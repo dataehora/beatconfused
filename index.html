@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BeatConfused - Online Metronome</title>
+  <meta name="description" content="BeatConfused is a fast, responsive online metronome with tempo controls, time signatures, accents, sound, and vibration." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">beatconfused.com</p>
+      <h1>BeatConfused</h1>
+      <p class="subtitle">A lightning-fast online metronome for musicians.</p>
+    </header>
+
+    <section class="metronome" aria-label="Metronome">
+      <div class="pulse-wrap">
+        <div class="pulse" id="pulse" aria-hidden="true"></div>
+        <p id="beatLabel" class="beat-label">Beat 1</p>
+      </div>
+
+      <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false">Start</button>
+
+      <div class="beat-indicators" id="beatIndicators" aria-label="Beat indicators"></div>
+
+      <div class="controls-grid">
+        <div class="control-block tempo-block">
+          <label for="bpmRange">Tempo (BPM)</label>
+          <div class="tempo-row">
+            <button id="decreaseBtn" type="button" class="small-btn" aria-label="Decrease BPM">−</button>
+            <input id="bpmInput" type="number" min="40" max="240" step="1" value="120" />
+            <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM">+</button>
+          </div>
+          <input id="bpmRange" type="range" min="40" max="240" value="120" />
+          <p class="hint">Space: Start/Stop · ↑/↓: ±5 BPM</p>
+        </div>
+
+        <div class="control-block">
+          <label for="timeSignature">Time Signature</label>
+          <select id="timeSignature">
+            <option value="1">1/1</option>
+            <option value="2">2/4</option>
+            <option value="3">3/4</option>
+            <option value="4" selected>4/4</option>
+            <option value="5">5/4</option>
+            <option value="6">6/8</option>
+            <option value="8">8/8</option>
+            <option value="12">12/8</option>
+          </select>
+        </div>
+
+        <div class="control-block">
+          <label for="accentInterval">Strong Beat Interval</label>
+          <input id="accentInterval" type="number" min="1" max="12" step="1" value="4" />
+        </div>
+
+        <div class="control-block toggle-row">
+          <label>
+            <input id="soundToggle" type="checkbox" checked />
+            Sound
+          </label>
+          <label>
+            <input id="vibrationToggle" type="checkbox" />
+            Vibration
+          </label>
+        </div>
+
+        <div class="control-block">
+          <label for="volume">Volume</label>
+          <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" />
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Made with ❤️ for musicians, by musicians.</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
