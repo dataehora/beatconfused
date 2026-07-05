@@ -492,7 +492,18 @@ function handleTapTempo() {
 }
 
 function setVisualMode() {
-  metronomeSection.dataset.visualMode = visualModeSelect.value;
+  const mode = visualModeSelect.value;
+  const visualElementsByMode = {
+    pulse: pulse,
+    numbers: numberDisplay,
+    pendulum: pendulum,
+  };
+
+  metronomeSection.dataset.visualMode = mode;
+
+  Object.entries(visualElementsByMode).forEach(([visualMode, element]) => {
+    element.hidden = visualMode !== mode;
+  });
 }
 
 function handleSubdivisionChange() {
