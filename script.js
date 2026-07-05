@@ -26,7 +26,7 @@ const REGULAR_VIBRATION_MS = 20;
 const PULSE_ANIMATION_DURATION_MS = 110;
 const MS_PER_SECOND = 1000;
 
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 function getAccentInterval() {
   return clamp(Number(accentIntervalInput.value) || 1, 1, 12);
@@ -69,7 +69,7 @@ function ensureAudioContext() {
   }
 
   if (audioContext.state === "suspended") {
-    audioContext.resume();
+    audioContext.resume().catch(() => {});
   }
 }
 
@@ -133,9 +133,9 @@ function tick() {
 }
 
 function startTimer() {
-  const interval = (60 / bpm) * MS_PER_SECOND;
+  const intervalMs = (60 / bpm) * MS_PER_SECOND;
   tick();
-  timerId = setInterval(tick, interval);
+  timerId = setInterval(tick, intervalMs);
 }
 
 function stopTimer() {
