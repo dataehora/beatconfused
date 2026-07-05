@@ -49,7 +49,7 @@ const MAX_STORED_TAPS = 6;
 const MAX_SUBDIVISION = 16;
 const MIN_BPM = 40;
 const MAX_BPM = 240;
-const IPHONE_REGEX = /iPhone|iPad|iPod/i;
+const IOS_DEVICE_REGEX = /iPhone|iPad|iPod/i;
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -282,7 +282,7 @@ function updateVibrationUI() {
 
   if (!supported) {
     vibrationToggle.checked = false;
-    vibrationStatus.textContent = IPHONE_REGEX.test(navigator.userAgent)
+    vibrationStatus.textContent = IOS_DEVICE_REGEX.test(navigator.userAgent)
       ? "Vibration is unavailable in iPhone Safari because the browser does not expose the web vibration API."
       : "Vibration is unavailable in this browser. Audio and visual beat cues still work normally.";
     return;
@@ -323,6 +323,7 @@ function numberVisual(pulseType) {
   numberDisplay.classList.remove("active", "accent");
   numberDisplay.textContent = String(state.currentBeat + 1);
 
+  // Force reflow so the number animation restarts on every pulse.
   void numberDisplay.offsetWidth;
   numberDisplay.classList.add("active");
 

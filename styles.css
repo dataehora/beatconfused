@@ -8,7 +8,7 @@
   --muted: #b8bfd8;
   --accent: #7a9dff;
   --accent-strong: #ff7d7d;
-  --surface-light: #ffffff;
+  --surface-light-bg: #ffffff;
   --surface-light-text: #16203a;
   --shadow: 0 18px 42px rgba(6, 11, 25, 0.24);
 }
@@ -301,7 +301,7 @@ input[type="range"] { width: 100%; }
   min-height: 44px;
   border-radius: 0.8rem;
   border: 1px solid rgba(17, 25, 40, 0.14);
-  background: var(--surface-light);
+  background: var(--surface-light-bg);
   color: var(--surface-light-text);
   font-weight: 700;
   transition: transform 100ms ease, border-color 100ms ease, background 100ms ease, color 100ms ease;
