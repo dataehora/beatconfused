@@ -45,7 +45,7 @@ const BEAT_VIBRATION_MS = 20;
 const PULSE_ANIMATION_DURATION_MS = 120;
 const MS_PER_SECOND = 1000;
 const MAX_TAP_WINDOW_MS = 2500;
-const MAX_STORED_TAPS = 6;
+const MAX_STORED_TAPS = 2;
 const MAX_SUBDIVISION = 16;
 const MIN_BPM = 40;
 const MAX_BPM = 240;
@@ -478,17 +478,11 @@ function handleTapTempo() {
     return;
   }
 
-  const intervals = [];
-
-  for (let index = 1; index < tapTimes.length; index += 1) {
-    intervals.push(tapTimes[index] - tapTimes[index - 1]);
-  }
-
-  const averageInterval = intervals.reduce((total, value) => total + value, 0) / intervals.length;
-  const tappedBpm = clamp(Math.round(60000 / averageInterval), MIN_BPM, MAX_BPM);
+  const latestInterval = tapTimes[1] - tapTimes[0];
+  const tappedBpm = clamp(Math.round(60000 / latestInterval), MIN_BPM, MAX_BPM);
 
   updateTempo(tappedBpm);
-  setTapMessage(`Tap tempo: ${tappedBpm} BPM from ${intervals.length + 1} taps.`);
+  setTapMessage(`Tap tempo: ${tappedBpm} BPM from last 2 taps.`);
 }
 
 function setVisualMode() {
