@@ -3,21 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BeatConfused - Online Metronome</title>
-  <meta name="description" content="BeatConfused is a fast, responsive online metronome with tempo controls, time signatures, accents, sound, and vibration." />
+  <title>BeatConfused | Online Metronome with Tap Tempo, Subdivisions, and Visual Beats</title>
+  <meta
+    name="description"
+    content="BeatConfused is a fast online metronome with tap tempo, organized time signatures, beat subdivisions, multiple visualizations, sound styles, and responsive musician-friendly controls."
+  />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#10131d" />
+  <link rel="canonical" href="https://beatconfused.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="BeatConfused | Online Metronome with Tap Tempo" />
+  <meta
+    property="og:description"
+    content="Practice with tap tempo, multiple time signatures, beat subdivisions, sound styles, and animated metronome views."
+  />
+  <meta property="og:url" content="https://beatconfused.com/" />
+  <meta property="og:site_name" content="BeatConfused" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="BeatConfused | Online Metronome with Tap Tempo" />
+  <meta
+    name="twitter:description"
+    content="A responsive online metronome for musicians with tap tempo, subdivisions, sound styles, and visual beat modes."
+  />
   <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "BeatConfused",
+          "url": "https://beatconfused.com/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web Browser",
+          "description": "An online metronome with tap tempo, time signatures, beat subdivisions, sound styles, and multiple beat visualizers for practice.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How do I set the tempo without typing a BPM number?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Use the Tap Tempo button or press the T key repeatedly. BeatConfused averages the taps and sets the BPM automatically."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I change the beat subdivision and time signature?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can choose from organized standard time signatures and switch beat subdivisions to hear each beat split into more pulses."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does BeatConfused support different metronome sounds and visuals?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can switch between pulse, number, and pendulum visual modes and pick sound styles including electronic, bossa, jazz, wood, cymbal, and cowbell."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  </script>
 </head>
 <body>
   <main class="page">
     <header class="hero">
       <p class="eyebrow">beatconfused.com</p>
-      <h1>BeatConfused</h1>
-      <p class="subtitle">A lightning-fast online metronome for musicians.</p>
+      <h1>BeatConfused Online Metronome</h1>
+      <p class="subtitle">
+        Tap in a tempo, choose a time signature, add subdivisions, and practice with sounds and visuals built for musicians.
+      </p>
     </header>
 
-    <section class="metronome" aria-label="Metronome">
-      <div class="pulse-wrap">
-        <div class="pulse" id="pulse" aria-hidden="true"></div>
+    <section class="metronome" aria-labelledby="metronome-title" data-visual-mode="pulse">
+      <div class="section-heading">
+        <h2 id="metronome-title">Practice tempo in seconds</h2>
+        <p>Set the pulse your way with direct BPM entry, tap tempo, keyboard shortcuts, and multiple metronome views.</p>
+      </div>
+
+      <div class="visual-stage" aria-live="polite">
+        <div class="pulse visual-element" id="pulse" aria-hidden="true"></div>
+        <div class="number-display visual-element" id="numberDisplay" aria-hidden="true">1</div>
+        <div class="pendulum visual-element" id="pendulum" aria-hidden="true">
+          <div class="pendulum-arm"></div>
+          <div class="pendulum-bob"></div>
+        </div>
         <p id="beatLabel" class="beat-label">Beat 1</p>
       </div>
 
@@ -34,26 +115,134 @@
             <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM">+</button>
           </div>
           <input id="bpmRange" type="range" min="40" max="240" value="120" />
-          <p class="hint">Space: Start/Stop · ↑/↓: ±5 BPM</p>
+          <div class="tap-row">
+            <button id="tapBtn" type="button" class="small-btn tap-btn">Tap Tempo</button>
+            <p id="tapStatus" class="hint">Tap or press T at least twice to detect tempo.</p>
+          </div>
+          <p class="hint">Space: Start/Stop · ↑/↓: ±5 BPM · T: Tap Tempo</p>
         </div>
 
+        <fieldset class="control-block signature-block">
+          <legend>Time Signature</legend>
+          <div class="signature-groups">
+            <div class="signature-group">
+              <h3>Simple</h3>
+              <div class="signature-options">
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="2/2" data-beats="2" />
+                  <span>2/2</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="2/4" data-beats="2" />
+                  <span>2/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="3/4" data-beats="3" />
+                  <span>3/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="4/4" data-beats="4" checked />
+                  <span>4/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="6/4" data-beats="6" />
+                  <span>6/4</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="signature-group">
+              <h3>Compound</h3>
+              <div class="signature-options">
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="3/8" data-beats="3" />
+                  <span>3/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="6/8" data-beats="6" />
+                  <span>6/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="9/8" data-beats="9" />
+                  <span>9/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="12/8" data-beats="12" />
+                  <span>12/8</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="signature-group">
+              <h3>Odd</h3>
+              <div class="signature-options">
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="5/4" data-beats="5" />
+                  <span>5/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="5/8" data-beats="5" />
+                  <span>5/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="7/8" data-beats="7" />
+                  <span>7/8</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
         <div class="control-block">
-          <label for="timeSignature">Time Signature</label>
-          <select id="timeSignature">
-            <option value="1">1/1</option>
-            <option value="2">2/4</option>
-            <option value="3">3/4</option>
-            <option value="4" selected>4/4</option>
-            <option value="5">5/4</option>
-            <option value="6">6/8</option>
-            <option value="8">8/8</option>
-            <option value="12">12/8</option>
+          <label for="subdivisionSelect">Beat Subdivision</label>
+          <select id="subdivisionSelect">
+            <option value="1" selected>1 pulse per beat</option>
+            <option value="2">2 pulses per beat</option>
+            <option value="3">3 pulses per beat</option>
+            <option value="4">4 pulses per beat</option>
+            <option value="5">5 pulses per beat</option>
+            <option value="6">6 pulses per beat</option>
+            <option value="7">7 pulses per beat</option>
+            <option value="8">8 pulses per beat</option>
+            <option value="9">9 pulses per beat</option>
+            <option value="10">10 pulses per beat</option>
+            <option value="11">11 pulses per beat</option>
+            <option value="12">12 pulses per beat</option>
+            <option value="13">13 pulses per beat</option>
+            <option value="14">14 pulses per beat</option>
+            <option value="15">15 pulses per beat</option>
+            <option value="16">16 pulses per beat</option>
           </select>
         </div>
 
         <div class="control-block">
-          <label for="accentInterval">Strong Beat Interval</label>
-          <input id="accentInterval" type="number" min="1" max="12" step="1" value="4" />
+          <label for="visualMode">Beat Visual</label>
+          <select id="visualMode">
+            <option value="pulse" selected>Flashing circle</option>
+            <option value="numbers">Animated numbers</option>
+            <option value="pendulum">Swinging line</option>
+          </select>
+        </div>
+
+        <div class="control-block">
+          <label for="countDisplay">Tempo Counting</label>
+          <select id="countDisplay">
+            <option value="beat" selected>Beat count</option>
+            <option value="measure">Measure + beat</option>
+            <option value="off">Off</option>
+          </select>
+        </div>
+
+        <div class="control-block">
+          <label for="soundStyle">Sound Style</label>
+          <select id="soundStyle">
+            <option value="electronic" selected>Electronic</option>
+            <option value="bossa">Bossa</option>
+            <option value="jazz">Jazz</option>
+            <option value="wood">Wood</option>
+            <option value="cymbal">Cymbal</option>
+            <option value="cowbell">Cowbell</option>
+          </select>
         </div>
 
         <div class="control-block toggle-row">
@@ -65,12 +254,58 @@
             <input id="vibrationToggle" type="checkbox" />
             Vibration
           </label>
+          <p id="vibrationStatus" class="hint wide-hint">Vibration availability is detected automatically.</p>
         </div>
 
         <div class="control-block">
           <label for="volume">Volume</label>
           <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" />
         </div>
+      </div>
+    </section>
+
+    <section class="content-section" aria-labelledby="features-title">
+      <h2 id="features-title">Why musicians use BeatConfused</h2>
+      <div class="content-grid">
+        <article class="content-card">
+          <h3>Fast practice setup</h3>
+          <p>Open the metronome, tap the tempo, and start rehearsing in a few seconds on desktop, tablet, or phone.</p>
+        </article>
+        <article class="content-card">
+          <h3>Flexible rhythmic control</h3>
+          <p>Move between standard time signatures, hear fine beat subdivisions, and switch between clear sound styles for different practice contexts.</p>
+        </article>
+        <article class="content-card">
+          <h3>Visual timing cues</h3>
+          <p>Choose between a flashing circle, animated beat numbers, or a pendulum-style swing to match the way you count and internalize time.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section" aria-labelledby="how-to-title">
+      <h2 id="how-to-title">How to use this online metronome</h2>
+      <ol class="steps-list">
+        <li>Set a BPM manually or use Tap Tempo to detect the pulse from your clicks or key presses.</li>
+        <li>Choose the time signature and beat subdivision that fit your exercise, groove, or song.</li>
+        <li>Pick a beat visual, tempo counting mode, sound style, and volume, then press Start.</li>
+      </ol>
+    </section>
+
+    <section class="content-section faq-section" aria-labelledby="faq-title">
+      <h2 id="faq-title">Metronome FAQ</h2>
+      <div class="faq-list">
+        <article class="content-card">
+          <h3>Can I use BeatConfused on mobile?</h3>
+          <p>Yes. The interface is responsive and works well with touch controls, including tap tempo and the main transport button.</p>
+        </article>
+        <article class="content-card">
+          <h3>Why is vibration unavailable on some iPhones?</h3>
+          <p>Many iPhone browsers do not expose the web vibration API, so BeatConfused shows the status automatically and keeps audio and visual cues available.</p>
+        </article>
+        <article class="content-card">
+          <h3>Which counting modes are available?</h3>
+          <p>You can display beat count, measure plus beat, or switch counting off for a cleaner visual practice mode.</p>
+        </article>
       </div>
     </section>
 
