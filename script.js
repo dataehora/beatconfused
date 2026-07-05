@@ -19,6 +19,13 @@ let bpm = 120;
 let beatsPerMeasure = 4;
 let currentBeat = 0;
 
+const CLICK_DURATION_SEC = 0.05;
+const MIN_GAIN = 0.001;
+const ACCENT_VIBRATION_MS = 35;
+const REGULAR_VIBRATION_MS = 20;
+const PULSE_ANIMATION_DURATION_MS = 110;
+const MS_PER_SECOND = 1000;
+
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 function getAccentInterval() {
@@ -82,13 +89,13 @@ function playClick(isAccent) {
 
   const volume = Number(volumeInput.value);
   gainNode.gain.setValueAtTime(volume, now);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+  gainNode.gain.exponentialRampToValueAtTime(MIN_GAIN, now + CLICK_DURATION_SEC);
 
   oscillator.connect(gainNode);
   gainNode.connect(audioContext.destination);
 
   oscillator.start(now);
-  oscillator.stop(now + 0.05);
+  oscillator.stop(now + CLICK_DURATION_SEC);
 }
 
 function triggerVibration(isAccent) {
@@ -96,7 +103,7 @@ function triggerVibration(isAccent) {
     return;
   }
 
-  navigator.vibrate(isAccent ? 35 : 20);
+  navigator.vibrate(isAccent ? ACCENT_VIBRATION_MS : REGULAR_VIBRATION_MS);
 }
 
 function pulseVisual(isAccent) {
@@ -109,7 +116,7 @@ function pulseVisual(isAccent) {
 
   setTimeout(() => {
     pulse.classList.remove("active", "accent");
-  }, 110);
+  }, PULSE_ANIMATION_DURATION_MS);
 }
 
 function tick() {
@@ -126,7 +133,7 @@ function tick() {
 }
 
 function startTimer() {
-  const interval = (60 / bpm) * 1000;
+  const interval = (60 / bpm) * MS_PER_SECOND;
   tick();
   timerId = setInterval(tick, interval);
 }
