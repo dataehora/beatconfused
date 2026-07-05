@@ -138,8 +138,18 @@ function updateBeatLabel() {
 }
 
 function ensureAudioContext() {
+  const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContextConstructor) {
+    return false;
+  }
+
   if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    try {
+      audioContext = new AudioContextConstructor();
+    } catch (_) {
+      return false;
+    }
   }
 
   if (audioContext.state === "suspended") {
@@ -155,6 +165,8 @@ function ensureAudioContext() {
       channelData[index] = Math.random() * 2 - 1;
     }
   }
+
+  return true;
 }
 
 function createGainNode(volume, now, duration, decayTarget = MIN_GAIN) {
@@ -223,7 +235,9 @@ function playSound(pulseType) {
     return;
   }
 
-  ensureAudioContext();
+  if (!ensureAudioContext()) {
+    return;
+  }
 
   const volume = Number(volumeInput.value);
   const isAccent = pulseType === "measure";
@@ -414,7 +428,6 @@ function startMetronome() {
     return;
   }
 
-  ensureAudioContext();
   state.isPlaying = true;
   state.currentBeat = 0;
   state.currentSubdivisionStep = 0;
@@ -454,8 +467,6 @@ function toggleMetronome() {
 }
 
 function handleTapTempo() {
-  ensureAudioContext();
-
   const now = performance.now();
   const previousTap = tapTimes[tapTimes.length - 1];
 
