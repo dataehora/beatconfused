@@ -494,7 +494,7 @@ function handleTapTempo() {
 function setVisualMode() {
   const mode = visualModeSelect.value;
   const visualElementsByMode = {
-    pulse,
+    pulse: pulse,
     numbers: numberDisplay,
     pendulum,
   };
