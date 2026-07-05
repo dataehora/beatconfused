@@ -496,7 +496,7 @@ function setVisualMode() {
   const visualElementsByMode = {
     pulse: pulse,
     numbers: numberDisplay,
-    pendulum,
+    pendulum: pendulum,
   };
 
   metronomeSection.dataset.visualMode = mode;
