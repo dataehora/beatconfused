@@ -7,11 +7,13 @@ A lightning-fast, modern, and elegant online metronome for musicians. No install
 ✨ **Modern Interface** - Clean, elegant design optimized for musicians
 ⚡ **Lightning Fast** - Instant loading, smooth performance
 📱 **Fully Responsive** - Works perfectly on desktop, tablet, and mobile devices
-🔊 **Sound & Vibration** - Customizable audio and haptic feedback
-🎚️ **Advanced Controls** - BPM, beat patterns, accents, and volume control
-⌨️ **Keyboard Shortcuts** - Space to start/stop, Arrow keys to adjust BPM
+👆 **Tap Tempo** - Click the tap button or press `T` to detect BPM naturally
+🔊 **Sound Styles** - Electronic, bossa, jazz, wood, cymbal, and cowbell options
+🎚️ **Advanced Controls** - BPM, beat subdivisions, counting modes, and volume control
+👀 **Multiple Visuals** - Flashing pulse, animated numbers, or pendulum swing
+⌨️ **Keyboard Shortcuts** - Space to start/stop, Arrow keys to adjust BPM, `T` to tap
 🎵 **Musical Tempos** - Supports tempos from 40 to 240 BPM
-♪ **Time Signatures** - 1/1, 2/4, 3/4, 4/4, 5/4, 6/8, 8/8, 12/8
+♪ **Time Signatures** - Organized standard simple, compound, and odd meters
 
 ## Getting Started
 
@@ -25,11 +27,16 @@ A lightning-fast, modern, and elegant online metronome for musicians. No install
 - **Slider** - Smooth BPM adjustment
 - **Input Field** - Direct BPM entry
 - **+/- Buttons** - Increment/decrement by 5 BPM
+- **Tap Tempo** - Detect BPM from repeated taps
 - **Arrow Keys** - Up/Down to adjust BPM
+- **T Key** - Tap tempo from the keyboard
 
 ### Beat Settings
-- **Beats per Measure** - Choose your time signature
-- **Strong Beat** - Set accent interval
+- **Time Signature** - Choose from organized standard signatures
+- **Beat Subdivision** - Split each beat into more pulses
+- **Tempo Counting** - Show beat count, measure + beat, or hide counts
+- **Beat Visual** - Pulse, numbers, or pendulum
+- **Sound Style** - Pick the click character you want
 - **Sound Toggle** - Enable/disable audio
 - **Vibration Toggle** - Enable/disable haptic feedback
 - **Volume Control** - Adjust metronome volume
@@ -39,12 +46,14 @@ A lightning-fast, modern, and elegant online metronome for musicians. No install
 - **Space** - Start/Stop metronome
 - **Arrow Up** - Increase BPM by 5
 - **Arrow Down** - Decrease BPM by 5
+- **T** - Tap tempo
 
 ## Technical Stack
 
 - **HTML5** - Semantic structure
 - **CSS3** - Modern styling with gradients and animations
 - **Web Audio API** - High-precision audio generation
+- **Structured Data + Crawl Files** - JSON-LD, robots.txt, and sitemap.xml
 - **Vanilla JavaScript** - No dependencies required
 
 ## Performance
@@ -54,6 +63,7 @@ A lightning-fast, modern, and elegant online metronome for musicians. No install
 - 🔄 Smooth 60fps animations
 - 📊 Minimal resource usage
 - 🌐 Works offline after first load
+- 🔎 SEO-friendly metadata and structured on-page content
 
 ## Browser Support
 
@@ -95,8 +105,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## Roadmap
 
 - [ ] Preset tempo buttons
-- [ ] Multiple sound options
-- [ ] Tap tempo feature
+- [x] Multiple sound options
+- [x] Tap tempo feature
 - [ ] Session recording
 - [ ] Dark/Light theme toggle
 - [ ] PWA installation

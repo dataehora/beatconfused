@@ -1,667 +1,319 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BeatConfused — Online Metronome</title>
-  <meta name="description" content="A lightning-fast, modern online metronome for musicians. No installation, no configuration, just tempo." />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0f0f13;
-      --surface: #1a1a24;
-      --surface2: #23232f;
-      --accent: #7c6af7;
-      --accent2: #a78bfa;
-      --beat-active: #f472b6;
-      --text: #e2e8f0;
-      --muted: #64748b;
-      --radius: 14px;
-      --transition: 0.18s ease;
+  <title>BeatConfused | Online Metronome with Tap Tempo, Subdivisions, and Visual Beats</title>
+  <meta
+    name="description"
+    content="BeatConfused is a fast online metronome with tap tempo, organized time signatures, beat subdivisions, multiple visualizations, sound styles, and responsive musician-friendly controls."
+  />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#10131d" />
+  <link rel="canonical" href="https://beatconfused.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="BeatConfused | Online Metronome with Tap Tempo" />
+  <meta
+    property="og:description"
+    content="Practice with tap tempo, multiple time signatures, beat subdivisions, sound styles, and animated metronome views."
+  />
+  <meta property="og:url" content="https://beatconfused.com/" />
+  <meta property="og:site_name" content="BeatConfused" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="BeatConfused | Online Metronome with Tap Tempo" />
+  <meta
+    name="twitter:description"
+    content="A responsive online metronome for musicians with tap tempo, subdivisions, sound styles, and visual beat modes."
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "BeatConfused",
+          "url": "https://beatconfused.com/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web Browser",
+          "description": "An online metronome with tap tempo, time signatures, beat subdivisions, sound styles, and multiple beat visualizers for practice.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How do I set the tempo without typing a BPM number?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Use the Tap Tempo button or press the T key repeatedly. BeatConfused averages the taps and sets the BPM automatically."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I change the beat subdivision and time signature?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can choose from organized standard time signatures and switch beat subdivisions to hear each beat split into more pulses."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does BeatConfused support different metronome sounds and visuals?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can switch between pulse, number, and pendulum visual modes and pick sound styles including electronic, bossa, jazz, wood, cymbal, and cowbell."
+              }
+            }
+          ]
+        }
+      ]
     }
-
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      font-size: 16px;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 2rem 1rem 3rem;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-
-    header h1 {
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--accent2), var(--beat-active));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
-    }
-
-    header p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-top: 0.4rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 2rem;
-      width: 100%;
-      max-width: 480px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.45);
-    }
-
-    /* Beat indicators */
-    .beats-display {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .beat-dot {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--surface2);
-      border: 2px solid var(--surface2);
-      transition: background var(--transition), border-color var(--transition), transform var(--transition);
-    }
-
-    .beat-dot.active {
-      background: var(--accent);
-      border-color: var(--accent2);
-      transform: scale(1.2);
-    }
-
-    .beat-dot.accent {
-      background: var(--beat-active) !important;
-      border-color: #fbcfe8 !important;
-      transform: scale(1.3) !important;
-    }
-
-    /* BPM display */
-    .bpm-section {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .bpm-value {
-      font-size: clamp(3rem, 12vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1;
-      color: var(--text);
-      letter-spacing: -2px;
-    }
-
-    .bpm-label {
-      color: var(--muted);
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-top: 0.2rem;
-    }
-
-    /* Tempo name */
-    .tempo-name {
-      color: var(--accent2);
-      font-size: 0.9rem;
-      font-style: italic;
-      margin-top: 0.3rem;
-    }
-
-    /* Slider */
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 1.2rem;
-    }
-
-    .bpm-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: none;
-      background: var(--surface2);
-      color: var(--text);
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--transition);
-      flex-shrink: 0;
-    }
-    .bpm-btn:hover { background: var(--accent); }
-
-    input[type="range"] {
-      -webkit-appearance: none;
-      flex: 1;
-      height: 6px;
-      border-radius: 3px;
-      background: var(--surface2);
-      outline: none;
-      cursor: pointer;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--accent2);
-      cursor: pointer;
-      box-shadow: 0 0 0 3px rgba(124,106,247,0.25);
-    }
-    input[type="range"]::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--accent2);
-      cursor: pointer;
-      border: none;
-    }
-
-    /* BPM direct input */
-    .bpm-input-row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-    }
-    .bpm-input-row input[type="number"] {
-      width: 90px;
-      text-align: center;
-      background: var(--surface2);
-      border: 1px solid #333;
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 1rem;
-      padding: 0.4rem 0.6rem;
-      outline: none;
-      -moz-appearance: textfield;
-    }
-    .bpm-input-row input[type="number"]::-webkit-inner-spin-button,
-    .bpm-input-row input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-    .bpm-input-row input[type="number"]:focus { border-color: var(--accent); }
-
-    /* Controls grid */
-    .controls {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .control-group label {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 0.4rem;
-    }
-
-    select {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid #333;
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 0.9rem;
-      padding: 0.45rem 0.6rem;
-      outline: none;
-      cursor: pointer;
-    }
-    select:focus { border-color: var(--accent); }
-
-    /* Toggle row */
-    .toggles {
-      display: flex;
-      gap: 0.8rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .toggle-btn {
-      flex: 1;
-      min-width: 80px;
-      padding: 0.5rem 0.8rem;
-      border-radius: 8px;
-      border: 1px solid #333;
-      background: var(--surface2);
-      color: var(--muted);
-      font-size: 0.8rem;
-      cursor: pointer;
-      text-align: center;
-      transition: all var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-    }
-    .toggle-btn.on {
-      border-color: var(--accent);
-      color: var(--accent2);
-      background: rgba(124,106,247,0.12);
-    }
-
-    /* Volume */
-    .volume-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 1.8rem;
-    }
-    .volume-row span {
-      font-size: 0.8rem;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    /* Start button */
-    #startBtn {
-      width: 100%;
-      padding: 1rem;
-      border-radius: var(--radius);
-      border: none;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.5px;
-      background: linear-gradient(135deg, var(--accent), #9b59f0);
-      color: #fff;
-      transition: all var(--transition);
-      box-shadow: 0 4px 20px rgba(124,106,247,0.4);
-    }
-    #startBtn:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(124,106,247,0.55); }
-    #startBtn:active { transform: translateY(0); }
-    #startBtn.running {
-      background: linear-gradient(135deg, #e04b8a, var(--beat-active));
-      box-shadow: 0 4px 20px rgba(244,114,182,0.4);
-    }
-
-    /* Tap tempo */
-    #tapBtn {
-      width: 100%;
-      margin-top: 0.8rem;
-      padding: 0.7rem;
-      border-radius: var(--radius);
-      border: 1px solid #333;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: var(--surface2);
-      color: var(--muted);
-      transition: all var(--transition);
-      letter-spacing: 0.5px;
-    }
-    #tapBtn:hover { border-color: var(--accent); color: var(--accent2); }
-    #tapBtn:active { background: rgba(124,106,247,0.15); }
-
-    footer {
-      margin-top: 2.5rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-    footer a { color: var(--accent2); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
-
-    .shortcuts {
-      margin-top: 1rem;
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-align: center;
-    }
-    .kbd {
-      display: inline-block;
-      padding: 1px 6px;
-      background: var(--surface2);
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 0.8rem;
-      border: 1px solid #333;
-    }
-
-    @media (max-width: 380px) {
-      .card { padding: 1.4rem 1.2rem; }
-      .controls { grid-template-columns: 1fr; }
-    }
-  </style>
+  </script>
 </head>
 <body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">beatconfused.com</p>
+      <h1>BeatConfused Online Metronome</h1>
+      <p class="subtitle">
+        Tap in a tempo, choose a time signature, add subdivisions, and practice with sounds and visuals built for musicians.
+      </p>
+    </header>
 
-<header>
-  <h1>🥁 BeatConfused</h1>
-  <p>Online Metronome — simple, fast, precise</p>
-</header>
+    <section class="metronome" aria-labelledby="metronome-title" data-visual-mode="pendulum">
+      <div class="section-heading">
+        <h2 id="metronome-title">Practice tempo in seconds</h2>
+        <p>Set the pulse your way with direct BPM entry, tap tempo, keyboard shortcuts, and multiple metronome views.</p>
+      </div>
 
-<div class="card">
-  <!-- Beat indicators -->
-  <div class="beats-display" id="beatsDisplay"></div>
+      <div class="visual-stage" aria-live="polite">
+        <div class="pulse visual-element" id="pulse" aria-hidden="true"></div>
+        <div class="number-display visual-element" id="numberDisplay" aria-hidden="true">1</div>
+        <div class="pendulum visual-element" id="pendulum" aria-hidden="true">
+          <div class="pendulum-arm"></div>
+          <div class="pendulum-bob"></div>
+        </div>
+        <p id="beatLabel" class="beat-label">Beat 1</p>
+      </div>
 
-  <!-- BPM readout -->
-  <div class="bpm-section">
-    <div class="bpm-value" id="bpmDisplay">120</div>
-    <div class="bpm-label">BPM</div>
-    <div class="tempo-name" id="tempoName">Moderato</div>
-  </div>
+      <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false">Start</button>
 
-  <!-- Slider -->
-  <div class="slider-row">
-    <button class="bpm-btn" id="bpmDown" aria-label="Decrease BPM">−</button>
-    <input type="range" id="bpmSlider" min="40" max="240" value="120" />
-    <button class="bpm-btn" id="bpmUp" aria-label="Increase BPM">+</button>
-  </div>
+      <div class="beat-indicators" id="beatIndicators" aria-label="Beat indicators"></div>
 
-  <!-- Direct input -->
-  <div class="bpm-input-row">
-    <input type="number" id="bpmInput" min="40" max="240" value="120" aria-label="Enter BPM" />
-  </div>
+      <div class="controls-grid">
+        <div class="control-block tempo-block">
+          <label for="bpmRange">Tempo (BPM)</label>
+          <div class="tempo-row">
+            <button id="decreaseBtn" type="button" class="small-btn" aria-label="Decrease BPM">−</button>
+            <input id="bpmInput" type="number" min="40" max="240" step="1" value="120" />
+            <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM">+</button>
+          </div>
+          <input id="bpmRange" type="range" min="40" max="240" value="120" />
+          <div class="tap-row">
+            <button id="tapBtn" type="button" class="small-btn tap-btn">Tap Tempo</button>
+            <p id="tapStatus" class="hint">Tap or press T at least twice to detect tempo.</p>
+          </div>
+          <p class="hint">Space: Start/Stop · ↑/↓: ±5 BPM · T: Tap Tempo</p>
+        </div>
 
-  <!-- Beats / Accent selectors -->
-  <div class="controls">
-    <div class="control-group">
-      <label for="beatsSelect">Beats per measure</label>
-      <select id="beatsSelect">
-        <option value="1">1 — No meter</option>
-        <option value="2">2 — 2/4</option>
-        <option value="3">3 — 3/4</option>
-        <option value="4" selected>4 — 4/4</option>
-        <option value="5">5 — 5/4</option>
-        <option value="6">6 — 6/8</option>
-        <option value="8">8 — 8/8</option>
-        <option value="12">12 — 12/8</option>
-      </select>
-    </div>
-    <div class="control-group">
-      <label for="accentSelect">Strong beat every</label>
-      <select id="accentSelect">
-        <option value="1" selected>1st beat</option>
-        <option value="2">Every 2nd</option>
-        <option value="3">Every 3rd</option>
-        <option value="4">Every 4th</option>
-        <option value="0">No accent</option>
-      </select>
-    </div>
-  </div>
+        <fieldset class="control-block signature-block">
+          <legend>Time Signature</legend>
+          <div class="signature-groups">
+            <div class="signature-group">
+              <h3>Simple</h3>
+              <div class="signature-options">
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="2/2" data-beats="2" />
+                  <span>2/2</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="2/4" data-beats="2" />
+                  <span>2/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="3/4" data-beats="3" />
+                  <span>3/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="4/4" data-beats="4" checked />
+                  <span>4/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="6/4" data-beats="6" />
+                  <span>6/4</span>
+                </label>
+              </div>
+            </div>
 
-  <!-- Toggles -->
-  <div class="toggles">
-    <button class="toggle-btn on" id="soundToggle">🔊 Sound</button>
-    <button class="toggle-btn" id="vibrateToggle">📳 Vibrate</button>
-  </div>
+            <div class="signature-group">
+              <h3>Compound</h3>
+              <div class="signature-options">
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="3/8" data-beats="3" />
+                  <span>3/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="6/8" data-beats="6" />
+                  <span>6/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="9/8" data-beats="9" />
+                  <span>9/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="12/8" data-beats="12" />
+                  <span>12/8</span>
+                </label>
+              </div>
+            </div>
 
-  <!-- Volume -->
-  <div class="volume-row">
-    <span>🔈 Vol</span>
-    <input type="range" id="volumeSlider" min="0" max="100" value="80" />
-    <span id="volumeLabel">80%</span>
-  </div>
+            <div class="signature-group">
+              <h3>Odd</h3>
+              <div class="signature-options">
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="5/4" data-beats="5" />
+                  <span>5/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="5/8" data-beats="5" />
+                  <span>5/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="7/8" data-beats="7" />
+                  <span>7/8</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
 
-  <!-- Start / Stop -->
-  <button id="startBtn">▶ Start</button>
+        <div class="control-block">
+          <label for="subdivisionSelect">Beat Subdivision</label>
+          <select id="subdivisionSelect">
+            <option value="1" selected>1 pulse per beat</option>
+            <option value="2">2 pulses per beat</option>
+            <option value="3">3 pulses per beat</option>
+            <option value="4">4 pulses per beat</option>
+            <option value="5">5 pulses per beat</option>
+            <option value="6">6 pulses per beat</option>
+            <option value="7">7 pulses per beat</option>
+            <option value="8">8 pulses per beat</option>
+            <option value="9">9 pulses per beat</option>
+            <option value="10">10 pulses per beat</option>
+            <option value="11">11 pulses per beat</option>
+            <option value="12">12 pulses per beat</option>
+            <option value="13">13 pulses per beat</option>
+            <option value="14">14 pulses per beat</option>
+            <option value="15">15 pulses per beat</option>
+            <option value="16">16 pulses per beat</option>
+          </select>
+        </div>
 
-  <!-- Tap Tempo -->
-  <button id="tapBtn">Tap Tempo</button>
-</div>
+        <div class="control-block">
+          <label for="visualMode">Beat Visual</label>
+          <select id="visualMode">
+            <option value="pulse">Flashing circle</option>
+            <option value="numbers">Animated numbers</option>
+            <option value="pendulum" selected>Swinging line</option>
+          </select>
+        </div>
 
-<div class="shortcuts">
-  <span class="kbd">Space</span> Start/Stop &nbsp;
-  <span class="kbd">↑</span><span class="kbd">↓</span> ±5 BPM &nbsp;
-  <span class="kbd">T</span> Tap Tempo
-</div>
+        <div class="control-block">
+          <label for="countDisplay">Tempo Counting</label>
+          <select id="countDisplay">
+            <option value="beat" selected>Beat count</option>
+            <option value="measure">Measure + beat</option>
+            <option value="off">Off</option>
+          </select>
+        </div>
 
-<footer>
-  <p>Made with ♥ for musicians · <a href="https://github.com/dataehora/beatconfused">GitHub</a></p>
-</footer>
+        <div class="control-block">
+          <label for="soundStyle">Sound Style</label>
+          <select id="soundStyle">
+            <option value="electronic" selected>Electronic</option>
+            <option value="bossa">Bossa</option>
+            <option value="jazz">Jazz</option>
+            <option value="wood">Wood</option>
+            <option value="cymbal">Cymbal</option>
+            <option value="cowbell">Cowbell</option>
+          </select>
+        </div>
 
-<script>
-(function () {
-  'use strict';
+        <div class="control-block toggle-row">
+          <label>
+            <input id="soundToggle" type="checkbox" checked />
+            Sound
+          </label>
+          <label>
+            <input id="vibrationToggle" type="checkbox" />
+            Vibration
+          </label>
+          <p id="vibrationStatus" class="hint wide-hint">Vibration availability is detected automatically.</p>
+        </div>
 
-  // ── State ──────────────────────────────────────────────────────────────────
-  let bpm = 120;
-  let beats = 4;
-  let accentEvery = 1;
-  let currentBeat = 0;
-  let isRunning = false;
-  let soundOn = true;
-  let vibrateOn = false;
-  let volume = 0.8;
+        <div class="control-block">
+          <label for="volume">Volume</label>
+          <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" />
+        </div>
+      </div>
+    </section>
 
-  let audioCtx = null;
-  let nextBeatTime = 0;
-  let scheduleAheadTime = 0.1;
-  let lookahead = 25; // ms
-  let schedulerTimer = null;
+    <section class="content-section" aria-labelledby="features-title">
+      <h2 id="features-title">Why musicians use BeatConfused</h2>
+      <div class="content-grid">
+        <article class="content-card">
+          <h3>Fast practice setup</h3>
+          <p>Open the metronome, tap the tempo, and start rehearsing in a few seconds on desktop, tablet, or phone.</p>
+        </article>
+        <article class="content-card">
+          <h3>Flexible rhythmic control</h3>
+          <p>Move between standard time signatures, hear fine beat subdivisions, and switch between clear sound styles for different practice contexts.</p>
+        </article>
+        <article class="content-card">
+          <h3>Visual timing cues</h3>
+          <p>Choose between a flashing circle, animated beat numbers, or a pendulum-style swing to match the way you count and internalize time.</p>
+        </article>
+      </div>
+    </section>
 
-  // Tap tempo
-  let tapTimes = [];
+    <section class="content-section" aria-labelledby="how-to-title">
+      <h2 id="how-to-title">How to use this online metronome</h2>
+      <ol class="steps-list">
+        <li>Set a BPM manually or use Tap Tempo to detect the pulse from your clicks or key presses.</li>
+        <li>Choose the time signature and beat subdivision that fit your exercise, groove, or song.</li>
+        <li>Pick a beat visual, tempo counting mode, sound style, and volume, then press Start.</li>
+      </ol>
+    </section>
 
-  // ── DOM refs ──────────────────────────────────────────────────────────────
-  const bpmDisplay   = document.getElementById('bpmDisplay');
-  const tempoName    = document.getElementById('tempoName');
-  const bpmSlider    = document.getElementById('bpmSlider');
-  const bpmInput     = document.getElementById('bpmInput');
-  const bpmDown      = document.getElementById('bpmDown');
-  const bpmUp        = document.getElementById('bpmUp');
-  const beatsSelect  = document.getElementById('beatsSelect');
-  const accentSelect = document.getElementById('accentSelect');
-  const soundToggle  = document.getElementById('soundToggle');
-  const vibrateToggle= document.getElementById('vibrateToggle');
-  const volumeSlider = document.getElementById('volumeSlider');
-  const volumeLabel  = document.getElementById('volumeLabel');
-  const startBtn     = document.getElementById('startBtn');
-  const tapBtn       = document.getElementById('tapBtn');
-  const beatsDisplay = document.getElementById('beatsDisplay');
+    <section class="content-section faq-section" aria-labelledby="faq-title">
+      <h2 id="faq-title">Metronome FAQ</h2>
+      <div class="faq-list">
+        <article class="content-card">
+          <h3>Can I use BeatConfused on mobile?</h3>
+          <p>Yes. The interface is responsive and works well with touch controls, including tap tempo and the main transport button.</p>
+        </article>
+        <article class="content-card">
+          <h3>Why is vibration unavailable on some iPhones?</h3>
+          <p>Many iPhone browsers do not expose the web vibration API, so BeatConfused shows the status automatically and keeps audio and visual cues available.</p>
+        </article>
+        <article class="content-card">
+          <h3>Which counting modes are available?</h3>
+          <p>You can display beat count, measure plus beat, or switch counting off for a cleaner visual practice mode.</p>
+        </article>
+      </div>
+    </section>
 
-  // ── Tempo names ───────────────────────────────────────────────────────────
-  function getTempoName(b) {
-    if (b < 60)  return 'Grave';
-    if (b < 66)  return 'Largo';
-    if (b < 76)  return 'Larghetto';
-    if (b < 108) return 'Andante';
-    if (b < 120) return 'Moderato';
-    if (b < 156) return 'Allegro';
-    if (b < 176) return 'Vivace';
-    if (b < 200) return 'Presto';
-    return 'Prestissimo';
-  }
+    <footer class="footer">
+      <p>Made with ❤️ for musicians, by musicians.</p>
+    </footer>
+  </main>
 
-  // ── Beat dots ─────────────────────────────────────────────────────────────
-  function renderDots() {
-    beatsDisplay.innerHTML = '';
-    for (let i = 0; i < beats; i++) {
-      const d = document.createElement('div');
-      d.className = 'beat-dot';
-      d.id = 'dot-' + i;
-      beatsDisplay.appendChild(d);
-    }
-  }
-
-  function flashBeat(beatIndex) {
-    document.querySelectorAll('.beat-dot').forEach((d, i) => {
-      d.classList.remove('active', 'accent');
-    });
-    const dot = document.getElementById('dot-' + beatIndex);
-    if (!dot) return;
-    const isAccent = accentEvery > 0 && ((beatIndex % accentEvery) === 0);
-    dot.classList.add(isAccent ? 'accent' : 'active');
-    // remove after short flash
-    setTimeout(() => {
-      dot.classList.remove('active', 'accent');
-    }, Math.min(180, (60000 / bpm) * 0.45));
-  }
-
-  // ── Audio ─────────────────────────────────────────────────────────────────
-  function getAudioContext() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    return audioCtx;
-  }
-
-  function scheduleClick(time, isAccent) {
-    if (!soundOn) return;
-    const ctx = getAudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.frequency.value = isAccent ? 1050 : 820;
-    gain.gain.setValueAtTime(volume * (isAccent ? 1 : 0.75), time);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.06);
-
-    osc.start(time);
-    osc.stop(time + 0.07);
-  }
-
-  // ── Scheduler ─────────────────────────────────────────────────────────────
-  function scheduler() {
-    const ctx = getAudioContext();
-    while (nextBeatTime < ctx.currentTime + scheduleAheadTime) {
-      const beat = currentBeat;
-      const isAccent = accentEvery > 0 && ((beat % accentEvery) === 0);
-
-      scheduleClick(nextBeatTime, isAccent);
-
-      // Visual flash — delayed to align with audio
-      const delay = Math.max(0, (nextBeatTime - ctx.currentTime) * 1000);
-      setTimeout(() => flashBeat(beat), delay);
-
-      // Vibrate on accent
-      if (vibrateOn && isAccent && navigator.vibrate) {
-        setTimeout(() => navigator.vibrate(30), delay);
-      }
-
-      nextBeatTime += 60.0 / bpm;
-      currentBeat = (currentBeat + 1) % beats;
-    }
-  }
-
-  // ── Start / Stop ──────────────────────────────────────────────────────────
-  function start() {
-    if (isRunning) return;
-    isRunning = true;
-    currentBeat = 0;
-    const ctx = getAudioContext();
-    nextBeatTime = ctx.currentTime + 0.05;
-    schedulerTimer = setInterval(scheduler, lookahead);
-    startBtn.textContent = '⏹ Stop';
-    startBtn.classList.add('running');
-  }
-
-  function stop() {
-    if (!isRunning) return;
-    isRunning = false;
-    clearInterval(schedulerTimer);
-    schedulerTimer = null;
-    document.querySelectorAll('.beat-dot').forEach(d => d.classList.remove('active', 'accent'));
-    startBtn.textContent = '▶ Start';
-    startBtn.classList.remove('running');
-  }
-
-  function toggle() {
-    if (isRunning) { stop(); } else { start(); }
-  }
-
-  // ── BPM helpers ───────────────────────────────────────────────────────────
-  function setBpm(val) {
-    bpm = Math.max(40, Math.min(240, Math.round(val)));
-    bpmDisplay.textContent = bpm;
-    bpmSlider.value = bpm;
-    bpmInput.value = bpm;
-    tempoName.textContent = getTempoName(bpm);
-  }
-
-  // ── Tap tempo ─────────────────────────────────────────────────────────────
-  function tap() {
-    const now = performance.now();
-    tapTimes.push(now);
-    // keep last 8 taps
-    if (tapTimes.length > 8) tapTimes.shift();
-    if (tapTimes.length < 2) return;
-    const intervals = [];
-    for (let i = 1; i < tapTimes.length; i++) {
-      intervals.push(tapTimes[i] - tapTimes[i - 1]);
-    }
-    const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-    setBpm(60000 / avgInterval);
-    // Reset if no tap for 3s
-    clearTimeout(tap._reset);
-    tap._reset = setTimeout(() => { tapTimes = []; }, 3000);
-  }
-
-  // ── Event listeners ───────────────────────────────────────────────────────
-  bpmSlider.addEventListener('input', () => setBpm(bpmSlider.value));
-
-  bpmInput.addEventListener('change', () => setBpm(bpmInput.value));
-  bpmInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') setBpm(bpmInput.value);
-  });
-
-  bpmDown.addEventListener('click', () => setBpm(bpm - 5));
-  bpmUp.addEventListener('click', () => setBpm(bpm + 5));
-
-  beatsSelect.addEventListener('change', () => {
-    beats = parseInt(beatsSelect.value);
-    renderDots();
-  });
-
-  accentSelect.addEventListener('change', () => {
-    accentEvery = parseInt(accentSelect.value);
-  });
-
-  soundToggle.addEventListener('click', () => {
-    soundOn = !soundOn;
-    soundToggle.textContent = soundOn ? '🔊 Sound' : '🔇 Sound';
-    soundToggle.classList.toggle('on', soundOn);
-  });
-
-  vibrateToggle.addEventListener('click', () => {
-    vibrateOn = !vibrateOn;
-    vibrateToggle.classList.toggle('on', vibrateOn);
-  });
-
-  volumeSlider.addEventListener('input', () => {
-    volume = volumeSlider.value / 100;
-    volumeLabel.textContent = volumeSlider.value + '%';
-  });
-
-  startBtn.addEventListener('click', toggle);
-  tapBtn.addEventListener('click', tap);
-
-  document.addEventListener('keydown', e => {
-    const tag = e.target.tagName.toLowerCase();
-    if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
-    if (e.code === 'Space') { e.preventDefault(); toggle(); }
-    if (e.code === 'ArrowUp') { e.preventDefault(); setBpm(bpm + 5); }
-    if (e.code === 'ArrowDown') { e.preventDefault(); setBpm(bpm - 5); }
-    if (e.code === 'KeyT') { e.preventDefault(); tap(); }
-  });
-
-  // ── Init ──────────────────────────────────────────────────────────────────
-  renderDots();
-  setBpm(120);
-})();
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
