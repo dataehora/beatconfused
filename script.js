@@ -50,6 +50,10 @@ const MAX_SUBDIVISION = 16;
 const MIN_BPM = 40;
 const MAX_BPM = 240;
 const IOS_DEVICE_REGEX = /iPhone|iPad|iPod/i;
+const UPDATE_CHECK_INTERVAL_MS = 30000;
+
+let deployedVersionToken;
+let pendingReloadForUpdate = false;
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -71,6 +75,49 @@ function isVibrationSupported() {
 
 function setTapMessage(message) {
   tapStatus.textContent = message;
+}
+
+function buildUpdateCheckUrl() {
+  const url = new URL(window.location.href);
+  url.searchParams.set("__update_check", String(Date.now()));
+  return url.toString();
+}
+
+async function checkForDeployedUpdate() {
+  try {
+    const response = await fetch(buildUpdateCheckUrl(), {
+      method: "HEAD",
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return;
+    }
+
+    const versionToken = response.headers.get("etag") || response.headers.get("last-modified");
+
+    if (!versionToken) {
+      return;
+    }
+
+    if (!deployedVersionToken) {
+      deployedVersionToken = versionToken;
+      return;
+    }
+
+    if (versionToken === deployedVersionToken) {
+      return;
+    }
+
+    if (state.isPlaying) {
+      pendingReloadForUpdate = true;
+      return;
+    }
+
+    window.location.reload();
+  } catch (error) {
+    console.warn("Update check failed:", error);
+  }
 }
 
 function syncTimeSignature() {
@@ -456,6 +503,10 @@ function stopMetronome() {
   pulse.classList.remove("active", "accent");
   numberDisplay.classList.remove("active", "accent");
   pendulum.classList.remove("accent");
+
+  if (pendingReloadForUpdate) {
+    window.location.reload();
+  }
 }
 
 function toggleMetronome() {
@@ -573,3 +624,5 @@ updateVibrationUI();
 renderBeatIndicators();
 updateBeatLabel();
 updateTempo(state.bpm);
+checkForDeployedUpdate();
+window.setInterval(checkForDeployedUpdate, UPDATE_CHECK_INTERVAL_MS);
