@@ -10,6 +10,7 @@
   --accent-strong: #ff7d7d;
   --surface-light-bg: #ffffff;
   --surface-light-text: #16203a;
+  --surface-light-border: rgba(17, 25, 40, 0.14);
   --shadow: 0 18px 42px rgba(6, 11, 25, 0.24);
 }
 
@@ -300,7 +301,7 @@ input[type="range"] { width: 100%; }
   justify-content: center;
   min-height: 44px;
   border-radius: 0.8rem;
-  border: 1px solid rgba(17, 25, 40, 0.14);
+  border: 1px solid var(--surface-light-border);
   background: var(--surface-light-bg);
   color: var(--surface-light-text);
   font-weight: 700;

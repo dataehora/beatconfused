@@ -283,7 +283,7 @@ function updateVibrationUI() {
   if (!supported) {
     vibrationToggle.checked = false;
     vibrationStatus.textContent = IOS_DEVICE_REGEX.test(navigator.userAgent)
-      ? "Vibration is unavailable in iPhone Safari because the browser does not expose the web vibration API."
+      ? "Vibration is unavailable on iOS browsers because they do not expose the web vibration API."
       : "Vibration is unavailable in this browser. Audio and visual beat cues still work normally.";
     return;
   }
@@ -488,7 +488,7 @@ function handleTapTempo() {
   const tappedBpm = clamp(Math.round(60000 / averageInterval), MIN_BPM, MAX_BPM);
 
   updateTempo(tappedBpm);
-  setTapMessage(`${tappedBpm} BPM from ${intervals.length + 1} taps.`);
+  setTapMessage(`Tap tempo: ${tappedBpm} BPM from ${intervals.length + 1} taps.`);
 }
 
 function setVisualMode() {
