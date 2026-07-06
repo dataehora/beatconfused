@@ -50,10 +50,12 @@ const MAX_SUBDIVISION = 16;
 const MIN_BPM = 40;
 const MAX_BPM = 240;
 const IOS_DEVICE_REGEX = /iPhone|iPad|iPod/i;
-const UPDATE_CHECK_INTERVAL_MS = 30000;
+const UPDATE_CHECK_INTERVAL_MS = 10000;
+const UPDATE_CHECK_RESOURCES = [window.location.pathname, "styles.css", "script.js"];
 
-let deployedVersionToken;
+const deployedVersionTokens = new Map();
 let pendingReloadForUpdate = false;
+let pendingReloadVersionToken;
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -77,44 +79,75 @@ function setTapMessage(message) {
   tapStatus.textContent = message;
 }
 
-function buildUpdateCheckUrl() {
-  const url = new URL(window.location.href);
+function buildUpdateCheckUrl(resource) {
+  const url = new URL(resource, window.location.href);
   url.searchParams.set("__update_check", String(Date.now()));
   return url.toString();
 }
 
+function getVersionToken(response) {
+  return response.headers.get("etag") || response.headers.get("last-modified");
+}
+
+function getResourceKey(resource) {
+  return new URL(resource, window.location.href).pathname;
+}
+
+function buildReloadUrl(versionToken) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("__v", versionToken);
+  return url.toString();
+}
+
+function reloadWithVersion(versionToken) {
+  window.location.replace(buildReloadUrl(versionToken));
+}
+
+async function checkResourceForDeployedUpdate(resource) {
+  const response = await fetch(buildUpdateCheckUrl(resource), {
+    method: "HEAD",
+    cache: "reload",
+  });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const versionToken = getVersionToken(response);
+
+  if (!versionToken) {
+    return null;
+  }
+
+  const resourceKey = getResourceKey(resource);
+  const previousVersionToken = deployedVersionTokens.get(resourceKey);
+  deployedVersionTokens.set(resourceKey, versionToken);
+
+  if (!previousVersionToken || previousVersionToken === versionToken) {
+    return null;
+  }
+
+  return versionToken;
+}
+
 async function checkForDeployedUpdate() {
   try {
-    const response = await fetch(buildUpdateCheckUrl(), {
-      method: "HEAD",
-      cache: "no-store",
-    });
+    for (const resource of UPDATE_CHECK_RESOURCES) {
+      const updatedVersionToken = await checkResourceForDeployedUpdate(resource);
 
-    if (!response.ok) {
+      if (!updatedVersionToken) {
+        continue;
+      }
+
+      if (state.isPlaying) {
+        pendingReloadForUpdate = true;
+        pendingReloadVersionToken = updatedVersionToken;
+        return;
+      }
+
+      reloadWithVersion(updatedVersionToken);
       return;
     }
-
-    const versionToken = response.headers.get("etag") || response.headers.get("last-modified");
-
-    if (!versionToken) {
-      return;
-    }
-
-    if (!deployedVersionToken) {
-      deployedVersionToken = versionToken;
-      return;
-    }
-
-    if (versionToken === deployedVersionToken) {
-      return;
-    }
-
-    if (state.isPlaying) {
-      pendingReloadForUpdate = true;
-      return;
-    }
-
-    window.location.reload();
   } catch (error) {
     console.warn("Update check failed:", error);
   }
@@ -505,7 +538,7 @@ function stopMetronome() {
   pendulum.classList.remove("accent");
 
   if (pendingReloadForUpdate) {
-    window.location.reload();
+    reloadWithVersion(pendingReloadVersionToken || String(Date.now()));
   }
 }
 
@@ -626,3 +659,8 @@ updateBeatLabel();
 updateTempo(state.bpm);
 checkForDeployedUpdate();
 window.setInterval(checkForDeployedUpdate, UPDATE_CHECK_INTERVAL_MS);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    checkForDeployedUpdate();
+  }
+});
