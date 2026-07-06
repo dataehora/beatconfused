@@ -52,10 +52,21 @@ const MAX_BPM = 240;
 const IOS_DEVICE_REGEX = /iPhone|iPad|iPod/i;
 const UPDATE_CHECK_INTERVAL_MS = 10000;
 const UPDATE_CHECK_RESOURCES = [window.location.pathname, "styles.css", "script.js"];
+const PENDULUM_MIN_AMPLITUDE_DEG = 10;
+const PENDULUM_MAX_AMPLITUDE_DEG = 22;
+const PENDULUM_WEIGHT_MIN_OFFSET_PX = -56;
+const PENDULUM_WEIGHT_MAX_OFFSET_PX = 8;
+const PENDULUM_PREVIEW_RETURN_MS = 240;
 
 const deployedVersionTokens = new Map();
 let pendingReloadForUpdate = false;
 let pendingReloadVersionToken;
+let pendulumAnimationFrameId;
+let pendulumPreviewTimeoutId;
+let pendulumTickTimeoutId;
+let pendulumPreviewDirection = -1;
+
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -168,9 +179,11 @@ function updateTempo(value) {
   state.bpm = clamp(Number(value) || 120, MIN_BPM, MAX_BPM);
   bpmInput.value = String(state.bpm);
   bpmRange.value = String(state.bpm);
+  syncPendulumPhysics();
 
   if (state.isPlaying) {
     restartTimer();
+    startPendulumAnimation();
   }
 }
 
@@ -430,14 +443,128 @@ function numberVisual(pulseType) {
   }, PULSE_ANIMATION_DURATION_MS);
 }
 
-function pendulumVisual(pulseType) {
-  const direction = state.totalPulseCount % 2 === 0 ? -1 : 1;
-  const angle = direction * 26;
-  const offset = direction * 45;
+function getTempoProgress() {
+  return (state.bpm - MIN_BPM) / (MAX_BPM - MIN_BPM);
+}
 
+function getPendulumAmplitudeDeg() {
+  const amplitudeRange = PENDULUM_MAX_AMPLITUDE_DEG - PENDULUM_MIN_AMPLITUDE_DEG;
+  return PENDULUM_MAX_AMPLITUDE_DEG - (getTempoProgress() * amplitudeRange);
+}
+
+function getPendulumCarriageOffsetPx() {
+  const offsetRange = PENDULUM_WEIGHT_MAX_OFFSET_PX - PENDULUM_WEIGHT_MIN_OFFSET_PX;
+  return PENDULUM_WEIGHT_MAX_OFFSET_PX - (getTempoProgress() * offsetRange);
+}
+
+function getPendulumHalfCycleMs() {
+  return (60 / state.bpm) * MS_PER_SECOND;
+}
+
+function applyPendulumAngle(angle) {
+  pendulum.style.setProperty("--pendulum-angle", `${angle.toFixed(2)}deg`);
+}
+
+function syncPendulumPhysics() {
+  pendulum.style.setProperty("--pendulum-amplitude", `${getPendulumAmplitudeDeg().toFixed(2)}deg`);
+  pendulum.style.setProperty("--pendulum-carriage-offset", `${getPendulumCarriageOffsetPx().toFixed(2)}px`);
+}
+
+function stopPendulumPreview() {
+  if (pendulumPreviewTimeoutId !== undefined) {
+    window.clearTimeout(pendulumPreviewTimeoutId);
+    pendulumPreviewTimeoutId = undefined;
+  }
+
+  pendulum.classList.remove("is-previewing");
+}
+
+function flashPendulumTick(pulseType) {
   pendulum.classList.toggle("accent", pulseType === "measure");
-  pendulum.style.setProperty("--swing-angle", `${angle}deg`);
-  pendulum.style.setProperty("--swing-offset", `${offset}px`);
+  pendulum.classList.remove("tick");
+
+  if (pendulumTickTimeoutId !== undefined) {
+    window.clearTimeout(pendulumTickTimeoutId);
+  }
+
+  void pendulum.offsetWidth;
+  pendulum.classList.add("tick");
+  pendulumTickTimeoutId = window.setTimeout(() => {
+    pendulum.classList.remove("tick");
+    pendulumTickTimeoutId = undefined;
+  }, PULSE_ANIMATION_DURATION_MS);
+}
+
+function previewPendulumSwing() {
+  if (reducedMotionQuery.matches) {
+    applyPendulumAngle(0);
+    return;
+  }
+
+  stopPendulumPreview();
+  pendulumPreviewDirection *= -1;
+  pendulum.classList.add("is-previewing");
+  applyPendulumAngle(pendulumPreviewDirection * getPendulumAmplitudeDeg() * 0.86);
+  pendulumPreviewTimeoutId = window.setTimeout(() => {
+    applyPendulumAngle(0);
+    pendulum.classList.remove("is-previewing");
+    pendulumPreviewTimeoutId = undefined;
+  }, PENDULUM_PREVIEW_RETURN_MS);
+}
+
+function stopPendulumAnimation() {
+  if (pendulumAnimationFrameId !== undefined) {
+    window.cancelAnimationFrame(pendulumAnimationFrameId);
+    pendulumAnimationFrameId = undefined;
+  }
+
+  stopPendulumPreview();
+  pendulum.classList.remove("is-playing");
+  applyPendulumAngle(0);
+}
+
+function startPendulumAnimation() {
+  syncPendulumPhysics();
+  stopPendulumPreview();
+
+  if (reducedMotionQuery.matches) {
+    applyPendulumAngle(0);
+    return;
+  }
+
+  if (pendulumAnimationFrameId !== undefined) {
+    window.cancelAnimationFrame(pendulumAnimationFrameId);
+  }
+
+  const amplitude = getPendulumAmplitudeDeg();
+  const halfCycleMs = getPendulumHalfCycleMs();
+  const startedAt = performance.now();
+
+  pendulum.classList.add("is-playing");
+  applyPendulumAngle(-amplitude);
+
+  const animatePendulum = (now) => {
+    if (!state.isPlaying) {
+      pendulumAnimationFrameId = undefined;
+      return;
+    }
+
+    const phase = (now - startedAt) / halfCycleMs;
+    const angle = -Math.cos(phase * Math.PI) * amplitude;
+    applyPendulumAngle(angle);
+    pendulumAnimationFrameId = window.requestAnimationFrame(animatePendulum);
+  };
+
+  pendulumAnimationFrameId = window.requestAnimationFrame(animatePendulum);
+}
+
+function pendulumVisual(pulseType) {
+  syncPendulumPhysics();
+  flashPendulumTick(pulseType);
+
+  if (!state.isPlaying) {
+    previewPendulumSwing();
+  }
 }
 
 function runVisuals(pulseType) {
@@ -515,6 +642,7 @@ function startMetronome() {
   state.totalPulseCount = 0;
   toggleBtn.textContent = "Stop";
   toggleBtn.setAttribute("aria-pressed", "true");
+  startPendulumAnimation();
   startTimer();
 }
 
@@ -527,6 +655,7 @@ function stopMetronome() {
   toggleBtn.textContent = "Start";
   toggleBtn.setAttribute("aria-pressed", "false");
   stopTimer();
+  stopPendulumAnimation();
   state.currentBeat = 0;
   state.currentSubdivisionStep = 0;
   state.currentMeasure = 1;
@@ -535,7 +664,7 @@ function stopMetronome() {
   renderBeatIndicators();
   pulse.classList.remove("active", "accent");
   numberDisplay.classList.remove("active", "accent");
-  pendulum.classList.remove("accent");
+  pendulum.classList.remove("accent", "tick");
 
   if (pendingReloadForUpdate) {
     reloadWithVersion(pendingReloadVersionToken || String(Date.now()));
@@ -609,6 +738,21 @@ function handleCountModeChange() {
   updateBeatLabel();
 }
 
+function handleReducedMotionPreferenceChange() {
+  syncPendulumPhysics();
+
+  if (state.isPlaying) {
+    if (reducedMotionQuery.matches) {
+      stopPendulumAnimation();
+    } else {
+      startPendulumAnimation();
+    }
+    return;
+  }
+
+  applyPendulumAngle(0);
+}
+
 bpmInput.addEventListener("input", (event) => updateTempo(event.target.value));
 bpmRange.addEventListener("input", (event) => updateTempo(event.target.value));
 
@@ -650,6 +794,12 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+if (typeof reducedMotionQuery.addEventListener === "function") {
+  reducedMotionQuery.addEventListener("change", handleReducedMotionPreferenceChange);
+} else if (typeof reducedMotionQuery.addListener === "function") {
+  reducedMotionQuery.addListener(handleReducedMotionPreferenceChange);
+}
+
 syncTimeSignature();
 state.subdivision = getSubdivision();
 setVisualMode();
@@ -657,6 +807,7 @@ updateVibrationUI();
 renderBeatIndicators();
 updateBeatLabel();
 updateTempo(state.bpm);
+syncPendulumPhysics();
 checkForDeployedUpdate();
 window.setInterval(checkForDeployedUpdate, UPDATE_CHECK_INTERVAL_MS);
 document.addEventListener("visibilitychange", () => {

@@ -167,36 +167,89 @@ body {
 }
 
 .pendulum {
-  width: min(280px, 80vw);
-  height: 132px;
+  --pendulum-angle: 0deg;
+  --pendulum-amplitude: 16deg;
+  --pendulum-carriage-offset: 0px;
+  width: min(320px, 82vw);
+  aspect-ratio: 1;
+  height: auto;
   position: relative;
-  transform-origin: 50% 0;
 }
 
-.pendulum-arm {
-  position: absolute;
-  left: 50%;
-  top: 4px;
-  width: 4px;
-  height: 92px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #cfab70, #8a5627);
-  transform-origin: top center;
-  transform: translateX(-50%) rotate(var(--swing-angle, 0deg));
-  transition: transform 140ms cubic-bezier(0.25, 0.8, 0.25, 1);
+.metronome[data-visual-mode="pendulum"] .visual-stage {
+  min-height: 332px;
+  padding-top: 0;
 }
 
-.pendulum-bob {
-  position: absolute;
-  left: 50%;
-  top: 82px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: linear-gradient(160deg, #af7031, #7f4a22);
-  transform: translateX(calc(-50% + (var(--swing-offset, 0px))));
-  transition: transform 140ms cubic-bezier(0.25, 0.8, 0.25, 1), background 120ms ease;
-  box-shadow: 0 8px 18px rgba(56, 35, 21, 0.25);
+.pendulum-device {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.device-shadow {
+  fill: rgba(61, 31, 15, 0.18);
+}
+
+.window-glow {
+  opacity: 0.75;
+}
+
+.scale-lines {
+  stroke: rgba(71, 62, 49, 0.34);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.device-foot {
+  fill: #603122;
+}
+
+.pendulum-swing {
+  transform-box: fill-box;
+  transform-origin: 160px 74px;
+  transform: rotate(var(--pendulum-angle));
+  transition: transform 220ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.pendulum.is-playing .pendulum-swing {
+  transition: none;
+}
+
+.pendulum.is-previewing .pendulum-swing {
+  transition-duration: 160ms;
+}
+
+.pendulum-rod,
+.pendulum-pivot {
+  fill: #d7c79c;
+}
+
+.pendulum-carriage {
+  transform: translateY(var(--pendulum-carriage-offset));
+  transition: transform 220ms ease;
+}
+
+.pendulum-carriage-body {
+  fill: #c9a05b;
+}
+
+.pendulum-carriage-groove {
+  fill: rgba(83, 55, 25, 0.34);
+}
+
+.pendulum-counterweight {
+  fill: #b67a35;
+}
+
+.pendulum-counterweight-highlight {
+  fill: rgba(255, 244, 221, 0.58);
+}
+
+.pendulum.tick .pendulum-carriage-body,
+.pendulum.tick .pendulum-counterweight {
+  fill: #d89a4b;
 }
 
 .metronome[data-visual-mode="pulse"] .pulse,
@@ -210,9 +263,13 @@ body {
   box-shadow: 0 0 30px rgba(140, 59, 47, 0.42);
 }
 
-.pulse.accent,
-.pendulum.accent .pendulum-bob {
+.pulse.accent {
   background: linear-gradient(160deg, #a13828, #7d2215);
+}
+
+.pendulum.accent .pendulum-carriage-body,
+.pendulum.accent .pendulum-counterweight {
+  fill: #a13828;
 }
 
 .number-display.accent {
@@ -509,6 +566,10 @@ select:focus-visible {
 
   .tap-row {
     grid-template-columns: 1fr;
+  }
+
+  .metronome[data-visual-mode="pendulum"] .visual-stage {
+    min-height: 292px;
   }
 }
 
