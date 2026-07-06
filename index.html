@@ -25,6 +25,12 @@
     name="twitter:description"
     content="A responsive online metronome for musicians with tap tempo, subdivisions, sound styles, and visual beat modes."
   />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Marck+Script&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="styles.css" />
   <script type="application/ld+json">
     {
@@ -79,17 +85,17 @@
 <body>
   <main class="page">
     <header class="hero">
-      <p class="eyebrow">beatconfused.com</p>
-      <h1>BeatConfused Online Metronome</h1>
+      <p class="eyebrow">BeatConfused Studio Edition</p>
+      <h1>BeatConfused Jazz Metronome</h1>
       <p class="subtitle">
-        Tap in a tempo, choose a time signature, add subdivisions, and practice with sounds and visuals built for musicians.
+        A refined tempo companion inspired by score sheets, jazz journals, and editorial design. Shape pulse, feel, and phrasing with elegant control.
       </p>
     </header>
 
     <section class="metronome" aria-labelledby="metronome-title" data-visual-mode="pendulum">
       <div class="section-heading">
-        <h2 id="metronome-title">Practice tempo in seconds</h2>
-        <p>Set the pulse your way with direct BPM entry, tap tempo, keyboard shortcuts, and multiple metronome views.</p>
+        <h2 id="metronome-title">Set tempo with precision</h2>
+        <p>Dial BPM directly, tap naturally, and move through visual and rhythmic modes made for thoughtful practice.</p>
       </div>
 
       <div class="visual-stage" aria-live="polite">
@@ -216,7 +222,7 @@
         </div>
 
         <div class="control-block">
-          <label for="visualMode">Beat Visual</label>
+          <label for="visualMode">Visual Style</label>
           <select id="visualMode">
             <option value="pulse">Flashing circle</option>
             <option value="numbers">Animated numbers</option>
@@ -225,7 +231,7 @@
         </div>
 
         <div class="control-block">
-          <label for="countDisplay">Tempo Counting</label>
+          <label for="countDisplay">Counting Display</label>
           <select id="countDisplay">
             <option value="beat" selected>Beat count</option>
             <option value="measure">Measure + beat</option>
@@ -234,7 +240,7 @@
         </div>
 
         <div class="control-block">
-          <label for="soundStyle">Sound Style</label>
+          <label for="soundStyle">Tone</label>
           <select id="soundStyle">
             <option value="electronic" selected>Electronic</option>
             <option value="bossa">Bossa</option>
@@ -248,11 +254,11 @@
         <div class="control-block toggle-row">
           <label>
             <input id="soundToggle" type="checkbox" checked />
-            Sound
+            Audio
           </label>
           <label>
             <input id="vibrationToggle" type="checkbox" />
-            Vibration
+            Haptics
           </label>
           <p id="vibrationStatus" class="hint wide-hint">Vibration availability is detected automatically.</p>
         </div>
@@ -265,52 +271,52 @@
     </section>
 
     <section class="content-section" aria-labelledby="features-title">
-      <h2 id="features-title">Why musicians use BeatConfused</h2>
+      <h2 id="features-title">Why players stay with BeatConfused</h2>
       <div class="content-grid">
         <article class="content-card">
-          <h3>Fast practice setup</h3>
-          <p>Open the metronome, tap the tempo, and start rehearsing in a few seconds on desktop, tablet, or phone.</p>
+          <h3>Editorial clarity</h3>
+          <p>A calm, legible interface keeps attention on touch, timing, and tone instead of visual noise.</p>
         </article>
         <article class="content-card">
-          <h3>Flexible rhythmic control</h3>
-          <p>Move between standard time signatures, hear fine beat subdivisions, and switch between clear sound styles for different practice contexts.</p>
+          <h3>Rhythmic depth</h3>
+          <p>Switch signatures, shape subdivisions, and adapt the click voice for swing studies, phrasing drills, and ensemble prep.</p>
         </article>
         <article class="content-card">
-          <h3>Visual timing cues</h3>
-          <p>Choose between a flashing circle, animated beat numbers, or a pendulum-style swing to match the way you count and internalize time.</p>
+          <h3>Musical pacing</h3>
+          <p>Pulse, number, and pendulum modes mirror different ways musicians internalize meter during long sessions.</p>
         </article>
       </div>
     </section>
 
     <section class="content-section" aria-labelledby="how-to-title">
-      <h2 id="how-to-title">How to use this online metronome</h2>
+      <h2 id="how-to-title">A quick studio workflow</h2>
       <ol class="steps-list">
-        <li>Set a BPM manually or use Tap Tempo to detect the pulse from your clicks or key presses.</li>
-        <li>Choose the time signature and beat subdivision that fit your exercise, groove, or song.</li>
-        <li>Pick a beat visual, tempo counting mode, sound style, and volume, then press Start.</li>
+        <li>Set BPM directly or use Tap Tempo to capture the natural pulse from your hand.</li>
+        <li>Select time signature and subdivision for the phrase, groove, or chart in front of you.</li>
+        <li>Choose visual style, counting display, and tone, then start the clock and settle in.</li>
       </ol>
     </section>
 
     <section class="content-section faq-section" aria-labelledby="faq-title">
-      <h2 id="faq-title">Metronome FAQ</h2>
+      <h2 id="faq-title">Session notes</h2>
       <div class="faq-list">
         <article class="content-card">
-          <h3>Can I use BeatConfused on mobile?</h3>
-          <p>Yes. The interface is responsive and works well with touch controls, including tap tempo and the main transport button.</p>
+          <h3>Does this work well on mobile?</h3>
+          <p>Yes. Controls are touch-friendly and tuned for quick rehearsal setup on phone, tablet, or desktop.</p>
         </article>
         <article class="content-card">
-          <h3>Why is vibration unavailable on some iPhones?</h3>
-          <p>Many iPhone browsers do not expose the web vibration API, so BeatConfused shows the status automatically and keeps audio and visual cues available.</p>
+          <h3>Why can haptics be unavailable on some iPhones?</h3>
+          <p>Some iOS browsers do not expose the vibration API. When that happens, BeatConfused keeps clear audio and visual timing cues active.</p>
         </article>
         <article class="content-card">
           <h3>Which counting modes are available?</h3>
-          <p>You can display beat count, measure plus beat, or switch counting off for a cleaner visual practice mode.</p>
+          <p>Choose beat count, measure plus beat, or no count when you want a cleaner visual field.</p>
         </article>
       </div>
     </section>
 
     <footer class="footer">
-      <p>Made with ❤️ for musicians, by musicians.</p>
+      <p>Crafted for musicians who value tone, timing, and taste.</p>
     </footer>
   </main>
 
