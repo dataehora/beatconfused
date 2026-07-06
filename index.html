@@ -102,8 +102,113 @@
         <div class="pulse visual-element" id="pulse" aria-hidden="true"></div>
         <div class="number-display visual-element" id="numberDisplay" aria-hidden="true">1</div>
         <div class="pendulum visual-element" id="pendulum" aria-hidden="true">
-          <div class="pendulum-arm"></div>
-          <div class="pendulum-bob"></div>
+          <svg class="pendulum-device" viewBox="0 0 320 320" role="presentation" focusable="false">
+            <defs>
+              <linearGradient id="pendulumWoodFront" x1="78" y1="18" x2="242" y2="286" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#8a4c2d" />
+                <stop offset="0.52" stop-color="#6b341f" />
+                <stop offset="1" stop-color="#4a2417" />
+              </linearGradient>
+              <linearGradient id="pendulumWoodSide" x1="206" y1="40" x2="282" y2="250" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#4b2317" />
+                <stop offset="1" stop-color="#31160f" />
+              </linearGradient>
+              <linearGradient id="pendulumWoodTop" x1="104" y1="12" x2="222" y2="44" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#9a5a37" />
+                <stop offset="1" stop-color="#65311f" />
+              </linearGradient>
+              <linearGradient id="pendulumDoorWood" x1="72" y1="208" x2="234" y2="292" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#a35d3b" />
+                <stop offset="1" stop-color="#6d3421" />
+              </linearGradient>
+              <linearGradient id="pendulumWindowFrame" x1="112" y1="44" x2="208" y2="214" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#5c5b59" />
+                <stop offset="0.55" stop-color="#1f2021" />
+                <stop offset="1" stop-color="#0f1113" />
+              </linearGradient>
+              <linearGradient id="pendulumWindowDark" x1="104" y1="56" x2="216" y2="212" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#2c2e31" />
+                <stop offset="1" stop-color="#131416" />
+              </linearGradient>
+              <linearGradient id="pendulumScalePaper" x1="140" y1="60" x2="180" y2="194" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#fffef8" />
+                <stop offset="1" stop-color="#f0ecde" />
+              </linearGradient>
+              <linearGradient id="pendulumWindowGlow" x1="160" y1="58" x2="160" y2="204" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#ffffff" stop-opacity="0.18" />
+                <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+              </linearGradient>
+              <clipPath id="pendulumWindowClip">
+                <path d="M110 58 L210 58 L194 204 L126 204 Z" />
+              </clipPath>
+            </defs>
+            <ellipse class="device-shadow" cx="176" cy="292" rx="92" ry="16" />
+            <path
+              d="M116 16 L202 16 L226 40 L92 40 Z"
+              fill="url(#pendulumWoodTop)"
+              stroke="rgba(36, 18, 12, 0.48)"
+              stroke-width="2"
+            />
+            <path
+              d="M92 40 L226 40 L258 258 L60 258 Z"
+              fill="url(#pendulumWoodFront)"
+              stroke="rgba(36, 18, 12, 0.5)"
+              stroke-width="2.4"
+            />
+            <path
+              d="M226 40 L258 258 L226 244 L196 58 Z"
+              fill="url(#pendulumWoodSide)"
+              opacity="0.95"
+            />
+            <path
+              d="M110 48 L210 48 L222 212 L98 212 Z"
+              fill="url(#pendulumWindowFrame)"
+              stroke="rgba(245, 238, 220, 0.08)"
+              stroke-width="1.4"
+            />
+            <path d="M110 58 L210 58 L194 204 L126 204 Z" fill="url(#pendulumWindowDark)" />
+            <g clip-path="url(#pendulumWindowClip)">
+              <rect class="window-glow" x="126" y="58" width="68" height="146" rx="2" fill="url(#pendulumWindowGlow)" />
+              <g class="pendulum-swing">
+                <circle class="pendulum-pivot" cx="160" cy="74" r="5" />
+                <rect class="pendulum-rod" x="158.5" y="78" width="3" height="142" rx="2" />
+                <g class="pendulum-carriage">
+                  <rect class="pendulum-carriage-body" x="142" y="128" width="36" height="16" rx="6" />
+                  <rect class="pendulum-carriage-groove" x="148" y="134" width="24" height="4" rx="2" />
+                </g>
+                <circle class="pendulum-counterweight" cx="160" cy="228" r="15" />
+                <circle class="pendulum-counterweight-highlight" cx="154" cy="222" r="4" />
+              </g>
+            </g>
+            <path d="M144 60 L176 60 L181 194 L139 194 Z" fill="url(#pendulumScalePaper)" />
+            <g class="scale-lines">
+              <line x1="149" y1="78" x2="171" y2="78" />
+              <line x1="149" y1="88" x2="171" y2="88" />
+              <line x1="149" y1="98" x2="171" y2="98" />
+              <line x1="149" y1="108" x2="171" y2="108" />
+              <line x1="149" y1="118" x2="171" y2="118" />
+              <line x1="149" y1="128" x2="171" y2="128" />
+              <line x1="149" y1="138" x2="171" y2="138" />
+              <line x1="149" y1="148" x2="171" y2="148" />
+              <line x1="149" y1="158" x2="171" y2="158" />
+              <line x1="149" y1="168" x2="171" y2="168" />
+              <line x1="149" y1="178" x2="171" y2="178" />
+            </g>
+            <path
+              d="M82 212 L238 212 L254 286 L64 286 Z"
+              fill="url(#pendulumDoorWood)"
+              stroke="rgba(47, 22, 14, 0.45)"
+              stroke-width="2"
+            />
+            <path
+              d="M92 220 L232 220"
+              stroke="rgba(255, 244, 220, 0.18)"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <circle class="device-foot" cx="84" cy="286" r="9" />
+            <circle class="device-foot" cx="236" cy="286" r="9" />
+          </svg>
         </div>
         <p id="beatLabel" class="beat-label">Beat 1</p>
       </div>
