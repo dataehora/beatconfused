@@ -138,7 +138,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.52) 100%);
+  background: radial-gradient(ellipse, transparent 45%, rgba(0,0,0,0.52) 100%);
 }
 
 /* ── Game overlay (win / lose / intro) ── */

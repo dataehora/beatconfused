@@ -1,19 +1,32 @@
 "use strict";
 
 // ── Constants ──────────────────────────────────────────────────────────────────
-const CANVAS_W       = 800;
-const CANVAS_H       = 450;
-const GROUND_Y       = 365;   // y-coord of the stage floor surface
-const GRAVITY        = 0.55;
-const JUMP_VEL       = -13.5;
-const MOVE_SPEED     = 4.5;
-const PROJ_SPEED     = 9;
-const MAX_HP         = 100;
-const PROJ_DAMAGE    = 25;
-const ATTACK_COOLDOWN = 72;   // frames between allowed attacks (~1.2 s at 60 fps)
-const HURT_FRAMES    = 22;
-const ROUND_SECONDS  = 99;
-const AI_INTERVAL    = 48;    // frames between AI decisions
+const CANVAS_W        = 800;
+const CANVAS_H        = 450;
+const GROUND_Y        = 365;   // y-coord of the stage floor surface
+const GRAVITY         = 0.55;
+const JUMP_VEL        = -13.5;
+const MOVE_SPEED      = 4.5;
+const PROJ_SPEED      = 9;
+const MAX_HP          = 100;
+const PROJ_DAMAGE     = 25;
+const ATTACK_COOLDOWN = 72;    // frames between allowed attacks (1.2 s at 60 fps)
+const HURT_FRAMES     = 22;
+const ROUND_SECONDS   = 99;
+const AI_INTERVAL     = 48;    // frames between AI decisions
+
+// Drawing constants
+const FONT_LABEL      = "bold 13px \"Courier New\",monospace";
+const FONT_SIGN_SMALL = "bold 9px Arial,sans-serif";
+const FONT_SIGN_MED   = "bold 14px Arial,sans-serif";
+const FONT_SIGN_LARGE = "bold 17px Arial,sans-serif";
+
+// Colour constants
+const COLOR_BUNTING_LINE = "#888";
+const COLOR_NAMEPLATE_BG = "#100800";
+const COLOR_NAMEPLATE_FG = "#c8a020";
+const COLOR_PLANK_LIGHT  = "#6a4c18";
+const COLOR_PLANK_DARK   = "#3a2808";
 
 // ── DOM refs ───────────────────────────────────────────────────────────────────
 const canvas        = document.getElementById("game-canvas");
@@ -104,7 +117,7 @@ class Fighter {
     const ml = keys["ArrowLeft"];
     const mr = keys["ArrowRight"];
     const mj = keys["ArrowUp"];
-    const ma = keys[" "] || keys["Space"];
+    const ma = keys[" "];
 
     if (ml) {
       this.vx = -MOVE_SPEED;
@@ -130,8 +143,7 @@ class Fighter {
       this.state      = "attack";
       this.stateTimer = 28;
       this.cooldown   = ATTACK_COOLDOWN;
-      keys[" "]     = false;
-      keys["Space"] = false;
+      keys[" "] = false;
     }
   }
 
@@ -445,13 +457,13 @@ function panelPavilion(ox, x, y, w, h) {
   ox.lineWidth   = 2;
   ox.strokeRect(x+20, sy, w-40, 37);
   ox.fillStyle   = "#ffee00";
-  ox.font        = "bold 17px Arial,sans-serif";
+  ox.font        = FONT_SIGN_LARGE;
   ox.textAlign   = "center";
   ox.fillText("AMUSEMENTS", x+w/2, sy+26);
 
   // building title
   ox.fillStyle = "#2a1a0a";
-  ox.font      = "bold 14px Arial,sans-serif";
+  ox.font      = FONT_SIGN_MED;
   ox.textAlign = "center";
   ox.fillText("CLACTON PIER", x+w/2, by-12);
 
@@ -595,7 +607,7 @@ function drawCloud(ox, x, y, w, h) {
 
 function drawBunting(ox, x1, y1, x2, y2, count) {
   const cols = ["#cc0000","#ffffff","#0033cc"];
-  ox.strokeStyle = "#888";
+  ox.strokeStyle = COLOR_BUNTING_LINE;
   ox.lineWidth   = 1;
   ox.beginPath();
   for (let i=0; i<=count; i++) {
@@ -625,13 +637,13 @@ function drawFloor() {
   const fh = CANVAS_H - fy;
 
   const pg = ctx.createLinearGradient(0, fy, 0, CANVAS_H);
-  pg.addColorStop(0, "#6a4c18");
-  pg.addColorStop(1, "#3a2808");
+  pg.addColorStop(0, COLOR_PLANK_LIGHT);
+  pg.addColorStop(1, COLOR_PLANK_DARK);
   ctx.fillStyle = pg;
   ctx.fillRect(0, fy, CANVAS_W, fh);
 
   // plank grooves
-  ctx.strokeStyle = "#3a2808";
+  ctx.strokeStyle = COLOR_PLANK_DARK;
   ctx.lineWidth   = 2;
   for (let i=1; i<7; i++) {
     ctx.beginPath();
@@ -657,13 +669,13 @@ function drawFloor() {
   // stage name plate
   const nw=264, nh=28;
   const nx=(CANVAS_W-nw)/2, ny=CANVAS_H-nh-4;
-  ctx.fillStyle   = "#100800";
+  ctx.fillStyle   = COLOR_NAMEPLATE_BG;
   ctx.fillRect(nx, ny, nw, nh);
-  ctx.strokeStyle = "#c8a020";
+  ctx.strokeStyle = COLOR_NAMEPLATE_FG;
   ctx.lineWidth   = 2;
   ctx.strokeRect(nx, ny, nw, nh);
-  ctx.fillStyle   = "#c8a020";
-  ctx.font        = 'bold 13px "Courier New",monospace';
+  ctx.fillStyle   = COLOR_NAMEPLATE_FG;
+  ctx.font        = FONT_LABEL;
   ctx.textAlign   = "center";
   ctx.fillText("✦  CLACTON PIER  ✧  ESSEX  ✦", CANVAS_W/2, ny+19);
 }
@@ -934,7 +946,7 @@ function drawVomit(p) {
 
   // label
   ctx.fillStyle = "rgba(90,130,10,0.9)";
-  ctx.font      = "bold 9px Arial,sans-serif";
+  ctx.font      = FONT_SIGN_SMALL;
   ctx.textAlign = "center";
   ctx.fillText("BLEURGH!", 0, -24);
 
@@ -1149,17 +1161,19 @@ function startGame() {
 }
 
 // ── Input ──────────────────────────────────────────────────────────────────────
+const GAME_KEYS = new Set(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," "]);
+
 document.addEventListener("keydown", e => {
-  // Only intercept game keys; let the browser handle others
-  if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," ","Space"].includes(e.key) ||
-      e.code === "Space") {
+  // Intercept only game control keys to avoid hijacking browser shortcuts
+  if (GAME_KEYS.has(e.key) || e.code === "Space") {
     e.preventDefault();
   }
-  keys[e.key] = true;
+  // Normalise Space so both e.key===" " and e.code==="Space" map to the same slot
+  keys[e.code === "Space" ? " " : e.key] = true;
 });
 
 document.addEventListener("keyup", e => {
-  keys[e.key] = false;
+  keys[e.code === "Space" ? " " : e.key] = false;
 });
 
 restartBtn.addEventListener("click", startGame);
