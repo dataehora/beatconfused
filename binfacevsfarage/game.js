@@ -292,7 +292,7 @@ function playSound(frequency, duration, type = "square", volume = 0.025) {
   oscillator.stop(now + duration);
 }
 
-function keyFor(event) {
+function normalizeKey(event) {
   return event.key.toLowerCase();
 }
 
@@ -686,16 +686,16 @@ function draw() {
   drawFighter(fighters[1]);
 }
 
-function frame(timestamp) {
+function gameLoop(timestamp) {
   const dt = Math.min(MAX_DT, (timestamp - state.lastFrame) / 1000 || 0);
   state.lastFrame = timestamp;
   update(dt);
   draw();
-  requestAnimationFrame(frame);
+  requestAnimationFrame(gameLoop);
 }
 
 document.addEventListener("keydown", (event) => {
-  const key = keyFor(event);
+  const key = normalizeKey(event);
   if (CONTROL_KEYS.has(key)) {
     event.preventDefault();
   }
@@ -708,7 +708,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("keyup", (event) => {
-  keysDown.delete(keyFor(event));
+  keysDown.delete(normalizeKey(event));
 });
 
 soundToggle.addEventListener("click", () => {
@@ -721,4 +721,4 @@ soundToggle.addEventListener("click", () => {
 });
 
 goToIntro();
-requestAnimationFrame(frame);
+requestAnimationFrame(gameLoop);
