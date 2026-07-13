@@ -20,6 +20,12 @@ const GRAVITY = 1800;
 const MOVE_SPEED = 245;
 const JUMP_VELOCITY = -720;
 const MAX_DT = 1 / 30;
+const MIN_FIGHTER_SEPARATION = 72;
+const COUNTDOWN_TOTAL = 3.5;
+const COUNTDOWN_ROUND_MARK = 2.7;
+const COUNTDOWN_THREE_MARK = 1.95;
+const COUNTDOWN_TWO_MARK = 1.2;
+const COUNTDOWN_ONE_MARK = 0.45;
 
 const ATTACKS = {
   punch: { startup: 0.08, active: 0.12, recovery: 0.2, range: 68, damage: 8, push: 28, hitstun: 0.18 },
@@ -87,7 +93,7 @@ function createFighter(config) {
 
 const fighters = [
   createFighter({
-    name: "Bin Visage",
+    name: "Count Binfaux",
     title: "Space-bin reformer",
     x: 260,
     facing: 1,
@@ -105,7 +111,7 @@ const fighters = [
     },
   }),
   createFighter({
-    name: "Ferry Rage",
+    name: "Far Rage",
     title: "Pier-side blusterer",
     x: 700,
     facing: -1,
@@ -126,7 +132,7 @@ const fighters = [
 
 function resetFighters() {
   fighters[0] = createFighter({
-    name: "Bin Visage",
+    name: "Count Binfaux",
     title: "Space-bin reformer",
     x: 260,
     facing: 1,
@@ -137,7 +143,7 @@ function resetFighters() {
     controls: fighters[0].controls,
   });
   fighters[1] = createFighter({
-    name: "Ferry Rage",
+    name: "Far Rage",
     title: "Pier-side blusterer",
     x: 700,
     facing: -1,
@@ -215,7 +221,7 @@ function applyResult(winner, mode) {
     body: winner
       ? `${winner.name} controls the promenade today. Hit rematch to reset health, timer, positions, and try again.`
       : "The judges could not split them. Hit rematch to restart the bout from a clean slate.",
-    primaryLabel: "Start new game",
+    primaryLabel: "Rematch",
     primaryHandler: startCountdown,
     secondaryLabel: "Back to intro",
     secondaryHandler: goToIntro,
@@ -241,7 +247,7 @@ function startCountdown() {
   resetFighters();
   state.phase = "countdown";
   state.timer = ROUND_TIME;
-  state.countdown = 3.5;
+  state.countdown = COUNTDOWN_TOTAL;
   clearAnnouncement();
   hideOverlay();
   updateHud();
@@ -323,8 +329,24 @@ function startAttack(fighter, type) {
 }
 
 function tryAttack(attacker, defender) {
-  // Attacks only resolve during the live fight so the intro/result overlays stay deterministic.
-  if (state.phase !== "fight" || attacker.attack || attacker.attackCooldown > 0 || attacker.hitstun > 0 || !isGrounded(attacker)) {
+  if (state.phase !== "fight") {
+    return;
+  }
+
+  if (attacker.attack) {
+    return;
+  }
+
+  if (attacker.attackCooldown > 0) {
+    return;
+  }
+
+  if (attacker.hitstun > 0) {
+    return;
+  }
+
+  // Attacks only resolve from grounded neutral so each move has a readable start and cooldown.
+  if (!isGrounded(attacker)) {
     return;
   }
 
@@ -431,13 +453,13 @@ function updateCountdown(dt) {
   state.countdown -= dt;
 
   const nextText =
-    state.countdown > 2.7
+    state.countdown > COUNTDOWN_ROUND_MARK
       ? "ROUND 1"
-      : state.countdown > 1.95
+      : state.countdown > COUNTDOWN_THREE_MARK
         ? "3"
-        : state.countdown > 1.2
+        : state.countdown > COUNTDOWN_TWO_MARK
           ? "2"
-          : state.countdown > 0.45
+          : state.countdown > COUNTDOWN_ONE_MARK
             ? "1"
             : "FIGHT!";
 
@@ -482,10 +504,10 @@ function update(dt) {
   updateFighter(fighters[1], fighters[0], dt);
 
   if (state.phase !== "result") {
-    if (Math.abs(fighters[0].x - fighters[1].x) < 72) {
+    if (Math.abs(fighters[0].x - fighters[1].x) < MIN_FIGHTER_SEPARATION) {
       const midpoint = (fighters[0].x + fighters[1].x) / 2;
-      fighters[0].x = midpoint - 36;
-      fighters[1].x = midpoint + 36;
+      fighters[0].x = midpoint - MIN_FIGHTER_SEPARATION / 2;
+      fighters[1].x = midpoint + MIN_FIGHTER_SEPARATION / 2;
     }
   }
 
