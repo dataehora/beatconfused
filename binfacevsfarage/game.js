@@ -293,7 +293,7 @@ function playSound(frequency, duration, type = "square", volume = 0.025) {
 }
 
 function keyFor(event) {
-  return event.key.length === 1 ? event.key.toLowerCase() : event.key.toLowerCase();
+  return event.key.toLowerCase();
 }
 
 function isPressed(key) {
