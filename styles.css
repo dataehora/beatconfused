@@ -547,6 +547,55 @@ select:focus-visible {
   font-size: 1.22rem;
 }
 
+/* ── Pier Fighter promo section ── */
+.pier-fighter-section {
+  text-align: center;
+  padding: 1.4rem 1.4rem 1.6rem;
+}
+
+.pier-fighter-section h2 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+}
+
+.pier-fighter-section p {
+  margin: 0.5rem auto 1.2rem;
+  max-width: 600px;
+  color: var(--ink-soft);
+}
+
+.inline-kbd {
+  background: var(--paper-strong);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.88em;
+}
+
+.pier-fighter-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.65rem 1.6rem;
+  border-radius: 0.55rem;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.pier-fighter-btn:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+}
+
+.pier-fighter-btn:active {
+  transform: translateY(0);
+}
+
 @media (max-width: 820px) {
   .controls-grid,
   .content-grid {

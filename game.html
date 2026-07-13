@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pier Fighter | BeatConfused</title>
+  <link rel="stylesheet" href="game.css" />
+</head>
+<body>
+  <div id="game-wrap">
+
+    <div id="hud">
+      <div class="fighter-hud" id="p1-hud">
+        <div class="fighter-name">FARAGE</div>
+        <div class="health-bar-outer">
+          <div class="health-bar-fill" id="p1-health-fill"></div>
+        </div>
+      </div>
+      <div id="timer-box">
+        <div id="round-timer">99</div>
+      </div>
+      <div class="fighter-hud right" id="p2-hud">
+        <div class="health-bar-outer right">
+          <div class="health-bar-fill" id="p2-health-fill"></div>
+        </div>
+        <div class="fighter-name">BINFACE</div>
+      </div>
+    </div>
+
+    <div id="canvas-container">
+      <canvas id="game-canvas" width="800" height="450"></canvas>
+      <div id="crt-overlay" aria-hidden="true"></div>
+    </div>
+
+    <div id="game-overlay" class="hidden" aria-live="assertive">
+      <div id="overlay-inner">
+        <div id="overlay-title"></div>
+        <div id="overlay-subtitle"></div>
+        <button id="restart-btn" type="button">PLAY AGAIN</button>
+      </div>
+    </div>
+
+    <div id="controls-bar">
+      ← → Move &nbsp;·&nbsp; ↑ Jump &nbsp;·&nbsp; <kbd>Space</kbd> Special Attack
+    </div>
+
+  </div>
+
+  <nav id="back-nav">
+    <a href="index.html" id="back-link">← BeatConfused Metronome</a>
+  </nav>
+
+  <script src="game.js"></script>
+</body>
+</html>
