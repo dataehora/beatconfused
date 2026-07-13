@@ -17,6 +17,7 @@ const HEIGHT = canvas.height;
 const FLOOR_Y = 430;
 const ROUND_TIME = 60;
 const GRAVITY = 1800;
+const GRAB_LAUNCH_VELOCITY = -120;
 const MOVE_SPEED = 245;
 const CPU_MOVE_SPEED = 212;
 const JUMP_VELOCITY = -720;
@@ -29,9 +30,31 @@ const COUNTDOWN_ROUND_MARK = 2.7;
 const COUNTDOWN_THREE_MARK = 1.95;
 const COUNTDOWN_TWO_MARK = 1.2;
 const COUNTDOWN_ONE_MARK = 0.45;
-const MUSIC_STEP_DURATION = 0.18;
+const MUSIC_STEP_DURATION = 0.18; // Seconds per note step in the MUSIC_PATTERN loop.
+const ARENA_SIGN_TEXT = "CABINET CLASH";
+const AUDIO_RAMP_FLOOR = 0.0001;
+const MIN_ATTACK_FORWARD_DISTANCE = 8;
+const MAX_ATTACK_VERTICAL_GAP = 52;
+const CPU_ADVANCE_DISTANCE = 118;
+const CPU_RETREAT_DISTANCE = 78;
+const CPU_GRAB_DISTANCE = 56;
+const CPU_PUNCH_DISTANCE = 82;
+const CPU_KICK_DISTANCE = 106;
+const CPU_GRAB_COOLDOWN = 0.4;
+const CPU_PUNCH_COOLDOWN = 0.32;
+const CPU_KICK_COOLDOWN = 0.36;
+const CPU_GRAB_CHANCE_THRESHOLD = 0.35;
+const CPU_KICK_CHANCE_THRESHOLD = 0.45;
+const SKY_STREAK_COUNT = 7;
+const SKY_STREAK_SPACING = 160;
+const SKY_STREAK_BASE_Y = 92;
+const SKY_STREAK_ROW_OFFSET = 14;
+const SKY_STREAK_WIDTH = 130;
+const SKY_STREAK_HEIGHT = 3;
+const FIGHTER_BOB_SPEED = 90;
+const FIGHTER_BOB_DISTANCE = 3;
 const PORTRAIT_SOURCES = {
-  binface: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Count_Binface_(cropped)_(cropped).jpg",
+  binface: "https://upload.wikimedia.org/wikipedia/commons/c/c2/Count_Binface_%28cropped%29.jpg",
   farage: "https://upload.wikimedia.org/wikipedia/commons/9/92/Official_portrait_of_Nigel_Farage_MP_%283x4_close_cropped%29.jpg",
 };
 const ATTACK_SOUND_MAP = {
@@ -97,10 +120,23 @@ let audioContext;
 
 function createPortrait(url) {
   const image = new Image();
+  // Wikimedia serves these files with CORS headers, which lets the portraits render safely on canvas.
   image.crossOrigin = "anonymous";
   image.decoding = "async";
+  image.onerror = () => {
+    image.failedToLoad = true;
+    console.warn(`Unable to load portrait: ${url}`);
+  };
   image.src = url;
   return image;
+}
+
+function getCountdownSound(text) {
+  if (text === "FIGHT!") {
+    return { frequency: 630, duration: 0.18, type: "sawtooth", volume: 0.034 };
+  }
+
+  return { frequency: 320, duration: 0.09, type: "square", volume: 0.026 };
 }
 
 function preloadPortraits() {
@@ -319,7 +355,9 @@ function ensureAudioContext() {
   }
 
   if (audioContext.state === "suspended") {
-    audioContext.resume().catch(() => {});
+    audioContext.resume().catch((error) => {
+      console.warn("Unable to resume fight audio.", error);
+    });
   }
 
   return audioContext;
@@ -342,7 +380,7 @@ function playSound(frequency, duration, type = "square", volume = 0.025) {
   oscillator.type = type;
   oscillator.frequency.setValueAtTime(frequency, now);
   gain.gain.setValueAtTime(volume, now);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  gain.gain.exponentialRampToValueAtTime(AUDIO_RAMP_FLOOR, now + duration);
 
   oscillator.connect(gain);
   gain.connect(context.destination);
@@ -449,7 +487,11 @@ function attackCanHit(attacker, defender, spec) {
 
   const forwardDistance = (defender.x - attacker.x) * attacker.facing;
   const verticalGap = Math.abs(defender.y - attacker.y);
-  return forwardDistance > 8 && forwardDistance < spec.range + defender.width * 0.5 && verticalGap < 52;
+  return (
+    forwardDistance > MIN_ATTACK_FORWARD_DISTANCE &&
+    forwardDistance < spec.range + defender.width * 0.5 &&
+    verticalGap < MAX_ATTACK_VERTICAL_GAP
+  );
 }
 
 function registerHit(attacker, defender, spec) {
@@ -457,7 +499,7 @@ function registerHit(attacker, defender, spec) {
   defender.hitstun = spec.hitstun;
   defender.invulnerable = 0.16;
   defender.x = clamp(defender.x + spec.push * attacker.facing, FIGHTER_MIN_X, FIGHTER_MAX_X);
-  defender.velocityY = spec === ATTACKS.grab ? -120 : defender.velocityY;
+  defender.velocityY = spec === ATTACKS.grab ? GRAB_LAUNCH_VELOCITY : defender.velocityY;
   playSound(spec === ATTACKS.grab ? 110 : 170, 0.12, spec === ATTACKS.kick ? "sawtooth" : "square", 0.035);
   updateHud();
 
@@ -512,9 +554,9 @@ function updateCpuBehavior(fighter, opponent, dt) {
   const distance = Math.abs(gap);
   fighter.facing = gap >= 0 ? 1 : -1;
 
-  if (distance > 118) {
+  if (distance > CPU_ADVANCE_DISTANCE) {
     fighter.moveDirection = fighter.facing;
-  } else if (distance < 78) {
+  } else if (distance < CPU_RETREAT_DISTANCE) {
     fighter.moveDirection = -fighter.facing;
   } else {
     fighter.moveDirection = 0;
@@ -532,21 +574,21 @@ function updateCpuBehavior(fighter, opponent, dt) {
     return;
   }
 
-  if (distance < 56) {
+  if (distance < CPU_GRAB_DISTANCE) {
     startAttack(fighter, "grab");
-    fighter.aiAttackTimer = 0.4;
+    fighter.aiAttackTimer = CPU_GRAB_COOLDOWN;
     return;
   }
 
-  if (distance < 82) {
-    startAttack(fighter, Math.random() > 0.35 ? "punch" : "grab");
-    fighter.aiAttackTimer = 0.32;
+  if (distance < CPU_PUNCH_DISTANCE) {
+    startAttack(fighter, Math.random() > CPU_GRAB_CHANCE_THRESHOLD ? "punch" : "grab");
+    fighter.aiAttackTimer = CPU_PUNCH_COOLDOWN;
     return;
   }
 
-  if (distance < 106) {
-    startAttack(fighter, Math.random() > 0.45 ? "kick" : "punch");
-    fighter.aiAttackTimer = 0.36;
+  if (distance < CPU_KICK_DISTANCE) {
+    startAttack(fighter, Math.random() > CPU_KICK_CHANCE_THRESHOLD ? "kick" : "punch");
+    fighter.aiAttackTimer = CPU_KICK_COOLDOWN;
   }
 }
 
@@ -587,9 +629,7 @@ function updateCountdown(dt) {
   if (state.announcementText !== nextText) {
     setAnnouncement(nextText, 0.6);
     speakCountdown(nextText);
-    const countdownSound = nextText === "FIGHT!"
-      ? { frequency: 630, duration: 0.18, type: "sawtooth", volume: 0.034 }
-      : { frequency: 320, duration: 0.09, type: "square", volume: 0.026 };
+    const countdownSound = getCountdownSound(nextText);
     playSound(countdownSound.frequency, countdownSound.duration, countdownSound.type, countdownSound.volume);
   }
 
@@ -658,8 +698,13 @@ function drawBackground() {
   ctx.fill();
 
   ctx.fillStyle = "rgba(255, 204, 96, 0.12)";
-  for (let index = 0; index < 7; index += 1) {
-    ctx.fillRect(index * 160, 92 + (index % 2) * 14, 130, 3);
+  for (let index = 0; index < SKY_STREAK_COUNT; index += 1) {
+    ctx.fillRect(
+      index * SKY_STREAK_SPACING,
+      SKY_STREAK_BASE_Y + (index % 2) * SKY_STREAK_ROW_OFFSET,
+      SKY_STREAK_WIDTH,
+      SKY_STREAK_HEIGHT
+    );
   }
 
   ctx.fillStyle = "#33226d";
@@ -694,7 +739,7 @@ function drawPier() {
   ctx.fillRect(612, 166, 114, 44);
   ctx.fillStyle = "#ffd164";
   ctx.font = "bold 17px Inter";
-  ctx.fillText("CABINET CLASH", 622, 193);
+  ctx.fillText(ARENA_SIGN_TEXT, 622, 193);
 
   ctx.fillStyle = "#23131d";
   ctx.fillRect(604, 150, 10, 26);
@@ -740,7 +785,7 @@ function drawFloorGlow() {
 }
 
 function drawImageCover(image, dx, dy, dw, dh, focusY = 0.5) {
-  if (!image || !image.complete || !image.naturalWidth || !image.naturalHeight) {
+  if (!isUsableImage(image)) {
     return false;
   }
 
@@ -763,6 +808,16 @@ function drawImageCover(image, dx, dy, dw, dh, focusY = 0.5) {
   sy = clamp(sy, 0, image.naturalHeight - sh);
   ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
   return true;
+}
+
+function isUsableImage(image) {
+  return Boolean(
+    image &&
+    !image.failedToLoad &&
+    image.complete &&
+    image.naturalWidth > 0 &&
+    image.naturalHeight > 0
+  );
 }
 
 function drawPortrait(fighter) {
@@ -823,7 +878,12 @@ function drawPortrait(fighter) {
 }
 
 function drawFighter(fighter) {
-  const bob = fighter.attack ? -4 : fighter.moveDirection !== 0 ? Math.sin(performance.now() / 90) * 3 : 0;
+  let bob = 0;
+  if (fighter.attack) {
+    bob = -4;
+  } else if (fighter.moveDirection !== 0) {
+    bob = Math.sin(performance.now() / FIGHTER_BOB_SPEED) * FIGHTER_BOB_DISTANCE;
+  }
   const baseX = fighter.x;
   const baseY = fighter.y + bob;
   const hitTint = fighter.invulnerable > 0 ? 28 : 0;
