@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BeatConfused | Binface vs Farage: Seaside Showdown</title>
+  <meta
+    name="description"
+    content="Play a polished parody one-fight arcade showdown at BeatConfused with two fictional seaside rivals, local two-player controls, health bars, a timer, and instant rematches."
+  />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#120f1d" />
+  <link rel="canonical" href="https://beatconfused.com/binfacevsfarage/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Binface vs Farage: Seaside Showdown" />
+  <meta
+    property="og:description"
+    content="A parody single-fight browser brawler with two-player keyboard controls, arcade overlays, seaside satire, and a full rematch loop."
+  />
+  <meta property="og:url" content="https://beatconfused.com/binfacevsfarage/" />
+  <meta property="og:site_name" content="BeatConfused" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Binface vs Farage: Seaside Showdown" />
+  <meta
+    name="twitter:description"
+    content="Two parody fighters. One seaside bout. Local keyboard chaos."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">BeatConfused special event</p>
+      <h1>Binface vs Farage: Seaside Showdown</h1>
+      <p class="subtitle">
+        A playful parody fighter staged on a Clacton-inspired promenade. Two local players, one bout, no quarter.
+      </p>
+    </header>
+
+    <section class="game-shell" aria-labelledby="fight-title">
+      <div class="hud">
+        <div class="fighter-panel fighter-panel-left">
+          <div class="fighter-heading">
+            <span class="fighter-name">Bin Visage</span>
+            <span class="fighter-tag">Space-bin reformer</span>
+          </div>
+          <div class="health-track" aria-label="Bin Visage health">
+            <div class="health-fill health-fill-left" id="healthLeft"></div>
+          </div>
+        </div>
+
+        <div class="center-panel">
+          <p class="round-label">Round 1</p>
+          <div class="timer" id="timer" aria-live="polite">60</div>
+          <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true">Sound: On</button>
+        </div>
+
+        <div class="fighter-panel fighter-panel-right">
+          <div class="fighter-heading fighter-heading-right">
+            <span class="fighter-name">Ferry Rage</span>
+            <span class="fighter-tag">Pier-side blusterer</span>
+          </div>
+          <div class="health-track" aria-label="Ferry Rage health">
+            <div class="health-fill health-fill-right" id="healthRight"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arena-frame">
+        <canvas
+          id="gameCanvas"
+          class="game-canvas"
+          width="960"
+          height="540"
+          aria-labelledby="fight-title"
+          aria-describedby="fight-description"
+        ></canvas>
+        <h2 id="fight-title" class="sr-only">Binface vs Farage single-fight parody game</h2>
+        <p id="fight-description" class="sr-only">
+          Two players share one keyboard. Player one uses A, D, W, F, G, H. Player two uses arrow keys, K, L, and semicolon.
+        </p>
+        <div class="announcement" id="announcement" aria-live="polite"></div>
+        <div class="overlay" id="overlay">
+          <div class="overlay-card">
+            <p class="overlay-kicker" id="overlayKicker">Tonight only</p>
+            <h2 id="overlayTitle">Promenade prizefight</h2>
+            <p id="overlayBody">
+              Two parody hopefuls have arrived in Clacton for a highly unserious clash. Press start and settle the argument with jumps, jabs, kicks, and grabs.
+            </p>
+            <div class="overlay-actions">
+              <button class="arcade-button" id="primaryAction" type="button">Start fight</button>
+              <button class="ghost-button" id="secondaryAction" type="button" hidden>Back to intro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-grid" aria-label="Game details">
+      <article class="info-card">
+        <h3>Controls</h3>
+        <div class="controls-grid">
+          <div>
+            <p class="legend-player">Player 1 · Bin Visage</p>
+            <ul>
+              <li><strong>A / D</strong> move</li>
+              <li><strong>W</strong> jump</li>
+              <li><strong>F</strong> punch</li>
+              <li><strong>G</strong> kick</li>
+              <li><strong>H</strong> grab</li>
+            </ul>
+          </div>
+          <div>
+            <p class="legend-player">Player 2 · Ferry Rage</p>
+            <ul>
+              <li><strong>← / →</strong> move</li>
+              <li><strong>↑</strong> jump</li>
+              <li><strong>K</strong> punch</li>
+              <li><strong>L</strong> kick</li>
+              <li><strong>;</strong> grab</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="info-card">
+        <h3>How it plays</h3>
+        <p>
+          The fight runs for a single round. Every move has a short window and cooldown, so timing beats frantic button mashing. Win by knockout or by holding the lead when time expires.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <h3>About the style</h3>
+        <p>
+          This page uses only original parody art, interface treatment, and synthesized sound effects. No copyrighted arcade assets, logos, or media are used.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
