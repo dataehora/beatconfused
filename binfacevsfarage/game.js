@@ -21,6 +21,8 @@ const MOVE_SPEED = 245;
 const JUMP_VELOCITY = -720;
 const MAX_DT = 1 / 30;
 const MIN_FIGHTER_SEPARATION = 72;
+const FIGHTER_MIN_X = 58;
+const FIGHTER_MAX_X = WIDTH - 58;
 const COUNTDOWN_TOTAL = 3.5;
 const COUNTDOWN_ROUND_MARK = 2.7;
 const COUNTDOWN_THREE_MARK = 1.95;
@@ -394,7 +396,7 @@ function registerHit(attacker, defender, spec) {
   defender.health = clamp(defender.health - spec.damage, 0, 100);
   defender.hitstun = spec.hitstun;
   defender.invulnerable = 0.16;
-  defender.x = clamp(defender.x + spec.push * attacker.facing, 84, WIDTH - 84);
+  defender.x = clamp(defender.x + spec.push * attacker.facing, FIGHTER_MIN_X, FIGHTER_MAX_X);
   defender.velocityY = spec === ATTACKS.grab ? -120 : defender.velocityY;
   playSound(spec === ATTACKS.grab ? 110 : 170, 0.12, spec === ATTACKS.kick ? "sawtooth" : "square", 0.035);
   updateHud();
@@ -460,7 +462,7 @@ function updateFighter(fighter, opponent, dt) {
     fighter.velocityY = 0;
   }
 
-  fighter.x = clamp(fighter.x, 58, WIDTH - 58);
+  fighter.x = clamp(fighter.x, FIGHTER_MIN_X, FIGHTER_MAX_X);
 }
 
 function updateCountdown(dt) {
@@ -503,7 +505,7 @@ function update(dt) {
     updateCountdown(dt);
   } else if (state.phase === "fight") {
     state.timer = Math.max(0, state.timer - dt);
-    if (state.timer === 0) {
+    if (state.timer <= 0) {
       finishOnTimer();
     }
   }
@@ -730,7 +732,11 @@ function getCountdownText() {
 }
 
 function gameLoop(timestamp) {
-  const dt = Math.min(MAX_DT, (timestamp - state.lastFrame) / 1000 || 0);
+  if (!state.lastFrame) {
+    state.lastFrame = timestamp;
+  }
+
+  const dt = Math.min(MAX_DT, (timestamp - state.lastFrame) / 1000);
   state.lastFrame = timestamp;
   update(dt);
   draw();
