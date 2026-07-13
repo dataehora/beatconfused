@@ -26,6 +26,19 @@ const COUNTDOWN_ROUND_MARK = 2.7;
 const COUNTDOWN_THREE_MARK = 1.95;
 const COUNTDOWN_TWO_MARK = 1.2;
 const COUNTDOWN_ONE_MARK = 0.45;
+const ATTACK_SOUND_MAP = {
+  punch: { frequency: 420, type: "square" },
+  kick: { frequency: 290, type: "square" },
+  grab: { frequency: 180, type: "triangle" },
+};
+const ARM_REACH_BY_ATTACK = {
+  punch: 28,
+  kick: 14,
+  grab: 34,
+};
+const LEG_REACH_BY_ATTACK = {
+  kick: 24,
+};
 
 const ATTACKS = {
   punch: { startup: 0.08, active: 0.12, recovery: 0.2, range: 68, damage: 8, push: 28, hitstun: 0.18 },
@@ -325,7 +338,8 @@ function startAttack(fighter, type) {
     connected: false,
   };
   fighter.attackCooldown = ATTACKS[type].startup + ATTACKS[type].active + ATTACKS[type].recovery;
-  playSound(type === "punch" ? 420 : type === "kick" ? 290 : 180, 0.08, type === "grab" ? "triangle" : "square");
+  const sound = ATTACK_SOUND_MAP[type];
+  playSound(sound.frequency, 0.08, sound.type);
 }
 
 function tryAttack(attacker, defender) {
@@ -452,20 +466,14 @@ function updateFighter(fighter, opponent, dt) {
 function updateCountdown(dt) {
   state.countdown -= dt;
 
-  const nextText =
-    state.countdown > COUNTDOWN_ROUND_MARK
-      ? "ROUND 1"
-      : state.countdown > COUNTDOWN_THREE_MARK
-        ? "3"
-        : state.countdown > COUNTDOWN_TWO_MARK
-          ? "2"
-          : state.countdown > COUNTDOWN_ONE_MARK
-            ? "1"
-            : "FIGHT!";
+  const nextText = getCountdownText();
 
   if (state.announcementText !== nextText) {
     setAnnouncement(nextText, 0.6);
-    playSound(nextText === "FIGHT!" ? 630 : 320, nextText === "FIGHT!" ? 0.18 : 0.09, nextText === "FIGHT!" ? "sawtooth" : "square");
+    const countdownSound = nextText === "FIGHT!"
+      ? { frequency: 630, duration: 0.18, type: "sawtooth" }
+      : { frequency: 320, duration: 0.09, type: "square" };
+    playSound(countdownSound.frequency, countdownSound.duration, countdownSound.type);
   }
 
   if (state.countdown <= 0) {
@@ -628,15 +636,8 @@ function drawFighter(fighter) {
   ctx.strokeStyle = fighter.outline;
   ctx.lineWidth = 8;
 
-  const armReach =
-    fighter.attack?.type === "punch"
-      ? 28
-      : fighter.attack?.type === "kick"
-        ? 14
-        : fighter.attack?.type === "grab"
-          ? 34
-          : 0;
-  const legReach = fighter.attack?.type === "kick" ? 24 : 0;
+  const armReach = fighter.attack ? ARM_REACH_BY_ATTACK[fighter.attack.type] || 0 : 0;
+  const legReach = fighter.attack ? LEG_REACH_BY_ATTACK[fighter.attack.type] || 0 : 0;
 
   ctx.strokeStyle = fighter.outline;
   ctx.beginPath();
@@ -706,6 +707,26 @@ function draw() {
   drawVsBanner();
   drawFighter(fighters[0]);
   drawFighter(fighters[1]);
+}
+
+function getCountdownText() {
+  if (state.countdown > COUNTDOWN_ROUND_MARK) {
+    return "ROUND 1";
+  }
+
+  if (state.countdown > COUNTDOWN_THREE_MARK) {
+    return "3";
+  }
+
+  if (state.countdown > COUNTDOWN_TWO_MARK) {
+    return "2";
+  }
+
+  if (state.countdown > COUNTDOWN_ONE_MARK) {
+    return "1";
+  }
+
+  return "FIGHT!";
 }
 
 function gameLoop(timestamp) {
