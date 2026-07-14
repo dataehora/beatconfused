@@ -118,7 +118,7 @@ matching the classic layout. A bar flashes red once that fighter drops to
   the ground (it can still connect with another airborne fighter).
   Throw speed has been reduced twice now (30%, then a further 15% on
   top of that) to widen the dodge window. Farrage's bag is 30% bigger
-  than Binface's.
+  than Binface's, and it now spins 50% slower than it first did.
 - **Opposing thrown objects collide.** If a rubbish bag and a bag of
   slime-money meet in mid-air, they destroy each other in a small burst
   — no damage to either fighter — instead of one continuing through to
@@ -169,13 +169,26 @@ wrong and it can be corrected directly.
 
 ## Mobile controls
 
-The touch HUD now uses a proper arcade joystick (drag the stick in any
+The touch HUD uses a proper arcade joystick (drag the stick in any
 direction — left/right to move, up to jump) instead of separate D-pad
-buttons, plus a glossy arcade-style pushbutton for throwing. The page
-also no longer gets stuck zoomed-in and unscrollable on phones: pinch
-zoom is allowed again as a fallback, and both the menu and result
-screens scroll internally if their content is ever taller than the
-screen, so nothing can get stranded off-screen.
+buttons, plus a glossy arcade-style pushbutton for throwing. Both now
+use Pointer Events with pointer capture, which is a more robust,
+unified way of handling touch/mouse/pen input than juggling separate
+touch and mouse listeners.
+
+The gameplay screen also had a real layout bug: the canvas had no
+aspect-ratio constraint, so `width:100%` and `flex:1` were stretching
+it independently — on a tall portrait phone this produced severe
+vertical distortion, and effectively a heavily cropped, "zoomed in"
+view once the oversized canvas got clipped by the screen bounds. The
+canvas is now locked to its true 960:540 aspect ratio and letterboxed
+to fit, so it always displays undistorted and fully in view, in any
+orientation.
+
+The page also no longer gets stuck zoomed-in and unscrollable on
+phones generally: pinch zoom is allowed again as a fallback, and both
+the menu and result screens scroll internally if their content is
+ever taller than the screen, so nothing can get stranded off-screen.
 
 ## Controls
 

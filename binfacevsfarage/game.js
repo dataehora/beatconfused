@@ -42,14 +42,16 @@
       projectileLabel: "rubbish bag",
       projectileColor: "#7a5230",
       projectileScale: 1,
+      projectileSpinRate: 10,
     },
     Farrage: {
-      label: "THE CHALLENGER",
+      label: "FARAGE",
       color: "#3b6ea5",
       capColor: "#22456b",
       projectileLabel: "spinning dirty bitcoin",
       projectileColor: "#c9971f",
       projectileScale: 1.3, // 30% bigger bag
+      projectileSpinRate: 5, // 50% slower spin than the rubbish bag
     },
   };
 
@@ -530,12 +532,10 @@
   document.querySelectorAll(".pad-btn").forEach((btn) => {
     const k = btn.dataset.key;
     const set = (v) => (e) => { keys[k] = v; if (e) e.preventDefault(); };
-    btn.addEventListener("touchstart", set(true), { passive: false });
-    btn.addEventListener("touchend", set(false), { passive: false });
-    btn.addEventListener("touchcancel", set(false), { passive: false });
-    btn.addEventListener("mousedown", set(true));
-    btn.addEventListener("mouseup", set(false));
-    btn.addEventListener("mouseleave", set(false));
+    btn.addEventListener("pointerdown", set(true));
+    btn.addEventListener("pointerup", set(false));
+    btn.addEventListener("pointercancel", set(false));
+    btn.addEventListener("pointerleave", set(false));
   });
 
   /* ---- arcade joystick: drag the stick to move/jump ---- */
@@ -570,23 +570,29 @@
       joystickStick.style.transform = "translate(-50%,-50%)";
     }
 
-    joystickBase.addEventListener("touchstart", (e) => {
+    // Pointer Events give one unified, robust code path for touch/mouse/pen,
+    // and setPointerCapture keeps the drag tracking correctly even if the
+    // finger slides off the joystick's visual bounds mid-drag.
+    joystickBase.addEventListener("pointerdown", (e) => {
       joyActive = true;
-      moveStick(e.touches[0].clientX, e.touches[0].clientY);
+      try { joystickBase.setPointerCapture(e.pointerId); } catch (err) {}
+      moveStick(e.clientX, e.clientY);
       e.preventDefault();
-    }, { passive: false });
-    joystickBase.addEventListener("touchmove", (e) => {
+    });
+    joystickBase.addEventListener("pointermove", (e) => {
       if (!joyActive) return;
-      moveStick(e.touches[0].clientX, e.touches[0].clientY);
+      moveStick(e.clientX, e.clientY);
       e.preventDefault();
-    }, { passive: false });
-    joystickBase.addEventListener("touchend", (e) => { joyActive = false; resetStick(); e.preventDefault(); }, { passive: false });
-    joystickBase.addEventListener("touchcancel", (e) => { joyActive = false; resetStick(); e.preventDefault(); }, { passive: false });
-
-    // mouse support, useful for testing on desktop
-    joystickBase.addEventListener("mousedown", (e) => { joyActive = true; moveStick(e.clientX, e.clientY); });
-    window.addEventListener("mousemove", (e) => { if (joyActive) moveStick(e.clientX, e.clientY); });
-    window.addEventListener("mouseup", () => { if (joyActive) { joyActive = false; resetStick(); } });
+    });
+    const endJoystick = (e) => {
+      if (!joyActive) return;
+      joyActive = false;
+      resetStick();
+      if (e) e.preventDefault();
+    };
+    joystickBase.addEventListener("pointerup", endJoystick);
+    joystickBase.addEventListener("pointercancel", endJoystick);
+    joystickBase.addEventListener("lostpointercapture", endJoystick);
   }
 
   /* ============================================================
@@ -638,6 +644,7 @@
       this.h = 28 * scale;
       this.dead = false;
       this.spin = 0;
+      this.spinRate = (owner.def && owner.def.projectileSpinRate) || 10;
       this.exploding = false;
       this.explodeT = 0;
     }
@@ -830,7 +837,7 @@
         continue; // frozen in place during the explosion burst
       }
       p.x += p.vx * dt;
-      p.spin += dt * 10;
+      p.spin += dt * p.spinRate;
       const target = p.owner === player ? cpu : player;
       const tr = target.rect();
       if (p.x > tr.x && p.x < tr.x + tr.w && p.y > tr.y && p.y < tr.y + tr.h) {
