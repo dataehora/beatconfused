@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>CLACTON FIGHTER II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,8 +16,15 @@
   <!-- ===================== TITLE / SELECT SCREEN ===================== -->
   <div id="screen-menu" class="screen">
     <div class="scanlines"></div>
-    <h1 class="title">CLACTON<br><span>FIGHTER&nbsp;II</span></h1>
-    <p class="subtitle">A BY-ELECTION BRAWL</p>
+    <div class="logo-wrap">
+      <img id="game-logo" class="game-logo" src="Assets/ClactonFighter.png"
+           alt="Clacton Fighter — The By-Election Brawl"
+           onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" />
+      <div id="logo-fallback" class="title-fallback">
+        <h1 class="title">CLACTON<br><span>FIGHTER&nbsp;II</span></h1>
+        <p class="subtitle">A BY-ELECTION BRAWL</p>
+      </div>
+    </div>
 
     <div class="select-block">
       <h2>1. CHOOSE YOUR STAGE</h2>
@@ -41,7 +51,7 @@
         <button class="option-card" data-fighter="Farrage">
           <div class="thumb thumb-fighter" data-sprite="Farrage"></div>
           <span>THE CHALLENGER</span>
-          <small>THROWS: GREEN SLIME</small>
+          <small>THROWS: DIRTY BITCOIN</small>
         </button>
       </div>
     </div>
@@ -185,10 +195,19 @@
       <h1 class="title" id="result-title">K.O.</h1>
       <p class="subtitle" id="result-sub">WINNER</p>
 
-      <div class="portraits">
-        <img id="winner-portrait" class="portrait winner-portrait" alt="Winner" />
-        <div class="vs-label">VS</div>
-        <img id="loser-portrait" class="portrait loser-portrait" alt="Loser" />
+      <div class="result-stage">
+        <div class="newspaper">
+          <div class="newspaper-masthead">THE CLACTON HERALD</div>
+          <div class="newspaper-date" id="paper-date">SPECIAL EDITION · CLACTON-ON-SEA</div>
+          <hr />
+          <div class="newspaper-headline" id="paper-headline">WINNER TRIUMPHANT!</div>
+          <img id="paper-photo" class="newspaper-photo" alt="" />
+          <p class="newspaper-sub" id="paper-subhead">Clacton awaits its fate.</p>
+          <div class="newspaper-lines">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <img id="winner-portrait" class="winner-portrait-big" alt="Winner" />
       </div>
 
       <div class="continue-box">

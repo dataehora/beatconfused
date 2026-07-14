@@ -47,9 +47,9 @@
       label: "THE CHALLENGER",
       color: "#3b6ea5",
       capColor: "#22456b",
-      projectileLabel: "green slime",
-      projectileColor: "#3fbf4a",
-      projectileScale: 1.2, // 20% bigger bag
+      projectileLabel: "spinning dirty bitcoin",
+      projectileColor: "#c9971f",
+      projectileScale: 1.3, // 30% bigger bag
     },
   };
 
@@ -78,7 +78,10 @@
   const resultBg = $("#result-bg");
   const resultBgPhoto = $("#result-bg-photo");
   const winnerPortrait = $("#winner-portrait");
-  const loserPortrait = $("#loser-portrait");
+  const paperHeadline = $("#paper-headline");
+  const paperSubhead = $("#paper-subhead");
+  const paperPhoto = $("#paper-photo");
+  const paperDate = $("#paper-date");
   const continueNumEl = $("#continue-num");
 
   let selectedMap = null;
@@ -343,13 +346,78 @@
       osc.stop(when + 0.18);
     }
 
+    // a meatier "impact" for hits/KOs — low thump + band-passed noise
+    // crunch layered together, closer to a classic arcade-fighter punch hit
+    function punch(when, gainVal) {
+      const ac = ensureCtx();
+      const osc = ac.createOscillator();
+      const oGain = ac.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(190, when);
+      osc.frequency.exponentialRampToValueAtTime(55, when + 0.09);
+      oGain.gain.setValueAtTime(gainVal, when);
+      oGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.13);
+      osc.connect(oGain).connect(ac.destination);
+      osc.start(when);
+      osc.stop(when + 0.14);
+
+      const src = ac.createBufferSource();
+      src.buffer = getNoiseBuffer(ac);
+      const bp = ac.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = 1400;
+      bp.Q.value = 0.6;
+      const nGain = ac.createGain();
+      nGain.gain.setValueAtTime(gainVal * 0.85, when);
+      nGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.08);
+      src.connect(bp).connect(nGain).connect(ac.destination);
+      src.start(when);
+      src.stop(when + 0.09);
+    }
+
+    // rising filtered-noise sweep for throws/whooshes
+    function whoosh(when, gainVal) {
+      const ac = ensureCtx();
+      const src = ac.createBufferSource();
+      src.buffer = getNoiseBuffer(ac);
+      const bp = ac.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.Q.value = 0.9;
+      bp.frequency.setValueAtTime(500, when);
+      bp.frequency.exponentialRampToValueAtTime(2200, when + 0.15);
+      const gain = ac.createGain();
+      gain.gain.setValueAtTime(gainVal, when);
+      gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.18);
+      src.connect(bp).connect(gain).connect(ac.destination);
+      src.start(when);
+      src.stop(when + 0.2);
+    }
+
+    // dual detuned oscillators for a fuller, less thin lead-synth tone
+    function leadBlip(freq, duration, gainVal, when) {
+      const ac = ensureCtx();
+      const gain = ac.createGain();
+      gain.gain.setValueAtTime(gainVal, when);
+      gain.gain.exponentialRampToValueAtTime(0.0001, when + duration);
+      gain.connect(ac.destination);
+      [-6, 6].forEach((detune) => {
+        const osc = ac.createOscillator();
+        osc.type = "square";
+        osc.frequency.value = freq;
+        osc.detune.value = detune;
+        osc.connect(gain);
+        osc.start(when);
+        osc.stop(when + duration);
+      });
+    }
+
     function startSynthMusic() {
       const ac = ensureCtx();
       step = 0;
       musicTimer = setInterval(() => {
         const t = ac.currentTime + 0.02;
         const i = step % LEAD.length;
-        if (LEAD[i]) blip(LEAD[i], STEP_TIME * 0.85, "square", 0.055, t);
+        if (LEAD[i]) leadBlip(LEAD[i], STEP_TIME * 0.85, 0.05, t);
         if (BASS[i]) blip(BASS[i], STEP_TIME * 0.9, "sawtooth", 0.075, t);
         if (HAT[i]) hat(t, 0.035);
         if (KICK[i]) kick(t, 0.12);
@@ -397,13 +465,14 @@
 
     const sfxThrow = () => play("throw", () => {
       const ac = ensureCtx();
-      blip(300, 0.12, "sawtooth", 0.09, ac.currentTime);
-      blip(180, 0.15, "sawtooth", 0.07, ac.currentTime + 0.05);
+      whoosh(ac.currentTime, 0.11);
+      blip(300, 0.1, "sawtooth", 0.08, ac.currentTime);
+      blip(180, 0.13, "sawtooth", 0.06, ac.currentTime + 0.06);
     });
 
     const sfxHit = () => play("hit", () => {
       const ac = ensureCtx();
-      blip(120, 0.12, "square", 0.12, ac.currentTime);
+      punch(ac.currentTime, 0.16);
     });
 
     const sfxJump = () => play("jump", () => {
@@ -432,7 +501,8 @@
 
     const sfxKO = () => play("ko", () => {
       const ac = ensureCtx();
-      [392, 349, 294, 196].forEach((f, i) => blip(f, 0.35, "sawtooth", 0.1, ac.currentTime + i * 0.18));
+      punch(ac.currentTime, 0.2);
+      [392, 349, 294, 196].forEach((f, i) => blip(f, 0.35, "sawtooth", 0.1, ac.currentTime + 0.1 + i * 0.18));
     });
 
     const sfxWin = () => play("win", () => {
@@ -561,8 +631,12 @@
   }
 
   function updateHealthBars() {
-    p1HealthEl.style.width = `${(player.health / MAX_HEALTH) * 100}%`;
-    p2HealthEl.style.width = `${(cpu.health / MAX_HEALTH) * 100}%`;
+    const p1pct = (player.health / MAX_HEALTH) * 100;
+    const p2pct = (cpu.health / MAX_HEALTH) * 100;
+    p1HealthEl.style.width = `${p1pct}%`;
+    p2HealthEl.style.width = `${p2pct}%`;
+    p1HealthEl.classList.toggle("low", p1pct <= 25 && p1pct > 0);
+    p2HealthEl.classList.toggle("low", p2pct <= 25 && p2pct > 0);
   }
 
   /* ----------------------------- MAIN LOOP ----------------------------- */
@@ -782,21 +856,38 @@
       resultTitle.textContent = title;
       resultSub.textContent = sub;
 
-      // close-up portraits: winner in their victory pose, loser beaten up
       resultBg.classList.remove("winner-binface", "winner-farrage");
       resultBgPhoto.style.display = "none";
+      paperPhoto.style.display = "none";
+
       if (winner) {
         winnerPortrait.src = `Assets/${winner.key}_win.png`;
-        loserPortrait.src = `Assets/${loser.key}_hit.png`;
         resultBg.classList.add(winner.key === "Binface" ? "winner-binface" : "winner-farrage");
+
         // real photo backdrop if supplied, else the SVG illustration underneath shows through
         resultBgPhoto.onload = () => { resultBgPhoto.style.display = "block"; };
         resultBgPhoto.onerror = () => { resultBgPhoto.style.display = "none"; };
         resultBgPhoto.src = `Assets/ClactonFuture${winner.key}.png`;
+
+        // newspaper front page — headline + the same future photo, so the
+        // paper visually matches the backdrop behind it
+        paperDate.textContent = "SPECIAL EDITION · CLACTON-ON-SEA";
+        paperPhoto.onload = () => { paperPhoto.style.display = "block"; };
+        paperPhoto.onerror = () => { paperPhoto.style.display = "none"; };
+        paperPhoto.src = `Assets/ClactonFuture${winner.key}.png`;
+        if (winner.key === "Binface") {
+          paperHeadline.textContent = "BINFACE TRIUMPHANT!";
+          paperSubhead.textContent = "Count Binface defeated Nigel Farage and saved the day, residents confirm.";
+        } else {
+          paperHeadline.textContent = "FARAGE VICTORIOUS!";
+          paperSubhead.textContent = "Pier sold to oil interests overnight — campaigners warn of a smoke-choked coastline ahead for Clacton.";
+        }
       } else {
-        // double K.O. / draw — show both fighters beaten up, no themed backdrop
+        // double K.O. / draw — no clear winner, no themed backdrop or photo
         winnerPortrait.src = `Assets/${player.key}_hit.png`;
-        loserPortrait.src = `Assets/${cpu.key}_hit.png`;
+        paperDate.textContent = "SPECIAL EDITION · CLACTON-ON-SEA";
+        paperHeadline.textContent = "CLACTON STUNNED!";
+        paperSubhead.textContent = "Neither candidate prevails — the town's future hangs in the balance as both camps claim victory.";
       }
 
       screenGame.classList.add("hidden");
