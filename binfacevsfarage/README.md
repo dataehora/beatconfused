@@ -148,6 +148,10 @@ matching the classic layout. A bar flashes red once that fighter drops to
   If either photo is missing, a simple hand-drawn illustration in the
   same spirit is used for the backdrop automatically, and the
   newspaper simply runs without a photo — nothing breaks.
+- The whole scene now reads as an aged **newsprint page** — a beige/gray
+  paper background instead of a dark photo backdrop, with the K.O./WINS
+  announcement in its own high-contrast dark ribbon banner at the top so
+  it stays legible regardless of which photo is behind it.
 - A classic arcade-style **"CONTINUE?" countdown from 9 to 0** gives
   you time to pick Rematch or Main Menu; if it hits 0 with no choice
   made, it automatically returns to the main menu (just like the coin-op
@@ -162,6 +166,16 @@ re-flipping specific poses. If Binface (or Farrage) still ever looks
 backwards for a specific pose after this update, the fastest fix is the
 `FACING_OVERRIDE` switch mentioned above, or just say which pose looks
 wrong and it can be corrected directly.
+
+## Mobile controls
+
+The touch HUD now uses a proper arcade joystick (drag the stick in any
+direction — left/right to move, up to jump) instead of separate D-pad
+buttons, plus a glossy arcade-style pushbutton for throwing. The page
+also no longer gets stuck zoomed-in and unscrollable on phones: pinch
+zoom is allowed again as a fallback, and both the menu and result
+screens scroll internally if their content is ever taller than the
+screen, so nothing can get stranded off-screen.
 
 ## Controls
 

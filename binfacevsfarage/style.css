@@ -54,9 +54,11 @@ html,body{
 /* ---------------- MENU SCREEN ---------------- */
 #screen-menu{
   justify-content:flex-start;
-  padding:14px 14px 10px;
+  padding:14px 14px 24px;
   background:
     linear-gradient(180deg, #bfe3f5 0%, #7fc4e0 30%, #2f6f8f 65%, #123449 100%);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
 .logo-wrap{ width:100%; max-width:720px; margin:0 auto; text-align:center; }
@@ -77,15 +79,15 @@ html,body{
 
 .subtitle{
   text-align:center; letter-spacing:4px; font-size:clamp(11px,2vw,14px);
-  color:var(--p1); margin:4px 0 14px;
+  color:var(--p1); margin:4px 0 14px; text-shadow:1px 1px 3px rgba(0,0,0,0.5);
 }
 
 .select-block{ width:100%; max-width:820px; margin:0 auto 10px; }
 .select-block h2{
   font-family:var(--font-display);
-  font-size:clamp(15px,2.6vw,20px); letter-spacing:2px; color:#123449;
-  border-bottom:3px dashed var(--frame); padding-bottom:5px; margin:10px 0 10px;
-  text-shadow:1px 1px 0 rgba(255,255,255,0.4);
+  font-size:clamp(15px,2.6vw,20px); letter-spacing:2px; color:#fff8ec;
+  border-bottom:3px dashed rgba(255,255,255,0.55); padding-bottom:5px; margin:10px 0 10px;
+  text-shadow:2px 2px 0 rgba(0,0,0,0.55), 0 0 8px rgba(0,0,0,0.25);
 }
 
 .option-row{ display:flex; gap:16px; justify-content:center; }
@@ -106,13 +108,13 @@ html,body{
 .option-card small{ color:#c9a97e; font-size:11px; letter-spacing:1px; }
 
 .thumb{
-  width:100%; height:150px; background-size:cover; background-position:center;
+  width:100%; height:clamp(70px, 20vh, 150px); background-size:cover; background-position:center;
   border:2px solid #000; image-rendering:pixelated;
   background-color:#2a2015;
 }
 .thumb-pier{ background-image:url('Assets/Pier.png'); }
 .thumb-magic{ background-image:url('Assets/MagicCity.png'); }
-.thumb-fighter{ background-size:contain; background-repeat:no-repeat; height:190px; }
+.thumb-fighter{ background-size:contain; background-repeat:no-repeat; height:clamp(85px, 26vh, 190px); }
 .thumb-fighter[data-sprite="Binface"]{ background-image:url('Assets/Binface_win.png'); }
 .thumb-fighter[data-sprite="Farrage"]{ background-image:url('Assets/Farrage_idle1.png'); }
 
@@ -128,7 +130,7 @@ html,body{
 .start-btn.secondary{ background:var(--panel); border-color:var(--frame); box-shadow:0 5px 0 var(--frame); margin-top:10px;}
 .start-btn:active:not(:disabled){ transform:translateY(4px); box-shadow:none; }
 
-.hint{ font-size:11px; color:#123449; text-align:center; margin-top:12px; max-width:520px; font-weight:bold; }
+.hint{ font-size:11px; color:#fff8ec; text-align:center; margin-top:12px; max-width:520px; font-weight:bold; text-shadow:1px 1px 3px rgba(0,0,0,0.65); }
 
 /* ---------------- GAME SCREEN ---------------- */
 #screen-game{ background:#000; justify-content:flex-start; }
@@ -196,62 +198,126 @@ html,body{
   position:absolute; bottom:0; left:0; right:0;
   display:none;
   justify-content:space-between; align-items:flex-end;
-  padding:0 10px 14px;
+  padding:0 18px 20px;
   pointer-events:none;
 }
 .show-touch #touch-hud{ display:flex; }
 
 .pad{ display:flex; gap:8px; pointer-events:auto; }
-.pad-btn{
-  width:56px; height:56px; border-radius:50%;
-  background:rgba(23,26,51,0.85); border:2px solid var(--frame);
-  color:var(--text); font-size:20px; display:flex; align-items:center; justify-content:center;
-  font-family:inherit;
+
+/* ---- arcade joystick ---- */
+.joystick-base{
+  position:relative;
+  width:118px; height:118px; border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%, #2a2a2a 0%, #161616 60%, #0a0a0a 100%);
+  border:4px solid #050505;
+  box-shadow:
+    inset 0 4px 10px rgba(0,0,0,0.7),
+    inset 0 -3px 6px rgba(255,255,255,0.06),
+    0 4px 8px rgba(0,0,0,0.5);
+  touch-action:none;
 }
-.pad-btn:active{ background:var(--danger); }
-.attack-btn{ width:84px; height:84px; border-radius:50%; font-size:12px; background:rgba(255,59,92,0.85); border-color:#7a0f24; }
-.attack-btn:active{ background:var(--gold); color:#000; }
+.joystick-base::before{
+  content:""; position:absolute; inset:10px; border-radius:50%;
+  border:2px dashed rgba(255,255,255,0.12);
+}
+.joystick-stick{
+  position:absolute; left:50%; top:50%;
+  width:52px; height:52px; border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle at 35% 30%, #ff6b52 0%, var(--danger) 55%, #8f1a10 100%);
+  border:2px solid #3a0805;
+  box-shadow:0 5px 10px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.35);
+  pointer-events:none;
+}
+.joystick-base::after{
+  content:""; position:absolute; left:50%; top:50%; width:14px; height:14px;
+  transform:translate(-50%,-50%); border-radius:50%;
+  background:#000; box-shadow:0 0 0 3px rgba(255,255,255,0.08);
+}
+
+/* ---- arcade pushbutton ---- */
+.attack-btn{
+  width:96px; height:96px; border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 28%, #ff8a6e 0%, var(--danger) 45%, #7a0f0f 100%);
+  border:4px solid #3a0805;
+  box-shadow:
+    0 6px 0 #5c0d0d, 0 9px 14px rgba(0,0,0,0.55),
+    inset 0 3px 6px rgba(255,255,255,0.35);
+  color:#fff; font-family:var(--font-display); letter-spacing:1px;
+  display:flex; align-items:center; justify-content:center;
+  padding:0;
+}
+.attack-btn span{ font-size:16px; text-shadow:2px 2px 0 rgba(0,0,0,0.4); transform:translateY(1px); }
+.attack-btn:active{
+  transform:translateY(5px);
+  box-shadow:0 1px 0 #5c0d0d, 0 3px 6px rgba(0,0,0,0.5), inset 0 3px 6px rgba(0,0,0,0.35);
+  background:radial-gradient(circle at 35% 28%, #ffb199 0%, #ff5a3c 45%, #7a0f0f 100%);
+}
 
 /* ---------------- RESULT SCREEN ---------------- */
-#screen-result{ justify-content:center; position:relative; overflow:hidden; }
+#screen-result{ justify-content:center; position:relative; overflow-y:auto; -webkit-overflow-scrolling:touch; }
 
-.result-bg{ position:absolute; inset:0; z-index:0; background:radial-gradient(ellipse at 50% 40%, #3a1030 0%, #0b0c1a 60%); }
-.result-bg-photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; display:none; filter:brightness(0.72); }
+.result-bg{
+  position:absolute; inset:0; z-index:0;
+  background:linear-gradient(160deg, #e8e0c9 0%, #d9d0b4 45%, #c9c0a0 100%);
+}
+.result-bg-photo{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; display:none;
+  filter:sepia(0.45) saturate(0.85) brightness(0.98) contrast(1.05);
+}
+.result-bg::after{
+  /* ties a full-bleed photo into the newsprint page look without hiding it entirely */
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:rgba(228,220,196,0.32);
+}
 .result-deco{ position:absolute; inset:0; width:100%; height:100%; display:none; }
 .result-bg.winner-binface .deco-binface{ display:block; }
 .result-bg.winner-farrage .deco-farrage{ display:block; }
 
 .result-content{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; width:100%; height:100%; padding:14px 0 18px; box-sizing:border-box; }
 
+.result-banner{
+  background:linear-gradient(180deg,#1c1108,#0a0603);
+  border-top:3px solid var(--gold); border-bottom:3px solid var(--gold);
+  width:100%; padding:8px 10px 10px; box-shadow:0 4px 10px rgba(0,0,0,0.35);
+}
+.result-banner .title,
+.result-banner .subtitle{ margin:0; }
+.result-banner .subtitle{ margin-top:2px; text-shadow:2px 2px 0 #000; }
+
 .result-stage{
   display:flex; align-items:flex-end; justify-content:center; gap:4%;
-  width:100%; flex:1; min-height:0; margin:6px 0 10px; padding:0 3%;
+  width:100%; flex:1; min-height:0; margin:14px 0 10px; padding:0 3%;
 }
 
 /* ---- newspaper front page (left) ---- */
 .newspaper{
-  background:#f3ecd8; color:#1a1a1a; font-family:Georgia,'Times New Roman',serif;
-  width:34%; max-width:300px; min-width:190px; padding:10px 12px 14px;
-  box-shadow:0 10px 24px rgba(0,0,0,0.5); transform:rotate(-2deg);
-  border:1px solid #cabf9e;
+  background:linear-gradient(165deg,#f6f0dd 0%,#ece2c6 100%);
+  color:#221c12; font-family:Georgia,'Times New Roman',serif;
+  width:36%; max-width:320px; min-width:190px; padding:12px 14px 16px;
+  box-shadow:0 10px 24px rgba(0,0,0,0.35); transform:rotate(-2deg);
+  border:1px solid #b9ac85;
 }
 .newspaper-masthead{
   font-size:clamp(15px,2.6vw,22px); font-weight:bold; text-align:center; letter-spacing:1px;
-  border-bottom:3px double #1a1a1a; padding-bottom:4px;
+  border-bottom:3px double #221c12; padding-bottom:4px;
 }
-.newspaper-date{ font-size:9px; text-align:center; letter-spacing:1px; margin-top:3px; color:#4a4436; }
-.newspaper hr{ border:none; border-top:2px solid #1a1a1a; margin:6px 0; }
+.newspaper-date{ font-size:9px; text-align:center; letter-spacing:1px; margin-top:3px; color:#5a5138; }
+.newspaper hr{ border:none; border-top:2px solid #221c12; margin:6px 0; }
 .newspaper-headline{
   font-size:clamp(14px,2.4vw,19px); font-weight:900; line-height:1.15; text-align:center;
   margin-bottom:6px; font-family:'Arial Black', Georgia, sans-serif; text-transform:uppercase;
 }
 .newspaper-photo{
   width:100%; height:90px; object-fit:cover; filter:grayscale(1) contrast(1.1);
-  border:1px solid #1a1a1a; display:block; margin-bottom:6px;
+  border:1px solid #221c12; display:block; margin-bottom:6px;
 }
-.newspaper-sub{ font-size:11px; font-style:italic; line-height:1.35; margin:0 0 8px; }
+.newspaper-sub{ font-size:11px; font-style:italic; line-height:1.35; margin:0 0 8px; color:#2a2416; }
 .newspaper-lines{ display:flex; flex-direction:column; gap:5px; }
-.newspaper-lines span{ display:block; height:5px; background:#c9c0a4; border-radius:1px; }
+.newspaper-lines span{ display:block; height:5px; background:#b9ac85; border-radius:1px; }
 .newspaper-lines span:nth-child(3n+1){ width:100%; }
 .newspaper-lines span:nth-child(3n+2){ width:92%; }
 .newspaper-lines span:nth-child(3n+3){ width:75%; }
@@ -262,7 +328,12 @@ html,body{
   filter:drop-shadow(0 14px 18px rgba(0,0,0,0.65));
 }
 
-.continue-box{ text-align:center; margin-bottom:14px; }
+.continue-box{
+  text-align:center; margin-bottom:14px;
+  background:linear-gradient(180deg,#1c1108,#0a0603);
+  border:2px solid var(--gold); border-radius:6px;
+  padding:8px 26px; box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
 .continue-label{ font-size:13px; letter-spacing:3px; color:var(--p1); text-shadow:2px 2px 0 #000; }
 .continue-num{
   font-size:56px; color:var(--gold); text-shadow:3px 3px 0 var(--danger), 6px 6px 0 rgba(0,0,0,0.6);
@@ -275,15 +346,10 @@ html,body{
 @media (max-width:640px){
   .option-row{ flex-direction:row; }
   .hint{ display:none; }
-  .thumb{ height:100px; }
-  .thumb-fighter{ height:130px; }
   .option-card span{ font-size:16px; }
-  #screen-menu{ overflow-y:auto; }
 }
 
 @media (max-height:700px){
   .logo-wrap{ max-width:440px; }
-  .thumb{ height:90px; }
-  .thumb-fighter{ height:120px; }
-  #screen-menu{ overflow-y:auto; padding-top:8px; }
+  #screen-menu{ padding-top:8px; }
 }

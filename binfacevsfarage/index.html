@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CLACTON FIGHTER II</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,12 +84,14 @@
     <!-- ============ MOBILE TOUCH HUD ============ -->
     <div id="touch-hud">
       <div class="pad" id="pad-left">
-        <button class="pad-btn" data-key="ArrowLeft" aria-label="Left">◀</button>
-        <button class="pad-btn" data-key="ArrowUp" aria-label="Jump">▲</button>
-        <button class="pad-btn" data-key="ArrowRight" aria-label="Right">▶</button>
+        <div class="joystick-base" id="joystick-base">
+          <div class="joystick-stick" id="joystick-stick"></div>
+        </div>
       </div>
       <div class="pad" id="pad-right">
-        <button class="pad-btn attack-btn" data-key="Space" aria-label="Throw">THROW</button>
+        <button class="pad-btn attack-btn" data-key="Space" aria-label="Throw">
+          <span>THROW</span>
+        </button>
       </div>
     </div>
   </div>
@@ -192,8 +194,10 @@
     </div>
     <div class="scanlines"></div>
     <div class="result-content">
-      <h1 class="title" id="result-title">K.O.</h1>
-      <p class="subtitle" id="result-sub">WINNER</p>
+      <div class="result-banner">
+        <h1 class="title" id="result-title">K.O.</h1>
+        <p class="subtitle" id="result-sub">WINNER</p>
+      </div>
 
       <div class="result-stage">
         <div class="newspaper">

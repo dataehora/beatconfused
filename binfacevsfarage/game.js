@@ -538,6 +538,57 @@
     btn.addEventListener("mouseleave", set(false));
   });
 
+  /* ---- arcade joystick: drag the stick to move/jump ---- */
+  const joystickBase = document.getElementById("joystick-base");
+  const joystickStick = document.getElementById("joystick-stick");
+  if (joystickBase && joystickStick) {
+    const JOY_RADIUS = 34; // max visual travel, px
+    const DEAD_ZONE = 14; // px before a direction registers
+    let joyActive = false;
+
+    function moveStick(clientX, clientY) {
+      const rect = joystickBase.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = clientX - cx;
+      const dy = clientY - cy;
+      const dist = Math.min(Math.hypot(dx, dy), JOY_RADIUS);
+      const angle = Math.atan2(dy, dx);
+      joystickStick.style.transition = "none";
+      joystickStick.style.transform = `translate(-50%,-50%) translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px)`;
+
+      keys.ArrowLeft = dx < -DEAD_ZONE;
+      keys.ArrowRight = dx > DEAD_ZONE;
+      keys.ArrowUp = dy < -DEAD_ZONE;
+    }
+
+    function resetStick() {
+      keys.ArrowLeft = false;
+      keys.ArrowRight = false;
+      keys.ArrowUp = false;
+      joystickStick.style.transition = "transform 0.12s ease";
+      joystickStick.style.transform = "translate(-50%,-50%)";
+    }
+
+    joystickBase.addEventListener("touchstart", (e) => {
+      joyActive = true;
+      moveStick(e.touches[0].clientX, e.touches[0].clientY);
+      e.preventDefault();
+    }, { passive: false });
+    joystickBase.addEventListener("touchmove", (e) => {
+      if (!joyActive) return;
+      moveStick(e.touches[0].clientX, e.touches[0].clientY);
+      e.preventDefault();
+    }, { passive: false });
+    joystickBase.addEventListener("touchend", (e) => { joyActive = false; resetStick(); e.preventDefault(); }, { passive: false });
+    joystickBase.addEventListener("touchcancel", (e) => { joyActive = false; resetStick(); e.preventDefault(); }, { passive: false });
+
+    // mouse support, useful for testing on desktop
+    joystickBase.addEventListener("mousedown", (e) => { joyActive = true; moveStick(e.clientX, e.clientY); });
+    window.addEventListener("mousemove", (e) => { if (joyActive) moveStick(e.clientX, e.clientY); });
+    window.addEventListener("mouseup", () => { if (joyActive) { joyActive = false; resetStick(); } });
+  }
+
   /* ============================================================
      ENTITIES
      ============================================================ */
