@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>CLACTON FIGHTER II</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="arcade">
+
+  <!-- ===================== TITLE / SELECT SCREEN ===================== -->
+  <div id="screen-menu" class="screen">
+    <div class="scanlines"></div>
+    <h1 class="title">CLACTON<br><span>FIGHTER&nbsp;II</span></h1>
+    <p class="subtitle">A BY-ELECTION BRAWL</p>
+
+    <div class="select-block">
+      <h2>1. CHOOSE YOUR STAGE</h2>
+      <div class="option-row" id="map-row">
+        <button class="option-card" data-map="Pier">
+          <div class="thumb thumb-pier"></div>
+          <span>THE PIER</span>
+        </button>
+        <button class="option-card" data-map="MagicCity">
+          <div class="thumb thumb-magic"></div>
+          <span>MAGIC CITY</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="select-block">
+      <h2>2. CHOOSE YOUR FIGHTER</h2>
+      <div class="option-row" id="fighter-row">
+        <button class="option-card" data-fighter="Binface">
+          <div class="thumb thumb-fighter" data-sprite="Binface"></div>
+          <span>COUNT BINFACE</span>
+          <small>THROWS: RUBBISH BAGS</small>
+        </button>
+        <button class="option-card" data-fighter="Farrage">
+          <div class="thumb thumb-fighter" data-sprite="Farrage"></div>
+          <span>THE CHALLENGER</span>
+          <small>THROWS: GREEN SLIME</small>
+        </button>
+      </div>
+    </div>
+
+    <button id="start-btn" class="start-btn" disabled>PRESS START</button>
+    <p class="hint">Use ARROW KEYS to move, SPACE to throw. On mobile, use the on-screen pad.</p>
+  </div>
+
+  <!-- ===================== GAME SCREEN ===================== -->
+  <div id="screen-game" class="screen hidden">
+    <div class="hud">
+      <div class="hud-side">
+        <div class="hud-name" id="p1-name">P1</div>
+        <div class="healthbar-frame"><div class="healthbar" id="p1-health"></div></div>
+      </div>
+      <div class="hud-mid">
+        <div id="timer">99</div>
+        <div id="round-label">ROUND 1</div>
+      </div>
+      <div class="hud-side hud-side-right">
+        <div class="hud-name" id="p2-name">P2</div>
+        <div class="healthbar-frame"><div class="healthbar" id="p2-health"></div></div>
+      </div>
+    </div>
+
+    <canvas id="game-canvas" width="960" height="540"></canvas>
+
+    <div id="overlay-text" class="overlay-text"></div>
+
+    <!-- ============ MOBILE TOUCH HUD ============ -->
+    <div id="touch-hud">
+      <div class="pad" id="pad-left">
+        <button class="pad-btn" data-key="ArrowLeft" aria-label="Left">◀</button>
+        <button class="pad-btn" data-key="ArrowUp" aria-label="Jump">▲</button>
+        <button class="pad-btn" data-key="ArrowRight" aria-label="Right">▶</button>
+      </div>
+      <div class="pad" id="pad-right">
+        <button class="pad-btn attack-btn" data-key="Space" aria-label="Throw">THROW</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== RESULT SCREEN ===================== -->
+  <div id="screen-result" class="screen hidden">
+    <div id="result-bg" class="result-bg">
+      <img id="result-bg-photo" class="result-bg-photo" alt="" />
+      <svg class="result-deco deco-binface" viewBox="0 0 960 540" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#bfe8f5"/>
+            <stop offset="55%" stop-color="#8fd3e8"/>
+            <stop offset="100%" stop-color="#4a9d7f"/>
+          </linearGradient>
+        </defs>
+        <rect width="960" height="540" fill="url(#skyGrad)"/>
+        <circle cx="120" cy="90" r="46" fill="#fff6d6" opacity="0.9"/>
+        <rect x="0" y="380" width="960" height="160" fill="#1c6f6b"/>
+        <g fill="#cfeee0" opacity="0.5">
+          <ellipse cx="150" cy="386" rx="120" ry="10"/>
+          <ellipse cx="520" cy="392" rx="160" ry="10"/>
+          <ellipse cx="820" cy="386" rx="110" ry="10"/>
+        </g>
+        <g stroke="#eef8fb" stroke-width="10" stroke-linecap="round">
+          <line x1="230" y1="230" x2="230" y2="410"/>
+          <line x1="470" y1="200" x2="470" y2="410"/>
+          <line x1="740" y1="245" x2="740" y2="410"/>
+        </g>
+        <g stroke="#eef8fb" stroke-width="6" stroke-linecap="round" fill="none">
+          <g transform="translate(230,230)">
+            <line x1="0" y1="0" x2="0" y2="-46" transform="rotate(20)"/>
+            <line x1="0" y1="0" x2="0" y2="-46" transform="rotate(140)"/>
+            <line x1="0" y1="0" x2="0" y2="-46" transform="rotate(260)"/>
+          </g>
+          <g transform="translate(470,200)">
+            <line x1="0" y1="0" x2="0" y2="-50" transform="rotate(60)"/>
+            <line x1="0" y1="0" x2="0" y2="-50" transform="rotate(180)"/>
+            <line x1="0" y1="0" x2="0" y2="-50" transform="rotate(300)"/>
+          </g>
+          <g transform="translate(740,245)">
+            <line x1="0" y1="0" x2="0" y2="-42" transform="rotate(-10)"/>
+            <line x1="0" y1="0" x2="0" y2="-42" transform="rotate(110)"/>
+            <line x1="0" y1="0" x2="0" y2="-42" transform="rotate(230)"/>
+          </g>
+        </g>
+        <g fill="#3a2a1a">
+          <rect x="60" y="410" width="12" height="130"/>
+          <rect x="160" y="410" width="12" height="130"/>
+          <rect x="260" y="410" width="12" height="130"/>
+          <rect x="360" y="410" width="12" height="130"/>
+        </g>
+        <rect x="40" y="398" width="340" height="20" fill="#4a3624"/>
+        <g fill="#2f7a4f" opacity="0.85">
+          <rect x="600" y="440" width="60" height="40" rx="6"/>
+          <rect x="670" y="430" width="60" height="50" rx="6"/>
+          <rect x="740" y="450" width="60" height="30" rx="6"/>
+        </g>
+      </svg>
+      <svg class="result-deco deco-farrage" viewBox="0 0 960 540" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="dirtyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2a1a14"/>
+            <stop offset="55%" stop-color="#3a2018"/>
+            <stop offset="100%" stop-color="#150c0a"/>
+          </linearGradient>
+        </defs>
+        <rect width="960" height="540" fill="url(#dirtyGrad)"/>
+        <circle cx="800" cy="110" r="50" fill="#ff8a3d" opacity="0.35"/>
+        <rect x="0" y="400" width="960" height="140" fill="#1a1210"/>
+        <g fill="#0d0908" opacity="0.6">
+          <ellipse cx="200" cy="405" rx="180" ry="12"/>
+          <ellipse cx="650" cy="410" rx="220" ry="12"/>
+        </g>
+        <g stroke="#2a2018" stroke-width="8" fill="none">
+          <path d="M220,400 L250,260 L280,400"/>
+          <path d="M235,320 L265,320"/>
+          <path d="M600,400 L640,220 L680,400"/>
+          <path d="M615,300 L665,300"/>
+          <path d="M615,350 L665,350"/>
+        </g>
+        <g fill="#1c1512">
+          <rect x="240" y="255" width="20" height="20"/>
+          <rect x="630" y="215" width="20" height="20"/>
+        </g>
+        <g fill="#3a2f2a">
+          <rect x="420" y="360" width="26" height="80"/>
+          <rect x="470" y="330" width="26" height="110"/>
+          <rect x="520" y="370" width="26" height="70"/>
+        </g>
+        <g fill="#4a4038" opacity="0.55">
+          <ellipse cx="433" cy="330" rx="26" ry="18"/>
+          <ellipse cx="415" cy="300" rx="30" ry="20"/>
+          <ellipse cx="483" cy="290" rx="28" ry="18"/>
+          <ellipse cx="465" cy="255" rx="34" ry="22"/>
+          <ellipse cx="533" cy="335" rx="24" ry="16"/>
+          <ellipse cx="515" cy="305" rx="28" ry="18"/>
+        </g>
+      </svg>
+    </div>
+    <div class="scanlines"></div>
+    <div class="result-content">
+      <h1 class="title" id="result-title">K.O.</h1>
+      <p class="subtitle" id="result-sub">WINNER</p>
+
+      <div class="portraits">
+        <img id="winner-portrait" class="portrait winner-portrait" alt="Winner" />
+        <div class="vs-label">VS</div>
+        <img id="loser-portrait" class="portrait loser-portrait" alt="Loser" />
+      </div>
+
+      <div class="continue-box">
+        <div class="continue-label">CONTINUE?</div>
+        <div class="continue-num" id="continue-num">9</div>
+      </div>
+
+      <button id="rematch-btn" class="start-btn">REMATCH</button>
+      <button id="menu-btn" class="start-btn secondary">MAIN MENU</button>
+    </div>
+  </div>
+
+</div>
+
+
+<script src="game.js"></script>
+</body>
+</html>
