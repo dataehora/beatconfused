@@ -16,7 +16,7 @@
   const MOVE_SPEED = 260;
   const FIGHTER_W = 130, FIGHTER_H = 210;
   const MAX_HEALTH = 100;
-  const ROUND_TIME = 60; // seconds
+  const ROUND_TIME = 30; // seconds
   const THROW_COOLDOWN = 0.7;
   const HIT_STUN = 0.35;
   const ARENA_MARGIN = 40;
@@ -41,8 +41,8 @@
       capColor: "#1a8f4a",
       projectileLabel: "rubbish bag",
       projectileColor: "#7a5230",
-      projectileScale: 1,
-      projectileSpinRate: 10,
+      projectileScale: 1.3, // 30% bigger bag
+      projectileSpinRate: 8, // 20% slower spin
     },
     Farrage: {
       label: "FARAGE",
@@ -301,9 +301,55 @@
     let distortionCurve = null;
     let musicBus = null;
 
+    let iosAudioUnlocked = false;
+
+    // iOS Safari mutes <audio>/<video> and Web Audio output when the phone's
+    // physical silent switch is on, UNLESS a <video> element with a live
+    // audio track is played — that flips the page's audio session into the
+    // "video playback" category, which iOS exempts from the mute switch, and
+    // it stays exempt for the rest of the session (including plain Web Audio
+    // output afterwards). Built entirely from an in-memory MediaStream (a
+    // blank canvas track + a near-silent oscillator) so no audio/video asset
+    // file is needed. Runs once, on the first real audio trigger (always
+    // inside a user gesture, which iOS requires for this to take effect).
+    function unlockIOSAudioSession(ac) {
+      if (iosAudioUnlocked || typeof HTMLCanvasElement === "undefined" || !HTMLCanvasElement.prototype.captureStream) {
+        return;
+      }
+      iosAudioUnlocked = true;
+
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = 1;
+        canvas.height = 1;
+        const videoStream = canvas.captureStream(0);
+
+        const dest = ac.createMediaStreamDestination();
+        const osc = ac.createOscillator();
+        const gain = ac.createGain();
+        gain.gain.value = 0.00001; // inaudible, but a live (non-silent) track
+        osc.connect(gain).connect(dest);
+        osc.start();
+
+        const combined = new MediaStream([...videoStream.getVideoTracks(), ...dest.stream.getAudioTracks()]);
+        const video = document.createElement("video");
+        video.muted = false;
+        video.setAttribute("playsinline", "");
+        video.setAttribute("webkit-playsinline", "");
+        video.style.display = "none";
+        video.srcObject = combined;
+        document.body.appendChild(video);
+        video.play().catch(() => {});
+      } catch (_) {
+        // best-effort — if any of this isn't supported, sound still plays,
+        // it just may stay silenced by the mute switch on affected devices
+      }
+    }
+
     function ensureCtx() {
       if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
       if (actx.state === "suspended") actx.resume();
+      unlockIOSAudioSession(actx);
       return actx;
     }
 
@@ -790,6 +836,7 @@
     cpu = new Fighter(otherKey, CANVAS_W * 0.72, -1, false);
     projectiles = [];
     timeLeft = ROUND_TIME;
+    timerEl.textContent = ROUND_TIME; // otherwise the HUD still shows the "99" placeholder during the countdown
 
     p1NameEl.textContent = FIGHTERS[fighterKey].label;
     p2NameEl.textContent = FIGHTERS[otherKey].label;
