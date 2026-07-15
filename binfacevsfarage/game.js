@@ -215,11 +215,12 @@
      AUDIO — Assets-first sound system.
      For every sound below, if a matching file exists in Assets/ it is
      used as-is (looked up as .mp3, then .ogg, then .wav). If nothing is
-     found, a synthesised 8-bit fallback (Web Audio API) plays instead,
-     so the game always has sound even with zero audio assets supplied.
+     found, a synthesised fallback (Web Audio API) plays instead — the
+     battle theme is a distorted power-chord rock riff, not a chiptune
+     arpeggio — so the game always has sound even with zero audio assets.
 
      Drop any of these filenames into Assets/ to override the built-in
-     chiptune sounds:
+     sounds:
        Assets/music.mp3         — looping battle theme
        Assets/sfx_throw.mp3     — throwing the rubbish bag / money bags
        Assets/sfx_hit.mp3       — getting struck by a projectile
@@ -278,17 +279,27 @@
     let musicTimer = null;
     let musicUsingCustom = false;
     let step = 0;
-    const BPM = 172; // faster, more driving tempo than a typical idle-menu loop
-    const STEP_TIME = 60 / BPM / 2; // eighth notes
+    const BPM = 150; // driving rock stomp, not a chiptune arpeggio
+    const STEP_TIME = 60 / BPM / 2; // eighth notes, 16 steps = two bars of 4/4
 
-    // two-bar minor-key riff — lead, power-chord-ish bass, and a hi-hat/kick
-    // pattern layered underneath for a punchier, more "battle theme" feel
-    const LEAD = [587,0,698,587, 880,0,698,0, 784,0,698,587, 698,0,523,0];
-    const BASS = [147,147,0,147, 147,147,0,196, 175,175,0,175, 175,175,0,131];
-    const HAT  = [1,0,1,0, 1,0,1,1, 1,0,1,0, 1,0,1,1];
-    const KICK = [1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,1,0];
+    // two-bar power-chord progression (i - i - VI - VII in E minor) — the
+    // kind of chugging rhythm-guitar riff a Guile/Ryu-style stage theme runs
+    // underneath its melody. Guitar and bass lock to the chord roots, drums
+    // lay down a rock backbeat, and a sparse synth-lead hook answers in bar 2.
+    const CHORD_ROOT = [
+      164.81,164.81,164.81,164.81, 164.81,164.81,164.81,164.81, // E3 (bar 1)
+      130.81,130.81,130.81,130.81, 146.83,146.83,146.83,146.83, // C3, D3 (bar 2)
+    ];
+    const GTR   = [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1]; // rhythm-guitar chug, every 8th
+    const BASS  = [1,0,1,1, 0,1,0,1, 1,0,1,1, 0,1,0,1]; // syncopated bass under the chug
+    const HAT   = [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1]; // driving closed hats
+    const KICK  = [1,0,0,0, 1,0,0,1, 1,0,0,0, 1,0,0,1]; // kick on 1, 3, and a pickup
+    const SNARE = [0,0,1,0, 0,0,1,0, 0,0,1,0, 0,0,1,0]; // backbeat on 2 & 4
+    const LEAD  = [0,0,0,0, 0,0,0,0, 0,0,659,0, 784,880,0,987]; // rising hook, bar 2 only
 
     let noiseBuffer = null;
+    let distortionCurve = null;
+    let musicBus = null;
 
     function ensureCtx() {
       if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
@@ -303,6 +314,39 @@
       const data = noiseBuffer.getChannelData(0);
       for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
       return noiseBuffer;
+    }
+
+    // classic waveshaper soft-clip curve — turns a plain oscillator into a
+    // crunchy, amp-like distortion for the rhythm guitar and bass
+    function getDistortionCurve() {
+      if (distortionCurve) return distortionCurve;
+      const amount = 34;
+      const n = 44100;
+      const curve = new Float32Array(n);
+      const deg = Math.PI / 180;
+      for (let i = 0; i < n; i++) {
+        const x = (i * 2) / n - 1;
+        curve[i] = ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
+      }
+      distortionCurve = curve;
+      return curve;
+    }
+
+    // shared bus for the synth-music instruments only — sfx stay wired
+    // straight to the destination so they're never ducked by this. Glues the
+    // guitar/bass/drum layers together and keeps them from clipping when
+    // several land on the same eighth note.
+    function getMusicBus(ac) {
+      if (musicBus) return musicBus;
+      const comp = ac.createDynamicsCompressor();
+      comp.threshold.value = -20;
+      comp.knee.value = 14;
+      comp.ratio.value = 4;
+      comp.attack.value = 0.004;
+      comp.release.value = 0.18;
+      comp.connect(ac.destination);
+      musicBus = comp;
+      return musicBus;
     }
 
     function blip(freq, duration, type, gainVal, when) {
@@ -329,7 +373,7 @@
       const gain = ac.createGain();
       gain.gain.setValueAtTime(gainVal, when);
       gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.05);
-      src.connect(hp).connect(gain).connect(ac.destination);
+      src.connect(hp).connect(gain).connect(getMusicBus(ac));
       src.start(when);
       src.stop(when + 0.06);
     }
@@ -343,9 +387,81 @@
       osc.frequency.exponentialRampToValueAtTime(45, when + 0.12);
       gain.gain.setValueAtTime(gainVal, when);
       gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.16);
-      osc.connect(gain).connect(ac.destination);
+      osc.connect(gain).connect(getMusicBus(ac));
       osc.start(when);
       osc.stop(when + 0.18);
+    }
+
+    // acoustic-style snare — bandpassed noise crack plus a tonal thump for body
+    function snare(when, gainVal) {
+      const ac = ensureCtx();
+      const src = ac.createBufferSource();
+      src.buffer = getNoiseBuffer(ac);
+      const bp = ac.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = 1800;
+      bp.Q.value = 0.7;
+      const nGain = ac.createGain();
+      nGain.gain.setValueAtTime(gainVal, when);
+      nGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.12);
+      src.connect(bp).connect(nGain).connect(getMusicBus(ac));
+      src.start(when);
+      src.stop(when + 0.13);
+
+      const osc = ac.createOscillator();
+      const oGain = ac.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(200, when);
+      osc.frequency.exponentialRampToValueAtTime(120, when + 0.08);
+      oGain.gain.setValueAtTime(gainVal * 0.6, when);
+      oGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.09);
+      osc.connect(oGain).connect(getMusicBus(ac));
+      osc.start(when);
+      osc.stop(when + 0.1);
+    }
+
+    // distorted power chord (root + fifth + octave) — the rhythm-guitar chug
+    function powerChord(rootFreq, duration, gainVal, when) {
+      const ac = ensureCtx();
+      const shaper = ac.createWaveShaper();
+      shaper.curve = getDistortionCurve();
+      shaper.oversample = "2x";
+      const tone = ac.createBiquadFilter();
+      tone.type = "lowpass";
+      tone.frequency.value = 3200;
+      const gain = ac.createGain();
+      gain.gain.setValueAtTime(gainVal, when);
+      gain.gain.exponentialRampToValueAtTime(0.0001, when + duration);
+      shaper.connect(tone).connect(gain).connect(getMusicBus(ac));
+      [1, 1.5, 2].forEach((mult, idx) => {
+        const osc = ac.createOscillator();
+        osc.type = "sawtooth";
+        osc.frequency.value = rootFreq * mult;
+        osc.detune.value = idx === 0 ? -5 : idx === 2 ? 5 : 0;
+        osc.connect(shaper);
+        osc.start(when);
+        osc.stop(when + duration);
+      });
+    }
+
+    // driven bass guitar, an octave under the chord root
+    function rockBass(freq, duration, gainVal, when) {
+      const ac = ensureCtx();
+      const shaper = ac.createWaveShaper();
+      shaper.curve = getDistortionCurve();
+      const tone = ac.createBiquadFilter();
+      tone.type = "lowpass";
+      tone.frequency.value = 950;
+      const gain = ac.createGain();
+      gain.gain.setValueAtTime(gainVal, when);
+      gain.gain.exponentialRampToValueAtTime(0.0001, when + duration);
+      shaper.connect(tone).connect(gain).connect(getMusicBus(ac));
+      const osc = ac.createOscillator();
+      osc.type = "sawtooth";
+      osc.frequency.value = freq;
+      osc.connect(shaper);
+      osc.start(when);
+      osc.stop(when + duration);
     }
 
     // a meatier "impact" for hits/KOs — low thump + band-passed noise
@@ -401,7 +517,7 @@
       const gain = ac.createGain();
       gain.gain.setValueAtTime(gainVal, when);
       gain.gain.exponentialRampToValueAtTime(0.0001, when + duration);
-      gain.connect(ac.destination);
+      gain.connect(getMusicBus(ac));
       [-6, 6].forEach((detune) => {
         const osc = ac.createOscillator();
         osc.type = "square";
@@ -418,11 +534,14 @@
       step = 0;
       musicTimer = setInterval(() => {
         const t = ac.currentTime + 0.02;
-        const i = step % LEAD.length;
-        if (LEAD[i]) leadBlip(LEAD[i], STEP_TIME * 0.85, 0.05, t);
-        if (BASS[i]) blip(BASS[i], STEP_TIME * 0.9, "sawtooth", 0.075, t);
-        if (HAT[i]) hat(t, 0.035);
-        if (KICK[i]) kick(t, 0.12);
+        const i = step % CHORD_ROOT.length;
+        const chugDur = STEP_TIME * 0.72;
+        if (GTR[i]) powerChord(CHORD_ROOT[i], chugDur, 0.05, t);
+        if (BASS[i]) rockBass(CHORD_ROOT[i] / 2, chugDur, 0.09, t);
+        if (LEAD[i]) leadBlip(LEAD[i], STEP_TIME * 0.9, 0.05, t);
+        if (HAT[i]) hat(t, 0.022);
+        if (KICK[i]) kick(t, 0.13);
+        if (SNARE[i]) snare(t, 0.1);
         step++;
       }, STEP_TIME * 1000);
     }
