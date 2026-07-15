@@ -93,260 +93,140 @@
     </header>
 
     <section class="metronome" aria-labelledby="metronome-title" data-visual-mode="pendulum">
-      <div class="section-heading">
-        <h2 id="metronome-title">Set tempo with precision</h2>
-        <p>Dial BPM directly, tap naturally, and move through visual and rhythmic modes made for thoughtful practice.</p>
-      </div>
+      <h2 id="metronome-title" class="sr-only">Metronome</h2>
 
       <div class="visual-stage" aria-live="polite">
         <div class="pulse visual-element" id="pulse" aria-hidden="true"></div>
         <div class="number-display visual-element" id="numberDisplay" aria-hidden="true">1</div>
         <div class="pendulum visual-element" id="pendulum" aria-hidden="true">
-          <svg class="pendulum-device" viewBox="0 0 320 320" role="presentation" focusable="false">
+          <svg class="pendulum-device" viewBox="0 0 240 300" role="presentation" focusable="false">
             <defs>
-              <linearGradient id="pendulumWoodFront" x1="78" y1="18" x2="242" y2="286" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#8a4c2d" />
-                <stop offset="0.52" stop-color="#6b341f" />
-                <stop offset="1" stop-color="#4a2417" />
+              <linearGradient id="caseGradient" x1="50" y1="16" x2="190" y2="284" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#caa06a" />
+                <stop offset="1" stop-color="#8a5a30" />
               </linearGradient>
-              <linearGradient id="pendulumWoodSide" x1="206" y1="40" x2="282" y2="250" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#4b2317" />
-                <stop offset="1" stop-color="#31160f" />
-              </linearGradient>
-              <linearGradient id="pendulumWoodTop" x1="104" y1="12" x2="222" y2="44" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#9a5a37" />
-                <stop offset="1" stop-color="#65311f" />
-              </linearGradient>
-              <linearGradient id="pendulumDoorWood" x1="72" y1="208" x2="234" y2="292" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#a35d3b" />
-                <stop offset="1" stop-color="#6d3421" />
-              </linearGradient>
-              <linearGradient id="pendulumWindowFrame" x1="112" y1="44" x2="208" y2="214" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#5c5b59" />
-                <stop offset="0.55" stop-color="#1f2021" />
-                <stop offset="1" stop-color="#0f1113" />
-              </linearGradient>
-              <linearGradient id="pendulumWindowDark" x1="104" y1="56" x2="216" y2="212" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#2c2e31" />
-                <stop offset="1" stop-color="#131416" />
-              </linearGradient>
-              <linearGradient id="pendulumScalePaper" x1="140" y1="60" x2="180" y2="194" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#fffef8" />
-                <stop offset="1" stop-color="#f0ecde" />
-              </linearGradient>
-              <linearGradient id="pendulumWindowGlow" x1="160" y1="58" x2="160" y2="204" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#ffffff" stop-opacity="0.18" />
-                <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+              <linearGradient id="windowGradient" x1="120" y1="40" x2="120" y2="268" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#362b21" />
+                <stop offset="1" stop-color="#1b1512" />
               </linearGradient>
               <clipPath id="pendulumWindowClip">
-                <path d="M110 58 L210 58 L194 204 L126 204 Z" />
+                <path d="M85 40 L155 40 L200 268 L40 268 Z" />
               </clipPath>
             </defs>
-            <ellipse class="device-shadow" cx="176" cy="292" rx="92" ry="16" />
-            <path
-              d="M116 16 L202 16 L226 40 L92 40 Z"
-              fill="url(#pendulumWoodTop)"
-              stroke="rgba(36, 18, 12, 0.48)"
-              stroke-width="2"
-            />
-            <path
-              d="M92 40 L226 40 L258 258 L60 258 Z"
-              fill="url(#pendulumWoodFront)"
-              stroke="rgba(36, 18, 12, 0.5)"
-              stroke-width="2.4"
-            />
-            <path
-              d="M226 40 L258 258 L226 244 L196 58 Z"
-              fill="url(#pendulumWoodSide)"
-              opacity="0.95"
-            />
-            <path
-              d="M110 48 L210 48 L222 212 L98 212 Z"
-              fill="url(#pendulumWindowFrame)"
-              stroke="rgba(245, 238, 220, 0.08)"
-              stroke-width="1.4"
-            />
-            <path d="M110 58 L210 58 L194 204 L126 204 Z" fill="url(#pendulumWindowDark)" />
-            <g clip-path="url(#pendulumWindowClip)">
-              <rect class="window-glow" x="126" y="58" width="68" height="146" rx="2" fill="url(#pendulumWindowGlow)" />
-              <g class="pendulum-swing">
-                <circle class="pendulum-pivot" cx="160" cy="74" r="5" />
-                <rect class="pendulum-rod" x="158.5" y="78" width="3" height="142" rx="2" />
-                <g class="pendulum-carriage">
-                  <rect class="pendulum-carriage-body" x="142" y="128" width="36" height="16" rx="6" />
-                  <rect class="pendulum-carriage-groove" x="148" y="134" width="24" height="4" rx="2" />
-                </g>
-                <circle class="pendulum-counterweight" cx="160" cy="228" r="15" />
-                <circle class="pendulum-counterweight-highlight" cx="154" cy="222" r="4" />
+
+            <ellipse class="device-shadow" cx="120" cy="288" rx="86" ry="9" />
+
+            <path class="device-case" d="M68 24 L172 24 L214 284 L26 284 Z" fill="url(#caseGradient)" />
+
+            <path class="device-window" d="M85 40 L155 40 L200 268 L40 268 Z" fill="url(#windowGradient)" />
+
+            <g class="scale-ticks" clip-path="url(#pendulumWindowClip)">
+              <line x1="66" y1="96" x2="174" y2="96" />
+              <line x1="60" y1="146" x2="180" y2="146" />
+              <line x1="54" y1="196" x2="186" y2="196" />
+              <line x1="48" y1="246" x2="192" y2="246" />
+            </g>
+
+            <g class="pendulum-swing" clip-path="url(#pendulumWindowClip)">
+              <circle class="pendulum-pivot" cx="120" cy="54" r="4.5" />
+              <rect class="pendulum-rod" x="118.4" y="52" width="3.2" height="198" rx="1.6" />
+              <g class="pendulum-carriage">
+                <path class="pendulum-weight" d="M120 172 L136 196 L120 220 L104 196 Z" />
+                <path class="pendulum-weight-highlight" d="M120 178 L129 196 L120 200 Z" />
               </g>
             </g>
-            <path d="M144 60 L176 60 L181 194 L139 194 Z" fill="url(#pendulumScalePaper)" />
-            <g class="scale-lines">
-              <line x1="149" y1="78" x2="171" y2="78" />
-              <line x1="149" y1="88" x2="171" y2="88" />
-              <line x1="149" y1="98" x2="171" y2="98" />
-              <line x1="149" y1="108" x2="171" y2="108" />
-              <line x1="149" y1="118" x2="171" y2="118" />
-              <line x1="149" y1="128" x2="171" y2="128" />
-              <line x1="149" y1="138" x2="171" y2="138" />
-              <line x1="149" y1="148" x2="171" y2="148" />
-              <line x1="149" y1="158" x2="171" y2="158" />
-              <line x1="149" y1="168" x2="171" y2="168" />
-              <line x1="149" y1="178" x2="171" y2="178" />
-            </g>
-            <path
-              d="M82 212 L238 212 L254 286 L64 286 Z"
-              fill="url(#pendulumDoorWood)"
-              stroke="rgba(47, 22, 14, 0.45)"
-              stroke-width="2"
-            />
-            <path
-              d="M92 220 L232 220"
-              stroke="rgba(255, 244, 220, 0.18)"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-            <circle class="device-foot" cx="84" cy="286" r="9" />
-            <circle class="device-foot" cx="236" cy="286" r="9" />
           </svg>
         </div>
         <p id="beatLabel" class="beat-label">Beat 1</p>
+
+        <div class="display-toggle" role="radiogroup" aria-label="Visual style">
+          <label class="pill pill-sm">
+            <input type="radio" name="visualMode" value="pulse" />
+            <span>Pulse</span>
+          </label>
+          <label class="pill pill-sm">
+            <input type="radio" name="visualMode" value="numbers" />
+            <span>Numbers</span>
+          </label>
+          <label class="pill pill-sm">
+            <input type="radio" name="visualMode" value="pendulum" checked />
+            <span>Pendulum</span>
+          </label>
+        </div>
       </div>
 
-      <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false">Start</button>
+      <div class="tempo-hero">
+        <button id="decreaseBtn" type="button" class="small-btn" aria-label="Decrease BPM" title="Decrease BPM (↓)">−</button>
+        <div class="bpm-readout">
+          <input id="bpmInput" type="number" min="40" max="240" step="1" value="120" aria-label="Tempo in beats per minute" title="Tempo (BPM)" />
+          <span class="bpm-unit">BPM</span>
+        </div>
+        <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM" title="Increase BPM (↑)">+</button>
+      </div>
+      <input id="bpmRange" type="range" min="40" max="240" value="120" class="bpm-slider" aria-label="Tempo slider" />
+
+      <div class="transport-row">
+        <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop (Space)">Start</button>
+        <button id="tapBtn" type="button" class="small-btn tap-btn" title="Tap tempo (T)">Tap</button>
+      </div>
+      <p id="tapStatus" class="hint tap-status" aria-live="polite"></p>
 
       <div class="beat-indicators" id="beatIndicators" aria-label="Beat indicators"></div>
 
       <div class="controls-grid">
-        <div class="control-block tempo-block">
-          <label for="bpmRange">Tempo (BPM)</label>
-          <div class="tempo-row">
-            <button id="decreaseBtn" type="button" class="small-btn" aria-label="Decrease BPM">−</button>
-            <input id="bpmInput" type="number" min="40" max="240" step="1" value="120" />
-            <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM">+</button>
-          </div>
-          <input id="bpmRange" type="range" min="40" max="240" value="120" />
-          <div class="tap-row">
-            <button id="tapBtn" type="button" class="small-btn tap-btn">Tap Tempo</button>
-            <p id="tapStatus" class="hint">Tap or press T at least twice to detect tempo.</p>
-          </div>
-          <p class="hint">Space: Start/Stop · ↑/↓: ±5 BPM · T: Tap Tempo</p>
-        </div>
-
-        <fieldset class="control-block signature-block">
-          <legend>Time Signature</legend>
-          <div class="signature-groups">
-            <div class="signature-group">
-              <h3>Simple</h3>
-              <div class="signature-options">
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="2/2" data-beats="2" />
-                  <span>2/2</span>
-                </label>
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="2/4" data-beats="2" />
-                  <span>2/4</span>
-                </label>
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="3/4" data-beats="3" />
-                  <span>3/4</span>
-                </label>
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="4/4" data-beats="4" checked />
-                  <span>4/4</span>
-                </label>
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="6/4" data-beats="6" />
-                  <span>6/4</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="signature-group">
-              <h3>Compound</h3>
-              <div class="signature-options">
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="3/8" data-beats="3" />
-                  <span>3/8</span>
-                </label>
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="6/8" data-beats="6" />
-                  <span>6/8</span>
-                </label>
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="9/8" data-beats="9" />
-                  <span>9/8</span>
-                </label>
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="12/8" data-beats="12" />
-                  <span>12/8</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="signature-group">
-              <h3>Odd</h3>
-              <div class="signature-options">
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="5/4" data-beats="5" />
-                  <span>5/4</span>
-                </label>
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="5/8" data-beats="5" />
-                  <span>5/8</span>
-                </label>
-                <label class="signature-option">
-                  <input type="radio" name="timeSignature" value="7/8" data-beats="7" />
-                  <span>7/8</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-
         <div class="control-block">
-          <label for="subdivisionSelect">Beat Subdivision</label>
-          <select id="subdivisionSelect">
-            <option value="1" selected>1 pulse per beat</option>
-            <option value="2">2 pulses per beat</option>
-            <option value="3">3 pulses per beat</option>
-            <option value="4">4 pulses per beat</option>
-            <option value="5">5 pulses per beat</option>
-            <option value="6">6 pulses per beat</option>
-            <option value="7">7 pulses per beat</option>
-            <option value="8">8 pulses per beat</option>
-            <option value="9">9 pulses per beat</option>
-            <option value="10">10 pulses per beat</option>
-            <option value="11">11 pulses per beat</option>
-            <option value="12">12 pulses per beat</option>
-            <option value="13">13 pulses per beat</option>
-            <option value="14">14 pulses per beat</option>
-            <option value="15">15 pulses per beat</option>
-            <option value="16">16 pulses per beat</option>
+          <span class="sr-only">Time signature</span>
+          <select id="timeSignature" aria-label="Time signature">
+            <optgroup label="Simple">
+              <option value="2/2" data-beats="2">2/2</option>
+              <option value="2/4" data-beats="2">2/4</option>
+              <option value="3/4" data-beats="3">3/4</option>
+              <option value="4/4" data-beats="4" selected>4/4</option>
+              <option value="6/4" data-beats="6">6/4</option>
+            </optgroup>
+            <optgroup label="Compound">
+              <option value="3/8" data-beats="3">3/8</option>
+              <option value="6/8" data-beats="6">6/8</option>
+              <option value="9/8" data-beats="9">9/8</option>
+              <option value="12/8" data-beats="12">12/8</option>
+            </optgroup>
+            <optgroup label="Odd">
+              <option value="5/4" data-beats="5">5/4</option>
+              <option value="5/8" data-beats="5">5/8</option>
+              <option value="7/8" data-beats="7">7/8</option>
+            </optgroup>
           </select>
+
+          <div class="pill-group" role="radiogroup" aria-label="Beat subdivision">
+            <label class="pill pill-sm">
+              <input type="radio" name="subdivision" value="1" checked />
+              <span>1</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="subdivision" value="2" />
+              <span>2</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="subdivision" value="3" />
+              <span>3</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="subdivision" value="4" />
+              <span>4</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="subdivision" value="6" />
+              <span>6</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="subdivision" value="8" />
+              <span>8</span>
+            </label>
+          </div>
         </div>
 
         <div class="control-block">
-          <label for="visualMode">Visual Style</label>
-          <select id="visualMode">
-            <option value="pulse">Flashing circle</option>
-            <option value="numbers">Animated numbers</option>
-            <option value="pendulum" selected>Swinging line</option>
-          </select>
-        </div>
-
-        <div class="control-block">
-          <label for="countDisplay">Counting Display</label>
-          <select id="countDisplay">
-            <option value="beat" selected>Beat count</option>
-            <option value="measure">Measure + beat</option>
-            <option value="off">Off</option>
-          </select>
-        </div>
-
-        <div class="control-block">
-          <label for="soundStyle">Tone</label>
-          <select id="soundStyle">
+          <select id="soundStyle" aria-label="Sound tone">
             <option value="electronic" selected>Electronic</option>
             <option value="bossa">Bossa</option>
             <option value="jazz">Jazz</option>
@@ -354,23 +234,36 @@
             <option value="cymbal">Cymbal</option>
             <option value="cowbell">Cowbell</option>
           </select>
-        </div>
 
-        <div class="control-block toggle-row">
-          <label>
-            <input id="soundToggle" type="checkbox" checked />
-            Audio
-          </label>
-          <label>
-            <input id="vibrationToggle" type="checkbox" />
-            Haptics
-          </label>
-          <p id="vibrationStatus" class="hint wide-hint">Vibration availability is detected automatically.</p>
-        </div>
+          <div class="sound-row">
+            <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume" title="Volume" />
 
-        <div class="control-block">
-          <label for="volume">Volume</label>
-          <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" />
+            <div class="pill-group">
+              <label class="pill pill-sm">
+                <input id="soundToggle" type="checkbox" checked />
+                <span>Audio</span>
+              </label>
+              <label class="pill pill-sm">
+                <input id="vibrationToggle" type="checkbox" />
+                <span>Haptics</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="pill-group" role="radiogroup" aria-label="Counting display">
+            <label class="pill pill-sm">
+              <input type="radio" name="countMode" value="beat" checked />
+              <span>Beat</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="countMode" value="measure" />
+              <span>Bar</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="countMode" value="off" />
+              <span>Off</span>
+            </label>
+          </div>
         </div>
       </div>
     </section>
