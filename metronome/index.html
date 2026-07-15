@@ -48,35 +48,6 @@
             "price": "0",
             "priceCurrency": "USD"
           }
-        },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "How do I set the tempo without typing a BPM number?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Use the Tap Tempo button or press the T key repeatedly. BeatConfused averages the taps and sets the BPM automatically."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Can I change the beat subdivision and time signature?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. You can choose from organized standard time signatures and switch beat subdivisions to hear each beat split into more pulses."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Does BeatConfused support different metronome sounds and visuals?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. You can switch between pulse, number, and pendulum visual modes and pick sound styles including electronic, bossa, jazz, wood, cymbal, and cowbell."
-              }
-            }
-          ]
         }
       ]
     }
@@ -86,10 +57,7 @@
   <main class="page">
     <header class="hero">
       <p class="eyebrow">BeatConfused Studio Edition</p>
-      <h1>BeatConfused Jazz Metronome</h1>
-      <p class="subtitle">
-        A refined tempo companion inspired by score sheets, jazz journals, and editorial design. Shape pulse, feel, and phrasing with elegant control.
-      </p>
+      <h1>Jazz Metronome</h1>
     </header>
 
     <section class="metronome" aria-labelledby="metronome-title" data-visual-mode="pendulum">
@@ -101,39 +69,41 @@
         <div class="pendulum visual-element" id="pendulum" aria-hidden="true">
           <svg class="pendulum-device" viewBox="0 0 240 300" role="presentation" focusable="false">
             <defs>
-              <linearGradient id="caseGradient" x1="50" y1="16" x2="190" y2="284" gradientUnits="userSpaceOnUse">
+              <linearGradient id="caseGradient" x1="40" y1="14" x2="200" y2="284" gradientUnits="userSpaceOnUse">
                 <stop offset="0" stop-color="#caa06a" />
                 <stop offset="1" stop-color="#8a5a30" />
               </linearGradient>
-              <linearGradient id="windowGradient" x1="120" y1="40" x2="120" y2="268" gradientUnits="userSpaceOnUse">
+              <linearGradient id="windowGradient" x1="120" y1="38" x2="120" y2="260" gradientUnits="userSpaceOnUse">
                 <stop offset="0" stop-color="#362b21" />
                 <stop offset="1" stop-color="#1b1512" />
               </linearGradient>
               <clipPath id="pendulumWindowClip">
-                <path d="M85 40 L155 40 L200 268 L40 268 Z" />
+                <rect x="54" y="38" width="132" height="222" rx="4" />
               </clipPath>
             </defs>
 
             <ellipse class="device-shadow" cx="120" cy="288" rx="86" ry="9" />
 
-            <path class="device-case" d="M68 24 L172 24 L214 284 L26 284 Z" fill="url(#caseGradient)" />
+            <path class="device-case" d="M36 14 L204 14 L223 284 L17 284 Z" fill="url(#caseGradient)" />
 
-            <path class="device-window" d="M85 40 L155 40 L200 268 L40 268 Z" fill="url(#windowGradient)" />
+            <rect class="device-window" x="54" y="38" width="132" height="222" rx="4" fill="url(#windowGradient)" />
 
             <g class="scale-ticks" clip-path="url(#pendulumWindowClip)">
-              <line x1="66" y1="96" x2="174" y2="96" />
-              <line x1="60" y1="146" x2="180" y2="146" />
-              <line x1="54" y1="196" x2="186" y2="196" />
-              <line x1="48" y1="246" x2="192" y2="246" />
+              <line x1="72" y1="80" x2="168" y2="80" />
+              <line x1="72" y1="130" x2="168" y2="130" />
+              <line x1="72" y1="180" x2="168" y2="180" />
+              <line x1="72" y1="230" x2="168" y2="230" />
             </g>
 
+            <!-- pivots near the base, like a real metronome's escapement — the
+                 rod is fixed at the bottom and the free end swings above it -->
             <g class="pendulum-swing" clip-path="url(#pendulumWindowClip)">
-              <circle class="pendulum-pivot" cx="120" cy="54" r="4.5" />
-              <rect class="pendulum-rod" x="118.4" y="52" width="3.2" height="198" rx="1.6" />
+              <rect class="pendulum-rod" x="118.4" y="52" width="3.2" height="194" rx="1.6" />
               <g class="pendulum-carriage">
-                <path class="pendulum-weight" d="M120 172 L136 196 L120 220 L104 196 Z" />
-                <path class="pendulum-weight-highlight" d="M120 178 L129 196 L120 200 Z" />
+                <path class="pendulum-weight" d="M120 134 L136 150 L120 166 L104 150 Z" />
+                <path class="pendulum-weight-highlight" d="M120 140 L129 150 L120 154 Z" />
               </g>
+              <circle class="pendulum-pivot" cx="120" cy="246" r="5" />
             </g>
           </svg>
         </div>
@@ -265,51 +235,6 @@
             </label>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="content-section" aria-labelledby="features-title">
-      <h2 id="features-title">Why players stay with BeatConfused</h2>
-      <div class="content-grid">
-        <article class="content-card">
-          <h3>Editorial clarity</h3>
-          <p>A calm, legible interface keeps attention on touch, timing, and tone instead of visual noise.</p>
-        </article>
-        <article class="content-card">
-          <h3>Rhythmic depth</h3>
-          <p>Switch signatures, shape subdivisions, and adapt the click voice for swing studies, phrasing drills, and ensemble prep.</p>
-        </article>
-        <article class="content-card">
-          <h3>Musical pacing</h3>
-          <p>Pulse, number, and pendulum modes mirror different ways musicians internalize meter during long sessions.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="content-section" aria-labelledby="how-to-title">
-      <h2 id="how-to-title">A quick studio workflow</h2>
-      <ol class="steps-list">
-        <li>Set BPM directly or use Tap Tempo to capture the natural pulse from your hand.</li>
-        <li>Select time signature and subdivision for the phrase, groove, or chart in front of you.</li>
-        <li>Choose visual style, counting display, and tone, then start the clock and settle in.</li>
-      </ol>
-    </section>
-
-    <section class="content-section faq-section" aria-labelledby="faq-title">
-      <h2 id="faq-title">Session notes</h2>
-      <div class="faq-list">
-        <article class="content-card">
-          <h3>Does this work well on mobile?</h3>
-          <p>Yes. Controls are touch-friendly and tuned for quick rehearsal setup on phone, tablet, or desktop.</p>
-        </article>
-        <article class="content-card">
-          <h3>Why can haptics be unavailable on some iPhones?</h3>
-          <p>Some iOS browsers do not expose the vibration API. When that happens, BeatConfused keeps clear audio and visual timing cues active.</p>
-        </article>
-        <article class="content-card">
-          <h3>Which counting modes are available?</h3>
-          <p>Choose beat count, measure plus beat, or no count when you want a cleaner visual field.</p>
-        </article>
       </div>
     </section>
 

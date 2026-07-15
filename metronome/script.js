@@ -8,6 +8,7 @@ const toggleBtn = document.getElementById("toggleBtn");
 const pulse = document.getElementById("pulse");
 const numberDisplay = document.getElementById("numberDisplay");
 const pendulum = document.getElementById("pendulum");
+const pendulumSwing = pendulum.querySelector(".pendulum-swing");
 const beatLabel = document.getElementById("beatLabel");
 const beatIndicators = document.getElementById("beatIndicators");
 const timeSignatureSelect = document.getElementById("timeSignature");
@@ -52,18 +53,24 @@ const IOS_DEVICE_REGEX = /iPhone|iPad|iPod/i;
 const UPDATE_CHECK_INTERVAL_MS = 10000;
 const UPDATE_CHECK_RESOURCES = [window.location.pathname, "styles.css", "script.js"];
 const PENDULUM_MIN_AMPLITUDE_DEG = 10;
-const PENDULUM_MAX_AMPLITUDE_DEG = 22;
-const PENDULUM_WEIGHT_MIN_OFFSET_PX = -56;
-const PENDULUM_WEIGHT_MAX_OFFSET_PX = 8;
+const PENDULUM_MAX_AMPLITUDE_DEG = 17;
+// pivots near the base (like the escapement in a real metronome), rod swings
+// above it — offsets below are relative to that, positive = toward the pivot
+const PENDULUM_PIVOT_X = 120;
+const PENDULUM_PIVOT_Y = 246;
+const PENDULUM_WEIGHT_MIN_OFFSET_PX = 56;
+const PENDULUM_WEIGHT_MAX_OFFSET_PX = -8;
 const PENDULUM_PREVIEW_RETURN_MS = 240;
 
 const deployedVersionTokens = new Map();
 let pendingReloadForUpdate = false;
 let pendingReloadVersionToken;
 let pendulumAnimationFrameId;
+let pendulumTweenFrameId;
 let pendulumPreviewTimeoutId;
 let pendulumTickTimeoutId;
 let pendulumPreviewDirection = -1;
+let pendulumCurrentAngle = 0;
 
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -461,13 +468,43 @@ function getPendulumHalfCycleMs() {
   return (60 / state.bpm) * MS_PER_SECOND;
 }
 
+// Rotating the SVG group via its transform attribute (rather than a CSS
+// custom property + transform-origin) sidesteps transform-box, which is
+// inconsistently implemented across browsers — most notably mobile Safari,
+// where it produced an erratic, off-axis swing.
 function applyPendulumAngle(angle) {
-  pendulum.style.setProperty("--pendulum-angle", `${angle.toFixed(2)}deg`);
+  pendulumCurrentAngle = angle;
+  pendulumSwing.setAttribute("transform", `rotate(${angle.toFixed(2)} ${PENDULUM_PIVOT_X} ${PENDULUM_PIVOT_Y})`);
 }
 
 function syncPendulumPhysics() {
-  pendulum.style.setProperty("--pendulum-amplitude", `${getPendulumAmplitudeDeg().toFixed(2)}deg`);
   pendulum.style.setProperty("--pendulum-carriage-offset", `${getPendulumCarriageOffsetPx().toFixed(2)}px`);
+}
+
+// Small manual tween (used only for the idle tap-tempo preview swing) so the
+// easing doesn't depend on a CSS transition running on the same attribute.
+function tweenPendulumAngle(fromAngle, toAngle, durationMs, onDone) {
+  if (pendulumTweenFrameId !== undefined) {
+    window.cancelAnimationFrame(pendulumTweenFrameId);
+  }
+
+  const startedAt = performance.now();
+
+  const step = (now) => {
+    const t = Math.min((now - startedAt) / durationMs, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    applyPendulumAngle(fromAngle + (toAngle - fromAngle) * eased);
+
+    if (t < 1) {
+      pendulumTweenFrameId = window.requestAnimationFrame(step);
+      return;
+    }
+
+    pendulumTweenFrameId = undefined;
+    onDone?.();
+  };
+
+  pendulumTweenFrameId = window.requestAnimationFrame(step);
 }
 
 function stopPendulumPreview() {
@@ -476,7 +513,10 @@ function stopPendulumPreview() {
     pendulumPreviewTimeoutId = undefined;
   }
 
-  pendulum.classList.remove("is-previewing");
+  if (pendulumTweenFrameId !== undefined) {
+    window.cancelAnimationFrame(pendulumTweenFrameId);
+    pendulumTweenFrameId = undefined;
+  }
 }
 
 function flashPendulumTick(pulseType) {
@@ -503,13 +543,14 @@ function previewPendulumSwing() {
 
   stopPendulumPreview();
   pendulumPreviewDirection *= -1;
-  pendulum.classList.add("is-previewing");
-  applyPendulumAngle(pendulumPreviewDirection * getPendulumAmplitudeDeg() * 0.86);
-  pendulumPreviewTimeoutId = window.setTimeout(() => {
-    applyPendulumAngle(0);
-    pendulum.classList.remove("is-previewing");
-    pendulumPreviewTimeoutId = undefined;
-  }, PENDULUM_PREVIEW_RETURN_MS);
+  const targetAngle = pendulumPreviewDirection * getPendulumAmplitudeDeg() * 0.86;
+
+  tweenPendulumAngle(pendulumCurrentAngle, targetAngle, 150, () => {
+    pendulumPreviewTimeoutId = window.setTimeout(() => {
+      pendulumPreviewTimeoutId = undefined;
+      tweenPendulumAngle(pendulumCurrentAngle, 0, PENDULUM_PREVIEW_RETURN_MS);
+    }, 90);
+  });
 }
 
 function stopPendulumAnimation() {
@@ -519,7 +560,6 @@ function stopPendulumAnimation() {
   }
 
   stopPendulumPreview();
-  pendulum.classList.remove("is-playing");
   applyPendulumAngle(0);
 }
 
@@ -540,7 +580,6 @@ function startPendulumAnimation() {
   const halfCycleMs = getPendulumHalfCycleMs();
   const startedAt = performance.now();
 
-  pendulum.classList.add("is-playing");
   applyPendulumAngle(-amplitude);
 
   const animatePendulum = (now) => {
