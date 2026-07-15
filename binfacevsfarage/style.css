@@ -375,11 +375,13 @@ html,body{
 }
 
 /* narrow screens: side-by-side no longer fits, so stack the newspaper above
-   the winner instead of letting flex-wrap hand each one the full stage height */
+   the winner. Both size to their natural content instead of being flex-shrunk
+   into the leftover space (that was cropping the newspaper's photo/subhead) —
+   #screen-result already scrolls, so the page grows instead of clipping. */
 @media (max-width:560px){
   .result-stage{ flex-direction:column; flex-wrap:nowrap; align-items:center; gap:10px; }
-  .newspaper{ width:88%; max-width:360px; flex:1 1 56%; min-height:0; max-height:none; }
-  .winner-portrait-big{ flex:1 1 34%; min-height:0; height:auto; max-height:100%; width:auto; max-width:62%; object-fit:contain; }
+  .newspaper{ width:88%; max-width:360px; flex:none; max-height:none; overflow:visible; }
+  .winner-portrait-big{ flex:none; height:auto; max-height:280px; width:auto; max-width:62%; object-fit:contain; }
 }
 
 @media (max-height:700px){
