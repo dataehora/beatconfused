@@ -17,7 +17,7 @@ A lightning-fast, modern, and elegant online metronome for musicians. No install
 
 ## Getting Started
 
-1. Visit [beatconfused.com](https://beatconfused.com)
+1. Visit [beatconfused.com/metronome](https://beatconfused.com/metronome)
 2. Adjust your desired tempo and beat settings
 3. Click "Start" or press Space to begin
 
@@ -81,8 +81,8 @@ To run locally:
 # Clone the repository
 git clone https://github.com/dataehora/beatconfused.git
 
-# Open in browser
-open index.html
+# Open the metronome in browser
+open metronome/index.html
 ```
 
 ## Deployment

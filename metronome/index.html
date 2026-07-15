@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BeatConfused | Online Metronome with Tap Tempo, Subdivisions, and Visual Beats</title>
+  <meta
+    name="description"
+    content="BeatConfused is a fast online metronome with tap tempo, organized time signatures, beat subdivisions, multiple visualizations, sound styles, and responsive musician-friendly controls."
+  />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#10131d" />
+  <link rel="canonical" href="https://beatconfused.com/metronome/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="BeatConfused | Online Metronome with Tap Tempo" />
+  <meta
+    property="og:description"
+    content="Practice with tap tempo, multiple time signatures, beat subdivisions, sound styles, and animated metronome views."
+  />
+  <meta property="og:url" content="https://beatconfused.com/metronome/" />
+  <meta property="og:site_name" content="BeatConfused" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="BeatConfused | Online Metronome with Tap Tempo" />
+  <meta
+    name="twitter:description"
+    content="A responsive online metronome for musicians with tap tempo, subdivisions, sound styles, and visual beat modes."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Marck+Script&display=swap"
+    rel="stylesheet"
+  />
+  <link id="appStylesheet" rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "BeatConfused",
+          "url": "https://beatconfused.com/metronome/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web Browser",
+          "description": "An online metronome with tap tempo, time signatures, beat subdivisions, sound styles, and multiple beat visualizers for practice.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How do I set the tempo without typing a BPM number?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Use the Tap Tempo button or press the T key repeatedly. BeatConfused averages the taps and sets the BPM automatically."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I change the beat subdivision and time signature?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can choose from organized standard time signatures and switch beat subdivisions to hear each beat split into more pulses."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does BeatConfused support different metronome sounds and visuals?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can switch between pulse, number, and pendulum visual modes and pick sound styles including electronic, bossa, jazz, wood, cymbal, and cowbell."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  </script>
+</head>
+<body>
+  <main class="page">
+    <a class="home-link" href="/">← BeatConfused</a>
+    <header class="hero">
+      <p class="eyebrow">BeatConfused Studio Edition</p>
+      <h1>BeatConfused Jazz Metronome</h1>
+      <p class="subtitle">
+        A refined tempo companion inspired by score sheets, jazz journals, and editorial design. Shape pulse, feel, and phrasing with elegant control.
+      </p>
+    </header>
+
+    <section class="metronome" aria-labelledby="metronome-title" data-visual-mode="pendulum">
+      <div class="section-heading">
+        <h2 id="metronome-title">Set tempo with precision</h2>
+        <p>Dial BPM directly, tap naturally, and move through visual and rhythmic modes made for thoughtful practice.</p>
+      </div>
+
+      <div class="visual-stage" aria-live="polite">
+        <div class="pulse visual-element" id="pulse" aria-hidden="true"></div>
+        <div class="number-display visual-element" id="numberDisplay" aria-hidden="true">1</div>
+        <div class="pendulum visual-element" id="pendulum" aria-hidden="true">
+          <svg class="pendulum-device" viewBox="0 0 320 320" role="presentation" focusable="false">
+            <defs>
+              <linearGradient id="pendulumWoodFront" x1="78" y1="18" x2="242" y2="286" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#8a4c2d" />
+                <stop offset="0.52" stop-color="#6b341f" />
+                <stop offset="1" stop-color="#4a2417" />
+              </linearGradient>
+              <linearGradient id="pendulumWoodSide" x1="206" y1="40" x2="282" y2="250" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#4b2317" />
+                <stop offset="1" stop-color="#31160f" />
+              </linearGradient>
+              <linearGradient id="pendulumWoodTop" x1="104" y1="12" x2="222" y2="44" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#9a5a37" />
+                <stop offset="1" stop-color="#65311f" />
+              </linearGradient>
+              <linearGradient id="pendulumDoorWood" x1="72" y1="208" x2="234" y2="292" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#a35d3b" />
+                <stop offset="1" stop-color="#6d3421" />
+              </linearGradient>
+              <linearGradient id="pendulumWindowFrame" x1="112" y1="44" x2="208" y2="214" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#5c5b59" />
+                <stop offset="0.55" stop-color="#1f2021" />
+                <stop offset="1" stop-color="#0f1113" />
+              </linearGradient>
+              <linearGradient id="pendulumWindowDark" x1="104" y1="56" x2="216" y2="212" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#2c2e31" />
+                <stop offset="1" stop-color="#131416" />
+              </linearGradient>
+              <linearGradient id="pendulumScalePaper" x1="140" y1="60" x2="180" y2="194" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#fffef8" />
+                <stop offset="1" stop-color="#f0ecde" />
+              </linearGradient>
+              <linearGradient id="pendulumWindowGlow" x1="160" y1="58" x2="160" y2="204" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#ffffff" stop-opacity="0.18" />
+                <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+              </linearGradient>
+              <clipPath id="pendulumWindowClip">
+                <path d="M110 58 L210 58 L194 204 L126 204 Z" />
+              </clipPath>
+            </defs>
+            <ellipse class="device-shadow" cx="176" cy="292" rx="92" ry="16" />
+            <path
+              d="M116 16 L202 16 L226 40 L92 40 Z"
+              fill="url(#pendulumWoodTop)"
+              stroke="rgba(36, 18, 12, 0.48)"
+              stroke-width="2"
+            />
+            <path
+              d="M92 40 L226 40 L258 258 L60 258 Z"
+              fill="url(#pendulumWoodFront)"
+              stroke="rgba(36, 18, 12, 0.5)"
+              stroke-width="2.4"
+            />
+            <path
+              d="M226 40 L258 258 L226 244 L196 58 Z"
+              fill="url(#pendulumWoodSide)"
+              opacity="0.95"
+            />
+            <path
+              d="M110 48 L210 48 L222 212 L98 212 Z"
+              fill="url(#pendulumWindowFrame)"
+              stroke="rgba(245, 238, 220, 0.08)"
+              stroke-width="1.4"
+            />
+            <path d="M110 58 L210 58 L194 204 L126 204 Z" fill="url(#pendulumWindowDark)" />
+            <g clip-path="url(#pendulumWindowClip)">
+              <rect class="window-glow" x="126" y="58" width="68" height="146" rx="2" fill="url(#pendulumWindowGlow)" />
+              <g class="pendulum-swing">
+                <circle class="pendulum-pivot" cx="160" cy="74" r="5" />
+                <rect class="pendulum-rod" x="158.5" y="78" width="3" height="142" rx="2" />
+                <g class="pendulum-carriage">
+                  <rect class="pendulum-carriage-body" x="142" y="128" width="36" height="16" rx="6" />
+                  <rect class="pendulum-carriage-groove" x="148" y="134" width="24" height="4" rx="2" />
+                </g>
+                <circle class="pendulum-counterweight" cx="160" cy="228" r="15" />
+                <circle class="pendulum-counterweight-highlight" cx="154" cy="222" r="4" />
+              </g>
+            </g>
+            <path d="M144 60 L176 60 L181 194 L139 194 Z" fill="url(#pendulumScalePaper)" />
+            <g class="scale-lines">
+              <line x1="149" y1="78" x2="171" y2="78" />
+              <line x1="149" y1="88" x2="171" y2="88" />
+              <line x1="149" y1="98" x2="171" y2="98" />
+              <line x1="149" y1="108" x2="171" y2="108" />
+              <line x1="149" y1="118" x2="171" y2="118" />
+              <line x1="149" y1="128" x2="171" y2="128" />
+              <line x1="149" y1="138" x2="171" y2="138" />
+              <line x1="149" y1="148" x2="171" y2="148" />
+              <line x1="149" y1="158" x2="171" y2="158" />
+              <line x1="149" y1="168" x2="171" y2="168" />
+              <line x1="149" y1="178" x2="171" y2="178" />
+            </g>
+            <path
+              d="M82 212 L238 212 L254 286 L64 286 Z"
+              fill="url(#pendulumDoorWood)"
+              stroke="rgba(47, 22, 14, 0.45)"
+              stroke-width="2"
+            />
+            <path
+              d="M92 220 L232 220"
+              stroke="rgba(255, 244, 220, 0.18)"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <circle class="device-foot" cx="84" cy="286" r="9" />
+            <circle class="device-foot" cx="236" cy="286" r="9" />
+          </svg>
+        </div>
+        <p id="beatLabel" class="beat-label">Beat 1</p>
+      </div>
+
+      <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false">Start</button>
+
+      <div class="beat-indicators" id="beatIndicators" aria-label="Beat indicators"></div>
+
+      <div class="controls-grid">
+        <div class="control-block tempo-block">
+          <label for="bpmRange">Tempo (BPM)</label>
+          <div class="tempo-row">
+            <button id="decreaseBtn" type="button" class="small-btn" aria-label="Decrease BPM">−</button>
+            <input id="bpmInput" type="number" min="40" max="240" step="1" value="120" />
+            <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM">+</button>
+          </div>
+          <input id="bpmRange" type="range" min="40" max="240" value="120" />
+          <div class="tap-row">
+            <button id="tapBtn" type="button" class="small-btn tap-btn">Tap Tempo</button>
+            <p id="tapStatus" class="hint">Tap or press T at least twice to detect tempo.</p>
+          </div>
+          <p class="hint">Space: Start/Stop · ↑/↓: ±5 BPM · T: Tap Tempo</p>
+        </div>
+
+        <fieldset class="control-block signature-block">
+          <legend>Time Signature</legend>
+          <div class="signature-groups">
+            <div class="signature-group">
+              <h3>Simple</h3>
+              <div class="signature-options">
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="2/2" data-beats="2" />
+                  <span>2/2</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="2/4" data-beats="2" />
+                  <span>2/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="3/4" data-beats="3" />
+                  <span>3/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="4/4" data-beats="4" checked />
+                  <span>4/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="6/4" data-beats="6" />
+                  <span>6/4</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="signature-group">
+              <h3>Compound</h3>
+              <div class="signature-options">
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="3/8" data-beats="3" />
+                  <span>3/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="6/8" data-beats="6" />
+                  <span>6/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="9/8" data-beats="9" />
+                  <span>9/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="12/8" data-beats="12" />
+                  <span>12/8</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="signature-group">
+              <h3>Odd</h3>
+              <div class="signature-options">
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="5/4" data-beats="5" />
+                  <span>5/4</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="5/8" data-beats="5" />
+                  <span>5/8</span>
+                </label>
+                <label class="signature-option">
+                  <input type="radio" name="timeSignature" value="7/8" data-beats="7" />
+                  <span>7/8</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="control-block">
+          <label for="subdivisionSelect">Beat Subdivision</label>
+          <select id="subdivisionSelect">
+            <option value="1" selected>1 pulse per beat</option>
+            <option value="2">2 pulses per beat</option>
+            <option value="3">3 pulses per beat</option>
+            <option value="4">4 pulses per beat</option>
+            <option value="5">5 pulses per beat</option>
+            <option value="6">6 pulses per beat</option>
+            <option value="7">7 pulses per beat</option>
+            <option value="8">8 pulses per beat</option>
+            <option value="9">9 pulses per beat</option>
+            <option value="10">10 pulses per beat</option>
+            <option value="11">11 pulses per beat</option>
+            <option value="12">12 pulses per beat</option>
+            <option value="13">13 pulses per beat</option>
+            <option value="14">14 pulses per beat</option>
+            <option value="15">15 pulses per beat</option>
+            <option value="16">16 pulses per beat</option>
+          </select>
+        </div>
+
+        <div class="control-block">
+          <label for="visualMode">Visual Style</label>
+          <select id="visualMode">
+            <option value="pulse">Flashing circle</option>
+            <option value="numbers">Animated numbers</option>
+            <option value="pendulum" selected>Swinging line</option>
+          </select>
+        </div>
+
+        <div class="control-block">
+          <label for="countDisplay">Counting Display</label>
+          <select id="countDisplay">
+            <option value="beat" selected>Beat count</option>
+            <option value="measure">Measure + beat</option>
+            <option value="off">Off</option>
+          </select>
+        </div>
+
+        <div class="control-block">
+          <label for="soundStyle">Tone</label>
+          <select id="soundStyle">
+            <option value="electronic" selected>Electronic</option>
+            <option value="bossa">Bossa</option>
+            <option value="jazz">Jazz</option>
+            <option value="wood">Wood</option>
+            <option value="cymbal">Cymbal</option>
+            <option value="cowbell">Cowbell</option>
+          </select>
+        </div>
+
+        <div class="control-block toggle-row">
+          <label>
+            <input id="soundToggle" type="checkbox" checked />
+            Audio
+          </label>
+          <label>
+            <input id="vibrationToggle" type="checkbox" />
+            Haptics
+          </label>
+          <p id="vibrationStatus" class="hint wide-hint">Vibration availability is detected automatically.</p>
+        </div>
+
+        <div class="control-block">
+          <label for="volume">Volume</label>
+          <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" />
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" aria-labelledby="features-title">
+      <h2 id="features-title">Why players stay with BeatConfused</h2>
+      <div class="content-grid">
+        <article class="content-card">
+          <h3>Editorial clarity</h3>
+          <p>A calm, legible interface keeps attention on touch, timing, and tone instead of visual noise.</p>
+        </article>
+        <article class="content-card">
+          <h3>Rhythmic depth</h3>
+          <p>Switch signatures, shape subdivisions, and adapt the click voice for swing studies, phrasing drills, and ensemble prep.</p>
+        </article>
+        <article class="content-card">
+          <h3>Musical pacing</h3>
+          <p>Pulse, number, and pendulum modes mirror different ways musicians internalize meter during long sessions.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section" aria-labelledby="how-to-title">
+      <h2 id="how-to-title">A quick studio workflow</h2>
+      <ol class="steps-list">
+        <li>Set BPM directly or use Tap Tempo to capture the natural pulse from your hand.</li>
+        <li>Select time signature and subdivision for the phrase, groove, or chart in front of you.</li>
+        <li>Choose visual style, counting display, and tone, then start the clock and settle in.</li>
+      </ol>
+    </section>
+
+    <section class="content-section faq-section" aria-labelledby="faq-title">
+      <h2 id="faq-title">Session notes</h2>
+      <div class="faq-list">
+        <article class="content-card">
+          <h3>Does this work well on mobile?</h3>
+          <p>Yes. Controls are touch-friendly and tuned for quick rehearsal setup on phone, tablet, or desktop.</p>
+        </article>
+        <article class="content-card">
+          <h3>Why can haptics be unavailable on some iPhones?</h3>
+          <p>Some iOS browsers do not expose the vibration API. When that happens, BeatConfused keeps clear audio and visual timing cues active.</p>
+        </article>
+        <article class="content-card">
+          <h3>Which counting modes are available?</h3>
+          <p>Choose beat count, measure plus beat, or no count when you want a cleaner visual field.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Crafted for musicians who value tone, timing, and taste.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function loadVersionedAssets() {
+      const version = new URLSearchParams(window.location.search).get("__v");
+      const stylesheet = document.getElementById("appStylesheet");
+
+      if (version && stylesheet) {
+        stylesheet.href = `styles.css?__v=${encodeURIComponent(version)}`;
+      }
+
+      const appScript = document.createElement("script");
+      appScript.src = version
+        ? `script.js?__v=${encodeURIComponent(version)}`
+        : "script.js";
+      document.body.appendChild(appScript);
+    })();
+  </script>
+</body>
+</html>
