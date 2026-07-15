@@ -661,22 +661,44 @@
       }
     }
 
+    // <audio>.volume is capped at 1, so boosting a clip past its natural
+    // level needs an actual Web Audio gain stage instead.
+    function playWithGainBoost(node, gainValue) {
+      try {
+        const ac = ensureCtx();
+        const source = ac.createMediaElementSource(node);
+        const gain = ac.createGain();
+        gain.gain.value = gainValue;
+        source.connect(gain).connect(ac.destination);
+      } catch (_) {
+        // best effort — if routing isn't available, it just plays at 1x
+      }
+      node.play().catch(() => {});
+    }
+
     // plays a custom clip if one was supplied, otherwise runs the synth
     // fallback. By default each trigger is cloned so overlapping triggers
     // (e.g. rapid hits) don't cut each other off; pass singleVoice for UI
     // sounds where a new trigger should interrupt any still-playing one
-    // instead of layering on top of it.
-    function play(key, synthFallback, { singleVoice = false } = {}) {
+    // instead of layering on top of it. volume is a multiplier on the
+    // clip's natural level (1 = unchanged); values above 1 use a gain
+    // boost since native playback volume can't exceed 1.
+    function play(key, synthFallback, { singleVoice = false, volume = 1 } = {}) {
       const custom = CUSTOM_AUDIO[key];
       if (custom) {
         if (singleVoice) {
           custom.pause();
           custom.currentTime = 0;
+          custom.volume = Math.min(1, volume);
           custom.play().catch(() => {});
         } else {
           const node = custom.cloneNode(true);
-          node.volume = custom.volume || 1;
-          node.play().catch(() => {});
+          if (volume > 1) {
+            playWithGainBoost(node, volume);
+          } else {
+            node.volume = volume;
+            node.play().catch(() => {});
+          }
         }
       } else {
         synthFallback();
@@ -719,13 +741,13 @@
 
     const sfxCountBeep = () => play("countdown", () => {
       const ac = ensureCtx();
-      blip(440, 0.15, "square", 0.08, ac.currentTime);
-    });
+      blip(440, 0.15, "square", 0.08 * 0.7, ac.currentTime);
+    }, { volume: 0.7 });
 
     const sfxFight = () => play("fight", () => {
       const ac = ensureCtx();
-      [523, 659, 784, 1046].forEach((f, i) => blip(f, 0.18, "square", 0.09, ac.currentTime + i * 0.08));
-    });
+      [523, 659, 784, 1046].forEach((f, i) => blip(f, 0.18, "square", 0.09 * 1.5, ac.currentTime + i * 0.08));
+    }, { volume: 1.5 });
 
     const sfxKO = () => play("ko", () => {
       const ac = ensureCtx();
