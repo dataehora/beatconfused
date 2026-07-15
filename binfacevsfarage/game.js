@@ -914,16 +914,17 @@
       resultTitle.textContent = title;
       resultSub.textContent = sub;
 
-      resultBg.classList.remove("winner-binface", "winner-farrage");
+      resultBg.classList.remove("winner-binface", "winner-farrage", "show-deco");
       resultBgPhoto.style.display = "none";
       paperPhoto.style.display = "none";
 
       if (winner) {
         winnerPortrait.src = `Assets/${winner.key}_win.png`;
         resultBg.classList.add(winner.key === "Binface" ? "winner-binface" : "winner-farrage");
+        resultBg.classList.add("show-deco");
 
         // real photo backdrop if supplied, else the SVG illustration underneath shows through
-        resultBgPhoto.onload = () => { resultBgPhoto.style.display = "block"; };
+        resultBgPhoto.onload = () => { resultBgPhoto.style.display = "block"; resultBg.classList.remove("show-deco"); };
         resultBgPhoto.onerror = () => { resultBgPhoto.style.display = "none"; };
         resultBgPhoto.src = `Assets/ClactonFuture${winner.key}.png`;
 
