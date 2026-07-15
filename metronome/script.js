@@ -21,7 +21,11 @@ const vibrationToggle = document.getElementById("vibrationToggle");
 const volumeInput = document.getElementById("volume");
 const metronomeSection = document.querySelector(".metronome");
 
-let audioContext;
+// Constructed immediately (not gated behind a user gesture) so custom
+// Assets/ sounds can be decoded and ready before the first tick. Browsers
+// only restrict resume()/output, not construction or decodeAudioData().
+const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+let audioContext = AudioContextConstructor ? new AudioContextConstructor() : null;
 let timerId;
 let noiseBuffer;
 let tapTimes = [];
@@ -238,18 +242,8 @@ function updateBeatLabel() {
 }
 
 function ensureAudioContext() {
-  const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
-
-  if (!AudioContextConstructor) {
-    return false;
-  }
-
   if (!audioContext) {
-    try {
-      audioContext = new AudioContextConstructor();
-    } catch (_) {
-      return false;
-    }
+    return false;
   }
 
   if (audioContext.state === "suspended") {
@@ -267,6 +261,75 @@ function ensureAudioContext() {
   }
 
   return true;
+}
+
+/* ============================================================
+   CUSTOM SOUNDS — Assets-first, same idea as the Clacton Fighter game.
+   For every tone/beat combination below, if a matching file exists in
+   Assets/ it's decoded and used instead of the built-in synthesised
+   click. Anything not supplied keeps using the synthesised sound, so
+   the metronome always has audio even with zero custom assets.
+
+   Filenames follow {tone}_{beat}, tried as .mp3, then .ogg, then .wav:
+     wood_accent / wood_beat / wood_subdivision
+     cymbal_accent / cymbal_beat / cymbal_subdivision
+     cowbell_accent / cowbell_beat / cowbell_subdivision
+     bossa_accent / bossa_beat / bossa_subdivision
+     electronic_accent / electronic_beat / electronic_subdivision
+     jazz_accent / jazz_beat / jazz_subdivision
+   "accent" is the downbeat (start of the measure), "beat" is a regular
+   beat, "subdivision" is a subdivided pulse within a beat.
+   ============================================================ */
+const SOUND_STYLES = ["electronic", "bossa", "jazz", "wood", "cymbal", "cowbell"];
+const BEAT_TYPES = ["accent", "beat", "subdivision"];
+const CUSTOM_AUDIO_EXTS = ["mp3", "ogg", "wav"];
+
+async function loadCustomSoundBuffer(baseName) {
+  if (!audioContext) {
+    return null;
+  }
+
+  for (const ext of CUSTOM_AUDIO_EXTS) {
+    try {
+      const response = await fetch(`Assets/${baseName}.${ext}`);
+
+      if (!response.ok) {
+        continue;
+      }
+
+      const arrayBuffer = await response.arrayBuffer();
+      return await audioContext.decodeAudioData(arrayBuffer);
+    } catch (_) {
+      // not found, blocked, or not decodable — try the next extension
+    }
+  }
+
+  return null;
+}
+
+const CUSTOM_SOUND_BUFFERS = {};
+const customSoundsReady = Promise.all(
+  SOUND_STYLES.flatMap((style) =>
+    BEAT_TYPES.map(async (beatType) => {
+      const key = `${style}_${beatType}`;
+      CUSTOM_SOUND_BUFFERS[key] = await loadCustomSoundBuffer(key);
+    })
+  )
+);
+
+// Scheduled the same way as the synthesised clicks (via audioContext.currentTime)
+// rather than an <audio> element, so custom sounds stay sample-accurate instead
+// of drifting from HTMLMediaElement playback latency.
+function playCustomSoundBuffer(buffer, volume) {
+  const now = audioContext.currentTime;
+  const gainNode = audioContext.createGain();
+  gainNode.gain.setValueAtTime(Math.max(volume, MIN_GAIN), now);
+  gainNode.connect(audioContext.destination);
+
+  const source = audioContext.createBufferSource();
+  source.buffer = buffer;
+  source.connect(gainNode);
+  source.start(now);
 }
 
 function createGainNode(volume, now, duration, decayTarget = MIN_GAIN) {
@@ -345,6 +408,14 @@ function playSound(pulseType) {
   const style = soundStyleSelect.value;
   const level = isAccent ? 1 : isSubdivision ? 0.45 : 0.7;
   const adjustedVolume = Math.max(volume * level, MIN_GAIN);
+
+  const beatType = isAccent ? "accent" : isSubdivision ? "subdivision" : "beat";
+  const customBuffer = CUSTOM_SOUND_BUFFERS[`${style}_${beatType}`];
+
+  if (customBuffer) {
+    playCustomSoundBuffer(customBuffer, adjustedVolume);
+    return;
+  }
 
   switch (style) {
     case "wood":
