@@ -102,6 +102,7 @@
       document.querySelectorAll("#map-row .option-card").forEach((b) => b.classList.remove("selected"));
       btn.classList.add("selected");
       selectedMap = btn.dataset.map;
+      AudioEngine.sfxSelect();
       checkReady();
     });
   });
@@ -111,6 +112,7 @@
       document.querySelectorAll("#fighter-row .option-card").forEach((b) => b.classList.remove("selected"));
       btn.classList.add("selected");
       selectedFighter = btn.dataset.fighter;
+      AudioEngine.sfxSelect();
       checkReady();
     });
   });
@@ -120,6 +122,7 @@
   }
 
   startBtn.addEventListener("click", () => {
+    AudioEngine.sfxSelected();
     screenMenu.classList.add("hidden");
     screenGame.classList.remove("hidden");
     beginMatch(selectedFighter, selectedMap);
@@ -222,6 +225,8 @@
      Drop any of these filenames into Assets/ to override the built-in
      sounds:
        Assets/music.mp3         — looping battle theme
+       Assets/sfx_select.mp3    — browsing stage/fighter options on the menu
+       Assets/sfx_selected.mp3  — pressing START to confirm the match-up
        Assets/sfx_throw.mp3     — throwing the rubbish bag / money bags
        Assets/sfx_hit.mp3       — getting struck by a projectile
        Assets/sfx_jump.mp3      — jumping
@@ -233,6 +238,8 @@
      ============================================================ */
   const SOUND_FILES = {
     music: "music",
+    select: "sfx_select",
+    selected: "sfx_selected",
     throw: "sfx_throw",
     hit: "sfx_hit",
     jump: "sfx_jump",
@@ -630,6 +637,16 @@
       }
     }
 
+    const sfxSelect = () => play("select", () => {
+      const ac = ensureCtx();
+      blip(720, 0.07, "square", 0.05, ac.currentTime);
+    });
+
+    const sfxSelected = () => play("selected", () => {
+      const ac = ensureCtx();
+      [660, 880].forEach((f, i) => blip(f, 0.12, "square", 0.08, ac.currentTime + i * 0.07));
+    });
+
     const sfxThrow = () => play("throw", () => {
       const ac = ensureCtx();
       whoosh(ac.currentTime, 0.11);
@@ -677,7 +694,7 @@
       [523, 659, 784, 1046, 1318].forEach((f, i) => blip(f, 0.22, "square", 0.09, ac.currentTime + i * 0.11));
     });
 
-    return { startMusic, stopMusic, sfxThrow, sfxHit, sfxJump, sfxCountBeep, sfxFight, sfxKO, sfxWin, ensureCtx };
+    return { startMusic, stopMusic, sfxSelect, sfxSelected, sfxThrow, sfxHit, sfxJump, sfxCountBeep, sfxFight, sfxKO, sfxWin, ensureCtx };
   })();
 
   /* ============================================================
