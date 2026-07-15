@@ -624,28 +624,48 @@
       musicUsingCustom = false;
     }
 
-    // plays a custom clip (cloned so overlapping triggers don't cut each
-    // other off) if one was supplied, otherwise runs the synth fallback
-    function play(key, synthFallback) {
+    // plays a custom clip if one was supplied, otherwise runs the synth
+    // fallback. By default each trigger is cloned so overlapping triggers
+    // (e.g. rapid hits) don't cut each other off; pass singleVoice for UI
+    // sounds where a new trigger should interrupt any still-playing one
+    // instead of layering on top of it.
+    function play(key, synthFallback, { singleVoice = false } = {}) {
       const custom = CUSTOM_AUDIO[key];
       if (custom) {
-        const node = custom.cloneNode(true);
-        node.volume = custom.volume || 1;
-        node.play().catch(() => {});
+        if (singleVoice) {
+          custom.pause();
+          custom.currentTime = 0;
+          custom.play().catch(() => {});
+        } else {
+          const node = custom.cloneNode(true);
+          node.volume = custom.volume || 1;
+          node.play().catch(() => {});
+        }
       } else {
         synthFallback();
+      }
+    }
+
+    function stopSound(key) {
+      const custom = CUSTOM_AUDIO[key];
+      if (custom) {
+        custom.pause();
+        custom.currentTime = 0;
       }
     }
 
     const sfxSelect = () => play("select", () => {
       const ac = ensureCtx();
       blip(720, 0.07, "square", 0.05, ac.currentTime);
-    });
+    }, { singleVoice: true });
 
-    const sfxSelected = () => play("selected", () => {
-      const ac = ensureCtx();
-      [660, 880].forEach((f, i) => blip(f, 0.12, "square", 0.08, ac.currentTime + i * 0.07));
-    });
+    const sfxSelected = () => {
+      stopSound("select");
+      play("selected", () => {
+        const ac = ensureCtx();
+        [660, 880].forEach((f, i) => blip(f, 0.12, "square", 0.08, ac.currentTime + i * 0.07));
+      }, { singleVoice: true });
+    };
 
     const sfxThrow = () => play("throw", () => {
       const ac = ensureCtx();
