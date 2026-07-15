@@ -102,7 +102,6 @@
       document.querySelectorAll("#map-row .option-card").forEach((b) => b.classList.remove("selected"));
       btn.classList.add("selected");
       selectedMap = btn.dataset.map;
-      AudioEngine.sfxSelect();
       checkReady();
     });
   });
@@ -112,7 +111,6 @@
       document.querySelectorAll("#fighter-row .option-card").forEach((b) => b.classList.remove("selected"));
       btn.classList.add("selected");
       selectedFighter = btn.dataset.fighter;
-      AudioEngine.sfxSelect();
       checkReady();
     });
   });
@@ -138,6 +136,7 @@
     stopContinueCountdown();
     screenResult.classList.add("hidden");
     screenMenu.classList.remove("hidden");
+    AudioEngine.startMenuMusic();
   });
 
   $("#rematch-btn").addEventListener("click", () => {
@@ -225,8 +224,8 @@
      Drop any of these filenames into Assets/ to override the built-in
      sounds:
        Assets/music.mp3         — looping battle theme
-       Assets/sfx_select.mp3    — browsing stage/fighter options on the menu
-       Assets/sfx_selected.mp3  — pressing START to confirm the match-up
+       Assets/sfx_select.mp3    — looping ambient track for the menu screen
+       Assets/sfx_selected.mp3  — pressing "LET'S HAVE IT!" to confirm
        Assets/sfx_throw.mp3     — throwing the rubbish bag / money bags
        Assets/sfx_hit.mp3       — getting struck by a projectile
        Assets/sfx_jump.mp3      — jumping
@@ -624,6 +623,44 @@
       musicUsingCustom = false;
     }
 
+    // Menu-screen ambient loop (Assets/sfx_select.*). Plays from the moment
+    // the menu is shown until the player presses "LET'S HAVE IT!". Browsers
+    // block audio autoplay before any user gesture, so if the initial play()
+    // is rejected, it's retried on the first click/key/touch anywhere on the
+    // page. Silent (no synth fallback) if no custom clip was supplied.
+    let menuMusicWanted = false;
+    let menuMusicUnlockArmed = false;
+
+    function armMenuMusicUnlock() {
+      if (menuMusicUnlockArmed) return;
+      menuMusicUnlockArmed = true;
+      const retry = () => {
+        menuMusicUnlockArmed = false;
+        if (menuMusicWanted) startMenuMusic();
+      };
+      ["pointerdown", "keydown", "touchstart"].forEach((evt) =>
+        document.addEventListener(evt, retry, { once: true })
+      );
+    }
+
+    function startMenuMusic() {
+      menuMusicWanted = true;
+      const custom = CUSTOM_AUDIO.select;
+      if (!custom) return;
+      custom.loop = true;
+      custom.volume = 0.6;
+      custom.play().catch(() => armMenuMusicUnlock());
+    }
+
+    function stopMenuMusic() {
+      menuMusicWanted = false;
+      const custom = CUSTOM_AUDIO.select;
+      if (custom) {
+        custom.pause();
+        custom.currentTime = 0;
+      }
+    }
+
     // plays a custom clip if one was supplied, otherwise runs the synth
     // fallback. By default each trigger is cloned so overlapping triggers
     // (e.g. rapid hits) don't cut each other off; pass singleVoice for UI
@@ -646,21 +683,8 @@
       }
     }
 
-    function stopSound(key) {
-      const custom = CUSTOM_AUDIO[key];
-      if (custom) {
-        custom.pause();
-        custom.currentTime = 0;
-      }
-    }
-
-    const sfxSelect = () => play("select", () => {
-      const ac = ensureCtx();
-      blip(720, 0.07, "square", 0.05, ac.currentTime);
-    }, { singleVoice: true });
-
     const sfxSelected = () => {
-      stopSound("select");
+      stopMenuMusic();
       play("selected", () => {
         const ac = ensureCtx();
         [660, 880].forEach((f, i) => blip(f, 0.12, "square", 0.08, ac.currentTime + i * 0.07));
@@ -714,8 +738,12 @@
       [523, 659, 784, 1046, 1318].forEach((f, i) => blip(f, 0.22, "square", 0.09, ac.currentTime + i * 0.11));
     });
 
-    return { startMusic, stopMusic, sfxSelect, sfxSelected, sfxThrow, sfxHit, sfxJump, sfxCountBeep, sfxFight, sfxKO, sfxWin, ensureCtx };
+    return { startMusic, stopMusic, startMenuMusic, stopMenuMusic, sfxSelected, sfxThrow, sfxHit, sfxJump, sfxCountBeep, sfxFight, sfxKO, sfxWin, ensureCtx };
   })();
+
+  // Kick off the menu's ambient loop as soon as its custom clip (if any) is
+  // ready — it plays until "LET'S HAVE IT!" is pressed.
+  customAudioReady.then(() => AudioEngine.startMenuMusic());
 
   /* ============================================================
      INPUT
