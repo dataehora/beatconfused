@@ -10,14 +10,13 @@ const numberDisplay = document.getElementById("numberDisplay");
 const pendulum = document.getElementById("pendulum");
 const beatLabel = document.getElementById("beatLabel");
 const beatIndicators = document.getElementById("beatIndicators");
-const timeSignatureInputs = document.querySelectorAll('input[name="timeSignature"]');
-const subdivisionSelect = document.getElementById("subdivisionSelect");
-const visualModeSelect = document.getElementById("visualMode");
-const countDisplaySelect = document.getElementById("countDisplay");
+const timeSignatureSelect = document.getElementById("timeSignature");
+const subdivisionInputs = document.querySelectorAll('input[name="subdivision"]');
+const visualModeInputs = document.querySelectorAll('input[name="visualMode"]');
+const countModeInputs = document.querySelectorAll('input[name="countMode"]');
 const soundStyleSelect = document.getElementById("soundStyle");
 const soundToggle = document.getElementById("soundToggle");
 const vibrationToggle = document.getElementById("vibrationToggle");
-const vibrationStatus = document.getElementById("vibrationStatus");
 const volumeInput = document.getElementById("volume");
 const metronomeSection = document.querySelector(".metronome");
 
@@ -70,16 +69,17 @@ const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
-function getSelectedTimeSignatureInput() {
-  return document.querySelector('input[name="timeSignature"]:checked');
+function getSelectedTimeSignatureOption() {
+  return timeSignatureSelect.selectedOptions[0];
 }
 
 function getSubdivision() {
-  return clamp(Number(subdivisionSelect.value) || 1, 1, MAX_SUBDIVISION);
+  const checked = document.querySelector('input[name="subdivision"]:checked');
+  return clamp(Number(checked?.value) || 1, 1, MAX_SUBDIVISION);
 }
 
 function getCountMode() {
-  return countDisplaySelect.value;
+  return document.querySelector('input[name="countMode"]:checked')?.value || "beat";
 }
 
 function isVibrationSupported() {
@@ -165,9 +165,9 @@ async function checkForDeployedUpdate() {
 }
 
 function syncTimeSignature() {
-  const selectedInput = getSelectedTimeSignatureInput();
-  state.beatsPerMeasure = clamp(Number(selectedInput?.dataset.beats) || 4, 1, 16);
-  state.timeSignatureLabel = selectedInput?.value || "4/4";
+  const selectedOption = getSelectedTimeSignatureOption();
+  state.beatsPerMeasure = clamp(Number(selectedOption?.dataset.beats) || 4, 1, 16);
+  state.timeSignatureLabel = selectedOption?.value || "4/4";
   state.currentBeat = 0;
   state.currentSubdivisionStep = 0;
   state.currentMeasure = 1;
@@ -389,13 +389,13 @@ function updateVibrationUI() {
 
   if (!supported) {
     vibrationToggle.checked = false;
-    vibrationStatus.textContent = IOS_DEVICE_REGEX.test(navigator.userAgent)
+    vibrationToggle.title = IOS_DEVICE_REGEX.test(navigator.userAgent)
       ? "Vibration is unavailable on iOS browsers because they do not expose the web vibration API."
       : "Vibration is unavailable in this browser. Audio and visual beat cues still work normally.";
     return;
   }
 
-  vibrationStatus.textContent = "Vibration is supported on this browser after a touch or click interaction.";
+  vibrationToggle.title = "Vibration is supported on this browser after a touch or click interaction.";
 }
 
 function triggerVibration(pulseType) {
@@ -698,7 +698,7 @@ function handleTapTempo() {
   pendulumVisual("beat");
 
   if (tapTimes.length < 2) {
-    setTapMessage("Tap again to calculate BPM.");
+    setTapMessage("Tap again…");
     return;
   }
 
@@ -706,11 +706,11 @@ function handleTapTempo() {
   const tappedBpm = clamp(Math.round(60000 / latestInterval), MIN_BPM, MAX_BPM);
 
   updateTempo(tappedBpm);
-  setTapMessage(`Tap tempo: ${tappedBpm} BPM from last 2 taps.`);
+  setTapMessage(`${tappedBpm} BPM`);
 }
 
 function setVisualMode() {
-  const mode = visualModeSelect.value;
+  const mode = document.querySelector('input[name="visualMode"]:checked')?.value || "pendulum";
   const visualElementsByMode = {
     pulse: pulse,
     numbers: numberDisplay,
@@ -761,13 +761,19 @@ decreaseBtn.addEventListener("click", () => updateTempo(state.bpm - 5));
 tapBtn.addEventListener("click", handleTapTempo);
 toggleBtn.addEventListener("click", toggleMetronome);
 
-timeSignatureInputs.forEach((input) => {
-  input.addEventListener("change", syncTimeSignature);
+timeSignatureSelect.addEventListener("change", syncTimeSignature);
+
+subdivisionInputs.forEach((input) => {
+  input.addEventListener("change", handleSubdivisionChange);
 });
 
-subdivisionSelect.addEventListener("change", handleSubdivisionChange);
-visualModeSelect.addEventListener("change", setVisualMode);
-countDisplaySelect.addEventListener("change", handleCountModeChange);
+visualModeInputs.forEach((input) => {
+  input.addEventListener("change", setVisualMode);
+});
+
+countModeInputs.forEach((input) => {
+  input.addEventListener("change", handleCountModeChange);
+});
 
 document.addEventListener("keydown", (event) => {
   const focusedTag = document.activeElement?.tagName;
