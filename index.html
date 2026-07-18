@@ -114,13 +114,26 @@
         </a>
         <a class="tool-card" href="/tuner/">
           <span class="tool-media tuner-icon">
-            <span class="tuner-icon-case">
-              <span class="tuner-icon-window">
-                <span class="tuner-icon-ring tuner-icon-ring-outer"></span>
-                <span class="tuner-icon-ring tuner-icon-ring-inner"></span>
-                <span class="tuner-icon-hub"></span>
-              </span>
-            </span>
+            <svg id="tunerIconSvg" class="tuner-icon-svg" viewBox="0 0 300 180" role="presentation" focusable="false">
+              <defs>
+                <linearGradient id="homeTunerCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
+                  <stop offset="0" stop-color="#caa06a" />
+                  <stop offset="1" stop-color="#8a5a30" />
+                </linearGradient>
+                <radialGradient id="homeTunerWindowGradient" cx="0.5" cy="0.42" r="0.75">
+                  <stop offset="0" stop-color="#362b21" />
+                  <stop offset="1" stop-color="#171310" />
+                </radialGradient>
+                <clipPath id="homeTunerHalfClip">
+                  <path d="M 26 150 A 124 124 0 0 1 274 150 Z" />
+                </clipPath>
+              </defs>
+              <path class="tuner-icon-case" d="M 8 150 A 142 142 0 0 1 292 150 Z" fill="url(#homeTunerCaseGradient)" />
+              <path class="tuner-icon-window" d="M 26 150 A 124 124 0 0 1 274 150 Z" fill="url(#homeTunerWindowGradient)" />
+              <g id="tunerIconWedges" clip-path="url(#homeTunerHalfClip)"></g>
+              <rect class="tuner-icon-base" x="34" y="146" width="232" height="16" rx="8" />
+              <circle class="tuner-icon-hub" cx="150" cy="150" r="5" />
+            </svg>
           </span>
           <span class="tool-name">Tuner</span>
           <span class="tool-desc">Strobe, needle or meter. Always in tune</span>
@@ -144,5 +157,65 @@
       <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>
     </footer>
   </main>
+
+  <script>
+    // Builds the homepage tuner icon as a small, static replica of the real
+    // /tuner/ strobe wheel (same half-circle wedge construction, scaled down
+    // to icon size), frozen in the green "in tune" state for A4 440Hz at
+    // 0 cents — rather than an unrelated decorative graphic.
+    (function buildTunerIcon() {
+      const NS = "http://www.w3.org/2000/svg";
+      const wedgesGroup = document.getElementById("tunerIconWedges");
+
+      if (!wedgesGroup) {
+        return;
+      }
+
+      const cx = 150;
+      const cy = 150;
+      const rings = [
+        { inner: 100, outer: 120, count: 16 },
+        { inner: 72, outer: 92, count: 8 },
+        { inner: 44, outer: 64, count: 4 },
+      ];
+
+      function polar(r, deg) {
+        const rad = (deg * Math.PI) / 180;
+        return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
+      }
+
+      function wedgePath(innerR, outerR, startDeg, endDeg) {
+        const startOuter = polar(outerR, startDeg);
+        const endOuter = polar(outerR, endDeg);
+        const startInner = polar(innerR, startDeg);
+        const endInner = polar(innerR, endDeg);
+        const largeArc = endDeg - startDeg > 180 ? 1 : 0;
+
+        return (
+          `M ${startInner.x.toFixed(2)} ${startInner.y.toFixed(2)} ` +
+          `L ${startOuter.x.toFixed(2)} ${startOuter.y.toFixed(2)} ` +
+          `A ${outerR} ${outerR} 0 ${largeArc} 1 ${endOuter.x.toFixed(2)} ${endOuter.y.toFixed(2)} ` +
+          `L ${endInner.x.toFixed(2)} ${endInner.y.toFixed(2)} ` +
+          `A ${innerR} ${innerR} 0 ${largeArc} 0 ${startInner.x.toFixed(2)} ${startInner.y.toFixed(2)} Z`
+        );
+      }
+
+      rings.forEach((ring, ringIndex) => {
+        const g = document.createElementNS(NS, "g");
+        g.setAttribute("class", ringIndex % 2 === 0 ? "tuner-icon-wedges" : "tuner-icon-wedges tuner-icon-wedges-alt");
+
+        const totalSlices = ring.count * 2;
+        const step = 360 / totalSlices;
+
+        for (let i = 0; i < totalSlices; i += 2) {
+          const path = document.createElementNS(NS, "path");
+          path.setAttribute("d", wedgePath(ring.inner, ring.outer, i * step, (i + 1) * step));
+          g.appendChild(path);
+        }
+
+        wedgesGroup.appendChild(g);
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -74,7 +74,11 @@
            document-global, so a single <defs> here avoids repeating them). -->
       <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
         <defs>
-          <linearGradient id="tunerCaseGradient" x1="20" y1="10" x2="220" y2="230" gradientUnits="userSpaceOnUse">
+          <!-- objectBoundingBox (the default) rather than userSpaceOnUse, so
+               the same gradient scales correctly across the strobe's circular
+               case and the needle's rectangular one despite their different
+               coordinate systems. -->
+          <linearGradient id="tunerCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
             <stop offset="0" stop-color="#caa06a" />
             <stop offset="1" stop-color="#8a5a30" />
           </linearGradient>
@@ -82,6 +86,18 @@
             <stop offset="0" stop-color="#362b21" />
             <stop offset="1" stop-color="#171310" />
           </radialGradient>
+          <radialGradient id="strobeVignette" cx="0.5" cy="0.46" r="0.62">
+            <stop offset="0" stop-color="#000000" stop-opacity="0" />
+            <stop offset="0.76" stop-color="#000000" stop-opacity="0" />
+            <stop offset="1" stop-color="#000000" stop-opacity="0.6" />
+          </radialGradient>
+          <radialGradient id="strobeGlassHighlight" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#ffffff" stop-opacity="0.24" />
+            <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+          </radialGradient>
+          <clipPath id="strobeHalfClip">
+            <path d="M 26 150 A 124 124 0 0 1 274 150 Z" />
+          </clipPath>
         </defs>
       </svg>
 
@@ -95,14 +111,27 @@
 
       <div class="visual-stage">
         <div class="strobe visual-element" id="strobeVisual" aria-hidden="true">
-          <svg class="strobe-device" viewBox="0 0 240 240" role="presentation" focusable="false">
-            <ellipse class="device-shadow" cx="120" cy="234" rx="90" ry="8" />
-            <circle class="device-case-circle" cx="120" cy="118" r="112" fill="url(#tunerCaseGradient)" />
-            <circle class="device-window-circle" cx="120" cy="118" r="98" fill="url(#tunerWindowGradient)" />
-            <g id="strobeRingOuter" class="strobe-ring"></g>
-            <g id="strobeRingMiddle" class="strobe-ring"></g>
-            <g id="strobeRingInner" class="strobe-ring"></g>
-            <circle class="strobe-hub" cx="120" cy="118" r="6" />
+          <svg class="strobe-device" viewBox="0 0 300 180" role="presentation" focusable="false">
+            <ellipse class="device-shadow" cx="150" cy="172" rx="118" ry="7" />
+
+            <path class="strobe-case" d="M 8 150 A 142 142 0 0 1 292 150 Z" fill="url(#tunerCaseGradient)" />
+            <path class="strobe-bezel-groove" d="M 16 150 A 134 134 0 0 1 284 150" />
+            <path class="strobe-window" d="M 26 150 A 124 124 0 0 1 274 150 Z" fill="url(#tunerWindowGradient)" />
+            <path class="strobe-window-rim" d="M 30 150 A 120 120 0 0 1 270 150" />
+
+            <g clip-path="url(#strobeHalfClip)">
+              <g id="strobeRing1" class="strobe-ring"></g>
+              <g id="strobeRing2" class="strobe-ring strobe-ring-alt"></g>
+              <g id="strobeRing3" class="strobe-ring"></g>
+              <g id="strobeRing4" class="strobe-ring strobe-ring-alt"></g>
+              <g id="strobeRing5" class="strobe-ring"></g>
+              <circle class="strobe-vignette" cx="150" cy="150" r="124" fill="url(#strobeVignette)" />
+              <ellipse class="strobe-glass-highlight" cx="150" cy="70" rx="94" ry="46" fill="url(#strobeGlassHighlight)" />
+            </g>
+
+            <rect class="strobe-base" x="34" y="146" width="232" height="16" rx="8" />
+            <circle class="strobe-hub" cx="150" cy="150" r="5" />
+            <circle class="strobe-hub-shine" cx="148.3" cy="148.3" r="1.6" />
           </svg>
         </div>
 
@@ -152,45 +181,101 @@
         </div>
       </div>
 
-      <div class="tuner-hero">
-        <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)">−</button>
-        <div class="pitch-readout">
-          <span class="pitch-unit">A4 =</span>
-          <input id="pitchInput" type="number" min="415" max="466" step="1" value="440" aria-label="Reference pitch in Hz" title="Reference pitch (Hz)" />
-          <span class="pitch-unit">Hz</span>
-        </div>
-        <button id="increasePitchBtn" type="button" class="small-btn" aria-label="Increase reference pitch" title="Increase A4 (↑)">+</button>
-      </div>
-      <input id="pitchRange" type="range" min="415" max="466" value="440" class="pitch-slider" aria-label="Reference pitch slider" />
-
       <div class="transport-row">
         <button id="toggleMicBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop tuner">Start Tuner</button>
       </div>
       <p id="micStatus" class="hint tap-status" aria-live="polite">Uses your microphone. Nothing is recorded or sent anywhere.</p>
 
-      <div class="control-block pitch-presets">
-        <span class="sr-only">Concert pitch presets</span>
-        <div class="pill-group" role="radiogroup" aria-label="Concert pitch presets">
-          <label class="pill pill-sm">
-            <input type="radio" name="pitchPreset" value="438" />
-            <span>438</span>
-          </label>
-          <label class="pill pill-sm">
-            <input type="radio" name="pitchPreset" value="440" checked />
-            <span>440</span>
-          </label>
-          <label class="pill pill-sm">
-            <input type="radio" name="pitchPreset" value="442" />
-            <span>442</span>
-          </label>
-          <label class="pill pill-sm">
-            <input type="radio" name="pitchPreset" value="443" />
-            <span>443</span>
-          </label>
-          <label class="pill pill-sm">
-            <input type="radio" name="pitchPreset" value="444" />
-            <span>444</span>
-          </label>
+      <div class="settings-row">
+        <div class="control-block reference-pitch-block">
+          <div class="panel-header">
+            <span class="panel-title">Reference Pitch</span>
+          </div>
+          <div class="fine-freq-row">
+            <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)">−</button>
+            <span class="fine-freq-value">
+              A4 = <input id="pitchInput" type="number" min="415" max="466" step="1" value="440" aria-label="Reference pitch in Hz" title="Reference pitch (Hz)" /> Hz
+            </span>
+            <button id="increasePitchBtn" type="button" class="small-btn" aria-label="Increase reference pitch" title="Increase A4 (↑)">+</button>
+          </div>
+          <input id="pitchRange" type="range" min="415" max="466" value="440" class="panel-slider" aria-label="Reference pitch slider" />
+          <div class="pill-group compact-presets" role="radiogroup" aria-label="Concert pitch presets">
+            <label class="pill pill-sm">
+              <input type="radio" name="pitchPreset" value="438" />
+              <span>438</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="pitchPreset" value="440" checked />
+              <span>440</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="pitchPreset" value="442" />
+              <span>442</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="pitchPreset" value="443" />
+              <span>443</span>
+            </label>
+            <label class="pill pill-sm">
+              <input type="radio" name="pitchPreset" value="444" />
+              <span>444</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="control-block test-tone-block">
+          <div class="panel-header">
+            <span class="panel-title">Test Tone</span>
+            <span class="panel-value" id="testToneNote">A4</span>
+          </div>
+          <span class="slider-title">Frequency</span>
+          <div class="fine-freq-row">
+            <button id="decreaseTestToneBtn" type="button" class="small-btn" aria-label="Decrease test tone frequency" title="Decrease (↓)">−</button>
+            <span class="fine-freq-value" id="testToneFreqLabel">440 Hz</span>
+            <button id="increaseTestToneBtn" type="button" class="small-btn" aria-label="Increase test tone frequency" title="Increase (↑)">+</button>
+          </div>
+          <input
+            id="testToneRange"
+            type="range"
+            min="55"
+            max="1568"
+            step="1"
+            value="440"
+            class="panel-slider"
+            aria-label="Test tone frequency in Hz"
+          />
+
+          <span class="slider-title">Fine Tuning (¢)</span>
+          <input
+            id="testToneCentsRange"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0"
+            class="panel-slider"
+            aria-label="Fine tuning between this frequency and the next Hz"
+          />
+
+          <div class="variance-block">
+            <div class="variance-track">
+              <div class="variance-fill" id="varianceFill"></div>
+            </div>
+            <div class="variance-labels">
+              <span id="variancePrevNote">G♯4</span>
+              <span id="varianceCurrentNote">A4</span>
+              <span id="varianceNextNote">A♯4</span>
+            </div>
+          </div>
+
+          <div class="test-tone-controls">
+            <button id="toggleTestToneBtn" type="button" class="small-btn" aria-pressed="false">Play Test Tone</button>
+            <label class="volume-control">
+              <span class="volume-label">Volume</span>
+              <input id="testToneVolume" type="range" min="0" max="0.4" step="0.01" value="0.15" aria-label="Test tone volume" />
+            </label>
+          </div>
+          <p class="hint">Feeds a pure tone straight into the tuner (and your speakers) — no microphone needed.</p>
         </div>
       </div>
     </section>
