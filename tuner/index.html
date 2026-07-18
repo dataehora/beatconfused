@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title>BeatConfused | Chromatic Instrument Tuner</title>
+  <meta
+    name="description"
+    content="BeatConfused is a free online chromatic tuner with strobe, needle and meter displays, an adjustable A4 reference pitch, and no install required."
+  />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#10131d" />
+  <link rel="canonical" href="https://beatconfused.com/tuner/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="BeatConfused | Chromatic Instrument Tuner" />
+  <meta
+    property="og:description"
+    content="A free online chromatic tuner with strobe, needle and meter displays, and an adjustable reference pitch."
+  />
+  <meta property="og:url" content="https://beatconfused.com/tuner/" />
+  <meta property="og:site_name" content="BeatConfused" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="BeatConfused | Chromatic Instrument Tuner" />
+  <meta
+    name="twitter:description"
+    content="A free online chromatic tuner with strobe, needle and meter displays, and an adjustable reference pitch."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Marck+Script&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "BeatConfused Tuner",
+          "url": "https://beatconfused.com/tuner/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web Browser",
+          "description": "An online chromatic instrument tuner with strobe, needle and meter displays, and an adjustable A4 reference pitch.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+      ]
+    }
+  </script>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">BeatConfused Studio</p>
+      <h1>Tuner</h1>
+    </header>
+
+    <section class="tuner" aria-labelledby="tuner-title" data-visual-mode="strobe">
+      <h2 id="tuner-title" class="sr-only">Tuner</h2>
+
+      <!-- Shared gradients referenced by both device SVGs below (SVG ids are
+           document-global, so a single <defs> here avoids repeating them). -->
+      <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="tunerCaseGradient" x1="20" y1="10" x2="220" y2="230" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#caa06a" />
+            <stop offset="1" stop-color="#8a5a30" />
+          </linearGradient>
+          <radialGradient id="tunerWindowGradient" cx="0.5" cy="0.42" r="0.75">
+            <stop offset="0" stop-color="#362b21" />
+            <stop offset="1" stop-color="#171310" />
+          </radialGradient>
+        </defs>
+      </svg>
+
+      <div class="note-readout" aria-live="polite">
+        <span class="note-name" id="noteName">–</span>
+        <span class="note-meta">
+          <span class="cents-value" id="centsValue">0¢</span>
+          <span class="freq-value" id="freqValue">— Hz</span>
+        </span>
+      </div>
+
+      <div class="visual-stage">
+        <div class="strobe visual-element" id="strobeVisual" aria-hidden="true">
+          <svg class="strobe-device" viewBox="0 0 240 240" role="presentation" focusable="false">
+            <ellipse class="device-shadow" cx="120" cy="234" rx="90" ry="8" />
+            <circle class="device-case-circle" cx="120" cy="118" r="112" fill="url(#tunerCaseGradient)" />
+            <circle class="device-window-circle" cx="120" cy="118" r="98" fill="url(#tunerWindowGradient)" />
+            <g id="strobeRingOuter" class="strobe-ring"></g>
+            <g id="strobeRingMiddle" class="strobe-ring"></g>
+            <g id="strobeRingInner" class="strobe-ring"></g>
+            <circle class="strobe-hub" cx="120" cy="118" r="6" />
+          </svg>
+        </div>
+
+        <div class="needle-gauge visual-element" id="needleVisual" aria-hidden="true" hidden>
+          <svg class="needle-device" viewBox="0 0 240 200" role="presentation" focusable="false">
+            <ellipse class="device-shadow" cx="120" cy="194" rx="94" ry="8" />
+            <rect class="device-case" x="8" y="8" width="224" height="178" rx="20" fill="url(#tunerCaseGradient)" />
+            <rect class="device-window" x="24" y="24" width="192" height="132" rx="12" fill="url(#tunerWindowGradient)" />
+            <g id="needleInTuneArc"></g>
+            <g id="needleScaleTicks"></g>
+            <text class="needle-flat-label" x="40" y="150">♭</text>
+            <text class="needle-sharp-label" x="200" y="150">♯</text>
+            <g id="needleSwing">
+              <path class="needle-pointer" d="M118.6 150 L121.4 150 L120.5 60 L120 54 L119.5 60 Z" />
+            </g>
+            <circle class="needle-hub" cx="120" cy="150" r="7" />
+          </svg>
+        </div>
+
+        <div class="led-meter visual-element" id="meterVisual" aria-hidden="true" hidden>
+          <div class="led-meter-device">
+            <div class="led-track">
+              <div class="led-segments" id="ledSegments"></div>
+              <div class="led-indicator" id="ledIndicator"></div>
+            </div>
+            <div class="led-scale-labels">
+              <span>♭</span>
+              <span>in tune</span>
+              <span>♯</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="display-toggle" role="radiogroup" aria-label="Visual style">
+          <label class="pill pill-sm">
+            <input type="radio" name="tunerVisualMode" value="strobe" checked />
+            <span>Strobe</span>
+          </label>
+          <label class="pill pill-sm">
+            <input type="radio" name="tunerVisualMode" value="needle" />
+            <span>Needle</span>
+          </label>
+          <label class="pill pill-sm">
+            <input type="radio" name="tunerVisualMode" value="meter" />
+            <span>Meter</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="tuner-hero">
+        <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)">−</button>
+        <div class="pitch-readout">
+          <span class="pitch-unit">A4 =</span>
+          <input id="pitchInput" type="number" min="415" max="466" step="1" value="440" aria-label="Reference pitch in Hz" title="Reference pitch (Hz)" />
+          <span class="pitch-unit">Hz</span>
+        </div>
+        <button id="increasePitchBtn" type="button" class="small-btn" aria-label="Increase reference pitch" title="Increase A4 (↑)">+</button>
+      </div>
+      <input id="pitchRange" type="range" min="415" max="466" value="440" class="pitch-slider" aria-label="Reference pitch slider" />
+
+      <div class="transport-row">
+        <button id="toggleMicBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop tuner">Start Tuner</button>
+      </div>
+      <p id="micStatus" class="hint tap-status" aria-live="polite">Uses your microphone. Nothing is recorded or sent anywhere.</p>
+
+      <div class="control-block pitch-presets">
+        <span class="sr-only">Concert pitch presets</span>
+        <div class="pill-group" role="radiogroup" aria-label="Concert pitch presets">
+          <label class="pill pill-sm">
+            <input type="radio" name="pitchPreset" value="438" />
+            <span>438</span>
+          </label>
+          <label class="pill pill-sm">
+            <input type="radio" name="pitchPreset" value="440" checked />
+            <span>440</span>
+          </label>
+          <label class="pill pill-sm">
+            <input type="radio" name="pitchPreset" value="442" />
+            <span>442</span>
+          </label>
+          <label class="pill pill-sm">
+            <input type="radio" name="pitchPreset" value="443" />
+            <span>443</span>
+          </label>
+          <label class="pill pill-sm">
+            <input type="radio" name="pitchPreset" value="444" />
+            <span>444</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-links">
+        <a href="https://beatconfused.com">beatconfused.com</a>
+      </p>
+      <p class="footer-contact">
+        <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>
+      </p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
