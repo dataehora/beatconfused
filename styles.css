@@ -152,60 +152,35 @@ body {
   }
 }
 
-.tuner-icon-case {
+/* A small static replica of the /tuner/ strobe wheel, frozen green as if
+   reading a perfectly in-tune A4 — built from the same half-circle wedge
+   construction (see the inline script at the end of the page), just with
+   far fewer segments since it only needs to read clearly at icon size. */
+.tuner-icon-svg {
   height: 6.6rem;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  background: linear-gradient(160deg, #caa06a, #8a5a30);
-  box-shadow: 0 6px 10px rgba(61, 31, 15, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: auto;
+  display: block;
+  overflow: visible;
 }
 
-.tuner-icon-window {
-  position: relative;
-  width: 82%;
-  height: 82%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 45% 38%, #362b21, #171310);
-  overflow: hidden;
+.tuner-icon-case {
+  filter: drop-shadow(0 4px 7px rgba(61, 31, 15, 0.22));
 }
 
-.tuner-icon-ring {
-  position: absolute;
-  border-radius: 50%;
+.tuner-icon-wedges path {
+  fill: #6f8f52;
 }
 
-.tuner-icon-ring-outer {
-  inset: 6%;
-  background: repeating-conic-gradient(var(--accent) 0deg 8deg, transparent 8deg 20deg);
-  animation: tuner-icon-spin 7s linear infinite;
+.tuner-icon-wedges-alt path {
+  fill: #8fae6a;
 }
 
-.tuner-icon-ring-inner {
-  inset: 30%;
-  background: repeating-conic-gradient(#b27a37 0deg 14deg, transparent 14deg 32deg);
-  animation: tuner-icon-spin-reverse 4.5s linear infinite;
+.tuner-icon-base {
+  fill: url(#homeTunerCaseGradient);
 }
 
 .tuner-icon-hub {
-  position: absolute;
-  inset: 44%;
-  border-radius: 50%;
-  background: #f6f1e8;
-}
-
-@keyframes tuner-icon-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes tuner-icon-spin-reverse {
-  to {
-    transform: rotate(-360deg);
-  }
+  fill: #f6f1e8;
 }
 
 .tool-name {
@@ -247,11 +222,6 @@ body {
   }
 
   .mini-pendulum-swing {
-    animation: none;
-  }
-
-  .tuner-icon-ring-outer,
-  .tuner-icon-ring-inner {
     animation: none;
   }
 }
