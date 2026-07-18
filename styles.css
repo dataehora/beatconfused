@@ -68,14 +68,15 @@ body {
 .tool-card {
   display: grid;
   gap: 0.3rem;
-  min-width: 13rem;
-  padding: 1.1rem 1.4rem;
+  width: 14rem;
+  padding: 0 0 1.1rem;
   border: 1px solid var(--border);
-  border-radius: 0.6rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
   background: rgba(255, 255, 255, 0.4);
-  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .tool-card:hover,
@@ -83,9 +84,75 @@ body {
   border-color: var(--accent);
   background: rgba(255, 255, 255, 0.7);
   transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(38, 34, 32, 0.1);
+}
+
+.tool-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(160deg, rgba(38, 34, 32, 0.05), rgba(38, 34, 32, 0.09));
+  border-bottom: 1px solid var(--border);
+}
+
+.tool-media img {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+.metronome-icon svg {
+  width: auto;
+  height: 82%;
+  overflow: visible;
+}
+
+.mini-device-shadow {
+  fill: rgba(61, 31, 15, 0.16);
+}
+
+.mini-device-case {
+  filter: drop-shadow(0 6px 10px rgba(61, 31, 15, 0.2));
+}
+
+.mini-scale-ticks line {
+  stroke: rgba(246, 241, 232, 0.24);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.mini-pendulum-rod,
+.mini-pendulum-pivot {
+  fill: #f6f1e8;
+}
+
+.mini-pendulum-weight {
+  fill: var(--accent);
+}
+
+.mini-pendulum-swing {
+  transform-origin: 120px 246px;
+  animation: mini-swing 1.3s ease-in-out infinite;
+}
+
+@keyframes mini-swing {
+  0%,
+  100% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
 }
 
 .tool-name {
+  margin-top: 0.85rem;
+  padding: 0 1.4rem;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 600;
   font-size: 1.2rem;
@@ -93,6 +160,7 @@ body {
 }
 
 .tool-desc {
+  padding: 0 1.4rem;
   font-size: 0.82rem;
   color: var(--ink-soft);
 }
@@ -118,5 +186,9 @@ body {
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 0.01ms !important;
+  }
+
+  .mini-pendulum-swing {
+    animation: none;
   }
 }

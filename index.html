@@ -69,10 +69,52 @@
 
       <nav class="tools" aria-label="Tools">
         <a class="tool-card" href="/metronome/">
+          <span class="tool-media metronome-icon">
+            <svg viewBox="0 0 240 300" role="presentation" focusable="false">
+              <defs>
+                <linearGradient id="homeCaseGradient" x1="40" y1="14" x2="200" y2="284" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#caa06a" />
+                  <stop offset="1" stop-color="#8a5a30" />
+                </linearGradient>
+                <linearGradient id="homeWindowGradient" x1="120" y1="38" x2="120" y2="260" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#362b21" />
+                  <stop offset="1" stop-color="#1b1512" />
+                </linearGradient>
+                <clipPath id="homePendulumWindowClip">
+                  <rect x="54" y="38" width="132" height="222" rx="4" />
+                </clipPath>
+              </defs>
+
+              <ellipse class="mini-device-shadow" cx="120" cy="288" rx="86" ry="9" />
+              <path class="mini-device-case" d="M36 14 L204 14 L223 284 L17 284 Z" fill="url(#homeCaseGradient)" />
+              <rect x="54" y="38" width="132" height="222" rx="4" fill="url(#homeWindowGradient)" />
+
+              <g class="mini-scale-ticks" clip-path="url(#homePendulumWindowClip)">
+                <line x1="72" y1="80" x2="168" y2="80" />
+                <line x1="72" y1="130" x2="168" y2="130" />
+                <line x1="72" y1="180" x2="168" y2="180" />
+                <line x1="72" y1="230" x2="168" y2="230" />
+              </g>
+
+              <g class="mini-pendulum-swing" clip-path="url(#homePendulumWindowClip)">
+                <rect class="mini-pendulum-rod" x="118.4" y="52" width="3.2" height="194" rx="1.6" />
+                <path class="mini-pendulum-weight" d="M120 134 L136 150 L120 166 L104 150 Z" />
+                <circle class="mini-pendulum-pivot" cx="120" cy="246" r="5" />
+              </g>
+            </svg>
+          </span>
           <span class="tool-name">Metronome</span>
           <span class="tool-desc">No install, no apps, no loading. Just Tempo</span>
         </a>
         <a class="tool-card" href="/binfacevsfarage/">
+          <span class="tool-media">
+            <img
+              src="/binfacevsfarage/Assets/ClactonFighter.png"
+              alt="Clacton Fighter game artwork"
+              width="1408"
+              height="768"
+            />
+          </span>
           <span class="tool-name">Clacton Fighter</span>
           <span class="tool-desc">The By-Election brawl</span>
         </a>
