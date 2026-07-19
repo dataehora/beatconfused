@@ -862,10 +862,17 @@ body {
   transition: height 90ms linear;
 }
 
+/* A separate full-width frame below the settings row — spans the same
+   total width as that row whether its three blocks sit on one line or
+   have wrapped onto their own, since it isn't one of those flex items. */
+.control-block.spectrum-analyzer-block {
+  max-width: none;
+  margin: 0;
+}
+
 .spectrum-block {
   display: grid;
   gap: 0.35rem;
-  margin-top: 0.4rem;
 }
 
 /* Same golden-case-over-dark-window bezel as the strobe/needle/meter
