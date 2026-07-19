@@ -768,10 +768,6 @@ body {
 /* ---- Input Monitor: gain boost + level meter + spectrum, spanning the
    full card width rather than the settings-row's narrower columns since
    the spectrum canvas needs the room. ---- */
-.signal-block {
-  max-width: none;
-}
-
 .signal-block .hint {
   text-align: center;
 }
@@ -804,8 +800,12 @@ body {
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--accent-strong);
-  min-width: 5ch;
+  /* Fixed (not min-) width, sized for the longest reading ("-60.0 dB"),
+     so the level text changing length can't re-center the flex row and
+     nudge the gain slider sideways. */
+  width: 4.6rem;
   text-align: center;
+  white-space: nowrap;
 }
 
 /* The classic rotated-range-input technique for a vertical slider: the
@@ -866,6 +866,16 @@ body {
   display: grid;
   gap: 0.35rem;
   margin-top: 0.4rem;
+}
+
+/* Same golden-case-over-dark-window bezel as the strobe/needle/meter
+   devices, so the spectrum reads as one more instrument display rather
+   than a bare canvas. */
+.spectrum-case {
+  padding: 4px;
+  border-radius: 0.85rem;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: 0 2px 5px rgba(61, 31, 15, 0.14);
 }
 
 .spectrum-canvas {
