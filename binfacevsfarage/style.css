@@ -187,18 +187,18 @@ html,body{
 
 .healthbar{
   height:100%; width:100%;
+  display:flex; gap:2px;
+}
+/* each block is a fixed 1/7th slot — a hit drops a whole block off the end
+   instead of shrinking the bar's width */
+.health-segment{
+  flex:1; height:100%;
+  background:#1a0000;
+}
+.health-segment.filled{
   background:linear-gradient(180deg,#fff59a 0%, #ffd23f 35%, #ff9d1e 100%);
-  transition:width .2s linear, background .15s linear;
-  position:relative;
 }
-/* tick marks dividing the bar into segments, SF2-style */
-.healthbar::after{
-  content:""; position:absolute; inset:0;
-  background-image:repeating-linear-gradient(
-    to right, rgba(0,0,0,0.35) 0, rgba(0,0,0,0.35) 2px, transparent 2px, transparent 10%
-  );
-}
-.healthbar.low{
+.health-segment.filled.low{
   background:linear-gradient(180deg,#ff9d8a 0%, #ff4d3c 45%, #c21414 100%);
   animation: healthFlash .5s steps(2) infinite;
 }
