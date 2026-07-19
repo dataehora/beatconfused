@@ -27,8 +27,11 @@ const testToneVolume = document.getElementById("testToneVolume");
 const toggleTestToneBtn = document.getElementById("toggleTestToneBtn");
 const decreaseTestToneBtn = document.getElementById("decreaseTestToneBtn");
 const increaseTestToneBtn = document.getElementById("increaseTestToneBtn");
+const decreaseCentsBtn = document.getElementById("decreaseCentsBtn");
+const increaseCentsBtn = document.getElementById("increaseCentsBtn");
 const testToneNoteEl = document.getElementById("testToneNote");
 const testToneFreqLabelEl = document.getElementById("testToneFreqLabel");
+const testToneCentsLabelEl = document.getElementById("testToneCentsLabel");
 const varianceFillEl = document.getElementById("varianceFill");
 const variancePrevNoteEl = document.getElementById("variancePrevNote");
 const varianceCurrentNoteEl = document.getElementById("varianceCurrentNote");
@@ -48,7 +51,7 @@ let lastPitchCheckAt = 0;
 
 const NOTE_NAMES = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"];
 
-const MIN_A4 = 415;
+const MIN_A4 = 392;
 const MAX_A4 = 466;
 const DEFAULT_A4 = 440;
 const MIN_FREQ_HZ = 40;
@@ -68,6 +71,11 @@ const NEEDLE_MAX_CENTS = 50;
 const NEEDLE_MAX_DEG = 45;
 const LED_MAX_CENTS = 50;
 const LED_STEP_CENTS = 5;
+
+// The test tone's frequency slider spans the full piano keyboard, A0 to C8.
+const TEST_FREQ_MIN = 28; // A0 is 27.5 Hz; the slider deals in whole Hz.
+const TEST_FREQ_MAX = 4186; // C8
+const FINE_TUNING_MAX_CENTS = 50;
 
 // Five rings graduating from a slow outer band to a fast inner one, closer
 // to a real optical strobe disc (e.g. the Peterson StroboStomp HD) than a
@@ -353,43 +361,47 @@ function renderNeedle() {
 }
 
 function renderMeter() {
+  // With no source active, rest the meter at its tuned center (0 cents)
+  // rather than switching the indicator off — matches the strobe/needle
+  // idling in their in-tune position at the reference A4.
   const hasSignal = state.hasSignal;
-  const clamped = clamp(state.smoothedCents, -LED_MAX_CENTS, LED_MAX_CENTS);
+  const clamped = hasSignal ? clamp(state.smoothedCents, -LED_MAX_CENTS, LED_MAX_CENTS) : 0;
 
   ledDotElements.forEach(({ cents, el }) => {
-    let lit = false;
+    let lit;
 
-    if (hasSignal) {
-      if (cents === 0) {
-        lit = Math.abs(clamped) <= IN_TUNE_THRESHOLD_CENTS;
-      } else if (cents > 0) {
-        lit = clamped >= cents;
-      } else {
-        lit = clamped <= cents;
-      }
+    if (cents === 0) {
+      lit = Math.abs(clamped) <= IN_TUNE_THRESHOLD_CENTS;
+    } else if (hasSignal && cents > 0) {
+      lit = clamped >= cents;
+    } else if (hasSignal && cents < 0) {
+      lit = clamped <= cents;
+    } else {
+      lit = false;
     }
 
     el.classList.toggle("lit", lit);
   });
 
-  if (hasSignal) {
-    const percent = 50 + (clamped / LED_MAX_CENTS) * 50;
-    ledIndicatorEl.style.left = `${percent}%`;
-    ledIndicatorEl.classList.add("visible");
-  } else {
-    ledIndicatorEl.classList.remove("visible");
-  }
+  // The track runs bottom-to-top (flat at the bottom, sharp at the top), so
+  // the indicator's vertical position is driven by `bottom`, not `left`.
+  const percent = 50 + (clamped / LED_MAX_CENTS) * 50;
+  ledIndicatorEl.style.bottom = `${percent}%`;
+  ledIndicatorEl.classList.add("visible");
 }
 
 function updateReadout() {
-  const inTune = state.hasSignal && Math.abs(state.smoothedCents) <= IN_TUNE_THRESHOLD_CENTS;
+  // With no source active, the tuner rests at its reference A4 rather than
+  // going blank — it reads as a device sitting in its tuned position (like
+  // a physical strobe disc at standstill), not a device that's off.
+  const inTune = !state.hasSignal || Math.abs(state.smoothedCents) <= IN_TUNE_THRESHOLD_CENTS;
   tunerSection.classList.toggle("in-tune", inTune);
   tunerSection.style.setProperty("--tune-mix", String(state.hasSignal ? getTuneMixPercent(state.smoothedCents) : 0));
 
   if (!state.hasSignal || !state.currentNote) {
-    noteNameEl.textContent = "–";
+    noteNameEl.textContent = "A4";
     centsValueEl.textContent = "0¢";
-    freqValueEl.textContent = "— Hz";
+    freqValueEl.textContent = `${state.a4.toFixed(1)} Hz`;
     return;
   }
 
@@ -665,7 +677,7 @@ function stopTestTone() {
     testGainNode = null;
   }
 
-  toggleTestToneBtn.textContent = "Play Test Tone";
+  toggleTestToneBtn.textContent = "Test Tone";
   toggleTestToneBtn.setAttribute("aria-pressed", "false");
   endRenderLoop();
   resetVisuals();
@@ -687,11 +699,13 @@ function stopActiveSource() {
   }
 }
 
-// The Frequency slider sets a whole-Hz base; the Fine Tuning slider adds a
-// continuous 0-1 Hz offset on top of it, covering exactly the gap between
-// that base and the next Hz up.
+// The Frequency slider picks a whole-Hz base; Fine Tuning bends it by up to
+// ±50 cents (a quarter-tone each way) rather than adding raw Hz, so it reads
+// the same musically at any point on the keyboard.
 function getTestToneFrequency() {
-  return Number(testToneRange.value) + Number(testToneCentsRange.value);
+  const base = Number(testToneRange.value);
+  const cents = Number(testToneCentsRange.value);
+  return base * Math.pow(2, cents / 1200);
 }
 
 function updateTestToneDisplay(frequency) {
@@ -701,6 +715,12 @@ function updateTestToneDisplay(frequency) {
   const sign = roundedCents > 0 ? "+" : "";
   testToneNoteEl.textContent = `${note.name}${note.octave} ${sign}${roundedCents}¢`;
   updateVarianceBar(note);
+}
+
+function updateFineTuningLabel() {
+  const cents = Number(testToneCentsRange.value);
+  const sign = cents > 0 ? "+" : "";
+  testToneCentsLabelEl.textContent = `${sign}${cents}¢`;
 }
 
 // A single lean fill growing outward from a center tick (the nearest note)
@@ -724,9 +744,7 @@ function updateVarianceBar(note) {
   varianceNextNoteEl.textContent = noteNameForMidi(note.midi + 1);
 }
 
-function nudgeTestToneFrequency(deltaHz) {
-  const next = clamp(Number(testToneRange.value) + deltaHz, Number(testToneRange.min), Number(testToneRange.max));
-  testToneRange.value = String(next);
+function applyTestToneFrequency() {
   const combined = getTestToneFrequency();
   updateTestToneDisplay(combined);
 
@@ -735,11 +753,32 @@ function nudgeTestToneFrequency(deltaHz) {
   }
 }
 
+// Changing the base frequency resets Fine Tuning back to 0 — otherwise the
+// two controls would fight over what "0" even means as the base moves.
+function resetFineTuningCents() {
+  testToneCentsRange.value = "0";
+  updateFineTuningLabel();
+  applyTestToneFrequency();
+}
+
+function nudgeTestToneFrequency(deltaHz) {
+  const next = clamp(Number(testToneRange.value) + deltaHz, TEST_FREQ_MIN, TEST_FREQ_MAX);
+  testToneRange.value = String(next);
+  resetFineTuningCents();
+}
+
+function nudgeFineTuningCents(deltaCents) {
+  const next = clamp(Number(testToneCentsRange.value) + deltaCents, -FINE_TUNING_MAX_CENTS, FINE_TUNING_MAX_CENTS);
+  testToneCentsRange.value = String(next);
+  updateFineTuningLabel();
+  applyTestToneFrequency();
+}
+
 /* ============================================================
    CONTROLS
    ============================================================ */
 function setVisualMode() {
-  const mode = document.querySelector('input[name="tunerVisualMode"]:checked')?.value || "strobe";
+  const mode = document.querySelector('input[name="tunerVisualMode"]:checked')?.value || "needle";
   tunerSection.dataset.visualMode = mode;
   strobeVisual.hidden = mode !== "strobe";
   needleVisual.hidden = mode !== "needle";
@@ -760,6 +799,8 @@ function updateReferencePitch(value) {
 
 pitchInput.addEventListener("input", (event) => updateReferencePitch(event.target.value));
 pitchRange.addEventListener("input", (event) => updateReferencePitch(event.target.value));
+// A double-click anywhere on the reference pitch bar snaps it back to A440.
+pitchRange.addEventListener("dblclick", () => updateReferencePitch(DEFAULT_A4));
 decreasePitchBtn.addEventListener("click", () => updateReferencePitch(state.a4 - 1));
 increasePitchBtn.addEventListener("click", () => updateReferencePitch(state.a4 + 1));
 
@@ -775,18 +816,19 @@ toggleMicBtn.addEventListener("click", toggleMic);
 toggleTestToneBtn.addEventListener("click", toggleTestTone);
 decreaseTestToneBtn.addEventListener("click", () => nudgeTestToneFrequency(-1));
 increaseTestToneBtn.addEventListener("click", () => nudgeTestToneFrequency(1));
+decreaseCentsBtn.addEventListener("click", () => nudgeFineTuningCents(-1));
+increaseCentsBtn.addEventListener("click", () => nudgeFineTuningCents(1));
 
-function handleTestToneFrequencyInput() {
-  const combined = getTestToneFrequency();
-  updateTestToneDisplay(combined);
+// Dragging the base frequency resets Fine Tuning to 0 (see resetFineTuningCents).
+testToneRange.addEventListener("input", resetFineTuningCents);
 
-  if (state.activeSource === "test" && testOscillator) {
-    testOscillator.frequency.setTargetAtTime(combined, audioContext.currentTime, 0.01);
-  }
-}
+testToneCentsRange.addEventListener("input", () => {
+  updateFineTuningLabel();
+  applyTestToneFrequency();
+});
 
-testToneRange.addEventListener("input", handleTestToneFrequencyInput);
-testToneCentsRange.addEventListener("input", handleTestToneFrequencyInput);
+// A double-click anywhere on the Fine Tuning bar snaps it back to 0.
+testToneCentsRange.addEventListener("dblclick", resetFineTuningCents);
 
 testToneVolume.addEventListener("input", (event) => {
   if (testGainNode) {
@@ -827,5 +869,6 @@ buildNeedleScale();
 buildLedSegments();
 setVisualMode();
 updateReferencePitch(state.a4);
+updateFineTuningLabel();
 updateTestToneDisplay(getTestToneFrequency());
 resetVisuals();

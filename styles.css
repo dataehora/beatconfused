@@ -183,6 +183,19 @@ body {
   fill: #f6f1e8;
 }
 
+/* A blue "A4" label layered on top of the icon (last in paint order), so
+   the tool reads as a tuner at a glance rather than a generic dial. */
+.tuner-icon-a4 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 54px;
+  fill: #3f7fc9;
+  paint-order: stroke fill;
+  stroke: #f6f1e8;
+  stroke-width: 6px;
+  stroke-linejoin: round;
+}
+
 .tool-name {
   margin-top: 0.85rem;
   padding: 0 1.4rem;
