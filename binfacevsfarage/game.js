@@ -14,7 +14,8 @@
   const GRAVITY = 1400;
   const JUMP_VELOCITY = -620;
   const MOVE_SPEED = 260;
-  const FIGHTER_W = 130, FIGHTER_H = 210;
+  const CHARACTER_SCALE = 1.5; // fighters (and, to match, thrown items) drawn 50% bigger
+  const FIGHTER_W = 130 * CHARACTER_SCALE, FIGHTER_H = 210 * CHARACTER_SCALE;
   const MAX_HEALTH = 100;
   const ROUND_TIME = 30; // seconds
   const THROW_COOLDOWN = 0.7;
@@ -892,8 +893,8 @@
       this.y = y;
       this.vx = dir * 274; // 322 * 0.85 — an additional 15% slower
       const scale = (owner.def && owner.def.projectileScale) || 1;
-      this.w = 34 * scale;
-      this.h = 28 * scale;
+      this.w = 34 * scale * CHARACTER_SCALE;
+      this.h = 28 * scale * CHARACTER_SCALE;
       this.dead = false;
       this.spin = 0;
       this.spinRate = (owner.def && owner.def.projectileSpinRate) || 10;
