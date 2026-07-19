@@ -190,6 +190,54 @@
       </div>
 
       <div class="settings-row">
+        <div class="control-block signal-block">
+          <div class="panel-header">
+            <span class="panel-title">Input Monitor</span>
+          </div>
+          <p class="hint">Boosts the microphone and shows how much signal is reaching the tuner.</p>
+
+          <div class="signal-meters-row">
+            <div class="vertical-control">
+              <span class="vertical-control-label">Gain</span>
+              <div class="vertical-slider-wrap">
+                <input
+                  id="micGainRange"
+                  type="range"
+                  min="1"
+                  max="12"
+                  step="0.5"
+                  value="6"
+                  class="vertical-slider"
+                  aria-label="Microphone gain boost"
+                  aria-orientation="vertical"
+                />
+              </div>
+              <span class="vertical-control-value" id="micGainValueLabel">6.0×</span>
+            </div>
+
+            <div class="vertical-control">
+              <span class="vertical-control-label">Level</span>
+              <div class="level-meter-case">
+                <div class="level-meter-track">
+                  <div class="level-meter-fill" id="levelMeterFill"></div>
+                </div>
+              </div>
+              <span class="vertical-control-value" id="levelValueLabel">−∞ dB</span>
+            </div>
+          </div>
+
+          <div class="spectrum-block">
+            <div class="spectrum-case">
+              <canvas id="spectrumCanvas" class="spectrum-canvas" aria-hidden="true"></canvas>
+            </div>
+            <div class="spectrum-labels">
+              <span>19 Hz</span>
+              <span>440 Hz</span>
+              <span>4434 Hz</span>
+            </div>
+          </div>
+        </div>
+
         <div class="control-block reference-pitch-block">
           <div class="panel-header">
             <span class="panel-title">Reference Pitch</span>
@@ -321,52 +369,6 @@
               aria-label="Fine tuning: pans up to 50 cents sharp or flat from the selected frequency. Double-click resets to 0."
             />
             <span class="cents-center-mark" aria-hidden="true"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="control-block signal-block">
-        <div class="panel-header">
-          <span class="panel-title">Input Monitor</span>
-        </div>
-        <p class="hint">Boosts the microphone and shows how much signal is reaching the tuner.</p>
-
-        <div class="signal-meters-row">
-          <div class="vertical-control">
-            <span class="vertical-control-label">Gain</span>
-            <div class="vertical-slider-wrap">
-              <input
-                id="micGainRange"
-                type="range"
-                min="1"
-                max="12"
-                step="0.5"
-                value="6"
-                class="vertical-slider"
-                aria-label="Microphone gain boost"
-                aria-orientation="vertical"
-              />
-            </div>
-            <span class="vertical-control-value" id="micGainValueLabel">6.0×</span>
-          </div>
-
-          <div class="vertical-control">
-            <span class="vertical-control-label">Level</span>
-            <div class="level-meter-case">
-              <div class="level-meter-track">
-                <div class="level-meter-fill" id="levelMeterFill"></div>
-              </div>
-            </div>
-            <span class="vertical-control-value" id="levelValueLabel">−∞ dB</span>
-          </div>
-        </div>
-
-        <div class="spectrum-block">
-          <canvas id="spectrumCanvas" class="spectrum-canvas" aria-hidden="true"></canvas>
-          <div class="spectrum-labels">
-            <span>19 Hz</span>
-            <span>440 Hz</span>
-            <span>4434 Hz</span>
           </div>
         </div>
       </div>
