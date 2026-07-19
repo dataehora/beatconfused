@@ -37,14 +37,23 @@ const variancePrevNoteEl = document.getElementById("variancePrevNote");
 const varianceCurrentNoteEl = document.getElementById("varianceCurrentNote");
 const varianceNextNoteEl = document.getElementById("varianceNextNote");
 
+const micGainRange = document.getElementById("micGainRange");
+const micGainValueLabelEl = document.getElementById("micGainValueLabel");
+const levelMeterFillEl = document.getElementById("levelMeterFill");
+const levelValueLabelEl = document.getElementById("levelValueLabel");
+const spectrumCanvas = document.getElementById("spectrumCanvas");
+const spectrumCtx = spectrumCanvas.getContext("2d");
+
 const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
 let audioContext = null;
 let analyserNode = null;
 let mediaStream = null;
 let mediaStreamSource = null;
+let micGainNode = null;
 let testOscillator = null;
 let testGainNode = null;
 let timeDomainBuffer = null;
+let freqDataBuffer = null;
 let rafId;
 let lastFrameAt = 0;
 let lastPitchCheckAt = 0;
@@ -59,6 +68,9 @@ const MAX_FREQ_HZ = 1600;
 const FFT_SIZE = 4096;
 const MIN_RMS = 0.012;
 const MIN_CLARITY = 0.9;
+// The floor of the Input Monitor's dB scale — anything quieter reads as
+// silence rather than an ever-more-negative number.
+const LEVEL_FLOOR_DB = -60;
 const PITCH_CHECK_INTERVAL_MS = 45;
 const SILENCE_TIMEOUT_MS = 500;
 const CENTS_SMOOTHING = 0.25;
@@ -73,8 +85,8 @@ const LED_MAX_CENTS = 50;
 const LED_STEP_CENTS = 5;
 
 // The test tone's frequency slider spans the full piano keyboard, A0 to C8.
-const TEST_FREQ_MIN = 28; // A0 is 27.5 Hz; the slider deals in whole Hz.
-const TEST_FREQ_MAX = 4186; // C8
+const TEST_FREQ_MIN = 19;
+const TEST_FREQ_MAX = 4434;
 const FINE_TUNING_MAX_CENTS = 50;
 
 // Five rings graduating from a slow outer band to a fast inner one, closer
@@ -390,6 +402,91 @@ function renderMeter() {
   ledIndicatorEl.classList.add("visible");
 }
 
+/* ============================================================
+   INPUT MONITOR — a separate readout from the tuning display: how loud
+   the (post-gain-boost) microphone signal is, and where its energy sits
+   across the spectrum. Purely diagnostic, so it only reflects the mic
+   path — the test tone bypasses the analyser entirely (see startTestTone)
+   and has nothing for this panel to show.
+   ============================================================ */
+function computeRms(buffer) {
+  let sumSquares = 0;
+
+  for (let i = 0; i < buffer.length; i += 1) {
+    sumSquares += buffer[i] * buffer[i];
+  }
+
+  return Math.sqrt(sumSquares / buffer.length);
+}
+
+function rmsToDb(rms) {
+  if (rms <= 0) {
+    return LEVEL_FLOOR_DB;
+  }
+
+  return Math.max(LEVEL_FLOOR_DB, 20 * Math.log10(rms));
+}
+
+function updateLevelMeter(rms) {
+  const db = rmsToDb(rms);
+  const percent = clamp(((db - LEVEL_FLOOR_DB) / -LEVEL_FLOOR_DB) * 100, 0, 100);
+  levelMeterFillEl.style.height = `${percent}%`;
+  // Gold up to a comfortable working level, warming toward the accent red
+  // as the signal approaches 0 dB (clipping) — the last 12 dB of headroom.
+  levelMeterFillEl.style.setProperty("--level-mix", String(Math.round(clamp((db + 12) / 12, 0, 1) * 100)));
+  levelValueLabelEl.textContent = db <= LEVEL_FLOOR_DB ? "−∞ dB" : `${db.toFixed(1)} dB`;
+}
+
+function resetLevelMeter() {
+  levelMeterFillEl.style.height = "0%";
+  levelMeterFillEl.style.setProperty("--level-mix", "0");
+  levelValueLabelEl.textContent = "−∞ dB";
+}
+
+function sizeSpectrumCanvas() {
+  const rect = spectrumCanvas.getBoundingClientRect();
+
+  if (rect.width === 0 || rect.height === 0) {
+    return;
+  }
+
+  const dpr = window.devicePixelRatio || 1;
+  spectrumCanvas.width = Math.round(rect.width * dpr);
+  spectrumCanvas.height = Math.round(rect.height * dpr);
+}
+
+function clearSpectrum() {
+  spectrumCtx.clearRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
+}
+
+// Log-scaled across TEST_FREQ_MIN..TEST_FREQ_MAX (the same 19-4434 Hz span
+// as the test tone) so an octave always takes up the same width on screen,
+// matching how the ear actually perceives the spectrum, rather than a
+// linear Hz axis that would crush everything below a few hundred Hz into
+// a handful of pixels.
+function updateSpectrum(freqData, sampleRate) {
+  const width = spectrumCanvas.width;
+  const height = spectrumCanvas.height;
+  clearSpectrum();
+
+  const hzPerBin = sampleRate / FFT_SIZE;
+  const logMin = Math.log2(TEST_FREQ_MIN);
+  const logMax = Math.log2(TEST_FREQ_MAX);
+  const barWidth = Math.max(1, width / 160);
+  const barCount = Math.floor(width / barWidth);
+
+  spectrumCtx.fillStyle = "#caa06a";
+
+  for (let i = 0; i < barCount; i += 1) {
+    const t = i / (barCount - 1);
+    const freq = Math.pow(2, logMin + t * (logMax - logMin));
+    const binIndex = Math.min(freqData.length - 1, Math.round(freq / hzPerBin));
+    const magnitude = freqData[binIndex] / 255;
+    const barHeight = magnitude * height;
+    spectrumCtx.fillRect(i * barWidth, height - barHeight, Math.max(1, barWidth - 1), barHeight);
+  }
+}
+
 function updateReadout() {
   // With no source active, the tuner rests at its reference A4 rather than
   // going blank — it reads as a device sitting in its tuned position (like
@@ -421,6 +518,8 @@ function resetVisuals() {
   updateReadout();
   needleSwingEl.setAttribute("transform", `rotate(0 ${NEEDLE_PIVOT.x} ${NEEDLE_PIVOT.y})`);
   renderMeter();
+  resetLevelMeter();
+  clearSpectrum();
 
   // With no tone playing, every ring's wedge boundaries should line up
   // along the same radial lines (as in a physical strobe disc at rest),
@@ -466,6 +565,7 @@ function ensureAnalyser() {
     analyserNode = audioContext.createAnalyser();
     analyserNode.fftSize = FFT_SIZE;
     timeDomainBuffer = new Float32Array(analyserNode.fftSize);
+    freqDataBuffer = new Uint8Array(analyserNode.frequencyBinCount);
   }
 
   return analyserNode;
@@ -513,6 +613,10 @@ function mainLoop(timestamp) {
       state.lastFrequency = testFrequency;
     } else {
       analyserNode.getFloatTimeDomainData(timeDomainBuffer);
+      updateLevelMeter(computeRms(timeDomainBuffer));
+      analyserNode.getByteFrequencyData(freqDataBuffer);
+      updateSpectrum(freqDataBuffer, audioContext.sampleRate);
+
       const result = detectPitch(timeDomainBuffer, audioContext.sampleRate);
 
       if (result) {
@@ -553,7 +657,7 @@ async function startMic() {
 
   try {
     mediaStream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 1 },
     });
   } catch (error) {
     if (error && error.name === "NotAllowedError") {
@@ -577,7 +681,10 @@ async function startMic() {
 
   ensureAnalyser();
   mediaStreamSource = ctx.createMediaStreamSource(mediaStream);
-  mediaStreamSource.connect(analyserNode);
+  micGainNode = ctx.createGain();
+  micGainNode.gain.value = Number(micGainRange.value);
+  mediaStreamSource.connect(micGainNode);
+  micGainNode.connect(analyserNode);
   // Deliberately not connected to audioContext.destination — we only
   // analyze the signal, never play it back, so there's no feedback loop.
 
@@ -598,6 +705,11 @@ function stopMic() {
   if (mediaStreamSource) {
     mediaStreamSource.disconnect();
     mediaStreamSource = null;
+  }
+
+  if (micGainNode) {
+    micGainNode.disconnect();
+    micGainNode = null;
   }
 
   if (mediaStream) {
@@ -822,6 +934,14 @@ increaseCentsBtn.addEventListener("click", () => nudgeFineTuningCents(1));
 // Dragging the base frequency resets Fine Tuning to 0 (see resetFineTuningCents).
 testToneRange.addEventListener("input", resetFineTuningCents);
 
+// A double-click on the Frequency bar snaps the test tone back to the
+// current reference pitch (state.a4), not a fixed number, so it always
+// matches whatever standard is selected in Reference Pitch.
+testToneRange.addEventListener("dblclick", () => {
+  testToneRange.value = String(state.a4);
+  resetFineTuningCents();
+});
+
 testToneCentsRange.addEventListener("input", () => {
   updateFineTuningLabel();
   applyTestToneFrequency();
@@ -835,6 +955,17 @@ testToneVolume.addEventListener("input", (event) => {
     testGainNode.gain.setTargetAtTime(Number(event.target.value), audioContext.currentTime, 0.01);
   }
 });
+
+micGainRange.addEventListener("input", (event) => {
+  const gain = Number(event.target.value);
+  micGainValueLabelEl.textContent = `${gain.toFixed(1)}×`;
+
+  if (micGainNode) {
+    micGainNode.gain.setTargetAtTime(gain, audioContext.currentTime, 0.01);
+  }
+});
+
+window.addEventListener("resize", sizeSpectrumCanvas);
 
 document.addEventListener("keydown", (event) => {
   const focusedTag = document.activeElement?.tagName;
@@ -871,4 +1002,6 @@ setVisualMode();
 updateReferencePitch(state.a4);
 updateFineTuningLabel();
 updateTestToneDisplay(getTestToneFrequency());
+micGainValueLabelEl.textContent = `${Number(micGainRange.value).toFixed(1)}×`;
+sizeSpectrumCanvas();
 resetVisuals();

@@ -96,11 +96,12 @@
             <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
           </radialGradient>
           <clipPath id="strobeHalfClip">
-            <path d="M 26 150 A 124 124 0 0 1 274 150 Z" />
+            <path d="M 13 150 A 137 137 0 0 1 287 150 Z" />
           </clipPath>
         </defs>
       </svg>
 
+      <div class="tuner-live">
       <div class="note-readout" aria-live="polite">
         <span class="note-name" id="noteName">–</span>
         <span class="note-meta">
@@ -112,12 +113,13 @@
       <div class="visual-stage">
         <div class="strobe visual-element" id="strobeVisual" aria-hidden="true" hidden>
           <svg class="strobe-device" viewBox="0 0 300 180" role="presentation" focusable="false">
-            <ellipse class="device-shadow" cx="150" cy="172" rx="118" ry="7" />
-
-            <path class="strobe-case" d="M 8 150 A 142 142 0 0 1 292 150 Z" fill="url(#tunerCaseGradient)" />
-            <path class="strobe-bezel-groove" d="M 16 150 A 134 134 0 0 1 284 150" />
-            <path class="strobe-window" d="M 26 150 A 124 124 0 0 1 274 150 Z" fill="url(#tunerWindowGradient)" />
-            <path class="strobe-window-rim" d="M 30 150 A 120 120 0 0 1 270 150" />
+            <path
+              class="strobe-case"
+              d="M 8 150 A 142 142 0 0 1 292 150 L 292 158 A 8 8 0 0 1 284 166 L 16 166 A 8 8 0 0 1 8 158 Z"
+              fill="url(#tunerCaseGradient)"
+            />
+            <path class="strobe-window" d="M 13 150 A 137 137 0 0 1 287 150 Z" fill="url(#tunerWindowGradient)" />
+            <path class="strobe-window-rim" d="M 17 150 A 133 133 0 0 1 283 150" />
 
             <g clip-path="url(#strobeHalfClip)">
               <g id="strobeRing1" class="strobe-ring"></g>
@@ -125,11 +127,10 @@
               <g id="strobeRing3" class="strobe-ring"></g>
               <g id="strobeRing4" class="strobe-ring strobe-ring-alt"></g>
               <g id="strobeRing5" class="strobe-ring"></g>
-              <circle class="strobe-vignette" cx="150" cy="150" r="124" fill="url(#strobeVignette)" />
+              <circle class="strobe-vignette" cx="150" cy="150" r="137" fill="url(#strobeVignette)" />
               <ellipse class="strobe-glass-highlight" cx="150" cy="70" rx="94" ry="46" fill="url(#strobeGlassHighlight)" />
             </g>
 
-            <rect class="strobe-base" x="34" y="146" width="232" height="16" rx="8" />
             <circle class="strobe-hub" cx="150" cy="150" r="5" />
             <circle class="strobe-hub-shine" cx="148.3" cy="148.3" r="1.6" />
           </svg>
@@ -137,9 +138,8 @@
 
         <div class="needle-gauge visual-element" id="needleVisual" aria-hidden="true">
           <svg class="needle-device" viewBox="0 0 240 200" role="presentation" focusable="false">
-            <ellipse class="device-shadow" cx="120" cy="194" rx="94" ry="8" />
             <rect class="device-case" x="8" y="8" width="224" height="178" rx="20" fill="url(#tunerCaseGradient)" />
-            <rect class="device-window" x="24" y="24" width="192" height="132" rx="12" fill="url(#tunerWindowGradient)" />
+            <rect class="device-window" x="12" y="12" width="216" height="170" rx="16" fill="url(#tunerWindowGradient)" />
             <g id="needleInTuneArc"></g>
             <g id="needleScaleTicks"></g>
             <text class="needle-flat-label" x="40" y="150">♭</text>
@@ -153,9 +153,11 @@
 
         <div class="led-meter visual-element" id="meterVisual" aria-hidden="true" hidden>
           <div class="led-meter-device">
-            <div class="led-track">
-              <div class="led-segments" id="ledSegments"></div>
-              <div class="led-indicator" id="ledIndicator"></div>
+            <div class="led-case">
+              <div class="led-track">
+                <div class="led-segments" id="ledSegments"></div>
+                <div class="led-indicator" id="ledIndicator"></div>
+              </div>
             </div>
             <div class="led-scale-labels">
               <span>♭</span>
@@ -185,6 +187,7 @@
         <button id="toggleMicBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop tuner">Start Tuner</button>
       </div>
       <p id="micStatus" class="hint tap-status" aria-live="polite">Uses your microphone. Nothing is recorded or sent anywhere.</p>
+      </div>
 
       <div class="settings-row">
         <div class="control-block reference-pitch-block">
@@ -292,12 +295,12 @@
           <input
             id="testToneRange"
             type="range"
-            min="28"
-            max="4186"
+            min="19"
+            max="4434"
             step="1"
             value="440"
             class="panel-slider"
-            aria-label="Test tone base frequency in Hz, from A0 (27.5 Hz) to C8 (4186 Hz)"
+            aria-label="Test tone base frequency in Hz, from 19 Hz to 4434 Hz. Double-click to revert to the reference pitch."
           />
 
           <span class="slider-title">Fine Tuning (¢)</span>
@@ -318,6 +321,52 @@
               aria-label="Fine tuning: pans up to 50 cents sharp or flat from the selected frequency. Double-click resets to 0."
             />
             <span class="cents-center-mark" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-block signal-block">
+        <div class="panel-header">
+          <span class="panel-title">Input Monitor</span>
+        </div>
+        <p class="hint">Boosts the microphone and shows how much signal is reaching the tuner.</p>
+
+        <div class="signal-meters-row">
+          <div class="vertical-control">
+            <span class="vertical-control-label">Gain</span>
+            <div class="vertical-slider-wrap">
+              <input
+                id="micGainRange"
+                type="range"
+                min="1"
+                max="12"
+                step="0.5"
+                value="6"
+                class="vertical-slider"
+                aria-label="Microphone gain boost"
+                aria-orientation="vertical"
+              />
+            </div>
+            <span class="vertical-control-value" id="micGainValueLabel">6.0×</span>
+          </div>
+
+          <div class="vertical-control">
+            <span class="vertical-control-label">Level</span>
+            <div class="level-meter-case">
+              <div class="level-meter-track">
+                <div class="level-meter-fill" id="levelMeterFill"></div>
+              </div>
+            </div>
+            <span class="vertical-control-value" id="levelValueLabel">−∞ dB</span>
+          </div>
+        </div>
+
+        <div class="spectrum-block">
+          <canvas id="spectrumCanvas" class="spectrum-canvas" aria-hidden="true"></canvas>
+          <div class="spectrum-labels">
+            <span>19 Hz</span>
+            <span>440 Hz</span>
+            <span>4434 Hz</span>
           </div>
         </div>
       </div>
