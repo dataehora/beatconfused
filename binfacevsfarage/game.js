@@ -16,7 +16,17 @@
   const MOVE_SPEED = 260;
   const CHARACTER_SCALE = 1.5; // fighters (and, to match, thrown items) drawn 50% bigger
   const FIGHTER_W = 130 * CHARACTER_SCALE, FIGHTER_H = 210 * CHARACTER_SCALE;
+  // The fighter pose art (Assets/*_idle1.png etc.) is drawn on a shared 340x410
+  // canvas that's proportionally wider/shorter than the FIGHTER_W x FIGHTER_H
+  // box, so drawFighter() letterboxes it to the box's width and the sprite
+  // only fills the bottom ~75% of the box — there's dead (invisible) space
+  // above the character's actual head. VISIBLE_FIGHTER_H is that real drawn
+  // height, used to keep hit detection and the "sails over your head" throw
+  // arc lined up with what's actually on screen instead of the padded box.
+  const SPRITE_NATIVE_W = 340, SPRITE_NATIVE_H = 410;
+  const VISIBLE_FIGHTER_H = SPRITE_NATIVE_H * Math.min(FIGHTER_W / SPRITE_NATIVE_W, FIGHTER_H / SPRITE_NATIVE_H);
   const MAX_HEALTH = 100;
+  const HEALTH_SEGMENTS = 7; // SF2-style chunked health bar: whole blocks drop off, the bar never scales down
   const ROUND_TIME = 30; // seconds
   const THROW_COOLDOWN = 0.7;
   const HIT_STUN = 0.35;
@@ -86,6 +96,20 @@
   const paperPhoto = $("#paper-photo");
   const paperDate = $("#paper-date");
   const continueNumEl = $("#continue-num");
+
+  // health bars are built from HEALTH_SEGMENTS discrete blocks instead of a
+  // continuously-scaling width — a hit drops whole segments off the end
+  // rather than shrinking everything, SF2-style
+  function buildHealthSegments(container) {
+    container.innerHTML = "";
+    for (let i = 0; i < HEALTH_SEGMENTS; i++) {
+      const seg = document.createElement("div");
+      seg.className = "health-segment";
+      container.appendChild(seg);
+    }
+  }
+  buildHealthSegments(p1HealthEl);
+  buildHealthSegments(p2HealthEl);
 
   let selectedMap = null;
   let selectedFighter = null;
@@ -874,7 +898,13 @@
     get w() { return FIGHTER_W; }
     get h() { return FIGHTER_H; }
 
-    rect() { return { x: this.x - this.w / 2, y: this.y, w: this.w, h: this.h }; }
+    // hit detection uses the fighter's actual visible height (VISIBLE_FIGHTER_H),
+    // not the full padded box, so a projectile that visually clears the head
+    // never silently registers as a hit against the invisible space above it
+    rect() {
+      const headGap = this.h - VISIBLE_FIGHTER_H;
+      return { x: this.x - this.w / 2, y: this.y + headGap, w: this.w, h: VISIBLE_FIGHTER_H };
+    }
 
     takeHit(dmg) {
       if (this.state === "ko") return;
@@ -943,12 +973,20 @@
   }
 
   function updateHealthBars() {
-    const p1pct = (player.health / MAX_HEALTH) * 100;
-    const p2pct = (cpu.health / MAX_HEALTH) * 100;
-    p1HealthEl.style.width = `${p1pct}%`;
-    p2HealthEl.style.width = `${p2pct}%`;
-    p1HealthEl.classList.toggle("low", p1pct <= 25 && p1pct > 0);
-    p2HealthEl.classList.toggle("low", p2pct <= 25 && p2pct > 0);
+    setHealthSegments(p1HealthEl, player.health);
+    setHealthSegments(p2HealthEl, cpu.health);
+  }
+
+  function setHealthSegments(container, health) {
+    const pct = health / MAX_HEALTH;
+    // ceil so the bar only drops a segment once health has actually crossed
+    // below that segment's threshold, never for merely being under 100%
+    const filled = Math.ceil(pct * HEALTH_SEGMENTS);
+    const low = pct > 0 && pct <= 0.25;
+    Array.from(container.children).forEach((seg, i) => {
+      seg.classList.toggle("filled", i < filled);
+      seg.classList.toggle("low", i < filled && low);
+    });
   }
 
   /* ----------------------------- MAIN LOOP ----------------------------- */
@@ -1052,7 +1090,7 @@
   }
 
   const WAIST_HEIGHT_ABOVE_GROUND = FIGHTER_H * 0.34; // dodgeable by a normal jump
-  const HIGH_THROW_HEIGHT_ABOVE_GROUND = FIGHTER_H * 1.1; // clears a standing opponent's head entirely
+  const HIGH_THROW_HEIGHT_ABOVE_GROUND = VISIBLE_FIGHTER_H * 1.12; // a modest clearance above a standing opponent's actual (visible) head, not the padded box
 
   function throwProjectile(f) {
     f.throwCooldown = THROW_COOLDOWN;
