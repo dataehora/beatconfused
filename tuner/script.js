@@ -4,6 +4,7 @@ const tunerSection = document.querySelector(".tuner");
 const noteNameEl = document.getElementById("noteName");
 const centsValueEl = document.getElementById("centsValue");
 const freqValueEl = document.getElementById("freqValue");
+const noteMetaEl = document.getElementById("noteMeta");
 
 const strobeVisual = document.getElementById("strobeVisual");
 const needleVisual = document.getElementById("needleVisual");
@@ -43,6 +44,12 @@ const levelMeterFillEl = document.getElementById("levelMeterFill");
 const levelValueLabelEl = document.getElementById("levelValueLabel");
 const spectrumCanvas = document.getElementById("spectrumCanvas");
 const spectrumCtx = spectrumCanvas.getContext("2d");
+const spectrumStyleInputs = document.querySelectorAll('input[name="spectrumStyle"]');
+const spectrumLowLabelEl = document.getElementById("spectrumLowLabel");
+const spectrumRefLabelEl = document.getElementById("spectrumRefLabel");
+const spectrumHighLabelEl = document.getElementById("spectrumHighLabel");
+const freqTableHeadRow = document.getElementById("freqTableHeadRow");
+const freqTableBody = document.getElementById("freqTableBody");
 
 const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
 let audioContext = null;
@@ -89,6 +96,21 @@ const TEST_FREQ_MIN = 19;
 const TEST_FREQ_MAX = 4434;
 const FINE_TUNING_MAX_CENTS = 50;
 
+// A standard 88-key grand piano: A0 (MIDI 21) to C8 (MIDI 108).
+const PIANO_MIN_MIDI = 21;
+const PIANO_MAX_MIDI = 108;
+
+// The six tuning standards offered under Reference Pitch, in the same
+// ascending order — reused here to build the Frequency Table's columns.
+const REFERENCE_PITCH_PRESETS = [
+  { value: 392, primary: "French Baroque", secondary: "\"Tone de Chambre\"" },
+  { value: 415, primary: "Baroque" },
+  { value: 432, primary: "Verdi", secondary: "\"Scientific\"" },
+  { value: 440, primary: "Standard" },
+  { value: 444, primary: "Modern", secondary: "\"Symphony\"" },
+  { value: 466, primary: "Italian", secondary: "Renaissance" },
+];
+
 // Five rings graduating from a slow outer band to a fast inner one, closer
 // to a real optical strobe disc (e.g. the Peterson StroboStomp HD) than a
 // simple two- or three-ring toy. Segment counts follow a strict power-of-two
@@ -115,6 +137,7 @@ const state = {
   currentNote: null,
   lastFrequency: 0,
   lastConfidentAt: 0,
+  spectrumStyle: "vintage", // "vintage" | "modern"
 };
 
 let ledDotElements = [];
@@ -230,6 +253,10 @@ function noteNameForMidi(midi) {
   const name = NOTE_NAMES[((midi % 12) + 12) % 12];
   const octave = Math.floor(midi / 12) - 1;
   return `${name}${octave}`;
+}
+
+function pianoNoteFrequency(midi, a4) {
+  return a4 * Math.pow(2, (midi - 69) / 12);
 }
 
 function centsToNeedleAngle(cents) {
@@ -349,6 +376,43 @@ function buildLedSegments() {
   }
 }
 
+// Builds the 88-row x 6-column reference table once at load: each column
+// is one of the tuning standards from Reference Pitch, each row one piano
+// key (A0-C8), each cell that key's frequency under that standard.
+function buildFrequencyTable() {
+  REFERENCE_PITCH_PRESETS.forEach((preset) => {
+    const th = document.createElement("th");
+    const freqEl = document.createElement("span");
+    freqEl.className = "freq-table-col-freq";
+    freqEl.textContent = `${preset.value} Hz`;
+    th.appendChild(freqEl);
+
+    if (preset.primary) {
+      const nameEl = document.createElement("span");
+      nameEl.className = "freq-table-col-name";
+      nameEl.textContent = preset.secondary ? `${preset.primary} ${preset.secondary}` : preset.primary;
+      th.appendChild(nameEl);
+    }
+
+    freqTableHeadRow.appendChild(th);
+  });
+
+  for (let midi = PIANO_MIN_MIDI; midi <= PIANO_MAX_MIDI; midi += 1) {
+    const row = document.createElement("tr");
+    const noteCell = document.createElement("td");
+    noteCell.textContent = noteNameForMidi(midi);
+    row.appendChild(noteCell);
+
+    REFERENCE_PITCH_PRESETS.forEach((preset) => {
+      const cell = document.createElement("td");
+      cell.textContent = pianoNoteFrequency(midi, preset.value).toFixed(2);
+      row.appendChild(cell);
+    });
+
+    freqTableBody.appendChild(row);
+  }
+}
+
 /* ============================================================
    RENDERING — called every animation frame regardless of which
    visual mode is active (all three stay in sync at once, same as
@@ -459,31 +523,104 @@ function clearSpectrum() {
   spectrumCtx.clearRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
 }
 
-// Log-scaled across TEST_FREQ_MIN..TEST_FREQ_MAX (the same 19-4434 Hz span
-// as the test tone) so an octave always takes up the same width on screen,
-// matching how the ear actually perceives the spectrum, rather than a
-// linear Hz axis that would crush everything below a few hundred Hz into
-// a handful of pixels.
+// The spectrum's own axis tracks the current reference pitch — A0 to C8
+// at that A4 — rather than the test tone's fixed 19-4434 Hz slider range,
+// so it always matches the Frequency Table's columns and the Input
+// Monitor labels below it.
+function getSpectrumRange() {
+  return {
+    min: pianoNoteFrequency(PIANO_MIN_MIDI, state.a4),
+    max: pianoNoteFrequency(PIANO_MAX_MIDI, state.a4),
+  };
+}
+
+function updateSpectrumLabels() {
+  // The keys themselves (A0 lowest, A4 reference, C8 highest) never
+  // change — only their Hz value does, as the reference pitch moves.
+  const range = getSpectrumRange();
+  spectrumLowLabelEl.textContent = `A0 · ${range.min.toFixed(1)} Hz`;
+  spectrumRefLabelEl.textContent = `A4 · ${state.a4.toFixed(1)} Hz`;
+  spectrumHighLabelEl.textContent = `C8 · ${range.max.toFixed(1)} Hz`;
+}
+
+// ---- Vintage: a classic segmented LED equalizer — blocky steps rather
+// than a smooth bar, gold at rest warming through amber to the accent red
+// in the last few segments, echoing the tuner's own wood-and-brass case
+// language instead of a generic rainbow EQ.
+function drawVintageSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin) {
+  const segmentHeight = 6;
+  const segmentGap = 2;
+  const segmentUnit = segmentHeight + segmentGap;
+  const totalSegments = Math.max(1, Math.floor(height / segmentUnit));
+
+  for (let i = 0; i < barCount; i += 1) {
+    const t = barCount > 1 ? i / (barCount - 1) : 0;
+    const freq = Math.pow(2, logMin + t * (logMax - logMin));
+    const binIndex = Math.min(freqData.length - 1, Math.round(freq / hzPerBin));
+    const magnitude = freqData[binIndex] / 255;
+    const litSegments = Math.round(magnitude * totalSegments);
+
+    for (let s = 0; s < litSegments; s += 1) {
+      const ratio = s / totalSegments;
+
+      if (ratio > 0.85) {
+        spectrumCtx.fillStyle = "#c0453a";
+      } else if (ratio > 0.6) {
+        spectrumCtx.fillStyle = "#d9a441";
+      } else {
+        spectrumCtx.fillStyle = "#caa06a";
+      }
+
+      const y = height - (s + 1) * segmentUnit + segmentGap;
+      spectrumCtx.fillRect(i * barWidth, y, Math.max(1, barWidth - 1), segmentHeight);
+    }
+  }
+}
+
+// ---- Modern: smooth, thin, cool-toned bars with a per-bar gradient —
+// closer to a DAW's analyzer (Ableton Live et al.) than a hardware EQ.
+function drawModernSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin) {
+  for (let i = 0; i < barCount; i += 1) {
+    const t = barCount > 1 ? i / (barCount - 1) : 0;
+    const freq = Math.pow(2, logMin + t * (logMax - logMin));
+    const binIndex = Math.min(freqData.length - 1, Math.round(freq / hzPerBin));
+    const magnitude = freqData[binIndex] / 255;
+    const barHeight = magnitude * height;
+
+    if (barHeight <= 0) {
+      continue;
+    }
+
+    const x = i * barWidth + barWidth * 0.15;
+    const w = Math.max(1, barWidth * 0.7);
+    const gradient = spectrumCtx.createLinearGradient(0, height, 0, height - barHeight);
+    gradient.addColorStop(0, "#3f6ea0");
+    gradient.addColorStop(1, "#a8cdf0");
+    spectrumCtx.fillStyle = gradient;
+    spectrumCtx.fillRect(x, height - barHeight, w, barHeight);
+  }
+}
+
+// Log-scaled across the current A0-C8 range (see getSpectrumRange) so an
+// octave always takes up the same width on screen, matching how the ear
+// actually perceives the spectrum, rather than a linear Hz axis that
+// would crush everything below a few hundred Hz into a handful of pixels.
 function updateSpectrum(freqData, sampleRate) {
   const width = spectrumCanvas.width;
   const height = spectrumCanvas.height;
   clearSpectrum();
 
   const hzPerBin = sampleRate / FFT_SIZE;
-  const logMin = Math.log2(TEST_FREQ_MIN);
-  const logMax = Math.log2(TEST_FREQ_MAX);
+  const range = getSpectrumRange();
+  const logMin = Math.log2(range.min);
+  const logMax = Math.log2(range.max);
   const barWidth = Math.max(1, width / 160);
   const barCount = Math.floor(width / barWidth);
 
-  spectrumCtx.fillStyle = "#caa06a";
-
-  for (let i = 0; i < barCount; i += 1) {
-    const t = i / (barCount - 1);
-    const freq = Math.pow(2, logMin + t * (logMax - logMin));
-    const binIndex = Math.min(freqData.length - 1, Math.round(freq / hzPerBin));
-    const magnitude = freqData[binIndex] / 255;
-    const barHeight = magnitude * height;
-    spectrumCtx.fillRect(i * barWidth, height - barHeight, Math.max(1, barWidth - 1), barHeight);
+  if (state.spectrumStyle === "modern") {
+    drawModernSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin);
+  } else {
+    drawVintageSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin);
   }
 }
 
@@ -496,12 +633,14 @@ function updateReadout() {
   tunerSection.style.setProperty("--tune-mix", String(state.hasSignal ? getTuneMixPercent(state.smoothedCents) : 0));
 
   if (!state.hasSignal || !state.currentNote) {
-    noteNameEl.textContent = "A4";
-    centsValueEl.textContent = "0¢";
-    freqValueEl.textContent = `${state.a4.toFixed(1)} Hz`;
+    noteNameEl.textContent = "No signal";
+    noteNameEl.classList.add("is-no-signal");
+    noteMetaEl.classList.add("is-empty");
     return;
   }
 
+  noteNameEl.classList.remove("is-no-signal");
+  noteMetaEl.classList.remove("is-empty");
   const { name, octave } = state.currentNote;
   noteNameEl.textContent = `${name}${octave}`;
   const roundedCents = Math.round(state.smoothedCents);
@@ -907,6 +1046,7 @@ function updateReferencePitch(value) {
   });
 
   updateTestToneDisplay(getTestToneFrequency());
+  updateSpectrumLabels();
 }
 
 pitchInput.addEventListener("input", (event) => updateReferencePitch(event.target.value));
@@ -922,6 +1062,12 @@ pitchPresetInputs.forEach((input) => {
 
 visualModeInputs.forEach((input) => {
   input.addEventListener("change", setVisualMode);
+});
+
+spectrumStyleInputs.forEach((input) => {
+  input.addEventListener("change", () => {
+    state.spectrumStyle = input.value;
+  });
 });
 
 toggleMicBtn.addEventListener("click", toggleMic);
@@ -967,6 +1113,23 @@ micGainRange.addEventListener("input", (event) => {
 
 window.addEventListener("resize", sizeSpectrumCanvas);
 
+// Collapsible frames: each panel-header's toggle hides everything in its
+// .control-block except the header (see the .is-collapsed CSS rule).
+// Re-measuring the spectrum canvas on expand matters because it reports
+// zero size while display:none, so sizeSpectrumCanvas's guard skips it
+// until the frame is visible again.
+document.querySelectorAll(".collapse-toggle").forEach((toggle) => {
+  toggle.addEventListener("click", () => {
+    const panel = toggle.closest(".control-block");
+    const collapsed = panel.classList.toggle("is-collapsed");
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+
+    if (!collapsed && panel.contains(spectrumCanvas)) {
+      sizeSpectrumCanvas();
+    }
+  });
+});
+
 document.addEventListener("keydown", (event) => {
   const focusedTag = document.activeElement?.tagName;
   const isFormElement = focusedTag === "INPUT" || focusedTag === "SELECT" || focusedTag === "TEXTAREA";
@@ -1003,5 +1166,6 @@ updateReferencePitch(state.a4);
 updateFineTuningLabel();
 updateTestToneDisplay(getTestToneFrequency());
 micGainValueLabelEl.textContent = `${Number(micGainRange.value).toFixed(1)}×`;
+buildFrequencyTable();
 sizeSpectrumCanvas();
 resetVisuals();

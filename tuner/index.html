@@ -104,7 +104,7 @@
       <div class="tuner-live">
       <div class="note-readout" aria-live="polite">
         <span class="note-name" id="noteName">–</span>
-        <span class="note-meta">
+        <span class="note-meta" id="noteMeta">
           <span class="cents-value" id="centsValue">0¢</span>
           <span class="freq-value" id="freqValue">— Hz</span>
         </span>
@@ -193,6 +193,9 @@
         <div class="control-block signal-block">
           <div class="panel-header">
             <span class="panel-title">Input Monitor</span>
+            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Input Monitor">
+              <span class="collapse-icon" aria-hidden="true">▾</span>
+            </button>
           </div>
           <p class="hint">Boosts the microphone and shows how much signal is reaching the tuner.</p>
 
@@ -230,6 +233,9 @@
         <div class="control-block reference-pitch-block">
           <div class="panel-header">
             <span class="panel-title">Reference Pitch</span>
+            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Reference Pitch">
+              <span class="collapse-icon" aria-hidden="true">▾</span>
+            </button>
           </div>
           <div class="fine-freq-row">
             <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)">−</button>
@@ -301,6 +307,9 @@
           <div class="panel-header">
             <span class="panel-title">Test Tone</span>
             <span class="panel-value" id="testToneNote">A4</span>
+            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Test Tone">
+              <span class="collapse-icon" aria-hidden="true">▾</span>
+            </button>
           </div>
           <p class="hint">Feeds a pure tone straight into the tuner (and your speakers) — no microphone needed.</p>
 
@@ -365,16 +374,49 @@
       <div class="control-block spectrum-analyzer-block">
         <div class="panel-header">
           <span class="panel-title">Spectrum Analyser</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Spectrum Analyser">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <div class="display-toggle" role="radiogroup" aria-label="Spectrum style">
+          <label class="pill pill-sm">
+            <input type="radio" name="spectrumStyle" value="vintage" checked />
+            <span>Vintage</span>
+          </label>
+          <label class="pill pill-sm">
+            <input type="radio" name="spectrumStyle" value="modern" />
+            <span>Modern</span>
+          </label>
         </div>
         <div class="spectrum-block">
           <div class="spectrum-case">
             <canvas id="spectrumCanvas" class="spectrum-canvas" aria-hidden="true"></canvas>
           </div>
           <div class="spectrum-labels">
-            <span>19 Hz</span>
-            <span>440 Hz</span>
-            <span>4434 Hz</span>
+            <span id="spectrumLowLabel">A0 · 27.5 Hz</span>
+            <span id="spectrumRefLabel">A4 · 440.0 Hz</span>
+            <span id="spectrumHighLabel">C8 · 4186.0 Hz</span>
           </div>
+        </div>
+      </div>
+
+      <div class="control-block freq-table-block is-collapsed">
+        <div class="panel-header">
+          <span class="panel-title">Frequency Table</span>
+          <button type="button" class="collapse-toggle" aria-expanded="false" aria-label="Expand Frequency Table">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <p class="hint">Every note of an 88-key piano, in Hz, under each reference pitch standard.</p>
+        <div class="freq-table-scroll">
+          <table class="freq-table" id="freqTable">
+            <thead>
+              <tr id="freqTableHeadRow">
+                <th class="freq-table-note-col">Note</th>
+              </tr>
+            </thead>
+            <tbody id="freqTableBody"></tbody>
+          </table>
         </div>
       </div>
     </section>
