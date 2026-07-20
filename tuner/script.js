@@ -44,7 +44,8 @@ const levelMeterFillEl = document.getElementById("levelMeterFill");
 const levelValueLabelEl = document.getElementById("levelValueLabel");
 const spectrumCanvas = document.getElementById("spectrumCanvas");
 const spectrumCtx = spectrumCanvas.getContext("2d");
-const spectrumStyleInputs = document.querySelectorAll('input[name="spectrumStyle"]');
+const spectrumStyleCheckbox = document.getElementById("spectrumStyleCheckbox");
+const spectrumStyleToggleEl = document.getElementById("spectrumStyleToggle");
 const spectrumLowLabelEl = document.getElementById("spectrumLowLabel");
 const spectrumRefLabelEl = document.getElementById("spectrumRefLabel");
 const spectrumHighLabelEl = document.getElementById("spectrumHighLabel");
@@ -388,10 +389,17 @@ function buildFrequencyTable() {
     th.appendChild(freqEl);
 
     if (preset.primary) {
-      const nameEl = document.createElement("span");
-      nameEl.className = "freq-table-col-name";
-      nameEl.textContent = preset.secondary ? `${preset.primary} ${preset.secondary}` : preset.primary;
-      th.appendChild(nameEl);
+      const primaryEl = document.createElement("span");
+      primaryEl.className = "freq-table-col-name-primary";
+      primaryEl.textContent = preset.primary;
+      th.appendChild(primaryEl);
+    }
+
+    if (preset.secondary) {
+      const secondaryEl = document.createElement("span");
+      secondaryEl.className = "freq-table-col-name-secondary";
+      secondaryEl.textContent = preset.secondary;
+      th.appendChild(secondaryEl);
     }
 
     freqTableHeadRow.appendChild(th);
@@ -737,6 +745,15 @@ function mainLoop(timestamp) {
   if (timestamp - lastPitchCheckAt >= PITCH_CHECK_INTERVAL_MS) {
     lastPitchCheckAt = timestamp;
 
+    // Both sources feed the same analyser now (mic through micGainNode,
+    // test tone through testGainNode in parallel with the speakers), so
+    // the Input Monitor's level meter and Spectrum Analyser read it the
+    // same way regardless of which one is active.
+    analyserNode.getFloatTimeDomainData(timeDomainBuffer);
+    updateLevelMeter(computeRms(timeDomainBuffer));
+    analyserNode.getByteFrequencyData(freqDataBuffer);
+    updateSpectrum(freqDataBuffer, audioContext.sampleRate);
+
     if (state.activeSource === "test") {
       // The test tone's frequency is already known exactly, so the readout
       // is computed directly from it rather than detected — this keeps it
@@ -751,11 +768,6 @@ function mainLoop(timestamp) {
       state.currentNote = note;
       state.lastFrequency = testFrequency;
     } else {
-      analyserNode.getFloatTimeDomainData(timeDomainBuffer);
-      updateLevelMeter(computeRms(timeDomainBuffer));
-      analyserNode.getByteFrequencyData(freqDataBuffer);
-      updateSpectrum(freqDataBuffer, audioContext.sampleRate);
-
       const result = detectPitch(timeDomainBuffer, audioContext.sampleRate);
 
       if (result) {
@@ -872,10 +884,12 @@ function toggleMic() {
 }
 
 /* ============================================================
-   TEST TONE — an oscillator routed to the speakers so it's audible,
-   but NOT into the analyser: its readout is computed directly from
-   the known set frequency (see mainLoop) rather than detected, so
-   it can't be perturbed by gain/volume changes.
+   TEST TONE — an oscillator routed to the speakers so it's audible. Its
+   pitch readout is still computed directly from the known set frequency
+   (see mainLoop) rather than detected, so it can't be perturbed by gain/
+   volume changes — but it's also tapped into the analyser (in parallel
+   with the speakers) so the Input Monitor's level meter and Spectrum
+   Analyser have something to show while it plays, same as the mic.
    ============================================================ */
 function startTestTone() {
   if (state.activeSource === "test") {
@@ -893,6 +907,8 @@ function startTestTone() {
     return;
   }
 
+  ensureAnalyser();
+
   testOscillator = ctx.createOscillator();
   testOscillator.type = "sine";
   testOscillator.frequency.setValueAtTime(getTestToneFrequency(), ctx.currentTime);
@@ -902,6 +918,7 @@ function startTestTone() {
 
   testOscillator.connect(testGainNode);
   testGainNode.connect(ctx.destination);
+  testGainNode.connect(analyserNode);
   testOscillator.start();
 
   state.activeSource = "test";
@@ -1064,10 +1081,16 @@ visualModeInputs.forEach((input) => {
   input.addEventListener("change", setVisualMode);
 });
 
-spectrumStyleInputs.forEach((input) => {
-  input.addEventListener("change", () => {
-    state.spectrumStyle = input.value;
+function setSpectrumStyle(styleName) {
+  state.spectrumStyle = styleName;
+  spectrumStyleCheckbox.checked = styleName === "modern";
+  spectrumStyleToggleEl.querySelectorAll(".style-toggle-label").forEach((label) => {
+    label.classList.toggle("is-active", label.dataset.style === styleName);
   });
+}
+
+spectrumStyleCheckbox.addEventListener("change", () => {
+  setSpectrumStyle(spectrumStyleCheckbox.checked ? "modern" : "vintage");
 });
 
 toggleMicBtn.addEventListener("click", toggleMic);
@@ -1166,6 +1189,7 @@ updateReferencePitch(state.a4);
 updateFineTuningLabel();
 updateTestToneDisplay(getTestToneFrequency());
 micGainValueLabelEl.textContent = `${Number(micGainRange.value).toFixed(1)}×`;
+setSpectrumStyle(state.spectrumStyle);
 buildFrequencyTable();
 sizeSpectrumCanvas();
 resetVisuals();
