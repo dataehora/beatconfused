@@ -140,7 +140,12 @@ body {
 .note-readout {
   display: grid;
   justify-items: center;
+  align-content: center;
   gap: 0.15rem;
+  /* Reserves the same vertical band a detected note (name + cents/Hz line)
+     takes up, so "No signal" — a single shorter line — centers within that
+     band (via align-content above) instead of sitting flush at the top. */
+  min-height: clamp(4.8rem, 13vw, 6.2rem);
   text-align: center;
 }
 
@@ -161,12 +166,30 @@ body {
   color: var(--in-tune-strong);
 }
 
-/* "No signal" is a much longer string than a note name (e.g. "C♯5"), so
-   it needs its own, considerably smaller size rather than inheriting the
-   giant note-name font meant for two or three characters. */
+/* "No signal" is a much longer string than a note name (e.g. "C♯5"), so it
+   needs its own, considerably smaller size rather than inheriting the
+   giant note-name font meant for two or three characters. Fixed to one
+   line — font-weight:700 is already inherited from .note-name, so this
+   reads as bold without needing its own font-weight declaration. */
 .note-name.is-no-signal {
-  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  font-size: clamp(1.5rem, 4.2vw, 1.9rem);
   letter-spacing: 0;
+  white-space: nowrap;
+}
+
+/* Outranks .tuner.in-tune .note-name (green) — the resting "no signal"
+   state carries .in-tune too (see updateReadout), since idling at the
+   reference pitch is visually treated like sitting in tune, but the text
+   itself should still read as an alert, not a green "all good".
+
+   Deliberately more saturated than the page's own warm palette — a studio
+   "ON AIR"-style vivid red rather than the muted wood/brass accent, so it
+   reads as a status light breaking from the classy styling on purpose. */
+.tuner.in-tune .note-name.is-no-signal {
+  color: #e2261c;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 12px rgba(226, 38, 28, 0.4);
 }
 
 .note-meta {
@@ -181,6 +204,23 @@ body {
   display: none;
 }
 
+/* Second line under the "NO SIGNAL" alert — what to actually do about it —
+   set by updateReadout() to one of two messages depending on whether the
+   tuner has been started at all yet. Matches the heading above it: same
+   serif face (rather than falling back to the body's sans-serif), same red
+   with the same glow, just one size down. */
+.no-signal-hint {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  color: #e2261c;
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  text-align: center;
+  text-shadow: 0 0 12px rgba(226, 38, 28, 0.4);
+}
+
+.no-signal-hint[hidden] {
+  display: none;
+}
+
 .cents-value {
   font-weight: 700;
   min-width: 3.4ch;
@@ -190,15 +230,25 @@ body {
   color: var(--in-tune-strong);
 }
 
-/* ---- visual stage: strobe / needle / meter share the same slot ---- */
+/* ---- visual stage: the Strobe/Needle/Meter toggle sits directly above
+   the device, close enough to read as attached to it, with the device
+   itself centered on the stage below. ---- */
 .visual-stage {
   position: relative;
   min-height: 268px;
   display: grid;
   justify-items: center;
-  align-items: center;
-  gap: 0.9rem;
+  align-content: center;
+  gap: 0.25rem;
   padding-top: 0.2rem;
+  min-width: 0;
+}
+
+.visual-devices {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-items: center;
   min-width: 0;
 }
 
@@ -560,6 +610,22 @@ body {
   min-height: 1.1em;
 }
 
+/* ---- tuning statement: a plain-language readout of the current Standard
+   + Key + reference pitch, kept in sync from updateTuningStatement() —
+   distinct from .hint's muted gray since this is live status, not a
+   one-time explanation. Sits right after .visual-stage as a caption/legend
+   for the device, so the negative margin claws back most of .tuner-live's
+   1rem grid gap to read as "attached" to the display rather than floating
+   in the middle of the stack. ---- */
+.tuning-statement {
+  margin: -0.75rem 0 0;
+  text-align: center;
+  color: var(--accent-strong);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+}
+
 /* ---- settings row: Reference Pitch and Test Tone sit side by side in
    matching compact panels below the strobe. ---- */
 .settings-row {
@@ -600,14 +666,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 2rem;
+  height: 2rem;
   padding: 0;
   border: none;
   background: none;
   color: var(--ink-soft);
   cursor: pointer;
-  border-radius: 0.4rem;
+  border-radius: 0.5rem;
 }
 
 .collapse-toggle:hover {
@@ -617,7 +683,8 @@ body {
 
 .collapse-icon {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: 1.2rem;
+  font-weight: 700;
   line-height: 1;
   transition: transform 150ms ease;
 }
@@ -657,6 +724,54 @@ body {
   justify-content: center;
   align-items: center;
   gap: 0.6rem;
+}
+
+/* Label above a full-width select (not side by side) — the tuning
+   standard names run long ("Just Intonation (Major)"), and a select box
+   narrower than its selected option's text gets silently clipped by the
+   browser, so the row needs the select to have the row's *whole* width
+   available rather than sharing it with an inline label. */
+.select-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.3rem;
+  /* Grid items (this is one, inside .control-block's grid) default to
+     min-width:auto same as flex items — without this, a long option (e.g.
+     "Just Intonation (Major)") forces the whole row past the card's edge
+     instead of letting the select inside it shrink to fit. */
+  min-width: 0;
+}
+
+.select-row[hidden] {
+  display: none;
+}
+
+.select-row-label {
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.select-row select {
+  /* Flex items default to min-width:auto, which floors their shrink at the
+     content's own intrinsic width — without this, a long option (e.g.
+     "Just Intonation (Major)") overflows the panel instead of shrinking
+     to fit. */
+  min-width: 0;
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.65rem;
+  background: #fff9f1;
+  color: var(--ink);
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+}
+
+.select-row select:hover {
+  background: #fff3e3;
 }
 
 .fine-freq-value {
@@ -1036,6 +1151,18 @@ body {
   margin: 0;
 }
 
+.freq-table-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.6rem;
+}
+
+.freq-table-controls .select-row {
+  flex: 1 1 12rem;
+  max-width: 20rem;
+}
+
 .freq-table-scroll {
   max-height: 22rem;
   overflow: auto;
@@ -1122,27 +1249,32 @@ body {
 /* ---- shared primitives (buttons, pills, inputs) — same language as the
    metronome ---- */
 .toggle-btn {
-  width: min(228px, 100%);
+  width: min(170px, 100%);
   justify-self: center;
-  border: 1px solid rgba(123, 71, 32, 0.65);
+  border: 1px solid rgba(123, 71, 32, 0.55);
   border-radius: 999px;
-  padding: 0.85rem 1rem;
+  padding: 0.35rem 1rem;
   background: linear-gradient(145deg, #b57a38, #885123);
   color: #fffdf8;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 700;
-  font-size: 1.22rem;
-  letter-spacing: 0.03em;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  box-shadow: 0 7px 18px rgba(82, 47, 20, 0.25);
+  box-shadow: 0 3px 9px rgba(82, 47, 20, 0.2);
 }
 
 .toggle-btn:hover {
   filter: brightness(1.04);
 }
 
+/* Switches from the case's warm brown/gold to a clear red once listening
+   starts — the same "live" red used for No Signal — rather than just a
+   darker shade of the same gradient, so it's unmistakable the mic is on. */
 .toggle-btn[aria-pressed="true"] {
-  background: linear-gradient(145deg, #8d5524, #6d3f1a);
+  background: linear-gradient(145deg, #d1453a, #9c2620);
+  border-color: rgba(156, 38, 32, 0.65);
+  box-shadow: 0 3px 10px rgba(156, 38, 32, 0.35);
 }
 
 .control-block {

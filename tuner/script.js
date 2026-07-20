@@ -5,6 +5,7 @@ const noteNameEl = document.getElementById("noteName");
 const centsValueEl = document.getElementById("centsValue");
 const freqValueEl = document.getElementById("freqValue");
 const noteMetaEl = document.getElementById("noteMeta");
+const noSignalHintEl = document.getElementById("noSignalHint");
 
 const strobeVisual = document.getElementById("strobeVisual");
 const needleVisual = document.getElementById("needleVisual");
@@ -14,6 +15,7 @@ const ledSegmentsContainer = document.getElementById("ledSegments");
 const ledIndicatorEl = document.getElementById("ledIndicator");
 
 const toggleMicBtn = document.getElementById("toggleMicBtn");
+const tuningStatementEl = document.getElementById("tuningStatement");
 const micStatus = document.getElementById("micStatus");
 const decreasePitchBtn = document.getElementById("decreasePitchBtn");
 const increasePitchBtn = document.getElementById("increasePitchBtn");
@@ -21,6 +23,13 @@ const pitchInput = document.getElementById("pitchInput");
 const pitchRange = document.getElementById("pitchRange");
 const visualModeInputs = document.querySelectorAll('input[name="tunerVisualMode"]');
 const pitchPresetInputs = document.querySelectorAll('input[name="pitchPreset"]');
+// Two identical Standard/Key control pairs live on the page at once (the
+// Tuning Standard panel and the one above the Frequency Table) — queried
+// by class rather than id so updateTemperament/updateTemperamentKey can
+// keep every instance of both in sync with a single write to state.
+const temperamentSelects = document.querySelectorAll(".temperament-select");
+const temperamentKeyRows = document.querySelectorAll(".temperament-key-row");
+const temperamentKeySelects = document.querySelectorAll(".temperament-key-select");
 
 const testToneRange = document.getElementById("testToneRange");
 const testToneCentsRange = document.getElementById("testToneCentsRange");
@@ -112,6 +121,107 @@ const REFERENCE_PITCH_PRESETS = [
   { value: 466, primary: "Italian", secondary: "Renaissance" },
 ];
 
+/* ============================================================
+   TUNING STANDARDS (temperaments) — Equal Temperament plus four
+   historical/alternate systems, each built from first principles
+   rather than a hand-typed cents table:
+
+   - Vallotti, Young II and 1/4-comma meantone are all "fifths chain"
+     temperaments: every note is reached from the tonic by stacking a
+     run of (possibly tempered) fifths. FIFTHS_POSITION_FOR_SEMITONE
+     encodes that chain's shape once; each temperament only supplies
+     how many cents its fifths deviate from a pure 3:2.
+   - Just Intonation (Major) instead fixes each degree directly to a
+     5-limit ratio (Wikipedia's "asymmetric" 12-tone scale, chosen for
+     using the smallest integers in each ratio).
+
+   Every temperament is expressed as a table of 12 cents offsets from
+   equal temperament, indexed by semitone *above the chosen tonic* —
+   see getTemperamentOffsetCents, which rotates that table to whatever
+   key the Reference Pitch panel's Key selector is set to.
+   ============================================================ */
+const PURE_FIFTH_CENTS = 1200 * Math.log2(3 / 2); // ~701.955
+const PYTHAGOREAN_COMMA_CENTS = 1200 * Math.log2(531441 / 524288); // ~23.460
+const SYNTONIC_COMMA_CENTS = 1200 * Math.log2(81 / 80); // ~21.506
+
+// Position on the circle of fifths (tonic = 0) for each semitone above the
+// tonic. Derived from: 7 * position ≡ semitone (mod 12), position in -5..6.
+const FIFTHS_POSITION_FOR_SEMITONE = [0, -5, 2, -3, 4, -1, 6, 1, -4, 3, -2, 5];
+
+// Walks the chain of 11 fifths spanning position -5 (a major third below
+// the tonic's relative minor) to position +6 (the tritone), given how many
+// cents the fifth connecting `lowerPosition` to `lowerPosition + 1`
+// deviates from a pure 3:2 (0 = pure, negative = narrowed) — then reduces
+// each position against where a 700-cent equal-tempered fifth would have
+// put it, yielding cents-from-equal-temperament per semitone above tonic.
+function buildFifthsChainOffsets(fifthDeviationCents) {
+  const cumulative = { 0: 0 };
+
+  for (let position = 1; position <= 6; position += 1) {
+    cumulative[position] = cumulative[position - 1] + PURE_FIFTH_CENTS + fifthDeviationCents(position - 1);
+  }
+
+  for (let position = -1; position >= -5; position -= 1) {
+    cumulative[position] = cumulative[position + 1] - (PURE_FIFTH_CENTS + fifthDeviationCents(position));
+  }
+
+  return FIFTHS_POSITION_FOR_SEMITONE.map((position) => cumulative[position] - position * 700);
+}
+
+function equalTemperamentOffsets() {
+  return new Array(12).fill(0);
+}
+
+// A "well" temperament: a fixed set of fifths (identified by the lower
+// position of each tempered edge) narrowed by a shared fraction of the
+// Pythagorean comma; every other fifth in the chain stays pure.
+function wellTemperamentOffsets(temperedLowerPositions, temperCents) {
+  const tempered = new Set(temperedLowerPositions);
+  return buildFifthsChainOffsets((lowerPosition) => (tempered.has(lowerPosition) ? -temperCents : 0));
+}
+
+// A "regular" temperament: every fifth in the chain is narrowed by the
+// same fraction of the syntonic comma (1/4-comma meantone favors pure
+// major thirds at the cost of a "wolf" fifth far from the tonic).
+function meantoneOffsets(commaFraction) {
+  const temperCents = SYNTONIC_COMMA_CENTS * commaFraction;
+  return buildFifthsChainOffsets(() => -temperCents);
+}
+
+// 5-limit just intonation, asymmetric 12-tone chromatic scale (the
+// smallest-integer ratio for each degree) — not derived from a fifths
+// chain, so each degree is given directly as cents from the tonic.
+const JUST_MAJOR_RATIO_CENTS = [
+  0, // C    1/1
+  1200 * Math.log2(16 / 15), // C♯/D♭
+  1200 * Math.log2(9 / 8), // D
+  1200 * Math.log2(6 / 5), // D♯/E♭
+  1200 * Math.log2(5 / 4), // E
+  1200 * Math.log2(4 / 3), // F
+  1200 * Math.log2(45 / 32), // F♯/G♭
+  1200 * Math.log2(3 / 2), // G
+  1200 * Math.log2(8 / 5), // G♯/A♭
+  1200 * Math.log2(5 / 3), // A
+  1200 * Math.log2(9 / 5), // A♯/B♭
+  1200 * Math.log2(15 / 8), // B
+];
+
+function justIntonationMajorOffsets() {
+  return JUST_MAJOR_RATIO_CENTS.map((cents, semitone) => cents - semitone * 100);
+}
+
+// The five tuning standards offered under Reference Pitch. Only the first
+// (Equal Temperament) needs no tonic — the rest are anchored to whichever
+// key the auxiliary Key selector is set to, so that selector only shows up
+// once one of these is chosen (see updateTemperament).
+const TEMPERAMENTS = [
+  { id: "equal", name: "Equal Temperament", needsKey: false, getOffsets: equalTemperamentOffsets },
+  { id: "vallotti", name: "Vallotti", needsKey: true, getOffsets: () => wellTemperamentOffsets([-1, 0, 1, 2, 3, 4], PYTHAGOREAN_COMMA_CENTS / 6) },
+  { id: "young2", name: "Young II", needsKey: true, getOffsets: () => wellTemperamentOffsets([0, 1, 2, 3, 4, 5], PYTHAGOREAN_COMMA_CENTS / 6) },
+  { id: "meantone4", name: "1/4-Comma Meantone", needsKey: true, getOffsets: () => meantoneOffsets(0.25) },
+  { id: "justMajor", name: "Just Intonation (Major)", needsKey: true, getOffsets: justIntonationMajorOffsets },
+];
+
 // Five rings graduating from a slow outer band to a fast inner one, closer
 // to a real optical strobe disc (e.g. the Peterson StroboStomp HD) than a
 // simple two- or three-ring toy. Segment counts follow a strict power-of-two
@@ -139,6 +249,9 @@ const state = {
   lastFrequency: 0,
   lastConfidentAt: 0,
   spectrumStyle: "vintage", // "vintage" | "modern"
+  temperamentId: TEMPERAMENTS[0].id, // "equal"
+  temperamentKey: 0, // tonic as a pitch class (0 = C), only used when the selected temperament needsKey
+  temperamentOffsets: TEMPERAMENTS[0].getOffsets(), // 12 cents-from-equal-temperament values, indexed by semitone above the tonic
 };
 
 let ledDotElements = [];
@@ -241,10 +354,21 @@ function detectPitch(buffer, sampleRate) {
   return { frequency: sampleRate / refinedLag, clarity };
 }
 
+// Rotates the active temperament's offset table (defined relative to its
+// own tonic) to whatever pitch class the Key selector is set to, so e.g.
+// selecting "Vallotti, key D" shifts Vallotti's usual C-centered pattern
+// so D becomes the sweetest key instead.
+function getTemperamentOffsetCents(midi) {
+  const pitchClass = ((midi % 12) + 12) % 12;
+  const semitoneAboveTonic = ((pitchClass - state.temperamentKey) % 12 + 12) % 12;
+  return state.temperamentOffsets[semitoneAboveTonic];
+}
+
 function frequencyToNote(frequency, a4) {
-  const midi = 69 + 12 * Math.log2(frequency / a4);
-  const rounded = Math.round(midi);
-  const cents = (midi - rounded) * 100;
+  const equalMidi = 69 + 12 * Math.log2(frequency / a4);
+  const rounded = Math.round(equalMidi);
+  const targetFrequency = pianoNoteFrequency(rounded, a4);
+  const cents = 1200 * Math.log2(frequency / targetFrequency);
   const name = NOTE_NAMES[((rounded % 12) + 12) % 12];
   const octave = Math.floor(rounded / 12) - 1;
   return { name, octave, cents, midi: rounded };
@@ -256,8 +380,13 @@ function noteNameForMidi(midi) {
   return `${name}${octave}`;
 }
 
+// The selected tuning standard nudges every note away from equal
+// temperament by a few cents (see getTemperamentOffsetCents) — Equal
+// Temperament itself has an all-zero offset table, so this collapses back
+// to the plain a4 * 2^((midi-69)/12) formula in that case.
 function pianoNoteFrequency(midi, a4) {
-  return a4 * Math.pow(2, (midi - 69) / 12);
+  const equalFrequency = a4 * Math.pow(2, (midi - 69) / 12);
+  return equalFrequency * Math.pow(2, getTemperamentOffsetCents(midi) / 1200);
 }
 
 function centsToNeedleAngle(cents) {
@@ -377,10 +506,10 @@ function buildLedSegments() {
   }
 }
 
-// Builds the 88-row x 6-column reference table once at load: each column
-// is one of the tuning standards from Reference Pitch, each row one piano
-// key (A0-C8), each cell that key's frequency under that standard.
-function buildFrequencyTable() {
+// Builds the table's 6 columns once at load: one per tuning standard from
+// Reference Pitch. Unlike the body, these headers don't depend on which
+// temperament is selected, so they never need rebuilding.
+function buildFrequencyTableHead() {
   REFERENCE_PITCH_PRESETS.forEach((preset) => {
     const th = document.createElement("th");
     const freqEl = document.createElement("span");
@@ -404,6 +533,14 @@ function buildFrequencyTable() {
 
     freqTableHeadRow.appendChild(th);
   });
+}
+
+// Builds the table's 88 rows (A0-C8), each cell that key's frequency under
+// one of the Reference Pitch standards — under the currently selected
+// tuning standard (see pianoNoteFrequency), so this is rebuilt whenever
+// the Tuning Standard or Key selector changes, unlike the head above.
+function buildFrequencyTableBody() {
+  freqTableBody.innerHTML = "";
 
   for (let midi = PIANO_MIN_MIDI; midi <= PIANO_MAX_MIDI; midi += 1) {
     const row = document.createElement("tr");
@@ -419,6 +556,11 @@ function buildFrequencyTable() {
 
     freqTableBody.appendChild(row);
   }
+}
+
+function buildFrequencyTable() {
+  buildFrequencyTableHead();
+  buildFrequencyTableBody();
 }
 
 /* ============================================================
@@ -552,9 +694,8 @@ function updateSpectrumLabels() {
 }
 
 // ---- Vintage: a classic segmented LED equalizer — blocky steps rather
-// than a smooth bar, gold at rest warming through amber to the accent red
-// in the last few segments, echoing the tuner's own wood-and-brass case
-// language instead of a generic rainbow EQ.
+// than a smooth bar, in the traditional green/yellow/red ladder of an old
+// hardware VU meter or graphic EQ.
 function drawVintageSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin) {
   const segmentHeight = 6;
   const segmentGap = 2;
@@ -571,12 +712,12 @@ function drawVintageSpectrum(freqData, width, height, barCount, barWidth, logMin
     for (let s = 0; s < litSegments; s += 1) {
       const ratio = s / totalSegments;
 
-      if (ratio > 0.85) {
+      if (ratio > 0.9) {
         spectrumCtx.fillStyle = "#c0453a";
-      } else if (ratio > 0.6) {
-        spectrumCtx.fillStyle = "#d9a441";
+      } else if (ratio > 0.7) {
+        spectrumCtx.fillStyle = "#d9b23c";
       } else {
-        spectrumCtx.fillStyle = "#caa06a";
+        spectrumCtx.fillStyle = "#5f9153";
       }
 
       const y = height - (s + 1) * segmentUnit + segmentGap;
@@ -585,28 +726,64 @@ function drawVintageSpectrum(freqData, width, height, barCount, barWidth, logMin
   }
 }
 
-// ---- Modern: smooth, thin, cool-toned bars with a per-bar gradient —
-// closer to a DAW's analyzer (Ableton Live et al.) than a hardware EQ.
+// ---- Modern: a single smoothed curve over a soft gradient area fill —
+// closer to a DAW's analyzer (Ableton Live et al.) than the vintage ladder
+// above. Quadratic curves through the midpoint between each pair of points
+// (rather than a plain lineTo polyline) round the per-bin steps into one
+// continuous line instead of a jagged staircase.
 function drawModernSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin) {
+  const points = [];
+
   for (let i = 0; i < barCount; i += 1) {
     const t = barCount > 1 ? i / (barCount - 1) : 0;
     const freq = Math.pow(2, logMin + t * (logMax - logMin));
     const binIndex = Math.min(freqData.length - 1, Math.round(freq / hzPerBin));
     const magnitude = freqData[binIndex] / 255;
-    const barHeight = magnitude * height;
-
-    if (barHeight <= 0) {
-      continue;
-    }
-
-    const x = i * barWidth + barWidth * 0.15;
-    const w = Math.max(1, barWidth * 0.7);
-    const gradient = spectrumCtx.createLinearGradient(0, height, 0, height - barHeight);
-    gradient.addColorStop(0, "#3f6ea0");
-    gradient.addColorStop(1, "#a8cdf0");
-    spectrumCtx.fillStyle = gradient;
-    spectrumCtx.fillRect(x, height - barHeight, w, barHeight);
+    points.push({ x: i * barWidth + barWidth / 2, y: height - magnitude * height });
   }
+
+  if (points.length < 2) {
+    return;
+  }
+
+  const first = points[0];
+  const last = points[points.length - 1];
+
+  spectrumCtx.beginPath();
+  spectrumCtx.moveTo(first.x, height);
+  spectrumCtx.lineTo(first.x, first.y);
+
+  for (let i = 1; i < points.length - 1; i += 1) {
+    const midX = (points[i].x + points[i + 1].x) / 2;
+    const midY = (points[i].y + points[i + 1].y) / 2;
+    spectrumCtx.quadraticCurveTo(points[i].x, points[i].y, midX, midY);
+  }
+
+  spectrumCtx.lineTo(last.x, last.y);
+  spectrumCtx.lineTo(last.x, height);
+  spectrumCtx.closePath();
+
+  const fillGradient = spectrumCtx.createLinearGradient(0, 0, 0, height);
+  fillGradient.addColorStop(0, "rgba(168, 205, 240, 0.55)");
+  fillGradient.addColorStop(1, "rgba(63, 110, 160, 0)");
+  spectrumCtx.fillStyle = fillGradient;
+  spectrumCtx.fill();
+
+  spectrumCtx.beginPath();
+  spectrumCtx.moveTo(first.x, first.y);
+
+  for (let i = 1; i < points.length - 1; i += 1) {
+    const midX = (points[i].x + points[i + 1].x) / 2;
+    const midY = (points[i].y + points[i + 1].y) / 2;
+    spectrumCtx.quadraticCurveTo(points[i].x, points[i].y, midX, midY);
+  }
+
+  spectrumCtx.lineTo(last.x, last.y);
+  spectrumCtx.strokeStyle = "#a8cdf0";
+  spectrumCtx.lineWidth = 1.5;
+  spectrumCtx.lineJoin = "round";
+  spectrumCtx.lineCap = "round";
+  spectrumCtx.stroke();
 }
 
 // Log-scaled across the current A0-C8 range (see getSpectrumRange) so an
@@ -641,14 +818,20 @@ function updateReadout() {
   tunerSection.style.setProperty("--tune-mix", String(state.hasSignal ? getTuneMixPercent(state.smoothedCents) : 0));
 
   if (!state.hasSignal || !state.currentNote) {
-    noteNameEl.textContent = "No signal";
+    noteNameEl.textContent = "No Signal";
     noteNameEl.classList.add("is-no-signal");
     noteMetaEl.classList.add("is-empty");
+    // Two distinct causes read differently: nothing has been started yet
+    // (activeSource is still null) versus the mic is listening but hasn't
+    // picked up a clear pitch — the fix is different in each case.
+    noSignalHintEl.textContent = state.activeSource === "mic" ? "Check your microphone" : "Start the Tuner or the Test Tone";
+    noSignalHintEl.hidden = false;
     return;
   }
 
   noteNameEl.classList.remove("is-no-signal");
   noteMetaEl.classList.remove("is-empty");
+  noSignalHintEl.hidden = true;
   const { name, octave } = state.currentNote;
   noteNameEl.textContent = `${name}${octave}`;
   const roundedCents = Math.round(state.smoothedCents);
@@ -1064,6 +1247,7 @@ function updateReferencePitch(value) {
 
   updateTestToneDisplay(getTestToneFrequency());
   updateSpectrumLabels();
+  updateTuningStatement();
 }
 
 pitchInput.addEventListener("input", (event) => updateReferencePitch(event.target.value));
@@ -1076,6 +1260,87 @@ increasePitchBtn.addEventListener("click", () => updateReferencePitch(state.a4 +
 pitchPresetInputs.forEach((input) => {
   input.addEventListener("change", () => updateReferencePitch(input.value));
 });
+
+function getSelectedTemperament() {
+  return TEMPERAMENTS.find((temperament) => temperament.id === state.temperamentId) || TEMPERAMENTS[0];
+}
+
+// A plain-language readout of the current tuning configuration — e.g.
+// "Tuning for Vallotti in G · 440 Hz" — kept in sync with every control
+// that can change it (Standard, Key, and the A4 reference pitch).
+function updateTuningStatement() {
+  const temperament = getSelectedTemperament();
+  const keyPart = temperament.needsKey ? ` in ${NOTE_NAMES[state.temperamentKey]}` : "";
+  tuningStatementEl.textContent = `Tuning for ${temperament.name}${keyPart} · ${state.a4} Hz`;
+}
+
+// Whichever Standard select fired the change, every instance (and both Key
+// rows) gets synced to match — so the Tuning Standard panel and the pair
+// above the Frequency Table always agree, regardless of which one the user
+// touched.
+function updateTemperament(id) {
+  state.temperamentId = id;
+  const temperament = getSelectedTemperament();
+  state.temperamentOffsets = temperament.getOffsets();
+
+  temperamentSelects.forEach((select) => {
+    select.value = id;
+  });
+
+  temperamentKeyRows.forEach((row) => {
+    row.hidden = !temperament.needsKey;
+  });
+
+  buildFrequencyTableBody();
+  updateTestToneDisplay(getTestToneFrequency());
+  updateSpectrumLabels();
+  updateTuningStatement();
+}
+
+function updateTemperamentKey(pitchClass) {
+  state.temperamentKey = clamp(Math.round(Number(pitchClass) || 0), 0, 11);
+
+  temperamentKeySelects.forEach((select) => {
+    select.value = String(state.temperamentKey);
+  });
+
+  buildFrequencyTableBody();
+  updateTestToneDisplay(getTestToneFrequency());
+  updateSpectrumLabels();
+  updateTuningStatement();
+}
+
+temperamentSelects.forEach((select) => {
+  select.addEventListener("change", (event) => updateTemperament(event.target.value));
+});
+
+temperamentKeySelects.forEach((select) => {
+  select.addEventListener("change", (event) => updateTemperamentKey(event.target.value));
+});
+
+// Options are generated from TEMPERAMENTS / NOTE_NAMES rather than hand-
+// written in the markup, so the dropdowns can never drift out of sync with
+// the tables that actually compute the frequencies — and every instance of
+// each select gets the same option list.
+function populateTemperamentControls() {
+  temperamentSelects.forEach((select) => {
+    TEMPERAMENTS.forEach((temperament) => {
+      const option = document.createElement("option");
+      option.value = temperament.id;
+      option.textContent = temperament.name;
+      select.appendChild(option);
+    });
+  });
+
+  temperamentKeySelects.forEach((select) => {
+    NOTE_NAMES.forEach((name, pitchClass) => {
+      const option = document.createElement("option");
+      option.value = String(pitchClass);
+      option.textContent = name;
+      select.appendChild(option);
+    });
+  });
+}
 
 visualModeInputs.forEach((input) => {
   input.addEventListener("change", setVisualMode);
@@ -1185,6 +1450,7 @@ buildStrobeRings();
 buildNeedleScale();
 buildLedSegments();
 setVisualMode();
+populateTemperamentControls();
 updateReferencePitch(state.a4);
 updateFineTuningLabel();
 updateTestToneDisplay(getTestToneFrequency());
