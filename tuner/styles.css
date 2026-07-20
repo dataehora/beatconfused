@@ -161,12 +161,24 @@ body {
   color: var(--in-tune-strong);
 }
 
+/* "No signal" is a much longer string than a note name (e.g. "C♯5"), so
+   it needs its own, considerably smaller size rather than inheriting the
+   giant note-name font meant for two or three characters. */
+.note-name.is-no-signal {
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  letter-spacing: 0;
+}
+
 .note-meta {
   display: flex;
   align-items: baseline;
   gap: 0.6rem;
   color: var(--ink-soft);
   font-size: 0.95rem;
+}
+
+.note-meta.is-empty {
+  visibility: hidden;
 }
 
 .cents-value {
@@ -494,14 +506,56 @@ body {
 
 .panel-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .panel-title {
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--ink);
+  /* Pushes whatever follows (a panel-value, the collapse toggle, or both)
+     to the right edge of the header, rather than spreading all header
+     children apart evenly. */
+  margin-right: auto;
+}
+
+/* ---- collapsible frames: every panel-header carries a toggle; clicking
+   it hides everything in the .control-block except the header itself,
+   collapsing the frame down to a title bar. ---- */
+.collapse-toggle {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-radius: 0.4rem;
+}
+
+.collapse-toggle:hover {
+  background: var(--paper-strong);
+  color: var(--ink);
+}
+
+.collapse-icon {
+  display: inline-block;
+  font-size: 0.7rem;
+  line-height: 1;
+  transition: transform 150ms ease;
+}
+
+.collapse-toggle[aria-expanded="false"] .collapse-icon {
+  transform: rotate(-90deg);
+}
+
+.control-block.is-collapsed > *:not(.panel-header) {
+  display: none;
 }
 
 .panel-value {
@@ -900,6 +954,85 @@ body {
   color: var(--ink-soft);
   font-size: 0.72rem;
   letter-spacing: 0.02em;
+}
+
+/* ---- Frequency Table: a full-width frame like the spectrum analyzer,
+   holding a long (88-row) reference table in its own scroll container so
+   it doesn't stretch the page when expanded. ---- */
+.control-block.freq-table-block {
+  max-width: none;
+  margin: 0;
+}
+
+.freq-table-scroll {
+  max-height: 22rem;
+  overflow: auto;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+}
+
+.freq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.freq-table th,
+.freq-table td {
+  padding: 0.35rem 0.65rem;
+  text-align: right;
+}
+
+.freq-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-solid);
+  border-bottom: 1px solid var(--border-strong);
+  z-index: 1;
+}
+
+.freq-table-note-col,
+.freq-table td:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: var(--surface-solid);
+}
+
+.freq-table-note-col {
+  z-index: 2;
+}
+
+/* display:flex directly on a <th> breaks the table's column layout in
+   some browsers (the cell stops negotiating width with its siblings, so
+   every header ends up rendered on top of the first, sticky column).
+   Block-stacking the two spans instead keeps the cell a normal table
+   cell while still showing the frequency and standard name on their own
+   lines. */
+.freq-table thead th:not(.freq-table-note-col) {
+  line-height: 1.15;
+}
+
+.freq-table-col-freq {
+  display: block;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--accent-strong);
+}
+
+.freq-table-col-name {
+  display: block;
+  font-family: "Marck Script", "Brush Script MT", cursive;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.freq-table tbody tr:nth-child(even) {
+  background: rgba(62, 45, 30, 0.04);
 }
 
 /* ---- shared primitives (buttons, pills, inputs) — same language as the
