@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title>BeatConfused | Stroboscope</title>
+  <meta
+    name="description"
+    content="BeatConfused's Stroboscope is a free chromatic strobe tuner with a dedicated strobe wheel for each of the 12 notes, laid out like a piano keyboard."
+  />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#10131d" />
+  <link rel="canonical" href="https://beatconfused.com/stroboscope/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="BeatConfused | Stroboscope" />
+  <meta
+    property="og:description"
+    content="A free chromatic strobe tuner with one dedicated strobe wheel per note, laid out like a piano keyboard."
+  />
+  <meta property="og:url" content="https://beatconfused.com/stroboscope/" />
+  <meta property="og:site_name" content="BeatConfused" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="BeatConfused | Stroboscope" />
+  <meta
+    name="twitter:description"
+    content="A free chromatic strobe tuner with one dedicated strobe wheel per note, laid out like a piano keyboard."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Marck+Script&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "BeatConfused Stroboscope",
+          "url": "https://beatconfused.com/stroboscope/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web Browser",
+          "description": "A chromatic strobe tuner with a dedicated strobe wheel for each of the 12 notes, laid out like a piano keyboard.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+      ]
+    }
+  </script>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">BeatConfused Studio</p>
+      <h1>Stroboscope</h1>
+    </header>
+
+    <section class="stroboscope" aria-labelledby="stroboscope-title">
+      <h2 id="stroboscope-title" class="sr-only">Stroboscope</h2>
+
+      <!-- Shared gradients referenced by all 12 disc SVGs — a single <defs>
+           here avoids repeating identical gradient stops 12 times. -->
+      <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="discCaseGradient" x1="0.1" y1="0.05" x2="0.9" y2="0.95">
+            <stop offset="0" stop-color="#caa06a" />
+            <stop offset="1" stop-color="#8a5a30" />
+          </linearGradient>
+          <radialGradient id="discWindowGradient" cx="0.5" cy="0.42" r="0.75">
+            <stop offset="0" stop-color="#362b21" />
+            <stop offset="1" stop-color="#171310" />
+          </radialGradient>
+        </defs>
+      </svg>
+
+      <div class="stroboscope-live">
+        <div class="transport-row">
+          <button id="toggleMicBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop stroboscope">Start Tuner</button>
+        </div>
+        <p id="tuningStatement" class="tuning-statement" aria-live="polite">Tuning at 440 Hz</p>
+        <p id="micStatus" class="hint tap-status" aria-live="polite">Uses your microphone. Nothing is recorded or sent anywhere.</p>
+      </div>
+
+      <div class="control-block signal-block">
+        <div class="panel-header">
+          <span class="panel-title">Input Monitor</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Input Monitor">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <p class="hint">Boosts the microphone and shows how much signal is reaching the tuner.</p>
+
+        <div class="signal-meters-row">
+          <div class="vertical-control">
+            <span class="vertical-control-label">Gain</span>
+            <div class="vertical-slider-wrap">
+              <input
+                id="micGainRange"
+                type="range"
+                min="1"
+                max="12"
+                step="0.5"
+                value="6"
+                class="vertical-slider"
+                aria-label="Microphone gain boost"
+                aria-orientation="vertical"
+              />
+            </div>
+            <span class="vertical-control-value" id="micGainValueLabel">6.0×</span>
+          </div>
+
+          <div class="vertical-control">
+            <span class="vertical-control-label">Level</span>
+            <div class="level-meter-case">
+              <div class="level-meter-track">
+                <div class="level-meter-fill" id="levelMeterFill"></div>
+              </div>
+            </div>
+            <span class="vertical-control-value" id="levelValueLabel">−∞ dB</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-block reference-pitch-block">
+        <div class="panel-header">
+          <span class="panel-title">Reference Pitch</span>
+        </div>
+        <div class="fine-freq-row">
+          <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)">−</button>
+          <span class="fine-freq-value">
+            A4 = <input id="pitchInput" type="number" min="392" max="466" step="1" value="440" aria-label="Reference pitch in Hz" title="Reference pitch (Hz)" /> Hz
+          </span>
+          <button id="increasePitchBtn" type="button" class="small-btn" aria-label="Increase reference pitch" title="Increase A4 (↑)">+</button>
+        </div>
+        <input id="pitchRange" type="range" min="392" max="466" value="440" class="panel-slider" aria-label="Reference pitch slider" />
+      </div>
+
+      <div class="control-block keyboard-block">
+        <div class="panel-header">
+          <span class="panel-title">Chromatic Strobe Wheels</span>
+        </div>
+        <p class="hint">
+          Every note has its own disc, laid out like a piano — sharps in the row above, naturals below. Each disc
+          holds one concentric ring per octave of that note across the full 88-key range. Whichever octaves are
+          actually sounding light up and spin to show their cents error; every other ring stays dim and still.
+        </p>
+
+        <div class="stroboscope-keyboard">
+          <div class="stroboscope-sharps" id="strobeDiscsSharps"></div>
+          <div class="stroboscope-naturals" id="strobeDiscsNaturals"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-links">
+        <a href="https://beatconfused.com">beatconfused.com</a>
+      </p>
+      <p class="footer-contact">
+        <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>
+      </p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
