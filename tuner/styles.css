@@ -178,7 +178,7 @@ body {
 }
 
 .note-meta.is-empty {
-  visibility: hidden;
+  display: none;
 }
 
 .cents-value {
@@ -474,6 +474,78 @@ body {
   display: flex;
   justify-content: center;
   gap: 0.4rem;
+}
+
+/* ---- style-toggle: a single sliding switch (not two separate buttons)
+   between two named states, styled like the tuner's own dark recessed
+   track with a golden case-colored thumb. ---- */
+.style-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.style-toggle-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: color 120ms ease;
+}
+
+.style-toggle-label.is-active {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.style-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.style-toggle-switch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.style-toggle-track {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #241b14, #171310);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.style-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: transform 150ms ease;
+}
+
+.style-toggle-switch input:checked ~ .style-toggle-track .style-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.style-toggle-switch input:focus-visible ~ .style-toggle-track {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 2px;
 }
 
 .transport-row {
@@ -1023,7 +1095,19 @@ body {
   color: var(--accent-strong);
 }
 
-.freq-table-col-name {
+/* The standard's nickname (e.g. Verdi's "Scientific" pitch) sits on its
+   own italic line below the plain-set primary name — same split as the
+   Reference Pitch presets — so the combined string doesn't force each
+   column wider than the numbers underneath it need. */
+.freq-table-col-name-primary {
+  display: block;
+  font-family: "Marck Script", "Brush Script MT", cursive;
+  font-size: 0.9rem;
+  font-style: normal;
+  color: var(--ink-soft);
+}
+
+.freq-table-col-name-secondary {
   display: block;
   font-family: "Marck Script", "Brush Script MT", cursive;
   font-size: 0.9rem;

@@ -378,16 +378,16 @@
             <span class="collapse-icon" aria-hidden="true">▾</span>
           </button>
         </div>
-        <div class="display-toggle" role="radiogroup" aria-label="Spectrum style">
-          <label class="pill pill-sm">
-            <input type="radio" name="spectrumStyle" value="vintage" checked />
-            <span>Vintage</span>
-          </label>
-          <label class="pill pill-sm">
-            <input type="radio" name="spectrumStyle" value="modern" />
-            <span>Modern</span>
-          </label>
-        </div>
+        <label class="style-toggle" id="spectrumStyleToggle">
+          <span class="style-toggle-label" data-style="vintage">Vintage</span>
+          <span class="style-toggle-switch">
+            <input type="checkbox" id="spectrumStyleCheckbox" aria-label="Spectrum style: Vintage or Modern" />
+            <span class="style-toggle-track">
+              <span class="style-toggle-thumb"></span>
+            </span>
+          </span>
+          <span class="style-toggle-label" data-style="modern">Modern</span>
+        </label>
         <div class="spectrum-block">
           <div class="spectrum-case">
             <canvas id="spectrumCanvas" class="spectrum-canvas" aria-hidden="true"></canvas>
