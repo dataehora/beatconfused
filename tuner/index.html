@@ -108,65 +108,10 @@
           <span class="cents-value" id="centsValue">0¢</span>
           <span class="freq-value" id="freqValue">— Hz</span>
         </span>
+        <span class="no-signal-hint" id="noSignalHint" hidden></span>
       </div>
 
       <div class="visual-stage">
-        <div class="strobe visual-element" id="strobeVisual" aria-hidden="true" hidden>
-          <svg class="strobe-device" viewBox="0 0 300 180" role="presentation" focusable="false">
-            <path
-              class="strobe-case"
-              d="M 8 150 A 142 142 0 0 1 292 150 L 292 158 A 8 8 0 0 1 284 166 L 16 166 A 8 8 0 0 1 8 158 Z"
-              fill="url(#tunerCaseGradient)"
-            />
-            <path class="strobe-window" d="M 13 150 A 137 137 0 0 1 287 150 Z" fill="url(#tunerWindowGradient)" />
-            <path class="strobe-window-rim" d="M 17 150 A 133 133 0 0 1 283 150" />
-
-            <g clip-path="url(#strobeHalfClip)">
-              <g id="strobeRing1" class="strobe-ring"></g>
-              <g id="strobeRing2" class="strobe-ring strobe-ring-alt"></g>
-              <g id="strobeRing3" class="strobe-ring"></g>
-              <g id="strobeRing4" class="strobe-ring strobe-ring-alt"></g>
-              <g id="strobeRing5" class="strobe-ring"></g>
-              <circle class="strobe-vignette" cx="150" cy="150" r="137" fill="url(#strobeVignette)" />
-              <ellipse class="strobe-glass-highlight" cx="150" cy="70" rx="94" ry="46" fill="url(#strobeGlassHighlight)" />
-            </g>
-
-            <circle class="strobe-hub" cx="150" cy="150" r="5" />
-            <circle class="strobe-hub-shine" cx="148.3" cy="148.3" r="1.6" />
-          </svg>
-        </div>
-
-        <div class="needle-gauge visual-element" id="needleVisual" aria-hidden="true">
-          <svg class="needle-device" viewBox="0 0 240 200" role="presentation" focusable="false">
-            <rect class="device-case" x="8" y="8" width="224" height="178" rx="20" fill="url(#tunerCaseGradient)" />
-            <rect class="device-window" x="12" y="12" width="216" height="170" rx="16" fill="url(#tunerWindowGradient)" />
-            <g id="needleInTuneArc"></g>
-            <g id="needleScaleTicks"></g>
-            <text class="needle-flat-label" x="40" y="150">♭</text>
-            <text class="needle-sharp-label" x="200" y="150">♯</text>
-            <g id="needleSwing">
-              <path class="needle-pointer" d="M118.6 150 L121.4 150 L120.5 60 L120 54 L119.5 60 Z" />
-            </g>
-            <circle class="needle-hub" cx="120" cy="150" r="7" />
-          </svg>
-        </div>
-
-        <div class="led-meter visual-element" id="meterVisual" aria-hidden="true" hidden>
-          <div class="led-meter-device">
-            <div class="led-case">
-              <div class="led-track">
-                <div class="led-segments" id="ledSegments"></div>
-                <div class="led-indicator" id="ledIndicator"></div>
-              </div>
-            </div>
-            <div class="led-scale-labels">
-              <span>♭</span>
-              <span>in tune</span>
-              <span>♯</span>
-            </div>
-          </div>
-        </div>
-
         <div class="display-toggle" role="radiogroup" aria-label="Visual style">
           <label class="pill pill-sm">
             <input type="radio" name="tunerVisualMode" value="strobe" />
@@ -181,7 +126,67 @@
             <span>Meter</span>
           </label>
         </div>
+
+        <div class="visual-devices">
+          <div class="strobe visual-element" id="strobeVisual" aria-hidden="true" hidden>
+            <svg class="strobe-device" viewBox="0 0 300 180" role="presentation" focusable="false">
+              <path
+                class="strobe-case"
+                d="M 8 150 A 142 142 0 0 1 292 150 L 292 158 A 8 8 0 0 1 284 166 L 16 166 A 8 8 0 0 1 8 158 Z"
+                fill="url(#tunerCaseGradient)"
+              />
+              <path class="strobe-window" d="M 13 150 A 137 137 0 0 1 287 150 Z" fill="url(#tunerWindowGradient)" />
+              <path class="strobe-window-rim" d="M 17 150 A 133 133 0 0 1 283 150" />
+
+              <g clip-path="url(#strobeHalfClip)">
+                <g id="strobeRing1" class="strobe-ring"></g>
+                <g id="strobeRing2" class="strobe-ring strobe-ring-alt"></g>
+                <g id="strobeRing3" class="strobe-ring"></g>
+                <g id="strobeRing4" class="strobe-ring strobe-ring-alt"></g>
+                <g id="strobeRing5" class="strobe-ring"></g>
+                <circle class="strobe-vignette" cx="150" cy="150" r="137" fill="url(#strobeVignette)" />
+                <ellipse class="strobe-glass-highlight" cx="150" cy="70" rx="94" ry="46" fill="url(#strobeGlassHighlight)" />
+              </g>
+
+              <circle class="strobe-hub" cx="150" cy="150" r="5" />
+              <circle class="strobe-hub-shine" cx="148.3" cy="148.3" r="1.6" />
+            </svg>
+          </div>
+
+          <div class="needle-gauge visual-element" id="needleVisual" aria-hidden="true">
+            <svg class="needle-device" viewBox="0 0 240 200" role="presentation" focusable="false">
+              <rect class="device-case" x="8" y="8" width="224" height="178" rx="20" fill="url(#tunerCaseGradient)" />
+              <rect class="device-window" x="12" y="12" width="216" height="170" rx="16" fill="url(#tunerWindowGradient)" />
+              <g id="needleInTuneArc"></g>
+              <g id="needleScaleTicks"></g>
+              <text class="needle-flat-label" x="40" y="150">♭</text>
+              <text class="needle-sharp-label" x="200" y="150">♯</text>
+              <g id="needleSwing">
+                <path class="needle-pointer" d="M118.6 150 L121.4 150 L120.5 60 L120 54 L119.5 60 Z" />
+              </g>
+              <circle class="needle-hub" cx="120" cy="150" r="7" />
+            </svg>
+          </div>
+
+          <div class="led-meter visual-element" id="meterVisual" aria-hidden="true" hidden>
+            <div class="led-meter-device">
+              <div class="led-case">
+                <div class="led-track">
+                  <div class="led-segments" id="ledSegments"></div>
+                  <div class="led-indicator" id="ledIndicator"></div>
+                </div>
+              </div>
+              <div class="led-scale-labels">
+                <span>♭</span>
+                <span>in tune</span>
+                <span>♯</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <p id="tuningStatement" class="tuning-statement" aria-live="polite">Tuning for Equal Temperament · 440 Hz</p>
 
       <div class="transport-row">
         <button id="toggleMicBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop tuner">Start Tuner</button>
@@ -303,6 +308,24 @@
           </div>
         </div>
 
+        <div class="control-block temperament-block">
+          <div class="panel-header">
+            <span class="panel-title">Tuning Standard</span>
+            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Tuning Standard">
+              <span class="collapse-icon" aria-hidden="true">▾</span>
+            </button>
+          </div>
+          <p class="hint">Retunes every note by a few cents to a historical or alternate temperament, instead of modern Equal Temperament.</p>
+          <div class="select-row">
+            <label class="select-row-label" for="temperamentSelect">Standard</label>
+            <select id="temperamentSelect" class="temperament-select" aria-label="Tuning standard"></select>
+          </div>
+          <div class="select-row temperament-key-row" id="temperamentKeyRow" hidden>
+            <label class="select-row-label" for="temperamentKeySelect">Key</label>
+            <select id="temperamentKeySelect" class="temperament-key-select" aria-label="Tuning standard key (tonic)"></select>
+          </div>
+        </div>
+
         <div class="control-block test-tone-block">
           <div class="panel-header">
             <span class="panel-title">Test Tone</span>
@@ -408,6 +431,16 @@
           </button>
         </div>
         <p class="hint">Every note of an 88-key piano, in Hz, under each reference pitch standard.</p>
+        <div class="freq-table-controls">
+          <div class="select-row">
+            <label class="select-row-label" for="temperamentSelectFreqTable">Standard</label>
+            <select id="temperamentSelectFreqTable" class="temperament-select" aria-label="Tuning standard"></select>
+          </div>
+          <div class="select-row temperament-key-row" id="temperamentKeyRowFreqTable" hidden>
+            <label class="select-row-label" for="temperamentKeySelectFreqTable">Key</label>
+            <select id="temperamentKeySelectFreqTable" class="temperament-key-select" aria-label="Tuning standard key (tonic)"></select>
+          </div>
+        </div>
         <div class="freq-table-scroll">
           <table class="freq-table" id="freqTable">
             <thead>
