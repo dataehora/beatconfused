@@ -1,0 +1,598 @@
+:root {
+  color-scheme: light;
+  --ink: #221b16;
+  --ink-soft: #57483b;
+  --paper: #f6f1e8;
+  --paper-strong: #efe7da;
+  --surface: rgba(255, 251, 244, 0.82);
+  --surface-solid: #fffaf2;
+  --border: rgba(62, 45, 30, 0.2);
+  --border-strong: rgba(62, 45, 30, 0.36);
+  --accent: #8c3b2f;
+  --accent-strong: #6f1f16;
+  --gold: #b27a37;
+  --in-tune: #6f8f52;
+  --in-tune-strong: #4f6a38;
+  --tune-gray: #9c9186;
+  --shadow-soft: 0 10px 30px rgba(34, 27, 22, 0.1);
+  --shadow-strong: 0 18px 45px rgba(34, 27, 22, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, "Segoe UI", Roboto, system-ui, sans-serif;
+  color: var(--ink);
+  line-height: 1.55;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(178, 122, 55, 0.16), transparent 35%),
+    radial-gradient(circle at 12% 22%, rgba(140, 59, 47, 0.1), transparent 34%),
+    repeating-linear-gradient(
+      180deg,
+      rgba(57, 43, 31, 0.035) 0,
+      rgba(57, 43, 31, 0.035) 1px,
+      transparent 1px,
+      transparent 36px
+    ),
+    linear-gradient(180deg, #fcf7ef 0%, #f3eadb 100%);
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.6rem 1.1rem 3.4rem;
+  display: grid;
+  gap: 1.35rem;
+}
+
+.hero {
+  text-align: center;
+  position: relative;
+  padding: 1.4rem 0.7rem 0.1rem;
+}
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: min(520px, 78vw);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(62, 45, 30, 0.46), transparent);
+}
+
+.hero::before {
+  top: 0.3rem;
+}
+
+.hero::after {
+  bottom: -0.2rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: "Marck Script", "Brush Script MT", cursive;
+  font-size: clamp(1.2rem, 2.6vw, 1.7rem);
+  color: var(--accent);
+}
+
+.hero h1 {
+  margin: 0.2rem 0 0.55rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.4rem, 5.2vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #2d221b;
+}
+
+.stroboscope {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  border-radius: 1.05rem;
+  padding: 1.2rem;
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+/* ---- sticky "live" area: the current reading and Start/Stop control stay
+   pinned at the top of the viewport as the settings below scroll past,
+   matching /tuner/'s .tuner-live. ---- */
+.stroboscope-live {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: grid;
+  gap: 1rem;
+  margin: -1.2rem -1.2rem 0;
+  padding: 1.2rem 1.2rem 0.9rem;
+  background: var(--surface-solid);
+  border-radius: 1.05rem 1.05rem 0 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.transport-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tap-status {
+  text-align: center;
+  min-height: 1.1em;
+}
+
+.tuning-statement {
+  margin: 0;
+  text-align: center;
+  color: var(--accent-strong);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+}
+
+.control-block {
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  max-width: 26rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* The chromatic keyboard needs the full card width for 7 natural-key
+   columns to have any breathing room, unlike Reference Pitch's narrower
+   compact panel. */
+.control-block.keyboard-block {
+  max-width: none;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.panel-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink);
+  /* Pushes whatever follows (the collapse toggle) to the right edge of
+     the header, rather than sitting right next to the title text. */
+  margin-right: auto;
+}
+
+.hint {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.hint.is-error {
+  color: var(--accent-strong);
+}
+
+/* ---- collapsible frames: every panel-header carries a toggle; clicking
+   it hides everything in the .control-block except the header itself,
+   collapsing the frame down to a title bar. ---- */
+.collapse-toggle {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+.collapse-toggle:hover {
+  background: var(--paper-strong);
+  color: var(--ink);
+}
+
+.collapse-icon {
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 150ms ease;
+}
+
+.collapse-toggle[aria-expanded="false"] .collapse-icon {
+  transform: rotate(-90deg);
+}
+
+.control-block.is-collapsed > *:not(.panel-header) {
+  display: none;
+}
+
+.fine-freq-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.fine-freq-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.fine-freq-value input[type="number"] {
+  width: 3.2ch;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: right;
+  font: inherit;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-strong);
+  -moz-appearance: textfield;
+  appearance: textfield;
+  border-radius: 0.65rem;
+}
+
+.fine-freq-value input[type="number"]::-webkit-inner-spin-button,
+.fine-freq-value input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.panel-slider {
+  width: 100%;
+}
+
+/* ---- shared primitives ---- */
+input,
+select,
+button {
+  font: inherit;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.toggle-btn {
+  width: min(170px, 100%);
+  justify-self: center;
+  border: 1px solid rgba(123, 71, 32, 0.55);
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  background: linear-gradient(145deg, #b57a38, #885123);
+  color: #fffdf8;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 3px 9px rgba(82, 47, 20, 0.2);
+}
+
+.toggle-btn:hover {
+  filter: brightness(1.04);
+}
+
+.toggle-btn[aria-pressed="true"] {
+  background: linear-gradient(145deg, #d1453a, #9c2620);
+  border-color: rgba(156, 38, 32, 0.65);
+  box-shadow: 0 3px 10px rgba(156, 38, 32, 0.35);
+}
+
+.small-btn {
+  border: 1px solid var(--border-strong);
+  background: #fff9f1;
+  color: var(--ink);
+  border-radius: 0.65rem;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.small-btn:hover {
+  background: #fff3e3;
+}
+
+.toggle-btn:focus-visible,
+.small-btn:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   CHROMATIC KEYBOARD — 12 discs laid out like a piano: 5 sharps in a row
+   above, 7 naturals in a row below. Each disc shows only the top 90° of
+   its wheel (see DISC_VIEWBOX in script.js — a wide-short viewBox, not a
+   square one) and holds one concentric ring per octave-instance of that
+   note in the 88-key range (see midiListForPitchClass) — every ring is
+   independently analyzed, so several rings across several discs can be
+   lit at once (e.g. a note's non-octave harmonics land on *other* discs'
+   rings), not just one "the detected note" disc at a time.
+
+   Showing only the top quarter of each wheel (rather than a full circle)
+   is what makes discs holding 7-8 distinguishable concentric bands
+   affordable at all — the same DOM/layout budget that a full circle would
+   need just to stay legible instead buys roughly 4x the effective size.
+   ============================================================ */
+.stroboscope-keyboard {
+  position: relative;
+  /* Room for the sharps row to float above the naturals row without
+     overlapping it — matches .stroboscope-sharps' own height below. */
+  padding-top: clamp(3.6rem, 10vw, 5.2rem);
+}
+
+.stroboscope-naturals {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 0.6rem;
+}
+
+.stroboscope-sharps {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(3.6rem, 10vw, 5.2rem);
+}
+
+.strobe-disc {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+}
+
+/* Sharps are positioned at the boundary between two natural columns (e.g.
+   C♯ sits between C and D) — the exact left% for each is set inline in
+   script.js from SHARP_BOUNDARY, the same way a piano's black keys sit
+   between, not on top of, the white keys beneath them. */
+.stroboscope-sharps .strobe-disc {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.disc-device {
+  display: block;
+  width: min(180px, 17vw, 100%);
+  overflow: visible;
+}
+
+.stroboscope-sharps .disc-device {
+  width: min(140px, 13vw, 100%);
+}
+
+.disc-case {
+  fill: url(#discCaseGradient);
+  filter: drop-shadow(0 2px 4px rgba(61, 31, 15, 0.14));
+}
+
+.disc-window {
+  fill: url(#discWindowGradient);
+}
+
+/* Idle (default): dim and gray-blue — deliberately distinct from the
+   green "in tune" state below, so a ring at rest is never mistaken for a
+   ring that's confidently in tune. */
+.disc-ring path {
+  fill: var(--tune-gray);
+  opacity: 0.32;
+  transition: fill 160ms ease, opacity 160ms ease;
+}
+
+.disc-ring.is-active path {
+  fill: color-mix(in srgb, var(--tune-gray) calc(var(--tune-mix, 0) * 1%), #a8cdf0);
+  opacity: 1;
+}
+
+.disc-ring.in-tune path {
+  fill: var(--in-tune);
+}
+
+.disc-hub {
+  fill: #f6f1e8;
+}
+
+.disc-label {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+  color: var(--ink-soft);
+  transition: color 160ms ease;
+}
+
+/* The label reflects the disc as a whole: brightens once any of its
+   rings has a confident reading, turns green once any of them is
+   specifically in tune (the .in-tune rule must win when both are true,
+   hence it's declared after .is-active here). */
+.strobe-disc.is-active .disc-label {
+  color: var(--accent-strong);
+}
+
+.strobe-disc.in-tune .disc-label {
+  color: var(--in-tune-strong);
+}
+
+/* ---- Input Monitor: gain boost + level meter, same as /tuner/'s. ---- */
+.signal-block .hint {
+  text-align: center;
+}
+
+.signal-meters-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2.2rem;
+  padding-top: 0.2rem;
+}
+
+.vertical-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vertical-control-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.vertical-control-value {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-strong);
+  /* Fixed (not min-) width, sized for the longest reading ("-60.0 dB"),
+     so the level text changing length can't re-center the flex row and
+     nudge the gain slider sideways. */
+  width: 4.6rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* The classic rotated-range-input technique for a vertical slider: the
+   input keeps its normal horizontal layout box, centered then rotated
+   -90deg so dragging up (visually) still means dragging toward the max
+   end (originally the right) — the natural "higher fader = more gain" feel. */
+.vertical-slider-wrap {
+  position: relative;
+  width: 44px;
+  height: 160px;
+}
+
+.vertical-slider-wrap .vertical-slider {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 32px;
+  margin: 0;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  accent-color: var(--accent);
+}
+
+/* Same golden-case-over-dark-track language as the disc bezels, just
+   without segments — a single continuous fill rising from the bottom,
+   colored gold at safe levels and warming toward the accent red as it
+   nears clipping. */
+.level-meter-case {
+  width: 44px;
+  height: 160px;
+  padding: 4px;
+  border-radius: 1rem;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: 0 2px 5px rgba(61, 31, 15, 0.14);
+}
+
+.level-meter-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.7rem;
+  background: linear-gradient(180deg, #241b14, #171310);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.level-meter-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0%;
+  background: color-mix(in srgb, var(--accent) calc(var(--level-mix, 0) * 1%), var(--gold));
+  transition: height 90ms linear;
+}
+
+.footer {
+  text-align: center;
+  color: var(--ink-soft);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.22rem;
+}
+
+.footer-links,
+.footer-contact {
+  margin: 0.3rem 0 0;
+  font-family: Inter, "Segoe UI", Roboto, system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+.footer-links a,
+.footer-contact a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.05rem;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.footer-links a:hover,
+.footer-contact a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding-top: 2rem;
+  }
+
+  .stroboscope {
+    padding: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
