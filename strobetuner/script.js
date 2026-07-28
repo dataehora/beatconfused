@@ -66,17 +66,17 @@ const LEVEL_FLOOR_DB = -60;
 // A much wider, half-circle geometry than /multistrobe/'s compact 90°
 // discs — this page has room for exactly one disc to be the hero of the
 // page, in the same half-circle style as /tuner/'s own strobe device. The
-// gap between ringOuterR and caseR is deliberately wide (unlike
-// /multistrobe/'s discs) to leave room for the reference bezel drawn by
-// addScaleTicks() below.
+// rings are the whole point of this page, so the bezel between
+// ringOuterR and caseR is kept just wide enough for addScaleTicks()'s
+// tick marks and nothing more — everything else goes to ring radius.
 const STAGE_GEOMETRY = {
   cx: 150,
   cy: 150,
   arcSpanDeg: 180,
   viewBox: "0 0 300 165",
   caseR: 145,
-  windowR: 122,
-  ringOuterR: 118,
+  windowR: 137,
+  ringOuterR: 133,
   hubR: 7,
   hubDotR: 4.5,
   ringGap: 1,
@@ -84,6 +84,11 @@ const STAGE_GEOMETRY = {
   // visibly poke outside the window sector without this — see the
   // comment on clipToWindow in shared/strobe-disc.js.
   clipToWindow: true,
+  // The wedge pattern spans the full 360° (not just the visible 180°),
+  // so a ring can spin any amount, in either direction, without ever
+  // running out of pattern to show — see the comment on continuousWedges
+  // in shared/strobe-disc.js.
+  continuousWedges: true,
 };
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -106,6 +111,13 @@ const state = {
 
 const discCache = new Map(); // note name -> disc
 let activeDisc = null;
+
+// Shown at rest before any note has been identified — matches /tuner/'s
+// and /multistrobe/'s own devices, which are always visible on the page
+// (dim/idle, never blank) rather than only appearing once a signal shows
+// up. A4 matches the frozen "in tune" state the homepage's tuner icon
+// uses for the same reason: a familiar, recognizable resting point.
+const DEFAULT_NOTE_NAME = "A";
 
 /* ============================================================
    PITCH DETECTION — time-domain autocorrelation (the standard "ACF2+"
@@ -216,11 +228,15 @@ function polarPoint(cx, cy, r, angleDeg) {
 
 function addScaleTicks(disc) {
   const svg = disc.el.querySelector("svg");
-  const { cx, cy, caseR } = STAGE_GEOMETRY;
+  const { cx, cy, caseR, windowR } = STAGE_GEOMETRY;
   const halfSpan = STAGE_GEOMETRY.arcSpanDeg / 2;
-  const majorTickInnerR = caseR - 9;
-  const minorTickInnerR = caseR - 5;
-  const tickOuterR = caseR - 2;
+  // Ticks live entirely within the thin bezel band between windowR and
+  // caseR — the rings themselves get everything inside windowR, since
+  // they're the part that actually matters here.
+  const majorTickInnerR = caseR - 6;
+  const minorTickInnerR = caseR - 3;
+  const tickOuterR = caseR - 1;
+  const labelR = windowR + 1;
 
   const ticksGroup = document.createElementNS(SVG_NS, "g");
   ticksGroup.setAttribute("class", "disc-scale-ticks");
@@ -239,7 +255,7 @@ function addScaleTicks(disc) {
     ticksGroup.appendChild(tick);
   }
 
-  const flatPoint = polarPoint(cx, cy, majorTickInnerR - 9, -halfSpan);
+  const flatPoint = polarPoint(cx, cy, labelR, -halfSpan);
   const flatLabel = document.createElementNS(SVG_NS, "text");
   flatLabel.setAttribute("class", "disc-scale-label disc-scale-label-flat");
   flatLabel.setAttribute("x", flatPoint.x.toFixed(2));
@@ -248,7 +264,7 @@ function addScaleTicks(disc) {
   flatLabel.textContent = "♭";
   ticksGroup.appendChild(flatLabel);
 
-  const sharpPoint = polarPoint(cx, cy, majorTickInnerR - 9, halfSpan);
+  const sharpPoint = polarPoint(cx, cy, labelR, halfSpan);
   const sharpLabel = document.createElementNS(SVG_NS, "text");
   sharpLabel.setAttribute("class", "disc-scale-label disc-scale-label-sharp");
   sharpLabel.setAttribute("x", sharpPoint.x.toFixed(2));
@@ -724,6 +740,11 @@ document.addEventListener("visibilitychange", () => {
     stopMic();
   }
 });
+
+// A freshly built disc's rings/legend start idle by construction (see
+// buildDisc/buildLegend), so mounting it here is enough to have something
+// other than blank space on the page before the tuner is even started.
+setActiveDisc(DEFAULT_NOTE_NAME, 44100);
 
 updateReferencePitch(state.a4);
 micGainValueLabelEl.textContent = `${Number(micGainRange.value).toFixed(1)}×`;

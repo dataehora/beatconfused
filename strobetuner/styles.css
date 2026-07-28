@@ -99,7 +99,7 @@ body {
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
   border-radius: 1.05rem;
-  padding: 1.2rem;
+  padding: 0.8rem;
   display: grid;
   gap: 1rem;
   min-width: 0;
@@ -107,15 +107,17 @@ body {
 
 /* ---- sticky "live" area: the current reading, disc and Start/Stop
    control stay pinned at the top of the viewport as the settings below
-   scroll past, matching /tuner/'s .tuner-live. ---- */
+   scroll past, matching /tuner/'s .tuner-live. Padding trimmed down to
+   just enough for the sticky header not to feel cramped — the disc
+   itself is the priority, not the frame around it. ---- */
 .strobetuner-live {
   position: sticky;
   top: 0;
   z-index: 5;
   display: grid;
-  gap: 0.6rem;
-  margin: -1.2rem -1.2rem 0;
-  padding: 1.2rem 1.2rem 0.9rem;
+  gap: 0.5rem;
+  margin: -0.8rem -0.8rem 0;
+  padding: 0.9rem 0.6rem 0.6rem;
   background: var(--surface-solid);
   border-radius: 1.05rem 1.05rem 0 0;
   border-bottom: 1px solid var(--border);
@@ -395,11 +397,14 @@ input:focus-visible {
 .strobetuner-disc-stage {
   display: flex;
   justify-content: center;
-  padding: 0.2rem 0 0.4rem;
+  padding: 0 0 0.3rem;
 }
 
+/* The rings are the entire point of this page, so the disc gets as much
+   width as the card can spare — a much higher cap than a purely
+   decorative device would need. */
 .strobetuner-disc-wrap {
-  width: min(480px, 100%);
+  width: min(720px, 100%);
   display: grid;
   justify-items: center;
 }
@@ -432,6 +437,7 @@ input:focus-visible {
   display: block;
   width: 100%;
   overflow: visible;
+  transition: filter 300ms ease;
 }
 
 .disc-case {
@@ -441,28 +447,48 @@ input:focus-visible {
 
 .disc-window {
   fill: url(#discWindowGradient);
+  transition: filter 300ms ease;
 }
 
-/* Idle (default): dim and gray-blue — deliberately distinct from the
-   green "in tune" state below, so a ring at rest is never mistaken for a
-   ring that's confidently in tune. */
+/* A real strobe disc's wedges are just black and white — the pattern's
+   *motion* (or stillness) carries the tuning information, not a color
+   change, so unlike /multistrobe/'s colored rings, active and in-tune
+   here render identically (both bright white); only whether the ring is
+   actually spinning tells them apart. Idle rings sit dim and low-
+   contrast, like a wheel with its light off. */
 .disc-ring path {
-  fill: var(--tune-gray);
-  opacity: 0.32;
-  transition: fill 160ms ease, opacity 160ms ease;
+  fill: #3a3a3a;
+  opacity: 0.55;
+  transition: fill 220ms ease, opacity 220ms ease;
 }
 
-.disc-ring.is-active path {
-  fill: color-mix(in srgb, var(--tune-gray) calc(var(--tune-mix, 0) * 1%), #a8cdf0);
+.disc-ring.is-active path,
+.disc-ring.in-tune path {
+  fill: #fbfaf7;
   opacity: 1;
 }
 
+/* In tune specifically means "stopped spinning" (see shared/strobe-disc.js
+   RING_DEADZONE_CENTS), so it earns a soft white glow on top of the same
+   plain white fill every active ring gets — a reward for stillness, still
+   strictly monochrome. */
 .disc-ring.in-tune path {
-  fill: var(--in-tune);
+  filter: drop-shadow(0 0 2.5px rgba(255, 255, 255, 0.9));
 }
 
 .disc-hub {
   fill: #f6f1e8;
+}
+
+/* "Illuminating" the whole disc when anything is sounding — the window
+   backlight brightens and the whole device gains a touch of contrast,
+   distinct from any single ring's own state. */
+.strobe-disc.is-active .disc-window {
+  filter: brightness(1.9) saturate(1.05);
+}
+
+.strobe-disc.is-active .disc-device {
+  filter: brightness(1.06) contrast(1.05);
 }
 
 /* A soft golden glow layered on top of whichever coloring a ring already
@@ -490,7 +516,7 @@ input:focus-visible {
 .disc-scale-label {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 9px;
   fill: var(--gold);
   dominant-baseline: middle;
 }
@@ -514,10 +540,11 @@ input:focus-visible {
 
 .octave-legend-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
-  padding: 0.3rem 0.75rem;
+  height: 2.2rem;
+  padding: 0 0.75rem;
   border: 1px solid var(--border);
   border-radius: 0.6rem;
   background: var(--surface-solid);
@@ -684,7 +711,12 @@ input:focus-visible {
   }
 
   .strobetuner {
-    padding: 1rem;
+    padding: 0.6rem;
+  }
+
+  .strobetuner-live {
+    margin: -0.6rem -0.6rem 0;
+    padding: 0.8rem 0.5rem 0.5rem;
   }
 }
 
