@@ -59,6 +59,18 @@
           "applicationCategory": "MultimediaApplication"
         },
         {
+          "@type": "WebApplication",
+          "name": "BeatConfused Strobe Tuner",
+          "url": "https://beatconfused.com/strobetuner/",
+          "applicationCategory": "MultimediaApplication"
+        },
+        {
+          "@type": "WebApplication",
+          "name": "BeatConfused Multi Strobe",
+          "url": "https://beatconfused.com/multistrobe/",
+          "applicationCategory": "MultimediaApplication"
+        },
+        {
           "@type": "Game",
           "name": "Clacton Fighter",
           "url": "https://beatconfused.com/binfacevsfarage/"
@@ -139,6 +151,60 @@
           <span class="tool-name">Tuner</span>
           <span class="tool-desc">Strobe, needle or meter. Always in tune</span>
         </a>
+        <a class="tool-card" href="/strobetuner/">
+          <span class="tool-media tuner-icon">
+            <svg id="strobeTunerIconSvg" class="tuner-icon-svg" viewBox="0 0 300 180" role="presentation" focusable="false">
+              <defs>
+                <linearGradient id="homeStrobeTunerCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
+                  <stop offset="0" stop-color="#caa06a" />
+                  <stop offset="1" stop-color="#8a5a30" />
+                </linearGradient>
+                <radialGradient id="homeStrobeTunerWindowGradient" cx="0.5" cy="0.42" r="0.75">
+                  <stop offset="0" stop-color="#362b21" />
+                  <stop offset="1" stop-color="#171310" />
+                </radialGradient>
+                <clipPath id="homeStrobeTunerHalfClip">
+                  <path d="M 26 150 A 124 124 0 0 1 274 150 Z" />
+                </clipPath>
+              </defs>
+              <path class="tuner-icon-case" d="M 8 150 A 142 142 0 0 1 292 150 Z" fill="url(#homeStrobeTunerCaseGradient)" />
+              <path class="tuner-icon-window" d="M 26 150 A 124 124 0 0 1 274 150 Z" fill="url(#homeStrobeTunerWindowGradient)" />
+              <g id="strobeTunerIconWedges" clip-path="url(#homeStrobeTunerHalfClip)"></g>
+              <rect class="tuner-icon-base" x="34" y="146" width="232" height="16" rx="8" />
+              <circle class="tuner-icon-hub" cx="150" cy="150" r="5" />
+              <text class="tuner-icon-a4" x="150" y="108" text-anchor="middle">A4</text>
+            </svg>
+          </span>
+          <span class="tool-name">Strobe Tuner</span>
+          <span class="tool-desc">One note, every octave, at once</span>
+        </a>
+        <a class="tool-card" href="/multistrobe/">
+          <span class="tool-media tuner-icon">
+            <svg id="multiStrobeIconSvg" class="tuner-icon-svg" viewBox="0 0 300 180" role="presentation" focusable="false">
+              <defs>
+                <linearGradient id="homeMultiStrobeCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
+                  <stop offset="0" stop-color="#caa06a" />
+                  <stop offset="1" stop-color="#8a5a30" />
+                </linearGradient>
+                <radialGradient id="homeMultiStrobeWindowGradient" cx="0.5" cy="0.42" r="0.75">
+                  <stop offset="0" stop-color="#362b21" />
+                  <stop offset="1" stop-color="#171310" />
+                </radialGradient>
+                <clipPath id="homeMultiStrobeHalfClip">
+                  <path d="M 26 150 A 124 124 0 0 1 274 150 Z" />
+                </clipPath>
+              </defs>
+              <path class="tuner-icon-case" d="M 8 150 A 142 142 0 0 1 292 150 Z" fill="url(#homeMultiStrobeCaseGradient)" />
+              <path class="tuner-icon-window" d="M 26 150 A 124 124 0 0 1 274 150 Z" fill="url(#homeMultiStrobeWindowGradient)" />
+              <g id="multiStrobeIconWedges" clip-path="url(#homeMultiStrobeHalfClip)"></g>
+              <rect class="tuner-icon-base" x="34" y="146" width="232" height="16" rx="8" />
+              <circle class="tuner-icon-hub" cx="150" cy="150" r="5" />
+              <text class="tuner-icon-a4" x="150" y="108" text-anchor="middle">A4</text>
+            </svg>
+          </span>
+          <span class="tool-name">Multi Strobe</span>
+          <span class="tool-desc">All 12 notes, one strobe each</span>
+        </a>
         <a class="tool-card" href="/binfacevsfarage/">
           <span class="tool-media">
             <img
@@ -160,13 +226,16 @@
   </main>
 
   <script>
-    // Builds the homepage tuner icon as a small, static replica of the real
-    // /tuner/ strobe wheel (same half-circle wedge construction, scaled down
-    // to icon size), frozen in the green "in tune" state for A4 440Hz at
-    // 0 cents — rather than an unrelated decorative graphic.
-    (function buildTunerIcon() {
+    // Builds the homepage tuner/strobe-tool icons as small, static replicas
+    // of the real /tuner/ strobe wheel (same half-circle wedge
+    // construction, scaled down to icon size), frozen in the green
+    // "in tune" state for A4 440Hz at 0 cents — rather than an unrelated
+    // decorative graphic. All three strobe-family tools (Tuner, Strobe
+    // Tuner, Multi Strobe) share this same icon, since they're all views
+    // onto the same underlying strobe idea.
+    function buildStrobeIcon(wedgesGroupId) {
       const NS = "http://www.w3.org/2000/svg";
-      const wedgesGroup = document.getElementById("tunerIconWedges");
+      const wedgesGroup = document.getElementById(wedgesGroupId);
 
       if (!wedgesGroup) {
         return;
@@ -216,7 +285,11 @@
 
         wedgesGroup.appendChild(g);
       });
-    })();
+    }
+
+    buildStrobeIcon("tunerIconWedges");
+    buildStrobeIcon("strobeTunerIconWedges");
+    buildStrobeIcon("multiStrobeIconWedges");
   </script>
 </body>
 </html>
