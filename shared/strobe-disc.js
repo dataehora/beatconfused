@@ -291,10 +291,12 @@
     // less noticeable on /multistrobe/'s small 90°-arc ones, which is why
     // this stayed opt-in rather than always-on). When geo.clipToWindow is
     // set, every ring is confined to the window sector's own shape, same
-    // as /tuner/'s original strobe (see #strobeHalfClip).
+    // as /tuner/'s original strobe (see #strobeHalfClip). geo.continuousWedges
+    // (below) always implies this too, since an unclipped full-circle
+    // pattern would show its "back half" outside the intended window.
     let ringsParent = svg;
 
-    if (geo.clipToWindow) {
+    if (geo.clipToWindow || geo.continuousWedges) {
       const clipId = `discClip-${Math.random().toString(36).slice(2, 9)}`;
       const clipPath = document.createElementNS(SVG_NS, "clipPath");
       clipPath.setAttribute("id", clipId);
@@ -307,6 +309,17 @@
       ringsParent.setAttribute("clip-path", `url(#${clipId})`);
       svg.appendChild(ringsParent);
     }
+
+    // A ring built only across the visible arc (plus a small buffer) runs
+    // out of wedges to show once it's rotated far enough — the pattern
+    // has a beginning and an end, so a sustained sharp/flat note visibly
+    // spins the wheel "off the edge" into a blank gap. Building the full
+    // 360° pattern instead (still only ever *shown* through the window
+    // sector, via the clip above) makes it a genuinely continuous wheel
+    // that can spin any amount, in either direction, forever — exactly
+    // like the physical disc this is modeled on, which is a full wheel
+    // viewed through a narrow window, not a wheel-shaped window itself.
+    const wedgeArcSpanDeg = geo.continuousWedges ? 360 : arcSpanDeg;
 
     const totalRings = midiList.length;
     const availableBand = ringOuterR - hubR - ringGap * (totalRings - 1);
@@ -323,7 +336,7 @@
 
       const ringGroup = document.createElementNS(SVG_NS, "g");
       ringGroup.setAttribute("class", "disc-ring");
-      buildArcRingWedges(ringGroup, cx, cy, innerR, outerR, segmentCount, arcSpanDeg);
+      buildArcRingWedges(ringGroup, cx, cy, innerR, outerR, segmentCount, wedgeArcSpanDeg);
       ringsParent.appendChild(ringGroup);
 
       return {
@@ -354,7 +367,7 @@
     wrapper.appendChild(svg);
     wrapper.appendChild(label);
 
-    return { name, el: wrapper, rings, cx, cy };
+    return { name, el: wrapper, rings, cx, cy, continuousWedges: Boolean(geo.continuousWedges) };
   }
 
   // Recomputes every ring's target frequency (and the analysis window that
@@ -387,8 +400,23 @@
 
       if (!isActive) {
         ring.ringGroupEl.classList.remove("in-tune");
-        ring.angle = 0;
-        ring.ringGroupEl.setAttribute("transform", `rotate(0 ${disc.cx} ${disc.cy})`);
+
+        // Snapping back to a fixed "0" position the instant a ring loses
+        // confidence (then jumping again once it regains it) is what
+        // produced the reported stutter — the ring would freeze at
+        // whatever angle it was mid-spin at, not at the position this
+        // reset forces it to. Continuous-wedge discs (see buildDisc) have
+        // no "canonical" rest angle to return to — the pattern repeats
+        // perfectly at every angle — so for them it's safe (and far
+        // smoother) to just leave the ring exactly where it stopped and
+        // resume from there whenever it goes active again. Discs without
+        // the full 360° pattern still need this reset: their wedges only
+        // exist near angle 0, so idling anywhere else would show gaps.
+        if (!disc.continuousWedges) {
+          ring.angle = 0;
+          ring.ringGroupEl.setAttribute("transform", `rotate(0 ${disc.cx} ${disc.cy})`);
+        }
+
         return;
       }
 
