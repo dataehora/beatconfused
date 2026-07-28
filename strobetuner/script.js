@@ -15,6 +15,7 @@ const noteNameEl = document.getElementById("noteName");
 const noSignalHintEl = document.getElementById("noSignalHint");
 const strobeSection = document.querySelector(".strobetuner");
 const discContainer = document.getElementById("strobeDiscContainer");
+const octaveLegendEl = document.getElementById("octaveLegend");
 
 const toggleMicBtn = document.getElementById("toggleMicBtn");
 const tuningStatementEl = document.getElementById("tuningStatement");
@@ -64,19 +65,28 @@ const LEVEL_FLOOR_DB = -60;
 
 // A much wider, half-circle geometry than /multistrobe/'s compact 90°
 // discs — this page has room for exactly one disc to be the hero of the
-// page, in the same half-circle style as /tuner/'s own strobe device.
+// page, in the same half-circle style as /tuner/'s own strobe device. The
+// gap between ringOuterR and caseR is deliberately wide (unlike
+// /multistrobe/'s discs) to leave room for the reference bezel drawn by
+// addScaleTicks() below.
 const STAGE_GEOMETRY = {
   cx: 150,
   cy: 150,
   arcSpanDeg: 180,
-  viewBox: "0 0 300 160",
+  viewBox: "0 0 300 165",
   caseR: 145,
-  windowR: 139,
-  ringOuterR: 135,
-  hubR: 8,
-  hubDotR: 5,
+  windowR: 122,
+  ringOuterR: 118,
+  hubR: 7,
+  hubDotR: 4.5,
   ringGap: 1,
+  // A 180° arc's boundary wedges are big enough that a spinning ring can
+  // visibly poke outside the window sector without this — see the
+  // comment on clipToWindow in shared/strobe-disc.js.
+  clipToWindow: true,
 };
+
+const SVG_NS = "http://www.w3.org/2000/svg";
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -86,6 +96,12 @@ const state = {
   hasSignal: false,
   currentNoteName: null,
   lastConfidentAt: 0,
+  // The exact MIDI note (name + octave) autocorrelation last detected —
+  // distinct from currentNoteName (pitch class only), used purely to
+  // highlight the "best guess" fundamental ring. The disc's own per-ring
+  // Goertzel confidence (not this) is still what actually lights up each
+  // ring — see the comment in mainLoop.
+  fundamentalMidi: null,
 };
 
 const discCache = new Map(); // note name -> disc
@@ -170,9 +186,148 @@ function detectPitch(buffer, sampleRate) {
 }
 
 function frequencyToPitchClassName(frequency, a4) {
-  const equalMidi = 69 + 12 * Math.log2(frequency / a4);
-  const rounded = Math.round(equalMidi);
-  return NOTE_NAMES[((rounded % 12) + 12) % 12];
+  return NOTE_NAMES[((frequencyToMidi(frequency, a4) % 12) + 12) % 12];
+}
+
+// The exact equal-tempered MIDI note (name + octave) nearest a detected
+// frequency — used only to pick which ring is the "best guess" fundamental
+// to highlight (see updateDiscExtras). The disc's own rings decide their
+// own state independently of this.
+function frequencyToMidi(frequency, a4) {
+  return Math.round(69 + 12 * Math.log2(frequency / a4));
+}
+
+/* ============================================================
+   REFERENCE BEZEL — a static ring of calibration ticks around the outer
+   rim of each disc (between ringOuterR and caseR), framing it the way a
+   physical strobe tuner's bezel does, plus ♭/♯ glyphs marking the flat
+   and sharp ends of the arc (rings rotate clockwise when sharp,
+   counter-clockwise when flat — see shared/strobe-disc.js's renderDisc).
+   Purely decorative/orientational: unlike the needle gauge on /tuner/,
+   there's no pointer to read a position off this scale — the ring's
+   *rotation*, not its position, is what carries the tuning information.
+   Drawn directly into each disc's own <svg> (not a separate overlay) so
+   it's guaranteed to stay pixel-aligned with that disc's geometry.
+   ============================================================ */
+function polarPoint(cx, cy, r, angleDeg) {
+  const rad = (angleDeg * Math.PI) / 180;
+  return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
+}
+
+function addScaleTicks(disc) {
+  const svg = disc.el.querySelector("svg");
+  const { cx, cy, caseR } = STAGE_GEOMETRY;
+  const halfSpan = STAGE_GEOMETRY.arcSpanDeg / 2;
+  const majorTickInnerR = caseR - 9;
+  const minorTickInnerR = caseR - 5;
+  const tickOuterR = caseR - 2;
+
+  const ticksGroup = document.createElementNS(SVG_NS, "g");
+  ticksGroup.setAttribute("class", "disc-scale-ticks");
+
+  for (let angle = -halfSpan; angle <= halfSpan; angle += 10) {
+    const isMajor = angle % 30 === 0;
+    const inner = polarPoint(cx, cy, isMajor ? majorTickInnerR : minorTickInnerR, angle);
+    const outer = polarPoint(cx, cy, tickOuterR, angle);
+
+    const tick = document.createElementNS(SVG_NS, "line");
+    tick.setAttribute("class", isMajor ? "disc-scale-tick disc-scale-tick-major" : "disc-scale-tick");
+    tick.setAttribute("x1", inner.x.toFixed(2));
+    tick.setAttribute("y1", inner.y.toFixed(2));
+    tick.setAttribute("x2", outer.x.toFixed(2));
+    tick.setAttribute("y2", outer.y.toFixed(2));
+    ticksGroup.appendChild(tick);
+  }
+
+  const flatPoint = polarPoint(cx, cy, majorTickInnerR - 9, -halfSpan);
+  const flatLabel = document.createElementNS(SVG_NS, "text");
+  flatLabel.setAttribute("class", "disc-scale-label disc-scale-label-flat");
+  flatLabel.setAttribute("x", flatPoint.x.toFixed(2));
+  flatLabel.setAttribute("y", flatPoint.y.toFixed(2));
+  flatLabel.setAttribute("text-anchor", "middle");
+  flatLabel.textContent = "♭";
+  ticksGroup.appendChild(flatLabel);
+
+  const sharpPoint = polarPoint(cx, cy, majorTickInnerR - 9, halfSpan);
+  const sharpLabel = document.createElementNS(SVG_NS, "text");
+  sharpLabel.setAttribute("class", "disc-scale-label disc-scale-label-sharp");
+  sharpLabel.setAttribute("x", sharpPoint.x.toFixed(2));
+  sharpLabel.setAttribute("y", sharpPoint.y.toFixed(2));
+  sharpLabel.setAttribute("text-anchor", "middle");
+  sharpLabel.textContent = "♯";
+  ticksGroup.appendChild(sharpLabel);
+
+  svg.appendChild(ticksGroup);
+}
+
+/* ============================================================
+   OCTAVE LEGEND — a plain HTML readout beside the disc, one row per ring,
+   showing that octave's note name and its live cents error. Mirrors
+   shared/strobe-disc.js's ring state (confident/smoothedCents) every
+   tick rather than tracking anything of its own — see updateDiscExtras.
+   Built once per disc (cached alongside it in discCache) since the ring
+   list for a given note never changes.
+   ============================================================ */
+function buildLegend(disc) {
+  const legendEl = document.createElement("div");
+  legendEl.className = "octave-legend-disc";
+  legendEl.hidden = true;
+
+  disc.rings.forEach((ring) => {
+    const row = document.createElement("div");
+    row.className = "octave-legend-row";
+
+    const noteEl = document.createElement("span");
+    noteEl.className = "octave-legend-note";
+    noteEl.textContent = StrobeDiscEngine.noteNameForMidi(ring.midi);
+
+    const centsEl = document.createElement("span");
+    centsEl.className = "octave-legend-cents";
+    centsEl.textContent = "—";
+
+    row.appendChild(noteEl);
+    row.appendChild(centsEl);
+    legendEl.appendChild(row);
+
+    // Stashed directly on the ring object: it's already the single source
+    // of truth for this octave's live state, so the legend row just reads
+    // off it every tick instead of keeping its own parallel lookup.
+    ring.legendRowEl = row;
+    ring.legendCentsEl = centsEl;
+  });
+
+  return legendEl;
+}
+
+// Mirrors every ring's confidence/tuning/fundamental state onto its
+// legend row and (for the fundamental ring only) onto the wedge itself —
+// called every pitch-check tick while a disc is active.
+function updateDiscExtras(disc) {
+  disc.rings.forEach((ring) => {
+    const isFundamental = state.fundamentalMidi === ring.midi;
+    const isInTune = ring.confident && Math.abs(ring.smoothedCents) <= StrobeDiscEngine.IN_TUNE_THRESHOLD_CENTS;
+
+    ring.ringGroupEl.classList.toggle("is-fundamental", isFundamental);
+    ring.legendRowEl.classList.toggle("is-active", ring.confident);
+    ring.legendRowEl.classList.toggle("is-in-tune", isInTune);
+    ring.legendRowEl.classList.toggle("is-fundamental", isFundamental);
+
+    if (ring.confident) {
+      const rounded = Math.round(ring.smoothedCents);
+      const sign = rounded > 0 ? "+" : "";
+      ring.legendCentsEl.textContent = `${sign}${rounded}¢`;
+    } else {
+      ring.legendCentsEl.textContent = "—";
+    }
+  });
+}
+
+function resetDiscExtras(disc) {
+  disc.rings.forEach((ring) => {
+    ring.ringGroupEl.classList.remove("is-fundamental");
+    ring.legendRowEl.classList.remove("is-active", "is-in-tune", "is-fundamental");
+    ring.legendCentsEl.textContent = "—";
+  });
 }
 
 /* ============================================================
@@ -186,6 +341,8 @@ function getOrBuildDisc(name) {
   if (!disc) {
     const midiList = StrobeDiscEngine.midiListForPitchClass(NOTE_NAMES.indexOf(name));
     disc = StrobeDiscEngine.buildDisc(name, midiList, STAGE_GEOMETRY);
+    addScaleTicks(disc);
+    disc.legendEl = buildLegend(disc);
     discCache.set(name, disc);
   }
 
@@ -205,13 +362,19 @@ function setActiveDisc(name, sampleRate) {
 
   if (activeDisc) {
     activeDisc.el.hidden = true;
+    activeDisc.legendEl.hidden = true;
   }
 
   if (!disc.el.isConnected) {
     discContainer.appendChild(disc.el);
   }
 
+  if (!disc.legendEl.isConnected) {
+    octaveLegendEl.appendChild(disc.legendEl);
+  }
+
   disc.el.hidden = false;
+  disc.legendEl.hidden = false;
   StrobeDiscEngine.recomputeDiscTargets(disc, state.a4, sampleRate);
   activeDisc = disc;
   return disc;
@@ -276,9 +439,11 @@ function resetLevelMeter() {
 function resetVisuals() {
   state.hasSignal = false;
   state.currentNoteName = null;
+  state.fundamentalMidi = null;
 
   if (activeDisc) {
     StrobeDiscEngine.resetDisc(activeDisc);
+    resetDiscExtras(activeDisc);
   }
 
   updateReadout();
@@ -363,12 +528,15 @@ function mainLoop(timestamp) {
       state.hasSignal = true;
       state.lastConfidentAt = timestamp;
       state.currentNoteName = frequencyToPitchClassName(result.frequency, state.a4);
+      state.fundamentalMidi = frequencyToMidi(result.frequency, state.a4);
     } else if (state.hasSignal && timestamp - state.lastConfidentAt > SILENCE_TIMEOUT_MS) {
       state.hasSignal = false;
       state.currentNoteName = null;
+      state.fundamentalMidi = null;
 
       if (activeDisc) {
         StrobeDiscEngine.resetDisc(activeDisc);
+        resetDiscExtras(activeDisc);
       }
     }
 
@@ -378,10 +546,13 @@ function mainLoop(timestamp) {
     // drive the actual tuning display, exactly like /multistrobe/'s
     // discs: each ring independently decides whether it's hearing its
     // own exact target frequency, regardless of which note
-    // autocorrelation currently thinks is predominant.
+    // autocorrelation currently thinks is predominant. fundamentalMidi
+    // (from autocorrelation) only picks which ring gets the "best guess"
+    // highlight in updateDiscExtras.
     if (state.hasSignal && state.currentNoteName) {
       const disc = setActiveDisc(state.currentNoteName, sampleRate);
       StrobeDiscEngine.analyzeDisc(disc, timeDomainBuffer, sampleRate, now);
+      updateDiscExtras(disc);
     }
   }
 

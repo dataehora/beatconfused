@@ -68,6 +68,14 @@
     return a4 * Math.pow(2, (midi - 69) / 12);
   }
 
+  // Standard MIDI-to-scientific-pitch-notation octave numbering (midi 69 =
+  // A4), matching /tuner/'s noteNameForMidi — e.g. midi 57 -> "A3".
+  function noteNameForMidi(midi) {
+    const name = NOTE_NAMES[((midi % 12) + 12) % 12];
+    const octave = Math.floor(midi / 12) - 1;
+    return `${name}${octave}`;
+  }
+
   function midiListForPitchClass(pitchClassIndex) {
     const list = [];
 
@@ -276,6 +284,30 @@
     windowShape.setAttribute("d", sectorPath(cx, cy, windowR, -halfSpan, halfSpan));
     svg.appendChild(windowShape);
 
+    // A ring rotates a live wedge boundary right up to (and briefly past)
+    // the edge of its own segment as it spins, which can carry it outside
+    // the window sector altogether — most visible on wide arcs with big,
+    // fast-rotating wedges (e.g. /strobetuner/'s single large disc; far
+    // less noticeable on /multistrobe/'s small 90°-arc ones, which is why
+    // this stayed opt-in rather than always-on). When geo.clipToWindow is
+    // set, every ring is confined to the window sector's own shape, same
+    // as /tuner/'s original strobe (see #strobeHalfClip).
+    let ringsParent = svg;
+
+    if (geo.clipToWindow) {
+      const clipId = `discClip-${Math.random().toString(36).slice(2, 9)}`;
+      const clipPath = document.createElementNS(SVG_NS, "clipPath");
+      clipPath.setAttribute("id", clipId);
+      const clipShape = document.createElementNS(SVG_NS, "path");
+      clipShape.setAttribute("d", sectorPath(cx, cy, windowR, -halfSpan, halfSpan));
+      clipPath.appendChild(clipShape);
+      svg.appendChild(clipPath);
+
+      ringsParent = document.createElementNS(SVG_NS, "g");
+      ringsParent.setAttribute("clip-path", `url(#${clipId})`);
+      svg.appendChild(ringsParent);
+    }
+
     const totalRings = midiList.length;
     const availableBand = ringOuterR - hubR - ringGap * (totalRings - 1);
     const bandWidth = availableBand / totalRings;
@@ -292,7 +324,7 @@
       const ringGroup = document.createElementNS(SVG_NS, "g");
       ringGroup.setAttribute("class", "disc-ring");
       buildArcRingWedges(ringGroup, cx, cy, innerR, outerR, segmentCount, arcSpanDeg);
-      svg.appendChild(ringGroup);
+      ringsParent.appendChild(ringGroup);
 
       return {
         midi,
@@ -401,6 +433,7 @@
     ANALYSER_BUFFER_SIZE,
     IN_TUNE_THRESHOLD_CENTS,
     pianoNoteFrequency,
+    noteNameForMidi,
     midiListForPitchClass,
     getTuneMixPercent,
     buildDisc,
