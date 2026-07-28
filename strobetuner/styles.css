@@ -465,6 +465,106 @@ input:focus-visible {
   fill: #f6f1e8;
 }
 
+/* A soft golden glow layered on top of whichever coloring a ring already
+   has (idle/active/in-tune) — marks it as autocorrelation's "best guess"
+   fundamental octave, without overriding what its own Goertzel reading
+   says about it. */
+.disc-ring.is-fundamental path {
+  filter: drop-shadow(0 0 3px rgba(178, 122, 55, 0.85)) drop-shadow(0 0 1px rgba(178, 122, 55, 0.95));
+}
+
+/* ---- reference bezel: static calibration ticks + flat/sharp glyphs
+   around the disc's outer rim, drawn once per disc by addScaleTicks() in
+   script.js. Decorative framing, not a readable scale — see that
+   function's comment. ---- */
+.disc-scale-tick {
+  stroke: var(--border-strong);
+  stroke-width: 0.6;
+}
+
+.disc-scale-tick-major {
+  stroke: var(--gold);
+  stroke-width: 1;
+}
+
+.disc-scale-label {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 11px;
+  fill: var(--gold);
+  dominant-baseline: middle;
+}
+
+/* ============================================================
+   OCTAVE LEGEND — one row per ring of the active disc, mirroring its
+   note name and live cents reading (see buildLegend/updateDiscExtras in
+   script.js). Only one .octave-legend-disc is ever visible at a time,
+   matching whichever disc is currently mounted.
+   ============================================================ */
+.octave-legend {
+  width: min(320px, 100%);
+  margin: 0 auto;
+  padding: 0.2rem 0 0.4rem;
+}
+
+.octave-legend-disc {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.octave-legend-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  background: var(--surface-solid);
+  font-variant-numeric: tabular-nums;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.octave-legend-note {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+
+.octave-legend-cents {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--tune-gray);
+}
+
+.octave-legend-row.is-active .octave-legend-note {
+  color: var(--accent-strong);
+}
+
+.octave-legend-row.is-active .octave-legend-cents {
+  color: color-mix(in srgb, var(--tune-gray) calc(var(--tune-mix, 0) * 1%), var(--accent-strong));
+}
+
+.octave-legend-row.is-in-tune {
+  border-color: var(--in-tune);
+  background: color-mix(in srgb, var(--in-tune) 12%, var(--surface-solid));
+}
+
+.octave-legend-row.is-in-tune .octave-legend-note,
+.octave-legend-row.is-in-tune .octave-legend-cents {
+  color: var(--in-tune-strong);
+}
+
+/* The autocorrelation-identified fundamental gets the same golden
+   treatment as its ring on the disc (see .disc-ring.is-fundamental) —
+   left as a border/glow accent rather than a text color change so it
+   doesn't fight with the is-active/is-in-tune coloring above. */
+.octave-legend-row.is-fundamental {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold);
+}
+
 /* ---- Input Monitor: gain boost + level meter, same as /tuner/'s. ---- */
 .signal-block .hint {
   text-align: center;
