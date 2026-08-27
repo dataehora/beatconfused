@@ -10,7 +10,7 @@
     gtag("js", new Date());
     gtag("config", "G-KCCMBL7GMJ");
   </script>
-  <title>BeatConfused | Chromatic Instrument Tuner</title>
+  <title>BeatConfused | Tuner</title>
   <meta
     name="description"
     content="BeatConfused is a free online chromatic tuner with strobe, needle and meter displays, an adjustable A4 reference pitch, and no install required."
@@ -19,7 +19,7 @@
   <meta name="theme-color" content="#10131d" />
   <link rel="canonical" href="https://beatconfused.com/tuner/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="BeatConfused | Chromatic Instrument Tuner" />
+  <meta property="og:title" content="BeatConfused | Tuner" />
   <meta
     property="og:description"
     content="A free online chromatic tuner with strobe, needle and meter displays, and an adjustable reference pitch."
@@ -27,7 +27,7 @@
   <meta property="og:url" content="https://beatconfused.com/tuner/" />
   <meta property="og:site_name" content="BeatConfused" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="BeatConfused | Chromatic Instrument Tuner" />
+  <meta name="twitter:title" content="BeatConfused | Tuner" />
   <meta
     name="twitter:description"
     content="A free online chromatic tuner with strobe, needle and meter displays, and an adjustable reference pitch."
@@ -102,13 +102,29 @@
       </svg>
 
       <div class="tuner-live">
+      <div class="power-switch">
+        <span class="power-switch-legend">Start Tuner</span>
+        <button
+          id="toggleMicBtn"
+          class="power-toggle"
+          type="button"
+          aria-pressed="false"
+          aria-label="Start or stop the tuner"
+          title="Start / stop tuner"
+        >
+          <span class="power-toggle-track">
+            <span class="power-toggle-thumb"></span>
+          </span>
+        </button>
+        <span class="power-switch-state" id="powerSwitchState" aria-hidden="true">OFF</span>
+      </div>
+
       <div class="note-readout" aria-live="polite">
         <span class="note-name" id="noteName">–</span>
         <span class="note-meta" id="noteMeta">
           <span class="cents-value" id="centsValue">0¢</span>
           <span class="freq-value" id="freqValue">— Hz</span>
         </span>
-        <span class="no-signal-hint" id="noSignalHint" hidden></span>
       </div>
 
       <div class="visual-stage">
@@ -188,9 +204,7 @@
 
       <p id="tuningStatement" class="tuning-statement" aria-live="polite">Tuning for Equal Temperament · 440 Hz</p>
 
-      <div class="transport-row">
-        <button id="toggleMicBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop tuner">Start Tuner</button>
-      </div>
+      <p class="no-signal-hint" id="noSignalHint" hidden>no signal, check the microphone in the input monitor below</p>
       <p id="micStatus" class="hint tap-status" aria-live="polite">Uses your microphone. Nothing is recorded or sent anywhere.</p>
       </div>
 

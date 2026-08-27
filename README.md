@@ -1,119 +1,104 @@
-# BeatConfused - Online Metronome
+# BeatConfused
 
-A lightning-fast, modern, and elegant online metronome for musicians. No installation, no configuration, just tempo.
+A small web studio of fast, elegant, install-free music tools. Every tool
+is plain HTML, CSS and vanilla JavaScript with the Web Audio API — no build
+step, no dependencies, no accounts, works offline after first load.
 
-## Features
+Live at [beatconfused.com](https://beatconfused.com).
 
-✨ **Modern Interface** - Clean, elegant design optimized for musicians
-⚡ **Lightning Fast** - Instant loading, smooth performance
-📱 **Fully Responsive** - Works perfectly on desktop, tablet, and mobile devices
-👆 **Tap Tempo** - Click the tap button or press `T` to detect BPM naturally
-🔊 **Sound Styles** - Electronic, bossa, jazz, wood, cymbal, and cowbell options
-🎚️ **Advanced Controls** - BPM, beat subdivisions, counting modes, and volume control
-👀 **Multiple Visuals** - Flashing pulse, animated numbers, or pendulum swing
-⌨️ **Keyboard Shortcuts** - Space to start/stop, Arrow keys to adjust BPM, `T` to tap
-🎵 **Musical Tempos** - Supports tempos from 40 to 240 BPM
-♪ **Time Signatures** - Organized standard simple, compound, and odd meters
+## Tools
 
-## Getting Started
+| Tool | Path | What it does |
+| --- | --- | --- |
+| **Metronome** | [`/metronome/`](https://beatconfused.com/metronome/) | Tap tempo, organized time signatures, beat subdivisions, counting modes, sound styles, and pulse / number / pendulum visuals. |
+| **Tuner** | [`/tuner/`](https://beatconfused.com/tuner/) | Chromatic instrument tuner with needle, strobe and LED-meter displays, an adjustable A4 reference pitch, historical tuning standards, a test-tone generator, and a spectrum analyser. |
+| **Octave Strobe Tuner** | [`/strobetuner/`](https://beatconfused.com/strobetuner/) | Identifies the note being played and shows its tuning across every octave at once on a single strobe disc. |
+| **Chromatic Strobe Tuner** | [`/multistrobe/`](https://beatconfused.com/multistrobe/) | One dedicated strobe wheel per note, laid out like a piano keyboard, each with a ring per octave across the 88-key range. |
 
-1. Visit [beatconfused.com/metronome](https://beatconfused.com/metronome)
-2. Adjust your desired tempo and beat settings
-3. Click "Start" or press Space to begin
+## Repository layout
 
-## Controls
+```
+index.html            Studio landing page (tool cards + JSON-LD)
+styles.css             Landing-page styles
+metronome/             Metronome — index.html, script.js, styles.css, Assets/
+tuner/                 Tuner — index.html, script.js, styles.css
+strobetuner/           Octave Strobe Tuner — index.html, script.js, styles.css
+multistrobe/           Chromatic Strobe Tuner — index.html, script.js, styles.css
+binfacevsfarage/       Standalone browser game (not linked from the studio)
+shared/                Assets shared across tools
+CNAME, robots.txt, sitemap.xml   Hosting + crawl metadata
+```
 
-### Tempo Control
-- **Slider** - Smooth BPM adjustment
-- **Input Field** - Direct BPM entry
-- **+/- Buttons** - Increment/decrement by 5 BPM
-- **Tap Tempo** - Detect BPM from repeated taps
-- **Arrow Keys** - Up/Down to adjust BPM
-- **T Key** - Tap tempo from the keyboard
+## Metronome controls
 
-### Beat Settings
-- **Time Signature** - Choose from organized standard signatures
-- **Beat Subdivision** - Split each beat into more pulses
-- **Tempo Counting** - Show beat count, measure + beat, or hide counts
-- **Beat Visual** - Pulse, numbers, or pendulum
-- **Sound Style** - Pick the click character you want
-- **Sound Toggle** - Enable/disable audio
-- **Vibration Toggle** - Enable/disable haptic feedback
-- **Volume Control** - Adjust metronome volume
+### Tempo
+- **Slider** / **input field** — smooth or direct BPM entry (40–240)
+- **+/- buttons** — step by 5 BPM
+- **Tap tempo** — tap the button or press `T` to detect BPM
+- **Arrow keys** — Up / Down to adjust BPM
 
-## Keyboard Shortcuts
+### Beat settings
+- **Time signature** — organized simple, compound and odd meters
+- **Beat subdivision** — split each beat into more pulses
+- **Tempo counting** — beat count, measure + beat, or hidden
+- **Beat visual** — pulse, numbers, or pendulum
+- **Sound style** — electronic, bossa, jazz, wood, cymbal, cowbell
+- **Sound / vibration toggles** and **volume control**
 
-- **Space** - Start/Stop metronome
-- **Arrow Up** - Increase BPM by 5
-- **Arrow Down** - Decrease BPM by 5
-- **T** - Tap tempo
+### Keyboard shortcuts
+- **Space** — start / stop
+- **Arrow Up / Down** — BPM ±5
+- **T** — tap tempo
 
-## Technical Stack
+### Custom sounds
+Drop `{style}_{accent|beat|subdivision}` audio files (`.mp3`, then `.ogg`,
+then `.wav`) into `metronome/Assets/` and they replace the synthesised click
+for that combination. Anything not supplied keeps the built-in sound, so the
+metronome always has audio even with no custom assets.
 
-- **HTML5** - Semantic structure
-- **CSS3** - Modern styling with gradients and animations
-- **Web Audio API** - High-precision audio generation
-- **Structured Data + Crawl Files** - JSON-LD, robots.txt, and sitemap.xml
-- **Vanilla JavaScript** - No dependencies required
+## Tuner controls
 
-## Performance
+- **Start Tuner** — vintage-style slide switch above the display; turns the
+  microphone on. A "no signal" sign appears below the display after ~3s of
+  silence while running.
+- **Display** — needle, strobe or LED meter
+- **Input Monitor** — microphone gain boost and a live level meter
+- **Reference Pitch** — A4 from 392–466 Hz, with historical presets
+  (French Baroque, Baroque, Verdi, Standard, Modern, Italian Renaissance)
+- **Tuning Standard** — Equal Temperament plus Vallotti, Young II,
+  1/4-comma meantone and Just Intonation, each built from first principles
+- **Test Tone** — a pure tone fed straight into the tuner, no mic needed
+- **Spectrum Analyser** — vintage or modern style
+- **Frequency Table** — every note of an 88-key piano under each standard
 
-- ⚡ Instant page load
-- 🎯 Precise beat timing
-- 🔄 Smooth 60fps animations
-- 📊 Minimal resource usage
-- 🌐 Works offline after first load
-- 🔎 SEO-friendly metadata and structured on-page content
+## Technical stack
 
-## Browser Support
-
-- Chrome 14+
-- Firefox 25+
-- Safari 6+
-- Edge 12+
-- Mobile browsers (iOS Safari, Chrome Mobile, etc.)
+- **HTML5 / CSS3** — semantic structure, gradients and animations
+- **Web Audio API** — high-precision timing, autocorrelation pitch
+  detection, Goertzel per-octave analysis for the strobe tools
+- **Vanilla JavaScript** — no dependencies, no build step
+- **Structured data + crawl files** — JSON-LD, `robots.txt`, `sitemap.xml`
 
 ## Development
 
-To run locally:
+Everything is static — serve the repo root with any static file server:
 
 ```bash
-# Clone the repository
 git clone https://github.com/dataehora/beatconfused.git
-
-# Open the metronome in browser
-open metronome/index.html
+cd beatconfused
+python3 -m http.server 8000
+# then open http://localhost:8000/
 ```
 
 ## Deployment
 
-Deploy to beatconfused.com using your preferred hosting:
-
-1. **GitHub Pages** - Simple and free
-2. **Vercel** - Automatic deployments
-3. **Netlify** - Git-based deployment
-4. **Traditional Hosting** - Any web host with HTTPS
+Served via GitHub Pages on the `beatconfused.com` domain (`CNAME`). Any
+static host with HTTPS works — no server-side code.
 
 ## License
 
-MIT License - Feel free to use and modify
+MIT License — feel free to use and modify.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## Roadmap
-
-- [ ] Preset tempo buttons
-- [x] Multiple sound options
-- [x] Tap tempo feature
-- [ ] Session recording
-- [ ] Dark/Light theme toggle
-- [ ] PWA installation
-- [ ] Advanced rhythm patterns
-- [ ] Chord progressions
-- [ ] Music theory tools
-
----
-
-Made with ❤️ for musicians, by musicians.
+Contributions are welcome. Please open a Pull Request.

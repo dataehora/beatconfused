@@ -204,13 +204,14 @@ body {
   display: none;
 }
 
-/* Second line under the "NO SIGNAL" alert — what to actually do about it —
-   set by updateReadout() to one of two messages depending on whether the
-   tuner has been started at all yet. Matches the heading above it: same
-   serif face (rather than falling back to the body's sans-serif), same red
-   with the same glow, just one size down. */
+/* "no signal" alert, shown below the display only while the tuner is
+   running and has heard nothing for a few seconds (see updateNoSignalSign
+   in script.js). Studio "ON AIR"-style vivid red with a soft glow so it
+   reads as a status light, in the same serif face as the note readout. */
 .no-signal-hint {
+  margin: 0;
   font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
   color: #e2261c;
   font-size: clamp(1rem, 3vw, 1.25rem);
   text-align: center;
@@ -598,11 +599,88 @@ body {
   outline-offset: 2px;
 }
 
-.transport-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.6rem;
+/* ---- power switch: the Start/Stop control, styled as a vintage-gear
+   slide switch — a dark recessed track with a golden case-colored thumb
+   that slides across, a "Start Tuner" legend printed above it and the
+   current position (OFF / ON) called out below, the ON state lit in the
+   same live red the tuner uses elsewhere. Sits at the very top of the
+   sticky live area, above the Strobe/Needle/Meter display options. ---- */
+.power-switch {
+  display: grid;
+  justify-items: center;
+  gap: 0.32rem;
+}
+
+.power-switch-legend {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.power-toggle {
+  position: relative;
+  width: 66px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.power-toggle-track {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #241b14, #171310);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+  transition: background 160ms ease, border-color 160ms ease;
+  pointer-events: none;
+}
+
+.power-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  transition: transform 160ms ease;
+}
+
+.power-toggle[aria-pressed="true"] .power-toggle-thumb {
+  transform: translateX(36px);
+}
+
+.power-toggle[aria-pressed="true"] .power-toggle-track {
+  background: linear-gradient(180deg, #7c1f18, #4f1310);
+  border-color: rgba(156, 38, 32, 0.7);
+}
+
+.power-toggle:focus-visible .power-toggle-track {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 2px;
+}
+
+.power-switch-state {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  min-width: 4ch;
+  text-align: center;
+}
+
+.power-toggle[aria-pressed="true"] ~ .power-switch-state {
+  color: #e2261c;
+  text-shadow: 0 0 10px rgba(226, 38, 28, 0.4);
 }
 
 .tap-status {
@@ -626,20 +704,18 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* ---- settings row: Reference Pitch and Test Tone sit side by side in
-   matching compact panels below the strobe. ---- */
+/* ---- settings column: Input Monitor, Reference Pitch, Tuning Standard
+   and Test Tone stack in a single centered column, full width, on every
+   screen size — no side-by-side split. ---- */
 .settings-row {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: start;
+  flex-direction: column;
+  align-items: center;
   gap: 0.9rem;
 }
 
 .settings-row .control-block {
-  flex: 1 1 15rem;
-  max-width: 18rem;
-  margin: 0;
+  margin: 0 auto;
 }
 
 .panel-header {
@@ -1006,9 +1082,7 @@ body {
   text-align: center;
 }
 
-/* ---- Input Monitor: gain boost + level meter + spectrum, spanning the
-   full card width rather than the settings-row's narrower columns since
-   the spectrum canvas needs the room. ---- */
+/* ---- Input Monitor: microphone gain boost + level meter. ---- */
 .signal-block .hint {
   text-align: center;
 }
