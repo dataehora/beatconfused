@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /binfacevsfarage/
 
 Sitemap: https://beatconfused.com/sitemap.xml
