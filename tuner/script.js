@@ -5,7 +5,7 @@ const noteNameEl = document.getElementById("noteName");
 const centsValueEl = document.getElementById("centsValue");
 const freqValueEl = document.getElementById("freqValue");
 const noteMetaEl = document.getElementById("noteMeta");
-const noSignalHintEl = document.getElementById("noSignalHint");
+const noteReadoutEl = document.getElementById("noteReadout");
 
 const strobeVisual = document.getElementById("strobeVisual");
 const needleVisual = document.getElementById("needleVisual");
@@ -814,22 +814,26 @@ function updateSpectrum(freqData, sampleRate) {
   }
 }
 
+const NO_SIGNAL_MESSAGE = "no signal, check the microphone in the input monitor below";
+
 function updateReadout() {
-  // With no source active, the tuner rests at its reference A4 rather than
-  // going blank — it reads as a device sitting in its tuned position (like
-  // a physical strobe disc at standstill), not a device that's off.
   const inTune = !state.hasSignal || Math.abs(state.smoothedCents) <= IN_TUNE_THRESHOLD_CENTS;
   tunerSection.classList.toggle("in-tune", inTune);
   tunerSection.style.setProperty("--tune-mix", String(state.hasSignal ? getTuneMixPercent(state.smoothedCents) : 0));
 
-  updateNoSignalSign();
+  // The readout only exists while a source is running — stopped, it
+  // collapses entirely so the live area stays compact.
+  noteReadoutEl.hidden = state.activeSource === null;
 
   if (!state.hasSignal || !state.currentNote) {
-    // At rest the readout just shows a dash — the "no signal" alert is a
-    // separate sign below the display, and only while the tuner is running
-    // (see updateNoSignalSign).
-    noteNameEl.textContent = "–";
-    noteNameEl.classList.remove("is-no-signal");
+    // Running but nothing heard yet: a bare dash for the first few
+    // seconds, then the "no signal" message takes its place in the same
+    // spot (mic only — the test tone always has a signal). The grace
+    // period runs from state.lastConfidentAt, seeded when the mic starts.
+    const silentForMs = performance.now() - state.lastConfidentAt;
+    const showNoSignal = state.activeSource === "mic" && silentForMs > NO_SIGNAL_DELAY_MS;
+    noteNameEl.textContent = showNoSignal ? NO_SIGNAL_MESSAGE : "–";
+    noteNameEl.classList.toggle("is-no-signal", showNoSignal);
     noteMetaEl.classList.add("is-empty");
     return;
   }
@@ -842,18 +846,6 @@ function updateReadout() {
   const sign = roundedCents > 0 ? "+" : "";
   centsValueEl.textContent = `${sign}${roundedCents}¢`;
   freqValueEl.textContent = `${state.lastFrequency.toFixed(1)} Hz`;
-}
-
-// The "no signal" sign shows only when the microphone is running and has
-// gone NO_SIGNAL_DELAY_MS without a confident pitch. state.lastConfidentAt
-// is seeded when the mic starts, so the grace period also covers the
-// initial "started but nothing played yet" case. Never shown for the test
-// tone (which always has a signal) or while the tuner is stopped.
-function updateNoSignalSign() {
-  const silentForMs = performance.now() - state.lastConfidentAt;
-  const show =
-    state.activeSource === "mic" && !state.hasSignal && silentForMs > NO_SIGNAL_DELAY_MS;
-  noSignalHintEl.hidden = !show;
 }
 
 function resetVisuals() {

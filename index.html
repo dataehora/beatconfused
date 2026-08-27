@@ -121,26 +121,25 @@
         </a>
         <a class="tool-card" href="/tuner/">
           <span class="tool-media tuner-icon">
-            <svg id="tunerIconSvg" class="tuner-icon-svg" viewBox="0 0 300 180" role="presentation" focusable="false">
+            <svg id="tunerIconSvg" class="needle-icon-svg" viewBox="0 0 300 172" role="presentation" focusable="false">
               <defs>
                 <linearGradient id="homeTunerCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
                   <stop offset="0" stop-color="#caa06a" />
                   <stop offset="1" stop-color="#8a5a30" />
                 </linearGradient>
-                <radialGradient id="homeTunerWindowGradient" cx="0.5" cy="0.42" r="0.75">
+                <radialGradient id="homeTunerWindowGradient" cx="0.5" cy="0.4" r="0.8">
                   <stop offset="0" stop-color="#362b21" />
                   <stop offset="1" stop-color="#171310" />
                 </radialGradient>
-                <clipPath id="homeTunerHalfClip">
-                  <path d="M 26 150 A 124 124 0 0 1 274 150 Z" />
-                </clipPath>
               </defs>
-              <path class="tuner-icon-case" d="M 8 150 A 142 142 0 0 1 292 150 Z" fill="url(#homeTunerCaseGradient)" />
-              <path class="tuner-icon-window" d="M 26 150 A 124 124 0 0 1 274 150 Z" fill="url(#homeTunerWindowGradient)" />
-              <g id="tunerIconWedges" clip-path="url(#homeTunerHalfClip)"></g>
-              <rect class="tuner-icon-base" x="34" y="146" width="232" height="16" rx="8" />
-              <circle class="tuner-icon-hub" cx="150" cy="150" r="5" />
-              <text class="tuner-icon-a4" x="150" y="108" text-anchor="middle">A4</text>
+              <rect class="needle-icon-case" x="12" y="12" width="276" height="150" rx="20" fill="url(#homeTunerCaseGradient)" />
+              <rect class="needle-icon-window" x="22" y="22" width="256" height="130" rx="12" fill="url(#homeTunerWindowGradient)" />
+              <path class="needle-icon-arc" d="M 124.8 49.1 A 104 104 0 0 1 175.2 49.1" />
+              <g id="tunerIconTicks"></g>
+              <text class="needle-icon-accidental" x="46" y="138">&#9837;</text>
+              <text class="needle-icon-accidental" x="254" y="138">&#9839;</text>
+              <g id="tunerIconNeedle"></g>
+              <circle class="needle-icon-hub" cx="150" cy="150" r="6" />
             </svg>
           </span>
           <span class="tool-name">Tuner</span>
@@ -209,13 +208,12 @@
   </main>
 
   <script>
-    // Builds the homepage tuner/strobe-tool icons as small, static replicas
-    // of the real /tuner/ strobe wheel (same half-circle wedge
-    // construction, scaled down to icon size), frozen in the green
-    // "in tune" state for A4 440Hz at 0 cents — rather than an unrelated
-    // decorative graphic. All three strobe-family tools (Tuner, Octave
-    // Strobe Tuner, Chromatic Strobe Tuner) share this same icon, since
-    // they're all views onto the same underlying strobe idea.
+    // Builds the homepage tool icons as small, static replicas of the
+    // real devices, frozen in the green "in tune" state for A4 440Hz at
+    // 0 cents — rather than unrelated decorative graphics. The two
+    // strobe-family tools (Octave Strobe Tuner, Chromatic Strobe Tuner)
+    // share the strobe-wheel icon; the Tuner card gets a needle gauge,
+    // matching its default display.
     function buildStrobeIcon(wedgesGroupId) {
       const NS = "http://www.w3.org/2000/svg";
       const wedgesGroup = document.getElementById(wedgesGroupId);
@@ -270,7 +268,46 @@
       });
     }
 
-    buildStrobeIcon("tunerIconWedges");
+    // The Tuner card's needle gauge: a fan of scale ticks and a pointer
+    // frozen straight up, the way the real gauge reads a perfectly
+    // centered, in-tune note.
+    function buildNeedleIcon() {
+      const NS = "http://www.w3.org/2000/svg";
+      const ticksGroup = document.getElementById("tunerIconTicks");
+      const needleGroup = document.getElementById("tunerIconNeedle");
+
+      if (!ticksGroup || !needleGroup) {
+        return;
+      }
+
+      const cx = 150;
+      const cy = 150;
+
+      function polar(r, deg) {
+        const rad = (deg * Math.PI) / 180;
+        return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
+      }
+
+      for (let deg = -48; deg <= 48; deg += 12) {
+        const isMajor = deg === -48 || deg === 0 || deg === 48;
+        const inner = polar(80, deg);
+        const outer = polar(isMajor ? 102 : 94, deg);
+        const tick = document.createElementNS(NS, "line");
+        tick.setAttribute("x1", inner.x.toFixed(2));
+        tick.setAttribute("y1", inner.y.toFixed(2));
+        tick.setAttribute("x2", outer.x.toFixed(2));
+        tick.setAttribute("y2", outer.y.toFixed(2));
+        tick.setAttribute("class", isMajor ? "needle-icon-tick needle-icon-tick-major" : "needle-icon-tick");
+        ticksGroup.appendChild(tick);
+      }
+
+      const needle = document.createElementNS(NS, "path");
+      needle.setAttribute("d", "M145 150 L155 150 L151 58 L150 52 L149 58 Z");
+      needle.setAttribute("class", "needle-icon-pointer");
+      needleGroup.appendChild(needle);
+    }
+
+    buildNeedleIcon();
     buildStrobeIcon("strobeTunerIconWedges");
     buildStrobeIcon("multiStrobeIconWedges");
   </script>

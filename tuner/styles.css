@@ -136,17 +136,25 @@ body {
   border: 0;
 }
 
-/* ---- shared note readout, common to all three visual modes ---- */
+/* ---- shared note readout, common to all three visual modes. Only
+   present while the tuner is running (see updateReadout) — stopped, it
+   collapses so the live area stays compact. ---- */
 .note-readout {
   display: grid;
   justify-items: center;
   align-content: center;
   gap: 0.15rem;
   /* Reserves the same vertical band a detected note (name + cents/Hz line)
-     takes up, so "No signal" — a single shorter line — centers within that
-     band (via align-content above) instead of sitting flush at the top. */
+     takes up, so the "no signal" message centers within that band (via
+     align-content above) instead of sitting flush at the top. */
   min-height: clamp(4.8rem, 13vw, 6.2rem);
   text-align: center;
+}
+
+/* .note-readout sets display:grid, which would otherwise beat the [hidden]
+   attribute's UA display:none. */
+.note-readout[hidden] {
+  display: none;
 }
 
 .note-name {
@@ -166,29 +174,25 @@ body {
   color: var(--in-tune-strong);
 }
 
-/* "No signal" is a much longer string than a note name (e.g. "C♯5"), so it
-   needs its own, considerably smaller size rather than inheriting the
-   giant note-name font meant for two or three characters. Fixed to one
-   line — font-weight:700 is already inherited from .note-name, so this
-   reads as bold without needing its own font-weight declaration. */
+/* The "no signal" message is a full sentence, not a note name, so it
+   drops to a small wrapping size instead of the giant note-name font
+   meant for two or three characters. */
 .note-name.is-no-signal {
-  font-size: clamp(1.5rem, 4.2vw, 1.9rem);
+  font-size: clamp(1rem, 3.4vw, 1.25rem);
+  font-weight: 600;
   letter-spacing: 0;
-  white-space: nowrap;
+  line-height: 1.35;
+  white-space: normal;
+  max-width: 22rem;
 }
 
-/* Outranks .tuner.in-tune .note-name (green) — the resting "no signal"
-   state carries .in-tune too (see updateReadout), since idling at the
-   reference pitch is visually treated like sitting in tune, but the text
-   itself should still read as an alert, not a green "all good".
-
-   Deliberately more saturated than the page's own warm palette — a studio
-   "ON AIR"-style vivid red rather than the muted wood/brass accent, so it
-   reads as a status light breaking from the classy styling on purpose. */
+/* Outranks .tuner.in-tune .note-name (green) — the "no signal" state
+   carries .in-tune too (see updateReadout), since idling at the reference
+   pitch is visually treated like sitting in tune, but the text itself
+   should still read as an alert, not a green "all good". A studio
+   "ON AIR"-style vivid red rather than the muted wood/brass accent. */
 .tuner.in-tune .note-name.is-no-signal {
   color: #e2261c;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
   text-shadow: 0 0 12px rgba(226, 38, 28, 0.4);
 }
 
@@ -201,24 +205,6 @@ body {
 }
 
 .note-meta.is-empty {
-  display: none;
-}
-
-/* "no signal" alert, shown below the display only while the tuner is
-   running and has heard nothing for a few seconds (see updateNoSignalSign
-   in script.js). Studio "ON AIR"-style vivid red with a soft glow so it
-   reads as a status light, in the same serif face as the note readout. */
-.no-signal-hint {
-  margin: 0;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-weight: 600;
-  color: #e2261c;
-  font-size: clamp(1rem, 3vw, 1.25rem);
-  text-align: center;
-  text-shadow: 0 0 12px rgba(226, 38, 28, 0.4);
-}
-
-.no-signal-hint[hidden] {
   display: none;
 }
 
@@ -704,9 +690,9 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* ---- settings column: Input Monitor, Reference Pitch, Tuning Standard
-   and Test Tone stack in a single centered column, full width, on every
-   screen size — no side-by-side split. ---- */
+/* ---- settings: Input Monitor, Reference Pitch, Tuning Standard and Test
+   Tone. A single centered column by default; on wide screens (where two
+   full-width panels plus the gap actually fit) they pair up two-across. ---- */
 .settings-row {
   display: flex;
   flex-direction: column;
@@ -716,6 +702,20 @@ body {
 
 .settings-row .control-block {
   margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .settings-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .settings-row .control-block {
+    flex: 1 1 24rem;
+    max-width: 26rem;
+    margin: 0;
+  }
 }
 
 .panel-header {

@@ -119,7 +119,7 @@
         <span class="power-switch-state" id="powerSwitchState" aria-hidden="true">OFF</span>
       </div>
 
-      <div class="note-readout" aria-live="polite">
+      <div class="note-readout" id="noteReadout" aria-live="polite" hidden>
         <span class="note-name" id="noteName">–</span>
         <span class="note-meta" id="noteMeta">
           <span class="cents-value" id="centsValue">0¢</span>
@@ -204,7 +204,6 @@
 
       <p id="tuningStatement" class="tuning-statement" aria-live="polite">Tuning for Equal Temperament · 440 Hz</p>
 
-      <p class="no-signal-hint" id="noSignalHint" hidden>no signal, check the microphone in the input monitor below</p>
       <p id="micStatus" class="hint tap-status" aria-live="polite">Uses your microphone. Nothing is recorded or sent anywhere.</p>
       </div>
 
@@ -437,10 +436,10 @@
         </div>
       </div>
 
-      <div class="control-block freq-table-block is-collapsed">
+      <div class="control-block freq-table-block">
         <div class="panel-header">
           <span class="panel-title">Frequency Table</span>
-          <button type="button" class="collapse-toggle" aria-expanded="false" aria-label="Expand Frequency Table">
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Frequency Table">
             <span class="collapse-icon" aria-hidden="true">▾</span>
           </button>
         </div>
