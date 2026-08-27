@@ -15,6 +15,7 @@ const ledSegmentsContainer = document.getElementById("ledSegments");
 const ledIndicatorEl = document.getElementById("ledIndicator");
 
 const toggleMicBtn = document.getElementById("toggleMicBtn");
+const powerSwitchStateEl = document.getElementById("powerSwitchState");
 const tuningStatementEl = document.getElementById("tuningStatement");
 const micStatus = document.getElementById("micStatus");
 const decreasePitchBtn = document.getElementById("decreasePitchBtn");
@@ -90,6 +91,10 @@ const MIN_CLARITY = 0.9;
 const LEVEL_FLOOR_DB = -60;
 const PITCH_CHECK_INTERVAL_MS = 45;
 const SILENCE_TIMEOUT_MS = 500;
+// How long the running tuner must hear nothing before the "no signal"
+// sign below the display appears — a short grace period so brief gaps
+// between notes don't flash it.
+const NO_SIGNAL_DELAY_MS = 3000;
 const CENTS_SMOOTHING = 0.25;
 const NEEDLE_DAMPING = 0.18;
 const IN_TUNE_THRESHOLD_CENTS = 1;
@@ -817,27 +822,38 @@ function updateReadout() {
   tunerSection.classList.toggle("in-tune", inTune);
   tunerSection.style.setProperty("--tune-mix", String(state.hasSignal ? getTuneMixPercent(state.smoothedCents) : 0));
 
+  updateNoSignalSign();
+
   if (!state.hasSignal || !state.currentNote) {
-    noteNameEl.textContent = "No Signal";
-    noteNameEl.classList.add("is-no-signal");
+    // At rest the readout just shows a dash — the "no signal" alert is a
+    // separate sign below the display, and only while the tuner is running
+    // (see updateNoSignalSign).
+    noteNameEl.textContent = "–";
+    noteNameEl.classList.remove("is-no-signal");
     noteMetaEl.classList.add("is-empty");
-    // Two distinct causes read differently: nothing has been started yet
-    // (activeSource is still null) versus the mic is listening but hasn't
-    // picked up a clear pitch — the fix is different in each case.
-    noSignalHintEl.textContent = state.activeSource === "mic" ? "Check your microphone" : "Start the Tuner or the Test Tone";
-    noSignalHintEl.hidden = false;
     return;
   }
 
   noteNameEl.classList.remove("is-no-signal");
   noteMetaEl.classList.remove("is-empty");
-  noSignalHintEl.hidden = true;
   const { name, octave } = state.currentNote;
   noteNameEl.textContent = `${name}${octave}`;
   const roundedCents = Math.round(state.smoothedCents);
   const sign = roundedCents > 0 ? "+" : "";
   centsValueEl.textContent = `${sign}${roundedCents}¢`;
   freqValueEl.textContent = `${state.lastFrequency.toFixed(1)} Hz`;
+}
+
+// The "no signal" sign shows only when the microphone is running and has
+// gone NO_SIGNAL_DELAY_MS without a confident pitch. state.lastConfidentAt
+// is seeded when the mic starts, so the grace period also covers the
+// initial "started but nothing played yet" case. Never shown for the test
+// tone (which always has a signal) or while the tuner is stopped.
+function updateNoSignalSign() {
+  const silentForMs = performance.now() - state.lastConfidentAt;
+  const show =
+    state.activeSource === "mic" && !state.hasSignal && silentForMs > NO_SIGNAL_DELAY_MS;
+  noSignalHintEl.hidden = !show;
 }
 
 function resetVisuals() {
@@ -1023,8 +1039,11 @@ async function startMic() {
   // analyze the signal, never play it back, so there's no feedback loop.
 
   state.activeSource = "mic";
-  toggleMicBtn.textContent = "Stop Tuner";
+  // Seed the silence clock so the "no signal" sign's grace period starts
+  // counting from when the tuner was switched on, not from page load.
+  state.lastConfidentAt = performance.now();
   toggleMicBtn.setAttribute("aria-pressed", "true");
+  powerSwitchStateEl.textContent = "ON";
   setMicStatus("Listening… play a note.");
   beginRenderLoop();
 }
@@ -1051,8 +1070,8 @@ function stopMic() {
     mediaStream = null;
   }
 
-  toggleMicBtn.textContent = "Start Tuner";
   toggleMicBtn.setAttribute("aria-pressed", "false");
+  powerSwitchStateEl.textContent = "OFF";
   setMicStatus("Uses your microphone. Nothing is recorded or sent anywhere.");
   endRenderLoop();
   resetVisuals();
