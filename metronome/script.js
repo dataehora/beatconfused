@@ -264,7 +264,7 @@ function ensureAudioContext() {
 }
 
 /* ============================================================
-   CUSTOM SOUNDS — Assets-first, same idea as the Clacton Fighter game.
+   CUSTOM SOUNDS — Assets-first.
    For every tone/beat combination below, if a matching file exists in
    Assets/ it's decoded and used instead of the built-in synthesised
    click. Anything not supplied keeps using the synthesised sound, so
