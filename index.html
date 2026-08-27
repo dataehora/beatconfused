@@ -134,11 +134,12 @@
               </defs>
               <rect class="needle-icon-case" x="12" y="12" width="276" height="150" rx="20" fill="url(#homeTunerCaseGradient)" />
               <rect class="needle-icon-window" x="22" y="22" width="256" height="130" rx="12" fill="url(#homeTunerWindowGradient)" />
-              <path class="needle-icon-arc" d="M 124.8 49.1 A 104 104 0 0 1 175.2 49.1" />
+              <path class="needle-icon-arc" d="M 127.96 54.51 A 98 98 0 0 1 172.04 54.51" />
               <g id="tunerIconTicks"></g>
-              <text class="needle-icon-accidental" x="46" y="138">&#9837;</text>
-              <text class="needle-icon-accidental" x="254" y="138">&#9839;</text>
-              <g id="tunerIconNeedle"></g>
+              <text class="needle-icon-accidental" x="44" y="141">&#9837;</text>
+              <text class="needle-icon-a4" x="150" y="139">A4</text>
+              <text class="needle-icon-accidental" x="256" y="141">&#9839;</text>
+              <g id="tunerIconNeedle" class="needle-icon-swing"></g>
               <circle class="needle-icon-hub" cx="150" cy="150" r="6" />
             </svg>
           </span>
@@ -268,9 +269,11 @@
       });
     }
 
-    // The Tuner card's needle gauge: a fan of scale ticks and a pointer
-    // frozen straight up, the way the real gauge reads a perfectly
-    // centered, in-tune note.
+    // The Tuner card's needle gauge: a fan of scale ticks and a short
+    // meter needle (about half the dial radius). CSS swings the needle
+    // around the centered "in tune" position, green at the middle and
+    // easing to amber at the extremes — the same colour language the
+    // real /tuner/ needle uses.
     function buildNeedleIcon() {
       const NS = "http://www.w3.org/2000/svg";
       const ticksGroup = document.getElementById("tunerIconTicks");
@@ -288,10 +291,10 @@
         return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
       }
 
-      for (let deg = -48; deg <= 48; deg += 12) {
-        const isMajor = deg === -48 || deg === 0 || deg === 48;
-        const inner = polar(80, deg);
-        const outer = polar(isMajor ? 102 : 94, deg);
+      for (let deg = -45; deg <= 45; deg += 15) {
+        const isMajor = deg === -45 || deg === 0 || deg === 45;
+        const inner = polar(74, deg);
+        const outer = polar(isMajor ? 94 : 88, deg);
         const tick = document.createElementNS(NS, "line");
         tick.setAttribute("x1", inner.x.toFixed(2));
         tick.setAttribute("y1", inner.y.toFixed(2));
@@ -302,7 +305,7 @@
       }
 
       const needle = document.createElementNS(NS, "path");
-      needle.setAttribute("d", "M145 150 L155 150 L151 58 L150 52 L149 58 Z");
+      needle.setAttribute("d", "M147 150 L153 150 L150.5 105 L150 99 L149.5 105 Z");
       needle.setAttribute("class", "needle-icon-pointer");
       needleGroup.appendChild(needle);
     }

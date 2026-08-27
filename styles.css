@@ -230,6 +230,38 @@ body {
 
 .needle-icon-pointer {
   fill: #6f8f52;
+  animation: needle-icon-color 2.4s ease-in-out infinite;
+}
+
+/* Swings the needle around the centered "in tune" position, the same
+   way the /metronome/ card's pendulum swings — and the fill animation
+   below is timed to match, so the needle reads green as it passes
+   through the middle and amber out at the extremes. */
+.needle-icon-swing {
+  transform-origin: 150px 150px;
+  animation: needle-icon-swing 2.4s ease-in-out infinite;
+}
+
+@keyframes needle-icon-swing {
+  0%,
+  100% {
+    transform: rotate(-13deg);
+  }
+  50% {
+    transform: rotate(13deg);
+  }
+}
+
+@keyframes needle-icon-color {
+  0%,
+  50%,
+  100% {
+    fill: #c6892c;
+  }
+  25%,
+  75% {
+    fill: #6f8f52;
+  }
 }
 
 .needle-icon-hub {
@@ -242,6 +274,20 @@ body {
   font-size: 30px;
   fill: rgba(246, 241, 232, 0.5);
   text-anchor: middle;
+}
+
+/* The "A4" the needle is reading — blue with a cream outline so it stays
+   legible over the dark dial, matching the strobe-tool icons' A4 badge. */
+.needle-icon-a4 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  fill: #3f7fc9;
+  text-anchor: middle;
+  paint-order: stroke fill;
+  stroke: #f6f1e8;
+  stroke-width: 4px;
+  stroke-linejoin: round;
 }
 
 .tool-name {
@@ -282,7 +328,9 @@ body {
     transition-duration: 0.01ms !important;
   }
 
-  .mini-pendulum-swing {
+  .mini-pendulum-swing,
+  .needle-icon-swing,
+  .needle-icon-pointer {
     animation: none;
   }
 }
