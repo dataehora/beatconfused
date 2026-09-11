@@ -105,15 +105,12 @@ body {
   min-width: 0;
 }
 
-/* ---- sticky "live" area: the current reading, disc and Start/Stop
-   control stay pinned at the top of the viewport as the settings below
-   scroll past, matching /tuner/'s .tuner-live. Padding trimmed down to
-   just enough for the sticky header not to feel cramped — the disc
-   itself is the priority, not the frame around it. ---- */
+/* ---- "live" area: the current reading, disc and Start/Stop control. No
+   longer pinned to the top of the viewport while scrolling, matching
+   /tuner/'s .tuner-live — every settings panel below is collapsible
+   instead. Padding trimmed down to just enough not to feel cramped — the
+   disc itself is the priority, not the frame around it. ---- */
 .strobetuner-live {
-  position: sticky;
-  top: 0;
-  z-index: 5;
   display: grid;
   gap: 0.5rem;
   margin: -0.8rem -0.8rem 0;
@@ -138,7 +135,8 @@ body {
 /* ---- note readout: which pitch class the autocorrelation detector has
    identified — the /tuner/-style half of this page's hybrid, distinct
    from the disc below it (which shows *that* note's per-octave tuning,
-   the /multistrobe/-style half). ---- */
+   the /multistrobe/-style half). Only present while the tuner is running,
+   same as /tuner/'s — see updateReadout. ---- */
 .note-readout {
   display: grid;
   justify-items: center;
@@ -146,6 +144,10 @@ body {
   gap: 0.15rem;
   min-height: clamp(3.2rem, 9vw, 4rem);
   text-align: center;
+}
+
+.note-readout[hidden] {
+  display: none;
 }
 
 .note-name {
@@ -162,29 +164,22 @@ body {
   color: var(--in-tune-strong);
 }
 
+/* The "no signal" message is a full sentence, not a note name, so it
+   drops to a small wrapping size instead of the giant note-name font
+   meant for two or three characters — matches /tuner/'s. */
 .note-name.is-no-signal {
-  font-size: clamp(1.3rem, 3.8vw, 1.7rem);
+  font-size: clamp(1rem, 3.4vw, 1.25rem);
+  font-weight: 600;
   letter-spacing: 0;
-  white-space: nowrap;
+  line-height: 1.35;
+  white-space: normal;
+  max-width: 22rem;
+  margin: 0 auto;
 }
 
 .strobetuner.in-tune .note-name.is-no-signal {
   color: #e2261c;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
   text-shadow: 0 0 12px rgba(226, 38, 28, 0.4);
-}
-
-.no-signal-hint {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  color: #e2261c;
-  font-size: clamp(0.9rem, 2.6vw, 1.1rem);
-  text-align: center;
-  text-shadow: 0 0 12px rgba(226, 38, 28, 0.4);
-}
-
-.no-signal-hint[hidden] {
-  display: none;
 }
 
 .strobetuner-explainer {
@@ -513,6 +508,14 @@ input:focus-visible {
   stroke-width: 1;
 }
 
+/* The dead-center (0°) tick doubles as a fixed index mark — brighter and
+   slightly thicker than the other majors, the reference point every
+   ring's wedge boundary lines up against when perfectly in tune. */
+.disc-scale-tick-index {
+  stroke: #fbfaf7;
+  stroke-width: 1.4;
+}
+
 .disc-scale-label {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 700;
@@ -521,75 +524,19 @@ input:focus-visible {
   dominant-baseline: middle;
 }
 
-/* ============================================================
-   OCTAVE LEGEND — one row per ring of the active disc, mirroring its
-   note name and live cents reading (see buildLegend/updateDiscExtras in
-   script.js). Only one .octave-legend-disc is ever visible at a time,
-   matching whichever disc is currently mounted.
-   ============================================================ */
-.octave-legend {
-  width: min(320px, 100%);
-  margin: 0 auto;
-  padding: 0.2rem 0 0.4rem;
+/* A soft dark vignette toward the window's own rim, plus a diagonal glass
+   highlight near the top — the same glass-and-brass language /tuner/'s
+   strobe visual uses, so the disc reads as a lit instrument display
+   rather than a flat vector graphic. Purely cosmetic, painted on top of
+   the rings but under the hub (see addBezelDecoration in script.js). */
+.disc-vignette {
+  fill: url(#discVignette);
+  pointer-events: none;
 }
 
-.octave-legend-disc {
-  display: grid;
-  gap: 0.3rem;
-}
-
-.octave-legend-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
-  height: 2.2rem;
-  padding: 0 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: 0.6rem;
-  background: var(--surface-solid);
-  font-variant-numeric: tabular-nums;
-  transition: border-color 160ms ease, background 160ms ease;
-}
-
-.octave-legend-note {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--ink-soft);
-}
-
-.octave-legend-cents {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--tune-gray);
-}
-
-.octave-legend-row.is-active .octave-legend-note {
-  color: var(--accent-strong);
-}
-
-.octave-legend-row.is-active .octave-legend-cents {
-  color: color-mix(in srgb, var(--tune-gray) calc(var(--tune-mix, 0) * 1%), var(--accent-strong));
-}
-
-.octave-legend-row.is-in-tune {
-  border-color: var(--in-tune);
-  background: color-mix(in srgb, var(--in-tune) 12%, var(--surface-solid));
-}
-
-.octave-legend-row.is-in-tune .octave-legend-note,
-.octave-legend-row.is-in-tune .octave-legend-cents {
-  color: var(--in-tune-strong);
-}
-
-/* The autocorrelation-identified fundamental gets the same golden
-   treatment as its ring on the disc (see .disc-ring.is-fundamental) —
-   left as a border/glow accent rather than a text color change so it
-   doesn't fight with the is-active/is-in-tune coloring above. */
-.octave-legend-row.is-fundamental {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 1px var(--gold);
+.disc-glass-highlight {
+  fill: url(#discGlassHighlight);
+  pointer-events: none;
 }
 
 /* ---- Input Monitor: gain boost + level meter, same as /tuner/'s. ---- */
@@ -674,6 +621,64 @@ input:focus-visible {
   height: 0%;
   background: color-mix(in srgb, var(--accent) calc(var(--level-mix, 0) * 1%), var(--gold));
   transition: height 90ms linear;
+}
+
+/* ============================================================
+   OCTAVE FREQUENCY TABLE — notes across the columns, octaves down the
+   rows (see buildOctaveFreqTable in script.js). Each populated cell
+   stacks its preloaded frequency with a compact live cents readout that
+   only appears once that exact note+octave is confidently sounding —
+   driven every tick by the shadow ring analysis, independent of whichever
+   note currently has the on-screen hero disc. ---- */
+.octave-freq-table td.octave-cell {
+  text-align: center;
+  padding: 0.3rem 0.4rem;
+}
+
+.octave-cell-freq {
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+
+.octave-cell-cents {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--tune-gray);
+}
+
+.octave-cell.is-active .octave-cell-freq {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.octave-cell.is-active .octave-cell-cents {
+  color: var(--accent-strong);
+}
+
+.octave-cell.is-in-tune .octave-cell-freq,
+.octave-cell.is-in-tune .octave-cell-cents {
+  color: var(--in-tune-strong);
+}
+
+.octave-cell.is-in-tune {
+  background: color-mix(in srgb, var(--in-tune) 14%, transparent);
+}
+
+/* The autocorrelation-identified fundamental gets a soft golden ring,
+   the same accent shown around its wedge on the disc itself. */
+.octave-cell.is-fundamental {
+  box-shadow: inset 0 0 0 1.5px var(--gold);
+}
+
+.octave-freq-table td.is-out-of-range {
+  background: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 4px,
+    rgba(62, 45, 30, 0.06) 4px,
+    rgba(62, 45, 30, 0.06) 8px
+  );
 }
 
 .footer {

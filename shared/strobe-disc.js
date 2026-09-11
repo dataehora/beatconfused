@@ -255,11 +255,13 @@
   };
 
   // Builds one disc's DOM (a wrapper <div> holding an <svg> and a text
-  // label) for `name`, with one ring per entry in `midiList` (outermost =
-  // lowest octave, innermost = highest — same outer-to-inner convention as
-  // /tuner/'s original strobe). Segment count doubles ring by ring outward
-  // from the center (2, 4, 8, … ) — the same fan pattern a real optical
-  // strobe disc uses.
+  // label) for `name`, with one ring per entry in `midiList` (innermost =
+  // lowest octave, outermost = highest — bass progresses outward from the
+  // hub toward treble, matching how the eye reads a strobe disc from its
+  // center out). Segment count doubles ring by ring outward from the
+  // center (2, 4, 8, … ) — the same fan pattern a real optical strobe disc
+  // uses, so the outermost (highest, densest) ring carries the most
+  // segments and the innermost (lowest) the fewest.
   function buildDisc(name, midiList, geometryOverrides) {
     const geo = Object.assign({}, DEFAULT_GEOMETRY, geometryOverrides);
     const { cx, cy, arcSpanDeg, viewBox, caseR, windowR, ringOuterR, hubR, hubDotR, ringGap } = geo;
@@ -326,12 +328,13 @@
     const bandWidth = availableBand / totalRings;
 
     const rings = midiList.map((midi, index) => {
-      const outerR = ringOuterR - index * (bandWidth + ringGap);
+      // `index` counts outward from the hub (index 0 = lowest octave), so
+      // it doubles directly as both the ring's position-from-center and
+      // its distance-from-outermost — the lowest octave sits innermost,
+      // the highest sits outermost.
+      const positionFromCenter = index;
+      const outerR = ringOuterR - (totalRings - 1 - index) * (bandWidth + ringGap);
       const innerR = outerR - bandWidth;
-      // `index` counts inward from the outermost ring (index 0), but
-      // segment count needs to count outward from the center: innermost
-      // ring = 2 segments, doubling ring by ring out to the outermost.
-      const positionFromCenter = totalRings - 1 - index;
       const segmentCount = Math.pow(2, positionFromCenter + 1);
 
       const ringGroup = document.createElementNS(SVG_NS, "g");
