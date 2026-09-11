@@ -120,7 +120,7 @@
           <span class="tool-desc">Master your Tempo</span>
         </a>
         <a class="tool-card" href="/tuner/">
-          <span class="tool-media tuner-icon">
+          <span class="tool-media tuner-icon tuner-icon-trio">
             <svg id="tunerIconSvg" class="needle-icon-svg" viewBox="0 0 300 172" role="presentation" focusable="false">
               <defs>
                 <linearGradient id="homeTunerCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
@@ -141,6 +141,45 @@
               <text class="needle-icon-accidental" x="256" y="141">&#9839;</text>
               <g id="tunerIconNeedle" class="needle-icon-swing"></g>
               <circle class="needle-icon-hub" cx="150" cy="150" r="6" />
+            </svg>
+
+            <!-- Two small thumbnails alongside the main needle gauge — the
+                 Strobe and Meter displays the same Tuner page also offers,
+                 so the card previews all three at a glance. -->
+            <svg class="tool-thumb tool-thumb-strobe" viewBox="0 0 100 62" role="presentation" focusable="false">
+              <defs>
+                <linearGradient id="homeThumbStrobeCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
+                  <stop offset="0" stop-color="#caa06a" />
+                  <stop offset="1" stop-color="#8a5a30" />
+                </linearGradient>
+                <radialGradient id="homeThumbStrobeWindowGradient" cx="0.5" cy="0.42" r="0.75">
+                  <stop offset="0" stop-color="#362b21" />
+                  <stop offset="1" stop-color="#171310" />
+                </radialGradient>
+                <clipPath id="homeThumbStrobeHalfClip">
+                  <path d="M 9 50 A 41 41 0 0 1 91 50 Z" />
+                </clipPath>
+              </defs>
+              <path class="tuner-icon-case" d="M 3 50 A 47 47 0 0 1 97 50 Z" fill="url(#homeThumbStrobeCaseGradient)" />
+              <path class="tuner-icon-window" d="M 9 50 A 41 41 0 0 1 91 50 Z" fill="url(#homeThumbStrobeWindowGradient)" />
+              <g id="tunerThumbStrobeWedges" clip-path="url(#homeThumbStrobeHalfClip)"></g>
+              <circle class="tuner-icon-hub" cx="50" cy="50" r="2.4" />
+            </svg>
+
+            <svg class="tool-thumb tool-thumb-meter" viewBox="0 0 34 62" role="presentation" focusable="false">
+              <defs>
+                <linearGradient id="homeThumbMeterCaseGradient" x1="0.1" y1="0.05" x2="0.9" y2="0.95">
+                  <stop offset="0" stop-color="#caa06a" />
+                  <stop offset="1" stop-color="#8a5a30" />
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="30" height="58" rx="9" fill="url(#homeThumbMeterCaseGradient)" />
+              <rect class="thumb-meter-track" x="6" y="6" width="22" height="50" rx="7" />
+              <circle class="thumb-meter-dot" cx="17" cy="14" r="2.1" />
+              <circle class="thumb-meter-dot" cx="17" cy="22" r="2.1" />
+              <circle class="thumb-meter-dot thumb-meter-dot-lit" cx="17" cy="31" r="2.6" />
+              <circle class="thumb-meter-dot" cx="17" cy="40" r="2.1" />
+              <circle class="thumb-meter-dot" cx="17" cy="48" r="2.1" />
             </svg>
           </span>
           <span class="tool-name">Tuner</span>
@@ -174,27 +213,20 @@
           <span class="tool-desc">One note, every octave, at once</span>
         </a>
         <a class="tool-card" href="/multistrobe/">
-          <span class="tool-media tuner-icon">
-            <svg id="multiStrobeIconSvg" class="tuner-icon-svg" viewBox="0 0 300 180" role="presentation" focusable="false">
+          <span class="tool-media">
+            <!-- Twelve small strobe discs laid out like a piano — sharps
+                 in a row above, naturals below, exactly how /multistrobe/
+                 arranges its own 12 wheels — rather than the single large
+                 wheel the Octave Strobe Tuner card uses, so the two read
+                 as distinct tools at a glance: one note vs. every note. -->
+            <svg id="multiStrobeIconSvg" class="multistrobe-icon-svg" viewBox="0 0 300 176" role="presentation" focusable="false">
               <defs>
-                <linearGradient id="homeMultiStrobeCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
-                  <stop offset="0" stop-color="#caa06a" />
-                  <stop offset="1" stop-color="#8a5a30" />
-                </linearGradient>
-                <radialGradient id="homeMultiStrobeWindowGradient" cx="0.5" cy="0.42" r="0.75">
-                  <stop offset="0" stop-color="#362b21" />
+                <radialGradient id="homeMiniDiscWindowGradient" cx="0.4" cy="0.35" r="0.75">
+                  <stop offset="0" stop-color="#3a2f24" />
                   <stop offset="1" stop-color="#171310" />
                 </radialGradient>
-                <clipPath id="homeMultiStrobeHalfClip">
-                  <path d="M 26 150 A 124 124 0 0 1 274 150 Z" />
-                </clipPath>
               </defs>
-              <path class="tuner-icon-case" d="M 8 150 A 142 142 0 0 1 292 150 Z" fill="url(#homeMultiStrobeCaseGradient)" />
-              <path class="tuner-icon-window" d="M 26 150 A 124 124 0 0 1 274 150 Z" fill="url(#homeMultiStrobeWindowGradient)" />
-              <g id="multiStrobeIconWedges" clip-path="url(#homeMultiStrobeHalfClip)"></g>
-              <rect class="tuner-icon-base" x="34" y="146" width="232" height="16" rx="8" />
-              <circle class="tuner-icon-hub" cx="150" cy="150" r="5" />
-              <text class="tuner-icon-a4" x="150" y="108" text-anchor="middle">A4</text>
+              <g id="multiStrobeDiscs"></g>
             </svg>
           </span>
           <span class="tool-name">Chromatic Strobe Tuner</span>
@@ -304,15 +336,103 @@
         ticksGroup.appendChild(tick);
       }
 
+      // A little longer/wider than a plain meter needle — this is the
+      // card's hero glyph, so it reads clearly even at thumbnail size.
       const needle = document.createElementNS(NS, "path");
-      needle.setAttribute("d", "M147 150 L153 150 L150.5 105 L150 99 L149.5 105 Z");
+      needle.setAttribute("d", "M146.3 150 L153.7 150 L150.7 84 L150 76 L149.3 84 Z");
       needle.setAttribute("class", "needle-icon-pointer");
       needleGroup.appendChild(needle);
     }
 
+    // The Chromatic Strobe Tuner card's logo: twelve small discs arranged
+    // exactly like /multistrobe/'s own keyboard (7 naturals in a row, 5
+    // sharps floating above at the boundary between two naturals) — each
+    // one a miniature strobe wheel (a ring of tick marks around a dark
+    // window), so the icon reads as "every note has one" rather than a
+    // single wheel like the Octave Strobe Tuner card uses.
+    function buildMultiStrobeDiscs() {
+      const NS = "http://www.w3.org/2000/svg";
+      const group = document.getElementById("multiStrobeDiscs");
+
+      if (!group) {
+        return;
+      }
+
+      const NATURAL_NAMES = ["C", "D", "E", "F", "G", "A", "B"];
+      const SHARP_AFTER = { "C♯": 1, "D♯": 2, "F♯": 4, "G♯": 5, "A♯": 6 };
+      const naturalR = 22;
+      const sharpR = 15;
+      const naturalY = 138;
+      const sharpY = 64;
+      const colWidth = 300 / 7;
+
+      function polar(cx, cy, r, deg) {
+        const rad = (deg * Math.PI) / 180;
+        return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
+      }
+
+      function buildDisc(cx, cy, r, isSharp) {
+        const g = document.createElementNS(NS, "g");
+        g.setAttribute("class", isSharp ? "mini-disc mini-disc-sharp" : "mini-disc");
+
+        const window = document.createElementNS(NS, "circle");
+        window.setAttribute("class", "mini-disc-window");
+        window.setAttribute("cx", String(cx));
+        window.setAttribute("cy", String(cy));
+        window.setAttribute("r", String(r));
+        window.setAttribute("fill", "url(#homeMiniDiscWindowGradient)");
+        g.appendChild(window);
+
+        // A ring of short tick marks standing in for wedge segments —
+        // legible at icon scale where true alternating wedges would just
+        // blur into a gray smudge.
+        const tickCount = isSharp ? 10 : 14;
+
+        for (let i = 0; i < tickCount; i += 1) {
+          const deg = (360 / tickCount) * i;
+          const inner = polar(cx, cy, r * 0.55, deg);
+          const outer = polar(cx, cy, r * 0.82, deg);
+          const tick = document.createElementNS(NS, "line");
+          tick.setAttribute("class", "mini-disc-tick");
+          tick.setAttribute("x1", inner.x.toFixed(2));
+          tick.setAttribute("y1", inner.y.toFixed(2));
+          tick.setAttribute("x2", outer.x.toFixed(2));
+          tick.setAttribute("y2", outer.y.toFixed(2));
+          g.appendChild(tick);
+        }
+
+        const rim = document.createElementNS(NS, "circle");
+        rim.setAttribute("class", "mini-disc-rim");
+        rim.setAttribute("cx", String(cx));
+        rim.setAttribute("cy", String(cy));
+        rim.setAttribute("r", String(r));
+        g.appendChild(rim);
+
+        const hub = document.createElementNS(NS, "circle");
+        hub.setAttribute("class", "mini-disc-hub");
+        hub.setAttribute("cx", String(cx));
+        hub.setAttribute("cy", String(cy));
+        hub.setAttribute("r", String(Math.max(1.6, r * 0.1)));
+        g.appendChild(hub);
+
+        return g;
+      }
+
+      NATURAL_NAMES.forEach((name, index) => {
+        const cx = colWidth * (index + 0.5);
+        group.appendChild(buildDisc(cx, naturalY, naturalR, false));
+      });
+
+      Object.keys(SHARP_AFTER).forEach((name) => {
+        const cx = colWidth * SHARP_AFTER[name];
+        group.appendChild(buildDisc(cx, sharpY, sharpR, true));
+      });
+    }
+
     buildNeedleIcon();
     buildStrobeIcon("strobeTunerIconWedges");
-    buildStrobeIcon("multiStrobeIconWedges");
+    buildStrobeIcon("tunerThumbStrobeWedges");
+    buildMultiStrobeDiscs();
   </script>
 </body>
 </html>

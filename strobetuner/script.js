@@ -1,33 +1,53 @@
 /* ============================================================
-   STROBE TUNER — a hybrid of /tuner/'s live pitch identification and
-   /multistrobe/'s per-note, per-octave strobe display: autocorrelation
+   OCTAVE STROBE TUNER — a hybrid of /tuner/'s live pitch identification
+   and /multistrobe/'s per-note, per-octave strobe display: autocorrelation
    picks out which of the 12 notes is predominant (exactly like /tuner/'s
    note readout), then that single note's disc — built from the very same
    shared/strobe-disc.js engine /multistrobe/'s twelve discs are built
    from — is shown, with every one of its real octave-instances lit and
    spinning independently via Goertzel analysis.
 
-   Only one disc is ever mounted at a time; discs are cached per note so
-   switching back to a recently-played note doesn't rebuild its SVG.
+   Only one disc is ever mounted at a time for the visual display; discs
+   are cached per note so switching back to a recently-played note doesn't
+   rebuild its SVG. Separately, 12 lightweight "shadow" ring sets (no SVG,
+   just the same engine's ring bookkeeping) are analyzed every tick for
+   every note at once, so the Frequency Table below can show a live cents
+   reading for whichever notes are actually sounding — not just whichever
+   one is the current on-screen hero.
    ============================================================ */
 
+const T = TunerCommon;
+
 const noteNameEl = document.getElementById("noteName");
-const noSignalHintEl = document.getElementById("noSignalHint");
+const noteReadoutEl = document.getElementById("noteReadout");
 const strobeSection = document.querySelector(".strobetuner");
 const discContainer = document.getElementById("strobeDiscContainer");
-const octaveLegendEl = document.getElementById("octaveLegend");
 
 const toggleMicBtn = document.getElementById("toggleMicBtn");
+const powerSwitchStateEl = document.getElementById("powerSwitchState");
 const tuningStatementEl = document.getElementById("tuningStatement");
 const micStatus = document.getElementById("micStatus");
 const decreasePitchBtn = document.getElementById("decreasePitchBtn");
 const increasePitchBtn = document.getElementById("increasePitchBtn");
 const pitchInput = document.getElementById("pitchInput");
 const pitchRange = document.getElementById("pitchRange");
+const pitchPresetInputs = document.querySelectorAll('input[name="pitchPreset"]');
+const temperamentSelects = document.querySelectorAll(".temperament-select");
+const temperamentKeyRows = document.querySelectorAll(".temperament-key-row");
+const temperamentKeySelects = document.querySelectorAll(".temperament-key-select");
+
 const micGainRange = document.getElementById("micGainRange");
 const micGainValueLabelEl = document.getElementById("micGainValueLabel");
 const levelMeterFillEl = document.getElementById("levelMeterFill");
 const levelValueLabelEl = document.getElementById("levelValueLabel");
+const spectrumCanvas = document.getElementById("spectrumCanvas");
+const spectrumStyleCheckbox = document.getElementById("spectrumStyleCheckbox");
+const spectrumStyleToggleEl = document.getElementById("spectrumStyleToggle");
+const spectrumLowLabelEl = document.getElementById("spectrumLowLabel");
+const spectrumRefLabelEl = document.getElementById("spectrumRefLabel");
+const spectrumHighLabelEl = document.getElementById("spectrumHighLabel");
+const octaveFreqTableHead = document.getElementById("octaveFreqTableHead");
+const octaveFreqTableBody = document.getElementById("octaveFreqTableBody");
 
 const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
 let audioContext = null;
@@ -36,15 +56,12 @@ let mediaStream = null;
 let mediaStreamSource = null;
 let micGainNode = null;
 let timeDomainBuffer = null;
+let freqDataBuffer = null;
 let rafId;
 let lastFrameAt = 0;
 let lastPitchCheckAt = 0;
 
 const NOTE_NAMES = StrobeDiscEngine.NOTE_NAMES;
-
-const MIN_A4 = 392;
-const MAX_A4 = 466;
-const DEFAULT_A4 = 440;
 
 // Autocorrelation only needs to resolve *which note* is sounding (not a
 // precise cents reading — the disc's own Goertzel rings do that), so it
@@ -52,6 +69,7 @@ const DEFAULT_A4 = 440;
 // read from, matching /tuner/'s own FFT_SIZE rather than the much longer
 // window the low-frequency rings need.
 const AUTOCORRELATION_WINDOW = 4096;
+const SPECTRUM_FFT_SIZE = 4096;
 const MIN_FREQ_HZ = 40;
 const MAX_FREQ_HZ = 1600;
 const MIN_RMS = 0.012;
@@ -59,44 +77,46 @@ const MIN_CLARITY = 0.9;
 
 const PITCH_CHECK_INTERVAL_MS = 45;
 const SILENCE_TIMEOUT_MS = 500;
-// The floor of the Input Monitor's dB scale — anything quieter reads as
-// silence rather than an ever-more-negative number.
-const LEVEL_FLOOR_DB = -60;
+// How long the running tuner must hear nothing before the "no signal"
+// sign takes the note readout's place — a short grace period so brief
+// gaps between notes don't flash it, matching /tuner/'s.
+const NO_SIGNAL_DELAY_MS = 3000;
 
-// A much wider, half-circle geometry than /multistrobe/'s compact 90°
-// discs — this page has room for exactly one disc to be the hero of the
-// page, in the same half-circle style as /tuner/'s own strobe device. The
-// rings are the whole point of this page, so the bezel between
-// ringOuterR and caseR is kept just wide enough for addScaleTicks()'s
-// tick marks and nothing more — everything else goes to ring radius.
+// A narrow, ~120° window rather than a full half-circle — closer to a
+// real vintage strobe tuner's small display glass than a half-dial, and
+// with room enough left over for the reference bezel around it. The rings
+// are the whole point of this page, so the bezel between ringOuterR and
+// caseR is kept just wide enough for addBezelDecoration()'s tick marks
+// and nothing more — everything else goes to ring radius.
 const STAGE_GEOMETRY = {
-  cx: 150,
+  cx: 136,
   cy: 150,
-  arcSpanDeg: 180,
-  viewBox: "0 0 300 165",
+  arcSpanDeg: 120,
+  viewBox: "0 0 272 165",
   caseR: 145,
   windowR: 137,
   ringOuterR: 133,
   hubR: 7,
   hubDotR: 4.5,
   ringGap: 1,
-  // A 180° arc's boundary wedges are big enough that a spinning ring can
+  // A wide arc's boundary wedges are big enough that a spinning ring can
   // visibly poke outside the window sector without this — see the
   // comment on clipToWindow in shared/strobe-disc.js.
   clipToWindow: true,
-  // The wedge pattern spans the full 360° (not just the visible 180°),
-  // so a ring can spin any amount, in either direction, without ever
-  // running out of pattern to show — see the comment on continuousWedges
-  // in shared/strobe-disc.js.
+  // The wedge pattern spans the full 360° (not just the visible arc), so
+  // a ring can spin any amount, in either direction, without ever running
+  // out of pattern to show — see the comment on continuousWedges in
+  // shared/strobe-disc.js.
   continuousWedges: true,
 };
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+const clamp = T.clamp;
+const setMicStatus = T.setMicStatusFactory(micStatus);
 
 const state = {
-  a4: DEFAULT_A4,
+  a4: T.DEFAULT_A4,
   activeSource: null, // null | "mic"
   hasSignal: false,
   currentNoteName: null,
@@ -109,15 +129,58 @@ const state = {
   fundamentalMidi: null,
 };
 
-const discCache = new Map(); // note name -> disc
+const discCache = new Map(); // note name -> hero disc (large, on-screen SVG)
 let activeDisc = null;
 
-// Shown at rest before any note has been identified — matches /tuner/'s
-// and /multistrobe/'s own devices, which are always visible on the page
-// (dim/idle, never blank) rather than only appearing once a signal shows
-// up. A4 matches the frozen "in tune" state the homepage's tuner icon
-// uses for the same reason: a familiar, recognizable resting point.
-const DEFAULT_NOTE_NAME = "A";
+// One lightweight { name, rings } per pitch class, analyzed every tick for
+// every note at once (no SVG, no rendering) — see the file comment above.
+// This is what actually drives the Frequency Table's live cents column,
+// independent of which single note currently has the visible hero disc.
+const shadowDiscs = [];
+const shadowRingsByMidi = new Map();
+
+// Wired up first since several other controllers below need to read its
+// current tuning standard/key — see temperament.pianoNoteFrequency.
+const temperament = T.setupTemperament({
+  selects: temperamentSelects,
+  keyRows: temperamentKeyRows,
+  keySelects: temperamentKeySelects,
+  onChange: () => {
+    recomputeAllTargets();
+    buildOctaveFreqTable();
+    spectrum.updateLabels(getSpectrumRange(), state.a4);
+    updateTuningStatement();
+  },
+});
+
+function pianoNoteFrequency(midi, a4) {
+  return temperament.pianoNoteFrequency(midi, a4);
+}
+
+function getSpectrumRange() {
+  return {
+    min: pianoNoteFrequency(T.PIANO_MIN_MIDI, state.a4),
+    max: pianoNoteFrequency(T.PIANO_MAX_MIDI, state.a4),
+  };
+}
+
+const spectrum = T.createSpectrumAnalyser({
+  canvas: spectrumCanvas,
+  lowLabel: spectrumLowLabelEl,
+  refLabel: spectrumRefLabelEl,
+  highLabel: spectrumHighLabelEl,
+  styleCheckbox: spectrumStyleCheckbox,
+  styleToggleEl: spectrumStyleToggleEl,
+});
+
+const inputMonitor = T.createInputMonitor({
+  gainRange: micGainRange,
+  gainValueLabel: micGainValueLabelEl,
+  levelFill: levelMeterFillEl,
+  levelValueLabel: levelValueLabelEl,
+  getGainNode: () => micGainNode,
+  audioContextRef: () => audioContext,
+});
 
 /* ============================================================
    PITCH DETECTION — time-domain autocorrelation (the standard "ACF2+"
@@ -213,8 +276,10 @@ function frequencyToMidi(frequency, a4) {
    REFERENCE BEZEL — a static ring of calibration ticks around the outer
    rim of each disc (between ringOuterR and caseR), framing it the way a
    physical strobe tuner's bezel does, plus ♭/♯ glyphs marking the flat
-   and sharp ends of the arc (rings rotate clockwise when sharp,
-   counter-clockwise when flat — see shared/strobe-disc.js's renderDisc).
+   and sharp ends of the arc, an index mark at dead center, and a soft
+   vignette + glass highlight layered over the rings themselves — the same
+   glass-and-brass language /tuner/'s strobe visual uses, so this reads as
+   an old piece of measuring equipment rather than a flat vector graphic.
    Purely decorative/orientational: unlike the needle gauge on /tuner/,
    there's no pointer to read a position off this scale — the ring's
    *rotation*, not its position, is what carries the tuning information.
@@ -226,10 +291,45 @@ function polarPoint(cx, cy, r, angleDeg) {
   return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
 }
 
-function addScaleTicks(disc) {
+function sectorPath(cx, cy, r, startDeg, endDeg) {
+  const start = polarPoint(cx, cy, r, startDeg);
+  const end = polarPoint(cx, cy, r, endDeg);
+  const largeArc = endDeg - startDeg > 180 ? 1 : 0;
+
+  return [
+    `M ${cx} ${cy}`,
+    `L ${start.x.toFixed(2)} ${start.y.toFixed(2)}`,
+    `A ${r} ${r} 0 ${largeArc} 1 ${end.x.toFixed(2)} ${end.y.toFixed(2)}`,
+    "Z",
+  ].join(" ");
+}
+
+function addBezelDecoration(disc) {
   const svg = disc.el.querySelector("svg");
   const { cx, cy, caseR, windowR } = STAGE_GEOMETRY;
   const halfSpan = STAGE_GEOMETRY.arcSpanDeg / 2;
+
+  // A soft vignette + glass highlight, layered over the rings but under
+  // the hub — inserted into the same clipped group the rings live in
+  // (found by its clip-path attribute) so it never spills past the
+  // window's own sector.
+  const ringsParent = svg.querySelector("[clip-path]");
+
+  if (ringsParent) {
+    const vignette = document.createElementNS(SVG_NS, "path");
+    vignette.setAttribute("class", "disc-vignette");
+    vignette.setAttribute("d", sectorPath(cx, cy, windowR, -halfSpan, halfSpan));
+    ringsParent.appendChild(vignette);
+
+    const highlight = document.createElementNS(SVG_NS, "ellipse");
+    highlight.setAttribute("class", "disc-glass-highlight");
+    highlight.setAttribute("cx", String(cx));
+    highlight.setAttribute("cy", String(cy - windowR * 0.42));
+    highlight.setAttribute("rx", String(windowR * 0.62));
+    highlight.setAttribute("ry", String(windowR * 0.3));
+    ringsParent.appendChild(highlight);
+  }
+
   // Ticks live entirely within the thin bezel band between windowR and
   // caseR — the rings themselves get everything inside windowR, since
   // they're the part that actually matters here.
@@ -243,11 +343,15 @@ function addScaleTicks(disc) {
 
   for (let angle = -halfSpan; angle <= halfSpan; angle += 10) {
     const isMajor = angle % 30 === 0;
+    const isIndex = angle === 0;
     const inner = polarPoint(cx, cy, isMajor ? majorTickInnerR : minorTickInnerR, angle);
     const outer = polarPoint(cx, cy, tickOuterR, angle);
 
     const tick = document.createElementNS(SVG_NS, "line");
-    tick.setAttribute("class", isMajor ? "disc-scale-tick disc-scale-tick-major" : "disc-scale-tick");
+    let tickClass = "disc-scale-tick";
+    if (isMajor) tickClass += " disc-scale-tick-major";
+    if (isIndex) tickClass += " disc-scale-tick-index";
+    tick.setAttribute("class", tickClass);
     tick.setAttribute("x1", inner.x.toFixed(2));
     tick.setAttribute("y1", inner.y.toFixed(2));
     tick.setAttribute("x2", outer.x.toFixed(2));
@@ -277,76 +381,6 @@ function addScaleTicks(disc) {
 }
 
 /* ============================================================
-   OCTAVE LEGEND — a plain HTML readout beside the disc, one row per ring,
-   showing that octave's note name and its live cents error. Mirrors
-   shared/strobe-disc.js's ring state (confident/smoothedCents) every
-   tick rather than tracking anything of its own — see updateDiscExtras.
-   Built once per disc (cached alongside it in discCache) since the ring
-   list for a given note never changes.
-   ============================================================ */
-function buildLegend(disc) {
-  const legendEl = document.createElement("div");
-  legendEl.className = "octave-legend-disc";
-  legendEl.hidden = true;
-
-  disc.rings.forEach((ring) => {
-    const row = document.createElement("div");
-    row.className = "octave-legend-row";
-
-    const noteEl = document.createElement("span");
-    noteEl.className = "octave-legend-note";
-    noteEl.textContent = StrobeDiscEngine.noteNameForMidi(ring.midi);
-
-    const centsEl = document.createElement("span");
-    centsEl.className = "octave-legend-cents";
-    centsEl.textContent = "—";
-
-    row.appendChild(noteEl);
-    row.appendChild(centsEl);
-    legendEl.appendChild(row);
-
-    // Stashed directly on the ring object: it's already the single source
-    // of truth for this octave's live state, so the legend row just reads
-    // off it every tick instead of keeping its own parallel lookup.
-    ring.legendRowEl = row;
-    ring.legendCentsEl = centsEl;
-  });
-
-  return legendEl;
-}
-
-// Mirrors every ring's confidence/tuning/fundamental state onto its
-// legend row and (for the fundamental ring only) onto the wedge itself —
-// called every pitch-check tick while a disc is active.
-function updateDiscExtras(disc) {
-  disc.rings.forEach((ring) => {
-    const isFundamental = state.fundamentalMidi === ring.midi;
-    const isInTune = ring.confident && Math.abs(ring.smoothedCents) <= StrobeDiscEngine.IN_TUNE_THRESHOLD_CENTS;
-
-    ring.ringGroupEl.classList.toggle("is-fundamental", isFundamental);
-    ring.legendRowEl.classList.toggle("is-active", ring.confident);
-    ring.legendRowEl.classList.toggle("is-in-tune", isInTune);
-    ring.legendRowEl.classList.toggle("is-fundamental", isFundamental);
-
-    if (ring.confident) {
-      const rounded = Math.round(ring.smoothedCents);
-      const sign = rounded > 0 ? "+" : "";
-      ring.legendCentsEl.textContent = `${sign}${rounded}¢`;
-    } else {
-      ring.legendCentsEl.textContent = "—";
-    }
-  });
-}
-
-function resetDiscExtras(disc) {
-  disc.rings.forEach((ring) => {
-    ring.ringGroupEl.classList.remove("is-fundamental");
-    ring.legendRowEl.classList.remove("is-active", "is-in-tune", "is-fundamental");
-    ring.legendCentsEl.textContent = "—";
-  });
-}
-
-/* ============================================================
    DISC — a single instance of shared/strobe-disc.js's engine at this
    page's large STAGE_GEOMETRY. Discs are cached per note so switching
    between recently-heard notes doesn't rebuild their SVG each time.
@@ -357,8 +391,7 @@ function getOrBuildDisc(name) {
   if (!disc) {
     const midiList = StrobeDiscEngine.midiListForPitchClass(NOTE_NAMES.indexOf(name));
     disc = StrobeDiscEngine.buildDisc(name, midiList, STAGE_GEOMETRY);
-    addScaleTicks(disc);
-    disc.legendEl = buildLegend(disc);
+    addBezelDecoration(disc);
     discCache.set(name, disc);
   }
 
@@ -378,78 +411,202 @@ function setActiveDisc(name, sampleRate) {
 
   if (activeDisc) {
     activeDisc.el.hidden = true;
-    activeDisc.legendEl.hidden = true;
   }
 
   if (!disc.el.isConnected) {
     discContainer.appendChild(disc.el);
   }
 
-  if (!disc.legendEl.isConnected) {
-    octaveLegendEl.appendChild(disc.legendEl);
-  }
-
   disc.el.hidden = false;
-  disc.legendEl.hidden = false;
   StrobeDiscEngine.recomputeDiscTargets(disc, state.a4, sampleRate);
   activeDisc = disc;
   return disc;
 }
 
+// Mirrors the fundamental-highlight state onto the active disc's rings —
+// the disc's own per-ring Goertzel confidence (not this) is what actually
+// lights a ring up; this only marks autocorrelation's "best guess" among
+// whichever rings are already active.
+function updateDiscExtras(disc) {
+  disc.rings.forEach((ring) => {
+    const isFundamental = state.fundamentalMidi === ring.midi;
+    ring.ringGroupEl.classList.toggle("is-fundamental", isFundamental);
+  });
+}
+
+function resetDiscExtras(disc) {
+  disc.rings.forEach((ring) => {
+    ring.ringGroupEl.classList.remove("is-fundamental");
+  });
+}
+
+/* ============================================================
+   SHADOW RINGS — 12 lightweight { name, rings } sets (no SVG, no visual
+   disc), one per pitch class, covering the exact same octave-instances as
+   the on-screen discs above. Built once at load and analyzed every tick
+   regardless of which note is currently the hero, so the Frequency Table
+   can show a live cents reading for whichever notes are actually sounding
+   — including ones other than the single note currently on screen (e.g. a
+   chord, or a note's audible overtones landing on another pitch class).
+   Reuses StrobeDiscEngine.recomputeDiscTargets/analyzeDisc directly: both
+   only ever touch `.rings`, so a plain { rings } object works exactly like
+   a real disc as far as they're concerned.
+   ============================================================ */
+function buildShadowRings() {
+  NOTE_NAMES.forEach((name) => {
+    const midiList = StrobeDiscEngine.midiListForPitchClass(NOTE_NAMES.indexOf(name));
+    const rings = midiList.map((midi) => ({
+      midi,
+      targetFreq: 0,
+      windowSamples: 0,
+      previousPhase: 0,
+      previousTimestamp: 0,
+      hasPhase: false,
+      confident: false,
+      smoothedCents: 0,
+    }));
+
+    const shadow = { name, rings };
+    shadowDiscs.push(shadow);
+    rings.forEach((ring) => shadowRingsByMidi.set(ring.midi, ring));
+  });
+}
+
+function recomputeAllTargets() {
+  const sampleRate = audioContext ? audioContext.sampleRate : 44100;
+  shadowDiscs.forEach((shadow) => StrobeDiscEngine.recomputeDiscTargets(shadow, state.a4, sampleRate));
+
+  if (activeDisc) {
+    StrobeDiscEngine.recomputeDiscTargets(activeDisc, state.a4, sampleRate);
+  }
+}
+
+function analyzeShadowRings(buffer, sampleRate, now) {
+  shadowDiscs.forEach((shadow) => StrobeDiscEngine.analyzeDisc(shadow, buffer, sampleRate, now));
+}
+
+function resetShadowRings() {
+  shadowRingsByMidi.forEach((ring) => {
+    ring.hasPhase = false;
+    ring.confident = false;
+    ring.smoothedCents = 0;
+  });
+}
+
+/* ============================================================
+   FREQUENCY TABLE — columns are the 12 notes, rows are octaves 0-8 (every
+   key of an 88-key piano, from A0), preloaded with each cell's frequency
+   under the current tuning standard. Each cell also carries a live cents
+   readout, driven every tick by the shadow ring at that exact MIDI note —
+   the same compact "note + deviation together" idea /tuner/'s readout
+   uses, just laid out as a grid instead of one row per key.
+   ============================================================ */
+const OCTAVE_MIN = Math.floor(T.PIANO_MIN_MIDI / 12) - 1; // 0 (A0)
+const OCTAVE_MAX = Math.floor(T.PIANO_MAX_MIDI / 12) - 1; // 8 (C8)
+
+const freqTableCellsByMidi = new Map();
+
+function buildOctaveFreqTableHead() {
+  if (octaveFreqTableHead.childElementCount > 1) {
+    return;
+  }
+
+  NOTE_NAMES.forEach((name) => {
+    const th = document.createElement("th");
+    th.textContent = name;
+    octaveFreqTableHead.appendChild(th);
+  });
+}
+
+function buildOctaveFreqTable() {
+  buildOctaveFreqTableHead();
+  octaveFreqTableBody.innerHTML = "";
+  freqTableCellsByMidi.clear();
+
+  for (let octave = OCTAVE_MIN; octave <= OCTAVE_MAX; octave += 1) {
+    const row = document.createElement("tr");
+    const octaveCell = document.createElement("td");
+    octaveCell.className = "freq-table-note-col";
+    octaveCell.textContent = String(octave);
+    row.appendChild(octaveCell);
+
+    NOTE_NAMES.forEach((name, pitchClass) => {
+      const midi = (octave + 1) * 12 + pitchClass;
+      const cell = document.createElement("td");
+      cell.className = "octave-cell";
+
+      if (midi < T.PIANO_MIN_MIDI || midi > T.PIANO_MAX_MIDI) {
+        cell.classList.add("is-out-of-range");
+      } else {
+        const freqEl = document.createElement("span");
+        freqEl.className = "octave-cell-freq";
+        freqEl.textContent = pianoNoteFrequency(midi, state.a4).toFixed(2);
+
+        const centsEl = document.createElement("span");
+        centsEl.className = "octave-cell-cents";
+        centsEl.hidden = true;
+
+        cell.appendChild(freqEl);
+        cell.appendChild(centsEl);
+        freqTableCellsByMidi.set(midi, { cell, centsEl });
+      }
+
+      row.appendChild(cell);
+    });
+
+    octaveFreqTableBody.appendChild(row);
+  }
+}
+
+function updateFreqTableLiveCents() {
+  freqTableCellsByMidi.forEach(({ cell, centsEl }, midi) => {
+    const ring = shadowRingsByMidi.get(midi);
+    const isFundamental = state.fundamentalMidi === midi;
+    cell.classList.toggle("is-fundamental", isFundamental);
+
+    if (!ring || !ring.confident) {
+      cell.classList.remove("is-active", "is-in-tune");
+      centsEl.hidden = true;
+      return;
+    }
+
+    const rounded = Math.round(ring.smoothedCents);
+    const inTune = Math.abs(ring.smoothedCents) <= StrobeDiscEngine.IN_TUNE_THRESHOLD_CENTS;
+    const sign = rounded > 0 ? "+" : "";
+    centsEl.textContent = `${sign}${rounded}¢`;
+    centsEl.hidden = false;
+    cell.classList.add("is-active");
+    cell.classList.toggle("is-in-tune", inTune);
+  });
+}
+
+function resetFreqTableLiveCents() {
+  freqTableCellsByMidi.forEach(({ cell, centsEl }) => {
+    cell.classList.remove("is-active", "is-in-tune", "is-fundamental");
+    centsEl.hidden = true;
+  });
+}
+
 /* ============================================================
    READOUT
    ============================================================ */
+const NO_SIGNAL_MESSAGE = "no signal, check the microphone in the input monitor below";
+
 function updateReadout() {
   const inTune = !state.hasSignal;
   strobeSection.classList.toggle("in-tune", inTune);
+  noteReadoutEl.hidden = state.activeSource === null;
 
   if (!state.hasSignal || !state.currentNoteName) {
-    noteNameEl.textContent = "No Signal";
-    noteNameEl.classList.add("is-no-signal");
-    noSignalHintEl.textContent = state.activeSource === "mic" ? "Check your microphone" : "Start the Strobe Tuner or play a note";
-    noSignalHintEl.hidden = false;
+    const silentForMs = performance.now() - state.lastConfidentAt;
+    const showNoSignal = state.activeSource === "mic" && silentForMs > NO_SIGNAL_DELAY_MS;
+    noteNameEl.textContent = showNoSignal ? NO_SIGNAL_MESSAGE : "–";
+    noteNameEl.classList.toggle("is-no-signal", showNoSignal);
     return;
   }
 
   noteNameEl.classList.remove("is-no-signal");
-  noSignalHintEl.hidden = true;
   noteNameEl.textContent = state.currentNoteName;
-}
-
-/* ============================================================
-   INPUT MONITOR — a separate readout from the tuning display: how loud
-   the (post-gain-boost) microphone signal is. Same as /tuner/'s.
-   ============================================================ */
-function computeRms(buffer) {
-  let sumSquares = 0;
-
-  for (let i = 0; i < buffer.length; i += 1) {
-    sumSquares += buffer[i] * buffer[i];
-  }
-
-  return Math.sqrt(sumSquares / buffer.length);
-}
-
-function rmsToDb(rms) {
-  if (rms <= 0) {
-    return LEVEL_FLOOR_DB;
-  }
-
-  return Math.max(LEVEL_FLOOR_DB, 20 * Math.log10(rms));
-}
-
-function updateLevelMeter(rms) {
-  const db = rmsToDb(rms);
-  const percent = clamp(((db - LEVEL_FLOOR_DB) / -LEVEL_FLOOR_DB) * 100, 0, 100);
-  levelMeterFillEl.style.height = `${percent}%`;
-  levelMeterFillEl.style.setProperty("--level-mix", String(Math.round(clamp((db + 12) / 12, 0, 1) * 100)));
-  levelValueLabelEl.textContent = db <= LEVEL_FLOOR_DB ? "−∞ dB" : `${db.toFixed(1)} dB`;
-}
-
-function resetLevelMeter() {
-  levelMeterFillEl.style.height = "0%";
-  levelMeterFillEl.style.setProperty("--level-mix", "0");
-  levelValueLabelEl.textContent = "−∞ dB";
 }
 
 function resetVisuals() {
@@ -462,19 +619,16 @@ function resetVisuals() {
     resetDiscExtras(activeDisc);
   }
 
+  resetFreqTableLiveCents();
   updateReadout();
-  resetLevelMeter();
+  inputMonitor.reset();
+  spectrum.clear();
 }
 
 /* ============================================================
    AUDIO SOURCE — microphone only (no test tone on this page, unlike
    /tuner/).
    ============================================================ */
-function setMicStatus(message, isError) {
-  micStatus.textContent = message;
-  micStatus.classList.toggle("is-error", Boolean(isError));
-}
-
 function ensureAudioContext() {
   if (!AudioContextConstructor) {
     return null;
@@ -496,6 +650,7 @@ function ensureAnalyser() {
     analyserNode = audioContext.createAnalyser();
     analyserNode.fftSize = StrobeDiscEngine.ANALYSER_BUFFER_SIZE;
     timeDomainBuffer = new Float32Array(analyserNode.fftSize);
+    freqDataBuffer = new Uint8Array(analyserNode.frequencyBinCount);
   }
 
   return analyserNode;
@@ -529,7 +684,9 @@ function mainLoop(timestamp) {
     lastPitchCheckAt = timestamp;
 
     analyserNode.getFloatTimeDomainData(timeDomainBuffer);
-    updateLevelMeter(computeRms(timeDomainBuffer));
+    inputMonitor.updateLevelMeter(inputMonitor.computeRms(timeDomainBuffer));
+    analyserNode.getByteFrequencyData(freqDataBuffer);
+    spectrum.update(freqDataBuffer, audioContext.sampleRate, StrobeDiscEngine.ANALYSER_BUFFER_SIZE, getSpectrumRange());
 
     const sampleRate = audioContext.sampleRate;
     // audioContext.currentTime (seconds, audio-clock), not
@@ -560,16 +717,19 @@ function mainLoop(timestamp) {
 
     // The disc's own Goertzel rings — not the autocorrelation result —
     // drive the actual tuning display, exactly like /multistrobe/'s
-    // discs: each ring independently decides whether it's hearing its
-    // own exact target frequency, regardless of which note
-    // autocorrelation currently thinks is predominant. fundamentalMidi
-    // (from autocorrelation) only picks which ring gets the "best guess"
-    // highlight in updateDiscExtras.
+    // discs: each ring independently decides whether it's hearing its own
+    // exact target frequency. fundamentalMidi (from autocorrelation) only
+    // picks which ring gets the "best guess" highlight.
     if (state.hasSignal && state.currentNoteName) {
       const disc = setActiveDisc(state.currentNoteName, sampleRate);
       StrobeDiscEngine.analyzeDisc(disc, timeDomainBuffer, sampleRate, now);
       updateDiscExtras(disc);
     }
+
+    // All 12 notes' octaves, analyzed independently of which one is the
+    // current on-screen hero — see the file comment at the top.
+    analyzeShadowRings(timeDomainBuffer, sampleRate, now);
+    updateFreqTableLiveCents();
   }
 
   if (activeDisc) {
@@ -585,7 +745,7 @@ async function startMic() {
   }
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    setMicStatus("Microphone access isn't supported in this browser.", true);
+    setMicStatus(T.MIC_MESSAGES.notSupported, true);
     return;
   }
 
@@ -595,11 +755,11 @@ async function startMic() {
     });
   } catch (error) {
     if (error && error.name === "NotAllowedError") {
-      setMicStatus("Microphone access was denied. Allow it in your browser's address bar and try again.", true);
+      setMicStatus(T.MIC_MESSAGES.denied, true);
     } else if (error && error.name === "NotFoundError") {
-      setMicStatus("No microphone was found on this device.", true);
+      setMicStatus(T.MIC_MESSAGES.notFound, true);
     } else {
-      setMicStatus("Couldn't access the microphone. Please try again.", true);
+      setMicStatus(T.MIC_MESSAGES.genericError, true);
     }
     return;
   }
@@ -607,13 +767,14 @@ async function startMic() {
   const ctx = ensureAudioContext();
 
   if (!ctx) {
-    setMicStatus("Web Audio isn't supported in this browser.", true);
+    setMicStatus(T.MIC_MESSAGES.webAudioNotSupported, true);
     mediaStream.getTracks().forEach((track) => track.stop());
     mediaStream = null;
     return;
   }
 
   ensureAnalyser();
+  recomputeAllTargets();
 
   mediaStreamSource = ctx.createMediaStreamSource(mediaStream);
   micGainNode = ctx.createGain();
@@ -624,9 +785,10 @@ async function startMic() {
   // analyze the signal, never play it back, so there's no feedback loop.
 
   state.activeSource = "mic";
-  toggleMicBtn.textContent = "Stop Tuner";
+  state.lastConfidentAt = performance.now();
   toggleMicBtn.setAttribute("aria-pressed", "true");
-  setMicStatus("Listening… play a note.");
+  powerSwitchStateEl.textContent = "ON";
+  setMicStatus(T.MIC_MESSAGES.listening);
   updateReadout();
   beginRenderLoop();
 }
@@ -653,11 +815,12 @@ function stopMic() {
     mediaStream = null;
   }
 
-  toggleMicBtn.textContent = "Start Tuner";
   toggleMicBtn.setAttribute("aria-pressed", "false");
-  setMicStatus("Uses your microphone. Nothing is recorded or sent anywhere.");
+  powerSwitchStateEl.textContent = "OFF";
+  setMicStatus(T.MIC_MESSAGES.idle);
   endRenderLoop();
   resetVisuals();
+  resetShadowRings();
 }
 
 function toggleMic() {
@@ -672,65 +835,37 @@ function toggleMic() {
    CONTROLS
    ============================================================ */
 function updateTuningStatement() {
-  tuningStatementEl.textContent = `Tuning at ${state.a4} Hz`;
+  const selected = temperament.getTemperament();
+  const keyPart = selected.needsKey ? ` in ${NOTE_NAMES[temperament.state.temperamentKey]}` : "";
+  tuningStatementEl.textContent = `Tuning for ${selected.name}${keyPart} · ${state.a4} Hz`;
 }
 
-function updateReferencePitch(value) {
-  state.a4 = clamp(Math.round(Number(value) || DEFAULT_A4), MIN_A4, MAX_A4);
-  pitchInput.value = String(state.a4);
-  pitchRange.value = String(state.a4);
-  updateTuningStatement();
-
-  const sampleRate = audioContext ? audioContext.sampleRate : 44100;
-  discCache.forEach((disc) => StrobeDiscEngine.recomputeDiscTargets(disc, state.a4, sampleRate));
-}
-
-pitchInput.addEventListener("input", (event) => updateReferencePitch(event.target.value));
-pitchRange.addEventListener("input", (event) => updateReferencePitch(event.target.value));
-// A double-click anywhere on the reference pitch bar snaps it back to A440.
-pitchRange.addEventListener("dblclick", () => updateReferencePitch(DEFAULT_A4));
-decreasePitchBtn.addEventListener("click", () => updateReferencePitch(state.a4 - 1));
-increasePitchBtn.addEventListener("click", () => updateReferencePitch(state.a4 + 1));
+const referencePitch = T.setupReferencePitch({
+  pitchInput,
+  pitchRange,
+  decreaseBtn: decreasePitchBtn,
+  increaseBtn: increasePitchBtn,
+  presetInputs: pitchPresetInputs,
+  onChange: (a4) => {
+    state.a4 = a4;
+    recomputeAllTargets();
+    buildOctaveFreqTable();
+    spectrum.updateLabels(getSpectrumRange(), state.a4);
+    updateTuningStatement();
+  },
+});
 
 toggleMicBtn.addEventListener("click", toggleMic);
 
-micGainRange.addEventListener("input", (event) => {
-  const gain = Number(event.target.value);
-  micGainValueLabelEl.textContent = `${gain.toFixed(1)}×`;
-
-  if (micGainNode) {
-    micGainNode.gain.setTargetAtTime(gain, audioContext.currentTime, 0.01);
+T.wireCollapsibles((panel) => {
+  if (panel.contains(spectrumCanvas)) {
+    spectrum.sizeCanvas();
   }
 });
 
-// Collapsible frames: each panel-header's toggle hides everything in its
-// .control-block except the header (see the .is-collapsed CSS rule).
-document.querySelectorAll(".collapse-toggle").forEach((toggle) => {
-  toggle.addEventListener("click", () => {
-    const panel = toggle.closest(".control-block");
-    const collapsed = panel.classList.toggle("is-collapsed");
-    toggle.setAttribute("aria-expanded", String(!collapsed));
-  });
-});
-
-document.addEventListener("keydown", (event) => {
-  const focusedTag = document.activeElement?.tagName;
-  const isFormElement = focusedTag === "INPUT" || focusedTag === "SELECT" || focusedTag === "TEXTAREA";
-
-  if (event.code === "Space" && !isFormElement) {
-    event.preventDefault();
-    toggleMic();
-  }
-
-  if (event.key === "ArrowUp" && !isFormElement) {
-    event.preventDefault();
-    updateReferencePitch(state.a4 + 1);
-  }
-
-  if (event.key === "ArrowDown" && !isFormElement) {
-    event.preventDefault();
-    updateReferencePitch(state.a4 - 1);
-  }
+T.wireTransportShortcuts({
+  onToggle: toggleMic,
+  onA4Delta: (delta) => referencePitch.setA4(state.a4 + delta),
 });
 
 // Release the microphone when the tab is hidden, rather than leaving it
@@ -741,12 +876,15 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
-// A freshly built disc's rings/legend start idle by construction (see
-// buildDisc/buildLegend), so mounting it here is enough to have something
-// other than blank space on the page before the tuner is even started.
+// A freshly built disc's rings start idle by construction (see buildDisc),
+// so mounting it here is enough to have something other than blank space
+// on the page before the tuner is even started.
+const DEFAULT_NOTE_NAME = "A";
 setActiveDisc(DEFAULT_NOTE_NAME, 44100);
+buildShadowRings();
 
-updateReferencePitch(state.a4);
-micGainValueLabelEl.textContent = `${Number(micGainRange.value).toFixed(1)}×`;
+referencePitch.setA4(state.a4);
+spectrum.setStyle("vintage");
+spectrum.sizeCanvas();
 updateReadout();
-resetLevelMeter();
+inputMonitor.reset();

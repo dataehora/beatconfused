@@ -1,14 +1,30 @@
+const T = TunerCommon;
+
 const toggleMicBtn = document.getElementById("toggleMicBtn");
+const powerSwitchStateEl = document.getElementById("powerSwitchState");
 const tuningStatementEl = document.getElementById("tuningStatement");
 const micStatus = document.getElementById("micStatus");
 const decreasePitchBtn = document.getElementById("decreasePitchBtn");
 const increasePitchBtn = document.getElementById("increasePitchBtn");
 const pitchInput = document.getElementById("pitchInput");
 const pitchRange = document.getElementById("pitchRange");
+const pitchPresetInputs = document.querySelectorAll('input[name="pitchPreset"]');
+const temperamentSelects = document.querySelectorAll(".temperament-select");
+const temperamentKeyRows = document.querySelectorAll(".temperament-key-row");
+const temperamentKeySelects = document.querySelectorAll(".temperament-key-select");
+
 const micGainRange = document.getElementById("micGainRange");
 const micGainValueLabelEl = document.getElementById("micGainValueLabel");
 const levelMeterFillEl = document.getElementById("levelMeterFill");
 const levelValueLabelEl = document.getElementById("levelValueLabel");
+const spectrumCanvas = document.getElementById("spectrumCanvas");
+const spectrumStyleCheckbox = document.getElementById("spectrumStyleCheckbox");
+const spectrumStyleToggleEl = document.getElementById("spectrumStyleToggle");
+const spectrumLowLabelEl = document.getElementById("spectrumLowLabel");
+const spectrumRefLabelEl = document.getElementById("spectrumRefLabel");
+const spectrumHighLabelEl = document.getElementById("spectrumHighLabel");
+const freqTableHeadRow = document.getElementById("freqTableHeadRow");
+const freqTableBody = document.getElementById("freqTableBody");
 
 const sharpsContainer = document.getElementById("strobeDiscsSharps");
 const naturalsContainer = document.getElementById("strobeDiscsNaturals");
@@ -20,6 +36,7 @@ let mediaStream = null;
 let mediaStreamSource = null;
 let micGainNode = null;
 let timeDomainBuffer = null;
+let freqDataBuffer = null;
 let rafId;
 let lastFrameAt = 0;
 let lastPitchCheckAt = 0;
@@ -33,23 +50,60 @@ const NOTE_NAMES = StrobeDiscEngine.NOTE_NAMES;
 const SHARP_BOUNDARY = { "C♯": 1, "D♯": 2, "F♯": 4, "G♯": 5, "A♯": 6 };
 const NATURAL_COLUMN_COUNT = 7;
 
-const MIN_A4 = 392;
-const MAX_A4 = 466;
-const DEFAULT_A4 = 440;
-
 const PITCH_CHECK_INTERVAL_MS = 45;
-// The floor of the Input Monitor's dB scale — anything quieter reads as
-// silence rather than an ever-more-negative number.
-const LEVEL_FLOOR_DB = -60;
 
-const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+const clamp = T.clamp;
+const setMicStatus = T.setMicStatusFactory(micStatus);
 
 const state = {
-  a4: DEFAULT_A4,
+  a4: T.DEFAULT_A4,
   activeSource: null, // null | "mic"
 };
 
 const DISCS = []; // 12 entries (NOTE_NAMES order): { name, el, rings: [...] }
+
+// Wired up first since recomputeRingTargets below needs to read its
+// current tuning standard/key — see temperament.pianoNoteFrequency.
+const temperament = T.setupTemperament({
+  selects: temperamentSelects,
+  keyRows: temperamentKeyRows,
+  keySelects: temperamentKeySelects,
+  onChange: () => {
+    recomputeRingTargets();
+    T.buildFrequencyTable({ headRow: freqTableHeadRow, body: freqTableBody, pianoNoteFrequency });
+    spectrum.updateLabels(getSpectrumRange(), state.a4);
+    updateTuningStatement();
+  },
+});
+
+function pianoNoteFrequency(midi, a4) {
+  return temperament.pianoNoteFrequency(midi, a4);
+}
+
+function getSpectrumRange() {
+  return {
+    min: pianoNoteFrequency(T.PIANO_MIN_MIDI, state.a4),
+    max: pianoNoteFrequency(T.PIANO_MAX_MIDI, state.a4),
+  };
+}
+
+const spectrum = T.createSpectrumAnalyser({
+  canvas: spectrumCanvas,
+  lowLabel: spectrumLowLabelEl,
+  refLabel: spectrumRefLabelEl,
+  highLabel: spectrumHighLabelEl,
+  styleCheckbox: spectrumStyleCheckbox,
+  styleToggleEl: spectrumStyleToggleEl,
+});
+
+const inputMonitor = T.createInputMonitor({
+  gainRange: micGainRange,
+  gainValueLabel: micGainValueLabelEl,
+  levelFill: levelMeterFillEl,
+  levelValueLabel: levelValueLabelEl,
+  getGainNode: () => micGainNode,
+  audioContextRef: () => audioContext,
+});
 
 /* ============================================================
    DISCS — every disc is built from shared/strobe-disc.js's engine (the
@@ -76,8 +130,8 @@ function buildDiscs() {
 }
 
 // Recomputes every ring's target frequency (and the analysis window that
-// depends on it) from the current A4 — called at load and whenever the
-// reference pitch changes.
+// depends on it) from the current A4 and tuning standard — called at load
+// and whenever the reference pitch or tuning standard/key changes.
 function recomputeRingTargets() {
   const sampleRate = audioContext ? audioContext.sampleRate : 44100;
   DISCS.forEach((disc) => StrobeDiscEngine.recomputeDiscTargets(disc, state.a4, sampleRate));
@@ -85,56 +139,14 @@ function recomputeRingTargets() {
 
 function resetVisuals() {
   DISCS.forEach((disc) => StrobeDiscEngine.resetDisc(disc));
-  resetLevelMeter();
-}
-
-/* ============================================================
-   INPUT MONITOR — a separate readout from the strobe display: how loud
-   the (post-gain-boost) microphone signal is. Same as /tuner/'s.
-   ============================================================ */
-function computeRms(buffer) {
-  let sumSquares = 0;
-
-  for (let i = 0; i < buffer.length; i += 1) {
-    sumSquares += buffer[i] * buffer[i];
-  }
-
-  return Math.sqrt(sumSquares / buffer.length);
-}
-
-function rmsToDb(rms) {
-  if (rms <= 0) {
-    return LEVEL_FLOOR_DB;
-  }
-
-  return Math.max(LEVEL_FLOOR_DB, 20 * Math.log10(rms));
-}
-
-function updateLevelMeter(rms) {
-  const db = rmsToDb(rms);
-  const percent = clamp(((db - LEVEL_FLOOR_DB) / -LEVEL_FLOOR_DB) * 100, 0, 100);
-  levelMeterFillEl.style.height = `${percent}%`;
-  // Gold up to a comfortable working level, warming toward the accent red
-  // as the signal approaches 0 dB (clipping) — the last 12 dB of headroom.
-  levelMeterFillEl.style.setProperty("--level-mix", String(Math.round(clamp((db + 12) / 12, 0, 1) * 100)));
-  levelValueLabelEl.textContent = db <= LEVEL_FLOOR_DB ? "−∞ dB" : `${db.toFixed(1)} dB`;
-}
-
-function resetLevelMeter() {
-  levelMeterFillEl.style.height = "0%";
-  levelMeterFillEl.style.setProperty("--level-mix", "0");
-  levelValueLabelEl.textContent = "−∞ dB";
+  inputMonitor.reset();
+  spectrum.clear();
 }
 
 /* ============================================================
    AUDIO SOURCE — microphone only (no test tone on this page, unlike
    /tuner/).
    ============================================================ */
-function setMicStatus(message, isError) {
-  micStatus.textContent = message;
-  micStatus.classList.toggle("is-error", Boolean(isError));
-}
-
 function ensureAudioContext() {
   if (!AudioContextConstructor) {
     return null;
@@ -156,6 +168,7 @@ function ensureAnalyser() {
     analyserNode = audioContext.createAnalyser();
     analyserNode.fftSize = StrobeDiscEngine.ANALYSER_BUFFER_SIZE;
     timeDomainBuffer = new Float32Array(analyserNode.fftSize);
+    freqDataBuffer = new Uint8Array(analyserNode.frequencyBinCount);
   }
 
   return analyserNode;
@@ -189,7 +202,10 @@ function mainLoop(timestamp) {
     lastPitchCheckAt = timestamp;
 
     analyserNode.getFloatTimeDomainData(timeDomainBuffer);
-    updateLevelMeter(computeRms(timeDomainBuffer));
+    inputMonitor.updateLevelMeter(inputMonitor.computeRms(timeDomainBuffer));
+    analyserNode.getByteFrequencyData(freqDataBuffer);
+    spectrum.update(freqDataBuffer, audioContext.sampleRate, StrobeDiscEngine.ANALYSER_BUFFER_SIZE, getSpectrumRange());
+
     // audioContext.currentTime (seconds, audio-clock), not performance.now()
     // — see StrobeDiscEngine.analyzeRing's comment for why this matters.
     const now = audioContext.currentTime;
@@ -208,7 +224,7 @@ async function startMic() {
   }
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    setMicStatus("Microphone access isn't supported in this browser.", true);
+    setMicStatus(T.MIC_MESSAGES.notSupported, true);
     return;
   }
 
@@ -218,11 +234,11 @@ async function startMic() {
     });
   } catch (error) {
     if (error && error.name === "NotAllowedError") {
-      setMicStatus("Microphone access was denied. Allow it in your browser's address bar and try again.", true);
+      setMicStatus(T.MIC_MESSAGES.denied, true);
     } else if (error && error.name === "NotFoundError") {
-      setMicStatus("No microphone was found on this device.", true);
+      setMicStatus(T.MIC_MESSAGES.notFound, true);
     } else {
-      setMicStatus("Couldn't access the microphone. Please try again.", true);
+      setMicStatus(T.MIC_MESSAGES.genericError, true);
     }
     return;
   }
@@ -230,7 +246,7 @@ async function startMic() {
   const ctx = ensureAudioContext();
 
   if (!ctx) {
-    setMicStatus("Web Audio isn't supported in this browser.", true);
+    setMicStatus(T.MIC_MESSAGES.webAudioNotSupported, true);
     mediaStream.getTracks().forEach((track) => track.stop());
     mediaStream = null;
     return;
@@ -251,9 +267,9 @@ async function startMic() {
   // analyze the signal, never play it back, so there's no feedback loop.
 
   state.activeSource = "mic";
-  toggleMicBtn.textContent = "Stop Tuner";
   toggleMicBtn.setAttribute("aria-pressed", "true");
-  setMicStatus("Listening… play a note.");
+  powerSwitchStateEl.textContent = "ON";
+  setMicStatus(T.MIC_MESSAGES.listening);
   beginRenderLoop();
 }
 
@@ -279,9 +295,9 @@ function stopMic() {
     mediaStream = null;
   }
 
-  toggleMicBtn.textContent = "Start Tuner";
   toggleMicBtn.setAttribute("aria-pressed", "false");
-  setMicStatus("Uses your microphone. Nothing is recorded or sent anywhere.");
+  powerSwitchStateEl.textContent = "OFF";
+  setMicStatus(T.MIC_MESSAGES.idle);
   endRenderLoop();
   resetVisuals();
 }
@@ -298,63 +314,37 @@ function toggleMic() {
    CONTROLS
    ============================================================ */
 function updateTuningStatement() {
-  tuningStatementEl.textContent = `Tuning at ${state.a4} Hz`;
+  const selected = temperament.getTemperament();
+  const keyPart = selected.needsKey ? ` in ${NOTE_NAMES[temperament.state.temperamentKey]}` : "";
+  tuningStatementEl.textContent = `Tuning for ${selected.name}${keyPart} · ${state.a4} Hz`;
 }
 
-function updateReferencePitch(value) {
-  state.a4 = clamp(Math.round(Number(value) || DEFAULT_A4), MIN_A4, MAX_A4);
-  pitchInput.value = String(state.a4);
-  pitchRange.value = String(state.a4);
-  updateTuningStatement();
-  recomputeRingTargets();
-}
-
-pitchInput.addEventListener("input", (event) => updateReferencePitch(event.target.value));
-pitchRange.addEventListener("input", (event) => updateReferencePitch(event.target.value));
-// A double-click anywhere on the reference pitch bar snaps it back to A440.
-pitchRange.addEventListener("dblclick", () => updateReferencePitch(DEFAULT_A4));
-decreasePitchBtn.addEventListener("click", () => updateReferencePitch(state.a4 - 1));
-increasePitchBtn.addEventListener("click", () => updateReferencePitch(state.a4 + 1));
+const referencePitch = T.setupReferencePitch({
+  pitchInput,
+  pitchRange,
+  decreaseBtn: decreasePitchBtn,
+  increaseBtn: increasePitchBtn,
+  presetInputs: pitchPresetInputs,
+  onChange: (a4) => {
+    state.a4 = a4;
+    recomputeRingTargets();
+    T.buildFrequencyTable({ headRow: freqTableHeadRow, body: freqTableBody, pianoNoteFrequency });
+    spectrum.updateLabels(getSpectrumRange(), state.a4);
+    updateTuningStatement();
+  },
+});
 
 toggleMicBtn.addEventListener("click", toggleMic);
 
-micGainRange.addEventListener("input", (event) => {
-  const gain = Number(event.target.value);
-  micGainValueLabelEl.textContent = `${gain.toFixed(1)}×`;
-
-  if (micGainNode) {
-    micGainNode.gain.setTargetAtTime(gain, audioContext.currentTime, 0.01);
+T.wireCollapsibles((panel) => {
+  if (panel.contains(spectrumCanvas)) {
+    spectrum.sizeCanvas();
   }
 });
 
-// Collapsible frames: each panel-header's toggle hides everything in its
-// .control-block except the header (see the .is-collapsed CSS rule).
-document.querySelectorAll(".collapse-toggle").forEach((toggle) => {
-  toggle.addEventListener("click", () => {
-    const panel = toggle.closest(".control-block");
-    const collapsed = panel.classList.toggle("is-collapsed");
-    toggle.setAttribute("aria-expanded", String(!collapsed));
-  });
-});
-
-document.addEventListener("keydown", (event) => {
-  const focusedTag = document.activeElement?.tagName;
-  const isFormElement = focusedTag === "INPUT" || focusedTag === "SELECT" || focusedTag === "TEXTAREA";
-
-  if (event.code === "Space" && !isFormElement) {
-    event.preventDefault();
-    toggleMic();
-  }
-
-  if (event.key === "ArrowUp" && !isFormElement) {
-    event.preventDefault();
-    updateReferencePitch(state.a4 + 1);
-  }
-
-  if (event.key === "ArrowDown" && !isFormElement) {
-    event.preventDefault();
-    updateReferencePitch(state.a4 - 1);
-  }
+T.wireTransportShortcuts({
+  onToggle: toggleMic,
+  onA4Delta: (delta) => referencePitch.setA4(state.a4 + delta),
 });
 
 // Release the microphone when the tab is hidden, rather than leaving it
@@ -366,6 +356,7 @@ document.addEventListener("visibilitychange", () => {
 });
 
 buildDiscs();
-updateReferencePitch(state.a4);
-micGainValueLabelEl.textContent = `${Number(micGainRange.value).toFixed(1)}×`;
+referencePitch.setA4(state.a4);
+spectrum.setStyle("vintage");
+spectrum.sizeCanvas();
 resetVisuals();

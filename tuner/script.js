@@ -1,4 +1,5 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
+const T = TunerCommon;
 
 const tunerSection = document.querySelector(".tuner");
 const noteNameEl = document.getElementById("noteName");
@@ -25,9 +26,9 @@ const pitchRange = document.getElementById("pitchRange");
 const visualModeInputs = document.querySelectorAll('input[name="tunerVisualMode"]');
 const pitchPresetInputs = document.querySelectorAll('input[name="pitchPreset"]');
 // Two identical Standard/Key control pairs live on the page at once (the
-// Tuning Standard panel and the one above the Frequency Table) — queried
-// by class rather than id so updateTemperament/updateTemperamentKey can
-// keep every instance of both in sync with a single write to state.
+// Tuning Standard panel and the one above the Frequency Table) — the
+// shared TunerCommon.setupTemperament controller keeps every instance of
+// both in sync with a single change, regardless of which one fired it.
 const temperamentSelects = document.querySelectorAll(".temperament-select");
 const temperamentKeyRows = document.querySelectorAll(".temperament-key-row");
 const temperamentKeySelects = document.querySelectorAll(".temperament-key-select");
@@ -53,7 +54,6 @@ const micGainValueLabelEl = document.getElementById("micGainValueLabel");
 const levelMeterFillEl = document.getElementById("levelMeterFill");
 const levelValueLabelEl = document.getElementById("levelValueLabel");
 const spectrumCanvas = document.getElementById("spectrumCanvas");
-const spectrumCtx = spectrumCanvas.getContext("2d");
 const spectrumStyleCheckbox = document.getElementById("spectrumStyleCheckbox");
 const spectrumStyleToggleEl = document.getElementById("spectrumStyleToggle");
 const spectrumLowLabelEl = document.getElementById("spectrumLowLabel");
@@ -76,19 +76,12 @@ let rafId;
 let lastFrameAt = 0;
 let lastPitchCheckAt = 0;
 
-const NOTE_NAMES = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"];
-
-const MIN_A4 = 392;
-const MAX_A4 = 466;
-const DEFAULT_A4 = 440;
+const NOTE_NAMES = T.NOTE_NAMES;
 const MIN_FREQ_HZ = 40;
 const MAX_FREQ_HZ = 1600;
 const FFT_SIZE = 4096;
 const MIN_RMS = 0.012;
 const MIN_CLARITY = 0.9;
-// The floor of the Input Monitor's dB scale — anything quieter reads as
-// silence rather than an ever-more-negative number.
-const LEVEL_FLOOR_DB = -60;
 const PITCH_CHECK_INTERVAL_MS = 45;
 const SILENCE_TIMEOUT_MS = 500;
 // How long the running tuner must hear nothing before the "no signal"
@@ -111,122 +104,6 @@ const TEST_FREQ_MIN = 19;
 const TEST_FREQ_MAX = 4434;
 const FINE_TUNING_MAX_CENTS = 50;
 
-// A standard 88-key grand piano: A0 (MIDI 21) to C8 (MIDI 108).
-const PIANO_MIN_MIDI = 21;
-const PIANO_MAX_MIDI = 108;
-
-// The six tuning standards offered under Reference Pitch, in the same
-// ascending order — reused here to build the Frequency Table's columns.
-const REFERENCE_PITCH_PRESETS = [
-  { value: 392, primary: "French Baroque", secondary: "\"Tone de Chambre\"" },
-  { value: 415, primary: "Baroque" },
-  { value: 432, primary: "Verdi", secondary: "\"Scientific\"" },
-  { value: 440, primary: "Standard" },
-  { value: 444, primary: "Modern", secondary: "\"Symphony\"" },
-  { value: 466, primary: "Italian", secondary: "Renaissance" },
-];
-
-/* ============================================================
-   TUNING STANDARDS (temperaments) — Equal Temperament plus four
-   historical/alternate systems, each built from first principles
-   rather than a hand-typed cents table:
-
-   - Vallotti, Young II and 1/4-comma meantone are all "fifths chain"
-     temperaments: every note is reached from the tonic by stacking a
-     run of (possibly tempered) fifths. FIFTHS_POSITION_FOR_SEMITONE
-     encodes that chain's shape once; each temperament only supplies
-     how many cents its fifths deviate from a pure 3:2.
-   - Just Intonation (Major) instead fixes each degree directly to a
-     5-limit ratio (Wikipedia's "asymmetric" 12-tone scale, chosen for
-     using the smallest integers in each ratio).
-
-   Every temperament is expressed as a table of 12 cents offsets from
-   equal temperament, indexed by semitone *above the chosen tonic* —
-   see getTemperamentOffsetCents, which rotates that table to whatever
-   key the Reference Pitch panel's Key selector is set to.
-   ============================================================ */
-const PURE_FIFTH_CENTS = 1200 * Math.log2(3 / 2); // ~701.955
-const PYTHAGOREAN_COMMA_CENTS = 1200 * Math.log2(531441 / 524288); // ~23.460
-const SYNTONIC_COMMA_CENTS = 1200 * Math.log2(81 / 80); // ~21.506
-
-// Position on the circle of fifths (tonic = 0) for each semitone above the
-// tonic. Derived from: 7 * position ≡ semitone (mod 12), position in -5..6.
-const FIFTHS_POSITION_FOR_SEMITONE = [0, -5, 2, -3, 4, -1, 6, 1, -4, 3, -2, 5];
-
-// Walks the chain of 11 fifths spanning position -5 (a major third below
-// the tonic's relative minor) to position +6 (the tritone), given how many
-// cents the fifth connecting `lowerPosition` to `lowerPosition + 1`
-// deviates from a pure 3:2 (0 = pure, negative = narrowed) — then reduces
-// each position against where a 700-cent equal-tempered fifth would have
-// put it, yielding cents-from-equal-temperament per semitone above tonic.
-function buildFifthsChainOffsets(fifthDeviationCents) {
-  const cumulative = { 0: 0 };
-
-  for (let position = 1; position <= 6; position += 1) {
-    cumulative[position] = cumulative[position - 1] + PURE_FIFTH_CENTS + fifthDeviationCents(position - 1);
-  }
-
-  for (let position = -1; position >= -5; position -= 1) {
-    cumulative[position] = cumulative[position + 1] - (PURE_FIFTH_CENTS + fifthDeviationCents(position));
-  }
-
-  return FIFTHS_POSITION_FOR_SEMITONE.map((position) => cumulative[position] - position * 700);
-}
-
-function equalTemperamentOffsets() {
-  return new Array(12).fill(0);
-}
-
-// A "well" temperament: a fixed set of fifths (identified by the lower
-// position of each tempered edge) narrowed by a shared fraction of the
-// Pythagorean comma; every other fifth in the chain stays pure.
-function wellTemperamentOffsets(temperedLowerPositions, temperCents) {
-  const tempered = new Set(temperedLowerPositions);
-  return buildFifthsChainOffsets((lowerPosition) => (tempered.has(lowerPosition) ? -temperCents : 0));
-}
-
-// A "regular" temperament: every fifth in the chain is narrowed by the
-// same fraction of the syntonic comma (1/4-comma meantone favors pure
-// major thirds at the cost of a "wolf" fifth far from the tonic).
-function meantoneOffsets(commaFraction) {
-  const temperCents = SYNTONIC_COMMA_CENTS * commaFraction;
-  return buildFifthsChainOffsets(() => -temperCents);
-}
-
-// 5-limit just intonation, asymmetric 12-tone chromatic scale (the
-// smallest-integer ratio for each degree) — not derived from a fifths
-// chain, so each degree is given directly as cents from the tonic.
-const JUST_MAJOR_RATIO_CENTS = [
-  0, // C    1/1
-  1200 * Math.log2(16 / 15), // C♯/D♭
-  1200 * Math.log2(9 / 8), // D
-  1200 * Math.log2(6 / 5), // D♯/E♭
-  1200 * Math.log2(5 / 4), // E
-  1200 * Math.log2(4 / 3), // F
-  1200 * Math.log2(45 / 32), // F♯/G♭
-  1200 * Math.log2(3 / 2), // G
-  1200 * Math.log2(8 / 5), // G♯/A♭
-  1200 * Math.log2(5 / 3), // A
-  1200 * Math.log2(9 / 5), // A♯/B♭
-  1200 * Math.log2(15 / 8), // B
-];
-
-function justIntonationMajorOffsets() {
-  return JUST_MAJOR_RATIO_CENTS.map((cents, semitone) => cents - semitone * 100);
-}
-
-// The five tuning standards offered under Reference Pitch. Only the first
-// (Equal Temperament) needs no tonic — the rest are anchored to whichever
-// key the auxiliary Key selector is set to, so that selector only shows up
-// once one of these is chosen (see updateTemperament).
-const TEMPERAMENTS = [
-  { id: "equal", name: "Equal Temperament", needsKey: false, getOffsets: equalTemperamentOffsets },
-  { id: "vallotti", name: "Vallotti", needsKey: true, getOffsets: () => wellTemperamentOffsets([-1, 0, 1, 2, 3, 4], PYTHAGOREAN_COMMA_CENTS / 6) },
-  { id: "young2", name: "Young II", needsKey: true, getOffsets: () => wellTemperamentOffsets([0, 1, 2, 3, 4, 5], PYTHAGOREAN_COMMA_CENTS / 6) },
-  { id: "meantone4", name: "1/4-Comma Meantone", needsKey: true, getOffsets: () => meantoneOffsets(0.25) },
-  { id: "justMajor", name: "Just Intonation (Major)", needsKey: true, getOffsets: justIntonationMajorOffsets },
-];
-
 // Five rings graduating from a slow outer band to a fast inner one, closer
 // to a real optical strobe disc (e.g. the Peterson StroboStomp HD) than a
 // simple two- or three-ring toy. Segment counts follow a strict power-of-two
@@ -245,7 +122,7 @@ const STROBE_RINGS = [
 ];
 
 const state = {
-  a4: DEFAULT_A4,
+  a4: T.DEFAULT_A4,
   activeSource: null, // null | "mic" | "test"
   hasSignal: false,
   smoothedCents: 0,
@@ -253,15 +130,44 @@ const state = {
   currentNote: null,
   lastFrequency: 0,
   lastConfidentAt: 0,
-  spectrumStyle: "vintage", // "vintage" | "modern"
-  temperamentId: TEMPERAMENTS[0].id, // "equal"
-  temperamentKey: 0, // tonic as a pitch class (0 = C), only used when the selected temperament needsKey
-  temperamentOffsets: TEMPERAMENTS[0].getOffsets(), // 12 cents-from-equal-temperament values, indexed by semitone above the tonic
 };
 
 let ledDotElements = [];
 
-const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+const clamp = T.clamp;
+const setMicStatus = T.setMicStatusFactory(micStatus);
+
+// Wired up right away since every other controller below needs to read its
+// current tuning standard/key — see temperament.pianoNoteFrequency.
+const temperament = T.setupTemperament({
+  selects: temperamentSelects,
+  keyRows: temperamentKeyRows,
+  keySelects: temperamentKeySelects,
+  onChange: () => {
+    T.buildFrequencyTable({ headRow: freqTableHeadRow, body: freqTableBody, pianoNoteFrequency });
+    updateTestToneDisplay(getTestToneFrequency());
+    spectrum.updateLabels(getSpectrumRange(), state.a4);
+    updateTuningStatement();
+  },
+});
+
+const spectrum = T.createSpectrumAnalyser({
+  canvas: spectrumCanvas,
+  lowLabel: spectrumLowLabelEl,
+  refLabel: spectrumRefLabelEl,
+  highLabel: spectrumHighLabelEl,
+  styleCheckbox: spectrumStyleCheckbox,
+  styleToggleEl: spectrumStyleToggleEl,
+});
+
+const inputMonitor = T.createInputMonitor({
+  gainRange: micGainRange,
+  gainValueLabel: micGainValueLabelEl,
+  levelFill: levelMeterFillEl,
+  levelValueLabel: levelValueLabelEl,
+  getGainNode: () => micGainNode,
+  audioContextRef: () => audioContext,
+});
 
 // How far a reading sits between "just out of the green zone" (pure brown,
 // 0%) and "as untuned as the scale goes" (pure gray, 100%). Consumed by
@@ -359,14 +265,8 @@ function detectPitch(buffer, sampleRate) {
   return { frequency: sampleRate / refinedLag, clarity };
 }
 
-// Rotates the active temperament's offset table (defined relative to its
-// own tonic) to whatever pitch class the Key selector is set to, so e.g.
-// selecting "Vallotti, key D" shifts Vallotti's usual C-centered pattern
-// so D becomes the sweetest key instead.
-function getTemperamentOffsetCents(midi) {
-  const pitchClass = ((midi % 12) + 12) % 12;
-  const semitoneAboveTonic = ((pitchClass - state.temperamentKey) % 12 + 12) % 12;
-  return state.temperamentOffsets[semitoneAboveTonic];
+function pianoNoteFrequency(midi, a4) {
+  return temperament.pianoNoteFrequency(midi, a4);
 }
 
 function frequencyToNote(frequency, a4) {
@@ -380,18 +280,7 @@ function frequencyToNote(frequency, a4) {
 }
 
 function noteNameForMidi(midi) {
-  const name = NOTE_NAMES[((midi % 12) + 12) % 12];
-  const octave = Math.floor(midi / 12) - 1;
-  return `${name}${octave}`;
-}
-
-// The selected tuning standard nudges every note away from equal
-// temperament by a few cents (see getTemperamentOffsetCents) — Equal
-// Temperament itself has an all-zero offset table, so this collapses back
-// to the plain a4 * 2^((midi-69)/12) formula in that case.
-function pianoNoteFrequency(midi, a4) {
-  const equalFrequency = a4 * Math.pow(2, (midi - 69) / 12);
-  return equalFrequency * Math.pow(2, getTemperamentOffsetCents(midi) / 1200);
+  return T.noteNameForMidi(midi);
 }
 
 function centsToNeedleAngle(cents) {
@@ -511,63 +400,6 @@ function buildLedSegments() {
   }
 }
 
-// Builds the table's 6 columns once at load: one per tuning standard from
-// Reference Pitch. Unlike the body, these headers don't depend on which
-// temperament is selected, so they never need rebuilding.
-function buildFrequencyTableHead() {
-  REFERENCE_PITCH_PRESETS.forEach((preset) => {
-    const th = document.createElement("th");
-    const freqEl = document.createElement("span");
-    freqEl.className = "freq-table-col-freq";
-    freqEl.textContent = `${preset.value} Hz`;
-    th.appendChild(freqEl);
-
-    if (preset.primary) {
-      const primaryEl = document.createElement("span");
-      primaryEl.className = "freq-table-col-name-primary";
-      primaryEl.textContent = preset.primary;
-      th.appendChild(primaryEl);
-    }
-
-    if (preset.secondary) {
-      const secondaryEl = document.createElement("span");
-      secondaryEl.className = "freq-table-col-name-secondary";
-      secondaryEl.textContent = preset.secondary;
-      th.appendChild(secondaryEl);
-    }
-
-    freqTableHeadRow.appendChild(th);
-  });
-}
-
-// Builds the table's 88 rows (A0-C8), each cell that key's frequency under
-// one of the Reference Pitch standards — under the currently selected
-// tuning standard (see pianoNoteFrequency), so this is rebuilt whenever
-// the Tuning Standard or Key selector changes, unlike the head above.
-function buildFrequencyTableBody() {
-  freqTableBody.innerHTML = "";
-
-  for (let midi = PIANO_MIN_MIDI; midi <= PIANO_MAX_MIDI; midi += 1) {
-    const row = document.createElement("tr");
-    const noteCell = document.createElement("td");
-    noteCell.textContent = noteNameForMidi(midi);
-    row.appendChild(noteCell);
-
-    REFERENCE_PITCH_PRESETS.forEach((preset) => {
-      const cell = document.createElement("td");
-      cell.textContent = pianoNoteFrequency(midi, preset.value).toFixed(2);
-      row.appendChild(cell);
-    });
-
-    freqTableBody.appendChild(row);
-  }
-}
-
-function buildFrequencyTable() {
-  buildFrequencyTableHead();
-  buildFrequencyTableBody();
-}
-
 /* ============================================================
    RENDERING — called every animation frame regardless of which
    visual mode is active (all three stay in sync at once, same as
@@ -622,196 +454,16 @@ function renderMeter() {
 }
 
 /* ============================================================
-   INPUT MONITOR — a separate readout from the tuning display: how loud
-   the (post-gain-boost) microphone signal is, and where its energy sits
-   across the spectrum. Purely diagnostic, so it only reflects the mic
-   path — the test tone bypasses the analyser entirely (see startTestTone)
-   and has nothing for this panel to show.
+   INPUT MONITOR / SPECTRUM — the spectrum's own axis tracks the current
+   reference pitch and tuning standard (A0 to C8 at that A4), rather than
+   the test tone's fixed 19-4434 Hz slider range, so it always matches the
+   Frequency Table's columns and the Input Monitor labels below it.
    ============================================================ */
-function computeRms(buffer) {
-  let sumSquares = 0;
-
-  for (let i = 0; i < buffer.length; i += 1) {
-    sumSquares += buffer[i] * buffer[i];
-  }
-
-  return Math.sqrt(sumSquares / buffer.length);
-}
-
-function rmsToDb(rms) {
-  if (rms <= 0) {
-    return LEVEL_FLOOR_DB;
-  }
-
-  return Math.max(LEVEL_FLOOR_DB, 20 * Math.log10(rms));
-}
-
-function updateLevelMeter(rms) {
-  const db = rmsToDb(rms);
-  const percent = clamp(((db - LEVEL_FLOOR_DB) / -LEVEL_FLOOR_DB) * 100, 0, 100);
-  levelMeterFillEl.style.height = `${percent}%`;
-  // Gold up to a comfortable working level, warming toward the accent red
-  // as the signal approaches 0 dB (clipping) — the last 12 dB of headroom.
-  levelMeterFillEl.style.setProperty("--level-mix", String(Math.round(clamp((db + 12) / 12, 0, 1) * 100)));
-  levelValueLabelEl.textContent = db <= LEVEL_FLOOR_DB ? "−∞ dB" : `${db.toFixed(1)} dB`;
-}
-
-function resetLevelMeter() {
-  levelMeterFillEl.style.height = "0%";
-  levelMeterFillEl.style.setProperty("--level-mix", "0");
-  levelValueLabelEl.textContent = "−∞ dB";
-}
-
-function sizeSpectrumCanvas() {
-  const rect = spectrumCanvas.getBoundingClientRect();
-
-  if (rect.width === 0 || rect.height === 0) {
-    return;
-  }
-
-  const dpr = window.devicePixelRatio || 1;
-  spectrumCanvas.width = Math.round(rect.width * dpr);
-  spectrumCanvas.height = Math.round(rect.height * dpr);
-}
-
-function clearSpectrum() {
-  spectrumCtx.clearRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
-}
-
-// The spectrum's own axis tracks the current reference pitch — A0 to C8
-// at that A4 — rather than the test tone's fixed 19-4434 Hz slider range,
-// so it always matches the Frequency Table's columns and the Input
-// Monitor labels below it.
 function getSpectrumRange() {
   return {
-    min: pianoNoteFrequency(PIANO_MIN_MIDI, state.a4),
-    max: pianoNoteFrequency(PIANO_MAX_MIDI, state.a4),
+    min: pianoNoteFrequency(T.PIANO_MIN_MIDI, state.a4),
+    max: pianoNoteFrequency(T.PIANO_MAX_MIDI, state.a4),
   };
-}
-
-function updateSpectrumLabels() {
-  // The keys themselves (A0 lowest, A4 reference, C8 highest) never
-  // change — only their Hz value does, as the reference pitch moves.
-  const range = getSpectrumRange();
-  spectrumLowLabelEl.textContent = `A0 · ${range.min.toFixed(1)} Hz`;
-  spectrumRefLabelEl.textContent = `A4 · ${state.a4.toFixed(1)} Hz`;
-  spectrumHighLabelEl.textContent = `C8 · ${range.max.toFixed(1)} Hz`;
-}
-
-// ---- Vintage: a classic segmented LED equalizer — blocky steps rather
-// than a smooth bar, in the traditional green/yellow/red ladder of an old
-// hardware VU meter or graphic EQ.
-function drawVintageSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin) {
-  const segmentHeight = 6;
-  const segmentGap = 2;
-  const segmentUnit = segmentHeight + segmentGap;
-  const totalSegments = Math.max(1, Math.floor(height / segmentUnit));
-
-  for (let i = 0; i < barCount; i += 1) {
-    const t = barCount > 1 ? i / (barCount - 1) : 0;
-    const freq = Math.pow(2, logMin + t * (logMax - logMin));
-    const binIndex = Math.min(freqData.length - 1, Math.round(freq / hzPerBin));
-    const magnitude = freqData[binIndex] / 255;
-    const litSegments = Math.round(magnitude * totalSegments);
-
-    for (let s = 0; s < litSegments; s += 1) {
-      const ratio = s / totalSegments;
-
-      if (ratio > 0.9) {
-        spectrumCtx.fillStyle = "#c0453a";
-      } else if (ratio > 0.7) {
-        spectrumCtx.fillStyle = "#d9b23c";
-      } else {
-        spectrumCtx.fillStyle = "#5f9153";
-      }
-
-      const y = height - (s + 1) * segmentUnit + segmentGap;
-      spectrumCtx.fillRect(i * barWidth, y, Math.max(1, barWidth - 1), segmentHeight);
-    }
-  }
-}
-
-// ---- Modern: a single smoothed curve over a soft gradient area fill —
-// closer to a DAW's analyzer (Ableton Live et al.) than the vintage ladder
-// above. Quadratic curves through the midpoint between each pair of points
-// (rather than a plain lineTo polyline) round the per-bin steps into one
-// continuous line instead of a jagged staircase.
-function drawModernSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin) {
-  const points = [];
-
-  for (let i = 0; i < barCount; i += 1) {
-    const t = barCount > 1 ? i / (barCount - 1) : 0;
-    const freq = Math.pow(2, logMin + t * (logMax - logMin));
-    const binIndex = Math.min(freqData.length - 1, Math.round(freq / hzPerBin));
-    const magnitude = freqData[binIndex] / 255;
-    points.push({ x: i * barWidth + barWidth / 2, y: height - magnitude * height });
-  }
-
-  if (points.length < 2) {
-    return;
-  }
-
-  const first = points[0];
-  const last = points[points.length - 1];
-
-  spectrumCtx.beginPath();
-  spectrumCtx.moveTo(first.x, height);
-  spectrumCtx.lineTo(first.x, first.y);
-
-  for (let i = 1; i < points.length - 1; i += 1) {
-    const midX = (points[i].x + points[i + 1].x) / 2;
-    const midY = (points[i].y + points[i + 1].y) / 2;
-    spectrumCtx.quadraticCurveTo(points[i].x, points[i].y, midX, midY);
-  }
-
-  spectrumCtx.lineTo(last.x, last.y);
-  spectrumCtx.lineTo(last.x, height);
-  spectrumCtx.closePath();
-
-  const fillGradient = spectrumCtx.createLinearGradient(0, 0, 0, height);
-  fillGradient.addColorStop(0, "rgba(168, 205, 240, 0.55)");
-  fillGradient.addColorStop(1, "rgba(63, 110, 160, 0)");
-  spectrumCtx.fillStyle = fillGradient;
-  spectrumCtx.fill();
-
-  spectrumCtx.beginPath();
-  spectrumCtx.moveTo(first.x, first.y);
-
-  for (let i = 1; i < points.length - 1; i += 1) {
-    const midX = (points[i].x + points[i + 1].x) / 2;
-    const midY = (points[i].y + points[i + 1].y) / 2;
-    spectrumCtx.quadraticCurveTo(points[i].x, points[i].y, midX, midY);
-  }
-
-  spectrumCtx.lineTo(last.x, last.y);
-  spectrumCtx.strokeStyle = "#a8cdf0";
-  spectrumCtx.lineWidth = 1.5;
-  spectrumCtx.lineJoin = "round";
-  spectrumCtx.lineCap = "round";
-  spectrumCtx.stroke();
-}
-
-// Log-scaled across the current A0-C8 range (see getSpectrumRange) so an
-// octave always takes up the same width on screen, matching how the ear
-// actually perceives the spectrum, rather than a linear Hz axis that
-// would crush everything below a few hundred Hz into a handful of pixels.
-function updateSpectrum(freqData, sampleRate) {
-  const width = spectrumCanvas.width;
-  const height = spectrumCanvas.height;
-  clearSpectrum();
-
-  const hzPerBin = sampleRate / FFT_SIZE;
-  const range = getSpectrumRange();
-  const logMin = Math.log2(range.min);
-  const logMax = Math.log2(range.max);
-  const barWidth = Math.max(1, width / 160);
-  const barCount = Math.floor(width / barWidth);
-
-  if (state.spectrumStyle === "modern") {
-    drawModernSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin);
-  } else {
-    drawVintageSpectrum(freqData, width, height, barCount, barWidth, logMin, logMax, hzPerBin);
-  }
 }
 
 const NO_SIGNAL_MESSAGE = "no signal, check the microphone in the input monitor below";
@@ -856,8 +508,8 @@ function resetVisuals() {
   updateReadout();
   needleSwingEl.setAttribute("transform", `rotate(0 ${NEEDLE_PIVOT.x} ${NEEDLE_PIVOT.y})`);
   renderMeter();
-  resetLevelMeter();
-  clearSpectrum();
+  inputMonitor.reset();
+  spectrum.clear();
 
   // With no tone playing, every ring's wedge boundaries should line up
   // along the same radial lines (as in a physical strobe disc at rest),
@@ -877,11 +529,6 @@ function resetVisuals() {
    same render loop; only one is ever active at a time (starting one
    stops the other).
    ============================================================ */
-function setMicStatus(message, isError) {
-  micStatus.textContent = message;
-  micStatus.classList.toggle("is-error", Boolean(isError));
-}
-
 function ensureAudioContext() {
   if (!AudioContextConstructor) {
     return null;
@@ -941,9 +588,9 @@ function mainLoop(timestamp) {
     // the Input Monitor's level meter and Spectrum Analyser read it the
     // same way regardless of which one is active.
     analyserNode.getFloatTimeDomainData(timeDomainBuffer);
-    updateLevelMeter(computeRms(timeDomainBuffer));
+    inputMonitor.updateLevelMeter(inputMonitor.computeRms(timeDomainBuffer));
     analyserNode.getByteFrequencyData(freqDataBuffer);
-    updateSpectrum(freqDataBuffer, audioContext.sampleRate);
+    spectrum.update(freqDataBuffer, audioContext.sampleRate, FFT_SIZE, getSpectrumRange());
 
     if (state.activeSource === "test") {
       // The test tone's frequency is already known exactly, so the readout
@@ -993,7 +640,7 @@ async function startMic() {
   }
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    setMicStatus("Microphone access isn't supported in this browser.", true);
+    setMicStatus(T.MIC_MESSAGES.notSupported, true);
     return;
   }
 
@@ -1003,11 +650,11 @@ async function startMic() {
     });
   } catch (error) {
     if (error && error.name === "NotAllowedError") {
-      setMicStatus("Microphone access was denied. Allow it in your browser's address bar and try again.", true);
+      setMicStatus(T.MIC_MESSAGES.denied, true);
     } else if (error && error.name === "NotFoundError") {
-      setMicStatus("No microphone was found on this device.", true);
+      setMicStatus(T.MIC_MESSAGES.notFound, true);
     } else {
-      setMicStatus("Couldn't access the microphone. Please try again.", true);
+      setMicStatus(T.MIC_MESSAGES.genericError, true);
     }
     return;
   }
@@ -1015,7 +662,7 @@ async function startMic() {
   const ctx = ensureAudioContext();
 
   if (!ctx) {
-    setMicStatus("Web Audio isn't supported in this browser.", true);
+    setMicStatus(T.MIC_MESSAGES.webAudioNotSupported, true);
     mediaStream.getTracks().forEach((track) => track.stop());
     mediaStream = null;
     return;
@@ -1036,7 +683,7 @@ async function startMic() {
   state.lastConfidentAt = performance.now();
   toggleMicBtn.setAttribute("aria-pressed", "true");
   powerSwitchStateEl.textContent = "ON";
-  setMicStatus("Listening… play a note.");
+  setMicStatus(T.MIC_MESSAGES.listening);
   beginRenderLoop();
 }
 
@@ -1064,7 +711,7 @@ function stopMic() {
 
   toggleMicBtn.setAttribute("aria-pressed", "false");
   powerSwitchStateEl.textContent = "OFF";
-  setMicStatus("Uses your microphone. Nothing is recorded or sent anywhere.");
+  setMicStatus(T.MIC_MESSAGES.idle);
   endRenderLoop();
   resetVisuals();
 }
@@ -1097,7 +744,7 @@ function startTestTone() {
   const ctx = ensureAudioContext();
 
   if (!ctx) {
-    setMicStatus("Web Audio isn't supported in this browser.", true);
+    setMicStatus(T.MIC_MESSAGES.webAudioNotSupported, true);
     return;
   }
 
@@ -1247,126 +894,31 @@ function setVisualMode() {
   meterVisual.hidden = mode !== "meter";
 }
 
-function updateReferencePitch(value) {
-  state.a4 = clamp(Math.round(Number(value) || DEFAULT_A4), MIN_A4, MAX_A4);
-  pitchInput.value = String(state.a4);
-  pitchRange.value = String(state.a4);
-
-  pitchPresetInputs.forEach((input) => {
-    input.checked = Number(input.value) === state.a4;
-  });
-
-  updateTestToneDisplay(getTestToneFrequency());
-  updateSpectrumLabels();
-  updateTuningStatement();
-}
-
-pitchInput.addEventListener("input", (event) => updateReferencePitch(event.target.value));
-pitchRange.addEventListener("input", (event) => updateReferencePitch(event.target.value));
-// A double-click anywhere on the reference pitch bar snaps it back to A440.
-pitchRange.addEventListener("dblclick", () => updateReferencePitch(DEFAULT_A4));
-decreasePitchBtn.addEventListener("click", () => updateReferencePitch(state.a4 - 1));
-increasePitchBtn.addEventListener("click", () => updateReferencePitch(state.a4 + 1));
-
-pitchPresetInputs.forEach((input) => {
-  input.addEventListener("change", () => updateReferencePitch(input.value));
-});
-
-function getSelectedTemperament() {
-  return TEMPERAMENTS.find((temperament) => temperament.id === state.temperamentId) || TEMPERAMENTS[0];
-}
-
 // A plain-language readout of the current tuning configuration — e.g.
 // "Tuning for Vallotti in G · 440 Hz" — kept in sync with every control
 // that can change it (Standard, Key, and the A4 reference pitch).
 function updateTuningStatement() {
-  const temperament = getSelectedTemperament();
-  const keyPart = temperament.needsKey ? ` in ${NOTE_NAMES[state.temperamentKey]}` : "";
-  tuningStatementEl.textContent = `Tuning for ${temperament.name}${keyPart} · ${state.a4} Hz`;
+  const selected = temperament.getTemperament();
+  const keyPart = selected.needsKey ? ` in ${NOTE_NAMES[temperament.state.temperamentKey]}` : "";
+  tuningStatementEl.textContent = `Tuning for ${selected.name}${keyPart} · ${state.a4} Hz`;
 }
 
-// Whichever Standard select fired the change, every instance (and both Key
-// rows) gets synced to match — so the Tuning Standard panel and the pair
-// above the Frequency Table always agree, regardless of which one the user
-// touched.
-function updateTemperament(id) {
-  state.temperamentId = id;
-  const temperament = getSelectedTemperament();
-  state.temperamentOffsets = temperament.getOffsets();
-
-  temperamentSelects.forEach((select) => {
-    select.value = id;
-  });
-
-  temperamentKeyRows.forEach((row) => {
-    row.hidden = !temperament.needsKey;
-  });
-
-  buildFrequencyTableBody();
-  updateTestToneDisplay(getTestToneFrequency());
-  updateSpectrumLabels();
-  updateTuningStatement();
-}
-
-function updateTemperamentKey(pitchClass) {
-  state.temperamentKey = clamp(Math.round(Number(pitchClass) || 0), 0, 11);
-
-  temperamentKeySelects.forEach((select) => {
-    select.value = String(state.temperamentKey);
-  });
-
-  buildFrequencyTableBody();
-  updateTestToneDisplay(getTestToneFrequency());
-  updateSpectrumLabels();
-  updateTuningStatement();
-}
-
-temperamentSelects.forEach((select) => {
-  select.addEventListener("change", (event) => updateTemperament(event.target.value));
+const referencePitch = T.setupReferencePitch({
+  pitchInput,
+  pitchRange,
+  decreaseBtn: decreasePitchBtn,
+  increaseBtn: increasePitchBtn,
+  presetInputs: pitchPresetInputs,
+  onChange: (a4) => {
+    state.a4 = a4;
+    updateTestToneDisplay(getTestToneFrequency());
+    spectrum.updateLabels(getSpectrumRange(), state.a4);
+    updateTuningStatement();
+  },
 });
-
-temperamentKeySelects.forEach((select) => {
-  select.addEventListener("change", (event) => updateTemperamentKey(event.target.value));
-});
-
-// Options are generated from TEMPERAMENTS / NOTE_NAMES rather than hand-
-// written in the markup, so the dropdowns can never drift out of sync with
-// the tables that actually compute the frequencies — and every instance of
-// each select gets the same option list.
-function populateTemperamentControls() {
-  temperamentSelects.forEach((select) => {
-    TEMPERAMENTS.forEach((temperament) => {
-      const option = document.createElement("option");
-      option.value = temperament.id;
-      option.textContent = temperament.name;
-      select.appendChild(option);
-    });
-  });
-
-  temperamentKeySelects.forEach((select) => {
-    NOTE_NAMES.forEach((name, pitchClass) => {
-      const option = document.createElement("option");
-      option.value = String(pitchClass);
-      option.textContent = name;
-      select.appendChild(option);
-    });
-  });
-}
 
 visualModeInputs.forEach((input) => {
   input.addEventListener("change", setVisualMode);
-});
-
-function setSpectrumStyle(styleName) {
-  state.spectrumStyle = styleName;
-  spectrumStyleCheckbox.checked = styleName === "modern";
-  spectrumStyleToggleEl.querySelectorAll(".style-toggle-label").forEach((label) => {
-    label.classList.toggle("is-active", label.dataset.style === styleName);
-  });
-}
-
-spectrumStyleCheckbox.addEventListener("change", () => {
-  setSpectrumStyle(spectrumStyleCheckbox.checked ? "modern" : "vintage");
 });
 
 toggleMicBtn.addEventListener("click", toggleMic);
@@ -1401,52 +953,18 @@ testToneVolume.addEventListener("input", (event) => {
   }
 });
 
-micGainRange.addEventListener("input", (event) => {
-  const gain = Number(event.target.value);
-  micGainValueLabelEl.textContent = `${gain.toFixed(1)}×`;
-
-  if (micGainNode) {
-    micGainNode.gain.setTargetAtTime(gain, audioContext.currentTime, 0.01);
-  }
-});
-
-window.addEventListener("resize", sizeSpectrumCanvas);
-
-// Collapsible frames: each panel-header's toggle hides everything in its
-// .control-block except the header (see the .is-collapsed CSS rule).
 // Re-measuring the spectrum canvas on expand matters because it reports
-// zero size while display:none, so sizeSpectrumCanvas's guard skips it
-// until the frame is visible again.
-document.querySelectorAll(".collapse-toggle").forEach((toggle) => {
-  toggle.addEventListener("click", () => {
-    const panel = toggle.closest(".control-block");
-    const collapsed = panel.classList.toggle("is-collapsed");
-    toggle.setAttribute("aria-expanded", String(!collapsed));
-
-    if (!collapsed && panel.contains(spectrumCanvas)) {
-      sizeSpectrumCanvas();
-    }
-  });
+// zero size while display:none, so sizeCanvas's guard skips it until the
+// frame is visible again.
+T.wireCollapsibles((panel) => {
+  if (panel.contains(spectrumCanvas)) {
+    spectrum.sizeCanvas();
+  }
 });
 
-document.addEventListener("keydown", (event) => {
-  const focusedTag = document.activeElement?.tagName;
-  const isFormElement = focusedTag === "INPUT" || focusedTag === "SELECT" || focusedTag === "TEXTAREA";
-
-  if (event.code === "Space" && !isFormElement) {
-    event.preventDefault();
-    toggleMic();
-  }
-
-  if (event.key === "ArrowUp" && !isFormElement) {
-    event.preventDefault();
-    updateReferencePitch(state.a4 + 1);
-  }
-
-  if (event.key === "ArrowDown" && !isFormElement) {
-    event.preventDefault();
-    updateReferencePitch(state.a4 - 1);
-  }
+T.wireTransportShortcuts({
+  onToggle: toggleMic,
+  onA4Delta: (delta) => referencePitch.setA4(state.a4 + delta),
 });
 
 // Release whichever source is active when the tab is hidden, rather than
@@ -1461,12 +979,10 @@ buildStrobeRings();
 buildNeedleScale();
 buildLedSegments();
 setVisualMode();
-populateTemperamentControls();
-updateReferencePitch(state.a4);
+referencePitch.setA4(state.a4);
 updateFineTuningLabel();
 updateTestToneDisplay(getTestToneFrequency());
-micGainValueLabelEl.textContent = `${Number(micGainRange.value).toFixed(1)}×`;
-setSpectrumStyle(state.spectrumStyle);
-buildFrequencyTable();
-sizeSpectrumCanvas();
+spectrum.setStyle("vintage");
+T.buildFrequencyTable({ headRow: freqTableHeadRow, body: freqTableBody, pianoNoteFrequency });
+spectrum.sizeCanvas();
 resetVisuals();

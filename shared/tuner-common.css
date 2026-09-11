@@ -1,0 +1,925 @@
+/* ============================================================
+   TUNER COMMON STYLES — the component styles shared by every tuner-family
+   page (/tuner/, /strobetuner/, /multistrobe/): page chrome, the settings
+   panels (Input Monitor, Reference Pitch, Tuning Standard), the Spectrum
+   Analyser, the generic Frequency Table, and the shared button/slider/
+   select primitives. Each page's own stylesheet only holds what's actually
+   specific to it (its visual device(s), its own layout tweaks) — see
+   shared/tuner-common.js for the matching JS half of this split.
+   ============================================================ */
+:root {
+  color-scheme: light;
+  --ink: #221b16;
+  --ink-soft: #57483b;
+  --paper: #f6f1e8;
+  --paper-strong: #efe7da;
+  --surface: rgba(255, 251, 244, 0.82);
+  --surface-solid: #fffaf2;
+  --border: rgba(62, 45, 30, 0.2);
+  --border-strong: rgba(62, 45, 30, 0.36);
+  --accent: #8c3b2f;
+  --accent-strong: #6f1f16;
+  --gold: #b27a37;
+  --in-tune: #6f8f52;
+  --in-tune-strong: #4f6a38;
+  --tune-gray: #9c9186;
+  --shadow-soft: 0 10px 30px rgba(34, 27, 22, 0.1);
+  --shadow-strong: 0 18px 45px rgba(34, 27, 22, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, "Segoe UI", Roboto, system-ui, sans-serif;
+  color: var(--ink);
+  line-height: 1.55;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(178, 122, 55, 0.16), transparent 35%),
+    radial-gradient(circle at 12% 22%, rgba(140, 59, 47, 0.1), transparent 34%),
+    repeating-linear-gradient(
+      180deg,
+      rgba(57, 43, 31, 0.035) 0,
+      rgba(57, 43, 31, 0.035) 1px,
+      transparent 1px,
+      transparent 36px
+    ),
+    linear-gradient(180deg, #fcf7ef 0%, #f3eadb 100%);
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.6rem 1.1rem 3.4rem;
+  display: grid;
+  gap: 1.35rem;
+}
+
+.hero {
+  text-align: center;
+  position: relative;
+  padding: 1.4rem 0.7rem 0.1rem;
+}
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: min(520px, 78vw);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(62, 45, 30, 0.46), transparent);
+}
+
+.hero::before {
+  top: 0.3rem;
+}
+
+.hero::after {
+  bottom: -0.2rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: "Marck Script", "Brush Script MT", cursive;
+  font-size: clamp(1.2rem, 2.6vw, 1.7rem);
+  color: var(--accent);
+}
+
+.hero h1 {
+  margin: 0.2rem 0 0.55rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.4rem, 5.2vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #2d221b;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.transport-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tap-status {
+  text-align: center;
+  min-height: 1.1em;
+}
+
+.tuning-statement {
+  margin: 0;
+  text-align: center;
+  color: var(--accent-strong);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+}
+
+/* ---- control-block: the shared frame every settings panel (Input
+   Monitor, Reference Pitch, Tuning Standard, Spectrum Analyser, Frequency
+   Table) is built from. ---- */
+.control-block {
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  max-width: 26rem;
+  margin: 0 auto;
+  width: 100%;
+  /* Grid/flex items default to min-width:auto (their content's min-content
+     size) — without this, a wide table inside .freq-table-scroll's own
+     overflow:auto can still force this whole block (and its ancestors)
+     wider than the page instead of actually scrolling internally. */
+  min-width: 0;
+}
+
+.control-block.wide-block,
+.control-block.freq-table-block,
+.control-block.spectrum-analyzer-block,
+.control-block.keyboard-block {
+  max-width: none;
+  margin: 0;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.panel-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink);
+  /* Pushes whatever follows (a panel-value, the collapse toggle, or both)
+     to the right edge of the header, rather than spreading all header
+     children apart evenly. */
+  margin-right: auto;
+}
+
+.panel-value {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--accent-strong);
+}
+
+.hint {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.hint.is-error {
+  color: var(--accent-strong);
+}
+
+/* ---- collapsible frames: every panel-header carries a toggle; clicking
+   it hides everything in the .control-block except the header itself,
+   collapsing the frame down to a title bar. ---- */
+.collapse-toggle {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+.collapse-toggle:hover {
+  background: var(--paper-strong);
+  color: var(--ink);
+}
+
+.collapse-icon {
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 150ms ease;
+}
+
+.collapse-toggle[aria-expanded="false"] .collapse-icon {
+  transform: rotate(-90deg);
+}
+
+.control-block.is-collapsed > *:not(.panel-header) {
+  display: none;
+}
+
+.slider-title {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 0.2rem;
+}
+
+.slider-title:first-of-type {
+  margin-top: 0;
+}
+
+.fine-freq-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.fine-freq-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.fine-freq-value input[type="number"] {
+  width: 3.2ch;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: right;
+  font: inherit;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-strong);
+  -moz-appearance: textfield;
+  appearance: textfield;
+  border-radius: 0.65rem;
+}
+
+.fine-freq-value input[type="number"]::-webkit-inner-spin-button,
+.fine-freq-value input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.panel-slider {
+  width: 100%;
+}
+
+/* ---- fine-tuning slider: a center tick marking 0¢, so there's a visible
+   target to aim for (or double-click near) when resetting. ---- */
+.cents-slider-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cents-center-mark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 12px;
+  background: var(--border-strong);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* ---- shared primitives ---- */
+input,
+select,
+button {
+  font: inherit;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.toggle-btn {
+  width: min(170px, 100%);
+  justify-self: center;
+  border: 1px solid rgba(123, 71, 32, 0.55);
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  background: linear-gradient(145deg, #b57a38, #885123);
+  color: #fffdf8;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 3px 9px rgba(82, 47, 20, 0.2);
+}
+
+.toggle-btn:hover {
+  filter: brightness(1.04);
+}
+
+.toggle-btn[aria-pressed="true"] {
+  background: linear-gradient(145deg, #d1453a, #9c2620);
+  border-color: rgba(156, 38, 32, 0.65);
+  box-shadow: 0 3px 10px rgba(156, 38, 32, 0.35);
+}
+
+.small-btn {
+  border: 1px solid var(--border-strong);
+  background: #fff9f1;
+  color: var(--ink);
+  border-radius: 0.65rem;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.small-btn:hover {
+  background: #fff3e3;
+}
+
+.toggle-btn:focus-visible,
+.small-btn:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 2px;
+}
+
+/* ---- power switch: the Start/Stop control, styled as a vintage-gear
+   slide switch — a dark recessed track with a golden case-colored thumb
+   that slides across, a "Start Tuner" legend printed above it and the
+   current position (OFF / ON) called out below, the ON state lit in the
+   same live red the tuner uses elsewhere. Sits at the very top of the
+   page's live area, above whatever visual device that page shows. ---- */
+.power-switch {
+  display: grid;
+  justify-items: center;
+  gap: 0.32rem;
+}
+
+.power-switch-legend {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.power-toggle {
+  position: relative;
+  width: 66px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.power-toggle-track {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #241b14, #171310);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+  transition: background 160ms ease, border-color 160ms ease;
+  pointer-events: none;
+}
+
+.power-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  transition: transform 160ms ease;
+}
+
+.power-toggle[aria-pressed="true"] .power-toggle-thumb {
+  transform: translateX(36px);
+}
+
+.power-toggle[aria-pressed="true"] .power-toggle-track {
+  background: linear-gradient(180deg, #7c1f18, #4f1310);
+  border-color: rgba(156, 38, 32, 0.7);
+}
+
+.power-toggle:focus-visible .power-toggle-track {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 2px;
+}
+
+.power-switch-state {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  min-width: 4ch;
+  text-align: center;
+}
+
+.power-toggle[aria-pressed="true"] ~ .power-switch-state {
+  color: #e2261c;
+  text-shadow: 0 0 10px rgba(226, 38, 28, 0.4);
+}
+
+/* ---- settings: Input Monitor, Reference Pitch, Tuning Standard, etc. A
+   single centered column by default; on wide screens (where two full-width
+   panels plus the gap actually fit) they pair up two-across. ---- */
+.settings-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.settings-row .control-block {
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .settings-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .settings-row .control-block {
+    flex: 1 1 24rem;
+    max-width: 26rem;
+    margin: 0;
+  }
+}
+
+/* ---- select-row: a labeled <select>, e.g. the Tuning Standard dropdown.
+   Label sits above (not beside) the select — some option text runs long
+   ("Just Intonation (Major)"), and a select narrower than its selected
+   option's text gets silently clipped by the browser. ---- */
+.select-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.select-row[hidden] {
+  display: none;
+}
+
+.select-row-label {
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.select-row select {
+  min-width: 0;
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.65rem;
+  background: #fff9f1;
+  color: var(--ink);
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+}
+
+.select-row select:hover {
+  background: #fff3e3;
+}
+
+/* ---- reference pitch presets: plain text options (no button chrome) —
+   the frequency in the page's regular serif, the tuning-standard name in
+   the same cursive script as the "BeatConfused Studio" eyebrow, so picking
+   a standard feels like reading a label rather than pressing a button. ---- */
+.preset-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 1.3rem;
+  row-gap: 0.5rem;
+}
+
+.preset-option {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.preset-option input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.preset-option span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  line-height: 1.15;
+  text-align: center;
+  border-bottom: 1.5px solid transparent;
+  padding-bottom: 0.15rem;
+  transition: border-color 120ms ease;
+}
+
+.preset-freq {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+  transition: color 120ms ease;
+}
+
+.preset-name {
+  font-family: "Marck Script", "Brush Script MT", cursive;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.01em;
+  transition: color 120ms ease;
+}
+
+.preset-name-primary {
+  font-style: normal;
+}
+
+.preset-name-secondary {
+  font-style: italic;
+  margin-top: 0.05rem;
+}
+
+.preset-option:hover span {
+  border-color: var(--border);
+}
+
+.preset-option input:checked + span {
+  border-color: var(--accent-strong);
+}
+
+.preset-option input:checked + span .preset-freq,
+.preset-option input:checked + span .preset-name {
+  color: var(--accent-strong);
+}
+
+.preset-option input:focus-visible + span {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 3px;
+  border-radius: 0.2rem;
+}
+
+/* ---- style-toggle: a single sliding switch (not two separate buttons)
+   between two named states — used by the Spectrum Analyser's Vintage/
+   Modern picker. ---- */
+.style-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.style-toggle-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: color 120ms ease;
+}
+
+.style-toggle-label.is-active {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.style-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.style-toggle-switch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.style-toggle-track {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #241b14, #171310);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.style-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: transform 150ms ease;
+}
+
+.style-toggle-switch input:checked ~ .style-toggle-track .style-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.style-toggle-switch input:focus-visible ~ .style-toggle-track {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 2px;
+}
+
+/* ---- Input Monitor: gain boost + level meter. ---- */
+.signal-block .hint {
+  text-align: center;
+}
+
+.signal-meters-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2.2rem;
+  padding-top: 0.2rem;
+}
+
+.vertical-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vertical-control-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.vertical-control-value {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-strong);
+  width: 4.6rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.vertical-slider-wrap {
+  position: relative;
+  width: 44px;
+  height: 160px;
+}
+
+.vertical-slider-wrap .vertical-slider {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 32px;
+  margin: 0;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  accent-color: var(--accent);
+}
+
+.level-meter-case {
+  width: 44px;
+  height: 160px;
+  padding: 4px;
+  border-radius: 1rem;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: 0 2px 5px rgba(61, 31, 15, 0.14);
+}
+
+.level-meter-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.7rem;
+  background: linear-gradient(180deg, #241b14, #171310);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.level-meter-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0%;
+  background: color-mix(in srgb, var(--accent) calc(var(--level-mix, 0) * 1%), var(--gold));
+  transition: height 90ms linear;
+}
+
+/* ---- Spectrum Analyser: same golden-case-over-dark-window bezel as the
+   other instrument displays. ---- */
+.spectrum-block {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.spectrum-case {
+  padding: 4px;
+  border-radius: 0.85rem;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: 0 2px 5px rgba(61, 31, 15, 0.14);
+}
+
+.spectrum-canvas {
+  width: 100%;
+  height: 140px;
+  display: block;
+  border-radius: 0.65rem;
+  background: linear-gradient(180deg, #241b14, #171310);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.spectrum-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Frequency Table: a full-width frame like the spectrum analyzer,
+   holding a scrollable reference table so it doesn't stretch the page when
+   expanded. ---- */
+.freq-table-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.6rem;
+}
+
+.freq-table-controls .select-row {
+  flex: 1 1 12rem;
+  max-width: 20rem;
+}
+
+.freq-table-scroll {
+  max-height: 22rem;
+  overflow: auto;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+}
+
+.freq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.freq-table th,
+.freq-table td {
+  padding: 0.35rem 0.65rem;
+  text-align: right;
+}
+
+.freq-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-solid);
+  border-bottom: 1px solid var(--border-strong);
+  z-index: 1;
+}
+
+.freq-table-note-col,
+.freq-table td:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: var(--surface-solid);
+}
+
+.freq-table-note-col {
+  z-index: 2;
+}
+
+.freq-table thead th:not(.freq-table-note-col) {
+  line-height: 1.15;
+}
+
+.freq-table-col-freq {
+  display: block;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--accent-strong);
+}
+
+.freq-table-col-name-primary {
+  display: block;
+  font-family: "Marck Script", "Brush Script MT", cursive;
+  font-size: 0.9rem;
+  font-style: normal;
+  color: var(--ink-soft);
+}
+
+.freq-table-col-name-secondary {
+  display: block;
+  font-family: "Marck Script", "Brush Script MT", cursive;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.freq-table tbody tr:nth-child(even) {
+  background: rgba(62, 45, 30, 0.04);
+}
+
+.footer {
+  text-align: center;
+  color: var(--ink-soft);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.22rem;
+}
+
+.footer-links,
+.footer-contact {
+  margin: 0.3rem 0 0;
+  font-family: Inter, "Segoe UI", Roboto, system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+.footer-links a,
+.footer-contact a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.05rem;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.footer-links a:hover,
+.footer-contact a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding-top: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

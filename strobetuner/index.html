@@ -38,6 +38,7 @@
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Marck+Script&display=swap"
     rel="stylesheet"
   />
+  <link rel="stylesheet" href="/shared/tuner-common.css" />
   <link rel="stylesheet" href="styles.css" />
   <script type="application/ld+json">
     {
@@ -82,25 +83,45 @@
             <stop offset="0" stop-color="#362b21" />
             <stop offset="1" stop-color="#171310" />
           </radialGradient>
+          <radialGradient id="discVignette" cx="0.5" cy="0.46" r="0.62">
+            <stop offset="0" stop-color="#000000" stop-opacity="0" />
+            <stop offset="0.76" stop-color="#000000" stop-opacity="0" />
+            <stop offset="1" stop-color="#000000" stop-opacity="0.6" />
+          </radialGradient>
+          <radialGradient id="discGlassHighlight" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#ffffff" stop-opacity="0.22" />
+            <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+          </radialGradient>
         </defs>
       </svg>
 
       <div class="strobetuner-live">
-        <div class="note-readout" aria-live="polite">
+        <div class="power-switch">
+          <span class="power-switch-legend">Start Tuner</span>
+          <button
+            id="toggleMicBtn"
+            class="power-toggle"
+            type="button"
+            aria-pressed="false"
+            aria-label="Start or stop the tuner"
+            title="Start / stop tuner"
+          >
+            <span class="power-toggle-track">
+              <span class="power-toggle-thumb"></span>
+            </span>
+          </button>
+          <span class="power-switch-state" id="powerSwitchState" aria-hidden="true">OFF</span>
+        </div>
+
+        <div class="note-readout" id="noteReadout" aria-live="polite" hidden>
           <span class="note-name" id="noteName">–</span>
-          <span class="no-signal-hint" id="noSignalHint">Start the tuner and play a note</span>
         </div>
 
         <div class="strobetuner-disc-stage">
           <div class="strobetuner-disc-wrap" id="strobeDiscContainer"></div>
         </div>
 
-        <div class="octave-legend" id="octaveLegend" aria-label="Tuning by octave"></div>
-
-        <div class="transport-row">
-          <button id="toggleMicBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop tuner">Start Tuner</button>
-        </div>
-        <p id="tuningStatement" class="tuning-statement" aria-live="polite">Tuning at 440 Hz</p>
+        <p id="tuningStatement" class="tuning-statement" aria-live="polite">Tuning for Equal Temperament · 440 Hz</p>
         <p id="micStatus" class="hint tap-status" aria-live="polite">Uses your microphone. Nothing is recorded or sent anywhere.</p>
       </div>
 
@@ -110,58 +131,189 @@
         their cents error.
       </p>
 
-      <div class="control-block signal-block">
-        <div class="panel-header">
-          <span class="panel-title">Input Monitor</span>
-          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Input Monitor">
-            <span class="collapse-icon" aria-hidden="true">▾</span>
-          </button>
-        </div>
-        <p class="hint">Boosts the microphone and shows how much signal is reaching the tuner.</p>
-
-        <div class="signal-meters-row">
-          <div class="vertical-control">
-            <span class="vertical-control-label">Gain</span>
-            <div class="vertical-slider-wrap">
-              <input
-                id="micGainRange"
-                type="range"
-                min="1"
-                max="12"
-                step="0.5"
-                value="6"
-                class="vertical-slider"
-                aria-label="Microphone gain boost"
-                aria-orientation="vertical"
-              />
-            </div>
-            <span class="vertical-control-value" id="micGainValueLabel">6.0×</span>
+      <div class="settings-row">
+        <div class="control-block signal-block">
+          <div class="panel-header">
+            <span class="panel-title">Input Monitor</span>
+            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Input Monitor">
+              <span class="collapse-icon" aria-hidden="true">▾</span>
+            </button>
           </div>
+          <p class="hint">Boosts the microphone and shows how much signal is reaching the tuner.</p>
 
-          <div class="vertical-control">
-            <span class="vertical-control-label">Level</span>
-            <div class="level-meter-case">
-              <div class="level-meter-track">
-                <div class="level-meter-fill" id="levelMeterFill"></div>
+          <div class="signal-meters-row">
+            <div class="vertical-control">
+              <span class="vertical-control-label">Gain</span>
+              <div class="vertical-slider-wrap">
+                <input
+                  id="micGainRange"
+                  type="range"
+                  min="1"
+                  max="12"
+                  step="0.5"
+                  value="6"
+                  class="vertical-slider"
+                  aria-label="Microphone gain boost"
+                  aria-orientation="vertical"
+                />
               </div>
+              <span class="vertical-control-value" id="micGainValueLabel">6.0×</span>
             </div>
-            <span class="vertical-control-value" id="levelValueLabel">−∞ dB</span>
+
+            <div class="vertical-control">
+              <span class="vertical-control-label">Level</span>
+              <div class="level-meter-case">
+                <div class="level-meter-track">
+                  <div class="level-meter-fill" id="levelMeterFill"></div>
+                </div>
+              </div>
+              <span class="vertical-control-value" id="levelValueLabel">−∞ dB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-block reference-pitch-block">
+          <div class="panel-header">
+            <span class="panel-title">Reference Pitch</span>
+            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Reference Pitch">
+              <span class="collapse-icon" aria-hidden="true">▾</span>
+            </button>
+          </div>
+          <div class="fine-freq-row">
+            <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)">−</button>
+            <span class="fine-freq-value">
+              A4 = <input id="pitchInput" type="number" min="392" max="466" step="1" value="440" aria-label="Reference pitch in Hz" title="Reference pitch (Hz)" /> Hz
+            </span>
+            <button id="increasePitchBtn" type="button" class="small-btn" aria-label="Increase reference pitch" title="Increase A4 (↑)">+</button>
+          </div>
+          <input id="pitchRange" type="range" min="392" max="466" value="440" class="panel-slider" aria-label="Reference pitch slider" />
+          <div class="preset-list" role="radiogroup" aria-label="Concert pitch presets">
+            <label class="preset-option">
+              <input type="radio" name="pitchPreset" value="392" />
+              <span>
+                <span class="preset-freq">392</span>
+                <span class="preset-name">
+                  <span class="preset-name-primary">French Baroque</span>
+                  <span class="preset-name-secondary">"Tone de Chambre"</span>
+                </span>
+              </span>
+            </label>
+            <label class="preset-option">
+              <input type="radio" name="pitchPreset" value="415" />
+              <span>
+                <span class="preset-freq">415</span>
+                <span class="preset-name">Baroque</span>
+              </span>
+            </label>
+            <label class="preset-option">
+              <input type="radio" name="pitchPreset" value="432" />
+              <span>
+                <span class="preset-freq">432</span>
+                <span class="preset-name">
+                  <span class="preset-name-primary">Verdi</span>
+                  <span class="preset-name-secondary">"Scientific"</span>
+                </span>
+              </span>
+            </label>
+            <label class="preset-option">
+              <input type="radio" name="pitchPreset" value="440" checked />
+              <span>
+                <span class="preset-freq">440</span>
+                <span class="preset-name">Standard</span>
+              </span>
+            </label>
+            <label class="preset-option">
+              <input type="radio" name="pitchPreset" value="444" />
+              <span>
+                <span class="preset-freq">444</span>
+                <span class="preset-name">
+                  <span class="preset-name-primary">Modern</span>
+                  <span class="preset-name-secondary">"Symphony"</span>
+                </span>
+              </span>
+            </label>
+            <label class="preset-option">
+              <input type="radio" name="pitchPreset" value="466" />
+              <span>
+                <span class="preset-freq">466</span>
+                <span class="preset-name">
+                  <span class="preset-name-primary">Italian</span>
+                  <span class="preset-name-secondary">Renaissance</span>
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="control-block temperament-block">
+          <div class="panel-header">
+            <span class="panel-title">Tuning Standard</span>
+            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Tuning Standard">
+              <span class="collapse-icon" aria-hidden="true">▾</span>
+            </button>
+          </div>
+          <p class="hint">Retunes every note by a few cents to a historical or alternate temperament, instead of modern Equal Temperament.</p>
+          <div class="select-row">
+            <label class="select-row-label" for="temperamentSelect">Standard</label>
+            <select id="temperamentSelect" class="temperament-select" aria-label="Tuning standard"></select>
+          </div>
+          <div class="select-row temperament-key-row" id="temperamentKeyRow" hidden>
+            <label class="select-row-label" for="temperamentKeySelect">Key</label>
+            <select id="temperamentKeySelect" class="temperament-key-select" aria-label="Tuning standard key (tonic)"></select>
           </div>
         </div>
       </div>
 
-      <div class="control-block reference-pitch-block">
+      <div class="control-block spectrum-analyzer-block">
         <div class="panel-header">
-          <span class="panel-title">Reference Pitch</span>
+          <span class="panel-title">Spectrum Analyser</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Spectrum Analyser">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
         </div>
-        <div class="fine-freq-row">
-          <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)">−</button>
-          <span class="fine-freq-value">
-            A4 = <input id="pitchInput" type="number" min="392" max="466" step="1" value="440" aria-label="Reference pitch in Hz" title="Reference pitch (Hz)" /> Hz
+        <label class="style-toggle" id="spectrumStyleToggle">
+          <span class="style-toggle-label" data-style="vintage">Vintage</span>
+          <span class="style-toggle-switch">
+            <input type="checkbox" id="spectrumStyleCheckbox" aria-label="Spectrum style: Vintage or Modern" />
+            <span class="style-toggle-track">
+              <span class="style-toggle-thumb"></span>
+            </span>
           </span>
-          <button id="increasePitchBtn" type="button" class="small-btn" aria-label="Increase reference pitch" title="Increase A4 (↑)">+</button>
+          <span class="style-toggle-label" data-style="modern">Modern</span>
+        </label>
+        <div class="spectrum-block">
+          <div class="spectrum-case">
+            <canvas id="spectrumCanvas" class="spectrum-canvas" aria-hidden="true"></canvas>
+          </div>
+          <div class="spectrum-labels">
+            <span id="spectrumLowLabel">A0 · 27.5 Hz</span>
+            <span id="spectrumRefLabel">A4 · 440.0 Hz</span>
+            <span id="spectrumHighLabel">C8 · 4186.0 Hz</span>
+          </div>
         </div>
-        <input id="pitchRange" type="range" min="392" max="466" value="440" class="panel-slider" aria-label="Reference pitch slider" />
+      </div>
+
+      <div class="control-block freq-table-block wide-block">
+        <div class="panel-header">
+          <span class="panel-title">Frequency Table</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Frequency Table">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <p class="hint">
+          Every note from A0, notes across the columns and octaves down the rows. While the tuner is running, each
+          cell also shows its own live cents deviation next to the note.
+        </p>
+        <div class="freq-table-scroll">
+          <table class="freq-table octave-freq-table" id="octaveFreqTable">
+            <thead>
+              <tr id="octaveFreqTableHead">
+                <th class="freq-table-note-col">Oct</th>
+              </tr>
+            </thead>
+            <tbody id="octaveFreqTableBody"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -175,6 +327,7 @@
     </footer>
   </main>
 
+  <script src="/shared/tuner-common.js"></script>
   <script src="/shared/strobe-disc.js"></script>
   <script src="script.js"></script>
 </body>
