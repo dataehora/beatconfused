@@ -4,8 +4,8 @@
     {
       "name": "static-site",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5847"],
-      "port": 5847
+      "runtimeArgs": [".claude/nocache_server.py", "5849"],
+      "port": 5849
     }
   ]
 }

@@ -397,32 +397,29 @@ input:focus-visible {
 
 /* ---- octave legend: 0-8, one per key on an 88-key piano's octave
    numbering — matching buildOctaveFreqTable's OCTAVE_MIN..OCTAVE_MAX rows.
-   Starts at the disc's own horizontal center and runs right (see
-   .octave-legend's margin-left), rather than spanning the full width, so
-   it reads as an extension of the display above it instead of a separate
-   full-width bar. Whichever octave(s) of the current note are actually
-   confident get the note name lit up next to their number — see
-   updateOctaveLegend in script.js. ---- */
+   Each item is positioned (once, at build time — see buildOctaveLegend in
+   script.js) at the exact same radius its ring sits at on the disc above,
+   as a left% of this row's own width, which is why this stage shares the
+   disc-wrap's width cap: a plain percentage only lines up with the true
+   ring radii when both are measured against the same rendered width.
+   Absolute positioning (rather than a flex row) means a number never
+   shifts when its neighbor's note name appears or disappears — see
+   .octave-legend-note below for how the note grows to its own left
+   without touching the number's fixed position. ---- */
 .octave-legend-stage {
   width: min(720px, 100%);
   margin: 0 auto;
 }
 
 .octave-legend {
-  display: flex;
-  align-items: baseline;
-  gap: 0.55rem;
-  margin: 0 0 0 50%;
-  padding: 0 0 0.2rem;
-  overflow-x: auto;
+  position: relative;
+  height: 1.3rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
 }
 
 .octave-legend-item {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.15rem;
-  flex: none;
-  font-family: "Cormorant Garamond", Georgia, serif;
+  position: absolute;
+  top: 0;
 }
 
 .octave-legend-num {
@@ -431,7 +428,15 @@ input:focus-visible {
   color: var(--gold);
 }
 
+/* Reads hub-to-rim, so the note name comes *before* its octave number —
+   anchored to grow leftward from the number's fixed position instead of
+   sitting in normal flow, so showing/hiding it never moves the number. */
 .octave-legend-note {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  margin-right: 0.15rem;
+  white-space: nowrap;
   font-weight: 700;
   font-size: 0.85rem;
   color: var(--accent-strong);
@@ -478,115 +483,11 @@ input:focus-visible {
   display: none;
 }
 
+/* The disc's own appearance (case, window, rings, hub, bezel, vignette)
+   is shared — see shared/tuner-common.css — this page only overrides the
+   rendered size, since it's the one hero disc rather than one of twelve. */
 .disc-device {
-  display: block;
   width: 100%;
-  overflow: visible;
-  transition: filter 300ms ease;
-}
-
-.disc-case {
-  fill: url(#discCaseGradient);
-  filter: drop-shadow(0 3px 8px rgba(61, 31, 15, 0.18));
-}
-
-.disc-window {
-  fill: url(#discWindowGradient);
-  transition: filter 300ms ease;
-}
-
-/* A real strobe disc's wedges are just black and white — the pattern's
-   *motion* (or stillness) carries the tuning information, not a color
-   change, so unlike /multistrobe/'s colored rings, active and in-tune
-   here render identically (both bright white); only whether the ring is
-   actually spinning tells them apart. Idle rings sit dim and low-
-   contrast, like a wheel with its light off. */
-.disc-ring path {
-  fill: #3a3a3a;
-  opacity: 0.55;
-  transition: fill 220ms ease, opacity 220ms ease;
-}
-
-.disc-ring.is-active path,
-.disc-ring.in-tune path {
-  fill: #fbfaf7;
-  opacity: 1;
-}
-
-/* In tune specifically means "stopped spinning" (see shared/strobe-disc.js
-   RING_DEADZONE_CENTS), so it earns a soft white glow on top of the same
-   plain white fill every active ring gets — a reward for stillness, still
-   strictly monochrome. */
-.disc-ring.in-tune path {
-  filter: drop-shadow(0 0 2.5px rgba(255, 255, 255, 0.9));
-}
-
-.disc-hub {
-  fill: #f6f1e8;
-}
-
-/* "Illuminating" the whole disc when anything is sounding — the window
-   backlight brightens and the whole device gains a touch of contrast,
-   distinct from any single ring's own state. */
-.strobe-disc.is-active .disc-window {
-  filter: brightness(1.9) saturate(1.05);
-}
-
-.strobe-disc.is-active .disc-device {
-  filter: brightness(1.06) contrast(1.05);
-}
-
-/* A soft golden glow layered on top of whichever coloring a ring already
-   has (idle/active/in-tune) — marks it as autocorrelation's "best guess"
-   fundamental octave, without overriding what its own Goertzel reading
-   says about it. */
-.disc-ring.is-fundamental path {
-  filter: drop-shadow(0 0 3px rgba(178, 122, 55, 0.85)) drop-shadow(0 0 1px rgba(178, 122, 55, 0.95));
-}
-
-/* ---- reference bezel: static calibration ticks + flat/sharp glyphs
-   around the disc's outer rim, drawn once per disc by addScaleTicks() in
-   script.js. Decorative framing, not a readable scale — see that
-   function's comment. ---- */
-.disc-scale-tick {
-  stroke: var(--border-strong);
-  stroke-width: 0.6;
-}
-
-.disc-scale-tick-major {
-  stroke: var(--gold);
-  stroke-width: 1;
-}
-
-/* The dead-center (0°) tick doubles as a fixed index mark — brighter and
-   slightly thicker than the other majors, the reference point every
-   ring's wedge boundary lines up against when perfectly in tune. */
-.disc-scale-tick-index {
-  stroke: #fbfaf7;
-  stroke-width: 1.4;
-}
-
-.disc-scale-label {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-weight: 700;
-  font-size: 9px;
-  fill: var(--gold);
-  dominant-baseline: middle;
-}
-
-/* A soft dark vignette toward the window's own rim, plus a diagonal glass
-   highlight near the top — the same glass-and-brass language /tuner/'s
-   strobe visual uses, so the disc reads as a lit instrument display
-   rather than a flat vector graphic. Purely cosmetic, painted on top of
-   the rings but under the hub (see addBezelDecoration in script.js). */
-.disc-vignette {
-  fill: url(#discVignette);
-  pointer-events: none;
-}
-
-.disc-glass-highlight {
-  fill: url(#discGlassHighlight);
-  pointer-events: none;
 }
 
 /* ---- Input Monitor: gain boost + level meter, same as /tuner/'s. ---- */

@@ -88,6 +88,10 @@
     return list;
   }
 
+  function octaveForMidi(midi) {
+    return Math.floor(midi / 12) - 1;
+  }
+
   function computeWindowSamples(targetFreq, sampleRate) {
     const raw = Math.round((sampleRate * GOERTZEL_MIN_CYCLES) / targetFreq);
     return clamp(raw, MIN_RING_WINDOW_SAMPLES, ANALYSER_BUFFER_SIZE);
@@ -237,10 +241,10 @@
     }
   }
 
-  // Default geometry matches /multistrobe/'s compact piano-keyboard discs —
-  // a wide-short viewBox holding only the top 90° of the wheel. Pages that
-  // want a bigger, more prominent single disc (e.g. /strobetuner/) pass
-  // their own geometry object to buildDisc().
+  // Default geometry, used only if a page builds a disc without passing its
+  // own geometry — every real page uses buildStageGeometry() below instead,
+  // so both /strobetuner/'s single hero disc and /multistrobe/'s twelve
+  // small ones share pixel-perfect identical proportions.
   const DEFAULT_GEOMETRY = {
     cx: 50,
     cy: 52,
@@ -253,6 +257,72 @@
     hubDotR: 2.5,
     ringGap: 0.6,
   };
+
+  // The canonical "Octave Strobe Tuner" disc proportions — a full 180°
+  // half-circle window with a thin, ~3.5%-of-caseR bezel (the same slim
+  // proportion /tuner/'s Needle and Meter cases use), expressed as ratios
+  // of caseR so any page can request the identical look at any size.
+  // Changing a ratio here (border thickness, hub size, arc span) applies
+  // to every disc on every page at once.
+  const REFERENCE_PROPORTIONS = {
+    arcSpanDeg: 180,
+    windowRRatio: 140 / 145,
+    ringOuterRRatio: 136 / 145,
+    hubRRatio: 7 / 145,
+    hubDotRRatio: 4.5 / 145,
+    ringGapRatio: 1 / 145,
+  };
+
+  // Builds a full geometry object at any case radius from the reference
+  // proportions above. `cx`/`cy` default to the center of a viewBox sized
+  // `viewBoxWidth` × `viewBoxHeight` (defaulting to a snug box around a
+  // flat-bottomed half-circle of this caseR) — pass them explicitly to
+  // offset the disc within a larger viewBox instead.
+  function buildStageGeometry(overrides) {
+    const { caseR } = overrides;
+    const viewBoxWidth = overrides.viewBoxWidth || caseR * 2 + 10;
+    const viewBoxHeight = overrides.viewBoxHeight || caseR + 15;
+    const cx = overrides.cx !== undefined ? overrides.cx : viewBoxWidth / 2;
+    const cy = overrides.cy !== undefined ? overrides.cy : caseR + 5;
+
+    return {
+      cx,
+      cy,
+      arcSpanDeg: REFERENCE_PROPORTIONS.arcSpanDeg,
+      viewBox: `0 0 ${viewBoxWidth} ${viewBoxHeight}`,
+      viewBoxWidth,
+      viewBoxHeight,
+      caseR,
+      windowR: caseR * REFERENCE_PROPORTIONS.windowRRatio,
+      ringOuterR: caseR * REFERENCE_PROPORTIONS.ringOuterRRatio,
+      hubR: caseR * REFERENCE_PROPORTIONS.hubRRatio,
+      hubDotR: caseR * REFERENCE_PROPORTIONS.hubDotRRatio,
+      ringGap: caseR * REFERENCE_PROPORTIONS.ringGapRatio,
+      clipToWindow: true,
+      continuousWedges: true,
+    };
+  }
+
+  // Every disc reserves the same 9 radius "slots" — one per octave (0-8)
+  // of a standard 88-key piano — regardless of how many of those octaves
+  // actually exist for this particular pitch class (C/A/A♯/B reach one end
+  // of the range and get 8; every other note is missing both ends and gets
+  // 7). Ring band width is therefore always identical across every note's
+  // disc, and a given octave always sits at the same radius on every one —
+  // the visual scale never shifts when a different note's disc is shown,
+  // only the set of rings that are actually populated (see
+  // ringRadiusForOctave, used both here and by /strobetuner/'s octave
+  // legend to line its numbers up with the true ring radii).
+  const TOTAL_OCTAVE_SLOTS = 9;
+
+  function ringRadiusForOctave(geo, octave) {
+    const { ringOuterR, hubR, ringGap } = geo;
+    const availableBand = ringOuterR - hubR - ringGap * (TOTAL_OCTAVE_SLOTS - 1);
+    const bandWidth = availableBand / TOTAL_OCTAVE_SLOTS;
+    const outerR = ringOuterR - (TOTAL_OCTAVE_SLOTS - 1 - octave) * (bandWidth + ringGap);
+    const innerR = outerR - bandWidth;
+    return { innerR, outerR, midR: (innerR + outerR) / 2, bandWidth };
+  }
 
   // Builds one disc's DOM (a wrapper <div> holding an <svg> and a text
   // label) for `name`, with one ring per entry in `midiList` (innermost =
@@ -323,19 +393,14 @@
     // viewed through a narrow window, not a wheel-shaped window itself.
     const wedgeArcSpanDeg = geo.continuousWedges ? 360 : arcSpanDeg;
 
-    const totalRings = midiList.length;
-    const availableBand = ringOuterR - hubR - ringGap * (totalRings - 1);
-    const bandWidth = availableBand / totalRings;
-
-    const rings = midiList.map((midi, index) => {
-      // `index` counts outward from the hub (index 0 = lowest octave), so
-      // it doubles directly as both the ring's position-from-center and
-      // its distance-from-outermost — the lowest octave sits innermost,
-      // the highest sits outermost.
-      const positionFromCenter = index;
-      const outerR = ringOuterR - (totalRings - 1 - index) * (bandWidth + ringGap);
-      const innerR = outerR - bandWidth;
-      const segmentCount = Math.pow(2, positionFromCenter + 1);
+    // Segment count is derived from the octave itself (2^(octave+1)), not
+    // from position within this note's own (possibly shorter) ring list —
+    // see the TOTAL_OCTAVE_SLOTS comment above — so the density at a given
+    // radius matches across every disc too.
+    const rings = midiList.map((midi) => {
+      const octave = octaveForMidi(midi);
+      const { innerR, outerR } = ringRadiusForOctave(geo, octave);
+      const segmentCount = Math.pow(2, octave + 1);
 
       const ringGroup = document.createElementNS(SVG_NS, "g");
       ringGroup.setAttribute("class", "disc-ring");
@@ -344,6 +409,7 @@
 
       return {
         midi,
+        octave,
         targetFreq: 0,
         windowSamples: 0,
         angle: 0,
@@ -370,7 +436,100 @@
     wrapper.appendChild(svg);
     wrapper.appendChild(label);
 
-    return { name, el: wrapper, rings, cx, cy, continuousWedges: Boolean(geo.continuousWedges) };
+    return { name, el: wrapper, rings, cx, cy, continuousWedges: Boolean(geo.continuousWedges), geo };
+  }
+
+  /* ============================================================
+     REFERENCE BEZEL — a static ring of calibration ticks around the outer
+     rim of each disc (between ringOuterR and caseR), framing it the way a
+     physical strobe tuner's bezel does, plus ♭/♯ glyphs marking the flat
+     and sharp ends of the arc, an index mark at dead center, and a soft
+     vignette + glass highlight layered over the rings themselves — the same
+     glass-and-brass language /tuner/'s strobe visual uses, so the disc
+     reads as a lit instrument display rather than a flat vector graphic.
+     Purely decorative/orientational: unlike the needle gauge on /tuner/,
+     there's no pointer to read a position off this scale — the ring's
+     *rotation*, not its position, is what carries the tuning information.
+     Drawn directly into the disc's own <svg> (not a separate overlay) so
+     it's guaranteed to stay pixel-aligned with that disc's geometry. Reads
+     `disc.geo` (stored by buildDisc above), so it works identically for
+     /strobetuner/'s single large disc and every one of /multistrobe/'s
+     twelve small ones.
+     ============================================================ */
+  function addBezelDecoration(disc) {
+    const svg = disc.el.querySelector("svg");
+    const { cx, cy, caseR, windowR, arcSpanDeg } = disc.geo;
+    const halfSpan = arcSpanDeg / 2;
+
+    // A soft vignette + glass highlight, layered over the rings but under
+    // the hub — inserted into the same clipped group the rings live in
+    // (found by its clip-path attribute) so it never spills past the
+    // window's own sector.
+    const ringsParent = svg.querySelector("[clip-path]");
+
+    if (ringsParent) {
+      const vignette = document.createElementNS(SVG_NS, "path");
+      vignette.setAttribute("class", "disc-vignette");
+      vignette.setAttribute("d", sectorPath(cx, cy, windowR, -halfSpan, halfSpan));
+      ringsParent.appendChild(vignette);
+
+      const highlight = document.createElementNS(SVG_NS, "ellipse");
+      highlight.setAttribute("class", "disc-glass-highlight");
+      highlight.setAttribute("cx", String(cx));
+      highlight.setAttribute("cy", String(cy - windowR * 0.42));
+      highlight.setAttribute("rx", String(windowR * 0.62));
+      highlight.setAttribute("ry", String(windowR * 0.3));
+      ringsParent.appendChild(highlight);
+    }
+
+    // Ticks live entirely within the thin bezel band between windowR and
+    // caseR — the rings themselves get everything inside windowR, since
+    // they're the part that actually matters here.
+    const majorTickInnerR = caseR - caseR * 0.041;
+    const minorTickInnerR = caseR - caseR * 0.021;
+    const tickOuterR = caseR - caseR * 0.007;
+    const labelR = windowR + caseR * 0.007;
+
+    const ticksGroup = document.createElementNS(SVG_NS, "g");
+    ticksGroup.setAttribute("class", "disc-scale-ticks");
+
+    for (let angle = -halfSpan; angle <= halfSpan; angle += 10) {
+      const isMajor = angle % 30 === 0;
+      const isIndex = angle === 0;
+      const inner = polarPoint(cx, cy, isMajor ? majorTickInnerR : minorTickInnerR, angle);
+      const outer = polarPoint(cx, cy, tickOuterR, angle);
+
+      const tick = document.createElementNS(SVG_NS, "line");
+      let tickClass = "disc-scale-tick";
+      if (isMajor) tickClass += " disc-scale-tick-major";
+      if (isIndex) tickClass += " disc-scale-tick-index";
+      tick.setAttribute("class", tickClass);
+      tick.setAttribute("x1", inner.x.toFixed(2));
+      tick.setAttribute("y1", inner.y.toFixed(2));
+      tick.setAttribute("x2", outer.x.toFixed(2));
+      tick.setAttribute("y2", outer.y.toFixed(2));
+      ticksGroup.appendChild(tick);
+    }
+
+    const flatPoint = polarPoint(cx, cy, labelR, -halfSpan);
+    const flatLabel = document.createElementNS(SVG_NS, "text");
+    flatLabel.setAttribute("class", "disc-scale-label disc-scale-label-flat");
+    flatLabel.setAttribute("x", flatPoint.x.toFixed(2));
+    flatLabel.setAttribute("y", flatPoint.y.toFixed(2));
+    flatLabel.setAttribute("text-anchor", "middle");
+    flatLabel.textContent = "♭";
+    ticksGroup.appendChild(flatLabel);
+
+    const sharpPoint = polarPoint(cx, cy, labelR, halfSpan);
+    const sharpLabel = document.createElementNS(SVG_NS, "text");
+    sharpLabel.setAttribute("class", "disc-scale-label disc-scale-label-sharp");
+    sharpLabel.setAttribute("x", sharpPoint.x.toFixed(2));
+    sharpLabel.setAttribute("y", sharpPoint.y.toFixed(2));
+    sharpLabel.setAttribute("text-anchor", "middle");
+    sharpLabel.textContent = "♯";
+    ticksGroup.appendChild(sharpLabel);
+
+    svg.appendChild(ticksGroup);
   }
 
   // Recomputes every ring's target frequency (and the analysis window that
@@ -463,11 +622,16 @@
     PIANO_MAX_MIDI,
     ANALYSER_BUFFER_SIZE,
     IN_TUNE_THRESHOLD_CENTS,
+    TOTAL_OCTAVE_SLOTS,
     pianoNoteFrequency,
     noteNameForMidi,
     midiListForPitchClass,
+    octaveForMidi,
     getTuneMixPercent,
+    buildStageGeometry,
+    ringRadiusForOctave,
     buildDisc,
+    addBezelDecoration,
     recomputeDiscTargets,
     analyzeRing,
     analyzeDisc,
