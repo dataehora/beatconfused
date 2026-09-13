@@ -120,7 +120,7 @@
           <span class="tool-desc">Master your Tempo</span>
         </a>
         <a class="tool-card" href="/tuner/">
-          <span class="tool-media tuner-icon tuner-icon-trio">
+          <span class="tool-media tuner-icon">
             <svg id="tunerIconSvg" class="needle-icon-svg" viewBox="0 0 300 172" role="presentation" focusable="false">
               <defs>
                 <linearGradient id="homeTunerCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
@@ -141,45 +141,6 @@
               <text class="needle-icon-accidental" x="256" y="141">&#9839;</text>
               <g id="tunerIconNeedle" class="needle-icon-swing"></g>
               <circle class="needle-icon-hub" cx="150" cy="150" r="6" />
-            </svg>
-
-            <!-- Two small thumbnails alongside the main needle gauge — the
-                 Strobe and Meter displays the same Tuner page also offers,
-                 so the card previews all three at a glance. -->
-            <svg class="tool-thumb tool-thumb-strobe" viewBox="0 0 100 62" role="presentation" focusable="false">
-              <defs>
-                <linearGradient id="homeThumbStrobeCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
-                  <stop offset="0" stop-color="#caa06a" />
-                  <stop offset="1" stop-color="#8a5a30" />
-                </linearGradient>
-                <radialGradient id="homeThumbStrobeWindowGradient" cx="0.5" cy="0.42" r="0.75">
-                  <stop offset="0" stop-color="#362b21" />
-                  <stop offset="1" stop-color="#171310" />
-                </radialGradient>
-                <clipPath id="homeThumbStrobeHalfClip">
-                  <path d="M 9 50 A 41 41 0 0 1 91 50 Z" />
-                </clipPath>
-              </defs>
-              <path class="tuner-icon-case" d="M 3 50 A 47 47 0 0 1 97 50 Z" fill="url(#homeThumbStrobeCaseGradient)" />
-              <path class="tuner-icon-window" d="M 9 50 A 41 41 0 0 1 91 50 Z" fill="url(#homeThumbStrobeWindowGradient)" />
-              <g id="tunerThumbStrobeWedges" clip-path="url(#homeThumbStrobeHalfClip)"></g>
-              <circle class="tuner-icon-hub" cx="50" cy="50" r="2.4" />
-            </svg>
-
-            <svg class="tool-thumb tool-thumb-meter" viewBox="0 0 34 62" role="presentation" focusable="false">
-              <defs>
-                <linearGradient id="homeThumbMeterCaseGradient" x1="0.1" y1="0.05" x2="0.9" y2="0.95">
-                  <stop offset="0" stop-color="#caa06a" />
-                  <stop offset="1" stop-color="#8a5a30" />
-                </linearGradient>
-              </defs>
-              <rect x="2" y="2" width="30" height="58" rx="9" fill="url(#homeThumbMeterCaseGradient)" />
-              <rect class="thumb-meter-track" x="6" y="6" width="22" height="50" rx="7" />
-              <circle class="thumb-meter-dot" cx="17" cy="14" r="2.1" />
-              <circle class="thumb-meter-dot" cx="17" cy="22" r="2.1" />
-              <circle class="thumb-meter-dot thumb-meter-dot-lit" cx="17" cy="31" r="2.6" />
-              <circle class="thumb-meter-dot" cx="17" cy="40" r="2.1" />
-              <circle class="thumb-meter-dot" cx="17" cy="48" r="2.1" />
             </svg>
           </span>
           <span class="tool-name">Tuner</span>
@@ -431,7 +392,6 @@
 
     buildNeedleIcon();
     buildStrobeIcon("strobeTunerIconWedges");
-    buildStrobeIcon("tunerThumbStrobeWedges");
     buildMultiStrobeDiscs();
   </script>
 </body>
