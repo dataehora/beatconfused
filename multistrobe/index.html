@@ -211,9 +211,9 @@
 
         <span class="slider-title">Fine Tuning (¢)</span>
         <div class="fine-freq-row">
-          <button id="decreaseCentsBtn" type="button" class="small-btn" aria-label="Decrease fine tuning by one cent" title="Decrease (↓)">−</button>
-          <span class="fine-freq-value" id="testToneCentsLabel">0¢</span>
-          <button id="increaseCentsBtn" type="button" class="small-btn" aria-label="Increase fine tuning by one cent" title="Increase (↑)">+</button>
+          <button id="decreaseCentsBtn" type="button" class="small-btn" aria-label="Decrease fine tuning by 0.1 cent" title="Decrease (↓)">−</button>
+          <span class="fine-freq-value" id="testToneCentsLabel">0.0¢</span>
+          <button id="increaseCentsBtn" type="button" class="small-btn" aria-label="Increase fine tuning by 0.1 cent" title="Increase (↑)">+</button>
         </div>
         <div class="cents-slider-wrap">
           <input
@@ -221,10 +221,10 @@
             type="range"
             min="-50"
             max="50"
-            step="1"
+            step="0.1"
             value="0"
             class="panel-slider"
-            aria-label="Fine tuning: pans up to 50 cents sharp or flat from the selected frequency. Double-click resets to 0."
+            aria-label="Fine tuning: pans up to 50 cents sharp or flat from the selected frequency, in 0.1-cent steps. Double-click resets to 0."
           />
           <span class="cents-center-mark" aria-hidden="true"></span>
         </div>
@@ -385,8 +385,8 @@
     </footer>
   </main>
 
-  <script src="/shared/tuner-common.js?v=20260913"></script>
-  <script src="/shared/strobe-disc.js?v=20260913"></script>
-  <script src="script.js?v=20260913"></script>
+  <script src="/shared/tuner-common.js?v=20260914"></script>
+  <script src="/shared/strobe-disc.js?v=20260914"></script>
+  <script src="script.js?v=20260914"></script>
 </body>
 </html>

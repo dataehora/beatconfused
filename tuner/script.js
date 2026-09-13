@@ -953,8 +953,8 @@ toggleMicBtn.addEventListener("click", toggleMic);
 toggleTestToneBtn.addEventListener("click", toggleTestTone);
 decreaseTestToneBtn.addEventListener("click", () => nudgeTestToneFrequency(-1));
 increaseTestToneBtn.addEventListener("click", () => nudgeTestToneFrequency(1));
-decreaseCentsBtn.addEventListener("click", () => nudgeFineTuningCents(-1));
-increaseCentsBtn.addEventListener("click", () => nudgeFineTuningCents(1));
+decreaseCentsBtn.addEventListener("click", () => nudgeFineTuningCents(-0.1));
+increaseCentsBtn.addEventListener("click", () => nudgeFineTuningCents(0.1));
 
 // Dragging the base frequency resets Fine Tuning to 0 (see resetFineTuningCents).
 testToneRange.addEventListener("input", resetFineTuningCents);

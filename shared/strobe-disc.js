@@ -29,14 +29,30 @@
 
   // The analyser buffer needs to be long enough that even the lowest ring
   // (A0, 27.5 Hz) gets several full cycles to analyze — see
-  // computeWindowSamples(). 16384 samples is ~371ms at 44.1kHz, enough for
-  // ~10 cycles of A0 with room to spare, while still being cheap: every
-  // ring only reads as many of the most recent samples as it actually needs.
-  const ANALYSER_BUFFER_SIZE = 16384;
+  // computeWindowSamples(). 32768 (the largest fftSize the Web Audio API
+  // allows) is ~743ms at 44.1kHz — needed headroom now that
+  // GOERTZEL_MIN_CYCLES is much higher than it used to be (see below):
+  // without it, every ring below ~110 Hz would get silently capped back
+  // down to far fewer cycles than the rest of the keyboard, right where
+  // semitones are hardest to tell apart in absolute Hz terms.
+  const ANALYSER_BUFFER_SIZE = 32768;
   // How many cycles of a ring's own target frequency its Goertzel window
   // covers — more cycles means a cleaner, more frequency-selective reading
-  // but a longer (laggier) window for that specific ring.
-  const GOERTZEL_MIN_CYCLES = 6;
+  // but a longer (laggier) window for that specific ring. This used to be
+  // 6, which sounds like plenty until you compute the actual selectivity:
+  // a rectangular-windowed Goertzel filter's main lobe extends to roughly
+  // ±(1/cycles) of the target frequency, i.e. ±17% at 6 cycles — several
+  // times wider than the ~6% gap between adjacent semitones. The result
+  // (confirmed by simulation, not just theory): playing a single pure
+  // A440 tone lit up the rings for G#/A#/B/G at close to full strength,
+  // while genuine harmonics further away (e.g. the fifth, E5) correctly
+  // stayed dark — a textbook spectral-leakage symptom, not a tone-generator
+  // or reading bug. 36 cycles, paired with the Hann window applied in
+  // goertzel() below, pushes adjacent-semitone leakage down to a fraction
+  // of a percent everywhere except the bottom octave (still buffer-capped,
+  // see ANALYSER_BUFFER_SIZE above) — verified by sweeping every semitone
+  // offset 0-12 at several candidate cycle counts.
+  const GOERTZEL_MIN_CYCLES = 36;
   const MIN_RING_WINDOW_SAMPLES = 64;
 
   const CENTS_SMOOTHING = 0.25;
@@ -47,8 +63,11 @@
   const RING_ROTATION_SPEED = 8;
   // A Goertzel magnitude, normalized by window length, below which a ring
   // is treated as "nothing playing here" rather than noise mistaken for a
-  // reading.
-  const MIN_RING_MAGNITUDE = 0.006;
+  // reading. Half of what it was before the Hann window above was added:
+  // Hann's ~0.5 coherent-gain factor halves every ring's magnitude reading
+  // uniformly regardless of input level, so leaving this threshold alone
+  // would have quietly made the tuner half as sensitive to soft input.
+  const MIN_RING_MAGNITUDE = 0.003;
 
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -100,15 +119,24 @@
   /* ============================================================
      GOERTZEL FILTER — a single-bin DFT computed as a small IIR recurrence,
      tuned to one exact target frequency rather than a quantized FFT bin.
+     The input is Hann-windowed (tapered to zero at both ends) rather than
+     read as a raw rectangular slice: a rectangular window's frequency
+     response has slowly-decaying sidelobes, which is what let a single
+     A440 tone read as "present" on several neighboring semitones' rings at
+     once (see GOERTZEL_MIN_CYCLES above for the full story) — Hann's
+     sidelobes fall off far faster, at the cost of a wider main lobe that
+     the larger cycle count above already accounts for.
      ============================================================ */
   function goertzel(buffer, offset, length, targetFreq, sampleRate) {
     const w = (2 * Math.PI * targetFreq) / sampleRate;
     const coeff = 2 * Math.cos(w);
+    const windowScale = (2 * Math.PI) / (length - 1);
     let s1 = 0;
     let s2 = 0;
 
     for (let i = 0; i < length; i += 1) {
-      const s0 = buffer[offset + i] + coeff * s1 - s2;
+      const hann = 0.5 * (1 - Math.cos(i * windowScale));
+      const s0 = buffer[offset + i] * hann + coeff * s1 - s2;
       s2 = s1;
       s1 = s0;
     }
