@@ -26,6 +26,7 @@ const discContainer = document.getElementById("strobeDiscContainer");
 const toggleMicBtn = document.getElementById("toggleMicBtn");
 const powerSwitchStateEl = document.getElementById("powerSwitchState");
 const tuningStatementEl = document.getElementById("tuningStatement");
+const freqTableTuningNoteEl = document.getElementById("freqTableTuningNote");
 const micStatus = document.getElementById("micStatus");
 const decreasePitchBtn = document.getElementById("decreasePitchBtn");
 const increasePitchBtn = document.getElementById("increasePitchBtn");
@@ -541,97 +542,31 @@ function resetShadowRings() {
 }
 
 /* ============================================================
-   FREQUENCY TABLE — columns are the 12 notes, rows are octaves 0-8 (every
-   key of an 88-key piano, from A0), preloaded with each cell's frequency
-   under the current tuning standard. Each cell also carries a live cents
-   readout, driven every tick by the shadow ring at that exact MIDI note —
-   the same compact "note + deviation together" idea /tuner/'s readout
-   uses, just laid out as a grid instead of one row per key.
+   FREQUENCY TABLE — the shared octave-by-note table (see
+   T.buildOctaveFrequencyTable in shared/tuner-common.js), preloaded with
+   each cell's frequency under the current tuning standard. Each cell also
+   carries a live cents readout, driven every tick by the shadow ring at
+   that exact MIDI note — the same compact "note + deviation together"
+   idea /tuner/'s readout uses, just laid out as a grid instead of one row
+   per key.
    ============================================================ */
-const OCTAVE_MIN = Math.floor(T.PIANO_MIN_MIDI / 12) - 1; // 0 (A0)
-const OCTAVE_MAX = Math.floor(T.PIANO_MAX_MIDI / 12) - 1; // 8 (C8)
-
 const freqTableCellsByMidi = new Map();
 
-function buildOctaveFreqTableHead() {
-  if (octaveFreqTableHead.childElementCount > 1) {
-    return;
-  }
-
-  NOTE_NAMES.forEach((name) => {
-    const th = document.createElement("th");
-    th.textContent = name;
-    octaveFreqTableHead.appendChild(th);
-  });
-}
-
 function buildOctaveFreqTable() {
-  buildOctaveFreqTableHead();
-  octaveFreqTableBody.innerHTML = "";
-  freqTableCellsByMidi.clear();
-
-  for (let octave = OCTAVE_MIN; octave <= OCTAVE_MAX; octave += 1) {
-    const row = document.createElement("tr");
-    const octaveCell = document.createElement("td");
-    octaveCell.className = "freq-table-note-col";
-    octaveCell.textContent = String(octave);
-    row.appendChild(octaveCell);
-
-    NOTE_NAMES.forEach((name, pitchClass) => {
-      const midi = (octave + 1) * 12 + pitchClass;
-      const cell = document.createElement("td");
-      cell.className = "octave-cell";
-
-      if (midi < T.PIANO_MIN_MIDI || midi > T.PIANO_MAX_MIDI) {
-        cell.classList.add("is-out-of-range");
-      } else {
-        const freqEl = document.createElement("span");
-        freqEl.className = "octave-cell-freq";
-        freqEl.textContent = pianoNoteFrequency(midi, state.a4).toFixed(2);
-
-        const centsEl = document.createElement("span");
-        centsEl.className = "octave-cell-cents";
-        centsEl.hidden = true;
-
-        cell.appendChild(freqEl);
-        cell.appendChild(centsEl);
-        freqTableCellsByMidi.set(midi, { cell, centsEl });
-      }
-
-      row.appendChild(cell);
-    });
-
-    octaveFreqTableBody.appendChild(row);
-  }
+  T.buildOctaveFrequencyTable({
+    headRow: octaveFreqTableHead,
+    body: octaveFreqTableBody,
+    pianoNoteFrequency: (midi) => pianoNoteFrequency(midi, state.a4),
+    cellsByMidi: freqTableCellsByMidi,
+  });
 }
 
 function updateFreqTableLiveCents() {
-  freqTableCellsByMidi.forEach(({ cell, centsEl }, midi) => {
-    const ring = shadowRingsByMidi.get(midi);
-    const isFundamental = state.fundamentalMidi === midi;
-    cell.classList.toggle("is-fundamental", isFundamental);
-
-    if (!ring || !ring.confident) {
-      cell.classList.remove("is-active", "is-in-tune");
-      centsEl.hidden = true;
-      return;
-    }
-
-    const rounded = Math.round(ring.smoothedCents);
-    const inTune = Math.abs(ring.smoothedCents) <= StrobeDiscEngine.IN_TUNE_THRESHOLD_CENTS;
-    const sign = rounded > 0 ? "+" : "";
-    centsEl.textContent = `${sign}${rounded}¢`;
-    centsEl.hidden = false;
-    cell.classList.add("is-active");
-    cell.classList.toggle("is-in-tune", inTune);
-  });
+  T.updateOctaveFrequencyTableRings(freqTableCellsByMidi, shadowRingsByMidi, state.fundamentalMidi, StrobeDiscEngine.IN_TUNE_THRESHOLD_CENTS);
 }
 
 function resetFreqTableLiveCents() {
-  freqTableCellsByMidi.forEach(({ cell, centsEl }) => {
-    cell.classList.remove("is-active", "is-in-tune", "is-fundamental");
-    centsEl.hidden = true;
-  });
+  T.resetOctaveFrequencyTable(freqTableCellsByMidi);
 }
 
 /* ============================================================
@@ -646,7 +581,7 @@ function resetFreqTableLiveCents() {
 const octaveLegendCellsByOctave = new Map();
 
 function buildOctaveLegend() {
-  for (let octave = OCTAVE_MIN; octave <= OCTAVE_MAX; octave += 1) {
+  for (let octave = T.OCTAVE_MIN; octave <= T.OCTAVE_MAX; octave += 1) {
     const item = document.createElement("span");
     item.className = "octave-legend-item";
 
@@ -962,6 +897,7 @@ function updateTuningStatement() {
   const selected = temperament.getTemperament();
   const keyPart = selected.needsKey ? ` in ${NOTE_NAMES[temperament.state.temperamentKey]}` : "";
   tuningStatementEl.textContent = `Tuning for ${selected.name}${keyPart} · ${state.a4} Hz`;
+  freqTableTuningNoteEl.textContent = `Showing frequencies for ${selected.name}${keyPart} · ${state.a4} Hz — set above under Tuning Standard and Reference Pitch.`;
 }
 
 const referencePitch = T.setupReferencePitch({

@@ -18,6 +18,7 @@ const ledIndicatorEl = document.getElementById("ledIndicator");
 const toggleMicBtn = document.getElementById("toggleMicBtn");
 const powerSwitchStateEl = document.getElementById("powerSwitchState");
 const tuningStatementEl = document.getElementById("tuningStatement");
+const freqTableTuningNoteEl = document.getElementById("freqTableTuningNote");
 const micStatus = document.getElementById("micStatus");
 const decreasePitchBtn = document.getElementById("decreasePitchBtn");
 const increasePitchBtn = document.getElementById("increasePitchBtn");
@@ -25,10 +26,6 @@ const pitchInput = document.getElementById("pitchInput");
 const pitchRange = document.getElementById("pitchRange");
 const visualModeInputs = document.querySelectorAll('input[name="tunerVisualMode"]');
 const pitchPresetInputs = document.querySelectorAll('input[name="pitchPreset"]');
-// Two identical Standard/Key control pairs live on the page at once (the
-// Tuning Standard panel and the one above the Frequency Table) — the
-// shared TunerCommon.setupTemperament controller keeps every instance of
-// both in sync with a single change, regardless of which one fired it.
 const temperamentSelects = document.querySelectorAll(".temperament-select");
 const temperamentKeyRows = document.querySelectorAll(".temperament-key-row");
 const temperamentKeySelects = document.querySelectorAll(".temperament-key-select");
@@ -144,7 +141,7 @@ const temperament = T.setupTemperament({
   keyRows: temperamentKeyRows,
   keySelects: temperamentKeySelects,
   onChange: () => {
-    T.buildFrequencyTable({ headRow: freqTableHeadRow, body: freqTableBody, pianoNoteFrequency });
+    buildFreqTable();
     updateTestToneDisplay(getTestToneFrequency());
     spectrum.updateLabels(getSpectrumRange(), state.a4);
     updateTuningStatement();
@@ -511,6 +508,51 @@ function getSpectrumRange() {
   };
 }
 
+/* ============================================================
+   FREQUENCY TABLE — the shared octave-by-note table (see
+   T.buildOctaveFrequencyTable in shared/tuner-common.js). Unlike
+   /strobetuner/ and /multistrobe/ (which track every note/octave at once
+   via Goertzel rings), this page only ever detects one fundamental at a
+   time, so at most a single cell — the one matching state.currentNote's
+   exact MIDI note — lights up with a live cents reading.
+   ============================================================ */
+const freqTableCellsByMidi = new Map();
+
+function buildFreqTable() {
+  T.buildOctaveFrequencyTable({
+    headRow: freqTableHeadRow,
+    body: freqTableBody,
+    pianoNoteFrequency: (midi) => pianoNoteFrequency(midi, state.a4),
+    cellsByMidi: freqTableCellsByMidi,
+  });
+}
+
+function resetFreqTableLiveCents() {
+  T.resetOctaveFrequencyTable(freqTableCellsByMidi);
+}
+
+function updateFreqTableLiveCents() {
+  resetFreqTableLiveCents();
+
+  if (!state.hasSignal || !state.currentNote) {
+    return;
+  }
+
+  const entry = freqTableCellsByMidi.get(state.currentNote.midi);
+
+  if (!entry) {
+    return;
+  }
+
+  const rounded = Math.round(state.smoothedCents);
+  const inTune = Math.abs(state.smoothedCents) <= IN_TUNE_THRESHOLD_CENTS;
+  const sign = rounded > 0 ? "+" : "";
+  entry.centsEl.textContent = `${sign}${rounded}¢`;
+  entry.centsEl.hidden = false;
+  entry.cell.classList.add("is-active", "is-fundamental");
+  entry.cell.classList.toggle("is-in-tune", inTune);
+}
+
 const NO_SIGNAL_MESSAGE = "no signal, check the microphone in the input monitor below";
 
 function updateReadout() {
@@ -551,6 +593,7 @@ function resetVisuals() {
   state.currentNote = null;
   state.needleAngle = 0;
   updateReadout();
+  resetFreqTableLiveCents();
   needleSwingEl.setAttribute("transform", `rotate(0 ${NEEDLE_PIVOT.x} ${NEEDLE_PIVOT.y})`);
   renderMeter();
   inputMonitor.reset();
@@ -667,6 +710,7 @@ function mainLoop(timestamp) {
     }
 
     updateReadout();
+    updateFreqTableLiveCents();
     renderMeter();
   }
 
@@ -946,6 +990,7 @@ function updateTuningStatement() {
   const selected = temperament.getTemperament();
   const keyPart = selected.needsKey ? ` in ${NOTE_NAMES[temperament.state.temperamentKey]}` : "";
   tuningStatementEl.textContent = `Tuning for ${selected.name}${keyPart} · ${state.a4} Hz`;
+  freqTableTuningNoteEl.textContent = `Showing frequencies for ${selected.name}${keyPart} · ${state.a4} Hz — set above under Tuning Standard and Reference Pitch.`;
 }
 
 const referencePitch = T.setupReferencePitch({
@@ -956,6 +1001,7 @@ const referencePitch = T.setupReferencePitch({
   presetInputs: pitchPresetInputs,
   onChange: (a4) => {
     state.a4 = a4;
+    buildFreqTable();
     updateTestToneDisplay(getTestToneFrequency());
     spectrum.updateLabels(getSpectrumRange(), state.a4);
     updateTuningStatement();
@@ -1028,6 +1074,5 @@ referencePitch.setA4(state.a4);
 updateFineTuningLabel();
 updateTestToneDisplay(getTestToneFrequency());
 spectrum.setStyle("vintage");
-T.buildFrequencyTable({ headRow: freqTableHeadRow, body: freqTableBody, pianoNoteFrequency });
 spectrum.sizeCanvas();
 resetVisuals();

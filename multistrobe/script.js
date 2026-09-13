@@ -3,6 +3,7 @@ const T = TunerCommon;
 const toggleMicBtn = document.getElementById("toggleMicBtn");
 const powerSwitchStateEl = document.getElementById("powerSwitchState");
 const tuningStatementEl = document.getElementById("tuningStatement");
+const freqTableTuningNoteEl = document.getElementById("freqTableTuningNote");
 const micStatus = document.getElementById("micStatus");
 const decreasePitchBtn = document.getElementById("decreasePitchBtn");
 const increasePitchBtn = document.getElementById("increasePitchBtn");
@@ -23,8 +24,8 @@ const spectrumStyleToggleEl = document.getElementById("spectrumStyleToggle");
 const spectrumLowLabelEl = document.getElementById("spectrumLowLabel");
 const spectrumRefLabelEl = document.getElementById("spectrumRefLabel");
 const spectrumHighLabelEl = document.getElementById("spectrumHighLabel");
-const freqTableHeadRow = document.getElementById("freqTableHeadRow");
-const freqTableBody = document.getElementById("freqTableBody");
+const octaveFreqTableHead = document.getElementById("octaveFreqTableHead");
+const octaveFreqTableBody = document.getElementById("octaveFreqTableBody");
 
 const sharpsContainer = document.getElementById("strobeDiscsSharps");
 const naturalsContainer = document.getElementById("strobeDiscsNaturals");
@@ -61,6 +62,12 @@ const state = {
 };
 
 const DISCS = []; // 12 entries (NOTE_NAMES order): { name, el, rings: [...] }
+// Every disc's rings, flattened into one lookup by MIDI note — the same
+// shape /strobetuner/'s shadow rings are, so the shared Frequency Table
+// helper can drive live cents readings straight from the real, on-screen
+// discs here (no separate "shadow" analysis needed: all 12 notes are
+// already visible and analyzed every tick).
+const ringsByMidi = new Map();
 
 // Wired up first since recomputeRingTargets below needs to read its
 // current tuning standard/key — see temperament.pianoNoteFrequency.
@@ -70,7 +77,7 @@ const temperament = T.setupTemperament({
   keySelects: temperamentKeySelects,
   onChange: () => {
     recomputeRingTargets();
-    T.buildFrequencyTable({ headRow: freqTableHeadRow, body: freqTableBody, pianoNoteFrequency });
+    buildFreqTable();
     spectrum.updateLabels(getSpectrumRange(), state.a4);
     updateTuningStatement();
   },
@@ -125,6 +132,7 @@ function buildDiscs() {
     }
 
     DISCS.push(disc);
+    disc.rings.forEach((ring) => ringsByMidi.set(ring.midi, ring));
     (isSharp ? sharpsContainer : naturalsContainer).appendChild(disc.el);
   });
 }
@@ -137,8 +145,36 @@ function recomputeRingTargets() {
   DISCS.forEach((disc) => StrobeDiscEngine.recomputeDiscTargets(disc, state.a4, sampleRate));
 }
 
+/* ============================================================
+   FREQUENCY TABLE — the shared octave-by-note table (see
+   T.buildOctaveFrequencyTable in shared/tuner-common.js), driven every
+   tick straight from the real discs' own rings via ringsByMidi. There's
+   no autocorrelation-identified "predominant" note on this page (every
+   note is always on screen at once), so no cell ever gets the fundamental
+   highlight.
+   ============================================================ */
+const freqTableCellsByMidi = new Map();
+
+function buildFreqTable() {
+  T.buildOctaveFrequencyTable({
+    headRow: octaveFreqTableHead,
+    body: octaveFreqTableBody,
+    pianoNoteFrequency: (midi) => pianoNoteFrequency(midi, state.a4),
+    cellsByMidi: freqTableCellsByMidi,
+  });
+}
+
+function updateFreqTableLiveCents() {
+  T.updateOctaveFrequencyTableRings(freqTableCellsByMidi, ringsByMidi, null, StrobeDiscEngine.IN_TUNE_THRESHOLD_CENTS);
+}
+
+function resetFreqTableLiveCents() {
+  T.resetOctaveFrequencyTable(freqTableCellsByMidi);
+}
+
 function resetVisuals() {
   DISCS.forEach((disc) => StrobeDiscEngine.resetDisc(disc));
+  resetFreqTableLiveCents();
   inputMonitor.reset();
   spectrum.clear();
 }
@@ -212,6 +248,7 @@ function mainLoop(timestamp) {
     const sampleRate = audioContext.sampleRate;
 
     DISCS.forEach((disc) => StrobeDiscEngine.analyzeDisc(disc, timeDomainBuffer, sampleRate, now));
+    updateFreqTableLiveCents();
   }
 
   DISCS.forEach((disc) => StrobeDiscEngine.renderDisc(disc, dt));
@@ -317,6 +354,7 @@ function updateTuningStatement() {
   const selected = temperament.getTemperament();
   const keyPart = selected.needsKey ? ` in ${NOTE_NAMES[temperament.state.temperamentKey]}` : "";
   tuningStatementEl.textContent = `Tuning for ${selected.name}${keyPart} · ${state.a4} Hz`;
+  freqTableTuningNoteEl.textContent = `Showing frequencies for ${selected.name}${keyPart} · ${state.a4} Hz — set above under Tuning Standard and Reference Pitch.`;
 }
 
 const referencePitch = T.setupReferencePitch({
@@ -328,7 +366,7 @@ const referencePitch = T.setupReferencePitch({
   onChange: (a4) => {
     state.a4 = a4;
     recomputeRingTargets();
-    T.buildFrequencyTable({ headRow: freqTableHeadRow, body: freqTableBody, pianoNoteFrequency });
+    buildFreqTable();
     spectrum.updateLabels(getSpectrumRange(), state.a4);
     updateTuningStatement();
   },

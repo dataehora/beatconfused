@@ -175,14 +175,59 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="control-block reference-pitch-block">
+      <div class="control-block spectrum-analyzer-block">
+        <div class="panel-header">
+          <span class="panel-title">Spectrum Analyser</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Spectrum Analyser">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <label class="style-toggle" id="spectrumStyleToggle">
+          <span class="style-toggle-label" data-style="vintage">Vintage</span>
+          <span class="style-toggle-switch">
+            <input type="checkbox" id="spectrumStyleCheckbox" aria-label="Spectrum style: Vintage or Modern" />
+            <span class="style-toggle-track">
+              <span class="style-toggle-thumb"></span>
+            </span>
+          </span>
+          <span class="style-toggle-label" data-style="modern">Modern</span>
+        </label>
+        <div class="spectrum-block">
+          <div class="spectrum-case">
+            <canvas id="spectrumCanvas" class="spectrum-canvas" aria-hidden="true"></canvas>
+          </div>
+          <div class="spectrum-labels">
+            <span id="spectrumLowLabel">A0 · 27.5 Hz</span>
+            <span id="spectrumRefLabel">A4 · 440.0 Hz</span>
+            <span id="spectrumHighLabel">C8 · 4186.0 Hz</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-row">
+        <div class="control-block tuning-pitch-block">
           <div class="panel-header">
-            <span class="panel-title">Reference Pitch</span>
-            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Reference Pitch">
+            <span class="panel-title">Tuning Standard and Reference Pitch</span>
+            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Tuning Standard and Reference Pitch">
               <span class="collapse-icon" aria-hidden="true">▾</span>
             </button>
           </div>
+          <p class="hint">
+            Retunes every note by a few cents to a historical or alternate temperament, instead of modern Equal
+            Temperament, and sets the A4 reference pitch everything else is measured against.
+          </p>
+          <div class="select-row">
+            <label class="select-row-label" for="temperamentSelect">Standard</label>
+            <select id="temperamentSelect" class="temperament-select" aria-label="Tuning standard"></select>
+          </div>
+          <div class="select-row temperament-key-row" id="temperamentKeyRow" hidden>
+            <label class="select-row-label" for="temperamentKeySelect">Key</label>
+            <select id="temperamentKeySelect" class="temperament-key-select" aria-label="Tuning standard key (tonic)"></select>
+          </div>
+
+          <span class="slider-title">Reference Pitch</span>
           <div class="fine-freq-row">
             <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)">−</button>
             <span class="fine-freq-value">
@@ -248,53 +293,6 @@
             </label>
           </div>
         </div>
-
-        <div class="control-block temperament-block">
-          <div class="panel-header">
-            <span class="panel-title">Tuning Standard</span>
-            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Tuning Standard">
-              <span class="collapse-icon" aria-hidden="true">▾</span>
-            </button>
-          </div>
-          <p class="hint">Retunes every note by a few cents to a historical or alternate temperament, instead of modern Equal Temperament.</p>
-          <div class="select-row">
-            <label class="select-row-label" for="temperamentSelect">Standard</label>
-            <select id="temperamentSelect" class="temperament-select" aria-label="Tuning standard"></select>
-          </div>
-          <div class="select-row temperament-key-row" id="temperamentKeyRow" hidden>
-            <label class="select-row-label" for="temperamentKeySelect">Key</label>
-            <select id="temperamentKeySelect" class="temperament-key-select" aria-label="Tuning standard key (tonic)"></select>
-          </div>
-        </div>
-      </div>
-
-      <div class="control-block spectrum-analyzer-block">
-        <div class="panel-header">
-          <span class="panel-title">Spectrum Analyser</span>
-          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Spectrum Analyser">
-            <span class="collapse-icon" aria-hidden="true">▾</span>
-          </button>
-        </div>
-        <label class="style-toggle" id="spectrumStyleToggle">
-          <span class="style-toggle-label" data-style="vintage">Vintage</span>
-          <span class="style-toggle-switch">
-            <input type="checkbox" id="spectrumStyleCheckbox" aria-label="Spectrum style: Vintage or Modern" />
-            <span class="style-toggle-track">
-              <span class="style-toggle-thumb"></span>
-            </span>
-          </span>
-          <span class="style-toggle-label" data-style="modern">Modern</span>
-        </label>
-        <div class="spectrum-block">
-          <div class="spectrum-case">
-            <canvas id="spectrumCanvas" class="spectrum-canvas" aria-hidden="true"></canvas>
-          </div>
-          <div class="spectrum-labels">
-            <span id="spectrumLowLabel">A0 · 27.5 Hz</span>
-            <span id="spectrumRefLabel">A4 · 440.0 Hz</span>
-            <span id="spectrumHighLabel">C8 · 4186.0 Hz</span>
-          </div>
-        </div>
       </div>
 
       <div class="control-block freq-table-block wide-block">
@@ -307,6 +305,9 @@
         <p class="hint">
           Every note from A0, notes across the columns and octaves down the rows. While the tuner is running, each
           cell also shows its own live cents deviation next to the note.
+        </p>
+        <p class="hint freq-table-tuning-note" id="freqTableTuningNote" aria-live="polite">
+          Showing frequencies for Equal Temperament · 440 Hz — set above under Tuning Standard and Reference Pitch.
         </p>
         <div class="freq-table-scroll">
           <table class="freq-table octave-freq-table" id="octaveFreqTable">

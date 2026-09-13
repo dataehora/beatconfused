@@ -159,8 +159,7 @@ body {
 
 .control-block.wide-block,
 .control-block.freq-table-block,
-.control-block.spectrum-analyzer-block,
-.control-block.keyboard-block {
+.control-block.spectrum-analyzer-block {
   max-width: none;
   margin: 0;
 }
@@ -789,16 +788,9 @@ input:focus-visible {
 /* ---- Frequency Table: a full-width frame like the spectrum analyzer,
    holding a scrollable reference table so it doesn't stretch the page when
    expanded. ---- */
-.freq-table-controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem 1.6rem;
-}
-
-.freq-table-controls .select-row {
-  flex: 1 1 12rem;
-  max-width: 20rem;
+.freq-table-tuning-note {
+  color: var(--accent-strong);
+  font-weight: 600;
 }
 
 .freq-table-scroll {
@@ -846,32 +838,63 @@ input:focus-visible {
   line-height: 1.15;
 }
 
-.freq-table-col-freq {
+.freq-table tbody tr:nth-child(even) {
+  background: rgba(62, 45, 30, 0.04);
+}
+
+/* ---- Octave Frequency Table cells: notes across the columns, octaves
+   down the rows (see buildOctaveFrequencyTable). Each populated cell
+   stacks its preloaded frequency with a compact live cents readout that
+   only appears once that exact note+octave is confidently sounding. ---- */
+.octave-freq-table td.octave-cell {
+  text-align: center;
+  padding: 0.3rem 0.4rem;
+}
+
+.octave-cell-freq {
   display: block;
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.octave-cell-cents {
+  display: block;
+  font-size: 0.72rem;
   font-weight: 700;
-  font-size: 0.9rem;
+  color: var(--tune-gray);
+}
+
+.octave-cell.is-active .octave-cell-freq {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.octave-cell.is-active .octave-cell-cents {
   color: var(--accent-strong);
 }
 
-.freq-table-col-name-primary {
-  display: block;
-  font-family: "Marck Script", "Brush Script MT", cursive;
-  font-size: 0.9rem;
-  font-style: normal;
-  color: var(--ink-soft);
+.octave-cell.is-in-tune .octave-cell-freq,
+.octave-cell.is-in-tune .octave-cell-cents {
+  color: var(--in-tune-strong);
 }
 
-.freq-table-col-name-secondary {
-  display: block;
-  font-family: "Marck Script", "Brush Script MT", cursive;
-  font-size: 0.9rem;
-  font-style: italic;
-  color: var(--ink-soft);
+.octave-cell.is-in-tune {
+  background: color-mix(in srgb, var(--in-tune) 14%, transparent);
 }
 
-.freq-table tbody tr:nth-child(even) {
-  background: rgba(62, 45, 30, 0.04);
+/* The autocorrelation-identified fundamental gets a soft golden ring, the
+   same accent shown around its wedge on a strobe disc. */
+.octave-cell.is-fundamental {
+  box-shadow: inset 0 0 0 1.5px var(--gold);
+}
+
+.octave-freq-table td.is-out-of-range {
+  background: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 4px,
+    rgba(62, 45, 30, 0.06) 4px,
+    rgba(62, 45, 30, 0.06) 8px
+  );
 }
 
 .footer {

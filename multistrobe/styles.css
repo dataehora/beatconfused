@@ -118,6 +118,12 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
+.stroboscope-explainer {
+  text-align: center;
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -167,10 +173,6 @@ body {
 /* The chromatic keyboard needs the full card width for 7 natural-key
    columns to have any breathing room, unlike Reference Pitch's narrower
    compact panel. */
-.control-block.keyboard-block {
-  max-width: none;
-}
-
 .panel-header {
   display: flex;
   align-items: center;

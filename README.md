@@ -63,13 +63,17 @@ metronome always has audio even with no custom assets.
   silence while running.
 - **Display** — needle, strobe or LED meter
 - **Input Monitor** — microphone gain boost and a live level meter
-- **Reference Pitch** — A4 from 392–466 Hz, with historical presets
-  (French Baroque, Baroque, Verdi, Standard, Modern, Italian Renaissance)
-- **Tuning Standard** — Equal Temperament plus Vallotti, Young II,
-  1/4-comma meantone and Just Intonation, each built from first principles
-- **Test Tone** — a pure tone fed straight into the tuner, no mic needed
 - **Spectrum Analyser** — vintage or modern style
-- **Frequency Table** — every note of an 88-key piano under each standard
+- **Tuning Standard and Reference Pitch** — Equal Temperament plus
+  Vallotti, Young II, 1/4-comma meantone and Just Intonation (each built
+  from first principles), and an A4 reference from 392–466 Hz with
+  historical presets (French Baroque, Baroque, Verdi, Standard, Modern,
+  Italian Renaissance)
+- **Test Tone** — a pure tone fed straight into the tuner, no mic needed
+- **Frequency Table** — every note of an 88-key piano (octaves down the
+  rows, notes across the columns) under the selected Tuning Standard and
+  Reference Pitch, with a live cents deviation next to whichever note is
+  sounding
 
 ## Technical stack
 
