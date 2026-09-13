@@ -300,7 +300,7 @@
       if (!centsLabel) return;
       const cents = Number(centsRangeInput.value);
       const sign = cents > 0 ? "+" : "";
-      centsLabel.textContent = `${sign}${cents}¢`;
+      centsLabel.textContent = `${sign}${cents.toFixed(1)}¢`;
     }
 
     function isActive() {

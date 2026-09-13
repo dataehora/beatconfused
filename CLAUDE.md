@@ -154,6 +154,30 @@ code.
    `.panel-subheader` for non-collapsing sub-headings.
 6. **#52, #53** — the caching fix described above, found and fixed during
    this session's own final live-site review.
+7. **#55** — **fixed a real Goertzel spectral-leakage bug** reported by a
+   user: playing a single pure test tone (e.g. A440) on `/multistrobe/`
+   lit up several *neighboring semitones'* discs (G♯, A♯, B, G — not
+   harmonics, which correctly stayed dark) at close to full strength, and
+   the correct A disc's own reading looked jittery. Root cause: each
+   ring's Goertzel window (`shared/strobe-disc.js`) was only
+   `GOERTZEL_MIN_CYCLES = 6` cycles long with no window function applied —
+   a rectangular window's main lobe at that length is ≈±17% of the target
+   frequency, several times wider than the ~6% gap between adjacent
+   semitones, so a clean tone landed well inside a neighbor's passband.
+   Confirmed by simulation (not just the formula) before touching code —
+   see the constant's own comment in `shared/strobe-disc.js` for the
+   numbers. Fix: apply a Hann window inside `goertzel()` and raise
+   `GOERTZEL_MIN_CYCLES` to 36 (verified to push adjacent-semitone leakage
+   under ~0.3% almost everywhere on the keyboard); doubled
+   `ANALYSER_BUFFER_SIZE` to 32768 (the Web Audio API's own max fftSize)
+   so the longer window doesn't get clamped down again for the bottom
+   octave; halved `MIN_RING_MAGNITUDE` to compensate for Hann's ~0.5
+   coherent-gain factor so mic sensitivity is unchanged. Same fix, no
+   separate work needed: `/strobetuner/`'s single hero disc uses the exact
+   same shared engine. Also bumped the Test Tone **Fine Tuning** slider
+   from 1¢ to 0.1¢ steps (`shared/tuner-common.js` + all three
+   `index.html`s) per the same report, to match the Frequency Table's
+   hundredths-of-a-Hz display precision.
 
 ## Testing notes / caveats
 
@@ -167,6 +191,14 @@ code.
   session's local testing shows unexplained stale behavior, try a brand
   new browser tab or bump the dev server's port before assuming the code
   is wrong.
+- The #55 Goertzel leakage fix was verified two ways: a standalone Python
+  simulation of the exact windowed-Goertzel math (sweeping every semitone
+  offset 0-12 at several candidate cycle counts) before touching the code,
+  then structurally on the local dev server — driving Test Tone at 440 Hz
+  and reading each disc's `is-active`/`in-tune` classes via
+  `javascript_tool` confirmed only the `A` disc lit up, where before the
+  fix several neighbors would have too. Not yet re-confirmed on the live
+  production site the way #51's Test Tone rollout was.
 - A user report that Chromatic Strobe's Frequency Table appeared "empty"
   was investigated thoroughly and could not be reproduced anywhere
   (local dev, then the live site) — the table was correctly populated in
@@ -192,6 +224,13 @@ code.
 - No automated tests exist anywhere in this repo; all verification is
   manual/in-browser. If a testing setup is ever wanted, there isn't one
   to extend — it'd be new infrastructure.
+- Even after #55's fix, the bottom octave (A0/A♯0/B0, and to a lesser
+  extent A1-ish) still gets less semitone selectivity than the rest of
+  the keyboard, because their rings' desired 36-cycle window would exceed
+  `ANALYSER_BUFFER_SIZE` (32768, already the Web Audio API's max fftSize)
+  and gets clamped shorter. Not reported as a problem by any user yet —
+  flagging it here since it's an inherent, understood limitation rather
+  than an oversight, in case very-low-note leakage is ever reported.
 
 ## Workflow conventions observed this session
 
