@@ -336,24 +336,22 @@ input:focus-visible {
 
 /* ============================================================
    CHROMATIC KEYBOARD — 12 discs laid out like a piano: 5 sharps in a row
-   above, 7 naturals in a row below. Each disc shows only the top 90° of
-   its wheel (see DISC_VIEWBOX in script.js — a wide-short viewBox, not a
-   square one) and holds one concentric ring per octave-instance of that
-   note in the 88-key range (see midiListForPitchClass) — every ring is
-   independently analyzed, so several rings across several discs can be
-   lit at once (e.g. a note's non-octave harmonics land on *other* discs'
-   rings), not just one "the detected note" disc at a time.
-
-   Showing only the top quarter of each wheel (rather than a full circle)
-   is what makes discs holding 7-8 distinguishable concentric bands
-   affordable at all — the same DOM/layout budget that a full circle would
-   need just to stay legible instead buys roughly 4x the effective size.
+   above, 7 naturals in a row below. Every disc is an "adapted copy" of
+   /strobetuner/'s single hero disc — the exact same shared appearance,
+   180° window, thin bezel and reference ticks (see shared/tuner-common.css
+   and StrobeDiscEngine.buildStageGeometry/addBezelDecoration), just at
+   this page's compact per-key scale — and holds one concentric ring per
+   octave-instance of that note in the 88-key range (see
+   midiListForPitchClass) — every ring is independently analyzed, so
+   several rings across several discs can be lit at once (e.g. a note's
+   non-octave harmonics land on *other* discs' rings), not just one "the
+   detected note" disc at a time.
    ============================================================ */
 .stroboscope-keyboard {
   position: relative;
   /* Room for the sharps row to float above the naturals row without
      overlapping it — matches .stroboscope-sharps' own height below. */
-  padding-top: clamp(3.6rem, 10vw, 5.2rem);
+  padding-top: clamp(2.4rem, 7vw, 3.6rem);
 }
 
 .stroboscope-naturals {
@@ -367,7 +365,7 @@ input:focus-visible {
   top: 0;
   left: 0;
   width: 100%;
-  height: clamp(3.6rem, 10vw, 5.2rem);
+  height: clamp(2.4rem, 7vw, 3.6rem);
 }
 
 .strobe-disc {
@@ -387,64 +385,11 @@ input:focus-visible {
 }
 
 .disc-device {
-  display: block;
   width: min(180px, 17vw, 100%);
-  overflow: visible;
 }
 
 .stroboscope-sharps .disc-device {
   width: min(140px, 13vw, 100%);
-}
-
-.disc-case {
-  fill: url(#discCaseGradient);
-  filter: drop-shadow(0 2px 4px rgba(61, 31, 15, 0.14));
-}
-
-.disc-window {
-  fill: url(#discWindowGradient);
-}
-
-/* Idle (default): dim and gray-blue — deliberately distinct from the
-   green "in tune" state below, so a ring at rest is never mistaken for a
-   ring that's confidently in tune. */
-.disc-ring path {
-  fill: var(--tune-gray);
-  opacity: 0.32;
-  transition: fill 160ms ease, opacity 160ms ease;
-}
-
-.disc-ring.is-active path {
-  fill: color-mix(in srgb, var(--tune-gray) calc(var(--tune-mix, 0) * 1%), #a8cdf0);
-  opacity: 1;
-}
-
-.disc-ring.in-tune path {
-  fill: var(--in-tune);
-}
-
-.disc-hub {
-  fill: #f6f1e8;
-}
-
-.disc-label {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-weight: 700;
-  font-size: clamp(0.8rem, 2.2vw, 0.95rem);
-  color: var(--ink-soft);
-  transition: color 160ms ease;
-}
-
-/* The label reflects the disc as a whole: brightens once any of its
-   rings has a confident reading, turns green once any of them is
-   specifically in tune (the .in-tune rule must win when both are true,
-   hence it's declared after .is-active here). */
-.strobe-disc.is-active .disc-label {
-  color: var(--accent-strong);
-}
-
-.strobe-disc.in-tune .disc-label {
-  color: var(--in-tune-strong);
 }
 
 /* ---- Input Monitor: gain boost + level meter, same as /tuner/'s. ---- */

@@ -51,6 +51,14 @@ const NOTE_NAMES = StrobeDiscEngine.NOTE_NAMES;
 const SHARP_BOUNDARY = { "C♯": 1, "D♯": 2, "F♯": 4, "G♯": 5, "A♯": 6 };
 const NATURAL_COLUMN_COUNT = 7;
 
+// Every disc uses the exact shared Octave Strobe Tuner proportions (see
+// StrobeDiscEngine.buildStageGeometry) — the same 180° dome, thin bezel,
+// tick marks and flat/sharp glyphs /strobetuner/'s single hero disc uses,
+// just at this page's compact per-key scale. A future tweak to that shared
+// geometry or bezel decoration applies here automatically, with no code
+// change on this page.
+const DISC_GEOMETRY = StrobeDiscEngine.buildStageGeometry({ caseR: 100 });
+
 const PITCH_CHECK_INTERVAL_MS = 45;
 
 const clamp = T.clamp;
@@ -125,7 +133,8 @@ function buildDiscs() {
   NOTE_NAMES.forEach((name) => {
     const isSharp = name.includes("♯");
     const midiList = StrobeDiscEngine.midiListForPitchClass(NOTE_NAMES.indexOf(name));
-    const disc = StrobeDiscEngine.buildDisc(name, midiList);
+    const disc = StrobeDiscEngine.buildDisc(name, midiList, DISC_GEOMETRY);
+    StrobeDiscEngine.addBezelDecoration(disc);
 
     if (isSharp) {
       disc.el.style.left = `${(SHARP_BOUNDARY[name] / NATURAL_COLUMN_COUNT) * 100}%`;

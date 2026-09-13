@@ -754,6 +754,143 @@ input:focus-visible {
   transition: height 90ms linear;
 }
 
+/* ============================================================
+   STROBE DISC APPEARANCE — the shared "Octave Strobe Tuner" look every
+   disc shared/strobe-disc.js builds now uses, whether it's /strobetuner/'s
+   single large hero disc or one of /multistrobe/'s twelve small ones (see
+   StrobeDiscEngine.buildStageGeometry / addBezelDecoration): monochrome
+   spinning wedges (a real strobe disc's pattern *motion*, not a color
+   change, carries the tuning information), a thin brass bezel with
+   calibration ticks and ♭/♯ glyphs, and a soft glass vignette/highlight
+   over the window. A tweak here applies to every disc on every page.
+   ============================================================ */
+.disc-device {
+  display: block;
+  overflow: visible;
+  transition: filter 300ms ease;
+}
+
+.disc-case {
+  fill: url(#discCaseGradient);
+  filter: drop-shadow(0 3px 8px rgba(61, 31, 15, 0.18));
+}
+
+.disc-window {
+  fill: url(#discWindowGradient);
+  transition: filter 300ms ease;
+}
+
+/* Idle rings sit dim and low-contrast, like a wheel with its light off;
+   active and in-tune render identically (both bright white) — only
+   whether the ring is actually spinning tells them apart. */
+.disc-ring path {
+  fill: #3a3a3a;
+  opacity: 0.55;
+  transition: fill 220ms ease, opacity 220ms ease;
+}
+
+.disc-ring.is-active path,
+.disc-ring.in-tune path {
+  fill: #fbfaf7;
+  opacity: 1;
+}
+
+/* In tune specifically means "stopped spinning" (see shared/strobe-disc.js
+   RING_DEADZONE_CENTS), so it earns a soft white glow on top of the same
+   plain white fill every active ring gets — a reward for stillness, still
+   strictly monochrome. */
+.disc-ring.in-tune path {
+  filter: drop-shadow(0 0 2.5px rgba(255, 255, 255, 0.9));
+}
+
+.disc-hub {
+  fill: #f6f1e8;
+}
+
+/* "Illuminating" the whole disc when anything is sounding — the window
+   backlight brightens and the whole device gains a touch of contrast,
+   distinct from any single ring's own state. */
+.strobe-disc.is-active .disc-window {
+  filter: brightness(1.9) saturate(1.05);
+}
+
+.strobe-disc.is-active .disc-device {
+  filter: brightness(1.06) contrast(1.05);
+}
+
+/* A soft golden glow layered on top of whichever coloring a ring already
+   has (idle/active/in-tune) — marks it as autocorrelation's "best guess"
+   fundamental octave, without overriding what its own Goertzel reading
+   says about it. Only /strobetuner/ ever sets is-fundamental (see
+   updateDiscExtras) — /multistrobe/ has no single "best guess" note. */
+.disc-ring.is-fundamental path {
+  filter: drop-shadow(0 0 3px rgba(178, 122, 55, 0.85)) drop-shadow(0 0 1px rgba(178, 122, 55, 0.95));
+}
+
+/* ---- reference bezel: static calibration ticks + flat/sharp glyphs
+   around the disc's outer rim, drawn once per disc by addBezelDecoration
+   in shared/strobe-disc.js. Decorative framing, not a readable scale. ---- */
+.disc-scale-tick {
+  stroke: var(--border-strong);
+  stroke-width: 0.6;
+}
+
+.disc-scale-tick-major {
+  stroke: var(--gold);
+  stroke-width: 1;
+}
+
+/* The dead-center (0°) tick doubles as a fixed index mark — brighter and
+   slightly thicker than the other majors, the reference point every
+   ring's wedge boundary lines up against when perfectly in tune. */
+.disc-scale-tick-index {
+  stroke: #fbfaf7;
+  stroke-width: 1.4;
+}
+
+.disc-scale-label {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 9px;
+  fill: var(--gold);
+  dominant-baseline: middle;
+}
+
+/* A soft dark vignette toward the window's own rim, plus a diagonal glass
+   highlight near the top — the same glass-and-brass language /tuner/'s
+   strobe visual uses, so the disc reads as a lit instrument display
+   rather than a flat vector graphic. Purely cosmetic, painted on top of
+   the rings but under the hub. */
+.disc-vignette {
+  fill: url(#discVignette);
+  pointer-events: none;
+}
+
+.disc-glass-highlight {
+  fill: url(#discGlassHighlight);
+  pointer-events: none;
+}
+
+.disc-label {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+  color: var(--ink-soft);
+  transition: color 160ms ease;
+}
+
+/* The label reflects the disc as a whole: brightens once any of its rings
+   has a confident reading, turns green once any of them is specifically
+   in tune (the .in-tune rule must win when both are true, hence it's
+   declared after .is-active here). */
+.strobe-disc.is-active .disc-label {
+  color: var(--accent-strong);
+}
+
+.strobe-disc.in-tune .disc-label {
+  color: var(--in-tune-strong);
+}
+
 /* ---- Spectrum Analyser: same golden-case-over-dark-window bezel as the
    other instrument displays. ---- */
 .spectrum-block {

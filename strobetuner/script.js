@@ -84,37 +84,16 @@ const SILENCE_TIMEOUT_MS = 500;
 // gaps between notes don't flash it, matching /tuner/'s.
 const NO_SIGNAL_DELAY_MS = 3000;
 
-// A wide, 160° window rather than a full half-circle — closer to a real
-// vintage strobe tuner's small display glass than a half-dial, and with
-// room enough left over for the reference bezel around it. cx/viewBox are
-// widened to fit the arc's corners at this span (half-span 80° pushes them
-// almost as far out as the case radius itself). The bezel between windowR
-// and caseR is a thin, ~3.5%-of-caseR band — the same slim proportion
-// /tuner/'s Needle and Meter cases use — rather than the thicker ring a
-// naive half-circle border would suggest.
-const STAGE_GEOMETRY = {
-  cx: 147,
-  cy: 150,
-  arcSpanDeg: 160,
-  viewBox: "0 0 294 165",
+// The canonical Octave Strobe Tuner disc, at this page's large hero size —
+// see StrobeDiscEngine.buildStageGeometry for the shared 180°/thin-bezel
+// proportions /multistrobe/'s small discs also use.
+const STAGE_GEOMETRY = StrobeDiscEngine.buildStageGeometry({
   caseR: 145,
-  windowR: 140,
-  ringOuterR: 136,
-  hubR: 7,
-  hubDotR: 4.5,
-  ringGap: 1,
-  // A wide arc's boundary wedges are big enough that a spinning ring can
-  // visibly poke outside the window sector without this — see the
-  // comment on clipToWindow in shared/strobe-disc.js.
-  clipToWindow: true,
-  // The wedge pattern spans the full 360° (not just the visible arc), so
-  // a ring can spin any amount, in either direction, without ever running
-  // out of pattern to show — see the comment on continuousWedges in
-  // shared/strobe-disc.js.
-  continuousWedges: true,
-};
-
-const SVG_NS = "http://www.w3.org/2000/svg";
+  cx: 150,
+  cy: 150,
+  viewBoxWidth: 300,
+  viewBoxHeight: 165,
+});
 
 const clamp = T.clamp;
 const setMicStatus = T.setMicStatusFactory(micStatus);
@@ -321,117 +300,12 @@ function frequencyToMidi(frequency, a4) {
 }
 
 /* ============================================================
-   REFERENCE BEZEL — a static ring of calibration ticks around the outer
-   rim of each disc (between ringOuterR and caseR), framing it the way a
-   physical strobe tuner's bezel does, plus ♭/♯ glyphs marking the flat
-   and sharp ends of the arc, an index mark at dead center, and a soft
-   vignette + glass highlight layered over the rings themselves — the same
-   glass-and-brass language /tuner/'s strobe visual uses, so this reads as
-   an old piece of measuring equipment rather than a flat vector graphic.
-   Purely decorative/orientational: unlike the needle gauge on /tuner/,
-   there's no pointer to read a position off this scale — the ring's
-   *rotation*, not its position, is what carries the tuning information.
-   Drawn directly into each disc's own <svg> (not a separate overlay) so
-   it's guaranteed to stay pixel-aligned with that disc's geometry.
-   ============================================================ */
-function polarPoint(cx, cy, r, angleDeg) {
-  const rad = (angleDeg * Math.PI) / 180;
-  return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
-}
-
-function sectorPath(cx, cy, r, startDeg, endDeg) {
-  const start = polarPoint(cx, cy, r, startDeg);
-  const end = polarPoint(cx, cy, r, endDeg);
-  const largeArc = endDeg - startDeg > 180 ? 1 : 0;
-
-  return [
-    `M ${cx} ${cy}`,
-    `L ${start.x.toFixed(2)} ${start.y.toFixed(2)}`,
-    `A ${r} ${r} 0 ${largeArc} 1 ${end.x.toFixed(2)} ${end.y.toFixed(2)}`,
-    "Z",
-  ].join(" ");
-}
-
-function addBezelDecoration(disc) {
-  const svg = disc.el.querySelector("svg");
-  const { cx, cy, caseR, windowR } = STAGE_GEOMETRY;
-  const halfSpan = STAGE_GEOMETRY.arcSpanDeg / 2;
-
-  // A soft vignette + glass highlight, layered over the rings but under
-  // the hub — inserted into the same clipped group the rings live in
-  // (found by its clip-path attribute) so it never spills past the
-  // window's own sector.
-  const ringsParent = svg.querySelector("[clip-path]");
-
-  if (ringsParent) {
-    const vignette = document.createElementNS(SVG_NS, "path");
-    vignette.setAttribute("class", "disc-vignette");
-    vignette.setAttribute("d", sectorPath(cx, cy, windowR, -halfSpan, halfSpan));
-    ringsParent.appendChild(vignette);
-
-    const highlight = document.createElementNS(SVG_NS, "ellipse");
-    highlight.setAttribute("class", "disc-glass-highlight");
-    highlight.setAttribute("cx", String(cx));
-    highlight.setAttribute("cy", String(cy - windowR * 0.42));
-    highlight.setAttribute("rx", String(windowR * 0.62));
-    highlight.setAttribute("ry", String(windowR * 0.3));
-    ringsParent.appendChild(highlight);
-  }
-
-  // Ticks live entirely within the thin bezel band between windowR and
-  // caseR — the rings themselves get everything inside windowR, since
-  // they're the part that actually matters here.
-  const majorTickInnerR = caseR - 6;
-  const minorTickInnerR = caseR - 3;
-  const tickOuterR = caseR - 1;
-  const labelR = windowR + 1;
-
-  const ticksGroup = document.createElementNS(SVG_NS, "g");
-  ticksGroup.setAttribute("class", "disc-scale-ticks");
-
-  for (let angle = -halfSpan; angle <= halfSpan; angle += 10) {
-    const isMajor = angle % 30 === 0;
-    const isIndex = angle === 0;
-    const inner = polarPoint(cx, cy, isMajor ? majorTickInnerR : minorTickInnerR, angle);
-    const outer = polarPoint(cx, cy, tickOuterR, angle);
-
-    const tick = document.createElementNS(SVG_NS, "line");
-    let tickClass = "disc-scale-tick";
-    if (isMajor) tickClass += " disc-scale-tick-major";
-    if (isIndex) tickClass += " disc-scale-tick-index";
-    tick.setAttribute("class", tickClass);
-    tick.setAttribute("x1", inner.x.toFixed(2));
-    tick.setAttribute("y1", inner.y.toFixed(2));
-    tick.setAttribute("x2", outer.x.toFixed(2));
-    tick.setAttribute("y2", outer.y.toFixed(2));
-    ticksGroup.appendChild(tick);
-  }
-
-  const flatPoint = polarPoint(cx, cy, labelR, -halfSpan);
-  const flatLabel = document.createElementNS(SVG_NS, "text");
-  flatLabel.setAttribute("class", "disc-scale-label disc-scale-label-flat");
-  flatLabel.setAttribute("x", flatPoint.x.toFixed(2));
-  flatLabel.setAttribute("y", flatPoint.y.toFixed(2));
-  flatLabel.setAttribute("text-anchor", "middle");
-  flatLabel.textContent = "♭";
-  ticksGroup.appendChild(flatLabel);
-
-  const sharpPoint = polarPoint(cx, cy, labelR, halfSpan);
-  const sharpLabel = document.createElementNS(SVG_NS, "text");
-  sharpLabel.setAttribute("class", "disc-scale-label disc-scale-label-sharp");
-  sharpLabel.setAttribute("x", sharpPoint.x.toFixed(2));
-  sharpLabel.setAttribute("y", sharpPoint.y.toFixed(2));
-  sharpLabel.setAttribute("text-anchor", "middle");
-  sharpLabel.textContent = "♯";
-  ticksGroup.appendChild(sharpLabel);
-
-  svg.appendChild(ticksGroup);
-}
-
-/* ============================================================
    DISC — a single instance of shared/strobe-disc.js's engine at this
-   page's large STAGE_GEOMETRY. Discs are cached per note so switching
-   between recently-heard notes doesn't rebuild their SVG each time.
+   page's large STAGE_GEOMETRY, with the shared reference bezel (ticks,
+   ♭/♯ glyphs, vignette, glass highlight — see addBezelDecoration in
+   shared/strobe-disc.js) layered on top. Discs are cached per note so
+   switching between recently-heard notes doesn't rebuild their SVG each
+   time.
    ============================================================ */
 function getOrBuildDisc(name) {
   let disc = discCache.get(name);
@@ -439,7 +313,7 @@ function getOrBuildDisc(name) {
   if (!disc) {
     const midiList = StrobeDiscEngine.midiListForPitchClass(NOTE_NAMES.indexOf(name));
     disc = StrobeDiscEngine.buildDisc(name, midiList, STAGE_GEOMETRY);
-    addBezelDecoration(disc);
+    StrobeDiscEngine.addBezelDecoration(disc);
     discCache.set(name, disc);
   }
 
@@ -570,31 +444,46 @@ function resetFreqTableLiveCents() {
 }
 
 /* ============================================================
-   OCTAVE LEGEND — a single "0 1 2 3 4 5 6 7 8" row below the disc (see
-   .octave-legend), one entry per octave a real 88-key piano spans. Unlike
-   the Frequency Table above (which tracks all 12 notes independently via
-   shadowRingsByMidi), this only ever reflects the single note currently
-   on-screen as the hero disc — "the predominant note" — so octave 0 only
-   ever lights up for A/A♯/B (the only pitch classes with an A0-range key)
-   and octave 8 only for C, exactly matching that disc's own rings.
+   OCTAVE LEGEND — a "0 1 2 3 4 5 6 7 8" row below the disc (see
+   .octave-legend), one entry per octave a real 88-key piano spans,
+   positioned left-to-right at the exact same radius each octave's ring
+   sits at on the disc above (via StrobeDiscEngine.ringRadiusForOctave) —
+   fixed once at build time, in pixels-as-percent of the disc's own
+   rendered width, so the legend reads as a ruler for the disc rather than
+   an evenly-spaced list unrelated to it. Each item's number stays at that
+   fixed position regardless of state; the note name (drawn *before* the
+   number, per the disc's hub-to-rim reading direction) grows to its own
+   left without ever shifting the number itself — see the CSS for
+   .octave-legend-note's right-anchored absolute position.
+
+   Unlike the Frequency Table above (which tracks all 12 notes
+   independently via shadowRingsByMidi), this only ever reflects the
+   single note currently on-screen as the hero disc — "the predominant
+   note" — so octave 0 only ever lights up for A/A♯/B (the only pitch
+   classes with an A0-range key) and octave 8 only for C, exactly matching
+   that disc's own rings.
    ============================================================ */
 const octaveLegendCellsByOctave = new Map();
 
 function buildOctaveLegend() {
   for (let octave = T.OCTAVE_MIN; octave <= T.OCTAVE_MAX; octave += 1) {
+    const { midR } = StrobeDiscEngine.ringRadiusForOctave(STAGE_GEOMETRY, octave);
+    const leftPercent = ((STAGE_GEOMETRY.cx + midR) / STAGE_GEOMETRY.viewBoxWidth) * 100;
+
     const item = document.createElement("span");
     item.className = "octave-legend-item";
-
-    const numEl = document.createElement("span");
-    numEl.className = "octave-legend-num";
-    numEl.textContent = String(octave);
+    item.style.left = `${leftPercent.toFixed(2)}%`;
 
     const noteEl = document.createElement("span");
     noteEl.className = "octave-legend-note";
     noteEl.hidden = true;
 
-    item.appendChild(numEl);
+    const numEl = document.createElement("span");
+    numEl.className = "octave-legend-num";
+    numEl.textContent = String(octave);
+
     item.appendChild(noteEl);
+    item.appendChild(numEl);
     octaveLegendEl.appendChild(item);
     octaveLegendCellsByOctave.set(octave, { item, noteEl });
   }
@@ -609,8 +498,7 @@ function updateOctaveLegend() {
   const confidentOctaves = new Set();
 
   activeDisc.rings.forEach((ring) => {
-    const octave = Math.floor(ring.midi / 12) - 1;
-    const cell = octaveLegendCellsByOctave.get(octave);
+    const cell = octaveLegendCellsByOctave.get(ring.octave);
 
     if (!cell) {
       return;
@@ -622,7 +510,7 @@ function updateOctaveLegend() {
       return;
     }
 
-    confidentOctaves.add(octave);
+    confidentOctaves.add(ring.octave);
     const inTune = Math.abs(ring.smoothedCents) <= StrobeDiscEngine.IN_TUNE_THRESHOLD_CENTS;
     cell.noteEl.textContent = state.currentNoteName;
     cell.noteEl.hidden = false;
