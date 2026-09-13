@@ -48,6 +48,7 @@ const spectrumRefLabelEl = document.getElementById("spectrumRefLabel");
 const spectrumHighLabelEl = document.getElementById("spectrumHighLabel");
 const octaveFreqTableHead = document.getElementById("octaveFreqTableHead");
 const octaveFreqTableBody = document.getElementById("octaveFreqTableBody");
+const octaveLegendEl = document.getElementById("octaveLegend");
 
 const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
 let audioContext = null;
@@ -82,20 +83,22 @@ const SILENCE_TIMEOUT_MS = 500;
 // gaps between notes don't flash it, matching /tuner/'s.
 const NO_SIGNAL_DELAY_MS = 3000;
 
-// A narrow, ~120° window rather than a full half-circle — closer to a
-// real vintage strobe tuner's small display glass than a half-dial, and
-// with room enough left over for the reference bezel around it. The rings
-// are the whole point of this page, so the bezel between ringOuterR and
-// caseR is kept just wide enough for addBezelDecoration()'s tick marks
-// and nothing more — everything else goes to ring radius.
+// A wide, 160° window rather than a full half-circle — closer to a real
+// vintage strobe tuner's small display glass than a half-dial, and with
+// room enough left over for the reference bezel around it. cx/viewBox are
+// widened to fit the arc's corners at this span (half-span 80° pushes them
+// almost as far out as the case radius itself). The bezel between windowR
+// and caseR is a thin, ~3.5%-of-caseR band — the same slim proportion
+// /tuner/'s Needle and Meter cases use — rather than the thicker ring a
+// naive half-circle border would suggest.
 const STAGE_GEOMETRY = {
-  cx: 136,
+  cx: 147,
   cy: 150,
-  arcSpanDeg: 120,
-  viewBox: "0 0 272 165",
+  arcSpanDeg: 160,
+  viewBox: "0 0 294 165",
   caseR: 145,
-  windowR: 137,
-  ringOuterR: 133,
+  windowR: 140,
+  ringOuterR: 136,
   hubR: 7,
   hubDotR: 4.5,
   ringGap: 1,
@@ -183,21 +186,34 @@ const inputMonitor = T.createInputMonitor({
 });
 
 /* ============================================================
-   PITCH DETECTION — time-domain autocorrelation (the standard "ACF2+"
-   approach), restricted to the plausible instrument frequency range.
-   Adapted from /tuner/'s detectPitch — only the note *name* is used here
-   (the disc's Goertzel rings supply the actual cents readings), so there
-   is no need for /tuner/'s temperament-aware frequency-to-note mapping.
+   PITCH DETECTION — time-domain autocorrelation, normalized per-lag as an
+   NSDF (Normalized Square Difference Function, the same normalization the
+   McLeod Pitch Method uses) rather than against one fixed, full-buffer
+   energy figure. That fixed-denominator version is what /tuner/'s original
+   detectPitch used to do, and it systematically penalized low notes: the
+   numerator at a lag L only sums (size - L) sample pairs, so as L grows
+   for lower frequencies, that shrinking sum was being compared against the
+   *same* full-length sumSquares computed once for the whole buffer — a
+   perfectly periodic low note could land well under MIN_CLARITY for no
+   reason but its own lag length (e.g. a clean ~110 Hz tone in a 4096-
+   sample window tops out around clarity ~0.89, already below the 0.9 cutoff,
+   before any real noise or inharmonicity). Normalizing energy over the
+   same shrinking window the numerator itself uses removes that bias, so
+   clarity reflects actual periodicity at every frequency alike. Restricted
+   to the plausible instrument frequency range. Adapted from /tuner/'s
+   detectPitch — only the note *name* is used here (the disc's Goertzel
+   rings supply the actual cents readings), so there is no need for
+   /tuner/'s temperament-aware frequency-to-note mapping.
    ============================================================ */
 function detectPitch(buffer, sampleRate) {
   const size = buffer.length;
-  let sumSquares = 0;
+  let totalEnergy = 0;
 
   for (let i = 0; i < size; i += 1) {
-    sumSquares += buffer[i] * buffer[i];
+    totalEnergy += buffer[i] * buffer[i];
   }
 
-  const rms = Math.sqrt(sumSquares / size);
+  const rms = Math.sqrt(totalEnergy / size);
 
   if (rms < MIN_RMS) {
     return null;
@@ -212,21 +228,47 @@ function detectPitch(buffer, sampleRate) {
 
   const correlations = new Float32Array(maxLag - minLag + 1);
   let bestIndex = -1;
-  let bestValue = 0;
+  let bestValue = -1;
+  // A clean tone is exactly as periodic at 2x, 3x… its true period as at
+  // the period itself (any multiple of a period is also a period), so the
+  // NSDF ties or nearly ties there too — floating-point noise alone can
+  // then make one of those octave-below lags edge out the true peak as the
+  // single global max, misreading (say) a clean A2 as A1. The first local
+  // peak that already clears MIN_CLARITY is taken immediately instead: it
+  // is necessarily the shortest — i.e. highest-frequency — lag confident
+  // enough to count, which is always the true period, never a subharmonic
+  // multiple of it (those only appear later, at longer lags).
+  let peakIndex = -1;
 
   for (let lag = minLag; lag <= maxLag; lag += 1) {
+    const limit = size - lag;
     let sum = 0;
+    let energy = 0;
 
-    for (let i = 0; i < size - lag; i += 1) {
+    for (let i = 0; i < limit; i += 1) {
       sum += buffer[i] * buffer[i + lag];
+      energy += buffer[i] * buffer[i] + buffer[i + lag] * buffer[i + lag];
     }
 
+    // 2r(τ) / m'(τ): 1.0 for a perfectly periodic signal at any lag,
+    // instead of decaying toward 0 as the lag grows.
+    const normalized = energy > 0 ? (2 * sum) / energy : 0;
     const index = lag - minLag;
-    correlations[index] = sum;
+    correlations[index] = normalized;
 
-    if (sum > bestValue) {
-      bestValue = sum;
+    if (normalized > bestValue) {
+      bestValue = normalized;
       bestIndex = index;
+    }
+
+    if (
+      peakIndex === -1 &&
+      index >= 2 &&
+      correlations[index - 1] >= MIN_CLARITY &&
+      correlations[index - 1] >= correlations[index - 2] &&
+      correlations[index - 1] >= normalized
+    ) {
+      peakIndex = index - 1;
     }
   }
 
@@ -234,7 +276,12 @@ function detectPitch(buffer, sampleRate) {
     return null;
   }
 
-  const clarity = bestValue / sumSquares;
+  if (peakIndex !== -1) {
+    bestIndex = peakIndex;
+    bestValue = correlations[peakIndex];
+  }
+
+  const clarity = bestValue;
 
   if (clarity < MIN_CLARITY) {
     return null;
@@ -588,6 +635,81 @@ function resetFreqTableLiveCents() {
 }
 
 /* ============================================================
+   OCTAVE LEGEND — a single "0 1 2 3 4 5 6 7 8" row below the disc (see
+   .octave-legend), one entry per octave a real 88-key piano spans. Unlike
+   the Frequency Table above (which tracks all 12 notes independently via
+   shadowRingsByMidi), this only ever reflects the single note currently
+   on-screen as the hero disc — "the predominant note" — so octave 0 only
+   ever lights up for A/A♯/B (the only pitch classes with an A0-range key)
+   and octave 8 only for C, exactly matching that disc's own rings.
+   ============================================================ */
+const octaveLegendCellsByOctave = new Map();
+
+function buildOctaveLegend() {
+  for (let octave = OCTAVE_MIN; octave <= OCTAVE_MAX; octave += 1) {
+    const item = document.createElement("span");
+    item.className = "octave-legend-item";
+
+    const numEl = document.createElement("span");
+    numEl.className = "octave-legend-num";
+    numEl.textContent = String(octave);
+
+    const noteEl = document.createElement("span");
+    noteEl.className = "octave-legend-note";
+    noteEl.hidden = true;
+
+    item.appendChild(numEl);
+    item.appendChild(noteEl);
+    octaveLegendEl.appendChild(item);
+    octaveLegendCellsByOctave.set(octave, { item, noteEl });
+  }
+}
+
+function updateOctaveLegend() {
+  if (!state.hasSignal || !activeDisc) {
+    resetOctaveLegend();
+    return;
+  }
+
+  const confidentOctaves = new Set();
+
+  activeDisc.rings.forEach((ring) => {
+    const octave = Math.floor(ring.midi / 12) - 1;
+    const cell = octaveLegendCellsByOctave.get(octave);
+
+    if (!cell) {
+      return;
+    }
+
+    if (!ring.confident) {
+      cell.item.classList.remove("is-in-tune");
+      cell.noteEl.hidden = true;
+      return;
+    }
+
+    confidentOctaves.add(octave);
+    const inTune = Math.abs(ring.smoothedCents) <= StrobeDiscEngine.IN_TUNE_THRESHOLD_CENTS;
+    cell.noteEl.textContent = state.currentNoteName;
+    cell.noteEl.hidden = false;
+    cell.item.classList.toggle("is-in-tune", inTune);
+  });
+
+  octaveLegendCellsByOctave.forEach((cell, octave) => {
+    if (!confidentOctaves.has(octave)) {
+      cell.item.classList.remove("is-in-tune");
+      cell.noteEl.hidden = true;
+    }
+  });
+}
+
+function resetOctaveLegend() {
+  octaveLegendCellsByOctave.forEach((cell) => {
+    cell.item.classList.remove("is-in-tune");
+    cell.noteEl.hidden = true;
+  });
+}
+
+/* ============================================================
    READOUT
    ============================================================ */
 const NO_SIGNAL_MESSAGE = "no signal, check the microphone in the input monitor below";
@@ -620,6 +742,7 @@ function resetVisuals() {
   }
 
   resetFreqTableLiveCents();
+  resetOctaveLegend();
   updateReadout();
   inputMonitor.reset();
   spectrum.clear();
@@ -730,6 +853,7 @@ function mainLoop(timestamp) {
     // current on-screen hero — see the file comment at the top.
     analyzeShadowRings(timeDomainBuffer, sampleRate, now);
     updateFreqTableLiveCents();
+    updateOctaveLegend();
   }
 
   if (activeDisc) {
@@ -882,6 +1006,7 @@ document.addEventListener("visibilitychange", () => {
 const DEFAULT_NOTE_NAME = "A";
 setActiveDisc(DEFAULT_NOTE_NAME, 44100);
 buildShadowRings();
+buildOctaveLegend();
 
 referencePitch.setA4(state.a4);
 spectrum.setStyle("vintage");

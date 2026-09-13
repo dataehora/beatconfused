@@ -167,28 +167,20 @@
               <g id="strobeTunerIconWedges" clip-path="url(#homeStrobeTunerHalfClip)"></g>
               <rect class="tuner-icon-base" x="34" y="146" width="232" height="16" rx="8" />
               <circle class="tuner-icon-hub" cx="150" cy="150" r="5" />
-              <text class="tuner-icon-a4" x="150" y="108" text-anchor="middle">A4</text>
+              <text class="tuner-icon-a4" x="150" y="108" text-anchor="middle">A</text>
             </svg>
           </span>
           <span class="tool-name">Octave Strobe Tuner</span>
           <span class="tool-desc">One note, every octave, at once</span>
         </a>
         <a class="tool-card" href="/multistrobe/">
-          <span class="tool-media">
-            <!-- Twelve small strobe discs laid out like a piano — sharps
-                 in a row above, naturals below, exactly how /multistrobe/
-                 arranges its own 12 wheels — rather than the single large
-                 wheel the Octave Strobe Tuner card uses, so the two read
-                 as distinct tools at a glance: one note vs. every note. -->
-            <svg id="multiStrobeIconSvg" class="multistrobe-icon-svg" viewBox="0 0 300 176" role="presentation" focusable="false">
-              <defs>
-                <radialGradient id="homeMiniDiscWindowGradient" cx="0.4" cy="0.35" r="0.75">
-                  <stop offset="0" stop-color="#3a2f24" />
-                  <stop offset="1" stop-color="#171310" />
-                </radialGradient>
-              </defs>
-              <g id="multiStrobeDiscs"></g>
-            </svg>
+          <span class="tool-media fan-trio" id="fanTrio">
+            <!-- Three overlapping strobe-disc "fans" — the same pointed-
+                 vertex, arced-window wedge shape /strobetuner/'s real discs
+                 use — each labelled with a different chromatic neighbour
+                 (A, A♯, B) so the icon reads as "every note", distinct from
+                 the Octave Strobe Tuner card's single dome-shaped wheel.
+                 Built entirely by buildFanTrio() below. -->
           </span>
           <span class="tool-name">Chromatic Strobe Tuner</span>
           <span class="tool-desc">All Notes, All Octaves</span>
@@ -305,94 +297,204 @@
       needleGroup.appendChild(needle);
     }
 
-    // The Chromatic Strobe Tuner card's logo: twelve small discs arranged
-    // exactly like /multistrobe/'s own keyboard (7 naturals in a row, 5
-    // sharps floating above at the boundary between two naturals) — each
-    // one a miniature strobe wheel (a ring of tick marks around a dark
-    // window), so the icon reads as "every note has one" rather than a
-    // single wheel like the Octave Strobe Tuner card uses.
-    function buildMultiStrobeDiscs() {
+    // The Chromatic Strobe Tuner card's logo: three overlapping strobe
+    // "fans", each the same pointed-vertex wedge shape /strobetuner/'s real
+    // discs use (see shared/strobe-disc.js's sectorPath) — one out front
+    // labelled A, two behind labelled B♭ and B, so three chromatic
+    // neighbours read as "every note" at a glance, distinct from the
+    // Octave Strobe Tuner card's single dome-shaped wheel.
+    function buildFanTrio() {
       const NS = "http://www.w3.org/2000/svg";
-      const group = document.getElementById("multiStrobeDiscs");
+      const container = document.getElementById("fanTrio");
 
-      if (!group) {
+      if (!container) {
         return;
       }
 
-      const NATURAL_NAMES = ["C", "D", "E", "F", "G", "A", "B"];
-      const SHARP_AFTER = { "C♯": 1, "D♯": 2, "F♯": 4, "G♯": 5, "A♯": 6 };
-      const naturalR = 22;
-      const sharpR = 15;
-      const naturalY = 138;
-      const sharpY = 64;
-      const colWidth = 300 / 7;
+      const cx = 110;
+      const cy = 150;
+      const caseR = 110;
+      const windowR = 96;
+      const halfSpan = 68; // 136° arc, matching /strobetuner/'s wide window
+      const RINGS = [
+        { inner: 72, outer: 90, count: 16 },
+        { inner: 50, outer: 68, count: 8 },
+        { inner: 28, outer: 46, count: 4 },
+      ];
+      const FANS = [
+        { position: "left", label: "B♭" },
+        { position: "right", label: "B" },
+        { position: "top", label: "A" },
+      ];
 
-      function polar(cx, cy, r, deg) {
+      function polar(r, deg) {
         const rad = (deg * Math.PI) / 180;
         return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
       }
 
-      function buildDisc(cx, cy, r, isSharp) {
-        const g = document.createElementNS(NS, "g");
-        g.setAttribute("class", isSharp ? "mini-disc mini-disc-sharp" : "mini-disc");
+      // A pie wedge from the vertex (cx, cy) out to the arc — the same
+      // shape shared/strobe-disc.js's sectorPath draws for the real discs.
+      function sectorPath(r) {
+        const start = polar(r, -halfSpan);
+        const end = polar(r, halfSpan);
+        return (
+          `M ${cx} ${cy} ` +
+          `L ${start.x.toFixed(2)} ${start.y.toFixed(2)} ` +
+          `A ${r} ${r} 0 0 1 ${end.x.toFixed(2)} ${end.y.toFixed(2)} Z`
+        );
+      }
 
-        const window = document.createElementNS(NS, "circle");
-        window.setAttribute("class", "mini-disc-window");
-        window.setAttribute("cx", String(cx));
-        window.setAttribute("cy", String(cy));
-        window.setAttribute("r", String(r));
-        window.setAttribute("fill", "url(#homeMiniDiscWindowGradient)");
-        g.appendChild(window);
+      function wedgePath(innerR, outerR, startDeg, endDeg) {
+        const startOuter = polar(outerR, startDeg);
+        const endOuter = polar(outerR, endDeg);
+        const startInner = polar(innerR, startDeg);
+        const endInner = polar(innerR, endDeg);
 
-        // A ring of short tick marks standing in for wedge segments —
-        // legible at icon scale where true alternating wedges would just
-        // blur into a gray smudge.
-        const tickCount = isSharp ? 10 : 14;
+        return (
+          `M ${startInner.x.toFixed(2)} ${startInner.y.toFixed(2)} ` +
+          `L ${startOuter.x.toFixed(2)} ${startOuter.y.toFixed(2)} ` +
+          `A ${outerR} ${outerR} 0 0 1 ${endOuter.x.toFixed(2)} ${endOuter.y.toFixed(2)} ` +
+          `L ${endInner.x.toFixed(2)} ${endInner.y.toFixed(2)} ` +
+          `A ${innerR} ${innerR} 0 0 0 ${startInner.x.toFixed(2)} ${startInner.y.toFixed(2)} Z`
+        );
+      }
 
-        for (let i = 0; i < tickCount; i += 1) {
-          const deg = (360 / tickCount) * i;
-          const inner = polar(cx, cy, r * 0.55, deg);
-          const outer = polar(cx, cy, r * 0.82, deg);
+      function addStop(gradient, offset, color) {
+        const stop = document.createElementNS(NS, "stop");
+        stop.setAttribute("offset", offset);
+        stop.setAttribute("stop-color", color);
+        gradient.appendChild(stop);
+      }
+
+      FANS.forEach((fan, fanIndex) => {
+        const svg = document.createElementNS(NS, "svg");
+        svg.setAttribute("viewBox", "0 0 220 170");
+        svg.setAttribute("class", `fan-icon fan-icon-${fan.position}`);
+        svg.setAttribute("role", "presentation");
+        svg.setAttribute("focusable", "false");
+
+        const defs = document.createElementNS(NS, "defs");
+
+        const caseGradient = document.createElementNS(NS, "linearGradient");
+        const caseId = `fanCaseGradient${fanIndex}`;
+        caseGradient.setAttribute("id", caseId);
+        caseGradient.setAttribute("x1", "0.08");
+        caseGradient.setAttribute("y1", "0.04");
+        caseGradient.setAttribute("x2", "0.85");
+        caseGradient.setAttribute("y2", "0.95");
+        addStop(caseGradient, "0", "#caa06a");
+        addStop(caseGradient, "1", "#8a5a30");
+        defs.appendChild(caseGradient);
+
+        const windowGradient = document.createElementNS(NS, "radialGradient");
+        const windowId = `fanWindowGradient${fanIndex}`;
+        windowGradient.setAttribute("id", windowId);
+        windowGradient.setAttribute("cx", "0.5");
+        windowGradient.setAttribute("cy", "0.4");
+        windowGradient.setAttribute("r", "0.8");
+        addStop(windowGradient, "0", "#362b21");
+        addStop(windowGradient, "1", "#171310");
+        defs.appendChild(windowGradient);
+
+        const clipId = `fanClip${fanIndex}`;
+        const clipPath = document.createElementNS(NS, "clipPath");
+        clipPath.setAttribute("id", clipId);
+        const clipShape = document.createElementNS(NS, "path");
+        clipShape.setAttribute("d", sectorPath(windowR));
+        clipPath.appendChild(clipShape);
+        defs.appendChild(clipPath);
+
+        svg.appendChild(defs);
+
+        const caseShape = document.createElementNS(NS, "path");
+        caseShape.setAttribute("class", "fan-case");
+        caseShape.setAttribute("d", sectorPath(caseR));
+        caseShape.setAttribute("fill", `url(#${caseId})`);
+        svg.appendChild(caseShape);
+
+        const windowShape = document.createElementNS(NS, "path");
+        windowShape.setAttribute("class", "fan-window");
+        windowShape.setAttribute("d", sectorPath(windowR));
+        windowShape.setAttribute("fill", `url(#${windowId})`);
+        svg.appendChild(windowShape);
+
+        const wedgesGroup = document.createElementNS(NS, "g");
+        wedgesGroup.setAttribute("clip-path", `url(#${clipId})`);
+
+        RINGS.forEach((ring, ringIndex) => {
+          const g = document.createElementNS(NS, "g");
+          g.setAttribute("class", ringIndex % 2 === 0 ? "fan-wedges" : "fan-wedges fan-wedges-alt");
+          const totalSlices = ring.count * 2;
+          const step = 360 / totalSlices;
+
+          for (let i = 0; i < totalSlices; i += 2) {
+            const path = document.createElementNS(NS, "path");
+            path.setAttribute("d", wedgePath(ring.inner, ring.outer, i * step, (i + 1) * step));
+            g.appendChild(path);
+          }
+
+          wedgesGroup.appendChild(g);
+        });
+
+        svg.appendChild(wedgesGroup);
+
+        // A sparse ring of bezel ticks between the window and the case rim,
+        // plus flat/sharp glyphs at the arc's two ends — echoing
+        // /strobetuner/'s real reference bezel at icon scale.
+        const ticksGroup = document.createElementNS(NS, "g");
+        ticksGroup.setAttribute("class", "fan-scale-ticks");
+
+        for (let angle = -halfSpan; angle <= halfSpan + 0.01; angle += 34) {
+          const inner = polar(windowR + 2, angle);
+          const outer = polar(caseR - 3, angle);
           const tick = document.createElementNS(NS, "line");
-          tick.setAttribute("class", "mini-disc-tick");
           tick.setAttribute("x1", inner.x.toFixed(2));
           tick.setAttribute("y1", inner.y.toFixed(2));
           tick.setAttribute("x2", outer.x.toFixed(2));
           tick.setAttribute("y2", outer.y.toFixed(2));
-          g.appendChild(tick);
+          ticksGroup.appendChild(tick);
         }
 
-        const rim = document.createElementNS(NS, "circle");
-        rim.setAttribute("class", "mini-disc-rim");
-        rim.setAttribute("cx", String(cx));
-        rim.setAttribute("cy", String(cy));
-        rim.setAttribute("r", String(r));
-        g.appendChild(rim);
+        svg.appendChild(ticksGroup);
+
+        const flatPoint = polar(windowR + 8, -halfSpan);
+        const flatLabel = document.createElementNS(NS, "text");
+        flatLabel.setAttribute("class", "fan-scale-label");
+        flatLabel.setAttribute("x", flatPoint.x.toFixed(2));
+        flatLabel.setAttribute("y", flatPoint.y.toFixed(2));
+        flatLabel.textContent = "♭";
+        svg.appendChild(flatLabel);
+
+        const sharpPoint = polar(windowR + 8, halfSpan);
+        const sharpLabel = document.createElementNS(NS, "text");
+        sharpLabel.setAttribute("class", "fan-scale-label");
+        sharpLabel.setAttribute("x", sharpPoint.x.toFixed(2));
+        sharpLabel.setAttribute("y", sharpPoint.y.toFixed(2));
+        sharpLabel.textContent = "♯";
+        svg.appendChild(sharpLabel);
 
         const hub = document.createElementNS(NS, "circle");
-        hub.setAttribute("class", "mini-disc-hub");
+        hub.setAttribute("class", "fan-hub");
         hub.setAttribute("cx", String(cx));
         hub.setAttribute("cy", String(cy));
-        hub.setAttribute("r", String(Math.max(1.6, r * 0.1)));
-        g.appendChild(hub);
+        hub.setAttribute("r", "4");
+        svg.appendChild(hub);
 
-        return g;
-      }
+        const label = document.createElementNS(NS, "text");
+        label.setAttribute("class", "fan-note-label");
+        label.setAttribute("x", String(cx));
+        label.setAttribute("y", String(cy - caseR * 0.34));
+        label.setAttribute("text-anchor", "middle");
+        label.textContent = fan.label;
+        svg.appendChild(label);
 
-      NATURAL_NAMES.forEach((name, index) => {
-        const cx = colWidth * (index + 0.5);
-        group.appendChild(buildDisc(cx, naturalY, naturalR, false));
-      });
-
-      Object.keys(SHARP_AFTER).forEach((name) => {
-        const cx = colWidth * SHARP_AFTER[name];
-        group.appendChild(buildDisc(cx, sharpY, sharpR, true));
+        container.appendChild(svg);
       });
     }
 
     buildNeedleIcon();
     buildStrobeIcon("strobeTunerIconWedges");
-    buildMultiStrobeDiscs();
+    buildFanTrio();
   </script>
 </body>
 </html>

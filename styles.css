@@ -290,38 +290,80 @@ body {
   stroke-linejoin: round;
 }
 
-/* ---- Chromatic Strobe Tuner card: twelve small strobe discs arranged
-   like a piano keyboard (see buildMultiStrobeDiscs) — distinct from the
-   Octave Strobe Tuner card's single large wheel. ---- */
-.multistrobe-icon-svg {
-  height: 6.6rem;
-  width: auto;
-  display: block;
+/* ---- Chromatic Strobe Tuner card: three overlapping strobe-disc "fans" —
+   the same pointed-vertex wedge shape /strobetuner/'s real discs use (see
+   buildFanTrio) — each labelled with a different chromatic neighbour so
+   the icon reads as "every note", distinct from the Octave Strobe Tuner
+   card's single dome-shaped wheel. ---- */
+.fan-trio {
+  position: relative;
+}
+
+.fan-icon {
+  position: absolute;
+  width: 60%;
+  height: auto;
   overflow: visible;
+  filter: drop-shadow(0 4px 7px rgba(61, 31, 15, 0.22));
 }
 
-.mini-disc-window {
-  filter: drop-shadow(0 2px 3px rgba(61, 31, 15, 0.2));
+.fan-icon-top {
+  top: -8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
 }
 
-.mini-disc-rim {
-  fill: none;
-  stroke: #b27a37;
-  stroke-width: 1.4;
+.fan-icon-left {
+  top: 34%;
+  left: 3%;
+  z-index: 1;
 }
 
-.mini-disc-sharp .mini-disc-rim {
-  stroke: #8a5a30;
+.fan-icon-right {
+  top: 34%;
+  right: 3%;
+  z-index: 2;
 }
 
-.mini-disc-tick {
-  stroke: rgba(246, 241, 232, 0.55);
-  stroke-width: 1;
+.fan-wedges path {
+  fill: #6f8f52;
+}
+
+.fan-wedges-alt path {
+  fill: #8fae6a;
+}
+
+.fan-scale-ticks line {
+  stroke: rgba(246, 241, 232, 0.4);
+  stroke-width: 2;
   stroke-linecap: round;
 }
 
-.mini-disc-hub {
+.fan-scale-label {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: 16px;
+  fill: rgba(246, 241, 232, 0.55);
+  text-anchor: middle;
+}
+
+.fan-hub {
   fill: #f6f1e8;
+}
+
+/* Each fan's note label — smaller than the Octave Strobe card's single
+   "A" badge since three of these share the same card. */
+.fan-note-label {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 34px;
+  fill: #3f7fc9;
+  text-anchor: middle;
+  paint-order: stroke fill;
+  stroke: #f6f1e8;
+  stroke-width: 4px;
+  stroke-linejoin: round;
 }
 
 .tool-name {
