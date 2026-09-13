@@ -115,6 +115,20 @@
     return `${name}${octave}`;
   }
 
+  // The nearest equal-tempered note to a frequency, plus how far off it is
+  // in cents — `pianoNoteFrequency` is temperament-aware (pass the page's
+  // own `temperament.pianoNoteFrequency`), so the cents figure already
+  // reflects whatever tuning standard is currently selected.
+  function frequencyToNote(frequency, a4, pianoNoteFrequency) {
+    const equalMidi = 69 + 12 * Math.log2(frequency / a4);
+    const rounded = Math.round(equalMidi);
+    const targetFrequency = pianoNoteFrequency(rounded, a4);
+    const cents = 1200 * Math.log2(frequency / targetFrequency);
+    const name = NOTE_NAMES[((rounded % 12) + 12) % 12];
+    const octave = Math.floor(rounded / 12) - 1;
+    return { name, octave, cents, midi: rounded };
+  }
+
   /* ============================================================
      REFERENCE PITCH — wires the A4 number input, slider, ± buttons and
      (if present on the page) the preset radio list into one controller.
@@ -249,6 +263,166 @@
         return equalFrequency * Math.pow(2, this.getOffsetCents(midi) / 1200);
       },
     };
+  }
+
+  /* ============================================================
+     TEST TONE — a pure sine oscillator, fed into the page's own analyser
+     in parallel with the speakers, so it shares exactly the same
+     detection pipeline a microphone signal would (the Input Monitor's
+     level meter, the Spectrum Analyser, and each page's own pitch/ring
+     analysis all see it identically) — no separate "known frequency"
+     analysis path needed. Owns only the oscillator/gain node lifecycle
+     and the frequency/cents/volume slider math; the page's own toggle
+     handler still decides how "test" interacts with its other audio
+     source (usually the microphone) and its own render loop.
+     ============================================================ */
+  function createTestTone(options) {
+    const { rangeInput, centsRangeInput, volumeInput, freqLabel, centsLabel, minFreq, maxFreq, maxFineTuningCents } = options;
+
+    let oscillator = null;
+    let gainNode = null;
+
+    // The Frequency slider picks a whole-Hz base; Fine Tuning bends it by
+    // up to ±maxFineTuningCents (a quarter-tone each way by default) rather
+    // than adding raw Hz, so it reads the same musically at any point on
+    // the keyboard.
+    function getFrequency() {
+      const base = Number(rangeInput.value);
+      const cents = Number(centsRangeInput.value);
+      return base * Math.pow(2, cents / 1200);
+    }
+
+    function updateFreqLabel(frequency) {
+      if (freqLabel) freqLabel.textContent = `${frequency.toFixed(2)} Hz`;
+    }
+
+    function updateCentsLabel() {
+      if (!centsLabel) return;
+      const cents = Number(centsRangeInput.value);
+      const sign = cents > 0 ? "+" : "";
+      centsLabel.textContent = `${sign}${cents}¢`;
+    }
+
+    function isActive() {
+      return Boolean(oscillator);
+    }
+
+    // Starts the oscillator (a no-op if already running), routed to both
+    // the speakers and `analyserNode` — deliberately not started/stopped
+    // internally on its own, since only the page knows whether its other
+    // audio source needs stopping first.
+    function start(audioContext, analyserNode) {
+      if (oscillator) {
+        return;
+      }
+
+      oscillator = audioContext.createOscillator();
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(getFrequency(), audioContext.currentTime);
+
+      gainNode = audioContext.createGain();
+      gainNode.gain.setValueAtTime(Number(volumeInput.value), audioContext.currentTime);
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      gainNode.connect(analyserNode);
+      oscillator.start();
+
+      volumeInput.oninput = (event) => {
+        gainNode.gain.setTargetAtTime(Number(event.target.value), audioContext.currentTime, 0.01);
+      };
+    }
+
+    function stop() {
+      if (oscillator) {
+        oscillator.stop();
+        oscillator.disconnect();
+        oscillator = null;
+      }
+
+      if (gainNode) {
+        gainNode.disconnect();
+        gainNode = null;
+      }
+
+      volumeInput.oninput = null;
+    }
+
+    // Re-reads the sliders and (if running) glides the live oscillator to
+    // match — call after either slider changes. Returns the new frequency
+    // so the caller can update its own note/variance readout with it.
+    function applyFrequency(audioContext) {
+      const frequency = getFrequency();
+      updateFreqLabel(frequency);
+
+      if (oscillator) {
+        oscillator.frequency.setTargetAtTime(frequency, audioContext.currentTime, 0.01);
+      }
+
+      return frequency;
+    }
+
+    // Changing the base frequency resets Fine Tuning back to 0 — otherwise
+    // the two controls would fight over what "0" even means as the base
+    // moves.
+    function resetFineTuning(audioContext) {
+      centsRangeInput.value = "0";
+      updateCentsLabel();
+      return applyFrequency(audioContext);
+    }
+
+    function nudgeFrequency(deltaHz, audioContext) {
+      const next = clamp(Number(rangeInput.value) + deltaHz, minFreq, maxFreq);
+      rangeInput.value = String(next);
+      return resetFineTuning(audioContext);
+    }
+
+    function nudgeFineTuning(deltaCents, audioContext) {
+      const next = clamp(Number(centsRangeInput.value) + deltaCents, -maxFineTuningCents, maxFineTuningCents);
+      centsRangeInput.value = String(next);
+      updateCentsLabel();
+      return applyFrequency(audioContext);
+    }
+
+    updateCentsLabel();
+    updateFreqLabel(getFrequency());
+
+    return {
+      getFrequency,
+      isActive,
+      start,
+      stop,
+      applyFrequency,
+      resetFineTuning,
+      nudgeFrequency,
+      nudgeFineTuning,
+      updateFreqLabel,
+      updateCentsLabel,
+    };
+  }
+
+  // A single lean fill growing outward from a center tick (the nearest
+  // note) toward whichever neighbor a test tone is drifting closer to —
+  // how far it's come from the current note, and how much room is left
+  // before the next. Shared by every page's Test Tone panel.
+  function updateTestToneVariance(note, elements, options) {
+    const { fillEl, prevNoteEl, currentNoteEl, nextNoteEl } = elements;
+    const { inTuneThresholdCents, getTuneMixPercent } = options;
+    const clamped = clamp(note.cents, -50, 50);
+
+    if (clamped >= 0) {
+      fillEl.style.left = "50%";
+      fillEl.style.width = `${clamped}%`;
+    } else {
+      fillEl.style.left = `${50 + clamped}%`;
+      fillEl.style.width = `${-clamped}%`;
+    }
+
+    fillEl.classList.toggle("in-tune", Math.abs(note.cents) <= inTuneThresholdCents);
+    fillEl.style.setProperty("--tune-mix", String(getTuneMixPercent(note.cents)));
+    prevNoteEl.textContent = noteNameForMidi(note.midi - 1);
+    currentNoteEl.textContent = `${note.name}${note.octave}`;
+    nextNoteEl.textContent = noteNameForMidi(note.midi + 1);
   }
 
   /* ============================================================
@@ -661,9 +835,12 @@
     MIC_MESSAGES,
     clamp,
     noteNameForMidi,
+    frequencyToNote,
     getTemperamentById,
     setupReferencePitch,
     setupTemperament,
+    createTestTone,
+    updateTestToneVariance,
     buildOctaveFrequencyTable,
     updateOctaveFrequencyTableRings,
     resetOctaveFrequencyTable,

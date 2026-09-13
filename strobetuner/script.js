@@ -41,6 +41,23 @@ const micGainRange = document.getElementById("micGainRange");
 const micGainValueLabelEl = document.getElementById("micGainValueLabel");
 const levelMeterFillEl = document.getElementById("levelMeterFill");
 const levelValueLabelEl = document.getElementById("levelValueLabel");
+
+const testToneRange = document.getElementById("testToneRange");
+const testToneCentsRange = document.getElementById("testToneCentsRange");
+const testToneVolume = document.getElementById("testToneVolume");
+const toggleTestToneBtn = document.getElementById("toggleTestToneBtn");
+const decreaseTestToneBtn = document.getElementById("decreaseTestToneBtn");
+const increaseTestToneBtn = document.getElementById("increaseTestToneBtn");
+const decreaseCentsBtn = document.getElementById("decreaseCentsBtn");
+const increaseCentsBtn = document.getElementById("increaseCentsBtn");
+const testToneNoteEl = document.getElementById("testToneNote");
+const testToneFreqLabelEl = document.getElementById("testToneFreqLabel");
+const testToneCentsLabelEl = document.getElementById("testToneCentsLabel");
+const varianceFillEl = document.getElementById("varianceFill");
+const variancePrevNoteEl = document.getElementById("variancePrevNote");
+const varianceCurrentNoteEl = document.getElementById("varianceCurrentNote");
+const varianceNextNoteEl = document.getElementById("varianceNextNote");
+
 const spectrumCanvas = document.getElementById("spectrumCanvas");
 const spectrumStyleCheckbox = document.getElementById("spectrumStyleCheckbox");
 const spectrumStyleToggleEl = document.getElementById("spectrumStyleToggle");
@@ -84,6 +101,11 @@ const SILENCE_TIMEOUT_MS = 500;
 // gaps between notes don't flash it, matching /tuner/'s.
 const NO_SIGNAL_DELAY_MS = 3000;
 
+// The test tone's frequency slider spans the full piano keyboard, A0 to C8.
+const TEST_FREQ_MIN = 19;
+const TEST_FREQ_MAX = 4434;
+const FINE_TUNING_MAX_CENTS = 50;
+
 // The canonical Octave Strobe Tuner disc, at this page's large hero size —
 // see StrobeDiscEngine.buildStageGeometry for the shared 180°/thin-bezel
 // proportions /multistrobe/'s small discs also use.
@@ -100,7 +122,7 @@ const setMicStatus = T.setMicStatusFactory(micStatus);
 
 const state = {
   a4: T.DEFAULT_A4,
-  activeSource: null, // null | "mic"
+  activeSource: null, // null | "mic" | "test"
   hasSignal: false,
   currentNoteName: null,
   lastConfidentAt: 0,
@@ -131,6 +153,7 @@ const temperament = T.setupTemperament({
   onChange: () => {
     recomputeAllTargets();
     buildOctaveFreqTable();
+    updateTestToneDisplay(testTone.getFrequency());
     spectrum.updateLabels(getSpectrumRange(), state.a4);
     updateTuningStatement();
   },
@@ -163,6 +186,17 @@ const inputMonitor = T.createInputMonitor({
   levelValueLabel: levelValueLabelEl,
   getGainNode: () => micGainNode,
   audioContextRef: () => audioContext,
+});
+
+const testTone = T.createTestTone({
+  rangeInput: testToneRange,
+  centsRangeInput: testToneCentsRange,
+  volumeInput: testToneVolume,
+  freqLabel: testToneFreqLabelEl,
+  centsLabel: testToneCentsLabelEl,
+  minFreq: TEST_FREQ_MIN,
+  maxFreq: TEST_FREQ_MAX,
+  maxFineTuningCents: FINE_TUNING_MAX_CENTS,
 });
 
 /* ============================================================
@@ -572,8 +606,7 @@ function resetVisuals() {
 }
 
 /* ============================================================
-   AUDIO SOURCE — microphone only (no test tone on this page, unlike
-   /tuner/).
+   AUDIO SOURCE — the microphone; see TEST TONE below for the other one.
    ============================================================ */
 function ensureAudioContext() {
   if (!AudioContextConstructor) {
@@ -640,22 +673,35 @@ function mainLoop(timestamp) {
     // why this matters.
     const now = audioContext.currentTime;
 
-    const pitchWindow = timeDomainBuffer.subarray(timeDomainBuffer.length - AUTOCORRELATION_WINDOW);
-    const result = detectPitch(pitchWindow, sampleRate);
-
-    if (result) {
+    if (state.activeSource === "test") {
+      // The test tone's frequency is already known exactly, so the note
+      // identification is computed directly from it rather than detected —
+      // matching /tuner/'s own test-tone handling — while the disc's rings
+      // still analyze the real synthesized audio below exactly like a mic
+      // signal would.
+      const testFrequency = testTone.getFrequency();
       state.hasSignal = true;
       state.lastConfidentAt = timestamp;
-      state.currentNoteName = frequencyToPitchClassName(result.frequency, state.a4);
-      state.fundamentalMidi = frequencyToMidi(result.frequency, state.a4);
-    } else if (state.hasSignal && timestamp - state.lastConfidentAt > SILENCE_TIMEOUT_MS) {
-      state.hasSignal = false;
-      state.currentNoteName = null;
-      state.fundamentalMidi = null;
+      state.currentNoteName = frequencyToPitchClassName(testFrequency, state.a4);
+      state.fundamentalMidi = frequencyToMidi(testFrequency, state.a4);
+    } else {
+      const pitchWindow = timeDomainBuffer.subarray(timeDomainBuffer.length - AUTOCORRELATION_WINDOW);
+      const result = detectPitch(pitchWindow, sampleRate);
 
-      if (activeDisc) {
-        StrobeDiscEngine.resetDisc(activeDisc);
-        resetDiscExtras(activeDisc);
+      if (result) {
+        state.hasSignal = true;
+        state.lastConfidentAt = timestamp;
+        state.currentNoteName = frequencyToPitchClassName(result.frequency, state.a4);
+        state.fundamentalMidi = frequencyToMidi(result.frequency, state.a4);
+      } else if (state.hasSignal && timestamp - state.lastConfidentAt > SILENCE_TIMEOUT_MS) {
+        state.hasSignal = false;
+        state.currentNoteName = null;
+        state.fundamentalMidi = null;
+
+        if (activeDisc) {
+          StrobeDiscEngine.resetDisc(activeDisc);
+          resetDiscExtras(activeDisc);
+        }
       }
     }
 
@@ -689,6 +735,10 @@ function mainLoop(timestamp) {
 async function startMic() {
   if (state.activeSource === "mic") {
     return;
+  }
+
+  if (state.activeSource === "test") {
+    stopTestTone();
   }
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -779,6 +829,104 @@ function toggleMic() {
 }
 
 /* ============================================================
+   TEST TONE — an oscillator routed to the speakers so it's audible (see
+   T.createTestTone), tapped into the same analyser a mic signal would use
+   so the disc's Goertzel rings, the Input Monitor, and the Spectrum
+   Analyser all see it identically — only the note *identification* (see
+   mainLoop) is computed directly from the known frequency instead of
+   detected, matching /tuner/'s own test-tone handling.
+   ============================================================ */
+function startTestTone() {
+  if (state.activeSource === "test") {
+    return;
+  }
+
+  if (state.activeSource === "mic") {
+    stopMic();
+  }
+
+  const ctx = ensureAudioContext();
+
+  if (!ctx) {
+    setMicStatus(T.MIC_MESSAGES.webAudioNotSupported, true);
+    return;
+  }
+
+  ensureAnalyser();
+  recomputeAllTargets();
+  testTone.start(ctx, analyserNode);
+
+  state.activeSource = "test";
+  state.lastConfidentAt = performance.now();
+  toggleTestToneBtn.textContent = "Stop Test Tone";
+  toggleTestToneBtn.setAttribute("aria-pressed", "true");
+  updateReadout();
+  beginRenderLoop();
+}
+
+function stopTestTone() {
+  if (state.activeSource !== "test") {
+    return;
+  }
+
+  state.activeSource = null;
+  testTone.stop();
+
+  toggleTestToneBtn.textContent = "Test Tone";
+  toggleTestToneBtn.setAttribute("aria-pressed", "false");
+  endRenderLoop();
+  resetVisuals();
+  resetShadowRings();
+}
+
+function toggleTestTone() {
+  if (state.activeSource === "test") {
+    stopTestTone();
+  } else {
+    startTestTone();
+  }
+}
+
+function stopActiveSource() {
+  if (state.activeSource === "mic") {
+    stopMic();
+  } else if (state.activeSource === "test") {
+    stopTestTone();
+  }
+}
+
+function updateTestToneDisplay(frequency) {
+  testTone.updateFreqLabel(frequency);
+  const note = T.frequencyToNote(frequency, state.a4, pianoNoteFrequency);
+  const roundedCents = Math.round(note.cents);
+  const sign = roundedCents > 0 ? "+" : "";
+  testToneNoteEl.textContent = `${note.name}${note.octave} ${sign}${roundedCents}¢`;
+  T.updateTestToneVariance(
+    note,
+    { fillEl: varianceFillEl, prevNoteEl: variancePrevNoteEl, currentNoteEl: varianceCurrentNoteEl, nextNoteEl: varianceNextNoteEl },
+    { inTuneThresholdCents: StrobeDiscEngine.IN_TUNE_THRESHOLD_CENTS, getTuneMixPercent: StrobeDiscEngine.getTuneMixPercent },
+  );
+}
+
+function applyTestToneFrequency() {
+  updateTestToneDisplay(testTone.applyFrequency(audioContext));
+}
+
+// Changing the base frequency resets Fine Tuning back to 0 — otherwise the
+// two controls would fight over what "0" even means as the base moves.
+function resetFineTuningCents() {
+  updateTestToneDisplay(testTone.resetFineTuning(audioContext));
+}
+
+function nudgeTestToneFrequency(deltaHz) {
+  updateTestToneDisplay(testTone.nudgeFrequency(deltaHz, audioContext));
+}
+
+function nudgeFineTuningCents(deltaCents) {
+  updateTestToneDisplay(testTone.nudgeFineTuning(deltaCents, audioContext));
+}
+
+/* ============================================================
    CONTROLS
    ============================================================ */
 function updateTuningStatement() {
@@ -798,12 +946,37 @@ const referencePitch = T.setupReferencePitch({
     state.a4 = a4;
     recomputeAllTargets();
     buildOctaveFreqTable();
+    updateTestToneDisplay(testTone.getFrequency());
     spectrum.updateLabels(getSpectrumRange(), state.a4);
     updateTuningStatement();
   },
 });
 
 toggleMicBtn.addEventListener("click", toggleMic);
+toggleTestToneBtn.addEventListener("click", toggleTestTone);
+decreaseTestToneBtn.addEventListener("click", () => nudgeTestToneFrequency(-1));
+increaseTestToneBtn.addEventListener("click", () => nudgeTestToneFrequency(1));
+decreaseCentsBtn.addEventListener("click", () => nudgeFineTuningCents(-1));
+increaseCentsBtn.addEventListener("click", () => nudgeFineTuningCents(1));
+
+// Dragging the base frequency resets Fine Tuning to 0 (see resetFineTuningCents).
+testToneRange.addEventListener("input", resetFineTuningCents);
+
+// A double-click on the Frequency bar snaps the test tone back to the
+// current reference pitch (state.a4), not a fixed number, so it always
+// matches whatever standard is selected in Reference Pitch.
+testToneRange.addEventListener("dblclick", () => {
+  testToneRange.value = String(state.a4);
+  resetFineTuningCents();
+});
+
+testToneCentsRange.addEventListener("input", () => {
+  testTone.updateCentsLabel();
+  applyTestToneFrequency();
+});
+
+// A double-click anywhere on the Fine Tuning bar snaps it back to 0.
+testToneCentsRange.addEventListener("dblclick", resetFineTuningCents);
 
 T.wireCollapsibles((panel) => {
   if (panel.contains(spectrumCanvas)) {
@@ -816,11 +989,11 @@ T.wireTransportShortcuts({
   onA4Delta: (delta) => referencePitch.setA4(state.a4 + delta),
 });
 
-// Release the microphone when the tab is hidden, rather than leaving it
-// running in the background.
+// Release whichever source is active when the tab is hidden, rather than
+// leaving the microphone (or the test tone) running in the background.
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
-    stopMic();
+    stopActiveSource();
   }
 });
 
@@ -833,6 +1006,8 @@ buildShadowRings();
 buildOctaveLegend();
 
 referencePitch.setA4(state.a4);
+testTone.updateCentsLabel();
+updateTestToneDisplay(testTone.getFrequency());
 spectrum.setStyle("vintage");
 spectrum.sizeCanvas();
 updateReadout();
