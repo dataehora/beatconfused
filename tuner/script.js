@@ -187,22 +187,36 @@ function getTuneMixPercent(cents) {
 }
 
 /* ============================================================
-   PITCH DETECTION — time-domain autocorrelation (the standard
-   "ACF2+" approach), restricted to the plausible instrument
-   frequency range so the O(bufferSize * lagRange) cost stays cheap
-   enough to run several times a second in plain JS. A normalized
+   PITCH DETECTION — time-domain autocorrelation, normalized per-lag as an
+   NSDF (Normalized Square Difference Function, the same normalization the
+   McLeod Pitch Method uses) rather than against one fixed, full-buffer
+   energy figure. That fixed-denominator version is what this function
+   used to do, and it systematically penalized low notes: the numerator at
+   a lag L only sums (size - L) sample pairs, so as L grows for lower
+   frequencies, that shrinking sum was being compared against the *same*
+   full-length sumSquares computed once for the whole buffer — a perfectly
+   periodic low note could land well under MIN_CLARITY for no reason but
+   its own lag length (e.g. a clean ~110 Hz tone in a 4096-sample window
+   tops out around clarity ~0.89, already below the 0.9 cutoff, before any
+   real noise or inharmonicity — which is why guitar notes around A3 and
+   below were being reported as "no signal" despite showing clearly on the
+   Spectrum Analyser). Normalizing energy over the same shrinking window
+   the numerator itself uses removes that bias, so clarity reflects actual
+   periodicity at every frequency alike. Restricted to the plausible
+   instrument frequency range so the O(bufferSize * lagRange) cost stays
+   cheap enough to run several times a second in plain JS. A normalized
    correlation peak below MIN_CLARITY is treated as "no clear pitch"
    (background noise, breath, pick noise, silence).
    ============================================================ */
 function detectPitch(buffer, sampleRate) {
   const size = buffer.length;
-  let sumSquares = 0;
+  let totalEnergy = 0;
 
   for (let i = 0; i < size; i += 1) {
-    sumSquares += buffer[i] * buffer[i];
+    totalEnergy += buffer[i] * buffer[i];
   }
 
-  const rms = Math.sqrt(sumSquares / size);
+  const rms = Math.sqrt(totalEnergy / size);
 
   if (rms < MIN_RMS) {
     return null;
@@ -217,21 +231,47 @@ function detectPitch(buffer, sampleRate) {
 
   const correlations = new Float32Array(maxLag - minLag + 1);
   let bestIndex = -1;
-  let bestValue = 0;
+  let bestValue = -1;
+  // A clean tone is exactly as periodic at 2x, 3x… its true period as at
+  // the period itself (any multiple of a period is also a period), so the
+  // NSDF ties or nearly ties there too — floating-point noise alone can
+  // then make one of those octave-below lags edge out the true peak as the
+  // single global max, misreading (say) a clean A2 as A1. The first local
+  // peak that already clears MIN_CLARITY is taken immediately instead: it
+  // is necessarily the shortest — i.e. highest-frequency — lag confident
+  // enough to count, which is always the true period, never a subharmonic
+  // multiple of it (those only appear later, at longer lags).
+  let peakIndex = -1;
 
   for (let lag = minLag; lag <= maxLag; lag += 1) {
+    const limit = size - lag;
     let sum = 0;
+    let energy = 0;
 
-    for (let i = 0; i < size - lag; i += 1) {
+    for (let i = 0; i < limit; i += 1) {
       sum += buffer[i] * buffer[i + lag];
+      energy += buffer[i] * buffer[i] + buffer[i + lag] * buffer[i + lag];
     }
 
+    // 2r(τ) / m'(τ): 1.0 for a perfectly periodic signal at any lag,
+    // instead of decaying toward 0 as the lag grows.
+    const normalized = energy > 0 ? (2 * sum) / energy : 0;
     const index = lag - minLag;
-    correlations[index] = sum;
+    correlations[index] = normalized;
 
-    if (sum > bestValue) {
-      bestValue = sum;
+    if (normalized > bestValue) {
+      bestValue = normalized;
       bestIndex = index;
+    }
+
+    if (
+      peakIndex === -1 &&
+      index >= 2 &&
+      correlations[index - 1] >= MIN_CLARITY &&
+      correlations[index - 1] >= correlations[index - 2] &&
+      correlations[index - 1] >= normalized
+    ) {
+      peakIndex = index - 1;
     }
   }
 
@@ -239,7 +279,12 @@ function detectPitch(buffer, sampleRate) {
     return null;
   }
 
-  const clarity = bestValue / sumSquares;
+  if (peakIndex !== -1) {
+    bestIndex = peakIndex;
+    bestValue = correlations[peakIndex];
+  }
+
+  const clarity = bestValue;
 
   if (clarity < MIN_CLARITY) {
     return null;

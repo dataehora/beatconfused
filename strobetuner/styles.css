@@ -395,6 +395,56 @@ input:focus-visible {
   padding: 0 0 0.3rem;
 }
 
+/* ---- octave legend: 0-8, one per key on an 88-key piano's octave
+   numbering — matching buildOctaveFreqTable's OCTAVE_MIN..OCTAVE_MAX rows.
+   Starts at the disc's own horizontal center and runs right (see
+   .octave-legend's margin-left), rather than spanning the full width, so
+   it reads as an extension of the display above it instead of a separate
+   full-width bar. Whichever octave(s) of the current note are actually
+   confident get the note name lit up next to their number — see
+   updateOctaveLegend in script.js. ---- */
+.octave-legend-stage {
+  width: min(720px, 100%);
+  margin: 0 auto;
+}
+
+.octave-legend {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0 0 0 50%;
+  padding: 0 0 0.2rem;
+  overflow-x: auto;
+}
+
+.octave-legend-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15rem;
+  flex: none;
+  font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+.octave-legend-num {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--gold);
+}
+
+.octave-legend-note {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--accent-strong);
+}
+
+.octave-legend-item.is-in-tune .octave-legend-note {
+  color: var(--in-tune-strong);
+}
+
+.octave-legend-note[hidden] {
+  display: none;
+}
+
 /* The rings are the entire point of this page, so the disc gets as much
    width as the card can spare — a much higher cap than a purely
    decorative device would need. */
