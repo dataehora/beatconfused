@@ -19,17 +19,6 @@
   const PIANO_MIN_MIDI = 21;
   const PIANO_MAX_MIDI = 108;
 
-  // The six tuning standards offered under Reference Pitch, in ascending
-  // order — also reused to build the Frequency Table's columns.
-  const REFERENCE_PITCH_PRESETS = [
-    { value: 392, primary: "French Baroque", secondary: "\"Tone de Chambre\"" },
-    { value: 415, primary: "Baroque" },
-    { value: 432, primary: "Verdi", secondary: "\"Scientific\"" },
-    { value: 440, primary: "Standard" },
-    { value: 444, primary: "Modern", secondary: "\"Symphony\"" },
-    { value: 466, primary: "Italian", secondary: "Renaissance" },
-  ];
-
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
   /* ============================================================
@@ -263,56 +252,102 @@
   }
 
   /* ============================================================
-     FREQUENCY TABLE — the generic /tuner/-style table: one column per
-     Reference Pitch standard, one row per key of an 88-key piano (A0-C8).
-     /strobetuner/ builds its own specialized note-by-octave grid instead
-     (its layout is fundamentally different), so that one stays page-local.
+     OCTAVE FREQUENCY TABLE — the one Frequency Table design every
+     tuner-family page now shares (originally /strobetuner/'s): notes
+     across the columns (C..B), octaves down the rows (0-8), covering
+     exactly the 88 keys of a standard piano. Every populated cell holds a
+     static frequency under whichever Tuning Standard + Reference Pitch is
+     currently selected, plus a hidden cents span a page fills in live for
+     whichever note(s) it's actually hearing — see
+     updateOctaveFrequencyTableRings below for pages that track every
+     note/octave at once via Goertzel rings, or a page can update its own
+     single detected cell directly (see /tuner/'s updateFreqTableLiveCents).
      ============================================================ */
-  function buildFrequencyTable(options) {
-    const { headRow, body, pianoNoteFrequency } = options;
+  const OCTAVE_MIN = Math.floor(PIANO_MIN_MIDI / 12) - 1; // 0 (A0)
+  const OCTAVE_MAX = Math.floor(PIANO_MAX_MIDI / 12) - 1; // 8 (C8)
 
-    if (headRow.childElementCount === 0) {
-      REFERENCE_PITCH_PRESETS.forEach((preset) => {
+  function buildOctaveFrequencyTable(options) {
+    const { headRow, body, pianoNoteFrequency, cellsByMidi } = options;
+
+    if (headRow.childElementCount <= 1) {
+      NOTE_NAMES.forEach((name) => {
         const th = document.createElement("th");
-        const freqEl = document.createElement("span");
-        freqEl.className = "freq-table-col-freq";
-        freqEl.textContent = `${preset.value} Hz`;
-        th.appendChild(freqEl);
-
-        if (preset.primary) {
-          const primaryEl = document.createElement("span");
-          primaryEl.className = "freq-table-col-name-primary";
-          primaryEl.textContent = preset.primary;
-          th.appendChild(primaryEl);
-        }
-
-        if (preset.secondary) {
-          const secondaryEl = document.createElement("span");
-          secondaryEl.className = "freq-table-col-name-secondary";
-          secondaryEl.textContent = preset.secondary;
-          th.appendChild(secondaryEl);
-        }
-
+        th.textContent = name;
         headRow.appendChild(th);
       });
     }
 
     body.innerHTML = "";
+    cellsByMidi.clear();
 
-    for (let midi = PIANO_MIN_MIDI; midi <= PIANO_MAX_MIDI; midi += 1) {
+    for (let octave = OCTAVE_MIN; octave <= OCTAVE_MAX; octave += 1) {
       const row = document.createElement("tr");
-      const noteCell = document.createElement("td");
-      noteCell.textContent = noteNameForMidi(midi);
-      row.appendChild(noteCell);
+      const octaveCell = document.createElement("td");
+      octaveCell.className = "freq-table-note-col";
+      octaveCell.textContent = String(octave);
+      row.appendChild(octaveCell);
 
-      REFERENCE_PITCH_PRESETS.forEach((preset) => {
+      NOTE_NAMES.forEach((name, pitchClass) => {
+        const midi = (octave + 1) * 12 + pitchClass;
         const cell = document.createElement("td");
-        cell.textContent = pianoNoteFrequency(midi, preset.value).toFixed(2);
+        cell.className = "octave-cell";
+
+        if (midi < PIANO_MIN_MIDI || midi > PIANO_MAX_MIDI) {
+          cell.classList.add("is-out-of-range");
+        } else {
+          const freqEl = document.createElement("span");
+          freqEl.className = "octave-cell-freq";
+          freqEl.textContent = pianoNoteFrequency(midi).toFixed(2);
+
+          const centsEl = document.createElement("span");
+          centsEl.className = "octave-cell-cents";
+          centsEl.hidden = true;
+
+          cell.appendChild(freqEl);
+          cell.appendChild(centsEl);
+          cellsByMidi.set(midi, { cell, centsEl });
+        }
+
         row.appendChild(cell);
       });
 
       body.appendChild(row);
     }
+  }
+
+  // Per-tick update for pages that track every note/octave at once via a
+  // ringsByMidi map of { confident, smoothedCents } — the shape
+  // shared/strobe-disc.js's rings already are, so /strobetuner/'s shadow
+  // discs and /multistrobe/'s own on-screen discs can both feed this
+  // directly. `fundamentalMidi` (nullable) marks one cell with the same
+  // golden highlight its disc/ring gets; pass null where there's no single
+  // "best guess" note (e.g. /multistrobe/, which has no autocorrelation).
+  function updateOctaveFrequencyTableRings(cellsByMidi, ringsByMidi, fundamentalMidi, inTuneThresholdCents) {
+    cellsByMidi.forEach(({ cell, centsEl }, midi) => {
+      const ring = ringsByMidi.get(midi);
+      cell.classList.toggle("is-fundamental", fundamentalMidi === midi);
+
+      if (!ring || !ring.confident) {
+        cell.classList.remove("is-active", "is-in-tune");
+        centsEl.hidden = true;
+        return;
+      }
+
+      const rounded = Math.round(ring.smoothedCents);
+      const inTune = Math.abs(ring.smoothedCents) <= inTuneThresholdCents;
+      const sign = rounded > 0 ? "+" : "";
+      centsEl.textContent = `${sign}${rounded}¢`;
+      centsEl.hidden = false;
+      cell.classList.add("is-active");
+      cell.classList.toggle("is-in-tune", inTune);
+    });
+  }
+
+  function resetOctaveFrequencyTable(cellsByMidi) {
+    cellsByMidi.forEach(({ cell, centsEl }) => {
+      cell.classList.remove("is-active", "is-in-tune", "is-fundamental");
+      centsEl.hidden = true;
+    });
   }
 
   /* ============================================================
@@ -620,7 +655,8 @@
     DEFAULT_A4,
     PIANO_MIN_MIDI,
     PIANO_MAX_MIDI,
-    REFERENCE_PITCH_PRESETS,
+    OCTAVE_MIN,
+    OCTAVE_MAX,
     TEMPERAMENTS,
     MIC_MESSAGES,
     clamp,
@@ -628,7 +664,9 @@
     getTemperamentById,
     setupReferencePitch,
     setupTemperament,
-    buildFrequencyTable,
+    buildOctaveFrequencyTable,
+    updateOctaveFrequencyTableRings,
+    resetOctaveFrequencyTable,
     createSpectrumAnalyser,
     computeRms,
     rmsToDb,
