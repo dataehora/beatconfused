@@ -65,8 +65,6 @@ let analyserNode = null;
 let mediaStream = null;
 let mediaStreamSource = null;
 let micGainNode = null;
-let testOscillator = null;
-let testGainNode = null;
 let timeDomainBuffer = null;
 let freqDataBuffer = null;
 let rafId;
@@ -142,7 +140,7 @@ const temperament = T.setupTemperament({
   keySelects: temperamentKeySelects,
   onChange: () => {
     buildFreqTable();
-    updateTestToneDisplay(getTestToneFrequency());
+    updateTestToneDisplay(testTone.getFrequency());
     spectrum.updateLabels(getSpectrumRange(), state.a4);
     updateTuningStatement();
   },
@@ -164,6 +162,17 @@ const inputMonitor = T.createInputMonitor({
   levelValueLabel: levelValueLabelEl,
   getGainNode: () => micGainNode,
   audioContextRef: () => audioContext,
+});
+
+const testTone = T.createTestTone({
+  rangeInput: testToneRange,
+  centsRangeInput: testToneCentsRange,
+  volumeInput: testToneVolume,
+  freqLabel: testToneFreqLabelEl,
+  centsLabel: testToneCentsLabelEl,
+  minFreq: TEST_FREQ_MIN,
+  maxFreq: TEST_FREQ_MAX,
+  maxFineTuningCents: FINE_TUNING_MAX_CENTS,
 });
 
 // How far a reading sits between "just out of the green zone" (pure brown,
@@ -312,17 +321,7 @@ function pianoNoteFrequency(midi, a4) {
 }
 
 function frequencyToNote(frequency, a4) {
-  const equalMidi = 69 + 12 * Math.log2(frequency / a4);
-  const rounded = Math.round(equalMidi);
-  const targetFrequency = pianoNoteFrequency(rounded, a4);
-  const cents = 1200 * Math.log2(frequency / targetFrequency);
-  const name = NOTE_NAMES[((rounded % 12) + 12) % 12];
-  const octave = Math.floor(rounded / 12) - 1;
-  return { name, octave, cents, midi: rounded };
-}
-
-function noteNameForMidi(midi) {
-  return T.noteNameForMidi(midi);
+  return T.frequencyToNote(frequency, a4, pianoNoteFrequency);
 }
 
 function centsToNeedleAngle(cents) {
@@ -672,9 +671,10 @@ function mainLoop(timestamp) {
     lastPitchCheckAt = timestamp;
 
     // Both sources feed the same analyser now (mic through micGainNode,
-    // test tone through testGainNode in parallel with the speakers), so
-    // the Input Monitor's level meter and Spectrum Analyser read it the
-    // same way regardless of which one is active.
+    // test tone through its own gain node in parallel with the speakers —
+    // see T.createTestTone), so the Input Monitor's level meter and
+    // Spectrum Analyser read it the same way regardless of which one is
+    // active.
     analyserNode.getFloatTimeDomainData(timeDomainBuffer);
     inputMonitor.updateLevelMeter(inputMonitor.computeRms(timeDomainBuffer));
     analyserNode.getByteFrequencyData(freqDataBuffer);
@@ -686,7 +686,7 @@ function mainLoop(timestamp) {
       // immune to gain/volume changes, which briefly disturb the analysed
       // waveform (and therefore the autocorrelation result) if routed
       // through the same detector used for the microphone.
-      const testFrequency = getTestToneFrequency();
+      const testFrequency = testTone.getFrequency();
       const note = frequencyToNote(testFrequency, state.a4);
       state.smoothedCents += (note.cents - state.smoothedCents) * CENTS_SMOOTHING;
       state.hasSignal = true;
@@ -814,12 +814,14 @@ function toggleMic() {
 }
 
 /* ============================================================
-   TEST TONE — an oscillator routed to the speakers so it's audible. Its
-   pitch readout is still computed directly from the known set frequency
-   (see mainLoop) rather than detected, so it can't be perturbed by gain/
-   volume changes — but it's also tapped into the analyser (in parallel
-   with the speakers) so the Input Monitor's level meter and Spectrum
-   Analyser have something to show while it plays, same as the mic.
+   TEST TONE — an oscillator routed to the speakers so it's audible (see
+   T.createTestTone, which owns the oscillator/gain node lifecycle and the
+   frequency/cents/volume slider math). Its pitch readout here is still
+   computed directly from the known set frequency (see mainLoop) rather
+   than detected, so it can't be perturbed by gain/volume changes — but
+   it's also tapped into the analyser (in parallel with the speakers) so
+   the Input Monitor's level meter and Spectrum Analyser have something to
+   show while it plays, same as the mic.
    ============================================================ */
 function startTestTone() {
   if (state.activeSource === "test") {
@@ -838,18 +840,7 @@ function startTestTone() {
   }
 
   ensureAnalyser();
-
-  testOscillator = ctx.createOscillator();
-  testOscillator.type = "sine";
-  testOscillator.frequency.setValueAtTime(getTestToneFrequency(), ctx.currentTime);
-
-  testGainNode = ctx.createGain();
-  testGainNode.gain.setValueAtTime(Number(testToneVolume.value), ctx.currentTime);
-
-  testOscillator.connect(testGainNode);
-  testGainNode.connect(ctx.destination);
-  testGainNode.connect(analyserNode);
-  testOscillator.start();
+  testTone.start(ctx, analyserNode);
 
   state.activeSource = "test";
   toggleTestToneBtn.textContent = "Stop Test Tone";
@@ -863,17 +854,7 @@ function stopTestTone() {
   }
 
   state.activeSource = null;
-
-  if (testOscillator) {
-    testOscillator.stop();
-    testOscillator.disconnect();
-    testOscillator = null;
-  }
-
-  if (testGainNode) {
-    testGainNode.disconnect();
-    testGainNode = null;
-  }
+  testTone.stop();
 
   toggleTestToneBtn.textContent = "Test Tone";
   toggleTestToneBtn.setAttribute("aria-pressed", "false");
@@ -897,79 +878,35 @@ function stopActiveSource() {
   }
 }
 
-// The Frequency slider picks a whole-Hz base; Fine Tuning bends it by up to
-// ±50 cents (a quarter-tone each way) rather than adding raw Hz, so it reads
-// the same musically at any point on the keyboard.
-function getTestToneFrequency() {
-  const base = Number(testToneRange.value);
-  const cents = Number(testToneCentsRange.value);
-  return base * Math.pow(2, cents / 1200);
-}
-
 function updateTestToneDisplay(frequency) {
-  testToneFreqLabelEl.textContent = `${frequency.toFixed(2)} Hz`;
+  testTone.updateFreqLabel(frequency);
   const note = frequencyToNote(frequency, state.a4);
   const roundedCents = Math.round(note.cents);
   const sign = roundedCents > 0 ? "+" : "";
   testToneNoteEl.textContent = `${note.name}${note.octave} ${sign}${roundedCents}¢`;
-  updateVarianceBar(note);
-}
-
-function updateFineTuningLabel() {
-  const cents = Number(testToneCentsRange.value);
-  const sign = cents > 0 ? "+" : "";
-  testToneCentsLabelEl.textContent = `${sign}${cents}¢`;
-}
-
-// A single lean fill growing outward from a center tick (the nearest note)
-// toward whichever neighbor the tone is drifting closer to — how far it's
-// come from the current note, and how much room is left before the next.
-function updateVarianceBar(note) {
-  const clamped = clamp(note.cents, -50, 50);
-
-  if (clamped >= 0) {
-    varianceFillEl.style.left = "50%";
-    varianceFillEl.style.width = `${clamped}%`;
-  } else {
-    varianceFillEl.style.left = `${50 + clamped}%`;
-    varianceFillEl.style.width = `${-clamped}%`;
-  }
-
-  varianceFillEl.classList.toggle("in-tune", Math.abs(note.cents) <= IN_TUNE_THRESHOLD_CENTS);
-  varianceFillEl.style.setProperty("--tune-mix", String(getTuneMixPercent(note.cents)));
-  variancePrevNoteEl.textContent = noteNameForMidi(note.midi - 1);
-  varianceCurrentNoteEl.textContent = `${note.name}${note.octave}`;
-  varianceNextNoteEl.textContent = noteNameForMidi(note.midi + 1);
+  T.updateTestToneVariance(
+    note,
+    { fillEl: varianceFillEl, prevNoteEl: variancePrevNoteEl, currentNoteEl: varianceCurrentNoteEl, nextNoteEl: varianceNextNoteEl },
+    { inTuneThresholdCents: IN_TUNE_THRESHOLD_CENTS, getTuneMixPercent },
+  );
 }
 
 function applyTestToneFrequency() {
-  const combined = getTestToneFrequency();
-  updateTestToneDisplay(combined);
-
-  if (state.activeSource === "test" && testOscillator) {
-    testOscillator.frequency.setTargetAtTime(combined, audioContext.currentTime, 0.01);
-  }
+  updateTestToneDisplay(testTone.applyFrequency(audioContext));
 }
 
 // Changing the base frequency resets Fine Tuning back to 0 — otherwise the
 // two controls would fight over what "0" even means as the base moves.
 function resetFineTuningCents() {
-  testToneCentsRange.value = "0";
-  updateFineTuningLabel();
-  applyTestToneFrequency();
+  updateTestToneDisplay(testTone.resetFineTuning(audioContext));
 }
 
 function nudgeTestToneFrequency(deltaHz) {
-  const next = clamp(Number(testToneRange.value) + deltaHz, TEST_FREQ_MIN, TEST_FREQ_MAX);
-  testToneRange.value = String(next);
-  resetFineTuningCents();
+  updateTestToneDisplay(testTone.nudgeFrequency(deltaHz, audioContext));
 }
 
 function nudgeFineTuningCents(deltaCents) {
-  const next = clamp(Number(testToneCentsRange.value) + deltaCents, -FINE_TUNING_MAX_CENTS, FINE_TUNING_MAX_CENTS);
-  testToneCentsRange.value = String(next);
-  updateFineTuningLabel();
-  applyTestToneFrequency();
+  updateTestToneDisplay(testTone.nudgeFineTuning(deltaCents, audioContext));
 }
 
 /* ============================================================
@@ -1002,7 +939,7 @@ const referencePitch = T.setupReferencePitch({
   onChange: (a4) => {
     state.a4 = a4;
     buildFreqTable();
-    updateTestToneDisplay(getTestToneFrequency());
+    updateTestToneDisplay(testTone.getFrequency());
     spectrum.updateLabels(getSpectrumRange(), state.a4);
     updateTuningStatement();
   },
@@ -1031,18 +968,12 @@ testToneRange.addEventListener("dblclick", () => {
 });
 
 testToneCentsRange.addEventListener("input", () => {
-  updateFineTuningLabel();
+  testTone.updateCentsLabel();
   applyTestToneFrequency();
 });
 
 // A double-click anywhere on the Fine Tuning bar snaps it back to 0.
 testToneCentsRange.addEventListener("dblclick", resetFineTuningCents);
-
-testToneVolume.addEventListener("input", (event) => {
-  if (testGainNode) {
-    testGainNode.gain.setTargetAtTime(Number(event.target.value), audioContext.currentTime, 0.01);
-  }
-});
 
 // Re-measuring the spectrum canvas on expand matters because it reports
 // zero size while display:none, so sizeCanvas's guard skips it until the
@@ -1071,8 +1002,8 @@ buildNeedleScale();
 buildLedSegments();
 setVisualMode();
 referencePitch.setA4(state.a4);
-updateFineTuningLabel();
-updateTestToneDisplay(getTestToneFrequency());
+testTone.updateCentsLabel();
+updateTestToneDisplay(testTone.getFrequency());
 spectrum.setStyle("vintage");
 spectrum.sizeCanvas();
 resetVisuals();

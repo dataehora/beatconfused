@@ -170,6 +170,18 @@ body {
   gap: 0.5rem;
 }
 
+/* A second, non-collapsing header INSIDE a merged panel (e.g. "Test Tone"
+   within the combined Input Monitor and Test Tone block) — same layout as
+   .panel-header, but deliberately a different class: the collapse rule
+   (.control-block.is-collapsed > *:not(.panel-header)) exempts every
+   .panel-header from hiding, so a second one would stay visible even
+   while the panel is collapsed. */
+.panel-subheader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .panel-title {
   font-weight: 600;
   font-size: 0.9rem;
@@ -752,6 +764,101 @@ input:focus-visible {
   height: 0%;
   background: color-mix(in srgb, var(--accent) calc(var(--level-mix, 0) * 1%), var(--gold));
   transition: height 90ms linear;
+}
+
+/* ---- Test Tone: an oscillator every tuner-family page can feed into its
+   own analyser (see T.createTestTone in shared/tuner-common.js), plus the
+   variance bar showing how far it sits from its nearest note — a single
+   lean fill, not a segmented ladder, so it reads at a glance. ---- */
+.variance-block {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.variance-track {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--paper-strong);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.variance-track::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--border-strong);
+}
+
+.variance-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: color-mix(in srgb, var(--tune-gray) calc(var(--tune-mix, 0) * 1%), var(--accent));
+  border-radius: 999px;
+  transition: background 160ms ease;
+}
+
+.variance-fill.in-tune {
+  background: var(--in-tune);
+}
+
+.variance-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+
+.variance-labels span:nth-child(2) {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.test-tone-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.1rem;
+  min-width: 0;
+}
+
+.test-tone-controls .small-btn {
+  flex: 0 0 auto;
+}
+
+.test-tone-controls .small-btn[aria-pressed="true"] {
+  background: linear-gradient(140deg, #b67a35, #8d5524);
+  border-color: rgba(115, 68, 29, 0.7);
+  color: #fffdf7;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.volume-label {
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.volume-control input[type="range"] {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  max-width: 76px;
 }
 
 /* ============================================================
