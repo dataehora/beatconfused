@@ -132,6 +132,8 @@
         </div>
       </div>
 
+      <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop (Space)">Start</button>
+
       <div class="panel tempo-panel" aria-labelledby="tempoPanelTitle">
         <h3 id="tempoPanelTitle" class="panel-title">Tempo</h3>
 
@@ -213,6 +215,24 @@
               1 plain beat · 2 eighth notes · 3 triplets · 4 sixteenth notes · 6 sextuplets · 8 thirty-second notes
             </p>
           </div>
+
+          <div class="field">
+            <span class="field-label" id="countModeLabel">Counting display</span>
+            <div class="pill-group" role="radiogroup" aria-labelledby="countModeLabel">
+              <label class="pill pill-sm">
+                <input type="radio" name="countMode" value="beat" checked />
+                <span>Beat</span>
+              </label>
+              <label class="pill pill-sm">
+                <input type="radio" name="countMode" value="measure" />
+                <span>Bar</span>
+              </label>
+              <label class="pill pill-sm">
+                <input type="radio" name="countMode" value="off" />
+                <span>Off</span>
+              </label>
+            </div>
+          </div>
         </div>
 
         <div class="panel control-block" aria-labelledby="soundPanelTitle">
@@ -243,26 +263,17 @@
           </div>
 
           <div class="field">
-            <span class="field-label" id="countModeLabel">Counting display</span>
-            <div class="pill-group" role="radiogroup" aria-labelledby="countModeLabel">
+            <span class="field-label" id="accentLabel">Accent the first beat</span>
+            <div class="pill-group">
               <label class="pill pill-sm">
-                <input type="radio" name="countMode" value="beat" checked />
-                <span>Beat</span>
-              </label>
-              <label class="pill pill-sm">
-                <input type="radio" name="countMode" value="measure" />
-                <span>Bar</span>
-              </label>
-              <label class="pill pill-sm">
-                <input type="radio" name="countMode" value="off" />
-                <span>Off</span>
+                <input id="accentToggle" type="checkbox" checked aria-labelledby="accentLabel" />
+                <span>Stronger beat</span>
               </label>
             </div>
+            <p class="hint">When off, beat 1 clicks the same as every other beat.</p>
           </div>
         </div>
       </div>
-
-      <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop (Space)">Start</button>
     </section>
 
     <footer class="footer">
