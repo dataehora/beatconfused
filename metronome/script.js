@@ -274,13 +274,10 @@ function ensureAudioContext() {
      wood_accent / wood_beat / wood_subdivision
      cymbal_accent / cymbal_beat / cymbal_subdivision
      cowbell_accent / cowbell_beat / cowbell_subdivision
-     bossa_accent / bossa_beat / bossa_subdivision
-     electronic_accent / electronic_beat / electronic_subdivision
-     jazz_accent / jazz_beat / jazz_subdivision
    "accent" is the downbeat (start of the measure), "beat" is a regular
    beat, "subdivision" is a subdivided pulse within a beat.
    ============================================================ */
-const SOUND_STYLES = ["electronic", "bossa", "jazz", "wood", "cymbal", "cowbell"];
+const SOUND_STYLES = ["wood", "cymbal", "cowbell"];
 const BEAT_TYPES = ["accent", "beat", "subdivision"];
 const CUSTOM_AUDIO_EXTS = ["mp3", "ogg", "wav"];
 
@@ -418,44 +415,19 @@ function playSound(pulseType) {
   }
 
   switch (style) {
-    case "wood":
-      playOscillator({
-        type: "triangle",
-        frequency: isAccent ? 980 : isSubdivision ? 520 : 740,
-        volume: adjustedVolume,
-        duration: CLICK_DURATION_SEC,
-      });
-      break;
-    case "jazz":
-      playOscillator({
-        type: "sine",
-        frequency: isAccent ? 1120 : isSubdivision ? 640 : 860,
-        volume: adjustedVolume,
-        duration: 0.06,
-      });
-      break;
-    case "bossa":
-      playOscillator({
-        type: "triangle",
-        frequency: isAccent ? 920 : isSubdivision ? 460 : 700,
-        volume: adjustedVolume,
-        duration: 0.055,
-      });
-      break;
     case "cymbal":
       playCymbal(adjustedVolume, isAccent);
       break;
     case "cowbell":
       playCowbell(adjustedVolume, isAccent);
       break;
-    case "electronic":
+    case "wood":
     default:
       playOscillator({
-        type: "square",
-        frequency: isAccent ? 1320 : isSubdivision ? 620 : 920,
+        type: "triangle",
+        frequency: isAccent ? 980 : isSubdivision ? 520 : 740,
         volume: adjustedVolume,
         duration: CLICK_DURATION_SEC,
-        highPassFrequency: 240,
       });
       break;
   }
