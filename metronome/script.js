@@ -18,6 +18,7 @@ const countModeInputs = document.querySelectorAll('input[name="countMode"]');
 const soundStyleSelect = document.getElementById("soundStyle");
 const soundToggle = document.getElementById("soundToggle");
 const vibrationToggle = document.getElementById("vibrationToggle");
+const accentToggle = document.getElementById("accentToggle");
 const volumeInput = document.getElementById("volume");
 const metronomeSection = document.querySelector(".metronome");
 
@@ -400,7 +401,7 @@ function playSound(pulseType) {
   }
 
   const volume = Number(volumeInput.value);
-  const isAccent = pulseType === "measure";
+  const isAccent = pulseType === "measure" && accentToggle.checked;
   const isSubdivision = pulseType === "subdivision";
   const style = soundStyleSelect.value;
   const level = isAccent ? 1 : isSubdivision ? 0.45 : 0.7;
