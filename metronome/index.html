@@ -132,85 +132,100 @@
         </div>
       </div>
 
-      <div class="tempo-hero">
-        <button id="decreaseBtn" type="button" class="small-btn" aria-label="Decrease BPM" title="Decrease BPM (↓)">−</button>
-        <div class="bpm-readout">
-          <input id="bpmInput" type="number" min="40" max="240" step="1" value="120" aria-label="Tempo in beats per minute" title="Tempo (BPM)" />
-          <span class="bpm-unit">BPM</span>
-        </div>
-        <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM" title="Increase BPM (↑)">+</button>
-      </div>
-      <input id="bpmRange" type="range" min="40" max="240" value="120" class="bpm-slider" aria-label="Tempo slider" />
+      <div class="panel tempo-panel" aria-labelledby="tempoPanelTitle">
+        <h3 id="tempoPanelTitle" class="panel-title">Tempo</h3>
 
-      <div class="transport-row">
-        <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop (Space)">Start</button>
-        <button id="tapBtn" type="button" class="small-btn tap-btn" title="Tap tempo (T)">Tap</button>
+        <div class="tempo-hero">
+          <button id="decreaseBtn" type="button" class="small-btn" aria-label="Decrease BPM" title="Decrease BPM (↓)">−</button>
+          <div class="bpm-readout">
+            <input id="bpmInput" type="number" min="40" max="240" step="1" value="120" aria-label="Tempo in beats per minute" title="Tempo (BPM)" />
+            <span class="bpm-unit">BPM</span>
+          </div>
+          <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM" title="Increase BPM (↑)">+</button>
+        </div>
+        <input id="bpmRange" type="range" min="40" max="240" value="120" class="bpm-slider" aria-label="Tempo slider" />
+
+        <div class="tap-row">
+          <button id="tapBtn" type="button" class="tap-btn" title="Tap tempo (T)">Tap Tempo</button>
+          <p id="tapStatus" class="hint tap-status" aria-live="polite"></p>
+        </div>
       </div>
-      <p id="tapStatus" class="hint tap-status" aria-live="polite"></p>
 
       <div class="beat-indicators" id="beatIndicators" aria-label="Beat indicators"></div>
 
       <div class="controls-grid">
-        <div class="control-block">
-          <span class="sr-only">Time signature</span>
-          <select id="timeSignature" aria-label="Time signature">
-            <optgroup label="Simple">
-              <option value="2/2" data-beats="2">2/2</option>
-              <option value="2/4" data-beats="2">2/4</option>
-              <option value="3/4" data-beats="3">3/4</option>
-              <option value="4/4" data-beats="4" selected>4/4</option>
-              <option value="6/4" data-beats="6">6/4</option>
-            </optgroup>
-            <optgroup label="Compound">
-              <option value="3/8" data-beats="3">3/8</option>
-              <option value="6/8" data-beats="6">6/8</option>
-              <option value="9/8" data-beats="9">9/8</option>
-              <option value="12/8" data-beats="12">12/8</option>
-            </optgroup>
-            <optgroup label="Odd">
-              <option value="5/4" data-beats="5">5/4</option>
-              <option value="5/8" data-beats="5">5/8</option>
-              <option value="7/8" data-beats="7">7/8</option>
-            </optgroup>
-          </select>
+        <div class="panel control-block" aria-labelledby="timePanelTitle">
+          <h3 id="timePanelTitle" class="panel-title">Time Signature &amp; Beat</h3>
 
-          <div class="pill-group" role="radiogroup" aria-label="Beat subdivision">
-            <label class="pill pill-sm">
-              <input type="radio" name="subdivision" value="1" checked />
-              <span>1</span>
-            </label>
-            <label class="pill pill-sm">
-              <input type="radio" name="subdivision" value="2" />
-              <span>2</span>
-            </label>
-            <label class="pill pill-sm">
-              <input type="radio" name="subdivision" value="3" />
-              <span>3</span>
-            </label>
-            <label class="pill pill-sm">
-              <input type="radio" name="subdivision" value="4" />
-              <span>4</span>
-            </label>
-            <label class="pill pill-sm">
-              <input type="radio" name="subdivision" value="6" />
-              <span>6</span>
-            </label>
-            <label class="pill pill-sm">
-              <input type="radio" name="subdivision" value="8" />
-              <span>8</span>
-            </label>
+          <div class="field">
+            <span class="field-label" id="timeSignatureLabel">Time signature</span>
+            <select id="timeSignature" aria-labelledby="timeSignatureLabel">
+              <optgroup label="Simple">
+                <option value="2/2" data-beats="2">2/2</option>
+                <option value="2/4" data-beats="2">2/4</option>
+                <option value="3/4" data-beats="3">3/4</option>
+                <option value="4/4" data-beats="4" selected>4/4</option>
+                <option value="6/4" data-beats="6">6/4</option>
+              </optgroup>
+              <optgroup label="Compound">
+                <option value="3/8" data-beats="3">3/8</option>
+                <option value="6/8" data-beats="6">6/8</option>
+                <option value="9/8" data-beats="9">9/8</option>
+                <option value="12/8" data-beats="12">12/8</option>
+              </optgroup>
+              <optgroup label="Odd">
+                <option value="5/4" data-beats="5">5/4</option>
+                <option value="5/8" data-beats="5">5/8</option>
+                <option value="7/8" data-beats="7">7/8</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="field">
+            <span class="field-label" id="subdivisionLabel">Subdivide each beat into</span>
+            <div class="pill-group" role="radiogroup" aria-labelledby="subdivisionLabel">
+              <label class="pill pill-sm">
+                <input type="radio" name="subdivision" value="1" checked />
+                <span>1</span>
+              </label>
+              <label class="pill pill-sm">
+                <input type="radio" name="subdivision" value="2" />
+                <span>2</span>
+              </label>
+              <label class="pill pill-sm">
+                <input type="radio" name="subdivision" value="3" />
+                <span>3</span>
+              </label>
+              <label class="pill pill-sm">
+                <input type="radio" name="subdivision" value="4" />
+                <span>4</span>
+              </label>
+              <label class="pill pill-sm">
+                <input type="radio" name="subdivision" value="6" />
+                <span>6</span>
+              </label>
+              <label class="pill pill-sm">
+                <input type="radio" name="subdivision" value="8" />
+                <span>8</span>
+              </label>
+            </div>
+            <p class="hint subdivision-hint">
+              1 plain beat · 2 eighth notes · 3 triplets · 4 sixteenth notes · 6 sextuplets · 8 thirty-second notes
+            </p>
           </div>
         </div>
 
-        <div class="control-block">
-          <select id="soundStyle" aria-label="Sound tone">
-            <option value="electronic" selected>Electronic</option>
-            <option value="bossa">Bossa</option>
-            <option value="jazz">Jazz</option>
-            <option value="wood">Wood</option>
-            <option value="cymbal">Cymbal</option>
-            <option value="cowbell">Cowbell</option>
-          </select>
+        <div class="panel control-block" aria-labelledby="soundPanelTitle">
+          <h3 id="soundPanelTitle" class="panel-title">Sound</h3>
+
+          <div class="field">
+            <span class="field-label" id="soundStyleLabel">Click tone</span>
+            <select id="soundStyle" aria-labelledby="soundStyleLabel">
+              <option value="wood" selected>Wood</option>
+              <option value="cymbal">Cymbal</option>
+              <option value="cowbell">Cowbell</option>
+            </select>
+          </div>
 
           <div class="sound-row">
             <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume" title="Volume" />
@@ -227,22 +242,27 @@
             </div>
           </div>
 
-          <div class="pill-group" role="radiogroup" aria-label="Counting display">
-            <label class="pill pill-sm">
-              <input type="radio" name="countMode" value="beat" checked />
-              <span>Beat</span>
-            </label>
-            <label class="pill pill-sm">
-              <input type="radio" name="countMode" value="measure" />
-              <span>Bar</span>
-            </label>
-            <label class="pill pill-sm">
-              <input type="radio" name="countMode" value="off" />
-              <span>Off</span>
-            </label>
+          <div class="field">
+            <span class="field-label" id="countModeLabel">Counting display</span>
+            <div class="pill-group" role="radiogroup" aria-labelledby="countModeLabel">
+              <label class="pill pill-sm">
+                <input type="radio" name="countMode" value="beat" checked />
+                <span>Beat</span>
+              </label>
+              <label class="pill pill-sm">
+                <input type="radio" name="countMode" value="measure" />
+                <span>Bar</span>
+              </label>
+              <label class="pill pill-sm">
+                <input type="radio" name="countMode" value="off" />
+                <span>Off</span>
+              </label>
+            </div>
           </div>
         </div>
       </div>
+
+      <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop (Space)">Start</button>
     </section>
 
     <footer class="footer">

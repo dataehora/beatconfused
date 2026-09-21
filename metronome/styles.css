@@ -304,14 +304,64 @@ body {
   gap: 0.9rem;
 }
 
-.control-block {
+/* ---- titled panels: shared box treatment for Tempo, Time Signature &
+   Beat, and Sound, so every configuration group reads as one elegant,
+   clearly-labeled unit instead of loose controls ---- */
+.panel {
   background: var(--surface-solid);
   border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
   border-radius: 0.85rem;
-  padding: 0.9rem;
+  padding: 1rem 0.9rem;
   display: grid;
   gap: 0.7rem;
   align-content: start;
+}
+
+.panel-title {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--accent-strong);
+  position: relative;
+  padding-bottom: 0.55rem;
+}
+
+.panel-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.control-block {
+  gap: 0.9rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.field-label {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.subdivision-hint {
+  line-height: 1.4;
 }
 
 label,
@@ -380,11 +430,11 @@ input[type="range"] {
   margin: 0 auto;
 }
 
-.transport-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.6rem;
+.tap-row {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  margin-top: 0.1rem;
 }
 
 .tap-status {
@@ -406,7 +456,21 @@ input[type="range"] {
 }
 
 .tap-btn {
+  width: min(200px, 100%);
+  border: 1px solid rgba(123, 71, 32, 0.65);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  background: #fff9f1;
+  color: var(--accent-strong);
   font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 120ms ease, transform 100ms ease;
+}
+
+.tap-btn:hover {
+  background: #fff3e3;
+  transform: translateY(-1px);
 }
 
 /* ---- pill toggles: shared component for visual mode, subdivision,
@@ -454,6 +518,7 @@ input[type="range"] {
 .pill input:focus-visible + span,
 .toggle-btn:focus-visible,
 .small-btn:focus-visible,
+.tap-btn:focus-visible,
 input:focus-visible,
 select:focus-visible {
   outline: 2px solid rgba(163, 86, 34, 0.9);
