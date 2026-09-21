@@ -274,7 +274,9 @@ function ensureAudioContext() {
    Filenames follow {tone}_{beat}, tried as .mp3, then .ogg, then .wav:
      wood_accent / wood_beat / wood_subdivision
      cymbal_accent / cymbal_beat / cymbal_subdivision
-     cowbell_accent / cowbell_beat / cowbell_subdivision
+     cowbell_accent / cowbell_beat / cowbell_subdivision  (the "Agogô"
+       tone in the UI -- same slot/filenames, just retuned to a
+       two-bell agogô timbre; see playAgogo() below)
    "accent" is the downbeat (start of the measure), "beat" is a regular
    beat, "subdivision" is a subdivided pulse within a beat.
    ============================================================ */
@@ -360,35 +362,50 @@ function playOscillator({ type, frequency, volume, duration, highPassFrequency }
   oscillator.stop(now + duration);
 }
 
-function playCowbell(volume, isAccent) {
+// Realtime fallback for the "Agogô" tone (used only if Assets/cowbell_*
+// is ever removed -- see the Assets-first note above CUSTOM_SOUND_BUFFERS).
+// A real agogô is two struck conical bells, high and low, so the accented
+// beat 1 switches to the higher bell's pitch rather than just getting
+// louder -- a fundamental plus one bright overtone reads as a clean bell
+// tone instead of the old close-interval square-wave "cowbell" clang.
+function playAgogo(volume, isAccent) {
   const now = audioContext.currentTime;
-  const gainNode = createGainNode(volume, now, 0.08);
+  const duration = isAccent ? 0.26 : 0.22;
+  const gainNode = createGainNode(volume, now, duration);
+  const baseFrequency = isAccent ? 1180 : 760;
 
-  [540, 845].forEach((frequency) => {
+  [
+    { ratio: 1, amp: 1 },
+    { ratio: 2.4, amp: 0.42 },
+  ].forEach(({ ratio, amp }) => {
     const oscillator = audioContext.createOscillator();
-    oscillator.type = "square";
-    oscillator.frequency.setValueAtTime(isAccent ? frequency * 1.08 : frequency, now);
-    oscillator.connect(gainNode);
+    const partialGain = audioContext.createGain();
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(baseFrequency * ratio, now);
+    partialGain.gain.setValueAtTime(amp, now);
+    oscillator.connect(partialGain);
+    partialGain.connect(gainNode);
     oscillator.start(now);
-    oscillator.stop(now + 0.08);
+    oscillator.stop(now + duration);
   });
 }
 
 function playCymbal(volume, isAccent) {
   const now = audioContext.currentTime;
+  const duration = isAccent ? 0.19 : 0.09;
   const source = audioContext.createBufferSource();
   const filter = audioContext.createBiquadFilter();
-  const gainNode = createGainNode(volume, now, isAccent ? 0.09 : 0.05);
+  const gainNode = createGainNode(volume, now, duration);
 
   source.buffer = noiseBuffer;
   filter.type = "bandpass";
-  filter.frequency.setValueAtTime(isAccent ? 8800 : 7200, now);
-  filter.Q.setValueAtTime(0.9, now);
+  filter.frequency.setValueAtTime(isAccent ? 7000 : 8200, now);
+  filter.Q.setValueAtTime(0.8, now);
 
   source.connect(filter);
   filter.connect(gainNode);
   source.start(now);
-  source.stop(now + 0.09);
+  source.stop(now + duration);
 }
 
 function playSound(pulseType) {
@@ -420,7 +437,7 @@ function playSound(pulseType) {
       playCymbal(adjustedVolume, isAccent);
       break;
     case "cowbell":
-      playCowbell(adjustedVolume, isAccent);
+      playAgogo(adjustedVolume, isAccent);
       break;
     case "wood":
     default:
