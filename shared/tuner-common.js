@@ -21,6 +21,15 @@
 
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
+  // Translated string lookup with an inline English fallback -- mirrors
+  // the same helper in metronome/script.js. Each tuner-family page defines
+  // its own window.BC_STRINGS (including the keys this shared file needs,
+  // copied identically across all three pages' dictionaries -- see
+  // i18n/i18n.js and the "shared panel" key block noted in each page).
+  function tr(key, fallback, vars) {
+    return global.BC_I18N ? global.BC_I18N.t(key, vars) : fallback;
+  }
+
   /* ============================================================
      TUNING STANDARDS (temperaments) — Equal Temperament plus four
      historical/alternate systems, each built from first principles rather
@@ -198,10 +207,21 @@
       TEMPERAMENTS.forEach((temperament) => {
         const option = document.createElement("option");
         option.value = temperament.id;
-        option.textContent = temperament.name;
+        option.textContent = tr(`temperament.${temperament.id}`, temperament.name);
         select.appendChild(option);
       });
     });
+
+    function refreshTemperamentLabels() {
+      selects.forEach((select) => {
+        Array.prototype.forEach.call(select.options, (option) => {
+          const temperament = getTemperamentById(option.value);
+          option.textContent = tr(`temperament.${temperament.id}`, temperament.name);
+        });
+      });
+    }
+
+    global.addEventListener("bc:langchange", refreshTemperamentLabels);
 
     (keySelects || []).forEach((select) => {
       NOTE_NAMES.forEach((name, pitchClass) => {
@@ -804,20 +824,48 @@
 
   // The exact wording every page uses for getUserMedia failures and idle/
   // listening status, so the microphone experience reads identically no
-  // matter which tuner page you're on.
+  // matter which tuner page you're on. Values here are i18n keys (with an
+  // inline English fallback baked into MIC_MESSAGE_FALLBACKS) rather than
+  // literal text, so setMicStatus can re-translate live on a language
+  // switch without every page's script.js needing to know about it.
   const MIC_MESSAGES = {
-    idle: "Uses your microphone. Nothing is recorded or sent anywhere.",
-    listening: "Listening… play a note.",
-    notSupported: "Microphone access isn't supported in this browser.",
-    denied: "Microphone access was denied. Allow it in your browser's address bar and try again.",
-    notFound: "No microphone was found on this device.",
-    genericError: "Couldn't access the microphone. Please try again.",
-    webAudioNotSupported: "Web Audio isn't supported in this browser.",
+    idle: "mic.idle",
+    listening: "mic.listening",
+    notSupported: "mic.notSupported",
+    denied: "mic.denied",
+    notFound: "mic.notFound",
+    genericError: "mic.genericError",
+    webAudioNotSupported: "mic.webAudioNotSupported",
+  };
+
+  const MIC_MESSAGE_FALLBACKS = {
+    "mic.idle": "Uses your microphone. Nothing is recorded or sent anywhere.",
+    "mic.listening": "Listening… play a note.",
+    "mic.notSupported": "Microphone access isn't supported in this browser.",
+    "mic.denied": "Microphone access was denied. Allow it in your browser's address bar and try again.",
+    "mic.notFound": "No microphone was found on this device.",
+    "mic.genericError": "Couldn't access the microphone. Please try again.",
+    "mic.webAudioNotSupported": "Web Audio isn't supported in this browser.",
   };
 
   function setMicStatusFactory(el) {
-    return function setMicStatus(message, isError) {
-      el.textContent = message;
+    // Starts as "mic.idle" (not null) to match the paragraph's own static
+    // HTML default -- so a language switch before the mic is ever touched
+    // still re-translates it, instead of only starting to track state
+    // after the first setMicStatus() call.
+    let lastKey = "mic.idle";
+
+    function render() {
+      if (lastKey) {
+        el.textContent = tr(lastKey, MIC_MESSAGE_FALLBACKS[lastKey] || lastKey);
+      }
+    }
+
+    global.addEventListener("bc:langchange", render);
+
+    return function setMicStatus(key, isError) {
+      lastKey = key;
+      render();
       el.classList.toggle("is-error", Boolean(isError));
     };
   }

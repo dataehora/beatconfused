@@ -1,6 +1,6 @@
 # Metronome sounds
 
-The three sound tones (Wood, Cymbal, Agogô) ship with the `.wav` files
+The three sound tones (Wood, Cymbal, Cowbell) ship with the `.wav` files
 in this folder by default — they're picked up automatically and used
 instead of the built-in single-oscillator synth. Each is an original,
 royalty-free recording, rendered offline via physically-modeled synthesis
@@ -12,19 +12,21 @@ click for that tone/beat combination — nothing here is required.
 Each file is looked up as `.mp3`, then `.ogg`, then `.wav` (only supply
 one format per sound unless you want a specific fallback order).
 
-Filename pattern: `{tone}_{beat}.{ext}` — the "Agogô" tone keeps the
-`cowbell` filename prefix internally (it's the same UI slot, just
-retuned), so its files are still `cowbell_*`.
+Filename pattern: `{tone}_{beat}.{ext}` — the "Cowbell" tone's sound is
+actually tuned like a Brazilian agogô (two struck bells) rather than a
+Western cowbell; the UI label stays "Cowbell" since that's the familiar
+term, but the `cowbell_*` files and the `playAgogo()` function in
+script.js are the agogô-style samples/synth.
 
 | Tone | Accent (downbeat) | Beat | Subdivision |
 | --- | --- | --- | --- |
 | Wood | `wood_accent` | `wood_beat` | `wood_subdivision` |
 | Cymbal | `cymbal_accent` | `cymbal_beat` | `cymbal_subdivision` |
-| Agogô | `cowbell_accent` | `cowbell_beat` | `cowbell_subdivision` |
+| Cowbell | `cowbell_accent` | `cowbell_beat` | `cowbell_subdivision` |
 
-- **Accent** plays on beat 1 of the measure. For Agogô this is tuned to
+- **Accent** plays on beat 1 of the measure. For Cowbell this is tuned to
   the high bell (~1180 Hz) of a real two-bell agogô.
-- **Beat** plays on every other regular beat. For Agogô this is the low
+- **Beat** plays on every other regular beat. For Cowbell this is the low
   bell (~760 Hz) — real agogô playing alternates the two bells rather
   than just playing one bell louder.
 - **Subdivision** plays on the extra pulses when beat subdivision is set above 1.

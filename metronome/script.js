@@ -81,6 +81,16 @@ const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
+// Translated string lookup with an inline English fallback: metronome's
+// script.js is fetched asynchronously (see loadVersionedAssets below), so
+// window.BC_I18N may not exist yet the first time this runs -- the
+// fallback keeps that first paint correct (matching the English default)
+// until "bc:langchange" (dispatched on load too, not just on switches --
+// see i18n/i18n.js) fires and re-renders everything for real.
+function tr(key, fallback, vars) {
+  return window.BC_I18N ? window.BC_I18N.t(key, vars) : fallback;
+}
+
 function getSelectedTimeSignatureOption() {
   return timeSignatureSelect.selectedOptions[0];
 }
@@ -231,15 +241,19 @@ function updateBeatLabel() {
   const beatNumber = state.currentBeat + 1;
   const subdivisionNumber = state.currentSubdivisionStep + 1;
   const subdivisionText = state.subdivision > 1
-    ? ` · Sub ${subdivisionNumber}/${state.subdivision}`
+    ? tr("beatLabel.sub", ` · Sub ${subdivisionNumber}/${state.subdivision}`, { s: subdivisionNumber, total: state.subdivision })
     : "";
 
   if (countMode === "measure") {
-    beatLabel.textContent = `Measure ${state.currentMeasure} · Beat ${beatNumber}${subdivisionText}`;
+    beatLabel.textContent = tr(
+      "beatLabel.measureBeat",
+      `Measure ${state.currentMeasure} · Beat ${beatNumber}`,
+      { m: state.currentMeasure, n: beatNumber }
+    ) + subdivisionText;
     return;
   }
 
-  beatLabel.textContent = `Beat ${beatNumber}${subdivisionText}`;
+  beatLabel.textContent = tr("beatLabel.beat", `Beat ${beatNumber}`, { n: beatNumber }) + subdivisionText;
 }
 
 function ensureAudioContext() {
@@ -274,9 +288,9 @@ function ensureAudioContext() {
    Filenames follow {tone}_{beat}, tried as .mp3, then .ogg, then .wav:
      wood_accent / wood_beat / wood_subdivision
      cymbal_accent / cymbal_beat / cymbal_subdivision
-     cowbell_accent / cowbell_beat / cowbell_subdivision  (the "Agogô"
-       tone in the UI -- same slot/filenames, just retuned to a
-       two-bell agogô timbre; see playAgogo() below)
+     cowbell_accent / cowbell_beat / cowbell_subdivision  (still labeled
+       "Cowbell" in the UI, but retuned to a two-bell agogô timbre --
+       see playAgogo() below)
    "accent" is the downbeat (start of the measure), "beat" is a regular
    beat, "subdivision" is a subdivided pulse within a beat.
    ============================================================ */
@@ -362,7 +376,7 @@ function playOscillator({ type, frequency, volume, duration, highPassFrequency }
   oscillator.stop(now + duration);
 }
 
-// Realtime fallback for the "Agogô" tone (used only if Assets/cowbell_*
+// Realtime fallback for the "Cowbell" tone (used only if Assets/cowbell_*
 // is ever removed -- see the Assets-first note above CUSTOM_SOUND_BUFFERS).
 // A real agogô is two struck conical bells, high and low, so the accented
 // beat 1 switches to the higher bell's pitch rather than just getting
@@ -740,7 +754,7 @@ function startMetronome() {
   state.currentSubdivisionStep = 0;
   state.currentMeasure = 1;
   state.totalPulseCount = 0;
-  toggleBtn.textContent = "Stop";
+  toggleBtn.textContent = tr("transport.stop", "Stop");
   toggleBtn.setAttribute("aria-pressed", "true");
   startPendulumAnimation();
   startTimer();
@@ -752,7 +766,7 @@ function stopMetronome() {
   }
 
   state.isPlaying = false;
-  toggleBtn.textContent = "Start";
+  toggleBtn.textContent = tr("transport.start", "Start");
   toggleBtn.setAttribute("aria-pressed", "false");
   stopTimer();
   stopPendulumAnimation();
@@ -798,7 +812,7 @@ function handleTapTempo() {
   pendulumVisual("beat");
 
   if (tapTimes.length < 2) {
-    setTapMessage("Tap again…");
+    setTapMessage(tr("tempo.tapAgain", "Tap again…"));
     return;
   }
 
@@ -806,7 +820,7 @@ function handleTapTempo() {
   const tappedBpm = clamp(Math.round(60000 / latestInterval), MIN_BPM, MAX_BPM);
 
   updateTempo(tappedBpm);
-  setTapMessage(`${tappedBpm} BPM`);
+  setTapMessage(tr("tempo.tapBpm", `${tappedBpm} BPM`, { bpm: tappedBpm }));
 }
 
 function setVisualMode() {
@@ -914,6 +928,17 @@ renderBeatIndicators();
 updateBeatLabel();
 updateTempo(state.bpm);
 syncPendulumPhysics();
+
+// Re-render the dynamic (non data-i18n) text -- the Start/Stop button and
+// the beat label -- for the active language. Fires on every language
+// switch, and once on initial load too (see i18n/i18n.js), which is what
+// covers a returning pt/es visitor even if this script finishes loading
+// before the i18n engine does.
+window.addEventListener("bc:langchange", () => {
+  toggleBtn.textContent = tr(state.isPlaying ? "transport.stop" : "transport.start", toggleBtn.textContent);
+  updateBeatLabel();
+});
+
 checkForDeployedUpdate();
 window.setInterval(checkForDeployedUpdate, UPDATE_CHECK_INTERVAL_MS);
 document.addEventListener("visibilitychange", () => {
