@@ -10,27 +10,30 @@
     gtag("js", new Date());
     gtag("config", "G-KCCMBL7GMJ");
   </script>
-  <title>BeatConfused | Tuner</title>
+  <title data-i18n="meta.title">BeatConfused | Tuner</title>
   <meta
     name="description"
     content="BeatConfused is a free online chromatic tuner with strobe, needle and meter displays, an adjustable A4 reference pitch, and no install required."
+    data-i18n-attr="content:meta.description"
   />
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <meta name="theme-color" content="#10131d" />
   <link rel="canonical" href="https://beatconfused.com/tuner/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="BeatConfused | Tuner" />
+  <meta property="og:title" content="BeatConfused | Tuner" data-i18n-attr="content:meta.title" />
   <meta
     property="og:description"
     content="A free online chromatic tuner with strobe, needle and meter displays, and an adjustable reference pitch."
+    data-i18n-attr="content:meta.ogDescription"
   />
   <meta property="og:url" content="https://beatconfused.com/tuner/" />
   <meta property="og:site_name" content="BeatConfused" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="BeatConfused | Tuner" />
+  <meta name="twitter:title" content="BeatConfused | Tuner" data-i18n-attr="content:meta.title" />
   <meta
     name="twitter:description"
     content="A free online chromatic tuner with strobe, needle and meter displays, and an adjustable reference pitch."
+    data-i18n-attr="content:meta.ogDescription"
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,6 +43,7 @@
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
   <link rel="stylesheet" href="styles.css?v=20260913" />
+  <link rel="stylesheet" href="/i18n/i18n.css?v=20260922" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -64,8 +68,8 @@
 <body>
   <main class="page">
     <header class="hero">
-      <p class="eyebrow">BeatConfused Studio</p>
-      <h1>Tuner</h1>
+      <p class="eyebrow" data-i18n="hero.eyebrow">BeatConfused Studio</p>
+      <h1 data-i18n="hero.title">Tuner</h1>
     </header>
 
     <section class="tuner" aria-labelledby="tuner-title" data-visual-mode="needle">
@@ -104,7 +108,7 @@
 
       <div class="tuner-live">
       <div class="power-switch">
-        <span class="power-switch-legend">Start Tuner</span>
+        <span class="power-switch-legend" data-i18n="power.legend">Start Tuner</span>
         <button
           id="toggleMicBtn"
           class="power-toggle"
@@ -112,6 +116,7 @@
           aria-pressed="false"
           aria-label="Start or stop the tuner"
           title="Start / stop tuner"
+          data-i18n-attr="aria-label:power.toggleAria;title:power.toggleTitle"
         >
           <span class="power-toggle-track">
             <span class="power-toggle-thumb"></span>
@@ -129,18 +134,18 @@
       </div>
 
       <div class="visual-stage">
-        <div class="display-toggle" role="radiogroup" aria-label="Visual style">
+        <div class="display-toggle" role="radiogroup" aria-label="Visual style" data-i18n-attr="aria-label:aria.visualStyle">
           <label class="pill pill-sm">
             <input type="radio" name="tunerVisualMode" value="strobe" />
-            <span>Strobe</span>
+            <span data-i18n="display.strobe">Strobe</span>
           </label>
           <label class="pill pill-sm">
             <input type="radio" name="tunerVisualMode" value="needle" checked />
-            <span>Needle</span>
+            <span data-i18n="display.needle">Needle</span>
           </label>
           <label class="pill pill-sm">
             <input type="radio" name="tunerVisualMode" value="meter" />
-            <span>Meter</span>
+            <span data-i18n="display.meter">Meter</span>
           </label>
         </div>
 
@@ -195,7 +200,7 @@
               </div>
               <div class="led-scale-labels">
                 <span>♭</span>
-                <span>in tune</span>
+                <span data-i18n="display.inTune">in tune</span>
                 <span>♯</span>
               </div>
             </div>
@@ -210,16 +215,16 @@
 
       <div class="control-block signal-block wide-block is-collapsed">
         <div class="panel-header">
-          <span class="panel-title">Input Monitor and Test Tone - Setting up your Microphone</span>
-          <button type="button" class="collapse-toggle" aria-expanded="false" aria-label="Expand Input Monitor and Test Tone">
+          <span class="panel-title" data-i18n="inputMonitor.title">Input Monitor and Test Tone - Setting up your Microphone</span>
+          <button type="button" class="collapse-toggle" aria-expanded="false" aria-label="Expand Input Monitor and Test Tone" data-i18n-attr="aria-label:inputMonitor.expandAria">
             <span class="collapse-icon" aria-hidden="true">▾</span>
           </button>
         </div>
-        <p class="hint">Boosts the microphone and shows how much signal is reaching the tuner.</p>
+        <p class="hint" data-i18n="inputMonitor.hint">Boosts the microphone and shows how much signal is reaching the tuner.</p>
 
         <div class="signal-meters-row">
           <div class="vertical-control">
-            <span class="vertical-control-label">Gain</span>
+            <span class="vertical-control-label" data-i18n="inputMonitor.gainLabel">Gain</span>
             <div class="vertical-slider-wrap">
               <input
                 id="micGainRange"
@@ -231,13 +236,14 @@
                 class="vertical-slider"
                 aria-label="Microphone gain boost"
                 aria-orientation="vertical"
+                data-i18n-attr="aria-label:inputMonitor.gainAria"
               />
             </div>
             <span class="vertical-control-value" id="micGainValueLabel">6.0×</span>
           </div>
 
           <div class="vertical-control">
-            <span class="vertical-control-label">Level</span>
+            <span class="vertical-control-label" data-i18n="inputMonitor.levelLabel">Level</span>
             <div class="level-meter-case">
               <div class="level-meter-track">
                 <div class="level-meter-fill" id="levelMeterFill"></div>
@@ -248,10 +254,10 @@
         </div>
 
         <div class="panel-subheader">
-          <span class="panel-title">Test Tone</span>
+          <span class="panel-title" data-i18n="inputMonitor.testToneSubheader">Test Tone</span>
           <span class="panel-value" id="testToneNote">A4</span>
         </div>
-        <p class="hint">Feeds a pure tone straight into the tuner (and your speakers) — no microphone needed.</p>
+        <p class="hint" data-i18n="inputMonitor.testToneHint">Feeds a pure tone straight into the tuner (and your speakers) — no microphone needed.</p>
 
         <div class="variance-block">
           <div class="variance-track">
@@ -265,18 +271,18 @@
         </div>
 
         <div class="test-tone-controls">
-          <button id="toggleTestToneBtn" type="button" class="small-btn" aria-pressed="false">Test Tone</button>
+          <button id="toggleTestToneBtn" type="button" class="small-btn" aria-pressed="false" data-i18n="testTone.start">Test Tone</button>
           <label class="volume-control">
-            <span class="volume-label">Volume</span>
-            <input id="testToneVolume" type="range" min="0" max="0.4" step="0.01" value="0.15" aria-label="Test tone volume" />
+            <span class="volume-label" data-i18n="inputMonitor.volumeLabel">Volume</span>
+            <input id="testToneVolume" type="range" min="0" max="0.4" step="0.01" value="0.15" aria-label="Test tone volume" data-i18n-attr="aria-label:testTone.volumeAria" />
           </label>
         </div>
 
-        <span class="slider-title">Frequency (Hz)</span>
+        <span class="slider-title" data-i18n="testTone.freqSliderTitle">Frequency (Hz)</span>
         <div class="fine-freq-row">
-          <button id="decreaseTestToneBtn" type="button" class="small-btn" aria-label="Decrease test tone frequency" title="Decrease (↓)">−</button>
+          <button id="decreaseTestToneBtn" type="button" class="small-btn" aria-label="Decrease test tone frequency" title="Decrease (↓)" data-i18n-attr="aria-label:testTone.freqDecreaseAria;title:common.decreaseTitle">−</button>
           <span class="fine-freq-value" id="testToneFreqLabel">440 Hz</span>
-          <button id="increaseTestToneBtn" type="button" class="small-btn" aria-label="Increase test tone frequency" title="Increase (↑)">+</button>
+          <button id="increaseTestToneBtn" type="button" class="small-btn" aria-label="Increase test tone frequency" title="Increase (↑)" data-i18n-attr="aria-label:testTone.freqIncreaseAria;title:common.increaseTitle">+</button>
         </div>
         <input
           id="testToneRange"
@@ -287,13 +293,14 @@
           value="440"
           class="panel-slider"
           aria-label="Test tone base frequency in Hz, from 19 Hz to 4434 Hz. Double-click to revert to the reference pitch."
+          data-i18n-attr="aria-label:testTone.rangeAria"
         />
 
-        <span class="slider-title">Fine Tuning (¢)</span>
+        <span class="slider-title" data-i18n="testTone.fineTuningTitle">Fine Tuning (¢)</span>
         <div class="fine-freq-row">
-          <button id="decreaseCentsBtn" type="button" class="small-btn" aria-label="Decrease fine tuning by 0.1 cent" title="Decrease (↓)">−</button>
+          <button id="decreaseCentsBtn" type="button" class="small-btn" aria-label="Decrease fine tuning by 0.1 cent" title="Decrease (↓)" data-i18n-attr="aria-label:testTone.centsDecreaseAria;title:common.decreaseTitle">−</button>
           <span class="fine-freq-value" id="testToneCentsLabel">0.0¢</span>
-          <button id="increaseCentsBtn" type="button" class="small-btn" aria-label="Increase fine tuning by 0.1 cent" title="Increase (↑)">+</button>
+          <button id="increaseCentsBtn" type="button" class="small-btn" aria-label="Increase fine tuning by 0.1 cent" title="Increase (↑)" data-i18n-attr="aria-label:testTone.centsIncreaseAria;title:common.increaseTitle">+</button>
         </div>
         <div class="cents-slider-wrap">
           <input
@@ -305,6 +312,7 @@
             value="0"
             class="panel-slider"
             aria-label="Fine tuning: pans up to 50 cents sharp or flat from the selected frequency, in 0.1-cent steps. Double-click resets to 0."
+            data-i18n-attr="aria-label:testTone.centsRangeAria"
           />
           <span class="cents-center-mark" aria-hidden="true"></span>
         </div>
@@ -312,20 +320,20 @@
 
       <div class="control-block spectrum-analyzer-block">
         <div class="panel-header">
-          <span class="panel-title">Spectrum Analyser</span>
-          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Spectrum Analyser">
+          <span class="panel-title" data-i18n="spectrum.title">Spectrum Analyser</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Spectrum Analyser" data-i18n-attr="aria-label:spectrum.collapseAria">
             <span class="collapse-icon" aria-hidden="true">▾</span>
           </button>
         </div>
         <label class="style-toggle" id="spectrumStyleToggle">
-          <span class="style-toggle-label" data-style="vintage">Vintage</span>
+          <span class="style-toggle-label" data-style="vintage" data-i18n="spectrum.vintage">Vintage</span>
           <span class="style-toggle-switch">
-            <input type="checkbox" id="spectrumStyleCheckbox" aria-label="Spectrum style: Vintage or Modern" />
+            <input type="checkbox" id="spectrumStyleCheckbox" aria-label="Spectrum style: Vintage or Modern" data-i18n-attr="aria-label:spectrum.styleAria" />
             <span class="style-toggle-track">
               <span class="style-toggle-thumb"></span>
             </span>
           </span>
-          <span class="style-toggle-label" data-style="modern">Modern</span>
+          <span class="style-toggle-label" data-style="modern" data-i18n="spectrum.modern">Modern</span>
         </label>
         <div class="spectrum-block">
           <div class="spectrum-case">
@@ -342,40 +350,40 @@
       <div class="settings-row">
         <div class="control-block tuning-pitch-block">
           <div class="panel-header">
-            <span class="panel-title">Tuning Standard and Reference Pitch</span>
-            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Tuning Standard and Reference Pitch">
+            <span class="panel-title" data-i18n="tuningPitch.title">Tuning Standard and Reference Pitch</span>
+            <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Tuning Standard and Reference Pitch" data-i18n-attr="aria-label:tuningPitch.collapseAria">
               <span class="collapse-icon" aria-hidden="true">▾</span>
             </button>
           </div>
-          <p class="hint">
+          <p class="hint" data-i18n="tuningPitch.hint">
             Retunes every note by a few cents to a historical or alternate temperament, instead of modern Equal
             Temperament, and sets the A4 reference pitch everything else is measured against.
           </p>
           <div class="select-row">
-            <label class="select-row-label" for="temperamentSelect">Standard</label>
-            <select id="temperamentSelect" class="temperament-select" aria-label="Tuning standard"></select>
+            <label class="select-row-label" for="temperamentSelect" data-i18n="tuningPitch.standardLabel">Standard</label>
+            <select id="temperamentSelect" class="temperament-select" aria-label="Tuning standard" data-i18n-attr="aria-label:tuningPitch.temperamentSelectAria"></select>
           </div>
           <div class="select-row temperament-key-row" id="temperamentKeyRow" hidden>
-            <label class="select-row-label" for="temperamentKeySelect">Key</label>
-            <select id="temperamentKeySelect" class="temperament-key-select" aria-label="Tuning standard key (tonic)"></select>
+            <label class="select-row-label" for="temperamentKeySelect" data-i18n="tuningPitch.keyLabel">Key</label>
+            <select id="temperamentKeySelect" class="temperament-key-select" aria-label="Tuning standard key (tonic)" data-i18n-attr="aria-label:tuningPitch.temperamentKeySelectAria"></select>
           </div>
 
-          <span class="slider-title">Reference Pitch</span>
+          <span class="slider-title" data-i18n="tuningPitch.referencePitchTitle">Reference Pitch</span>
           <div class="fine-freq-row">
-            <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)">−</button>
+            <button id="decreasePitchBtn" type="button" class="small-btn" aria-label="Decrease reference pitch" title="Decrease A4 (↓)" data-i18n-attr="aria-label:tuningPitch.pitchDecreaseAria;title:tuningPitch.pitchDecreaseTitle">−</button>
             <span class="fine-freq-value">
-              A4 = <input id="pitchInput" type="number" min="392" max="466" step="1" value="440" aria-label="Reference pitch in Hz" title="Reference pitch (Hz)" /> Hz
+              A4 = <input id="pitchInput" type="number" min="392" max="466" step="1" value="440" aria-label="Reference pitch in Hz" title="Reference pitch (Hz)" data-i18n-attr="aria-label:tuningPitch.pitchInputAria;title:tuningPitch.pitchInputTitle" /> Hz
             </span>
-            <button id="increasePitchBtn" type="button" class="small-btn" aria-label="Increase reference pitch" title="Increase A4 (↑)">+</button>
+            <button id="increasePitchBtn" type="button" class="small-btn" aria-label="Increase reference pitch" title="Increase A4 (↑)" data-i18n-attr="aria-label:tuningPitch.pitchIncreaseAria;title:tuningPitch.pitchIncreaseTitle">+</button>
           </div>
-          <input id="pitchRange" type="range" min="392" max="466" value="440" class="panel-slider" aria-label="Reference pitch slider" />
-          <div class="preset-list" role="radiogroup" aria-label="Concert pitch presets">
+          <input id="pitchRange" type="range" min="392" max="466" value="440" class="panel-slider" aria-label="Reference pitch slider" data-i18n-attr="aria-label:tuningPitch.pitchRangeAria" />
+          <div class="preset-list" role="radiogroup" aria-label="Concert pitch presets" data-i18n-attr="aria-label:tuningPitch.presetListAria">
             <label class="preset-option">
               <input type="radio" name="pitchPreset" value="392" />
               <span>
                 <span class="preset-freq">392</span>
                 <span class="preset-name">
-                  <span class="preset-name-primary">French Baroque</span>
+                  <span class="preset-name-primary" data-i18n="tuningPitch.presetFrenchBaroque">French Baroque</span>
                   <span class="preset-name-secondary">"Tone de Chambre"</span>
                 </span>
               </span>
@@ -384,7 +392,7 @@
               <input type="radio" name="pitchPreset" value="415" />
               <span>
                 <span class="preset-freq">415</span>
-                <span class="preset-name">Baroque</span>
+                <span class="preset-name" data-i18n="tuningPitch.presetBaroque">Baroque</span>
               </span>
             </label>
             <label class="preset-option">
@@ -393,7 +401,7 @@
                 <span class="preset-freq">432</span>
                 <span class="preset-name">
                   <span class="preset-name-primary">Verdi</span>
-                  <span class="preset-name-secondary">"Scientific"</span>
+                  <span class="preset-name-secondary" data-i18n="tuningPitch.presetScientific">"Scientific"</span>
                 </span>
               </span>
             </label>
@@ -401,7 +409,7 @@
               <input type="radio" name="pitchPreset" value="440" checked />
               <span>
                 <span class="preset-freq">440</span>
-                <span class="preset-name">Standard</span>
+                <span class="preset-name" data-i18n="tuningPitch.presetStandard">Standard</span>
               </span>
             </label>
             <label class="preset-option">
@@ -409,8 +417,8 @@
               <span>
                 <span class="preset-freq">444</span>
                 <span class="preset-name">
-                  <span class="preset-name-primary">Modern</span>
-                  <span class="preset-name-secondary">"Symphony"</span>
+                  <span class="preset-name-primary" data-i18n="tuningPitch.presetModern">Modern</span>
+                  <span class="preset-name-secondary" data-i18n="tuningPitch.presetSymphony">"Symphony"</span>
                 </span>
               </span>
             </label>
@@ -419,8 +427,8 @@
               <span>
                 <span class="preset-freq">466</span>
                 <span class="preset-name">
-                  <span class="preset-name-primary">Italian</span>
-                  <span class="preset-name-secondary">Renaissance</span>
+                  <span class="preset-name-primary" data-i18n="tuningPitch.presetItalian">Italian</span>
+                  <span class="preset-name-secondary" data-i18n="tuningPitch.presetRenaissance">Renaissance</span>
                 </span>
               </span>
             </label>
@@ -431,12 +439,12 @@
 
       <div class="control-block freq-table-block wide-block">
         <div class="panel-header">
-          <span class="panel-title">Frequency Table</span>
-          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Frequency Table">
+          <span class="panel-title" data-i18n="freqTable.title">Frequency Table</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Frequency Table" data-i18n-attr="aria-label:freqTable.collapseAria">
             <span class="collapse-icon" aria-hidden="true">▾</span>
           </button>
         </div>
-        <p class="hint">
+        <p class="hint" data-i18n="freqTable.hint">
           Every note from A0, notes across the columns and octaves down the rows. While the tuner is running, the
           detected note's cell also shows its own live cents deviation.
         </p>
@@ -447,7 +455,7 @@
           <table class="freq-table octave-freq-table" id="freqTable">
             <thead>
               <tr id="freqTableHeadRow">
-                <th class="freq-table-note-col">Oct</th>
+                <th class="freq-table-note-col" data-i18n="freqTable.octHeader">Oct</th>
               </tr>
             </thead>
             <tbody id="freqTableBody"></tbody>
@@ -468,5 +476,275 @@
 
   <script src="/shared/tuner-common.js?v=20260914"></script>
   <script src="script.js?v=20260914"></script>
+
+  <script>
+    window.BC_STRINGS = {
+      en: {
+        "meta.title": "BeatConfused | Tuner",
+        "meta.description": "BeatConfused is a free online chromatic tuner with strobe, needle and meter displays, an adjustable A4 reference pitch, and no install required.",
+        "meta.ogDescription": "A free online chromatic tuner with strobe, needle and meter displays, and an adjustable reference pitch.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Tuner",
+        "power.legend": "Start Tuner",
+        "power.toggleAria": "Start or stop the tuner",
+        "power.toggleTitle": "Start / stop tuner",
+        "power.on": "ON",
+        "power.off": "OFF",
+        "aria.visualStyle": "Visual style",
+        "display.strobe": "Strobe",
+        "display.needle": "Needle",
+        "display.meter": "Meter",
+        "display.inTune": "in tune",
+        "status.noSignal": "no signal, check the microphone in the input monitor below",
+        "status.tuningFor": "Tuning for {temperament}{key} · {a4} Hz",
+        "status.showingFrequencies": "Showing frequencies for {temperament}{key} · {a4} Hz — set above under Tuning Standard and Reference Pitch.",
+        "status.inKey": " in {note}",
+        "inputMonitor.title": "Input Monitor and Test Tone - Setting up your Microphone",
+        "inputMonitor.expandAria": "Expand Input Monitor and Test Tone",
+        "inputMonitor.hint": "Boosts the microphone and shows how much signal is reaching the tuner.",
+        "inputMonitor.gainLabel": "Gain",
+        "inputMonitor.gainAria": "Microphone gain boost",
+        "inputMonitor.levelLabel": "Level",
+        "inputMonitor.testToneSubheader": "Test Tone",
+        "inputMonitor.testToneHint": "Feeds a pure tone straight into the tuner (and your speakers) — no microphone needed.",
+        "inputMonitor.volumeLabel": "Volume",
+        "testTone.start": "Test Tone",
+        "testTone.stop": "Stop Test Tone",
+        "testTone.volumeAria": "Test tone volume",
+        "testTone.freqSliderTitle": "Frequency (Hz)",
+        "testTone.freqDecreaseAria": "Decrease test tone frequency",
+        "testTone.freqIncreaseAria": "Increase test tone frequency",
+        "testTone.rangeAria": "Test tone base frequency in Hz, from 19 Hz to 4434 Hz. Double-click to revert to the reference pitch.",
+        "testTone.fineTuningTitle": "Fine Tuning (¢)",
+        "testTone.centsDecreaseAria": "Decrease fine tuning by 0.1 cent",
+        "testTone.centsIncreaseAria": "Increase fine tuning by 0.1 cent",
+        "testTone.centsRangeAria": "Fine tuning: pans up to 50 cents sharp or flat from the selected frequency, in 0.1-cent steps. Double-click resets to 0.",
+        "common.decreaseTitle": "Decrease (↓)",
+        "common.increaseTitle": "Increase (↑)",
+        "spectrum.title": "Spectrum Analyser",
+        "spectrum.collapseAria": "Collapse Spectrum Analyser",
+        "spectrum.vintage": "Vintage",
+        "spectrum.modern": "Modern",
+        "spectrum.styleAria": "Spectrum style: Vintage or Modern",
+        "tuningPitch.title": "Tuning Standard and Reference Pitch",
+        "tuningPitch.collapseAria": "Collapse Tuning Standard and Reference Pitch",
+        "tuningPitch.hint": "Retunes every note by a few cents to a historical or alternate temperament, instead of modern Equal Temperament, and sets the A4 reference pitch everything else is measured against.",
+        "tuningPitch.standardLabel": "Standard",
+        "tuningPitch.keyLabel": "Key",
+        "tuningPitch.temperamentSelectAria": "Tuning standard",
+        "tuningPitch.temperamentKeySelectAria": "Tuning standard key (tonic)",
+        "tuningPitch.referencePitchTitle": "Reference Pitch",
+        "tuningPitch.pitchDecreaseAria": "Decrease reference pitch",
+        "tuningPitch.pitchDecreaseTitle": "Decrease A4 (↓)",
+        "tuningPitch.pitchIncreaseAria": "Increase reference pitch",
+        "tuningPitch.pitchIncreaseTitle": "Increase A4 (↑)",
+        "tuningPitch.pitchInputAria": "Reference pitch in Hz",
+        "tuningPitch.pitchInputTitle": "Reference pitch (Hz)",
+        "tuningPitch.pitchRangeAria": "Reference pitch slider",
+        "tuningPitch.presetListAria": "Concert pitch presets",
+        "tuningPitch.presetFrenchBaroque": "French Baroque",
+        "tuningPitch.presetBaroque": "Baroque",
+        "tuningPitch.presetScientific": "\"Scientific\"",
+        "tuningPitch.presetStandard": "Standard",
+        "tuningPitch.presetModern": "Modern",
+        "tuningPitch.presetSymphony": "\"Symphony\"",
+        "tuningPitch.presetItalian": "Italian",
+        "tuningPitch.presetRenaissance": "Renaissance",
+        "freqTable.title": "Frequency Table",
+        "freqTable.collapseAria": "Collapse Frequency Table",
+        "freqTable.hint": "Every note from A0, notes across the columns and octaves down the rows. While the tuner is running, the detected note's cell also shows its own live cents deviation.",
+        "freqTable.octHeader": "Oct",
+        "mic.idle": "Uses your microphone. Nothing is recorded or sent anywhere.",
+        "mic.listening": "Listening… play a note.",
+        "mic.notSupported": "Microphone access isn't supported in this browser.",
+        "mic.denied": "Microphone access was denied. Allow it in your browser's address bar and try again.",
+        "mic.notFound": "No microphone was found on this device.",
+        "mic.genericError": "Couldn't access the microphone. Please try again.",
+        "mic.webAudioNotSupported": "Web Audio isn't supported in this browser.",
+        "temperament.equal": "Equal Temperament",
+        "temperament.vallotti": "Vallotti",
+        "temperament.young2": "Young II",
+        "temperament.meantone4": "1/4-Comma Meantone",
+        "temperament.justMajor": "Just Intonation (Major)",
+      },
+      pt: {
+        "meta.title": "BeatConfused | Afinador",
+        "meta.description": "O BeatConfused é um afinador cromático online gratuito com telas de estroboscópio, ponteiro e medidor, referência A4 ajustável, sem necessidade de instalação.",
+        "meta.ogDescription": "Um afinador cromático online gratuito com telas de estroboscópio, ponteiro e medidor, e referência ajustável.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Afinador",
+        "power.legend": "Iniciar Afinador",
+        "power.toggleAria": "Iniciar ou parar o afinador",
+        "power.toggleTitle": "Iniciar / parar afinador",
+        "power.on": "LIGADO",
+        "power.off": "DESLIGADO",
+        "aria.visualStyle": "Estilo visual",
+        "display.strobe": "Estroboscópio",
+        "display.needle": "Ponteiro",
+        "display.meter": "Medidor",
+        "display.inTune": "afinado",
+        "status.noSignal": "sem sinal, verifique o microfone no monitor de entrada abaixo",
+        "status.tuningFor": "Afinando para {temperament}{key} · {a4} Hz",
+        "status.showingFrequencies": "Mostrando frequências para {temperament}{key} · {a4} Hz — ajuste acima em Padrão de Afinação e Referência",
+        "status.inKey": " em {note}",
+        "inputMonitor.title": "Monitor de Entrada e Tom de Teste - Configurando seu Microfone",
+        "inputMonitor.expandAria": "Expandir Monitor de Entrada e Tom de Teste",
+        "inputMonitor.hint": "Amplifica o microfone e mostra o quanto de sinal está chegando ao afinador.",
+        "inputMonitor.gainLabel": "Ganho",
+        "inputMonitor.gainAria": "Reforço de ganho do microfone",
+        "inputMonitor.levelLabel": "Nível",
+        "inputMonitor.testToneSubheader": "Tom de Teste",
+        "inputMonitor.testToneHint": "Envia um tom puro diretamente para o afinador (e para as caixas de som) — sem precisar de microfone.",
+        "inputMonitor.volumeLabel": "Volume",
+        "testTone.start": "Tom de Teste",
+        "testTone.stop": "Parar Tom de Teste",
+        "testTone.volumeAria": "Volume do tom de teste",
+        "testTone.freqSliderTitle": "Frequência (Hz)",
+        "testTone.freqDecreaseAria": "Diminuir frequência do tom de teste",
+        "testTone.freqIncreaseAria": "Aumentar frequência do tom de teste",
+        "testTone.rangeAria": "Frequência base do tom de teste em Hz, de 19 Hz a 4434 Hz. Clique duas vezes para voltar à referência.",
+        "testTone.fineTuningTitle": "Ajuste Fino (¢)",
+        "testTone.centsDecreaseAria": "Diminuir ajuste fino em 0,1 cent",
+        "testTone.centsIncreaseAria": "Aumentar ajuste fino em 0,1 cent",
+        "testTone.centsRangeAria": "Ajuste fino: varia até 50 cents acima ou abaixo da frequência selecionada, em passos de 0,1 cent. Clique duas vezes para voltar a 0.",
+        "common.decreaseTitle": "Diminuir (↓)",
+        "common.increaseTitle": "Aumentar (↑)",
+        "spectrum.title": "Analisador de Espectro",
+        "spectrum.collapseAria": "Recolher Analisador de Espectro",
+        "spectrum.vintage": "Vintage",
+        "spectrum.modern": "Moderno",
+        "spectrum.styleAria": "Estilo do espectro: Vintage ou Moderno",
+        "tuningPitch.title": "Padrão de Afinação e Referência",
+        "tuningPitch.collapseAria": "Recolher Padrão de Afinação e Referência",
+        "tuningPitch.hint": "Reafina cada nota em alguns cents para um temperamento histórico ou alternativo, em vez do Temperamento Igual moderno, e define a referência A4 usada como base para tudo o mais.",
+        "tuningPitch.standardLabel": "Padrão",
+        "tuningPitch.keyLabel": "Tom",
+        "tuningPitch.temperamentSelectAria": "Padrão de afinação",
+        "tuningPitch.temperamentKeySelectAria": "Tom do padrão de afinação (tônica)",
+        "tuningPitch.referencePitchTitle": "Referência de Afinação",
+        "tuningPitch.pitchDecreaseAria": "Diminuir referência",
+        "tuningPitch.pitchDecreaseTitle": "Diminuir A4 (↓)",
+        "tuningPitch.pitchIncreaseAria": "Aumentar referência",
+        "tuningPitch.pitchIncreaseTitle": "Aumentar A4 (↑)",
+        "tuningPitch.pitchInputAria": "Referência de afinação em Hz",
+        "tuningPitch.pitchInputTitle": "Referência de afinação (Hz)",
+        "tuningPitch.pitchRangeAria": "Controle deslizante da referência de afinação",
+        "tuningPitch.presetListAria": "Predefinições de afinação de concerto",
+        "tuningPitch.presetFrenchBaroque": "Barroco Francês",
+        "tuningPitch.presetBaroque": "Barroco",
+        "tuningPitch.presetScientific": "\"Científico\"",
+        "tuningPitch.presetStandard": "Padrão",
+        "tuningPitch.presetModern": "Moderno",
+        "tuningPitch.presetSymphony": "\"Sinfônico\"",
+        "tuningPitch.presetItalian": "Italiano",
+        "tuningPitch.presetRenaissance": "Renascentista",
+        "freqTable.title": "Tabela de Frequências",
+        "freqTable.collapseAria": "Recolher Tabela de Frequências",
+        "freqTable.hint": "Todas as notas a partir de A0, notas nas colunas e oitavas nas linhas. Enquanto o afinador está ativo, a célula da nota detectada também mostra seu desvio em cents ao vivo.",
+        "freqTable.octHeader": "Oit",
+        "mic.idle": "Usa o seu microfone. Nada é gravado ou enviado a lugar nenhum.",
+        "mic.listening": "Ouvindo… toque uma nota.",
+        "mic.notSupported": "O acesso ao microfone não é suportado neste navegador.",
+        "mic.denied": "O acesso ao microfone foi negado. Permita na barra de endereço do navegador e tente novamente.",
+        "mic.notFound": "Nenhum microfone foi encontrado neste dispositivo.",
+        "mic.genericError": "Não foi possível acessar o microfone. Tente novamente.",
+        "mic.webAudioNotSupported": "Web Audio não é suportado neste navegador.",
+        "temperament.equal": "Temperamento Igual",
+        "temperament.vallotti": "Vallotti",
+        "temperament.young2": "Young II",
+        "temperament.meantone4": "Mesotônico de 1/4 de Comma",
+        "temperament.justMajor": "Entonação Justa (Maior)",
+      },
+      es: {
+        "meta.title": "BeatConfused | Afinador",
+        "meta.description": "BeatConfused es un afinador cromático online gratuito con pantallas de estroboscopio, aguja y medidor, referencia A4 ajustable y sin instalación.",
+        "meta.ogDescription": "Un afinador cromático online gratuito con pantallas de estroboscopio, aguja y medidor, y referencia ajustable.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Afinador",
+        "power.legend": "Iniciar Afinador",
+        "power.toggleAria": "Iniciar o detener el afinador",
+        "power.toggleTitle": "Iniciar / detener afinador",
+        "power.on": "ENCENDIDO",
+        "power.off": "APAGADO",
+        "aria.visualStyle": "Estilo visual",
+        "display.strobe": "Estroboscopio",
+        "display.needle": "Aguja",
+        "display.meter": "Medidor",
+        "display.inTune": "afinado",
+        "status.noSignal": "sin señal, revisa el micrófono en el monitor de entrada abajo",
+        "status.tuningFor": "Afinando para {temperament}{key} · {a4} Hz",
+        "status.showingFrequencies": "Mostrando frecuencias para {temperament}{key} · {a4} Hz — ajusta arriba en Estándar de Afinación y Referencia.",
+        "status.inKey": " en {note}",
+        "inputMonitor.title": "Monitor de Entrada y Tono de Prueba - Configurando tu Micrófono",
+        "inputMonitor.expandAria": "Expandir Monitor de Entrada y Tono de Prueba",
+        "inputMonitor.hint": "Amplifica el micrófono y muestra cuánta señal está llegando al afinador.",
+        "inputMonitor.gainLabel": "Ganancia",
+        "inputMonitor.gainAria": "Refuerzo de ganancia del micrófono",
+        "inputMonitor.levelLabel": "Nivel",
+        "inputMonitor.testToneSubheader": "Tono de Prueba",
+        "inputMonitor.testToneHint": "Envía un tono puro directamente al afinador (y a tus altavoces) — sin necesitar micrófono.",
+        "inputMonitor.volumeLabel": "Volumen",
+        "testTone.start": "Tono de Prueba",
+        "testTone.stop": "Detener Tono de Prueba",
+        "testTone.volumeAria": "Volumen del tono de prueba",
+        "testTone.freqSliderTitle": "Frecuencia (Hz)",
+        "testTone.freqDecreaseAria": "Disminuir frecuencia del tono de prueba",
+        "testTone.freqIncreaseAria": "Aumentar frecuencia del tono de prueba",
+        "testTone.rangeAria": "Frecuencia base del tono de prueba en Hz, de 19 Hz a 4434 Hz. Doble clic para volver a la referencia.",
+        "testTone.fineTuningTitle": "Afinación Fina (¢)",
+        "testTone.centsDecreaseAria": "Disminuir afinación fina en 0.1 cent",
+        "testTone.centsIncreaseAria": "Aumentar afinación fina en 0.1 cent",
+        "testTone.centsRangeAria": "Afinación fina: varía hasta 50 cents por encima o por debajo de la frecuencia seleccionada, en pasos de 0.1 cent. Doble clic para volver a 0.",
+        "common.decreaseTitle": "Disminuir (↓)",
+        "common.increaseTitle": "Aumentar (↑)",
+        "spectrum.title": "Analizador de Espectro",
+        "spectrum.collapseAria": "Contraer Analizador de Espectro",
+        "spectrum.vintage": "Vintage",
+        "spectrum.modern": "Moderno",
+        "spectrum.styleAria": "Estilo del espectro: Vintage o Moderno",
+        "tuningPitch.title": "Estándar de Afinación y Referencia",
+        "tuningPitch.collapseAria": "Contraer Estándar de Afinación y Referencia",
+        "tuningPitch.hint": "Reafina cada nota unos cents hacia un temperamento histórico o alternativo, en lugar del Temperamento Igual moderno, y fija la referencia A4 con la que se mide todo lo demás.",
+        "tuningPitch.standardLabel": "Estándar",
+        "tuningPitch.keyLabel": "Tono",
+        "tuningPitch.temperamentSelectAria": "Estándar de afinación",
+        "tuningPitch.temperamentKeySelectAria": "Tono del estándar de afinación (tónica)",
+        "tuningPitch.referencePitchTitle": "Referencia de Afinación",
+        "tuningPitch.pitchDecreaseAria": "Disminuir referencia",
+        "tuningPitch.pitchDecreaseTitle": "Disminuir A4 (↓)",
+        "tuningPitch.pitchIncreaseAria": "Aumentar referencia",
+        "tuningPitch.pitchIncreaseTitle": "Aumentar A4 (↑)",
+        "tuningPitch.pitchInputAria": "Referencia de afinación en Hz",
+        "tuningPitch.pitchInputTitle": "Referencia de afinación (Hz)",
+        "tuningPitch.pitchRangeAria": "Control deslizante de referencia de afinación",
+        "tuningPitch.presetListAria": "Preajustes de afinación de concierto",
+        "tuningPitch.presetFrenchBaroque": "Barroco Francés",
+        "tuningPitch.presetBaroque": "Barroco",
+        "tuningPitch.presetScientific": "\"Científico\"",
+        "tuningPitch.presetStandard": "Estándar",
+        "tuningPitch.presetModern": "Moderno",
+        "tuningPitch.presetSymphony": "\"Sinfónico\"",
+        "tuningPitch.presetItalian": "Italiano",
+        "tuningPitch.presetRenaissance": "Renacentista",
+        "freqTable.title": "Tabla de Frecuencias",
+        "freqTable.collapseAria": "Contraer Tabla de Frecuencias",
+        "freqTable.hint": "Todas las notas desde A0, notas en las columnas y octavas en las filas. Mientras el afinador está activo, la celda de la nota detectada también muestra su propia desviación en cents en vivo.",
+        "freqTable.octHeader": "Oct",
+        "mic.idle": "Usa tu micrófono. No se graba ni se envía nada a ningún lado.",
+        "mic.listening": "Escuchando… toca una nota.",
+        "mic.notSupported": "El acceso al micrófono no es compatible con este navegador.",
+        "mic.denied": "Se denegó el acceso al micrófono. Permítelo en la barra de direcciones del navegador e inténtalo de nuevo.",
+        "mic.notFound": "No se encontró ningún micrófono en este dispositivo.",
+        "mic.genericError": "No se pudo acceder al micrófono. Inténtalo de nuevo.",
+        "mic.webAudioNotSupported": "Web Audio no es compatible con este navegador.",
+        "temperament.equal": "Temperamento Igual",
+        "temperament.vallotti": "Vallotti",
+        "temperament.young2": "Young II",
+        "temperament.meantone4": "Mesotónico de 1/4 de Coma",
+        "temperament.justMajor": "Entonación Justa (Mayor)",
+      },
+    };
+  </script>
+  <script src="/i18n/i18n.js?v=20260922"></script>
 </body>
 </html>

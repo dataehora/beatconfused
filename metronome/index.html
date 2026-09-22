@@ -10,27 +10,30 @@
     gtag("js", new Date());
     gtag("config", "G-KCCMBL7GMJ");
   </script>
-  <title>BeatConfused | Metronome</title>
+  <title data-i18n="meta.title">BeatConfused | Metronome</title>
   <meta
     name="description"
     content="BeatConfused is a fast online metronome with tap tempo, organized time signatures, beat subdivisions, multiple visualizations, sound styles, and responsive musician-friendly controls."
+    data-i18n-attr="content:meta.description"
   />
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <meta name="theme-color" content="#10131d" />
   <link rel="canonical" href="https://beatconfused.com/metronome/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="BeatConfused | Metronome" />
+  <meta property="og:title" content="BeatConfused | Metronome" data-i18n-attr="content:meta.title" />
   <meta
     property="og:description"
     content="Practice with tap tempo, multiple time signatures, beat subdivisions, sound styles, and animated metronome views."
+    data-i18n-attr="content:meta.ogDescription"
   />
   <meta property="og:url" content="https://beatconfused.com/metronome/" />
   <meta property="og:site_name" content="BeatConfused" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="BeatConfused | Metronome" />
+  <meta name="twitter:title" content="BeatConfused | Metronome" data-i18n-attr="content:meta.title" />
   <meta
     name="twitter:description"
     content="A responsive online metronome for musicians with tap tempo, subdivisions, sound styles, and visual beat modes."
+    data-i18n-attr="content:meta.twitterDescription"
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -39,6 +42,7 @@
     rel="stylesheet"
   />
   <link id="appStylesheet" rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../i18n/i18n.css?v=20260922" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -63,8 +67,8 @@
 <body>
   <main class="page">
     <header class="hero">
-      <p class="eyebrow">BeatConfused Studio</p>
-      <h1>Metronome</h1>
+      <p class="eyebrow" data-i18n="hero.eyebrow">BeatConfused Studio</p>
+      <h1 data-i18n="hero.title">Metronome</h1>
     </header>
 
     <section class="metronome" aria-labelledby="metronome-title" data-visual-mode="pendulum">
@@ -116,66 +120,66 @@
         </div>
         <p id="beatLabel" class="beat-label">Beat 1</p>
 
-        <div class="display-toggle" role="radiogroup" aria-label="Visual style">
+        <div class="display-toggle" role="radiogroup" aria-label="Visual style" data-i18n-attr="aria-label:aria.visualStyle">
           <label class="pill pill-sm">
             <input type="radio" name="visualMode" value="pulse" />
-            <span>Pulse</span>
+            <span data-i18n="display.pulse">Pulse</span>
           </label>
           <label class="pill pill-sm">
             <input type="radio" name="visualMode" value="numbers" />
-            <span>Numbers</span>
+            <span data-i18n="display.numbers">Numbers</span>
           </label>
           <label class="pill pill-sm">
             <input type="radio" name="visualMode" value="pendulum" checked />
-            <span>Pendulum</span>
+            <span data-i18n="display.pendulum">Pendulum</span>
           </label>
         </div>
       </div>
 
-      <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop (Space)">Start</button>
+      <button id="toggleBtn" class="toggle-btn" type="button" aria-pressed="false" title="Start / stop (Space)" data-i18n-attr="title:transport.startStopTitle">Start</button>
 
       <div class="panel tempo-panel" aria-labelledby="tempoPanelTitle">
-        <h3 id="tempoPanelTitle" class="panel-title">Tempo</h3>
+        <h3 id="tempoPanelTitle" class="panel-title" data-i18n="tempo.title">Tempo</h3>
 
         <div class="tempo-hero">
-          <button id="decreaseBtn" type="button" class="small-btn" aria-label="Decrease BPM" title="Decrease BPM (↓)">−</button>
+          <button id="decreaseBtn" type="button" class="small-btn" aria-label="Decrease BPM" title="Decrease BPM (↓)" data-i18n-attr="aria-label:tempo.decreaseAria;title:tempo.decreaseTitle">−</button>
           <div class="bpm-readout">
-            <input id="bpmInput" type="number" min="40" max="240" step="1" value="120" aria-label="Tempo in beats per minute" title="Tempo (BPM)" />
+            <input id="bpmInput" type="number" min="40" max="240" step="1" value="120" aria-label="Tempo in beats per minute" title="Tempo (BPM)" data-i18n-attr="aria-label:tempo.bpmAria;title:tempo.bpmTitle" />
             <span class="bpm-unit">BPM</span>
           </div>
-          <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM" title="Increase BPM (↑)">+</button>
+          <button id="increaseBtn" type="button" class="small-btn" aria-label="Increase BPM" title="Increase BPM (↑)" data-i18n-attr="aria-label:tempo.increaseAria;title:tempo.increaseTitle">+</button>
         </div>
-        <input id="bpmRange" type="range" min="40" max="240" value="120" class="bpm-slider" aria-label="Tempo slider" />
+        <input id="bpmRange" type="range" min="40" max="240" value="120" class="bpm-slider" aria-label="Tempo slider" data-i18n-attr="aria-label:tempo.sliderAria" />
 
         <div class="tap-row">
-          <button id="tapBtn" type="button" class="tap-btn" title="Tap tempo (T)">Tap Tempo</button>
+          <button id="tapBtn" type="button" class="tap-btn" title="Tap tempo (T)" data-i18n="tempo.tapButton" data-i18n-attr="title:tempo.tapTitle">Tap Tempo</button>
           <p id="tapStatus" class="hint tap-status" aria-live="polite"></p>
         </div>
       </div>
 
-      <div class="beat-indicators" id="beatIndicators" aria-label="Beat indicators"></div>
+      <div class="beat-indicators" id="beatIndicators" aria-label="Beat indicators" data-i18n-attr="aria-label:aria.beatIndicators"></div>
 
       <div class="controls-grid">
         <div class="panel control-block" aria-labelledby="timePanelTitle">
-          <h3 id="timePanelTitle" class="panel-title">Time Signature &amp; Beat</h3>
+          <h3 id="timePanelTitle" class="panel-title" data-i18n="timeBeat.title">Time Signature &amp; Beat</h3>
 
           <div class="field">
-            <span class="field-label" id="timeSignatureLabel">Time signature</span>
+            <span class="field-label" id="timeSignatureLabel" data-i18n="timeBeat.timeSignatureLabel">Time signature</span>
             <select id="timeSignature" aria-labelledby="timeSignatureLabel">
-              <optgroup label="Simple">
+              <optgroup label="Simple" data-i18n-attr="label:timeBeat.groupSimple">
                 <option value="2/2" data-beats="2">2/2</option>
                 <option value="2/4" data-beats="2">2/4</option>
                 <option value="3/4" data-beats="3">3/4</option>
                 <option value="4/4" data-beats="4" selected>4/4</option>
                 <option value="6/4" data-beats="6">6/4</option>
               </optgroup>
-              <optgroup label="Compound">
+              <optgroup label="Compound" data-i18n-attr="label:timeBeat.groupCompound">
                 <option value="3/8" data-beats="3">3/8</option>
                 <option value="6/8" data-beats="6">6/8</option>
                 <option value="9/8" data-beats="9">9/8</option>
                 <option value="12/8" data-beats="12">12/8</option>
               </optgroup>
-              <optgroup label="Odd">
+              <optgroup label="Odd" data-i18n-attr="label:timeBeat.groupOdd">
                 <option value="5/4" data-beats="5">5/4</option>
                 <option value="5/8" data-beats="5">5/8</option>
                 <option value="7/8" data-beats="7">7/8</option>
@@ -184,7 +188,7 @@
           </div>
 
           <div class="field">
-            <span class="field-label" id="subdivisionLabel">Subdivide each beat into</span>
+            <span class="field-label" id="subdivisionLabel" data-i18n="timeBeat.subdivisionLabel">Subdivide each beat into</span>
             <div class="pill-group" role="radiogroup" aria-labelledby="subdivisionLabel">
               <label class="pill pill-sm">
                 <input type="radio" name="subdivision" value="1" checked />
@@ -211,66 +215,66 @@
                 <span>8</span>
               </label>
             </div>
-            <p class="hint subdivision-hint">
+            <p class="hint subdivision-hint" data-i18n="timeBeat.subdivisionHint">
               1 plain beat · 2 eighth notes · 3 triplets · 4 sixteenth notes · 6 sextuplets · 8 thirty-second notes
             </p>
           </div>
 
           <div class="field">
-            <span class="field-label" id="countModeLabel">Counting display</span>
+            <span class="field-label" id="countModeLabel" data-i18n="timeBeat.countModeLabel">Counting display</span>
             <div class="pill-group" role="radiogroup" aria-labelledby="countModeLabel">
               <label class="pill pill-sm">
                 <input type="radio" name="countMode" value="beat" checked />
-                <span>Beat</span>
+                <span data-i18n="timeBeat.countBeat">Beat</span>
               </label>
               <label class="pill pill-sm">
                 <input type="radio" name="countMode" value="measure" />
-                <span>Bar</span>
+                <span data-i18n="timeBeat.countBar">Bar</span>
               </label>
               <label class="pill pill-sm">
                 <input type="radio" name="countMode" value="off" />
-                <span>Off</span>
+                <span data-i18n="timeBeat.countOff">Off</span>
               </label>
             </div>
           </div>
         </div>
 
         <div class="panel control-block" aria-labelledby="soundPanelTitle">
-          <h3 id="soundPanelTitle" class="panel-title">Sound</h3>
+          <h3 id="soundPanelTitle" class="panel-title" data-i18n="sound.title">Sound</h3>
 
           <div class="field">
-            <span class="field-label" id="soundStyleLabel">Click tone</span>
+            <span class="field-label" id="soundStyleLabel" data-i18n="sound.styleLabel">Click tone</span>
             <select id="soundStyle" aria-labelledby="soundStyleLabel">
-              <option value="wood" selected>Wood</option>
-              <option value="cymbal">Cymbal</option>
-              <option value="cowbell">Agogô</option>
+              <option value="wood" selected data-i18n="sound.wood">Wood</option>
+              <option value="cymbal" data-i18n="sound.cymbal">Cymbal</option>
+              <option value="cowbell" data-i18n="sound.cowbell">Cowbell</option>
             </select>
           </div>
 
           <div class="sound-row">
-            <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume" title="Volume" />
+            <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume" title="Volume" data-i18n-attr="aria-label:sound.volumeAria;title:sound.volumeTitle" />
 
             <div class="pill-group">
               <label class="pill pill-sm">
                 <input id="soundToggle" type="checkbox" checked />
-                <span>Audio</span>
+                <span data-i18n="sound.audio">Audio</span>
               </label>
               <label class="pill pill-sm">
                 <input id="vibrationToggle" type="checkbox" />
-                <span>Haptics</span>
+                <span data-i18n="sound.haptics">Haptics</span>
               </label>
             </div>
           </div>
 
           <div class="field">
-            <span class="field-label" id="accentLabel">Accent the first beat</span>
+            <span class="field-label" id="accentLabel" data-i18n="sound.accentLabel">Accent the first beat</span>
             <div class="pill-group">
               <label class="pill pill-sm">
                 <input id="accentToggle" type="checkbox" checked aria-labelledby="accentLabel" />
-                <span>Stronger beat</span>
+                <span data-i18n="sound.strongerBeat">Stronger beat</span>
               </label>
             </div>
-            <p class="hint">When off, beat 1 clicks the same as every other beat.</p>
+            <p class="hint" data-i18n="sound.accentHint">When off, beat 1 clicks the same as every other beat.</p>
           </div>
         </div>
       </div>
@@ -302,5 +306,173 @@
       document.body.appendChild(appScript);
     })();
   </script>
+
+  <script>
+    window.BC_STRINGS = {
+      en: {
+        "meta.title": "BeatConfused | Metronome",
+        "meta.description": "BeatConfused is a fast online metronome with tap tempo, organized time signatures, beat subdivisions, multiple visualizations, sound styles, and responsive musician-friendly controls.",
+        "meta.ogDescription": "Practice with tap tempo, multiple time signatures, beat subdivisions, sound styles, and animated metronome views.",
+        "meta.twitterDescription": "A responsive online metronome for musicians with tap tempo, subdivisions, sound styles, and visual beat modes.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Metronome",
+        "aria.visualStyle": "Visual style",
+        "aria.beatIndicators": "Beat indicators",
+        "display.pulse": "Pulse",
+        "display.numbers": "Numbers",
+        "display.pendulum": "Pendulum",
+        "transport.start": "Start",
+        "transport.stop": "Stop",
+        "transport.startStopTitle": "Start / stop (Space)",
+        "tempo.title": "Tempo",
+        "tempo.decreaseAria": "Decrease BPM",
+        "tempo.decreaseTitle": "Decrease BPM (↓)",
+        "tempo.increaseAria": "Increase BPM",
+        "tempo.increaseTitle": "Increase BPM (↑)",
+        "tempo.bpmAria": "Tempo in beats per minute",
+        "tempo.bpmTitle": "Tempo (BPM)",
+        "tempo.sliderAria": "Tempo slider",
+        "tempo.tapButton": "Tap Tempo",
+        "tempo.tapTitle": "Tap tempo (T)",
+        "tempo.tapAgain": "Tap again…",
+        "tempo.tapBpm": "{bpm} BPM",
+        "timeBeat.title": "Time Signature & Beat",
+        "timeBeat.timeSignatureLabel": "Time signature",
+        "timeBeat.groupSimple": "Simple",
+        "timeBeat.groupCompound": "Compound",
+        "timeBeat.groupOdd": "Odd",
+        "timeBeat.subdivisionLabel": "Subdivide each beat into",
+        "timeBeat.subdivisionHint": "1 plain beat · 2 eighth notes · 3 triplets · 4 sixteenth notes · 6 sextuplets · 8 thirty-second notes",
+        "timeBeat.countModeLabel": "Counting display",
+        "timeBeat.countBeat": "Beat",
+        "timeBeat.countBar": "Bar",
+        "timeBeat.countOff": "Off",
+        "beatLabel.beat": "Beat {n}",
+        "beatLabel.measureBeat": "Measure {m} · Beat {n}",
+        "beatLabel.sub": " · Sub {s}/{total}",
+        "sound.title": "Sound",
+        "sound.styleLabel": "Click tone",
+        "sound.wood": "Wood",
+        "sound.cymbal": "Cymbal",
+        "sound.cowbell": "Cowbell",
+        "sound.volumeAria": "Volume",
+        "sound.volumeTitle": "Volume",
+        "sound.audio": "Audio",
+        "sound.haptics": "Haptics",
+        "sound.accentLabel": "Accent the first beat",
+        "sound.strongerBeat": "Stronger beat",
+        "sound.accentHint": "When off, beat 1 clicks the same as every other beat.",
+      },
+      pt: {
+        "meta.title": "BeatConfused | Metrônomo",
+        "meta.description": "O BeatConfused é um metrônomo online rápido com tap tempo, fórmulas de compasso organizadas, subdivisões de tempo, várias visualizações, estilos de som e controles responsivos pensados para músicos.",
+        "meta.ogDescription": "Pratique com tap tempo, várias fórmulas de compasso, subdivisões de tempo, estilos de som e visualizações animadas do metrônomo.",
+        "meta.twitterDescription": "Um metrônomo online responsivo para músicos, com tap tempo, subdivisões, estilos de som e modos visuais de batida.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Metrônomo",
+        "aria.visualStyle": "Estilo visual",
+        "aria.beatIndicators": "Indicadores de batida",
+        "display.pulse": "Pulso",
+        "display.numbers": "Números",
+        "display.pendulum": "Pêndulo",
+        "transport.start": "Iniciar",
+        "transport.stop": "Parar",
+        "transport.startStopTitle": "Iniciar / parar (Espaço)",
+        "tempo.title": "Tempo",
+        "tempo.decreaseAria": "Diminuir BPM",
+        "tempo.decreaseTitle": "Diminuir BPM (↓)",
+        "tempo.increaseAria": "Aumentar BPM",
+        "tempo.increaseTitle": "Aumentar BPM (↑)",
+        "tempo.bpmAria": "Andamento em batidas por minuto",
+        "tempo.bpmTitle": "Andamento (BPM)",
+        "tempo.sliderAria": "Controle deslizante de andamento",
+        "tempo.tapButton": "Marcar Tempo",
+        "tempo.tapTitle": "Marcar tempo (T)",
+        "tempo.tapAgain": "Toque novamente…",
+        "tempo.tapBpm": "{bpm} BPM",
+        "timeBeat.title": "Compasso e Batida",
+        "timeBeat.timeSignatureLabel": "Fórmula de compasso",
+        "timeBeat.groupSimple": "Simples",
+        "timeBeat.groupCompound": "Composto",
+        "timeBeat.groupOdd": "Ímpar",
+        "timeBeat.subdivisionLabel": "Subdividir cada batida em",
+        "timeBeat.subdivisionHint": "1 batida simples · 2 colcheias · 3 tercinas · 4 semicolcheias · 6 sextinas · 8 fusas",
+        "timeBeat.countModeLabel": "Exibição da contagem",
+        "timeBeat.countBeat": "Batida",
+        "timeBeat.countBar": "Compasso",
+        "timeBeat.countOff": "Desligado",
+        "beatLabel.beat": "Batida {n}",
+        "beatLabel.measureBeat": "Compasso {m} · Batida {n}",
+        "beatLabel.sub": " · Sub {s}/{total}",
+        "sound.title": "Som",
+        "sound.styleLabel": "Timbre do clique",
+        "sound.wood": "Madeira",
+        "sound.cymbal": "Prato",
+        "sound.cowbell": "Agogô",
+        "sound.volumeAria": "Volume",
+        "sound.volumeTitle": "Volume",
+        "sound.audio": "Áudio",
+        "sound.haptics": "Vibração",
+        "sound.accentLabel": "Acentuar a primeira batida",
+        "sound.strongerBeat": "Batida mais forte",
+        "sound.accentHint": "Quando desligado, a batida 1 soa igual às demais.",
+      },
+      es: {
+        "meta.title": "BeatConfused | Metrónomo",
+        "meta.description": "BeatConfused es un metrónomo online rápido con tap tempo, compases organizados, subdivisiones de tiempo, múltiples visualizaciones, estilos de sonido y controles responsivos pensados para músicos.",
+        "meta.ogDescription": "Practica con tap tempo, múltiples compases, subdivisiones de tiempo, estilos de sonido y visualizaciones animadas del metrónomo.",
+        "meta.twitterDescription": "Un metrónomo online responsivo para músicos, con tap tempo, subdivisiones, estilos de sonido y modos visuales de pulso.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Metrónomo",
+        "aria.visualStyle": "Estilo visual",
+        "aria.beatIndicators": "Indicadores de pulso",
+        "display.pulse": "Pulso",
+        "display.numbers": "Números",
+        "display.pendulum": "Péndulo",
+        "transport.start": "Iniciar",
+        "transport.stop": "Detener",
+        "transport.startStopTitle": "Iniciar / detener (Espacio)",
+        "tempo.title": "Tempo",
+        "tempo.decreaseAria": "Disminuir BPM",
+        "tempo.decreaseTitle": "Disminuir BPM (↓)",
+        "tempo.increaseAria": "Aumentar BPM",
+        "tempo.increaseTitle": "Aumentar BPM (↑)",
+        "tempo.bpmAria": "Tempo en pulsos por minuto",
+        "tempo.bpmTitle": "Tempo (BPM)",
+        "tempo.sliderAria": "Control deslizante de tempo",
+        "tempo.tapButton": "Marcar Tempo",
+        "tempo.tapTitle": "Marcar tempo (T)",
+        "tempo.tapAgain": "Toca de nuevo…",
+        "tempo.tapBpm": "{bpm} BPM",
+        "timeBeat.title": "Compás y Pulso",
+        "timeBeat.timeSignatureLabel": "Compás",
+        "timeBeat.groupSimple": "Simple",
+        "timeBeat.groupCompound": "Compuesto",
+        "timeBeat.groupOdd": "Impar",
+        "timeBeat.subdivisionLabel": "Subdividir cada pulso en",
+        "timeBeat.subdivisionHint": "1 pulso simple · 2 corcheas · 3 tresillos · 4 semicorcheas · 6 seisillos · 8 fusas",
+        "timeBeat.countModeLabel": "Visualización del conteo",
+        "timeBeat.countBeat": "Pulso",
+        "timeBeat.countBar": "Compás",
+        "timeBeat.countOff": "Apagado",
+        "beatLabel.beat": "Pulso {n}",
+        "beatLabel.measureBeat": "Compás {m} · Pulso {n}",
+        "beatLabel.sub": " · Sub {s}/{total}",
+        "sound.title": "Sonido",
+        "sound.styleLabel": "Timbre del clic",
+        "sound.wood": "Madera",
+        "sound.cymbal": "Platillo",
+        "sound.cowbell": "Cencerro",
+        "sound.volumeAria": "Volumen",
+        "sound.volumeTitle": "Volumen",
+        "sound.audio": "Audio",
+        "sound.haptics": "Vibración",
+        "sound.accentLabel": "Acentuar el primer pulso",
+        "sound.strongerBeat": "Pulso más fuerte",
+        "sound.accentHint": "Si está apagado, el pulso 1 suena igual que los demás.",
+      },
+    };
+  </script>
+  <script src="../i18n/i18n.js?v=20260922"></script>
 </body>
 </html>

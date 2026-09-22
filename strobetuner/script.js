@@ -18,6 +18,12 @@
 
 const T = TunerCommon;
 
+// Same pattern as metronome/script.js's tr(): translated lookup with an
+// inline English fallback, safe to call even before i18n.js has loaded.
+function tr(key, fallback, vars) {
+  return window.BC_I18N ? window.BC_I18N.t(key, vars) : fallback;
+}
+
 const noteNameEl = document.getElementById("noteName");
 const noteReadoutEl = document.getElementById("noteReadout");
 const strobeSection = document.querySelector(".strobetuner");
@@ -569,7 +575,7 @@ function resetOctaveLegend() {
 /* ============================================================
    READOUT
    ============================================================ */
-const NO_SIGNAL_MESSAGE = "no signal, check the microphone in the input monitor below";
+const NO_SIGNAL_MESSAGE_FALLBACK = "no signal, check the microphone in the input monitor below";
 
 function updateReadout() {
   const inTune = !state.hasSignal;
@@ -579,7 +585,7 @@ function updateReadout() {
   if (!state.hasSignal || !state.currentNoteName) {
     const silentForMs = performance.now() - state.lastConfidentAt;
     const showNoSignal = state.activeSource === "mic" && silentForMs > NO_SIGNAL_DELAY_MS;
-    noteNameEl.textContent = showNoSignal ? NO_SIGNAL_MESSAGE : "–";
+    noteNameEl.textContent = showNoSignal ? tr("status.noSignal", NO_SIGNAL_MESSAGE_FALLBACK) : "–";
     noteNameEl.classList.toggle("is-no-signal", showNoSignal);
     return;
   }
@@ -784,7 +790,7 @@ async function startMic() {
   state.activeSource = "mic";
   state.lastConfidentAt = performance.now();
   toggleMicBtn.setAttribute("aria-pressed", "true");
-  powerSwitchStateEl.textContent = "ON";
+  powerSwitchStateEl.textContent = tr("power.on", "ON");
   setMicStatus(T.MIC_MESSAGES.listening);
   updateReadout();
   beginRenderLoop();
@@ -813,7 +819,7 @@ function stopMic() {
   }
 
   toggleMicBtn.setAttribute("aria-pressed", "false");
-  powerSwitchStateEl.textContent = "OFF";
+  powerSwitchStateEl.textContent = tr("power.off", "OFF");
   setMicStatus(T.MIC_MESSAGES.idle);
   endRenderLoop();
   resetVisuals();
@@ -858,7 +864,7 @@ function startTestTone() {
 
   state.activeSource = "test";
   state.lastConfidentAt = performance.now();
-  toggleTestToneBtn.textContent = "Stop Test Tone";
+  toggleTestToneBtn.textContent = tr("testTone.stop", "Stop Test Tone");
   toggleTestToneBtn.setAttribute("aria-pressed", "true");
   updateReadout();
   beginRenderLoop();
@@ -872,7 +878,7 @@ function stopTestTone() {
   state.activeSource = null;
   testTone.stop();
 
-  toggleTestToneBtn.textContent = "Test Tone";
+  toggleTestToneBtn.textContent = tr("testTone.start", "Test Tone");
   toggleTestToneBtn.setAttribute("aria-pressed", "false");
   endRenderLoop();
   resetVisuals();
@@ -931,9 +937,16 @@ function nudgeFineTuningCents(deltaCents) {
    ============================================================ */
 function updateTuningStatement() {
   const selected = temperament.getTemperament();
-  const keyPart = selected.needsKey ? ` in ${NOTE_NAMES[temperament.state.temperamentKey]}` : "";
-  tuningStatementEl.textContent = `Tuning for ${selected.name}${keyPart} · ${state.a4} Hz`;
-  freqTableTuningNoteEl.textContent = `Showing frequencies for ${selected.name}${keyPart} · ${state.a4} Hz — set above under Tuning Standard and Reference Pitch.`;
+  const temperamentName = tr(`temperament.${selected.id}`, selected.name);
+  const noteName = NOTE_NAMES[temperament.state.temperamentKey];
+  const keyPart = selected.needsKey ? tr("status.inKey", ` in ${noteName}`, { note: noteName }) : "";
+  const vars = { temperament: temperamentName, key: keyPart, a4: state.a4 };
+  tuningStatementEl.textContent = tr("status.tuningFor", `Tuning for ${temperamentName}${keyPart} · ${state.a4} Hz`, vars);
+  freqTableTuningNoteEl.textContent = tr(
+    "status.showingFrequencies",
+    `Showing frequencies for ${temperamentName}${keyPart} · ${state.a4} Hz — set above under Tuning Standard and Reference Pitch.`,
+    vars
+  );
 }
 
 const referencePitch = T.setupReferencePitch({
@@ -1012,3 +1025,15 @@ spectrum.setStyle("vintage");
 spectrum.sizeCanvas();
 updateReadout();
 inputMonitor.reset();
+
+// Re-render the dynamic (non data-i18n) text for the active language --
+// same pattern as /tuner/'s script.js. Fires on every language switch,
+// and once on initial load too (see i18n/i18n.js).
+window.addEventListener("bc:langchange", () => {
+  updateTuningStatement();
+  powerSwitchStateEl.textContent = tr(state.activeSource === "mic" ? "power.on" : "power.off", powerSwitchStateEl.textContent);
+  toggleTestToneBtn.textContent = tr(
+    state.activeSource === "test" ? "testTone.stop" : "testTone.start",
+    toggleTestToneBtn.textContent
+  );
+});

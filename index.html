@@ -14,6 +14,7 @@
   <meta
     name="description"
     content="BeatConfused is a web studio with music tools"
+    data-i18n-attr="content:meta.description"
   />
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <meta name="theme-color" content="#f6f2ea" />
@@ -23,6 +24,7 @@
   <meta
     property="og:description"
     content="BeatConfused is a web studio with music tools."
+    data-i18n-attr="content:meta.description"
   />
   <meta property="og:url" content="https://beatconfused.com/" />
   <meta property="og:site_name" content="BeatConfused" />
@@ -31,6 +33,7 @@
   <meta
     name="twitter:description"
     content="BeatConfused is a web studio with music tools"
+    data-i18n-attr="content:meta.description"
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -39,6 +42,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="i18n/i18n.css?v=20260922" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -78,9 +82,9 @@
   <main class="page">
     <section class="hero">
       <h1>beatconfused.com</h1>
-      <p class="tagline">BeatConfused is a web studio with music tools</p>
+      <p class="tagline" data-i18n="meta.description">BeatConfused is a web studio with music tools</p>
 
-      <nav class="tools" aria-label="Tools">
+      <nav class="tools" aria-label="Tools" data-i18n-attr="aria-label:home.toolsAria">
         <a class="tool-card" href="/metronome/">
           <span class="tool-media metronome-icon">
             <svg viewBox="0 0 240 300" width="240" height="300" role="presentation" focusable="false">
@@ -116,8 +120,8 @@
               </g>
             </svg>
           </span>
-          <span class="tool-name">Metronome</span>
-          <span class="tool-desc">Master your Tempo</span>
+          <span class="tool-name" data-i18n="home.tool.metronome.name">Metronome</span>
+          <span class="tool-desc" data-i18n="home.tool.metronome.desc">Master your Tempo</span>
         </a>
         <a class="tool-card" href="/tuner/">
           <span class="tool-media tuner-icon">
@@ -143,8 +147,8 @@
               <circle class="needle-icon-hub" cx="150" cy="150" r="6" />
             </svg>
           </span>
-          <span class="tool-name">Tuner</span>
-          <span class="tool-desc">Needle, Strobe or Meter display. Always in tune</span>
+          <span class="tool-name" data-i18n="home.tool.tuner.name">Tuner</span>
+          <span class="tool-desc" data-i18n="home.tool.tuner.desc">Needle, Strobe or Meter display. Always in tune</span>
         </a>
         <a class="tool-card" href="/strobetuner/">
           <span class="tool-media tuner-icon">
@@ -170,8 +174,8 @@
               <text class="tuner-icon-a4" x="150" y="108" text-anchor="middle">A</text>
             </svg>
           </span>
-          <span class="tool-name">Octave Strobe Tuner</span>
-          <span class="tool-desc">One note, every octave, at once</span>
+          <span class="tool-name" data-i18n="home.tool.strobetuner.name">Octave Strobe Tuner</span>
+          <span class="tool-desc" data-i18n="home.tool.strobetuner.desc">One note, every octave, at once</span>
         </a>
         <a class="tool-card" href="/multistrobe/">
           <span class="tool-media fan-trio" id="fanTrio">
@@ -182,8 +186,8 @@
                  the Octave Strobe Tuner card's single dome-shaped wheel.
                  Built entirely by buildFanTrio() below. -->
           </span>
-          <span class="tool-name">Chromatic Strobe Tuner</span>
-          <span class="tool-desc">All Notes, All Octaves</span>
+          <span class="tool-name" data-i18n="home.tool.multistrobe.name">Chromatic Strobe Tuner</span>
+          <span class="tool-desc" data-i18n="home.tool.multistrobe.desc">All Notes, All Octaves</span>
         </a>
       </nav>
     </section>
@@ -496,5 +500,47 @@
     buildStrobeIcon("strobeTunerIconWedges");
     buildFanTrio();
   </script>
+
+  <script>
+    window.BC_STRINGS = {
+      en: {
+        "meta.description": "BeatConfused is a web studio with music tools",
+        "home.toolsAria": "Tools",
+        "home.tool.metronome.name": "Metronome",
+        "home.tool.metronome.desc": "Master your Tempo",
+        "home.tool.tuner.name": "Tuner",
+        "home.tool.tuner.desc": "Needle, Strobe or Meter display. Always in tune",
+        "home.tool.strobetuner.name": "Octave Strobe Tuner",
+        "home.tool.strobetuner.desc": "One note, every octave, at once",
+        "home.tool.multistrobe.name": "Chromatic Strobe Tuner",
+        "home.tool.multistrobe.desc": "All Notes, All Octaves",
+      },
+      pt: {
+        "meta.description": "BeatConfused é um estúdio web com ferramentas musicais",
+        "home.toolsAria": "Ferramentas",
+        "home.tool.metronome.name": "Metrônomo",
+        "home.tool.metronome.desc": "Domine o seu Tempo",
+        "home.tool.tuner.name": "Afinador",
+        "home.tool.tuner.desc": "Display de Ponteiro, Estroboscópio ou Medidor. Sempre afinado",
+        "home.tool.strobetuner.name": "Afinador Estroboscópico de Oitava",
+        "home.tool.strobetuner.desc": "Uma nota, todas as oitavas, ao mesmo tempo",
+        "home.tool.multistrobe.name": "Afinador Estroboscópico Cromático",
+        "home.tool.multistrobe.desc": "Todas as Notas, Todas as Oitavas",
+      },
+      es: {
+        "meta.description": "BeatConfused es un estudio web con herramientas musicales",
+        "home.toolsAria": "Herramientas",
+        "home.tool.metronome.name": "Metrónomo",
+        "home.tool.metronome.desc": "Domina tu Tempo",
+        "home.tool.tuner.name": "Afinador",
+        "home.tool.tuner.desc": "Pantalla de Aguja, Estroboscopio o Medidor. Siempre afinado",
+        "home.tool.strobetuner.name": "Afinador Estroboscópico de Octava",
+        "home.tool.strobetuner.desc": "Una nota, todas las octavas, a la vez",
+        "home.tool.multistrobe.name": "Afinador Estroboscópico Cromático",
+        "home.tool.multistrobe.desc": "Todas las Notas, Todas las Octavas",
+      },
+    };
+  </script>
+  <script src="i18n/i18n.js?v=20260922"></script>
 </body>
 </html>

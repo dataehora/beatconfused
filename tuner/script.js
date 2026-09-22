@@ -1,6 +1,12 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 const T = TunerCommon;
 
+// Same pattern as metronome/script.js's tr(): translated lookup with an
+// inline English fallback, safe to call even before i18n.js has loaded.
+function tr(key, fallback, vars) {
+  return window.BC_I18N ? window.BC_I18N.t(key, vars) : fallback;
+}
+
 const tunerSection = document.querySelector(".tuner");
 const noteNameEl = document.getElementById("noteName");
 const centsValueEl = document.getElementById("centsValue");
@@ -552,7 +558,7 @@ function updateFreqTableLiveCents() {
   entry.cell.classList.toggle("is-in-tune", inTune);
 }
 
-const NO_SIGNAL_MESSAGE = "no signal, check the microphone in the input monitor below";
+const NO_SIGNAL_MESSAGE_FALLBACK = "no signal, check the microphone in the input monitor below";
 
 function updateReadout() {
   const inTune = !state.hasSignal || Math.abs(state.smoothedCents) <= IN_TUNE_THRESHOLD_CENTS;
@@ -570,7 +576,7 @@ function updateReadout() {
     // period runs from state.lastConfidentAt, seeded when the mic starts.
     const silentForMs = performance.now() - state.lastConfidentAt;
     const showNoSignal = state.activeSource === "mic" && silentForMs > NO_SIGNAL_DELAY_MS;
-    noteNameEl.textContent = showNoSignal ? NO_SIGNAL_MESSAGE : "–";
+    noteNameEl.textContent = showNoSignal ? tr("status.noSignal", NO_SIGNAL_MESSAGE_FALLBACK) : "–";
     noteNameEl.classList.toggle("is-no-signal", showNoSignal);
     noteMetaEl.classList.add("is-empty");
     return;
@@ -771,7 +777,7 @@ async function startMic() {
   // counting from when the tuner was switched on, not from page load.
   state.lastConfidentAt = performance.now();
   toggleMicBtn.setAttribute("aria-pressed", "true");
-  powerSwitchStateEl.textContent = "ON";
+  powerSwitchStateEl.textContent = tr("power.on", "ON");
   setMicStatus(T.MIC_MESSAGES.listening);
   beginRenderLoop();
 }
@@ -799,7 +805,7 @@ function stopMic() {
   }
 
   toggleMicBtn.setAttribute("aria-pressed", "false");
-  powerSwitchStateEl.textContent = "OFF";
+  powerSwitchStateEl.textContent = tr("power.off", "OFF");
   setMicStatus(T.MIC_MESSAGES.idle);
   endRenderLoop();
   resetVisuals();
@@ -843,7 +849,7 @@ function startTestTone() {
   testTone.start(ctx, analyserNode);
 
   state.activeSource = "test";
-  toggleTestToneBtn.textContent = "Stop Test Tone";
+  toggleTestToneBtn.textContent = tr("testTone.stop", "Stop Test Tone");
   toggleTestToneBtn.setAttribute("aria-pressed", "true");
   beginRenderLoop();
 }
@@ -856,7 +862,7 @@ function stopTestTone() {
   state.activeSource = null;
   testTone.stop();
 
-  toggleTestToneBtn.textContent = "Test Tone";
+  toggleTestToneBtn.textContent = tr("testTone.start", "Test Tone");
   toggleTestToneBtn.setAttribute("aria-pressed", "false");
   endRenderLoop();
   resetVisuals();
@@ -925,9 +931,16 @@ function setVisualMode() {
 // that can change it (Standard, Key, and the A4 reference pitch).
 function updateTuningStatement() {
   const selected = temperament.getTemperament();
-  const keyPart = selected.needsKey ? ` in ${NOTE_NAMES[temperament.state.temperamentKey]}` : "";
-  tuningStatementEl.textContent = `Tuning for ${selected.name}${keyPart} · ${state.a4} Hz`;
-  freqTableTuningNoteEl.textContent = `Showing frequencies for ${selected.name}${keyPart} · ${state.a4} Hz — set above under Tuning Standard and Reference Pitch.`;
+  const temperamentName = tr(`temperament.${selected.id}`, selected.name);
+  const noteName = NOTE_NAMES[temperament.state.temperamentKey];
+  const keyPart = selected.needsKey ? tr("status.inKey", ` in ${noteName}`, { note: noteName }) : "";
+  const vars = { temperament: temperamentName, key: keyPart, a4: state.a4 };
+  tuningStatementEl.textContent = tr("status.tuningFor", `Tuning for ${temperamentName}${keyPart} · ${state.a4} Hz`, vars);
+  freqTableTuningNoteEl.textContent = tr(
+    "status.showingFrequencies",
+    `Showing frequencies for ${temperamentName}${keyPart} · ${state.a4} Hz — set above under Tuning Standard and Reference Pitch.`,
+    vars
+  );
 }
 
 const referencePitch = T.setupReferencePitch({
@@ -1007,3 +1020,18 @@ updateTestToneDisplay(testTone.getFrequency());
 spectrum.setStyle("vintage");
 spectrum.sizeCanvas();
 resetVisuals();
+
+// Re-render the dynamic (non data-i18n) text for the active language: the
+// tuning statement / frequency-table note (temperament names are
+// translated), the power switch's ON/OFF, and the test tone button's
+// label. Fires on every language switch, and once on initial load too
+// (see i18n/i18n.js), covering a returning pt/es visitor regardless of
+// whether this script or the i18n engine finishes loading first.
+window.addEventListener("bc:langchange", () => {
+  updateTuningStatement();
+  powerSwitchStateEl.textContent = tr(state.activeSource === "mic" ? "power.on" : "power.off", powerSwitchStateEl.textContent);
+  toggleTestToneBtn.textContent = tr(
+    state.activeSource === "test" ? "testTone.stop" : "testTone.start",
+    toggleTestToneBtn.textContent
+  );
+});
