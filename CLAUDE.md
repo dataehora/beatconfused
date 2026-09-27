@@ -38,6 +38,24 @@ that doesn't belong there.
   linked from the studio nav, blocked in `robots.txt`, and absent from
   `sitemap.xml`. Leave it that way unless told otherwise.
 
+### Hosting headers / 404 / SEO
+
+- `404.html` (root) is served for unknown URLs by both GitHub Pages and
+  Cloudflare Pages (without it, Cloudflare Pages falls back to serving
+  `index.html` with a 200). It uses absolute paths only, since it can be
+  served at any depth.
+- `_headers` is Cloudflare Pages syntax (GitHub Pages ignores it).
+  **Keep `microphone=(self)`** in its Permissions-Policy — `microphone=()`
+  would block `getUserMedia` on all three tuners. Its CSP is
+  `Report-Only`; the only third parties are GA4 (gtag.js) and Google
+  Fonts. If a new third-party script/API is added, add it there.
+- `og-image.png` (1200×630) is a screenshot of the home hero, shared by
+  every page's `og:image`/`twitter:image`. Re-render it if the home icons
+  change noticeably.
+- The home page's `meta.description` i18n key is the short visible
+  tagline; the `<meta>` tags use `meta.pageDescription` (140-160 chars).
+  Keep `<lastmod>` in `sitemap.xml` current when a page's content changes.
+
 ### Section order convention (tuner-family pages)
 
 All three pages follow the same order: Title → Toggle → Display →

@@ -2,17 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://beatconfused.com/</loc>
+    <lastmod>2026-09-27</lastmod>
   </url>
   <url>
     <loc>https://beatconfused.com/metronome/</loc>
+    <lastmod>2026-09-27</lastmod>
   </url>
   <url>
     <loc>https://beatconfused.com/tuner/</loc>
+    <lastmod>2026-09-27</lastmod>
   </url>
   <url>
     <loc>https://beatconfused.com/strobetuner/</loc>
+    <lastmod>2026-09-27</lastmod>
   </url>
   <url>
     <loc>https://beatconfused.com/multistrobe/</loc>
+    <lastmod>2026-09-27</lastmod>
   </url>
 </urlset>

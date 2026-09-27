@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title data-i18n="meta.title">Page Not Found | BeatConfused</title>
+  <meta
+    name="description"
+    content="This page doesn't exist on BeatConfused. Head back home for the free online metronome, chromatic tuner, and octave and chromatic strobe tuners."
+    data-i18n-attr="content:meta.description"
+  />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#f6f2ea" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Absolute paths throughout: this page is served for *any* unknown URL,
+       at any depth (e.g. /tuner/foo/bar), so relative links would break. -->
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/i18n/i18n.css?v=20260922" />
+  <style>
+    .error-code {
+      margin: 0;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(4.5rem, 16vw, 7rem);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+    }
+
+    .home-link {
+      display: inline-block;
+      padding: 0.7rem 1.4rem;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      color: var(--paper);
+      background: var(--accent);
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    .home-link:hover,
+    .home-link:focus-visible {
+      background: transparent;
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .tool-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem 1.25rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0.95rem;
+    }
+
+    .tool-links a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tool-links a:hover,
+    .tool-links a:focus-visible {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <p class="error-code" aria-hidden="true">404</p>
+      <h1 data-i18n="notFound.heading">Page not found</h1>
+      <p class="tagline" data-i18n="notFound.message">
+        This page is out of tune: we couldn't find what you were looking for.
+      </p>
+      <a class="home-link" href="/" data-i18n="notFound.home">Back to BeatConfused home</a>
+      <nav aria-label="Tools" data-i18n-attr="aria-label:notFound.toolsAria">
+        <ul class="tool-links">
+          <li><a href="/metronome/" data-i18n="notFound.tool.metronome">Metronome</a></li>
+          <li><a href="/tuner/" data-i18n="notFound.tool.tuner">Tuner</a></li>
+          <li><a href="/strobetuner/" data-i18n="notFound.tool.strobetuner">Octave Strobe Tuner</a></li>
+          <li><a href="/multistrobe/" data-i18n="notFound.tool.multistrobe">Chromatic Strobe Tuner</a></li>
+        </ul>
+      </nav>
+    </section>
+
+    <footer class="footer">
+      <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>
+    </footer>
+  </main>
+
+  <script>
+    window.BC_STRINGS = {
+      en: {
+        "meta.title": "Page Not Found | BeatConfused",
+        "meta.description": "This page doesn't exist on BeatConfused. Head back home for the free online metronome, chromatic tuner, and octave and chromatic strobe tuners.",
+        "notFound.heading": "Page not found",
+        "notFound.message": "This page is out of tune: we couldn't find what you were looking for.",
+        "notFound.home": "Back to BeatConfused home",
+        "notFound.toolsAria": "Tools",
+        "notFound.tool.metronome": "Metronome",
+        "notFound.tool.tuner": "Tuner",
+        "notFound.tool.strobetuner": "Octave Strobe Tuner",
+        "notFound.tool.multistrobe": "Chromatic Strobe Tuner",
+      },
+      pt: {
+        "meta.title": "Página Não Encontrada | BeatConfused",
+        "meta.description": "Esta página não existe no BeatConfused. Volte ao início para usar o metrônomo online grátis, o afinador cromático e os afinadores estroboscópicos.",
+        "notFound.heading": "Página não encontrada",
+        "notFound.message": "Esta página está desafinada: não encontramos o que você procurava.",
+        "notFound.home": "Voltar ao início do BeatConfused",
+        "notFound.toolsAria": "Ferramentas",
+        "notFound.tool.metronome": "Metrônomo",
+        "notFound.tool.tuner": "Afinador",
+        "notFound.tool.strobetuner": "Afinador Estroboscópico de Oitava",
+        "notFound.tool.multistrobe": "Afinador Estroboscópico Cromático",
+      },
+      es: {
+        "meta.title": "Página No Encontrada | BeatConfused",
+        "meta.description": "Esta página no existe en BeatConfused. Vuelve al inicio para usar el metrónomo online gratis, el afinador cromático y los afinadores estroboscópicos.",
+        "notFound.heading": "Página no encontrada",
+        "notFound.message": "Esta página está desafinada: no encontramos lo que buscabas.",
+        "notFound.home": "Volver al inicio de BeatConfused",
+        "notFound.toolsAria": "Herramientas",
+        "notFound.tool.metronome": "Metrónomo",
+        "notFound.tool.tuner": "Afinador",
+        "notFound.tool.strobetuner": "Afinador Estroboscópico de Octava",
+        "notFound.tool.multistrobe": "Afinador Estroboscópico Cromático",
+      },
+    };
+  </script>
+  <script src="/i18n/i18n.js?v=20260922"></script>
+</body>
+</html>
