@@ -1,0 +1,20 @@
+# Cloudflare Pages response headers. Ignored by GitHub Pages.
+# https://developers.cloudflare.com/pages/configuration/headers/
+#
+# microphone=(self), not (): all three tuners call getUserMedia, which
+# microphone=() would block for every page, the site's own included.
+#
+# The CSP is Report-Only: it blocks nothing, only logs violations in the
+# browser console. Third parties actually in use: Google Analytics 4 (gtag.js)
+# and Google Fonts. No ads, no external APIs. 'unsafe-inline' is needed for
+# now because every page has inline <script> blocks (gtag bootstrap, i18n
+# strings, home-page icon builders) and inline style attributes.
+
+/*
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(self), geolocation=(self)
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'
+
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
