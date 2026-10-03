@@ -29,10 +29,30 @@
 
   var STORAGE_KEY = "bc_lang";
   var DEFAULT_LANG = "en";
+  // Flags are inline SVG, not emoji: Windows has no font that renders
+  // regional-indicator pairs (🇺🇸 etc.) as flags, so Chrome/Edge/Firefox
+  // there showed bare "US"/"BR"/"ES" letters instead. All three share a
+  // 30x20 (3:2) viewBox so they render at the same size.
+  var FLAG_SVGS = {
+    en:
+      '<rect width="30" height="20" fill="#B22234"/>' +
+      '<g fill="#fff"><rect y="1.538" width="30" height="1.539"/><rect y="4.615" width="30" height="1.539"/><rect y="7.692" width="30" height="1.539"/><rect y="10.769" width="30" height="1.539"/><rect y="13.846" width="30" height="1.539"/><rect y="16.923" width="30" height="1.539"/></g>' +
+      '<rect width="12" height="10.77" fill="#3C3B6E"/>' +
+      '<g fill="#fff"><circle cx="1.4" cy="1.4" r="0.45"/><circle cx="3.7" cy="1.4" r="0.45"/><circle cx="6.0" cy="1.4" r="0.45"/><circle cx="8.3" cy="1.4" r="0.45"/><circle cx="10.6" cy="1.4" r="0.45"/><circle cx="2.5" cy="3.6" r="0.45"/><circle cx="4.8" cy="3.6" r="0.45"/><circle cx="7.2" cy="3.6" r="0.45"/><circle cx="9.4" cy="3.6" r="0.45"/><circle cx="1.4" cy="5.8" r="0.45"/><circle cx="3.7" cy="5.8" r="0.45"/><circle cx="6.0" cy="5.8" r="0.45"/><circle cx="8.3" cy="5.8" r="0.45"/><circle cx="10.6" cy="5.8" r="0.45"/><circle cx="2.5" cy="8.0" r="0.45"/><circle cx="4.8" cy="8.0" r="0.45"/><circle cx="7.2" cy="8.0" r="0.45"/><circle cx="9.4" cy="8.0" r="0.45"/><circle cx="1.4" cy="10.2" r="0.45"/><circle cx="3.7" cy="10.2" r="0.45"/><circle cx="6.0" cy="10.2" r="0.45"/><circle cx="8.3" cy="10.2" r="0.45"/><circle cx="10.6" cy="10.2" r="0.45"/></g>',
+    pt:
+      '<rect width="30" height="20" fill="#009C3B"/>' +
+      '<polygon points="15,2.4 27.6,10 15,17.6 2.4,10" fill="#FFDF00"/>' +
+      '<circle cx="15" cy="10" r="4.4" fill="#002776"/>' +
+      '<path d="M10.7 9.1 Q15 7.9 19.3 10.7" fill="none" stroke="#fff" stroke-width="0.8"/>',
+    es:
+      '<rect width="30" height="20" fill="#AA151B"/>' +
+      '<rect y="5" width="30" height="10" fill="#F1BF00"/>',
+  };
+
   var LANGS = [
-    { code: "en", flag: "🇺🇸", label: "English" },
-    { code: "pt", flag: "🇧🇷", label: "Português" },
-    { code: "es", flag: "🇪🇸", label: "Español" },
+    { code: "en", label: "English" },
+    { code: "pt", label: "Português" },
+    { code: "es", label: "Español" },
   ];
 
   var currentLang = DEFAULT_LANG;
@@ -148,7 +168,10 @@
       var flag = document.createElement("span");
       flag.className = "bc-lang-flag";
       flag.setAttribute("aria-hidden", "true");
-      flag.textContent = lang.flag;
+      flag.innerHTML =
+        '<svg viewBox="0 0 30 20" width="30" height="20" focusable="false">' +
+        FLAG_SVGS[lang.code] +
+        "</svg>";
 
       var code = document.createElement("span");
       code.className = "bc-lang-code";
