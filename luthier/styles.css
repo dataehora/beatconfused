@@ -1,0 +1,221 @@
+/* ============================================================
+   LUTHIER TUNING — page-specific styles. Page chrome, the power switch,
+   the style-toggle, sliders and control-block panels all come from
+   shared/tuner-common.css; this file only holds the spectrogram display
+   and its control layout.
+   ============================================================ */
+.luthier {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.luthier-live {
+  display: grid;
+  gap: 1rem;
+}
+
+.luthier-switches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem 2.6rem;
+}
+
+.luthier-display {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+/* Same golden-case-over-dark-window bezel as the other instrument
+   displays (see .spectrum-case in shared/tuner-common.css), just larger. */
+.luthier-case {
+  position: relative;
+  padding: 5px;
+  border-radius: 0.95rem;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: var(--shadow-soft);
+}
+
+.luthier-spectrum,
+.luthier-waterfall {
+  display: block;
+  width: 100%;
+  border-radius: 0.7rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(80, 60, 40, 0.35), transparent 70%),
+    linear-gradient(180deg, #241b14, #171310);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45);
+  touch-action: none;
+}
+
+.luthier-spectrum {
+  height: clamp(240px, 42vw, 380px);
+  cursor: crosshair;
+}
+
+.luthier-waterfall {
+  height: clamp(130px, 18vw, 190px);
+  background: #171310;
+}
+
+.luthier-legend {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  display: flex;
+  gap: 0.9rem;
+  pointer-events: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: rgba(246, 241, 232, 0.72);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend-item::before {
+  content: "";
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.legend-live::before {
+  background: #ffd88a;
+  box-shadow: 0 0 6px rgba(255, 216, 138, 0.6);
+}
+
+.legend-peak::before {
+  background: rgba(160, 196, 236, 0.85);
+}
+
+.luthier-display .spectrum-labels {
+  gap: 0.75rem;
+  align-items: baseline;
+  font-variant-numeric: tabular-nums;
+}
+
+.luthier-peak-readout {
+  text-align: center;
+  font-weight: 600;
+  color: var(--accent-strong);
+}
+
+.luthier-cursor-readout {
+  margin: 0;
+  min-height: 1.4em;
+  text-align: center;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+.luthier-waterfall-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0 0.75rem;
+  margin-top: 0.4rem;
+}
+
+.luthier-waterfall-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.luthier-waterfall-sub {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+/* ---- Display Controls panel ---- */
+.luthier-control-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem 1.6rem;
+  align-items: start;
+}
+
+.luthier-control {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.luthier-control .hint {
+  margin: 0;
+}
+
+.luthier-control-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.luthier-control-head .slider-title {
+  margin: 0;
+}
+
+.luthier-control-value {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+
+.luthier-control-reset {
+  align-self: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.luthier-reset-btn {
+  padding: 0.5rem 1.1rem;
+  font-weight: 600;
+}
+
+/* ---- How to read it ---- */
+.luthier-guide-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.55rem;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 560px) {
+  .luthier-legend {
+    top: 10px;
+    right: 12px;
+    gap: 0.6rem;
+    font-size: 0.62rem;
+  }
+
+  .luthier-display .spectrum-labels {
+    flex-wrap: wrap;
+    font-size: 0.66rem;
+  }
+
+  /* Range ends stay on one line at the edges; the peak readout drops to
+     its own full-width row underneath. */
+  .luthier-display .spectrum-labels > span {
+    white-space: nowrap;
+  }
+
+  .luthier-peak-readout {
+    order: 3;
+    flex-basis: 100%;
+    font-size: 0.74rem;
+  }
+}

@@ -13,7 +13,7 @@
   <title data-i18n="meta.title">BeatConfused | Free Online Metronome &amp; Strobe Tuners</title>
   <meta
     name="description"
-    content="BeatConfused is a free online music studio: a metronome with tap tempo, a chromatic tuner, and octave and chromatic strobe tuners. No install or sign-up needed."
+    content="BeatConfused is a free online music studio: a metronome, a chromatic tuner, strobe tuners and a luthier spectrogram. No install or sign-up needed."
     data-i18n-attr="content:meta.pageDescription"
   />
   <meta name="robots" content="index,follow,max-image-preview:large" />
@@ -23,7 +23,7 @@
   <meta property="og:title" content="BeatConfused | Free Online Metronome &amp; Strobe Tuners" data-i18n-attr="content:meta.title" />
   <meta
     property="og:description"
-    content="BeatConfused is a free online music studio: a metronome with tap tempo, a chromatic tuner, and octave and chromatic strobe tuners. No install or sign-up needed."
+    content="BeatConfused is a free online music studio: a metronome, a chromatic tuner, strobe tuners and a luthier spectrogram. No install or sign-up needed."
     data-i18n-attr="content:meta.pageDescription"
   />
   <meta property="og:url" content="https://beatconfused.com/" />
@@ -37,7 +37,7 @@
   <meta name="twitter:title" content="BeatConfused | Free Online Metronome &amp; Strobe Tuners" data-i18n-attr="content:meta.title" />
   <meta
     name="twitter:description"
-    content="BeatConfused is a free online music studio: a metronome with tap tempo, a chromatic tuner, and octave and chromatic strobe tuners. No install or sign-up needed."
+    content="BeatConfused is a free online music studio: a metronome, a chromatic tuner, strobe tuners and a luthier spectrogram. No install or sign-up needed."
     data-i18n-attr="content:meta.pageDescription"
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,7 +46,7 @@
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=20261007" />
   <link rel="stylesheet" href="i18n/i18n.css?v=20261003" />
   <script type="application/ld+json">
     {
@@ -77,6 +77,12 @@
           "@type": "WebApplication",
           "name": "BeatConfused Chromatic Strobe Tuner",
           "url": "https://beatconfused.com/multistrobe/",
+          "applicationCategory": "MultimediaApplication"
+        },
+        {
+          "@type": "WebApplication",
+          "name": "BeatConfused Luthier Tuning",
+          "url": "https://beatconfused.com/luthier/",
           "applicationCategory": "MultimediaApplication"
         }
       ]
@@ -193,6 +199,42 @@
           </span>
           <span class="tool-name" data-i18n="home.tool.multistrobe.name">Chromatic Strobe Tuner</span>
           <span class="tool-desc" data-i18n="home.tool.multistrobe.desc">All Notes, All Octaves</span>
+        </a>
+        <a class="tool-card" href="/luthier/">
+          <span class="tool-media tuner-icon">
+            <svg id="spectroIconSvg" class="spectro-icon-svg" viewBox="0 0 300 172" role="presentation" focusable="false">
+              <defs>
+                <linearGradient id="homeSpectroCaseGradient" x1="0.08" y1="0.04" x2="0.85" y2="0.95">
+                  <stop offset="0" stop-color="#caa06a" />
+                  <stop offset="1" stop-color="#8a5a30" />
+                </linearGradient>
+                <radialGradient id="homeSpectroWindowGradient" cx="0.5" cy="0.3" r="0.85">
+                  <stop offset="0" stop-color="#362b21" />
+                  <stop offset="1" stop-color="#171310" />
+                </radialGradient>
+                <linearGradient id="homeSpectroLiveFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#f8c45c" stop-opacity="0.95" />
+                  <stop offset="0.6" stop-color="#c6702c" stop-opacity="0.55" />
+                  <stop offset="1" stop-color="#8c3b2f" stop-opacity="0.1" />
+                </linearGradient>
+                <clipPath id="homeSpectroWindowClip">
+                  <rect x="22" y="22" width="256" height="130" rx="12" />
+                </clipPath>
+              </defs>
+              <rect class="spectro-icon-case" x="12" y="12" width="276" height="150" rx="20" fill="url(#homeSpectroCaseGradient)" />
+              <rect x="22" y="22" width="256" height="130" rx="12" fill="url(#homeSpectroWindowGradient)" />
+              <g clip-path="url(#homeSpectroWindowClip)">
+                <g id="spectroIconGrid" class="spectro-icon-grid"></g>
+                <g id="spectroIconWaterfall"></g>
+                <path id="spectroIconPeak" class="spectro-icon-peak" />
+                <g class="spectro-icon-live-decay">
+                  <path id="spectroIconLive" class="spectro-icon-live" fill="url(#homeSpectroLiveFill)" />
+                </g>
+              </g>
+            </svg>
+          </span>
+          <span class="tool-name" data-i18n="home.tool.luthier.name">Luthier Tuning</span>
+          <span class="tool-desc" data-i18n="home.tool.luthier.desc">Harmonics, sustain and peaks, live</span>
         </a>
       </nav>
     </section>
@@ -501,9 +543,107 @@
       });
     }
 
+    // The Luthier Tuning card's logo: a modern spectrogram in miniature --
+    // a row of harmonic peaks (fundamental plus overtones, log-spaced like
+    // the real display) over a waterfall of their sustain streaks, longer
+    // for the low harmonics that ring the longest. The pale-blue outline is
+    // the peak hold; the amber curve under it decays and re-plucks via CSS.
+    function buildSpectrogramIcon() {
+      const NS = "http://www.w3.org/2000/svg";
+      const grid = document.getElementById("spectroIconGrid");
+      const waterfall = document.getElementById("spectroIconWaterfall");
+      const peakPath = document.getElementById("spectroIconPeak");
+      const livePath = document.getElementById("spectroIconLive");
+
+      if (!grid || !waterfall || !peakPath || !livePath) {
+        return;
+      }
+
+      const left = 22;
+      const right = 278;
+      const baseline = 100;
+      const fundamentalX = 58;
+      const octaveWidth = 62;
+      const HARMONICS = [1, 2, 3, 4, 5, 6, 7, 8];
+      const peaks = HARMONICS.map((k) => ({
+        x: fundamentalX + octaveWidth * Math.log2(k),
+        height: 66 * Math.pow(k, -0.55),
+        width: 3.2 + 1.4 / k,
+      }));
+
+      function curve(scale) {
+        let d = `M ${left} ${baseline}`;
+        for (let x = left; x <= right; x += 1) {
+          let y = 0;
+          peaks.forEach((p) => {
+            y = Math.max(y, p.height * scale * Math.exp(-((x - p.x) ** 2) / (2 * p.width * p.width)));
+          });
+          // A faint noise-floor shimmer so it reads as a measured spectrum.
+          y = Math.max(y, 2.2 + 1.4 * Math.sin(x * 0.9) * Math.sin(x * 0.23));
+          d += ` L ${x} ${(baseline - y).toFixed(2)}`;
+        }
+        return `${d} L ${right} ${baseline} Z`;
+      }
+
+      peakPath.setAttribute("d", curve(1));
+      livePath.setAttribute("d", curve(0.82));
+
+      [34, 56, 78].forEach((y) => {
+        const line = document.createElementNS(NS, "line");
+        line.setAttribute("x1", String(left));
+        line.setAttribute("x2", String(right));
+        line.setAttribute("y1", String(y));
+        line.setAttribute("y2", String(y));
+        grid.appendChild(line);
+      });
+
+      const divider = document.createElementNS(NS, "line");
+      divider.setAttribute("class", "spectro-icon-divider");
+      divider.setAttribute("x1", String(left));
+      divider.setAttribute("x2", String(right));
+      divider.setAttribute("y1", String(baseline + 0.5));
+      divider.setAttribute("y2", String(baseline + 0.5));
+      grid.appendChild(divider);
+
+      // Waterfall: a grid of small rounded cells coloured with the same
+      // dark -> oxblood -> copper -> brass -> cream heat map /luthier/ uses.
+      // Oldest rows at the bottom: every harmonic starts bright there (the
+      // attack), and the higher ones fade out sooner on the way up to "now".
+      const COLORS = ["#2a1d16", "#4a1a14", "#8c3b2f", "#c6702c", "#e8b04a", "#fff4d6"];
+      const pitch = 5;
+      const cellSize = 4;
+      const rows = 9;
+      const bottom = 150;
+
+      for (let cx = left + 2; cx + cellSize <= right - 1; cx += pitch) {
+        const centerX = cx + cellSize / 2;
+        for (let r = 0; r < rows; r += 1) {
+          let intensity = 0;
+          peaks.forEach((p, index) => {
+            const k = index + 1;
+            const spread = Math.exp(-((centerX - p.x) ** 2) / (2 * 3.4 * 3.4));
+            const decay = Math.exp(-r * 0.16 * Math.pow(k, 0.7));
+            intensity = Math.max(intensity, 1.25 * spread * decay * Math.pow(k, -0.15));
+          });
+          // Deterministic low-level "noise floor" speckle.
+          intensity = Math.max(intensity, 0.06 + 0.05 * Math.sin(centerX * 12.9898 + r * 78.233));
+          const level = Math.min(COLORS.length - 1, Math.floor(intensity * COLORS.length));
+          const cell = document.createElementNS(NS, "rect");
+          cell.setAttribute("x", String(cx));
+          cell.setAttribute("y", String(bottom - (r + 1) * pitch));
+          cell.setAttribute("width", String(cellSize));
+          cell.setAttribute("height", String(cellSize));
+          cell.setAttribute("rx", "1");
+          cell.setAttribute("fill", COLORS[level]);
+          waterfall.appendChild(cell);
+        }
+      }
+    }
+
     buildNeedleIcon();
     buildStrobeIcon("strobeTunerIconWedges");
     buildFanTrio();
+    buildSpectrogramIcon();
   </script>
 
   <script>
@@ -511,7 +651,7 @@
       en: {
         "meta.title": "BeatConfused | Free Online Metronome & Strobe Tuners",
         "meta.description": "BeatConfused is a web studio with music tools",
-        "meta.pageDescription": "BeatConfused is a free online music studio: a metronome with tap tempo, a chromatic tuner, and octave and chromatic strobe tuners. No install or sign-up needed.",
+        "meta.pageDescription": "BeatConfused is a free online music studio: a metronome, a chromatic tuner, strobe tuners and a luthier spectrogram. No install or sign-up needed.",
         "home.toolsAria": "Tools",
         "home.tool.metronome.name": "Metronome",
         "home.tool.metronome.desc": "Master your Tempo",
@@ -521,11 +661,13 @@
         "home.tool.strobetuner.desc": "One note, every octave, at once",
         "home.tool.multistrobe.name": "Chromatic Strobe Tuner",
         "home.tool.multistrobe.desc": "All Notes, All Octaves",
+        "home.tool.luthier.name": "Luthier Tuning",
+        "home.tool.luthier.desc": "Harmonics, sustain and peaks, live",
       },
       pt: {
         "meta.title": "BeatConfused | Metrônomo e Afinadores Online Grátis",
         "meta.description": "BeatConfused é um estúdio web com ferramentas musicais",
-        "meta.pageDescription": "BeatConfused é um estúdio musical online grátis: metrônomo com tap tempo, afinador cromático e afinadores estroboscópicos. Sem instalação nem cadastro.",
+        "meta.pageDescription": "BeatConfused é um estúdio musical online grátis: metrônomo, afinador cromático, afinadores estroboscópicos e espectrograma de luthier. Sem cadastro.",
         "home.toolsAria": "Ferramentas",
         "home.tool.metronome.name": "Metrônomo",
         "home.tool.metronome.desc": "Domine o seu Tempo",
@@ -535,11 +677,13 @@
         "home.tool.strobetuner.desc": "Uma nota, todas as oitavas, ao mesmo tempo",
         "home.tool.multistrobe.name": "Afinador Estroboscópico Cromático",
         "home.tool.multistrobe.desc": "Todas as Notas, Todas as Oitavas",
+        "home.tool.luthier.name": "Luthier Tuning",
+        "home.tool.luthier.desc": "Harmônicos, sustentação e picos, ao vivo",
       },
       es: {
         "meta.title": "BeatConfused | Metrónomo y Afinadores Online Gratis",
         "meta.description": "BeatConfused es un estudio web con herramientas musicales",
-        "meta.pageDescription": "BeatConfused es un estudio musical online gratis: metrónomo con tap tempo, afinador cromático y afinadores estroboscópicos. Sin instalación ni registro.",
+        "meta.pageDescription": "BeatConfused es un estudio musical online gratis: metrónomo, afinador cromático, afinadores estroboscópicos y espectrograma de luthier. Sin registro.",
         "home.toolsAria": "Herramientas",
         "home.tool.metronome.name": "Metrónomo",
         "home.tool.metronome.desc": "Domina tu Tempo",
@@ -549,6 +693,8 @@
         "home.tool.strobetuner.desc": "Una nota, todas las octavas, a la vez",
         "home.tool.multistrobe.name": "Afinador Estroboscópico Cromático",
         "home.tool.multistrobe.desc": "Todas las Notas, Todas las Octavas",
+        "home.tool.luthier.name": "Luthier Tuning",
+        "home.tool.luthier.desc": "Armónicos, sustain y picos, en vivo",
       },
     };
   </script>

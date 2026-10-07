@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title data-i18n="meta.title">BeatConfused | Luthier Tuning — Free Online Spectrogram</title>
+  <meta
+    name="description"
+    content="Luthier Tuning is a free online spectrogram for luthiers and tuners: watch every harmonic of your instrument ring out and keep a peak-hold record of each frequency."
+    data-i18n-attr="content:meta.description"
+  />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#10131d" />
+  <link rel="canonical" href="https://beatconfused.com/luthier/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="BeatConfused | Luthier Tuning — Free Online Spectrogram" data-i18n-attr="content:meta.title" />
+  <meta
+    property="og:description"
+    content="A free live spectrogram that shows each harmonic's sustain and keeps a peak-hold record of every frequency your instrument reaches."
+    data-i18n-attr="content:meta.ogDescription"
+  />
+  <meta property="og:url" content="https://beatconfused.com/luthier/" />
+  <meta property="og:image" content="https://beatconfused.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BeatConfused: free online metronome, tuners and spectrogram" />
+  <meta property="og:site_name" content="BeatConfused" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://beatconfused.com/og-image.png" />
+  <meta name="twitter:title" content="BeatConfused | Luthier Tuning — Free Online Spectrogram" data-i18n-attr="content:meta.title" />
+  <meta
+    name="twitter:description"
+    content="A free live spectrogram that shows each harmonic's sustain and keeps a peak-hold record of every frequency your instrument reaches."
+    data-i18n-attr="content:meta.ogDescription"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Marck+Script&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
+  <link rel="stylesheet" href="styles.css?v=20261007" />
+  <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "BeatConfused Luthier Tuning",
+          "url": "https://beatconfused.com/luthier/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web Browser",
+          "description": "A live spectrogram for luthiers and piano tuners: a decaying live spectrum over a peak-hold record of every frequency, plus a sustain waterfall.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+      ]
+    }
+  </script>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow" data-i18n="hero.eyebrow">BeatConfused Studio</p>
+      <h1 data-i18n="hero.title">Luthier Tuning</h1>
+    </header>
+
+    <section class="luthier" aria-labelledby="luthier-title">
+      <h2 id="luthier-title" class="sr-only" data-i18n="hero.title">Luthier Tuning</h2>
+
+      <div class="luthier-live">
+        <div class="luthier-switches">
+          <div class="power-switch">
+            <span class="power-switch-legend" data-i18n="power.legend">Start Listening</span>
+            <button
+              id="toggleMicBtn"
+              class="power-toggle"
+              type="button"
+              aria-pressed="false"
+              aria-label="Start or stop listening"
+              title="Start / stop (Space)"
+              data-i18n-attr="aria-label:power.toggleAria;title:power.toggleTitle"
+            >
+              <span class="power-toggle-track">
+                <span class="power-toggle-thumb"></span>
+              </span>
+            </button>
+            <span class="power-switch-state" id="powerSwitchState" aria-hidden="true">OFF</span>
+          </div>
+
+          <label class="style-toggle" id="rangeToggle">
+            <span class="style-toggle-label is-active" data-style="full" data-i18n="luthier.rangeFull">Full range</span>
+            <span class="style-toggle-switch">
+              <input type="checkbox" id="rangeCheckbox" aria-label="Frequency range: full microphone range or audible only (20 Hz – 20 kHz)" data-i18n-attr="aria-label:luthier.rangeAria" />
+              <span class="style-toggle-track">
+                <span class="style-toggle-thumb"></span>
+              </span>
+            </span>
+            <span class="style-toggle-label" data-style="audible" data-i18n="luthier.rangeAudible">Audible only</span>
+          </label>
+        </div>
+
+        <div class="luthier-display">
+          <div class="luthier-case">
+            <canvas id="luthierSpectrum" class="luthier-spectrum" role="img" aria-label="Live spectrum with peak hold" data-i18n-attr="aria-label:luthier.spectrumAria"></canvas>
+            <div class="luthier-legend" aria-hidden="true">
+              <span class="legend-item legend-live" data-i18n="luthier.legendLive">Live (decaying)</span>
+              <span class="legend-item legend-peak" data-i18n="luthier.legendPeak">Peak hold</span>
+            </div>
+          </div>
+          <div class="spectrum-labels">
+            <span id="rangeLowLabel">5.9 Hz</span>
+            <span id="peakReadout" class="luthier-peak-readout" aria-live="off">Strongest peak: —</span>
+            <span id="rangeHighLabel">24.000 kHz</span>
+          </div>
+          <p id="cursorReadout" class="luthier-cursor-readout">Hover or tap the display to read a frequency and see its harmonics.</p>
+
+          <div class="luthier-waterfall-head">
+            <span class="luthier-waterfall-title" data-i18n="luthier.waterfallTitle">Sustain history</span>
+            <span class="luthier-waterfall-sub" data-i18n="luthier.waterfallSub">last 12 s · newest at top</span>
+          </div>
+          <div class="luthier-case luthier-case-waterfall">
+            <canvas id="luthierWaterfall" class="luthier-waterfall" role="img" aria-label="Spectrogram history: frequency across, time downward" data-i18n-attr="aria-label:luthier.waterfallAria"></canvas>
+          </div>
+        </div>
+
+        <p id="micStatus" class="hint tap-status" aria-live="polite">Uses your microphone. Nothing is recorded or sent anywhere.</p>
+      </div>
+
+      <div class="control-block wide-block luthier-controls">
+        <div class="panel-header">
+          <span class="panel-title" data-i18n="controls.title">Display Controls</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Display Controls" data-i18n-attr="aria-label:controls.collapseAria">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+
+        <div class="luthier-control-grid">
+          <div class="luthier-control">
+            <div class="luthier-control-head">
+              <span class="slider-title" data-i18n="controls.decayTitle">Decay speed</span>
+              <span class="luthier-control-value" id="decayValue">20 dB/s</span>
+            </div>
+            <input id="decayRange" type="range" min="3" max="80" step="1" value="20" class="panel-slider" aria-label="Decay speed of the live curve, in decibels per second" data-i18n-attr="aria-label:controls.decayAria" />
+            <p class="hint" data-i18n="controls.decayHint">How fast the live curve falls back. Slower makes long sustains easier to follow.</p>
+          </div>
+
+          <div class="luthier-control">
+            <div class="luthier-control-head">
+              <span class="slider-title" data-i18n="controls.gainTitle">Input gain</span>
+              <span class="luthier-control-value" id="gainValue">2.0×</span>
+            </div>
+            <input id="gainRange" type="range" min="0.5" max="12" step="0.5" value="2" class="panel-slider" aria-label="Microphone gain boost" data-i18n-attr="aria-label:controls.gainAria" />
+            <p class="hint" data-i18n="controls.gainHint">Lifts quiet instruments up the scale. Shifts every curve equally.</p>
+          </div>
+
+          <div class="luthier-control luthier-control-reset">
+            <button id="resetPeaksBtn" type="button" class="small-btn luthier-reset-btn" data-i18n="controls.reset">Reset peak hold</button>
+            <p class="hint" data-i18n="controls.resetHint">Clears the recorded maximums and the sustain history before the next note.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-block wide-block luthier-guide is-collapsed">
+        <div class="panel-header">
+          <span class="panel-title" data-i18n="guide.title">How to read it</span>
+          <button type="button" class="collapse-toggle" aria-expanded="false" aria-label="Expand How to read it" data-i18n-attr="aria-label:guide.expandAria">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <ul class="luthier-guide-list">
+          <li data-i18n="guide.item1">The bright curve is what the microphone hears right now. When a note stops, each frequency falls back at the Decay speed, so you can watch the sound die away.</li>
+          <li data-i18n="guide.item2">The pale blue silhouette behind it is the peak hold: the loudest level each frequency has reached since the last reset. Play a note once and compare how much of that maximum each harmonic keeps over time.</li>
+          <li data-i18n="guide.item3">Hover or tap a peak to see its frequency, nearest note, and dashed guides at 2×, 3×, 4×… that frequency. Real overtones sitting slightly above the guides reveal inharmonicity, which is typical of stiff piano strings.</li>
+          <li data-i18n="guide.item4">The sustain history below scrolls downward over the last 12 seconds. Long vertical streaks are frequencies the instrument holds; short ones die quickly. Dead spots and wolf notes stand out as streaks that fade abnormally fast or pulse.</li>
+          <li data-i18n="guide.item5">Full range shows everything the microphone captures, up to half its sample rate, with the infrasound and ultrasound bands shaded. Audible only zooms in on 20 Hz – 20 kHz.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-links">
+        <a href="https://beatconfused.com">beatconfused.com</a>
+      </p>
+      <p class="footer-contact">
+        <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>
+      </p>
+    </footer>
+  </main>
+
+  <script src="/shared/tuner-common.js?v=20260914"></script>
+  <script src="script.js?v=20261007"></script>
+
+  <script>
+    window.BC_STRINGS = {
+      en: {
+        "meta.title": "BeatConfused | Luthier Tuning — Free Online Spectrogram",
+        "meta.description": "Luthier Tuning is a free online spectrogram for luthiers and tuners: watch every harmonic of your instrument ring out and keep a peak-hold record of each frequency.",
+        "meta.ogDescription": "A free live spectrogram that shows each harmonic's sustain and keeps a peak-hold record of every frequency your instrument reaches.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Luthier Tuning",
+        "power.legend": "Start Listening",
+        "power.toggleAria": "Start or stop listening",
+        "power.toggleTitle": "Start / stop (Space)",
+        "power.on": "ON",
+        "power.off": "OFF",
+        "luthier.rangeFull": "Full range",
+        "luthier.rangeAudible": "Audible only",
+        "luthier.rangeAria": "Frequency range: full microphone range or audible only (20 Hz – 20 kHz)",
+        "luthier.spectrumAria": "Live spectrum with peak hold",
+        "luthier.waterfallAria": "Spectrogram history: frequency across, time downward",
+        "luthier.legendLive": "Live (decaying)",
+        "luthier.legendPeak": "Peak hold",
+        "luthier.infrasound": "infrasound",
+        "luthier.ultrasound": "ultrasound",
+        "luthier.waterfallTitle": "Sustain history",
+        "luthier.waterfallSub": "last 12 s · newest at top",
+        "luthier.cursorHint": "Hover or tap the display to read a frequency and see its harmonics.",
+        "luthier.cursorReadout": "{freq} · {note} · live {live} · peak {peak}",
+        "luthier.peakNone": "Strongest peak: —",
+        "luthier.peakReadout": "Strongest peak: {freq} · {note} · {db}",
+        "controls.title": "Display Controls",
+        "controls.collapseAria": "Collapse Display Controls",
+        "controls.decayTitle": "Decay speed",
+        "controls.decayAria": "Decay speed of the live curve, in decibels per second",
+        "controls.decayHint": "How fast the live curve falls back. Slower makes long sustains easier to follow.",
+        "controls.gainTitle": "Input gain",
+        "controls.gainAria": "Microphone gain boost",
+        "controls.gainHint": "Lifts quiet instruments up the scale. Shifts every curve equally.",
+        "controls.reset": "Reset peak hold",
+        "controls.resetHint": "Clears the recorded maximums and the sustain history before the next note.",
+        "guide.title": "How to read it",
+        "guide.expandAria": "Expand How to read it",
+        "guide.item1": "The bright curve is what the microphone hears right now. When a note stops, each frequency falls back at the Decay speed, so you can watch the sound die away.",
+        "guide.item2": "The pale blue silhouette behind it is the peak hold: the loudest level each frequency has reached since the last reset. Play a note once and compare how much of that maximum each harmonic keeps over time.",
+        "guide.item3": "Hover or tap a peak to see its frequency, nearest note, and dashed guides at 2×, 3×, 4×… that frequency. Real overtones sitting slightly above the guides reveal inharmonicity, which is typical of stiff piano strings.",
+        "guide.item4": "The sustain history below scrolls downward over the last 12 seconds. Long vertical streaks are frequencies the instrument holds; short ones die quickly. Dead spots and wolf notes stand out as streaks that fade abnormally fast or pulse.",
+        "guide.item5": "Full range shows everything the microphone captures, up to half its sample rate, with the infrasound and ultrasound bands shaded. Audible only zooms in on 20 Hz – 20 kHz.",
+        "mic.idle": "Uses your microphone. Nothing is recorded or sent anywhere.",
+        "mic.listening": "Listening… play a note.",
+        "mic.notSupported": "Microphone access isn't supported in this browser.",
+        "mic.denied": "Microphone access was denied. Allow it in your browser's address bar and try again.",
+        "mic.notFound": "No microphone was found on this device.",
+        "mic.genericError": "Couldn't access the microphone. Please try again.",
+        "mic.webAudioNotSupported": "Web Audio isn't supported in this browser.",
+      },
+      pt: {
+        "meta.title": "BeatConfused | Luthier Tuning — Espectrograma Online Grátis",
+        "meta.description": "Luthier Tuning é um espectrograma online grátis para luthiers e afinadores: veja cada harmônico do instrumento decair e guarde o pico de cada frequência.",
+        "meta.ogDescription": "Um espectrograma ao vivo e grátis que mostra a sustentação de cada harmônico e guarda o pico de cada frequência que o seu instrumento atinge.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Luthier Tuning",
+        "power.legend": "Começar a Ouvir",
+        "power.toggleAria": "Iniciar ou parar a escuta",
+        "power.toggleTitle": "Iniciar / parar (Espaço)",
+        "power.on": "LIGADO",
+        "power.off": "DESLIGADO",
+        "luthier.rangeFull": "Faixa completa",
+        "luthier.rangeAudible": "Só audível",
+        "luthier.rangeAria": "Faixa de frequência: tudo o que o microfone capta ou só o audível (20 Hz – 20 kHz)",
+        "luthier.spectrumAria": "Espectro ao vivo com retenção de picos",
+        "luthier.waterfallAria": "Histórico do espectrograma: frequência na horizontal, tempo para baixo",
+        "luthier.legendLive": "Ao vivo (decaindo)",
+        "luthier.legendPeak": "Pico registrado",
+        "luthier.infrasound": "infrassom",
+        "luthier.ultrasound": "ultrassom",
+        "luthier.waterfallTitle": "Histórico de sustentação",
+        "luthier.waterfallSub": "últimos 12 s · mais recente no topo",
+        "luthier.cursorHint": "Passe o mouse ou toque no display para ler uma frequência e ver os seus harmônicos.",
+        "luthier.cursorReadout": "{freq} · {note} · ao vivo {live} · pico {peak}",
+        "luthier.peakNone": "Pico mais forte: —",
+        "luthier.peakReadout": "Pico mais forte: {freq} · {note} · {db}",
+        "controls.title": "Controles do Display",
+        "controls.collapseAria": "Recolher Controles do Display",
+        "controls.decayTitle": "Velocidade de decaimento",
+        "controls.decayAria": "Velocidade de decaimento da curva ao vivo, em decibéis por segundo",
+        "controls.decayHint": "Quão rápido a curva ao vivo cai. Mais lento facilita acompanhar sustentações longas.",
+        "controls.gainTitle": "Ganho de entrada",
+        "controls.gainAria": "Reforço de ganho do microfone",
+        "controls.gainHint": "Eleva instrumentos baixinhos na escala. Desloca todas as curvas por igual.",
+        "controls.reset": "Zerar picos",
+        "controls.resetHint": "Apaga os máximos registrados e o histórico de sustentação antes da próxima nota.",
+        "guide.title": "Como ler",
+        "guide.expandAria": "Expandir Como ler",
+        "guide.item1": "A curva brilhante é o que o microfone ouve agora. Quando a nota para, cada frequência cai na velocidade de decaimento, para você ver o som se extinguir.",
+        "guide.item2": "A silhueta azul-clara atrás dela é a retenção de picos: o nível mais alto que cada frequência atingiu desde o último reset. Toque uma nota e compare quanto desse máximo cada harmônico mantém ao longo do tempo.",
+        "guide.item3": "Passe o mouse ou toque num pico para ver a frequência, a nota mais próxima e guias tracejadas em 2×, 3×, 4×… dessa frequência. Harmônicos reais um pouco acima das guias revelam inarmonicidade, típica de cordas rígidas de piano.",
+        "guide.item4": "O histórico de sustentação abaixo rola para baixo nos últimos 12 segundos. Faixas verticais longas são frequências que o instrumento sustenta; curtas morrem rápido. Pontos mortos e notas lobo aparecem como faixas que somem rápido demais ou pulsam.",
+        "guide.item5": "Faixa completa mostra tudo o que o microfone capta, até metade da taxa de amostragem, com as bandas de infrassom e ultrassom sombreadas. Só audível foca em 20 Hz – 20 kHz.",
+        "mic.idle": "Usa o seu microfone. Nada é gravado ou enviado a lugar nenhum.",
+        "mic.listening": "Ouvindo… toque uma nota.",
+        "mic.notSupported": "O acesso ao microfone não é suportado neste navegador.",
+        "mic.denied": "O acesso ao microfone foi negado. Permita na barra de endereço do navegador e tente novamente.",
+        "mic.notFound": "Nenhum microfone foi encontrado neste dispositivo.",
+        "mic.genericError": "Não foi possível acessar o microfone. Tente novamente.",
+        "mic.webAudioNotSupported": "Web Audio não é suportado neste navegador.",
+      },
+      es: {
+        "meta.title": "BeatConfused | Luthier Tuning — Espectrograma Online Gratis",
+        "meta.description": "Luthier Tuning es un espectrograma online gratis para luthiers y afinadores: mira cada armónico del instrumento decaer y guarda el pico de cada frecuencia.",
+        "meta.ogDescription": "Un espectrograma en vivo y gratis que muestra el sustain de cada armónico y guarda el pico de cada frecuencia que alcanza tu instrumento.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Luthier Tuning",
+        "power.legend": "Empezar a Escuchar",
+        "power.toggleAria": "Iniciar o detener la escucha",
+        "power.toggleTitle": "Iniciar / detener (Espacio)",
+        "power.on": "ENCENDIDO",
+        "power.off": "APAGADO",
+        "luthier.rangeFull": "Rango completo",
+        "luthier.rangeAudible": "Solo audible",
+        "luthier.rangeAria": "Rango de frecuencia: todo lo que capta el micrófono o solo lo audible (20 Hz – 20 kHz)",
+        "luthier.spectrumAria": "Espectro en vivo con retención de picos",
+        "luthier.waterfallAria": "Historial del espectrograma: frecuencia en horizontal, tiempo hacia abajo",
+        "luthier.legendLive": "En vivo (decayendo)",
+        "luthier.legendPeak": "Pico registrado",
+        "luthier.infrasound": "infrasonido",
+        "luthier.ultrasound": "ultrasonido",
+        "luthier.waterfallTitle": "Historial de sustain",
+        "luthier.waterfallSub": "últimos 12 s · lo más reciente arriba",
+        "luthier.cursorHint": "Pasa el ratón o toca el display para leer una frecuencia y ver sus armónicos.",
+        "luthier.cursorReadout": "{freq} · {note} · en vivo {live} · pico {peak}",
+        "luthier.peakNone": "Pico más fuerte: —",
+        "luthier.peakReadout": "Pico más fuerte: {freq} · {note} · {db}",
+        "controls.title": "Controles del Display",
+        "controls.collapseAria": "Contraer Controles del Display",
+        "controls.decayTitle": "Velocidad de caída",
+        "controls.decayAria": "Velocidad de caída de la curva en vivo, en decibelios por segundo",
+        "controls.decayHint": "Qué tan rápido cae la curva en vivo. Más lento facilita seguir sustains largos.",
+        "controls.gainTitle": "Ganancia de entrada",
+        "controls.gainAria": "Refuerzo de ganancia del micrófono",
+        "controls.gainHint": "Sube instrumentos suaves en la escala. Desplaza todas las curvas por igual.",
+        "controls.reset": "Borrar picos",
+        "controls.resetHint": "Borra los máximos registrados y el historial de sustain antes de la siguiente nota.",
+        "guide.title": "Cómo leerlo",
+        "guide.expandAria": "Expandir Cómo leerlo",
+        "guide.item1": "La curva brillante es lo que el micrófono oye ahora. Cuando la nota se detiene, cada frecuencia cae a la velocidad de caída, para que veas cómo se apaga el sonido.",
+        "guide.item2": "La silueta azul claro detrás es la retención de picos: el nivel más alto que alcanzó cada frecuencia desde el último borrado. Toca una nota y compara cuánto de ese máximo conserva cada armónico con el tiempo.",
+        "guide.item3": "Pasa el ratón o toca un pico para ver su frecuencia, la nota más cercana y guías punteadas en 2×, 3×, 4×… de esa frecuencia. Armónicos reales un poco por encima de las guías revelan inarmonicidad, típica de las cuerdas rígidas del piano.",
+        "guide.item4": "El historial de sustain de abajo se desplaza hacia abajo durante los últimos 12 segundos. Las franjas verticales largas son frecuencias que el instrumento sostiene; las cortas mueren rápido. Puntos muertos y notas lobo destacan como franjas que se apagan demasiado rápido o pulsan.",
+        "guide.item5": "Rango completo muestra todo lo que capta el micrófono, hasta la mitad de su frecuencia de muestreo, con las bandas de infrasonido y ultrasonido sombreadas. Solo audible se centra en 20 Hz – 20 kHz.",
+        "mic.idle": "Usa tu micrófono. No se graba ni se envía nada a ningún lado.",
+        "mic.listening": "Escuchando… toca una nota.",
+        "mic.notSupported": "El acceso al micrófono no es compatible con este navegador.",
+        "mic.denied": "Se denegó el acceso al micrófono. Permítelo en la barra de direcciones del navegador e inténtalo de nuevo.",
+        "mic.notFound": "No se encontró ningún micrófono en este dispositivo.",
+        "mic.genericError": "No se pudo acceder al micrófono. Inténtalo de nuevo.",
+        "mic.webAudioNotSupported": "Web Audio no es compatible con este navegador.",
+      },
+    };
+  </script>
+  <script src="/i18n/i18n.js?v=20261003"></script>
+</body>
+</html>
