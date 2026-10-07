@@ -49,6 +49,12 @@ that doesn't belong there.
   linked from the studio nav, blocked in `robots.txt`, and absent from
   `sitemap.xml`. Leave it that way unless told otherwise.
 
+- `shared/site-title.css` — the "beatconfused.com" wordmark link back to
+  home (`<a class="site-title" href="/">`) that sits first inside
+  `<main>` on every page except the home page itself (which has it as its
+  own h1). Same colour in every link state by design. Loaded with its own
+  `?v=` on all six pages (five tools + `404.html`).
+
 ### Hosting headers / 404 / SEO
 
 - `404.html` (root) is served for unknown URLs by both GitHub Pages and
