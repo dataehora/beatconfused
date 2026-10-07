@@ -14,6 +14,7 @@ Live at [beatconfused.com](https://beatconfused.com).
 | **Tuner** | [`/tuner/`](https://beatconfused.com/tuner/) | Chromatic instrument tuner with needle, strobe and LED-meter displays, an adjustable A4 reference pitch, historical tuning standards, a test-tone generator, and a spectrum analyser. |
 | **Octave Strobe Tuner** | [`/strobetuner/`](https://beatconfused.com/strobetuner/) | Identifies the note being played and shows its tuning across every octave at once on a single strobe disc. |
 | **Chromatic Strobe Tuner** | [`/multistrobe/`](https://beatconfused.com/multistrobe/) | One dedicated strobe wheel per note, laid out like a piano keyboard, each with a ring per octave across the 88-key range. |
+| **Luthier Tuning** | [`/luthier/`](https://beatconfused.com/luthier/) | Live spectrogram for luthiers and tuners: a slowly decaying live spectrum over a peak-hold record of every frequency, a sustain waterfall, harmonic guides, and a full-range / audible-only toggle. |
 
 ## Repository layout
 
@@ -24,6 +25,7 @@ metronome/             Metronome — index.html, script.js, styles.css, Assets/
 tuner/                 Tuner — index.html, script.js, styles.css
 strobetuner/           Octave Strobe Tuner — index.html, script.js, styles.css
 multistrobe/           Chromatic Strobe Tuner — index.html, script.js, styles.css
+luthier/               Luthier Tuning (spectrogram) — index.html, script.js, styles.css
 binfacevsfarage/       Standalone browser game (not linked from the studio)
 shared/                Assets shared across tools
 CNAME, robots.txt, sitemap.xml   Hosting + crawl metadata
@@ -77,6 +79,21 @@ metronome always has audio even with no custom assets.
   rows, notes across the columns) under the selected Tuning Standard and
   Reference Pitch, with a live cents deviation next to whichever note is
   sounding
+
+## Luthier Tuning controls
+
+- **Start Listening** — the same slide switch as the tuners (or `Space`)
+- **Full range / Audible only** — everything the microphone captures (up
+  to half its sample rate, with infrasound and ultrasound shaded) or just
+  20 Hz – 20 kHz
+- **Live curve** — the current spectrum; each frequency falls back at the
+  **Decay speed** (dB/s) so a note's ring-out stays visible
+- **Peak hold** — the pale-blue background graph: the loudest level each
+  frequency has reached since the last **Reset peak hold**
+- **Sustain history** — a 12-second waterfall under the display
+- **Cursor** — hover / tap for frequency, nearest note, live and peak dB,
+  plus dashed guides at 2×, 3×, 4×… to judge inharmonicity
+- **Input gain** — boosts quiet instruments
 
 ## Technical stack
 

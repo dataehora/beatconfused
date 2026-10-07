@@ -34,6 +34,17 @@ that doesn't belong there.
   - A future look/behavior change to either shared file applies to all
     three pages automatically — that's the intended design, lean on it
     rather than re-forking page-local copies.
+- `luthier/` (Luthier Tuning) — a live spectrogram: decaying live
+  spectrum + peak-hold background curve on a log-frequency axis, a 12 s
+  waterfall underneath, full-range/audible toggle. Loads
+  `shared/tuner-common.css` (page chrome, power switch, style-toggle,
+  panels) and `shared/tuner-common.js` (only for `setMicStatusFactory`,
+  `MIC_MESSAGES`, `wireCollapsibles`, `noteNameForMidi`) — none of the
+  pitch/temperament/strobe machinery. Its own `script.js`/`styles.css`
+  carry their own `?v=` (independent of the tuner pages' value). No Test
+  Tone; for in-browser verification, monkeypatch
+  `navigator.mediaDevices.getUserMedia` to return a
+  `MediaStreamAudioDestinationNode` stream of synthesized partials.
 - `binfacevsfarage/` — standalone browser game, deliberately **not**
   linked from the studio nav, blocked in `robots.txt`, and absent from
   `sitemap.xml`. Leave it that way unless told otherwise.
