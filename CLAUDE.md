@@ -66,7 +66,7 @@ that doesn't belong there.
     write code blind): KiCad 10 at `C:/Program Files/KiCad/10.0/bin/`
     (its `python.exe` has `pcbnew`; `kicad-cli.exe` does DRC/Gerbers/
     renders) and the Arduino IDE's bundled
-    `C:/Users/julia/AppData/Local/Programs/Arduino IDE/resources/app/lib/backend/resources/arduino-cli.exe`
+    `C:/Program Files/Arduino IDE/resources/app/lib/backend/resources/arduino-cli.exe`
     with Teensyduino 1.60 installed — compile with
     `arduino-cli compile --fqbn teensy:avr:teensy40:usb=midi etutti/firmware/etutti_synth`.
   - `etutti/hardware/build_pcb.py` (run with KiCad's python) places,
