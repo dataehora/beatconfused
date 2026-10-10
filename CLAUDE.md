@@ -36,7 +36,9 @@ that doesn't belong there.
     rather than re-forking page-local copies.
 - `luthier/` (Luthier Tuning) — a live spectrogram: decaying live
   spectrum + peak-hold background curve on a log-frequency axis, a 12 s
-  waterfall underneath, full-range/audible toggle. Loads
+  waterfall underneath, full-range/audible toggle, peak-hold mode
+  On/Temporary/Off (Temporary = per-bin 2 s hold, then falls at the live
+  curve's Decay rate). Loads
   `shared/tuner-common.css` (page chrome, power switch, style-toggle,
   panels) and `shared/tuner-common.js` (only for `setMicStatusFactory`,
   `MIC_MESSAGES`, `wireCollapsibles`, `noteNameForMidi`) — none of the
