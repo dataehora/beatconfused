@@ -89,7 +89,9 @@ metronome always has audio even with no custom assets.
 - **Live curve** — the current spectrum; each frequency falls back at the
   **Decay speed** (dB/s) so a note's ring-out stays visible
 - **Peak hold** — the pale-blue background graph: the loudest level each
-  frequency has reached since the last **Reset peak hold**
+  frequency has reached since the last **Reset peak hold**. **On** keeps
+  it until reset; **Temporary** holds each maximum for 2 s, then lets it
+  fall at the same Decay speed as the live curve; **Off** hides it
 - **Sustain history** — a 12-second waterfall under the display
 - **Cursor** — hover / tap for frequency, nearest note, live and peak dB,
   plus dashed guides at 2×, 3×, 4×… to judge inharmonicity

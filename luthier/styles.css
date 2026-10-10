@@ -22,6 +22,68 @@
   gap: 1.2rem 2.6rem;
 }
 
+/* ---- Peak hold mode: On / Temporary / Off — the same pill style as the
+   Tuner's Strobe / Needle / Meter picker (tuner/styles.css .pill). ---- */
+.peak-mode {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.peak-mode-legend {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.peak-mode-options {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.peak-pill {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.peak-pill input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.peak-pill span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 0.6rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border-strong);
+  background: #fffdf9;
+  color: #2f2218;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: transform 100ms ease, border-color 100ms ease, background 100ms ease, color 100ms ease;
+}
+
+.peak-pill input:checked + span {
+  background: linear-gradient(140deg, #b67a35, #8d5524);
+  border-color: rgba(115, 68, 29, 0.7);
+  color: #fffdf7;
+  transform: translateY(-1px);
+}
+
+.peak-pill input:focus-visible + span {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 2px;
+}
+
 .luthier-display {
   display: grid;
   gap: 0.4rem;
@@ -77,6 +139,10 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+}
+
+.legend-item[hidden] {
+  display: none;
 }
 
 .legend-item::before {

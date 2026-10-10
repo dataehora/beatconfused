@@ -9,6 +9,9 @@
         the next frame, so a plucked note visibly rings out.
      2. PEAK HOLD — drawn behind the live curve: the loudest level ever
         reached in each bin since the last Reset. Every new peak raises it.
+        Three modes: On (kept until Reset), Temporary (each bin holds its
+        maximum for PEAK_TEMP_HOLD_SECONDS, then falls back at the same
+        Decay rate as the live curve) and Off (hidden, not recorded).
    Below it, a waterfall (time scrolling downward) keeps several seconds
    of history, so each harmonic's sustain reads as a vertical streak.
 
@@ -34,6 +37,7 @@
   const WATERFALL_SECONDS = 12;
   const READOUT_INTERVAL_MS = 120;
   const HARMONIC_GUIDES = 12;
+  const PEAK_TEMP_HOLD_SECONDS = 2;
 
   const els = {
     toggleMicBtn: document.getElementById("toggleMicBtn"),
@@ -52,6 +56,8 @@
     gainRange: document.getElementById("gainRange"),
     gainValue: document.getElementById("gainValue"),
     resetPeaksBtn: document.getElementById("resetPeaksBtn"),
+    peakModeInputs: document.querySelectorAll('input[name="peakMode"]'),
+    legendPeak: document.querySelector(".legend-peak"),
   };
 
   const setMicStatus = T.setMicStatusFactory(els.micStatus);
@@ -74,10 +80,14 @@
   let frameDb = null;
   let liveDb = null;
   let peakDb = null;
+  // Seconds since each bin last set (or matched) its peak — drives the
+  // Temporary mode's hold-then-fall.
+  let peakAge = null;
   let waterfallAccum = null;
 
   // ---- display state ----
   let fullRange = true;
+  let peakMode = "on"; // "on" | "temp" | "off"
   let decayDbPerSecond = Number(els.decayRange.value);
   let cursorHz = null;
   let lastFrameTime = 0;
@@ -112,6 +122,7 @@
     frameDb = new Float32Array(count).fill(DB_MIN);
     liveDb = new Float32Array(count).fill(DB_MIN);
     peakDb = new Float32Array(count).fill(DB_MIN);
+    peakAge = new Float32Array(count);
     waterfallAccum = new Float32Array(count).fill(DB_MIN);
   }
 
@@ -357,13 +368,15 @@
 
     // Peak hold — the "background" graph: a soft filled silhouette plus a
     // thin pale-blue outline, so the live curve always reads in front.
-    traceCurve(ctx, peakDb);
-    ctx.fillStyle = "rgba(143, 179, 217, 0.12)";
-    ctx.fill();
-    strokeCurve(ctx, peakDb);
-    ctx.strokeStyle = "rgba(160, 196, 236, 0.75)";
-    ctx.lineWidth = 1.2 * dpr;
-    ctx.stroke();
+    if (peakMode !== "off") {
+      traceCurve(ctx, peakDb);
+      ctx.fillStyle = "rgba(143, 179, 217, 0.12)";
+      ctx.fill();
+      strokeCurve(ctx, peakDb);
+      ctx.strokeStyle = "rgba(160, 196, 236, 0.75)";
+      ctx.lineWidth = 1.2 * dpr;
+      ctx.stroke();
+    }
 
     // Live (decaying) spectrum.
     const fill = ctx.createLinearGradient(0, 0, 0, height);
@@ -528,6 +541,15 @@
       return;
     }
 
+    if (peakMode === "off") {
+      els.cursorReadout.textContent = tr("luthier.cursorReadoutLive", "{freq} · {note} · live {live}", {
+        freq: formatHzPrecise(cursorHz),
+        note: noteLabel(cursorHz),
+        live: formatDb(binDb(liveDb, cursorHz)),
+      });
+      return;
+    }
+
     els.cursorReadout.textContent = tr("luthier.cursorReadout", "{freq} · {note} · live {live} · peak {peak}", {
       freq: formatHzPrecise(cursorHz),
       note: noteLabel(cursorHz),
@@ -598,8 +620,31 @@
       const decayed = liveDb[i] - fallStep;
       liveDb[i] = v > decayed ? v : decayed;
       if (liveDb[i] < DB_MIN) liveDb[i] = DB_MIN;
-      if (v > peakDb[i]) peakDb[i] = v;
       if (v > waterfallAccum[i]) waterfallAccum[i] = v;
+    }
+
+    if (peakMode === "on") {
+      for (let i = 0; i < frameDb.length; i += 1) {
+        if (frameDb[i] > peakDb[i]) peakDb[i] = frameDb[i];
+      }
+    } else if (peakMode === "temp") {
+      // Hold each bin's maximum for PEAK_TEMP_HOLD_SECONDS, then let it sink
+      // at the live curve's own Decay rate — a gradual fade, never a jump —
+      // until something reaches it again (a sustained note simply ends up
+      // with the peak resting on top of it).
+      for (let i = 0; i < frameDb.length; i += 1) {
+        const v = frameDb[i] > DB_MIN ? frameDb[i] : DB_MIN;
+        if (v >= peakDb[i]) {
+          peakDb[i] = v;
+          peakAge[i] = 0;
+        } else {
+          peakAge[i] += dt;
+          if (peakAge[i] > PEAK_TEMP_HOLD_SECONDS) {
+            const fallen = peakDb[i] - fallStep;
+            peakDb[i] = fallen > v ? fallen : v;
+          }
+        }
+      }
     }
 
     drawSpectrum();
@@ -770,8 +815,30 @@
   }
   els.gainRange.addEventListener("input", syncGain);
 
+  function setPeakMode(mode) {
+    if (mode === peakMode) return;
+    if (mode === "off") {
+      // Off means "not recorded", so turning it back on starts clean.
+      peakDb.fill(DB_MIN);
+    }
+    // Entering Temporary: whatever is held now gets the full 2 s before it
+    // starts to fade, rather than vanishing at once.
+    peakAge.fill(0);
+    peakMode = mode;
+    els.legendPeak.hidden = mode === "off";
+    if (!isRunning) drawSpectrum();
+    updateCursorReadout();
+  }
+
+  els.peakModeInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      if (input.checked) setPeakMode(input.value);
+    });
+  });
+
   els.resetPeaksBtn.addEventListener("click", () => {
     peakDb.fill(DB_MIN);
+    peakAge.fill(0);
     liveDb.fill(DB_MIN);
     clearWaterfall();
     drawSpectrum();

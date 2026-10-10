@@ -47,7 +47,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261007" />
+  <link rel="stylesheet" href="styles.css?v=20261010" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
   <script type="application/ld+json">
@@ -112,6 +112,24 @@
             </span>
             <span class="style-toggle-label" data-style="audible" data-i18n="luthier.rangeAudible">Audible only</span>
           </label>
+
+          <div class="peak-mode" role="radiogroup" aria-labelledby="peakModeLegend">
+            <span class="peak-mode-legend" id="peakModeLegend" data-i18n="peakMode.legend">Peak hold</span>
+            <div class="peak-mode-options">
+              <label class="peak-pill">
+                <input type="radio" name="peakMode" value="on" checked />
+                <span data-i18n="peakMode.on">On</span>
+              </label>
+              <label class="peak-pill">
+                <input type="radio" name="peakMode" value="temp" />
+                <span data-i18n="peakMode.temp">Temporary</span>
+              </label>
+              <label class="peak-pill">
+                <input type="radio" name="peakMode" value="off" />
+                <span data-i18n="peakMode.off">Off</span>
+              </label>
+            </div>
+          </div>
         </div>
 
         <div class="luthier-display">
@@ -184,7 +202,7 @@
         </div>
         <ul class="luthier-guide-list">
           <li data-i18n="guide.item1">The bright curve is what the microphone hears right now. When a note stops, each frequency falls back at the Decay speed, so you can watch the sound die away.</li>
-          <li data-i18n="guide.item2">The pale blue silhouette behind it is the peak hold: the loudest level each frequency has reached since the last reset. Play a note once and compare how much of that maximum each harmonic keeps over time.</li>
+          <li data-i18n="guide.item2">The pale blue silhouette behind it is the peak hold: the loudest level each frequency has reached since the last reset. Play a note once and compare how much of that maximum each harmonic keeps over time. Set it to Temporary to let each maximum fade away 2 seconds after it was reached, or Off to hide it.</li>
           <li data-i18n="guide.item3">Hover or tap a peak to see its frequency, nearest note, and dashed guides at 2×, 3×, 4×… that frequency. Real overtones sitting slightly above the guides reveal inharmonicity, which is typical of stiff piano strings.</li>
           <li data-i18n="guide.item4">The sustain history below scrolls downward over the last 12 seconds. Long vertical streaks are frequencies the instrument holds; short ones die quickly. Dead spots and wolf notes stand out as streaks that fade abnormally fast or pulse.</li>
           <li data-i18n="guide.item5">Full range shows everything the microphone captures, up to half its sample rate, with the infrasound and ultrasound bands shaded. Audible only zooms in on 20 Hz – 20 kHz.</li>
@@ -203,7 +221,7 @@
   </main>
 
   <script src="/shared/tuner-common.js?v=20260914"></script>
-  <script src="script.js?v=20261007"></script>
+  <script src="script.js?v=20261010"></script>
 
   <script>
     window.BC_STRINGS = {
@@ -221,6 +239,10 @@
         "luthier.rangeFull": "Full range",
         "luthier.rangeAudible": "Audible only",
         "luthier.rangeAria": "Frequency range: full microphone range or audible only (20 Hz – 20 kHz)",
+        "peakMode.legend": "Peak hold",
+        "peakMode.on": "On",
+        "peakMode.temp": "Temporary",
+        "peakMode.off": "Off",
         "luthier.spectrumAria": "Live spectrum with peak hold",
         "luthier.waterfallAria": "Spectrogram history: frequency across, time downward",
         "luthier.legendLive": "Live (decaying)",
@@ -231,6 +253,7 @@
         "luthier.waterfallSub": "last 12 s · newest at top",
         "luthier.cursorHint": "Hover or tap the display to read a frequency and see its harmonics.",
         "luthier.cursorReadout": "{freq} · {note} · live {live} · peak {peak}",
+        "luthier.cursorReadoutLive": "{freq} · {note} · live {live}",
         "luthier.peakNone": "Strongest peak: —",
         "luthier.peakReadout": "Strongest peak: {freq} · {note} · {db}",
         "controls.title": "Display Controls",
@@ -246,7 +269,7 @@
         "guide.title": "How to read it",
         "guide.expandAria": "Expand How to read it",
         "guide.item1": "The bright curve is what the microphone hears right now. When a note stops, each frequency falls back at the Decay speed, so you can watch the sound die away.",
-        "guide.item2": "The pale blue silhouette behind it is the peak hold: the loudest level each frequency has reached since the last reset. Play a note once and compare how much of that maximum each harmonic keeps over time.",
+        "guide.item2": "The pale blue silhouette behind it is the peak hold: the loudest level each frequency has reached since the last reset. Play a note once and compare how much of that maximum each harmonic keeps over time. Set it to Temporary to let each maximum fade away 2 seconds after it was reached, or Off to hide it.",
         "guide.item3": "Hover or tap a peak to see its frequency, nearest note, and dashed guides at 2×, 3×, 4×… that frequency. Real overtones sitting slightly above the guides reveal inharmonicity, which is typical of stiff piano strings.",
         "guide.item4": "The sustain history below scrolls downward over the last 12 seconds. Long vertical streaks are frequencies the instrument holds; short ones die quickly. Dead spots and wolf notes stand out as streaks that fade abnormally fast or pulse.",
         "guide.item5": "Full range shows everything the microphone captures, up to half its sample rate, with the infrasound and ultrasound bands shaded. Audible only zooms in on 20 Hz – 20 kHz.",
@@ -272,6 +295,10 @@
         "luthier.rangeFull": "Faixa completa",
         "luthier.rangeAudible": "Só audível",
         "luthier.rangeAria": "Faixa de frequência: tudo o que o microfone capta ou só o audível (20 Hz – 20 kHz)",
+        "peakMode.legend": "Pico registrado",
+        "peakMode.on": "Ativo",
+        "peakMode.temp": "Temporário",
+        "peakMode.off": "Inativo",
         "luthier.spectrumAria": "Espectro ao vivo com retenção de picos",
         "luthier.waterfallAria": "Histórico do espectrograma: frequência na horizontal, tempo para baixo",
         "luthier.legendLive": "Ao vivo (decaindo)",
@@ -282,6 +309,7 @@
         "luthier.waterfallSub": "últimos 12 s · mais recente no topo",
         "luthier.cursorHint": "Passe o mouse ou toque no display para ler uma frequência e ver os seus harmônicos.",
         "luthier.cursorReadout": "{freq} · {note} · ao vivo {live} · pico {peak}",
+        "luthier.cursorReadoutLive": "{freq} · {note} · ao vivo {live}",
         "luthier.peakNone": "Pico mais forte: —",
         "luthier.peakReadout": "Pico mais forte: {freq} · {note} · {db}",
         "controls.title": "Controles do Display",
@@ -297,7 +325,7 @@
         "guide.title": "Como ler",
         "guide.expandAria": "Expandir Como ler",
         "guide.item1": "A curva brilhante é o que o microfone ouve agora. Quando a nota para, cada frequência cai na velocidade de decaimento, para você ver o som se extinguir.",
-        "guide.item2": "A silhueta azul-clara atrás dela é a retenção de picos: o nível mais alto que cada frequência atingiu desde o último reset. Toque uma nota e compare quanto desse máximo cada harmônico mantém ao longo do tempo.",
+        "guide.item2": "A silhueta azul-clara atrás dela é a retenção de picos: o nível mais alto que cada frequência atingiu desde o último reset. Toque uma nota e compare quanto desse máximo cada harmônico mantém ao longo do tempo. Em Temporário, cada máximo começa a cair 2 segundos depois de atingido; em Inativo, ela fica oculta.",
         "guide.item3": "Passe o mouse ou toque num pico para ver a frequência, a nota mais próxima e guias tracejadas em 2×, 3×, 4×… dessa frequência. Harmônicos reais um pouco acima das guias revelam inarmonicidade, típica de cordas rígidas de piano.",
         "guide.item4": "O histórico de sustentação abaixo rola para baixo nos últimos 12 segundos. Faixas verticais longas são frequências que o instrumento sustenta; curtas morrem rápido. Pontos mortos e notas lobo aparecem como faixas que somem rápido demais ou pulsam.",
         "guide.item5": "Faixa completa mostra tudo o que o microfone capta, até metade da taxa de amostragem, com as bandas de infrassom e ultrassom sombreadas. Só audível foca em 20 Hz – 20 kHz.",
@@ -323,6 +351,10 @@
         "luthier.rangeFull": "Rango completo",
         "luthier.rangeAudible": "Solo audible",
         "luthier.rangeAria": "Rango de frecuencia: todo lo que capta el micrófono o solo lo audible (20 Hz – 20 kHz)",
+        "peakMode.legend": "Pico registrado",
+        "peakMode.on": "Activo",
+        "peakMode.temp": "Temporal",
+        "peakMode.off": "Inactivo",
         "luthier.spectrumAria": "Espectro en vivo con retención de picos",
         "luthier.waterfallAria": "Historial del espectrograma: frecuencia en horizontal, tiempo hacia abajo",
         "luthier.legendLive": "En vivo (decayendo)",
@@ -333,6 +365,7 @@
         "luthier.waterfallSub": "últimos 12 s · lo más reciente arriba",
         "luthier.cursorHint": "Pasa el ratón o toca el display para leer una frecuencia y ver sus armónicos.",
         "luthier.cursorReadout": "{freq} · {note} · en vivo {live} · pico {peak}",
+        "luthier.cursorReadoutLive": "{freq} · {note} · en vivo {live}",
         "luthier.peakNone": "Pico más fuerte: —",
         "luthier.peakReadout": "Pico más fuerte: {freq} · {note} · {db}",
         "controls.title": "Controles del Display",
@@ -348,7 +381,7 @@
         "guide.title": "Cómo leerlo",
         "guide.expandAria": "Expandir Cómo leerlo",
         "guide.item1": "La curva brillante es lo que el micrófono oye ahora. Cuando la nota se detiene, cada frecuencia cae a la velocidad de caída, para que veas cómo se apaga el sonido.",
-        "guide.item2": "La silueta azul claro detrás es la retención de picos: el nivel más alto que alcanzó cada frecuencia desde el último borrado. Toca una nota y compara cuánto de ese máximo conserva cada armónico con el tiempo.",
+        "guide.item2": "La silueta azul claro detrás es la retención de picos: el nivel más alto que alcanzó cada frecuencia desde el último borrado. Toca una nota y compara cuánto de ese máximo conserva cada armónico con el tiempo. En Temporal, cada máximo empieza a caer 2 segundos después de alcanzarse; en Inactivo, se oculta.",
         "guide.item3": "Pasa el ratón o toca un pico para ver su frecuencia, la nota más cercana y guías punteadas en 2×, 3×, 4×… de esa frecuencia. Armónicos reales un poco por encima de las guías revelan inarmonicidad, típica de las cuerdas rígidas del piano.",
         "guide.item4": "El historial de sustain de abajo se desplaza hacia abajo durante los últimos 12 segundos. Las franjas verticales largas son frecuencias que el instrumento sostiene; las cortas mueren rápido. Puntos muertos y notas lobo destacan como franjas que se apagan demasiado rápido o pulsan.",
         "guide.item5": "Rango completo muestra todo lo que capta el micrófono, hasta la mitad de su frecuencia de muestreo, con las bandas de infrasonido y ultrasonido sombreadas. Solo audible se centra en 20 Hz – 20 kHz.",
