@@ -1,12 +1,135 @@
 /* ============================================================
    eTUTTI — page-specific styles. Page chrome, control-block panels,
    buttons, sliders and selects come from shared/tuner-common.css; this
-   file holds the connection row, the on-screen keyboard, the synth
-   controls and the MIDI monitor.
+   file holds the model picker, the connection row, the on-screen
+   eTuttino, the synth controls and the MIDI monitor.
    ============================================================ */
 .etutti {
   display: grid;
   gap: 1.35rem;
+}
+
+/* ---- Model picker: eTuttino / eTutti as two compact product renders. ---- */
+.model-picker {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.model-card {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  /* Two across even on a phone, so the playable keyboard stays near the top. */
+  width: min(17rem, calc(50% - 0.5rem));
+  padding: 1rem 1rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface-solid);
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.model-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.model-card.is-selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(178, 122, 55, 0.35), var(--shadow-soft);
+}
+
+.model-card:focus-visible {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 2px;
+}
+
+.model-render {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 6.5rem;
+}
+
+.model-svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.model-shadow {
+  fill: rgba(34, 27, 22, 0.18);
+}
+
+.model-svg-aluminium .model-case {
+  fill: #c7ccd2;
+  stroke: #9ea4ab;
+  stroke-width: 0.8;
+}
+
+.model-svg-plastic .model-case {
+  fill: #2f3236;
+  stroke: #1d1f22;
+  stroke-width: 0.8;
+}
+
+.model-plate {
+  fill: #202225;
+}
+
+.model-cap-side {
+  fill: rgba(0, 0, 0, 0.35);
+}
+
+.model-cap {
+  fill: #f4efe6;
+}
+
+.model-cap-dark {
+  fill: #43464b;
+}
+
+.model-svg-plastic .model-cap {
+  fill: #d9d3c8;
+}
+
+.model-name {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--ink);
+}
+
+.model-desc {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.etutti-sections {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.etutti-sections[hidden],
+.etutti-wip[hidden] {
+  display: none;
+}
+
+.etutti-wip {
+  text-align: center;
+  padding: 2.2rem 1rem;
+}
+
+.etutti-wip-title {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--accent-strong);
 }
 
 /* ---- Connection ---- */
@@ -91,101 +214,111 @@
   font-weight: 600;
 }
 
-/* Same golden-case-over-dark-window bezel as the site's other devices. */
-.piano-case {
-  padding: 10px 10px 12px;
-  border-radius: 0.95rem;
-  background: linear-gradient(145deg, #caa06a, #8a5a30);
-  box-shadow: var(--shadow-soft);
+/* ---- On-screen eTuttino: a custom-keyboard look — anodised aluminium
+   case, dark recessed plate, square keycaps (cream for naturals, charcoal
+   for sharps, like accordion buttons) in the staggered C-griff rows. ---- */
+.device-case {
+  padding: clamp(10px, 2.4vw, 22px);
+  border-radius: 1.1rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 38%),
+    linear-gradient(135deg, #e3e6ea 0%, #c3c8ce 45%, #a9afb6 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.12),
+    0 14px 30px rgba(34, 27, 22, 0.22),
+    0 3px 6px rgba(34, 27, 22, 0.12);
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
 }
 
-.piano {
-  --white-count: 11;
+.device-plate {
+  padding: clamp(4px, 1vw, 8px);
+  border-radius: 0.55rem;
+  background: linear-gradient(180deg, #2a2d31, #1d1f22);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.button-grid {
   position: relative;
-  height: clamp(150px, 26vw, 220px);
-  border-radius: 0.5rem;
-  background: #171310;
-  padding: 6px 6px 0;
+  width: 100%;
+  aspect-ratio: 9 / 4;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
 }
 
-.piano-whites {
-  display: flex;
-  height: 100%;
-  gap: 3px;
-}
-
-.piano-blacks {
+.cap {
   position: absolute;
-  inset: 6px 6px auto;
-  height: 60%;
-  pointer-events: none;
+  display: block;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
 }
 
-.piano-key {
-  position: relative;
+/* Absolutely inset rather than width/height 100%: a <button> doesn't hand
+   percentage heights down to its children. */
+.cap-face {
+  position: absolute;
+  inset: 6%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.2rem;
-  padding: 0 0 0.5rem;
-  border: none;
-  font: inherit;
-  cursor: pointer;
-  transition: background 60ms ease, transform 60ms ease;
+  justify-content: center;
+  gap: 0.15em;
+  border-radius: 14%;
+  background: linear-gradient(180deg, #fbf8f2 0%, #ece6dc 100%);
+  box-shadow:
+    inset 0 -0.32em 0 rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.5);
+  color: #3a2f27;
+  font-size: clamp(0.55rem, 1.55vw, 0.9rem);
+  transition: transform 60ms ease, background 60ms ease, box-shadow 60ms ease;
 }
 
-.piano-key-white {
-  flex: 1 1 0;
-  min-width: 0;
-  border-radius: 0 0 6px 6px;
-  background: linear-gradient(180deg, #fffaf2 0%, #f1e8da 100%);
-  box-shadow: inset 0 -5px 0 rgba(62, 45, 30, 0.12);
-  color: #8a7a6b;
+.cap-dark .cap-face {
+  background: linear-gradient(180deg, #4a4d52 0%, #34373b 100%);
+  box-shadow:
+    inset 0 -0.32em 0 rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.6);
+  color: #ece6dc;
 }
 
-.piano-key-black {
+/* Every C gets a small accent dot, like the textured C buttons on an
+   accordion, so the player can find the octaves by eye. */
+.cap-c .cap-face::after {
+  content: "";
   position: absolute;
-  top: 0;
-  /* --slot = how many white keys sit to the left; centre on that seam. */
-  left: calc((100% + 3px) / var(--white-count) * var(--slot) - 1.5px);
-  width: calc((100% + 3px) / var(--white-count) * 0.62);
-  height: 100%;
-  transform: translateX(-50%);
-  border-radius: 0 0 5px 5px;
-  background: linear-gradient(180deg, #3a2e25 0%, #1b1512 100%);
-  box-shadow: inset 0 -4px 0 rgba(255, 255, 255, 0.06), 0 2px 4px rgba(0, 0, 0, 0.45);
-  color: rgba(246, 241, 232, 0.6);
-  pointer-events: auto;
+  top: 9%;
+  left: 11%;
+  width: 0.32em;
+  height: 0.32em;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
-.piano-key-white.is-down {
-  background: linear-gradient(180deg, #f2d29a 0%, #e0a95a 100%);
-  box-shadow: inset 0 -2px 0 rgba(62, 45, 30, 0.2);
-  color: #5a3b17;
-}
-
-.piano-key-black.is-down {
-  background: linear-gradient(180deg, #b67a35 0%, #8d5524 100%);
-  transform: translateX(-50%) translateY(1px);
-  color: #fffdf7;
-}
-
-.piano-key-label {
-  font-size: 0.72rem;
+.cap-note {
   font-weight: 700;
   line-height: 1;
 }
 
-.piano-key-note {
-  font-size: 0.62rem;
+.cap-key {
+  font-size: 0.72em;
   font-weight: 600;
   line-height: 1;
-  min-height: 0.62rem;
-  color: var(--accent);
+  opacity: 0.55;
+}
+
+.cap.is-down .cap-face {
+  transform: translateY(0.12em);
+  background: linear-gradient(180deg, #f2c27a 0%, #d99a48 100%);
+  box-shadow: inset 0 -0.12em 0 rgba(0, 0, 0, 0.2), 0 0 10px rgba(242, 194, 122, 0.65);
+  color: #3a2410;
 }
 
 .etutti-keys-hint {
@@ -316,12 +449,18 @@
   color: var(--accent);
 }
 
+
 @media (max-width: 560px) {
-  .piano-key-label {
-    font-size: 0.62rem;
+  .model-card {
+    padding: 0.7rem 0.5rem 0.6rem;
   }
 
-  .piano-key-note {
-    display: none;
+  .model-render {
+    height: 4.2rem;
+  }
+
+  .model-desc {
+    font-size: 0.68rem;
+    text-align: center;
   }
 }

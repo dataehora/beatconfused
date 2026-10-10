@@ -27,7 +27,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261011" />
+  <link rel="stylesheet" href="styles.css?v=20261012" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
 </head>
@@ -42,6 +42,26 @@
     <section class="etutti" aria-labelledby="etutti-title">
       <h2 id="etutti-title" class="sr-only" data-i18n="hero.title">eTutti</h2>
 
+      <!-- ---- Model picker ---- -->
+      <div class="model-picker" role="group" aria-label="Model" data-i18n-attr="aria-label:model.aria">
+        <button type="button" class="model-card is-selected" data-model="etuttino" aria-pressed="true">
+          <span class="model-render" id="renderEtuttino"></span>
+          <span class="model-name">eTuttino</span>
+          <span class="model-desc" data-i18n="model.etuttinoDesc">34 keys · C-griff · G3–G5</span>
+        </button>
+        <button type="button" class="model-card" data-model="etutti" aria-pressed="false">
+          <span class="model-render" id="renderEtutti"></span>
+          <span class="model-name">eTutti</span>
+          <span class="model-desc" data-i18n="model.etuttiDesc">Full instrument · in development</span>
+        </button>
+      </div>
+
+      <div id="etuttiWip" class="control-block wide-block etutti-wip" hidden>
+        <p class="etutti-wip-title" data-i18n="wip.title">In development</p>
+        <p class="hint" data-i18n="wip.text">The full eTutti is still being designed. Pick the eTuttino to play.</p>
+      </div>
+
+      <div id="etuttinoSections" class="etutti-sections">
       <!-- ---- Connection ---- -->
       <div class="control-block wide-block etutti-connection">
         <div class="panel-header">
@@ -71,25 +91,27 @@
         <div class="etutti-play-controls">
           <div class="stepper">
             <span class="stepper-label" data-i18n="play.octave">Octave</span>
-            <button id="octaveDown" type="button" class="small-btn" aria-label="Octave down (Z)" title="Z" data-i18n-attr="aria-label:play.octaveDownAria">−</button>
-            <span id="octaveValue" class="stepper-value">C4–F5</span>
-            <button id="octaveUp" type="button" class="small-btn" aria-label="Octave up (X)" title="X" data-i18n-attr="aria-label:play.octaveUpAria">+</button>
+            <button id="octaveDown" type="button" class="small-btn" aria-label="Octave down (←)" title="←" data-i18n-attr="aria-label:play.octaveDownAria">−</button>
+            <span id="octaveValue" class="stepper-value">F♯3–G5</span>
+            <button id="octaveUp" type="button" class="small-btn" aria-label="Octave up (→)" title="→" data-i18n-attr="aria-label:play.octaveUpAria">+</button>
           </div>
           <div class="stepper">
             <span class="stepper-label" data-i18n="play.velocity">Velocity</span>
-            <button id="velocityDown" type="button" class="small-btn" aria-label="Velocity down (C)" title="C" data-i18n-attr="aria-label:play.velocityDownAria">−</button>
+            <button id="velocityDown" type="button" class="small-btn" aria-label="Velocity down (↓)" title="↓" data-i18n-attr="aria-label:play.velocityDownAria">−</button>
             <span id="velocityValue" class="stepper-value">100</span>
-            <button id="velocityUp" type="button" class="small-btn" aria-label="Velocity up (V)" title="V" data-i18n-attr="aria-label:play.velocityUpAria">+</button>
+            <button id="velocityUp" type="button" class="small-btn" aria-label="Velocity up (↑)" title="↑" data-i18n-attr="aria-label:play.velocityUpAria">+</button>
           </div>
           <button id="panicBtn" type="button" class="small-btn etutti-panic" title="Esc" data-i18n="play.panic">All notes off</button>
         </div>
 
-        <div class="piano-case">
-          <div id="piano" class="piano" role="group" aria-label="Keyboard" data-i18n-attr="aria-label:play.pianoAria"></div>
+        <div class="device-case">
+          <div class="device-plate">
+            <div id="buttonGrid" class="button-grid" role="group" aria-label="eTuttino keys" data-i18n-attr="aria-label:play.pianoAria"></div>
+          </div>
         </div>
         <p class="hint etutti-keys-hint" data-i18n="play.hint">
-          Play with your computer keyboard: A S D F G H J K L ; ' are the white keys, W E T Y U O P the black keys.
-          Z / X change octave, C / V change velocity, Esc silences everything.
+          Four rows of the computer keyboard are the four accordion rows: 3 … 0, W … P, S … L and Z … the full stop.
+          ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.
         </p>
       </div>
 
@@ -179,7 +201,10 @@
         </ol>
         <p class="hint">
           <a class="etutti-link" href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener" data-i18n="setup.firmwareLink">Firmware source on GitHub</a>
+          ·
+          <a class="etutti-link" href="https://github.com/dataehora/beatconfused/tree/main/etutti/hardware" target="_blank" rel="noopener" data-i18n="setup.hardwareLink">PCB design notes</a>
         </p>
+      </div>
       </div>
     </section>
 
@@ -193,7 +218,7 @@
     </footer>
   </main>
 
-  <script src="script.js?v=20261011"></script>
+  <script src="script.js?v=20261012"></script>
 
   <script>
     window.BC_STRINGS = {
@@ -217,14 +242,14 @@
         "status.connected": "Connected to {name}.",
         "status.disconnected": "{name} was unplugged.",
         "play.octave": "Octave",
-        "play.octaveDownAria": "Octave down (Z)",
-        "play.octaveUpAria": "Octave up (X)",
+        "play.octaveDownAria": "Octave down (←)",
+        "play.octaveUpAria": "Octave up (→)",
         "play.velocity": "Velocity",
-        "play.velocityDownAria": "Velocity down (C)",
-        "play.velocityUpAria": "Velocity up (V)",
+        "play.velocityDownAria": "Velocity down (↓)",
+        "play.velocityUpAria": "Velocity up (↑)",
         "play.panic": "All notes off",
-        "play.pianoAria": "Keyboard",
-        "play.hint": "Play with your computer keyboard: A S D F G H J K L ; ' are the white keys, W E T Y U O P the black keys. Z / X change octave, C / V change velocity, Esc silences everything.",
+        "play.pianoAria": "eTuttino keys",
+        "play.hint": "Four rows of the computer keyboard are the four accordion rows: 3 … 0, W … P, S … L and Z … the full stop. ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.",
         "synth.title": "Synth",
         "synth.collapseAria": "Collapse Synth",
         "synth.waveform": "Waveform",
@@ -251,6 +276,12 @@
         "setup.step3": "Under Tools › USB Type choose \"MIDI\" (or \"Serial + MIDI\"), then upload.",
         "setup.step4": "Plug the Teensy into this computer, press Connect above and allow MIDI access. Use Chrome or Edge; Safari has no Web MIDI.",
         "setup.firmwareLink": "Firmware source on GitHub",
+        "model.aria": "Model",
+        "model.etuttinoDesc": "34 keys · C-griff · G3–G5",
+        "model.etuttiDesc": "Full instrument · in development",
+        "wip.title": "In development",
+        "wip.text": "The full eTutti is still being designed. Pick the eTuttino to play.",
+        "setup.hardwareLink": "PCB design notes",
       },
       pt: {
         "meta.title": "BeatConfused | eTutti",
@@ -272,14 +303,14 @@
         "status.connected": "Conectado a {name}.",
         "status.disconnected": "{name} foi desconectado.",
         "play.octave": "Oitava",
-        "play.octaveDownAria": "Descer oitava (Z)",
-        "play.octaveUpAria": "Subir oitava (X)",
+        "play.octaveDownAria": "Descer oitava (←)",
+        "play.octaveUpAria": "Subir oitava (→)",
         "play.velocity": "Velocidade",
-        "play.velocityDownAria": "Diminuir velocidade (C)",
-        "play.velocityUpAria": "Aumentar velocidade (V)",
+        "play.velocityDownAria": "Diminuir velocidade (↓)",
+        "play.velocityUpAria": "Aumentar velocidade (↑)",
         "play.panic": "Silenciar tudo",
-        "play.pianoAria": "Teclado",
-        "play.hint": "Toque com o teclado do computador: A S D F G H J K L Ç ~ são as teclas brancas, W E T Y U O P as pretas. Z / X mudam a oitava, C / V a velocidade, Esc silencia tudo.",
+        "play.pianoAria": "Teclas do eTuttino",
+        "play.hint": "Quatro fileiras do teclado do computador são as quatro fileiras do acordeão: 3 … 0, W … P, S … L e Z … o ponto. ← / → mudam a oitava, ↓ / ↑ a velocidade, Esc silencia tudo.",
         "synth.title": "Sintetizador",
         "synth.collapseAria": "Recolher Sintetizador",
         "synth.waveform": "Forma de onda",
@@ -306,6 +337,12 @@
         "setup.step3": "Em Tools › USB Type escolha \"MIDI\" (ou \"Serial + MIDI\") e faça o upload.",
         "setup.step4": "Plugue o Teensy neste computador, clique em Conectar acima e permita o acesso MIDI. Use o Chrome ou o Edge; o Safari não tem Web MIDI.",
         "setup.firmwareLink": "Código do firmware no GitHub",
+        "model.aria": "Modelo",
+        "model.etuttinoDesc": "34 teclas · C-griff · G3–G5",
+        "model.etuttiDesc": "Instrumento completo · em desenvolvimento",
+        "wip.title": "Em desenvolvimento",
+        "wip.text": "O eTutti completo ainda está sendo projetado. Escolha o eTuttino para tocar.",
+        "setup.hardwareLink": "Notas do projeto da placa",
       },
       es: {
         "meta.title": "BeatConfused | eTutti",
@@ -327,14 +364,14 @@
         "status.connected": "Conectado a {name}.",
         "status.disconnected": "{name} se desconectó.",
         "play.octave": "Octava",
-        "play.octaveDownAria": "Bajar octava (Z)",
-        "play.octaveUpAria": "Subir octava (X)",
+        "play.octaveDownAria": "Bajar octava (←)",
+        "play.octaveUpAria": "Subir octava (→)",
         "play.velocity": "Velocidad",
-        "play.velocityDownAria": "Bajar velocidad (C)",
-        "play.velocityUpAria": "Subir velocidad (V)",
+        "play.velocityDownAria": "Bajar velocidad (↓)",
+        "play.velocityUpAria": "Subir velocidad (↑)",
         "play.panic": "Silenciar todo",
-        "play.pianoAria": "Teclado",
-        "play.hint": "Toca con el teclado del ordenador: A S D F G H J K L Ñ ´ son las teclas blancas, W E T Y U O P las negras. Z / X cambian la octava, C / V la velocidad, Esc silencia todo.",
+        "play.pianoAria": "Teclas del eTuttino",
+        "play.hint": "Cuatro filas del teclado del ordenador son las cuatro filas del acordeón: 3 … 0, W … P, S … L y Z … el punto. ← / → cambian la octava, ↓ / ↑ la velocidad, Esc silencia todo.",
         "synth.title": "Sintetizador",
         "synth.collapseAria": "Contraer Sintetizador",
         "synth.waveform": "Forma de onda",
@@ -361,6 +398,12 @@
         "setup.step3": "En Tools › USB Type elige \"MIDI\" (o \"Serial + MIDI\") y súbelo.",
         "setup.step4": "Conecta el Teensy a este ordenador, pulsa Conectar arriba y permite el acceso MIDI. Usa Chrome o Edge; Safari no tiene Web MIDI.",
         "setup.firmwareLink": "Código del firmware en GitHub",
+        "model.aria": "Modelo",
+        "model.etuttinoDesc": "34 teclas · C-griff · G3–G5",
+        "model.etuttiDesc": "Instrumento completo · en desarrollo",
+        "wip.title": "En desarrollo",
+        "wip.text": "El eTutti completo todavía se está diseñando. Elige el eTuttino para tocar.",
+        "setup.hardwareLink": "Notas del diseño de la placa",
       },
     };
   </script>
