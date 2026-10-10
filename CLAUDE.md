@@ -49,13 +49,19 @@ that doesn't belong there.
   `MediaStreamAudioDestinationNode` stream of synthesized partials.
 - `etutti/` (eTutti) — **work in progress, deliberately unlisted**: no
   home-page card, not in `sitemap.xml`, `noindex` meta (the user asked
-  for no home button while it's being built). Browser front-end for a
-  Teensy controller/synth: Web MIDI (`navigator.requestMIDIAccess`) to a
-  Teensy running `etutti/firmware/etutti_synth/` (Teensy Audio Library +
-  SGTL5000 Audio Board, 8-voice synth, USB name "eTutti" via `name.c`).
-  Computer keyboard (by `KeyboardEvent.code`, DAW layout A-row whites /
-  Q-row blacks, Z/X octave, C/V velocity, Esc panic) and on-screen keys
-  send notes; Synth panel sends CCs. The CC map lives in both
+  for no home button while it's being built). Two models: **eTuttino**
+  (the one being built — Teensy 4.0 + Audio Board Rev D, 34 Cherry MX
+  hot-swap keys in a chromatic-accordion **C-griff** layout, G3-G5, rows
+  A3.., G3.., G#3.., F#3+row1) and **eTutti** (full version, the page only
+  shows "in development"). Web MIDI (`navigator.requestMIDIAccess`) to the
+  Teensy running `etutti/firmware/etutti_synth/` (8-voice synth, USB name
+  "eTutti" via `name.c`, scans the 4x9 key matrix and plays/sends notes).
+  Computer keyboard rows 3..0 / W..P / S..L / Z..Period = accordion rows
+  1-4 (by `KeyboardEvent.code`), arrows = octave/velocity, Esc panic.
+  The layout lives in THREE places that must agree: `ROWS` in
+  `etutti/script.js`, `NOTE_MAP` in the sketch, `ROWS` in
+  `etutti/hardware/generate.py` (PCB/plate/KiCad generator; re-run it to
+  refresh `etutti/hardware/build/`). The CC map lives in both
   `etutti/script.js` (`CC`) and the sketch — change both together. The
   MIDI monitor already logs what the Teensy sends back (hook for the
   user's planned custom hardware interface). Firmware has never been

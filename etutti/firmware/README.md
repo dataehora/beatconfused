@@ -6,9 +6,15 @@ MIDI. Sound comes out of the PJRC Audio Board.
 
 ## Hardware
 
-- Teensy 4.0 or 4.1 (Teensy 3.2 / 3.5 / 3.6 also work)
-- PJRC Audio Adaptor Board (SGTL5000): **Rev D** for Teensy 4.x, Rev C for 3.x
+- Teensy 4.0 + PJRC Audio Adaptor Board **Rev D** (SGTL5000)
+- the eTuttino PCB with its 34 key switches, see [`../hardware`](../hardware).
+  Without the PCB the sketch still works as a USB MIDI synth driven by the
+  web page.
 - Headphones or an amplifier on the Audio Board's headphone jack or line out
+
+The firmware scans the 4 × 9 key matrix (rows on pins 0–3; columns on
+pins 4, 5, 6, 9, 14, 15, 16, 17 and 22). Every key plays the built-in synth
+and is also sent as USB MIDI, so the page lights the key up.
 
 ## Flashing
 

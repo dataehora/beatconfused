@@ -1,9 +1,13 @@
 /* ============================================================
    eTutti synth — Teensy firmware for https://beatconfused.com/etutti/
 
-   Hardware: Teensy 4.0 / 4.1 (also Teensy 3.2/3.5/3.6) + PJRC Audio
-   Adaptor Board (SGTL5000; Rev D for Teensy 4.x). Sound comes out of the
-   Audio Board's headphone jack and line out.
+   Hardware: Teensy 4.0 + PJRC Audio Adaptor Board Rev D (SGTL5000), on
+   the eTuttino PCB (etutti/hardware/). Sound comes out of the Audio
+   Board's headphone jack and line out. The 34 MX switches form a 4 x 9
+   key matrix (one 1N4148 per switch, anode on the switch side, cathode
+   on the row): rows are driven low one at a time, columns are read with
+   pull-ups. Every key plays the internal synth AND is sent over USB MIDI,
+   so the device works standalone or with the web page.
 
    Arduino IDE + Teensyduino settings:
      Tools > Board:    your Teensy
@@ -34,6 +38,36 @@
 #include <SerialFlash.h>
 
 const int NUM_VOICES = 8;
+
+// ---- eTuttino key matrix (see etutti/hardware/README.md) ----
+// Pins chosen to stay clear of the Audio Board Rev D (7, 8, 18-21, 23)
+// and of its SD card (10-13), so sample playback from SD stays possible.
+// 6 and 15 are only used by the Audio Board's optional memory chip and
+// volume pot, which the eTuttino doesn't fit.
+const int MATRIX_ROWS = 4;
+const int MATRIX_COLS = 9;
+const uint8_t ROW_PINS[MATRIX_ROWS] = {0, 1, 2, 3};
+const uint8_t COL_PINS[MATRIX_COLS] = {4, 5, 6, 9, 14, 15, 16, 17, 22};
+const uint8_t KEY_VELOCITY = 100;   // MX switches are on/off: fixed velocity
+const uint32_t DEBOUNCE_MS = 5;
+
+// MIDI note for each [row][col]; -1 = no switch there. Chromatic accordion
+// C-griff: +3 semitones along a row, rows staggered half a key, row 4 a
+// copy of row 1 with F#3 in front. Keep in sync with ROWS in
+// etutti/script.js.
+const int8_t NOTE_MAP[MATRIX_ROWS][MATRIX_COLS] = {
+  // col: 0    1    2    3    4    5    6    7    8
+  {     -1,  57,  60,  63,  66,  69,  72,  75,  78 },  // row 1: A3 .. F#5
+  {     55,  58,  61,  64,  67,  70,  73,  76,  79 },  // row 2: G3 .. G5
+  {     -1,  56,  59,  62,  65,  68,  71,  74,  77 },  // row 3: G#3 .. F5
+  {     54,  57,  60,  63,  66,  69,  72,  75,  78 },  // row 4: F#3 .. F#5
+};
+
+bool keyDown[MATRIX_ROWS][MATRIX_COLS];
+uint32_t keyChangedAt[MATRIX_ROWS][MATRIX_COLS];
+// How many physical keys hold each note (row 4 doubles row 1), so a note
+// only starts on the first press and stops on the last release.
+uint8_t noteHolders[128];
 
 // ---- Audio graph ----
 AudioSynthWaveform       wave[NUM_VOICES];
@@ -197,8 +231,53 @@ void handleControlChange(byte channel, byte control, byte value) {
   }
 }
 
+void localNoteOn(uint8_t note) {
+  if (noteHolders[note]++ > 0) return;
+  handleNoteOn(1, note, KEY_VELOCITY);
+  usbMIDI.sendNoteOn(note, KEY_VELOCITY, 1);
+}
+
+void localNoteOff(uint8_t note) {
+  if (noteHolders[note] == 0 || --noteHolders[note] > 0) return;
+  handleNoteOff(1, note, 0);
+  usbMIDI.sendNoteOff(note, 0, 1);
+}
+
+void setupMatrix() {
+  for (int r = 0; r < MATRIX_ROWS; r++) pinMode(ROW_PINS[r], INPUT);   // idle rows float
+  for (int c = 0; c < MATRIX_COLS; c++) pinMode(COL_PINS[c], INPUT_PULLUP);
+}
+
+// One full pass over the matrix. A key's new state is accepted only if it
+// differs from the current one and the last accepted change is at least
+// DEBOUNCE_MS old (switch bounce is a few ms of chatter on each edge).
+void scanMatrix() {
+  uint32_t now = millis();
+  bool changed = false;
+  for (int r = 0; r < MATRIX_ROWS; r++) {
+    pinMode(ROW_PINS[r], OUTPUT);
+    digitalWrite(ROW_PINS[r], LOW);
+    delayMicroseconds(10);                       // let the line settle
+    for (int c = 0; c < MATRIX_COLS; c++) {
+      int note = NOTE_MAP[r][c];
+      if (note < 0) continue;
+      bool pressed = digitalRead(COL_PINS[c]) == LOW;
+      if (pressed != keyDown[r][c] && now - keyChangedAt[r][c] >= DEBOUNCE_MS) {
+        keyDown[r][c] = pressed;
+        keyChangedAt[r][c] = now;
+        if (pressed) localNoteOn(note);
+        else localNoteOff(note);
+        changed = true;
+      }
+    }
+    pinMode(ROW_PINS[r], INPUT);
+  }
+  if (changed) usbMIDI.send_now();
+}
+
 void setup() {
   AudioMemory(40);
+  setupMatrix();
 
   codec.enable();
   codec.volume(0.6f);
@@ -238,4 +317,5 @@ void loop() {
   // Drain every pending USB MIDI message; each one calls a handler above.
   while (usbMIDI.read()) {
   }
+  scanMatrix();
 }
