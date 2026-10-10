@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title data-i18n="meta.title">BeatConfused | eTutti</title>
+  <meta
+    name="description"
+    content="eTutti: play and control a Teensy synthesizer from the browser over USB MIDI."
+    data-i18n-attr="content:meta.description"
+  />
+  <!-- Work in progress: not linked from the home page, kept out of the
+       sitemap and out of search results until it's ready. -->
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#10131d" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Marck+Script&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
+  <link rel="stylesheet" href="styles.css?v=20261011" />
+  <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
+  <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
+</head>
+<body>
+  <main class="page">
+    <a class="site-title" href="/">beatconfused.com</a>
+    <header class="hero">
+      <p class="eyebrow" data-i18n="hero.eyebrow">BeatConfused Studio</p>
+      <h1 data-i18n="hero.title">eTutti</h1>
+    </header>
+
+    <section class="etutti" aria-labelledby="etutti-title">
+      <h2 id="etutti-title" class="sr-only" data-i18n="hero.title">eTutti</h2>
+
+      <!-- ---- Connection ---- -->
+      <div class="control-block wide-block etutti-connection">
+        <div class="panel-header">
+          <span class="panel-title" data-i18n="conn.title">Teensy connection</span>
+        </div>
+        <div class="etutti-conn-row">
+          <span id="connLight" class="conn-light" aria-hidden="true"></span>
+          <p id="connStatus" class="hint conn-status" aria-live="polite">Not connected. Plug in the Teensy and press Connect.</p>
+          <button id="connectBtn" type="button" class="toggle-btn etutti-connect-btn" data-i18n="conn.connect">Connect</button>
+        </div>
+        <div class="etutti-conn-row etutti-conn-selects">
+          <label class="select-row">
+            <span class="select-row-label" data-i18n="conn.device">Device</span>
+            <select id="outputSelect" disabled>
+              <option value="" data-i18n="conn.pressConnect">Press Connect first</option>
+            </select>
+          </label>
+          <label class="select-row">
+            <span class="select-row-label" data-i18n="conn.channel">MIDI channel</span>
+            <select id="channelSelect"></select>
+          </label>
+        </div>
+      </div>
+
+      <!-- ---- Keyboard ---- -->
+      <div class="etutti-play">
+        <div class="etutti-play-controls">
+          <div class="stepper">
+            <span class="stepper-label" data-i18n="play.octave">Octave</span>
+            <button id="octaveDown" type="button" class="small-btn" aria-label="Octave down (Z)" title="Z" data-i18n-attr="aria-label:play.octaveDownAria">−</button>
+            <span id="octaveValue" class="stepper-value">C4–F5</span>
+            <button id="octaveUp" type="button" class="small-btn" aria-label="Octave up (X)" title="X" data-i18n-attr="aria-label:play.octaveUpAria">+</button>
+          </div>
+          <div class="stepper">
+            <span class="stepper-label" data-i18n="play.velocity">Velocity</span>
+            <button id="velocityDown" type="button" class="small-btn" aria-label="Velocity down (C)" title="C" data-i18n-attr="aria-label:play.velocityDownAria">−</button>
+            <span id="velocityValue" class="stepper-value">100</span>
+            <button id="velocityUp" type="button" class="small-btn" aria-label="Velocity up (V)" title="V" data-i18n-attr="aria-label:play.velocityUpAria">+</button>
+          </div>
+          <button id="panicBtn" type="button" class="small-btn etutti-panic" title="Esc" data-i18n="play.panic">All notes off</button>
+        </div>
+
+        <div class="piano-case">
+          <div id="piano" class="piano" role="group" aria-label="Keyboard" data-i18n-attr="aria-label:play.pianoAria"></div>
+        </div>
+        <p class="hint etutti-keys-hint" data-i18n="play.hint">
+          Play with your computer keyboard: A S D F G H J K L ; ' are the white keys, W E T Y U O P the black keys.
+          Z / X change octave, C / V change velocity, Esc silences everything.
+        </p>
+      </div>
+
+      <!-- ---- Synth ---- -->
+      <div class="control-block wide-block etutti-synth">
+        <div class="panel-header">
+          <span class="panel-title" data-i18n="synth.title">Synth</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Synth" data-i18n-attr="aria-label:synth.collapseAria">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+
+        <div class="etutti-wave" role="radiogroup" aria-labelledby="waveLegend">
+          <span class="etutti-group-label" id="waveLegend" data-i18n="synth.waveform">Waveform</span>
+          <div class="etutti-pills">
+            <label class="etutti-pill"><input type="radio" name="waveform" value="0" /><span data-i18n="synth.sine">Sine</span></label>
+            <label class="etutti-pill"><input type="radio" name="waveform" value="1" checked /><span data-i18n="synth.saw">Saw</span></label>
+            <label class="etutti-pill"><input type="radio" name="waveform" value="2" /><span data-i18n="synth.square">Square</span></label>
+            <label class="etutti-pill"><input type="radio" name="waveform" value="3" /><span data-i18n="synth.triangle">Triangle</span></label>
+          </div>
+        </div>
+
+        <div class="etutti-sliders">
+          <label class="etutti-slider">
+            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.volume">Volume</span><span id="ccVolumeValue" class="etutti-slider-value"></span></span>
+            <input id="ccVolume" type="range" min="0" max="127" value="90" data-cc="7" data-format="percent" class="panel-slider" />
+          </label>
+          <label class="etutti-slider">
+            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.cutoff">Filter cutoff</span><span id="ccCutoffValue" class="etutti-slider-value"></span></span>
+            <input id="ccCutoff" type="range" min="0" max="127" value="110" data-cc="74" data-format="cutoff" class="panel-slider" />
+          </label>
+          <label class="etutti-slider">
+            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.resonance">Resonance</span><span id="ccResonanceValue" class="etutti-slider-value"></span></span>
+            <input id="ccResonance" type="range" min="0" max="127" value="10" data-cc="71" data-format="resonance" class="panel-slider" />
+          </label>
+          <label class="etutti-slider">
+            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.attack">Attack</span><span id="ccAttackValue" class="etutti-slider-value"></span></span>
+            <input id="ccAttack" type="range" min="0" max="127" value="10" data-cc="73" data-format="attack" class="panel-slider" />
+          </label>
+          <label class="etutti-slider">
+            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.decay">Decay</span><span id="ccDecayValue" class="etutti-slider-value"></span></span>
+            <input id="ccDecay" type="range" min="0" max="127" value="50" data-cc="75" data-format="decay" class="panel-slider" />
+          </label>
+          <label class="etutti-slider">
+            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.sustain">Sustain</span><span id="ccSustainValue" class="etutti-slider-value"></span></span>
+            <input id="ccSustain" type="range" min="0" max="127" value="90" data-cc="79" data-format="percent" class="panel-slider" />
+          </label>
+          <label class="etutti-slider">
+            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.release">Release</span><span id="ccReleaseValue" class="etutti-slider-value"></span></span>
+            <input id="ccRelease" type="range" min="0" max="127" value="40" data-cc="72" data-format="release" class="panel-slider" />
+          </label>
+        </div>
+
+        <div class="etutti-synth-footer">
+          <button id="sendAllBtn" type="button" class="small-btn" data-i18n="synth.sendAll">Send all settings to the Teensy</button>
+        </div>
+      </div>
+
+      <!-- ---- MIDI monitor ---- -->
+      <div class="control-block wide-block etutti-monitor-block is-collapsed">
+        <div class="panel-header">
+          <span class="panel-title" data-i18n="monitor.title">MIDI monitor</span>
+          <button type="button" class="collapse-toggle" aria-expanded="false" aria-label="Expand MIDI monitor" data-i18n-attr="aria-label:monitor.expandAria">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <p class="hint" data-i18n="monitor.hint">→ messages sent to the Teensy, ← messages it sends back. Newest on top.</p>
+        <div id="midiMonitor" class="midi-monitor" aria-live="off"></div>
+        <div>
+          <button id="clearMonitorBtn" type="button" class="small-btn" data-i18n="monitor.clear">Clear</button>
+        </div>
+      </div>
+
+      <!-- ---- Setup ---- -->
+      <div class="control-block wide-block etutti-setup is-collapsed">
+        <div class="panel-header">
+          <span class="panel-title" data-i18n="setup.title">Setting up the Teensy</span>
+          <button type="button" class="collapse-toggle" aria-expanded="false" aria-label="Expand Setting up the Teensy" data-i18n-attr="aria-label:setup.expandAria">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <ol class="etutti-setup-list">
+          <li data-i18n="setup.step1">Mount the Audio Board on the Teensy (Rev D for Teensy 4.x) and plug headphones or an amplifier into its output.</li>
+          <li data-i18n="setup.step2">Install Arduino IDE with Teensyduino, open the etutti_synth sketch from this site's repository, and choose your board under Tools › Board.</li>
+          <li data-i18n="setup.step3">Under Tools › USB Type choose "MIDI" (or "Serial + MIDI"), then upload.</li>
+          <li data-i18n="setup.step4">Plug the Teensy into this computer, press Connect above and allow MIDI access. Use Chrome or Edge; Safari has no Web MIDI.</li>
+        </ol>
+        <p class="hint">
+          <a class="etutti-link" href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener" data-i18n="setup.firmwareLink">Firmware source on GitHub</a>
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-links">
+        <a href="https://beatconfused.com">beatconfused.com</a>
+      </p>
+      <p class="footer-contact">
+        <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>
+      </p>
+    </footer>
+  </main>
+
+  <script src="script.js?v=20261011"></script>
+
+  <script>
+    window.BC_STRINGS = {
+      en: {
+        "meta.title": "BeatConfused | eTutti",
+        "meta.description": "eTutti: play and control a Teensy synthesizer from the browser over USB MIDI.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "eTutti",
+        "conn.title": "Teensy connection",
+        "conn.connect": "Connect",
+        "conn.device": "Device",
+        "conn.channel": "MIDI channel",
+        "conn.pressConnect": "Press Connect first",
+        "device.none": "No MIDI devices",
+        "device.choose": "— choose a device —",
+        "status.idle": "Not connected. Plug in the Teensy and press Connect.",
+        "status.unsupported": "This browser has no Web MIDI. Use Chrome or Edge on a computer.",
+        "status.denied": "MIDI access was refused. Allow it in the address bar and try again.",
+        "status.noDevice": "MIDI is on, but no device was found. Is the Teensy plugged in with USB Type set to MIDI?",
+        "status.pickDevice": "Choose your Teensy in the list.",
+        "status.connected": "Connected to {name}.",
+        "status.disconnected": "{name} was unplugged.",
+        "play.octave": "Octave",
+        "play.octaveDownAria": "Octave down (Z)",
+        "play.octaveUpAria": "Octave up (X)",
+        "play.velocity": "Velocity",
+        "play.velocityDownAria": "Velocity down (C)",
+        "play.velocityUpAria": "Velocity up (V)",
+        "play.panic": "All notes off",
+        "play.pianoAria": "Keyboard",
+        "play.hint": "Play with your computer keyboard: A S D F G H J K L ; ' are the white keys, W E T Y U O P the black keys. Z / X change octave, C / V change velocity, Esc silences everything.",
+        "synth.title": "Synth",
+        "synth.collapseAria": "Collapse Synth",
+        "synth.waveform": "Waveform",
+        "synth.sine": "Sine",
+        "synth.saw": "Saw",
+        "synth.square": "Square",
+        "synth.triangle": "Triangle",
+        "synth.volume": "Volume",
+        "synth.cutoff": "Filter cutoff",
+        "synth.resonance": "Resonance",
+        "synth.attack": "Attack",
+        "synth.decay": "Decay",
+        "synth.sustain": "Sustain",
+        "synth.release": "Release",
+        "synth.sendAll": "Send all settings to the Teensy",
+        "monitor.title": "MIDI monitor",
+        "monitor.expandAria": "Expand MIDI monitor",
+        "monitor.hint": "→ messages sent to the Teensy, ← messages it sends back. Newest on top.",
+        "monitor.clear": "Clear",
+        "setup.title": "Setting up the Teensy",
+        "setup.expandAria": "Expand Setting up the Teensy",
+        "setup.step1": "Mount the Audio Board on the Teensy (Rev D for Teensy 4.x) and plug headphones or an amplifier into its output.",
+        "setup.step2": "Install Arduino IDE with Teensyduino, open the etutti_synth sketch from this site's repository, and choose your board under Tools › Board.",
+        "setup.step3": "Under Tools › USB Type choose \"MIDI\" (or \"Serial + MIDI\"), then upload.",
+        "setup.step4": "Plug the Teensy into this computer, press Connect above and allow MIDI access. Use Chrome or Edge; Safari has no Web MIDI.",
+        "setup.firmwareLink": "Firmware source on GitHub",
+      },
+      pt: {
+        "meta.title": "BeatConfused | eTutti",
+        "meta.description": "eTutti: toque e controle um sintetizador Teensy pelo navegador via MIDI USB.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "eTutti",
+        "conn.title": "Conexão com o Teensy",
+        "conn.connect": "Conectar",
+        "conn.device": "Dispositivo",
+        "conn.channel": "Canal MIDI",
+        "conn.pressConnect": "Clique em Conectar primeiro",
+        "device.none": "Nenhum dispositivo MIDI",
+        "device.choose": "— escolha um dispositivo —",
+        "status.idle": "Desconectado. Plugue o Teensy e clique em Conectar.",
+        "status.unsupported": "Este navegador não tem Web MIDI. Use o Chrome ou o Edge num computador.",
+        "status.denied": "O acesso MIDI foi negado. Permita na barra de endereço e tente de novo.",
+        "status.noDevice": "MIDI ativo, mas nenhum dispositivo encontrado. O Teensy está plugado com USB Type em MIDI?",
+        "status.pickDevice": "Escolha o seu Teensy na lista.",
+        "status.connected": "Conectado a {name}.",
+        "status.disconnected": "{name} foi desconectado.",
+        "play.octave": "Oitava",
+        "play.octaveDownAria": "Descer oitava (Z)",
+        "play.octaveUpAria": "Subir oitava (X)",
+        "play.velocity": "Velocidade",
+        "play.velocityDownAria": "Diminuir velocidade (C)",
+        "play.velocityUpAria": "Aumentar velocidade (V)",
+        "play.panic": "Silenciar tudo",
+        "play.pianoAria": "Teclado",
+        "play.hint": "Toque com o teclado do computador: A S D F G H J K L Ç ~ são as teclas brancas, W E T Y U O P as pretas. Z / X mudam a oitava, C / V a velocidade, Esc silencia tudo.",
+        "synth.title": "Sintetizador",
+        "synth.collapseAria": "Recolher Sintetizador",
+        "synth.waveform": "Forma de onda",
+        "synth.sine": "Senoidal",
+        "synth.saw": "Dente de serra",
+        "synth.square": "Quadrada",
+        "synth.triangle": "Triangular",
+        "synth.volume": "Volume",
+        "synth.cutoff": "Corte do filtro",
+        "synth.resonance": "Ressonância",
+        "synth.attack": "Ataque",
+        "synth.decay": "Decaimento",
+        "synth.sustain": "Sustentação",
+        "synth.release": "Liberação",
+        "synth.sendAll": "Enviar todos os ajustes ao Teensy",
+        "monitor.title": "Monitor MIDI",
+        "monitor.expandAria": "Expandir Monitor MIDI",
+        "monitor.hint": "→ mensagens enviadas ao Teensy, ← mensagens que ele envia de volta. Mais recentes no topo.",
+        "monitor.clear": "Limpar",
+        "setup.title": "Preparando o Teensy",
+        "setup.expandAria": "Expandir Preparando o Teensy",
+        "setup.step1": "Encaixe a Audio Board no Teensy (Rev D para Teensy 4.x) e ligue fones ou um amplificador na saída dela.",
+        "setup.step2": "Instale o Arduino IDE com o Teensyduino, abra o sketch etutti_synth do repositório deste site e escolha a sua placa em Tools › Board.",
+        "setup.step3": "Em Tools › USB Type escolha \"MIDI\" (ou \"Serial + MIDI\") e faça o upload.",
+        "setup.step4": "Plugue o Teensy neste computador, clique em Conectar acima e permita o acesso MIDI. Use o Chrome ou o Edge; o Safari não tem Web MIDI.",
+        "setup.firmwareLink": "Código do firmware no GitHub",
+      },
+      es: {
+        "meta.title": "BeatConfused | eTutti",
+        "meta.description": "eTutti: toca y controla un sintetizador Teensy desde el navegador por MIDI USB.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "eTutti",
+        "conn.title": "Conexión con el Teensy",
+        "conn.connect": "Conectar",
+        "conn.device": "Dispositivo",
+        "conn.channel": "Canal MIDI",
+        "conn.pressConnect": "Pulsa Conectar primero",
+        "device.none": "Ningún dispositivo MIDI",
+        "device.choose": "— elige un dispositivo —",
+        "status.idle": "Desconectado. Conecta el Teensy y pulsa Conectar.",
+        "status.unsupported": "Este navegador no tiene Web MIDI. Usa Chrome o Edge en un ordenador.",
+        "status.denied": "Se denegó el acceso MIDI. Permítelo en la barra de direcciones e inténtalo de nuevo.",
+        "status.noDevice": "MIDI activo, pero no se encontró ningún dispositivo. ¿El Teensy está conectado con USB Type en MIDI?",
+        "status.pickDevice": "Elige tu Teensy en la lista.",
+        "status.connected": "Conectado a {name}.",
+        "status.disconnected": "{name} se desconectó.",
+        "play.octave": "Octava",
+        "play.octaveDownAria": "Bajar octava (Z)",
+        "play.octaveUpAria": "Subir octava (X)",
+        "play.velocity": "Velocidad",
+        "play.velocityDownAria": "Bajar velocidad (C)",
+        "play.velocityUpAria": "Subir velocidad (V)",
+        "play.panic": "Silenciar todo",
+        "play.pianoAria": "Teclado",
+        "play.hint": "Toca con el teclado del ordenador: A S D F G H J K L Ñ ´ son las teclas blancas, W E T Y U O P las negras. Z / X cambian la octava, C / V la velocidad, Esc silencia todo.",
+        "synth.title": "Sintetizador",
+        "synth.collapseAria": "Contraer Sintetizador",
+        "synth.waveform": "Forma de onda",
+        "synth.sine": "Senoidal",
+        "synth.saw": "Diente de sierra",
+        "synth.square": "Cuadrada",
+        "synth.triangle": "Triangular",
+        "synth.volume": "Volumen",
+        "synth.cutoff": "Corte del filtro",
+        "synth.resonance": "Resonancia",
+        "synth.attack": "Ataque",
+        "synth.decay": "Caída",
+        "synth.sustain": "Sostenido",
+        "synth.release": "Liberación",
+        "synth.sendAll": "Enviar todos los ajustes al Teensy",
+        "monitor.title": "Monitor MIDI",
+        "monitor.expandAria": "Expandir Monitor MIDI",
+        "monitor.hint": "→ mensajes enviados al Teensy, ← mensajes que devuelve. Los más recientes arriba.",
+        "monitor.clear": "Limpiar",
+        "setup.title": "Preparar el Teensy",
+        "setup.expandAria": "Expandir Preparar el Teensy",
+        "setup.step1": "Monta la Audio Board en el Teensy (Rev D para Teensy 4.x) y conecta auriculares o un amplificador a su salida.",
+        "setup.step2": "Instala Arduino IDE con Teensyduino, abre el sketch etutti_synth del repositorio de este sitio y elige tu placa en Tools › Board.",
+        "setup.step3": "En Tools › USB Type elige \"MIDI\" (o \"Serial + MIDI\") y súbelo.",
+        "setup.step4": "Conecta el Teensy a este ordenador, pulsa Conectar arriba y permite el acceso MIDI. Usa Chrome o Edge; Safari no tiene Web MIDI.",
+        "setup.firmwareLink": "Código del firmware en GitHub",
+      },
+    };
+  </script>
+  <script src="/i18n/i18n.js?v=20261003"></script>
+</body>
+</html>

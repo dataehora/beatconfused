@@ -1,0 +1,327 @@
+/* ============================================================
+   eTUTTI — page-specific styles. Page chrome, control-block panels,
+   buttons, sliders and selects come from shared/tuner-common.css; this
+   file holds the connection row, the on-screen keyboard, the synth
+   controls and the MIDI monitor.
+   ============================================================ */
+.etutti {
+  display: grid;
+  gap: 1.35rem;
+}
+
+/* ---- Connection ---- */
+.etutti-conn-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+}
+
+.conn-light {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #9c9186;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: background 160ms ease, box-shadow 160ms ease;
+}
+
+.conn-light.is-on {
+  background: #6f8f52;
+  box-shadow: 0 0 8px rgba(111, 143, 82, 0.8);
+}
+
+.conn-status {
+  flex: 1 1 14rem;
+  margin: 0;
+}
+
+.etutti-connect-btn {
+  width: auto;
+  padding: 0.4rem 1.4rem;
+}
+
+.etutti-connect-btn[hidden] {
+  display: none;
+}
+
+.etutti-conn-selects .select-row {
+  flex: 1 1 12rem;
+  margin: 0;
+}
+
+/* ---- Keyboard ---- */
+.etutti-play {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.etutti-play-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem 1.6rem;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.stepper-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.stepper-value {
+  min-width: 4.6rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.etutti-panic {
+  font-weight: 600;
+}
+
+/* Same golden-case-over-dark-window bezel as the site's other devices. */
+.piano-case {
+  padding: 10px 10px 12px;
+  border-radius: 0.95rem;
+  background: linear-gradient(145deg, #caa06a, #8a5a30);
+  box-shadow: var(--shadow-soft);
+}
+
+.piano {
+  --white-count: 11;
+  position: relative;
+  height: clamp(150px, 26vw, 220px);
+  border-radius: 0.5rem;
+  background: #171310;
+  padding: 6px 6px 0;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.piano-whites {
+  display: flex;
+  height: 100%;
+  gap: 3px;
+}
+
+.piano-blacks {
+  position: absolute;
+  inset: 6px 6px auto;
+  height: 60%;
+  pointer-events: none;
+}
+
+.piano-key {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.2rem;
+  padding: 0 0 0.5rem;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  transition: background 60ms ease, transform 60ms ease;
+}
+
+.piano-key-white {
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(180deg, #fffaf2 0%, #f1e8da 100%);
+  box-shadow: inset 0 -5px 0 rgba(62, 45, 30, 0.12);
+  color: #8a7a6b;
+}
+
+.piano-key-black {
+  position: absolute;
+  top: 0;
+  /* --slot = how many white keys sit to the left; centre on that seam. */
+  left: calc((100% + 3px) / var(--white-count) * var(--slot) - 1.5px);
+  width: calc((100% + 3px) / var(--white-count) * 0.62);
+  height: 100%;
+  transform: translateX(-50%);
+  border-radius: 0 0 5px 5px;
+  background: linear-gradient(180deg, #3a2e25 0%, #1b1512 100%);
+  box-shadow: inset 0 -4px 0 rgba(255, 255, 255, 0.06), 0 2px 4px rgba(0, 0, 0, 0.45);
+  color: rgba(246, 241, 232, 0.6);
+  pointer-events: auto;
+}
+
+.piano-key-white.is-down {
+  background: linear-gradient(180deg, #f2d29a 0%, #e0a95a 100%);
+  box-shadow: inset 0 -2px 0 rgba(62, 45, 30, 0.2);
+  color: #5a3b17;
+}
+
+.piano-key-black.is-down {
+  background: linear-gradient(180deg, #b67a35 0%, #8d5524 100%);
+  transform: translateX(-50%) translateY(1px);
+  color: #fffdf7;
+}
+
+.piano-key-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.piano-key-note {
+  font-size: 0.62rem;
+  font-weight: 600;
+  line-height: 1;
+  min-height: 0.62rem;
+  color: var(--accent);
+}
+
+.etutti-keys-hint {
+  text-align: center;
+}
+
+/* ---- Synth ---- */
+.etutti-wave {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.8rem;
+}
+
+.etutti-group-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.etutti-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* Same pill style as the Tuner's display picker / Luthier peak-hold modes. */
+.etutti-pill {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.etutti-pill input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.etutti-pill span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 0.7rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border-strong);
+  background: #fffdf9;
+  color: #2f2218;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: transform 100ms ease, border-color 100ms ease, background 100ms ease, color 100ms ease;
+}
+
+.etutti-pill input:checked + span {
+  background: linear-gradient(140deg, #b67a35, #8d5524);
+  border-color: rgba(115, 68, 29, 0.7);
+  color: #fffdf7;
+  transform: translateY(-1px);
+}
+
+.etutti-pill input:focus-visible + span {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 2px;
+}
+
+.etutti-sliders {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.9rem 1.6rem;
+}
+
+.etutti-slider {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.etutti-slider-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.etutti-slider-head .slider-title {
+  margin: 0;
+}
+
+.etutti-slider-value {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+
+/* ---- MIDI monitor ---- */
+.midi-monitor {
+  height: 12rem;
+  overflow-y: auto;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.6rem;
+  background: #171310;
+  color: rgba(246, 241, 232, 0.85);
+  font: 0.78rem/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace;
+  white-space: pre;
+}
+
+.monitor-in {
+  color: #a0c4ec;
+}
+
+/* ---- Setup ---- */
+.etutti-setup-list {
+  margin: 0;
+  padding-left: 1.3rem;
+  display: grid;
+  gap: 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+.etutti-link {
+  color: var(--accent);
+}
+
+@media (max-width: 560px) {
+  .piano-key-label {
+    font-size: 0.62rem;
+  }
+
+  .piano-key-note {
+    display: none;
+  }
+}

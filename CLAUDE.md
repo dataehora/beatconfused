@@ -47,6 +47,21 @@ that doesn't belong there.
   Tone; for in-browser verification, monkeypatch
   `navigator.mediaDevices.getUserMedia` to return a
   `MediaStreamAudioDestinationNode` stream of synthesized partials.
+- `etutti/` (eTutti) — **work in progress, deliberately unlisted**: no
+  home-page card, not in `sitemap.xml`, `noindex` meta (the user asked
+  for no home button while it's being built). Browser front-end for a
+  Teensy controller/synth: Web MIDI (`navigator.requestMIDIAccess`) to a
+  Teensy running `etutti/firmware/etutti_synth/` (Teensy Audio Library +
+  SGTL5000 Audio Board, 8-voice synth, USB name "eTutti" via `name.c`).
+  Computer keyboard (by `KeyboardEvent.code`, DAW layout A-row whites /
+  Q-row blacks, Z/X octave, C/V velocity, Esc panic) and on-screen keys
+  send notes; Synth panel sends CCs. The CC map lives in both
+  `etutti/script.js` (`CC`) and the sketch — change both together. The
+  MIDI monitor already logs what the Teensy sends back (hook for the
+  user's planned custom hardware interface). Firmware has never been
+  compiled in this environment (no Arduino/Teensyduino toolchain here);
+  the page was verified with a fake `requestMIDIAccess` that records
+  sent bytes.
 - `binfacevsfarage/` — standalone browser game, deliberately **not**
   linked from the studio nav, blocked in `robots.txt`, and absent from
   `sitemap.xml`. Leave it that way unless told otherwise.
