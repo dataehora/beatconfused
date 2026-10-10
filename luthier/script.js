@@ -87,7 +87,7 @@
 
   // ---- display state ----
   let fullRange = true;
-  let peakMode = "on"; // "on" | "temp" | "off"
+  let peakMode = "temp"; // "on" | "temp" | "off" — Temporary by default
   let decayDbPerSecond = Number(els.decayRange.value);
   let cursorHz = null;
   let lastFrameTime = 0;
