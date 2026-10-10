@@ -8,16 +8,61 @@ the PJRC Audio Adaptor Board Rev D stacked on it. The firmware is in
 
 ![PCB preview](build/etuttino_pcb_preview.svg)
 
-All geometry comes from [`generate.py`](generate.py), which you run with plain
-Python 3 and no extra packages. Change the layout there and re-run it. It
-regenerates everything in `build/`:
+## Ordering (ready to upload)
+
+Everything a PCB service needs is already generated, routed and checked
+(KiCad DRC: 0 errors, 0 warnings, 0 unconnected):
+
+| File | Upload it as |
+| --- | --- |
+| [`fab/etuttino_gerbers.zip`](fab/etuttino_gerbers.zip) | **the PCB**: Gerbers + drill files |
+| [`fab/etuttino_plate_gerbers.zip`](fab/etuttino_plate_gerbers.zip) | **the switch plate**: a copper-less FR4 board with the 14 mm cutouts |
+| [`fab/etuttino_bom.csv`](fab/etuttino_bom.csv) + [`fab/etuttino_cpl_bottom.csv`](fab/etuttino_cpl_bottom.csv) | *optional*: have the fab solder the diodes and sockets |
+
+**JLCPCB** (PCBWay and others work the same way):
+
+1. Go to jlcpcb.com, click **Order now** and upload `etuttino_gerbers.zip`.
+   The site reads the size (183.45 × 132.2 mm) and shows a preview. Check
+   that the keys and the Teensy sockets look right.
+2. Settings: **2 layers**, **FR-4**, **1.6 mm**, any colour, **HASL
+   lead-free**, quantity 5 (the minimum). Leave the rest at the defaults.
+   Under "Remove order number" you can pick "Specify a location"; there is
+   no marked spot, so they will put it somewhere unobtrusive.
+3. Place a second order with `etuttino_plate_gerbers.zip`, same settings
+   (1.6 mm FR-4). The plate has no copper, so "No" for any copper-related
+   option. Black or white looks good under keycaps.
+4. **Optional assembly.** Enable *PCB Assembly*, choose **Bottom side**,
+   and upload the BOM and CPL files. Match the parts in their library:
+   Kailh MX hot-swap socket **CPG151101S11** and diode **1N4148W
+   (SOD-123)**. Then check the rotation of every part in their placement
+   preview before paying. Without assembly you solder 68 small SMD parts
+   yourself, which is easy with a fine tip.
+
+The switches, keycaps, Teensy, Audio Board and headers are bought
+separately (see the BOM below). They are not on the fab's order.
+
+## Source files and regenerating
 
 | File | What it is |
 | --- | --- |
-| `build/etuttino_pcb_preview.svg` | top view: outline, keys, matrix cells, Teensy zone, holes |
+| [`generate.py`](generate.py) | single source of the geometry (plain Python 3, no packages) |
+| [`build_pcb.py`](build_pcb.py) | builds and routes the KiCad board, runs DRC, exports everything in `fab/` |
+| [`etuttino.pretty/`](etuttino.pretty) | footprint library: Kailh MX hot-swap socket, origin at the switch centre |
+| [`kicad/etuttino.kicad_pcb`](kicad/etuttino.kicad_pcb) | the routed board. Open it in KiCad's PCB Editor to look at or tweak it |
+| [`kicad/etuttino_plate.kicad_pcb`](kicad/etuttino_plate.kicad_pcb) | the plate |
+| `build/etuttino_pcb_preview.svg` | top view: keys, matrix cells, Teensy zone, holes |
 | `build/etuttino_keys.csv` | each switch: reference, matrix row/col, Teensy pins, note, X/Y (mm) |
-| `build/etuttino_plate.dxf` | switch plate for laser cutting / CNC (mm, DXF R12) |
-| `build/kicad_place_etuttino.py` | KiCad script: places every footprint and assigns all nets |
+| `build/etuttino_plate.dxf` | the plate as DXF, for laser cutting aluminium instead of FR4 |
+
+After changing the layout in `generate.py`, rebuild everything:
+
+```bash
+python generate.py
+"C:/Program Files/KiCad/10.0/bin/python.exe" build_pcb.py
+```
+
+`build_pcb.py` exits with an error if DRC finds a problem or anything is
+left unconnected.
 
 ## Layout
 
@@ -99,32 +144,9 @@ Pins the matrix stays clear of:
 | 1 | PJRC Audio Adaptor Board **Rev D** | |
 | 2 | 1×14 long-pin stacking header | Teensy → through Audio Board |
 | 2 | 1×14 female socket, 2.54 mm | on the eTuttino PCB |
-| 1 | switch plate, 1.5 mm | aluminium, FR4 or POM, from `etuttino_plate.dxf` (183.45 × 88.2 mm, 14 mm cutouts) |
+| 1 | switch plate | 1.6 mm FR4 from `fab/etuttino_plate_gerbers.zip` (same fab as the PCB), or 1.5 mm aluminium from `build/etuttino_plate.dxf` (183.45 × 88.2 mm, 14 mm cutouts) |
 | 10 | M2 screw + standoff | through the M2 holes (2.2 mm) |
 | 1 | case | 3D-printed or CNC aluminium, tray mount on the M2 holes |
-
-## Building the PCB in KiCad
-
-1. Install [KiCad 8](https://www.kicad.org/). It ships with every footprint
-   used here: `SW_Hotswap_Kailh_MX_1.00u`, `D_SOD-123`,
-   `PinSocket_1x14_P2.54mm_Vertical` and `MountingHole_2.2mm_M2`.
-2. Create a new project and open the **PCB Editor**.
-3. Open **Tools › Scripting Console** and run:
-   ```python
-   exec(open(r"C:\path\to\etutti\hardware\build\kicad_place_etuttino.py").read())
-   ```
-   All switches, diodes, sockets, holes and the board outline are placed,
-   with every connection shown as a ratsnest.
-4. Route the board, either by hand or with the Freerouting plugin
-   (**Plugin and Content Manager**). Two layers are plenty. A GND pour on
-   both sides is a good finish.
-5. Run **DRC**, then **File › Fabrication Outputs** (Gerbers + drill files).
-6. Order from JLCPCB, PCBWay or similar: 2 layers, 1.6 mm, any colour.
-   The board is 183.45 × 132.2 mm.
-
-The placement script **has not been run in this repo's environment** (no
-KiCad here). If KiCad reports an error, send the message and it will be
-fixed in `generate.py`.
 
 ## Assembly
 
@@ -132,6 +154,8 @@ fixed in `generate.py`.
    net, as marked on the footprint.
 2. Solder the 34 hot-swap sockets on the back.
 3. Solder the two 1×14 female sockets on the top.
+   The silkscreen marks **GND** and **0** (J1) and **VIN** and **23** (J2):
+   the Teensy goes in with its USB towards the "USB >" mark.
 4. Solder the stacking headers through the Audio Board and the Teensy.
    Check the pin-to-pin alignment of both boards first.
 5. Mount the plate on standoffs, snap the switches through the plate into

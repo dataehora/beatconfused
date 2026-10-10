@@ -60,9 +60,23 @@ that doesn't belong there.
   1-4 (by `KeyboardEvent.code`), arrows = octave/velocity, Esc panic.
   The layout lives in THREE places that must agree: `ROWS` in
   `etutti/script.js`, `NOTE_MAP` in the sketch, `ROWS` in
-  `etutti/hardware/generate.py` (PCB/plate/KiCad generator; re-run it to
-  refresh `etutti/hardware/build/`). The CC map lives in both
-  `etutti/script.js` (`CC`) and the sketch — change both together. The
+  `etutti/hardware/generate.py` (geometry source). The CC map lives in
+  both `etutti/script.js` (`CC`) and the sketch — change both together.
+  - **Tooling available on this machine** (use it to verify, don't just
+    write code blind): KiCad 10 at `C:/Program Files/KiCad/10.0/bin/`
+    (its `python.exe` has `pcbnew`; `kicad-cli.exe` does DRC/Gerbers/
+    renders) and the Arduino IDE's bundled
+    `C:/Users/julia/AppData/Local/Programs/Arduino IDE/resources/app/lib/backend/resources/arduino-cli.exe`
+    with Teensyduino 1.60 installed — compile with
+    `arduino-cli compile --fqbn teensy:avr:teensy40:usb=midi etutti/firmware/etutti_synth`.
+  - `etutti/hardware/build_pcb.py` (run with KiCad's python) places,
+    **routes** (own deterministic router: columns F.Cu zig-zag, rows B.Cu,
+    nested runs to the Teensy sockets), DRCs and exports `fab/`
+    (Gerbers zip, plate-as-FR4 Gerbers zip, BOM/CPL, renders). It exits
+    non-zero on any DRC error/unconnected. KiCad 10's stock library has
+    **no** Kailh hot-swap footprint — ours is `etuttino.pretty/`.
+  - The firmware's `#error` on missing `MIDI_INTERFACE` exists because the
+    user hit "'usbMIDI' was not declared" with USB Type left on Serial. The
   MIDI monitor already logs what the Teensy sends back (hook for the
   user's planned custom hardware interface). Firmware has never been
   compiled in this environment (no Arduino/Teensyduino toolchain here);
