@@ -26,6 +26,7 @@ tuner/                 Tuner — index.html, script.js, styles.css
 strobetuner/           Octave Strobe Tuner — index.html, script.js, styles.css
 multistrobe/           Chromatic Strobe Tuner — index.html, script.js, styles.css
 luthier/               Luthier Tuning (spectrogram) — index.html, script.js, styles.css
+etutti/                eTutti (work in progress, unlisted) — Web MIDI page + Teensy firmware/
 binfacevsfarage/       Standalone browser game (not linked from the studio)
 shared/                Assets shared across tools
 CNAME, robots.txt, sitemap.xml   Hosting + crawl metadata
