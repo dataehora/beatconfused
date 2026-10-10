@@ -37,6 +37,12 @@
 #include <SD.h>
 #include <SerialFlash.h>
 
+// usbMIDI only exists when the USB Type includes MIDI. Without this check
+// the compiler only says "'usbMIDI' was not declared in this scope".
+#if !defined(MIDI_INTERFACE)
+#error "In the Arduino IDE choose Tools > USB Type > MIDI (or Serial + MIDI), then upload again."
+#endif
+
 const int NUM_VOICES = 8;
 
 // ---- eTuttino key matrix (see etutti/hardware/README.md) ----

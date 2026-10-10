@@ -29,6 +29,15 @@ and is also sent as USB MIDI, so the page lights the key up.
 4. Upload. Then open the eTutti page in Chrome or Edge, press **Connect**,
    and allow MIDI access.
 
+If compiling stops with *"In the Arduino IDE choose Tools > USB Type >
+MIDI…"* (or, in older copies of the sketch, *"'usbMIDI' was not declared in
+this scope"*), the USB Type is still on the default "Serial". Change it and
+upload again.
+
+The message *"Multiple libraries were found for SD.h"* is only a warning:
+the Arduino IDE also has its own SD library installed, and it correctly
+uses the Teensy one.
+
 On Windows the old device name ("Teensy MIDI") can stick around after the
 rename. Remove the device in Device Manager and plug it in again. The page
 recognises either name.
