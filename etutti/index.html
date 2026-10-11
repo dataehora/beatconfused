@@ -27,7 +27,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261013" />
+  <link rel="stylesheet" href="styles.css?v=20261014" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
 </head>
@@ -161,43 +161,43 @@
             <label class="etutti-pill"><input type="radio" name="preset" value="bass" /><span data-i18n="preset.bass">Bass</span></label>
             <label class="etutti-pill"><input type="radio" name="preset" value="guitar" /><span data-i18n="preset.guitar">Guitar</span></label>
           </div>
-          <p class="hint" data-i18n="synth.presetHint">Classic accordion is the default: two reeds a few cents apart in a soft cassotto. The other instruments are synthetic approximations.</p>
+          <p class="hint" data-i18n="synth.presetHint">Accordions are synthesised reed by reed. Piano, bass and guitar play recorded samples (the bass uses the guitar's low strings two octaves down).</p>
         </div>
 
-        <div class="etutti-voices">
-          <div class="etutti-group" role="radiogroup" aria-labelledby="wave1Legend">
-            <span class="etutti-group-label" id="wave1Legend" data-i18n="synth.voice1">Voice 1</span>
-            <div class="etutti-pills">
-              <label class="etutti-pill"><input type="radio" name="wave1" value="0" /><span data-i18n="synth.sine">Sine</span></label>
-              <label class="etutti-pill"><input type="radio" name="wave1" value="1" checked /><span data-i18n="synth.saw">Saw</span></label>
-              <label class="etutti-pill"><input type="radio" name="wave1" value="2" /><span data-i18n="synth.square">Square</span></label>
-              <label class="etutti-pill"><input type="radio" name="wave1" value="3" /><span data-i18n="synth.triangle">Triangle</span></label>
+        <div id="accordionControls" class="etutti-accordion">
+          <div class="register-block">
+            <div class="register" role="group" aria-label="Accordion register" data-i18n-attr="aria-label:register.aria">
+              <span class="register-band" aria-hidden="true"></span>
+              <button type="button" class="register-dot register-dot-high" data-reed="8" aria-pressed="false" title="4' piccolo" data-i18n-attr="title:register.highTitle;aria-label:register.highTitle" aria-label="4' piccolo"></button>
+              <button type="button" class="register-dot register-dot-m1" data-reed="2" aria-pressed="false" title="8' middle reed, open" data-i18n-attr="title:register.m1Title;aria-label:register.m1Title" aria-label="8' middle reed, open"></button>
+              <button type="button" class="register-dot register-dot-m2" data-reed="4" aria-pressed="false" title="8' middle reed, in cassotto" data-i18n-attr="title:register.m2Title;aria-label:register.m2Title" aria-label="8' middle reed, in cassotto"></button>
+              <button type="button" class="register-dot register-dot-low" data-reed="1" aria-pressed="false" title="16' low reed, in cassotto" data-i18n-attr="title:register.lowTitle;aria-label:register.lowTitle" aria-label="16' low reed, in cassotto"></button>
+            </div>
+            <div class="register-info">
+              <span class="etutti-group-label" data-i18n="register.title">Register</span>
+              <span class="register-code" id="registerCode">MM</span>
+              <span class="register-name" id="registerName">Violin</span>
+              <ul class="register-legend">
+                <li data-i18n="register.legendHigh">top: 4' piccolo</li>
+                <li data-i18n="register.legendMiddle">middle: 8' open (left) · 8' cassotto (right)</li>
+                <li data-i18n="register.legendLow">bottom: 16' in cassotto</li>
+              </ul>
             </div>
           </div>
-
-          <div class="etutti-group">
-            <span class="etutti-group-label" id="wave2Legend" data-i18n="synth.voice2">Voice 2</span>
-            <div class="etutti-pills" role="radiogroup" aria-labelledby="wave2Legend">
-              <label class="etutti-pill"><input type="radio" name="wave2" value="0" /><span data-i18n="synth.sine">Sine</span></label>
-              <label class="etutti-pill"><input type="radio" name="wave2" value="1" checked /><span data-i18n="synth.saw">Saw</span></label>
-              <label class="etutti-pill"><input type="radio" name="wave2" value="2" /><span data-i18n="synth.square">Square</span></label>
-              <label class="etutti-pill"><input type="radio" name="wave2" value="3" /><span data-i18n="synth.triangle">Triangle</span></label>
-            </div>
-            <div class="etutti-pills" role="radiogroup" aria-label="Voice 2 octave" data-i18n-attr="aria-label:synth.octave2Aria">
-              <label class="etutti-pill"><input type="radio" name="octave2" value="-1" /><span data-i18n="synth.octaveDown">−1 octave</span></label>
-              <label class="etutti-pill"><input type="radio" name="octave2" value="0" checked /><span data-i18n="synth.unison">Unison</span></label>
-              <label class="etutti-pill"><input type="radio" name="octave2" value="1" /><span data-i18n="synth.octaveUp">+1 octave</span></label>
-            </div>
-            <div class="etutti-sliders etutti-sliders-tight">
-              <label class="etutti-slider">
-                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.voice2Level">Voice 2 level</span><span id="ccVoice2LevelValue" class="etutti-slider-value"></span></span>
-                <input id="ccVoice2Level" type="range" min="0" max="127" value="100" data-cc="21" data-format="percent" class="panel-slider" />
-              </label>
-              <label class="etutti-slider">
-                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.voice2Detune">Voice 2 detune</span><span id="ccVoice2DetuneValue" class="etutti-slider-value"></span></span>
-                <input id="ccVoice2Detune" type="range" min="0" max="127" value="69" data-cc="22" data-format="detune" class="panel-slider" />
-              </label>
-            </div>
+          <div class="register-presets" id="registerPresets" aria-label="Named registers" data-i18n-attr="aria-label:register.presetsAria"></div>
+          <div class="etutti-sliders">
+            <label class="etutti-slider">
+              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.reedTuning">Reed tuning</span><span id="ccReedTuningValue" class="etutti-slider-value"></span></span>
+              <input id="ccReedTuning" type="range" min="0" max="30" step="1" value="0" data-cc="27" data-format="wetness" class="panel-slider" />
+            </label>
+            <label class="etutti-slider">
+              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.attack">Attack</span><span id="ccAttackValue" class="etutti-slider-value"></span></span>
+              <input id="ccAttack" type="range" min="0" max="127" value="14" data-cc="73" data-format="attack" class="panel-slider" />
+            </label>
+            <label class="etutti-slider">
+              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.release">Release</span><span id="ccReleaseValue" class="etutti-slider-value"></span></span>
+              <input id="ccRelease" type="range" min="0" max="127" value="21" data-cc="72" data-format="release" class="panel-slider" />
+            </label>
           </div>
         </div>
 
@@ -207,28 +207,12 @@
             <input id="ccVolume" type="range" min="0" max="127" value="90" data-cc="7" data-format="percent" class="panel-slider" />
           </label>
           <label class="etutti-slider">
-            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.cutoff">Filter cutoff</span><span id="ccCutoffValue" class="etutti-slider-value"></span></span>
-            <input id="ccCutoff" type="range" min="0" max="127" value="82" data-cc="74" data-format="cutoff" class="panel-slider" />
+            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.tone">Tone</span><span id="ccToneValue" class="etutti-slider-value"></span></span>
+            <input id="ccTone" type="range" min="0" max="127" value="110" data-cc="74" data-format="cutoff" class="panel-slider" />
           </label>
           <label class="etutti-slider">
-            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.resonance">Resonance</span><span id="ccResonanceValue" class="etutti-slider-value"></span></span>
-            <input id="ccResonance" type="range" min="0" max="127" value="0" data-cc="71" data-format="resonance" class="panel-slider" />
-          </label>
-          <label class="etutti-slider">
-            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.attack">Attack</span><span id="ccAttackValue" class="etutti-slider-value"></span></span>
-            <input id="ccAttack" type="range" min="0" max="127" value="14" data-cc="73" data-format="attack" class="panel-slider" />
-          </label>
-          <label class="etutti-slider">
-            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.decay">Decay</span><span id="ccDecayValue" class="etutti-slider-value"></span></span>
-            <input id="ccDecay" type="range" min="0" max="127" value="30" data-cc="75" data-format="decay" class="panel-slider" />
-          </label>
-          <label class="etutti-slider">
-            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.sustain">Sustain</span><span id="ccSustainValue" class="etutti-slider-value"></span></span>
-            <input id="ccSustain" type="range" min="0" max="127" value="127" data-cc="79" data-format="percent" class="panel-slider" />
-          </label>
-          <label class="etutti-slider">
-            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.release">Release</span><span id="ccReleaseValue" class="etutti-slider-value"></span></span>
-            <input id="ccRelease" type="range" min="0" max="127" value="21" data-cc="72" data-format="release" class="panel-slider" />
+            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.ambience">Ambience</span><span id="ccAmbienceValue" class="etutti-slider-value"></span></span>
+            <input id="ccAmbience" type="range" min="0" max="127" value="25" data-cc="91" data-format="percent" class="panel-slider" />
           </label>
         </div>
 
@@ -285,7 +269,7 @@
     </footer>
   </main>
 
-  <script src="script.js?v=20261013"></script>
+  <script src="script.js?v=20261014"></script>
 
   <script>
     window.BC_STRINGS = {
@@ -319,16 +303,8 @@
         "play.hint": "Computer keys, from the row nearest you: Z … , is row 1, A … L row 2, W … O row 3 and 2 … 0 row 4. ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.",
         "synth.title": "Synth",
         "synth.collapseAria": "Collapse Synth",
-        "synth.sine": "Sine",
-        "synth.saw": "Saw",
-        "synth.square": "Square",
-        "synth.triangle": "Triangle",
         "synth.volume": "Volume",
-        "synth.cutoff": "Filter cutoff",
-        "synth.resonance": "Resonance",
         "synth.attack": "Attack",
-        "synth.decay": "Decay",
-        "synth.sustain": "Sustain",
         "synth.release": "Release",
         "synth.sendAll": "Send all settings to the Teensy",
         "monitor.title": "MIDI monitor",
@@ -357,20 +333,37 @@
         "synth.preset": "Instrument",
         "synth.modified": "modified",
         "synth.reset": "Reset to default",
-        "synth.presetHint": "Classic accordion is the default: two reeds a few cents apart in a soft cassotto. The other instruments are synthetic approximations.",
+        "synth.presetHint": "Accordions are synthesised reed by reed. Piano, bass and guitar play recorded samples (the bass uses the guitar's low strings two octaves down).",
         "preset.accordion": "Classic accordion",
         "preset.accordionJazz": "Jazz accordion",
         "preset.piano": "Piano",
         "preset.bass": "Bass",
-        "preset.guitar": "Guitar",
-        "synth.voice1": "Voice 1",
-        "synth.voice2": "Voice 2",
-        "synth.octave2Aria": "Voice 2 octave",
-        "synth.octaveDown": "−1 octave",
-        "synth.unison": "Unison",
-        "synth.octaveUp": "+1 octave",
-        "synth.voice2Level": "Voice 2 level",
-        "synth.voice2Detune": "Voice 2 detune",
+        "preset.guitar": "Guitar (nylon)",
+        "synth.reedTuning": "Reed tuning",
+        "synth.dry": "dry",
+        "synth.wet": "wet",
+        "synth.tone": "Tone",
+        "synth.ambience": "Ambience",
+        "register.aria": "Accordion register",
+        "register.title": "Register",
+        "register.highTitle": "4' piccolo reed",
+        "register.m1Title": "8' middle reed, open",
+        "register.m2Title": "8' middle reed, in cassotto",
+        "register.lowTitle": "16' low reed, in cassotto",
+        "register.legendHigh": "top: 4' piccolo",
+        "register.legendMiddle": "middle: 8' open (left) · 8' cassotto (right)",
+        "register.legendLow": "bottom: 16' in cassotto",
+        "register.presetsAria": "Named registers",
+        "register.master": "Master",
+        "register.violin": "Violin",
+        "register.clarinet": "Clarinet",
+        "register.bandoneon": "Bandoneon",
+        "register.oboe": "Oboe",
+        "register.organ": "Organ",
+        "register.piccolo": "Piccolo",
+        "register.bassoon": "Bassoon",
+        "register.harmonium": "Harmonium",
+        "register.accordion": "Accordion",
       },
       pt: {
         "meta.title": "BeatConfused | eTutti",
@@ -402,16 +395,8 @@
         "play.hint": "Teclas do computador, da fileira mais perto de você: Z … , é a fileira 1, A … L a 2, W … O a 3 e 2 … 0 a 4. ← / → mudam a oitava, ↓ / ↑ a velocidade, Esc silencia tudo.",
         "synth.title": "Sintetizador",
         "synth.collapseAria": "Recolher Sintetizador",
-        "synth.sine": "Senoidal",
-        "synth.saw": "Dente de serra",
-        "synth.square": "Quadrada",
-        "synth.triangle": "Triangular",
         "synth.volume": "Volume",
-        "synth.cutoff": "Corte do filtro",
-        "synth.resonance": "Ressonância",
         "synth.attack": "Ataque",
-        "synth.decay": "Decaimento",
-        "synth.sustain": "Sustentação",
         "synth.release": "Liberação",
         "synth.sendAll": "Enviar todos os ajustes ao Teensy",
         "monitor.title": "Monitor MIDI",
@@ -440,20 +425,37 @@
         "synth.preset": "Instrumento",
         "synth.modified": "modificado",
         "synth.reset": "Restaurar padrão",
-        "synth.presetHint": "O acordeão clássico é o padrão: duas palhetas a poucos cents de distância num cassotto suave. Os outros instrumentos são aproximações sintéticas.",
+        "synth.presetHint": "Os acordeões são sintetizados palheta por palheta. Piano, baixo e guitarra tocam samples gravados (o baixo usa as cordas graves do violão duas oitavas abaixo).",
         "preset.accordion": "Acordeão clássico",
         "preset.accordionJazz": "Acordeão jazz",
         "preset.piano": "Piano",
         "preset.bass": "Baixo",
-        "preset.guitar": "Guitarra",
-        "synth.voice1": "Voz 1",
-        "synth.voice2": "Voz 2",
-        "synth.octave2Aria": "Oitava da voz 2",
-        "synth.octaveDown": "−1 oitava",
-        "synth.unison": "Uníssono",
-        "synth.octaveUp": "+1 oitava",
-        "synth.voice2Level": "Nível da voz 2",
-        "synth.voice2Detune": "Desafinação da voz 2",
+        "preset.guitar": "Guitarra (nylon)",
+        "synth.reedTuning": "Afinação das palhetas",
+        "synth.dry": "seca",
+        "synth.wet": "molhada",
+        "synth.tone": "Tom",
+        "synth.ambience": "Ambiente",
+        "register.aria": "Registro do acordeão",
+        "register.title": "Registro",
+        "register.highTitle": "4' palheta piccolo",
+        "register.m1Title": "8' palheta média, simples",
+        "register.m2Title": "8' palheta média, em cassotto",
+        "register.lowTitle": "16' palheta baixa, em cassotto",
+        "register.legendHigh": "em cima: 4' piccolo",
+        "register.legendMiddle": "no meio: 8' simples (esq.) · 8' cassotto (dir.)",
+        "register.legendLow": "embaixo: 16' em cassotto",
+        "register.presetsAria": "Registros com nome",
+        "register.master": "Master",
+        "register.violin": "Violino",
+        "register.clarinet": "Clarinete",
+        "register.bandoneon": "Bandoneon",
+        "register.oboe": "Oboé",
+        "register.organ": "Órgão",
+        "register.piccolo": "Piccolo",
+        "register.bassoon": "Fagote",
+        "register.harmonium": "Harmônio",
+        "register.accordion": "Acordeão",
       },
       es: {
         "meta.title": "BeatConfused | eTutti",
@@ -485,16 +487,8 @@
         "play.hint": "Teclas del ordenador, desde la fila más cercana: Z … , es la fila 1, A … L la 2, W … O la 3 y 2 … 0 la 4. ← / → cambian la octava, ↓ / ↑ la velocidad, Esc silencia todo.",
         "synth.title": "Sintetizador",
         "synth.collapseAria": "Contraer Sintetizador",
-        "synth.sine": "Senoidal",
-        "synth.saw": "Diente de sierra",
-        "synth.square": "Cuadrada",
-        "synth.triangle": "Triangular",
         "synth.volume": "Volumen",
-        "synth.cutoff": "Corte del filtro",
-        "synth.resonance": "Resonancia",
         "synth.attack": "Ataque",
-        "synth.decay": "Caída",
-        "synth.sustain": "Sostenido",
         "synth.release": "Liberación",
         "synth.sendAll": "Enviar todos los ajustes al Teensy",
         "monitor.title": "Monitor MIDI",
@@ -523,20 +517,37 @@
         "synth.preset": "Instrumento",
         "synth.modified": "modificado",
         "synth.reset": "Restaurar por defecto",
-        "synth.presetHint": "El acordeón clásico es el predeterminado: dos lengüetas a pocos cents de distancia en un cassotto suave. Los demás instrumentos son aproximaciones sintéticas.",
+        "synth.presetHint": "Los acordeones se sintetizan lengüeta por lengüeta. Piano, bajo y guitarra tocan muestras grabadas (el bajo usa las cuerdas graves de la guitarra dos octavas abajo).",
         "preset.accordion": "Acordeón clásico",
         "preset.accordionJazz": "Acordeón jazz",
         "preset.piano": "Piano",
         "preset.bass": "Bajo",
-        "preset.guitar": "Guitarra",
-        "synth.voice1": "Voz 1",
-        "synth.voice2": "Voz 2",
-        "synth.octave2Aria": "Octava de la voz 2",
-        "synth.octaveDown": "−1 octava",
-        "synth.unison": "Unísono",
-        "synth.octaveUp": "+1 octava",
-        "synth.voice2Level": "Nivel de la voz 2",
-        "synth.voice2Detune": "Desafinación de la voz 2",
+        "preset.guitar": "Guitarra (nylon)",
+        "synth.reedTuning": "Afinación de lengüetas",
+        "synth.dry": "seca",
+        "synth.wet": "húmeda",
+        "synth.tone": "Tono",
+        "synth.ambience": "Ambiente",
+        "register.aria": "Registro del acordeón",
+        "register.title": "Registro",
+        "register.highTitle": "4' lengüeta piccolo",
+        "register.m1Title": "8' lengüeta media, abierta",
+        "register.m2Title": "8' lengüeta media, en cassotto",
+        "register.lowTitle": "16' lengüeta grave, en cassotto",
+        "register.legendHigh": "arriba: 4' piccolo",
+        "register.legendMiddle": "en medio: 8' abierta (izq.) · 8' cassotto (der.)",
+        "register.legendLow": "abajo: 16' en cassotto",
+        "register.presetsAria": "Registros con nombre",
+        "register.master": "Master",
+        "register.violin": "Violín",
+        "register.clarinet": "Clarinete",
+        "register.bandoneon": "Bandoneón",
+        "register.oboe": "Oboe",
+        "register.organ": "Órgano",
+        "register.piccolo": "Piccolo",
+        "register.bassoon": "Fagot",
+        "register.harmonium": "Armonio",
+        "register.accordion": "Acordeón",
       },
     };
   </script>

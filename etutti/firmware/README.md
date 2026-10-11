@@ -42,6 +42,26 @@ On Windows the old device name ("Teensy MIDI") can stick around after the
 rename. Remove the device in Device Manager and plug it in again. The page
 recognises either name.
 
+## Sound engines
+
+- **Accordion**: every note sounds up to four free reeds, chosen by the
+  register (CC 26), as on a real accordion: 16' (low, in cassotto), 8' M1
+  (open), 8' M2 (in cassotto) and 4' (piccolo). Each reed plays a waveform
+  built at start-up by additive synthesis of a free reed's spectrum
+  (brighter when open, rounder in cassotto). The spectrum is band-limited,
+  so it doesn't alias, which is what made the old saw/square synth sound
+  metallic. "Reed tuning" (CC 27) detunes M2 against M1: 0 = dry
+  (classic), a few cents = wet (jazz).
+- **Samples**: piano, nylon guitar, and the guitar's low strings two
+  octaves down as an acoustic-bass stand-in. They play through
+  `AudioSynthWavetable`. The sample data (`piano_samples.*`,
+  `nylonstrgtr_samples.*`) comes from the Teensy Audio Library's
+  `MidiSynthLarge` example. More instruments can be converted from any
+  SoundFont with PJRC's SoundFont decoder.
+- Both engines feed a tone filter and a light room reverb (CC 91).
+- Measured on a Teensy 4.0 with the worst case (8 notes × 4 reeds plus
+  reverb): about 9 % CPU and 32 audio blocks.
+
 ## MIDI implementation
 
 The synth listens on every channel.
@@ -50,18 +70,14 @@ The synth listens on every channel.
 | --- | --- |
 | Note On / Off | play / release; velocity sets loudness |
 | CC 7 | volume |
-| CC 20 | voice 2 waveform (as CC 70) |
-| CC 21 | voice 2 level (0–100 % of voice 1) |
-| CC 22 | voice 2 detune: 64 = in tune, 0 / 127 = −50 / +50 cents |
-| CC 23 | voice 2 octave: 0–42 one down, 43–84 unison, 85–127 one up |
 | CC 24 | key layout of the physical keys: 0–63 C-griff, 64–127 B-griff |
-| CC 70 | voice 1 waveform: 0–31 sine, 32–63 saw, 64–95 square, 96–127 triangle |
-| CC 71 | filter resonance (0.7–5.0) |
-| CC 72 | release (0–3000 ms) |
-| CC 73 | attack (0–2000 ms) |
-| CC 74 | filter cutoff (40 Hz – ~17 kHz) |
-| CC 75 | decay (0–2000 ms) |
-| CC 79 | sustain level |
+| CC 25 | instrument: 0–31 accordion, 32–63 piano, 64–95 bass, 96–127 guitar |
+| CC 26 | accordion register, bit mask: 1 = 16', 2 = 8' M1 (open), 4 = 8' M2 (cassotto), 8 = 4' |
+| CC 27 | reed tuning: M2 detune in cents, 0 = dry … 30 = very wet |
+| CC 72 | release, accordion (0–3000 ms) |
+| CC 73 | attack, accordion (0–2000 ms) |
+| CC 74 | tone: low-pass 40 Hz – ~17 kHz |
+| CC 91 | ambience (room reverb) |
 | CC 120 | all sound off |
 | CC 123 | all notes off |
 

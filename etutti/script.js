@@ -11,8 +11,9 @@
    an SGTL5000 Audio Board) and enumerates over USB as a class-compliant
    MIDI device. This page talks to it with the Web MIDI API:
      - the computer keyboard (optional) and the on-screen keys send notes,
-     - the Synth panel sends Control Change messages: instrument presets,
-       two voices per note, filter and envelope,
+     - the Synth panel sends Control Change messages: instrument presets
+       (accordion reed synthesis with a register switch, or recorded
+       piano / bass / guitar samples), tone and room ambience,
      - the C/B-griff switch is sent too, so the real keys follow it,
      - notes played on the real keys light up on the on-screen ones.
    No sound is made in the browser — the Teensy's audio output is the
@@ -24,18 +25,14 @@
   // CC numbers shared with the firmware (keep in sync with etutti_synth.ino).
   const CC = {
     volume: 7,
-    wave2: 20,
-    voice2Level: 21,
-    voice2Detune: 22,
-    voice2Octave: 23,
     layout: 24,
-    wave1: 70,
-    resonance: 71,
+    instrument: 25,
+    register: 26,
+    reedTuning: 27,
     release: 72,
     attack: 73,
-    cutoff: 74,
-    decay: 75,
-    sustain: 79,
+    tone: 74,
+    ambience: 91,
     allSoundOff: 120,
     allNotesOff: 123,
   };
@@ -81,20 +78,50 @@
   const MONITOR_LINES = 40;
 
   /* ------------------------------------------------------------
+     ACCORDION REGISTER — one bit per reed set, as in the firmware:
+     16' low reed in cassotto, 8' M1 open, 8' M2 in cassotto, 4' piccolo.
+     Named combinations follow the usual accordion register names.
+     ------------------------------------------------------------ */
+  const REED = { low: 1, m1: 2, m2: 4, high: 8 };
+  const NAMED_REGISTERS = [
+    { mask: 15, key: "master" },
+    { mask: 6, key: "violin" },
+    { mask: 2, key: "clarinet" },
+    { mask: 3, key: "bandoneon" },
+    { mask: 10, key: "oboe" },
+    { mask: 9, key: "organ" },
+    { mask: 8, key: "piccolo" },
+    { mask: 1, key: "bassoon" },
+  ];
+  // Name for any mask: M1 and M2 both count as "M" (8').
+  function registerNameKey(mask) {
+    const l = mask & REED.low ? 1 : 0;
+    const m = (mask & REED.m1 ? 1 : 0) + (mask & REED.m2 ? 1 : 0);
+    const h = mask & REED.high ? 1 : 0;
+    const code = `${l ? "L" : ""}${"M".repeat(m)}${h ? "H" : ""}`;
+    const names = { L: "bassoon", M: "clarinet", H: "piccolo", LM: "bandoneon", MM: "violin", MH: "oboe", LH: "organ", LMH: "harmonium", LMM: "accordion", LMMH: "master" };
+    return { code, name: names[code] || null };
+  }
+
+  /* ------------------------------------------------------------
      INSTRUMENT PRESETS — raw CC values (see the firmware for units).
-     "accordion" is the default and what Reset restores: two reeds a few
-     cents apart in a soft cassotto (mellow, gentle beating). The others
-     are synthetic approximations built from the same two-voice engine.
+     instrument: 0 accordion (reed synthesis), 1 piano, 2 bass, 3 guitar
+     (recorded samples). "accordion" is the default and what Reset
+     restores: dry tuning, register MM (both 8' reeds — they differ only in
+     timbre, open vs cassotto). Jazz is the same reeds tuned slightly wet.
      Custom presets will slot into this same shape later.
      ------------------------------------------------------------ */
   const DEFAULT_PRESET = "accordion";
+  const ACCORDION_DEFAULTS = { register: 6, ccReedTuning: 0, ccAttack: 14, ccRelease: 21 };
   const PRESETS = {
-    accordion: { wave1: 1, wave2: 1, octave2: 0, ccVoice2Level: 100, ccVoice2Detune: 69, ccVolume: 90, ccCutoff: 82, ccResonance: 0, ccAttack: 14, ccDecay: 30, ccSustain: 127, ccRelease: 21 },
-    accordionJazz: { wave1: 2, wave2: 2, octave2: 0, ccVoice2Level: 0, ccVoice2Detune: 64, ccVolume: 90, ccCutoff: 77, ccResonance: 8, ccAttack: 12, ccDecay: 30, ccSustain: 127, ccRelease: 18 },
-    piano: { wave1: 3, wave2: 1, octave2: 0, ccVoice2Level: 45, ccVoice2Detune: 67, ccVolume: 95, ccCutoff: 96, ccResonance: 0, ccAttack: 0, ccDecay: 110, ccSustain: 0, ccRelease: 43 },
-    bass: { wave1: 1, wave2: 2, octave2: -1, ccVoice2Level: 115, ccVoice2Detune: 64, ccVolume: 100, ccCutoff: 58, ccResonance: 25, ccAttack: 2, ccDecay: 49, ccSustain: 85, ccRelease: 25 },
-    guitar: { wave1: 1, wave2: 2, octave2: 0, ccVoice2Level: 64, ccVoice2Detune: 72, ccVolume: 95, ccCutoff: 88, ccResonance: 20, ccAttack: 1, ccDecay: 90, ccSustain: 15, ccRelease: 37 },
+    accordion: { instrument: 0, ...ACCORDION_DEFAULTS, ccVolume: 90, ccTone: 110, ccAmbience: 25 },
+    accordionJazz: { instrument: 0, ...ACCORDION_DEFAULTS, ccReedTuning: 6, ccVolume: 90, ccTone: 100, ccAmbience: 32 },
+    piano: { instrument: 1, ...ACCORDION_DEFAULTS, ccVolume: 100, ccTone: 127, ccAmbience: 30 },
+    bass: { instrument: 2, ...ACCORDION_DEFAULTS, ccVolume: 105, ccTone: 100, ccAmbience: 15 },
+    guitar: { instrument: 3, ...ACCORDION_DEFAULTS, ccVolume: 100, ccTone: 122, ccAmbience: 25 },
   };
+  // Settings that only mean something for the accordion engine.
+  const ACCORDION_ONLY = ["register", "ccReedTuning", "ccAttack", "ccRelease"];
 
   const STORAGE = {
     griff: "etutti.griff",
@@ -147,6 +174,11 @@
     resetBtn: document.getElementById("resetSynthBtn"),
     presetInputs: document.querySelectorAll('input[name="preset"]'),
     presetModified: document.getElementById("presetModified"),
+    accordionControls: document.getElementById("accordionControls"),
+    registerDots: document.querySelectorAll(".register-dot"),
+    registerCode: document.getElementById("registerCode"),
+    registerName: document.getElementById("registerName"),
+    registerPresets: document.getElementById("registerPresets"),
     sliders: document.querySelectorAll("[data-cc]"),
     monitor: document.getElementById("midiMonitor"),
     clearMonitorBtn: document.getElementById("clearMonitorBtn"),
@@ -375,20 +407,16 @@
     send([0xb0 | channel, number, Math.max(0, Math.min(127, Math.round(value)))]);
   }
 
-  function radioValue(name) {
-    const checked = document.querySelector(`input[name="${name}"]:checked`);
-    return checked ? Number(checked.value) : 0;
-  }
-
-  const octaveToCC = (o) => (o < 0 ? 0 : o > 0 ? 127 : 64);
+  // Synth state that isn't a slider.
+  let instrument = 0;
+  let registerMask = ACCORDION_DEFAULTS.register;
 
   // Pushes every setting, so a freshly plugged (or rebooted) Teensy
   // matches what the page shows.
   function sendAllControls() {
     sendCC(CC.layout, griff === "b" ? 127 : 0);
-    sendCC(CC.wave1, radioValue("wave1") * 32);
-    sendCC(CC.wave2, radioValue("wave2") * 32);
-    sendCC(CC.voice2Octave, octaveToCC(radioValue("octave2")));
+    sendCC(CC.instrument, instrument * 32);
+    sendCC(CC.register, registerMask);
     els.sliders.forEach((slider) => sendCC(Number(slider.dataset.cc), Number(slider.value)));
   }
 
@@ -722,17 +750,12 @@
   const FORMATS = {
     percent: (v) => `${Math.round((v / 127) * 100)}%`,
     attack: (v) => `${Math.round(Math.pow(v / 127, 2) * 2000)} ms`,
-    decay: (v) => `${Math.round(Math.pow(v / 127, 2) * 2000)} ms`,
     release: (v) => `${Math.round(Math.pow(v / 127, 2) * 3000)} ms`,
     cutoff: (v) => {
       const hz = 40 * Math.pow(2, (v / 127) * 9);
       return hz >= 1000 ? `${(hz / 1000).toFixed(1)} kHz` : `${Math.round(hz)} Hz`;
     },
-    resonance: (v) => (0.7 + (v / 127) * 4.3).toFixed(2),
-    detune: (v) => {
-      const cents = ((v - 64) / 64) * 50;
-      return `${cents > 0 ? "+" : cents < 0 ? "−" : ""}${Math.abs(cents).toFixed(1)}¢`;
-    },
+    wetness: (v) => (v === 0 ? tr("synth.dry", "dry") : `${tr("synth.wet", "wet")} · ${v}¢`),
   };
   const sliderLabelUpdaters = new Map();
 
@@ -751,49 +774,75 @@
     update();
   });
 
-  const RADIO_CC = {
-    wave1: (v) => sendCC(CC.wave1, v * 32),
-    wave2: (v) => sendCC(CC.wave2, v * 32),
-    octave2: (v) => sendCC(CC.voice2Octave, octaveToCC(v)),
-  };
-  Object.keys(RADIO_CC).forEach((name) => {
-    document.querySelectorAll(`input[name="${name}"]`).forEach((radio) => {
-      radio.addEventListener("change", () => {
-        if (!radio.checked) return;
-        RADIO_CC[name](Number(radio.value));
-        refreshPresetState();
-      });
+  // ---- register switch ----
+  function renderRegister() {
+    els.registerDots.forEach((dot) => {
+      const on = (registerMask & Number(dot.dataset.reed)) !== 0;
+      dot.classList.toggle("is-on", on);
+      dot.setAttribute("aria-pressed", String(on));
     });
+    const { code, name } = registerNameKey(registerMask);
+    els.registerCode.textContent = code;
+    els.registerName.textContent = name ? tr(`register.${name}`, name) : "";
+    els.registerPresets.querySelectorAll("[data-mask]").forEach((btn) => {
+      btn.classList.toggle("is-active", Number(btn.dataset.mask) === registerMask);
+    });
+  }
+
+  function setRegister(mask) {
+    if (mask === 0) return; // at least one reed must sound
+    registerMask = mask;
+    sendCC(CC.register, mask);
+    renderRegister();
+    refreshPresetState();
+  }
+
+  els.registerDots.forEach((dot) => {
+    dot.addEventListener("click", () => setRegister(registerMask ^ Number(dot.dataset.reed)));
   });
 
+  NAMED_REGISTERS.forEach(({ mask, key }) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "small-btn register-preset";
+    btn.dataset.mask = String(mask);
+    btn.dataset.i18n = `register.${key}`;
+    btn.textContent = tr(`register.${key}`, key);
+    btn.addEventListener("click", () => setRegister(mask));
+    els.registerPresets.appendChild(btn);
+  });
+
+  // ---- presets ----
   function currentSettings() {
-    const settings = { wave1: radioValue("wave1"), wave2: radioValue("wave2"), octave2: radioValue("octave2") };
+    const settings = { instrument, register: registerMask };
     els.sliders.forEach((slider) => {
       settings[slider.id] = Number(slider.value);
     });
     return settings;
   }
 
-  // Shows "modified" once any control differs from the chosen preset.
+  // Shows "modified" once any control that matters for the chosen
+  // instrument differs from its preset.
   function refreshPresetState() {
     const preset = PRESETS[activePreset];
     const now = currentSettings();
-    const modified = Object.keys(preset).some((k) => preset[k] !== now[k]);
+    const modified = Object.keys(preset).some((k) => {
+      if (preset.instrument !== 0 && ACCORDION_ONLY.includes(k)) return false;
+      return preset[k] !== now[k];
+    });
     els.presetModified.hidden = !modified;
   }
 
   function applyPreset(id, { send: doSend = true } = {}) {
     const preset = PRESETS[id];
     if (!preset) return;
+    if (doSend && preset.instrument !== instrument) releaseEverything();
     activePreset = id;
     save(STORAGE.preset, id);
+    instrument = preset.instrument;
+    registerMask = preset.register;
     els.presetInputs.forEach((radio) => {
       radio.checked = radio.value === id;
-    });
-    ["wave1", "wave2", "octave2"].forEach((name) => {
-      document.querySelectorAll(`input[name="${name}"]`).forEach((radio) => {
-        radio.checked = Number(radio.value) === preset[name];
-      });
     });
     els.sliders.forEach((slider) => {
       if (slider.id in preset) {
@@ -801,6 +850,8 @@
         sliderLabelUpdaters.get(slider.id)();
       }
     });
+    els.accordionControls.hidden = instrument !== 0;
+    renderRegister();
     refreshPresetState();
     if (doSend) sendAllControls();
   }
@@ -811,6 +862,11 @@
     });
   });
   els.resetBtn.addEventListener("click", () => applyPreset(DEFAULT_PRESET));
+
+  window.addEventListener("bc:langchange", () => {
+    renderRegister();
+    sliderLabelUpdaters.forEach((update) => update());
+  });
 
   /* ============================================================
      OTHER CONTROLS
