@@ -70,7 +70,11 @@ that doesn't belong there.
   ~6 cents wet (CC 27). Piano/bass/guitar = Teensy Audio Library wavetable
   samples (`piano`, `nylonstrgtr`; the library has NO bass sample — bass
   is the guitar 2 octaves down; a real one would need converting from a
-  SoundFont). Light reverb (CC 91). The user found the earlier
+  SoundFont). "Synth" instrument (CC 25 = 4·16) reuses 3 of each voice's
+  oscillators: wave (sine/triangle/BANDLIMIT saw/square), level, detune,
+  octave + ADSR. Light reverb (CC 91). Tone filter is a **biquad** —
+  `AudioFilterStateVariable` near its max frequency went unstable and
+  turned piano/guitar into full-scale noise; don't bring the SVF back. The user found the earlier
   saw/square synth "metallic" (aliasing) — don't go back to raw
   WAVEFORM_SAWTOOTH/SQUARE. `PRESETS` in script.js; custom saved presets
   are a planned follow-up. To measure CPU on the real Teensy, build a
@@ -97,10 +101,8 @@ that doesn't belong there.
   - The firmware's `#error` on missing `MIDI_INTERFACE` exists because the
     user hit "'usbMIDI' was not declared" with USB Type left on Serial. The
   MIDI monitor already logs what the Teensy sends back (hook for the
-  user's planned custom hardware interface). Firmware has never been
-  compiled in this environment (no Arduino/Teensyduino toolchain here);
-  the page was verified with a fake `requestMIDIAccess` that records
-  sent bytes.
+  user's planned custom hardware interface). See **eTutti handoff** below
+  for the current state, verification recipes and next steps.
 - `binfacevsfarage/` — standalone browser game, deliberately **not**
   linked from the studio nav, blocked in `robots.txt`, and absent from
   `sitemap.xml`. Leave it that way unless told otherwise.
@@ -195,7 +197,79 @@ despite the file on disk being correct, suspect the browser's own cache
 first (try a brand new tab, or bump the preview port) rather than the
 code.
 
-## Recent history (this session: PRs #47–#53, in order)
+## eTutti handoff (session of Oct 2026, PRs #63–#74) — start here to continue
+
+**State at hand-off** (everything merged to `main`):
+- **Page** `/etutti/` (unlisted, noindex) works with the user's real
+  Teensy. It has:
+  - model picker (eTuttino / eTutti "in development")
+  - round C-griff / B-griff buttons, row 1 at the bottom
+  - optional computer keyboard
+  - instruments: classic accordion (default, dry MM), jazz accordion
+    (~6¢ wet), piano, bass, guitar (nylon), synth (3 oscillators)
+  - round accordion register switch with named registers
+  - Reset to default, "modified" marker
+  - MIDI monitor, en/pt/es strings
+- **Firmware** `etutti/firmware/etutti_synth/` compiles clean (teensy40,
+  usb=midi) and is flashed on the user's Teensy 4.0 + Audio Board Rev D.
+  The user confirmed accordion/bass work and asked for piano/guitar to be
+  fixed (done in #74: SVF → biquad, sample gain up) and the synth to come
+  back (done in #74).
+- **PCB** `etutti/hardware/`: routed, DRC 0/0/0, firmware cross-check
+  34/34. Ready-to-upload Gerbers are in `fab/` (PCB + FR4 plate +
+  optional BOM/CPL). As far as we know it has **not been ordered** yet.
+  If the layout changes, re-run `generate.py`, then `build_pcb.py`.
+
+**Next steps the user mentioned** (not done):
+- Tune the instruments by ear. The user said the other sounds "can be
+  improved later". Ask what sounds artificial, instrument by instrument.
+- A real acoustic-bass sample, converted from a SoundFont with PJRC's
+  SoundFont decoder and dropped in like `piano_samples.*`.
+- Saved custom presets. `PRESETS` in `etutti/script.js` is already one
+  flat shape per preset; Web storage or a downloadable JSON are the
+  obvious routes.
+- A custom hardware interface (knobs/buttons) talking back over MIDI.
+  The monitor and `handleIncoming` are the hook.
+- The full eTutti model (bigger keyboard), only a render for now.
+- The user may want round MX keycaps (noted in the hardware BOM).
+
+**How to verify, without asking the user to test:**
+- Firmware: `arduino-cli compile --fqbn teensy:avr:teensy40:usb=midi
+  etutti/firmware/etutti_synth`, then
+  `arduino-cli upload -p usb:80001/3/0/3 --fqbn ...` (check
+  `arduino-cli board list` for the port). The user has OK'd flashing
+  their connected Teensy. After a flash, confirm it enumerates as
+  `VID_16C0&PID_0485` (MIDI) and stays stable (PowerShell `Get-PnpDevice`).
+- On-device measurements: copy the sketch to the scratchpad, add
+  `AudioAnalyzePeak` / `AudioProcessorUsageMax()` prints and a
+  self-playing loop that cycles every ~10 s, then build with
+  `usb=serialmidi` and read `COM3` with
+  `System.IO.Ports.SerialPort` (arduino-cli monitor printed nothing).
+  Reflash the production `usb=midi` build afterwards.
+- Page: the in-app browser pane hung repeatedly in this session. Instead,
+  use headless Edge (`msedge --headless --screenshot --timeout=3000
+  --window-size=800,700`) on a temp copy of `etutti/index.html` with:
+  - `/shared/` → `../shared/` paths
+  - the gtag script removed (it blocks `load`)
+  - a fake `navigator.requestMIDIAccess` that records sent bytes and
+    prints results into a full-screen `<pre>`
+  - Retry a few times: headless screenshots fail intermittently, and
+    window heights over ~1100 px tend to fail.
+- PCB: `"C:/Program Files/KiCad/10.0/bin/python.exe"
+  etutti/hardware/build_pcb.py`. It exits non-zero on DRC problems or a
+  firmware mismatch. Running it rewrites `fab/`/`kicad/` with new
+  timestamps even when nothing changed; `git checkout -- etutti/hardware`
+  if the layout didn't change.
+
+**Gotchas learned:**
+- Holding the Teensy's button ~15 s restores the factory blink sketch
+  (orange LED blinking, enumerates as RawHID `PID_0486`). Just reflash.
+- `tone` is an Arduino core function: don't name an audio object `tone`.
+- Windows caches the USB device name ("Teensy MIDI" instead of "eTutti").
+  Harmless; the page matches both.
+- The user writes in Portuguese (pt-BR). Reply in Portuguese.
+
+## Recent history (earlier session: PRs #47–#53, in order)
 
 1. **#47** — reverted the home page's Tuner card icon back to needle-only
    (removed a since-unwanted strobe/meter thumbnail trio).
@@ -322,6 +396,13 @@ code.
   and gets clamped shorter. Not reported as a problem by any user yet —
   flagging it here since it's an inherent, understood limitation rather
   than an oversight, in case very-low-note leakage is ever reported.
+
+### Later sessions (summary)
+
+- **#63–#67** — Luthier Tuning (`/luthier/`): spectrogram, home card,
+  og-image re-render, site-title link on every page, peak-hold modes
+  (Temporary default).
+- **#68–#74** — eTutti / eTuttino (see the handoff above).
 
 ## Workflow conventions observed this session
 

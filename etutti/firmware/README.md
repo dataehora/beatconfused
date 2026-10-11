@@ -58,9 +58,20 @@ recognises either name.
   `nylonstrgtr_samples.*`) comes from the Teensy Audio Library's
   `MidiSynthLarge` example. More instruments can be converted from any
   SoundFont with PJRC's SoundFont decoder.
-- Both engines feed a tone filter and a light room reverb (CC 91).
-- Measured on a Teensy 4.0 with the worst case (8 notes × 4 reeds plus
-  reverb): about 9 % CPU and 32 audio blocks.
+- **Synth**: a subtractive synth that reuses three of each voice's
+  oscillators. Each oscillator has a waveform (sine, triangle, and
+  band-limited saw/square), a level, a detune and an octave. A full ADSR
+  envelope follows.
+- All engines feed a tone filter and a light room reverb (CC 91). The tone
+  filter is a **biquad**. The state-variable filter used before blew up
+  near its top frequency: with the tone wide open, piano and guitar came
+  out as full-scale noise (measured on the Teensy: input 0.02, output
+  pinned at 1.0).
+- Measured on a Teensy 4.0:
+  - accordion worst case (8 notes × 4 reeds + reverb): about 9–16 % CPU
+  - synth (8 notes × 3 band-limited oscillators): about 17.5 %
+  - samples: about 4–5 %
+  - The peak was 32 audio blocks; `AudioMemory(60)`.
 
 ## MIDI implementation
 
@@ -71,13 +82,19 @@ The synth listens on every channel.
 | Note On / Off | play / release; velocity sets loudness |
 | CC 7 | volume |
 | CC 24 | key layout of the physical keys: 0–63 C-griff, 64–127 B-griff |
-| CC 25 | instrument: 0–31 accordion, 32–63 piano, 64–95 bass, 96–127 guitar |
+| CC 20–22 | synth oscillator 1–3 waveform: 0–31 sine, 32–63 triangle, 64–95 saw, 96–127 square |
+| CC 25 | instrument = value / 16: 0 accordion, 1 piano, 2 bass, 3 guitar, 4 synth |
 | CC 26 | accordion register, bit mask: 1 = 16', 2 = 8' M1 (open), 4 = 8' M2 (cassotto), 8 = 4' |
 | CC 27 | reed tuning: M2 detune in cents, 0 = dry … 30 = very wet |
-| CC 72 | release, accordion (0–3000 ms) |
-| CC 73 | attack, accordion (0–2000 ms) |
-| CC 74 | tone: low-pass 40 Hz – ~17 kHz |
+| CC 28–30 | synth oscillator 1–3 level |
+| CC 72 | release, accordion + synth (0–3000 ms) |
+| CC 73 | attack, accordion + synth (0–2000 ms) |
+| CC 74 | tone: low-pass 40 Hz – 16 kHz (biquad) |
+| CC 75 | decay, synth (0–2000 ms) |
+| CC 79 | sustain, synth |
+| CC 85–87 | synth oscillator 1–3 detune: 64 = in tune, 0 / 127 = −50 / +50 cents |
 | CC 91 | ambience (room reverb) |
+| CC 102–104 | synth oscillator 1–3 octave: 0–42 down, 43–84 unison, 85–127 up |
 | CC 120 | all sound off |
 | CC 123 | all notes off |
 

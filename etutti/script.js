@@ -33,6 +33,10 @@
     attack: 73,
     tone: 74,
     ambience: 91,
+    decay: 75,
+    sustain: 79,
+    synthWave: [20, 21, 22],
+    synthOctave: [102, 103, 104],
     allSoundOff: 120,
     allNotesOff: 123,
   };
@@ -112,16 +116,38 @@
      Custom presets will slot into this same shape later.
      ------------------------------------------------------------ */
   const DEFAULT_PRESET = "accordion";
+  const SYNTH_INSTRUMENT = 4;
   const ACCORDION_DEFAULTS = { register: 6, ccReedTuning: 0, ccAttack: 14, ccRelease: 21 };
-  const PRESETS = {
-    accordion: { instrument: 0, ...ACCORDION_DEFAULTS, ccVolume: 90, ccTone: 110, ccAmbience: 25 },
-    accordionJazz: { instrument: 0, ...ACCORDION_DEFAULTS, ccReedTuning: 6, ccVolume: 90, ccTone: 100, ccAmbience: 32 },
-    piano: { instrument: 1, ...ACCORDION_DEFAULTS, ccVolume: 100, ccTone: 127, ccAmbience: 30 },
-    bass: { instrument: 2, ...ACCORDION_DEFAULTS, ccVolume: 105, ccTone: 100, ccAmbience: 15 },
-    guitar: { instrument: 3, ...ACCORDION_DEFAULTS, ccVolume: 100, ccTone: 122, ccAmbience: 25 },
+  // Synth: three oscillators (wave 0 sine, 1 triangle, 2 saw, 3 square —
+  // the firmware uses band-limited saw/square), level, detune (64 = in
+  // tune), octave (-1 / 0 / +1), plus decay/sustain for the ADSR.
+  const SYNTH_DEFAULTS = {
+    oscWave1: 2, ccOsc1Level: 100, ccOsc1Detune: 64, oscOct1: 0,
+    oscWave2: 2, ccOsc2Level: 80, ccOsc2Detune: 73, oscOct2: 0,
+    oscWave3: 3, ccOsc3Level: 50, ccOsc3Detune: 64, oscOct3: -1,
+    ccDecay: 49, ccSustain: 89,
   };
-  // Settings that only mean something for the accordion engine.
-  const ACCORDION_ONLY = ["register", "ccReedTuning", "ccAttack", "ccRelease"];
+  const BASE = { ...ACCORDION_DEFAULTS, ...SYNTH_DEFAULTS };
+  const PRESETS = {
+    accordion: { ...BASE, instrument: 0, ccVolume: 90, ccTone: 110, ccAmbience: 25 },
+    accordionJazz: { ...BASE, instrument: 0, ccReedTuning: 6, ccVolume: 90, ccTone: 100, ccAmbience: 32 },
+    piano: { ...BASE, instrument: 1, ccVolume: 100, ccTone: 127, ccAmbience: 30 },
+    bass: { ...BASE, instrument: 2, ccVolume: 105, ccTone: 100, ccAmbience: 15 },
+    guitar: { ...BASE, instrument: 3, ccVolume: 100, ccTone: 122, ccAmbience: 25 },
+    synth: { ...BASE, instrument: SYNTH_INSTRUMENT, ccAttack: 6, ccRelease: 33, ccVolume: 90, ccTone: 88, ccAmbience: 25 },
+  };
+  // Which settings matter for which engine (for the "modified" marker and
+  // for showing the right panels).
+  const ACCORDION_ONLY = ["register", "ccReedTuning"];
+  const SYNTH_ONLY = Object.keys(SYNTH_DEFAULTS);
+  const ENVELOPE = ["ccAttack", "ccRelease"];
+  const SYNTH_RADIOS = ["oscWave1", "oscWave2", "oscWave3", "oscOct1", "oscOct2", "oscOct3"];
+  function settingMatters(key, inst) {
+    if (ACCORDION_ONLY.includes(key)) return inst === 0;
+    if (SYNTH_ONLY.includes(key)) return inst === SYNTH_INSTRUMENT;
+    if (ENVELOPE.includes(key)) return inst === 0 || inst === SYNTH_INSTRUMENT;
+    return true;
+  }
 
   const STORAGE = {
     griff: "etutti.griff",
@@ -179,6 +205,9 @@
     registerCode: document.getElementById("registerCode"),
     registerName: document.getElementById("registerName"),
     registerPresets: document.getElementById("registerPresets"),
+    synthControls: document.getElementById("synthControls"),
+    envelopeControls: document.getElementById("envelopeControls"),
+    synthEnvelopeOnly: document.querySelectorAll(".synth-envelope-only"),
     sliders: document.querySelectorAll("[data-cc]"),
     monitor: document.getElementById("midiMonitor"),
     clearMonitorBtn: document.getElementById("clearMonitorBtn"),
@@ -407,7 +436,14 @@
     send([0xb0 | channel, number, Math.max(0, Math.min(127, Math.round(value)))]);
   }
 
-  // Synth state that isn't a slider.
+  function radioValue(name) {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    return checked ? Number(checked.value) : 0;
+  }
+
+  const octaveToCC = (o) => (o < 0 ? 0 : o > 0 ? 127 : 64);
+
+  // Synth state that isn't a slider or radio.
   let instrument = 0;
   let registerMask = ACCORDION_DEFAULTS.register;
 
@@ -415,7 +451,11 @@
   // matches what the page shows.
   function sendAllControls() {
     sendCC(CC.layout, griff === "b" ? 127 : 0);
-    sendCC(CC.instrument, instrument * 32);
+    sendCC(CC.instrument, instrument * 16);
+    for (let o = 0; o < 3; o += 1) {
+      sendCC(CC.synthWave[o], radioValue(`oscWave${o + 1}`) * 32);
+      sendCC(CC.synthOctave[o], octaveToCC(radioValue(`oscOct${o + 1}`)));
+    }
     sendCC(CC.register, registerMask);
     els.sliders.forEach((slider) => sendCC(Number(slider.dataset.cc), Number(slider.value)));
   }
@@ -756,6 +796,11 @@
       return hz >= 1000 ? `${(hz / 1000).toFixed(1)} kHz` : `${Math.round(hz)} Hz`;
     },
     wetness: (v) => (v === 0 ? tr("synth.dry", "dry") : `${tr("synth.wet", "wet")} · ${v}¢`),
+    decay: (v) => `${Math.round(Math.pow(v / 127, 2) * 2000)} ms`,
+    detune: (v) => {
+      const cents = ((v - 64) / 64) * 50;
+      return `${cents > 0 ? "+" : cents < 0 ? "−" : ""}${Math.abs(cents).toFixed(1)}¢`;
+    },
   };
   const sliderLabelUpdaters = new Map();
 
@@ -812,9 +857,30 @@
     els.registerPresets.appendChild(btn);
   });
 
+  // ---- synth oscillators ----
+  for (let o = 0; o < 3; o += 1) {
+    document.querySelectorAll(`input[name="oscWave${o + 1}"]`).forEach((radio) => {
+      radio.addEventListener("change", () => {
+        if (!radio.checked) return;
+        sendCC(CC.synthWave[o], Number(radio.value) * 32);
+        refreshPresetState();
+      });
+    });
+    document.querySelectorAll(`input[name="oscOct${o + 1}"]`).forEach((radio) => {
+      radio.addEventListener("change", () => {
+        if (!radio.checked) return;
+        sendCC(CC.synthOctave[o], octaveToCC(Number(radio.value)));
+        refreshPresetState();
+      });
+    });
+  }
+
   // ---- presets ----
   function currentSettings() {
     const settings = { instrument, register: registerMask };
+    SYNTH_RADIOS.forEach((name) => {
+      settings[name] = radioValue(name);
+    });
     els.sliders.forEach((slider) => {
       settings[slider.id] = Number(slider.value);
     });
@@ -826,10 +892,7 @@
   function refreshPresetState() {
     const preset = PRESETS[activePreset];
     const now = currentSettings();
-    const modified = Object.keys(preset).some((k) => {
-      if (preset.instrument !== 0 && ACCORDION_ONLY.includes(k)) return false;
-      return preset[k] !== now[k];
-    });
+    const modified = Object.keys(preset).some((k) => settingMatters(k, preset.instrument) && preset[k] !== now[k]);
     els.presetModified.hidden = !modified;
   }
 
@@ -850,7 +913,18 @@
         sliderLabelUpdaters.get(slider.id)();
       }
     });
+    SYNTH_RADIOS.forEach((name) => {
+      document.querySelectorAll(`input[name="${name}"]`).forEach((radio) => {
+        radio.checked = Number(radio.value) === preset[name];
+      });
+    });
+    const isSynth = instrument === SYNTH_INSTRUMENT;
     els.accordionControls.hidden = instrument !== 0;
+    els.synthControls.hidden = !isSynth;
+    els.envelopeControls.hidden = !(instrument === 0 || isSynth);
+    els.synthEnvelopeOnly.forEach((el) => {
+      el.hidden = !isSynth;
+    });
     renderRegister();
     refreshPresetState();
     if (doSend) sendAllControls();
