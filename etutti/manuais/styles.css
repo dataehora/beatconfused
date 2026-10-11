@@ -1,0 +1,301 @@
+/* ============================================================
+   eTUTTI MANUALS — assembly (two routes) and user manual for the
+   eTuttino. Page chrome comes from shared/tuner-common.css; this file
+   holds the long-form reading layout. The text exists once per language
+   (.lang-block[data-lang]); the one matching <html lang> (set by
+   i18n/i18n.js) is shown.
+   ============================================================ */
+.lang-block {
+  display: none;
+}
+
+html[lang="en"] .lang-block[data-lang="en"],
+html[lang="pt"] .lang-block[data-lang="pt"],
+html[lang="es"] .lang-block[data-lang="es"] {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.manual-back {
+  margin: 0;
+  text-align: center;
+}
+
+.manual-back a,
+.manual a {
+  color: var(--accent-strong);
+  font-weight: 600;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.manual-intro {
+  margin: 0 auto;
+  max-width: 46rem;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+}
+
+/* ---- Table of contents: one card per manual ---- */
+.manual-toc {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.9rem;
+}
+
+.manual-toc a {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-soft);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 140ms ease, transform 140ms ease;
+}
+
+.manual-toc a:hover {
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.manual-toc .toc-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.manual-toc .toc-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #2d221b;
+}
+
+.manual-toc .toc-desc {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+/* ---- One manual / chapter ---- */
+.manual {
+  padding: 1.4rem clamp(1rem, 3vw, 2rem) 1.6rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  scroll-margin-top: 1rem;
+  min-width: 0;
+}
+
+.manual > h2 {
+  margin: 0 0 0.2rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.7rem, 3.6vw, 2.3rem);
+  line-height: 1.1;
+  color: #2d221b;
+}
+
+.manual .manual-kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.manual h3 {
+  margin: 1.6rem 0 0.4rem;
+  font-size: 1.08rem;
+  color: var(--accent-strong);
+}
+
+.manual h4 {
+  margin: 1.1rem 0 0.3rem;
+  font-size: 0.98rem;
+}
+
+.manual p,
+.manual li {
+  max-width: 50rem;
+}
+
+.manual p {
+  margin: 0.45rem 0;
+}
+
+.manual ol,
+.manual ul {
+  margin: 0.45rem 0;
+  padding-left: 1.4rem;
+}
+
+.manual li {
+  margin: 0.3rem 0;
+}
+
+.manual ol.steps > li {
+  margin: 0.65rem 0;
+  padding-left: 0.2rem;
+}
+
+.manual ol.steps > li::marker {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.manual code,
+.manual kbd {
+  padding: 0.05em 0.35em;
+  border-radius: 0.3em;
+  background: rgba(62, 45, 30, 0.08);
+  font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.88em;
+  overflow-wrap: anywhere;
+}
+
+.manual kbd {
+  border: 1px solid var(--border-strong);
+  background: var(--surface-solid);
+}
+
+/* ---- Callouts ---- */
+.callout {
+  margin: 0.8rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid var(--gold);
+  border-radius: 0.5rem;
+  background: rgba(178, 122, 55, 0.1);
+}
+
+.callout.warn {
+  border-left-color: var(--accent);
+  background: rgba(140, 59, 47, 0.08);
+}
+
+.callout.ok {
+  border-left-color: var(--in-tune);
+  background: rgba(111, 143, 82, 0.1);
+}
+
+.callout > :first-child {
+  margin-top: 0;
+}
+
+.callout > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Tables ---- */
+.table-wrap {
+  margin: 0.7rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  background: var(--surface-solid);
+}
+
+.manual table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.manual th,
+.manual td {
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.manual th {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: rgba(62, 45, 30, 0.04);
+}
+
+.manual tr:last-child td {
+  border-bottom: none;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tag-fab {
+  background: rgba(111, 143, 82, 0.18);
+  color: var(--in-tune-strong);
+}
+
+.tag-home {
+  background: rgba(140, 59, 47, 0.12);
+  color: var(--accent-strong);
+}
+
+.tag-none {
+  background: rgba(62, 45, 30, 0.08);
+  color: var(--ink-soft);
+}
+
+/* ---- Figures ---- */
+.manual figure {
+  margin: 1rem 0;
+}
+
+.manual figure img,
+.manual figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 46rem;
+  border-radius: 0.6rem;
+}
+
+.manual figure img {
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.manual figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.figure-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.9rem;
+}
+
+.downloads {
+  display: grid;
+  gap: 0.35rem;
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .manual table {
+    font-size: 0.82rem;
+  }
+
+  .manual th,
+  .manual td {
+    padding: 0.45rem 0.5rem;
+  }
+}
