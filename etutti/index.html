@@ -27,7 +27,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261014" />
+  <link rel="stylesheet" href="styles.css?v=20261015" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
 </head>
@@ -160,6 +160,7 @@
             <label class="etutti-pill"><input type="radio" name="preset" value="piano" /><span data-i18n="preset.piano">Piano</span></label>
             <label class="etutti-pill"><input type="radio" name="preset" value="bass" /><span data-i18n="preset.bass">Bass</span></label>
             <label class="etutti-pill"><input type="radio" name="preset" value="guitar" /><span data-i18n="preset.guitar">Guitar</span></label>
+            <label class="etutti-pill"><input type="radio" name="preset" value="synth" /><span data-i18n="preset.synth">Synth</span></label>
           </div>
           <p class="hint" data-i18n="synth.presetHint">Accordions are synthesised reed by reed. Piano, bass and guitar play recorded samples (the bass uses the guitar's low strings two octaves down).</p>
         </div>
@@ -190,9 +191,68 @@
               <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.reedTuning">Reed tuning</span><span id="ccReedTuningValue" class="etutti-slider-value"></span></span>
               <input id="ccReedTuning" type="range" min="0" max="30" step="1" value="0" data-cc="27" data-format="wetness" class="panel-slider" />
             </label>
+          </div>
+        </div>
+
+        <div id="synthControls" class="etutti-synthosc" hidden>
+          <p class="hint" data-i18n="synth.synthHint">Three oscillators per note. Saw and square are band-limited so they stay smooth instead of metallic.</p>
+          <div class="synth-osc-grid">
+            <div class="synth-osc">
+              <span class="etutti-group-label"><span data-i18n="synth.oscillator">Oscillator</span> 1</span>
+              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 1 waveform"><label class="etutti-pill"><input type="radio" name="oscWave1" value="0" /><span data-i18n="synth.sine">Sine</span></label><label class="etutti-pill"><input type="radio" name="oscWave1" value="1" /><span data-i18n="synth.triangle">Triangle</span></label><label class="etutti-pill"><input type="radio" name="oscWave1" value="2" checked /><span data-i18n="synth.saw">Saw</span></label><label class="etutti-pill"><input type="radio" name="oscWave1" value="3" /><span data-i18n="synth.square">Square</span></label></div>
+              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 1 octave"><label class="etutti-pill"><input type="radio" name="oscOct1" value="-1" /><span data-i18n="synth.octaveDown">−1 oct</span></label><label class="etutti-pill"><input type="radio" name="oscOct1" value="0" checked /><span data-i18n="synth.unison">Unison</span></label><label class="etutti-pill"><input type="radio" name="oscOct1" value="1" /><span data-i18n="synth.octaveUp">+1 oct</span></label></div>
+              <label class="etutti-slider">
+                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.level">Level</span><span id="ccOsc1LevelValue" class="etutti-slider-value"></span></span>
+                <input id="ccOsc1Level" type="range" min="0" max="127" value="100" data-cc="28" data-format="percent" class="panel-slider" />
+              </label>
+              <label class="etutti-slider">
+                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.detune">Detune</span><span id="ccOsc1DetuneValue" class="etutti-slider-value"></span></span>
+                <input id="ccOsc1Detune" type="range" min="0" max="127" value="64" data-cc="85" data-format="detune" class="panel-slider" />
+              </label>
+            </div>
+            <div class="synth-osc">
+              <span class="etutti-group-label"><span data-i18n="synth.oscillator">Oscillator</span> 2</span>
+              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 2 waveform"><label class="etutti-pill"><input type="radio" name="oscWave2" value="0" /><span data-i18n="synth.sine">Sine</span></label><label class="etutti-pill"><input type="radio" name="oscWave2" value="1" /><span data-i18n="synth.triangle">Triangle</span></label><label class="etutti-pill"><input type="radio" name="oscWave2" value="2" checked /><span data-i18n="synth.saw">Saw</span></label><label class="etutti-pill"><input type="radio" name="oscWave2" value="3" /><span data-i18n="synth.square">Square</span></label></div>
+              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 2 octave"><label class="etutti-pill"><input type="radio" name="oscOct2" value="-1" /><span data-i18n="synth.octaveDown">−1 oct</span></label><label class="etutti-pill"><input type="radio" name="oscOct2" value="0" checked /><span data-i18n="synth.unison">Unison</span></label><label class="etutti-pill"><input type="radio" name="oscOct2" value="1" /><span data-i18n="synth.octaveUp">+1 oct</span></label></div>
+              <label class="etutti-slider">
+                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.level">Level</span><span id="ccOsc2LevelValue" class="etutti-slider-value"></span></span>
+                <input id="ccOsc2Level" type="range" min="0" max="127" value="80" data-cc="29" data-format="percent" class="panel-slider" />
+              </label>
+              <label class="etutti-slider">
+                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.detune">Detune</span><span id="ccOsc2DetuneValue" class="etutti-slider-value"></span></span>
+                <input id="ccOsc2Detune" type="range" min="0" max="127" value="73" data-cc="86" data-format="detune" class="panel-slider" />
+              </label>
+            </div>
+            <div class="synth-osc">
+              <span class="etutti-group-label"><span data-i18n="synth.oscillator">Oscillator</span> 3</span>
+              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 3 waveform"><label class="etutti-pill"><input type="radio" name="oscWave3" value="0" /><span data-i18n="synth.sine">Sine</span></label><label class="etutti-pill"><input type="radio" name="oscWave3" value="1" /><span data-i18n="synth.triangle">Triangle</span></label><label class="etutti-pill"><input type="radio" name="oscWave3" value="2" /><span data-i18n="synth.saw">Saw</span></label><label class="etutti-pill"><input type="radio" name="oscWave3" value="3" checked /><span data-i18n="synth.square">Square</span></label></div>
+              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 3 octave"><label class="etutti-pill"><input type="radio" name="oscOct3" value="-1" checked /><span data-i18n="synth.octaveDown">−1 oct</span></label><label class="etutti-pill"><input type="radio" name="oscOct3" value="0" /><span data-i18n="synth.unison">Unison</span></label><label class="etutti-pill"><input type="radio" name="oscOct3" value="1" /><span data-i18n="synth.octaveUp">+1 oct</span></label></div>
+              <label class="etutti-slider">
+                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.level">Level</span><span id="ccOsc3LevelValue" class="etutti-slider-value"></span></span>
+                <input id="ccOsc3Level" type="range" min="0" max="127" value="50" data-cc="30" data-format="percent" class="panel-slider" />
+              </label>
+              <label class="etutti-slider">
+                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.detune">Detune</span><span id="ccOsc3DetuneValue" class="etutti-slider-value"></span></span>
+                <input id="ccOsc3Detune" type="range" min="0" max="127" value="64" data-cc="87" data-format="detune" class="panel-slider" />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div id="envelopeControls" class="etutti-envelope">
+          <span class="etutti-group-label" data-i18n="synth.envelope">Envelope</span>
+          <div class="etutti-sliders">
             <label class="etutti-slider">
               <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.attack">Attack</span><span id="ccAttackValue" class="etutti-slider-value"></span></span>
               <input id="ccAttack" type="range" min="0" max="127" value="14" data-cc="73" data-format="attack" class="panel-slider" />
+            </label>
+            <label class="etutti-slider synth-envelope-only" hidden>
+              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.decay">Decay</span><span id="ccDecayValue" class="etutti-slider-value"></span></span>
+              <input id="ccDecay" type="range" min="0" max="127" value="49" data-cc="75" data-format="decay" class="panel-slider" />
+            </label>
+            <label class="etutti-slider synth-envelope-only" hidden>
+              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.sustain">Sustain</span><span id="ccSustainValue" class="etutti-slider-value"></span></span>
+              <input id="ccSustain" type="range" min="0" max="127" value="89" data-cc="79" data-format="percent" class="panel-slider" />
             </label>
             <label class="etutti-slider">
               <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.release">Release</span><span id="ccReleaseValue" class="etutti-slider-value"></span></span>
@@ -269,7 +329,7 @@
     </footer>
   </main>
 
-  <script src="script.js?v=20261014"></script>
+  <script src="script.js?v=20261015"></script>
 
   <script>
     window.BC_STRINGS = {
@@ -364,6 +424,21 @@
         "register.bassoon": "Bassoon",
         "register.harmonium": "Harmonium",
         "register.accordion": "Accordion",
+        "preset.synth": "Synth",
+        "synth.synthHint": "Three oscillators per note. Saw and square are band-limited so they stay smooth instead of metallic.",
+        "synth.oscillator": "Oscillator",
+        "synth.level": "Level",
+        "synth.detune": "Detune",
+        "synth.envelope": "Envelope",
+        "synth.sine": "Sine",
+        "synth.triangle": "Triangle",
+        "synth.saw": "Saw",
+        "synth.square": "Square",
+        "synth.octaveDown": "−1 oct",
+        "synth.unison": "Unison",
+        "synth.octaveUp": "+1 oct",
+        "synth.decay": "Decay",
+        "synth.sustain": "Sustain",
       },
       pt: {
         "meta.title": "BeatConfused | eTutti",
@@ -456,6 +531,21 @@
         "register.bassoon": "Fagote",
         "register.harmonium": "Harmônio",
         "register.accordion": "Acordeão",
+        "preset.synth": "Sintetizador",
+        "synth.synthHint": "Três osciladores por nota. Dente de serra e quadrada têm banda limitada, para soarem suaves e não metálicas.",
+        "synth.oscillator": "Oscilador",
+        "synth.level": "Nível",
+        "synth.detune": "Desafinação",
+        "synth.envelope": "Envelope",
+        "synth.sine": "Senoidal",
+        "synth.triangle": "Triangular",
+        "synth.saw": "Dente de serra",
+        "synth.square": "Quadrada",
+        "synth.octaveDown": "−1 oit",
+        "synth.unison": "Uníssono",
+        "synth.octaveUp": "+1 oit",
+        "synth.decay": "Decaimento",
+        "synth.sustain": "Sustentação",
       },
       es: {
         "meta.title": "BeatConfused | eTutti",
@@ -548,6 +638,21 @@
         "register.bassoon": "Fagot",
         "register.harmonium": "Armonio",
         "register.accordion": "Acordeón",
+        "preset.synth": "Sintetizador",
+        "synth.synthHint": "Tres osciladores por nota. Diente de sierra y cuadrada tienen banda limitada para sonar suaves y no metálicas.",
+        "synth.oscillator": "Oscilador",
+        "synth.level": "Nivel",
+        "synth.detune": "Desafinación",
+        "synth.envelope": "Envolvente",
+        "synth.sine": "Senoidal",
+        "synth.triangle": "Triangular",
+        "synth.saw": "Diente de sierra",
+        "synth.square": "Cuadrada",
+        "synth.octaveDown": "−1 oct",
+        "synth.unison": "Unísono",
+        "synth.octaveUp": "+1 oct",
+        "synth.decay": "Caída",
+        "synth.sustain": "Sostenido",
       },
     };
   </script>

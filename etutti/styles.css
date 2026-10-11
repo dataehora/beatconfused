@@ -629,3 +629,38 @@
   border-color: rgba(115, 68, 29, 0.7);
   color: #fffdf7;
 }
+
+/* ---- Synth instrument: three oscillator cards + shared envelope. ---- */
+.etutti-synthosc,
+.etutti-envelope {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.etutti-synthosc[hidden],
+.etutti-envelope[hidden],
+.synth-envelope-only[hidden] {
+  display: none;
+}
+
+.synth-osc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.8rem;
+}
+
+.synth-osc {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.etutti-synthosc .hint {
+  margin: 0;
+}

@@ -28,19 +28,32 @@
        nylon guitar, and the guitar's low strings two octaves down as an
        acoustic-bass stand-in (sample sets from the Teensy Audio Library's
        MidiSynthLarge example).
-   Both feed a tone (low-pass) filter and a light room reverb.
+     SYNTH — a classic subtractive synth reusing three of each voice's
+       oscillators: per oscillator a waveform (sine, triangle, and
+       band-limited saw / square — never the raw ones, which alias and
+       sound metallic), level, detune and octave, through a full ADSR.
+   All feed a tone (low-pass) filter and a light room reverb. The tone
+   filter is a biquad: the state-variable filter used before went unstable
+   near its top frequency and turned piano/guitar (tone wide open) into
+   full-scale noise.
 
    MIDI implementation (any channel; keep in sync with CC in etutti/script.js):
      Note On / Note Off      play / release (velocity -> loudness)
      CC 7   Volume           headphone volume
      CC 24  Key layout       0-63 C-griff, 64-127 B-griff (the physical keys)
-     CC 25  Instrument       0-31 accordion, 32-63 piano, 64-95 bass, 96-127 guitar
+     CC 20-22 Synth osc 1-3 waveform  0-31 sine, 32-63 triangle, 64-95 saw, 96-127 square
+     CC 25  Instrument       value / 16: 0 accordion, 1 piano, 2 bass, 3 guitar, 4 synth
+     CC 28-30 Synth osc 1-3 level     0 .. 100 %
      CC 26  Register         bit mask: 1 = 16', 2 = 8' M1, 4 = 8' M2, 8 = 4'
      CC 27  Reed tuning      M2 detune in cents: 0 = dry ... 30 = very wet
-     CC 72  Release          0 .. 3000 ms (accordion; quadratic curve)
-     CC 73  Attack           0 .. 2000 ms (accordion; quadratic curve)
-     CC 74  Tone             low-pass 40 Hz .. ~17 kHz (exponential)
+     CC 72  Release          0 .. 3000 ms (accordion + synth; quadratic curve)
+     CC 73  Attack           0 .. 2000 ms (accordion + synth; quadratic curve)
+     CC 74  Tone             low-pass 40 Hz .. 16 kHz (exponential)
+     CC 75  Decay            0 .. 2000 ms (synth; quadratic curve)
+     CC 79  Sustain          0 .. 100 % (synth)
+     CC 85-87 Synth osc 1-3 detune    64 = in tune, 0 / 127 = -50 / +50 cents
      CC 91  Ambience         room reverb amount
+     CC 102-104 Synth osc 1-3 octave  0-42 one down, 43-84 unison, 85-127 one up
      CC 120 All sound off    instant silence
      CC 123 All notes off    release every voice
    ============================================================ */
@@ -110,7 +123,7 @@ AudioSynthWavetable      sampler[NUM_VOICES];
 AudioMixer4              smpA, smpB;
 // Common: sum -> tone filter -> dry + reverb -> both channels.
 AudioMixer4              engines;             // accA, accB, smpA, smpB
-AudioFilterStateVariable toneFilter;
+AudioFilterBiquad        toneFilter;
 AudioEffectFreeverb      room;
 AudioMixer4              master;              // dry, reverb
 AudioOutputI2S           i2sOut;
@@ -189,11 +202,34 @@ unsigned long voiceCounter = 0;
 
 // ---- Current settings — defaults = the page's "Classic accordion"
 // preset: dry tuning, register MM (both 8' reeds). ----
-enum { INST_ACCORDION, INST_PIANO, INST_BASS, INST_GUITAR };
+enum { INST_ACCORDION, INST_PIANO, INST_BASS, INST_GUITAR, INST_SYNTH };
 int instrument = INST_ACCORDION;
 uint8_t registerMask = 0b0110;   // M1 + M2
 float wetCents = 0;
 float reedGain[NUM_REEDS] = {0.42f, 0.42f, 0.42f, 0.30f};
+
+// Synth: the first three oscillators of each voice, re-purposed. Defaults
+// = the page's "Synth" preset.
+const int SYNTH_OSCS = 3;
+const short SYNTH_WAVES[4] = { WAVEFORM_SINE, WAVEFORM_TRIANGLE, WAVEFORM_BANDLIMIT_SAWTOOTH, WAVEFORM_BANDLIMIT_SQUARE };
+struct SynthOsc {
+  short wave;
+  float level;
+  float detune;   // cents
+  int octave;
+};
+SynthOsc synthOsc[SYNTH_OSCS] = {
+  { WAVEFORM_BANDLIMIT_SAWTOOTH, 100 / 127.0f, 0.0f, 0 },
+  { WAVEFORM_BANDLIMIT_SAWTOOTH, 80 / 127.0f, 7.0f, 0 },
+  { WAVEFORM_BANDLIMIT_SQUARE, 50 / 127.0f, 0.0f, -1 },
+};
+float synthDecayMs = 300.0f;
+float synthSustain = 0.7f;
+byte attackCC = 14, releaseCC = 21;
+
+bool usesOscillators() {
+  return instrument == INST_ACCORDION || instrument == INST_SYNTH;
+}
 
 float noteToFreq(float note) {
   return 440.0f * powf(2.0f, (note - 69.0f) / 12.0f);
@@ -209,29 +245,63 @@ int sampleNote(int note) {
   return instrument == INST_BASS ? note - 24 : note;
 }
 
-void tuneReeds(int v, int note) {
+void tuneVoice(int v, int note) {
+  if (instrument == INST_SYNTH) {
+    for (int o = 0; o < SYNTH_OSCS; o++) {
+      reed[o][v].frequency(noteToFreq(note + 12.0f * synthOsc[o].octave + synthOsc[o].detune / 100.0f));
+    }
+    return;
+  }
   reed[REED_16][v].frequency(noteToFreq(note - 12));
   reed[REED_M1][v].frequency(noteToFreq(note));
   reed[REED_M2][v].frequency(noteToFreq(note + wetCents / 100.0f));
   reed[REED_4][v].frequency(noteToFreq(note + 12));
 }
 
-void applyRegister() {
+// Per-oscillator gains: the register for the accordion, the oscillator
+// levels for the synth (its 4th oscillator stays silent).
+void applyOscGains() {
   for (int v = 0; v < NUM_VOICES; v++) {
     for (int r = 0; r < NUM_REEDS; r++) {
-      reedMix[v].gain(r, (registerMask & (1 << r)) ? reedGain[r] : 0.0f);
+      float g;
+      if (instrument == INST_SYNTH) g = r < SYNTH_OSCS ? 0.45f * synthOsc[r].level : 0.0f;
+      else g = (registerMask & (1 << r)) ? reedGain[r] : 0.0f;
+      reedMix[v].gain(r, g);
     }
   }
 }
 
+void applyEnvelope() {
+  for (int v = 0; v < NUM_VOICES; v++) {
+    bellows[v].attack(quadraticMs(attackCC, 2000));
+    bellows[v].release(quadraticMs(releaseCC, 3000));
+    // A reed sounds steadily while held; the synth gets a full ADSR.
+    bellows[v].decay(instrument == INST_SYNTH ? synthDecayMs : 0.0f);
+    bellows[v].sustain(instrument == INST_SYNTH ? synthSustain : 1.0f);
+  }
+}
+
+// Switches every voice's oscillators between the reed tables and the
+// synth waveforms.
+void configureOscillators() {
+  for (int v = 0; v < NUM_VOICES; v++) {
+    for (int r = 0; r < NUM_REEDS; r++) {
+      if (instrument == INST_SYNTH && r < SYNTH_OSCS) reed[r][v].begin(synthOsc[r].wave);
+      else reed[r][v].begin(WAVEFORM_ARBITRARY);
+    }
+  }
+  applyOscGains();
+  applyEnvelope();
+}
+
 void retuneAll() {
   for (int i = 0; i < NUM_VOICES; i++) {
-    if (voices[i].lastNote >= 0) tuneReeds(i, voices[i].lastNote);
+    if (voices[i].lastNote >= 0) tuneVoice(i, voices[i].lastNote);
   }
 }
 
 bool voiceBusy(int i) {
-  return instrument == INST_ACCORDION ? bellows[i].isActive() : sampler[i].isPlaying();
+  return usesOscillators() ? bellows[i].isActive() : sampler[i].isPlaying();
 }
 
 int findVoiceForNote(int note) {
@@ -257,7 +327,7 @@ int findVoiceForNote(int note) {
 void handleNoteOff(byte channel, byte note, byte velocity) {
   for (int i = 0; i < NUM_VOICES; i++) {
     if (voices[i].note == note) {
-      if (instrument == INST_ACCORDION) bellows[i].noteOff();
+      if (usesOscillators()) bellows[i].noteOff();
       else sampler[i].stop();
       voices[i].note = -1;
     }
@@ -273,10 +343,10 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
   voices[v].note = note;
   voices[v].lastNote = note;
   voices[v].age = ++voiceCounter;
-  if (instrument == INST_ACCORDION) {
+  if (usesOscillators()) {
     float amp = 0.2f + 0.8f * (velocity / 127.0f);
     AudioNoInterrupts();
-    tuneReeds(v, note);
+    tuneVoice(v, note);
     for (int r = 0; r < NUM_REEDS; r++) reed[r][v].amplitude(amp);
     bellows[v].noteOn();
     AudioInterrupts();
@@ -309,8 +379,26 @@ void setInstrument(int inst) {
   if (inst == instrument) return;
   silenceAll();
   instrument = inst;
-  const AudioSynthWavetable::instrument_data &data = (inst == INST_PIANO) ? piano : nylonstrgtr;
-  for (int i = 0; i < NUM_VOICES; i++) sampler[i].setInstrument(data);
+  if (!usesOscillators()) {
+    const AudioSynthWavetable::instrument_data &data = (inst == INST_PIANO) ? piano : nylonstrgtr;
+    for (int i = 0; i < NUM_VOICES; i++) sampler[i].setInstrument(data);
+  }
+  configureOscillators();
+}
+
+void setTone(byte value) {
+  // 40 Hz .. 20 kHz on an exponential curve, capped at 16 kHz where the
+  // biquad is still well-behaved; Q 0.707 = no resonant peak.
+  float hz = 40.0f * powf(2.0f, 9.0f * value / 127.0f);
+  toneFilter.setLowpass(0, min(hz, 16000.0f), 0.707f);
+}
+
+void setSynthWave(int o, byte value) {
+  synthOsc[o].wave = SYNTH_WAVES[min(value / 32, 3)];
+  if (instrument != INST_SYNTH) return;
+  AudioNoInterrupts();
+  for (int v = 0; v < NUM_VOICES; v++) reed[o][v].begin(synthOsc[o].wave);
+  AudioInterrupts();
 }
 
 void setAmbience(byte value) {
@@ -327,30 +415,51 @@ void handleControlChange(byte channel, byte control, byte value) {
     case 24:
       layoutSystem = value < 64 ? 0 : 1;
       break;
+    case 20: case 21: case 22:
+      setSynthWave(control - 20, value);
+      break;
     case 25:
-      setInstrument(min(value / 32, 3));
+      setInstrument(min(value / 16, 4));
       break;
     case 26:
       registerMask = value & 0x0F;
-      applyRegister();
+      applyOscGains();
+      break;
+    case 28: case 29: case 30:
+      synthOsc[control - 28].level = value / 127.0f;
+      applyOscGains();
+      break;
+    case 85: case 86: case 87:
+      synthOsc[control - 85].detune = (value - 64) / 64.0f * 50.0f;
+      retuneAll();
+      break;
+    case 102: case 103: case 104:
+      synthOsc[control - 102].octave = value < 43 ? -1 : (value < 85 ? 0 : 1);
+      retuneAll();
+      break;
+    case 75:
+      synthDecayMs = quadraticMs(value, 2000);
+      applyEnvelope();
+      break;
+    case 79:
+      synthSustain = value / 127.0f;
+      applyEnvelope();
       break;
     case 27:
       wetCents = min((int)value, 30);
       retuneAll();
       break;
     case 72:
-      for (int i = 0; i < NUM_VOICES; i++) bellows[i].release(quadraticMs(value, 3000));
+      releaseCC = value;
+      applyEnvelope();
       break;
     case 73:
-      for (int i = 0; i < NUM_VOICES; i++) bellows[i].attack(quadraticMs(value, 2000));
+      attackCC = value;
+      applyEnvelope();
       break;
-    case 74: {
-      // 40 Hz .. 20 kHz on an exponential curve, capped where the
-      // state-variable filter stays stable (about samplerate / 2.5).
-      float hz = 40.0f * powf(2.0f, 9.0f * value / 127.0f);
-      toneFilter.frequency(min(hz, 17000.0f));
+    case 74:
+      setTone(value);
       break;
-    }
     case 91:
       setAmbience(value);
       break;
@@ -433,31 +542,28 @@ void setup() {
       reed[r][v].begin(0.0f, 440.0f, WAVEFORM_ARBITRARY);
     }
     // Bellows: a reed takes a few tens of ms to speak and to stop.
-    bellows[v].attack(quadraticMs(14, 2000));
     bellows[v].hold(0);
-    bellows[v].decay(0);
-    bellows[v].sustain(1.0f);
-    bellows[v].release(quadraticMs(21, 3000));
     sampler[v].setInstrument(piano);
     sampler[v].amplitude(1.0f);
   }
-  applyRegister();
+  configureOscillators();
 
   // Accordion voice peaks at 1.56 (all four reeds): 4 voices x 1.56 x 0.16
   // per bank, banks at 0.5 — a full chord stays under full scale.
   for (int ch = 0; ch < 4; ch++) {
     accA.gain(ch, 0.16f);
     accB.gain(ch, 0.16f);
-    smpA.gain(ch, 0.35f);
-    smpB.gain(ch, 0.35f);
+    // The wavetable samples come out ~2.5x quieter than a reed voice
+    // (measured on the Teensy), so they get more gain.
+    smpA.gain(ch, 0.8f);
+    smpB.gain(ch, 0.8f);
   }
   engines.gain(0, 0.5f);
   engines.gain(1, 0.5f);
   engines.gain(2, 0.5f);
   engines.gain(3, 0.5f);
 
-  toneFilter.frequency(40.0f * powf(2.0f, 9.0f * 110 / 127.0f));
-  toneFilter.resonance(0.7f);
+  setTone(110);
   room.roomsize(0.55f);
   room.damping(0.6f);
   setAmbience(25);
