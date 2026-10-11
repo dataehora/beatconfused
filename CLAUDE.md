@@ -50,21 +50,26 @@ that doesn't belong there.
 - `etutti/` (eTutti) — **work in progress, deliberately unlisted**: no
   home-page card, not in `sitemap.xml`, `noindex` meta (the user asked
   for no home button while it's being built). Two models: **eTuttino**
-  (the one being built — Teensy 4.0 + Audio Board Rev D, 34 **Gateron
+  (the one being built — Teensy 4.0 + Audio Board Rev D, 41 **Gateron
   magnetic (Hall-effect) keys with velocity** — see "Hall-effect keys"
-  below — in a chromatic-accordion **C-griff** layout, G3-G5, rows
-  A3.., G3.., G#3.., F#3+row1) and **eTutti** (full version, the page only
+  below — in a chromatic-accordion **C-griff** layout laid out like the
+  **Castagnari Magica K2** (PR #76): row 1 A3..D#6 (11), row 2 G3..G6
+  (13, half a key left), row 3 G#3..D6 (11), row 4 A3..C5 (6, repeats
+  the start of row 1; the user's "9 + 2 more" count didn't match their
+  note ranges — the note ranges were followed)) and **eTutti** (full version, the page only
   shows "in development"). Web MIDI (`navigator.requestMIDIAccess`) to the
   Teensy running `etutti/firmware/etutti_synth/` (8-voice synth, USB name
-  "eTutti" via `name.c`, reads the 34 Hall sensors through 3 analog
+  "eTutti" via `name.c`, reads the 41 Hall sensors through 3 analog
   multiplexers and plays/sends notes with velocity).
   **Row 1 is nearest the player (bottom), row 4 at the top** — on the
   page and on the PCB. Round on-screen buttons. C-griff / B-griff switch
   (B = mirror: rows 1 and 3 swapped; firmware gets CC 24 so the real keys
   follow). Optional computer-keyboard input (toggle, remembered in
-  localStorage), by `KeyboardEvent.code`: row 1 = Z..Comma, row 2 = A..L,
-  row 3 = W..O, row 4 = Digit2..Digit0 (the user specified it on ABNT2;
-  rows 1 and 3 have 8 keys, so they end at Comma / O). Arrows =
+  localStorage), by `KeyboardEvent.code`: row 1 = Z..Period,Slash,IntlRo
+  (ABNT2 ; and /), row 2 = A..L,Semicolon,Quote,Backslash (G6 has no
+  key), row 3 = W..P,BracketLeft,BracketRight, row 4 = Digit3..Digit8
+  (the user is on ABNT2; legends come from navigator.keyboard
+  .getLayoutMap() when available, else ABNT2 labels). Arrows =
   octave/velocity, Esc panic. Sound: accordion = additive free-reed synthesis, four reeds per
   note (16' cassotto, 8' M1 open, 8' M2 cassotto, 4' piccolo) switched by a
   round accordion-register widget (CC 26 bit mask) plus named registers;
@@ -101,9 +106,34 @@ that doesn't belong there.
     velocity = log-mapped time 12 %→45 % (1 ms = 127, 80 ms = 1). CC 9
     velocity curve, CC 14 recalibrate, CC 15 key-test stream (Poly AT on
     ch 16, data1 = key index in grid order). Full 34-key scan measured at
-    240 µs. Page: "eTuttino keys" panel (curve, Calibrate, Key test rings).
+    240 µs (41 keys: ~290 µs expected). Page: "eTuttino keys" panel (curve, Calibrate, Key test rings).
     Not yet tested with a real board — tune VEL thresholds/FAST_MS/SLOW_MS
     by feel once one exists.
+  - **Browser sound** (`etutti/websynth.js`, PR #76): "Listen in this
+    browser" switch, OFF by default every visit (the user asked that it
+    must be switched on before anything reaches the speakers). It takes
+    the same CCs as the firmware via `sendCC()` and plays the page's own
+    notes (on-screen + computer keyboard, not the Teensy's): accordion
+    reeds = same PeriodicWave spectra as `buildReedTable`, synth = 3
+    band-limited oscillators + ADSR, piano/guitar/bass = decaying-partial
+    approximations (labelled as such on the page). Verified by tapping
+    the output with an AnalyserNode in the browser pane.
+  - **Board shape (PR #76)**: 267 × 88.2 mm — only the 4 key rows tall.
+    Row 4 is short, so the Teensy + Audio Board stack sits in the free
+    back-right corner (`STACK_ZONE`), USB and headphone jack facing the
+    right edge (the jack is beside the 0-12 pin row at the USB end — read
+    off PJRC's pin diagram). The Audio Board is soldered ~3 mm above the
+    PCB on its stacking-header legs so the stack (~17 mm) stays below the
+    keycaps (~19 mm); sockets are the optional, ~6 mm taller route. The
+    plate is notched there. Muxes U51-U53 sit on the back behind row 4's
+    empty part, LDO U60 between the stack's pin rows. Routing order:
+    power buses → mux COM/SEL/power → 41 sensor outputs; on a failure
+    `build_pcb.py` re-runs itself with the failed net first
+    (`ETUTTINO_ROUTE_FIRST`), up to 8 attempts (~4 min each).
+  - `etutti/hardware/assembly3d.py` — VRML stand-ins (switches, round
+    keycaps, plate, Audio Board, Teensy; KiCad VRML unit = 2.54 mm, y up)
+    + `kicad-cli pcb render` → `etutti/manuais/img/*.jpg` (+ `-sm`
+    copies). The manual's `lightbox.js` opens the full image on click.
   - `etutti/manuais/` — assembly manuals (route A: JLCPCB PCBA, bottom
     side; route B: everything soldered at home) + user manual, one
     `.lang-block` per language (en/pt/es) shown by `html[lang]`; noindex,

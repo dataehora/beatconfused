@@ -299,3 +299,120 @@ html[lang="es"] .lang-block[data-lang="es"] {
     padding: 0.45rem 0.5rem;
   }
 }
+
+/* ---- Zoomable pictures + viewer (lightbox.js) ---- */
+a.zoomable {
+  position: relative;
+  display: block;
+  cursor: zoom-in;
+}
+
+a.zoomable::after {
+  content: "⤢";
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: rgba(34, 27, 22, 0.72);
+  color: #fffaf2;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.manual figure.wide img {
+  max-width: none;
+}
+
+.lightbox-open {
+  overflow: hidden;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  background: rgba(16, 13, 11, 0.94);
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox-stage {
+  overflow: auto;
+  display: grid;
+  place-items: center;
+  padding: 3rem 3.2rem 0.5rem;
+  min-height: 0;
+  touch-action: pan-x pan-y;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: calc(100vh - 7rem);
+  cursor: zoom-in;
+  border-radius: 0.4rem;
+  background: #fff;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.lightbox.is-zoomed .lightbox-stage {
+  display: block;
+  padding: 0;
+  cursor: grab;
+}
+
+.lightbox.is-zoomed .lightbox-img {
+  max-width: none;
+  max-height: none;
+  cursor: zoom-out;
+  border-radius: 0;
+}
+
+.lightbox-caption {
+  margin: 0;
+  padding: 0.6rem 1rem 0.9rem;
+  color: #efe7da;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.lightbox-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 1px solid rgba(255, 250, 242, 0.35);
+  border-radius: 50%;
+  background: rgba(34, 27, 22, 0.7);
+  color: #fffaf2;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.lightbox-close {
+  top: 0.6rem;
+  right: 0.6rem;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-prev {
+  left: 0.5rem;
+}
+
+.lightbox-next {
+  right: 0.5rem;
+}

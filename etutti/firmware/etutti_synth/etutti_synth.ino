@@ -3,10 +3,10 @@
 
    Hardware: Teensy 4.0 + PJRC Audio Adaptor Board Rev D (SGTL5000), on
    the eTuttino PCB (etutti/hardware/). Sound comes out of the Audio
-   Board's headphone jack and line out. The 34 keys are Gateron magnetic
+   Board's headphone jack and line out. The 41 keys are Gateron magnetic
    (Hall-effect) switches: under each one a DRV5056 sensor gives a voltage
    that rises as the key's magnet comes down. Three CD74HC4067
-   multiplexers (address on pins 0-3) put the 34 sensors on three ADC pins
+   multiplexers (address on pins 0-3) put the 41 sensors on three ADC pins
    (14, 15, 16), so the firmware knows how far down every key is and, from
    how fast it went down, the note's velocity. Every key plays the internal
    sound engine AND is sent over USB MIDI, so the device works standalone
@@ -64,7 +64,7 @@
      CC 123 All notes off    release every voice
    Sent back: the keys' notes (channel 1) and, in key test mode, each key's
    position as Polyphonic Aftertouch on channel 16: data 1 = key index
-   (0-33, row by row from row 1, as in etutti/hardware/build/
+   (0-40, row by row from row 1, as in etutti/hardware/build/
    etuttino_keys.csv), data 2 = 0 (up) .. 127 (bottomed out).
    ============================================================ */
 #include <Audio.h>
@@ -85,7 +85,7 @@
 const int NUM_VOICES = 8;
 
 // ---- eTuttino keys (see etutti/hardware/README.md) ----
-// The notes sit on a grid of 4 rows x 9 columns (row r = accordion row
+// The notes sit on a grid of 4 rows x 13 columns (row r = accordion row
 // r+1; row 1 is the one nearest the player). KEY_INPUT says where each
 // key's sensor is wired: multiplexer * 16 + channel, -1 = no key there.
 // It comes from etutti/hardware/generate.py, and build_pcb.py checks the
@@ -93,28 +93,29 @@ const int NUM_VOICES = 8;
 // Rev D (7, 8, 18-21, 23) and of its SD card (10-13); 15 is only used by
 // the Audio Board's optional volume pot, which the eTuttino doesn't fit.
 const int LAYOUT_ROWS = 4;
-const int LAYOUT_COLS = 9;
+const int LAYOUT_COLS = 13;
 const int MUX_COUNT = 3;
 const uint8_t MUX_SEL_PINS[4] = {0, 1, 2, 3};          // S0..S3, shared
 const uint8_t MUX_COM_PINS[MUX_COUNT] = {14, 15, 16};  // A0, A1, A2
 const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
-  { -1,   3,  13,  17,  21,  29,  33,  41,  45},
-  {  1,   5,  15,  19,  27,  31,  35,  43,  47},
-  { -1,   2,  12,  16,  20,  28,  32,  40,  44},
-  {  0,   4,  14,  18,  26,  30,  34,  42,  46},
+  { -1,   3,   7,  14,  18,  22,  28,  31,  34,  37,  42,  45,  -1},
+  {  0,   4,  11,  15,  19,  23,  29,  32,  35,  38,  43,  46,  47},
+  { -1,   2,   6,  13,  17,  21,  27,  30,  33,  36,  41,  44,  -1},
+  { -1,   1,   5,  12,  16,  20,  26,  -1,  -1,  -1,  -1,  -1,  -1},
 };
 
 // Chromatic button accordion layouts. Along a row each key is a minor
-// third (+3) above the previous one; rows 1 and 3 have 8 keys starting at
-// column 1, rows 2 and 4 have 9 starting at column 0 (they sit half a key
-// further left). Row 4 repeats row 1 with one more key in front.
+// third (+3) above the previous one. Laid out like the Castagnari Magica
+// K2: rows 1 and 3 have 11 keys starting at column 1 (A3 .. D#6, G#3 ..
+// D6), row 2 has 13 starting at column 0, half a key further left (G3 ..
+// G6), and row 4 repeats the start of row 1 (A3 .. C5, 6 keys).
 // B-griff is the mirror image of C-griff: rows 1 and 3 swap places, so a
 // diagonal step goes the other way. Keep in sync with etutti/script.js.
 const int8_t FIRST_NOTE[2][LAYOUT_ROWS] = {
-  {57, 55, 56, 54},   // C-griff: A3, G3, G#3, F#3
-  {56, 55, 57, 53},   // B-griff: G#3, G3, A3, F3
+  {57, 55, 56, 57},   // C-griff: A3, G3, G#3, A3
+  {56, 55, 57, 56},   // B-griff: G#3, G3, A3, G#3
 };
-const uint8_t FIRST_COL[LAYOUT_ROWS] = {1, 0, 1, 0};
+const uint8_t FIRST_COL[LAYOUT_ROWS] = {1, 0, 1, 1};
 int layoutSystem = 0;   // 0 = C-griff, 1 = B-griff
 
 int noteAt(int r, int c) {
@@ -129,7 +130,7 @@ int noteAt(int r, int c) {
 // zero), scaled between that key's reading at rest and at the bottom. The
 // rest reading is measured at start-up and then follows slow drift; the
 // bottom is learnt from the deepest press seen and kept in EEPROM.
-const int MAX_KEYS = 34;
+const int MAX_KEYS = 41;
 const float ADC_PER_VOLT = 4095.0f / 3.3f;
 const float SENSOR_ZERO = 0.6f * ADC_PER_VOLT;   // DRV5056 output at 0 mT
 const int MIN_SPAN = 120;          // ADC counts: the least a key is assumed to swing
@@ -140,7 +141,7 @@ const float NOTE_OFF_AT = 0.30f;   // note off (hysteresis against chatter)
 const float FAST_MS = 1.0f;        // VEL_START -> NOTE_ON_AT (~1.4 mm) time for velocity 127
 const float SLOW_MS = 80.0f;       // ... and for velocity 1
 const uint8_t FIXED_VELOCITY = 100;
-const uint32_t EEPROM_MAGIC = 0xE7770002;
+const uint32_t EEPROM_MAGIC = 0xE7770003;   // bump when the key count/order changes
 
 struct Key {
   int8_t row, col;          // note grid
@@ -677,7 +678,7 @@ uint32_t crossingTime(const Key &k, float prev, float now, float level, uint32_t
   return k.prevMicros + (uint32_t)(constrain(f, 0.0f, 1.0f) * (float)(nowMicros - k.prevMicros));
 }
 
-// One pass over all 34 sensors (~3 kHz): calibration, note on/off with
+// One pass over all 41 sensors (~3.5 kHz): calibration, note on/off with
 // velocity, and the key test stream.
 void scanKeys() {
   uint16_t readings[MAX_KEYS];

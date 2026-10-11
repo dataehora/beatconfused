@@ -27,7 +27,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261020" />
+  <link rel="stylesheet" href="styles.css?v=20261021" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
 </head>
@@ -47,7 +47,7 @@
         <button type="button" class="model-card is-selected" data-model="etuttino" aria-pressed="true">
           <span class="model-render" id="renderEtuttino"></span>
           <span class="model-name">eTuttino</span>
-          <span class="model-desc" data-i18n="model.etuttinoDesc">34 keys · C-griff · G3–G5</span>
+          <span class="model-desc" data-i18n="model.etuttinoDesc">41 keys · C-griff · G3–G6</span>
         </button>
         <button type="button" class="model-card" data-model="etutti" aria-pressed="false">
           <span class="model-render" id="renderEtutti"></span>
@@ -85,6 +85,25 @@
             <select id="channelSelect"></select>
           </label>
         </div>
+      </div>
+
+      <!-- ---- Sound in the browser ---- -->
+      <div class="control-block wide-block etutti-websound">
+        <div class="panel-header">
+          <span class="panel-title" data-i18n="web.title">Listen in this browser</span>
+        </div>
+        <div class="etutti-websound-row">
+          <p class="hint" data-i18n="web.hint">No Teensy? Hear the eTuttino's sounds through this computer's speakers, to try them before building one. Turn the volume down first: nothing plays until you switch this on.</p>
+          <label class="style-toggle" id="webSoundToggle">
+            <span class="style-toggle-label is-active" data-style="off" data-checked="false" data-i18n="play.keyboardOff">Off</span>
+            <span class="style-toggle-switch">
+              <input type="checkbox" id="webSoundCheckbox" aria-label="Play the sounds through this computer's speakers" data-i18n-attr="aria-label:web.aria" />
+              <span class="style-toggle-track"><span class="style-toggle-thumb"></span></span>
+            </span>
+            <span class="style-toggle-label" data-style="on" data-checked="true" data-i18n="play.keyboardOn">On</span>
+          </label>
+        </div>
+        <p class="hint etutti-websound-note" data-i18n="web.note">Accordion and synth use the same synthesis as the Teensy. Piano, bass and guitar are only approximations here: the Teensy plays recorded samples. With a Teensy connected too, both play.</p>
       </div>
 
       <!-- ---- Keyboard ---- -->
@@ -135,7 +154,7 @@
           </div>
         </div>
         <p class="hint etutti-keys-hint" id="keysHint" data-i18n="play.hint">
-          Computer keys, from the row nearest you: Z … , is row 1, A … L row 2, W … O row 3 and 2 … 0 row 4.
+          Computer keys, from the row nearest you: Z … / is row 1, A … ] row 2, W … [ row 3 and 3 … 8 row 4.
           ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.
         </p>
       </div>
@@ -368,7 +387,8 @@
     </footer>
   </main>
 
-  <script src="script.js?v=20261020"></script>
+  <script src="websynth.js?v=20261021"></script>
+  <script src="script.js?v=20261021"></script>
 
   <script>
     window.BC_STRINGS = {
@@ -399,7 +419,7 @@
         "play.velocityUpAria": "Velocity up (↑)",
         "play.panic": "All notes off",
         "play.pianoAria": "eTuttino keys",
-        "play.hint": "Computer keys, from the row nearest you: Z … , is row 1, A … L row 2, W … O row 3 and 2 … 0 row 4. ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.",
+        "play.hint": "Computer keys, from the row nearest you: Z … / is row 1, A … ] row 2, W … [ row 3 and 3 … 8 row 4 (the last key of row 2, G6, is mouse/touch only). ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.",
         "synth.title": "Synth",
         "synth.collapseAria": "Collapse Synth",
         "synth.volume": "Volume",
@@ -419,6 +439,10 @@
         "setup.firmwareLink": "Firmware source on GitHub",
         "model.manuals": "Build your own eTuttino: assembly and user manuals →",
         "setup.manualsLink": "Assembly and user manuals",
+        "web.title": "Listen in this browser",
+        "web.hint": "No Teensy? Hear the eTuttino's sounds through this computer's speakers, to try them before building one. Turn the volume down first: nothing plays until you switch this on.",
+        "web.aria": "Play the sounds through this computer's speakers",
+        "web.note": "Accordion and synth use the same synthesis as the Teensy. Piano, bass and guitar are only approximations here: the Teensy plays recorded samples. With a Teensy connected too, both play.",
         "keys.title": "eTuttino keys",
         "keys.collapseAria": "Collapse eTuttino keys",
         "keys.hint": "The real keys are magnetic: a sensor under each one measures how far and how fast it moves. These settings only matter with the eTuttino board.",
@@ -434,7 +458,7 @@
         "keys.testAria": "Key test: show how far each real key is pressed",
         "keys.testHint": "Key test: each on-screen key fills up as you press the real one. A key that never moves has a sensor problem (see the assembly manual).",
         "model.aria": "Model",
-        "model.etuttinoDesc": "34 keys · C-griff · G3–G5",
+        "model.etuttinoDesc": "41 keys · C-griff · G3–G6",
         "model.etuttiDesc": "Full instrument · in development",
         "wip.title": "In development",
         "wip.text": "The full eTutti is still being designed. Pick the eTuttino to play.",
@@ -522,7 +546,7 @@
         "play.velocityUpAria": "Aumentar velocidade (↑)",
         "play.panic": "Silenciar tudo",
         "play.pianoAria": "Teclas do eTuttino",
-        "play.hint": "Teclas do computador, da fileira mais perto de você: Z … , é a fileira 1, A … L a 2, W … O a 3 e 2 … 0 a 4. ← / → mudam a oitava, ↓ / ↑ a velocidade, Esc silencia tudo.",
+        "play.hint": "Teclas do computador, da fileira mais perto de você: Z … / é a fileira 1, A … ] a 2, W … [ a 3 e 3 … 8 a 4 (a última tecla da fileira 2, Sol6, só com mouse ou toque). ← / → mudam a oitava, ↓ / ↑ a velocidade, Esc silencia tudo.",
         "synth.title": "Sintetizador",
         "synth.collapseAria": "Recolher Sintetizador",
         "synth.volume": "Volume",
@@ -542,6 +566,10 @@
         "setup.firmwareLink": "Código do firmware no GitHub",
         "model.manuals": "Monte o seu eTuttino: manuais de montagem e de uso →",
         "setup.manualsLink": "Manuais de montagem e de uso",
+        "web.title": "Ouvir no navegador",
+        "web.hint": "Sem Teensy? Ouça os sons do eTuttino pelos alto-falantes deste computador, para experimentar antes de montar o seu. Abaixe o volume antes: nada toca até você ligar esta chave.",
+        "web.aria": "Tocar os sons pelos alto-falantes deste computador",
+        "web.note": "Acordeão e synth usam a mesma síntese do Teensy. Piano, baixo e violão aqui são só aproximações: o Teensy toca amostras gravadas. Com um Teensy conectado também, os dois tocam.",
         "keys.title": "Teclas do eTuttino",
         "keys.collapseAria": "Recolher Teclas do eTuttino",
         "keys.hint": "As teclas de verdade são magnéticas: um sensor embaixo de cada uma mede o quanto e com que velocidade ela desce. Estes ajustes só valem com a placa do eTuttino.",
@@ -557,7 +585,7 @@
         "keys.testAria": "Teste das teclas: mostra o quanto cada tecla de verdade está apertada",
         "keys.testHint": "Teste das teclas: cada tecla da tela se enche conforme você aperta a de verdade. Uma tecla que nunca se mexe tem problema no sensor (veja o manual de montagem).",
         "model.aria": "Modelo",
-        "model.etuttinoDesc": "34 teclas · C-griff · G3–G5",
+        "model.etuttinoDesc": "41 teclas · C-griff · G3–G6",
         "model.etuttiDesc": "Instrumento completo · em desenvolvimento",
         "wip.title": "Em desenvolvimento",
         "wip.text": "O eTutti completo ainda está sendo projetado. Escolha o eTuttino para tocar.",
@@ -645,7 +673,7 @@
         "play.velocityUpAria": "Subir velocidad (↑)",
         "play.panic": "Silenciar todo",
         "play.pianoAria": "Teclas del eTuttino",
-        "play.hint": "Teclas del ordenador, desde la fila más cercana: Z … , es la fila 1, A … L la 2, W … O la 3 y 2 … 0 la 4. ← / → cambian la octava, ↓ / ↑ la velocidad, Esc silencia todo.",
+        "play.hint": "Teclas del ordenador, desde la fila más cercana: Z … / es la fila 1, A … ] la 2, W … [ la 3 y 3 … 8 la 4 (la última tecla de la fila 2, Sol6, solo con ratón o toque). ← / → cambian la octava, ↓ / ↑ la velocidad, Esc silencia todo.",
         "synth.title": "Sintetizador",
         "synth.collapseAria": "Contraer Sintetizador",
         "synth.volume": "Volumen",
@@ -665,6 +693,10 @@
         "setup.firmwareLink": "Código del firmware en GitHub",
         "model.manuals": "Arma tu eTuttino: manuales de montaje y de uso →",
         "setup.manualsLink": "Manuales de montaje y de uso",
+        "web.title": "Escuchar en el navegador",
+        "web.hint": "¿Sin Teensy? Escucha los sonidos del eTuttino por los altavoces de este ordenador, para probarlos antes de montar el tuyo. Baja el volumen antes: no suena nada hasta que actives este interruptor.",
+        "web.aria": "Tocar los sonidos por los altavoces de este ordenador",
+        "web.note": "El acordeón y el synth usan la misma síntesis que el Teensy. Piano, bajo y guitarra aquí son solo aproximaciones: el Teensy toca muestras grabadas. Con un Teensy conectado también, suenan los dos.",
         "keys.title": "Teclas del eTuttino",
         "keys.collapseAria": "Contraer Teclas del eTuttino",
         "keys.hint": "Las teclas de verdad son magnéticas: un sensor debajo de cada una mide cuánto y a qué velocidad baja. Estos ajustes solo cuentan con la placa del eTuttino.",
@@ -680,7 +712,7 @@
         "keys.testAria": "Prueba de teclas: muestra cuánto está pulsada cada tecla de verdad",
         "keys.testHint": "Prueba de teclas: cada tecla de la pantalla se llena al pulsar la de verdad. Una tecla que nunca se mueve tiene un problema de sensor (ver el manual de montaje).",
         "model.aria": "Modelo",
-        "model.etuttinoDesc": "34 teclas · C-griff · G3–G5",
+        "model.etuttinoDesc": "41 teclas · C-griff · G3–G6",
         "model.etuttiDesc": "Instrumento completo · en desarrollo",
         "wip.title": "En desarrollo",
         "wip.text": "El eTutti completo todavía se está diseñando. Elige el eTuttino para tocar.",
