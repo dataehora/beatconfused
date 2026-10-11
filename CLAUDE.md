@@ -63,10 +63,19 @@ that doesn't belong there.
   localStorage), by `KeyboardEvent.code`: row 1 = Z..Comma, row 2 = A..L,
   row 3 = W..O, row 4 = Digit2..Digit0 (the user specified it on ABNT2;
   rows 1 and 3 have 8 keys, so they end at Comma / O). Arrows =
-  octave/velocity, Esc panic. Synth has two voices per note and
-  instrument presets (`PRESETS` in script.js; "accordion" = default =
-  two-reed soft cassotto, also what "Reset" restores; custom saved
-  presets are a planned follow-up). The note layout lives in THREE places
+  octave/velocity, Esc panic. Sound: accordion = additive free-reed synthesis, four reeds per
+  note (16' cassotto, 8' M1 open, 8' M2 cassotto, 4' piccolo) switched by a
+  round accordion-register widget (CC 26 bit mask) plus named registers;
+  "classic" = dry MM (default, what Reset restores), "jazz" = same reeds
+  ~6 cents wet (CC 27). Piano/bass/guitar = Teensy Audio Library wavetable
+  samples (`piano`, `nylonstrgtr`; the library has NO bass sample — bass
+  is the guitar 2 octaves down; a real one would need converting from a
+  SoundFont). Light reverb (CC 91). The user found the earlier
+  saw/square synth "metallic" (aliasing) — don't go back to raw
+  WAVEFORM_SAWTOOTH/SQUARE. `PRESETS` in script.js; custom saved presets
+  are a planned follow-up. To measure CPU on the real Teensy, build a
+  throwaway copy with usb=serialmidi that self-plays chords and prints
+  AudioProcessorUsageMax(), read it from the COM port. The note layout lives in THREE places
   that must agree: `FIRST_NOTE`/`ROWS` in `etutti/script.js`,
   `FIRST_NOTE`/`FIRST_COL` in the sketch, `ROWS` in
   `etutti/hardware/generate.py` (geometry source) — `build_pcb.py` checks

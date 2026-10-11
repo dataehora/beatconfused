@@ -366,20 +366,6 @@
   font-weight: 600;
 }
 
-.etutti-voices {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-  gap: 1rem 1.6rem;
-  padding: 0.8rem 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.etutti-sliders-tight {
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 0.6rem 1rem;
-}
-
 .etutti-group .hint {
   margin: 0;
 }
@@ -521,4 +507,125 @@
     font-size: 0.68rem;
     text-align: center;
   }
+}
+
+/* ---- Accordion register switch: the classic register symbol — a disc
+   with a band across the middle (the 8' reeds) and a dot for each reed
+   set: 4' above the band, 16' below it, the two 8' reeds inside it (open
+   on the left, cassotto on the right). A filled dot = that reed sounds. ---- */
+.etutti-accordion {
+  display: grid;
+  gap: 0.9rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.etutti-accordion[hidden] {
+  display: none;
+}
+
+.register-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.6rem;
+}
+
+.register {
+  position: relative;
+  flex: none;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #ffffff 0%, #f4efe6 55%, #e3dacb 100%);
+  box-shadow:
+    0 0 0 5px #c9ced4,
+    0 0 0 6px #9ea4ab,
+    0 6px 14px rgba(34, 27, 22, 0.25),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9);
+}
+
+.register-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 37%;
+  height: 26%;
+  border-top: 2px solid #2f2218;
+  border-bottom: 2px solid #2f2218;
+  background: rgba(47, 34, 24, 0.06);
+}
+
+.register-dot {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px dashed rgba(47, 34, 24, 0.45);
+  background: transparent;
+  cursor: pointer;
+  transition: background 100ms ease, border-color 100ms ease, transform 100ms ease;
+}
+
+.register-dot:hover {
+  transform: scale(1.08);
+  border-color: rgba(47, 34, 24, 0.75);
+}
+
+.register-dot.is-on {
+  border: 2px solid #1d1611;
+  background: radial-gradient(circle at 35% 30%, #5a4a3d, #1d1611 70%);
+}
+
+.register-dot:focus-visible {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 3px;
+}
+
+.register-dot-high { left: 50%; top: 19%; }
+.register-dot-low { left: 50%; top: 81%; }
+.register-dot-m1 { left: 28%; top: 50%; }
+.register-dot-m2 { left: 72%; top: 50%; }
+
+.register-info {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.register-code {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.7rem;
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.register-name {
+  min-height: 1.2em;
+  font-weight: 600;
+  color: var(--accent-strong);
+}
+
+.register-legend {
+  margin: 0.3rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.register-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.register-preset.is-active {
+  background: linear-gradient(140deg, #b67a35, #8d5524);
+  border-color: rgba(115, 68, 29, 0.7);
+  color: #fffdf7;
 }
