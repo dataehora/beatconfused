@@ -50,12 +50,14 @@ that doesn't belong there.
 - `etutti/` (eTutti) — **work in progress, deliberately unlisted**: no
   home-page card, not in `sitemap.xml`, `noindex` meta (the user asked
   for no home button while it's being built). Two models: **eTuttino**
-  (the one being built — Teensy 4.0 + Audio Board Rev D, 34 Cherry MX
-  hot-swap keys in a chromatic-accordion **C-griff** layout, G3-G5, rows
+  (the one being built — Teensy 4.0 + Audio Board Rev D, 34 **Gateron
+  magnetic (Hall-effect) keys with velocity** — see "Hall-effect keys"
+  below — in a chromatic-accordion **C-griff** layout, G3-G5, rows
   A3.., G3.., G#3.., F#3+row1) and **eTutti** (full version, the page only
   shows "in development"). Web MIDI (`navigator.requestMIDIAccess`) to the
   Teensy running `etutti/firmware/etutti_synth/` (8-voice synth, USB name
-  "eTutti" via `name.c`, scans the 4x9 key matrix and plays/sends notes).
+  "eTutti" via `name.c`, reads the 34 Hall sensors through 3 analog
+  multiplexers and plays/sends notes with velocity).
   **Row 1 is nearest the player (bottom), row 4 at the top** — on the
   page and on the PCB. Round on-screen buttons. C-griff / B-griff switch
   (B = mirror: rows 1 and 3 swapped; firmware gets CC 24 so the real keys
@@ -81,10 +83,32 @@ that doesn't belong there.
   throwaway copy with usb=serialmidi that self-plays chords and prints
   AudioProcessorUsageMax(), read it from the COM port. The note layout lives in THREE places
   that must agree: `FIRST_NOTE`/`ROWS` in `etutti/script.js`,
-  `FIRST_NOTE`/`FIRST_COL` in the sketch, `ROWS` in
-  `etutti/hardware/generate.py` (geometry source) — `build_pcb.py` checks
-  the board's nets against the sketch's tables and fails on a mismatch. The CC map lives in
+  `FIRST_NOTE`/`FIRST_COL`/`KEY_INPUT` in the sketch, `ROWS`/`MUXES` in
+  `etutti/hardware/generate.py` (geometry + sensor→mux-channel source;
+  `python generate.py` prints the `KEY_INPUT` table) — `build_pcb.py`
+  checks the board's nets against the sketch's tables and fails on a
+  mismatch. The CC map lives in
   both `etutti/script.js` (`CC`) and the sketch — change both together.
+  - **Hall-effect keys** (PR #75): DRV5056A3 under each Gateron KS-20
+    switch, on the **back** of a 1.2 mm board — the DRV5056 only reads a
+    SOUTH pole facing its marked side and Gateron magnets are NORTH-down,
+    so a front-mounted sensor would read nothing; don't "fix" it back to
+    the front. 3 × CD74HC4067 (S0-S3 = pins 0-3, COM = 14/15/16 with
+    INPUT_PULLDOWN so a bare Teensy has no stray notes — verified on the
+    real Teensy: 0 keys present, 0 notes), AMS1117-3.3 rail from VIN.
+    Firmware: cube-root (1/d³ dipole) travel model between per-key rest
+    (measured at boot) and learnt bottom (EEPROM), note on 45 %, off 30 %,
+    velocity = log-mapped time 12 %→45 % (1 ms = 127, 80 ms = 1). CC 9
+    velocity curve, CC 14 recalibrate, CC 15 key-test stream (Poly AT on
+    ch 16, data1 = key index in grid order). Full 34-key scan measured at
+    240 µs. Page: "eTuttino keys" panel (curve, Calibrate, Key test rings).
+    Not yet tested with a real board — tune VEL thresholds/FAST_MS/SLOW_MS
+    by feel once one exists.
+  - `etutti/manuais/` — assembly manuals (route A: JLCPCB PCBA, bottom
+    side; route B: everything soldered at home) + user manual, one
+    `.lang-block` per language (en/pt/es) shown by `html[lang]`; noindex,
+    linked from the eTutti page only. Keep it in step with hardware/firmware
+    changes.
   - **Tooling available on this machine** (use it to verify, don't just
     write code blind): KiCad 10 at `C:/Program Files/KiCad/10.0/bin/`
     (its `python.exe` has `pcbnew`; `kicad-cli.exe` does DRC/Gerbers/
@@ -92,12 +116,16 @@ that doesn't belong there.
     `C:/Program Files/Arduino IDE/resources/app/lib/backend/resources/arduino-cli.exe`
     with Teensyduino 1.60 installed — compile with
     `arduino-cli compile --fqbn teensy:avr:teensy40:usb=midi etutti/firmware/etutti_synth`.
-  - `etutti/hardware/build_pcb.py` (run with KiCad's python) places,
-    **routes** (own deterministic router: columns F.Cu zig-zag, rows B.Cu,
-    nested runs to the Teensy sockets), DRCs and exports `fab/`
-    (Gerbers zip, plate-as-FR4 Gerbers zip, BOM/CPL, renders). It exits
-    non-zero on any DRC error/unconnected. KiCad 10's stock library has
-    **no** Kailh hot-swap footprint — ours is `etuttino.pretty/`.
+  - `etutti/hardware/build_pcb.py` (run with KiCad's python, ~2 min)
+    places, **routes** (fixed per-key wiring + power buses/trunks, then
+    its own A* grid router — 0.254 mm grid aligned to the Teensy pins, two
+    layers, vias — for sensor outputs, mux address/COM and supplies; each
+    net only ever joins its already-connected copper tree, or the next job
+    can hook onto an island), DRCs and exports `fab/` (Gerbers zip,
+    plate-as-FR4 Gerbers zip, JLCPCB BOM/CPL for bottom-side assembly,
+    renders). It exits non-zero on any DRC error/unconnected or firmware
+    mismatch. The switch footprint is our own
+    `etuttino.pretty/Gateron_Magnetic_MX_1u` (two peg holes only).
   - The firmware's `#error` on missing `MIDI_INTERFACE` exists because the
     user hit "'usbMIDI' was not declared" with USB Type left on Serial. The
   MIDI monitor already logs what the Teensy sends back (hook for the
@@ -197,7 +225,7 @@ despite the file on disk being correct, suspect the browser's own cache
 first (try a brand new tab, or bump the preview port) rather than the
 code.
 
-## eTutti handoff (session of Oct 2026, PRs #63–#74) — start here to continue
+## eTutti handoff (session of Oct 2026, PRs #63–#75) — start here to continue
 
 **State at hand-off** (everything merged to `main`):
 - **Page** `/etutti/` (unlisted, noindex) works with the user's real
@@ -215,10 +243,12 @@ code.
   The user confirmed accordion/bass work and asked for piano/guitar to be
   fixed (done in #74: SVF → biquad, sample gain up) and the synth to come
   back (done in #74).
-- **PCB** `etutti/hardware/`: routed, DRC 0/0/0, firmware cross-check
-  34/34. Ready-to-upload Gerbers are in `fab/` (PCB + FR4 plate +
-  optional BOM/CPL). As far as we know it has **not been ordered** yet.
-  If the layout changes, re-run `generate.py`, then `build_pcb.py`.
+- **PCB** `etutti/hardware/`: **Hall-effect version (#75)**, routed, DRC
+  0/0/0, firmware cross-check 34/34. Ready-to-upload Gerbers in `fab/`
+  (PCB 1.2 mm + FR4 plate + JLCPCB BOM/CPL). The old MX/diode-matrix
+  board was never ordered and is gone. As far as we know the new one has
+  **not been ordered** yet either. If the layout changes, re-run
+  `generate.py`, then `build_pcb.py`, and update `etutti/manuais/`.
 
 **Next steps the user mentioned** (not done):
 - Tune the instruments by ear. The user said the other sounds "can be
@@ -232,6 +262,10 @@ code.
   The monitor and `handleIncoming` are the hook.
 - The full eTutti model (bigger keyboard), only a render for now.
 - The user may want round MX keycaps (noted in the hardware BOM).
+- Once a real Hall board exists: check the sensor swing (key test /
+  a serialmidi build printing raw readings), then tune NOTE_ON_AT,
+  VEL_START, FAST_MS/SLOW_MS by feel. A bellows/expression input on the
+  free pins 17 or 22 (A3/A8) was suggested for the accordion.
 
 **How to verify, without asking the user to test:**
 - Firmware: `arduino-cli compile --fqbn teensy:avr:teensy40:usb=midi
@@ -246,7 +280,9 @@ code.
   `usb=serialmidi` and read `COM3` with
   `System.IO.Ports.SerialPort` (arduino-cli monitor printed nothing).
   Reflash the production `usb=midi` build afterwards.
-- Page: the in-app browser pane hung repeatedly in this session. Instead,
+- Page: the in-app browser pane worked fine in the #75 session
+  (preview_start "static-site", fake `navigator.requestMIDIAccess` via
+  javascript_tool, then click Connect). If it hangs again,
   use headless Edge (`msedge --headless --screenshot --timeout=3000
   --window-size=800,700`) on a temp copy of `etutti/index.html` with:
   - `/shared/` → `../shared/` paths
@@ -403,6 +439,7 @@ code.
   og-image re-render, site-title link on every page, peak-hold modes
   (Temporary default).
 - **#68–#74** — eTutti / eTuttino (see the handoff above).
+- **#75** — eTuttino Hall-effect redesign (velocity) + `etutti/manuais/`.
 
 ## Workflow conventions observed this session
 

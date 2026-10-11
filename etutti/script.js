@@ -3,8 +3,9 @@
 
    Two models share this page:
      - eTuttino (the one being built): 34 round keys in a chromatic
-       button-accordion layout (C-griff or B-griff), G3–G5, read by a
-       Teensy 4.0 as a 4 x 9 key matrix.
+       button-accordion layout (C-griff or B-griff), G3–G5, on magnetic
+       (Hall-effect) switches: a Teensy 4.0 reads how far each key is down,
+       so the real keys play with velocity.
      - eTutti (the full instrument): only a preview render for now.
 
    The Teensy runs etutti/firmware/etutti_synth (Teensy Audio Library on
@@ -15,7 +16,9 @@
        (accordion reed synthesis with a register switch, or recorded
        piano / bass / guitar samples), tone and room ambience,
      - the C/B-griff switch is sent too, so the real keys follow it,
-     - notes played on the real keys light up on the on-screen ones.
+     - notes played on the real keys light up on the on-screen ones, and
+       the "eTuttino keys" panel sets their velocity curve, restarts their
+       calibration and shows a live key test.
    No sound is made in the browser — the Teensy's audio output is the
    instrument.
    ============================================================ */
@@ -37,6 +40,9 @@
     sustain: 79,
     synthWave: [20, 21, 22],
     synthOctave: [102, 103, 104],
+    keyVelocity: 9,
+    calibrate: 14,
+    keyTest: 15,
     allSoundOff: 120,
     allNotesOff: 123,
   };
@@ -153,6 +159,7 @@
     griff: "etutti.griff",
     keyboard: "etutti.computerKeyboard",
     preset: "etutti.preset",
+    keyVelocity: "etutti.keyVelocity",
   };
 
   function load(key, fallback) {
@@ -211,6 +218,11 @@
     sliders: document.querySelectorAll("[data-cc]"),
     monitor: document.getElementById("midiMonitor"),
     clearMonitorBtn: document.getElementById("clearMonitorBtn"),
+    keyVelocityInputs: document.querySelectorAll('input[name="keyVelocity"]'),
+    calibrateBtn: document.getElementById("calibrateBtn"),
+    calibrateStatus: document.getElementById("calibrateStatus"),
+    keyTestToggle: document.getElementById("keyTestToggle"),
+    keyTestCheckbox: document.getElementById("keyTestCheckbox"),
   };
 
   function tr(key, fallback, vars) {
@@ -231,6 +243,8 @@
   const heldByPointer = new Map(); // pointerId -> MIDI note
   const soundingCount = new Map(); // MIDI note -> how many sources hold it
   const remoteNotes = new Set(); // notes the Teensy reports from its own keys
+  let keyTestOn = false;
+  const keyPress = new Array(LAYOUT.length).fill(0); // key test: 0 .. 1 per real key
   let statusKey = "status.idle";
   let statusVars = null;
 
@@ -359,6 +373,7 @@
     if (type === 0x90 && d2 > 0) return `ch${ch} Note On  ${noteName(d1)} vel ${d2}`;
     if (type === 0x80 || (type === 0x90 && d2 === 0)) return `ch${ch} Note Off ${noteName(d1)}`;
     if (type === 0xb0) return `ch${ch} CC ${d1} = ${d2}`;
+    if (type === 0xa0) return `ch${ch} Poly pressure ${d1} = ${d2}`;
     if (type === 0xe0) return `ch${ch} Pitch bend ${(d2 << 7) | d1}`;
     return "";
   }
@@ -373,8 +388,18 @@
     }
   }
 
-  // Notes the Teensy plays from its own key matrix light up here too.
+  // Notes the Teensy plays from its own keys light up here too. In key
+  // test mode it also streams every key's position as Polyphonic
+  // Aftertouch on channel 16 (data 1 = key index in LAYOUT order); those
+  // aren't logged, they'd flood the monitor.
   function handleIncoming(bytes) {
+    if (bytes[0] === 0xaf) {
+      if (keyTestOn && bytes[1] < keyPress.length) {
+        keyPress[bytes[1]] = bytes[2] / 127;
+        paintPress(bytes[1]);
+      }
+      return;
+    }
     logMidi("in", bytes);
     const type = bytes[0] & 0xf0;
     if (type === 0x90 && bytes[2] > 0) remoteNotes.add(bytes[1]);
@@ -451,6 +476,8 @@
   // matches what the page shows.
   function sendAllControls() {
     sendCC(CC.layout, griff === "b" ? 127 : 0);
+    sendCC(CC.keyVelocity, radioValue("keyVelocity") * 32);
+    sendCC(CC.keyTest, keyTestOn ? 127 : 0);
     sendCC(CC.instrument, instrument * 16);
     for (let o = 0; o < 3; o += 1) {
       sendCC(CC.synthWave[o], radioValue(`oscWave${o + 1}`) * 32);
@@ -616,6 +643,7 @@
       keyEls.push({ el: cap, key });
     });
 
+    keyEls.forEach((_, i) => paintPress(i));
     const notes = LAYOUT.map(keyNote);
     els.octaveValue.textContent = `${noteName(Math.min(...notes))}–${noteName(Math.max(...notes))}`;
     keyEls.forEach(({ key }) => paintNote(keyNote(key)));
@@ -627,6 +655,13 @@
     keyEls.forEach(({ el, key }) => {
       if (keyNote(key) === note) el.classList.toggle("is-down", down);
     });
+  }
+
+  function paintPress(i) {
+    const entry = keyEls[i];
+    if (!entry) return;
+    entry.el.classList.toggle("has-press", keyTestOn);
+    entry.el.style.setProperty("--press", keyTestOn ? keyPress[i].toFixed(3) : "0");
   }
 
   function noteForCap(el) {
@@ -941,6 +976,35 @@
     renderRegister();
     sliderLabelUpdaters.forEach((update) => update());
   });
+
+  /* ============================================================
+     PHYSICAL KEYS (velocity curve, calibration, key test)
+     ============================================================ */
+  const savedCurve = load(STORAGE.keyVelocity, "2");
+  els.keyVelocityInputs.forEach((radio) => {
+    radio.checked = radio.value === savedCurve;
+    radio.addEventListener("change", () => {
+      if (!radio.checked) return;
+      save(STORAGE.keyVelocity, radio.value);
+      sendCC(CC.keyVelocity, Number(radio.value) * 32);
+    });
+  });
+
+  els.calibrateBtn.addEventListener("click", () => {
+    sendCC(CC.calibrate, 127);
+    els.calibrateStatus.dataset.i18n = "keys.calibrateSent";
+    els.calibrateStatus.textContent = tr("keys.calibrateSent", "Calibration restarted: now press every key all the way down once.");
+  });
+
+  function setKeyTest(on) {
+    keyTestOn = on;
+    els.keyTestCheckbox.checked = on;
+    syncToggleLabels(els.keyTestToggle, on ? "on" : "off");
+    keyPress.fill(0);
+    keyEls.forEach((_, i) => paintPress(i));
+    sendCC(CC.keyTest, on ? 127 : 0);
+  }
+  wireStyleToggle(els.keyTestToggle, els.keyTestCheckbox, setKeyTest);
 
   /* ============================================================
      OTHER CONTROLS

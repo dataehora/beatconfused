@@ -3,11 +3,14 @@
 
    Hardware: Teensy 4.0 + PJRC Audio Adaptor Board Rev D (SGTL5000), on
    the eTuttino PCB (etutti/hardware/). Sound comes out of the Audio
-   Board's headphone jack and line out. The 34 MX switches form a 4 x 9
-   key matrix (one 1N4148 per switch, anode on the switch side, cathode
-   on the row): rows are driven low one at a time, columns are read with
-   pull-ups. Every key plays the internal sound engine AND is sent over
-   USB MIDI, so the device works standalone or with the web page.
+   Board's headphone jack and line out. The 34 keys are Gateron magnetic
+   (Hall-effect) switches: under each one a DRV5056 sensor gives a voltage
+   that rises as the key's magnet comes down. Three CD74HC4067
+   multiplexers (address on pins 0-3) put the 34 sensors on three ADC pins
+   (14, 15, 16), so the firmware knows how far down every key is and, from
+   how fast it went down, the note's velocity. Every key plays the internal
+   sound engine AND is sent over USB MIDI, so the device works standalone
+   or with the web page.
 
    Arduino IDE + Teensyduino settings:
      Tools > Board:    Teensy 4.0
@@ -40,6 +43,9 @@
    MIDI implementation (any channel; keep in sync with CC in etutti/script.js):
      Note On / Note Off      play / release (velocity -> loudness)
      CC 7   Volume           headphone volume
+     CC 9   Key velocity     value / 32: 0 fixed (100), 1 soft, 2 normal, 3 hard
+     CC 14  Calibrate keys   64-127: forget the learnt key travel, learn it again
+     CC 15  Key test         64-127: stream every key's position (see below)
      CC 24  Key layout       0-63 C-griff, 64-127 B-griff (the physical keys)
      CC 20-22 Synth osc 1-3 waveform  0-31 sine, 32-63 triangle, 64-95 saw, 96-127 square
      CC 25  Instrument       value / 16: 0 accordion, 1 piano, 2 bass, 3 guitar, 4 synth
@@ -56,12 +62,17 @@
      CC 102-104 Synth osc 1-3 octave  0-42 one down, 43-84 unison, 85-127 one up
      CC 120 All sound off    instant silence
      CC 123 All notes off    release every voice
+   Sent back: the keys' notes (channel 1) and, in key test mode, each key's
+   position as Polyphonic Aftertouch on channel 16: data 1 = key index
+   (0-33, row by row from row 1, as in etutti/hardware/build/
+   etuttino_keys.csv), data 2 = 0 (up) .. 127 (bottomed out).
    ============================================================ */
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+#include <EEPROM.h>
 #include "piano_samples.h"
 #include "nylonstrgtr_samples.h"
 
@@ -73,30 +84,37 @@
 
 const int NUM_VOICES = 8;
 
-// ---- eTuttino key matrix (see etutti/hardware/README.md) ----
-// Pins chosen to stay clear of the Audio Board Rev D (7, 8, 18-21, 23)
-// and of its SD card (10-13), so sample playback from SD stays possible.
-// 6 and 15 are only used by the Audio Board's optional memory chip and
-// volume pot, which the eTuttino doesn't fit. ROW_PINS[r] is accordion
-// row r+1 (row 1 is the one nearest the player, at the bottom).
-const int MATRIX_ROWS = 4;
-const int MATRIX_COLS = 9;
-const uint8_t ROW_PINS[MATRIX_ROWS] = {3, 2, 1, 0};
-const uint8_t COL_PINS[MATRIX_COLS] = {4, 5, 6, 9, 14, 15, 16, 17, 22};
-const uint8_t KEY_VELOCITY = 100;   // MX switches are on/off: fixed velocity
-const uint32_t DEBOUNCE_MS = 5;
+// ---- eTuttino keys (see etutti/hardware/README.md) ----
+// The notes sit on a grid of 4 rows x 9 columns (row r = accordion row
+// r+1; row 1 is the one nearest the player). KEY_INPUT says where each
+// key's sensor is wired: multiplexer * 16 + channel, -1 = no key there.
+// It comes from etutti/hardware/generate.py, and build_pcb.py checks the
+// routed board against this copy. The pins stay clear of the Audio Board
+// Rev D (7, 8, 18-21, 23) and of its SD card (10-13); 15 is only used by
+// the Audio Board's optional volume pot, which the eTuttino doesn't fit.
+const int LAYOUT_ROWS = 4;
+const int LAYOUT_COLS = 9;
+const int MUX_COUNT = 3;
+const uint8_t MUX_SEL_PINS[4] = {0, 1, 2, 3};          // S0..S3, shared
+const uint8_t MUX_COM_PINS[MUX_COUNT] = {14, 15, 16};  // A0, A1, A2
+const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
+  { -1,   3,  13,  17,  21,  29,  33,  41,  45},
+  {  1,   5,  15,  19,  27,  31,  35,  43,  47},
+  { -1,   2,  12,  16,  20,  28,  32,  40,  44},
+  {  0,   4,  14,  18,  26,  30,  34,  42,  46},
+};
 
 // Chromatic button accordion layouts. Along a row each key is a minor
 // third (+3) above the previous one; rows 1 and 3 have 8 keys starting at
-// matrix column 1, rows 2 and 4 have 9 starting at column 0 (they sit half
-// a key further left). Row 4 repeats row 1 with one more key in front.
+// column 1, rows 2 and 4 have 9 starting at column 0 (they sit half a key
+// further left). Row 4 repeats row 1 with one more key in front.
 // B-griff is the mirror image of C-griff: rows 1 and 3 swap places, so a
 // diagonal step goes the other way. Keep in sync with etutti/script.js.
-const int8_t FIRST_NOTE[2][MATRIX_ROWS] = {
+const int8_t FIRST_NOTE[2][LAYOUT_ROWS] = {
   {57, 55, 56, 54},   // C-griff: A3, G3, G#3, F#3
   {56, 55, 57, 53},   // B-griff: G#3, G3, A3, F3
 };
-const uint8_t FIRST_COL[MATRIX_ROWS] = {1, 0, 1, 0};
+const uint8_t FIRST_COL[LAYOUT_ROWS] = {1, 0, 1, 0};
 int layoutSystem = 0;   // 0 = C-griff, 1 = B-griff
 
 int noteAt(int r, int c) {
@@ -104,12 +122,55 @@ int noteAt(int r, int c) {
   return FIRST_NOTE[layoutSystem][r] + 3 * (c - FIRST_COL[r]);
 }
 
-bool keyDown[MATRIX_ROWS][MATRIX_COLS];
-uint32_t keyChangedAt[MATRIX_ROWS][MATRIX_COLS];
-int8_t keyNote[MATRIX_ROWS][MATRIX_COLS];   // note a held key started (survives a layout switch)
+// ---- Key sensing ----
+// A DRV5056A3 at 3.3 V gives 0.6 V with no field plus 30 mV per mT. The
+// magnet's field falls off roughly as 1/distance^3, so the key's travel is
+// recovered from the cube root of the field (above the sensor's 0.6 V
+// zero), scaled between that key's reading at rest and at the bottom. The
+// rest reading is measured at start-up and then follows slow drift; the
+// bottom is learnt from the deepest press seen and kept in EEPROM.
+const int MAX_KEYS = 34;
+const float ADC_PER_VOLT = 4095.0f / 3.3f;
+const float SENSOR_ZERO = 0.6f * ADC_PER_VOLT;   // DRV5056 output at 0 mT
+const int MIN_SPAN = 120;          // ADC counts: the least a key is assumed to swing
+const float PRESENT_MIN = 0.4f * ADC_PER_VOLT;   // below this, no sensor answered
+const float VEL_START = 0.12f;     // travel where the velocity timer starts
+const float NOTE_ON_AT = 0.45f;    // note on (about 1.8 mm of the 4.1 mm travel)
+const float NOTE_OFF_AT = 0.30f;   // note off (hysteresis against chatter)
+const float FAST_MS = 1.0f;        // VEL_START -> NOTE_ON_AT (~1.4 mm) time for velocity 127
+const float SLOW_MS = 80.0f;       // ... and for velocity 1
+const uint8_t FIXED_VELOCITY = 100;
+const uint32_t EEPROM_MAGIC = 0xE7770002;
+
+struct Key {
+  int8_t row, col;          // note grid
+  uint8_t mux, channel;
+  float rest;               // ADC reading with the key up
+  float bottom;             // deepest reading seen
+  float restInv, spanInv;   // cube-root model, see keyTravel()
+  float travel;             // 0 (up) .. 1 (bottomed out)
+  uint32_t prevMicros;
+  uint32_t startMicros;     // when the press passed VEL_START (0 = not yet)
+  bool present;             // a sensor answered at start-up
+  bool down;
+  int8_t note;              // note it started (survives a layout switch)
+  uint8_t sentPosition;     // last position sent in key test mode
+};
+Key keyState[MAX_KEYS];
+int keyCount = 0;
+int velocityCurve = 2;      // 0 fixed, 1 soft, 2 normal, 3 hard
+bool keyTest = false;
+bool calibrationDirty = false;
+uint32_t calibrationChangedAt = 0;
 // How many physical keys hold each note (row 4 doubles row 1), so a note
 // only starts on the first press and stops on the last release.
 uint8_t noteHolders[128];
+// Written out so the Arduino builder doesn't put its own prototypes for
+// these above the Key struct.
+void resetCalibration();
+void updateModel(Key &k);
+float keyTravel(const Key &k, float reading);
+uint32_t crossingTime(const Key &k, float prev, float now, float level, uint32_t nowMicros);
 
 // ---- Audio graph ----
 // Accordion: 4 reeds per voice -> per-voice mixer -> bellows envelope.
@@ -412,6 +473,16 @@ void handleControlChange(byte channel, byte control, byte value) {
     case 7:
       codec.volume(0.8f * value / 127.0f);
       break;
+    case 9:
+      velocityCurve = min(value / 32, 3);
+      break;
+    case 14:
+      if (value >= 64) resetCalibration();
+      break;
+    case 15:
+      keyTest = value >= 64;
+      for (int i = 0; i < keyCount; i++) keyState[i].sentPosition = 255;
+      break;
     case 24:
       layoutSystem = value < 64 ? 0 : 1;
       break;
@@ -472,10 +543,10 @@ void handleControlChange(byte channel, byte control, byte value) {
   }
 }
 
-void localNoteOn(uint8_t note) {
+void localNoteOn(uint8_t note, uint8_t velocity) {
   if (noteHolders[note]++ > 0) return;
-  handleNoteOn(1, note, KEY_VELOCITY);
-  usbMIDI.sendNoteOn(note, KEY_VELOCITY, 1);
+  handleNoteOn(1, note, velocity);
+  usbMIDI.sendNoteOn(note, velocity, 1);
 }
 
 void localNoteOff(uint8_t note) {
@@ -484,44 +555,194 @@ void localNoteOff(uint8_t note) {
   usbMIDI.sendNoteOff(note, 0, 1);
 }
 
-void setupMatrix() {
-  for (int r = 0; r < MATRIX_ROWS; r++) pinMode(ROW_PINS[r], INPUT);   // idle rows float
-  for (int c = 0; c < MATRIX_COLS; c++) pinMode(COL_PINS[c], INPUT_PULLUP);
+void selectChannel(int ch) {
+  for (int b = 0; b < 4; b++) digitalWriteFast(MUX_SEL_PINS[b], (ch >> b) & 1);
 }
 
-// One full pass over the matrix. A key's new state is accepted only if it
-// differs from the current one and the last accepted change is at least
-// DEBOUNCE_MS old (switch bounce is a few ms of chatter on each edge).
-void scanMatrix() {
-  uint32_t now = millis();
+float fieldInv(float reading) {
+  return 1.0f / cbrtf(max(reading - SENSOR_ZERO, 4.0f));
+}
+
+void updateModel(Key &k) {
+  float bottom = max(k.bottom, k.rest + MIN_SPAN);
+  k.restInv = fieldInv(k.rest);
+  k.spanInv = 1.0f / max(k.restInv - fieldInv(bottom), 1e-6f);
+}
+
+// 0 at rest, 1 at the bottom: the magnet's distance from the cube root of
+// the field, scaled between the key's two calibration points.
+float keyTravel(const Key &k, float reading) {
+  float t = (k.restInv - fieldInv(reading)) * k.spanInv;
+  return constrain(t, 0.0f, 1.0f);
+}
+
+// Velocity from the time the key took between VEL_START and NOTE_ON_AT,
+// on a log scale: FAST_MS or quicker = 127, SLOW_MS or slower = 1. The
+// curve bends it: "soft" gives loud notes with a light touch, "hard" needs
+// a firmer one.
+uint8_t velocityFor(float ms) {
+  if (velocityCurve == 0) return FIXED_VELOCITY;
+  float x = (logf(SLOW_MS) - logf(max(ms, 0.1f))) / (logf(SLOW_MS) - logf(FAST_MS));
+  x = constrain(x, 0.0f, 1.0f);
+  const float exponent[4] = {1.0f, 0.6f, 1.0f, 1.6f};
+  return (uint8_t)constrain((int)roundf(1.0f + 126.0f * powf(x, exponent[velocityCurve])), 1, 127);
+}
+
+// EEPROM: a magic number, then each key's learnt span (bottom - rest).
+void saveCalibration() {
+  EEPROM.put(0, EEPROM_MAGIC);
+  for (int i = 0; i < keyCount; i++) {
+    uint16_t span = (uint16_t)max(0.0f, keyState[i].bottom - keyState[i].rest);
+    EEPROM.put(4 + 2 * i, span);
+  }
+  calibrationDirty = false;
+}
+
+void loadCalibration() {
+  uint32_t magic;
+  EEPROM.get(0, magic);
+  for (int i = 0; i < keyCount; i++) {
+    uint16_t span = 0;
+    if (magic == EEPROM_MAGIC) EEPROM.get(4 + 2 * i, span);
+    keyState[i].bottom = min(4095.0f, keyState[i].rest + max((int)span, MIN_SPAN));
+    updateModel(keyState[i]);
+  }
+}
+
+void resetCalibration() {
+  for (int i = 0; i < keyCount; i++) {
+    keyState[i].bottom = min(4095.0f, keyState[i].rest + MIN_SPAN);
+    updateModel(keyState[i]);
+  }
+  saveCalibration();
+}
+
+// Reads every sensor once into readings[] (key order), one multiplexer
+// channel at a time: all three multiplexers share the address lines.
+void readSensors(uint16_t *readings) {
+  for (int ch = 0; ch < 16; ch++) {
+    bool any = false;
+    for (int i = 0; i < keyCount; i++) any |= keyState[i].channel == ch;
+    if (!any) continue;
+    selectChannel(ch);
+    delayMicroseconds(3);                       // let the multiplexer settle
+    for (int i = 0; i < keyCount; i++) {
+      if (keyState[i].channel == ch) readings[i] = analogRead(MUX_COM_PINS[keyState[i].mux]);
+    }
+  }
+}
+
+void setupKeys() {
+  for (int b = 0; b < 4; b++) pinMode(MUX_SEL_PINS[b], OUTPUT);
+  // A sensor drives its line to 0.6 V or more. With the pull-downs, a
+  // missing board, multiplexer or sensor reads 0 V instead of floating
+  // (which would play random notes), and that key is left out.
+  for (int m = 0; m < MUX_COUNT; m++) pinMode(MUX_COM_PINS[m], INPUT_PULLDOWN);
+  analogReadResolution(12);
+  analogReadAveraging(1);
+  keyCount = 0;
+  for (int r = 0; r < LAYOUT_ROWS; r++) {
+    for (int c = 0; c < LAYOUT_COLS; c++) {
+      if (KEY_INPUT[r][c] < 0 || keyCount == MAX_KEYS) continue;
+      Key &k = keyState[keyCount++];
+      memset(&k, 0, sizeof(k));
+      k.row = r;
+      k.col = c;
+      k.mux = KEY_INPUT[r][c] / 16;
+      k.channel = KEY_INPUT[r][c] % 16;
+      k.note = -1;
+      k.sentPosition = 255;
+    }
+  }
+  // Rest readings: the average of a few dozen scans with the keys up.
+  delay(50);                                    // the sensors take ~0.3 ms to wake up
+  uint16_t readings[MAX_KEYS];
+  float sum[MAX_KEYS] = {0};
+  const int SCANS = 64;
+  for (int s = 0; s < SCANS; s++) {
+    readSensors(readings);
+    for (int i = 0; i < keyCount; i++) sum[i] += readings[i];
+  }
+  for (int i = 0; i < keyCount; i++) {
+    keyState[i].rest = sum[i] / SCANS;
+    keyState[i].present = keyState[i].rest >= PRESENT_MIN;
+  }
+  loadCalibration();
+}
+
+// Time (in micros) at which the travel crossed `level`, interpolated
+// between the previous scan and this one.
+uint32_t crossingTime(const Key &k, float prev, float now, float level, uint32_t nowMicros) {
+  float f = (level - prev) / max(now - prev, 1e-4f);
+  return k.prevMicros + (uint32_t)(constrain(f, 0.0f, 1.0f) * (float)(nowMicros - k.prevMicros));
+}
+
+// One pass over all 34 sensors (~3 kHz): calibration, note on/off with
+// velocity, and the key test stream.
+void scanKeys() {
+  uint16_t readings[MAX_KEYS];
+  readSensors(readings);
+  uint32_t now = micros();
   bool changed = false;
-  for (int r = 0; r < MATRIX_ROWS; r++) {
-    pinMode(ROW_PINS[r], OUTPUT);
-    digitalWrite(ROW_PINS[r], LOW);
-    delayMicroseconds(10);                       // let the line settle
-    for (int c = 0; c < MATRIX_COLS; c++) {
-      if (c < FIRST_COL[r]) continue;            // no switch in that cell
-      bool pressed = digitalRead(COL_PINS[c]) == LOW;
-      if (pressed != keyDown[r][c] && now - keyChangedAt[r][c] >= DEBOUNCE_MS) {
-        keyDown[r][c] = pressed;
-        keyChangedAt[r][c] = now;
-        if (pressed) {
-          keyNote[r][c] = noteAt(r, c);
-          localNoteOn(keyNote[r][c]);
-        } else {
-          localNoteOff(keyNote[r][c]);           // the note it started, even after a layout switch
-        }
+  for (int i = 0; i < keyCount; i++) {
+    Key &k = keyState[i];
+    if (!k.present) continue;
+    float raw = readings[i];
+    // Calibration. A reading below rest means rest was measured with the
+    // key held, or has drifted: take it. While the key is up, follow slow
+    // drift. The deepest press seen sets the bottom (saved after 5 s).
+    if (raw < k.rest - 2 && raw >= PRESENT_MIN) {
+      k.rest = raw;
+      updateModel(k);
+    } else if (!k.down && k.travel < 0.05f) {
+      k.rest += (raw - k.rest) * 0.002f;
+      updateModel(k);
+    }
+    if (raw > k.bottom + 4 && raw > k.rest + MIN_SPAN) {
+      k.bottom = raw;
+      updateModel(k);
+      calibrationDirty = true;
+      calibrationChangedAt = millis();
+    }
+    float t = keyTravel(k, raw);
+    if (!k.down) {
+      if (t < VEL_START) {
+        k.startMicros = 0;
+      } else if (k.startMicros == 0) {
+        k.startMicros = crossingTime(k, k.travel, t, VEL_START, now) | 1;
+      }
+      if (t >= NOTE_ON_AT) {
+        uint32_t at = crossingTime(k, k.travel, t, NOTE_ON_AT, now);
+        k.down = true;
+        k.note = noteAt(k.row, k.col);
+        if (k.note >= 0) localNoteOn(k.note, velocityFor((at - k.startMicros) / 1000.0f));
+        changed = true;
+      }
+    } else if (t < NOTE_OFF_AT) {
+      k.down = false;
+      k.startMicros = 0;
+      if (k.note >= 0) localNoteOff(k.note);    // the note it started, even after a layout switch
+      k.note = -1;
+      changed = true;
+    }
+    k.travel = t;
+    k.prevMicros = now;
+    if (keyTest) {
+      uint8_t pos = (uint8_t)roundf(t * 127.0f);
+      if (pos != k.sentPosition && (abs((int)pos - (int)k.sentPosition) >= 2 || pos == 0 || pos == 127)) {
+        usbMIDI.sendPolyPressure(i, pos, 16);
+        k.sentPosition = pos;
         changed = true;
       }
     }
-    pinMode(ROW_PINS[r], INPUT);
   }
+  if (calibrationDirty && millis() - calibrationChangedAt > 5000) saveCalibration();
   if (changed) usbMIDI.send_now();
 }
 
 void setup() {
   AudioMemory(60);   // measured peak: 32 blocks (8 voices x 4 reeds + reverb)
-  setupMatrix();
+  setupKeys();
 
   codec.enable();
   codec.volume(0.8f * 90 / 127.0f);
@@ -577,5 +798,5 @@ void loop() {
   // Drain every pending USB MIDI message; each one calls a handler above.
   while (usbMIDI.read()) {
   }
-  scanMatrix();
+  scanKeys();
 }

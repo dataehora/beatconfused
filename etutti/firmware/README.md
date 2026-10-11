@@ -7,14 +7,47 @@ MIDI. Sound comes out of the PJRC Audio Board.
 ## Hardware
 
 - Teensy 4.0 + PJRC Audio Adaptor Board **Rev D** (SGTL5000)
-- the eTuttino PCB with its 34 key switches, see [`../hardware`](../hardware).
-  Without the PCB the sketch still works as a USB MIDI synth driven by the
-  web page.
+- the eTuttino PCB with its 34 magnetic key switches and Hall sensors, see
+  [`../hardware`](../hardware). Without the PCB the sketch still works as a
+  USB MIDI synth driven by the web page: at start-up a key whose sensor
+  doesn't answer is left out, so a bare Teensy plays no stray notes.
 - Headphones or an amplifier on the Audio Board's headphone jack or line out
 
-The firmware scans the 4 × 9 key matrix (rows on pins 0–3; columns on
-pins 4, 5, 6, 9, 14, 15, 16, 17 and 22). Every key plays the built-in synth
-and is also sent as USB MIDI, so the page lights the key up.
+## Keys: Hall-effect sensing and velocity
+
+Each key is a Gateron magnetic switch with a DRV5056A3 Hall sensor under it
+(0.6 V with no field, +30 mV per mT at 3.3 V). Three CD74HC4067
+multiplexers share the address lines on pins 0–3 (S0–S3); their outputs go
+to pins 14, 15 and 16 (A0–A2), which have their pull-downs on so a missing
+sensor reads 0 V rather than floating. `KEY_INPUT` maps each note-grid cell
+to multiplexer × 16 + channel. It comes from `../hardware/generate.py`, and
+`build_pcb.py` checks the routed board against this copy.
+
+- **Scan:** all 34 sensors in about 240 µs (measured on a Teensy 4.0), so
+  about 4 kHz per key.
+- **Travel:** the magnet's field falls off roughly as 1/distance³, so the
+  travel is the cube root of the field above the sensor's 0.6 V zero,
+  scaled between the key's rest reading and its bottomed-out reading. In
+  simulation this tracks the real travel to within a couple of percent.
+- **Calibration:**
+  - Rest is measured at start-up (keys untouched) and then follows slow
+    drift.
+  - The bottom is the deepest press seen. It is saved to EEPROM 5 s after
+    it last grew.
+  - CC 14 forgets the learnt bottoms. The page's "Calibrate keys" button
+    sends it.
+- **Note on:** at 45 % of the travel, about 1.8 mm. Note off is at 30 %
+  (hysteresis).
+- **Velocity:** the time between passing 12 % and 45 % of the travel, with
+  both crossings interpolated between scans. It is mapped on a log scale:
+  1 ms or faster = 127, 80 ms or slower = 1. CC 9 bends the curve or fixes
+  velocity at 100.
+- **Key test (CC 15):** streams each key's position back as Polyphonic
+  Aftertouch on channel 16 (data 1 = key index in grid order, data 2 =
+  0–127). The page draws it as a ring around each on-screen key.
+
+Every key plays the built-in synth and is also sent as USB MIDI (channel 1,
+with its velocity), so the page lights the key up and any DAW can record it.
 
 ## Flashing
 
@@ -81,6 +114,9 @@ The synth listens on every channel.
 | --- | --- |
 | Note On / Off | play / release; velocity sets loudness |
 | CC 7 | volume |
+| CC 9 | velocity curve of the physical keys = value / 32: 0 fixed (100), 1 light touch, 2 normal, 3 firm touch |
+| CC 14 | 64–127: restart the keys' calibration (forget the learnt bottoms) |
+| CC 15 | key test: 64–127 on, streams key positions as Poly Aftertouch on channel 16 |
 | CC 24 | key layout of the physical keys: 0–63 C-griff, 64–127 B-griff |
 | CC 20–22 | synth oscillator 1–3 waveform: 0–31 sine, 32–63 triangle, 64–95 saw, 96–127 square |
 | CC 25 | instrument = value / 16: 0 accordion, 1 piano, 2 bass, 3 guitar, 4 synth |

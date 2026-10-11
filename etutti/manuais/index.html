@@ -1,0 +1,1445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title data-i18n="meta.title">BeatConfused | eTuttino manuals</title>
+  <meta
+    name="description"
+    content="Assembly manuals (factory-soldered board or soldered at home) and user manual for the eTuttino, a 34-key chromatic button accordion with magnetic, velocity-sensitive keys."
+    data-i18n-attr="content:meta.description"
+  />
+  <!-- Part of the unlisted eTutti work in progress: kept out of the sitemap
+       and out of search results until it's ready. -->
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#10131d" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Marck+Script&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
+  <link rel="stylesheet" href="styles.css?v=20261020" />
+  <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
+  <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
+</head>
+<body>
+  <main class="page">
+    <a class="site-title" href="/">beatconfused.com</a>
+    <header class="hero">
+      <p class="eyebrow" data-i18n="hero.eyebrow">BeatConfused Studio</p>
+      <h1 data-i18n="hero.title">eTuttino manuals</h1>
+    </header>
+    <p class="manual-back"><a href="../" data-i18n="nav.back">← Back to eTutti</a></p>
+
+      <!-- =========================== ENGLISH =========================== -->
+      <div class="lang-block" data-lang="en">
+        <p class="manual-intro">
+          The eTuttino is an electronic chromatic button accordion: 34 keys in C-griff (G3 to G5), with its own sound
+          and a headphone output. The keys are <strong>magnetic</strong>, so every note follows how hard you play it
+          (velocity). These manuals take you from zero, ordering the boards, to playing.
+        </p>
+
+        <nav class="manual-toc" aria-label="Manuals">
+          <a href="#en-before"><span class="toc-kicker">Start here</span><span class="toc-title">Before you start</span><span class="toc-desc">How it works, what to buy and which assembly route to pick.</span></a>
+          <a href="#en-route-a"><span class="toc-kicker">Assembly · route A</span><span class="toc-title">Board soldered by the factory</span><span class="toc-desc">JLCPCB solders every small part. You only solder the sockets.</span></a>
+          <a href="#en-route-b"><span class="toc-kicker">Assembly · route B</span><span class="toc-title">Everything soldered at home</span><span class="toc-desc">You get a bare board and solder the SMD parts yourself.</span></a>
+          <a href="#en-final"><span class="toc-kicker">Assembly · both routes</span><span class="toc-title">Final assembly and test</span><span class="toc-desc">Teensy, firmware, switches, keycaps and calibration.</span></a>
+          <a href="#en-use"><span class="toc-kicker">User manual</span><span class="toc-title">Playing the eTuttino</span><span class="toc-desc">Power, the web page, instruments, velocity and troubleshooting.</span></a>
+        </nav>
+
+        <!-- ------------------------------------------------ Before you start -->
+        <section class="manual" id="en-before">
+          <p class="manual-kicker">Start here</p>
+          <h2>Before you start</h2>
+
+          <h3>How the eTuttino works</h3>
+          <p>
+            Each key is a Gateron magnetic switch (KS-20) with a small magnet in its stem. Under every switch, on the back
+            of the board, a <strong>DRV5056A3</strong> Hall sensor measures the magnet's field: the further the key goes
+            down, the higher its voltage. Three <strong>CD74HC4067</strong> multiplexers bring the 34 sensors to three
+            analog inputs of a <strong>Teensy 4.0</strong>.
+          </p>
+          <p>
+            The Teensy reads every key about 4,000 times a second, and works out the velocity from how long the key takes
+            to go down. The sound comes from the <strong>Audio Board Rev D</strong> stacked on the Teensy. The eTuttino
+            plays on its own (it only needs USB power) and also talks to the <a href="../">beatconfused.com/etutti</a> page
+            over USB MIDI.
+          </p>
+
+          <figure>
+            <svg viewBox="0 0 640 230" role="img" aria-labelledby="en-fig-pole">
+              <title id="en-fig-pole">Side section: magnetic switch with the magnet's north pole down, the board, and the sensor on the back facing down.</title>
+              <rect x="0" y="0" width="640" height="230" fill="#fffaf2"/>
+              <rect x="230" y="18" width="180" height="26" rx="8" fill="#ece6dc" stroke="#57483b"/>
+              <text x="320" y="36" text-anchor="middle" font-size="13" fill="#221b16">keycap</text>
+              <rect x="300" y="44" width="40" height="40" fill="#d9cdbb" stroke="#57483b"/>
+              <rect x="250" y="84" width="140" height="44" rx="4" fill="#efe7da" stroke="#57483b"/>
+              <rect x="306" y="92" width="28" height="30" fill="#8c3b2f"/>
+              <rect x="306" y="107" width="28" height="15" fill="#3f6f9f"/>
+              <text x="320" y="104" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">S</text>
+              <text x="320" y="119" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">N</text>
+              <text x="410" y="110" font-size="12" fill="#57483b">magnetic switch (magnet in the stem)</text>
+              <rect x="120" y="128" width="400" height="14" fill="#1f5e3a"/>
+              <text x="530" y="140" font-size="12" fill="#57483b">1.2 mm board</text>
+              <rect x="306" y="142" width="28" height="10" fill="#2b2b2b"/>
+              <text x="320" y="192" text-anchor="middle" font-size="12" fill="#221b16" font-weight="700">DRV5056A3</text>
+              <text x="320" y="208" text-anchor="middle" font-size="11" fill="#57483b">on the back, marked side facing down</text>
+              <path d="M 272 112 L 272 166" stroke="#3f6f9f" stroke-width="2" marker-end="url(#en-arrow)"/>
+              <path d="M 368 112 L 368 166" stroke="#3f6f9f" stroke-width="2" marker-end="url(#en-arrow)"/>
+              <text x="384" y="166" font-size="11" fill="#3f6f9f">the north pole's field goes through the board</text>
+              <defs><marker id="en-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3f6f9f"/></marker></defs>
+            </svg>
+            <figcaption>
+              Why the sensors are on the back: the DRV5056 only responds to a <strong>south</strong> pole facing its marked
+              side, and Gateron switches have the <strong>north</strong> pole facing down. On the back, the sensor gets the
+              field from behind, which reads with the right polarity. So use Gateron magnetic switches (north pole down).
+            </figcaption>
+          </figure>
+
+          <h3>Two ways to build it</h3>
+          <ul>
+            <li>
+              <strong>Route A: board soldered by the factory.</strong> You order the board from JLCPCB with their assembly
+              service (PCBA). It arrives with every small part already soldered on the back. At home you only solder the
+              two Teensy sockets (28 joints) and the Teensy and Audio Board pins. It's the easiest and most reliable route.
+            </li>
+            <li>
+              <strong>Route B: everything soldered at home.</strong> The board arrives bare and you solder 78 SMD parts
+              (34 sensors, 39 capacitors, three 24-pin chips, one regulator). It's cheaper, but needs a fine-tip iron,
+              flux, tweezers and patience.
+            </li>
+          </ul>
+
+          <h3>What comes soldered and what you assemble</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Part</th><th>Qty</th><th>Route A</th><th>Route B</th></tr></thead>
+              <tbody>
+                <tr><td>Hall sensor DRV5056A3QDBZR (SOT-23)</td><td>34</td><td><span class="tag tag-fab">soldered</span></td><td><span class="tag tag-home">you solder</span></td></tr>
+                <tr><td>Capacitor 100 nF 0805</td><td>37</td><td><span class="tag tag-fab">soldered</span></td><td><span class="tag tag-home">you solder</span></td></tr>
+                <tr><td>Multiplexer CD74HC4067M96 (SOIC-24)</td><td>3</td><td><span class="tag tag-fab">soldered</span></td><td><span class="tag tag-home">you solder</span></td></tr>
+                <tr><td>Regulator AMS1117-3.3 (SOT-223)</td><td>1</td><td><span class="tag tag-fab">soldered</span></td><td><span class="tag tag-home">you solder</span></td></tr>
+                <tr><td>Capacitors 10 µF and 22 µF 0805</td><td>1 + 1</td><td><span class="tag tag-fab">soldered</span></td><td><span class="tag tag-home">you solder</span></td></tr>
+                <tr><td>Female socket 1×14, 2.54 mm (for the Teensy)</td><td>2</td><td><span class="tag tag-home">you solder</span>¹</td><td><span class="tag tag-home">you solder</span></td></tr>
+                <tr><td>Teensy 4.0 + 1×14 male headers</td><td>1 + 2</td><td><span class="tag tag-home">you solder</span>²</td><td><span class="tag tag-home">you solder</span>²</td></tr>
+                <tr><td>Audio Board Rev D + 1×14 stacking headers</td><td>1 + 2</td><td><span class="tag tag-home">you solder</span></td><td><span class="tag tag-home">you solder</span></td></tr>
+                <tr><td>Gateron KS-20 magnetic switch</td><td>34</td><td><span class="tag tag-none">snap in</span></td><td><span class="tag tag-none">snap in</span></td></tr>
+                <tr><td>Round MX keycap: 19 light + 15 dark</td><td>34</td><td><span class="tag tag-none">press on</span></td><td><span class="tag tag-none">press on</span></td></tr>
+                <tr><td>Switch plate, FR4</td><td>1</td><td><span class="tag tag-none">no solder</span></td><td><span class="tag tag-none">no solder</span></td></tr>
+                <tr><td>M2 × 3.5 mm standoffs + M2 × 4 mm screws</td><td>8 + 16</td><td><span class="tag tag-none">screw</span></td><td><span class="tag tag-none">screw</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            ¹ JLCPCB can also solder through-hole parts, but it costs extra and the sockets are on the other side of the
+            board. Soldering 28 pins at home is quick.<br />
+            ² PJRC sells a "Teensy 4.0 with pins", with the pins already soldered.
+          </p>
+          <p>
+            Magnetic switches <strong>have no electrical contacts</strong>, so they aren't soldered. The plate holds them,
+            and their two plastic pegs drop into holes in the board.
+          </p>
+
+          <h3>Shopping list (both routes)</h3>
+          <ul>
+            <li><strong>Teensy 4.0</strong>: <a href="https://www.pjrc.com/store/teensy40.html" target="_blank" rel="noopener">pjrc.com</a> or a distributor.</li>
+            <li><strong>Audio Adaptor Board Rev D</strong> for Teensy 4.x: <a href="https://www.pjrc.com/store/teensy3_audio.html" target="_blank" rel="noopener">pjrc.com</a>.</li>
+            <li>2 × 1×14 male headers (if your Teensy comes without pins).</li>
+            <li>2 × 1×14 stacking headers (female socket on top, long legs below): they join the Audio Board to the Teensy and to the board.</li>
+            <li>2 × 1×14 female sockets, 2.54 mm pitch, for the eTuttino board.</li>
+            <li>
+              <strong>35 Gateron KS-20 magnetic switches</strong> (one 35-pack covers the 34 keys). They must be
+              <strong>magnetic (Hall-effect)</strong> switches with the north pole down, which is Gateron's standard.
+              Ordinary mechanical switches won't work.
+            </li>
+            <li>34 round keycaps with an MX stem ("round" or "typewriter"): 19 light ones for the naturals and 15 dark ones for the sharps.</li>
+            <li>8 M2 × 3.5 mm standoffs (female-female) and 16 M2 × 4 mm screws, plus 2 for the case.</li>
+            <li>A micro-USB cable (the Teensy 4.0 is micro-USB) and headphones or a speaker with a 3.5 mm plug.</li>
+            <li>A case (3D-printed, wood or acrylic), fixed through the M2 holes.</li>
+          </ul>
+
+          <h3>Rough cost</h3>
+          <p>
+            Rough figures in US dollars, as of October 2026, before shipping and taxes. The sites show the exact price
+            before you pay. Import duties can add a lot in some countries.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Item</th><th>Route A</th><th>Route B</th></tr></thead>
+              <tbody>
+                <tr><td>Boards from JLCPCB (5 boards + 5 plates)</td><td>≈ US$ 20–45</td><td>≈ US$ 20–45</td></tr>
+                <tr><td>SMD assembly (PCBA), 2 boards, parts included</td><td>≈ US$ 70–120</td><td>—</td></tr>
+                <tr><td>SMD parts from LCSC (1 board, with spares)</td><td>—</td><td>≈ US$ 30–45</td></tr>
+                <tr><td>Teensy 4.0 + Audio Board Rev D</td><td>≈ US$ 40</td><td>≈ US$ 40</td></tr>
+                <tr><td>Gateron KS-20 switches (35)</td><td>≈ US$ 20–25</td><td>≈ US$ 20–25</td></tr>
+                <tr><td>Keycaps, headers, sockets, standoffs</td><td>≈ US$ 20–40</td><td>≈ US$ 20–40</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Downloads</h3>
+          <ul class="downloads">
+            <li><a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a>: the board (Gerbers + drill files)</li>
+            <li><a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: the switch plate</li>
+            <li><a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a>: parts list (BOM) for JLCPCB assembly</li>
+            <li><a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>: where each part goes (CPL)</li>
+            <li><a href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener">Firmware</a> and <a href="https://github.com/dataehora/beatconfused/tree/main/etutti/hardware" target="_blank" rel="noopener">board design (KiCad)</a> on GitHub</li>
+          </ul>
+
+          <div class="figure-pair">
+            <figure>
+              <img src="../hardware/fab/etuttino_top.png" alt="Board from the top: the 34 switch positions and the two Teensy sockets" loading="lazy" />
+              <figcaption>Front: switches and Teensy sockets.</figcaption>
+            </figure>
+            <figure>
+              <img src="../hardware/fab/etuttino_bottom.png" alt="Board from below: a sensor under each switch, three multiplexers and the regulator" loading="lazy" />
+              <figcaption>Back: all the SMD parts.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- ------------------------------------------------ Route A -->
+        <section class="manual" id="en-route-a">
+          <p class="manual-kicker">Assembly · route A</p>
+          <h2>Board soldered by the factory (JLCPCB)</h2>
+          <p>
+            JLCPCB makes the board and solders every SMD part on the back. The steps below follow JLCPCB's site as it was
+            when this was written. Button names may change a little, but the choices are the same. PCBWay and other fabs
+            work the same way.
+          </p>
+
+          <h3>1. Order the board with assembly</h3>
+          <ol class="steps">
+            <li>Download <a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a>, <a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a> and <a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>.</li>
+            <li>On <a href="https://jlcpcb.com" target="_blank" rel="noopener">jlcpcb.com</a>, create an account, click <strong>Order now</strong> and upload <code>etuttino_gerbers.zip</code>. The site reads the size (183.45 × 132.2 mm) and shows a preview.</li>
+            <li>
+              Board settings:
+              <ul>
+                <li><strong>Layers</strong>: 2 · <strong>Base material</strong>: FR-4 · <strong>PCB Qty</strong>: 5 (the minimum)</li>
+                <li><strong>PCB Thickness: 1.2 mm</strong>. This matters: a thinner board puts the sensor closer to the magnet. 1.6 mm still works, with a weaker signal.</li>
+                <li><strong>Surface finish</strong>: HASL (lead free) or ENIG · any colour · leave the rest at the defaults</li>
+              </ul>
+            </li>
+            <li>
+              Turn on <strong>PCB Assembly</strong>:
+              <ul>
+                <li><strong>PCBA Type</strong>: Economic</li>
+                <li><strong>Assembly Side: Bottom Side</strong> (every part is on the back)</li>
+                <li><strong>PCBA Qty</strong>: 2 (the minimum), or as many as you want built</li>
+                <li><strong>Tooling holes</strong>: "Added by JLCPCB"</li>
+              </ul>
+            </li>
+            <li>Click <strong>Next</strong> and upload the <strong>BOM</strong> (<code>etuttino_bom.csv</code>) and the <strong>CPL</strong> (<code>etuttino_cpl_bottom.csv</code>).</li>
+            <li>
+              On the parts screen, check every line:
+              <ul>
+                <li>the capacitors and the regulator already carry their LCSC numbers (C49678, C15850, C45783, C6186);</li>
+                <li>for <code>DRV5056A3QDBZR</code> and <code>CD74HC4067M96</code>, search by name and pick exactly that part.</li>
+              </ul>
+              If one is out of stock, JLCPCB offers to source it ("global sourcing"). The other option is to leave that line
+              unassembled and solder just that part at home, as in route B. If the A3 is missing, the
+              <code>DRV5056A4QDBZR</code> also works (it's less sensitive). Don't use DRV5055 or DRV5057.
+            </li>
+            <li>
+              Check the <strong>placement preview</strong> carefully. Fabs sometimes get the rotation of a package wrong:
+              <ul>
+                <li><strong>multiplexers</strong>: each chip's pin-1 dot must sit at the corner marked on the silkscreen;</li>
+                <li><strong>regulator</strong>: its wide tab sits on the wide pad;</li>
+                <li><strong>sensors</strong>: the side with 2 pins sits on the 2 pads and the single pin on the single pad.</li>
+              </ul>
+              If anything is turned, fix it with the rotate button on that screen.
+            </li>
+            <li>Confirm and add to cart.</li>
+          </ol>
+
+          <h3>2. Order the switch plate</h3>
+          <ol class="steps">
+            <li>Place a second order with <a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: FR-4, <strong>1.6 mm</strong>, no assembly. The plate has no copper; black or white looks good under the keys.</li>
+            <li>For aluminium, <code>hardware/build/etuttino_plate.dxf</code> is ready for 1.5 mm laser cutting.</li>
+          </ol>
+
+          <h3>3. When the board arrives</h3>
+          <ol class="steps">
+            <li>Look over the back with a magnifier: no crooked chips and no solder joining neighbouring pins, especially on the multiplexers.</li>
+            <li>With a multimeter on continuity, check there is <strong>no short</strong> between regulator U50's big tab (3.3 V) and the GND pin of socket J1. Check the same between J2's VIN pad and GND.</li>
+            <li>Carry on with the <a href="#en-final">Final assembly</a>.</li>
+          </ol>
+        </section>
+
+        <!-- ------------------------------------------------ Route B -->
+        <section class="manual" id="en-route-b">
+          <p class="manual-kicker">Assembly · route B</p>
+          <h2>Everything soldered at home</h2>
+          <p>
+            The board arrives bare and you solder the 78 SMD parts on the back. They're small, but none is hard: the
+            tightest pin spacing is 0.95 mm (sensors) and 1.27 mm (multiplexers).
+          </p>
+
+          <h3>Tools</h3>
+          <ul>
+            <li>A temperature-controlled iron with a fine tip (thin conical, or a 1–2 mm chisel), at about 330 °C</li>
+            <li>Thin solder (0.5 mm) and <strong>flux</strong> (gel or pen): without flux, SMD is misery</li>
+            <li>Fine tweezers, desoldering braid, a magnifier (or your phone's zoom)</li>
+            <li>A multimeter, plus isopropyl alcohol and a brush to clean off the flux</li>
+            <li>Optional: a JLCPCB stencil, solder paste and a hot plate or hot-air station</li>
+          </ul>
+
+          <h3>1. Order the board and the parts</h3>
+          <ol class="steps">
+            <li>On JLCPCB, upload <a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a> with the same settings as route A (2 layers, <strong>1.2 mm</strong>, 5 boards), but <strong>without</strong> PCB Assembly.</li>
+            <li>If you'll use solder paste, add a <strong>stencil</strong> for the <strong>bottom</strong> side only.</li>
+            <li>Order the plate too, as in step 2 of route A.</li>
+            <li>
+              Buy the parts (from <a href="https://www.lcsc.com" target="_blank" rel="noopener">LCSC</a>, which can ship with JLCPCB, or from Mouser, DigiKey or a local shop). Get spares:
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Part</th><th>Code</th><th>Used</th><th>Buy</th></tr></thead>
+                  <tbody>
+                    <tr><td>Hall sensor</td><td><code>DRV5056A3QDBZR</code></td><td>34</td><td>36–40</td></tr>
+                    <tr><td>Capacitor 100 nF 0805</td><td>LCSC C49678</td><td>37</td><td>50</td></tr>
+                    <tr><td>Multiplexer</td><td><code>CD74HC4067M96</code></td><td>3</td><td>4</td></tr>
+                    <tr><td>3.3 V regulator</td><td><code>AMS1117-3.3</code> (LCSC C6186)</td><td>1</td><td>2</td></tr>
+                    <tr><td>Capacitor 10 µF 0805</td><td>LCSC C15850</td><td>1</td><td>2</td></tr>
+                    <tr><td>Capacitor 22 µF 0805</td><td>LCSC C45783</td><td>1</td><td>2</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ol>
+
+          <h3>2. Soldering order (all on the back)</h3>
+          <p>Lay the board <strong>back side up</strong> (the side with the "Sensors DRV5056A3…" text). Go from the hardest part to the easiest:</p>
+          <ol class="steps">
+            <li>
+              <strong>Multiplexers U41, U42 and U43 (SOIC-24).</strong> Find the <strong>pin-1 dot</strong> on the chip and the
+              pin-1 mark on the silkscreen, and line them up.
+              <ol>
+                <li>Tin <em>one</em> corner pad.</li>
+                <li>Hold the chip with tweezers, reheat that pad and line up all 24 pins.</li>
+                <li>Solder the opposite corner.</li>
+                <li>Add flux and solder the rest, one by one or by dragging the tip.</li>
+                <li>Bridges come off with flux and braid.</li>
+              </ol>
+            </li>
+            <li><strong>Regulator U50 (SOT-223).</strong> It only fits one way: the wide tab on the wide pad. Solder one small pin, align, then the others and finally the tab (it needs more heat).</li>
+            <li><strong>Capacitors C50 (10 µF) and C51 (22 µF)</strong>, next to the regulator. Check the silkscreen: they look the same but have different values.</li>
+            <li>
+              <strong>Sensors U1–U34 (SOT-23).</strong> One in the middle of each key position. The 2-pin side goes on the 2
+              pads, so it can't go in backwards. The printed face points out, visible on the back: that's how any SMD part
+              sits.
+              <div class="callout warn"><p>Check the chip's marking: it must be a <strong>DRV5056</strong> (A3 or A4). DRV5055, DRV5053 and DRV5057 look the same but won't work here.</p></div>
+            </li>
+            <li><strong>100 nF capacitors</strong>: C1–C34, one just above each sensor, and C41–C43, below each multiplexer.</li>
+            <li>Clean the flux off with isopropyl alcohol and check everything with a magnifier: lifted pins, bridges and missing parts.</li>
+          </ol>
+          <div class="callout">
+            <p>
+              <strong>With paste and a stencil:</strong> apply the paste through the stencil on the back, place every part with
+              tweezers and reflow on the hot plate. The other side is still empty, so the board lies flat without trouble.
+              Then inspect with a magnifier.
+            </p>
+          </div>
+
+          <h3>3. Electrical check before going on</h3>
+          <ol class="steps">
+            <li>With a multimeter on continuity, check there is <strong>no short</strong> between regulator U50's tab (3.3 V) and GND (socket J1's GND pin, marked on the silkscreen), nor between VIN (J2) and GND.</li>
+            <li>Carry on with the <a href="#en-final">Final assembly</a>. The page's key test shows, sensor by sensor, whether each joint is good.</li>
+          </ol>
+        </section>
+
+        <!-- ------------------------------------------------ Final assembly -->
+        <section class="manual" id="en-final">
+          <p class="manual-kicker">Assembly · both routes</p>
+          <h2>Final assembly and test</h2>
+
+          <h3>1. Teensy sockets</h3>
+          <ol class="steps">
+            <li>The two 1×14 female sockets (J1 and J2) go on the <strong>front</strong> of the board (the switch side), in the strip at the back, near the right edge. Solder them from the back.</li>
+            <li>Tip: plug the Teensy + Audio Board stack (step 2) into the sockets before soldering them, so they end up aligned and straight.</li>
+          </ol>
+
+          <h3>2. Teensy + Audio Board</h3>
+          <ol class="steps">
+            <li>Solder the 1×14 male headers to the Teensy 4.0, pointing down (or use a "Teensy 4.0 with pins").</li>
+            <li>On the Audio Board Rev D, solder the two stacking headers: the female socket sits <strong>on top</strong> and the long legs go down through the board.</li>
+            <li>Plug the Teensy on top of the Audio Board. Pin 0 to pin 0, GND to GND: both boards share the same pin layout.</li>
+            <li>The Audio Board's long legs plug into the eTuttino's sockets. The <strong>Teensy's USB points at the board's right edge</strong>, where the "USB &gt;" mark is. The silkscreen marks "GND"/"0" (J1) and "VIN"/"23" (J2) so you can check.</li>
+          </ol>
+
+          <h3>3. Flash the firmware</h3>
+          <ol class="steps">
+            <li>Install the <a href="https://www.arduino.cc/en/software" target="_blank" rel="noopener">Arduino IDE</a> and <a href="https://www.pjrc.com/teensy/td_download.html" target="_blank" rel="noopener">Teensyduino</a>.</li>
+            <li>Download the <a href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware/etutti_synth" target="_blank" rel="noopener">etutti_synth</a> folder and open <code>etutti_synth.ino</code>. Keep the other files in the same folder.</li>
+            <li>Under <strong>Tools › Board</strong> pick <strong>Teensy 4.0</strong>; under <strong>Tools › USB Type</strong> pick <strong>MIDI</strong>.</li>
+            <li>Plug in the USB and click <strong>Upload</strong>. If you see "In the Arduino IDE choose Tools › USB Type › MIDI", the USB Type is still on "Serial".</li>
+          </ol>
+
+          <h3>4. Test the sensors before fitting the switches</h3>
+          <ol class="steps">
+            <li>Plug headphones or a speaker into the Audio Board, and the USB into the computer.</li>
+            <li>Open <a href="../">beatconfused.com/etutti</a> in Chrome or Edge, click <strong>Connect</strong> and allow MIDI.</li>
+            <li>In the <strong>eTuttino keys</strong> panel, turn on <strong>Key test</strong>.</li>
+            <li>Bring a small magnet (a fridge magnet will do) over each key position, from the <strong>top</strong>. The ring around that key on screen should fill up. If nothing happens, turn the magnet over: only one pole is read.</li>
+          </ol>
+          <div class="callout">
+            <p>
+              If <strong>one sensor</strong> doesn't respond, redo its solder joints. If <strong>a whole block</strong>
+              doesn't respond, the problem is that block's multiplexer: U41 for the left third, U42 for the middle, U43 for
+              the right. Check its joints and its pin 1. If <strong>nothing</strong> responds, measure 3.3 V between U50's tab
+              and GND, and check the Teensy is the right way round.
+            </p>
+          </div>
+
+          <h3>5. Switches, plate and keycaps</h3>
+          <ol class="steps">
+            <li>Snap the 34 Gateron switches into the plate from the top until they click. Either way round is fine.</li>
+            <li>Screw the 8 M2 × 3.5 mm standoffs to the plate (in the corner holes and the holes beside rows 1 and 3).</li>
+            <li>Lower the board onto the assembly: each switch's two plastic pegs drop into the board's holes. Screw it on from below.</li>
+            <li>The board has to sit <strong>right against the bottom of the switches</strong>, with no gap: the distance from magnet to sensor is part of the measurement.</li>
+            <li>Fit the keycaps: light ones on the naturals, dark ones on the sharps. Check against the page, which shows every key's note name.</li>
+            <li>Build the case, fixed through the M2 holes, with openings for the USB and the headphone jack.</li>
+          </ol>
+
+          <h3>6. Calibrate and check</h3>
+          <ol class="steps">
+            <li>Unplug and replug the USB: at start-up the Teensy measures every key at rest. Don't touch the keys while it starts.</li>
+            <li>On the page, click <strong>Calibrate keys</strong> and press <strong>every key all the way down once</strong>. The Teensy stores each key's travel in its internal memory (EEPROM).</li>
+            <li>With <strong>Key test</strong> on, each ring should go from empty (released) to full (bottomed out). Done: on to the <a href="#en-use">User manual</a>.</li>
+          </ol>
+          <div class="callout ok"><p>The magnet test in step 4 leaves a wrong calibration stored. That's why the calibration in step 6 is a must once the switches are in.</p></div>
+        </section>
+
+        <!-- ------------------------------------------------ User manual -->
+        <section class="manual" id="en-use">
+          <p class="manual-kicker">User manual</p>
+          <h2>Playing the eTuttino</h2>
+
+          <h3>Power and sound</h3>
+          <ul>
+            <li><strong>Power</strong>: the Teensy's USB cable into a computer or a phone charger. On a charger the eTuttino plays on its own, without the page.</li>
+            <li><strong>Sound</strong>: headphones or a speaker on the Audio Board's output. It starts on the <em>classic accordion</em>.</li>
+            <li><strong>Don't touch the keys for the first couple of seconds</strong>: that's when the Teensy measures every key's rest position.</li>
+          </ul>
+
+          <h3>The keyboard</h3>
+          <ul>
+            <li>There are 4 rows. <strong>Row 1</strong> is the one nearest you.</li>
+            <li>In <strong>C-griff</strong>, each key along a row is a minor third (3 semitones) above the previous one. Diagonally, from one row to the next, the step is 1 semitone.</li>
+            <li>Row 4 repeats row 1 (plus an extra F♯3), as on a 4-row accordion.</li>
+            <li>The page switches to <strong>B-griff</strong>, C-griff's mirror image, and the real keys follow.</li>
+          </ul>
+
+          <h3>With the beatconfused.com/etutti page</h3>
+          <ol class="steps">
+            <li>Open the page in <strong>Chrome</strong> or <strong>Edge</strong> (Safari has no Web MIDI), click <strong>Connect</strong> and allow MIDI. The device shows up as "eTutti" (or "Teensy MIDI").</li>
+            <li>On connecting, the page sends all its settings to the Teensy. They aren't stored there: after a power cycle it's back to the classic accordion until the page connects again.</li>
+          </ol>
+          <ul>
+            <li><strong>Instrument</strong>: classic accordion, jazz accordion, piano, bass, guitar (nylon) or synth. "Reset to default" goes back to the classic accordion.</li>
+            <li><strong>Accordion register</strong>: the round switch turns each reed set on and off (16', 8' open, 8' in cassotto, 4'). The named buttons (Master, Violin, Clarinet…) pick ready-made combinations.</li>
+            <li><strong>Envelope, volume, tone and ambience</strong>: shape the sound live.</li>
+            <li><strong>Computer keyboard</strong>: plays the eTuttino from the Z…, A…, W… and 2… keys. The page's octave and velocity only apply to these notes and the on-screen ones.</li>
+          </ul>
+
+          <h3>Velocity (how hard you play)</h3>
+          <p>
+            The eTuttino times how long each key takes to go down: fast sounds loud, slow sounds soft. Piano, guitar, bass
+            and synth respond to velocity, and so does the accordion, through each note's volume. In the
+            <strong>eTuttino keys</strong> panel:
+          </p>
+          <ul>
+            <li><strong>Fixed</strong>: every note at the same level (100), like an ordinary keyboard.</li>
+            <li><strong>Light touch</strong>: loud notes with little effort.</li>
+            <li><strong>Normal</strong>: the default.</li>
+            <li><strong>Firm touch</strong>: you have to play faster to sound loud.</li>
+          </ul>
+
+          <h3>Calibration</h3>
+          <ul>
+            <li>The Teensy learns the bottom of each key on its own (the deepest press it has seen) and keeps it even when unplugged. The rest position is measured every time it starts.</li>
+            <li>Click <strong>Calibrate keys</strong> and press every key all the way down once when you swap a switch, take the board apart, or a key triggers too early or too late.</li>
+            <li><strong>Key test</strong> shows, with a ring around each on-screen key, how far the real key is pressed.</li>
+          </ul>
+
+          <h3>As a MIDI controller</h3>
+          <p>
+            The eTuttino is a standard USB MIDI device. In a music program (DAW) it shows up as a MIDI input and sends its
+            notes on channel 1, with velocity. It also plays any notes it receives, on any channel, with its own sound.
+          </p>
+
+          <h3>Troubleshooting</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>What happens</th><th>What to do</th></tr></thead>
+              <tbody>
+                <tr><td>The page can't find the eTutti</td><td>Use Chrome or Edge and allow MIDI. Check the firmware was flashed with USB Type = MIDI.</td></tr>
+                <tr><td>A key doesn't play</td><td>Turn on Key test. If its ring doesn't move, check that key's sensor joints (or ask for help at the address below).</td></tr>
+                <tr><td>A key triggers on its own, or too early or late</td><td>Click Calibrate keys and press every key to the bottom. Check the board sits right against the switches.</td></tr>
+                <tr><td>Every note sounds the same, no dynamics</td><td>Key velocity is on "Fixed". Pick Normal.</td></tr>
+                <tr><td>No sound</td><td>Check the headphones on the Audio Board's output and the volume on the page. Click "All notes off" (Esc).</td></tr>
+                <tr><td>A note is stuck</td><td>Esc, or "All notes off" on the page.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Questions and ideas: <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>.</p>
+        </section>
+      </div>
+      <!-- =========================== PORTUGUÊS =========================== -->
+      <div class="lang-block" data-lang="pt">
+        <p class="manual-intro">
+          O eTuttino é um acordeão cromático de botões eletrônico: 34 teclas no sistema C-griff (Sol3 a Sol5),
+          com som próprio e saída de fone. As teclas são <strong>magnéticas</strong>, então cada nota sai com a
+          força com que você toca (velocity). Estes manuais levam você do zero, comprando as placas, até tocar.
+        </p>
+
+        <nav class="manual-toc" aria-label="Manuais">
+          <a href="#pt-antes"><span class="toc-kicker">Comece aqui</span><span class="toc-title">Antes de começar</span><span class="toc-desc">Como funciona, o que comprar e qual montagem escolher.</span></a>
+          <a href="#pt-montagem-a"><span class="toc-kicker">Montagem · opção A</span><span class="toc-title">Placa já soldada pela fábrica</span><span class="toc-desc">A JLCPCB solda todos os componentes pequenos. Você solda só os soquetes.</span></a>
+          <a href="#pt-montagem-b"><span class="toc-kicker">Montagem · opção B</span><span class="toc-title">Tudo soldado em casa</span><span class="toc-desc">Você recebe a placa vazia e solda os componentes SMD.</span></a>
+          <a href="#pt-final"><span class="toc-kicker">Montagem · as duas opções</span><span class="toc-title">Montagem final e teste</span><span class="toc-desc">Teensy, firmware, chaves, teclas e calibração.</span></a>
+          <a href="#pt-uso"><span class="toc-kicker">Manual de uso</span><span class="toc-title">Tocando o eTuttino</span><span class="toc-desc">Ligar, conectar à página, instrumentos, velocity e problemas comuns.</span></a>
+        </nav>
+
+        <!-- ------------------------------------------------ Antes de começar -->
+        <section class="manual" id="pt-antes">
+          <p class="manual-kicker">Comece aqui</p>
+          <h2>Antes de começar</h2>
+
+          <h3>Como o eTuttino funciona</h3>
+          <p>
+            Cada tecla é uma chave magnética Gateron (KS-20), com um pequeno ímã dentro da haste. Embaixo de cada chave,
+            no verso da placa, um sensor Hall <strong>DRV5056A3</strong> mede o campo do ímã. Quanto mais a tecla desce,
+            maior a tensão. Três multiplexadores <strong>CD74HC4067</strong> levam os 34 sensores a três entradas
+            analógicas de um <strong>Teensy 4.0</strong>.
+          </p>
+          <p>
+            O Teensy lê cada tecla cerca de 4 mil vezes por segundo. Com isso ele calcula a velocity pelo tempo que a
+            tecla leva para descer. O som sai da <strong>Audio Board Rev D</strong>, encaixada no Teensy. O eTuttino toca
+            sozinho (basta energia USB) e também conversa com a página <a href="../">beatconfused.com/etutti</a> por
+            MIDI USB.
+          </p>
+
+          <figure>
+            <svg viewBox="0 0 640 230" role="img" aria-labelledby="pt-fig-polo">
+              <title id="pt-fig-polo">Corte lateral: chave magnética com o polo norte do ímã para baixo, a placa e o sensor no verso, virado para baixo.</title>
+              <rect x="0" y="0" width="640" height="230" fill="#fffaf2"/>
+              <rect x="230" y="18" width="180" height="26" rx="8" fill="#ece6dc" stroke="#57483b"/>
+              <text x="320" y="36" text-anchor="middle" font-size="13" fill="#221b16">tecla</text>
+              <rect x="300" y="44" width="40" height="40" fill="#d9cdbb" stroke="#57483b"/>
+              <rect x="250" y="84" width="140" height="44" rx="4" fill="#efe7da" stroke="#57483b"/>
+              <rect x="306" y="92" width="28" height="30" fill="#8c3b2f"/>
+              <rect x="306" y="107" width="28" height="15" fill="#3f6f9f"/>
+              <text x="320" y="104" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">S</text>
+              <text x="320" y="119" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">N</text>
+              <text x="410" y="110" font-size="12" fill="#57483b">chave magnética (ímã na haste)</text>
+              <rect x="120" y="128" width="400" height="14" fill="#1f5e3a"/>
+              <text x="530" y="140" font-size="12" fill="#57483b">placa 1,2 mm</text>
+              <rect x="306" y="142" width="28" height="10" fill="#2b2b2b"/>
+              <text x="320" y="192" text-anchor="middle" font-size="12" fill="#221b16" font-weight="700">DRV5056A3</text>
+              <text x="320" y="208" text-anchor="middle" font-size="11" fill="#57483b">no verso, com a face marcada para baixo</text>
+              <path d="M 272 112 L 272 166" stroke="#3f6f9f" stroke-width="2" marker-end="url(#pt-arrow)"/>
+              <path d="M 368 112 L 368 166" stroke="#3f6f9f" stroke-width="2" marker-end="url(#pt-arrow)"/>
+              <text x="384" y="166" font-size="11" fill="#3f6f9f">campo do polo norte atravessa a placa</text>
+              <defs><marker id="pt-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3f6f9f"/></marker></defs>
+            </svg>
+            <figcaption>
+              Por que os sensores ficam no verso: o DRV5056 só reage ao polo <strong>sul</strong> voltado para a face
+              marcada, e as chaves Gateron têm o polo <strong>norte</strong> para baixo. Montado no verso, o sensor
+              recebe o campo por trás, e aí o sinal sai com a polaridade certa. Por isso use chaves magnéticas da
+              Gateron (polo norte para baixo).
+            </figcaption>
+          </figure>
+
+          <h3>Duas maneiras de montar</h3>
+          <ul>
+            <li>
+              <strong>Opção A: placa já soldada pela fábrica.</strong> Você pede a placa na JLCPCB com o serviço de montagem
+              (PCBA). Ela chega com todos os componentes pequenos já soldados no verso. Em casa você solda só os dois
+              soquetes do Teensy (28 pontos) e os pinos do Teensy e da Audio Board. É o caminho mais fácil e confiável.
+            </li>
+            <li>
+              <strong>Opção B: tudo soldado em casa.</strong> A placa chega vazia e você solda 78 componentes SMD
+              (34 sensores, 39 capacitores, 3 chips de 24 pinos, 1 regulador). Sai mais barato, mas pede ferro de ponta
+              fina, fluxo, pinça e paciência.
+            </li>
+          </ul>
+
+          <h3>O que vem soldado e o que você monta</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Peça</th><th>Qtd.</th><th>Opção A</th><th>Opção B</th></tr></thead>
+              <tbody>
+                <tr><td>Sensor Hall DRV5056A3QDBZR (SOT-23)</td><td>34</td><td><span class="tag tag-fab">vem soldado</span></td><td><span class="tag tag-home">você solda</span></td></tr>
+                <tr><td>Capacitor 100 nF 0805</td><td>37</td><td><span class="tag tag-fab">vem soldado</span></td><td><span class="tag tag-home">você solda</span></td></tr>
+                <tr><td>Multiplexador CD74HC4067M96 (SOIC-24)</td><td>3</td><td><span class="tag tag-fab">vem soldado</span></td><td><span class="tag tag-home">você solda</span></td></tr>
+                <tr><td>Regulador AMS1117-3.3 (SOT-223)</td><td>1</td><td><span class="tag tag-fab">vem soldado</span></td><td><span class="tag tag-home">você solda</span></td></tr>
+                <tr><td>Capacitores 10 µF e 22 µF 0805</td><td>1 + 1</td><td><span class="tag tag-fab">vem soldado</span></td><td><span class="tag tag-home">você solda</span></td></tr>
+                <tr><td>Soquete fêmea 1×14, 2,54 mm (para o Teensy)</td><td>2</td><td><span class="tag tag-home">você solda</span>¹</td><td><span class="tag tag-home">você solda</span></td></tr>
+                <tr><td>Teensy 4.0 + pinos macho 1×14</td><td>1 + 2</td><td><span class="tag tag-home">você solda</span>²</td><td><span class="tag tag-home">você solda</span>²</td></tr>
+                <tr><td>Audio Board Rev D + "stacking headers" 1×14</td><td>1 + 2</td><td><span class="tag tag-home">você solda</span></td><td><span class="tag tag-home">você solda</span></td></tr>
+                <tr><td>Chave magnética Gateron KS-20</td><td>34</td><td><span class="tag tag-none">só encaixa</span></td><td><span class="tag tag-none">só encaixa</span></td></tr>
+                <tr><td>Tecla (keycap) redonda MX: 19 claras + 15 escuras</td><td>34</td><td><span class="tag tag-none">só encaixa</span></td><td><span class="tag tag-none">só encaixa</span></td></tr>
+                <tr><td>Placa de suporte das chaves (plate), FR4</td><td>1</td><td><span class="tag tag-none">sem solda</span></td><td><span class="tag tag-none">sem solda</span></td></tr>
+                <tr><td>Espaçador M2 × 3,5 mm + parafusos M2 × 4 mm</td><td>8 + 16</td><td><span class="tag tag-none">parafusar</span></td><td><span class="tag tag-none">parafusar</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            ¹ A JLCPCB também solda peças de furo passante, mas cobra à parte e os soquetes ficam do outro lado da placa.
+            Soldar 28 pinos em casa é rápido.<br />
+            ² A PJRC vende o "Teensy 4.0 with pins", com os pinos já soldados.
+          </p>
+          <p>
+            As chaves magnéticas <strong>não têm contato elétrico</strong>: não são soldadas. Elas ficam presas na placa de
+            suporte, e dois pinos de plástico se encaixam nos furos da placa.
+          </p>
+
+          <h3>Lista de compras (vale para as duas opções)</h3>
+          <ul>
+            <li><strong>Teensy 4.0</strong>: <a href="https://www.pjrc.com/store/teensy40.html" target="_blank" rel="noopener">pjrc.com</a> ou distribuidores.</li>
+            <li><strong>Audio Adaptor Board Rev D</strong> para Teensy 4.x: <a href="https://www.pjrc.com/store/teensy3_audio.html" target="_blank" rel="noopener">pjrc.com</a>.</li>
+            <li>2 barras de pinos macho 1×14 (se o Teensy vier sem pinos).</li>
+            <li>2 "stacking headers" 1×14 (soquete fêmea em cima, pernas longas embaixo): é o que liga a Audio Board ao Teensy e à placa.</li>
+            <li>2 soquetes fêmea 1×14, passo 2,54 mm, para a placa do eTuttino.</li>
+            <li>
+              <strong>35 chaves Gateron KS-20 magnéticas</strong> (um pacote de 35 cobre as 34 teclas). Tem que ser chave
+              <strong>magnética (Hall effect)</strong> com o polo norte para baixo, que é o padrão da Gateron. Chaves
+              mecânicas comuns não funcionam.
+            </li>
+            <li>34 keycaps redondos com encaixe MX ("round" ou "typewriter"): 19 claros para as notas naturais e 15 escuros para os sustenidos.</li>
+            <li>8 espaçadores M2 × 3,5 mm (fêmea-fêmea) e 16 parafusos M2 × 4 mm, mais 2 para a caixa.</li>
+            <li>Cabo USB micro-B (o Teensy 4.0 usa micro-USB) e fone de ouvido ou caixa de som com plugue P2.</li>
+            <li>Uma caixa (impressão 3D, madeira ou acrílico), presa pelos furos M2.</li>
+          </ul>
+
+          <h3>Custo aproximado</h3>
+          <p>
+            Valores aproximados em dólar, de outubro de 2026, sem frete e sem impostos. Os sites mostram o preço exato antes
+            do pagamento. Na importação para o Brasil, frete e impostos podem pesar bastante.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Item</th><th>Opção A</th><th>Opção B</th></tr></thead>
+              <tbody>
+                <tr><td>Placas na JLCPCB (5 placas + 5 plates)</td><td>≈ US$ 20–45</td><td>≈ US$ 20–45</td></tr>
+                <tr><td>Montagem SMD (PCBA), 2 placas, peças incluídas</td><td>≈ US$ 70–120</td><td>—</td></tr>
+                <tr><td>Componentes SMD na LCSC (1 placa, com sobras)</td><td>—</td><td>≈ US$ 30–45</td></tr>
+                <tr><td>Teensy 4.0 + Audio Board Rev D</td><td>≈ US$ 40</td><td>≈ US$ 40</td></tr>
+                <tr><td>Chaves Gateron KS-20 (35)</td><td>≈ US$ 20–25</td><td>≈ US$ 20–25</td></tr>
+                <tr><td>Keycaps, pinos, soquetes, espaçadores</td><td>≈ US$ 20–40</td><td>≈ US$ 20–40</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Arquivos para baixar</h3>
+          <ul class="downloads">
+            <li><a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a>: a placa (Gerbers + furação)</li>
+            <li><a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: a placa de suporte das chaves (plate)</li>
+            <li><a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a>: lista de componentes (BOM), para a montagem na JLCPCB</li>
+            <li><a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>: posição de cada componente (CPL)</li>
+            <li><a href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener">Firmware</a> e <a href="https://github.com/dataehora/beatconfused/tree/main/etutti/hardware" target="_blank" rel="noopener">projeto da placa (KiCad)</a> no GitHub</li>
+          </ul>
+
+          <div class="figure-pair">
+            <figure>
+              <img src="../hardware/fab/etuttino_top.png" alt="Placa vista de cima: as 34 posições das chaves e os dois soquetes do Teensy" loading="lazy" />
+              <figcaption>Frente: chaves e soquetes do Teensy.</figcaption>
+            </figure>
+            <figure>
+              <img src="../hardware/fab/etuttino_bottom.png" alt="Placa vista de baixo: sensores sob cada chave, três multiplexadores e o regulador" loading="lazy" />
+              <figcaption>Verso: todos os componentes SMD.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- ------------------------------------------------ Montagem A -->
+        <section class="manual" id="pt-montagem-a">
+          <p class="manual-kicker">Montagem · opção A</p>
+          <h2>Placa já soldada pela fábrica (JLCPCB)</h2>
+          <p>
+            A JLCPCB fabrica a placa e solda todos os componentes SMD do verso. O passo a passo abaixo segue o site da
+            JLCPCB na data em que foi escrito. Os nomes dos botões podem mudar um pouco, mas as escolhas são as mesmas.
+            A PCBWay e outras fábricas funcionam do mesmo jeito.
+          </p>
+
+          <h3>1. Pedir a placa com montagem</h3>
+          <ol class="steps">
+            <li>Baixe <a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a>, <a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a> e <a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>.</li>
+            <li>Em <a href="https://jlcpcb.com" target="_blank" rel="noopener">jlcpcb.com</a>, crie uma conta, clique em <strong>Order now</strong> e envie o <code>etuttino_gerbers.zip</code>. O site lê o tamanho (183,45 × 132,2 mm) e mostra uma prévia.</li>
+            <li>
+              Ajustes da placa:
+              <ul>
+                <li><strong>Layers</strong>: 2 · <strong>Base material</strong>: FR-4 · <strong>PCB Qty</strong>: 5 (o mínimo)</li>
+                <li><strong>PCB Thickness: 1.2 mm</strong>. Importante: placa mais fina deixa o sensor mais perto do ímã. Com 1,6 mm funciona, só que com sinal mais fraco.</li>
+                <li><strong>Surface finish</strong>: HASL (lead free) ou ENIG · cor à vontade · o resto no padrão</li>
+              </ul>
+            </li>
+            <li>
+              Ligue <strong>PCB Assembly</strong>:
+              <ul>
+                <li><strong>PCBA Type</strong>: Economic</li>
+                <li><strong>Assembly Side: Bottom Side</strong> (todos os componentes ficam no verso)</li>
+                <li><strong>PCBA Qty</strong>: 2 (o mínimo), ou quantas você quiser montar</li>
+                <li><strong>Tooling holes</strong>: "Added by JLCPCB"</li>
+              </ul>
+            </li>
+            <li>Clique em <strong>Next</strong> e envie o <strong>BOM</strong> (<code>etuttino_bom.csv</code>) e o <strong>CPL</strong> (<code>etuttino_cpl_bottom.csv</code>).</li>
+            <li>
+              Na tela de peças, confira cada linha:
+              <ul>
+                <li>capacitores e regulador já vêm com o código LCSC (C49678, C15850, C45783, C6186);</li>
+                <li>para <code>DRV5056A3QDBZR</code> e <code>CD74HC4067M96</code>, procure pelo nome e escolha exatamente essa peça.</li>
+              </ul>
+              Se uma delas estiver sem estoque, a JLCPCB oferece comprar por encomenda ("global sourcing"). Outra saída:
+              deixar essa linha sem montar e soldar só essa peça em casa, como na opção B. Se faltar o A3, o
+              <code>DRV5056A4QDBZR</code> também funciona (é menos sensível). Não use DRV5055 nem DRV5057.
+            </li>
+            <li>
+              Confira a <strong>prévia de posicionamento</strong> com calma. A fábrica às vezes erra a rotação de alguns
+              encapsulamentos:
+              <ul>
+                <li><strong>multiplexadores</strong>: a bolinha do pino 1 de cada chip tem que ficar no canto marcado na serigrafia;</li>
+                <li><strong>regulador</strong>: a aba larga fica sobre o pad largo;</li>
+                <li><strong>sensores</strong>: o lado com 2 pinos fica sobre os 2 pads e o lado com 1 pino sobre o pad único.</li>
+              </ul>
+              Se algo estiver girado, use o botão de rotação da própria tela.
+            </li>
+            <li>Confirme e coloque no carrinho.</li>
+          </ol>
+
+          <h3>2. Pedir a placa de suporte (plate)</h3>
+          <ol class="steps">
+            <li>Faça um segundo pedido com <a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: FR-4, <strong>1,6 mm</strong>, sem montagem. A plate não tem cobre; preto ou branco ficam bonitos sob as teclas.</li>
+            <li>Se preferir alumínio, o arquivo <code>hardware/build/etuttino_plate.dxf</code> serve para corte a laser em 1,5 mm.</li>
+          </ol>
+
+          <h3>3. Quando a placa chegar</h3>
+          <ol class="steps">
+            <li>Olhe o verso com uma lupa: nenhum chip torto e nenhuma solda unindo dois pinos vizinhos, sobretudo nos multiplexadores.</li>
+            <li>Com um multímetro em continuidade, confira que <strong>não há curto</strong> entre a aba grande do regulador U50 (3,3 V) e o pino GND do soquete J1. Faça o mesmo entre o pad VIN de J2 e o GND.</li>
+            <li>Siga para a <a href="#pt-final">Montagem final</a>.</li>
+          </ol>
+        </section>
+
+        <!-- ------------------------------------------------ Montagem B -->
+        <section class="manual" id="pt-montagem-b">
+          <p class="manual-kicker">Montagem · opção B</p>
+          <h2>Tudo soldado em casa</h2>
+          <p>
+            A placa vem vazia e você solda os 78 componentes SMD do verso. Eles são pequenos, mas nenhum é difícil: o menor
+            espaçamento entre pinos é de 0,95 mm (sensores) e 1,27 mm (multiplexadores).
+          </p>
+
+          <h3>Ferramentas</h3>
+          <ul>
+            <li>Ferro de solda com controle de temperatura e ponta fina (cônica fina ou chanfrada de 1–2 mm), por volta de 330 °C</li>
+            <li>Solda fina (0,5 mm) e <strong>fluxo</strong> em gel ou caneta: sem fluxo, SMD vira sofrimento</li>
+            <li>Pinça de ponta fina, malha dessoldadora, lupa (ou o zoom do celular)</li>
+            <li>Multímetro e álcool isopropílico com uma escova para limpar o fluxo</li>
+            <li>Opcional: estêncil da JLCPCB, pasta de solda e chapa de refusão (hot plate) ou estação de ar quente</li>
+          </ul>
+
+          <h3>1. Pedir a placa e as peças</h3>
+          <ol class="steps">
+            <li>Na JLCPCB, envie <a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a> com os mesmos ajustes da opção A (2 camadas, <strong>1,2 mm</strong>, 5 placas), mas <strong>sem</strong> PCB Assembly.</li>
+            <li>Se for usar pasta de solda, peça junto um <strong>stencil</strong> só do lado <strong>bottom</strong>.</li>
+            <li>Peça também a plate, como no passo 2 da opção A.</li>
+            <li>
+              Compre os componentes (na <a href="https://www.lcsc.com" target="_blank" rel="noopener">LCSC</a>, que entrega junto com a JLCPCB, ou em Mouser, DigiKey ou lojas locais). Compre com sobra:
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Peça</th><th>Código</th><th>Usa</th><th>Compre</th></tr></thead>
+                  <tbody>
+                    <tr><td>Sensor Hall</td><td><code>DRV5056A3QDBZR</code></td><td>34</td><td>36–40</td></tr>
+                    <tr><td>Capacitor 100 nF 0805</td><td>LCSC C49678</td><td>37</td><td>50</td></tr>
+                    <tr><td>Multiplexador</td><td><code>CD74HC4067M96</code></td><td>3</td><td>4</td></tr>
+                    <tr><td>Regulador 3,3 V</td><td><code>AMS1117-3.3</code> (LCSC C6186)</td><td>1</td><td>2</td></tr>
+                    <tr><td>Capacitor 10 µF 0805</td><td>LCSC C15850</td><td>1</td><td>2</td></tr>
+                    <tr><td>Capacitor 22 µF 0805</td><td>LCSC C45783</td><td>1</td><td>2</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ol>
+
+          <h3>2. Ordem de solda (tudo no verso)</h3>
+          <p>Deixe a placa com o <strong>verso para cima</strong> (o lado com o texto "Sensors DRV5056A3…"). Solde do mais difícil para o mais fácil:</p>
+          <ol class="steps">
+            <li>
+              <strong>Multiplexadores U41, U42 e U43 (SOIC-24).</strong> Ache a <strong>bolinha do pino 1</strong> no chip e a
+              marca de pino 1 na serigrafia, e alinhe as duas.
+              <ol>
+                <li>Ponha um pouco de solda em <em>um</em> pad de canto.</li>
+                <li>Segure o chip com a pinça, reaqueça esse pad e alinhe os 24 pinos.</li>
+                <li>Solde o canto oposto.</li>
+                <li>Passe fluxo e solde os outros pinos, um a um ou arrastando a ponta.</li>
+                <li>Pontes de solda saem com fluxo e malha.</li>
+              </ol>
+            </li>
+            <li><strong>Regulador U50 (SOT-223).</strong> Ele só encaixa de um jeito: a aba larga no pad largo. Solde um pino pequeno, alinhe, depois os outros e por fim a aba (ela pede mais calor).</li>
+            <li><strong>Capacitores C50 (10 µF) e C51 (22 µF)</strong>, ao lado do regulador. Confira a serigrafia: os dois têm o mesmo tamanho, mas valores diferentes.</li>
+            <li>
+              <strong>Sensores U1–U34 (SOT-23).</strong> Ficam no centro de cada posição de tecla. O lado com 2 pinos vai nos
+              2 pads, então não tem como inverter. A face com letras fica para fora, visível no verso: é a montagem normal
+              de qualquer SMD.
+              <div class="callout warn"><p>Confira o código do chip: tem que ser <strong>DRV5056</strong> (A3 ou A4). DRV5055, DRV5053 e DRV5057 parecem iguais, mas não funcionam aqui.</p></div>
+            </li>
+            <li><strong>Capacitores de 100 nF</strong>: C1–C34, um logo acima de cada sensor, e C41–C43, abaixo de cada multiplexador.</li>
+            <li>Limpe o fluxo com álcool isopropílico e confira tudo com lupa: pinos levantados, pontes e peças faltando.</li>
+          </ol>
+          <div class="callout">
+            <p>
+              <strong>Com pasta e estêncil:</strong> passe a pasta com o estêncil no verso, posicione tudo com a pinça e refunda
+              na hot plate. O outro lado ainda está vazio, então a placa fica apoiada sem problema. Depois revise com lupa.
+            </p>
+          </div>
+
+          <h3>3. Teste elétrico antes de continuar</h3>
+          <ol class="steps">
+            <li>Com o multímetro em continuidade, confira que <strong>não há curto</strong> entre a aba do regulador U50 (3,3 V) e o GND (pino GND do soquete J1, marcado na serigrafia), nem entre VIN (J2) e GND.</li>
+            <li>Siga para a <a href="#pt-final">Montagem final</a>. O teste de teclas da página mostra, sensor por sensor, se cada solda ficou boa.</li>
+          </ol>
+        </section>
+
+        <!-- ------------------------------------------------ Montagem final -->
+        <section class="manual" id="pt-final">
+          <p class="manual-kicker">Montagem · as duas opções</p>
+          <h2>Montagem final e teste</h2>
+
+          <h3>1. Soquetes do Teensy</h3>
+          <ol class="steps">
+            <li>Os dois soquetes fêmea 1×14 (J1 e J2) vão na <strong>frente</strong> da placa (o lado das chaves), na faixa de trás, perto da borda direita. Solde pelo verso.</li>
+            <li>Dica: encaixe o conjunto Teensy + Audio Board (passo 2) nos soquetes antes de soldar. Assim eles ficam alinhados e retos.</li>
+          </ol>
+
+          <h3>2. Teensy + Audio Board</h3>
+          <ol class="steps">
+            <li>Solde os pinos macho 1×14 no Teensy 4.0, virados para baixo (ou use um "Teensy 4.0 with pins").</li>
+            <li>Na Audio Board Rev D, solde os dois "stacking headers": o soquete fêmea fica <strong>em cima</strong> e as pernas longas atravessam a placa para baixo.</li>
+            <li>Encaixe o Teensy em cima da Audio Board. Pino 0 com pino 0, GND com GND: as duas placas têm o mesmo desenho de pinos.</li>
+            <li>As pernas longas da Audio Board entram nos soquetes do eTuttino. O <strong>USB do Teensy aponta para a borda direita</strong> da placa, onde está a marca "USB &gt;". A serigrafia marca "GND"/"0" (J1) e "VIN"/"23" (J2) para conferir.</li>
+          </ol>
+
+          <h3>3. Gravar o firmware</h3>
+          <ol class="steps">
+            <li>Instale o <a href="https://www.arduino.cc/en/software" target="_blank" rel="noopener">Arduino IDE</a> e o <a href="https://www.pjrc.com/teensy/td_download.html" target="_blank" rel="noopener">Teensyduino</a>.</li>
+            <li>Baixe a pasta <a href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware/etutti_synth" target="_blank" rel="noopener">etutti_synth</a> e abra o <code>etutti_synth.ino</code>. Mantenha os outros arquivos na mesma pasta.</li>
+            <li>Em <strong>Ferramentas › Placa</strong> escolha <strong>Teensy 4.0</strong>; em <strong>Ferramentas › USB Type</strong> escolha <strong>MIDI</strong>.</li>
+            <li>Ligue o USB e clique em <strong>Carregar</strong>. Se aparecer "In the Arduino IDE choose Tools › USB Type › MIDI", o USB Type ainda está em "Serial".</li>
+          </ol>
+
+          <h3>4. Testar os sensores antes de pôr as chaves</h3>
+          <ol class="steps">
+            <li>Ligue fone ou caixa na saída da Audio Board e o USB no computador.</li>
+            <li>Abra <a href="../">beatconfused.com/etutti</a> no Chrome ou no Edge, clique em <strong>Conectar</strong> e permita o MIDI.</li>
+            <li>No painel <strong>Teclas do eTuttino</strong>, ligue o <strong>Teste das teclas</strong>.</li>
+            <li>Aproxime um ímã pequeno (de geladeira serve) de cada posição de tecla, pelo <strong>lado de cima</strong>. O anel da tecla correspondente na tela deve encher. Se nada acontecer, vire o ímã: só um dos polos é lido.</li>
+          </ol>
+          <div class="callout">
+            <p>
+              Se <strong>um sensor</strong> não responde, refaça a solda dele. Se <strong>um bloco inteiro</strong> não
+              responde, o problema está no multiplexador desse bloco: U41 para o terço esquerdo, U42 para o meio, U43 para o
+              direito. Revise a solda e a posição do pino 1. Se <strong>nada</strong> responde, meça 3,3 V entre a aba do
+              U50 e o GND, e confira se o Teensy está no sentido certo.
+            </p>
+          </div>
+
+          <h3>5. Chaves, plate e teclas</h3>
+          <ol class="steps">
+            <li>Encaixe as 34 chaves Gateron na plate, de cima para baixo, até travarem. Elas podem ir em qualquer um dos dois sentidos.</li>
+            <li>Parafuse os 8 espaçadores M2 × 3,5 mm na plate (nos furos dos cantos e nos furos ao lado das fileiras 1 e 3).</li>
+            <li>Abaixe a placa sobre o conjunto: os dois pinos plásticos de cada chave entram nos furos da placa. Parafuse por baixo.</li>
+            <li>A placa tem que ficar <strong>encostada no fundo das chaves</strong>, sem folga: a distância entre ímã e sensor faz parte da medida.</li>
+            <li>Coloque as teclas (keycaps): claras nas notas naturais, escuras nos sustenidos. Confira com a tela da página, que mostra o nome de cada tecla.</li>
+            <li>Monte a caixa, presa pelos furos M2, com abertura para o USB e para o fone.</li>
+          </ol>
+
+          <h3>6. Calibrar e conferir</h3>
+          <ol class="steps">
+            <li>Desligue e ligue o USB: na partida, o Teensy mede cada tecla em repouso. Não toque nas teclas enquanto liga.</li>
+            <li>Na página, clique em <strong>Calibrar teclas</strong> e aperte <strong>cada tecla até o fundo uma vez</strong>. O Teensy guarda o curso de cada tecla na memória interna (EEPROM).</li>
+            <li>Com o <strong>Teste das teclas</strong> ligado, cada anel deve ir de vazio (solta) a cheio (no fundo). Pronto: siga para o <a href="#pt-uso">Manual de uso</a>.</li>
+          </ol>
+          <div class="callout ok"><p>O teste com ímã do passo 4 deixa uma calibração errada gravada. Por isso a calibração do passo 6 é obrigatória depois de instalar as chaves.</p></div>
+        </section>
+
+        <!-- ------------------------------------------------ Manual de uso -->
+        <section class="manual" id="pt-uso">
+          <p class="manual-kicker">Manual de uso</p>
+          <h2>Tocando o eTuttino</h2>
+
+          <h3>Ligar</h3>
+          <ul>
+            <li><strong>Energia</strong>: cabo USB do Teensy no computador ou num carregador de celular. Com o carregador, o eTuttino toca sozinho, sem página.</li>
+            <li><strong>Som</strong>: fone ou caixa ligados na saída da Audio Board. Ao ligar, ele começa no <em>acordeão clássico</em>.</li>
+            <li><strong>Não toque nas teclas nos primeiros segundos</strong>: é quando o Teensy mede a posição de repouso de cada uma.</li>
+          </ul>
+
+          <h3>O teclado</h3>
+          <ul>
+            <li>São 4 fileiras. A <strong>fileira 1</strong> é a mais perto de você.</li>
+            <li>No <strong>C-griff</strong>, cada tecla ao longo de uma fileira fica uma terça menor (3 semitons) acima da anterior. Na diagonal, de uma fileira para a seguinte, o passo é de 1 semitom.</li>
+            <li>A fileira 4 repete a fileira 1 (com um Fá♯3 a mais), como num acordeão de 4 fileiras.</li>
+            <li>A página troca para <strong>B-griff</strong>, o espelho do C-griff, e as teclas de verdade passam a seguir o novo sistema.</li>
+          </ul>
+
+          <h3>Com a página beatconfused.com/etutti</h3>
+          <ol class="steps">
+            <li>Abra a página no <strong>Chrome</strong> ou no <strong>Edge</strong> (o Safari não tem Web MIDI), clique em <strong>Conectar</strong> e permita o MIDI. O dispositivo aparece como "eTutti" (ou "Teensy MIDI").</li>
+            <li>Na conexão, a página manda todos os ajustes para o Teensy. Os ajustes não ficam gravados nele: ao religar, ele volta ao acordeão clássico até a página se conectar de novo.</li>
+          </ol>
+          <ul>
+            <li><strong>Instrumento</strong>: acordeão clássico, acordeão jazz, piano, baixo, violão (nylon) ou synth. "Restaurar padrão" volta ao acordeão clássico.</li>
+            <li><strong>Registros do acordeão</strong>: o botão redondo liga e desliga cada jogo de palhetas (16', 8' aberta, 8' em cassotto, 4'). Os botões com nome (Master, Violino, Clarinete…) escolhem combinações prontas.</li>
+            <li><strong>Envelope, volume, tom e ambiência</strong>: ajustam o som em tempo real.</li>
+            <li><strong>Teclado do computador</strong>: toca o eTuttino pelas teclas Z…, A…, W… e 2…. Oitava e velocity da página valem só para essas notas e para as da tela.</li>
+          </ul>
+
+          <h3>Velocity (a força do toque)</h3>
+          <p>
+            O eTuttino mede o tempo que cada tecla leva para descer: rápido soa forte, devagar soa suave. Piano, violão,
+            baixo e synth respondem à velocity, e o acordeão também, com o volume de cada nota. No painel
+            <strong>Teclas do eTuttino</strong>:
+          </p>
+          <ul>
+            <li><strong>Fixa</strong>: toda nota sai com a mesma força (100), como num teclado comum.</li>
+            <li><strong>Toque leve</strong>: notas fortes com pouco esforço.</li>
+            <li><strong>Normal</strong>: o padrão.</li>
+            <li><strong>Toque firme</strong>: é preciso tocar mais rápido para soar forte.</li>
+          </ul>
+
+          <h3>Calibração</h3>
+          <ul>
+            <li>O Teensy aprende sozinho o fundo de cada tecla (a pressão mais funda que já viu) e guarda isso mesmo desligado. A posição de repouso é medida a cada vez que liga.</li>
+            <li>Clique em <strong>Calibrar teclas</strong> e aperte cada tecla até o fundo uma vez quando trocar uma chave, mexer na placa ou notar uma tecla que dispara cedo ou tarde demais.</li>
+            <li>O <strong>Teste das teclas</strong> mostra, num anel em volta de cada tecla da tela, o quanto a tecla de verdade está apertada.</li>
+          </ul>
+
+          <h3>Como controlador MIDI</h3>
+          <p>
+            O eTuttino é um dispositivo MIDI USB padrão. Num programa de música (DAW), ele aparece como entrada MIDI e manda
+            as notas no canal 1, com velocity. Ele também toca as notas que receber, em qualquer canal, usando o som interno.
+          </p>
+
+          <h3>Problemas comuns</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>O que acontece</th><th>O que fazer</th></tr></thead>
+              <tbody>
+                <tr><td>A página não acha o eTutti</td><td>Use Chrome ou Edge e permita o MIDI. Confira se o firmware foi gravado com USB Type = MIDI.</td></tr>
+                <tr><td>Uma tecla não toca</td><td>Ligue o Teste das teclas. Se o anel não se mexe, revise a solda do sensor dessa tecla (ou peça ajuda pelo e-mail abaixo).</td></tr>
+                <tr><td>Uma tecla dispara sozinha, ou cedo ou tarde demais</td><td>Clique em Calibrar teclas e aperte cada tecla até o fundo. Confira se a placa está bem encostada nas chaves.</td></tr>
+                <tr><td>Todas as notas soam iguais, sem dinâmica</td><td>A velocity das teclas está em "Fixa". Escolha Normal.</td></tr>
+                <tr><td>Sem som</td><td>Confira o fone na saída da Audio Board e o volume na página. Clique em "Silenciar tudo" (Esc).</td></tr>
+                <tr><td>Uma nota fica presa</td><td>Esc ou "Silenciar tudo" na página.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Dúvidas e sugestões: <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>.</p>
+        </section>
+      </div>
+      <!-- =========================== ESPAÑOL =========================== -->
+      <div class="lang-block" data-lang="es">
+        <p class="manual-intro">
+          El eTuttino es un acordeón cromático de botones electrónico: 34 teclas en sistema C-griff (Sol3 a Sol5), con
+          sonido propio y salida de auriculares. Las teclas son <strong>magnéticas</strong>, así que cada nota sale con la
+          fuerza con que la tocas (velocity). Estos manuales te llevan desde cero, encargando las placas, hasta tocar.
+        </p>
+
+        <nav class="manual-toc" aria-label="Manuales">
+          <a href="#es-antes"><span class="toc-kicker">Empieza aquí</span><span class="toc-title">Antes de empezar</span><span class="toc-desc">Cómo funciona, qué comprar y qué montaje elegir.</span></a>
+          <a href="#es-montaje-a"><span class="toc-kicker">Montaje · opción A</span><span class="toc-title">Placa soldada en fábrica</span><span class="toc-desc">JLCPCB suelda todos los componentes pequeños. Tú solo sueldas los zócalos.</span></a>
+          <a href="#es-montaje-b"><span class="toc-kicker">Montaje · opción B</span><span class="toc-title">Todo soldado en casa</span><span class="toc-desc">Recibes la placa vacía y sueldas los componentes SMD.</span></a>
+          <a href="#es-final"><span class="toc-kicker">Montaje · las dos opciones</span><span class="toc-title">Montaje final y prueba</span><span class="toc-desc">Teensy, firmware, interruptores, teclas y calibración.</span></a>
+          <a href="#es-uso"><span class="toc-kicker">Manual de uso</span><span class="toc-title">Tocar el eTuttino</span><span class="toc-desc">Encender, la página, instrumentos, velocity y problemas comunes.</span></a>
+        </nav>
+
+        <!-- ------------------------------------------------ Antes de empezar -->
+        <section class="manual" id="es-antes">
+          <p class="manual-kicker">Empieza aquí</p>
+          <h2>Antes de empezar</h2>
+
+          <h3>Cómo funciona el eTuttino</h3>
+          <p>
+            Cada tecla es un interruptor magnético Gateron (KS-20), con un pequeño imán en el vástago. Debajo de cada
+            interruptor, en el reverso de la placa, un sensor Hall <strong>DRV5056A3</strong> mide el campo del imán:
+            cuanto más baja la tecla, mayor es la tensión. Tres multiplexores <strong>CD74HC4067</strong> llevan los 34
+            sensores a tres entradas analógicas de un <strong>Teensy 4.0</strong>.
+          </p>
+          <p>
+            El Teensy lee cada tecla unas 4000 veces por segundo y calcula la velocity a partir del tiempo que tarda en
+            bajar. El sonido sale de la <strong>Audio Board Rev D</strong>, montada sobre el Teensy. El eTuttino suena solo
+            (basta con alimentación USB) y también se comunica con la página <a href="../">beatconfused.com/etutti</a> por
+            MIDI USB.
+          </p>
+
+          <figure>
+            <svg viewBox="0 0 640 230" role="img" aria-labelledby="es-fig-polo">
+              <title id="es-fig-polo">Corte lateral: interruptor magnético con el polo norte del imán hacia abajo, la placa y el sensor en el reverso, mirando hacia abajo.</title>
+              <rect x="0" y="0" width="640" height="230" fill="#fffaf2"/>
+              <rect x="230" y="18" width="180" height="26" rx="8" fill="#ece6dc" stroke="#57483b"/>
+              <text x="320" y="36" text-anchor="middle" font-size="13" fill="#221b16">tecla</text>
+              <rect x="300" y="44" width="40" height="40" fill="#d9cdbb" stroke="#57483b"/>
+              <rect x="250" y="84" width="140" height="44" rx="4" fill="#efe7da" stroke="#57483b"/>
+              <rect x="306" y="92" width="28" height="30" fill="#8c3b2f"/>
+              <rect x="306" y="107" width="28" height="15" fill="#3f6f9f"/>
+              <text x="320" y="104" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">S</text>
+              <text x="320" y="119" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">N</text>
+              <text x="410" y="110" font-size="12" fill="#57483b">interruptor magnético (imán en el vástago)</text>
+              <rect x="120" y="128" width="400" height="14" fill="#1f5e3a"/>
+              <text x="530" y="140" font-size="12" fill="#57483b">placa 1,2 mm</text>
+              <rect x="306" y="142" width="28" height="10" fill="#2b2b2b"/>
+              <text x="320" y="192" text-anchor="middle" font-size="12" fill="#221b16" font-weight="700">DRV5056A3</text>
+              <text x="320" y="208" text-anchor="middle" font-size="11" fill="#57483b">en el reverso, con la cara marcada hacia abajo</text>
+              <path d="M 272 112 L 272 166" stroke="#3f6f9f" stroke-width="2" marker-end="url(#es-arrow)"/>
+              <path d="M 368 112 L 368 166" stroke="#3f6f9f" stroke-width="2" marker-end="url(#es-arrow)"/>
+              <text x="384" y="166" font-size="11" fill="#3f6f9f">el campo del polo norte atraviesa la placa</text>
+              <defs><marker id="es-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3f6f9f"/></marker></defs>
+            </svg>
+            <figcaption>
+              Por qué los sensores van en el reverso: el DRV5056 solo reacciona a un polo <strong>sur</strong> frente a su cara
+              marcada, y los interruptores Gateron tienen el polo <strong>norte</strong> hacia abajo. En el reverso, el
+              sensor recibe el campo por detrás, y así la señal sale con la polaridad correcta. Por eso, usa interruptores
+              magnéticos Gateron (polo norte hacia abajo).
+            </figcaption>
+          </figure>
+
+          <h3>Dos maneras de montarlo</h3>
+          <ul>
+            <li>
+              <strong>Opción A: placa soldada en fábrica.</strong> Encargas la placa a JLCPCB con su servicio de montaje
+              (PCBA). Llega con todos los componentes pequeños ya soldados en el reverso. En casa solo sueldas los dos
+              zócalos del Teensy (28 puntos) y los pines del Teensy y de la Audio Board. Es el camino más fácil y fiable.
+            </li>
+            <li>
+              <strong>Opción B: todo soldado en casa.</strong> La placa llega vacía y sueldas 78 componentes SMD
+              (34 sensores, 39 condensadores, 3 chips de 24 pines, 1 regulador). Sale más barato, pero pide un soldador de
+              punta fina, flux, pinzas y paciencia.
+            </li>
+          </ul>
+
+          <h3>Qué viene soldado y qué montas tú</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Pieza</th><th>Cant.</th><th>Opción A</th><th>Opción B</th></tr></thead>
+              <tbody>
+                <tr><td>Sensor Hall DRV5056A3QDBZR (SOT-23)</td><td>34</td><td><span class="tag tag-fab">viene soldado</span></td><td><span class="tag tag-home">lo sueldas</span></td></tr>
+                <tr><td>Condensador 100 nF 0805</td><td>37</td><td><span class="tag tag-fab">viene soldado</span></td><td><span class="tag tag-home">lo sueldas</span></td></tr>
+                <tr><td>Multiplexor CD74HC4067M96 (SOIC-24)</td><td>3</td><td><span class="tag tag-fab">viene soldado</span></td><td><span class="tag tag-home">lo sueldas</span></td></tr>
+                <tr><td>Regulador AMS1117-3.3 (SOT-223)</td><td>1</td><td><span class="tag tag-fab">viene soldado</span></td><td><span class="tag tag-home">lo sueldas</span></td></tr>
+                <tr><td>Condensadores 10 µF y 22 µF 0805</td><td>1 + 1</td><td><span class="tag tag-fab">viene soldado</span></td><td><span class="tag tag-home">lo sueldas</span></td></tr>
+                <tr><td>Zócalo hembra 1×14, 2,54 mm (para el Teensy)</td><td>2</td><td><span class="tag tag-home">lo sueldas</span>¹</td><td><span class="tag tag-home">lo sueldas</span></td></tr>
+                <tr><td>Teensy 4.0 + tiras de pines macho 1×14</td><td>1 + 2</td><td><span class="tag tag-home">lo sueldas</span>²</td><td><span class="tag tag-home">lo sueldas</span>²</td></tr>
+                <tr><td>Audio Board Rev D + "stacking headers" 1×14</td><td>1 + 2</td><td><span class="tag tag-home">lo sueldas</span></td><td><span class="tag tag-home">lo sueldas</span></td></tr>
+                <tr><td>Interruptor magnético Gateron KS-20</td><td>34</td><td><span class="tag tag-none">solo encaja</span></td><td><span class="tag tag-none">solo encaja</span></td></tr>
+                <tr><td>Tecla (keycap) redonda MX: 19 claras + 15 oscuras</td><td>34</td><td><span class="tag tag-none">solo encaja</span></td><td><span class="tag tag-none">solo encaja</span></td></tr>
+                <tr><td>Placa de soporte de los interruptores (plate), FR4</td><td>1</td><td><span class="tag tag-none">sin soldar</span></td><td><span class="tag tag-none">sin soldar</span></td></tr>
+                <tr><td>Separador M2 × 3,5 mm + tornillos M2 × 4 mm</td><td>8 + 16</td><td><span class="tag tag-none">atornillar</span></td><td><span class="tag tag-none">atornillar</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            ¹ JLCPCB también suelda piezas de agujero pasante, pero cobra aparte y los zócalos están del otro lado de la
+            placa. Soldar 28 pines en casa es rápido.<br />
+            ² PJRC vende el "Teensy 4.0 with pins", con los pines ya soldados.
+          </p>
+          <p>
+            Los interruptores magnéticos <strong>no tienen contacto eléctrico</strong>, así que no se sueldan. La plate los
+            sujeta, y sus dos pines de plástico entran en los agujeros de la placa.
+          </p>
+
+          <h3>Lista de compras (para las dos opciones)</h3>
+          <ul>
+            <li><strong>Teensy 4.0</strong>: <a href="https://www.pjrc.com/store/teensy40.html" target="_blank" rel="noopener">pjrc.com</a> o distribuidores.</li>
+            <li><strong>Audio Adaptor Board Rev D</strong> para Teensy 4.x: <a href="https://www.pjrc.com/store/teensy3_audio.html" target="_blank" rel="noopener">pjrc.com</a>.</li>
+            <li>2 tiras de pines macho 1×14 (si el Teensy viene sin pines).</li>
+            <li>2 "stacking headers" 1×14 (zócalo hembra arriba, patas largas abajo): unen la Audio Board al Teensy y a la placa.</li>
+            <li>2 zócalos hembra 1×14, paso 2,54 mm, para la placa del eTuttino.</li>
+            <li>
+              <strong>35 interruptores Gateron KS-20 magnéticos</strong> (un paquete de 35 cubre las 34 teclas). Tienen que
+              ser <strong>magnéticos (Hall effect)</strong> con el polo norte hacia abajo, que es el estándar de Gateron.
+              Los interruptores mecánicos normales no funcionan.
+            </li>
+            <li>34 keycaps redondos con encaje MX ("round" o "typewriter"): 19 claros para las notas naturales y 15 oscuros para los sostenidos.</li>
+            <li>8 separadores M2 × 3,5 mm (hembra-hembra) y 16 tornillos M2 × 4 mm, más 2 para la caja.</li>
+            <li>Cable USB micro-B (el Teensy 4.0 usa micro-USB) y auriculares o altavoz con clavija de 3,5 mm.</li>
+            <li>Una caja (impresa en 3D, madera o acrílico), sujeta por los agujeros M2.</li>
+          </ul>
+
+          <h3>Coste aproximado</h3>
+          <p>
+            Cifras aproximadas en dólares, de octubre de 2026, sin envío ni impuestos. Las webs muestran el precio exacto
+            antes de pagar. En algunos países, los impuestos de importación pesan bastante.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Concepto</th><th>Opción A</th><th>Opción B</th></tr></thead>
+              <tbody>
+                <tr><td>Placas en JLCPCB (5 placas + 5 plates)</td><td>≈ US$ 20–45</td><td>≈ US$ 20–45</td></tr>
+                <tr><td>Montaje SMD (PCBA), 2 placas, piezas incluidas</td><td>≈ US$ 70–120</td><td>—</td></tr>
+                <tr><td>Componentes SMD en LCSC (1 placa, con repuestos)</td><td>—</td><td>≈ US$ 30–45</td></tr>
+                <tr><td>Teensy 4.0 + Audio Board Rev D</td><td>≈ US$ 40</td><td>≈ US$ 40</td></tr>
+                <tr><td>Interruptores Gateron KS-20 (35)</td><td>≈ US$ 20–25</td><td>≈ US$ 20–25</td></tr>
+                <tr><td>Keycaps, pines, zócalos, separadores</td><td>≈ US$ 20–40</td><td>≈ US$ 20–40</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Archivos para descargar</h3>
+          <ul class="downloads">
+            <li><a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a>: la placa (Gerbers + taladros)</li>
+            <li><a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: la plate de los interruptores</li>
+            <li><a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a>: lista de componentes (BOM) para el montaje en JLCPCB</li>
+            <li><a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>: posición de cada componente (CPL)</li>
+            <li><a href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener">Firmware</a> y <a href="https://github.com/dataehora/beatconfused/tree/main/etutti/hardware" target="_blank" rel="noopener">diseño de la placa (KiCad)</a> en GitHub</li>
+          </ul>
+
+          <div class="figure-pair">
+            <figure>
+              <img src="../hardware/fab/etuttino_top.png" alt="Placa vista desde arriba: las 34 posiciones de los interruptores y los dos zócalos del Teensy" loading="lazy" />
+              <figcaption>Frente: interruptores y zócalos del Teensy.</figcaption>
+            </figure>
+            <figure>
+              <img src="../hardware/fab/etuttino_bottom.png" alt="Placa vista desde abajo: un sensor bajo cada interruptor, tres multiplexores y el regulador" loading="lazy" />
+              <figcaption>Reverso: todos los componentes SMD.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- ------------------------------------------------ Montaje A -->
+        <section class="manual" id="es-montaje-a">
+          <p class="manual-kicker">Montaje · opción A</p>
+          <h2>Placa soldada en fábrica (JLCPCB)</h2>
+          <p>
+            JLCPCB fabrica la placa y suelda todos los componentes SMD del reverso. Los pasos siguen la web de JLCPCB tal
+            como era al escribir esto. Los nombres de los botones pueden cambiar un poco, pero las opciones son las mismas.
+            PCBWay y otras fábricas funcionan igual.
+          </p>
+
+          <h3>1. Encargar la placa con montaje</h3>
+          <ol class="steps">
+            <li>Descarga <a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a>, <a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a> y <a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>.</li>
+            <li>En <a href="https://jlcpcb.com" target="_blank" rel="noopener">jlcpcb.com</a>, crea una cuenta, pulsa <strong>Order now</strong> y sube <code>etuttino_gerbers.zip</code>. La web lee el tamaño (183,45 × 132,2 mm) y muestra una vista previa.</li>
+            <li>
+              Ajustes de la placa:
+              <ul>
+                <li><strong>Layers</strong>: 2 · <strong>Base material</strong>: FR-4 · <strong>PCB Qty</strong>: 5 (el mínimo)</li>
+                <li><strong>PCB Thickness: 1.2 mm</strong>. Importante: una placa más fina acerca el sensor al imán. Con 1,6 mm funciona, con una señal más débil.</li>
+                <li><strong>Surface finish</strong>: HASL (lead free) o ENIG · color a gusto · el resto por defecto</li>
+              </ul>
+            </li>
+            <li>
+              Activa <strong>PCB Assembly</strong>:
+              <ul>
+                <li><strong>PCBA Type</strong>: Economic</li>
+                <li><strong>Assembly Side: Bottom Side</strong> (todos los componentes van en el reverso)</li>
+                <li><strong>PCBA Qty</strong>: 2 (el mínimo), o las que quieras montar</li>
+                <li><strong>Tooling holes</strong>: "Added by JLCPCB"</li>
+              </ul>
+            </li>
+            <li>Pulsa <strong>Next</strong> y sube el <strong>BOM</strong> (<code>etuttino_bom.csv</code>) y el <strong>CPL</strong> (<code>etuttino_cpl_bottom.csv</code>).</li>
+            <li>
+              En la pantalla de piezas, revisa cada línea:
+              <ul>
+                <li>los condensadores y el regulador ya llevan su código LCSC (C49678, C15850, C45783, C6186);</li>
+                <li>para <code>DRV5056A3QDBZR</code> y <code>CD74HC4067M96</code>, búscalos por nombre y elige exactamente esa pieza.</li>
+              </ul>
+              Si alguna no tiene stock, JLCPCB ofrece conseguirla por encargo ("global sourcing"). La otra salida es dejar
+              esa línea sin montar y soldar solo esa pieza en casa, como en la opción B. Si falta el A3, el
+              <code>DRV5056A4QDBZR</code> también sirve (es menos sensible). No uses DRV5055 ni DRV5057.
+            </li>
+            <li>
+              Revisa la <strong>vista previa de colocación</strong> con calma. A veces la fábrica gira mal algún encapsulado:
+              <ul>
+                <li><strong>multiplexores</strong>: el punto del pin 1 de cada chip tiene que quedar en la esquina marcada en la serigrafía;</li>
+                <li><strong>regulador</strong>: la aleta ancha va sobre el pad ancho;</li>
+                <li><strong>sensores</strong>: el lado con 2 pines va sobre los 2 pads y el pin único sobre el pad único.</li>
+              </ul>
+              Si algo está girado, corrígelo con el botón de rotación de esa pantalla.
+            </li>
+            <li>Confirma y añade al carrito.</li>
+          </ol>
+
+          <h3>2. Encargar la plate</h3>
+          <ol class="steps">
+            <li>Haz un segundo pedido con <a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: FR-4, <strong>1,6 mm</strong>, sin montaje. La plate no tiene cobre; en negro o blanco queda bien bajo las teclas.</li>
+            <li>Si la prefieres de aluminio, <code>hardware/build/etuttino_plate.dxf</code> sirve para corte láser en 1,5 mm.</li>
+          </ol>
+
+          <h3>3. Cuando llegue la placa</h3>
+          <ol class="steps">
+            <li>Mira el reverso con una lupa: ningún chip torcido y ninguna soldadura uniendo dos pines vecinos, sobre todo en los multiplexores.</li>
+            <li>Con el multímetro en continuidad, comprueba que <strong>no hay cortocircuito</strong> entre la aleta grande del regulador U50 (3,3 V) y el pin GND del zócalo J1. Haz lo mismo entre el pad VIN de J2 y GND.</li>
+            <li>Sigue con el <a href="#es-final">Montaje final</a>.</li>
+          </ol>
+        </section>
+
+        <!-- ------------------------------------------------ Montaje B -->
+        <section class="manual" id="es-montaje-b">
+          <p class="manual-kicker">Montaje · opción B</p>
+          <h2>Todo soldado en casa</h2>
+          <p>
+            La placa llega vacía y sueldas los 78 componentes SMD del reverso. Son pequeños, pero ninguno es difícil: la
+            menor separación entre pines es de 0,95 mm (sensores) y 1,27 mm (multiplexores).
+          </p>
+
+          <h3>Herramientas</h3>
+          <ul>
+            <li>Soldador con control de temperatura y punta fina (cónica fina o biselada de 1–2 mm), a unos 330 °C</li>
+            <li>Estaño fino (0,5 mm) y <strong>flux</strong> en gel o rotulador: sin flux, el SMD es un sufrimiento</li>
+            <li>Pinzas de punta fina, malla desoldadora, lupa (o el zoom del móvil)</li>
+            <li>Multímetro, y alcohol isopropílico con un cepillo para limpiar el flux</li>
+            <li>Opcional: esténcil de JLCPCB, pasta de soldar y placa calefactora (hot plate) o estación de aire caliente</li>
+          </ul>
+
+          <h3>1. Encargar la placa y las piezas</h3>
+          <ol class="steps">
+            <li>En JLCPCB, sube <a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a> con los mismos ajustes que en la opción A (2 capas, <strong>1,2 mm</strong>, 5 placas), pero <strong>sin</strong> PCB Assembly.</li>
+            <li>Si vas a usar pasta de soldar, añade un <strong>esténcil</strong> solo del lado <strong>bottom</strong>.</li>
+            <li>Encarga también la plate, como en el paso 2 de la opción A.</li>
+            <li>
+              Compra los componentes (en <a href="https://www.lcsc.com" target="_blank" rel="noopener">LCSC</a>, que puede enviarlos junto con JLCPCB, o en Mouser, DigiKey o una tienda local). Compra con margen:
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Pieza</th><th>Código</th><th>Usa</th><th>Compra</th></tr></thead>
+                  <tbody>
+                    <tr><td>Sensor Hall</td><td><code>DRV5056A3QDBZR</code></td><td>34</td><td>36–40</td></tr>
+                    <tr><td>Condensador 100 nF 0805</td><td>LCSC C49678</td><td>37</td><td>50</td></tr>
+                    <tr><td>Multiplexor</td><td><code>CD74HC4067M96</code></td><td>3</td><td>4</td></tr>
+                    <tr><td>Regulador 3,3 V</td><td><code>AMS1117-3.3</code> (LCSC C6186)</td><td>1</td><td>2</td></tr>
+                    <tr><td>Condensador 10 µF 0805</td><td>LCSC C15850</td><td>1</td><td>2</td></tr>
+                    <tr><td>Condensador 22 µF 0805</td><td>LCSC C45783</td><td>1</td><td>2</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ol>
+
+          <h3>2. Orden de soldadura (todo en el reverso)</h3>
+          <p>Deja la placa con el <strong>reverso hacia arriba</strong> (el lado con el texto "Sensors DRV5056A3…"). Ve de lo más difícil a lo más fácil:</p>
+          <ol class="steps">
+            <li>
+              <strong>Multiplexores U41, U42 y U43 (SOIC-24).</strong> Busca el <strong>punto del pin 1</strong> en el chip y
+              la marca del pin 1 en la serigrafía, y alinéalos.
+              <ol>
+                <li>Pon estaño en <em>un</em> pad de esquina.</li>
+                <li>Sujeta el chip con las pinzas, recalienta ese pad y alinea los 24 pines.</li>
+                <li>Suelda la esquina opuesta.</li>
+                <li>Pon flux y suelda el resto, uno a uno o arrastrando la punta.</li>
+                <li>Los puentes de estaño salen con flux y malla.</li>
+              </ol>
+            </li>
+            <li><strong>Regulador U50 (SOT-223).</strong> Solo encaja de una manera: la aleta ancha en el pad ancho. Suelda un pin pequeño, alinea, luego los otros y al final la aleta (necesita más calor).</li>
+            <li><strong>Condensadores C50 (10 µF) y C51 (22 µF)</strong>, junto al regulador. Mira la serigrafía: tienen el mismo tamaño, pero distinto valor.</li>
+            <li>
+              <strong>Sensores U1–U34 (SOT-23).</strong> Van en el centro de cada posición de tecla. El lado con 2 pines va en
+              los 2 pads, así que no se pueden poner al revés. La cara con letras queda hacia fuera, visible en el reverso:
+              es como va cualquier SMD.
+              <div class="callout warn"><p>Comprueba el código del chip: tiene que ser <strong>DRV5056</strong> (A3 o A4). DRV5055, DRV5053 y DRV5057 parecen iguales, pero aquí no funcionan.</p></div>
+            </li>
+            <li><strong>Condensadores de 100 nF</strong>: C1–C34, uno justo encima de cada sensor, y C41–C43, debajo de cada multiplexor.</li>
+            <li>Limpia el flux con alcohol isopropílico y revisa todo con lupa: pines levantados, puentes y piezas que falten.</li>
+          </ol>
+          <div class="callout">
+            <p>
+              <strong>Con pasta y esténcil:</strong> aplica la pasta con el esténcil en el reverso, coloca todo con las
+              pinzas y refunde en la hot plate. El otro lado sigue vacío, así que la placa queda bien apoyada. Después
+              revisa con lupa.
+            </p>
+          </div>
+
+          <h3>3. Prueba eléctrica antes de seguir</h3>
+          <ol class="steps">
+            <li>Con el multímetro en continuidad, comprueba que <strong>no hay cortocircuito</strong> entre la aleta del regulador U50 (3,3 V) y GND (pin GND del zócalo J1, marcado en la serigrafía), ni entre VIN (J2) y GND.</li>
+            <li>Sigue con el <a href="#es-final">Montaje final</a>. La prueba de teclas de la página muestra, sensor por sensor, si cada soldadura quedó bien.</li>
+          </ol>
+        </section>
+
+        <!-- ------------------------------------------------ Montaje final -->
+        <section class="manual" id="es-final">
+          <p class="manual-kicker">Montaje · las dos opciones</p>
+          <h2>Montaje final y prueba</h2>
+
+          <h3>1. Zócalos del Teensy</h3>
+          <ol class="steps">
+            <li>Los dos zócalos hembra 1×14 (J1 y J2) van en el <strong>frente</strong> de la placa (el lado de los interruptores), en la franja de atrás, cerca del borde derecho. Suéldalos desde el reverso.</li>
+            <li>Truco: encaja el conjunto Teensy + Audio Board (paso 2) en los zócalos antes de soldarlos, para que queden alineados y rectos.</li>
+          </ol>
+
+          <h3>2. Teensy + Audio Board</h3>
+          <ol class="steps">
+            <li>Suelda las tiras de pines macho 1×14 al Teensy 4.0, hacia abajo (o usa un "Teensy 4.0 with pins").</li>
+            <li>En la Audio Board Rev D, suelda los dos "stacking headers": el zócalo hembra queda <strong>arriba</strong> y las patas largas atraviesan la placa hacia abajo.</li>
+            <li>Encaja el Teensy encima de la Audio Board. Pin 0 con pin 0, GND con GND: las dos placas tienen la misma disposición de pines.</li>
+            <li>Las patas largas de la Audio Board entran en los zócalos del eTuttino. El <strong>USB del Teensy apunta al borde derecho</strong> de la placa, donde está la marca "USB &gt;". La serigrafía marca "GND"/"0" (J1) y "VIN"/"23" (J2) para comprobarlo.</li>
+          </ol>
+
+          <h3>3. Grabar el firmware</h3>
+          <ol class="steps">
+            <li>Instala el <a href="https://www.arduino.cc/en/software" target="_blank" rel="noopener">Arduino IDE</a> y <a href="https://www.pjrc.com/teensy/td_download.html" target="_blank" rel="noopener">Teensyduino</a>.</li>
+            <li>Descarga la carpeta <a href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware/etutti_synth" target="_blank" rel="noopener">etutti_synth</a> y abre <code>etutti_synth.ino</code>. Deja los demás archivos en la misma carpeta.</li>
+            <li>En <strong>Herramientas › Placa</strong> elige <strong>Teensy 4.0</strong>; en <strong>Herramientas › USB Type</strong> elige <strong>MIDI</strong>.</li>
+            <li>Conecta el USB y pulsa <strong>Subir</strong>. Si aparece "In the Arduino IDE choose Tools › USB Type › MIDI", el USB Type sigue en "Serial".</li>
+          </ol>
+
+          <h3>4. Probar los sensores antes de poner los interruptores</h3>
+          <ol class="steps">
+            <li>Conecta auriculares o altavoz a la salida de la Audio Board y el USB al ordenador.</li>
+            <li>Abre <a href="../">beatconfused.com/etutti</a> en Chrome o Edge, pulsa <strong>Conectar</strong> y permite el MIDI.</li>
+            <li>En el panel <strong>Teclas del eTuttino</strong>, activa la <strong>Prueba de teclas</strong>.</li>
+            <li>Acerca un imán pequeño (uno de nevera sirve) a cada posición de tecla, por el <strong>lado de arriba</strong>. El anillo de esa tecla en la pantalla debe llenarse. Si no pasa nada, dale la vuelta al imán: solo se lee uno de los polos.</li>
+          </ol>
+          <div class="callout">
+            <p>
+              Si <strong>un sensor</strong> no responde, rehaz su soldadura. Si <strong>un bloque entero</strong> no responde,
+              el problema está en el multiplexor de ese bloque: U41 para el tercio izquierdo, U42 para el centro, U43 para el
+              derecho. Revisa su soldadura y su pin 1. Si <strong>nada</strong> responde, mide 3,3 V entre la aleta de U50 y
+              GND, y comprueba que el Teensy está en el sentido correcto.
+            </p>
+          </div>
+
+          <h3>5. Interruptores, plate y teclas</h3>
+          <ol class="steps">
+            <li>Encaja los 34 interruptores Gateron en la plate desde arriba hasta que hagan clic. Pueden ir en cualquiera de los dos sentidos.</li>
+            <li>Atornilla los 8 separadores M2 × 3,5 mm a la plate (en los agujeros de las esquinas y los que hay junto a las filas 1 y 3).</li>
+            <li>Baja la placa sobre el conjunto: los dos pines de plástico de cada interruptor entran en los agujeros de la placa. Atorníllala por debajo.</li>
+            <li>La placa tiene que quedar <strong>pegada al fondo de los interruptores</strong>, sin holgura: la distancia entre imán y sensor forma parte de la medida.</li>
+            <li>Pon las teclas (keycaps): claras en las notas naturales, oscuras en los sostenidos. Compruébalo con la página, que muestra el nombre de cada tecla.</li>
+            <li>Monta la caja, sujeta por los agujeros M2, con aberturas para el USB y los auriculares.</li>
+          </ol>
+
+          <h3>6. Calibrar y comprobar</h3>
+          <ol class="steps">
+            <li>Desconecta y vuelve a conectar el USB: al arrancar, el Teensy mide cada tecla en reposo. No toques las teclas mientras arranca.</li>
+            <li>En la página, pulsa <strong>Calibrar teclas</strong> y pulsa <strong>cada tecla hasta el fondo una vez</strong>. El Teensy guarda el recorrido de cada tecla en su memoria interna (EEPROM).</li>
+            <li>Con la <strong>Prueba de teclas</strong> activada, cada anillo debe ir de vacío (suelta) a lleno (al fondo). Listo: sigue con el <a href="#es-uso">Manual de uso</a>.</li>
+          </ol>
+          <div class="callout ok"><p>La prueba con imán del paso 4 deja guardada una calibración incorrecta. Por eso la calibración del paso 6 es obligatoria después de instalar los interruptores.</p></div>
+        </section>
+
+        <!-- ------------------------------------------------ Manual de uso -->
+        <section class="manual" id="es-uso">
+          <p class="manual-kicker">Manual de uso</p>
+          <h2>Tocar el eTuttino</h2>
+
+          <h3>Encender</h3>
+          <ul>
+            <li><strong>Alimentación</strong>: el cable USB del Teensy al ordenador o a un cargador de móvil. Con el cargador, el eTuttino suena solo, sin la página.</li>
+            <li><strong>Sonido</strong>: auriculares o altavoz en la salida de la Audio Board. Al encender, empieza en el <em>acordeón clásico</em>.</li>
+            <li><strong>No toques las teclas durante los primeros segundos</strong>: es cuando el Teensy mide la posición de reposo de cada una.</li>
+          </ul>
+
+          <h3>El teclado</h3>
+          <ul>
+            <li>Tiene 4 filas. La <strong>fila 1</strong> es la más cercana a ti.</li>
+            <li>En <strong>C-griff</strong>, cada tecla a lo largo de una fila está una tercera menor (3 semitonos) por encima de la anterior. En diagonal, de una fila a la siguiente, el paso es de 1 semitono.</li>
+            <li>La fila 4 repite la fila 1 (con un Fa♯3 más), como en un acordeón de 4 filas.</li>
+            <li>La página cambia a <strong>B-griff</strong>, el espejo del C-griff, y las teclas de verdad pasan a seguir el nuevo sistema.</li>
+          </ul>
+
+          <h3>Con la página beatconfused.com/etutti</h3>
+          <ol class="steps">
+            <li>Abre la página en <strong>Chrome</strong> o <strong>Edge</strong> (Safari no tiene Web MIDI), pulsa <strong>Conectar</strong> y permite el MIDI. El dispositivo aparece como "eTutti" (o "Teensy MIDI").</li>
+            <li>Al conectar, la página envía todos los ajustes al Teensy. Los ajustes no se guardan en él: al volver a encenderlo, vuelve al acordeón clásico hasta que la página se conecte otra vez.</li>
+          </ol>
+          <ul>
+            <li><strong>Instrumento</strong>: acordeón clásico, acordeón jazz, piano, bajo, guitarra (nylon) o synth. "Restaurar por defecto" vuelve al acordeón clásico.</li>
+            <li><strong>Registros del acordeón</strong>: el botón redondo enciende y apaga cada juego de lengüetas (16', 8' abierta, 8' en cassotto, 4'). Los botones con nombre (Master, Violín, Clarinete…) eligen combinaciones listas.</li>
+            <li><strong>Envolvente, volumen, tono y ambiente</strong>: ajustan el sonido en directo.</li>
+            <li><strong>Teclado del ordenador</strong>: toca el eTuttino con las teclas Z…, A…, W… y 2…. La octava y la velocity de la página solo valen para esas notas y las de la pantalla.</li>
+          </ul>
+
+          <h3>Velocity (la fuerza del toque)</h3>
+          <p>
+            El eTuttino mide el tiempo que tarda cada tecla en bajar: rápido suena fuerte, despacio suena suave. Piano,
+            guitarra, bajo y synth responden a la velocity, y el acordeón también, con el volumen de cada nota. En el panel
+            <strong>Teclas del eTuttino</strong>:
+          </p>
+          <ul>
+            <li><strong>Fija</strong>: todas las notas con la misma fuerza (100), como un teclado normal.</li>
+            <li><strong>Toque ligero</strong>: notas fuertes con poco esfuerzo.</li>
+            <li><strong>Normal</strong>: el valor por defecto.</li>
+            <li><strong>Toque firme</strong>: hay que tocar más rápido para que suene fuerte.</li>
+          </ul>
+
+          <h3>Calibración</h3>
+          <ul>
+            <li>El Teensy aprende solo el fondo de cada tecla (la pulsación más profunda que ha visto) y lo recuerda incluso desconectado. La posición de reposo se mide cada vez que arranca.</li>
+            <li>Pulsa <strong>Calibrar teclas</strong> y pulsa cada tecla hasta el fondo una vez cuando cambies un interruptor, desmontes la placa o notes una tecla que dispara demasiado pronto o tarde.</li>
+            <li>La <strong>Prueba de teclas</strong> muestra, con un anillo alrededor de cada tecla de la pantalla, cuánto está pulsada la tecla de verdad.</li>
+          </ul>
+
+          <h3>Como controlador MIDI</h3>
+          <p>
+            El eTuttino es un dispositivo MIDI USB estándar. En un programa de música (DAW) aparece como entrada MIDI y envía
+            las notas por el canal 1, con velocity. También toca las notas que reciba, en cualquier canal, con su sonido
+            interno.
+          </p>
+
+          <h3>Problemas comunes</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Qué pasa</th><th>Qué hacer</th></tr></thead>
+              <tbody>
+                <tr><td>La página no encuentra el eTutti</td><td>Usa Chrome o Edge y permite el MIDI. Comprueba que el firmware se grabó con USB Type = MIDI.</td></tr>
+                <tr><td>Una tecla no suena</td><td>Activa la Prueba de teclas. Si su anillo no se mueve, revisa la soldadura del sensor de esa tecla (o pide ayuda en la dirección de abajo).</td></tr>
+                <tr><td>Una tecla dispara sola, o demasiado pronto o tarde</td><td>Pulsa Calibrar teclas y pulsa cada tecla hasta el fondo. Comprueba que la placa está pegada a los interruptores.</td></tr>
+                <tr><td>Todas las notas suenan igual, sin dinámica</td><td>La velocity de las teclas está en "Fija". Elige Normal.</td></tr>
+                <tr><td>No hay sonido</td><td>Comprueba los auriculares en la salida de la Audio Board y el volumen en la página. Pulsa "Silenciar todo" (Esc).</td></tr>
+                <tr><td>Una nota se queda pegada</td><td>Esc o "Silenciar todo" en la página.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Dudas e ideas: <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>.</p>
+        </section>
+      </div>
+
+    <footer class="footer">
+      <p class="footer-links">
+        <a href="https://beatconfused.com">beatconfused.com</a>
+      </p>
+      <p class="footer-contact">
+        <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a>
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    // The manuals themselves are written out once per language below
+    // (.lang-block); these strings only cover the page chrome.
+    window.BC_STRINGS = {
+      en: {
+        "meta.title": "BeatConfused | eTuttino manuals",
+        "meta.description": "Assembly manuals (factory-soldered board or soldered at home) and user manual for the eTuttino, a 34-key chromatic button accordion with magnetic, velocity-sensitive keys.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "eTuttino manuals",
+        "nav.back": "← Back to eTutti",
+      },
+      pt: {
+        "meta.title": "BeatConfused | Manuais do eTuttino",
+        "meta.description": "Manuais de montagem (placa soldada pela fábrica ou soldada em casa) e manual de uso do eTuttino, um acordeão cromático de botões de 34 teclas magnéticas sensíveis ao toque.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Manuais do eTuttino",
+        "nav.back": "← Voltar ao eTutti",
+      },
+      es: {
+        "meta.title": "BeatConfused | Manuales del eTuttino",
+        "meta.description": "Manuales de montaje (placa soldada en fábrica o soldada en casa) y manual de uso del eTuttino, un acordeón cromático de botones de 34 teclas magnéticas sensibles al toque.",
+        "hero.eyebrow": "BeatConfused Studio",
+        "hero.title": "Manuales del eTuttino",
+        "nav.back": "← Volver al eTutti",
+      },
+    };
+  </script>
+  <script src="/i18n/i18n.js?v=20261003"></script>
+</body>
+</html>

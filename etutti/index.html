@@ -27,7 +27,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261015" />
+  <link rel="stylesheet" href="styles.css?v=20261020" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
 </head>
@@ -55,6 +55,7 @@
           <span class="model-desc" data-i18n="model.etuttiDesc">Full instrument · in development</span>
         </button>
       </div>
+      <p class="etutti-manuals-link"><a class="etutti-link" href="manuais/" data-i18n="model.manuals">Build your own eTuttino: assembly and user manuals →</a></p>
 
       <div id="etuttiWip" class="control-block wide-block etutti-wip" hidden>
         <p class="etutti-wip-title" data-i18n="wip.title">In development</p>
@@ -137,6 +138,42 @@
           Computer keys, from the row nearest you: Z … , is row 1, A … L row 2, W … O row 3 and 2 … 0 row 4.
           ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.
         </p>
+      </div>
+
+      <!-- ---- Physical keys ---- -->
+      <div class="control-block wide-block etutti-keys">
+        <div class="panel-header">
+          <span class="panel-title" data-i18n="keys.title">eTuttino keys</span>
+          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse eTuttino keys" data-i18n-attr="aria-label:keys.collapseAria">
+            <span class="collapse-icon" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <p class="hint" data-i18n="keys.hint">The real keys are magnetic: a sensor under each one measures how far and how fast it moves. These settings only matter with the eTuttino board.</p>
+        <div class="etutti-group" role="radiogroup" aria-labelledby="keyVelocityLegend">
+          <span class="etutti-group-label" id="keyVelocityLegend" data-i18n="keys.velocity">Key velocity</span>
+          <div class="etutti-pills">
+            <label class="etutti-pill"><input type="radio" name="keyVelocity" value="0" /><span data-i18n="keys.velFixed">Fixed</span></label>
+            <label class="etutti-pill"><input type="radio" name="keyVelocity" value="1" /><span data-i18n="keys.velSoft">Light touch</span></label>
+            <label class="etutti-pill"><input type="radio" name="keyVelocity" value="2" checked /><span data-i18n="keys.velNormal">Normal</span></label>
+            <label class="etutti-pill"><input type="radio" name="keyVelocity" value="3" /><span data-i18n="keys.velHard">Firm touch</span></label>
+          </div>
+        </div>
+        <div class="etutti-keys-actions">
+          <button id="calibrateBtn" type="button" class="small-btn" data-i18n="keys.calibrate">Calibrate keys</button>
+          <div class="etutti-toggle-group">
+            <span class="etutti-group-label" data-i18n="keys.test">Key test</span>
+            <label class="style-toggle" id="keyTestToggle">
+              <span class="style-toggle-label is-active" data-style="off" data-checked="false" data-i18n="play.keyboardOff">Off</span>
+              <span class="style-toggle-switch">
+                <input type="checkbox" id="keyTestCheckbox" aria-label="Key test: show how far each real key is pressed" data-i18n-attr="aria-label:keys.testAria" />
+                <span class="style-toggle-track"><span class="style-toggle-thumb"></span></span>
+              </span>
+              <span class="style-toggle-label" data-style="on" data-checked="true" data-i18n="play.keyboardOn">On</span>
+            </label>
+          </div>
+        </div>
+        <p class="hint" id="calibrateStatus" data-i18n="keys.calibrateHint">After Calibrate, press every key all the way down once. The Teensy remembers it, even unplugged.</p>
+        <p class="hint" data-i18n="keys.testHint">Key test: each on-screen key fills up as you press the real one. A key that never moves has a sensor problem (see the assembly manual).</p>
       </div>
 
       <!-- ---- Synth ---- -->
@@ -311,6 +348,8 @@
           <li data-i18n="setup.step4">Plug the Teensy into this computer, press Connect above and allow MIDI access. Use Chrome or Edge; Safari has no Web MIDI.</li>
         </ol>
         <p class="hint">
+          <a class="etutti-link" href="manuais/" data-i18n="setup.manualsLink">Assembly and user manuals</a>
+          ·
           <a class="etutti-link" href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener" data-i18n="setup.firmwareLink">Firmware source on GitHub</a>
           ·
           <a class="etutti-link" href="https://github.com/dataehora/beatconfused/tree/main/etutti/hardware" target="_blank" rel="noopener" data-i18n="setup.hardwareLink">PCB design notes</a>
@@ -329,7 +368,7 @@
     </footer>
   </main>
 
-  <script src="script.js?v=20261015"></script>
+  <script src="script.js?v=20261020"></script>
 
   <script>
     window.BC_STRINGS = {
@@ -378,6 +417,22 @@
         "setup.step3": "Under Tools › USB Type choose \"MIDI\" (or \"Serial + MIDI\"), then upload.",
         "setup.step4": "Plug the Teensy into this computer, press Connect above and allow MIDI access. Use Chrome or Edge; Safari has no Web MIDI.",
         "setup.firmwareLink": "Firmware source on GitHub",
+        "model.manuals": "Build your own eTuttino: assembly and user manuals →",
+        "setup.manualsLink": "Assembly and user manuals",
+        "keys.title": "eTuttino keys",
+        "keys.collapseAria": "Collapse eTuttino keys",
+        "keys.hint": "The real keys are magnetic: a sensor under each one measures how far and how fast it moves. These settings only matter with the eTuttino board.",
+        "keys.velocity": "Key velocity",
+        "keys.velFixed": "Fixed",
+        "keys.velSoft": "Light touch",
+        "keys.velNormal": "Normal",
+        "keys.velHard": "Firm touch",
+        "keys.calibrate": "Calibrate keys",
+        "keys.calibrateHint": "After Calibrate, press every key all the way down once. The Teensy remembers it, even unplugged.",
+        "keys.calibrateSent": "Calibration restarted: now press every key all the way down once.",
+        "keys.test": "Key test",
+        "keys.testAria": "Key test: show how far each real key is pressed",
+        "keys.testHint": "Key test: each on-screen key fills up as you press the real one. A key that never moves has a sensor problem (see the assembly manual).",
         "model.aria": "Model",
         "model.etuttinoDesc": "34 keys · C-griff · G3–G5",
         "model.etuttiDesc": "Full instrument · in development",
@@ -485,6 +540,22 @@
         "setup.step3": "Em Tools › USB Type escolha \"MIDI\" (ou \"Serial + MIDI\") e faça o upload.",
         "setup.step4": "Plugue o Teensy neste computador, clique em Conectar acima e permita o acesso MIDI. Use o Chrome ou o Edge; o Safari não tem Web MIDI.",
         "setup.firmwareLink": "Código do firmware no GitHub",
+        "model.manuals": "Monte o seu eTuttino: manuais de montagem e de uso →",
+        "setup.manualsLink": "Manuais de montagem e de uso",
+        "keys.title": "Teclas do eTuttino",
+        "keys.collapseAria": "Recolher Teclas do eTuttino",
+        "keys.hint": "As teclas de verdade são magnéticas: um sensor embaixo de cada uma mede o quanto e com que velocidade ela desce. Estes ajustes só valem com a placa do eTuttino.",
+        "keys.velocity": "Velocity das teclas",
+        "keys.velFixed": "Fixa",
+        "keys.velSoft": "Toque leve",
+        "keys.velNormal": "Normal",
+        "keys.velHard": "Toque firme",
+        "keys.calibrate": "Calibrar teclas",
+        "keys.calibrateHint": "Depois de Calibrar, aperte cada tecla até o fundo uma vez. O Teensy guarda isso, mesmo desligado.",
+        "keys.calibrateSent": "Calibração reiniciada: agora aperte cada tecla até o fundo uma vez.",
+        "keys.test": "Teste das teclas",
+        "keys.testAria": "Teste das teclas: mostra o quanto cada tecla de verdade está apertada",
+        "keys.testHint": "Teste das teclas: cada tecla da tela se enche conforme você aperta a de verdade. Uma tecla que nunca se mexe tem problema no sensor (veja o manual de montagem).",
         "model.aria": "Modelo",
         "model.etuttinoDesc": "34 teclas · C-griff · G3–G5",
         "model.etuttiDesc": "Instrumento completo · em desenvolvimento",
@@ -505,7 +576,7 @@
         "preset.accordionJazz": "Acordeão jazz",
         "preset.piano": "Piano",
         "preset.bass": "Baixo",
-        "preset.guitar": "Guitarra (nylon)",
+        "preset.guitar": "Violão (nylon)",
         "synth.reedTuning": "Afinação das palhetas",
         "synth.dry": "seca",
         "synth.wet": "molhada",
@@ -592,6 +663,22 @@
         "setup.step3": "En Tools › USB Type elige \"MIDI\" (o \"Serial + MIDI\") y súbelo.",
         "setup.step4": "Conecta el Teensy a este ordenador, pulsa Conectar arriba y permite el acceso MIDI. Usa Chrome o Edge; Safari no tiene Web MIDI.",
         "setup.firmwareLink": "Código del firmware en GitHub",
+        "model.manuals": "Arma tu eTuttino: manuales de montaje y de uso →",
+        "setup.manualsLink": "Manuales de montaje y de uso",
+        "keys.title": "Teclas del eTuttino",
+        "keys.collapseAria": "Contraer Teclas del eTuttino",
+        "keys.hint": "Las teclas de verdad son magnéticas: un sensor debajo de cada una mide cuánto y a qué velocidad baja. Estos ajustes solo cuentan con la placa del eTuttino.",
+        "keys.velocity": "Velocity de las teclas",
+        "keys.velFixed": "Fija",
+        "keys.velSoft": "Toque ligero",
+        "keys.velNormal": "Normal",
+        "keys.velHard": "Toque firme",
+        "keys.calibrate": "Calibrar teclas",
+        "keys.calibrateHint": "Después de Calibrar, pulsa cada tecla hasta el fondo una vez. El Teensy lo recuerda, incluso desconectado.",
+        "keys.calibrateSent": "Calibración reiniciada: ahora pulsa cada tecla hasta el fondo una vez.",
+        "keys.test": "Prueba de teclas",
+        "keys.testAria": "Prueba de teclas: muestra cuánto está pulsada cada tecla de verdad",
+        "keys.testHint": "Prueba de teclas: cada tecla de la pantalla se llena al pulsar la de verdad. Una tecla que nunca se mueve tiene un problema de sensor (ver el manual de montaje).",
         "model.aria": "Modelo",
         "model.etuttinoDesc": "34 teclas · C-griff · G3–G5",
         "model.etuttiDesc": "Instrumento completo · en desarrollo",
