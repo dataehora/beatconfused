@@ -412,6 +412,11 @@ class Router:
         return None
 
 
+# The order the retries found for the current layout; a layout change may
+# need a new one (the retry loop finds it and prints it).
+DEFAULT_ROUTE_FIRST = "OUT_U34,OUT_U6,OUT_U18,OUT_U30,OUT_U41,OUT_U27,OUT_U38"
+
+
 class RoutingFailed(Exception):
     pass
 
@@ -436,7 +441,11 @@ def add_track(points, layer, net_name, width=None, register=True, item=None):
             router.mark_segment([layer], a, b, w / 2, net_name, item=item, attach=True)
 
 
+via_spots = {}                  # net -> [(x, y)] of its vias
+
+
 def add_via(x, y, net_name, item=None):
+    via_spots.setdefault(net_name, []).append((x, y))
     v = pcbnew.PCB_VIA(board)
     v.SetPosition(mm(x, y))
     v.SetWidth(pcbnew.FromMM(VIA_D))
@@ -479,6 +488,14 @@ def path_to_copper(net_name, path, start_xy=None, end_xy=None):
             runs[-1][1].append((x, y))
         else:
             if runs:
+                # Changing layer right beside one of this net's vias (the
+                # sensor's own, usually): go through that via instead of
+                # drilling a second one on top of it.
+                near = [v for v in via_spots.get(net_name, []) if abs(x - v[0]) < VIA_D and abs(y - v[1]) < VIA_D]
+                if near:
+                    runs[-1][1].append(near[0])
+                    runs.append((li, [near[0], (x, y)]))
+                    continue
                 add_via(x, y, net_name)
             runs.append((li, [(x, y)]))
     if start_xy:
@@ -728,7 +745,7 @@ def build():
     # outputs and address lines); the 41 sensor outputs then fit around them.
     # Sensor outputs that failed in an earlier attempt go first (see
     # route_with_retries below).
-    first = [n for n in os.environ.get("ETUTTINO_ROUTE_FIRST", "").split(",") if n]
+    first = [n for n in os.environ.get("ETUTTINO_ROUTE_FIRST", DEFAULT_ROUTE_FIRST).split(",") if n]
     jobs.sort(key=lambda j: (j[0].startswith("OUT_"), j[0] not in first, first.index(j[0]) if j[0] in first else 0))
     for net_name, src_item, dst, label in jobs:
         if dst == "tree":
@@ -972,7 +989,7 @@ def route_with_retries(max_attempts=8):
     When a sensor output fails, start again (a fresh process, so no state
     leaks) with that net routed first, up to max_attempts times. The order
     that worked is printed so it can be reused."""
-    first = [n for n in os.environ.get("ETUTTINO_ROUTE_FIRST", "").split(",") if n]
+    first = [n for n in os.environ.get("ETUTTINO_ROUTE_FIRST", DEFAULT_ROUTE_FIRST).split(",") if n]
     for attempt in range(max_attempts):
         env = dict(os.environ, ETUTTINO_ROUTE_FIRST=",".join(first), ETUTTINO_CHILD="1")
         r = subprocess.run([sys.executable, os.path.abspath(__file__)], env=env, capture_output=True, text=True)

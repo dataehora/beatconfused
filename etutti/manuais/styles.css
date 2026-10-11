@@ -323,8 +323,34 @@ a.zoomable::after {
   pointer-events: none;
 }
 
-.manual figure.wide img {
-  max-width: none;
+.manual figure.wide img,
+.lang-block > figure.wide img {
+  max-width: 100%;
+}
+
+/* grid items default to min-width: auto, which let a big picture widen
+   the whole column past the screen */
+.lang-block > * {
+  min-width: 0;
+}
+
+.lang-block > figure {
+  margin: 0;
+}
+
+.lang-block > figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+}
+
+.lang-block > figure figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  text-align: center;
 }
 
 .lightbox-open {

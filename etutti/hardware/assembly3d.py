@@ -37,8 +37,8 @@ HEADER_H = 8.5           # stacking header body on the Audio Board
 TEENSY_T = 1.6
 
 COLORS = {
-    "plate": (0.08, 0.08, 0.09),
-    "switch": (0.25, 0.27, 0.30),
+    "plate": (0.10, 0.10, 0.12),
+    "switch": (0.46, 0.50, 0.56),
     "cap_light": (0.95, 0.92, 0.86),
     "cap_dark": (0.22, 0.23, 0.25),
     "cap_c": (0.55, 0.23, 0.18),
@@ -67,12 +67,16 @@ class Vrml:
         self.shapes.append(
             "Shape {\n appearance Appearance { material Material { diffuseColor %.3f %.3f %.3f specularColor 0.15 0.15 0.15 shininess 0.25 } }\n"
             " geometry IndexedFaceSet { solid FALSE coord Coordinate { point [ %s ] } coordIndex [ %s ] }\n}\n"
-            % (r, g, b, ", ".join(self._p(*p) for p in pts), " ".join(" ".join(str(i) for i in f) + " -1" for f in faces)))
+            % (r, g, b, ", ".join(self._p(*p) for p in pts),
+               # y is flipped on the way out, which flips the winding too:
+               # write the faces reversed so their normals face outwards
+               " ".join(" ".join(str(i) for i in reversed(f)) + " -1" for f in faces)))
 
     def box(self, x0, y0, z0, x1, y1, z1, color):
         pts = [(x0, y0, z0), (x1, y0, z0), (x1, y1, z0), (x0, y1, z0),
                (x0, y0, z1), (x1, y0, z1), (x1, y1, z1), (x0, y1, z1)]
-        faces = [(0, 1, 2, 3), (4, 7, 6, 5), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)]
+        # (wound the other way round from the cylinder's, see _shape)
+        faces = [(3, 2, 1, 0), (5, 6, 7, 4), (1, 5, 4, 0), (2, 6, 5, 1), (3, 7, 6, 2), (0, 4, 7, 3)]
         self._shape(pts, faces, color)
 
     def cylinder(self, cx, cy, z0, z1, r, color, n=28, axis="z"):
@@ -154,37 +158,80 @@ def assembled_board(board_path):
     return ASSEMBLED_PATH
 
 
-def render(cli, board, out, side="top", width=3000, height=1200, extra=()):
-    path = os.path.join(IMG_DIR, out)
+PAPER = (243, 234, 219)      # the manual's page colour, behind every picture
+
+
+def render_png(cli, board, side, width, height, extra=()):
+    """One kicad-cli render with a transparent background, as a PIL image."""
+    from PIL import Image
+    path = os.path.join(os.path.dirname(ASSEMBLED_PATH), "_render_%s.png" % side)
     args = [cli, "pcb", "render", "--side", side, "--width", str(width), "--height", str(height),
-            "--quality", "high", "--background", "opaque", *extra, "--output", path, board]
+            "--quality", "high", "--background", "transparent", *extra, "--output", path, board]
     subprocess.run(args, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return path
+    img = Image.open(path).convert("RGBA")
+    img.load()
+    os.remove(path)
+    return img
 
 
-def small_copy(cli, board, out, side, extra, width, height):
-    base, ext = os.path.splitext(out)
-    return render(cli, board, base + "-sm" + ext, side, width // 3, height // 3, extra)
+def save(img, name, box=None, pad=40):
+    """Crops to `box` (pixels) or to the drawn content plus `pad`, puts it
+    on the page colour and writes the full JPEG plus a 1/3-size copy."""
+    from PIL import Image
+    if box is None:
+        x0, y0, x1, y1 = img.getchannel("A").getbbox()
+        box = (max(0, x0 - pad), max(0, y0 - pad), min(img.width, x1 + pad), min(img.height, y1 + pad))
+    part = img.crop(tuple(int(v) for v in box))
+    flat = Image.new("RGB", part.size, PAPER)
+    flat.paste(part, mask=part.getchannel("A"))
+    full = os.path.join(IMG_DIR, name)
+    flat.save(full, quality=88)
+    small = flat.resize((max(1, flat.width // 3), max(1, flat.height // 3)), Image.LANCZOS)
+    base, ext = os.path.splitext(full)
+    small.save(base + "-sm" + ext, quality=85)
+    return full
+
+
+class BoardMap:
+    """mm on the board -> pixels in a straight top or bottom render, from
+    where the board's outline landed in the image (the bottom view is
+    mirrored left-right)."""
+
+    def __init__(self, img, side):
+        self.x0, self.y0, self.x1, self.y1 = img.getchannel("A").getbbox()
+        self.sx = (self.x1 - self.x0) / G.PCB_W
+        self.sy = (self.y1 - self.y0) / G.PCB_H
+        self.bottom = side == "bottom"
+
+    def box(self, x0, y0, x1, y1):
+        if self.bottom:
+            x0, x1 = G.PCB_W - x1, G.PCB_W - x0
+        return (self.x0 + x0 * self.sx, self.y0 + y0 * self.sy, self.x0 + x1 * self.sx, self.y0 + y1 * self.sy)
 
 
 def render_all(cli, board_path):
     os.makedirs(IMG_DIR, exist_ok=True)
     keycap_top, stack_top = build_model()
     assembled = assembled_board(board_path)
-    # Pan is in board-centre-relative units of the render; these views were
-    # framed by trial on the 267 x 88 mm board.
-    shots = [
-        (board_path, "pcb_top.jpg", "top", (), 3000, 1100),
-        (board_path, "pcb_bottom.jpg", "bottom", (), 3000, 1100),
-        (board_path, "detail_sensors.jpg", "bottom", ("--zoom", "4", "--pan", "6,1.2,0"), 2400, 1500),
-        (board_path, "detail_muxes.jpg", "bottom", ("--zoom", "3.2", "--pan", "-3.2,-2.4,0"), 2400, 1500),
-        (board_path, "detail_stack.jpg", "top", ("--zoom", "3.2", "--pan", "-9.8,-2.2,0"), 2400, 1500),
-        (assembled, "assembled_top.jpg", "top", (), 3000, 1100),
-        (assembled, "assembled_iso.jpg", "top", ("--perspective", "--rotate", "-48,0,18", "--zoom", "1.05"), 3000, 1600),
-        (assembled, "assembled_front.jpg", "front", ("--zoom", "1.3"), 3000, 700),
-    ]
     made = []
-    for board, out, side, extra, w, h in shots:
-        made.append(render(cli, board, out, side, w, h, extra))
-        small_copy(cli, board, out, side, extra, w, h)
+    # Big straight views; the close-ups are crops of them (board mm -> px).
+    for side in ("top", "bottom"):
+        img = render_png(cli, board_path, side, 6000, 3000, ("--zoom", "2"))
+        made.append(save(img, "pcb_%s.jpg" % side))
+        m = BoardMap(img, side)
+        if side == "bottom":
+            made.append(save(img, "detail_sensors.jpg", m.box(G.GRID_X0 - 2, G.GRID_Y0 + 2 * G.U - 2, G.GRID_X0 + 4.5 * G.U, G.PCB_H)))
+            made.append(save(img, "detail_muxes.jpg", m.box(G.ROW4_END + 2, 0, G.NOTCH_X, G.GRID_Y0 + 1.6 * G.U)))
+            made.append(save(img, "detail_regulator.jpg", m.box(G.STACK_ZONE[0] - 2, 0, G.PCB_W, G.STACK_ZONE[3] + 4)))
+        else:
+            made.append(save(img, "detail_stack.jpg", m.box(G.STACK_ZONE[0] - 6, 0, G.PCB_W, G.STACK_ZONE[3] + 8)))
+    img = render_png(cli, assembled, "top", 6000, 3000, ("--zoom", "2"))
+    made.append(save(img, "assembled_top.jpg"))
+    img = render_png(cli, assembled, "top", 4800, 3000, ("--perspective", "--rotate", "-50,0,15", "--zoom", "1.0"))
+    made.append(save(img, "assembled_iso.jpg"))
+    img = render_png(cli, assembled, "front", 6000, 3000, ("--zoom", "2"))
+    made.append(save(img, "assembled_front.jpg"))
+    # pivot: board-centre-relative, in cm (+y towards the back edge)
+    img = render_png(cli, assembled, "top", 4800, 3000, ("--perspective", "--rotate", "-55,0,-30", "--zoom", "2.6", "--pivot", "11.1,2.1,0"))
+    made.append(save(img, "assembled_stack.jpg", (0, 0, img.width, img.height)))
     return made, keycap_top, stack_top

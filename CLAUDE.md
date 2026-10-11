@@ -255,7 +255,7 @@ despite the file on disk being correct, suspect the browser's own cache
 first (try a brand new tab, or bump the preview port) rather than the
 code.
 
-## eTutti handoff (session of Oct 2026, PRs #63–#75) — start here to continue
+## eTutti handoff (session of Oct 2026, PRs #63–#76) — start here to continue
 
 **State at hand-off** (everything merged to `main`):
 - **Page** `/etutti/` (unlisted, noindex) works with the user's real
@@ -273,9 +273,11 @@ code.
   The user confirmed accordion/bass work and asked for piano/guitar to be
   fixed (done in #74: SVF → biquad, sample gain up) and the synth to come
   back (done in #74).
-- **PCB** `etutti/hardware/`: **Hall-effect version (#75)**, routed, DRC
-  0/0/0, firmware cross-check 34/34. Ready-to-upload Gerbers in `fab/`
-  (PCB 1.2 mm + FR4 plate + JLCPCB BOM/CPL). The old MX/diode-matrix
+- **PCB** `etutti/hardware/`: **Magica K2 / slim version (#76)**, 41 keys,
+  267 × 88.2 mm, routed, DRC 0/0/0, firmware cross-check 41/41, manual
+  renders in `etutti/manuais/img/`. Firmware with the 41-key table is
+  flashed on the user's Teensy. (The #75 board, 34 keys, was: Ready-to-upload Gerbers in `fab/`
+  (PCB 1.2 mm + FR4 plate + JLCPCB BOM/CPL).) The old MX/diode-matrix
   board was never ordered and is gone. As far as we know the new one has
   **not been ordered** yet either. If the layout changes, re-run
   `generate.py`, then `build_pcb.py`, and update `etutti/manuais/`.
@@ -470,6 +472,13 @@ code.
   (Temporary default).
 - **#68–#74** — eTutti / eTuttino (see the handoff above).
 - **#75** — eTuttino Hall-effect redesign (velocity) + `etutti/manuais/`.
+- **#76** — Magica K2 layout (41 keys), slim board with the stack in the
+  back-right corner, browser sound (`websynth.js`), manual 3D renders +
+  lightbox. Render gotchas: VRML y is flipped, so face winding flips too
+  (boxes and cylinders are wound opposite ways in `assembly3d.py`, the
+  raytracer shows wrongly-wound faces black); close-ups are crops of
+  6000-px transparent renders mapped by the board's alpha bbox, because
+  kicad-cli's --pan units aren't mm.
 
 ## Workflow conventions observed this session
 

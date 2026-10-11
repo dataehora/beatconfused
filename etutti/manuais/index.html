@@ -27,7 +27,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261021" />
+  <link rel="stylesheet" href="styles.css?v=20261022" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
 </head>
@@ -352,7 +352,11 @@
                 <figcaption>The three multiplexers (U51–U53) and their capacitors C71–C73. Check each chip's pin 1.</figcaption>
               </figure>
             </li>
-            <li><strong>Regulator U60 (SOT-223)</strong>, in the back right corner, between the two rows of Teensy holes. It only fits one way: the wide tab on the wide pad. Solder one small pin, align, then the others and finally the tab (it needs more heat).</li>
+            <li><strong>Regulator U60 (SOT-223)</strong>, in the back right corner, between the two rows of Teensy holes. It only fits one way: the wide tab on the wide pad. Solder one small pin, align, then the others and finally the tab (it needs more heat).
+              <figure>
+                <a class="zoomable" href="img/detail_regulator.jpg"><img src="img/detail_regulator-sm.jpg" alt="Close-up of the back: regulator U60 between the two rows of Teensy holes, with C81 and C80 on either side" loading="lazy" /></a>
+                <figcaption>Regulator U60 between the Teensy holes, C81 (22 µF) on one side and C80 (10 µF) on the other. Seen from the back.</figcaption>
+              </figure></li>
             <li><strong>Capacitors C80 (10 µF) and C81 (22 µF)</strong>, one on each side of the regulator. Check the silkscreen: they look the same but have different values.</li>
             <li>
               <strong>Sensors U1–U41 (SOT-23)</strong>, in the middle of each key position. The 2-pin side goes on the 2
@@ -406,6 +410,10 @@
             <li>Put the 3 mm spacer between the Audio Board and the board, hold them together and solder the legs from the back. Trim the legs flush with the joints: the back has to stay flat.</li>
             <li>Solder the male headers to the Teensy 4.0, pointing down (or use a "Teensy 4.0 with pins"), and plug the Teensy into the Audio Board's sockets: pin 0 to pin 0, USB towards the right edge.</li>
           </ol>
+                    <figure>
+                <a class="zoomable" href="img/assembled_stack.jpg"><img src="img/assembled_stack-sm.jpg" alt="The Teensy plugged into the Audio Board in the back right corner, with the USB and the headphone jack at the right edge, next to the keys" loading="lazy" /></a>
+                <figcaption>Finished: the Teensy on the Audio Board, USB and headphone jack at the right edge, a little lower than the keys.</figcaption>
+              </figure>
           <div class="callout"><p>Rather keep the Audio Board removable? Solder two 1×14 female sockets to the board and plug the Audio Board's legs into them. It works the same, but the stack ends up about 6 mm taller than the keys.</p></div>
 
           <h3>2. Flash the firmware</h3>
@@ -845,7 +853,11 @@
                 <figcaption>Os três multiplexadores (U51–U53) e seus capacitores C71–C73. Confira a posição do pino 1 de cada um.</figcaption>
               </figure>
             </li>
-            <li><strong>Regulador U60 (SOT-223)</strong>, no canto de trás à direita, entre as duas fileiras de furos do Teensy. Ele só encaixa de um jeito: a aba larga no pad largo. Solde um pino pequeno, alinhe, depois os outros e por fim a aba (ela pede mais calor).</li>
+            <li><strong>Regulador U60 (SOT-223)</strong>, no canto de trás à direita, entre as duas fileiras de furos do Teensy. Ele só encaixa de um jeito: a aba larga no pad largo. Solde um pino pequeno, alinhe, depois os outros e por fim a aba (ela pede mais calor).
+              <figure>
+                <a class="zoomable" href="img/detail_regulator.jpg"><img src="img/detail_regulator-sm.jpg" alt="Detalhe do verso: o regulador U60 entre as duas fileiras de furos do Teensy, com C81 e C80 dos lados" loading="lazy" /></a>
+                <figcaption>O regulador U60 entre os furos do Teensy, com C81 (22 µF) de um lado e C80 (10 µF) do outro. Visto pelo verso.</figcaption>
+              </figure></li>
             <li><strong>Capacitores C80 (10 µF) e C81 (22 µF)</strong>, um de cada lado do regulador. Confira a serigrafia: os dois têm o mesmo tamanho, mas valores diferentes.</li>
             <li>
               <strong>Sensores U1–U41 (SOT-23)</strong>, no centro de cada posição de tecla. O lado com 2 pinos vai nos 2
@@ -898,6 +910,10 @@
             <li>Ponha o calço de 3 mm entre a Audio Board e a placa, segure as duas firmes e solde as pernas pelo verso. Corte o excesso das pernas rente à solda: o verso precisa ficar plano.</li>
             <li>Solde as barras de pinos macho no Teensy 4.0, viradas para baixo (ou use um "Teensy 4.0 with pins"), e encaixe o Teensy nos soquetes da Audio Board: pino 0 com pino 0, USB para a borda direita.</li>
           </ol>
+                    <figure>
+                <a class="zoomable" href="img/assembled_stack.jpg"><img src="img/assembled_stack-sm.jpg" alt="O Teensy encaixado na Audio Board no canto de trás à direita, com o USB e o fone na borda direita, ao lado das teclas" loading="lazy" /></a>
+                <figcaption>Pronto: o Teensy sobre a Audio Board, USB e fone na borda direita, um pouco mais baixos que as teclas.</figcaption>
+              </figure>
           <div class="callout"><p>Prefere poder tirar a Audio Board? Solde dois soquetes fêmea 1×14 na placa e encaixe nela as pernas da Audio Board. Funciona igual, mas o conjunto fica cerca de 6 mm mais alto que as teclas.</p></div>
 
           <h3>2. Gravar o firmware</h3>
@@ -1336,7 +1352,11 @@
                 <figcaption>Los tres multiplexores (U51–U53) y sus condensadores C71–C73. Comprueba el pin 1 de cada uno.</figcaption>
               </figure>
             </li>
-            <li><strong>Regulador U60 (SOT-223)</strong>, en la esquina trasera derecha, entre las dos filas de agujeros del Teensy. Solo encaja de una manera: la aleta ancha en el pad ancho. Suelda un pin pequeño, alinea, luego los otros y al final la aleta (necesita más calor).</li>
+            <li><strong>Regulador U60 (SOT-223)</strong>, en la esquina trasera derecha, entre las dos filas de agujeros del Teensy. Solo encaja de una manera: la aleta ancha en el pad ancho. Suelda un pin pequeño, alinea, luego los otros y al final la aleta (necesita más calor).
+              <figure>
+                <a class="zoomable" href="img/detail_regulator.jpg"><img src="img/detail_regulator-sm.jpg" alt="Detalle del reverso: el regulador U60 entre las dos filas de agujeros del Teensy, con C81 y C80 a los lados" loading="lazy" /></a>
+                <figcaption>El regulador U60 entre los agujeros del Teensy, con C81 (22 µF) a un lado y C80 (10 µF) al otro. Visto desde el reverso.</figcaption>
+              </figure></li>
             <li><strong>Condensadores C80 (10 µF) y C81 (22 µF)</strong>, uno a cada lado del regulador. Mira la serigrafía: tienen el mismo tamaño, pero distinto valor.</li>
             <li>
               <strong>Sensores U1–U41 (SOT-23)</strong>, en el centro de cada posición de tecla. El lado con 2 pines va en
@@ -1390,6 +1410,10 @@
             <li>Pon el calzo de 3 mm entre la Audio Board y la placa, sujétalas firmes y suelda las patas por el reverso. Corta lo que sobre de las patas a ras de la soldadura: el reverso tiene que quedar plano.</li>
             <li>Suelda las tiras de pines macho al Teensy 4.0, hacia abajo (o usa un "Teensy 4.0 with pins"), y encaja el Teensy en los zócalos de la Audio Board: pin 0 con pin 0, USB hacia el borde derecho.</li>
           </ol>
+                    <figure>
+                <a class="zoomable" href="img/assembled_stack.jpg"><img src="img/assembled_stack-sm.jpg" alt="El Teensy encajado en la Audio Board en la esquina trasera derecha, con el USB y los auriculares en el borde derecho, junto a las teclas" loading="lazy" /></a>
+                <figcaption>Listo: el Teensy sobre la Audio Board, USB y auriculares en el borde derecho, un poco más bajos que las teclas.</figcaption>
+              </figure>
           <div class="callout"><p>¿Prefieres poder quitar la Audio Board? Suelda dos zócalos hembra 1×14 en la placa y encaja en ellos las patas de la Audio Board. Funciona igual, pero el conjunto queda unos 6 mm más alto que las teclas.</p></div>
 
           <h3>2. Grabar el firmware</h3>
