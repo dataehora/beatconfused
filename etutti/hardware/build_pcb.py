@@ -61,7 +61,7 @@ ROW_Y = 8.5                     # row trace, between this key row and the next
 COL_CORRIDOR_Y = {0: 26.0, 1: 25.0, 2: 24.0, 3: 23.0,          # to J1, between the sockets
                   4: 37.5, 5: 38.5, 6: 39.5, 7: 40.5, 8: 41.5}  # to J2, below the sockets
 ROW_CHANNEL_X0 = 176.6          # first row channel on the right edge, then +0.6 each
-ROW_TOP_Y = {0: 16.0, 1: 15.0, 2: 14.0, 3: 13.0}                # above J1
+ROW_TOP_Y0 = 16.0               # top row's run above J1, then 1 mm higher per row below
 
 board = pcbnew.BOARD()
 nets = {}
@@ -201,20 +201,27 @@ def build():
                 pad_pos[n] = (x, y)
 
     # ---- rows: along each key row on the back, out to the right channel ----
-    for r in range(len(G.ROWS)):
+    # Rows nest without crossing when, going down the board, each row gets a
+    # channel further out, a run above J1 that is higher, and a J1 pad
+    # further left — so rank the rows by height, top first.
+    by_height = sorted(range(len(G.ROWS)), key=lambda r: cathodes[r][0][1])
+    pad_xs = [pad_pos["ROW%d" % r][0] for r in by_height]
+    assert pad_xs == sorted(pad_xs, reverse=True), "ROW_PINS order would make row traces cross"
+    for rank, r in enumerate(by_height):
         row_net = "ROW%d" % r
         pts = sorted(cathodes[r])
         y = pts[0][1]
-        chan_x = ROW_CHANNEL_X0 + 0.6 * r
+        chan_x = ROW_CHANNEL_X0 + 0.6 * rank
+        top_y = ROW_TOP_Y0 - rank
         # Split at every cathode so each stub ends on a segment end.
         track(pts + [(chan_x, y)], pcbnew.B_Cu, row_net)
         px, py = pad_pos[row_net]
-        track([(chan_x, y), (chan_x, ROW_TOP_Y[r]), (px, ROW_TOP_Y[r]), (px, py)], pcbnew.B_Cu, row_net)
+        track([(chan_x, y), (chan_x, top_y), (px, top_y), (px, py)], pcbnew.B_Cu, row_net)
 
     # ---- columns: zig-zag down the rows on the front, then up to the Teensy ----
     for c, vias in col_vias.items():
         col_net = "COL%d" % c
-        vias.sort()
+        vias.sort(key=lambda v: v[2])   # top of the board first
         chain = [(x, y) for _, x, y in vias]
         track(chain, pcbnew.F_Cu, col_net)
         top_x, top_y = chain[0]
@@ -334,6 +341,53 @@ def fab():
     return len(errors), len(unconnected)
 
 
+FIRMWARE = os.path.join(HERE, "..", "firmware", "etutti_synth", "etutti_synth.ino")
+
+
+def verify_against_firmware():
+    """Reads the saved board back and checks, for every key, that the
+    Teensy pins its row and column nets reach are the ones the firmware
+    scans for that key's position, in both C-griff and B-griff. DRC only
+    proves the copper matches the nets; this proves the nets match the
+    firmware."""
+    import re
+    b = pcbnew.LoadBoard(BOARD_PATH)
+    pin_of_net = {}
+    for ref, side in (("J1", G.TEENSY_LEFT), ("J2", G.TEENSY_RIGHT)):
+        for p in b.FindFootprintByReference(ref).Pads():
+            if p.GetNetname():
+                pin_of_net[p.GetNetname()] = side[int(p.GetNumber()) - 1]
+    ino = open(FIRMWARE, encoding="utf-8").read()
+
+    def ints(pattern):
+        return [int(v) for v in re.findall(r"-?\d+", re.search(pattern, ino, re.S).group(1))]
+
+    row_pins = ints(r"ROW_PINS\[MATRIX_ROWS\] = \{([^}]*)\}")
+    col_pins = ints(r"COL_PINS\[MATRIX_COLS\] = \{([^}]*)\}")
+    first_col = ints(r"FIRST_COL\[MATRIX_ROWS\] = \{([^}]*)\}")
+    first = ints(r"FIRST_NOTE\[2\]\[MATRIX_ROWS\] = \{(.*?)\};")
+    first_note = [first[0:4], first[4:8]]
+    # This board is laid out in C-griff (generate.ROWS); B-griff is the
+    # same switches with the firmware's second note table.
+    b_first = [first_note[1][r] for r in range(4)]
+    bad = 0
+    for k in G.keys():
+        sw = b.FindFootprintByReference(k["ref"])
+        d = b.FindFootprintByReference(k["diode"])
+        col_net = [p.GetNetname() for p in sw.Pads() if p.GetNumber() == "1"][0]
+        row_net = [p.GetNetname() for p in d.Pads() if p.GetNumber() == "1"][0]
+        r = row_pins.index(int(pin_of_net[row_net]))
+        c = col_pins.index(int(pin_of_net[col_net]))
+        fw_c = first_note[0][r] + 3 * (c - first_col[r])
+        if c < first_col[r] or fw_c != k["note"] or (r, c) != (k["row"], k["col"]):
+            bad += 1
+            print("  MISMATCH", k["ref"], "board", k["note"], "firmware", fw_c)
+        fw_b = b_first[r] + 3 * (c - first_col[r])
+        assert 0 <= fw_b < 128
+    print("firmware check: %d/%d keys reach the pins the firmware expects" % (len(G.keys()) - bad, len(G.keys())))
+    return bad
+
+
 PLATE_PATH = os.path.join(KICAD_DIR, "etuttino_plate.kicad_pcb")
 
 
@@ -399,5 +453,6 @@ def build_plate():
 if __name__ == "__main__":
     build()
     errs, unc = fab()
+    mismatches = verify_against_firmware()
     build_plate()
-    sys.exit(1 if errs or unc else 0)
+    sys.exit(1 if errs or unc or mismatches else 0)

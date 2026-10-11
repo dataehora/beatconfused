@@ -10,18 +10,25 @@
    so the device works standalone or with the web page.
 
    Arduino IDE + Teensyduino settings:
-     Tools > Board:    your Teensy
+     Tools > Board:    Teensy 4.0
      Tools > USB Type: "MIDI" (or "Serial + MIDI" to also get Serial)
 
    The Teensy shows up as a USB MIDI device called "eTutti" (see name.c)
-   and plays an 8-voice polyphonic synth:
-     8 x (oscillator -> ADSR envelope) -> mixer -> state-variable low-pass
-     filter -> both channels of the Audio Board.
+   and plays an 8-voice polyphonic synth. Each voice has two oscillators
+   ("reeds") — the second one detunable and shiftable by an octave, like
+   the voices of an accordion — through an ADSR envelope; all voices then
+   share a state-variable low-pass filter (the "cassotto"):
+     8 x (osc1 + osc2 -> mixer -> ADSR) -> mixers -> low-pass -> L + R
 
-   MIDI implementation (any channel; keep in sync with etutti/script.js):
+   MIDI implementation (any channel; keep in sync with CC in etutti/script.js):
      Note On / Note Off      play / release (velocity -> loudness)
      CC 7   Volume           headphone volume
-     CC 70  Waveform         0-31 sine, 32-63 saw, 64-95 square, 96-127 triangle
+     CC 20  Voice 2 waveform 0-31 sine, 32-63 saw, 64-95 square, 96-127 triangle
+     CC 21  Voice 2 level    0 .. 100 % of voice 1
+     CC 22  Voice 2 detune   64 = in tune, 0 / 127 = -50 / +50 cents
+     CC 23  Voice 2 octave   0-42 one octave down, 43-84 unison, 85-127 up
+     CC 24  Key layout       0-63 C-griff, 64-127 B-griff (the physical keys)
+     CC 70  Voice 1 waveform as CC 20
      CC 71  Resonance        0.7 .. 5.0
      CC 72  Release          0 .. 3000 ms (quadratic curve)
      CC 73  Attack           0 .. 2000 ms (quadratic curve)
@@ -49,34 +56,44 @@ const int NUM_VOICES = 8;
 // Pins chosen to stay clear of the Audio Board Rev D (7, 8, 18-21, 23)
 // and of its SD card (10-13), so sample playback from SD stays possible.
 // 6 and 15 are only used by the Audio Board's optional memory chip and
-// volume pot, which the eTuttino doesn't fit.
+// volume pot, which the eTuttino doesn't fit. ROW_PINS[r] is accordion
+// row r+1 (row 1 is the one nearest the player, at the bottom).
 const int MATRIX_ROWS = 4;
 const int MATRIX_COLS = 9;
-const uint8_t ROW_PINS[MATRIX_ROWS] = {0, 1, 2, 3};
+const uint8_t ROW_PINS[MATRIX_ROWS] = {3, 2, 1, 0};
 const uint8_t COL_PINS[MATRIX_COLS] = {4, 5, 6, 9, 14, 15, 16, 17, 22};
 const uint8_t KEY_VELOCITY = 100;   // MX switches are on/off: fixed velocity
 const uint32_t DEBOUNCE_MS = 5;
 
-// MIDI note for each [row][col]; -1 = no switch there. Chromatic accordion
-// C-griff: +3 semitones along a row, rows staggered half a key, row 4 a
-// copy of row 1 with F#3 in front. Keep in sync with ROWS in
-// etutti/script.js.
-const int8_t NOTE_MAP[MATRIX_ROWS][MATRIX_COLS] = {
-  // col: 0    1    2    3    4    5    6    7    8
-  {     -1,  57,  60,  63,  66,  69,  72,  75,  78 },  // row 1: A3 .. F#5
-  {     55,  58,  61,  64,  67,  70,  73,  76,  79 },  // row 2: G3 .. G5
-  {     -1,  56,  59,  62,  65,  68,  71,  74,  77 },  // row 3: G#3 .. F5
-  {     54,  57,  60,  63,  66,  69,  72,  75,  78 },  // row 4: F#3 .. F#5
+// Chromatic button accordion layouts. Along a row each key is a minor
+// third (+3) above the previous one; rows 1 and 3 have 8 keys starting at
+// matrix column 1, rows 2 and 4 have 9 starting at column 0 (they sit half
+// a key further left). Row 4 repeats row 1 with one more key in front.
+// B-griff is the mirror image of C-griff: rows 1 and 3 swap places, so a
+// diagonal step goes the other way. Keep in sync with etutti/script.js.
+const int8_t FIRST_NOTE[2][MATRIX_ROWS] = {
+  {57, 55, 56, 54},   // C-griff: A3, G3, G#3, F#3
+  {56, 55, 57, 53},   // B-griff: G#3, G3, A3, F3
 };
+const uint8_t FIRST_COL[MATRIX_ROWS] = {1, 0, 1, 0};
+int layoutSystem = 0;   // 0 = C-griff, 1 = B-griff
+
+int noteAt(int r, int c) {
+  if (c < FIRST_COL[r]) return -1;
+  return FIRST_NOTE[layoutSystem][r] + 3 * (c - FIRST_COL[r]);
+}
 
 bool keyDown[MATRIX_ROWS][MATRIX_COLS];
 uint32_t keyChangedAt[MATRIX_ROWS][MATRIX_COLS];
+int8_t keyNote[MATRIX_ROWS][MATRIX_COLS];   // note a held key started (survives a layout switch)
 // How many physical keys hold each note (row 4 doubles row 1), so a note
 // only starts on the first press and stops on the last release.
 uint8_t noteHolders[128];
 
 // ---- Audio graph ----
-AudioSynthWaveform       wave[NUM_VOICES];
+AudioSynthWaveform       osc1[NUM_VOICES];
+AudioSynthWaveform       osc2[NUM_VOICES];
+AudioMixer4              voiceMix[NUM_VOICES];
 AudioEffectEnvelope      env[NUM_VOICES];
 AudioMixer4              mixA;      // voices 0-3
 AudioMixer4              mixB;      // voices 4-7
@@ -85,46 +102,89 @@ AudioFilterStateVariable filter;
 AudioOutputI2S           i2sOut;
 AudioControlSGTL5000     codec;
 
-AudioConnection patchW0(wave[0], env[0]);
-AudioConnection patchW1(wave[1], env[1]);
-AudioConnection patchW2(wave[2], env[2]);
-AudioConnection patchW3(wave[3], env[3]);
-AudioConnection patchW4(wave[4], env[4]);
-AudioConnection patchW5(wave[5], env[5]);
-AudioConnection patchW6(wave[6], env[6]);
-AudioConnection patchW7(wave[7], env[7]);
-AudioConnection patchE0(env[0], 0, mixA, 0);
-AudioConnection patchE1(env[1], 0, mixA, 1);
-AudioConnection patchE2(env[2], 0, mixA, 2);
-AudioConnection patchE3(env[3], 0, mixA, 3);
-AudioConnection patchE4(env[4], 0, mixB, 0);
-AudioConnection patchE5(env[5], 0, mixB, 1);
-AudioConnection patchE6(env[6], 0, mixB, 2);
-AudioConnection patchE7(env[7], 0, mixB, 3);
-AudioConnection patchMA(mixA, 0, mixMain, 0);
-AudioConnection patchMB(mixB, 0, mixMain, 1);
-AudioConnection patchF(mixMain, 0, filter, 0);
-AudioConnection patchL(filter, 0, i2sOut, 0);   // low-pass output -> left
-AudioConnection patchR(filter, 0, i2sOut, 1);   //                 -> right
+AudioConnection c1a(osc1[0], 0, voiceMix[0], 0);
+AudioConnection c1b(osc1[1], 0, voiceMix[1], 0);
+AudioConnection c1c(osc1[2], 0, voiceMix[2], 0);
+AudioConnection c1d(osc1[3], 0, voiceMix[3], 0);
+AudioConnection c1e(osc1[4], 0, voiceMix[4], 0);
+AudioConnection c1f(osc1[5], 0, voiceMix[5], 0);
+AudioConnection c1g(osc1[6], 0, voiceMix[6], 0);
+AudioConnection c1h(osc1[7], 0, voiceMix[7], 0);
+AudioConnection c2a(osc2[0], 0, voiceMix[0], 1);
+AudioConnection c2b(osc2[1], 0, voiceMix[1], 1);
+AudioConnection c2c(osc2[2], 0, voiceMix[2], 1);
+AudioConnection c2d(osc2[3], 0, voiceMix[3], 1);
+AudioConnection c2e(osc2[4], 0, voiceMix[4], 1);
+AudioConnection c2f(osc2[5], 0, voiceMix[5], 1);
+AudioConnection c2g(osc2[6], 0, voiceMix[6], 1);
+AudioConnection c2h(osc2[7], 0, voiceMix[7], 1);
+AudioConnection cva(voiceMix[0], env[0]);
+AudioConnection cvb(voiceMix[1], env[1]);
+AudioConnection cvc(voiceMix[2], env[2]);
+AudioConnection cvd(voiceMix[3], env[3]);
+AudioConnection cve(voiceMix[4], env[4]);
+AudioConnection cvf(voiceMix[5], env[5]);
+AudioConnection cvg(voiceMix[6], env[6]);
+AudioConnection cvh(voiceMix[7], env[7]);
+AudioConnection cea(env[0], 0, mixA, 0);
+AudioConnection ceb(env[1], 0, mixA, 1);
+AudioConnection cec(env[2], 0, mixA, 2);
+AudioConnection ced(env[3], 0, mixA, 3);
+AudioConnection cee(env[4], 0, mixB, 0);
+AudioConnection cef(env[5], 0, mixB, 1);
+AudioConnection ceg(env[6], 0, mixB, 2);
+AudioConnection ceh(env[7], 0, mixB, 3);
+AudioConnection cma(mixA, 0, mixMain, 0);
+AudioConnection cmb(mixB, 0, mixMain, 1);
+AudioConnection cf(mixMain, 0, filter, 0);
+AudioConnection cl(filter, 0, i2sOut, 0);   // low-pass output -> left
+AudioConnection cr(filter, 0, i2sOut, 1);   //                 -> right
 
 // ---- Voice allocation ----
 struct Voice {
   int note;            // MIDI note held, or -1 when free / releasing
+  int lastNote;        // note it last played (kept while releasing, for retuning)
   unsigned long age;   // allocation order, for stealing the oldest
 };
 Voice voices[NUM_VOICES];
 unsigned long voiceCounter = 0;
 
-// ---- Current synth settings (defaults match the page's sliders) ----
-short waveformType = WAVEFORM_SAWTOOTH;
+// ---- Current synth settings — the defaults are the page's "Classic
+// accordion" preset: two reeds almost in tune, in a soft cassotto. ----
+const short WAVE_TYPES[4] = { WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAVEFORM_TRIANGLE };
+short wave1Type = WAVEFORM_SAWTOOTH;
+short wave2Type = WAVEFORM_SAWTOOTH;
+float voice2Level = 100 / 127.0f;
+float voice2Detune = (69 - 64) / 64.0f * 50.0f;   // cents
+int voice2Octave = 0;
 
-float noteToFreq(int note) {
-  return 440.0f * powf(2.0f, (note - 69) / 12.0f);
+float noteToFreq(float note) {
+  return 440.0f * powf(2.0f, (note - 69.0f) / 12.0f);
 }
 
 float quadraticMs(byte value, float maxMs) {
   float t = value / 127.0f;
   return t * t * maxMs;
+}
+
+void tuneVoice(int v, int note) {
+  osc1[v].frequency(noteToFreq(note));
+  osc2[v].frequency(noteToFreq(note + 12.0f * voice2Octave + voice2Detune / 100.0f));
+}
+
+void applyVoiceMix() {
+  // Voice 1 at 0.6, voice 2 at 0.6 x level: a full two-reed voice peaks at
+  // 1.2, and eight of them through 0.2 x 0.5 stay just under full scale.
+  for (int i = 0; i < NUM_VOICES; i++) {
+    voiceMix[i].gain(0, 0.6f);
+    voiceMix[i].gain(1, 0.6f * voice2Level);
+  }
+}
+
+void retuneAll() {
+  for (int i = 0; i < NUM_VOICES; i++) {
+    if (voices[i].lastNote >= 0) tuneVoice(i, voices[i].lastNote);
+  }
 }
 
 int findVoiceForNote(int note) {
@@ -163,10 +223,13 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
   }
   int v = findVoiceForNote(note);
   voices[v].note = note;
+  voices[v].lastNote = note;
   voices[v].age = ++voiceCounter;
+  float amp = 0.15f + 0.85f * (velocity / 127.0f);
   AudioNoInterrupts();
-  wave[v].frequency(noteToFreq(note));
-  wave[v].amplitude(0.15f + 0.85f * (velocity / 127.0f));
+  tuneVoice(v, note);
+  osc1[v].amplitude(amp);
+  osc2[v].amplitude(amp);
   env[v].noteOn();
   AudioInterrupts();
 }
@@ -181,21 +244,16 @@ void releaseAll() {
 void silenceAll() {
   AudioNoInterrupts();
   for (int i = 0; i < NUM_VOICES; i++) {
-    wave[i].amplitude(0);
+    osc1[i].amplitude(0);
+    osc2[i].amplitude(0);
     env[i].noteOff();
     voices[i].note = -1;
   }
   AudioInterrupts();
 }
 
-void setWaveform(byte value) {
-  static const short TYPES[4] = {
-    WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAVEFORM_TRIANGLE
-  };
-  waveformType = TYPES[min(value / 32, 3)];
-  AudioNoInterrupts();
-  for (int i = 0; i < NUM_VOICES; i++) wave[i].begin(waveformType);
-  AudioInterrupts();
+short waveFromCC(byte value) {
+  return WAVE_TYPES[min(value / 32, 3)];
 }
 
 void handleControlChange(byte channel, byte control, byte value) {
@@ -203,8 +261,32 @@ void handleControlChange(byte channel, byte control, byte value) {
     case 7:
       codec.volume(0.8f * value / 127.0f);
       break;
+    case 20:
+      wave2Type = waveFromCC(value);
+      AudioNoInterrupts();
+      for (int i = 0; i < NUM_VOICES; i++) osc2[i].begin(wave2Type);
+      AudioInterrupts();
+      break;
+    case 21:
+      voice2Level = value / 127.0f;
+      applyVoiceMix();
+      break;
+    case 22:
+      voice2Detune = (value - 64) / 64.0f * 50.0f;
+      retuneAll();
+      break;
+    case 23:
+      voice2Octave = value < 43 ? -1 : (value < 85 ? 0 : 1);
+      retuneAll();
+      break;
+    case 24:
+      layoutSystem = value < 64 ? 0 : 1;
+      break;
     case 70:
-      setWaveform(value);
+      wave1Type = waveFromCC(value);
+      AudioNoInterrupts();
+      for (int i = 0; i < NUM_VOICES; i++) osc1[i].begin(wave1Type);
+      AudioInterrupts();
       break;
     case 71:
       filter.resonance(0.7f + 4.3f * value / 127.0f);
@@ -265,14 +347,17 @@ void scanMatrix() {
     digitalWrite(ROW_PINS[r], LOW);
     delayMicroseconds(10);                       // let the line settle
     for (int c = 0; c < MATRIX_COLS; c++) {
-      int note = NOTE_MAP[r][c];
-      if (note < 0) continue;
+      if (c < FIRST_COL[r]) continue;            // no switch in that cell
       bool pressed = digitalRead(COL_PINS[c]) == LOW;
       if (pressed != keyDown[r][c] && now - keyChangedAt[r][c] >= DEBOUNCE_MS) {
         keyDown[r][c] = pressed;
         keyChangedAt[r][c] = now;
-        if (pressed) localNoteOn(note);
-        else localNoteOff(note);
+        if (pressed) {
+          keyNote[r][c] = noteAt(r, c);
+          localNoteOn(keyNote[r][c]);
+        } else {
+          localNoteOff(keyNote[r][c]);           // the note it started, even after a layout switch
+        }
         changed = true;
       }
     }
@@ -282,37 +367,38 @@ void scanMatrix() {
 }
 
 void setup() {
-  AudioMemory(40);
+  AudioMemory(48);
   setupMatrix();
 
   codec.enable();
-  codec.volume(0.6f);
+  codec.volume(0.8f * 90 / 127.0f);
 
   for (int i = 0; i < NUM_VOICES; i++) {
     voices[i].note = -1;
+    voices[i].lastNote = -1;
     voices[i].age = 0;
-    wave[i].begin(0.0f, 440.0f, waveformType);
-    // Defaults equal to the page's initial slider positions.
-    env[i].attack(quadraticMs(10, 2000));
+    osc1[i].begin(0.0f, 440.0f, wave1Type);
+    osc2[i].begin(0.0f, 440.0f, wave2Type);
+    // Defaults equal to the page's "Classic accordion" preset.
+    env[i].attack(quadraticMs(14, 2000));
     env[i].hold(0);
-    env[i].decay(quadraticMs(50, 2000));
-    env[i].sustain(90 / 127.0f);
-    env[i].release(quadraticMs(40, 3000));
+    env[i].decay(quadraticMs(30, 2000));
+    env[i].sustain(1.0f);
+    env[i].release(quadraticMs(21, 3000));
   }
+  applyVoiceMix();
 
-  // Each voice at most 1.0 * 0.25 * 0.5 -> eight full-velocity voices sum
-  // to 1.0, so chords never clip.
   for (int ch = 0; ch < 4; ch++) {
-    mixA.gain(ch, 0.25f);
-    mixB.gain(ch, 0.25f);
+    mixA.gain(ch, 0.2f);
+    mixB.gain(ch, 0.2f);
   }
   mixMain.gain(0, 0.5f);
   mixMain.gain(1, 0.5f);
   mixMain.gain(2, 0.0f);
   mixMain.gain(3, 0.0f);
 
-  filter.frequency(40.0f * powf(2.0f, 9.0f * 110 / 127.0f));
-  filter.resonance(0.7f + 4.3f * 10 / 127.0f);
+  filter.frequency(40.0f * powf(2.0f, 9.0f * 82 / 127.0f));
+  filter.resonance(0.7f);
 
   usbMIDI.setHandleNoteOn(handleNoteOn);
   usbMIDI.setHandleNoteOff(handleNoteOff);
