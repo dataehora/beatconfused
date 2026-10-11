@@ -56,11 +56,21 @@ that doesn't belong there.
   shows "in development"). Web MIDI (`navigator.requestMIDIAccess`) to the
   Teensy running `etutti/firmware/etutti_synth/` (8-voice synth, USB name
   "eTutti" via `name.c`, scans the 4x9 key matrix and plays/sends notes).
-  Computer keyboard rows 3..0 / W..P / S..L / Z..Period = accordion rows
-  1-4 (by `KeyboardEvent.code`), arrows = octave/velocity, Esc panic.
-  The layout lives in THREE places that must agree: `ROWS` in
-  `etutti/script.js`, `NOTE_MAP` in the sketch, `ROWS` in
-  `etutti/hardware/generate.py` (geometry source). The CC map lives in
+  **Row 1 is nearest the player (bottom), row 4 at the top** — on the
+  page and on the PCB. Round on-screen buttons. C-griff / B-griff switch
+  (B = mirror: rows 1 and 3 swapped; firmware gets CC 24 so the real keys
+  follow). Optional computer-keyboard input (toggle, remembered in
+  localStorage), by `KeyboardEvent.code`: row 1 = Z..Comma, row 2 = A..L,
+  row 3 = W..O, row 4 = Digit2..Digit0 (the user specified it on ABNT2;
+  rows 1 and 3 have 8 keys, so they end at Comma / O). Arrows =
+  octave/velocity, Esc panic. Synth has two voices per note and
+  instrument presets (`PRESETS` in script.js; "accordion" = default =
+  two-reed soft cassotto, also what "Reset" restores; custom saved
+  presets are a planned follow-up). The note layout lives in THREE places
+  that must agree: `FIRST_NOTE`/`ROWS` in `etutti/script.js`,
+  `FIRST_NOTE`/`FIRST_COL` in the sketch, `ROWS` in
+  `etutti/hardware/generate.py` (geometry source) — `build_pcb.py` checks
+  the board's nets against the sketch's tables and fails on a mismatch. The CC map lives in
   both `etutti/script.js` (`CC`) and the sketch — change both together.
   - **Tooling available on this machine** (use it to verify, don't just
     write code blind): KiCad 10 at `C:/Program Files/KiCad/10.0/bin/`

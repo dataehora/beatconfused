@@ -43,7 +43,11 @@ ROWS = [
 # right column top->bottom (pad 1 = top).
 TEENSY_LEFT = ["GND", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
 TEENSY_RIGHT = ["VIN", "GND", "3V3", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13"]
-ROW_PINS = ["0", "1", "2", "3"]
+# Matrix row r = accordion row r+1. Row 1 sits at the bottom (nearest the
+# player), so the top row (4) gets pin 0, the J1 pad nearest the routing
+# channel — that ordering is what lets the row traces nest without
+# crossing (see build_pcb.py).
+ROW_PINS = ["3", "2", "1", "0"]
 COL_PINS = ["4", "5", "6", "9", "14", "15", "16", "17", "22"]
 AUDIO_PINS = {"7", "8", "18", "19", "20", "21", "23"}  # Audio Board Rev D
 
@@ -56,6 +60,11 @@ GRID_Y0 = MARGIN + ZONE_H
 # right-aligned in the back strip. Centre of the 2 x 14 header footprint:
 STACK_CX = PCB_W - MARGIN - 24.0
 STACK_CY = MARGIN + ZONE_H / 2
+
+
+def row_slot(r):
+    """Vertical slot (0 = top) of accordion row r+1: row 1 at the bottom."""
+    return len(ROWS) - 1 - r
 
 
 def note_name(midi):
@@ -76,7 +85,7 @@ def keys():
                 "col": col0 + i,
                 "note": first + 3 * i,
                 "cx": GRID_X0 + (x + 1.0) * U,   # x = -0.5 -> half a key in
-                "cy": GRID_Y0 + (r + 0.5) * U,
+                "cy": GRID_Y0 + (row_slot(r) + 0.5) * U,
             })
     return out
 
@@ -96,7 +105,7 @@ def mounting_holes():
         (PCB_W - m, PCB_H - m),
     ]
     for r in (0, 2):
-        cy = GRID_Y0 + (r + 0.5) * U
+        cy = GRID_Y0 + (row_slot(r) + 0.5) * U
         holes.append((GRID_X0 + 0.25 * U, cy))
         holes.append((GRID_X0 + 8.75 * U, cy))
     return holes

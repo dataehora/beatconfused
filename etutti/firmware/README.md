@@ -50,7 +50,12 @@ The synth listens on every channel.
 | --- | --- |
 | Note On / Off | play / release; velocity sets loudness |
 | CC 7 | volume |
-| CC 70 | waveform: 0–31 sine, 32–63 saw, 64–95 square, 96–127 triangle |
+| CC 20 | voice 2 waveform (as CC 70) |
+| CC 21 | voice 2 level (0–100 % of voice 1) |
+| CC 22 | voice 2 detune: 64 = in tune, 0 / 127 = −50 / +50 cents |
+| CC 23 | voice 2 octave: 0–42 one down, 43–84 unison, 85–127 one up |
+| CC 24 | key layout of the physical keys: 0–63 C-griff, 64–127 B-griff |
+| CC 70 | voice 1 waveform: 0–31 sine, 32–63 saw, 64–95 square, 96–127 triangle |
 | CC 71 | filter resonance (0.7–5.0) |
 | CC 72 | release (0–3000 ms) |
 | CC 73 | attack (0–2000 ms) |

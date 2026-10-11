@@ -72,6 +72,12 @@ Chromatic accordion, C-griff:
 - Rows are **staggered by half a key**, so a diagonal step to the next row
   is **one semitone**.
 - Row 4 repeats row 1, with F♯3 added in front.
+- **Row 1 is nearest the player**, at the bottom (front edge) of the board,
+  and row 4 is at the top, behind it.
+- The same switches also play **B-griff** (the mirror image: rows 1 and 3
+  swap, row 1 G♯3…, row 3 A3…, row 4 F3 + row 1). The web page's C/B-griff
+  switch tells the firmware which note table to use (CC 24). The PCB does
+  not change.
 
 | Row | Keys | Notes |
 | --- | --- | --- |
@@ -98,10 +104,10 @@ cells are used.
 
 | Net | Teensy pin |   | Net | Teensy pin |
 | --- | --- | --- | --- | --- |
-| ROW0 | 0 | | COL0 | 4 |
-| ROW1 | 1 | | COL1 | 5 |
-| ROW2 | 2 | | COL2 | 6 |
-| ROW3 | 3 | | COL3 | 9 |
+| ROW0 (row 1, front) | 3 | | COL0 | 4 |
+| ROW1 (row 2) | 2 | | COL1 | 5 |
+| ROW2 (row 3) | 1 | | COL2 | 6 |
+| ROW3 (row 4, back) | 0 | | COL3 | 9 |
 | | | | COL4 | 14 |
 | | | | COL5 | 15 |
 | | | | COL6 | 16 |
@@ -139,7 +145,7 @@ Pins the matrix stays clear of:
 | 34 | MX-compatible switch, 3- or 5-pin | linear or tactile, your choice |
 | 34 | Kailh MX hot-swap socket (CPG151101S11) | soldered on the back |
 | 34 | 1N4148W diode, SOD-123 | back side, next to each socket |
-| 34 | 1u MX keycap | uniform profile (DSA / XDA) suits a staggered grid. **19 light** (naturals) + **15 dark** (sharps), like accordion buttons |
+| 34 | 1u MX keycap, **round** | round MX-stem keycaps (sold as "round" or "typewriter" keycaps) give the accordion-button look of the web page. **19 light** (naturals) + **15 dark** (sharps) |
 | 1 | Teensy 4.0 | |
 | 1 | PJRC Audio Adaptor Board **Rev D** | |
 | 2 | 1×14 long-pin stacking header | Teensy → through Audio Board |

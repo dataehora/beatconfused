@@ -27,7 +27,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261012" />
+  <link rel="stylesheet" href="styles.css?v=20261013" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
 </head>
@@ -89,6 +89,30 @@
       <!-- ---- Keyboard ---- -->
       <div class="etutti-play">
         <div class="etutti-play-controls">
+          <div class="etutti-toggle-group">
+          <span class="etutti-group-label" data-i18n="play.system">Layout</span>
+          <label class="style-toggle" id="griffToggle">
+            <span class="style-toggle-label is-active" data-style="c" data-checked="false">C-griff</span>
+            <span class="style-toggle-switch">
+              <input type="checkbox" id="griffCheckbox" aria-label="Key layout: C-griff or B-griff" data-i18n-attr="aria-label:play.griffAria" />
+              <span class="style-toggle-track"><span class="style-toggle-thumb"></span></span>
+            </span>
+            <span class="style-toggle-label" data-style="b" data-checked="true">B-griff</span>
+          </label>
+          </div>
+          <div class="etutti-toggle-group">
+          <span class="etutti-group-label" data-i18n="play.keyboard">Computer keyboard</span>
+          <label class="style-toggle" id="keyboardToggle">
+            <span class="style-toggle-label" data-style="off" data-checked="false" data-i18n="play.keyboardOff">Off</span>
+            <span class="style-toggle-switch">
+              <input type="checkbox" id="keyboardCheckbox" checked aria-label="Play notes with the computer keyboard" data-i18n-attr="aria-label:play.keyboardAria" />
+              <span class="style-toggle-track"><span class="style-toggle-thumb"></span></span>
+            </span>
+            <span class="style-toggle-label is-active" data-style="on" data-checked="true" data-i18n="play.keyboardOn">On</span>
+          </label>
+          </div>
+        </div>
+        <div class="etutti-play-controls">
           <div class="stepper">
             <span class="stepper-label" data-i18n="play.octave">Octave</span>
             <button id="octaveDown" type="button" class="small-btn" aria-label="Octave down (←)" title="←" data-i18n-attr="aria-label:play.octaveDownAria">−</button>
@@ -109,8 +133,8 @@
             <div id="buttonGrid" class="button-grid" role="group" aria-label="eTuttino keys" data-i18n-attr="aria-label:play.pianoAria"></div>
           </div>
         </div>
-        <p class="hint etutti-keys-hint" data-i18n="play.hint">
-          Four rows of the computer keyboard are the four accordion rows: 3 … 0, W … P, S … L and Z … the full stop.
+        <p class="hint etutti-keys-hint" id="keysHint" data-i18n="play.hint">
+          Computer keys, from the row nearest you: Z … , is row 1, A … L row 2, W … O row 3 and 2 … 0 row 4.
           ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.
         </p>
       </div>
@@ -124,13 +148,56 @@
           </button>
         </div>
 
-        <div class="etutti-wave" role="radiogroup" aria-labelledby="waveLegend">
-          <span class="etutti-group-label" id="waveLegend" data-i18n="synth.waveform">Waveform</span>
+        <div class="etutti-group" role="radiogroup" aria-labelledby="presetLegend">
+          <div class="etutti-group-head">
+            <span class="etutti-group-label" id="presetLegend" data-i18n="synth.preset">Instrument</span>
+            <span id="presetModified" class="etutti-modified" hidden data-i18n="synth.modified">modified</span>
+            <button id="resetSynthBtn" type="button" class="small-btn etutti-reset" data-i18n="synth.reset">Reset to default</button>
+          </div>
           <div class="etutti-pills">
-            <label class="etutti-pill"><input type="radio" name="waveform" value="0" /><span data-i18n="synth.sine">Sine</span></label>
-            <label class="etutti-pill"><input type="radio" name="waveform" value="1" checked /><span data-i18n="synth.saw">Saw</span></label>
-            <label class="etutti-pill"><input type="radio" name="waveform" value="2" /><span data-i18n="synth.square">Square</span></label>
-            <label class="etutti-pill"><input type="radio" name="waveform" value="3" /><span data-i18n="synth.triangle">Triangle</span></label>
+            <label class="etutti-pill"><input type="radio" name="preset" value="accordion" checked /><span data-i18n="preset.accordion">Classic accordion</span></label>
+            <label class="etutti-pill"><input type="radio" name="preset" value="accordionJazz" /><span data-i18n="preset.accordionJazz">Jazz accordion</span></label>
+            <label class="etutti-pill"><input type="radio" name="preset" value="piano" /><span data-i18n="preset.piano">Piano</span></label>
+            <label class="etutti-pill"><input type="radio" name="preset" value="bass" /><span data-i18n="preset.bass">Bass</span></label>
+            <label class="etutti-pill"><input type="radio" name="preset" value="guitar" /><span data-i18n="preset.guitar">Guitar</span></label>
+          </div>
+          <p class="hint" data-i18n="synth.presetHint">Classic accordion is the default: two reeds a few cents apart in a soft cassotto. The other instruments are synthetic approximations.</p>
+        </div>
+
+        <div class="etutti-voices">
+          <div class="etutti-group" role="radiogroup" aria-labelledby="wave1Legend">
+            <span class="etutti-group-label" id="wave1Legend" data-i18n="synth.voice1">Voice 1</span>
+            <div class="etutti-pills">
+              <label class="etutti-pill"><input type="radio" name="wave1" value="0" /><span data-i18n="synth.sine">Sine</span></label>
+              <label class="etutti-pill"><input type="radio" name="wave1" value="1" checked /><span data-i18n="synth.saw">Saw</span></label>
+              <label class="etutti-pill"><input type="radio" name="wave1" value="2" /><span data-i18n="synth.square">Square</span></label>
+              <label class="etutti-pill"><input type="radio" name="wave1" value="3" /><span data-i18n="synth.triangle">Triangle</span></label>
+            </div>
+          </div>
+
+          <div class="etutti-group">
+            <span class="etutti-group-label" id="wave2Legend" data-i18n="synth.voice2">Voice 2</span>
+            <div class="etutti-pills" role="radiogroup" aria-labelledby="wave2Legend">
+              <label class="etutti-pill"><input type="radio" name="wave2" value="0" /><span data-i18n="synth.sine">Sine</span></label>
+              <label class="etutti-pill"><input type="radio" name="wave2" value="1" checked /><span data-i18n="synth.saw">Saw</span></label>
+              <label class="etutti-pill"><input type="radio" name="wave2" value="2" /><span data-i18n="synth.square">Square</span></label>
+              <label class="etutti-pill"><input type="radio" name="wave2" value="3" /><span data-i18n="synth.triangle">Triangle</span></label>
+            </div>
+            <div class="etutti-pills" role="radiogroup" aria-label="Voice 2 octave" data-i18n-attr="aria-label:synth.octave2Aria">
+              <label class="etutti-pill"><input type="radio" name="octave2" value="-1" /><span data-i18n="synth.octaveDown">−1 octave</span></label>
+              <label class="etutti-pill"><input type="radio" name="octave2" value="0" checked /><span data-i18n="synth.unison">Unison</span></label>
+              <label class="etutti-pill"><input type="radio" name="octave2" value="1" /><span data-i18n="synth.octaveUp">+1 octave</span></label>
+            </div>
+            <div class="etutti-sliders etutti-sliders-tight">
+              <label class="etutti-slider">
+                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.voice2Level">Voice 2 level</span><span id="ccVoice2LevelValue" class="etutti-slider-value"></span></span>
+                <input id="ccVoice2Level" type="range" min="0" max="127" value="100" data-cc="21" data-format="percent" class="panel-slider" />
+              </label>
+              <label class="etutti-slider">
+                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.voice2Detune">Voice 2 detune</span><span id="ccVoice2DetuneValue" class="etutti-slider-value"></span></span>
+                <input id="ccVoice2Detune" type="range" min="0" max="127" value="69" data-cc="22" data-format="detune" class="panel-slider" />
+              </label>
+            </div>
           </div>
         </div>
 
@@ -141,27 +208,27 @@
           </label>
           <label class="etutti-slider">
             <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.cutoff">Filter cutoff</span><span id="ccCutoffValue" class="etutti-slider-value"></span></span>
-            <input id="ccCutoff" type="range" min="0" max="127" value="110" data-cc="74" data-format="cutoff" class="panel-slider" />
+            <input id="ccCutoff" type="range" min="0" max="127" value="82" data-cc="74" data-format="cutoff" class="panel-slider" />
           </label>
           <label class="etutti-slider">
             <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.resonance">Resonance</span><span id="ccResonanceValue" class="etutti-slider-value"></span></span>
-            <input id="ccResonance" type="range" min="0" max="127" value="10" data-cc="71" data-format="resonance" class="panel-slider" />
+            <input id="ccResonance" type="range" min="0" max="127" value="0" data-cc="71" data-format="resonance" class="panel-slider" />
           </label>
           <label class="etutti-slider">
             <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.attack">Attack</span><span id="ccAttackValue" class="etutti-slider-value"></span></span>
-            <input id="ccAttack" type="range" min="0" max="127" value="10" data-cc="73" data-format="attack" class="panel-slider" />
+            <input id="ccAttack" type="range" min="0" max="127" value="14" data-cc="73" data-format="attack" class="panel-slider" />
           </label>
           <label class="etutti-slider">
             <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.decay">Decay</span><span id="ccDecayValue" class="etutti-slider-value"></span></span>
-            <input id="ccDecay" type="range" min="0" max="127" value="50" data-cc="75" data-format="decay" class="panel-slider" />
+            <input id="ccDecay" type="range" min="0" max="127" value="30" data-cc="75" data-format="decay" class="panel-slider" />
           </label>
           <label class="etutti-slider">
             <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.sustain">Sustain</span><span id="ccSustainValue" class="etutti-slider-value"></span></span>
-            <input id="ccSustain" type="range" min="0" max="127" value="90" data-cc="79" data-format="percent" class="panel-slider" />
+            <input id="ccSustain" type="range" min="0" max="127" value="127" data-cc="79" data-format="percent" class="panel-slider" />
           </label>
           <label class="etutti-slider">
             <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.release">Release</span><span id="ccReleaseValue" class="etutti-slider-value"></span></span>
-            <input id="ccRelease" type="range" min="0" max="127" value="40" data-cc="72" data-format="release" class="panel-slider" />
+            <input id="ccRelease" type="range" min="0" max="127" value="21" data-cc="72" data-format="release" class="panel-slider" />
           </label>
         </div>
 
@@ -218,7 +285,7 @@
     </footer>
   </main>
 
-  <script src="script.js?v=20261012"></script>
+  <script src="script.js?v=20261013"></script>
 
   <script>
     window.BC_STRINGS = {
@@ -249,10 +316,9 @@
         "play.velocityUpAria": "Velocity up (↑)",
         "play.panic": "All notes off",
         "play.pianoAria": "eTuttino keys",
-        "play.hint": "Four rows of the computer keyboard are the four accordion rows: 3 … 0, W … P, S … L and Z … the full stop. ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.",
+        "play.hint": "Computer keys, from the row nearest you: Z … , is row 1, A … L row 2, W … O row 3 and 2 … 0 row 4. ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.",
         "synth.title": "Synth",
         "synth.collapseAria": "Collapse Synth",
-        "synth.waveform": "Waveform",
         "synth.sine": "Sine",
         "synth.saw": "Saw",
         "synth.square": "Square",
@@ -282,6 +348,29 @@
         "wip.title": "In development",
         "wip.text": "The full eTutti is still being designed. Pick the eTuttino to play.",
         "setup.hardwareLink": "PCB design notes",
+        "play.system": "Layout",
+        "play.griffAria": "Key layout: C-griff or B-griff",
+        "play.keyboard": "Computer keyboard",
+        "play.keyboardOff": "Off",
+        "play.keyboardOn": "On",
+        "play.keyboardAria": "Play notes with the computer keyboard",
+        "synth.preset": "Instrument",
+        "synth.modified": "modified",
+        "synth.reset": "Reset to default",
+        "synth.presetHint": "Classic accordion is the default: two reeds a few cents apart in a soft cassotto. The other instruments are synthetic approximations.",
+        "preset.accordion": "Classic accordion",
+        "preset.accordionJazz": "Jazz accordion",
+        "preset.piano": "Piano",
+        "preset.bass": "Bass",
+        "preset.guitar": "Guitar",
+        "synth.voice1": "Voice 1",
+        "synth.voice2": "Voice 2",
+        "synth.octave2Aria": "Voice 2 octave",
+        "synth.octaveDown": "−1 octave",
+        "synth.unison": "Unison",
+        "synth.octaveUp": "+1 octave",
+        "synth.voice2Level": "Voice 2 level",
+        "synth.voice2Detune": "Voice 2 detune",
       },
       pt: {
         "meta.title": "BeatConfused | eTutti",
@@ -310,10 +399,9 @@
         "play.velocityUpAria": "Aumentar velocidade (↑)",
         "play.panic": "Silenciar tudo",
         "play.pianoAria": "Teclas do eTuttino",
-        "play.hint": "Quatro fileiras do teclado do computador são as quatro fileiras do acordeão: 3 … 0, W … P, S … L e Z … o ponto. ← / → mudam a oitava, ↓ / ↑ a velocidade, Esc silencia tudo.",
+        "play.hint": "Teclas do computador, da fileira mais perto de você: Z … , é a fileira 1, A … L a 2, W … O a 3 e 2 … 0 a 4. ← / → mudam a oitava, ↓ / ↑ a velocidade, Esc silencia tudo.",
         "synth.title": "Sintetizador",
         "synth.collapseAria": "Recolher Sintetizador",
-        "synth.waveform": "Forma de onda",
         "synth.sine": "Senoidal",
         "synth.saw": "Dente de serra",
         "synth.square": "Quadrada",
@@ -343,6 +431,29 @@
         "wip.title": "Em desenvolvimento",
         "wip.text": "O eTutti completo ainda está sendo projetado. Escolha o eTuttino para tocar.",
         "setup.hardwareLink": "Notas do projeto da placa",
+        "play.system": "Sistema",
+        "play.griffAria": "Sistema das teclas: C-griff ou B-griff",
+        "play.keyboard": "Teclado do computador",
+        "play.keyboardOff": "Desligado",
+        "play.keyboardOn": "Ligado",
+        "play.keyboardAria": "Tocar notas com o teclado do computador",
+        "synth.preset": "Instrumento",
+        "synth.modified": "modificado",
+        "synth.reset": "Restaurar padrão",
+        "synth.presetHint": "O acordeão clássico é o padrão: duas palhetas a poucos cents de distância num cassotto suave. Os outros instrumentos são aproximações sintéticas.",
+        "preset.accordion": "Acordeão clássico",
+        "preset.accordionJazz": "Acordeão jazz",
+        "preset.piano": "Piano",
+        "preset.bass": "Baixo",
+        "preset.guitar": "Guitarra",
+        "synth.voice1": "Voz 1",
+        "synth.voice2": "Voz 2",
+        "synth.octave2Aria": "Oitava da voz 2",
+        "synth.octaveDown": "−1 oitava",
+        "synth.unison": "Uníssono",
+        "synth.octaveUp": "+1 oitava",
+        "synth.voice2Level": "Nível da voz 2",
+        "synth.voice2Detune": "Desafinação da voz 2",
       },
       es: {
         "meta.title": "BeatConfused | eTutti",
@@ -371,10 +482,9 @@
         "play.velocityUpAria": "Subir velocidad (↑)",
         "play.panic": "Silenciar todo",
         "play.pianoAria": "Teclas del eTuttino",
-        "play.hint": "Cuatro filas del teclado del ordenador son las cuatro filas del acordeón: 3 … 0, W … P, S … L y Z … el punto. ← / → cambian la octava, ↓ / ↑ la velocidad, Esc silencia todo.",
+        "play.hint": "Teclas del ordenador, desde la fila más cercana: Z … , es la fila 1, A … L la 2, W … O la 3 y 2 … 0 la 4. ← / → cambian la octava, ↓ / ↑ la velocidad, Esc silencia todo.",
         "synth.title": "Sintetizador",
         "synth.collapseAria": "Contraer Sintetizador",
-        "synth.waveform": "Forma de onda",
         "synth.sine": "Senoidal",
         "synth.saw": "Diente de sierra",
         "synth.square": "Cuadrada",
@@ -404,6 +514,29 @@
         "wip.title": "En desarrollo",
         "wip.text": "El eTutti completo todavía se está diseñando. Elige el eTuttino para tocar.",
         "setup.hardwareLink": "Notas del diseño de la placa",
+        "play.system": "Sistema",
+        "play.griffAria": "Sistema de teclas: C-griff o B-griff",
+        "play.keyboard": "Teclado del ordenador",
+        "play.keyboardOff": "Apagado",
+        "play.keyboardOn": "Encendido",
+        "play.keyboardAria": "Tocar notas con el teclado del ordenador",
+        "synth.preset": "Instrumento",
+        "synth.modified": "modificado",
+        "synth.reset": "Restaurar por defecto",
+        "synth.presetHint": "El acordeón clásico es el predeterminado: dos lengüetas a pocos cents de distancia en un cassotto suave. Los demás instrumentos son aproximaciones sintéticas.",
+        "preset.accordion": "Acordeón clásico",
+        "preset.accordionJazz": "Acordeón jazz",
+        "preset.piano": "Piano",
+        "preset.bass": "Bajo",
+        "preset.guitar": "Guitarra",
+        "synth.voice1": "Voz 1",
+        "synth.voice2": "Voz 2",
+        "synth.octave2Aria": "Octava de la voz 2",
+        "synth.octaveDown": "−1 octava",
+        "synth.unison": "Unísono",
+        "synth.octaveUp": "+1 octava",
+        "synth.voice2Level": "Nivel de la voz 2",
+        "synth.voice2Detune": "Desafinación de la voz 2",
       },
     };
   </script>

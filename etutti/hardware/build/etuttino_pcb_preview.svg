@@ -61,152 +61,152 @@
 <text x="547.8" y="69.5" font-size="9" fill="#f6f1e8" text-anchor="middle">12</text>
 <circle cx="547.8" cy="142.5" r="4.5" fill="#b9c4bd"/>
 <text x="547.8" y="162.5" font-size="9" fill="#f6f1e8" text-anchor="middle">13</text>
-<rect x="64.1" y="202.0" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="72.2" y="210.1" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="100.2" y="234.1" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">A3</text>
-<text x="100.2" y="256.1" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW1 · R0C1</text>
-<rect x="140.3" y="202.0" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="148.4" y="210.1" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="176.4" y="234.1" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">C4</text>
-<text x="176.4" y="256.1" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW2 · R0C2</text>
-<rect x="216.5" y="202.0" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="224.6" y="210.1" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="252.6" y="234.1" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">D#4</text>
-<text x="252.6" y="256.1" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW3 · R0C3</text>
-<rect x="292.7" y="202.0" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="300.8" y="210.1" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="328.8" y="234.1" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#4</text>
-<text x="328.8" y="256.1" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW4 · R0C4</text>
-<rect x="368.9" y="202.0" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="377.0" y="210.1" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="405.0" y="234.1" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">A4</text>
-<text x="405.0" y="256.1" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW5 · R0C5</text>
-<rect x="445.1" y="202.0" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="453.2" y="210.1" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="481.2" y="234.1" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">C5</text>
-<text x="481.2" y="256.1" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW6 · R0C6</text>
-<rect x="521.3" y="202.0" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="529.4" y="210.1" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="557.4" y="234.1" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">D#5</text>
-<text x="557.4" y="256.1" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW7 · R0C7</text>
-<rect x="597.5" y="202.0" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="605.6" y="210.1" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="633.6" y="234.1" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#5</text>
-<text x="633.6" y="256.1" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW8 · R0C8</text>
-<rect x="26.0" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="34.1" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="62.1" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">G3</text>
-<text x="62.1" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW9 · R1C0</text>
-<rect x="102.2" y="278.2" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="110.3" y="286.3" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="138.3" y="310.3" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">A#3</text>
-<text x="138.3" y="332.3" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW10 · R1C1</text>
-<rect x="178.4" y="278.2" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="186.5" y="286.3" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="214.5" y="310.3" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">C#4</text>
-<text x="214.5" y="332.3" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW11 · R1C2</text>
-<rect x="254.6" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="262.7" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="290.7" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">E4</text>
-<text x="290.7" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW12 · R1C3</text>
-<rect x="330.8" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="338.9" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="366.9" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">G4</text>
-<text x="366.9" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW13 · R1C4</text>
-<rect x="407.0" y="278.2" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="415.1" y="286.3" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="443.1" y="310.3" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">A#4</text>
-<text x="443.1" y="332.3" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW14 · R1C5</text>
-<rect x="483.2" y="278.2" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="491.3" y="286.3" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="519.3" y="310.3" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">C#5</text>
-<text x="519.3" y="332.3" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW15 · R1C6</text>
-<rect x="559.4" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="567.5" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="595.5" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">E5</text>
-<text x="595.5" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW16 · R1C7</text>
-<rect x="635.6" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="643.7" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="671.7" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">G5</text>
-<text x="671.7" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW17 · R1C8</text>
-<rect x="64.1" y="354.4" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="72.2" y="362.5" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="100.2" y="386.5" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">G#3</text>
-<text x="100.2" y="408.5" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW18 · R2C1</text>
-<rect x="140.3" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="148.4" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="176.4" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">B3</text>
-<text x="176.4" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW19 · R2C2</text>
-<rect x="216.5" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="224.6" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="252.6" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">D4</text>
-<text x="252.6" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW20 · R2C3</text>
-<rect x="292.7" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="300.8" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="328.8" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">F4</text>
-<text x="328.8" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW21 · R2C4</text>
-<rect x="368.9" y="354.4" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="377.0" y="362.5" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="405.0" y="386.5" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">G#4</text>
-<text x="405.0" y="408.5" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW22 · R2C5</text>
-<rect x="445.1" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="453.2" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="481.2" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">B4</text>
-<text x="481.2" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW23 · R2C6</text>
-<rect x="521.3" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="529.4" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="557.4" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">D5</text>
-<text x="557.4" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW24 · R2C7</text>
-<rect x="597.5" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="605.6" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="633.6" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">F5</text>
-<text x="633.6" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW25 · R2C8</text>
-<rect x="26.0" y="430.6" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="34.1" y="438.7" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="62.1" y="462.7" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#3</text>
-<text x="62.1" y="484.7" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW26 · R3C0</text>
-<rect x="102.2" y="430.6" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="110.3" y="438.7" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="138.3" y="462.7" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">A3</text>
-<text x="138.3" y="484.7" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW27 · R3C1</text>
-<rect x="178.4" y="430.6" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="186.5" y="438.7" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="214.5" y="462.7" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">C4</text>
-<text x="214.5" y="484.7" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW28 · R3C2</text>
-<rect x="254.6" y="430.6" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="262.7" y="438.7" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="290.7" y="462.7" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">D#4</text>
-<text x="290.7" y="484.7" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW29 · R3C3</text>
-<rect x="330.8" y="430.6" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="338.9" y="438.7" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="366.9" y="462.7" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#4</text>
-<text x="366.9" y="484.7" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW30 · R3C4</text>
-<rect x="407.0" y="430.6" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="415.1" y="438.7" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="443.1" y="462.7" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">A4</text>
-<text x="443.1" y="484.7" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW31 · R3C5</text>
-<rect x="483.2" y="430.6" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
-<rect x="491.3" y="438.7" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
-<text x="519.3" y="462.7" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">C5</text>
-<text x="519.3" y="484.7" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW32 · R3C6</text>
-<rect x="559.4" y="430.6" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="567.5" y="438.7" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="595.5" y="462.7" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">D#5</text>
-<text x="595.5" y="484.7" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW33 · R3C7</text>
-<rect x="635.6" y="430.6" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
-<rect x="643.7" y="438.7" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
-<text x="671.7" y="462.7" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#5</text>
-<text x="671.7" y="484.7" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW34 · R3C8</text>
+<rect x="64.1" y="430.6" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="72.2" y="438.7" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="100.2" y="462.7" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">A3</text>
+<text x="100.2" y="484.7" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW1 · R0C1</text>
+<rect x="140.3" y="430.6" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="148.4" y="438.7" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="176.4" y="462.7" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">C4</text>
+<text x="176.4" y="484.7" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW2 · R0C2</text>
+<rect x="216.5" y="430.6" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="224.6" y="438.7" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="252.6" y="462.7" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">D#4</text>
+<text x="252.6" y="484.7" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW3 · R0C3</text>
+<rect x="292.7" y="430.6" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="300.8" y="438.7" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="328.8" y="462.7" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#4</text>
+<text x="328.8" y="484.7" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW4 · R0C4</text>
+<rect x="368.9" y="430.6" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="377.0" y="438.7" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="405.0" y="462.7" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">A4</text>
+<text x="405.0" y="484.7" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW5 · R0C5</text>
+<rect x="445.1" y="430.6" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="453.2" y="438.7" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="481.2" y="462.7" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">C5</text>
+<text x="481.2" y="484.7" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW6 · R0C6</text>
+<rect x="521.3" y="430.6" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="529.4" y="438.7" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="557.4" y="462.7" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">D#5</text>
+<text x="557.4" y="484.7" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW7 · R0C7</text>
+<rect x="597.5" y="430.6" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="605.6" y="438.7" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="633.6" y="462.7" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#5</text>
+<text x="633.6" y="484.7" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW8 · R0C8</text>
+<rect x="26.0" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="34.1" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="62.1" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">G3</text>
+<text x="62.1" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW9 · R1C0</text>
+<rect x="102.2" y="354.4" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="110.3" y="362.5" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="138.3" y="386.5" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">A#3</text>
+<text x="138.3" y="408.5" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW10 · R1C1</text>
+<rect x="178.4" y="354.4" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="186.5" y="362.5" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="214.5" y="386.5" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">C#4</text>
+<text x="214.5" y="408.5" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW11 · R1C2</text>
+<rect x="254.6" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="262.7" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="290.7" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">E4</text>
+<text x="290.7" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW12 · R1C3</text>
+<rect x="330.8" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="338.9" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="366.9" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">G4</text>
+<text x="366.9" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW13 · R1C4</text>
+<rect x="407.0" y="354.4" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="415.1" y="362.5" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="443.1" y="386.5" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">A#4</text>
+<text x="443.1" y="408.5" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW14 · R1C5</text>
+<rect x="483.2" y="354.4" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="491.3" y="362.5" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="519.3" y="386.5" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">C#5</text>
+<text x="519.3" y="408.5" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW15 · R1C6</text>
+<rect x="559.4" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="567.5" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="595.5" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">E5</text>
+<text x="595.5" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW16 · R1C7</text>
+<rect x="635.6" y="354.4" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="643.7" y="362.5" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="671.7" y="386.5" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">G5</text>
+<text x="671.7" y="408.5" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW17 · R1C8</text>
+<rect x="64.1" y="278.2" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="72.2" y="286.3" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="100.2" y="310.3" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">G#3</text>
+<text x="100.2" y="332.3" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW18 · R2C1</text>
+<rect x="140.3" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="148.4" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="176.4" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">B3</text>
+<text x="176.4" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW19 · R2C2</text>
+<rect x="216.5" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="224.6" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="252.6" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">D4</text>
+<text x="252.6" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW20 · R2C3</text>
+<rect x="292.7" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="300.8" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="328.8" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">F4</text>
+<text x="328.8" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW21 · R2C4</text>
+<rect x="368.9" y="278.2" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="377.0" y="286.3" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="405.0" y="310.3" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">G#4</text>
+<text x="405.0" y="332.3" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW22 · R2C5</text>
+<rect x="445.1" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="453.2" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="481.2" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">B4</text>
+<text x="481.2" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW23 · R2C6</text>
+<rect x="521.3" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="529.4" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="557.4" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">D5</text>
+<text x="557.4" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW24 · R2C7</text>
+<rect x="597.5" y="278.2" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="605.6" y="286.3" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="633.6" y="310.3" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">F5</text>
+<text x="633.6" y="332.3" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW25 · R2C8</text>
+<rect x="26.0" y="202.0" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="34.1" y="210.1" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="62.1" y="234.1" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#3</text>
+<text x="62.1" y="256.1" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW26 · R3C0</text>
+<rect x="102.2" y="202.0" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="110.3" y="210.1" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="138.3" y="234.1" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">A3</text>
+<text x="138.3" y="256.1" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW27 · R3C1</text>
+<rect x="178.4" y="202.0" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="186.5" y="210.1" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="214.5" y="234.1" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">C4</text>
+<text x="214.5" y="256.1" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW28 · R3C2</text>
+<rect x="254.6" y="202.0" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="262.7" y="210.1" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="290.7" y="234.1" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">D#4</text>
+<text x="290.7" y="256.1" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW29 · R3C3</text>
+<rect x="330.8" y="202.0" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="338.9" y="210.1" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="366.9" y="234.1" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#4</text>
+<text x="366.9" y="256.1" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW30 · R3C4</text>
+<rect x="407.0" y="202.0" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="415.1" y="210.1" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="443.1" y="234.1" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">A4</text>
+<text x="443.1" y="256.1" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW31 · R3C5</text>
+<rect x="483.2" y="202.0" width="72.2" height="72.2" rx="6" fill="#f4efe6" stroke="#0d2c1b"/>
+<rect x="491.3" y="210.1" width="56.0" height="56.0" fill="none" stroke="#c9bfae" stroke-dasharray="4 3"/>
+<text x="519.3" y="234.1" font-size="17" font-weight="700" fill="#2f2218" text-anchor="middle">C5</text>
+<text x="519.3" y="256.1" font-size="11" fill="#2f2218" text-anchor="middle" opacity="0.7">SW32 · R3C6</text>
+<rect x="559.4" y="202.0" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="567.5" y="210.1" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="595.5" y="234.1" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">D#5</text>
+<text x="595.5" y="256.1" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW33 · R3C7</text>
+<rect x="635.6" y="202.0" width="72.2" height="72.2" rx="6" fill="#3a3d42" stroke="#0d2c1b"/>
+<rect x="643.7" y="210.1" width="56.0" height="56.0" fill="none" stroke="#8a8f96" stroke-dasharray="4 3"/>
+<text x="671.7" y="234.1" font-size="17" font-weight="700" fill="#f4efe6" text-anchor="middle">F#5</text>
+<text x="671.7" y="256.1" font-size="11" fill="#f4efe6" text-anchor="middle" opacity="0.7">SW34 · R3C8</text>
 <circle cx="12.0" cy="12.0" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
 <circle cx="721.8" cy="12.0" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
 <circle cx="12.0" cy="188.0" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
 <circle cx="721.8" cy="188.0" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
 <circle cx="12.0" cy="516.8" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
 <circle cx="721.8" cy="516.8" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
-<circle cx="43.0" cy="238.1" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
-<circle cx="690.8" cy="238.1" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
-<circle cx="43.0" cy="390.5" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
-<circle cx="690.8" cy="390.5" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
+<circle cx="43.0" cy="466.7" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
+<circle cx="690.8" cy="466.7" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
+<circle cx="43.0" cy="314.3" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
+<circle cx="690.8" cy="314.3" r="4.4" fill="#f6f1e8" stroke="#c9a227" stroke-width="2"/>
 </g>
 <text x="763.8000000000001" y="40" font-size="18" font-weight="700" fill="#2f2218">eTuttino PCB — top view</text>
 <text x="763.8000000000001" y="66" font-size="14" font-weight="400" fill="#2f2218">183.5 × 132.2 mm</text>
@@ -215,10 +215,10 @@
 <text x="763.8000000000001" y="130" font-size="13" font-weight="400" fill="#2f2218">matrix 4 rows × 9 cols</text>
 <text x="763.8000000000001" y="151" font-size="10" font-weight="400" fill="#2f2218"></text>
 <text x="763.8000000000001" y="169" font-size="13" font-weight="700" fill="#2f2218">Rows  (cathode side):</text>
-<text x="763.8000000000001" y="190" font-size="13" font-weight="400" fill="#2f2218">  ROW0 → pin 0</text>
-<text x="763.8000000000001" y="211" font-size="13" font-weight="400" fill="#2f2218">  ROW1 → pin 1</text>
-<text x="763.8000000000001" y="232" font-size="13" font-weight="400" fill="#2f2218">  ROW2 → pin 2</text>
-<text x="763.8000000000001" y="253" font-size="13" font-weight="400" fill="#2f2218">  ROW3 → pin 3</text>
+<text x="763.8000000000001" y="190" font-size="13" font-weight="400" fill="#2f2218">  ROW0 → pin 3</text>
+<text x="763.8000000000001" y="211" font-size="13" font-weight="400" fill="#2f2218">  ROW1 → pin 2</text>
+<text x="763.8000000000001" y="232" font-size="13" font-weight="400" fill="#2f2218">  ROW2 → pin 1</text>
+<text x="763.8000000000001" y="253" font-size="13" font-weight="400" fill="#2f2218">  ROW3 → pin 0</text>
 <text x="763.8000000000001" y="274" font-size="13" font-weight="700" fill="#2f2218">Cols  (switch side):</text>
 <text x="763.8000000000001" y="295" font-size="13" font-weight="400" fill="#2f2218">  COL0 → pin 4</text>
 <text x="763.8000000000001" y="316" font-size="13" font-weight="400" fill="#2f2218">  COL1 → pin 5</text>
