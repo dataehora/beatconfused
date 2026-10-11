@@ -76,8 +76,11 @@ CAP_DY = -3.0                   # 100 nF right above the sensor
 VCC_BUS_DY = -5.0               # 3.3 V bus above each key row
 GND_BUS_DY = 5.0                # GND bus below it
 OUT_VIA_DY = 2.7                # sensor output drops to a via here
-VCC_TRUNK_X = 177.0             # 3.3 V trunk (back) down the right edge
-GND_TRUNK_X = 175.6             # GND trunk (front) beside it
+MUX_CAP_REFS = ["C71", "C72", "C73"]   # 100 nF next to each multiplexer
+LDO_CIN, LDO_COUT = "C80", "C81"         # regulator input / output capacitors
+# Every net with a fixed starting point grows from it: a route may only
+# join copper already connected to this item (see Router.component).
+ROOTS = {"VCC": (G.LDO["ref"], "2"), "GND": ("J1", "1"), "VIN": ("J2", "1")}
 
 board = pcbnew.BOARD()
 nets = {}
@@ -294,6 +297,30 @@ class Router:
                     self.owner[0][idx] = HARD
                     self.owner[1][idx] = HARD
 
+    def component(self, net_name, seeds):
+        """Cells of `net_name` copper connected to `seeds`: 8-neighbours on
+        a layer, and both layers where copper sits at the same spot on both
+        (vias, through-hole pads)."""
+        cells = self.copper.get(net_name, {})
+        todo = [c for c in seeds if c in cells]
+        seen = set(todo)
+        W = self.W
+        while todo:
+            li, idx = todo.pop()
+            ix, iy = idx % W, idx // W
+            nbrs = [(1 - li, idx)]
+            for dy in (-1, 0, 1):
+                for dx in (-1, 0, 1):
+                    if dx or dy:
+                        jx, jy = ix + dx, iy + dy
+                        if 0 <= jx < W and 0 <= jy < self.H:
+                            nbrs.append((li, jy * W + jx))
+            for c in nbrs:
+                if c in cells and c not in seen:
+                    seen.add(c)
+                    todo.append(c)
+        return seen
+
     # ------------------------------------------------------------ search
     def usable(self, li, idx, nid):
         o = self.owner[li][idx]
@@ -312,7 +339,7 @@ class Router:
                     return False
         return True
 
-    def search(self, net_name, sources, targets, max_expand=3_000_000):
+    def search(self, net_name, sources, targets, max_expand=8_000_000):
         nid = self.nid(net_name)
         W = self.W
         tset = set(targets)
@@ -349,6 +376,7 @@ class Router:
                 return path[::-1]
             expanded += 1
             if expanded > max_expand:
+                print("  search limit hit for", net_name)
                 break
             ix, iy = idx % W, idx // W
             for nd, (dx, dy) in enumerate(DIRS):
@@ -384,6 +412,15 @@ class Router:
         return None
 
 
+# The order the retries found for the current layout; a layout change may
+# need a new one (the retry loop finds it and prints it).
+DEFAULT_ROUTE_FIRST = "OUT_U34,OUT_U6,OUT_U18,OUT_U30,OUT_U41,OUT_U27,OUT_U38"
+
+
+class RoutingFailed(Exception):
+    pass
+
+
 router = None
 pending_tracks = []             # (layer, a, b, width, net) added to the board at the end
 
@@ -404,7 +441,11 @@ def add_track(points, layer, net_name, width=None, register=True, item=None):
             router.mark_segment([layer], a, b, w / 2, net_name, item=item, attach=True)
 
 
+via_spots = {}                  # net -> [(x, y)] of its vias
+
+
 def add_via(x, y, net_name, item=None):
+    via_spots.setdefault(net_name, []).append((x, y))
     v = pcbnew.PCB_VIA(board)
     v.SetPosition(mm(x, y))
     v.SetWidth(pcbnew.FromMM(VIA_D))
@@ -447,6 +488,14 @@ def path_to_copper(net_name, path, start_xy=None, end_xy=None):
             runs[-1][1].append((x, y))
         else:
             if runs:
+                # Changing layer right beside one of this net's vias (the
+                # sensor's own, usually): go through that via instead of
+                # drilling a second one on top of it.
+                near = [v for v in via_spots.get(net_name, []) if abs(x - v[0]) < VIA_D and abs(y - v[1]) < VIA_D]
+                if near:
+                    runs[-1][1].append(near[0])
+                    runs.append((li, [near[0], (x, y)]))
+                    continue
                 add_via(x, y, net_name)
             runs.append((li, [(x, y)]))
     if start_xy:
@@ -475,13 +524,16 @@ def connect(net_name, source_item, targets, label):
         src = {c for c in src if c[0] == 0}     # leave the sensor's via on the front
     path = router.search(net_name, src, targets)
     if path is None:
-        raise SystemExit("ROUTING FAILED: %s (%s)" % (label, net_name))
+        print("ROUTING FAILED: %s (%s)" % (label, net_name))
+        raise RoutingFailed(net_name)
     last = (path[-1][0], path[-1][1])
     end = router.copper[net_name].get(last)
     router.recording = set()
     path_to_copper(net_name, path, end_xy=end)
-    tree = router.tree.setdefault(net_name, set())
-    tree |= router.recording | src
+    if net_name in ROOTS:
+        router.tree[net_name] = router.component(net_name, router.items[ROOTS[net_name]])
+    else:
+        router.tree.setdefault(net_name, set()).update(router.recording | src)
     router.recording = None
     return path
 
@@ -559,7 +611,7 @@ def build():
             if k["mux"] == m:
                 pad(u, str(G.channel_pin(k["ch"]))).SetNet(net("OUT_%s" % k["sensor"]))
         u.Reference().SetPosition(mm(spec["x"], spec["y"]))
-        c = place(lib("Capacitor_SMD"), "C_0805_2012Metric", "C%d" % (41 + m), spec["x"] + 2.4, spec["y"] + 9.8,
+        c = place(lib("Capacitor_SMD"), "C_0805_2012Metric", MUX_CAP_REFS[m], spec["x"] + 2.4, spec["y"] + 9.8,
                   "100nF", back=True)
         c.Reference().SetVisible(False)
         c1, c2 = xy(pad(c, "1").GetPosition()), xy(pad(c, "2").GetPosition())
@@ -574,9 +626,9 @@ def build():
     for p in ldo.Pads():
         p.SetNet(net({"1": "GND", "2": "VCC", "3": "VIN"}[p.GetNumber()]))
     ldo.Reference().SetPosition(mm(G.LDO["x"], G.LDO["y"] + 4.6))
-    c_in = place(lib("Capacitor_SMD"), "C_0805_2012Metric", "C50", G.LDO["x"] + 7.0, G.LDO["y"] + 3.2, "10uF",
+    c_in = place(lib("Capacitor_SMD"), "C_0805_2012Metric", LDO_CIN, G.LDO["x"] + 7.0, G.LDO["y"] + 3.2, "10uF",
                  back=True, rot=90)
-    c_out = place(lib("Capacitor_SMD"), "C_0805_2012Metric", "C51", G.LDO["x"] - 7.2, G.LDO["y"] + 3.2, "22uF",
+    c_out = place(lib("Capacitor_SMD"), "C_0805_2012Metric", LDO_COUT, G.LDO["x"] - 7.2, G.LDO["y"] + 3.2, "22uF",
                   back=True, rot=90)
     for cap, live in ((c_in, "VIN"), (c_out, "VCC")):
         cap.Reference().SetVisible(False)
@@ -619,19 +671,25 @@ def build():
         add_via(k["out_via"][0], k["out_via"][1], "OUT_%s" % k["sensor"], item=("via", k["sensor"]))
     rows_y = sorted({k["row_y"] for k in keys})
     by_row = {k["row_y"]: k["row"] for k in keys}
+    # one 3.3 V bus above and one GND bus below each key row, as long as
+    # the row; the router joins them to the regulator and the Teensy
     for cy in rows_y:
         r = by_row[cy]
-        add_track([(min(row_vcc[r]), cy + VCC_BUS_DY), (VCC_TRUNK_X, cy + VCC_BUS_DY)], pcbnew.B_Cu, "VCC")
-        add_track([(min(row_gnd[r]), cy + GND_BUS_DY), (GND_TRUNK_X, cy + GND_BUS_DY)], pcbnew.B_Cu, "GND")
-        add_via(GND_TRUNK_X, cy + GND_BUS_DY, "GND")
-    add_track([(VCC_TRUNK_X, rows_y[0] + VCC_BUS_DY), (VCC_TRUNK_X, rows_y[-1] + VCC_BUS_DY)], pcbnew.B_Cu, "VCC")
+        add_track(sorted({(x, cy + VCC_BUS_DY) for x in row_vcc[r]}), pcbnew.B_Cu, "VCC", item=("vccbus", r))
+        add_track(sorted({(x, cy + GND_BUS_DY) for x in row_gnd[r]}), pcbnew.B_Cu, "GND", item=("gndbus", r))
     # the regulator's output pin and its tab are separate pads: join them
     out_pads = [xy(p.GetPosition()) for p in pads(ldo, "2")]
     add_track(out_pads, pcbnew.B_Cu, "VCC", 0.6, item=(G.LDO["ref"], "2"))
-    add_track([(GND_TRUNK_X, rows_y[0] + GND_BUS_DY), (GND_TRUNK_X, rows_y[-1] + GND_BUS_DY)], pcbnew.F_Cu, "GND")
 
     # ---- routed connections ----
     jobs = []
+    # row buses first, nearest the regulator / Teensy GND first
+    ldo_y = G.LDO["y"]
+    gnd_y0 = [p[4] for p in pins if p[0] == "J1" and p[1] == 1][0]
+    for r in sorted(by_row.values(), key=lambda r: abs([y for y, rr in by_row.items() if rr == r][0] + VCC_BUS_DY - ldo_y)):
+        jobs.append(("VCC", ("vccbus", r), "tree", "row %d 3.3 V bus" % (r + 1)))
+    for r in sorted(by_row.values(), key=lambda r: abs([y for y, rr in by_row.items() if rr == r][0] + GND_BUS_DY - gnd_y0)):
+        jobs.append(("GND", ("gndbus", r), "tree", "row %d GND bus" % (r + 1)))
     # sensor outputs, furthest from their multiplexer first
     outs = []
     for k in keys:
@@ -658,16 +716,16 @@ def build():
         for spec in order[1:]:
             jobs.append(("SEL%d" % s, (spec["ref"], sel_pad), "tree", "%s S%d" % (spec["ref"], s)))
     # power
-    jobs.append(("VIN", ("J2", "1"), [("U50", "3")], "VIN -> regulator"))
-    jobs.append(("VIN", ("C50", "1" if pad(c_in, "1").GetNetname() == "VIN" else "2"), "tree", "C50 VIN"))
-    for item in [("J1", "1"), ("J2", "2"), ("U50", "1"), ("C50", "1" if pad(c_in, "1").GetNetname() == "GND" else "2"),
-                 ("C51", "1" if pad(c_out, "1").GetNetname() == "GND" else "2")]:
+    ldo_ref = G.LDO["ref"]
+    pad_of = lambda fp, name: "1" if pad(fp, "1").GetNetname() == name else "2"
+    jobs.append(("VIN", ("J2", "1"), [(ldo_ref, "3")], "VIN -> regulator"))
+    jobs.append(("VIN", (LDO_CIN, pad_of(c_in, "VIN")), "tree", "%s VIN" % LDO_CIN))
+    for item in [("J2", "2"), (ldo_ref, "1"), (LDO_CIN, pad_of(c_in, "GND")), (LDO_COUT, pad_of(c_out, "GND"))]:
         jobs.append(("GND", item, "tree", "GND %s.%s" % item))
-    for item in [("U50", "2"), ("C51", "1" if pad(c_out, "1").GetNetname() == "VCC" else "2")]:
-        jobs.append(("VCC", item, "tree", "VCC %s.%s" % item))
+    jobs.append(("VCC", (LDO_COUT, pad_of(c_out, "VCC")), "tree", "VCC %s" % LDO_COUT))
     gnd_pins = [str(p) for p, f in G.MUX_PINS.items() if f in ("GND", "E")]
     for m, spec in enumerate(G.MUXES):
-        cref = "C%d" % (41 + m)
+        cref = MUX_CAP_REFS[m]
         cap = muxes[m][1]
         c_gnd = "1" if pad(cap, "1").GetNetname() == "GND" else "2"
         c_vcc = "2" if c_gnd == "1" else "1"
@@ -679,23 +737,19 @@ def build():
             jobs.append(("GND", (spec["ref"], gp), "tree", "%s pin %s GND" % (spec["ref"], gp)))
         jobs.append(("GND", (cref, c_gnd), "tree", "%s GND" % cref))
 
-    # Each net's connected tree starts as its fixed copper minus the items
-    # that still wait to be routed.
-    pending = set()
-    for net_name, src_item, dst, _ in jobs:
-        pending.add(src_item)
-        if dst != "tree":
-            pending.update(dst)
-    for net_name, cells in router.copper.items():
-        loose = set()
-        for it in pending:
-            if it in router.items and next(iter(router.items[it])) in cells:
-                loose |= router.items[it]
-        router.tree[net_name] = set(cells) - loose
+    # Each rooted net's tree starts as the copper connected to its root.
+    for net_name, root in ROOTS.items():
+        router.tree[net_name] = router.component(net_name, router.items[root])
 
+    # Few, long, must-not-fail connections first (power, multiplexer
+    # outputs and address lines); the 41 sensor outputs then fit around them.
+    # Sensor outputs that failed in an earlier attempt go first (see
+    # route_with_retries below).
+    first = [n for n in os.environ.get("ETUTTINO_ROUTE_FIRST", DEFAULT_ROUTE_FIRST).split(",") if n]
+    jobs.sort(key=lambda j: (j[0].startswith("OUT_"), j[0] not in first, first.index(j[0]) if j[0] in first else 0))
     for net_name, src_item, dst, label in jobs:
         if dst == "tree":
-            targets = router.tree[net_name] - router.items[src_item]
+            targets = router.tree.get(net_name, set()) - router.items[src_item]
         else:
             targets = set()
             for it in dst:
@@ -703,7 +757,7 @@ def build():
         if not targets:
             raise SystemExit("no target for %s" % label)
         connect(net_name, src_item, targets, label)
-        if dst != "tree":
+        if dst != "tree" and net_name not in ROOTS:
             for it in dst:
                 router.tree[net_name] |= router.items[it]
         print("routed", label)
@@ -720,18 +774,16 @@ def build():
         seg.SetWidth(pcbnew.FromMM(0.1))
         board.Add(seg)
 
-    text("eTuttino v0.2 HE", 30, 4.5, 2.0)
-    text("beatconfused.com/etutti", 30, 8.2, 1.2)
-    text("Teensy 4.0 + Audio Board Rev D", G.STACK_CX - 2, G.STACK_CY + 11.5, 1.0)
-    text("USB >", G.PCB_W - 9, G.STACK_CY, 1.2)
+    text("eTuttino v0.3 HE", G.ROW4_END + 41, 3.2, 1.6)
+    text("Teensy 4.0 on Audio Board Rev D - USB + jack >", G.STACK_CX, G.STACK_ZONE[3] + 1.6, 0.9)
     j1_gnd = [p for p in pins if p[0] == "J1" and p[1] == 1][0]
     j2_vin = [p for p in pins if p[0] == "J2" and p[1] == 1][0]
     text("GND", j1_gnd[3], j1_gnd[4] - 2.4, 0.8)
     text("VIN", j2_vin[3], j2_vin[4] + 2.4, 0.8)
     text("0", j1_gnd[3] - 2.54, j1_gnd[4] - 2.4, 0.8)
     text("23", j2_vin[3] - 7.62, j2_vin[4] + 2.4, 0.8)
-    text("eTuttino v0.2 HE - C-griff G3-G5", 60, 4.5, 1.5, pcbnew.B_SilkS)
-    text("Sensors DRV5056A3, back side, under each switch", 60, 7.6, 1.0, pcbnew.B_SilkS)
+    text("eTuttino v0.3 HE - Magica K2 layout, C-griff G3-G6 - beatconfused.com/etutti", 120, 85.6, 1.0, pcbnew.B_SilkS)
+    text("Sensors DRV5056A3 on this side, under each switch", G.ROW4_END + 41, 2.6, 1.0, pcbnew.B_SilkS)
 
     os.makedirs(KICAD_DIR, exist_ok=True)
     pcbnew.SaveBoard(BOARD_PATH, board)
@@ -748,11 +800,11 @@ def cli(*args):
 BOM_LINES = [
     # (comment / MPN, designators, footprint, LCSC)
     ("DRV5056A3QDBZR", lambda ks: [k["sensor"] for k in ks], "SOT-23-3", ""),
-    ("100nF 0805 X7R", lambda ks: [k["cap"] for k in ks] + ["C41", "C42", "C43"], "C_0805", "C49678"),
+    ("100nF 0805 X7R", lambda ks: [k["cap"] for k in ks] + MUX_CAP_REFS, "C_0805", "C49678"),
     ("CD74HC4067M96", lambda ks: [m["ref"] for m in G.MUXES], "SOIC-24W", ""),
     ("AMS1117-3.3", lambda ks: [G.LDO["ref"]], "SOT-223", "C6186"),
-    ("10uF 0805", lambda ks: ["C50"], "C_0805", "C15850"),
-    ("22uF 0805", lambda ks: ["C51"], "C_0805", "C45783"),
+    ("10uF 0805", lambda ks: [LDO_CIN], "C_0805", "C15850"),
+    ("22uF 0805", lambda ks: [LDO_COUT], "C_0805", "C45783"),
 ]
 
 
@@ -859,12 +911,12 @@ def verify_against_firmware():
             for p in mux_by_ref[spec["ref"]].Pads():
                 if p.GetNetname() == out:
                     found = (m, channel_of_pin[int(p.GetNumber())])
-        fw = table[k["row"] * 9 + k["col"]]
+        fw = table[k["row"] * G.GRID_COLS + k["col"]]
         note = first[k["row"]] + 3 * (k["col"] - first_col[k["row"]])
         if found is None or fw != found[0] * 16 + found[1] or note != k["note"]:
             bad += 1
             print("  MISMATCH", k["ref"], "board", found, "firmware", fw, "note", note, k["note"])
-    print("firmware check: %d/%d keys reach the inputs the firmware reads" % (len(G.keys()) - (bad and bad), len(G.keys())))
+    print("firmware check: %d/%d keys reach the inputs the firmware reads, %d mismatches" % (len(G.keys()), len(G.keys()), bad))
     return bad
 
 
@@ -880,11 +932,10 @@ def build_plate():
     board = pcbnew.BOARD()
     ox = G.GRID_X0 - G.PLATE_MARGIN
     oy = G.GRID_Y0 - G.PLATE_MARGIN
-    pw = 9 * G.U + 2 * G.PLATE_MARGIN
+    pw = G.GRID_UNITS * G.U + 2 * G.PLATE_MARGIN
     ph = 4 * G.U + 2 * G.PLATE_MARGIN
 
-    def rect(x0, y0, x1, y1):
-        pts = [(x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)]
+    def outline(pts):
         for (ax, ay), (bx, by) in zip(pts, pts[1:]):
             seg = pcbnew.PCB_SHAPE(board)
             seg.SetShape(pcbnew.SHAPE_T_SEGMENT)
@@ -894,18 +945,21 @@ def build_plate():
             seg.SetWidth(pcbnew.FromMM(0.1))
             board.Add(seg)
 
-    rect(ox, oy, ox + pw, oy + ph)
+    def rect(x0, y0, x1, y1):
+        outline([(x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)])
+
+    outline(G.plate_outline())
     half = G.CUTOUT / 2
     for k in G.keys():
         rect(k["cx"] - half, k["cy"] - half, k["cx"] + half, k["cy"] + half)
     for i, (x, y) in enumerate(G.mounting_holes(), start=1):
-        if oy <= y <= oy + ph:
+        if G.in_plate(x, y):
             h = load(lib("MountingHole"), "MountingHole_2.2mm_M2")
             h.SetReference("H%d" % i)
             h.Reference().SetVisible(False)
             h.SetPosition(mm(x, y))
             board.Add(h)
-    text("eTuttino plate v0.2", ox + pw / 2, oy + ph - 2.6, 1.2)
+    text("eTuttino plate v0.3", ox + pw / 2, oy + ph - 2.6, 1.2)
     pcbnew.SaveBoard(PLATE_PATH, board)
     print("saved", PLATE_PATH)
     board = main_board
@@ -930,8 +984,48 @@ def build_plate():
         print("plate render failed")
 
 
+def route_with_retries(max_attempts=8):
+    """The router is greedy: a net routed early can wall off a later one.
+    When a sensor output fails, start again (a fresh process, so no state
+    leaks) with that net routed first, up to max_attempts times. The order
+    that worked is printed so it can be reused."""
+    first = [n for n in os.environ.get("ETUTTINO_ROUTE_FIRST", DEFAULT_ROUTE_FIRST).split(",") if n]
+    for attempt in range(max_attempts):
+        env = dict(os.environ, ETUTTINO_ROUTE_FIRST=",".join(first), ETUTTINO_CHILD="1")
+        r = subprocess.run([sys.executable, os.path.abspath(__file__)], env=env, capture_output=True, text=True)
+        sys.stdout.write(r.stdout[-6000:])
+        failed = [l.split("(")[-1].rstrip(")") for l in r.stdout.splitlines() if l.startswith("ROUTING FAILED")]
+        if r.returncode == 0 or not failed:
+            print("attempt %d: exit %d, route-first order: %s" % (attempt + 1, r.returncode, ",".join(first) or "-"))
+            return r.returncode
+        print("attempt %d: %s failed, retrying with it first" % (attempt + 1, failed[0]))
+        first = [failed[0]] + [n for n in first if n != failed[0]]
+    return 1
+
+
+def renders():
+    """Pictures for the manuals (see assembly3d.py)."""
+    import assembly3d
+    made, keycap_top, stack_top = assembly3d.render_all(KICAD_CLI, BOARD_PATH)
+    print("renders:", ", ".join(os.path.basename(m) for m in made))
+    print("heights above the board: keycaps %.1f mm, Teensy stack %.1f mm" % (keycap_top, stack_top))
+
+
+if __name__ == "__main__" and "--renders" in sys.argv:
+    renders()
+    sys.exit(0)
+
+if __name__ == "__main__" and not os.environ.get("ETUTTINO_CHILD"):
+    code = route_with_retries()
+    if code == 0:
+        renders()
+    sys.exit(code)
+
 if __name__ == "__main__":
-    build()
+    try:
+        build()
+    except RoutingFailed:
+        sys.exit(3)
     errs, unc = fab()
     mismatches = verify_against_firmware()
     build_plate()

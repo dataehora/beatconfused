@@ -243,7 +243,7 @@
 .button-grid {
   position: relative;
   width: 100%;
-  aspect-ratio: 9 / 4;
+  aspect-ratio: 13 / 4;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -692,4 +692,22 @@
   -webkit-mask: radial-gradient(circle, transparent 54%, #000 55%);
   mask: radial-gradient(circle, transparent 54%, #000 55%);
   pointer-events: none;
+}
+
+/* ---- Listen in this browser ---- */
+.etutti-websound-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1.2rem;
+}
+
+.etutti-websound-row .hint {
+  flex: 1 1 18rem;
+  margin: 0;
+}
+
+.etutti-websound-note {
+  margin-bottom: 0;
 }

@@ -3,7 +3,8 @@
 
    Two models share this page:
      - eTuttino (the one being built): 34 round keys in a chromatic
-       button-accordion layout (C-griff or B-griff), G3–G5, on magnetic
+       button-accordion layout (C-griff or B-griff), G3–G6, laid out like
+       a Castagnari Magica K2 (41 keys), on magnetic
        (Hall-effect) switches: a Teensy 4.0 reads how far each key is down,
        so the real keys play with velocity.
      - eTutti (the full instrument): only a preview render for now.
@@ -52,27 +53,31 @@
   /* ------------------------------------------------------------
      eTuttino LAYOUT — chromatic button accordion.
      Row 1 is nearest the player (drawn at the bottom), row 4 furthest.
+     Laid out like the Castagnari Magica K2: rows 1-3 run A3..D♯6,
+     G3..G6 and G♯3..D6; row 4 repeats the start of row 1 (A3..C5).
      Along a row each key is a minor third (3 semitones) above the last;
      rows are staggered half a key, so a diagonal step to the next row is
      one semitone (up in C-griff, down in B-griff — B-griff is C-griff's
-     mirror image, rows 1 and 3 swapped). Row 4 repeats row 1 with one
-     more key in front, as on a 4-row accordion.
+     mirror image, rows 1 and 3 swapped).
        x    = horizontal position in key units (19.05 mm on the PCB)
        col  = matrix column on the PCB/firmware (row = matrix row)
        code = computer key (KeyboardEvent.code). The computer's rows are
-              staggered too, so the shape under the fingers matches.
+              staggered too, so the shape under the fingers matches. On
+              ABNT2, Slash/IntlRo are the ; and / keys, BracketLeft/Right
+              the ´ and [ keys, Backslash the ] key; the last key of row 2
+              (G6) has no computer key.
      Keep in sync with FIRST_NOTE/FIRST_COL in etutti_synth.ino and with
      ROWS in etutti/hardware/generate.py.
      ------------------------------------------------------------ */
   const FIRST_NOTE = {
-    c: [57, 55, 56, 54], // A3, G3, G♯3, F♯3
-    b: [56, 55, 57, 53], // G♯3, G3, A3, F3
+    c: [57, 55, 56, 57], // A3, G3, G♯3, A3
+    b: [56, 55, 57, 56], // G♯3, G3, A3, G♯3
   };
   const ROWS = [
-    { count: 8, x0: 0, col0: 1, codes: ["KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma"] },
-    { count: 9, x0: -0.5, col0: 0, codes: ["KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL"] },
-    { count: 8, x0: 0, col0: 1, codes: ["KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO"] },
-    { count: 9, x0: -0.5, col0: 0, codes: ["Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0"] },
+    { count: 11, x0: 0, col0: 1, codes: ["KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash", "IntlRo"] },
+    { count: 13, x0: -0.5, col0: 0, codes: ["KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL", "Semicolon", "Quote", "Backslash", null] },
+    { count: 11, x0: 0, col0: 1, codes: ["KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO", "KeyP", "BracketLeft", "BracketRight"] },
+    { count: 6, x0: 0, col0: 1, codes: ["Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8"] },
   ];
   const LAYOUT = [];
   ROWS.forEach((row, r) => {
@@ -80,8 +85,8 @@
       LAYOUT.push({ row: r, step: i, col: row.col0 + i, x: row.x0 + i, code: row.codes[i] });
     }
   });
-  const CODE_TO_KEY = new Map(LAYOUT.map((k) => [k.code, k]));
-  const GRID_UNITS_X = 9; // x from -0.5 to 7.5, one key wide each
+  const CODE_TO_KEY = new Map(LAYOUT.filter((k) => k.code).map((k) => [k.code, k]));
+  const GRID_UNITS_X = 13; // x from -0.5 to 11.5, one key wide each
   const GRID_UNITS_Y = 4;
   const MAX_TRANSPOSE = 3; // octaves either way
   const VELOCITY_STEP = 16;
@@ -243,6 +248,9 @@
   const heldByPointer = new Map(); // pointerId -> MIDI note
   const soundingCount = new Map(); // MIDI note -> how many sources hold it
   const remoteNotes = new Set(); // notes the Teensy reports from its own keys
+  // The eTuttino's sounds in the browser (websynth.js), off until the user
+  // switches "Listen in this browser" on.
+  const webSynth = window.EtuttiWebSynth ? window.EtuttiWebSynth.create() : null;
   let keyTestOn = false;
   const keyPress = new Array(LAYOUT.length).fill(0); // key test: 0 .. 1 per real key
   let statusKey = "status.idle";
@@ -425,7 +433,10 @@
   function noteOn(note) {
     const count = soundingCount.get(note) || 0;
     soundingCount.set(note, count + 1);
-    if (count === 0) send([0x90 | channel, note, velocity]);
+    if (count === 0) {
+      send([0x90 | channel, note, velocity]);
+      if (webSynth) webSynth.noteOn(note, velocity);
+    }
     paintNote(note);
   }
 
@@ -433,7 +444,10 @@
     const count = soundingCount.get(note) || 0;
     if (count <= 1) {
       soundingCount.delete(note);
-      if (count === 1) send([0x80 | channel, note, 0]);
+      if (count === 1) {
+        send([0x80 | channel, note, 0]);
+        if (webSynth) webSynth.noteOff(note);
+      }
     } else {
       soundingCount.set(note, count - 1);
     }
@@ -445,6 +459,7 @@
     heldByPointer.clear();
     const notes = Array.from(soundingCount.keys());
     notes.forEach((note) => send([0x80 | channel, note, 0]));
+    if (webSynth) webSynth.allOff();
     soundingCount.clear();
     notes.forEach(paintNote);
   }
@@ -458,7 +473,9 @@
   }
 
   function sendCC(number, value) {
-    send([0xb0 | channel, number, Math.max(0, Math.min(127, Math.round(value)))]);
+    const v = Math.max(0, Math.min(127, Math.round(value)));
+    if (webSynth) webSynth.cc(number, v);
+    send([0xb0 | channel, number, v]);
   }
 
   function radioValue(name) {
@@ -604,8 +621,25 @@
      ============================================================ */
   const keyEls = []; // { el, key } per layout key
 
+  // Key legends: the real labels of the user's keyboard where the browser
+  // exposes them (navigator.keyboard.getLayoutMap, Chrome/Edge), else the
+  // ABNT2 labels the layout was designed on.
+  const ABNT2_LABELS = {
+    Comma: ",", Period: ".", Slash: ";", IntlRo: "/", Semicolon: "Ç", Quote: "~",
+    Backslash: "]", BracketLeft: "´", BracketRight: "[",
+  };
+  let layoutMap = null;
   function keyLegend(code) {
-    return code.replace(/^(Key|Digit)/, "").replace("Comma", ",").replace("Period", ".");
+    if (!code) return "";
+    const label = layoutMap && layoutMap.get(code);
+    if (label) return label.toUpperCase();
+    return ABNT2_LABELS[code] || code.replace(/^(Key|Digit)/, "");
+  }
+  if (navigator.keyboard && navigator.keyboard.getLayoutMap) {
+    navigator.keyboard.getLayoutMap().then((map) => {
+      layoutMap = map;
+      renderGrid();
+    }).catch(() => {});
   }
 
   function renderGrid() {
@@ -619,7 +653,7 @@
       cap.type = "button";
       cap.className = isSharp(note) ? "cap cap-dark" : "cap";
       if (((note % 12) + 12) % 12 === 0) cap.classList.add("cap-c");
-      cap.dataset.code = key.code;
+      cap.dataset.index = String(LAYOUT.indexOf(key));
       cap.tabIndex = -1;
       cap.setAttribute("aria-label", noteName(note));
       cap.style.left = `${((key.x + 0.5) / GRID_UNITS_X) * 100}%`;
@@ -665,7 +699,7 @@
   }
 
   function noteForCap(el) {
-    return keyNote(CODE_TO_KEY.get(el.dataset.code));
+    return keyNote(LAYOUT[Number(el.dataset.index)]);
   }
 
   els.grid.addEventListener("pointerdown", (event) => {
@@ -1005,6 +1039,28 @@
     sendCC(CC.keyTest, on ? 127 : 0);
   }
   wireStyleToggle(els.keyTestToggle, els.keyTestCheckbox, setKeyTest);
+
+  /* ============================================================
+     SOUND IN THE BROWSER
+     ============================================================ */
+  const webSoundToggle = document.getElementById("webSoundToggle");
+  const webSoundCheckbox = document.getElementById("webSoundCheckbox");
+  async function setWebSound(on) {
+    webSoundCheckbox.checked = on;
+    syncToggleLabels(webSoundToggle, on ? "on" : "off");
+    if (!webSynth) return;
+    if (on) {
+      await webSynth.enable();
+      sendAllControls(); // the web synth starts from the page's settings
+    } else {
+      webSynth.disable();
+    }
+  }
+  if (webSynth) {
+    wireStyleToggle(webSoundToggle, webSoundCheckbox, setWebSound);
+  } else {
+    webSoundCheckbox.disabled = true;
+  }
 
   /* ============================================================
      OTHER CONTROLS

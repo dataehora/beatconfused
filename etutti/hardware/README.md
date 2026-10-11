@@ -1,6 +1,7 @@
 # eTuttino — PCB design (Hall-effect, velocity-sensitive)
 
-A 34-key chromatic button-accordion controller (C-griff, G3–G5).
+A 41-key chromatic button-accordion controller (C-griff, G3–G6), laid out
+like the treble keyboard of a Castagnari Magica K2.
 
 - **Keys:** Gateron magnetic (Hall-effect) switches, MX-compatible.
 - **Sensing:** a TI DRV5056A3 linear Hall sensor under every key, so the
@@ -19,7 +20,7 @@ step-by-step **assembly and user manuals** (en/pt/es) are at
 ## Ordering (ready to upload)
 
 Everything a PCB service needs is generated, routed and checked (KiCad DRC:
-0 errors, 0 warnings, 0 unconnected; firmware cross-check 34/34):
+0 errors, 0 warnings, 0 unconnected; firmware cross-check 41/41):
 
 | File | Upload it as |
 | --- | --- |
@@ -30,8 +31,8 @@ Everything a PCB service needs is generated, routed and checked (KiCad DRC:
 There are two routes, both written up in the manuals:
 
 - **A, factory-soldered:** order the PCB with JLCPCB's assembly service.
-  It arrives with all 78 SMD parts soldered. You solder only the two
-  Teensy sockets.
+  It arrives with all 91 SMD parts soldered. You solder only the Teensy
+  and the Audio Board.
 - **B, home-soldered:** order the bare PCB (plus an optional bottom-side
   stencil). Buy the parts from LCSC (same numbers as the BOM) and solder
   them yourself.
@@ -66,7 +67,8 @@ to move to the front.
 | File | What it is |
 | --- | --- |
 | [`generate.py`](generate.py) | single source of the geometry and of the sensor → multiplexer channel map (plain Python 3). Prints the `KEY_INPUT` table for the firmware |
-| [`build_pcb.py`](build_pcb.py) | builds and **routes** the KiCad board, runs DRC, checks it against the firmware, exports everything in `fab/` |
+| [`build_pcb.py`](build_pcb.py) | builds and **routes** the KiCad board, runs DRC, checks it against the firmware, exports everything in `fab/`, then the manual's pictures (`--renders` redoes only those) |
+| [`assembly3d.py`](assembly3d.py) | simple VRML models of the switches, keycaps, plate, Teensy and Audio Board, and the `kicad-cli` renders in `../manuais/img/` |
 | [`etuttino.pretty/`](etuttino.pretty) | footprint library: `Gateron_Magnetic_MX_1u` (two 1.75 mm peg holes, no centre post, no pins), origin at the switch centre |
 | [`kicad/etuttino.kicad_pcb`](kicad/etuttino.kicad_pcb) | the routed board. Open it in KiCad's PCB Editor to look at or tweak it |
 | [`kicad/etuttino_plate.kicad_pcb`](kicad/etuttino_plate.kicad_pcb) | the plate |
@@ -74,8 +76,10 @@ to move to the front.
 | `build/etuttino_keys.csv` | each key: switch, sensor, note-grid row/col, multiplexer, channel and pin, Teensy pin, note, X/Y (mm) |
 | `build/etuttino_plate.dxf` | the plate as DXF, for laser cutting aluminium instead of FR4 |
 
-After changing the layout in `generate.py`, rebuild everything (about two
-minutes; the router is pure Python):
+After changing the layout in `generate.py`, rebuild everything (about four
+minutes per routing attempt; the router is pure Python and greedy, so if a
+sensor output can't be routed the script starts again with that net first,
+up to eight times):
 
 ```bash
 python generate.py
@@ -108,14 +112,27 @@ Chromatic accordion, C-griff:
 
 | Row | Keys | Notes |
 | --- | --- | --- |
-| 1 | 8 | A3 C4 D♯4 F♯4 A4 C5 D♯5 F♯5 |
-| 2 | 9 | G3 A♯3 C♯4 E4 G4 A♯4 C♯5 E5 G5 |
-| 3 | 8 | G♯3 B3 D4 F4 G♯4 B4 D5 F5 |
-| 4 | 9 | F♯3 A3 C4 D♯4 F♯4 A4 C5 D♯5 F♯5 |
+| 1 | 11 | A3 C4 D♯4 F♯4 A4 C5 D♯5 F♯5 A5 C6 D♯6 |
+| 2 | 13 | G3 A♯3 C♯4 E4 G4 A♯4 C♯5 E5 G5 A♯5 C♯6 E6 G6 |
+| 3 | 11 | G♯3 B3 D4 F4 G♯4 B4 D5 F5 G♯5 B5 D6 |
+| 4 | 6 | A3 C4 D♯4 F♯4 A4 C5 (the start of row 1 again) |
 
-Keys sit on the standard MX pitch of 19.05 mm. Rows 2 and 4 start half a
-key further left than rows 1 and 3. The key area is 9 × 4 keys
-(171.45 × 76.2 mm). The PCB is 183.45 × 132.2 mm.
+Keys sit on the standard MX pitch of 19.05 mm. Row 2 starts half a key
+further left than the others. The key area is 13 × 4 keys
+(247.65 × 76.2 mm).
+
+**Size.** The PCB is **267 × 88.2 mm**, only as tall as the four rows (6 mm
+margins). Row 4 is short, so the back-right corner is free. The Teensy +
+Audio Board stack sits there, with USB and the headphone jack facing the
+right edge. On the Audio Board the jack sits beside the 0–12 pin row at the
+USB end; that was read off PJRC's pin diagram, so check a real board
+before you cut a case. The stack only adds about 13 mm to the length. The
+plate is notched around it.
+
+**Thickness.** The Audio Board is soldered about 3 mm above the PCB on its
+stacking-header legs, and the Teensy plugs in on top. The stack ends
+about 17 mm above the board, below the keycaps (about 19 mm). With sockets
+under the Audio Board it would end up about 6 mm taller than the keys.
 
 ## Electrical
 
@@ -128,24 +145,25 @@ key further left than rows 1 and 3. The key area is 9 × 4 keys
 
 **Multiplexers:** three CD74HC4067 (SOIC-24) in the strip behind the keys.
 
-- U41 serves the left third of the keyboard, U42 the middle, U43 the
-  right (see `build/etuttino_keys.csv` for each key's channel).
+- They sit behind the empty part of row 4. U51 serves the left part of
+  the keyboard, U52 the middle, U53 the right (see
+  `build/etuttino_keys.csv` for each key's channel).
 - Their address lines S0–S3 are shared.
 - Enable is tied to GND.
 
 | Net | Teensy pin |
 | --- | --- |
 | SEL0–SEL3 (multiplexer address S0–S3) | 0, 1, 2, 3 |
-| COM0 (U41 output) | 14 (A0) |
-| COM1 (U42 output) | 15 (A1) |
-| COM2 (U43 output) | 16 (A2) |
+| COM0 (U51 output) | 14 (A0) |
+| COM1 (U52 output) | 15 (A1) |
+| COM2 (U53 output) | 16 (A2) |
 | VIN (USB 5 V) → regulator | VIN |
 | GND | GND (both sockets) |
 
-**Power:** 34 sensors draw about 200 mA, more than the Teensy's own 3.3 V
-pin should give. An AMS1117-3.3 (SOT-223, on the back between the Teensy
-socket rows) makes a separate 3.3 V rail from VIN for the sensors and
-multiplexers. It has 10 µF in and 22 µF out. The sensor outputs never
+**Power:** 41 sensors draw about 250 mA, more than the Teensy's own 3.3 V
+pin should give. An AMS1117-3.3 (U60, SOT-223, on the back between the
+Teensy pin rows) makes a separate 3.3 V rail from VIN for the sensors and
+multiplexers. It has 10 µF (C80) in and 22 µF (C81) out. The sensor outputs never
 exceed this rail, and the Teensy's ADC pins tolerate 3.3 V.
 
 **Pins kept clear of:**
@@ -161,42 +179,45 @@ expression pedal or bellows sensor.
 
 **Routing:** two layers.
 
-- Per-key wiring, power buses and trunks (3.3 V on the back and GND on the
-  front, down the right edge) are laid deterministically.
+- Per-key wiring and the 3.3 V / GND bus along each key row are laid
+  deterministically.
 - Everything else is routed by a small grid router in `build_pcb.py`:
   A* on a 0.254 mm grid aligned to the Teensy pins, both layers, vias,
-  keeping KiCad's clearances. Sensor outputs are routed first, furthest
-  from their multiplexer first.
+  keeping KiCad's clearances. Order: the row buses to the regulator and
+  the Teensy GND, then the multiplexers' outputs, address lines and
+  supplies, then the 41 sensor outputs (furthest first). A net may only
+  join copper already connected to its root.
 - KiCad's DRC then checks the result independently.
 
 ## Teensy + Audio Board mounting
 
-- The stack sits in the strip behind the keys, long axis horizontal, **USB
-  pointing at the right edge** (silkscreen "USB >").
-- It plugs into **two 1×14 female sockets** (2.54 mm pitch, 15.24 mm apart)
-  on the front of the board.
-- The Teensy (male pins down) plugs into stacking headers on the Audio
-  Board, whose long legs plug into the eTuttino sockets.
-- Before ordering a case, hold your real stack against the preview and
-  check where the headphone jack ends up. Then cut the case openings for
-  both the USB and the jack.
+- Two rows of 14 holes (2.54 mm pitch, 15.24 mm apart) in the back-right
+  corner. The silkscreen marks "GND"/"0" and "VIN"/"23" and
+  "USB + jack >".
+- The Audio Board's stacking headers (female on top) are soldered to the
+  Audio Board. Their legs then go through the eTuttino holes with the Audio
+  Board about 3 mm above the PCB, and are soldered and trimmed on the back.
+- The Teensy (male pins down) plugs into the stacking headers, USB to the
+  right edge.
+- Optional: two 1×14 female sockets on the PCB make the Audio Board
+  removable, at about 6 mm more height.
 
 ## Bill of materials
 
 | Qty | Part | Notes |
 | --- | --- | --- |
-| 34 | Gateron KS-20 magnetic switch (or another Gateron magnetic switch, north pole down) | plate-mounted, **not soldered**: no pins, two plastic pegs |
-| 34 | DRV5056A3QDBZR, SOT-23 | back side, under each switch (A4 also works) |
-| 37 | 100 nF 0805 | one per sensor + one per multiplexer |
+| 41 | Gateron KS-20 magnetic switch (or another Gateron magnetic switch, north pole down) | plate-mounted, **not soldered**: no pins, two plastic pegs |
+| 41 | DRV5056A3QDBZR, SOT-23 | back side, under each switch (A4 also works) |
+| 44 | 100 nF 0805 | one per sensor + one per multiplexer |
 | 3 | CD74HC4067M96, SOIC-24 | back side |
 | 1 | AMS1117-3.3, SOT-223 | back side |
 | 1 + 1 | 10 µF, 22 µF 0805 | regulator input / output |
-| 34 | 1u MX keycap, **round** | round MX-stem keycaps (sold as "round" or "typewriter" keycaps) give the accordion-button look of the web page. **19 light** (naturals) + **15 dark** (sharps) |
+| 41 | 1u MX keycap, **round** | round MX-stem keycaps (sold as "round" or "typewriter" keycaps) give the accordion-button look of the web page. **25 light** (naturals) + **16 dark** (sharps) |
 | 1 | Teensy 4.0 (+ 2 × 1×14 male headers) | |
 | 1 | PJRC Audio Adaptor Board **Rev D** (+ 2 × 1×14 stacking headers) | |
-| 2 | 1×14 female socket, 2.54 mm | on the eTuttino PCB |
-| 1 | switch plate | 1.6 mm FR4 from `fab/etuttino_plate_gerbers.zip` (same fab as the PCB), or 1.5 mm aluminium from `build/etuttino_plate.dxf` (183.45 × 88.2 mm, 14 mm cutouts) |
-| 8 + 16 | M2 × 3.5 mm standoff + M2 × 4 mm screws | plate ↔ PCB (the standard 3.5 mm MX gap under a 1.5 mm plate); the board must sit right against the switch bottoms |
+| (2) | 1×14 female socket, 2.54 mm | optional, only to make the Audio Board removable |
+| 1 | switch plate | 1.6 mm FR4 from `fab/etuttino_plate_gerbers.zip` (same fab as the PCB), or 1.5 mm aluminium from `build/etuttino_plate.dxf` (259.65 × 88.2 mm, notched for the stack, 14 mm cutouts) |
+| 10 + 20 | M2 × 3.5 mm standoff + M2 × 4 mm screws | plate ↔ PCB (the standard 3.5 mm MX gap under a 1.5 mm plate); the board must sit right against the switch bottoms |
 | 1 | case | 3D-printed or CNC aluminium, tray mount on the M2 holes |
 
 ## Assembly
@@ -208,8 +229,8 @@ version:
 
 1. Back side SMD: multiplexers (pin 1!), regulator, its two capacitors,
    sensors, 100 nF capacitors. Route A skips this step.
-2. Teensy sockets on the front, soldered from the back.
-3. Teensy + Audio Board stack in the sockets, USB to the right. Flash
+2. Audio Board on its stacking headers, about 3 mm above the front of the board, soldered and trimmed on the back.
+3. Teensy plugged into the Audio Board, USB to the right. Flash
    `firmware/etutti_synth` (USB Type: MIDI).
 4. On the web page, turn on **Key test** and sweep a small magnet over each
    key position from the top. Every ring should fill.
