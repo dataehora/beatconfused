@@ -1,0 +1,75 @@
+/* ============================================================
+   eTUTTI MODELS — concept layouts of the eTuttino, eTutti and
+   eTuttiChorus. Reading layout, figures, lightbox and the per-language
+   blocks come from ../manuais/styles.css; this file only adds the model
+   overview cards and the spec lists.
+   ============================================================ */
+.model-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  gap: 0.9rem;
+}
+
+.model-nav a {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-soft);
+  color: inherit;
+  text-decoration: none;
+}
+
+.model-nav a:hover {
+  border-color: var(--accent-strong);
+}
+
+.model-nav img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.model-nav .nav-name {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.model-nav .nav-desc {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.spec-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.manual .spec-list li {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: var(--surface-solid);
+}
+
+.spec-list strong {
+  display: block;
+  font-size: 1.05rem;
+}
+
+.spec-list span {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.manual figure img.plan {
+  background: #f6f1e8;
+}

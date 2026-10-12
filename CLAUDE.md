@@ -172,6 +172,22 @@ that doesn't belong there.
     USB/jack openings on the left), joined by 8 M2 self-tappers through the
     walls + 2 through the board's left holes. Purchase options given to the
     user: JLC3DP, PCBWay, Craftcloud, a local FDM service (PETG). The user is in London; manuals stay country-neutral (no import/customs talk).
+  - **Concept models page** `/etutti/models/` (PR #80, unlisted/noindex,
+    linked from the eTutti page): layouts only, no manual/BOM. One
+    parametric design in `etutti/hardware/concepts.py` (pure Python:
+    geometry + top-view SVGs), `concepts_cad.py` (FreeCAD: appearance
+    solids → `concepts_build/`, gitignored), `concepts_render.py` (KiCad:
+    STL→VRML→`kicad-cli` renders, dummy board hidden in the solid body),
+    `concepts_page.py` (writes the static en/pt/es page; edit texts there).
+    Models: **eTuttino** (44 keys + a left grip 76 mm long, 30.5 mm tall —
+    as low as the stacked Teensy + Audio Board allow — ramp down to the
+    keyboard ~20 mm before the key tops; LED, USB + audio on the grip's left
+    face); **eTutti** (each row +1 key: F♯6/G6/F6/D♯6, 48 keys, G3–G6 — the
+    user wrote "F#5…D#5", read as a typo); **eTuttiChorus** (eTutti +
+    battery, round speaker grille, 1.9" 320×170 screen at the grip's back
+    like the Corsair Vanguard 96 LCD). The stack sits in the same place in
+    every model (front half of the grip, against the left face) so the
+    board can be shared; the back half is free until the Chorus.
   - **Stiffness**: `etutti/hardware/mechanics.py` (KiCad python + numpy,
     no scipy) picks pillar spots on the back where there's only traces and
     runs a dense grillage FE (4 mm mesh) per key: ~2.7 mm sag at 3 N on the

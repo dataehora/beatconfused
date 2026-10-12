@@ -4,8 +4,20 @@
     {
       "name": "static-site",
       "runtimeExecutable": "python",
-      "runtimeArgs": [".claude/nocache_server.py", "5849"],
+      "runtimeArgs": [
+        ".claude/nocache_server.py",
+        "5849"
+      ],
       "port": 5849
+    },
+    {
+      "name": "static-site-alt",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        ".claude/nocache_server.py",
+        "5850"
+      ],
+      "port": 5850
     }
   ]
 }

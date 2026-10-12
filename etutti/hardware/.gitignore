@@ -5,3 +5,4 @@ kicad/fp-info-cache
 # Loose Gerbers: the zips in fab/ are what gets uploaded
 fab/gerbers/
 fab/plate_gerbers/
+concepts_build/
