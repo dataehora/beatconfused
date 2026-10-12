@@ -17,8 +17,9 @@ board, runs KiCad's DRC and exports everything a PCB service needs:
   fab/etuttino_top.png / _bottom.png   renders for a visual check
 
 What is on the board:
-  - front: 34 Gateron magnetic switches (no pins, two plastic pegs) and
-    the two 1x14 sockets for the Teensy 4.0 + Audio Board stack,
+  - front: 44 Gateron magnetic switches (no pins, two plastic pegs) and
+    the two rows of 14 holes for the Teensy 4.0 + Audio Board stack (back
+    left corner, USB and headphone jack facing the left edge), the power LED,
   - back: under every switch a DRV5056A3 linear Hall sensor and its
     100 nF capacitor; three CD74HC4067 analog multiplexers; an AMS1117-3.3
     regulator for the sensors.
@@ -33,8 +34,7 @@ has south facing down, the sensors would have to move to the front.)
 Routing (two layers):
   - per key, fixed: sensor -> capacitor -> a 3.3 V bus above the key row
     and a GND bus below it (back), the output to a via,
-  - power trunks on the right edge (3.3 V on the back, GND on the front),
-  - everything else -- the 34 sensor outputs to their multiplexer
+  - everything else -- the 44 sensor outputs to their multiplexer
     channels, the multiplexer outputs and address lines to the Teensy, and
     the regulator / multiplexer supplies -- by a small grid router (A*,
     both layers, vias allowed) that keeps KiCad's clearances. DRC then
@@ -416,7 +416,7 @@ class Router:
 
 # The order the retries found for the current layout; a layout change may
 # need a new one (the retry loop finds it and prints it).
-DEFAULT_ROUTE_FIRST = ""
+DEFAULT_ROUTE_FIRST = "OUT_U34"
 
 
 class RoutingFailed(Exception):
@@ -635,21 +635,26 @@ def build():
         muxes.append((u, c))
         footprints += [u, c]
 
+    # Rotated 180 deg: input pins on the left, VIN (pin 3) towards the
+    # Teensy's VIN row at the back, the output tab on the right.
     ldo = place(lib("Package_TO_SOT_SMD"), "SOT-223-3_TabPin2", G.LDO["ref"], G.LDO["x"], G.LDO["y"],
-                "AMS1117-3.3", back=True)
+                "AMS1117-3.3", back=True, rot=G.LDO.get("rot", 0))
     for p in ldo.Pads():
         p.SetNet(net({"1": "GND", "2": "VCC", "3": "VIN"}[p.GetNumber()]))
+    vin_xy = xy(pad(ldo, "3").GetPosition())
+    assert vin_xy[0] < G.LDO["x"] and vin_xy[1] < G.LDO["y"], vin_xy
     ldo.Reference().SetPosition(mm(G.LDO["x"], G.LDO["y"] + 4.6))
-    c_in = place(lib("Capacitor_SMD"), "C_0805_2012Metric", LDO_CIN, G.LDO["x"] + 7.0, G.LDO["y"] + 3.2, "10uF",
+    c_in = place(lib("Capacitor_SMD"), "C_0805_2012Metric", LDO_CIN, G.LDO["x"] - 7.0, G.LDO["y"] - 3.2, "10uF",
                  back=True, rot=90)
-    c_out = place(lib("Capacitor_SMD"), "C_0805_2012Metric", LDO_COUT, G.LDO["x"] - 7.2, G.LDO["y"] + 3.2, "22uF",
+    c_out = place(lib("Capacitor_SMD"), "C_0805_2012Metric", LDO_COUT, G.LDO["x"] + 7.2, G.LDO["y"] - 3.2, "22uF",
                   back=True, rot=90)
     for cap, live in ((c_in, "VIN"), (c_out, "VCC")):
         cap.Reference().SetVisible(False)
         p1, p2 = pad(cap, "1"), pad(cap, "2")
-        top, bot = (p1, p2) if xy(p1.GetPosition())[1] < xy(p2.GetPosition())[1] else (p2, p1)
-        top.SetNet(net(live))
-        bot.SetNet(net("GND"))
+        # the pad nearer the regulator's centre line takes the live net
+        near, far = (p1, p2) if abs(xy(p1.GetPosition())[1] - G.LDO["y"]) < abs(xy(p2.GetPosition())[1] - G.LDO["y"]) else (p2, p1)
+        near.SetNet(net(live))
+        far.SetNet(net("GND"))
     footprints += [ldo, c_in, c_out]
 
     # ---- power LED (top, through-hole, red/green common cathode) and its
@@ -674,7 +679,7 @@ def build():
     sockets = {}
     for ref in ("J1", "J2"):
         first = [p for p in pins if p[0] == ref and p[1] == 1][0]
-        s = place(lib("Connector_PinSocket_2.54mm"), "PinSocket_1x14_P2.54mm_Vertical", ref, first[3], first[4], rot=-90)
+        s = place(lib("Connector_PinSocket_2.54mm"), "PinSocket_1x14_P2.54mm_Vertical", ref, first[3], first[4], rot=90)
         s.Value().SetVisible(False)
         sockets[ref] = s
     for ref, number, pin, x, y in pins:
@@ -729,28 +734,35 @@ def build():
         spec = G.MUXES[k["mux"]]
         dist = abs(k["out_via"][0] - spec["x"]) + abs(k["out_via"][1] - spec["y"])
         outs.append((dist, k))
-    outs.sort(key=lambda t: -t[0])
+    # Front multiplexer U51 the other way round, nearest first: its 16 keys
+    # all sit in rows 1-2 to its right, and the far ones' traces along the
+    # row boxed the near ones' vias in; the far ones can still go round
+    # through the empty strip in front of row 1.
+    outs.sort(key=lambda t: t[0] if t[1]["mux"] == 0 else -t[0])
     free_channels = {m: set(range(G.MUX_CHANNELS)) for m in range(len(G.MUXES))}
     for _, k in outs:
         spec = G.MUXES[k["mux"]]
         jobs.append(("OUT_%s" % k["sensor"], ("via", k["sensor"]), ("mux", k["mux"], k),
                      "%s -> %s" % (k["sensor"], spec["ref"])))
-    # multiplexer outputs to the Teensy ADC pins
-    # The far multiplexer's address and output lines cross the whole board:
-    # routed after the sensor outputs, or they box the sensors in.
-    far = {spec["ref"] for spec in G.MUXES if spec["x"] < G.NOTCH_X / 2}
+    # Multiplexer outputs to the Teensy ADC pins, and the address lines, all
+    # with the power: before the sensor outputs. The far multiplexer's lines
+    # run along the back strip behind row 4 (routed after the sensors, its
+    # COM and address lines found the way blocked; when they crossed the
+    # rows, earlier layouts routed them last so they wouldn't box the
+    # sensors in -- set ETUTTINO_LATE_FAR=1 to get that back).
+    far = set()
+    if os.environ.get("ETUTTINO_LATE_FAR"):
+        far = {spec["ref"] for spec in G.MUXES if abs(spec["x"] - G.STACK_CX) > G.PCB_W / 2}
     late = set()
     for m, spec in enumerate(G.MUXES):
         com_pad = [p for p, f in G.MUX_PINS.items() if f == "COM"][0]
         j2 = [p for p in pins if p[0] == "J2" and p[2] == G.COM_PINS[m]][0]
         jobs.append(("COM%d" % m, (spec["ref"], str(com_pad)), [("J2", str(j2[1]))], "%s COM -> pin %s" % (spec["ref"], G.COM_PINS[m])))
-        if spec["ref"] in far:
-            late.add(jobs[-1][3])
     # address lines: Teensy -> the nearest multiplexer, then on to the others
     for s, pin in enumerate(G.SEL_PINS):
         j1 = [p for p in pins if p[0] == "J1" and p[2] == pin][0]
         sel_pad = str([p for p, f in G.MUX_PINS.items() if f == "S%d" % s][0])
-        order = sorted(G.MUXES, key=lambda m: -m["x"])
+        order = sorted(G.MUXES, key=lambda m: abs(m["x"] - j1[3]) + abs(m["y"] - j1[4]))
         jobs.append(("SEL%d" % s, ("J1", str(j1[1])), [(order[0]["ref"], sel_pad)], "pin %s -> %s S%d" % (pin, order[0]["ref"], s)))
         for spec in order[1:]:
             jobs.append(("SEL%d" % s, (spec["ref"], sel_pad), "tree", "%s S%d" % (spec["ref"], s)))
@@ -849,17 +861,17 @@ def build():
         seg.SetWidth(pcbnew.FromMM(0.1))
         board.Add(seg)
 
-    text("eTuttino v0.4 HE", G.GRID_X0 + 3 * G.U, 3.2, 1.2)
+    text("eTuttino v0.5 HE", G.GRID_X0 + 3 * G.U, 3.2, 1.2)
     text("POWER", G.LED["x"], G.LED["y"] - 2.6, 0.9)
-    text("Teensy 4.0 on Audio Board Rev D - USB + jack >", G.STACK_CX, G.STACK_ZONE[3] - 1.4, 0.9)
+    text("< USB + jack - Teensy 4.0 on Audio Board Rev D", G.STACK_CX, G.STACK_ZONE[1] + 1.4, 0.9)
     j1_gnd = [p for p in pins if p[0] == "J1" and p[1] == 1][0]
     j2_vin = [p for p in pins if p[0] == "J2" and p[1] == 1][0]
-    text("GND", j1_gnd[3], j1_gnd[4] - 2.4, 0.8)
-    text("VIN", j2_vin[3], j2_vin[4] + 2.4, 0.8)
-    text("0", j1_gnd[3] - 2.54, j1_gnd[4] - 2.4, 0.8)
-    text("23", j2_vin[3] - 7.62, j2_vin[4] + 2.4, 0.8)
-    text("eTuttino v0.4 HE - C-griff G3-E6 - beatconfused.com/etutti", 120, 85.6, 1.0, pcbnew.B_SilkS)
-    text("Sensors DRV5056A3 on this side, under each switch", 120, 2.6, 1.0, pcbnew.B_SilkS)
+    text("GND", j1_gnd[3], j1_gnd[4] + 2.4, 0.8)
+    text("VIN", j2_vin[3], j2_vin[4] - 2.4, 0.8)
+    text("0", j1_gnd[3] + 2.54, j1_gnd[4] + 2.4, 0.8)
+    text("23", j2_vin[3] + 7.62, j2_vin[4] - 2.4, 0.8)
+    text("eTuttino v0.5 HE - C-griff G3-E6 - beatconfused.com/etutti", G.PCB_W / 2, G.PCB_H - 2.6, 1.0, pcbnew.B_SilkS)
+    text("Sensors DRV5056A3 on this side, under each switch", G.PCB_W / 2 + 40, 2.6, 1.0, pcbnew.B_SilkS)
 
     os.makedirs(KICAD_DIR, exist_ok=True)
     pcbnew.SaveBoard(BOARD_PATH, board)
@@ -1057,7 +1069,7 @@ def build_plate():
             h.Reference().SetVisible(False)
             h.SetPosition(mm(x, y))
             board.Add(h)
-    text("eTuttino plate v0.4", ox + pw / 2, oy + ph - 2.6, 1.2)
+    text("eTuttino plate v0.5", ox + pw / 2, oy + ph - 2.6, 1.2)
     pcbnew.SaveBoard(PLATE_PATH, board)
     print("saved", PLATE_PATH)
     board = main_board
@@ -1101,9 +1113,21 @@ def route_with_retries(max_attempts=20):
     return 1
 
 
+FREECAD_PY = os.environ.get("FREECAD_PYTHON", "C:/Program Files/FreeCAD 1.0/bin/python.exe")
+
+
 def renders():
-    """Pictures for the manuals (see assembly3d.py)."""
+    """Case supports + sag check (mechanics.py), the case (case.py, in
+    FreeCAD), then the pictures for the manuals (assembly3d.py)."""
     import assembly3d
+    import mechanics
+    mechanics.write_supports(BOARD_PATH)
+    for script in ("case.py", "case_check.py"):
+        r = subprocess.run([FREECAD_PY, os.path.join(HERE, script)], capture_output=True, text=True)
+        sys.stdout.write(r.stdout[-2000:])
+        if r.returncode:
+            sys.stdout.write(r.stderr[-4000:])
+            raise SystemExit("%s failed" % script)
     made, keycap_top, stack_top = assembly3d.render_all(KICAD_CLI, BOARD_PATH)
     print("renders:", ", ".join(os.path.basename(m) for m in made))
     print("heights above the board: keycaps %.1f mm, Teensy stack %.1f mm" % (keycap_top, stack_top))

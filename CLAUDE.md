@@ -121,21 +121,27 @@ that doesn't belong there.
     band-limited oscillators + ADSR, piano/guitar/bass = decaying-partial
     approximations (labelled as such on the page). Verified by tapping
     the output with an AnalyserNode in the browser pane.
-  - **Board shape (PR #76)**: 267 × 88.2 mm — only the 4 key rows tall.
-    Rows 3-4 end before row 2, so the Teensy + Audio Board stack sits in the free
-    back-right corner (`STACK_ZONE`), USB and headphone jack facing the
-    right edge (the jack is beside the 0-12 pin row at the USB end — read
-    off PJRC's pin diagram). The Audio Board is soldered ~3 mm above the
-    PCB on its stacking-header legs so the stack (~17 mm) stays below the
-    keycaps (~19 mm); sockets are the optional, ~6 mm taller route. The
-    plate is notched there. Mux U51 sits on the back of the
-    front-right corner (past rows 1-2, `CORNER_X`; row 1 + right end of
-    row 2), U53 in the back-left corner (left of rows 3-4, left 16 keys)
-    and U52 sideways (rot 90) along the back edge above J1 (right 12) —
-    with two or three muxes beside the stack the router couldn't fan the
-    traces out to the pins, LDO U60 between the
-    stack's pin rows. **Power LED** D1 (#77): 3 mm red/green common-cathode
-    THT on top in that corner, pins 4 (red) / 5 (green) through R1/R2
+  - **Board shape (PR #78, "ergonomic" layout)**: 267 × 97.2 mm — the
+    4 key rows + 6 mm margins + a 15 mm strip at the BACK (`MARGIN_BACK`,
+    for U52 and the long lines to the far mux). The user asked for USB and jack on
+    the LEFT for ergonomics (cables away from the playing right hand, high
+    notes clear, LED in sight): the Teensy + Audio Board stack sits in the
+    free back-LEFT corner (`STACK_ZONE`, rows 3-4 start after row 2), the
+    USB-up view turned 90° anticlockwise, so the 0-12 row (J1) is the front
+    one and VIN-13 (J2) the back one; the jack is beside the 0-12 row at the
+    USB end (read off PJRC's pin diagram — unverified on a real board). The
+    key grid is mirror-symmetric, so the layout is the #77 one mirrored:
+    U51 in the front-left corner (`CORNER_X` = row 2's left edge; row 1 +
+    left 5 of row 2, routed nearest-first), LED D1 just in front of the
+    Audio Board under J1 pins 4/5 (down the left edge its lines walled U51
+    in), U52 sideways (rot 90) in the back strip just right of the stack
+    (left 12 keys; behind J2 its traces couldn't squeeze past the stack), U53 rot 0 in the back-right corner (right
+    16; COM pin at the top so COM2 runs along the back strip, routed with
+    the other COMs, not late), LDO U60 rot 180 between the pin rows, VIN pin towards J2. The
+    Audio Board is soldered ~3 mm above the PCB on its stacking-header legs;
+    with the Teensy's 2.5 mm male-header spacer the Teensy top is 17.2 mm,
+    USB 19.8 mm (keycaps 18.8) — the case's pod covers it. **Power LED** D1 (#77): 3 mm red/green common-cathode
+    THT on top in front of the Audio Board, pins 4 (red) / 5 (green) through R1/R2
     330 Ω on the back; firmware: orange while the keys are first read
     (≥ 0.6 s), green playing, red blinking if the codec or any key's
     sensor didn't answer (so a bare Teensy blinks red — no LED there
@@ -146,10 +152,32 @@ that doesn't belong there.
     (`ETUTTINO_ROUTE_FIRST`), up to 20 attempts (~4-15 min each). A net
     that fails even when first is a physical blockage: export
     `kicad/etuttino_failed.kicad_pcb` to SVG and look.
-  - `etutti/hardware/assembly3d.py` — VRML stand-ins (switches, round
-    keycaps, plate, Audio Board, Teensy; KiCad VRML unit = 2.54 mm, y up)
-    + `kicad-cli pcb render` → `etutti/manuais/img/*.jpg` (+ `-sm`
-    copies). The manual's `lightbox.js` opens the full image on click.
+  - `etutti/hardware/assembly3d.py` — VRML stand-ins (switches incl. the
+    bottom housing standing on the PCB, round keycaps, plate, Audio Board,
+    Teensy, and ALL 28 stacking-header legs through the board with solder
+    under it, the Teensy's 2.5 mm pin spacers and pin tips — the user wants
+    the renders to show that those legs are the only link between the
+    stack and the keyboard; KiCad VRML unit = 2.54 mm, y up) + the case
+    (read from its STLs, real-world winding kept) + `kicad-cli pcb render`
+    → `etutti/manuais/img/*.jpg` (+ `-sm` copies; `case_*` = in the case,
+    `stack_pins` = the legs close up; the tray alone is rendered on a 1 mm
+    dummy board hidden in its floor). The manual's `lightbox.js` opens the
+    full image on click.
+  - **Case (PR #78)**: `etutti/hardware/case.py`, run with FreeCAD 1.0's
+    Python (`C:/Program Files/FreeCAD 1.0/bin/python.exe`, has Part +
+    MeshPart; build_pcb.py calls it) → `fab/etuttino_case_{top,bottom}.
+    {stl,step}`. Tray (floor, bosses under every hole, pillars) + top shell
+    (3 mm deck on the plate edge, stepped key opening = key cells + 0.6 mm,
+    LED window, pod over the stack 1 mm clear of row 3's first keycap,
+    USB/jack openings on the left), joined by 8 M2 self-tappers through the
+    walls + 2 through the board's left holes. Purchase options given to the
+    user: JLC3DP, PCBWay, Craftcloud, Brazilian STL-quote services (PETG).
+  - **Stiffness**: `etutti/hardware/mechanics.py` (KiCad python + numpy,
+    no scipy) picks pillar spots on the back where there's only traces and
+    runs a dense grillage FE (4 mm mesh) per key: ~2.7 mm sag at 3 N on the
+    holes alone vs a few hundredths of a mm on the pillars →
+    `build/etuttino_supports.json`. The user asked that the board "not flex
+    much"; keep the pillars if the layout changes.
   - `etutti/manuais/` — assembly manuals (route A: JLCPCB PCBA, bottom
     side; route B: everything soldered at home) + user manual, one
     `.lang-block` per language (en/pt/es) shown by `html[lang]`; noindex,
@@ -290,7 +318,7 @@ code.
   fixed (done in #74: SVF → biquad, sample gain up) and the synth to come
   back (done in #74).
 - **PCB** `etutti/hardware/`: **44-key version with power LED (#77)**,
-  267 × 88.2 mm, routed, DRC 0/0/0, firmware cross-check 44/44 (incl.
+  stack moved to the back-left + case (#78), 267 × 97.2 mm, routed, DRC 0/0/0, firmware cross-check 44/44 (incl.
   LED pins), manual renders in `etutti/manuais/img/`. Firmware with the
   44-key table, LED and high-note reed tables is
   flashed on the user's Teensy. (The #75 board, 34 keys, was: Ready-to-upload Gerbers in `fab/`
@@ -500,6 +528,14 @@ code.
   columns), muxes moved to the front-right corner, power LED, high-note
   reed tables (above C5 the full 20-harmonic tables aliased), commercial
   layout reference removed everywhere.
+- **#78** — ergonomic re-layout: Teensy + Audio Board in the back-LEFT
+  corner (USB + jack to the left), LED in front of the stack, U52 in a
+  15 mm back strip, 267 × 97.2 mm; two-piece 3D-printed case
+  (`case.py`/FreeCAD, `case_check.py` collision check), tray pillars from
+  `mechanics.py` (board sag 2.6 mm → 0.03 mm at 3 N); renders show all 28
+  header legs (`stack_pins`) and the case (`case_*`). Routing took
+  U53 rot 0 + COM/address lines early, U51 nearest-first,
+  `DEFAULT_ROUTE_FIRST = "OUT_U34"`.
 
 ## Workflow conventions observed this session
 
