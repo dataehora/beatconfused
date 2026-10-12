@@ -49,8 +49,8 @@
         </p>
 
         <figure class="wide">
-          <a class="zoomable" href="img/assembled_iso.jpg"><img src="img/assembled_iso-sm.jpg" alt="The finished eTuttino in perspective: 44 round keys, with the Teensy and Audio Board in the back right corner" loading="lazy" /></a>
-          <figcaption>The eTuttino with everything installed (rendered from the board design). Click any picture to see it in high resolution.</figcaption>
+          <a class="zoomable" href="img/case_iso.jpg"><img src="img/case_iso-sm.jpg" alt="The finished eTuttino in its case, in perspective: 44 round keys, and the pod over the Teensy and Audio Board in the back left corner" loading="lazy" /></a>
+          <figcaption>The finished eTuttino in its 3D-printed case (rendered from the design files). Click any picture to see it in high resolution.</figcaption>
         </figure>
 
         <nav class="manual-toc" aria-label="Manuals">
@@ -116,16 +116,22 @@
             </figcaption>
           </figure>
 
-          <h3>Size</h3>
+          <h3>Size and layout</h3>
           <p>
-            The board is <strong>267 × 88.2 mm</strong>: only as tall as the four key rows. Rows 3 and 4 end before row 2,
-            which leaves the back right corner free for the Teensy and the Audio Board, with the USB and the headphone output facing the
-            right edge. With the Audio Board soldered low on the board, the stack stays <strong>lower than the
-            keys</strong>: about 17 mm above the board, against about 19 mm for the top of the keys.
+            The board is <strong>267 × 97.2 mm</strong>: the four key rows plus a 15 mm strip at the back; the case
+            adds 5.5 mm all round (<strong>278 × 108 mm</strong>). Rows 3 and 4 start after row 2, which leaves the
+            <strong>back left corner</strong> free for the Teensy and the Audio Board, with the USB and the headphone
+            output facing the <strong>left edge</strong>. That's for the player: the cables leave on the left, away from
+            the right hand that plays, the right end is clear for the high notes, and the power LED sits just in front of
+            the Teensy, in sight.
+          </p>
+          <p>
+            The Audio Board is soldered low on the board, so the stack ends about 20 mm above it (the top of the keys
+            is at about 19 mm). In the case it sits under a small pod in that corner, clear of the keys.
           </p>
           <figure class="wide">
-            <a class="zoomable" href="img/assembled_front.jpg"><img src="img/assembled_front-sm.jpg" alt="Front view of the finished eTuttino: the thin board, the keys, and the Teensy in the corner no higher than the keys" loading="lazy" /></a>
-            <figcaption>From the front: the Teensy and the Audio Board stay below the top of the keys.</figcaption>
+            <a class="zoomable" href="img/assembled_front.jpg"><img src="img/assembled_front-sm.jpg" alt="Front view of the eTuttino without its case: the thin board, the keys, and the Teensy stack in the left corner, about as high as the keys" loading="lazy" /></a>
+            <figcaption>From the front, without the case: the Teensy and the Audio Board are about as high as the keys.</figcaption>
           </figure>
 
           <h3>Two ways to build it</h3>
@@ -160,6 +166,7 @@
                 <tr><td>Round MX keycap: 26 light + 18 dark</td><td>44</td><td><span class="tag tag-none">press on</span></td><td><span class="tag tag-none">press on</span></td></tr>
                 <tr><td>Switch plate, FR4</td><td>1</td><td><span class="tag tag-none">no solder</span></td><td><span class="tag tag-none">no solder</span></td></tr>
                 <tr><td>M2 × 3.5 mm standoffs + M2 × 4 mm screws</td><td>9 + 18</td><td><span class="tag tag-none">screw</span></td><td><span class="tag tag-none">screw</span></td></tr>
+                <tr><td>3D-printed case (tray + top), M2 × 10 mm self-tapping screws, 10 mm rubber feet</td><td>2 + 10 + 4</td><td><span class="tag tag-none">screw</span></td><td><span class="tag tag-none">screw</span></td></tr>
               </tbody>
             </table>
           </div>
@@ -181,11 +188,12 @@
               Ordinary mechanical switches won't work.
             </li>
             <li>44 round keycaps with an MX stem ("round" or "typewriter"): 26 light ones for the naturals and 18 dark ones for the sharps.</li>
-            <li>9 M2 × 3.5 mm standoffs (female-female) and 18 M2 × 4 mm screws, plus 2 for the case.</li>
+            <li>9 M2 × 3.5 mm standoffs (female-female) and 18 M2 × 4 mm screws.</li>
+            <li>For the case: 10 M2 × 10 mm self-tapping screws (pan head, for plastic) and 4 stick-on rubber feet, 10 mm across.</li>
             <li>A 3 mm bicolour LED, red/green, <strong>common cathode</strong> (3 legs, the cathode in the middle), for the power light.</li>
             <li>A 3 mm piece of cardboard or plastic, as a spacer while soldering the Audio Board.</li>
             <li>A micro-USB cable (the Teensy 4.0 is micro-USB) and headphones or a speaker with a 3.5 mm plug.</li>
-            <li>A case (3D-printed, wood or acrylic), fixed through the M2 holes, with openings on the right side for the USB and the headphone jack.</li>
+            <li>The <strong>case</strong>: two 3D-printed parts, ordered from a printing service (see <a href="#en-case">The case</a>).</li>
           </ul>
 
           <h3>Rough cost</h3>
@@ -203,6 +211,7 @@
                 <tr><td>Teensy 4.0 + Audio Board Rev D</td><td>≈ US$ 40</td><td>≈ US$ 40</td></tr>
                 <tr><td>Gateron KS-20 switches (44)</td><td>≈ US$ 30–50</td><td>≈ US$ 30–50</td></tr>
                 <tr><td>Keycaps, headers, standoffs</td><td>≈ US$ 20–40</td><td>≈ US$ 20–40</td></tr>
+                <tr><td>3D-printed case (resin or nylon, 2 parts) + screws and feet</td><td>≈ US$ 30–80</td><td>≈ US$ 30–80</td></tr>
               </tbody>
             </table>
           </div>
@@ -213,12 +222,13 @@
             <li><a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: the switch plate</li>
             <li><a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a>: parts list (BOM) for JLCPCB assembly</li>
             <li><a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>: where each part goes (CPL)</li>
+            <li><a href="../hardware/fab/etuttino_case_top.stl">etuttino_case_top.stl</a> and <a href="../hardware/fab/etuttino_case_bottom.stl">etuttino_case_bottom.stl</a>: the case, for 3D printing (<a href="../hardware/fab/etuttino_case_top.step">top</a> and <a href="../hardware/fab/etuttino_case_bottom.step">tray</a> as STEP, to change in CAD)</li>
             <li><a href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener">Firmware</a> and <a href="https://github.com/dataehora/beatconfused/tree/main/etutti/hardware" target="_blank" rel="noopener">board design (KiCad)</a> on GitHub</li>
           </ul>
 
           <figure class="wide">
-            <a class="zoomable" href="img/pcb_top.jpg"><img src="img/pcb_top-sm.jpg" alt="Board from the top: the 44 switch positions and, in the back right corner, the Teensy holes" loading="lazy" /></a>
-            <figcaption>Front of the board: the 44 switch positions and, in the back right corner, the two rows of holes for the Teensy + Audio Board.</figcaption>
+            <a class="zoomable" href="img/pcb_top.jpg"><img src="img/pcb_top-sm.jpg" alt="Board from the top: the 44 switch positions and, in the back left corner, the Teensy holes" loading="lazy" /></a>
+            <figcaption>Front of the board: the 44 switch positions and, in the back left corner, the two rows of holes for the Teensy + Audio Board.</figcaption>
           </figure>
           <figure class="wide">
             <a class="zoomable" href="img/pcb_bottom.jpg"><img src="img/pcb_bottom-sm.jpg" alt="Board from below: a sensor under each switch, the three multiplexers and the regulator" loading="lazy" /></a>
@@ -239,7 +249,7 @@
           <h3>1. Order the board with assembly</h3>
           <ol class="steps">
             <li>Download <a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a>, <a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a> and <a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>.</li>
-            <li>On <a href="https://jlcpcb.com" target="_blank" rel="noopener">jlcpcb.com</a>, create an account, click <strong>Order now</strong> and upload <code>etuttino_gerbers.zip</code>. The site reads the size (267 × 88.2 mm) and shows a preview.</li>
+            <li>On <a href="https://jlcpcb.com" target="_blank" rel="noopener">jlcpcb.com</a>, create an account, click <strong>Order now</strong> and upload <code>etuttino_gerbers.zip</code>. The site reads the size (267 × 97.2 mm) and shows a preview.</li>
             <li>
               Board settings:
               <ul>
@@ -283,7 +293,7 @@
 
           <h3>2. Order the switch plate</h3>
           <ol class="steps">
-            <li>Place a second order with <a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: FR-4, <strong>1.6 mm</strong>, no assembly. The plate has a notch in the back right corner for the Teensy, and no copper. Black or white looks good under the keys.</li>
+            <li>Place a second order with <a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: FR-4, <strong>1.6 mm</strong>, no assembly. The plate has a notch in the back left corner for the Teensy, and no copper. Black or white looks good under the keys.</li>
             <li>For aluminium, <code>hardware/build/etuttino_plate.dxf</code> is ready for 1.5 mm laser cutting.</li>
           </ol>
 
@@ -341,7 +351,7 @@
           <p>Lay the board <strong>back side up</strong> (the side with the "Sensors DRV5056A3…" text). Go from the hardest part to the easiest:</p>
           <ol class="steps">
             <li>
-              <strong>Multiplexers U51, U52 and U53 (SOIC-24)</strong>: U51 in the front right corner, past the end of rows 1 and 2; U53 in the back left corner, left of rows 3 and 4; U52 lying sideways in the back right corner, above the Teensy's row of holes. Find the
+              <strong>Multiplexers U51, U52 and U53 (SOIC-24)</strong>: U51 in the front left corner, before the start of rows 1 and 2; U52 lying sideways along the back edge, just right of the Teensy's holes; U53 in the back right corner, past the end of rows 3 and 4. Find the
               <strong>pin-1 dot</strong> on the chip and the pin-1 mark on the silkscreen, and line them up.
               <ol>
                 <li>Tin <em>one</em> corner pad.</li>
@@ -351,15 +361,15 @@
                 <li>Bridges come off with flux and braid.</li>
               </ol>
               <figure>
-                <a class="zoomable" href="img/detail_muxes.jpg"><img src="img/detail_muxes-sm.jpg" alt="Close-up of the back: multiplexer U51 in the front right corner with its capacitor, and the LED resistors" loading="lazy" /></a>
-                <figcaption>U51 with its capacitor C71, and the LED resistors R1/R2. Check the chip's pin 1. U52 is in the regulator close-up below, U53 in the back-left close-up.</figcaption>
+                <a class="zoomable" href="img/detail_muxes.jpg"><img src="img/detail_muxes-sm.jpg" alt="Close-up of the back: multiplexer U51 in the front left corner with its capacitor, and the LED resistors" loading="lazy" /></a>
+                <figcaption>U51 with its capacitor C71, and the LED resistors R1/R2. Check the chip's pin 1. U52 is in the regulator close-up below, U53 in the back-right close-up.</figcaption>
               </figure>
               <figure>
-                <a class="zoomable" href="img/detail_mux_left.jpg"><img src="img/detail_mux_left-sm.jpg" alt="Close-up of the back: multiplexer U53 in the back left corner with its capacitor" loading="lazy" /></a>
-                <figcaption>U53 with its capacitor C73, in the back left corner. Check the chip's pin 1.</figcaption>
+                <a class="zoomable" href="img/detail_mux_right.jpg"><img src="img/detail_mux_right-sm.jpg" alt="Close-up of the back: multiplexer U53 in the back right corner with its capacitor" loading="lazy" /></a>
+                <figcaption>U53 with its capacitor C73, in the back right corner. Check the chip's pin 1.</figcaption>
               </figure>
             </li>
-            <li><strong>Regulator U60 (SOT-223)</strong>, in the back right corner, between the two rows of Teensy holes. It only fits one way: the wide tab on the wide pad. Solder one small pin, align, then the others and finally the tab (it needs more heat).
+            <li><strong>Regulator U60 (SOT-223)</strong>, in the back left corner, between the two rows of Teensy holes. It only fits one way: the wide tab on the wide pad. Solder one small pin, align, then the others and finally the tab (it needs more heat).
               <figure>
                 <a class="zoomable" href="img/detail_regulator.jpg"><img src="img/detail_regulator-sm.jpg" alt="Close-up of the back: regulator U60 between the two rows of Teensy holes, with C81 and C80 on either side" loading="lazy" /></a>
                 <figcaption>Regulator U60 between the Teensy holes, C81 (22 µF) on one side and C80 (10 µF) on the other; multiplexer U52 with C72 above. Seen from the back.</figcaption>
@@ -376,7 +386,7 @@
               </figure>
             </li>
             <li><strong>100 nF capacitors</strong>: C1–C44, one just above each sensor, and C71–C73, one next to each multiplexer.</li>
-            <li><strong>LED resistors R1 and R2 (330 Ω)</strong>, in the front right corner, just behind the LED's holes.</li>
+            <li><strong>LED resistors R1 and R2 (330 Ω)</strong>, in the front left corner, just behind the LED's holes.</li>
             <li>Clean the flux off with isopropyl alcohol and check everything with a magnifier: lifted pins, bridges and missing parts.</li>
           </ol>
           <div class="callout">
@@ -399,35 +409,41 @@
           <p class="manual-kicker">Assembly · both routes</p>
           <h2>Final assembly and test</h2>
 
-          <h3>1. Teensy + Audio Board, in the back right corner</h3>
+          <h3>1. Teensy + Audio Board, in the back left corner</h3>
           <p>
             To keep the eTuttino thin, the Audio Board is soldered <strong>low on the board</strong>, about 3 mm above it,
-            on the legs of the stacking headers. The Teensy plugs in on top and stays removable.
+            on the legs of the stacking headers. The Teensy plugs in on top and stays removable. Those 28 legs are the
+            <strong>only</strong> link between the stack and the keyboard: no screws, no other wires. Every Teensy pin has
+            its leg and its hole.
           </p>
           <figure>
-            <a class="zoomable" href="img/detail_stack.jpg"><img src="img/detail_stack-sm.jpg" alt="Close-up of the front: the two rows of 14 Teensy holes in the back right corner, with the GND, 0, VIN and 23 marks" loading="lazy" /></a>
-            <figcaption>The two rows of holes for the stack, with the "GND"/"0" and "VIN"/"23" marks. The USB and the headphone jack face the right edge.</figcaption>
+            <a class="zoomable" href="img/detail_stack.jpg"><img src="img/detail_stack-sm.jpg" alt="Close-up of the front: the two rows of 14 Teensy holes in the back left corner, with the GND, 0, VIN and 23 marks" loading="lazy" /></a>
+            <figcaption>The two rows of holes for the stack, with the "GND"/"0" and "VIN"/"23" marks. The USB and the headphone jack face the left edge.</figcaption>
           </figure>
           <ol class="steps">
             <li>On the Audio Board Rev D, fit the two stacking headers from the top: the female socket sits <strong>on top</strong> of the Audio Board and the long legs go down through it. Solder the legs underneath the Audio Board.</li>
             <li>
               Put the legs into the eTuttino board's holes from the <strong>front</strong>. The Audio Board's headphone jack
-              and its "GND/0" side face the <strong>right edge</strong>, as the "USB + jack &gt;" silkscreen shows. The holes
-              marked "GND"/"0" and "VIN"/"23" help you check the direction.
+              faces the <strong>left edge</strong>, as the "&lt; USB + jack" silkscreen shows, and its "GND/0" row is the
+              front one, towards the keys. The holes marked "GND"/"0" and "VIN"/"23" help you check the direction.
             </li>
             <li>Put the 3 mm spacer between the Audio Board and the board, hold them together and solder the legs from the back. Trim the legs flush with the joints: the back has to stay flat.</li>
-            <li>Solder the male headers to the Teensy 4.0, pointing down (or use a "Teensy 4.0 with pins"), and plug the Teensy into the Audio Board's sockets: pin 0 to pin 0, USB towards the right edge.</li>
+            <li>Solder the male headers to the Teensy 4.0, pointing down (or use a "Teensy 4.0 with pins"), and plug the Teensy into the Audio Board's sockets: pin 0 to pin 0, USB towards the left edge.</li>
           </ol>
                     <figure>
-                <a class="zoomable" href="img/assembled_stack.jpg"><img src="img/assembled_stack-sm.jpg" alt="The Teensy plugged into the Audio Board in the back right corner, with the USB and the headphone jack at the right edge, next to the keys" loading="lazy" /></a>
-                <figcaption>Finished: the Teensy on the Audio Board, USB and headphone jack at the right edge, a little lower than the keys.</figcaption>
+                <a class="zoomable" href="img/assembled_stack.jpg"><img src="img/assembled_stack-sm.jpg" alt="The Teensy plugged into the Audio Board in the back left corner, with the USB and the headphone jack at the left edge, next to the keys" loading="lazy" /></a>
+                <figcaption>Finished: the Teensy on the Audio Board, USB and headphone jack at the left edge.</figcaption>
               </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/stack_pins.jpg"><img src="img/stack_pins-sm.jpg" alt="Close-up from behind, low down: the header legs going from the Audio Board down through the eTuttino board, soldered underneath, and the Teensy on its pin spacers" loading="lazy" /></a>
+            <figcaption>The legs seen from behind, low down: one row of 14 (the other row is the same, further in), from the Audio Board through the eTuttino board, soldered and trimmed underneath. Above, the Teensy's pins on their plastic spacers in the female headers.</figcaption>
+          </figure>
           <div class="callout"><p>Rather keep the Audio Board removable? Solder two 1×14 female sockets to the board and plug the Audio Board's legs into them. It works the same, but the stack ends up about 6 mm taller than the keys.</p></div>
 
           <h3>The power LED</h3>
           <ol class="steps">
-            <li>The LED goes on the <strong>front</strong>, in the front right corner, in the three holes marked "POWER", outside the plate. The <strong>middle leg is the common cathode</strong>; the red leg goes in the square hole. Check your LED's datasheet: the long-leg rule doesn't apply to three-leg LEDs.</li>
-            <li>Leave the legs long enough for the LED to reach the case's top (a few millimetres), solder from the back and trim.</li>
+            <li>The LED goes on the <strong>front</strong>, in the front left corner, in the three holes marked "POWER", outside the plate. The <strong>middle leg is the common cathode</strong>; the red leg goes in the square hole. Check your LED's datasheet: the long-leg rule doesn't apply to three-leg LEDs.</li>
+            <li>Leave the legs long enough for the LED's dome to sit about 6 mm above the board, in the window of the case's top; solder from the back and trim.</li>
           </ol>
 
           <h3>2. Flash the firmware</h3>
@@ -449,7 +465,7 @@
             <p>
               If <strong>one sensor</strong> doesn't respond, redo its solder joints. If <strong>a whole block</strong> of
               neighbouring keys doesn't respond, the problem is that block's multiplexer: U51 for row 1 and the
-              right end of row 2, U53 for the left half of the other keys, U52 for their right half. Check its joints and its pin 1. If <strong>nothing</strong>
+              left end of row 2, U52 for the left half of the other keys, U53 for their right half. Check its joints and its pin 1. If <strong>nothing</strong>
               responds, measure 3.3 V between U60's tab and GND, and check the Teensy and the Audio Board are the right way
               round.
             </p>
@@ -462,20 +478,69 @@
             <li>Lower the board onto the assembly: each switch's two plastic pegs drop into the board's holes, and the Teensy sits in the plate's notch. Screw it on from below.</li>
             <li>The board has to sit <strong>right against the bottom of the switches</strong>, with no gap: the distance from magnet to sensor is part of the measurement.</li>
             <li>Fit the keycaps: light ones on the naturals, dark ones on the sharps. Check against the page, which shows every key's note name.</li>
-            <li>Build the case, fixed through the M2 holes, with openings on the right side for the USB and the headphone jack.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/assembled_top.jpg"><img src="img/assembled_top-sm.jpg" alt="The finished eTuttino from above: 44 round keys, light and dark, and the Teensy in the back right corner" loading="lazy" /></a>
+            <a class="zoomable" href="img/assembled_top.jpg"><img src="img/assembled_top-sm.jpg" alt="The eTuttino from above without its case: 44 round keys, light and dark, and the Teensy in the back left corner" loading="lazy" /></a>
             <figcaption>Everything installed, from above. The dark keys are the sharps; every C has a small dot.</figcaption>
           </figure>
 
-          <h3>5. Calibrate and check</h3>
+          <h3 id="en-case">5. The case</h3>
+          <p>
+            The case is two 3D-printed parts: a <strong>tray</strong> under the board and a <strong>top</strong> that frames
+            the keys. The top has one stepped opening that follows the four staggered rows, a window for the power LED and,
+            in the back left corner, a pod over the Teensy with the USB and headphone openings in its left side. Nothing in
+            the case touches the Teensy or the Audio Board.
+          </p>
+          <figure class="wide">
+            <a class="zoomable" href="img/case_left.jpg"><img src="img/case_left-sm.jpg" alt="The left end of the case: the pod over the Teensy, with the USB opening and the round headphone opening in its side" loading="lazy" /></a>
+            <figcaption>The left end: USB and headphones come out of the pod's side, away from the playing hand.</figcaption>
+          </figure>
+          <p>
+            <strong>Why the tray has pillars.</strong> The switches stand on the board, so pressing a key pushes the 1.2 mm
+            board down under it. Held only at its mounting holes, which are all near the edges, the middle of the board would
+            give about <strong>2.62 mm</strong> under a firm press (3 N), enough to feel and to upset the sensor reading.
+            The tray has a boss under every hole and <strong>43 small pillars</strong> that touch the back of the board
+            where it carries only traces (no parts, no pads, no vias), along the gaps between the rows. On them the worst key
+            gives about <strong>0.027 mm</strong>. (Estimated with a simple model of the bare board, ignoring the plate,
+            so the real figures are lower.)
+          </p>
+          <figure class="wide">
+            <a class="zoomable" href="img/case_tray.jpg"><img src="img/case_tray-sm.jpg" alt="The empty tray: the bosses under the mounting holes and the rows of small pillars that hold the board up" loading="lazy" /></a>
+            <figcaption>The tray: a boss under each mounting hole, the pillars along the gaps between the key rows, the screw holes in the walls.</figcaption>
+          </figure>
+          <h4>Ordering the case</h4>
+          <p>
+            Upload <a href="../hardware/fab/etuttino_case_top.stl">etuttino_case_top.stl</a> and
+            <a href="../hardware/fab/etuttino_case_bottom.stl">etuttino_case_bottom.stl</a> (millimetres) to a printing
+            service. Each part is 278 × 108 mm, too long for most home printers (it needs a 300 mm bed).
+          </p>
+          <ul>
+            <li><a href="https://jlc3dp.com/" target="_blank" rel="noopener"><strong>JLC3DP</strong></a> (JLCPCB's printing service): it can ship with the boards. SLA resin is the cheapest smooth finish; MJF nylon (PA12) is the toughest.</li>
+            <li><a href="https://www.pcbway.com/rapid-prototyping/3d-printing/" target="_blank" rel="noopener"><strong>PCBWay</strong></a>: the same choices, if you order the boards there.</li>
+            <li><a href="https://craftcloud3d.com/" target="_blank" rel="noopener"><strong>Craftcloud</strong></a>: compares prices from many printers, including local ones.</li>
+            <li>A local service with a large FDM printer: PETG at 0.2 mm layers and 4 walls is strong enough.</li>
+          </ul>
+          <p>Print the top upside down (deck on the bed) and the tray the right way up; neither needs supports except the openings in the pod's side.</p>
+          <h4>Putting it together</h4>
+          <ol class="steps">
+            <li>Stick the four rubber feet into the round recesses under the tray.</li>
+            <li>Lay the board, with plate, switches and Teensy, into the tray: the screw heads under the board drop into the pockets of the bosses.</li>
+            <li>Put the top on, with the USB and headphone openings over the Teensy's end.</li>
+            <li>From below, drive the eight M2 × 10 mm screws through the tray's walls into the top, and the two in the left holes (they go through the board into the posts under the top). Don't overtighten: it's plastic.</li>
+            <li>Fit the keycaps if they're not on yet.</li>
+          </ol>
+          <figure class="wide">
+            <a class="zoomable" href="img/case_top.jpg"><img src="img/case_top-sm.jpg" alt="The finished eTuttino in its case, from above" loading="lazy" /></a>
+            <figcaption>Finished, from above.</figcaption>
+          </figure>
+
+          <h3>6. Calibrate and check</h3>
           <ol class="steps">
             <li>Unplug and replug the USB: at start-up the Teensy measures every key at rest. Don't touch the keys while it starts.</li>
             <li>On the page, click <strong>Calibrate keys</strong> and press <strong>every key all the way down once</strong>. The Teensy stores each key's travel in its internal memory (EEPROM).</li>
             <li>With <strong>Key test</strong> on, each ring should go from empty (released) to full (bottomed out). Done: on to the <a href="#en-use">User manual</a>.</li>
           </ol>
-          <div class="callout ok"><p>The magnet test in step 3 leaves a wrong calibration stored. That's why the calibration in step 5 is a must once the switches are in.</p></div>
+          <div class="callout ok"><p>The magnet test in step 3 leaves a wrong calibration stored. That's why the calibration in step 6 is a must once the switches are in.</p></div>
         </section>
 
         <!-- ------------------------------------------------ User manual -->
@@ -486,7 +551,7 @@
           <h3>Power and sound</h3>
           <ul>
             <li><strong>Power</strong>: the Teensy's USB cable into a computer or a phone charger. On a charger the eTuttino plays on its own, without the page.</li>
-            <li><strong>Sound</strong>: headphones or a speaker on the Audio Board's output, on the right side. It starts on the <em>classic accordion</em>.</li>
+            <li><strong>Sound</strong>: headphones or a speaker on the Audio Board's output, on the left side, next to the USB. It starts on the <em>classic accordion</em>.</li>
             <li><strong>Don't touch the keys for the first couple of seconds</strong>: that's when the Teensy measures every key's rest position.</li>
             <li><strong>Power LED</strong>: <em>orange</em> while it reads all the keys at power-up, then <em>green</em> while playing. <em>Blinking red</em> means an error: the Audio Board didn't answer, or a key's sensor didn't (find it with Key test on the page).</li>
           </ul>
@@ -566,7 +631,7 @@
         </p>
 
         <figure class="wide">
-          <a class="zoomable" href="img/assembled_iso.jpg"><img src="img/assembled_iso-sm.jpg" alt="O eTuttino montado, em perspectiva: 44 teclas redondas, e o Teensy com a Audio Board no canto de trás à direita" loading="lazy" /></a>
+          <a class="zoomable" href="img/case_iso.jpg"><img src="img/case_iso-sm.jpg" alt="O eTuttino pronto, na caixa, em perspectiva: 44 teclas redondas, e a cúpula sobre o Teensy e a Audio Board no canto de trás à esquerda" loading="lazy" /></a>
           <figcaption>O eTuttino com tudo instalado (imagem gerada a partir do projeto da placa). Clique em qualquer imagem para ver em alta resolução.</figcaption>
         </figure>
 
@@ -634,16 +699,22 @@
             </figcaption>
           </figure>
 
-          <h3>Tamanho</h3>
+          <h3>Tamanho e disposição</h3>
           <p>
-            A placa tem <strong>267 × 88,2 mm</strong>: só a altura das quatro fileiras de teclas. As fileiras 3 e 4
-            terminam antes da 2 e deixam livre o canto de trás à direita, onde ficam o Teensy e a Audio Board, com o USB e a saída de fone virados
-            para a borda direita. Com a Audio Board soldada rente à placa, o conjunto fica <strong>mais baixo que as
-            teclas</strong>: cerca de 17 mm acima da placa, contra cerca de 19 mm do topo das teclas.
+            A placa tem <strong>267 × 97,2 mm</strong>: as quatro fileiras de teclas e uma faixa de 15 mm atrás; a caixa
+            acrescenta 5,5 mm em volta (<strong>278 × 108 mm</strong>). As fileiras 3 e 4 começam depois da 2 e deixam livre
+            o <strong>canto de trás à esquerda</strong>, onde ficam o Teensy e a Audio Board, com o USB e a saída de fone
+            virados para a <strong>borda esquerda</strong>. É pensado para quem toca: os cabos saem pela esquerda, longe da
+            mão direita, a ponta direita fica livre para as notas agudas, e o LED de energia fica logo à frente do
+            Teensy, à vista.
+          </p>
+          <p>
+            A Audio Board é soldada rente à placa, e o conjunto termina cerca de 20 mm acima dela (o topo das teclas fica
+            a uns 19 mm). Na caixa ele fica sob uma pequena cúpula nesse canto, longe das teclas.
           </p>
           <figure class="wide">
-            <a class="zoomable" href="img/assembled_front.jpg"><img src="img/assembled_front-sm.jpg" alt="Vista frontal do eTuttino montado: a placa fina, as teclas, e o Teensy no canto sem passar da altura das teclas" loading="lazy" /></a>
-            <figcaption>Vista de frente: o Teensy e a Audio Board não passam da altura das teclas.</figcaption>
+            <a class="zoomable" href="img/assembled_front.jpg"><img src="img/assembled_front-sm.jpg" alt="Vista frontal do eTuttino sem a caixa: a placa fina, as teclas, e o Teensy no canto esquerdo, mais ou menos da altura das teclas" loading="lazy" /></a>
+            <figcaption>Vista de frente, sem a caixa: o Teensy e a Audio Board ficam mais ou menos da altura das teclas.</figcaption>
           </figure>
 
           <h3>Duas maneiras de montar</h3>
@@ -699,11 +770,12 @@
               Chaves mecânicas comuns não funcionam.
             </li>
             <li>44 keycaps redondos com encaixe MX ("round" ou "typewriter"): 26 claros para as notas naturais e 18 escuros para os sustenidos.</li>
-            <li>9 espaçadores M2 × 3,5 mm (fêmea-fêmea) e 18 parafusos M2 × 4 mm, mais 2 para a caixa.</li>
+            <li>9 espaçadores M2 × 3,5 mm (fêmea-fêmea) e 18 parafusos M2 × 4 mm.</li>
+            <li>Para a caixa: 10 parafusos auto-atarraxantes M2 × 10 mm (cabeça panela, para plástico) e 4 pés de borracha adesivos de 10 mm.</li>
             <li>Um LED bicolor de 3 mm, vermelho/verde, de <strong>cátodo comum</strong> (3 pernas, o cátodo no meio), para a luz de energia.</li>
             <li>Um pedaço de papelão ou plástico de 3 mm, para usar como calço na hora de soldar a Audio Board.</li>
             <li>Cabo USB micro-B (o Teensy 4.0 usa micro-USB) e fone de ouvido ou caixa de som com plugue P2.</li>
-            <li>Uma caixa (impressão 3D, madeira ou acrílico), presa pelos furos M2, com aberturas na lateral direita para o USB e o fone.</li>
+            <li>A <strong>caixa</strong>: duas peças impressas em 3D, encomendadas num serviço de impressão (veja <a href="#pt-case">A caixa</a>).</li>
           </ul>
 
           <h3>Custo aproximado</h3>
@@ -721,6 +793,7 @@
                 <tr><td>Teensy 4.0 + Audio Board Rev D</td><td>≈ US$ 40</td><td>≈ US$ 40</td></tr>
                 <tr><td>Chaves Gateron KS-20 (44)</td><td>≈ US$ 30–50</td><td>≈ US$ 30–50</td></tr>
                 <tr><td>Keycaps, pinos, espaçadores</td><td>≈ US$ 20–40</td><td>≈ US$ 20–40</td></tr>
+                <tr><td>Caixa impressa em 3D (resina ou nylon, 2 peças) + parafusos e pés</td><td>≈ US$ 30–80</td><td>≈ US$ 30–80</td></tr>
               </tbody>
             </table>
           </div>
@@ -731,12 +804,13 @@
             <li><a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: a placa de suporte das chaves (plate)</li>
             <li><a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a>: lista de componentes (BOM), para a montagem na JLCPCB</li>
             <li><a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>: posição de cada componente (CPL)</li>
+            <li><a href="../hardware/fab/etuttino_case_top.stl">etuttino_case_top.stl</a> e <a href="../hardware/fab/etuttino_case_bottom.stl">etuttino_case_bottom.stl</a>: a caixa, para impressão 3D (<a href="../hardware/fab/etuttino_case_top.step">tampo</a> e <a href="../hardware/fab/etuttino_case_bottom.step">bandeja</a> em STEP, para alterar num CAD)</li>
             <li><a href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener">Firmware</a> e <a href="https://github.com/dataehora/beatconfused/tree/main/etutti/hardware" target="_blank" rel="noopener">projeto da placa (KiCad)</a> no GitHub</li>
           </ul>
 
           <figure class="wide">
-            <a class="zoomable" href="img/pcb_top.jpg"><img src="img/pcb_top-sm.jpg" alt="Placa vista de cima: as 44 posições das chaves e, no canto de trás à direita, os furos do Teensy" loading="lazy" /></a>
-            <figcaption>Frente da placa: as 44 posições das chaves e, no canto de trás à direita, as duas fileiras de furos do Teensy + Audio Board.</figcaption>
+            <a class="zoomable" href="img/pcb_top.jpg"><img src="img/pcb_top-sm.jpg" alt="Placa vista de cima: as 44 posições das chaves e, no canto de trás à esquerda, os furos do Teensy" loading="lazy" /></a>
+            <figcaption>Frente da placa: as 44 posições das chaves e, no canto de trás à esquerda, as duas fileiras de furos do Teensy + Audio Board.</figcaption>
           </figure>
           <figure class="wide">
             <a class="zoomable" href="img/pcb_bottom.jpg"><img src="img/pcb_bottom-sm.jpg" alt="Placa vista de baixo: um sensor sob cada chave, os três multiplexadores e o regulador" loading="lazy" /></a>
@@ -757,7 +831,7 @@
           <h3>1. Pedir a placa com montagem</h3>
           <ol class="steps">
             <li>Baixe <a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a>, <a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a> e <a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>.</li>
-            <li>Em <a href="https://jlcpcb.com" target="_blank" rel="noopener">jlcpcb.com</a>, crie uma conta, clique em <strong>Order now</strong> e envie o <code>etuttino_gerbers.zip</code>. O site lê o tamanho (267 × 88,2 mm) e mostra uma prévia.</li>
+            <li>Em <a href="https://jlcpcb.com" target="_blank" rel="noopener">jlcpcb.com</a>, crie uma conta, clique em <strong>Order now</strong> e envie o <code>etuttino_gerbers.zip</code>. O site lê o tamanho (267 × 97.2 mm) e mostra uma prévia.</li>
             <li>
               Ajustes da placa:
               <ul>
@@ -801,7 +875,7 @@
 
           <h3>2. Pedir a placa de suporte (plate)</h3>
           <ol class="steps">
-            <li>Faça um segundo pedido com <a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: FR-4, <strong>1,6 mm</strong>, sem montagem. A plate tem um recorte no canto de trás à direita, para o Teensy, e não tem cobre. Preto ou branco ficam bonitos sob as teclas.</li>
+            <li>Faça um segundo pedido com <a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: FR-4, <strong>1,6 mm</strong>, sem montagem. A plate tem um recorte no canto de trás à esquerda, para o Teensy, e não tem cobre. Preto ou branco ficam bonitos sob as teclas.</li>
             <li>Se preferir alumínio, o arquivo <code>hardware/build/etuttino_plate.dxf</code> serve para corte a laser em 1,5 mm.</li>
           </ol>
 
@@ -859,7 +933,7 @@
           <p>Deixe a placa com o <strong>verso para cima</strong> (o lado com o texto "Sensors DRV5056A3…"). Solde do mais difícil para o mais fácil:</p>
           <ol class="steps">
             <li>
-              <strong>Multiplexadores U51, U52 e U53 (SOIC-24)</strong>: U51 no canto da frente à direita, depois do fim das fileiras 1 e 2; U53 no canto de trás à esquerda, antes das fileiras 3 e 4; U52 deitado no canto de trás à direita, acima da fileira de furos do Teensy. Ache a
+              <strong>Multiplexadores U51, U52 e U53 (SOIC-24)</strong>: U51 no canto da frente à esquerda, antes do começo das fileiras 1 e 2; U52 deitado junto à borda de trás, logo à direita dos furos do Teensy; U53 no canto de trás à direita, depois do fim das fileiras 3 e 4. Ache a
               <strong>bolinha do pino 1</strong> no chip e a marca de pino 1 na serigrafia, e alinhe as duas.
               <ol>
                 <li>Ponha um pouco de solda em <em>um</em> pad de canto.</li>
@@ -869,15 +943,15 @@
                 <li>Pontes de solda saem com fluxo e malha.</li>
               </ol>
               <figure>
-                <a class="zoomable" href="img/detail_muxes.jpg"><img src="img/detail_muxes-sm.jpg" alt="Detalhe do verso: o multiplexador U51 no canto da frente à direita, com seu capacitor, e os resistores do LED" loading="lazy" /></a>
-                <figcaption>U51 com seu capacitor C71, e os resistores do LED R1/R2. Confira a posição do pino 1. U52 aparece no detalhe do regulador, abaixo; U53 no detalhe do canto esquerdo.</figcaption>
+                <a class="zoomable" href="img/detail_muxes.jpg"><img src="img/detail_muxes-sm.jpg" alt="Detalhe do verso: o multiplexador U51 no canto da frente à esquerda, com seu capacitor, e os resistores do LED" loading="lazy" /></a>
+                <figcaption>U51 com seu capacitor C71, e os resistores do LED R1/R2. Confira a posição do pino 1. U52 aparece no detalhe do regulador, abaixo; U53 no detalhe do canto direito.</figcaption>
               </figure>
               <figure>
-                <a class="zoomable" href="img/detail_mux_left.jpg"><img src="img/detail_mux_left-sm.jpg" alt="Detalhe do verso: multiplexador U53 no canto de trás à esquerda, com seu capacitor" loading="lazy" /></a>
-                <figcaption>U53 com seu capacitor C73, no canto de trás à esquerda. Confira a posição do pino 1.</figcaption>
+                <a class="zoomable" href="img/detail_mux_right.jpg"><img src="img/detail_mux_right-sm.jpg" alt="Detalhe do verso: multiplexador U53 no canto de trás à direita, com seu capacitor" loading="lazy" /></a>
+                <figcaption>U53 com seu capacitor C73, no canto de trás à direita. Confira a posição do pino 1.</figcaption>
               </figure>
             </li>
-            <li><strong>Regulador U60 (SOT-223)</strong>, no canto de trás à direita, entre as duas fileiras de furos do Teensy. Ele só encaixa de um jeito: a aba larga no pad largo. Solde um pino pequeno, alinhe, depois os outros e por fim a aba (ela pede mais calor).
+            <li><strong>Regulador U60 (SOT-223)</strong>, no canto de trás à esquerda, entre as duas fileiras de furos do Teensy. Ele só encaixa de um jeito: a aba larga no pad largo. Solde um pino pequeno, alinhe, depois os outros e por fim a aba (ela pede mais calor).
               <figure>
                 <a class="zoomable" href="img/detail_regulator.jpg"><img src="img/detail_regulator-sm.jpg" alt="Detalhe do verso: o regulador U60 entre as duas fileiras de furos do Teensy, com C81 e C80 dos lados" loading="lazy" /></a>
                 <figcaption>O regulador U60 entre os furos do Teensy, com C81 (22 µF) de um lado e C80 (10 µF) do outro; acima, o multiplexador U52, com C72. Visto pelo verso.</figcaption>
@@ -894,7 +968,7 @@
               </figure>
             </li>
             <li><strong>Capacitores de 100 nF</strong>: C1–C44, um logo acima de cada sensor, e C71–C73, um ao lado de cada multiplexador.</li>
-            <li><strong>Resistores do LED R1 e R2 (330 Ω)</strong>, no canto da frente à direita, logo atrás dos furos do LED.</li>
+            <li><strong>Resistores do LED R1 e R2 (330 Ω)</strong>, no canto da frente à esquerda, logo atrás dos furos do LED.</li>
             <li>Limpe o fluxo com álcool isopropílico e confira tudo com lupa: pinos levantados, pontes e peças faltando.</li>
           </ol>
           <div class="callout">
@@ -916,35 +990,41 @@
           <p class="manual-kicker">Montagem · as duas opções</p>
           <h2>Montagem final e teste</h2>
 
-          <h3>1. Teensy + Audio Board, no canto de trás à direita</h3>
+          <h3>1. Teensy + Audio Board, no canto de trás à esquerda</h3>
           <p>
             Para o eTuttino ficar fino, a Audio Board é soldada <strong>rente à placa</strong>, uns 3 mm acima dela, pelas
-            pernas dos "stacking headers". O Teensy encaixa por cima e continua removível.
+            pernas dos "stacking headers". O Teensy encaixa por cima e continua removível. Essas 28 pernas são a
+            <strong>única</strong> ligação entre o conjunto e o teclado: nada de parafusos nem outros fios. Cada pino do
+            Teensy tem sua perna e seu furo.
           </p>
           <figure>
-            <a class="zoomable" href="img/detail_stack.jpg"><img src="img/detail_stack-sm.jpg" alt="Detalhe da frente da placa: as duas fileiras de 14 furos do Teensy no canto de trás à direita, com as marcas GND, 0, VIN e 23" loading="lazy" /></a>
-            <figcaption>As duas fileiras de furos do conjunto, com as marcas "GND"/"0" e "VIN"/"23". O USB e o fone apontam para a borda direita.</figcaption>
+            <a class="zoomable" href="img/detail_stack.jpg"><img src="img/detail_stack-sm.jpg" alt="Detalhe da frente da placa: as duas fileiras de 14 furos do Teensy no canto de trás à esquerda, com as marcas GND, 0, VIN e 23" loading="lazy" /></a>
+            <figcaption>As duas fileiras de furos do conjunto, com as marcas "GND"/"0" e "VIN"/"23". O USB e o fone apontam para a borda esquerda.</figcaption>
           </figure>
           <ol class="steps">
             <li>Na Audio Board Rev D, encaixe os dois "stacking headers" por cima: o soquete fêmea fica <strong>em cima</strong> da Audio Board e as pernas longas atravessam para baixo. Solde as pernas por baixo da Audio Board.</li>
             <li>
               Coloque as pernas nos furos da placa do eTuttino, pela <strong>frente</strong>. A Audio Board fica com o
-              conector de fone e o lado "GND/0" virados para a <strong>borda direita</strong>, como mostra a serigrafia
-              "USB + jack &gt;". Os furos marcados "GND"/"0" e "VIN"/"23" ajudam a conferir o sentido.
+              conector de fone virado para a <strong>borda esquerda</strong>, como mostra a serigrafia "&lt; USB + jack", e a
+              fileira "GND/0" é a da frente, do lado das teclas. Os furos marcados "GND"/"0" e "VIN"/"23" ajudam a conferir o sentido.
             </li>
             <li>Ponha o calço de 3 mm entre a Audio Board e a placa, segure as duas firmes e solde as pernas pelo verso. Corte o excesso das pernas rente à solda: o verso precisa ficar plano.</li>
-            <li>Solde as barras de pinos macho no Teensy 4.0, viradas para baixo (ou use um "Teensy 4.0 with pins"), e encaixe o Teensy nos soquetes da Audio Board: pino 0 com pino 0, USB para a borda direita.</li>
+            <li>Solde as barras de pinos macho no Teensy 4.0, viradas para baixo (ou use um "Teensy 4.0 with pins"), e encaixe o Teensy nos soquetes da Audio Board: pino 0 com pino 0, USB para a borda esquerda.</li>
           </ol>
                     <figure>
-                <a class="zoomable" href="img/assembled_stack.jpg"><img src="img/assembled_stack-sm.jpg" alt="O Teensy encaixado na Audio Board no canto de trás à direita, com o USB e o fone na borda direita, ao lado das teclas" loading="lazy" /></a>
-                <figcaption>Pronto: o Teensy sobre a Audio Board, USB e fone na borda direita, um pouco mais baixos que as teclas.</figcaption>
+                <a class="zoomable" href="img/assembled_stack.jpg"><img src="img/assembled_stack-sm.jpg" alt="O Teensy encaixado na Audio Board no canto de trás à esquerda, com o USB e o fone na borda esquerda, ao lado das teclas" loading="lazy" /></a>
+                <figcaption>Pronto: o Teensy sobre a Audio Board, USB e fone na borda esquerda.</figcaption>
               </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/stack_pins.jpg"><img src="img/stack_pins-sm.jpg" alt="Detalhe por trás, bem de baixo: as pernas dos headers descendo da Audio Board pela placa do eTuttino, soldadas por baixo, e o Teensy sobre os espaçadores dos pinos" loading="lazy" /></a>
+            <figcaption>As pernas vistas por trás, bem de baixo: uma fileira de 14 (a outra é igual, mais para dentro), da Audio Board atravessando a placa do eTuttino, soldadas e cortadas por baixo. Em cima, os pinos do Teensy com seus espaçadores plásticos, encaixados nos headers fêmea.</figcaption>
+          </figure>
           <div class="callout"><p>Prefere poder tirar a Audio Board? Solde dois soquetes fêmea 1×14 na placa e encaixe nela as pernas da Audio Board. Funciona igual, mas o conjunto fica cerca de 6 mm mais alto que as teclas.</p></div>
 
           <h3>O LED de energia</h3>
           <ol class="steps">
-            <li>O LED vai na <strong>frente</strong>, no canto da frente à direita, nos três furos marcados "POWER", fora da plate. A <strong>perna do meio é o cátodo comum</strong>; a perna do vermelho vai no furo quadrado. Confira na folha de dados do seu LED: a regra da perna mais longa não vale para LED de três pernas.</li>
-            <li>Deixe as pernas compridas o bastante para o LED chegar ao tampo da caixa (alguns milímetros), solde pelo verso e corte o excesso.</li>
+            <li>O LED vai na <strong>frente</strong>, no canto da frente à esquerda, nos três furos marcados "POWER", fora da plate. A <strong>perna do meio é o cátodo comum</strong>; a perna do vermelho vai no furo quadrado. Confira na folha de dados do seu LED: a regra da perna mais longa não vale para LED de três pernas.</li>
+            <li>Deixe as pernas compridas o bastante para a cúpula do LED ficar uns 6 mm acima da placa, na janela do tampo da caixa; solde pelo verso e corte o excesso.</li>
           </ol>
 
           <h3>2. Gravar o firmware</h3>
@@ -966,7 +1046,7 @@
             <p>
               Se <strong>um sensor</strong> não responde, refaça a solda dele. Se <strong>um bloco inteiro</strong> de teclas
               vizinhas não responde, o problema está no multiplexador desse bloco: U51 para a fileira 1 e o
-              fim da fileira 2, U53 para a metade esquerda das outras teclas, U52 para a metade direita. Revise a solda e a posição do pino 1. Se <strong>nada</strong> responde,
+              começo da fileira 2, U52 para a metade esquerda das outras teclas, U53 para a metade direita. Revise a solda e a posição do pino 1. Se <strong>nada</strong> responde,
               meça 3,3 V entre a aba do U60 e o GND, e confira o sentido do Teensy e da Audio Board.
             </p>
           </div>
@@ -978,20 +1058,69 @@
             <li>Abaixe a placa sobre o conjunto: os dois pinos plásticos de cada chave entram nos furos da placa, e o Teensy fica no recorte da plate. Parafuse por baixo.</li>
             <li>A placa tem que ficar <strong>encostada no fundo das chaves</strong>, sem folga: a distância entre ímã e sensor faz parte da medida.</li>
             <li>Coloque as teclas (keycaps): claras nas notas naturais, escuras nos sustenidos. Confira com a tela da página, que mostra o nome de cada tecla.</li>
-            <li>Monte a caixa, presa pelos furos M2, com aberturas na lateral direita para o USB e o fone.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/assembled_top.jpg"><img src="img/assembled_top-sm.jpg" alt="O eTuttino montado visto de cima: 44 teclas redondas, claras e escuras, e o Teensy no canto de trás à direita" loading="lazy" /></a>
+            <a class="zoomable" href="img/assembled_top.jpg"><img src="img/assembled_top-sm.jpg" alt="O eTuttino visto de cima, sem a caixa: 44 teclas redondas, claras e escuras, e o Teensy no canto de trás à esquerda" loading="lazy" /></a>
             <figcaption>Tudo instalado, visto de cima. As teclas escuras são os sustenidos; cada Dó tem um pontinho.</figcaption>
           </figure>
 
-          <h3>5. Calibrar e conferir</h3>
+          <h3 id="pt-case">5. A caixa</h3>
+          <p>
+            A caixa são duas peças impressas em 3D: uma <strong>bandeja</strong> por baixo da placa e um <strong>tampo</strong>
+            que emoldura as teclas. O tampo tem uma abertura em degraus que segue as quatro fileiras desencontradas, uma
+            janela para o LED de energia e, no canto de trás à esquerda, uma cúpula sobre o Teensy com as aberturas do USB e
+            do fone na lateral esquerda. Nada da caixa encosta no Teensy nem na Audio Board.
+          </p>
+          <figure class="wide">
+            <a class="zoomable" href="img/case_left.jpg"><img src="img/case_left-sm.jpg" alt="A ponta esquerda da caixa: a cúpula sobre o Teensy, com a abertura do USB e a abertura redonda do fone na lateral" loading="lazy" /></a>
+            <figcaption>A ponta esquerda: USB e fone saem pela lateral da cúpula, longe da mão que toca.</figcaption>
+          </figure>
+          <p>
+            <strong>Por que a bandeja tem pilares.</strong> As chaves se apoiam na placa, então apertar uma tecla empurra a
+            placa de 1,2 mm para baixo. Presa só pelos furos de fixação, que ficam todos perto das bordas, o meio da placa
+            cederia cerca de <strong>2,62 mm</strong> num toque firme (3 N), o bastante para sentir e para atrapalhar a
+            leitura do sensor. A bandeja tem um ressalto sob cada furo e <strong>43 pilares pequenos</strong> que tocam o
+            verso da placa onde ela só tem trilhas (sem componentes, pads ou vias), nos vãos entre as fileiras. Sobre eles, a
+            pior tecla cede cerca de <strong>0,027 mm</strong>. (Estimativa com um modelo simples da placa sozinha, sem
+            contar a plate; na prática é menos.)
+          </p>
+          <figure class="wide">
+            <a class="zoomable" href="img/case_tray.jpg"><img src="img/case_tray-sm.jpg" alt="A bandeja vazia: os ressaltos sob os furos de fixação e as fileiras de pilares pequenos que sustentam a placa" loading="lazy" /></a>
+            <figcaption>A bandeja: um ressalto sob cada furo de fixação, os pilares nos vãos entre as fileiras de teclas, os furos dos parafusos nas paredes.</figcaption>
+          </figure>
+          <h4>Encomendar a caixa</h4>
+          <p>
+            Envie <a href="../hardware/fab/etuttino_case_top.stl">etuttino_case_top.stl</a> e
+            <a href="../hardware/fab/etuttino_case_bottom.stl">etuttino_case_bottom.stl</a> (em milímetros) a um serviço de
+            impressão. Cada peça tem 278 × 108 mm, grande demais para a maioria das impressoras caseiras (precisa de mesa de 300 mm).
+          </p>
+          <ul>
+            <li><a href="https://jlc3dp.com/pt" target="_blank" rel="noopener"><strong>JLC3DP</strong></a> (o serviço de impressão da JLCPCB): pode vir junto com as placas. Resina SLA é o acabamento liso mais barato; nylon MJF (PA12) é o mais resistente.</li>
+            <li><a href="https://www.pcbway.com/rapid-prototyping/3d-printing/" target="_blank" rel="noopener"><strong>PCBWay</strong></a>: as mesmas opções, se você pedir as placas lá.</li>
+            <li><a href="https://craftcloud3d.com/" target="_blank" rel="noopener"><strong>Craftcloud</strong></a>: compara preços de muitas gráficas 3D, inclusive locais.</li>
+            <li>No Brasil, serviços com orçamento online pelo STL, como <a href="https://fabrica3d.com.br/" target="_blank" rel="noopener">fábrica3D</a>, <a href="https://www.3dkprint.com.br/" target="_blank" rel="noopener">3DKPRINT</a> ou <a href="https://koios3d.com.br/" target="_blank" rel="noopener">Koios 3D</a>: em PETG (FDM), camada 0,2 mm e 4 perímetros, fica resistente e sem imposto de importação.</li>
+          </ul>
+          <p>Imprima o tampo de cabeça para baixo (o tampo na mesa) e a bandeja na posição normal; só as aberturas na lateral da cúpula pedem suporte.</p>
+          <h4>Montar</h4>
+          <ol class="steps">
+            <li>Cole os quatro pés de borracha nos rebaixos redondos sob a bandeja.</li>
+            <li>Ponha a placa, com plate, chaves e Teensy, dentro da bandeja: as cabeças dos parafusos sob a placa entram nos rebaixos dos ressaltos.</li>
+            <li>Encaixe o tampo, com as aberturas do USB e do fone na ponta do Teensy.</li>
+            <li>Por baixo, aperte os oito parafusos M2 × 10 mm pelas paredes da bandeja até o tampo, e os dois dos furos da esquerda (eles atravessam a placa até as colunas sob o tampo). Sem força demais: é plástico.</li>
+            <li>Coloque as teclas, se ainda não estiverem.</li>
+          </ol>
+          <figure class="wide">
+            <a class="zoomable" href="img/case_top.jpg"><img src="img/case_top-sm.jpg" alt="O eTuttino pronto, na caixa, visto de cima" loading="lazy" /></a>
+            <figcaption>Pronto, visto de cima.</figcaption>
+          </figure>
+
+          <h3>6. Calibrar e conferir</h3>
           <ol class="steps">
             <li>Desligue e ligue o USB: na partida, o Teensy mede cada tecla em repouso. Não toque nas teclas enquanto liga.</li>
             <li>Na página, clique em <strong>Calibrar teclas</strong> e aperte <strong>cada tecla até o fundo uma vez</strong>. O Teensy guarda o curso de cada tecla na memória interna (EEPROM).</li>
             <li>Com o <strong>Teste das teclas</strong> ligado, cada anel deve ir de vazio (solta) a cheio (no fundo). Pronto: siga para o <a href="#pt-uso">Manual de uso</a>.</li>
           </ol>
-          <div class="callout ok"><p>O teste com ímã do passo 3 deixa uma calibração errada gravada. Por isso a calibração do passo 5 é obrigatória depois de instalar as chaves.</p></div>
+          <div class="callout ok"><p>O teste com ímã do passo 3 deixa uma calibração errada gravada. Por isso a calibração do passo 6 é obrigatória depois de instalar as chaves.</p></div>
         </section>
 
         <!-- ------------------------------------------------ Manual de uso -->
@@ -1002,7 +1131,7 @@
           <h3>Ligar</h3>
           <ul>
             <li><strong>Energia</strong>: cabo USB do Teensy no computador ou num carregador de celular. Com o carregador, o eTuttino toca sozinho, sem página.</li>
-            <li><strong>Som</strong>: fone ou caixa ligados na saída da Audio Board, na lateral direita. Ao ligar, ele começa no <em>acordeão clássico</em>.</li>
+            <li><strong>Som</strong>: fone ou caixa ligados na saída da Audio Board, na lateral esquerda, ao lado do USB. Ao ligar, ele começa no <em>acordeão clássico</em>.</li>
             <li><strong>Não toque nas teclas nos primeiros segundos</strong>: é quando o Teensy mede a posição de repouso de cada uma.</li>
             <li><strong>LED de energia</strong>: <em>laranja</em> enquanto lê todas as teclas ao ligar, depois <em>verde</em> enquanto você toca. <em>Vermelho piscando</em> indica erro: a Audio Board não respondeu, ou o sensor de alguma tecla não respondeu (descubra qual com o Teste das teclas na página).</li>
           </ul>
@@ -1082,7 +1211,7 @@
         </p>
 
         <figure class="wide">
-          <a class="zoomable" href="img/assembled_iso.jpg"><img src="img/assembled_iso-sm.jpg" alt="El eTuttino montado, en perspectiva: 44 teclas redondas, y el Teensy con la Audio Board en la esquina trasera derecha" loading="lazy" /></a>
+          <a class="zoomable" href="img/case_iso.jpg"><img src="img/case_iso-sm.jpg" alt="El eTuttino terminado, en su caja, en perspectiva: 44 teclas redondas, y la cúpula sobre el Teensy y la Audio Board en la esquina trasera izquierda" loading="lazy" /></a>
           <figcaption>El eTuttino con todo instalado (imagen generada a partir del diseño de la placa). Pulsa cualquier imagen para verla en alta resolución.</figcaption>
         </figure>
 
@@ -1150,16 +1279,22 @@
             </figcaption>
           </figure>
 
-          <h3>Tamaño</h3>
+          <h3>Tamaño y disposición</h3>
           <p>
-            La placa mide <strong>267 × 88,2 mm</strong>: solo la altura de las cuatro filas de teclas. Las filas 3 y 4
-            terminan antes que la 2 y dejan libre la esquina trasera derecha, donde van el Teensy y la Audio Board, con el USB y la salida de
-            auriculares hacia el borde derecho. Con la Audio Board soldada a ras de la placa, el conjunto queda <strong>más
-            bajo que las teclas</strong>: unos 17 mm sobre la placa, frente a unos 19 mm de la parte de arriba de las teclas.
+            La placa mide <strong>267 × 97,2 mm</strong>: las cuatro filas de teclas y una franja de 15 mm detrás; la caja
+            añade 5,5 mm alrededor (<strong>278 × 108 mm</strong>). Las filas 3 y 4 empiezan después de la 2 y dejan libre la
+            <strong>esquina trasera izquierda</strong>, donde van el Teensy y la Audio Board, con el USB y la salida de
+            auriculares hacia el <strong>borde izquierdo</strong>. Está pensado para quien toca: los cables salen por la
+            izquierda, lejos de la mano derecha, el extremo derecho queda libre para las notas agudas, y el LED de encendido
+            queda justo delante del Teensy, a la vista.
+          </p>
+          <p>
+            La Audio Board va soldada a ras de la placa, y el conjunto termina unos 20 mm por encima (la parte de arriba de
+            las teclas está a unos 19 mm). En la caja queda bajo una pequeña cúpula en esa esquina, lejos de las teclas.
           </p>
           <figure class="wide">
-            <a class="zoomable" href="img/assembled_front.jpg"><img src="img/assembled_front-sm.jpg" alt="Vista frontal del eTuttino montado: la placa fina, las teclas, y el Teensy en la esquina sin pasar la altura de las teclas" loading="lazy" /></a>
-            <figcaption>De frente: el Teensy y la Audio Board no pasan de la altura de las teclas.</figcaption>
+            <a class="zoomable" href="img/assembled_front.jpg"><img src="img/assembled_front-sm.jpg" alt="Vista frontal del eTuttino sin la caja: la placa fina, las teclas, y el Teensy en la esquina izquierda, más o menos a la altura de las teclas" loading="lazy" /></a>
+            <figcaption>De frente, sin la caja: el Teensy y la Audio Board quedan más o menos a la altura de las teclas.</figcaption>
           </figure>
 
           <h3>Dos maneras de montarlo</h3>
@@ -1215,11 +1350,12 @@
               Gateron. Los interruptores mecánicos normales no funcionan.
             </li>
             <li>44 keycaps redondos con encaje MX ("round" o "typewriter"): 26 claros para las notas naturales y 18 oscuros para los sostenidos.</li>
-            <li>9 separadores M2 × 3,5 mm (hembra-hembra) y 18 tornillos M2 × 4 mm, más 2 para la caja.</li>
+            <li>9 separadores M2 × 3,5 mm (hembra-hembra) y 18 tornillos M2 × 4 mm.</li>
+            <li>Para la caja: 10 tornillos autorroscantes M2 × 10 mm (cabeza redonda, para plástico) y 4 patas de goma adhesivas de 10 mm.</li>
             <li>Un LED bicolor de 3 mm, rojo/verde, de <strong>cátodo común</strong> (3 patas, el cátodo en el medio), para la luz de encendido.</li>
             <li>Un trozo de cartón o plástico de 3 mm, como calzo al soldar la Audio Board.</li>
             <li>Cable USB micro-B (el Teensy 4.0 usa micro-USB) y auriculares o altavoz con clavija de 3,5 mm.</li>
-            <li>Una caja (impresa en 3D, madera o acrílico), sujeta por los agujeros M2, con aberturas en el lado derecho para el USB y los auriculares.</li>
+            <li>La <strong>caja</strong>: dos piezas impresas en 3D, encargadas a un servicio de impresión (ver <a href="#es-case">La caja</a>).</li>
           </ul>
 
           <h3>Coste aproximado</h3>
@@ -1237,6 +1373,7 @@
                 <tr><td>Teensy 4.0 + Audio Board Rev D</td><td>≈ US$ 40</td><td>≈ US$ 40</td></tr>
                 <tr><td>Interruptores Gateron KS-20 (44)</td><td>≈ US$ 30–50</td><td>≈ US$ 30–50</td></tr>
                 <tr><td>Keycaps, pines, separadores</td><td>≈ US$ 20–40</td><td>≈ US$ 20–40</td></tr>
+                <tr><td>Caja impresa en 3D (resina o nailon, 2 piezas) + tornillos y patas</td><td>≈ US$ 30–80</td><td>≈ US$ 30–80</td></tr>
               </tbody>
             </table>
           </div>
@@ -1247,12 +1384,13 @@
             <li><a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: la plate de los interruptores</li>
             <li><a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a>: lista de componentes (BOM) para el montaje en JLCPCB</li>
             <li><a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>: posición de cada componente (CPL)</li>
+            <li><a href="../hardware/fab/etuttino_case_top.stl">etuttino_case_top.stl</a> y <a href="../hardware/fab/etuttino_case_bottom.stl">etuttino_case_bottom.stl</a>: la caja, para impresión 3D (<a href="../hardware/fab/etuttino_case_top.step">tapa</a> y <a href="../hardware/fab/etuttino_case_bottom.step">bandeja</a> en STEP, para cambiarla en CAD)</li>
             <li><a href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener">Firmware</a> y <a href="https://github.com/dataehora/beatconfused/tree/main/etutti/hardware" target="_blank" rel="noopener">diseño de la placa (KiCad)</a> en GitHub</li>
           </ul>
 
           <figure class="wide">
-            <a class="zoomable" href="img/pcb_top.jpg"><img src="img/pcb_top-sm.jpg" alt="Placa vista desde arriba: las 44 posiciones de los interruptores y, en la esquina trasera derecha, los agujeros del Teensy" loading="lazy" /></a>
-            <figcaption>Frente de la placa: las 44 posiciones de los interruptores y, en la esquina trasera derecha, las dos filas de agujeros del Teensy + Audio Board.</figcaption>
+            <a class="zoomable" href="img/pcb_top.jpg"><img src="img/pcb_top-sm.jpg" alt="Placa vista desde arriba: las 44 posiciones de los interruptores y, en la esquina trasera izquierda, los agujeros del Teensy" loading="lazy" /></a>
+            <figcaption>Frente de la placa: las 44 posiciones de los interruptores y, en la esquina trasera izquierda, las dos filas de agujeros del Teensy + Audio Board.</figcaption>
           </figure>
           <figure class="wide">
             <a class="zoomable" href="img/pcb_bottom.jpg"><img src="img/pcb_bottom-sm.jpg" alt="Placa vista desde abajo: un sensor bajo cada interruptor, los tres multiplexores y el regulador" loading="lazy" /></a>
@@ -1273,7 +1411,7 @@
           <h3>1. Encargar la placa con montaje</h3>
           <ol class="steps">
             <li>Descarga <a href="../hardware/fab/etuttino_gerbers.zip">etuttino_gerbers.zip</a>, <a href="../hardware/fab/etuttino_bom.csv">etuttino_bom.csv</a> y <a href="../hardware/fab/etuttino_cpl_bottom.csv">etuttino_cpl_bottom.csv</a>.</li>
-            <li>En <a href="https://jlcpcb.com" target="_blank" rel="noopener">jlcpcb.com</a>, crea una cuenta, pulsa <strong>Order now</strong> y sube <code>etuttino_gerbers.zip</code>. La web lee el tamaño (267 × 88,2 mm) y muestra una vista previa.</li>
+            <li>En <a href="https://jlcpcb.com" target="_blank" rel="noopener">jlcpcb.com</a>, crea una cuenta, pulsa <strong>Order now</strong> y sube <code>etuttino_gerbers.zip</code>. La web lee el tamaño (267 × 97.2 mm) y muestra una vista previa.</li>
             <li>
               Ajustes de la placa:
               <ul>
@@ -1317,7 +1455,7 @@
 
           <h3>2. Encargar la plate</h3>
           <ol class="steps">
-            <li>Haz un segundo pedido con <a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: FR-4, <strong>1,6 mm</strong>, sin montaje. La plate tiene un recorte en la esquina trasera derecha, para el Teensy, y no tiene cobre. En negro o blanco queda bien bajo las teclas.</li>
+            <li>Haz un segundo pedido con <a href="../hardware/fab/etuttino_plate_gerbers.zip">etuttino_plate_gerbers.zip</a>: FR-4, <strong>1,6 mm</strong>, sin montaje. La plate tiene un recorte en la esquina trasera izquierda, para el Teensy, y no tiene cobre. En negro o blanco queda bien bajo las teclas.</li>
             <li>Si la prefieres de aluminio, <code>hardware/build/etuttino_plate.dxf</code> sirve para corte láser en 1,5 mm.</li>
           </ol>
 
@@ -1375,7 +1513,7 @@
           <p>Deja la placa con el <strong>reverso hacia arriba</strong> (el lado con el texto "Sensors DRV5056A3…"). Ve de lo más difícil a lo más fácil:</p>
           <ol class="steps">
             <li>
-              <strong>Multiplexores U51, U52 y U53 (SOIC-24)</strong>: U51 en la esquina delantera derecha, después del final de las filas 1 y 2; U53 en la esquina trasera izquierda, antes de las filas 3 y 4; U52 acostado en la esquina trasera derecha, encima de la fila de agujeros del Teensy. Busca el
+              <strong>Multiplexores U51, U52 y U53 (SOIC-24)</strong>: U51 en la esquina delantera izquierda, antes del comienzo de las filas 1 y 2; U52 acostado junto al borde trasero, justo a la derecha de los agujeros del Teensy; U53 en la esquina trasera derecha, después del final de las filas 3 y 4. Busca el
               <strong>punto del pin 1</strong> en el chip y la marca del pin 1 en la serigrafía, y alinéalos.
               <ol>
                 <li>Pon estaño en <em>un</em> pad de esquina.</li>
@@ -1385,15 +1523,15 @@
                 <li>Los puentes de estaño salen con flux y malla.</li>
               </ol>
               <figure>
-                <a class="zoomable" href="img/detail_muxes.jpg"><img src="img/detail_muxes-sm.jpg" alt="Detalle del reverso: el multiplexor U51 en la esquina delantera derecha, con su condensador, y las resistencias del LED" loading="lazy" /></a>
-                <figcaption>U51 con su condensador C71, y las resistencias del LED R1/R2. Comprueba el pin 1. U52 sale en el detalle del regulador, abajo; U53 en el detalle de la esquina izquierda.</figcaption>
+                <a class="zoomable" href="img/detail_muxes.jpg"><img src="img/detail_muxes-sm.jpg" alt="Detalle del reverso: el multiplexor U51 en la esquina delantera izquierda, con su condensador, y las resistencias del LED" loading="lazy" /></a>
+                <figcaption>U51 con su condensador C71, y las resistencias del LED R1/R2. Comprueba el pin 1. U52 sale en el detalle del regulador, abajo; U53 en el detalle de la esquina derecha.</figcaption>
               </figure>
               <figure>
-                <a class="zoomable" href="img/detail_mux_left.jpg"><img src="img/detail_mux_left-sm.jpg" alt="Detalle del reverso: multiplexor U53 en la esquina trasera izquierda, con su condensador" loading="lazy" /></a>
-                <figcaption>U53 con su condensador C73, en la esquina trasera izquierda. Comprueba el pin 1.</figcaption>
+                <a class="zoomable" href="img/detail_mux_right.jpg"><img src="img/detail_mux_right-sm.jpg" alt="Detalle del reverso: multiplexor U53 en la esquina trasera derecha, con su condensador" loading="lazy" /></a>
+                <figcaption>U53 con su condensador C73, en la esquina trasera derecha. Comprueba el pin 1.</figcaption>
               </figure>
             </li>
-            <li><strong>Regulador U60 (SOT-223)</strong>, en la esquina trasera derecha, entre las dos filas de agujeros del Teensy. Solo encaja de una manera: la aleta ancha en el pad ancho. Suelda un pin pequeño, alinea, luego los otros y al final la aleta (necesita más calor).
+            <li><strong>Regulador U60 (SOT-223)</strong>, en la esquina trasera izquierda, entre las dos filas de agujeros del Teensy. Solo encaja de una manera: la aleta ancha en el pad ancho. Suelda un pin pequeño, alinea, luego los otros y al final la aleta (necesita más calor).
               <figure>
                 <a class="zoomable" href="img/detail_regulator.jpg"><img src="img/detail_regulator-sm.jpg" alt="Detalle del reverso: el regulador U60 entre las dos filas de agujeros del Teensy, con C81 y C80 a los lados" loading="lazy" /></a>
                 <figcaption>El regulador U60 entre los agujeros del Teensy, con C81 (22 µF) a un lado y C80 (10 µF) al otro; encima, el multiplexor U52, con C72. Visto desde el reverso.</figcaption>
@@ -1410,7 +1548,7 @@
               </figure>
             </li>
             <li><strong>Condensadores de 100 nF</strong>: C1–C44, uno justo encima de cada sensor, y C71–C73, uno junto a cada multiplexor.</li>
-            <li><strong>Resistencias del LED R1 y R2 (330 Ω)</strong>, en la esquina delantera derecha, justo detrás de los agujeros del LED.</li>
+            <li><strong>Resistencias del LED R1 y R2 (330 Ω)</strong>, en la esquina delantera izquierda, justo detrás de los agujeros del LED.</li>
             <li>Limpia el flux con alcohol isopropílico y revisa todo con lupa: pines levantados, puentes y piezas que falten.</li>
           </ol>
           <div class="callout">
@@ -1433,35 +1571,42 @@
           <p class="manual-kicker">Montaje · las dos opciones</p>
           <h2>Montaje final y prueba</h2>
 
-          <h3>1. Teensy + Audio Board, en la esquina trasera derecha</h3>
+          <h3>1. Teensy + Audio Board, en la esquina trasera izquierda</h3>
           <p>
             Para que el eTuttino quede fino, la Audio Board se suelda <strong>a ras de la placa</strong>, unos 3 mm por
-            encima, con las patas de los "stacking headers". El Teensy encaja encima y sigue siendo desmontable.
+            encima, con las patas de los "stacking headers". El Teensy encaja encima y sigue siendo desmontable. Esas 28
+            patas son la <strong>única</strong> unión entre el conjunto y el teclado: ni tornillos ni otros cables. Cada pin
+            del Teensy tiene su pata y su agujero.
           </p>
           <figure>
-            <a class="zoomable" href="img/detail_stack.jpg"><img src="img/detail_stack-sm.jpg" alt="Detalle del frente: las dos filas de 14 agujeros del Teensy en la esquina trasera derecha, con las marcas GND, 0, VIN y 23" loading="lazy" /></a>
-            <figcaption>Las dos filas de agujeros del conjunto, con las marcas "GND"/"0" y "VIN"/"23". El USB y los auriculares miran al borde derecho.</figcaption>
+            <a class="zoomable" href="img/detail_stack.jpg"><img src="img/detail_stack-sm.jpg" alt="Detalle del frente: las dos filas de 14 agujeros del Teensy en la esquina trasera izquierda, con las marcas GND, 0, VIN y 23" loading="lazy" /></a>
+            <figcaption>Las dos filas de agujeros del conjunto, con las marcas "GND"/"0" y "VIN"/"23". El USB y los auriculares miran al borde izquierdo.</figcaption>
           </figure>
           <ol class="steps">
             <li>En la Audio Board Rev D, encaja los dos "stacking headers" por arriba: el zócalo hembra queda <strong>encima</strong> de la Audio Board y las patas largas la atraviesan hacia abajo. Suelda las patas por debajo de la Audio Board.</li>
             <li>
               Mete las patas en los agujeros de la placa del eTuttino por el <strong>frente</strong>. El conector de
-              auriculares de la Audio Board y su lado "GND/0" miran al <strong>borde derecho</strong>, como indica la
-              serigrafía "USB + jack &gt;". Los agujeros marcados "GND"/"0" y "VIN"/"23" ayudan a comprobar el sentido.
+              auriculares de la Audio Board mira al <strong>borde izquierdo</strong>, como indica la serigrafía
+              "&lt; USB + jack", y su fila "GND/0" es la delantera, del lado de las teclas. Los agujeros marcados "GND"/"0" y
+              "VIN"/"23" ayudan a comprobar el sentido.
             </li>
             <li>Pon el calzo de 3 mm entre la Audio Board y la placa, sujétalas firmes y suelda las patas por el reverso. Corta lo que sobre de las patas a ras de la soldadura: el reverso tiene que quedar plano.</li>
-            <li>Suelda las tiras de pines macho al Teensy 4.0, hacia abajo (o usa un "Teensy 4.0 with pins"), y encaja el Teensy en los zócalos de la Audio Board: pin 0 con pin 0, USB hacia el borde derecho.</li>
+            <li>Suelda las tiras de pines macho al Teensy 4.0, hacia abajo (o usa un "Teensy 4.0 with pins"), y encaja el Teensy en los zócalos de la Audio Board: pin 0 con pin 0, USB hacia el borde izquierdo.</li>
           </ol>
                     <figure>
-                <a class="zoomable" href="img/assembled_stack.jpg"><img src="img/assembled_stack-sm.jpg" alt="El Teensy encajado en la Audio Board en la esquina trasera derecha, con el USB y los auriculares en el borde derecho, junto a las teclas" loading="lazy" /></a>
-                <figcaption>Listo: el Teensy sobre la Audio Board, USB y auriculares en el borde derecho, un poco más bajos que las teclas.</figcaption>
+                <a class="zoomable" href="img/assembled_stack.jpg"><img src="img/assembled_stack-sm.jpg" alt="El Teensy encajado en la Audio Board en la esquina trasera izquierda, con el USB y los auriculares en el borde izquierdo, junto a las teclas" loading="lazy" /></a>
+                <figcaption>Listo: el Teensy sobre la Audio Board, USB y auriculares en el borde izquierdo.</figcaption>
               </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/stack_pins.jpg"><img src="img/stack_pins-sm.jpg" alt="Detalle desde atrás y desde abajo: las patas de los headers bajando de la Audio Board a través de la placa del eTuttino, soldadas por debajo, y el Teensy sobre los separadores de sus pines" loading="lazy" /></a>
+            <figcaption>Las patas vistas desde atrás y desde abajo: una fila de 14 (la otra es igual, más adentro), de la Audio Board a través de la placa del eTuttino, soldadas y cortadas por debajo. Arriba, los pines del Teensy con sus separadores de plástico, encajados en los headers hembra.</figcaption>
+          </figure>
           <div class="callout"><p>¿Prefieres poder quitar la Audio Board? Suelda dos zócalos hembra 1×14 en la placa y encaja en ellos las patas de la Audio Board. Funciona igual, pero el conjunto queda unos 6 mm más alto que las teclas.</p></div>
 
           <h3>El LED de encendido</h3>
           <ol class="steps">
-            <li>El LED va en el <strong>frente</strong>, en la esquina delantera derecha, en los tres agujeros marcados "POWER", fuera de la plate. La <strong>pata del medio es el cátodo común</strong>; la pata del rojo va en el agujero cuadrado. Compruébalo en la hoja de datos de tu LED: la regla de la pata más larga no vale para LED de tres patas.</li>
-            <li>Deja las patas lo bastante largas para que el LED llegue a la tapa de la caja (unos milímetros), suelda por el reverso y corta lo que sobre.</li>
+            <li>El LED va en el <strong>frente</strong>, en la esquina delantera izquierda, en los tres agujeros marcados "POWER", fuera de la plate. La <strong>pata del medio es el cátodo común</strong>; la pata del rojo va en el agujero cuadrado. Compruébalo en la hoja de datos de tu LED: la regla de la pata más larga no vale para LED de tres patas.</li>
+            <li>Deja las patas lo bastante largas para que la cúpula del LED quede unos 6 mm sobre la placa, en la ventana de la tapa de la caja; suelda por el reverso y corta lo que sobre.</li>
           </ol>
 
           <h3>2. Grabar el firmware</h3>
@@ -1483,7 +1628,7 @@
             <p>
               Si <strong>un sensor</strong> no responde, rehaz su soldadura. Si <strong>un bloque entero</strong> de teclas
               vecinas no responde, el problema está en el multiplexor de ese bloque: U51 para la fila 1 y
-              el final de la fila 2, U53 para la mitad izquierda de las otras teclas, U52 para la mitad derecha. Revisa su soldadura y su pin 1. Si <strong>nada</strong>
+              el comienzo de la fila 2, U52 para la mitad izquierda de las otras teclas, U53 para la mitad derecha. Revisa su soldadura y su pin 1. Si <strong>nada</strong>
               responde, mide 3,3 V entre la aleta de U60 y GND, y comprueba el sentido del Teensy y de la Audio Board.
             </p>
           </div>
@@ -1495,20 +1640,69 @@
             <li>Baja la placa sobre el conjunto: los dos pines de plástico de cada interruptor entran en los agujeros de la placa, y el Teensy queda en el recorte de la plate. Atorníllala por debajo.</li>
             <li>La placa tiene que quedar <strong>pegada al fondo de los interruptores</strong>, sin holgura: la distancia entre imán y sensor forma parte de la medida.</li>
             <li>Pon las teclas (keycaps): claras en las notas naturales, oscuras en los sostenidos. Compruébalo con la página, que muestra el nombre de cada tecla.</li>
-            <li>Monta la caja, sujeta por los agujeros M2, con aberturas en el lado derecho para el USB y los auriculares.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/assembled_top.jpg"><img src="img/assembled_top-sm.jpg" alt="El eTuttino montado visto desde arriba: 44 teclas redondas, claras y oscuras, y el Teensy en la esquina trasera derecha" loading="lazy" /></a>
+            <a class="zoomable" href="img/assembled_top.jpg"><img src="img/assembled_top-sm.jpg" alt="El eTuttino visto desde arriba, sin la caja: 44 teclas redondas, claras y oscuras, y el Teensy en la esquina trasera izquierda" loading="lazy" /></a>
             <figcaption>Todo instalado, visto desde arriba. Las teclas oscuras son los sostenidos; cada Do tiene un puntito.</figcaption>
           </figure>
 
-          <h3>5. Calibrar y comprobar</h3>
+          <h3 id="es-case">5. La caja</h3>
+          <p>
+            La caja son dos piezas impresas en 3D: una <strong>bandeja</strong> bajo la placa y una <strong>tapa</strong> que
+            enmarca las teclas. La tapa tiene una abertura escalonada que sigue las cuatro filas desfasadas, una ventana para
+            el LED de encendido y, en la esquina trasera izquierda, una cúpula sobre el Teensy con las aberturas del USB y de
+            los auriculares en el lado izquierdo. Nada de la caja toca el Teensy ni la Audio Board.
+          </p>
+          <figure class="wide">
+            <a class="zoomable" href="img/case_left.jpg"><img src="img/case_left-sm.jpg" alt="El extremo izquierdo de la caja: la cúpula sobre el Teensy, con la abertura del USB y la abertura redonda de los auriculares en el lateral" loading="lazy" /></a>
+            <figcaption>El extremo izquierdo: el USB y los auriculares salen por el lateral de la cúpula, lejos de la mano que toca.</figcaption>
+          </figure>
+          <p>
+            <strong>Por qué la bandeja tiene pilares.</strong> Los interruptores se apoyan en la placa, así que pulsar una
+            tecla empuja hacia abajo la placa de 1,2 mm. Sujeta solo por los agujeros de fijación, que están todos cerca de
+            los bordes, el centro de la placa cedería unos <strong>2,62 mm</strong> con una pulsación firme (3 N),
+            suficiente para notarlo y para alterar la lectura del sensor. La bandeja tiene un saliente bajo cada agujero y
+            <strong>43 pilares pequeños</strong> que tocan el reverso de la placa donde solo hay pistas (sin componentes,
+            pads ni vías), en los huecos entre las filas. Sobre ellos, la peor tecla cede unos <strong>0,027 mm</strong>.
+            (Estimación con un modelo sencillo de la placa sola, sin contar la plate; en la práctica es menos.)
+          </p>
+          <figure class="wide">
+            <a class="zoomable" href="img/case_tray.jpg"><img src="img/case_tray-sm.jpg" alt="La bandeja vacía: los salientes bajo los agujeros de fijación y las filas de pilares pequeños que sostienen la placa" loading="lazy" /></a>
+            <figcaption>La bandeja: un saliente bajo cada agujero de fijación, los pilares en los huecos entre las filas de teclas, los agujeros de los tornillos en las paredes.</figcaption>
+          </figure>
+          <h4>Encargar la caja</h4>
+          <p>
+            Sube <a href="../hardware/fab/etuttino_case_top.stl">etuttino_case_top.stl</a> y
+            <a href="../hardware/fab/etuttino_case_bottom.stl">etuttino_case_bottom.stl</a> (en milímetros) a un servicio de
+            impresión. Cada pieza mide 278 × 108 mm, demasiado para la mayoría de las impresoras domésticas (hace falta una cama de 300 mm).
+          </p>
+          <ul>
+            <li><a href="https://jlc3dp.com/es" target="_blank" rel="noopener"><strong>JLC3DP</strong></a> (el servicio de impresión de JLCPCB): puede llegar junto con las placas. La resina SLA es el acabado liso más barato; el nailon MJF (PA12) es el más resistente.</li>
+            <li><a href="https://www.pcbway.com/rapid-prototyping/3d-printing/" target="_blank" rel="noopener"><strong>PCBWay</strong></a>: las mismas opciones, si encargas las placas allí.</li>
+            <li><a href="https://craftcloud3d.com/" target="_blank" rel="noopener"><strong>Craftcloud</strong></a>: compara precios de muchas imprentas 3D, también locales.</li>
+            <li>Un servicio local con una impresora FDM grande: en PETG, capa de 0,2 mm y 4 perímetros, queda resistente.</li>
+          </ul>
+          <p>Imprime la tapa boca abajo (la tapa sobre la cama) y la bandeja en su posición normal; solo las aberturas del lateral de la cúpula necesitan soporte.</p>
+          <h4>Montar</h4>
+          <ol class="steps">
+            <li>Pega las cuatro patas de goma en los rebajes redondos bajo la bandeja.</li>
+            <li>Pon la placa, con plate, interruptores y Teensy, dentro de la bandeja: las cabezas de los tornillos bajo la placa entran en los rebajes de los salientes.</li>
+            <li>Coloca la tapa, con las aberturas del USB y de los auriculares sobre el extremo del Teensy.</li>
+            <li>Desde abajo, atornilla los ocho tornillos M2 × 10 mm a través de las paredes de la bandeja hasta la tapa, y los dos de los agujeros de la izquierda (atraviesan la placa hasta las columnas bajo la tapa). Sin apretar de más: es plástico.</li>
+            <li>Pon las teclas, si aún no están.</li>
+          </ol>
+          <figure class="wide">
+            <a class="zoomable" href="img/case_top.jpg"><img src="img/case_top-sm.jpg" alt="El eTuttino terminado, en su caja, visto desde arriba" loading="lazy" /></a>
+            <figcaption>Terminado, visto desde arriba.</figcaption>
+          </figure>
+
+          <h3>6. Calibrar y comprobar</h3>
           <ol class="steps">
             <li>Desconecta y vuelve a conectar el USB: al arrancar, el Teensy mide cada tecla en reposo. No toques las teclas mientras arranca.</li>
             <li>En la página, pulsa <strong>Calibrar teclas</strong> y pulsa <strong>cada tecla hasta el fondo una vez</strong>. El Teensy guarda el recorrido de cada tecla en su memoria interna (EEPROM).</li>
             <li>Con la <strong>Prueba de teclas</strong> activada, cada anillo debe ir de vacío (suelta) a lleno (al fondo). Listo: sigue con el <a href="#es-uso">Manual de uso</a>.</li>
           </ol>
-          <div class="callout ok"><p>La prueba con imán del paso 3 deja guardada una calibración incorrecta. Por eso la calibración del paso 5 es obligatoria después de instalar los interruptores.</p></div>
+          <div class="callout ok"><p>La prueba con imán del paso 3 deja guardada una calibración incorrecta. Por eso la calibración del paso 6 es obligatoria después de instalar los interruptores.</p></div>
         </section>
 
         <!-- ------------------------------------------------ Manual de uso -->
@@ -1519,7 +1713,7 @@
           <h3>Encender</h3>
           <ul>
             <li><strong>Alimentación</strong>: el cable USB del Teensy al ordenador o a un cargador de móvil. Con el cargador, el eTuttino suena solo, sin la página.</li>
-            <li><strong>Sonido</strong>: auriculares o altavoz en la salida de la Audio Board, en el lado derecho. Al encender, empieza en el <em>acordeón clásico</em>.</li>
+            <li><strong>Sonido</strong>: auriculares o altavoz en la salida de la Audio Board, en el lado izquierdo, junto al USB. Al encender, empieza en el <em>acordeón clásico</em>.</li>
             <li><strong>No toques las teclas durante los primeros segundos</strong>: es cuando el Teensy mide la posición de reposo de cada una.</li>
             <li><strong>LED de encendido</strong>: <em>naranja</em> mientras lee todas las teclas al encender, luego <em>verde</em> mientras tocas. <em>Rojo parpadeando</em> indica un error: la Audio Board no respondió, o el sensor de alguna tecla no respondió (encuéntralo con la Prueba de teclas en la página).</li>
           </ul>

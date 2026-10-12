@@ -14,6 +14,8 @@ The firmware is in [`../firmware`](../firmware), the web page is
 step-by-step **assembly and user manuals** (en/pt/es) are at
 [beatconfused.com/etutti/manuais](https://beatconfused.com/etutti/manuais/).
 
+![The eTuttino in its case](../manuais/img/case_iso-sm.jpg)
+
 ![PCB preview](build/etuttino_pcb_preview.svg)
 
 ## Ordering (ready to upload)
@@ -26,6 +28,7 @@ Everything a PCB service needs is generated, routed and checked (KiCad DRC:
 | [`fab/etuttino_gerbers.zip`](fab/etuttino_gerbers.zip) | **the PCB**: Gerbers + drill files. 2 layers, FR-4, **1.2 mm** |
 | [`fab/etuttino_bom.csv`](fab/etuttino_bom.csv) + [`fab/etuttino_cpl_bottom.csv`](fab/etuttino_cpl_bottom.csv) | **assembly** (JLCPCB PCBA, *Bottom Side*): every SMD part is on the back |
 | [`fab/etuttino_plate_gerbers.zip`](fab/etuttino_plate_gerbers.zip) | **the switch plate**: a copper-less 1.6 mm FR-4 board with the 14 mm cutouts |
+| [`fab/etuttino_case_top.stl`](fab/etuttino_case_top.stl) + [`fab/etuttino_case_bottom.stl`](fab/etuttino_case_bottom.stl) | **the case**, for a 3D-printing service (mm). `.step` copies alongside for CAD |
 
 There are two routes, both written up in the manuals:
 
@@ -67,7 +70,9 @@ to move to the front.
 | --- | --- |
 | [`generate.py`](generate.py) | single source of the geometry and of the sensor → multiplexer channel map (plain Python 3). Prints the `KEY_INPUT` table for the firmware |
 | [`build_pcb.py`](build_pcb.py) | builds and **routes** the KiCad board, runs DRC, checks it against the firmware, exports everything in `fab/`, then the manual's pictures (`--renders` redoes only those) |
-| [`assembly3d.py`](assembly3d.py) | simple VRML models of the switches, keycaps, plate, Teensy and Audio Board, and the `kicad-cli` renders in `../manuais/img/` |
+| [`mechanics.py`](mechanics.py) | picks where the case's pillars touch the back of the board (clear of pads, vias and parts) and estimates how far the board bends under each key; writes `build/etuttino_supports.json` |
+| [`case.py`](case.py) | the two-piece case, built in FreeCAD from the board geometry and those supports; writes the STL/STEP files in `fab/`. [`case_check.py`](case_check.py) then proves nothing in the case touches a keycap (over its whole travel), a switch, or the Teensy + Audio Board |
+| [`assembly3d.py`](assembly3d.py) | simple VRML models of the switches, keycaps, plate, Teensy and Audio Board (with all 28 header legs), the case from its STLs, and the `kicad-cli` renders in `../manuais/img/` |
 | [`etuttino.pretty/`](etuttino.pretty) | footprint library: `Gateron_Magnetic_MX_1u` (two 1.75 mm peg holes, no centre post, no pins), origin at the switch centre |
 | [`kicad/etuttino.kicad_pcb`](kicad/etuttino.kicad_pcb) | the routed board. Open it in KiCad's PCB Editor to look at or tweak it |
 | [`kicad/etuttino_plate.kicad_pcb`](kicad/etuttino_plate.kicad_pcb) | the plate |
@@ -84,6 +89,10 @@ up to eight times):
 python generate.py
 "C:/Program Files/KiCad/10.0/bin/python.exe" build_pcb.py
 ```
+
+After a successful route `build_pcb.py` also runs `mechanics.py`, then
+`case.py` with FreeCAD 1.0's Python (`FREECAD_PYTHON` overrides the path),
+then the renders. `build_pcb.py --renders` redoes only those three.
 
 `build_pcb.py` exits with an error in three cases:
 
@@ -121,18 +130,28 @@ Keys sit on the standard MX pitch of 19.05 mm. Rows 2 and 4 start half a key
 further left than rows 1 and 3. The key area is 12 × 4 keys
 (228.6 × 76.2 mm).
 
-**Size.** The PCB is **267 × 88.2 mm**, only as tall as the four rows (6 mm
-margins). Rows 3 and 4 end before row 2, so the back-right corner is free. The Teensy +
-Audio Board stack sits there, with USB and the headphone jack facing the
-right edge. On the Audio Board the jack sits beside the 0–12 pin row at the
-USB end; that was read off PJRC's pin diagram, so check a real board
-before you cut a case. The stack only adds about 13 mm to the length. The
-plate is notched around it.
+**Size and ergonomics.** The PCB is **267 × 97.2 mm**: the four rows, 6 mm
+margins at the front and right, and a 15 mm strip at the back (multiplexer
+U52 and the long lines to the far one run there). Rows 3 and 4 start after row 2,
+so the **back-left corner** is free. The Teensy + Audio Board stack sits
+there, with USB and the headphone jack facing the **left edge**: the cables
+leave the instrument away from the right hand that plays it, the right end
+stays clear for the high notes, and the power LED is just in front of the
+Teensy, in the player's sight. On the Audio Board the jack sits beside the
+0–12 pin row at the USB end; that was read off PJRC's pin diagram, so check
+a real board before you print the case (`case.py` has the openings as
+parameters). The plate is notched around the stack.
 
-**Thickness.** The Audio Board is soldered about 3 mm above the PCB on its
-stacking-header legs, and the Teensy plugs in on top. The stack ends
-about 17 mm above the board, below the keycaps (about 19 mm). With sockets
-under the Audio Board it would end up about 6 mm taller than the keys.
+**Height.** The Audio Board is soldered about 3 mm above the PCB on its
+stacking-header legs, the female headers (8.5 mm) on top of it, then the
+Teensy on its male headers' 2.5 mm spacers. The Teensy's top is 17.2 mm
+above the board and its USB connector 19.8 mm, against 18.8 mm for the
+keycaps. The case covers it with a pod in that corner. With sockets under
+the Audio Board it would end up about 6 mm taller.
+
+**The only link between the stack and the keyboard** is the Audio Board's
+28 stacking-header legs, soldered on the back of the eTuttino board. No
+screws, no wires, and no part of the case touches the stack.
 
 ## Electrical
 
@@ -145,12 +164,12 @@ under the Audio Board it would end up about 6 mm taller than the keys.
 
 **Multiplexers:** three CD74HC4067 (SOIC-24) on the back.
 
-- U51 sits in the front-right corner, past the end of rows 1 and 2, and
-  serves row 1 and the right end of row 2. U53 sits in the back-left
-  corner (left of rows 3 and 4, which start further in) and serves the
-  left half of the other keys; U52 lies sideways along the back edge,
-  above the Teensy's 0–12 pin row, and serves their right half. The router picks
-  each key's channel; see `build/etuttino_keys.csv`.
+- U51 sits in the front-left corner, before the start of rows 1 and 2,
+  and serves row 1 and the left end of row 2. U52 lies sideways in the
+  back strip just right of the Teensy, behind row 4's first keys, and
+  serves the left half of the other keys; U53 sits in the back-right corner (past rows 3 and 4,
+  which end earlier) and serves their right half. The router picks each
+  key's channel; see `build/etuttino_keys.csv`.
 - Their address lines S0–S3 are shared.
 - Enable is tied to GND.
 
@@ -165,14 +184,14 @@ under the Audio Board it would end up about 6 mm taller than the keys.
 | LED_R_DRV / LED_G_DRV → 330 Ω (R1 / R2) → power LED D1 | 4 (red), 5 (green) |
 
 **Power LED:** D1 is a 3 mm red/green bicolour LED (common cathode, middle
-leg) on the top in the front-right corner, outside the plate. The firmware
+leg) on the top just in front of the Audio Board, outside the plate. The firmware
 shows orange (both) while it reads all the keys at power-up, green while
 playing, and blinks red on an error (codec or a key's sensor not
 answering).
 
 **Power:** 44 sensors draw about 260 mA, more than the Teensy's own 3.3 V
 pin should give. An AMS1117-3.3 (U60, SOT-223, on the back between the
-Teensy pin rows) makes a separate 3.3 V rail from VIN for the sensors and
+Teensy pin rows, input towards the VIN row) makes a separate 3.3 V rail from VIN for the sensors and
 multiplexers. It has 10 µF (C80) in and 22 µF (C81) out. The sensor outputs never
 exceed this rail, and the Teensy's ADC pins tolerate 3.3 V.
 
@@ -201,14 +220,14 @@ expression pedal or bellows sensor.
 
 ## Teensy + Audio Board mounting
 
-- Two rows of 14 holes (2.54 mm pitch, 15.24 mm apart) in the back-right
-  corner. The silkscreen marks "GND"/"0" and "VIN"/"23" and
-  "USB + jack >".
+- Two rows of 14 holes (2.54 mm pitch, 15.24 mm apart) in the back-left
+  corner: the 0–12 row at the front, the VIN–13 row at the back. The
+  silkscreen marks "GND"/"0" and "VIN"/"23" and "< USB + jack".
 - The Audio Board's stacking headers (female on top) are soldered to the
   Audio Board. Their legs then go through the eTuttino holes with the Audio
   Board about 3 mm above the PCB, and are soldered and trimmed on the back.
 - The Teensy (male pins down) plugs into the stacking headers, USB to the
-  right edge.
+  left edge.
 - Optional: two 1×14 female sockets on the PCB make the Audio Board
   removable, at about 6 mm more height.
 
@@ -230,7 +249,9 @@ expression pedal or bellows sensor.
 | (2) | 1×14 female socket, 2.54 mm | optional, only to make the Audio Board removable |
 | 1 | switch plate | 1.6 mm FR4 from `fab/etuttino_plate_gerbers.zip` (same fab as the PCB), or 1.5 mm aluminium from `build/etuttino_plate.dxf` (240.6 × 88.2 mm, notched for the stack, 14 mm cutouts) |
 | 9 + 18 | M2 × 3.5 mm standoff + M2 × 4 mm screws | plate ↔ PCB (the standard 3.5 mm MX gap under a 1.5 mm plate); the board must sit right against the switch bottoms |
-| 1 | case | 3D-printed or CNC aluminium, tray mount on the M2 holes |
+| 1 + 1 | case: tray + top | 3D-printed from `fab/etuttino_case_*.stl` (SLA resin, MJF nylon or PETG); see **Case** below |
+| 10 | M2 × 10 mm self-tapping screws, pan head | case: 8 through the tray walls into the top, 2 through the board's two left holes into posts under the top |
+| 4 | stick-on rubber feet, 10 mm | in the recesses under the tray |
 
 ## Assembly
 
@@ -242,11 +263,51 @@ version:
 1. Back side SMD: multiplexers (pin 1!), regulator, its two capacitors,
    sensors, 100 nF capacitors. Route A skips this step.
 2. Audio Board on its stacking headers, about 3 mm above the front of the board, soldered and trimmed on the back.
-3. Teensy plugged into the Audio Board, USB to the right. Flash
+3. Teensy plugged into the Audio Board, USB to the left. Flash
    `firmware/etutti_synth` (USB Type: MIDI).
 4. On the web page, turn on **Key test** and sweep a small magnet over each
    key position from the top. Every ring should fill.
 5. Switches into the plate. Plate onto the PCB on 3.5 mm standoffs.
    Keycaps.
-6. Replug the USB (rest is measured at start-up), click **Calibrate keys**,
+6. Board assembly into the case tray, top on, ten M2 screws from below.
+7. Replug the USB (rest is measured at start-up), click **Calibrate keys**,
    and press every key to the bottom once.
+
+## Case
+
+Two 3D-printed parts, generated by `case.py` from the same geometry (outer
+size 278 × 108 mm; 15.7 mm to the deck, keycaps on top, 33 mm at the pod):
+
+- **Tray** (under the board): 2 mm floor, 4.5 mm of room under the board for
+  the parts and the trimmed legs, a boss under every mounting hole (with a
+  pocket for the plate-standoff screw head, or a through hole and
+  counterbore for the two screws that hold the top), recesses for four
+  rubber feet, and the support pillars below.
+- **Top**: 5 mm walls plus a 3 mm deck resting on the plate's edge, with one
+  stepped opening that follows the four staggered rows (0.6 mm round each
+  key's 19.05 mm cell, so the round keycaps never touch it), pockets for the
+  plate screws, the power-LED window, two posts at the board's left holes,
+  and a pod over the stack: 1 mm clear of row 3's first keycap, open on the
+  left for the USB plug (13 × 9 mm, room for the overmould) and the 3.5 mm
+  jack (Ø 7.2 mm). Over the Audio Board the deck's underside is raised to
+  6 mm above the PCB.
+
+Where to get it printed (each part is 278 mm long, beyond most home
+printers' 256 mm beds): [JLC3DP](https://jlc3dp.com/) (ships with the JLCPCB
+boards; SLA resin or MJF PA12 nylon), [PCBWay](https://www.pcbway.com/rapid-prototyping/3d-printing/),
+[Craftcloud](https://craftcloud3d.com/) (compares many printers, local ones
+too), or any local service with a 300 mm FDM printer (PETG, 0.2 mm layers,
+4 walls). Print the top deck-down and the tray floor-down.
+
+## Stiffness
+
+The switches stand on the board, so a key press pushes the 1.2 mm PCB down
+right under the sensor. Held only at its mounting holes, all near the
+edges, the board would sag about 2.62 mm under a firm 3 N press (worst:
+C5 row 1). `mechanics.py` places **43 pillars** in the tray along the
+gaps between key rows and the front/back margins, each where the back of
+the board has only solder-masked traces (at least 0.6 mm from any pad, via
+or part), and checks the result with a grillage model of the bare board
+(4 mm beam mesh, E = 18 GPa, no twisting stiffness, the plate's help
+ignored, so it overestimates): worst key **0.027 mm** (C4 row 4),
+mean 0.014 mm. The numbers per key are in `build/etuttino_supports.json`.

@@ -20,12 +20,16 @@ CD74HC4067 16:1 analog multiplexers feed the 44 sensor voltages to three
 Teensy ADC pins, so the firmware knows how far down each key is (and so
 how fast it was pressed: velocity).
 
-Size: the board is only as tall as the four key rows. Rows 3 and 4 end
-before row 2, so the space behind them at the right end is free: the
-Teensy 4.0 + Audio Board stack sits there, USB and headphone jack facing
-the right edge. Rows 1 and 2 end early too: one multiplexer goes on the
-back of that front-right corner, with the power LED on top; the other
-two lie along the back edge above the Teensy's pins.
+Size and ergonomics: the board is only as tall as the four key rows plus
+a 15 mm strip at the back. Rows 3 and 4 start after row 2, so the space
+behind them at the LEFT end is free: the Teensy 4.0 + Audio Board stack
+sits there, USB and headphone jack facing the left edge. The cables leave
+the instrument on the left, away from the right hand that plays it, and
+the right end stays clear for the high notes. Rows 1 and 2 leave room in
+the front-left corner too: one multiplexer goes on the back there, with
+the power LED just in front of the Teensy, where the player sees it; the
+second lies in the back strip, just right of the Teensy, and the third in
+the back-right corner.
 
 Keep in sync with ROWS in etutti/script.js and FIRST_NOTE / FIRST_COL /
 KEY_INPUT in etutti/firmware/etutti_synth/etutti_synth.ino
@@ -39,7 +43,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 BUILD = os.path.join(HERE, "build")
 
 U = 19.05                 # MX key pitch (mm)
-MARGIN = 6.0              # PCB edge to key grid (left, top, bottom)
+MARGIN = 6.0              # PCB edge to key grid (right, front)
+MARGIN_BACK = 15.0        # behind row 4: U52 and the long lines to the far multiplexer
 CUTOUT = 14.0             # MX plate cutout
 PLATE_MARGIN = 6.0        # plate edge to key grid
 HOLE_D = 2.2              # M2 clearance
@@ -78,9 +83,8 @@ MUX_PINS = {1: "COM", 2: "I7", 3: "I6", 4: "I5", 5: "I4", 6: "I3", 7: "I2", 8: "
             18: "I13", 19: "I12", 20: "I11", 21: "I10", 22: "I9", 23: "I8", 24: "VCC"}
 MUX_CHANNELS = 16
 
-PCB_H = MARGIN + 4 * U + MARGIN
-GRID_X0 = MARGIN
-GRID_Y0 = MARGIN
+PCB_H = MARGIN_BACK + 4 * U + MARGIN
+GRID_Y0 = MARGIN_BACK
 
 
 def row_slot(r):
@@ -88,57 +92,70 @@ def row_slot(r):
     return len(ROWS) - 1 - r
 
 
+def key_left_edge(r):
+    first, count, x0, col0 = ROWS[r]
+    return GRID_X0 + (x0 + 0.5) * U
+
+
 def key_right_edge(r):
     first, count, x0, col0 = ROWS[r]
     return GRID_X0 + (x0 + count - 1 + 1.5) * U
 
 
-# The plate stops just past row 3's last key in the top two slots (rows 4
-# and 3); the Teensy + Audio Board stack sits in that notch.
-NOTCH_X = key_right_edge(2) + 0.6
-
-# Teensy + Audio Board stack: pin rows horizontal, USB (and the Audio
-# Board's headphone jack, which sits beside the 0-12 pin row at the USB
-# end) facing the right edge. Audio Board outline relative to the header
+# Teensy + Audio Board stack in the back-left corner: pin rows horizontal,
+# USB (and the Audio Board's headphone jack, which sits beside the 0-12 pin
+# row at the USB end) facing the LEFT edge. That is the USB-up top view
+# turned 90 deg anticlockwise, so the 0-12 row is the front one and the
+# VIN-13 row the back one. Audio Board outline relative to the header
 # (read off PJRC's pin diagram): 5 mm past pin 1 at the USB end, 2 mm past
-# pin 14, 14 mm beyond the 0-12 row (jack side), 9.5 mm beyond the VIN row.
+# pin 14, 14 mm beyond the 0-12 row (jack side, now towards the player),
+# 9.5 mm beyond the VIN row.
 AUDIO_PAST_USB, AUDIO_PAST_END, AUDIO_PAST_JACK, AUDIO_PAST_VIN = 5.0, 2.0, 14.0, 9.5
-STACK_CY = 27.5      # low enough to leave room above J1 for two multiplexers
-STACK_CX = round(NOTCH_X + 0.8 + 6.5 * 2.54 + AUDIO_PAST_END, 2)
-PCB_W = round(STACK_CX + 6.5 * 2.54 + AUDIO_PAST_USB + 0.5, 2)
-
+STACK_X0 = 0.5                       # Audio Board edge, 0.5 mm in from the PCB's left edge
+STACK_CX = round(STACK_X0 + AUDIO_PAST_USB + 6.5 * 2.54, 2)
+STACK_CY = MARGIN_BACK + 17.0        # as far forward as row 2's first switch allows
 # Audio Board keep-out on the top side (x0, y0, x1, y1).
-STACK_ZONE = (STACK_CX - 6.5 * 2.54 - AUDIO_PAST_END, STACK_CY - 7.62 - AUDIO_PAST_JACK,
-              STACK_CX + 6.5 * 2.54 + AUDIO_PAST_USB, STACK_CY + 7.62 + AUDIO_PAST_VIN)
-# The plate's notch reaches just below the Audio Board (a hair into row 2's
-# slot: the plate still keeps 1.6 mm round row 2's last cutout).
+STACK_ZONE = (STACK_CX - 6.5 * 2.54 - AUDIO_PAST_USB, STACK_CY - 7.62 - AUDIO_PAST_VIN,
+              STACK_CX + 6.5 * 2.54 + AUDIO_PAST_END, STACK_CY + 7.62 + AUDIO_PAST_JACK)
+# The plate starts just right of the Audio Board in the top two slots (rows
+# 4 and 3); the stack sits in that notch, which reaches just below the
+# Audio Board (a hair into row 2's slot: the plate still keeps 1.6 mm round
+# row 2's first cutout). Row 3's first key starts just past the notch.
+NOTCH_X = STACK_ZONE[2] + 0.8
 NOTCH_Y = STACK_ZONE[3] + 0.4
+GRID_X0 = round(NOTCH_X + 0.6 - 0.5 * U, 2)
+PCB_W = round(GRID_X0 + GRID_UNITS * U + MARGIN, 2)
 
-# Multiplexers, on the back. U51 sits in the front-right corner (right of
-# rows 1-2), upside down (rotated 180 deg) so its address pins face the top
-# edge, and serves the front keys: all of row 1 plus the right end of row
-# 2. U53 sits in the back-left corner (rows 3 and 4 start a half / whole
-# key in, leaving room there) and serves the left half of rows 2-4; U52
-# lies sideways along the back edge above the Teensy's 0-12 pin row and
-# serves the right half. With both back muxes beside the Teensy the 28
-# traces could not all reach their pins there.
-ROW4_END = key_right_edge(3)
-CORNER_X = key_right_edge(1)       # where row 2 (the longest front row) ends
+# Multiplexers, on the back. U51 sits in the front-left corner (left of
+# rows 1-2), upside down (rotated 180 deg) so its address pins face the
+# Teensy's 0-12 row just above it, and serves the front keys: all of row 1
+# plus the left end of row 2. U52 lies sideways in the back strip just
+# right of the stack, behind the first keys of row 4, and serves the left
+# half of rows 2-4 (behind the Teensy's pins, all its traces had to squeeze
+# past the stack); U53 sits in
+# the back-right corner (rows 3 and 4 end a half / whole key early, leaving
+# room there) and serves the right half. U53 is the other way up from U51
+# (rotated 0 deg on the back): its output pin is at the top, so the long
+# line back to the Teensy runs along the back strip, behind row 4.
+CORNER_X = key_left_edge(1)       # where row 2 (the longest front row) starts
 MUXES = [
-    {"ref": "U51", "x": CORNER_X + 15.4, "y": 66.0},
-    {"ref": "U52", "x": NOTCH_X + 20.8, "y": 9.5, "rot": 90, "cap": (-10.0, 0.0, 90)},
-    {"ref": "U53", "x": 15.0, "y": GRID_Y0 + 0.5 * U, "rot": 0, "cap": (4.65, -10.4, 0)},
+    {"ref": "U51", "x": round(CORNER_X - 15.4, 2), "y": GRID_Y0 + 60.0},
+    {"ref": "U52", "x": round(NOTCH_X + 29.0, 2), "y": 9.0, "rot": 90, "cap": (10.0, 0.0, 90)},
+    {"ref": "U53", "x": round(PCB_W - 15.0, 2), "y": GRID_Y0 + 0.5 * U, "rot": 0, "cap": (2.4, 9.8, 0)},
 ]
-FRONT_ROW2_KEYS = 5               # row 2 keys (rightmost) that go to U51 with row 1
-U53_KEYS = 16                     # U53 (back-left corner, room to spare) takes the left 16
+FRONT_ROW2_KEYS = 5               # row 2 keys (leftmost) that go to U51 with row 1
+U53_KEYS = 16                     # U53 (back-right corner, room to spare) takes the right 16
 # Power LED: a 3 mm bicolour (red/green, common cathode in the middle)
-# through-hole LED on the top, in the front-right corner, outside the
-# plate so it shows through the case. Its resistors sit on the back.
-LED = {"ref": "D1", "x": CORNER_X + 22.4, "y": 82.0}   # clear of the corner hole
-# 3.3 V regulator for the sensors and multiplexers (41 sensors x 6 mA is
+# through-hole LED on the top, just in front of the Audio Board, outside
+# the plate so it shows through the case, in the player's sight. It sits
+# below the Teensy's pins 4 and 5 that drive it, with its resistors on the
+# back in between: down the board's left edge its lines walled U51 in.
+LED = {"ref": "D1", "x": 19.5, "y": round(STACK_ZONE[3] + 4.4, 2)}
+# 3.3 V regulator for the sensors and multiplexers (44 sensors x 6 mA is
 # more than the Teensy's own 3.3 V pin should supply): on the back, under
-# the stack, between the two pin rows. Fed from VIN (USB 5 V).
-LDO = {"ref": "U60", "x": STACK_CX + 2.0, "y": STACK_CY}
+# the stack, between the two pin rows, input pins towards the VIN row.
+# Fed from VIN (USB 5 V).
+LDO = {"ref": "U60", "x": round(STACK_CX - 2.0, 2), "y": STACK_CY, "rot": 180}
 
 
 def note_name(midi):
@@ -196,9 +213,10 @@ def assign_channels(ks):
     channel pin nearest the top, so traces coming in from the keys can
     turn towards the chip without crossing."""
     row2 = sorted((k for k in ks if k["row"] == 1), key=lambda k: k["cx"])
-    front = [k for k in ks if k["row"] == 0] + row2[len(row2) - FRONT_ROW2_KEYS:]
+    front = [k for k in ks if k["row"] == 0] + row2[:FRONT_ROW2_KEYS]
     rest = sorted((k for k in ks if k not in front), key=lambda k: (k["cx"], k["cy"]))
-    groups = [front, rest[U53_KEYS:], rest[:U53_KEYS]]  # U51, U52 (right), U53 (left)
+    split = len(rest) - U53_KEYS
+    groups = [front, rest[:split], rest[split:]]  # U51, U52 (left), U53 (right)
     for m, mux in enumerate(MUXES):
         group = sorted(groups[m], key=lambda k: (k["cx"], k["cy"]))
         assert len(group) <= MUX_CHANNELS, (mux["ref"], len(group))
@@ -225,12 +243,12 @@ def firmware_key_table(ks):
 
 def plate_outline():
     """The plate as a closed polygon: the key area plus margin, with a notch
-    at the top right for the Teensy + Audio Board stack."""
+    at the top left for the Teensy + Audio Board stack."""
     x0 = GRID_X0 - PLATE_MARGIN
     y0 = GRID_Y0 - PLATE_MARGIN
     x1 = GRID_X0 + GRID_UNITS * U + PLATE_MARGIN
     y1 = GRID_Y0 + 4 * U + PLATE_MARGIN
-    return [(x0, y0), (NOTCH_X, y0), (NOTCH_X, NOTCH_Y), (x1, NOTCH_Y), (x1, y1), (x0, y1), (x0, y0)]
+    return [(NOTCH_X, y0), (x1, y0), (x1, y1), (x0, y1), (x0, NOTCH_Y), (NOTCH_X, NOTCH_Y), (NOTCH_X, y0)]
 
 
 def in_plate(x, y):
@@ -239,41 +257,42 @@ def in_plate(x, y):
     y1 = GRID_Y0 + 4 * U + PLATE_MARGIN
     if not (x0 <= x <= x1 and y0 <= y <= y1):
         return False
-    return not (x > NOTCH_X and y < NOTCH_Y)
+    return not (x < NOTCH_X and y < NOTCH_Y)
 
 
 def mounting_holes():
     """M2 holes (2.2 mm). Shared by plate and PCB: the plate's corners, the
-    half-key gaps at the ends of rows 1 and 3, and the gap after row 4.
-    PCB only (for the case): two at the far right."""
+    half-key gaps at the ends of rows 1 and 3, and the gap before row 4.
+    PCB only (for the case): two at the far left."""
     m = MARGIN / 2
-    x_plate_r = GRID_X0 + GRID_UNITS * U + PLATE_MARGIN - m
+    x_plate_l = GRID_X0 - PLATE_MARGIN + m
+    y_plate_t = GRID_Y0 - PLATE_MARGIN + m
     slot = lambda r: GRID_Y0 + (row_slot(r) + 0.5) * U
     return [
-        (m, m),                                   # plate + PCB
-        (m, PCB_H - m),
-        (NOTCH_X - m, m),
-        (x_plate_r, NOTCH_Y + m),
-        (x_plate_r, PCB_H - m),
-        (GRID_X0 + 0.25 * U, slot(0)),            # rows 1 / 3, left gaps
-        (GRID_X0 + 0.25 * U, slot(2)),
-        (key_right_edge(0) + 0.5 * U, slot(0)),   # row 1, right gap
-        ((ROW4_END + NOTCH_X) / 2, slot(3)),      # after row 4
-        (PCB_W - m, PCB_H - m),                   # PCB only
-        (PCB_W - m, STACK_ZONE[3] + 3.2),
+        (PCB_W - m, y_plate_t),                   # plate + PCB
+        (PCB_W - m, PCB_H - m),
+        (NOTCH_X + m, y_plate_t),
+        (x_plate_l, NOTCH_Y + m),
+        (x_plate_l, PCB_H - m),
+        (GRID_X0 + 11.75 * U, slot(0)),           # rows 1 / 3, right gaps
+        (GRID_X0 + 11.75 * U, slot(2)),
+        (key_left_edge(0) - 0.5 * U, slot(0)),    # row 1, left gap
+        ((key_left_edge(3) + NOTCH_X) / 2, slot(3)),   # before row 4
+        (m, PCB_H - m),                           # PCB only
+        (m, STACK_ZONE[3] + 3.2),
     ]
 
 
 def stack_pins():
     """(socket, pad, teensy_pin, x, y) for the two 1x14 rows.
-    Rotating the USB-up top view 90 deg clockwise puts USB to the right:
-    the left column becomes the top row (pad 1 at the right end), the right
-    column the bottom row."""
+    Rotating the USB-up top view 90 deg anticlockwise puts USB to the left:
+    the left column becomes the front row (pad 1 at the left end), the
+    right column the back row."""
     out = []
     for i in range(14):
-        x = STACK_CX + 6.5 * 2.54 - i * 2.54
-        out.append(("J1", i + 1, TEENSY_LEFT[i], x, STACK_CY - 7.62))
-        out.append(("J2", i + 1, TEENSY_RIGHT[i], x, STACK_CY + 7.62))
+        x = STACK_CX - 6.5 * 2.54 + i * 2.54
+        out.append(("J1", i + 1, TEENSY_LEFT[i], x, STACK_CY + 7.62))
+        out.append(("J2", i + 1, TEENSY_RIGHT[i], x, STACK_CY - 7.62))
     return out
 
 
@@ -348,13 +367,13 @@ def write_svg(ks):
     o.append(f'<polyline points="{pts}" fill="none" stroke="#9fc3ad" stroke-width="2" stroke-dasharray="10 6"/>')
     zx0, zy0, zx1, zy1 = STACK_ZONE
     o.append(f'<rect x="{zx0 * s:.1f}" y="{zy0 * s:.1f}" width="{(zx1 - zx0) * s:.1f}" height="{(zy1 - zy0) * s:.1f}" rx="6" fill="none" stroke="#e8d9a8" stroke-dasharray="8 6" stroke-width="2"/>')
-    o.append(f'<text x="{(zx0 + 1.5) * s:.1f}" y="{(zy1 - 2.2) * s:.1f}" font-size="12" fill="#e8d9a8">Teensy 4.0 + Audio Rev D</text>')
-    o.append(f'<text x="{(zx1 - 1.5) * s:.1f}" y="{(zy0 + 4) * s:.1f}" font-size="11" fill="#e8d9a8" text-anchor="end">jack + USB →</text>')
+    o.append(f'<text x="{(zx0 + 1.5) * s:.1f}" y="{(zy0 + 12.5) * s:.1f}" font-size="12" fill="#e8d9a8">Teensy 4.0 + Audio Rev D</text>')
+    o.append(f'<text x="{(zx0 + 1.5) * s:.1f}" y="{(zy1 - 2.2) * s:.1f}" font-size="11" fill="#e8d9a8">← USB + jack</text>')
     for sock, pad, pin, x, y in stack_pins():
         net = pin_net(pin)
         color = "#f2c27a" if net and net not in ("GND", "VIN") else ("#7aa0c8" if pin in AUDIO_PINS else "#b9c4bd")
         o.append(f'<circle cx="{x * s:.1f}" cy="{y * s:.1f}" r="4.5" fill="{color}"/>')
-        o.append(f'<text x="{x * s:.1f}" y="{(y + (-2.6 if sock == "J1" else 4.6)) * s:.1f}" font-size="8" fill="#f6f1e8" text-anchor="middle">{pin}</text>')
+        o.append(f'<text x="{x * s:.1f}" y="{(y + (4.6 if sock == "J1" else -2.6)) * s:.1f}" font-size="8" fill="#f6f1e8" text-anchor="middle">{pin}</text>')
     for k in ks:
         x, y = (k["cx"] - U / 2) * s, (k["cy"] - U / 2) * s
         sharp = "#" in note_name(k["note"])
@@ -363,7 +382,8 @@ def write_svg(ks):
         o.append(f'<text x="{k["cx"] * s:.1f}" y="{(k["cy"] - 1.5) * s:.1f}" font-size="17" font-weight="700" fill="{tc}" text-anchor="middle">{note_name(k["note"])}</text>')
         o.append(f'<text x="{k["cx"] * s:.1f}" y="{(k["cy"] + 4.2) * s:.1f}" font-size="10" fill="{tc}" text-anchor="middle" opacity="0.7">{k["ref"]} · M{k["mux"] + 1}/{k["ch"]}</text>')
     for i, mux in enumerate(MUXES):
-        o.append(f'<rect x="{(mux["x"] - 3.75) * s:.1f}" y="{(mux["y"] - 7.7) * s:.1f}" width="{7.5 * s}" height="{15.4 * s}" rx="3" fill="#2b2b2b" stroke="#e8d9a8" stroke-dasharray="5 4"/>')
+        hw, hh = (7.7, 3.75) if mux.get("rot", 180) in (90, 270) else (3.75, 7.7)
+        o.append(f'<rect x="{(mux["x"] - hw) * s:.1f}" y="{(mux["y"] - hh) * s:.1f}" width="{2 * hw * s}" height="{2 * hh * s}" rx="3" fill="#2b2b2b" stroke="#e8d9a8" stroke-dasharray="5 4"/>')
         o.append(f'<text x="{mux["x"] * s:.1f}" y="{(mux["y"] - 1) * s:.1f}" font-size="12" fill="#e8d9a8" text-anchor="middle">MUX{i + 1}</text>')
         o.append(f'<text x="{mux["x"] * s:.1f}" y="{(mux["y"] + 2.5) * s:.1f}" font-size="10" fill="#e8d9a8" text-anchor="middle">{mux["ref"]}</text>')
     o.append(f'<rect x="{(LDO["x"] - 3.3) * s:.1f}" y="{(LDO["y"] - 1.8) * s:.1f}" width="{6.6 * s}" height="{3.6 * s}" rx="3" fill="#2b2b2b" stroke="#e8d9a8" stroke-dasharray="5 4"/>')
@@ -398,9 +418,9 @@ def main():
     assert len({(k["row"], k["col"]) for k in ks}) == len(ks)       # one key per grid cell
     assert len({(k["mux"], k["ch"]) for k in ks}) == len(ks)        # one sensor per mux channel
     assert not (set(SEL_PINS + COM_PINS) & AUDIO_PINS)            # no clash with the Audio Board
-    # the stack stays clear of the keys: right of row 3's last key, above row 2
+    # the stack stays clear of the keys: left of row 3's first key, above row 2
     # (and clear of row 2's switch bodies, which start 7.4 mm above its centre line)
-    assert STACK_ZONE[0] > key_right_edge(2) and STACK_ZONE[3] < GRID_Y0 + 2.5 * U - 7.4 and STACK_ZONE[1] > 0
+    assert STACK_ZONE[2] < key_left_edge(2) and STACK_ZONE[3] < GRID_Y0 + 2.5 * U - 7.4 and STACK_ZONE[0] > 0
     assert GRID_Y0 + 2.5 * U - CUTOUT / 2 - NOTCH_Y > 1.5      # plate material left round row 2's cutouts
     print(write_csv(ks))
     dxf, pw, ph = write_dxf(ks)
