@@ -221,7 +221,8 @@ def render_all(cli, board_path):
         m = BoardMap(img, side)
         if side == "bottom":
             made.append(save(img, "detail_sensors.jpg", m.box(G.GRID_X0 - 2, G.GRID_Y0 + 2 * G.U - 2, G.GRID_X0 + 4.5 * G.U, G.PCB_H)))
-            made.append(save(img, "detail_muxes.jpg", m.box(G.ROW4_END + 2, 0, G.NOTCH_X, G.GRID_Y0 + 1.6 * G.U)))
+            made.append(save(img, "detail_muxes.jpg", m.box(G.CORNER_X - 4, G.NOTCH_Y - 2, G.PCB_W, G.PCB_H)))
+            made.append(save(img, "detail_mux_left.jpg", m.box(0, 0, G.GRID_X0 + 2.5 * G.U, G.GRID_Y0 + 1.6 * G.U)))
             made.append(save(img, "detail_regulator.jpg", m.box(G.STACK_ZONE[0] - 2, 0, G.PCB_W, G.STACK_ZONE[3] + 4)))
         else:
             made.append(save(img, "detail_stack.jpg", m.box(G.STACK_ZONE[0] - 6, 0, G.PCB_W, G.STACK_ZONE[3] + 8)))

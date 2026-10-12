@@ -322,9 +322,11 @@ class Router:
         return seen
 
     # ------------------------------------------------------------ search
+    extra = frozenset()           # more owner ids the current search may use
+
     def usable(self, li, idx, nid):
         o = self.owner[li][idx]
-        return o == FREE or o == nid
+        return o == FREE or o == nid or o in self.extra
 
     def via_ok(self, ix, iy, nid):
         if self.novia[iy * self.W + ix]:
@@ -414,7 +416,7 @@ class Router:
 
 # The order the retries found for the current layout; a layout change may
 # need a new one (the retry loop finds it and prints it).
-DEFAULT_ROUTE_FIRST = "OUT_U34,OUT_U6,OUT_U18,OUT_U30,OUT_U41,OUT_U27,OUT_U38"
+DEFAULT_ROUTE_FIRST = ""
 
 
 class RoutingFailed(Exception):
@@ -515,14 +517,16 @@ def path_to_copper(net_name, path, start_xy=None, end_xy=None):
         add_track(simple, LAYERS[li], net_name)
 
 
-def connect(net_name, source_item, targets, label):
+def connect(net_name, source_item, targets, label, extra=None):
     """Routes one item to a set of target cells, then records everything
     now joined (source item, new copper, explicit target items) as part of
     the net's connected tree."""
     src = router.items[source_item]
     if source_item[0] == "via":
         src = {c for c in src if c[0] == 0}     # leave the sensor's via on the front
+    router.extra = frozenset(router.nid(n) for n in extra) if extra else frozenset()
     path = router.search(net_name, src, targets)
+    router.extra = frozenset()
     if path is None:
         print("ROUTING FAILED: %s (%s)" % (label, net_name))
         raise RoutingFailed(net_name)
@@ -590,12 +594,16 @@ def build():
     # ---- multiplexers, regulator, their capacitors (back) ----
     muxes = []
     for m, spec in enumerate(G.MUXES):
+        rot = spec.get("rot", 180)
         u = place(lib("Package_SO"), "SOIC-24W_7.5x15.4mm_P1.27mm", spec["ref"], spec["x"], spec["y"],
-                  "CD74HC4067M96", back=True, rot=180)
+                  "CD74HC4067M96", back=True, rot=rot)
+        spec["pads"] = {}
         for number, func in G.MUX_PINS.items():
             got = xy(pad(u, str(number)).GetPosition())
-            want = G.mux_pin_offset(number)
-            assert abs(got[0] - spec["x"] - want[0]) < 0.01 and abs(got[1] - spec["y"] - want[1]) < 0.01, (number, got)
+            spec["pads"][number] = got
+            if rot == 180:
+                want = G.mux_pin_offset(number)
+                assert abs(got[0] - spec["x"] - want[0]) < 0.01 and abs(got[1] - spec["y"] - want[1]) < 0.01, (number, got)
             name = None
             if func == "COM":
                 name = "COM%d" % m
@@ -607,15 +615,21 @@ def build():
                 name = "VCC"
             if name:
                 pad(u, str(number)).SetNet(net(name))
-        for k in keys:
-            if k["mux"] == m:
-                pad(u, str(G.channel_pin(k["ch"]))).SetNet(net("OUT_%s" % k["sensor"]))
+        # Every channel pad starts on a placeholder net of its own: a sensor
+        # output may end on any free one (see the job loop), and the
+        # firmware table is written from what the router chose. Separate
+        # placeholders keep the clearance between neighbouring pads.
+        for ch in range(G.MUX_CHANNELS):
+            pad(u, str(G.channel_pin(ch))).SetNet(net("FREE%d_%d" % (m, ch)))
         u.Reference().SetPosition(mm(spec["x"], spec["y"]))
-        c = place(lib("Capacitor_SMD"), "C_0805_2012Metric", MUX_CAP_REFS[m], spec["x"] + 2.4, spec["y"] + 9.8,
-                  "100nF", back=True)
+        cdx, cdy, crot = spec.get("cap", (2.4, 9.8, 0))
+        c = place(lib("Capacitor_SMD"), "C_0805_2012Metric", MUX_CAP_REFS[m], spec["x"] + cdx, spec["y"] + cdy,
+                  "100nF", back=True, rot=crot)
         c.Reference().SetVisible(False)
-        c1, c2 = xy(pad(c, "1").GetPosition()), xy(pad(c, "2").GetPosition())
-        hi, lo = ("1", "2") if c1[0] > c2[0] else ("2", "1")   # VCC pin is bottom-right
+        # the capacitor pad nearer the multiplexer's VCC pin takes VCC
+        vx, vy = spec["pads"][[p for p, f in G.MUX_PINS.items() if f == "VCC"][0]]
+        d = lambda n: math.hypot(xy(pad(c, n).GetPosition())[0] - vx, xy(pad(c, n).GetPosition())[1] - vy)
+        hi, lo = ("1", "2") if d("1") < d("2") else ("2", "1")
         pad(c, hi).SetNet(net("VCC"))
         pad(c, lo).SetNet(net("GND"))
         muxes.append((u, c))
@@ -637,6 +651,24 @@ def build():
         top.SetNet(net(live))
         bot.SetNet(net("GND"))
     footprints += [ldo, c_in, c_out]
+
+    # ---- power LED (top, through-hole, red/green common cathode) and its
+    # 330 ohm resistors (back) ----
+    led = place(lib("LED_THT"), "LED_D3.0mm-3", G.LED["ref"], G.LED["x"] - 2.54, G.LED["y"], "LED 3mm red/green CC")
+    led.Reference().SetVisible(False)      # the "POWER" label marks it
+    for p in led.Pads():
+        p.SetNet(net({"1": "LED_R", "2": "GND", "3": "LED_G"}[p.GetNumber()]))
+    assert abs(xy(pad(led, "2").GetPosition())[0] - G.LED["x"]) < 0.01
+    led_res = {}
+    for ref, dx, drv, out in (("R1", -1.8, "LED_R_DRV", "LED_R"), ("R2", 5.0, "LED_G_DRV", "LED_G")):
+        r = place(lib("Resistor_SMD"), "R_0805_2012Metric", ref, G.LED["x"] + dx, G.LED["y"] - 4.5, "330", back=True, rot=90)
+        r.Reference().SetVisible(False)
+        p1, p2 = pad(r, "1"), pad(r, "2")
+        low, high = (p1, p2) if xy(p1.GetPosition())[1] > xy(p2.GetPosition())[1] else (p2, p1)
+        low.SetNet(net(out))      # the pad nearer the LED
+        high.SetNet(net(drv))
+        led_res[ref] = (high.GetNumber(), low.GetNumber())
+    footprints += [led, *[board.FindFootprintByReference(r) for r in led_res]]
 
     # ---- Teensy sockets (front, through-hole) ----
     sockets = {}
@@ -690,23 +722,30 @@ def build():
         jobs.append(("VCC", ("vccbus", r), "tree", "row %d 3.3 V bus" % (r + 1)))
     for r in sorted(by_row.values(), key=lambda r: abs([y for y, rr in by_row.items() if rr == r][0] + GND_BUS_DY - gnd_y0)):
         jobs.append(("GND", ("gndbus", r), "tree", "row %d GND bus" % (r + 1)))
-    # sensor outputs, furthest from their multiplexer first
+    # sensor outputs, furthest from their multiplexer first, each to any
+    # free channel of its multiplexer
     outs = []
     for k in keys:
         spec = G.MUXES[k["mux"]]
-        px, py = G.mux_pin_offset(G.channel_pin(k["ch"]))
-        dist = abs(k["out_via"][0] - spec["x"] - px) + abs(k["out_via"][1] - spec["y"] - py)
+        dist = abs(k["out_via"][0] - spec["x"]) + abs(k["out_via"][1] - spec["y"])
         outs.append((dist, k))
     outs.sort(key=lambda t: -t[0])
+    free_channels = {m: set(range(G.MUX_CHANNELS)) for m in range(len(G.MUXES))}
     for _, k in outs:
         spec = G.MUXES[k["mux"]]
-        jobs.append(("OUT_%s" % k["sensor"], ("via", k["sensor"]), [(spec["ref"], str(G.channel_pin(k["ch"])))],
-                     "%s -> %s I%d" % (k["sensor"], spec["ref"], k["ch"])))
+        jobs.append(("OUT_%s" % k["sensor"], ("via", k["sensor"]), ("mux", k["mux"], k),
+                     "%s -> %s" % (k["sensor"], spec["ref"])))
     # multiplexer outputs to the Teensy ADC pins
+    # The far multiplexer's address and output lines cross the whole board:
+    # routed after the sensor outputs, or they box the sensors in.
+    far = {spec["ref"] for spec in G.MUXES if spec["x"] < G.NOTCH_X / 2}
+    late = set()
     for m, spec in enumerate(G.MUXES):
         com_pad = [p for p, f in G.MUX_PINS.items() if f == "COM"][0]
         j2 = [p for p in pins if p[0] == "J2" and p[2] == G.COM_PINS[m]][0]
         jobs.append(("COM%d" % m, (spec["ref"], str(com_pad)), [("J2", str(j2[1]))], "%s COM -> pin %s" % (spec["ref"], G.COM_PINS[m])))
+        if spec["ref"] in far:
+            late.add(jobs[-1][3])
     # address lines: Teensy -> the nearest multiplexer, then on to the others
     for s, pin in enumerate(G.SEL_PINS):
         j1 = [p for p in pins if p[0] == "J1" and p[2] == pin][0]
@@ -715,6 +754,8 @@ def build():
         jobs.append(("SEL%d" % s, ("J1", str(j1[1])), [(order[0]["ref"], sel_pad)], "pin %s -> %s S%d" % (pin, order[0]["ref"], s)))
         for spec in order[1:]:
             jobs.append(("SEL%d" % s, (spec["ref"], sel_pad), "tree", "%s S%d" % (spec["ref"], s)))
+            if spec["ref"] in far:
+                late.add(jobs[-1][3])
     # power
     ldo_ref = G.LDO["ref"]
     pad_of = lambda fp, name: "1" if pad(fp, "1").GetNetname() == name else "2"
@@ -723,6 +764,13 @@ def build():
     for item in [("J2", "2"), (ldo_ref, "1"), (LDO_CIN, pad_of(c_in, "GND")), (LDO_COUT, pad_of(c_out, "GND"))]:
         jobs.append(("GND", item, "tree", "GND %s.%s" % item))
     jobs.append(("VCC", (LDO_COUT, pad_of(c_out, "VCC")), "tree", "VCC %s" % LDO_COUT))
+    # power LED: Teensy pin -> resistor -> LED, cathode to GND
+    for ref, drv, out, led_pad in (("R1", "LED_R_DRV", "LED_R", "1"), ("R2", "LED_G_DRV", "LED_G", "3")):
+        teensy_pin = [p for p, n in G.LED_PINS.items() if n == drv][0]
+        j1 = [p for p in pins if p[0] == "J1" and p[2] == teensy_pin][0]
+        jobs.append((drv, ("J1", str(j1[1])), [(ref, led_res[ref][0])], "pin %s -> %s" % (teensy_pin, ref)))
+        jobs.append((out, (ref, led_res[ref][1]), [(G.LED["ref"], led_pad)], "%s -> LED" % ref))
+    jobs.append(("GND", (G.LED["ref"], "2"), "tree", "LED cathode"))
     gnd_pins = [str(p) for p, f in G.MUX_PINS.items() if f in ("GND", "E")]
     for m, spec in enumerate(G.MUXES):
         cref = MUX_CAP_REFS[m]
@@ -742,14 +790,34 @@ def build():
         router.tree[net_name] = router.component(net_name, router.items[root])
 
     # Few, long, must-not-fail connections first (power, multiplexer
-    # outputs and address lines); the 41 sensor outputs then fit around them.
+    # outputs and address lines); the 44 sensor outputs then fit around them,
+    # and the far multiplexer's long lines last.
     # Sensor outputs that failed in an earlier attempt go first (see
     # route_with_retries below).
     first = [n for n in os.environ.get("ETUTTINO_ROUTE_FIRST", DEFAULT_ROUTE_FIRST).split(",") if n]
-    jobs.sort(key=lambda j: (j[0].startswith("OUT_"), j[0] not in first, first.index(j[0]) if j[0] in first else 0))
+    tier = lambda j: 2 if j[3] in late else 1 if j[0].startswith("OUT_") else 0
+    jobs.sort(key=lambda j: (tier(j), j[0] not in first, first.index(j[0]) if j[0] in first else 0))
     for net_name, src_item, dst, label in jobs:
         if dst == "tree":
             targets = router.tree.get(net_name, set()) - router.items[src_item]
+        elif dst[0] == "mux":
+            _, m, k = dst
+            ref = G.MUXES[m]["ref"]
+            targets = set()
+            for ch in free_channels[m]:
+                targets |= router.items[(ref, str(G.channel_pin(ch)))]
+            path = connect(net_name, src_item, targets, label, extra=["FREE%d_%d" % (m, c) for c in free_channels[m]])
+            last = (path[-1][0], path[-1][1])
+            ch = [c for c in free_channels[m] if last in router.items[(ref, str(G.channel_pin(c)))]][0]
+            free_channels[m].discard(ch)
+            k["ch"] = ch
+            # the pad now belongs to this output: claim it (and its
+            # clearance) for this net, so later routes keep away from it
+            p = pad(board.FindFootprintByReference(ref), str(G.channel_pin(ch)))
+            p.SetNet(net(net_name))
+            register_pad(p, (ref, str(G.channel_pin(ch))))
+            print("routed", label, "I%d" % ch)
+            continue
         else:
             targets = set()
             for it in dst:
@@ -761,6 +829,13 @@ def build():
             for it in dst:
                 router.tree[net_name] |= router.items[it]
         print("routed", label)
+
+    # unused channel pads: no net
+    for m, spec in enumerate(G.MUXES):
+        fp = board.FindFootprintByReference(spec["ref"])
+        for ch in free_channels[m]:
+            pad(fp, str(G.channel_pin(ch))).SetNetCode(0)
+    write_channel_table(keys)
 
     # ---- outline, labels ----
     w, hgt = G.PCB_W, G.PCB_H
@@ -774,20 +849,37 @@ def build():
         seg.SetWidth(pcbnew.FromMM(0.1))
         board.Add(seg)
 
-    text("eTuttino v0.3 HE", G.ROW4_END + 41, 3.2, 1.6)
-    text("Teensy 4.0 on Audio Board Rev D - USB + jack >", G.STACK_CX, G.STACK_ZONE[3] + 1.6, 0.9)
+    text("eTuttino v0.4 HE", G.GRID_X0 + 3 * G.U, 3.2, 1.2)
+    text("POWER", G.LED["x"], G.LED["y"] - 2.6, 0.9)
+    text("Teensy 4.0 on Audio Board Rev D - USB + jack >", G.STACK_CX, G.STACK_ZONE[3] - 1.4, 0.9)
     j1_gnd = [p for p in pins if p[0] == "J1" and p[1] == 1][0]
     j2_vin = [p for p in pins if p[0] == "J2" and p[1] == 1][0]
     text("GND", j1_gnd[3], j1_gnd[4] - 2.4, 0.8)
     text("VIN", j2_vin[3], j2_vin[4] + 2.4, 0.8)
     text("0", j1_gnd[3] - 2.54, j1_gnd[4] - 2.4, 0.8)
     text("23", j2_vin[3] - 7.62, j2_vin[4] + 2.4, 0.8)
-    text("eTuttino v0.3 HE - Magica K2 layout, C-griff G3-G6 - beatconfused.com/etutti", 120, 85.6, 1.0, pcbnew.B_SilkS)
-    text("Sensors DRV5056A3 on this side, under each switch", G.ROW4_END + 41, 2.6, 1.0, pcbnew.B_SilkS)
+    text("eTuttino v0.4 HE - C-griff G3-E6 - beatconfused.com/etutti", 120, 85.6, 1.0, pcbnew.B_SilkS)
+    text("Sensors DRV5056A3 on this side, under each switch", 120, 2.6, 1.0, pcbnew.B_SilkS)
 
     os.makedirs(KICAD_DIR, exist_ok=True)
     pcbnew.SaveBoard(BOARD_PATH, board)
     print("saved", BOARD_PATH)
+
+
+def write_channel_table(keys):
+    """The channels the router picked, written into the firmware's
+    KEY_INPUT table and build/etuttino_keys.csv (verify_against_firmware
+    then checks the saved board against that file)."""
+    import re
+    table = G.firmware_key_table(keys)
+    ino = open(FIRMWARE, encoding="utf-8").read()
+    new = re.sub(r"const int8_t KEY_INPUT\[LAYOUT_ROWS\]\[LAYOUT_COLS\] = \{.*?\n\};", lambda _: table, ino, flags=re.S)
+    if new != ino:
+        with open(FIRMWARE, "w", encoding="utf-8", newline="") as f:
+            f.write(new)
+        print("firmware KEY_INPUT updated from the routed channels")
+    os.makedirs(G.BUILD, exist_ok=True)
+    G.write_csv(keys)
 
 
 def cli(*args):
@@ -805,6 +897,7 @@ BOM_LINES = [
     ("AMS1117-3.3", lambda ks: [G.LDO["ref"]], "SOT-223", "C6186"),
     ("10uF 0805", lambda ks: [LDO_CIN], "C_0805", "C15850"),
     ("22uF 0805", lambda ks: [LDO_COUT], "C_0805", "C45783"),
+    ("330R 0805", lambda ks: ["R1", "R2"], "R_0805", "C17630"),
 ]
 
 
@@ -886,6 +979,7 @@ def verify_against_firmware():
         return [int(v) for v in re.findall(r"-?\d+", re.search(pattern, ino, re.S).group(1))]
 
     sel_pins = ints(r"MUX_SEL_PINS\[4\] = \{([^}]*)\}")
+    led_pins = ints(r"LED_PINS\[2\] = \{([^}]*)\}")
     com_pins = ints(r"MUX_COM_PINS\[MUX_COUNT\] = \{([^}]*)\}")
     table = ints(r"KEY_INPUT\[LAYOUT_ROWS\]\[LAYOUT_COLS\] = \{(.*?)\};")
     first_col = ints(r"FIRST_COL\[LAYOUT_ROWS\] = \{([^}]*)\}")
@@ -895,6 +989,10 @@ def verify_against_firmware():
         if int(pin_of_net["SEL%d" % s]) != sel_pins[s]:
             bad += 1
             print("  MISMATCH address S%d: board pin %s, firmware %d" % (s, pin_of_net["SEL%d" % s], sel_pins[s]))
+    for i, n in enumerate(("LED_R_DRV", "LED_G_DRV")):
+        if int(pin_of_net[n]) != led_pins[i]:
+            bad += 1
+            print("  MISMATCH LED: %s on pin %s, firmware %d" % (n, pin_of_net[n], led_pins[i]))
     mux_by_ref = {}
     for m, spec in enumerate(G.MUXES):
         fp = b.FindFootprintByReference(spec["ref"])
@@ -959,7 +1057,7 @@ def build_plate():
             h.Reference().SetVisible(False)
             h.SetPosition(mm(x, y))
             board.Add(h)
-    text("eTuttino plate v0.3", ox + pw / 2, oy + ph - 2.6, 1.2)
+    text("eTuttino plate v0.4", ox + pw / 2, oy + ph - 2.6, 1.2)
     pcbnew.SaveBoard(PLATE_PATH, board)
     print("saved", PLATE_PATH)
     board = main_board
@@ -984,7 +1082,7 @@ def build_plate():
         print("plate render failed")
 
 
-def route_with_retries(max_attempts=8):
+def route_with_retries(max_attempts=20):
     """The router is greedy: a net routed early can wall off a later one.
     When a sensor output fails, start again (a fresh process, so no state
     leaks) with that net routed first, up to max_attempts times. The order
@@ -1025,6 +1123,8 @@ if __name__ == "__main__":
     try:
         build()
     except RoutingFailed:
+        # keep the half-routed board for a look at what blocked the route
+        pcbnew.SaveBoard(os.path.join(KICAD_DIR, "etuttino_failed.kicad_pcb"), board)
         sys.exit(3)
     errs, unc = fab()
     mismatches = verify_against_firmware()

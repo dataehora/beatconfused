@@ -3,10 +3,10 @@
 
    Hardware: Teensy 4.0 + PJRC Audio Adaptor Board Rev D (SGTL5000), on
    the eTuttino PCB (etutti/hardware/). Sound comes out of the Audio
-   Board's headphone jack and line out. The 41 keys are Gateron magnetic
+   Board's headphone jack and line out. The 44 keys are Gateron magnetic
    (Hall-effect) switches: under each one a DRV5056 sensor gives a voltage
    that rises as the key's magnet comes down. Three CD74HC4067
-   multiplexers (address on pins 0-3) put the 41 sensors on three ADC pins
+   multiplexers (address on pins 0-3) put the 44 sensors on three ADC pins
    (14, 15, 16), so the firmware knows how far down every key is and, from
    how fast it went down, the note's velocity. Every key plays the internal
    sound engine AND is sent over USB MIDI, so the device works standalone
@@ -64,7 +64,7 @@
      CC 123 All notes off    release every voice
    Sent back: the keys' notes (channel 1) and, in key test mode, each key's
    position as Polyphonic Aftertouch on channel 16: data 1 = key index
-   (0-40, row by row from row 1, as in etutti/hardware/build/
+   (0-43, row by row from row 1, as in etutti/hardware/build/
    etuttino_keys.csv), data 2 = 0 (up) .. 127 (bottomed out).
    ============================================================ */
 #include <Audio.h>
@@ -85,30 +85,36 @@
 const int NUM_VOICES = 8;
 
 // ---- eTuttino keys (see etutti/hardware/README.md) ----
-// The notes sit on a grid of 4 rows x 13 columns (row r = accordion row
+// The notes sit on a grid of 4 rows x 12 columns (row r = accordion row
 // r+1; row 1 is the one nearest the player). KEY_INPUT says where each
 // key's sensor is wired: multiplexer * 16 + channel, -1 = no key there.
-// It comes from etutti/hardware/generate.py, and build_pcb.py checks the
-// routed board against this copy. The pins stay clear of the Audio Board
+// build_pcb.py writes it from the channels its router picked, then checks
+// the routed board against this copy. The pins stay clear of the Audio Board
 // Rev D (7, 8, 18-21, 23) and of its SD card (10-13); 15 is only used by
 // the Audio Board's optional volume pot, which the eTuttino doesn't fit.
 const int LAYOUT_ROWS = 4;
-const int LAYOUT_COLS = 13;
+const int LAYOUT_COLS = 12;
 const int MUX_COUNT = 3;
 const uint8_t MUX_SEL_PINS[4] = {0, 1, 2, 3};          // S0..S3, shared
 const uint8_t MUX_COM_PINS[MUX_COUNT] = {14, 15, 16};  // A0, A1, A2
+// Power LED: a red/green LED (common cathode) through 330 ohm each.
+//   orange (both) while the first reading of all keys runs at power-up,
+//   green while playing, red blinking on an error: the Audio Board's
+//   codec didn't answer, or a key's sensor didn't (see the key test).
+const uint8_t LED_PINS[2] = {4, 5};                    // red, green
+const uint32_t LED_STARTUP_MS = 600;                   // orange shows at least this long
 const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
-  { -1,   3,   7,  14,  18,  22,  28,  31,  34,  37,  42,  45,  -1},
-  {  0,   4,  11,  15,  19,  23,  29,  32,  35,  38,  43,  46,  47},
-  { -1,   2,   6,  13,  17,  21,  27,  30,  33,  36,  39,  44,  -1},
-  { -1,   1,   5,  12,  16,  20,  26,  -1,  -1,  -1,  -1,  -1,  -1},
+  { -1,   4,   3,   2,   5,   1,   0,   6,  14,   8,   9,  10},
+  { 43,  46,  47,  35,  33,  32,  24,  15,  13,  12,  11,   7},
+  { -1,  41,  44,  39,  37,  34,  25,  26,  27,  21,  28,  29},
+  { -1,  40,  42,  45,  38,  36,  23,  22,  20,  19,  18,  -1},
 };
 
 // Chromatic button accordion layouts. Along a row each key is a minor
-// third (+3) above the previous one. Laid out like the Castagnari Magica
-// K2: rows 1 and 3 have 11 keys starting at column 1 (A3 .. D#6, G#3 ..
-// D6), row 2 has 13 starting at column 0, half a key further left (G3 ..
-// G6), and row 4 repeats the start of row 1 (A3 .. C5, 6 keys).
+// third (+3) above the previous one. Rows 1 and 3 have 11 keys starting at
+// column 1 (A3 .. D#6, G#3 .. D6); row 2 has 12 starting at column 0, half
+// a key further left (G3 .. E6); row 4 sits on row 2's columns, half a key
+// left of row 3, and runs A3 .. C6 (10 keys, column 1 on).
 // B-griff is the mirror image of C-griff: rows 1 and 3 swap places, so a
 // diagonal step goes the other way. Keep in sync with etutti/script.js.
 const int8_t FIRST_NOTE[2][LAYOUT_ROWS] = {
@@ -130,7 +136,7 @@ int noteAt(int r, int c) {
 // zero), scaled between that key's reading at rest and at the bottom. The
 // rest reading is measured at start-up and then follows slow drift; the
 // bottom is learnt from the deepest press seen and kept in EEPROM.
-const int MAX_KEYS = 41;
+const int MAX_KEYS = 44;
 const float ADC_PER_VOLT = 4095.0f / 3.3f;
 const float SENSOR_ZERO = 0.6f * ADC_PER_VOLT;   // DRV5056 output at 0 mT
 const int MIN_SPAN = 120;          // ADC counts: the least a key is assumed to swing
@@ -141,7 +147,7 @@ const float NOTE_OFF_AT = 0.30f;   // note off (hysteresis against chatter)
 const float FAST_MS = 1.0f;        // VEL_START -> NOTE_ON_AT (~1.4 mm) time for velocity 127
 const float SLOW_MS = 80.0f;       // ... and for velocity 1
 const uint8_t FIXED_VELOCITY = 100;
-const uint32_t EEPROM_MAGIC = 0xE7770003;   // bump when the key count/order changes
+const uint32_t EEPROM_MAGIC = 0xE7770004;   // bump when the key count/order changes
 
 struct Key {
   int8_t row, col;          // note grid
@@ -166,6 +172,8 @@ uint32_t calibrationChangedAt = 0;
 // How many physical keys hold each note (row 4 doubles row 1), so a note
 // only starts on the first press and stops on the last release.
 uint8_t noteHolders[128];
+bool codecOk = true;
+int missingKeys = 0;
 // Written out so the Arduino builder doesn't put its own prototypes for
 // these above the Key struct.
 void resetCalibration();
@@ -231,6 +239,13 @@ AudioConnection pr(master, 0, i2sOut, 1);
 int16_t tableOpen[256];       // open reed: bright, many harmonics
 int16_t tableCassotto[256];   // reed in the cassotto chamber: rounder
 int16_t tablePiccolo[256];    // 4' reed: open, fewer harmonics (it sounds an octave up)
+// Above C5 the full tables would put harmonics past the Nyquist frequency
+// (E6 is 1319 Hz: 20 harmonics = 26 kHz) and alias, which sounds metallic,
+// so high reeds use tables with fewer harmonics.
+const int HIGH_TABLE_FROM = 73;   // sounding notes above C5
+int16_t tableOpenHigh[256];
+int16_t tableCassottoHigh[256];
+int16_t tablePiccoloHigh[256];
 
 // Additive synthesis of one period of a free reed. A free reed's
 // spectrum has every harmonic, falling off roughly as 1/n^k (k bigger =
@@ -314,6 +329,10 @@ void tuneVoice(int v, int note) {
     }
     return;
   }
+  reed[REED_16][v].arbitraryWaveform(note - 12 >= HIGH_TABLE_FROM ? tableCassottoHigh : tableCassotto, 16000.0f);
+  reed[REED_M1][v].arbitraryWaveform(note >= HIGH_TABLE_FROM ? tableOpenHigh : tableOpen, 16000.0f);
+  reed[REED_M2][v].arbitraryWaveform(note >= HIGH_TABLE_FROM ? tableCassottoHigh : tableCassotto, 16000.0f);
+  reed[REED_4][v].arbitraryWaveform(note + 12 >= HIGH_TABLE_FROM ? tablePiccoloHigh : tablePiccolo, 16000.0f);
   reed[REED_16][v].frequency(noteToFreq(note - 12));
   reed[REED_M1][v].frequency(noteToFreq(note));
   reed[REED_M2][v].frequency(noteToFreq(note + wetCents / 100.0f));
@@ -667,6 +686,7 @@ void setupKeys() {
   for (int i = 0; i < keyCount; i++) {
     keyState[i].rest = sum[i] / SCANS;
     keyState[i].present = keyState[i].rest >= PRESENT_MIN;
+    if (!keyState[i].present) missingKeys++;
   }
   loadCalibration();
 }
@@ -678,7 +698,7 @@ uint32_t crossingTime(const Key &k, float prev, float now, float level, uint32_t
   return k.prevMicros + (uint32_t)(constrain(f, 0.0f, 1.0f) * (float)(nowMicros - k.prevMicros));
 }
 
-// One pass over all 41 sensors (~3.5 kHz): calibration, note on/off with
+// One pass over all 44 sensors (~3.3 kHz): calibration, note on/off with
 // velocity, and the key test stream.
 void scanKeys() {
   uint16_t readings[MAX_KEYS];
@@ -741,18 +761,36 @@ void scanKeys() {
   if (changed) usbMIDI.send_now();
 }
 
+void setLed(bool red, bool green) {
+  digitalWriteFast(LED_PINS[0], red);
+  digitalWriteFast(LED_PINS[1], green);
+}
+
+// Green while all is well; red, blinking twice a second, on an error.
+void updateLed() {
+  if (codecOk && missingKeys == 0) setLed(false, true);
+  else setLed((millis() / 250) % 2 == 0, false);
+}
+
 void setup() {
+  for (int i = 0; i < 2; i++) pinMode(LED_PINS[i], OUTPUT);
+  setLed(true, true);                            // orange: reading the keys
+  uint32_t started = millis();
   AudioMemory(60);   // measured peak: 32 blocks (8 voices x 4 reeds + reverb)
   setupKeys();
 
-  codec.enable();
+  codecOk = codec.enable();
   codec.volume(0.8f * 90 / 127.0f);
 
-  // Harmonic counts keep G5 (784 Hz) below ~16 kHz: 20 x 784 for the 8'
-  // reeds, 10 x 1568 for the piccolo; the 16' reed is lower still.
+  // Harmonic counts keep everything below ~16 kHz. Up to C5 (523 Hz):
+  // 20 x 523 for the 8' reeds, 10 x 1047 for the piccolo. Above, up to E6
+  // (1319 Hz): 12 harmonics for the 8' reeds, 6 for the piccolo.
   buildReedTable(tableOpen, 20, 1.05f, 0.25f);
   buildReedTable(tableCassotto, 14, 1.85f, 0.20f);
   buildReedTable(tablePiccolo, 10, 1.20f, 0.20f);
+  buildReedTable(tableOpenHigh, 12, 1.05f, 0.25f);
+  buildReedTable(tableCassottoHigh, 12, 1.85f, 0.20f);
+  buildReedTable(tablePiccoloHigh, 6, 1.20f, 0.20f);
 
   const int16_t *tables[NUM_REEDS] = {tableCassotto, tableOpen, tableCassotto, tablePiccolo};
   for (int v = 0; v < NUM_VOICES; v++) {
@@ -793,6 +831,9 @@ void setup() {
   usbMIDI.setHandleNoteOn(handleNoteOn);
   usbMIDI.setHandleNoteOff(handleNoteOff);
   usbMIDI.setHandleControlChange(handleControlChange);
+  while (millis() - started < LED_STARTUP_MS) {
+  }
+  updateLed();
 }
 
 void loop() {
@@ -800,4 +841,5 @@ void loop() {
   while (usbMIDI.read()) {
   }
   scanKeys();
+  updateLed();
 }

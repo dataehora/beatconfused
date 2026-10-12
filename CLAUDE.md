@@ -50,16 +50,17 @@ that doesn't belong there.
 - `etutti/` (eTutti) — **work in progress, deliberately unlisted**: no
   home-page card, not in `sitemap.xml`, `noindex` meta (the user asked
   for no home button while it's being built). Two models: **eTuttino**
-  (the one being built — Teensy 4.0 + Audio Board Rev D, 41 **Gateron
+  (the one being built — Teensy 4.0 + Audio Board Rev D, 44 **Gateron
   magnetic (Hall-effect) keys with velocity** — see "Hall-effect keys"
-  below — in a chromatic-accordion **C-griff** layout laid out like the
-  **Castagnari Magica K2** (PR #76): row 1 A3..D#6 (11), row 2 G3..G6
-  (13, half a key left), row 3 G#3..D6 (11), row 4 A3..C5 (6, repeats
-  the start of row 1; the user's "9 + 2 more" count didn't match their
-  note ranges — the note ranges were followed)) and **eTutti** (full version, the page only
+  below — in a chromatic-accordion **C-griff** layout (PR #77): row 1
+  A3..D#6 (11), row 2 G3..E6 (12, half a key left), row 3 G#3..D6 (11),
+  row 4 A3..C6 (10, on row 2's columns: A3 above row 2's A#3, C6 above
+  C#6). **Never name the commercial accordion this layout was first
+  compared to** — the user asked for that reference to be removed
+  everywhere) and **eTutti** (full version, the page only
   shows "in development"). Web MIDI (`navigator.requestMIDIAccess`) to the
   Teensy running `etutti/firmware/etutti_synth/` (8-voice synth, USB name
-  "eTutti" via `name.c`, reads the 41 Hall sensors through 3 analog
+  "eTutti" via `name.c`, reads the 44 Hall sensors through 3 analog
   multiplexers and plays/sends notes with velocity).
   **Row 1 is nearest the player (bottom), row 4 at the top** — on the
   page and on the PCB. Round on-screen buttons. C-griff / B-griff switch
@@ -89,10 +90,12 @@ that doesn't belong there.
   AudioProcessorUsageMax(), read it from the COM port. The note layout lives in THREE places
   that must agree: `FIRST_NOTE`/`ROWS` in `etutti/script.js`,
   `FIRST_NOTE`/`FIRST_COL`/`KEY_INPUT` in the sketch, `ROWS`/`MUXES` in
-  `etutti/hardware/generate.py` (geometry + sensor→mux-channel source;
-  `python generate.py` prints the `KEY_INPUT` table) — `build_pcb.py`
-  checks the board's nets against the sketch's tables and fails on a
-  mismatch. The CC map lives in
+  `etutti/hardware/generate.py` (geometry + which mux each key uses) —
+  since #77 the router picks each sensor's mux **channel** (any free one
+  of its mux; per-pad placeholder nets `FREE<m>_<ch>` keep pad
+  clearances) and `build_pcb.py` **writes `KEY_INPUT` into the sketch**
+  and `build/etuttino_keys.csv`, then checks the board's nets against the
+  sketch and fails on a mismatch. Recompile/flash after a board rebuild. The CC map lives in
   both `etutti/script.js` (`CC`) and the sketch — change both together.
   - **Hall-effect keys** (PR #75): DRV5056A3 under each Gateron KS-20
     switch, on the **back** of a 1.2 mm board — the DRV5056 only reads a
@@ -106,7 +109,7 @@ that doesn't belong there.
     velocity = log-mapped time 12 %→45 % (1 ms = 127, 80 ms = 1). CC 9
     velocity curve, CC 14 recalibrate, CC 15 key-test stream (Poly AT on
     ch 16, data1 = key index in grid order). Full 34-key scan measured at
-    240 µs (41 keys: ~290 µs expected). Page: "eTuttino keys" panel (curve, Calibrate, Key test rings).
+    240 µs (44 keys: ~310 µs expected). Page: "eTuttino keys" panel (curve, Calibrate, Key test rings).
     Not yet tested with a real board — tune VEL thresholds/FAST_MS/SLOW_MS
     by feel once one exists.
   - **Browser sound** (`etutti/websynth.js`, PR #76): "Listen in this
@@ -119,17 +122,30 @@ that doesn't belong there.
     approximations (labelled as such on the page). Verified by tapping
     the output with an AnalyserNode in the browser pane.
   - **Board shape (PR #76)**: 267 × 88.2 mm — only the 4 key rows tall.
-    Row 4 is short, so the Teensy + Audio Board stack sits in the free
+    Rows 3-4 end before row 2, so the Teensy + Audio Board stack sits in the free
     back-right corner (`STACK_ZONE`), USB and headphone jack facing the
     right edge (the jack is beside the 0-12 pin row at the USB end — read
     off PJRC's pin diagram). The Audio Board is soldered ~3 mm above the
     PCB on its stacking-header legs so the stack (~17 mm) stays below the
     keycaps (~19 mm); sockets are the optional, ~6 mm taller route. The
-    plate is notched there. Muxes U51-U53 sit on the back behind row 4's
-    empty part, LDO U60 between the stack's pin rows. Routing order:
-    power buses → mux COM/SEL/power → 41 sensor outputs; on a failure
-    `build_pcb.py` re-runs itself with the failed net first
-    (`ETUTTINO_ROUTE_FIRST`), up to 8 attempts (~4 min each).
+    plate is notched there. Mux U51 sits on the back of the
+    front-right corner (past rows 1-2, `CORNER_X`; row 1 + right end of
+    row 2), U53 in the back-left corner (left of rows 3-4, left 16 keys)
+    and U52 sideways (rot 90) along the back edge above J1 (right 12) —
+    with two or three muxes beside the stack the router couldn't fan the
+    traces out to the pins, LDO U60 between the
+    stack's pin rows. **Power LED** D1 (#77): 3 mm red/green common-cathode
+    THT on top in that corner, pins 4 (red) / 5 (green) through R1/R2
+    330 Ω on the back; firmware: orange while the keys are first read
+    (≥ 0.6 s), green playing, red blinking if the codec or any key's
+    sensor didn't answer (so a bare Teensy blinks red — no LED there
+    anyway). Routing order:
+    power buses → mux COM/SEL/power/LED → 44 sensor outputs → the far
+    mux U53's COM/SEL (routed earlier they boxed row 4's sensors in); on a
+    failure `build_pcb.py` re-runs itself with the failed net first
+    (`ETUTTINO_ROUTE_FIRST`), up to 20 attempts (~4-15 min each). A net
+    that fails even when first is a physical blockage: export
+    `kicad/etuttino_failed.kicad_pcb` to SVG and look.
   - `etutti/hardware/assembly3d.py` — VRML stand-ins (switches, round
     keycaps, plate, Audio Board, Teensy; KiCad VRML unit = 2.54 mm, y up)
     + `kicad-cli pcb render` → `etutti/manuais/img/*.jpg` (+ `-sm`
@@ -273,9 +289,10 @@ code.
   The user confirmed accordion/bass work and asked for piano/guitar to be
   fixed (done in #74: SVF → biquad, sample gain up) and the synth to come
   back (done in #74).
-- **PCB** `etutti/hardware/`: **Magica K2 / slim version (#76)**, 41 keys,
-  267 × 88.2 mm, routed, DRC 0/0/0, firmware cross-check 41/41, manual
-  renders in `etutti/manuais/img/`. Firmware with the 41-key table is
+- **PCB** `etutti/hardware/`: **44-key version with power LED (#77)**,
+  267 × 88.2 mm, routed, DRC 0/0/0, firmware cross-check 44/44 (incl.
+  LED pins), manual renders in `etutti/manuais/img/`. Firmware with the
+  44-key table, LED and high-note reed tables is
   flashed on the user's Teensy. (The #75 board, 34 keys, was: Ready-to-upload Gerbers in `fab/`
   (PCB 1.2 mm + FR4 plate + JLCPCB BOM/CPL).) The old MX/diode-matrix
   board was never ordered and is gone. As far as we know the new one has
@@ -472,13 +489,17 @@ code.
   (Temporary default).
 - **#68–#74** — eTutti / eTuttino (see the handoff above).
 - **#75** — eTuttino Hall-effect redesign (velocity) + `etutti/manuais/`.
-- **#76** — Magica K2 layout (41 keys), slim board with the stack in the
+- **#76** — 41-key layout, slim board with the stack in the
   back-right corner, browser sound (`websynth.js`), manual 3D renders +
   lightbox. Render gotchas: VRML y is flipped, so face winding flips too
   (boxes and cylinders are wound opposite ways in `assembly3d.py`, the
   raytracer shows wrongly-wound faces black); close-ups are crops of
   6000-px transparent renders mapped by the board's alpha bbox, because
   kicad-cli's --pan units aren't mm.
+- **#77** — final layout (44 keys: row 2 to E6, row 4 A3..C6 on row 2's
+  columns), muxes moved to the front-right corner, power LED, high-note
+  reed tables (above C5 the full 20-harmonic tables aliased), commercial
+  layout reference removed everywhere.
 
 ## Workflow conventions observed this session
 
