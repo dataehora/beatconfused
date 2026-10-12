@@ -171,7 +171,7 @@ that doesn't belong there.
     LED window, pod over the stack 1 mm clear of row 3's first keycap,
     USB/jack openings on the left), joined by 8 M2 self-tappers through the
     walls + 2 through the board's left holes. Purchase options given to the
-    user: JLC3DP, PCBWay, Craftcloud, Brazilian STL-quote services (PETG).
+    user: JLC3DP, PCBWay, Craftcloud, a local FDM service (PETG). The user is in London; manuals stay country-neutral (no import/customs talk).
   - **Stiffness**: `etutti/hardware/mechanics.py` (KiCad python + numpy,
     no scipy) picks pillar spots on the back where there's only traces and
     runs a dense grillage FE (4 mm mesh) per key: ~2.7 mm sag at 3 N on the
