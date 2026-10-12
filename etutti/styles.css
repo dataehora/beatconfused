@@ -243,7 +243,7 @@
 .button-grid {
   position: relative;
   width: 100%;
-  aspect-ratio: 13 / 4;
+  aspect-ratio: 12 / 4;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;

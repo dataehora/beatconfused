@@ -2,9 +2,9 @@
    eTUTTI — browser front-end for a Teensy-based controller/synth.
 
    Two models share this page:
-     - eTuttino (the one being built): 34 round keys in a chromatic
-       button-accordion layout (C-griff or B-griff), G3–G6, laid out like
-       a Castagnari Magica K2 (41 keys), on magnetic
+     - eTuttino (the one being built): 44 round keys in a chromatic
+       button-accordion layout (C-griff or B-griff), G3–E6, 44 keys, on
+       magnetic
        (Hall-effect) switches: a Teensy 4.0 reads how far each key is down,
        so the real keys play with velocity.
      - eTutti (the full instrument): only a preview render for now.
@@ -53,8 +53,8 @@
   /* ------------------------------------------------------------
      eTuttino LAYOUT — chromatic button accordion.
      Row 1 is nearest the player (drawn at the bottom), row 4 furthest.
-     Laid out like the Castagnari Magica K2: rows 1-3 run A3..D♯6,
-     G3..G6 and G♯3..D6; row 4 repeats the start of row 1 (A3..C5).
+     Rows: 1 A3..D♯6, 2 G3..E6, 3 G♯3..D6, 4 A3..C6 (row 4 sits on
+     row 2's columns, half a key left of row 3).
      Along a row each key is a minor third (3 semitones) above the last;
      rows are staggered half a key, so a diagonal step to the next row is
      one semitone (up in C-griff, down in B-griff — B-griff is C-griff's
@@ -64,8 +64,7 @@
        code = computer key (KeyboardEvent.code). The computer's rows are
               staggered too, so the shape under the fingers matches. On
               ABNT2, Slash/IntlRo are the ; and / keys, BracketLeft/Right
-              the ´ and [ keys, Backslash the ] key; the last key of row 2
-              (G6) has no computer key.
+              the ´ and [ keys, Backslash the ] key.
      Keep in sync with FIRST_NOTE/FIRST_COL in etutti_synth.ino and with
      ROWS in etutti/hardware/generate.py.
      ------------------------------------------------------------ */
@@ -75,9 +74,9 @@
   };
   const ROWS = [
     { count: 11, x0: 0, col0: 1, codes: ["KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash", "IntlRo"] },
-    { count: 13, x0: -0.5, col0: 0, codes: ["KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL", "Semicolon", "Quote", "Backslash", null] },
+    { count: 12, x0: -0.5, col0: 0, codes: ["KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL", "Semicolon", "Quote", "Backslash"] },
     { count: 11, x0: 0, col0: 1, codes: ["KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO", "KeyP", "BracketLeft", "BracketRight"] },
-    { count: 6, x0: 0, col0: 1, codes: ["Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8"] },
+    { count: 10, x0: 0.5, col0: 1, codes: ["Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0", "Minus", "Equal"] },
   ];
   const LAYOUT = [];
   ROWS.forEach((row, r) => {
@@ -86,7 +85,7 @@
     }
   });
   const CODE_TO_KEY = new Map(LAYOUT.filter((k) => k.code).map((k) => [k.code, k]));
-  const GRID_UNITS_X = 13; // x from -0.5 to 11.5, one key wide each
+  const GRID_UNITS_X = 12; // x from -0.5 to 10.5, one key wide each
   const GRID_UNITS_Y = 4;
   const MAX_TRANSPOSE = 3; // octaves either way
   const VELOCITY_STEP = 16;

@@ -11,19 +11,21 @@ Writes, next to this file:
 The routed KiCad board and the fabrication files come from build_pcb.py,
 which imports this module (run it with KiCad's Python).
 
-Layout: chromatic button accordion, C-griff, laid out like the Castagnari
-Magica K2's treble keyboard: rows 1-3 run from A3 / G3 / G#3 up to D#6 /
-G6 / D6, row 4 repeats row 1 from A3 to C5 (41 keys). The keys are Gateron
+Layout: chromatic button accordion, C-griff, 44 keys: row 1 A3..D#6,
+row 2 G3..E6, row 3 G#3..D6, row 4 A3..C6 (row 4 sits on row 2's columns:
+its A3 above row 2's A#3, its C6 above C#6). The keys are Gateron
 magnetic (Hall-effect) switches: every key has a TI DRV5056 linear Hall
 sensor on the BACK of the board, straight under the switch's magnet; three
-CD74HC4067 16:1 analog multiplexers feed the 41 sensor voltages to three
+CD74HC4067 16:1 analog multiplexers feed the 44 sensor voltages to three
 Teensy ADC pins, so the firmware knows how far down each key is (and so
 how fast it was pressed: velocity).
 
-Size: the board is only as tall as the four key rows. Row 4 is short, so
-the space behind rows 3-4 at the right end is free: the Teensy 4.0 + Audio
-Board stack sits there, USB and headphone jack facing the right edge,
-which only adds about a centimetre to the length.
+Size: the board is only as tall as the four key rows. Rows 3 and 4 end
+before row 2, so the space behind them at the right end is free: the
+Teensy 4.0 + Audio Board stack sits there, USB and headphone jack facing
+the right edge. Rows 1 and 2 end early too: one multiplexer goes on the
+back of that front-right corner, with the power LED on top; the other
+two lie along the back edge above the Teensy's pins.
 
 Keep in sync with ROWS in etutti/script.js and FIRST_NOTE / FIRST_COL /
 KEY_INPUT in etutti/firmware/etutti_synth/etutti_synth.ino
@@ -47,16 +49,17 @@ NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
 # (first MIDI note, key count, x offset in key units, first column).
 # "Row"/"column" are the note grid the firmware and the page share (there
-# is no electrical matrix: every key has its own sensor). Rows 2 sits half
-# a key left of the others; within a row the column goes up by one per key.
+# is no electrical matrix: every key has its own sensor). Rows 2 and 4 sit
+# half a key left of rows 1 and 3; within a row the column goes up by one
+# per key.
 ROWS = [
     (57, 11, 0.0, 1),   # row 1: A3 .. D#6
-    (55, 13, -0.5, 0),  # row 2: G3 .. G6
+    (55, 12, -0.5, 0),  # row 2: G3 .. E6
     (56, 11, 0.0, 1),   # row 3: G#3 .. D6
-    (57, 6, 0.0, 1),    # row 4: A3 .. C5 (repeats the start of row 1)
+    (57, 10, 0.5, 1),   # row 4: A3 .. C6, on row 2's columns (A3 above A#3, C6 above C#6)
 ]
-GRID_COLS = 13            # note-grid columns (row 2 has 13 keys)
-GRID_UNITS = 13           # key area width in key units (x = -0.5 .. 11.5)
+GRID_COLS = 12            # note-grid columns (row 2 has 12 keys)
+GRID_UNITS = 12           # key area width in key units (x = -0.5 .. 10.5)
 
 # Teensy 4.0 edge pins, top view with USB up. Left column top->bottom,
 # right column top->bottom (pad 1 = top).
@@ -66,6 +69,7 @@ TEENSY_RIGHT = ["VIN", "GND", "3V3", "23", "22", "21", "20", "19", "18", "17", "
 # 7, 8, 18-21, 23, and of its SD card, 10-13):
 SEL_PINS = ["0", "1", "2", "3"]        # multiplexer address S0..S3, shared by all three
 COM_PINS = ["14", "15", "16"]          # multiplexer 1..3 output -> A0, A1, A2
+LED_PINS = {"4": "LED_R_DRV", "5": "LED_G_DRV"}  # bicolour power LED, through 330 ohm
 AUDIO_PINS = {"7", "8", "18", "19", "20", "21", "23"}  # Audio Board Rev D
 
 # CD74HC4067 pin functions (SOIC-24). Channel n is "I<n>".
@@ -92,7 +96,6 @@ def key_right_edge(r):
 # The plate stops just past row 3's last key in the top two slots (rows 4
 # and 3); the Teensy + Audio Board stack sits in that notch.
 NOTCH_X = key_right_edge(2) + 0.6
-NOTCH_Y = GRID_Y0 + 2 * U          # bottom of slot 1 (row 3)
 
 # Teensy + Audio Board stack: pin rows horizontal, USB (and the Audio
 # Board's headphone jack, which sits beside the 0-12 pin row at the USB
@@ -100,23 +103,38 @@ NOTCH_Y = GRID_Y0 + 2 * U          # bottom of slot 1 (row 3)
 # (read off PJRC's pin diagram): 5 mm past pin 1 at the USB end, 2 mm past
 # pin 14, 14 mm beyond the 0-12 row (jack side), 9.5 mm beyond the VIN row.
 AUDIO_PAST_USB, AUDIO_PAST_END, AUDIO_PAST_JACK, AUDIO_PAST_VIN = 5.0, 2.0, 14.0, 9.5
-STACK_CY = 23.5
+STACK_CY = 27.5      # low enough to leave room above J1 for two multiplexers
 STACK_CX = round(NOTCH_X + 0.8 + 6.5 * 2.54 + AUDIO_PAST_END, 2)
 PCB_W = round(STACK_CX + 6.5 * 2.54 + AUDIO_PAST_USB + 0.5, 2)
 
 # Audio Board keep-out on the top side (x0, y0, x1, y1).
 STACK_ZONE = (STACK_CX - 6.5 * 2.54 - AUDIO_PAST_END, STACK_CY - 7.62 - AUDIO_PAST_JACK,
               STACK_CX + 6.5 * 2.54 + AUDIO_PAST_USB, STACK_CY + 7.62 + AUDIO_PAST_VIN)
+# The plate's notch reaches just below the Audio Board (a hair into row 2's
+# slot: the plate still keeps 1.6 mm round row 2's last cutout).
+NOTCH_Y = STACK_ZONE[3] + 0.4
 
-# Multiplexers: on the back, behind the empty right part of row 4. Each
-# serves a band of half-key columns (k = 1..25, see half_col()). Placed
-# upside down (rotated 180 deg) so the address pins face the top edge.
+# Multiplexers, on the back. U51 sits in the front-right corner (right of
+# rows 1-2), upside down (rotated 180 deg) so its address pins face the top
+# edge, and serves the front keys: all of row 1 plus the right end of row
+# 2. U53 sits in the back-left corner (rows 3 and 4 start a half / whole
+# key in, leaving room there) and serves the left half of rows 2-4; U52
+# lies sideways along the back edge above the Teensy's 0-12 pin row and
+# serves the right half. With both back muxes beside the Teensy the 28
+# traces could not all reach their pins there.
 ROW4_END = key_right_edge(3)
+CORNER_X = key_right_edge(1)       # where row 2 (the longest front row) ends
 MUXES = [
-    {"ref": "U51", "x": ROW4_END + 17.5, "y": 16.5, "cols": range(1, 8)},
-    {"ref": "U52", "x": ROW4_END + 47.5, "y": 16.5, "cols": range(8, 15)},
-    {"ref": "U53", "x": ROW4_END + 77.0, "y": 16.5, "cols": range(15, 26)},
+    {"ref": "U51", "x": CORNER_X + 15.4, "y": 66.0},
+    {"ref": "U52", "x": NOTCH_X + 20.8, "y": 9.5, "rot": 90, "cap": (-10.0, 0.0, 90)},
+    {"ref": "U53", "x": 15.0, "y": GRID_Y0 + 0.5 * U, "rot": 0, "cap": (4.65, -10.4, 0)},
 ]
+FRONT_ROW2_KEYS = 5               # row 2 keys (rightmost) that go to U51 with row 1
+U53_KEYS = 16                     # U53 (back-left corner, room to spare) takes the left 16
+# Power LED: a 3 mm bicolour (red/green, common cathode in the middle)
+# through-hole LED on the top, in the front-right corner, outside the
+# plate so it shows through the case. Its resistors sit on the back.
+LED = {"ref": "D1", "x": CORNER_X + 22.4, "y": 82.0}   # clear of the corner hole
 # 3.3 V regulator for the sensors and multiplexers (41 sensors x 6 mA is
 # more than the Teensy's own 3.3 V pin should supply): on the back, under
 # the stack, between the two pin rows. Fed from VIN (USB 5 V).
@@ -169,15 +187,21 @@ def keys():
 
 
 def assign_channels(ks):
-    """Gives every key a multiplexer and a channel. Keys left of a
+    """Gives every key a multiplexer and a provisional channel (the router
+    in build_pcb.py then lets each sensor output take whichever free
+    channel of its multiplexer it reaches best, and writes the final table
+    into the firmware and the CSV). Keys left of a
     multiplexer go to the channels on its left side, the rest to its right
     side (at most 8 a side). On each side the key furthest out gets the
     channel pin nearest the top, so traces coming in from the keys can
     turn towards the chip without crossing."""
+    row2 = sorted((k for k in ks if k["row"] == 1), key=lambda k: k["cx"])
+    front = [k for k in ks if k["row"] == 0] + row2[len(row2) - FRONT_ROW2_KEYS:]
+    rest = sorted((k for k in ks if k not in front), key=lambda k: (k["cx"], k["cy"]))
+    groups = [front, rest[U53_KEYS:], rest[:U53_KEYS]]  # U51, U52 (right), U53 (left)
     for m, mux in enumerate(MUXES):
-        group = [k for k in ks if half_col(k["cx"]) in mux["cols"]]
+        group = sorted(groups[m], key=lambda k: (k["cx"], k["cy"]))
         assert len(group) <= MUX_CHANNELS, (mux["ref"], len(group))
-        group.sort(key=lambda k: (k["cx"], k["cy"]))
         n_left = sum(1 for k in group if k["cx"] < mux["x"])
         n_left = min(8, max(n_left, len(group) - 8))
         left, right = group[:n_left], group[n_left:][::-1]
@@ -220,8 +244,8 @@ def in_plate(x, y):
 
 def mounting_holes():
     """M2 holes (2.2 mm). Shared by plate and PCB: the plate's corners, the
-    half-key gaps at the ends of rows 1 and 3, and two in the empty right
-    part of row 4. PCB only (for the case): two at the far right."""
+    half-key gaps at the ends of rows 1 and 3, and the gap after row 4.
+    PCB only (for the case): two at the far right."""
     m = MARGIN / 2
     x_plate_r = GRID_X0 + GRID_UNITS * U + PLATE_MARGIN - m
     slot = lambda r: GRID_Y0 + (row_slot(r) + 0.5) * U
@@ -234,8 +258,7 @@ def mounting_holes():
         (GRID_X0 + 0.25 * U, slot(0)),            # rows 1 / 3, left gaps
         (GRID_X0 + 0.25 * U, slot(2)),
         (key_right_edge(0) + 0.5 * U, slot(0)),   # row 1, right gap
-        (ROW4_END + 4.8, slot(3)),                # row 4, empty part
-        (NOTCH_X - 7.5, slot(3)),
+        ((ROW4_END + NOTCH_X) / 2, slot(3)),      # after row 4
         (PCB_W - m, PCB_H - m),                   # PCB only
         (PCB_W - m, STACK_ZONE[3] + 3.2),
     ]
@@ -255,6 +278,8 @@ def stack_pins():
 
 
 def pin_net(pin):
+    if pin in LED_PINS:
+        return LED_PINS[pin]
     if pin in SEL_PINS:
         return f"SEL{SEL_PINS.index(pin)}"
     if pin in COM_PINS:
@@ -348,7 +373,7 @@ def write_svg(ks):
     o.append("</g>")
     lines = [
         ("eTuttino PCB (Hall effect) — top view", 18, "700"),
-        (f"{PCB_W:.1f} × {PCB_H:.1f} × {PCB_THICKNESS} mm · {len(ks)} keys · Castagnari Magica K2 layout (C-griff)", 13, "400"),
+        (f"{PCB_W:.1f} × {PCB_H:.1f} × {PCB_THICKNESS} mm · {len(ks)} keys · C-griff G3–E6", 13, "400"),
         (f"{len(ks)} × Gateron magnetic switch (no pins) · {len(ks)} × DRV5056A3 sensor on the BACK, under each switch", 13, "400"),
         ("3 × CD74HC4067 analog mux + AMS1117-3.3 regulator on the back (dashed: seen through the board)", 13, "400"),
         ("Key label: switch · MUX/channel     - - - plate outline (notched for the Teensy + Audio Board)", 13, "400"),
@@ -369,12 +394,14 @@ def write_svg(ks):
 def main():
     os.makedirs(BUILD, exist_ok=True)
     ks = keys()
-    assert len(ks) == 41
+    assert len(ks) == 44
     assert len({(k["row"], k["col"]) for k in ks}) == len(ks)       # one key per grid cell
     assert len({(k["mux"], k["ch"]) for k in ks}) == len(ks)        # one sensor per mux channel
     assert not (set(SEL_PINS + COM_PINS) & AUDIO_PINS)            # no clash with the Audio Board
     # the stack stays clear of the keys: right of row 3's last key, above row 2
-    assert STACK_ZONE[0] > key_right_edge(2) and STACK_ZONE[3] < GRID_Y0 + 2 * U and STACK_ZONE[1] > 0
+    # (and clear of row 2's switch bodies, which start 7.4 mm above its centre line)
+    assert STACK_ZONE[0] > key_right_edge(2) and STACK_ZONE[3] < GRID_Y0 + 2.5 * U - 7.4 and STACK_ZONE[1] > 0
+    assert GRID_Y0 + 2.5 * U - CUTOUT / 2 - NOTCH_Y > 1.5      # plate material left round row 2's cutouts
     print(write_csv(ks))
     dxf, pw, ph = write_dxf(ks)
     print(dxf, f"(plate {pw:.2f} x {ph:.2f} mm, notched)")

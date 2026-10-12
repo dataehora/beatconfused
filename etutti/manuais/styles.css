@@ -38,9 +38,15 @@ html[lang="es"] .lang-block[data-lang="es"] {
 }
 
 /* ---- Table of contents: one card per manual ---- */
+/* keep every grid item inside narrow screens */
+.page > *,
+.manual > * {
+  min-width: 0;
+}
+
 .manual-toc {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
   gap: 0.9rem;
 }
 

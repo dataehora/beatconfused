@@ -7,7 +7,7 @@ MIDI. Sound comes out of the PJRC Audio Board.
 ## Hardware
 
 - Teensy 4.0 + PJRC Audio Adaptor Board **Rev D** (SGTL5000)
-- the eTuttino PCB with its 41 magnetic key switches and Hall sensors, see
+- the eTuttino PCB with its 44 magnetic key switches and Hall sensors, see
   [`../hardware`](../hardware). Without the PCB the sketch still works as a
   USB MIDI synth driven by the web page: at start-up a key whose sensor
   doesn't answer is left out, so a bare Teensy plays no stray notes.
@@ -23,7 +23,7 @@ sensor reads 0 V rather than floating. `KEY_INPUT` maps each note-grid cell
 to multiplexer × 16 + channel. It comes from `../hardware/generate.py`, and
 `build_pcb.py` checks the routed board against this copy.
 
-- **Scan:** 34 sensors took about 240 µs (measured on a Teensy 4.0; 41 should take about 290 µs), so
+- **Scan:** 34 sensors took about 240 µs (measured on a Teensy 4.0; 44 should take about 310 µs), so
   about 4 kHz per key.
 - **Travel:** the magnet's field falls off roughly as 1/distance³, so the
   travel is the cube root of the field above the sensor's 0.6 V zero,
@@ -45,6 +45,10 @@ to multiplexer × 16 + channel. It comes from `../hardware/generate.py`, and
 - **Key test (CC 15):** streams each key's position back as Polyphonic
   Aftertouch on channel 16 (data 1 = key index in grid order, data 2 =
   0–127). The page draws it as a ring around each on-screen key.
+
+**Power LED** (pins 4 red, 5 green): orange while the keys are first read
+at power-up (at least 0.6 s), green while playing, red blinking on an
+error: the Audio Board's codec didn't answer, or a key's sensor didn't.
 
 Every key plays the built-in synth and is also sent as USB MIDI (channel 1,
 with its velocity), so the page lights the key up and any DAW can record it.
