@@ -188,6 +188,19 @@ that doesn't belong there.
     like the Corsair Vanguard 96 LCD). The stack sits in the same place in
     every model (front half of the grip, against the left face) so the
     board can be shared; the back half is free until the Chorus.
+  - **New case, Seixo/Madeira (Oct 2026)**: `etutti/hardware/case/` —
+    `SPEC.md` (the user's spec from Claude Chat, Portuguese), `case.py`
+    (CadQuery, all parameters at the top), `keycap.py`, `render.py`
+    (PyVista), `fit_check.py` → `FIT_CHECK.md` (Portuguese, SPEC item 9).
+    Python env: `C:/Users/julia/.venvs/cadquery` (cadquery + pyvista, not
+    in the repo). The SPEC's frame (x right, y towards the player, z up)
+    is LEFT-handed: everything is modelled in SPEC coordinates and
+    mirrored on export (`y_file = 100 - y_spec`). Big consequence: the SPEC
+    puts rows **16.5 mm** apart (hex grid), but the current board has
+    rows 19.05 mm apart, so `generate.py`/`build_pcb.py` must be redone for this
+    case. Fit result: the current 19.8 mm stack doesn't fit. The fix is a low stack
+    (Teensy soldered on the Audio Board), plus pot/encoder/LED on a small
+    board under the lid. Details are in FIT_CHECK.md.
   - **Stiffness**: `etutti/hardware/mechanics.py` (KiCad python + numpy,
     no scipy) picks pillar spots on the back where there's only traces and
     runs a dense grillage FE (4 mm mesh) per key: ~2.7 mm sag at 3 N on the
