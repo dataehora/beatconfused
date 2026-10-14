@@ -1,25 +1,26 @@
-# eTutti · case paramétrico (Seixo e Madeira) · v5
+# eTutti · case paramétrico (Seixo e Madeira) · v6
 
-**Versão 5.** Substitui a v4, implementada no PR #81 (a v4 continua no histórico do git). Cada versão nova deste arquivo ganha um número e a seção "Mudanças desde a versão anterior". O resultado da verificação de cada versão fica no `FIT_CHECK.md`, com as "Perguntas para o design" no fim. Os desenhos desta versão estão em `canvas-v5/`.
+**Versão 6.** Substitui a v5, implementada no PR #82 (as versões anteriores continuam no histórico do git). Cada versão nova deste arquivo ganha um número e a seção "Mudanças desde a versão anterior". O resultado da verificação de cada versão fica no `FIT_CHECK.md`, com as "Perguntas para o design" no fim. Os desenhos de referência continuam em `canvas-v5/` (forma geral; as medidas desta SPEC prevalecem).
 
-## Mudanças desde a versão anterior (v4)
+## Mudanças desde a versão anterior (v5)
 
-1. **Interface plana + 13°** (seção 4): plana a z = 33 só sob a tela e os controles, até y = 55; dali desce a 13° até a borda da frente (z ≈ 22,6). Antes era um plano único inclinado ~3° (33 → 28).
-2. **Rampa entre interface e teclado** (seção 4): a borda de cima passa a ser abertura + 12,7 (era "+ 20,3", com o vértice errado). Na metade da frente a rampa desce reta e curva para a borda (R 14) em vez de voltar pela diagonal. Bordas arredondadas com R 5.
-3. **Controles** (seção 5): da esquerda para a direita, volume (20; 45), seletor (37; 45) e LED (52; 45).
-4. **Zona da tela** (seção 5): x 8–62 (era 10–64).
-5. **Grade** (seção 5): retângulo x 8–53, y 61–94, no plano a 13°, com 6 mm de folga do vinco, da rampa e da borda. Não invade mais a rampa.
-6. **Dó e Fá** com xadrez diagonal em relevo (eram só os Dós, com ranhuras).
-7. **Madeira**: carvalho branco (white oak); CNC em **duas** fixações (correção do FIT_CHECK).
-8. **Seção 9** atualizada com as conclusões do `FIT_CHECK.md` (pilha baixa, plaquinha de controles, plugue USB de 90°).
+Decisões tomadas a partir do `FIT_CHECK.md` da v5 (PR #82):
 
+1. **Passo 18,5 mm** (seção 2), grade hexagonal mantida: cada botão a 18,5 mm dos seis vizinhos, fileiras a 16,02 mm, em y = 74,03 / 58,01 / 41,99 / 25,97. Comprimento total ~331,1 mm. Os vértices das seções 3 e 4 passam a ser derivados dos parâmetros (`case.py`), não mais listados aqui.
+2. **Largura de 100 mm mantida** (seção 3): a folga do teclado na frente e atrás sobe para ~8,2 mm; a faixa de tampa entre a abertura e as paredes continua 10,3 mm.
+3. **Fim da rampa** (seção 4): na frente, a curva R 14 vai até 75° e segue reta até a face, chegando em x ≈ 47,4 (borda de cima) e x ≈ 56,1 (borda de baixo).
+4. **Vinco** entre o plano e os 13° (seção 4): R 10.
+5. **Tampa em volta das teclas sobe para z = 17,4** (era 15,7), escondendo mais a carcaça do switch. O topo dos botões continua em z = 26,5.
+6. **Saia das capas Ø 16,5** (era Ø 17): 2 mm entre saias vizinhas.
+7. **Madeira** (seção 8): borda da abertura com 2 mm de reto (era 1 mm), e o LED passa a ter furo com janela de acrílico difuso no lugar da pele de 0,8 mm. CNC em duas fixações.
+8. **Pilha** (seção 9): ~13 mm no eTuttino; ≤ 10 mm no eTuttiChorus. PCB refeita com fileiras a 16,02 mm.
 
 Especificação para o Claude Code gerar o modelo 3D do case do eTuttino, nas duas versões:
 
 - **Seixo**: plástico, impressão em resina ou MJF, uma cor só.
 - **Madeira**: carvalho branco (white oak), CNC de 3 eixos em duas fixações (a de cima e o bolsão interno por baixo), acabamento a óleo.
 
-As duas versões têm exatamente a mesma geometria; só mudam o material e a fabricação. Os desenhos de referência estão em `canvas-v5/` (Seixo v5, Madeira v5, Botões sobre Gateron, Cores).
+As duas versões têm exatamente a mesma geometria; só mudam o material e a fabricação. Os desenhos de referência estão em `canvas-v5/` (Seixo, Madeira, Botões sobre Gateron, Cores).
 
 Medidas em mm. Tudo que estiver marcado **(conferir)** é estimativa do conceito e precisa ser confirmado com a peça real ou o datasheet.
 
@@ -33,15 +34,16 @@ Esse sistema é canhoto. Mantenha a convenção já usada no `case.py`: modelar 
 
 ## 2. Teclado C-griff (eTuttino, 44 teclas, G3–E6)
 
-- Passo entre botões: `P = 19,05`. Diâmetro do botão: `D = 15` (raio 7,5).
+- Passo entre botões: `P = 18,5`, igual para os seis vizinhos (grade hexagonal, triângulos equiláteros). Diâmetro do botão: `D = 15` (raio 7,5).
+- Distância entre fileiras: `P · cos 30° = 16,02`. O teclado fica centrado na largura (y = 50).
 - Centros das fileiras em y:
 
   | Fileira | Posição | y |
   |---|---|---|
-  | 1 | mais perto de quem toca | 74,8 |
-  | 2 | | 58,3 |
-  | 3 | | 41,8 |
-  | 4 | | 25,3 |
+  | 1 | mais perto de quem toca | 74,03 |
+  | 2 | | 58,01 |
+  | 3 | | 41,99 |
+  | 4 | | 25,97 |
 
 - Origem do teclado: `O = 104`. O centro de um botão fica em `x = O + xp · P`.
 - Nota `n` em semitons a partir de G3 (G3 = 0). A fileira e o `xp` de cada nota:
@@ -55,37 +57,26 @@ Esse sistema é canhoto. Mantenha a convenção já usada no `case.py`: modelar 
 
 - **Sustenidos (botão preto)**: `(n + 7) % 12 ∈ {1, 3, 6, 8, 10}`.
 - **Dós e Fás** (C4, F4, C5, F5, C6 = n 5, 10, 17, 22, 29): botão branco com xadrez diagonal em relevo no topo, para achar no tato.
-- Botões das pontas da fileira 2: (94,475; 58,3) e (304,025; 58,3).
+- Botões das pontas da fileira 2: (94,75; 58,01) e (298,25; 58,01).
 
 ## 3. Área do teclado (abertura na tampa)
 
 ### Folgas
 
 - Nas laterais: 1 botão (15 mm), medido perpendicular à borda dos botões. A folga segue as duas diagonais das fileiras, a 30° da vertical, formando "<" à esquerda e ">" à direita.
-- Na frente e atrás: ½ botão (7,5 mm).
+- Na frente e atrás: o que sobra com a caixa de 100 mm e a faixa de 10,3 mm, ~8,2 mm.
 
 ### Contorno da abertura
 
-Hexágono com vértices vivos:
+Hexágono derivado das folgas acima (o `case.py` calcula os vértices a partir de `P`):
 
-```
-(96,21; 10,3) → (302,29; 10,3) → (330,01; 58,3) → (311,82; 89,8) → (86,68; 89,8) → (68,49; 58,3)
-```
-
-- Os dois vértices laterais (y = 58,3) são arredondados com R 22,5, concêntricos aos botões das pontas da fileira 2. Assim a folga fica igual em toda a volta.
+- Os dois vértices laterais (na altura da fileira 2) são arredondados com R 22,5, concêntricos aos botões das pontas da fileira 2. Assim a folga fica igual em toda a volta.
 - Os quatro cantos de 120° têm R 6.
 
 ### Chanfro
 
-- Arredondado, de 4 mm, nas quatro bordas da abertura, no mesmo material e na mesma cor da tampa.
-- Contorno externo do chanfro = abertura + 4 mm:
-
-  ```
-  (93,90; 6,3) → (304,60; 6,3) → (334,62; 58,3) → (314,13; 93,8) → (84,37; 93,8) → (63,88; 58,3)
-  ```
-
-  - vértices laterais com R 26,5;
-  - cantos com R 10.
+- Arredondado, de 4 mm em planta e 2 mm de queda, nas quatro bordas da abertura, no mesmo material e na mesma cor da tampa. Abaixo dele, a borda tem um reto vertical (1 mm no Seixo, 2 mm na Madeira).
+- Contorno externo do chanfro = abertura + 4 mm (vértices laterais R 26,5; cantos R 10).
 
 ### Dentro da abertura
 
@@ -98,30 +89,23 @@ Hexágono com vértices vivos:
 ### Contorno em planta
 
 - **Largura**: 100 constante (y de 0 a 100).
-- **Lado direito, frente e trás**: seguem a área do teclado a ~6 mm do chanfro externo, o que equivale à abertura + 10,3 mm. Vértices vivos do lado direito:
-
-  ```
-  (308,24; 0) → (341,90; 58,3) → (317,77; 100)
-  ```
-
-  - vértice com R 32,8, concêntrico ao botão (304,025; 58,3);
-  - cantos com R 16,3.
+- **Lado direito, frente e trás**: seguem a área do teclado a ~6 mm do chanfro externo, o que equivale à abertura + 10,3 mm. Vértice do lado direito com R 32,8, concêntrico ao botão da ponta direita da fileira 2; cantos com R 16,3.
 - **Lado esquerdo**: reto em x = 0, cantos com R 16.
-- **Comprimento total**: ~336,8 mm.
+- **Comprimento total**: ~331,1 mm.
 
 ### Paredes e alturas
 
 - Paredes externas verticais, a 90° da mesa, sem chanfro nem arredondamento de perfil.
-- **Área do teclado**: tampa em z = 15,7. Topo dos botões em z = 26,5.
+- **Área do teclado**: tampa em z = 17,4 (4,7 mm sobre a borda da placa de switches). Topo dos botões em z = 26,5. Conferir que a saia, com a tecla apertada, não toca a tampa.
 - **Área de interface** (à esquerda da área do teclado): bloco elevado.
   - **Plano** em z = 33 de y = 0 até y = 55, só sob a tela e os controles. O vinco em y = 55 deixa os controles centrados entre a tela e o vinco (folgas de ~5 mm).
   - De y = 55 até a borda da frente, **desce a 13°** e chega a z ≈ 22,6 em y = 100. A grade fica nesse plano inclinado, voltada para quem toca.
-  - O vinco entre o plano e a parte a 13° é arredondado.
+  - O vinco entre o plano e a parte a 13° é arredondado com R 10.
 - **Transição** entre interface e teclado: rampa seguindo o mesmo "<".
-  - **metade de trás** (y de 0 a 58,3): segue a diagonal "<".
-    - borda de cima: abertura + 12,7, com arco R 35,2 concêntrico ao botão da ponta da fileira 2 (94,475; 58,3);
+  - **metade de trás** (de y = 0 até a fileira 2): segue a diagonal "<".
+    - borda de cima: abertura + 12,7, com arco R 35,2 concêntrico ao botão da ponta esquerda da fileira 2;
     - borda de baixo: o chanfro externo (abertura + 4), arco R 26,5.
-  - **metade da frente**: em vez de voltar pela diagonal, a rampa desce reta (borda de cima em x ≈ 59,3; borda de baixo em x ≈ 68,0) até y = 86. Dali curva com R 14 até a borda da frente, chegando em x ≈ 45,3 (cima) e x ≈ 54,0 (baixo).
+  - **metade da frente**: em vez de voltar pela diagonal, a rampa desce reta (paralela a y) até y = 86. Dali curva com R 14 por 75° e segue reta até a face da frente, chegando em x ≈ 47,4 (borda de cima) e x ≈ 56,1 (borda de baixo).
   - Isso deixa uma área de tampa plana, na altura do teclado, à esquerda da fileira 1, com espaço para a mão que toca os graves;
   - **as duas bordas da rampa arredondadas com R 5**, e nenhum canto vivo na interface do lado do teclado, para não machucar a mão que toca.
 
@@ -133,7 +117,7 @@ Hexágono com vértices vivos:
 | Tela | 1,9″ 320 × 170. Área visível ~43 × 23 centrada na zona (conferir datasheet do módulo) |
 | Volume | potenciômetro contínuo, eixo em (20; 45), knob Ø 9 |
 | Seletor de instrumento | encoder com clique e giro infinito, eixo em (37; 45), knob Ø 9 |
-| LED | Ø 3,5 em (52; 45), à direita dos knobs. Na Madeira, LED "fantasma": parede de madeira < 1 mm por cima |
+| LED | Ø 3,5 em (52; 45), à direita dos knobs. Seixo: furo. Madeira: furo com janela de acrílico difuso rente à superfície |
 | Grade | furos Ø 1,9 a passo de 4 |
 
 Contorno da grade:
@@ -153,7 +137,7 @@ A grade fica toda no plano a 13°, com folga de 6 mm do vinco, da rampa e da bor
 
 - Um só modelo: domo baixo com saia.
   - topo convexo de Ø 15;
-  - saia que abre até Ø 17 na base;
+  - saia que abre até Ø 16,5 na base (2 mm entre saias vizinhas, passo 18,5);
   - encaixe em cruz padrão MX.
 - Altura tal que o topo fique em z = 26,5 com o switch montado (conferir a altura do Gateron usado).
 - Três arquivos:
@@ -175,34 +159,35 @@ A grade fica toda no plano a 13°, com folga de 6 mm do vinco, da rampa e da bor
 
 - Carvalho branco (white oak); carvalho escuro como alternativa.
 - Bloco bruto ~350 × 110 × 40 mm.
-- Fresagem de 3 eixos de cima: contorno, abertura, chanfro, rebaixo da tela, furação, bolsão interno.
+- Fresagem de 3 eixos em duas fixações: de cima (contorno, abertura, chanfro, rebaixo da tela, furação) e virada (bolsão interno).
+- Borda da abertura com 2 mm de reto abaixo do chanfro, para o carvalho não lascar.
+- LED: furo Ø 3,5 com janela de acrílico difuso colada, rente.
 - Tampa de fundo fina.
 - Sem filetes nem texturas aplicadas.
 
 ## 9. A conferir no modelo
 
-Premissas que vêm do `FIT_CHECK.md` (v4) e continuam valendo:
+Premissas que continuam valendo (do `FIT_CHECK.md` da v5):
 
-- Pilha baixa: Teensy soldado direto na Audio Board, ~11,3 mm.
-- Potenciômetro, encoder e LED numa plaquinha presa por baixo da tampa, com eixos de L = 15.
-- Plugue micro-USB de 90° no cabo até o USB de painel; conectores de painel com no máximo ~10 mm de corpo atrás do inserto.
+- Pilha Teensy + Audio Board: **~13 mm no eTuttino** (cabe, com até 16,9 mm no Seixo). **≤ 10 mm no eTuttiChorus** (com 13 mm o plugue micro-USB de 90° bate na tela).
+- Potenciômetro, encoder e LED numa plaquinha presa por baixo da tampa (eixos L = 15).
+- Plugue micro-USB de 90° (≤ 11 mm a partir do conector, ≤ 7,5 mm de altura); conectores de painel com no máximo ~10 mm de corpo atrás do inserto.
 - Fone de painel ligado por fio à Audio Board.
 - Paredes: Seixo 2,5 mm; Madeira 4 mm (2,5 mm em volta do inserto) e tampa de 3 mm.
-- PCB e placa de switches refeitas na grade de 16,5 mm entre fileiras (etapa separada).
+- PCB e placa de switches refeitas com fileiras a **16,02 mm** e passo 18,5 (etapa separada).
 
-O que precisa ser verificado de novo, porque a geometria mudou:
+O que verificar nesta versão:
 
-1. Rodar o `fit_check.py` contra a v5. A rampa agora desce reta na metade da frente, então a interface fica mais estreita na frente (borda de cima em x ≈ 45–59 em vez de ~81). Conferir se a pilha baixa, o alto-falante de 28 mm (Chorus) e os conectores continuam cabendo, e se a eletrônica pode avançar por baixo da rampa e da área livre de tampa à esquerda da fileira 1.
-2. Teto interno sob o plano de 13° (z cai para ~22,6 na frente) contra a pilha e o alto-falante.
-3. Folga das saias de 17 mm (passo 19,05) com o Gateron KS-20 real, usando o `keycap_test_4.stl`.
-4. LED fantasma na Madeira: testar numa sobra se a pele de 0,8 mm deixa a luz passar.
+1. Com a tampa em z = 17,4: a saia Ø 16,5 com a tecla apertada não toca a tampa nem a borda da abertura, e a tampa mais grossa não bate em nada da placa principal sob a faixa de 10,3 mm.
+2. Saias Ø 16,5 entre vizinhas, inclusive na diagonal.
+3. O fim da rampa com a reta depois dos 75° não muda as folgas da interface.
+4. Madeira: borda com 2 mm de reto e janela do LED.
 
-## 10. Entregáveis pedidos ao Claude Code (v5)
+## 10. Entregáveis pedidos ao Claude Code (v6)
 
-Em `etutti/hardware/case/`, atualizando os arquivos que já existem (não criar outros do zero):
+Em `etutti/hardware/case/`, atualizando os arquivos que já existem:
 
-1. `case.py`: aplicar as mudanças da v5, mantendo todos os parâmetros no topo.
-2. `fit_check.py` e `FIT_CHECK.md`: rodar de novo contra a v5 (seção 9) e registrar o resultado.
-3. `keycap.py`: marcação de Dó e Fá com xadrez diagonal.
-4. Reexportar STEP e STL (Seixo: tampa e fundo; Madeira: corpo e tampa de fundo; inserto; placa de switches) e regerar os renders.
-5. `FIT_CHECK.md`: terminar com a seção "Perguntas para o design".
+1. `case.py`: aplicar as mudanças da v6 (a maior parte já está nos parâmetros: conferir `D_SKIRT`, `Z_DECK`, `IF_CREASE_R` e a borda e o LED da Madeira).
+2. `keycap.py`: saia Ø 16,5; regerar o `keycap_test_4.stl`.
+3. `fit_check.py` e `FIT_CHECK.md`: rodar contra a v6 (seção 9) e terminar com "Perguntas para o design".
+4. Reexportar STEP e STL e regerar os renders.
