@@ -1,6 +1,15 @@
-"""Where the case holds the eTuttino board up, and how far the board bends
-when a key is pressed (run with KiCad's Python; build_pcb.py calls
-write_supports() after routing, before the case and the renders).
+"""How far the eTuttino board bends when a key is pressed (run with
+KiCad's Python, which has numpy):
+
+    "C:/Program Files/KiCad/10.0/bin/python.exe" mechanics.py
+
+checks the v7 board on the bottom plate's pillars (case/pcb_envelope.json,
+generate.SUPPORTS) and writes build/etuttino_supports.json.
+
+write_supports() / choose_pillars() are the #78 board's: they picked
+pillar spots for its rectangular board and old case and are kept for the
+model only; on the v7 board the case decides the pillars (one at the
+centre of every three-key triangle) and this file checks them.
 
 The switches are plate-mounted but sit right on the PCB, so a key press
 ends up pushing the 1.2 mm board down under that key. Screwed only at its
@@ -195,6 +204,35 @@ def write_supports(board_path):
     return result
 
 
+def check_case_supports():
+    """The v7 board on the case's pillars (plus the stack's 28 header legs):
+    sag per key under PRESS_N."""
+    ks = G.keys()
+    loads = [(k["cx"], k["cy"]) for k in ks]
+    stack = [(p[3], p[4]) for p in G.stack_pins()]
+    pillars = [(x, y) for x, y, _ in G.SUPPORTS]
+    sag = deflections(pillars + stack, loads)
+    worst = max(range(len(ks)), key=lambda i: sag[i])
+    result = {
+        "pillars": [list(p) for p in pillars],
+        "deflection": {
+            "press_n": PRESS_N,
+            "model": "grillage of the bare %.1f mm FR-4 board's bounding box, %.0f mm mesh, E = %.0f MPa, no twisting stiffness, plate ignored" % (G.PCB_THICKNESS, GRID_H, E_FR4),
+            "max_mm": round(max(sag), 3),
+            "mean_mm": round(sum(sag) / len(sag), 3),
+            "worst_key": G.note_name(ks[worst]["note"]) + " row %d" % (ks[worst]["row"] + 1),
+            "per_key_mm": {k["ref"]: round(d, 4) for k, d in zip(ks, sag)},
+        },
+    }
+    os.makedirs(G.BUILD, exist_ok=True)
+    with open(SUPPORTS_PATH, "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=1)
+    d = result["deflection"]
+    print("%d pillars: board sag under a %.0f N press %.3f mm at worst (%s), %.3f mean%s" % (
+        len(pillars), PRESS_N, d["max_mm"], d["worst_key"], d["mean_mm"],
+        "" if d["max_mm"] <= TARGET_MM else "  -- ABOVE the %.2f mm target" % TARGET_MM))
+    return result
+
+
 if __name__ == "__main__":
-    import sys
-    write_supports(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), "kicad", "etuttino.kicad_pcb"))
+    check_case_supports()

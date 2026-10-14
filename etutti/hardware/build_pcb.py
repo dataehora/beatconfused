@@ -17,12 +17,18 @@ board, runs KiCad's DRC and exports everything a PCB service needs:
   fab/etuttino_top.png / _bottom.png   renders for a visual check
 
 What is on the board:
-  - front: 44 Gateron magnetic switches (no pins, two plastic pegs) and
-    the two rows of 14 holes for the Teensy 4.0 + Audio Board stack (back
-    left corner, USB and headphone jack facing the left edge), the power LED,
+  - front: 44 Gateron magnetic switches (no pins, two plastic pegs) on the
+    case's 18.5 mm hexagonal grid, the two rows of 14 holes for the Teensy
+    4.0 + Audio Board stack (back left, USB facing the case's left face) and
+    J3, the cable to the controls board under the interface lid (volume
+    pot, encoder, power LED),
   - back: under every switch a DRV5056A3 linear Hall sensor and its
     100 nF capacitor; three CD74HC4067 analog multiplexers; an AMS1117-3.3
-    regulator for the sensors.
+    regulator for the sensors; the LED's two 330 ohm resistors.
+
+The board's outline is the case's (case/out/pcb_envelope.json, see
+generate.py): the router keeps EDGE_CLEAR from that polygon, notches
+included.
 
 Why the sensors are on the back: the DRV5056 only responds to a magnetic
 SOUTH pole facing its marked (top) side, and Gateron's magnetic switches
@@ -287,12 +293,28 @@ class Router:
                 self.owner[1][idx] = HARD
                 self.novia[idx] = 1
 
-    def mark_edges(self, w, h):
+    def mark_edges(self, poly):
+        """Everything outside the board's outline (a polygon), and within
+        EDGE_CLEAR of it, is off limits."""
         r = EDGE_CLEAR + HW_MAX + SLACK
+        segs = list(zip(poly, poly[1:] + poly[:1]))
         for iy in range(self.H):
+            y = self.cy(iy)
+            xs = sorted(x0 + (y - y0) * (x1 - x0) / (y1 - y0)
+                        for (x0, y0), (x1, y1) in segs if (y0 > y) != (y1 > y))
+            inside = list(zip(xs[0::2], xs[1::2]))
             for ix in range(self.W):
-                x, y = self.cx(ix), self.cy(iy)
-                if x < r or y < r or x > w - r or y > h - r:
+                x = self.cx(ix)
+                if not any(a <= x <= b for a, b in inside):
+                    idx = iy * self.W + ix
+                    self.owner[0][idx] = HARD
+                    self.owner[1][idx] = HARD
+        for (ax, ay), (bx, by) in segs:
+            dx, dy = bx - ax, by - ay
+            L2 = dx * dx + dy * dy or 1e-12
+            for ix, iy, x, y in self._area(min(ax, bx), min(ay, by), max(ax, bx), max(ay, by), r):
+                t = max(0.0, min(1.0, ((x - ax) * dx + (y - ay) * dy) / L2))
+                if math.hypot(x - ax - t * dx, y - ay - t * dy) < r:
                     idx = iy * self.W + ix
                     self.owner[0][idx] = HARD
                     self.owner[1][idx] = HARD
@@ -416,7 +438,7 @@ class Router:
 
 # The order the retries found for the current layout; a layout change may
 # need a new one (the retry loop finds it and prints it).
-DEFAULT_ROUTE_FIRST = "OUT_U34"
+DEFAULT_ROUTE_FIRST = "OUT_U41,OUT_U42,GND,LED_R,LED_G_DRV,OUT_U34"
 
 
 class RoutingFailed(Exception):
@@ -553,7 +575,7 @@ def build():
     pins = G.stack_pins()
     anchor = [(p[3], p[4]) for p in pins if p[0] == "J1" and p[1] == 1][0]
     router = Router(G.PCB_W, G.PCB_H, anchor)
-    router.mark_edges(G.PCB_W, G.PCB_H)
+    router.mark_edges(G.OUTLINE)
 
     footprints = []             # every placed footprint; pads registered once nets are set
 
@@ -657,23 +679,25 @@ def build():
         far.SetNet(net("GND"))
     footprints += [ldo, c_in, c_out]
 
-    # ---- power LED (top, through-hole, red/green common cathode) and its
-    # 330 ohm resistors (back) ----
-    led = place(lib("LED_THT"), "LED_D3.0mm-3", G.LED["ref"], G.LED["x"] - 2.54, G.LED["y"], "LED 3mm red/green CC")
-    led.Reference().SetVisible(False)      # the "POWER" label marks it
-    for p in led.Pads():
-        p.SetNet(net({"1": "LED_R", "2": "GND", "3": "LED_G"}[p.GetNumber()]))
-    assert abs(xy(pad(led, "2").GetPosition())[0] - G.LED["x"]) < 0.01
+    # ---- the power LED's 330 ohm resistors (back); the LED itself is on the
+    # controls board, through J3 ----
     led_res = {}
-    for ref, dx, drv, out in (("R1", -1.8, "LED_R_DRV", "LED_R"), ("R2", 5.0, "LED_G_DRV", "LED_G")):
-        r = place(lib("Resistor_SMD"), "R_0805_2012Metric", ref, G.LED["x"] + dx, G.LED["y"] - 4.5, "330", back=True, rot=90)
+    for ref, dx, drv, out in (("R1", 0.0, "LED_R_DRV", "LED_R"), ("R2", 3.0, "LED_G_DRV", "LED_G")):
+        r = place(lib("Resistor_SMD"), "R_0805_2012Metric", ref, G.LED_RES["x"] + dx, G.LED_RES["y"], "330", back=True, rot=90)
         r.Reference().SetVisible(False)
         p1, p2 = pad(r, "1"), pad(r, "2")
         low, high = (p1, p2) if xy(p1.GetPosition())[1] > xy(p2.GetPosition())[1] else (p2, p1)
-        low.SetNet(net(out))      # the pad nearer the LED
+        low.SetNet(net(out))      # the pad nearer J3 (in front)
         high.SetNet(net(drv))
         led_res[ref] = (high.GetNumber(), low.GetNumber())
-    footprints += [led, *[board.FindFootprintByReference(r) for r in led_res]]
+    footprints += [board.FindFootprintByReference(r) for r in led_res]
+
+    # ---- J3: cable to the controls board (JST PH, 2 mm, vertical, top) ----
+    j3 = place(lib("Connector_JST"), "JST_PH_B8B-PH-K_1x08_P2.00mm_Vertical", G.J3["ref"], G.J3["x"], G.J3["y"],
+               "controls board")
+    for p in j3.Pads():
+        p.SetNet(net(G.J3_PINS[int(p.GetNumber())]))
+    footprints.append(j3)
 
     # ---- Teensy sockets (front, through-hole) ----
     sockets = {}
@@ -700,6 +724,19 @@ def build():
     for fp in footprints:
         for p in fp.Pads():
             register_pad(p, (fp.GetReference(), p.GetNumber()) if p.GetNetname() else None)
+
+    # nothing on the back where the bottom plate's pillars hold the board up
+    clash = []
+    for fp in footprints:
+        if not fp.IsFlipped():
+            continue
+        bb = fp.GetBoundingBox(False)
+        x0, y0, x1, y1 = (pcbnew.ToMM(v) for v in (bb.GetLeft(), bb.GetTop(), bb.GetRight(), bb.GetBottom()))
+        for sx, sy, sr in G.SUPPORTS:
+            if math.hypot(max(x0 - sx, 0, sx - x1), max(y0 - sy, 0, sy - y1)) < sr:
+                clash.append((fp.GetReference(), (sx, sy)))
+    if clash:
+        raise SystemExit("parts on the back over a bottom-plate pillar: %s" % clash)
 
     # ---- fixed copper: per-key stubs, row buses, trunks, output vias ----
     for points, layer, name, w in pending_tracks:
@@ -776,13 +813,19 @@ def build():
     for item in [("J2", "2"), (ldo_ref, "1"), (LDO_CIN, pad_of(c_in, "GND")), (LDO_COUT, pad_of(c_out, "GND"))]:
         jobs.append(("GND", item, "tree", "GND %s.%s" % item))
     jobs.append(("VCC", (LDO_COUT, pad_of(c_out, "VCC")), "tree", "VCC %s" % LDO_COUT))
-    # power LED: Teensy pin -> resistor -> LED, cathode to GND
-    for ref, drv, out, led_pad in (("R1", "LED_R_DRV", "LED_R", "1"), ("R2", "LED_G_DRV", "LED_G", "3")):
+    # power LED: Teensy pin -> resistor -> J3 (the LED is on the controls board)
+    j3_pin = {n: str(p) for p, n in G.J3_PINS.items()}
+    for ref, drv, out in (("R1", "LED_R_DRV", "LED_R"), ("R2", "LED_G_DRV", "LED_G")):
         teensy_pin = [p for p, n in G.LED_PINS.items() if n == drv][0]
         j1 = [p for p in pins if p[0] == "J1" and p[2] == teensy_pin][0]
         jobs.append((drv, ("J1", str(j1[1])), [(ref, led_res[ref][0])], "pin %s -> %s" % (teensy_pin, ref)))
-        jobs.append((out, (ref, led_res[ref][1]), [(G.LED["ref"], led_pad)], "%s -> LED" % ref))
-    jobs.append(("GND", (G.LED["ref"], "2"), "tree", "LED cathode"))
+        jobs.append((out, (ref, led_res[ref][1]), [(G.J3["ref"], j3_pin[out])], "%s -> J3" % ref))
+    # pot and encoder lines: Teensy pin -> J3; J3's supply joins the trees
+    for teensy_pin, n in G.CONTROL_PINS.items():
+        row = [p for p in pins if p[2] == teensy_pin][0]
+        jobs.append((n, (row[0], str(row[1])), [(G.J3["ref"], j3_pin[n])], "pin %s -> J3 %s" % (teensy_pin, n)))
+    jobs.append(("VCC", (G.J3["ref"], j3_pin["VCC"]), "tree", "J3 3.3 V"))
+    jobs.append(("GND", (G.J3["ref"], j3_pin["GND"]), "tree", "J3 GND"))
     gnd_pins = [str(p) for p, f in G.MUX_PINS.items() if f in ("GND", "E")]
     for m, spec in enumerate(G.MUXES):
         cref = MUX_CAP_REFS[m]
@@ -850,8 +893,7 @@ def build():
     write_channel_table(keys)
 
     # ---- outline, labels ----
-    w, hgt = G.PCB_W, G.PCB_H
-    corners = [(0, 0), (w, 0), (w, hgt), (0, hgt), (0, 0)]
+    corners = G.OUTLINE + G.OUTLINE[:1]
     for (x1, y1), (x2, y2) in zip(corners, corners[1:]):
         seg = pcbnew.PCB_SHAPE(board)
         seg.SetShape(pcbnew.SHAPE_T_SEGMENT)
@@ -861,17 +903,17 @@ def build():
         seg.SetWidth(pcbnew.FromMM(0.1))
         board.Add(seg)
 
-    text("eTuttino v0.5 HE", G.GRID_X0 + 3 * G.U, 3.2, 1.2)
-    text("POWER", G.LED["x"], G.LED["y"] - 2.6, 0.9)
-    text("< USB + jack - Teensy 4.0 on Audio Board Rev D", G.STACK_CX, G.STACK_ZONE[1] + 1.4, 0.9)
+    text("eTuttino v0.6 HE", G.KEY_O + 3 * G.U, G.ROW_Y[4] - 10.5, 1.2)
+    text("controls board", G.J3["x"] + 7.0, G.J3["y"] + 4.6, 0.9)
+    text("< USB - Teensy 4.0 on Audio Board Rev D", G.STACK_CX, G.STACK_ZONE[1] + 2.6, 0.9)
     j1_gnd = [p for p in pins if p[0] == "J1" and p[1] == 1][0]
     j2_vin = [p for p in pins if p[0] == "J2" and p[1] == 1][0]
     text("GND", j1_gnd[3], j1_gnd[4] + 2.4, 0.8)
     text("VIN", j2_vin[3], j2_vin[4] - 2.4, 0.8)
     text("0", j1_gnd[3] + 2.54, j1_gnd[4] + 2.4, 0.8)
     text("23", j2_vin[3] + 7.62, j2_vin[4] - 2.4, 0.8)
-    text("eTuttino v0.5 HE - C-griff G3-E6 - beatconfused.com/etutti", G.PCB_W / 2, G.PCB_H - 2.6, 1.0, pcbnew.B_SilkS)
-    text("Sensors DRV5056A3 on this side, under each switch", G.PCB_W / 2 + 40, 2.6, 1.0, pcbnew.B_SilkS)
+    text("eTuttino v0.6 HE - C-griff G3-E6 - beatconfused.com/etutti", G.KEY_O + 5 * G.U, G.ROW_Y[1] + 14.0, 1.0, pcbnew.B_SilkS)
+    text("Sensors DRV5056A3 on this side, under each switch", G.KEY_O + 5 * G.U, G.ROW_Y[4] - 14.0, 1.0, pcbnew.B_SilkS)
 
     os.makedirs(KICAD_DIR, exist_ok=True)
     pcbnew.SaveBoard(BOARD_PATH, board)
@@ -1040,10 +1082,10 @@ def build_plate():
     global board
     main_board = board
     board = pcbnew.BOARD()
-    ox = G.GRID_X0 - G.PLATE_MARGIN
-    oy = G.GRID_Y0 - G.PLATE_MARGIN
-    pw = G.GRID_UNITS * G.U + 2 * G.PLATE_MARGIN
-    ph = 4 * G.U + 2 * G.PLATE_MARGIN
+    ox = min(x for x, _ in G.PLATE_OUTLINE)
+    oy = min(y for _, y in G.PLATE_OUTLINE)
+    pw = max(x for x, _ in G.PLATE_OUTLINE) - ox
+    ph = max(y for _, y in G.PLATE_OUTLINE) - oy
 
     def outline(pts):
         for (ax, ay), (bx, by) in zip(pts, pts[1:]):
@@ -1069,7 +1111,7 @@ def build_plate():
             h.Reference().SetVisible(False)
             h.SetPosition(mm(x, y))
             board.Add(h)
-    text("eTuttino plate v0.5", ox + pw / 2, oy + ph - 2.6, 1.2)
+    text("eTuttino plate v0.6", ox + pw / 2, oy + ph - 2.0, 1.2)
     pcbnew.SaveBoard(PLATE_PATH, board)
     print("saved", PLATE_PATH)
     board = main_board
@@ -1113,24 +1155,12 @@ def route_with_retries(max_attempts=20):
     return 1
 
 
-FREECAD_PY = os.environ.get("FREECAD_PYTHON", "C:/Program Files/FreeCAD 1.0/bin/python.exe")
-
-
 def renders():
-    """Case supports + sag check (mechanics.py), the case (case.py, in
-    FreeCAD), then the pictures for the manuals (assembly3d.py)."""
-    import assembly3d
-    import mechanics
-    mechanics.write_supports(BOARD_PATH)
-    for script in ("case.py", "case_check.py"):
-        r = subprocess.run([FREECAD_PY, os.path.join(HERE, script)], capture_output=True, text=True)
-        sys.stdout.write(r.stdout[-2000:])
-        if r.returncode:
-            sys.stdout.write(r.stderr[-4000:])
-            raise SystemExit("%s failed" % script)
-    made, keycap_top, stack_top = assembly3d.render_all(KICAD_CLI, BOARD_PATH)
-    print("renders:", ", ".join(os.path.basename(m) for m in made))
-    print("heights above the board: keycaps %.1f mm, Teensy stack %.1f mm" % (keycap_top, stack_top))
+    """The manuals' pictures (assembly3d.py) were made for the #78 board and
+    its FreeCAD case, both gone: the case is case/ now (CadQuery, with its
+    own renders). They need redoing for the v7 board before --renders works
+    again."""
+    raise SystemExit("--renders: assembly3d.py still describes the #78 board; see renders.__doc__")
 
 
 if __name__ == "__main__" and "--renders" in sys.argv:
@@ -1138,10 +1168,7 @@ if __name__ == "__main__" and "--renders" in sys.argv:
     sys.exit(0)
 
 if __name__ == "__main__" and not os.environ.get("ETUTTINO_CHILD"):
-    code = route_with_retries()
-    if code == 0:
-        renders()
-    sys.exit(code)
+    sys.exit(route_with_retries())
 
 if __name__ == "__main__":
     try:

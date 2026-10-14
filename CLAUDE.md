@@ -237,16 +237,34 @@ that doesn't belong there.
       - The two R 5 ramp fillets are applied one after the other.
       - Check every export: ray-probe the opening and count open mesh
         edges (the render once hid a film over the keys).
-    - Board consequence: `generate.py`/`build_pcb.py` must be redone for
-      18.5 mm hex rows. That is a separate step, not done yet.
+    - **Board v0.6 (PR #87) is built for this case.** The README of
+      `etutti/hardware/` has the details.
+      - `generate.py` reads `case/out/pcb_envelope.json`: keys, outline,
+        pillars, stack spot. `ROWS`, the notes and the firmware
+        semantics are unchanged.
+      - The router keeps 0.5 mm from the outline polygon.
+      - Placement:
+        - U51 front-left of rows 1-2;
+        - U52 and U53 rot 90 in the strip behind row 4;
+        - the LED moved to the controls board: R1/R2 stay here, and J3
+          (JST PH 8) carries VCC, GND, POT (22), ENC A/B/SW (17/9/6) and
+          LED R/G.
+      - `DEFAULT_ROUTE_FIRST = OUT_U41,OUT_U42,GND,LED_R,LED_G_DRV,OUT_U34`.
+      - Result: DRC 0/0/0, firmware 44/44, KEY_INPUT rewritten in the
+        sketch (it compiles; not flashed, since no such board exists
+        yet).
+      - The case's pillars: one per three-key triangle (64), 0.044 mm
+        worst sag (`mechanics.py`). `build_pcb.py` fails if a back-side
+        part sits on one.
+      - Removed: the #78 FreeCAD case (`case.py`, `case_check.py`, its
+        `fab/` STLs). `build_pcb.py --renders` is disabled. The manuals
+        and `assembly3d.py` still show v0.5 and need redoing.
     - Electronics in the interface: pot, encoder and LED go on a small
       board under the lid. Use a 90° micro-USB plug.
   - **Stiffness**: `etutti/hardware/mechanics.py` (KiCad python + numpy,
-    no scipy) picks pillar spots on the back where there's only traces and
-    runs a dense grillage FE (4 mm mesh) per key: ~2.7 mm sag at 3 N on the
-    holes alone vs a few hundredths of a mm on the pillars →
-    `build/etuttino_supports.json`. The user asked that the board "not flex
-    much"; keep the pillars if the layout changes.
+    no scipy) runs a grillage FE (4 mm mesh) per key on the case's pillars
+    → `build/etuttino_supports.json`. The user asked that the board "not
+    flex much": keep the worst key ≤ 0.05 mm at 3 N (v0.6: 0.044).
   - `etutti/manuais/` — assembly manuals (route A: JLCPCB PCBA, bottom
     side; route B: everything soldered at home) + user manual, one
     `.lang-block` per language (en/pt/es) shown by `html[lang]`; noindex,
