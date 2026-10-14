@@ -1,75 +1,50 @@
 /* ============================================================
-   eTUTTI MODELS — concept layouts of the eTuttino, eTutti and
-   eTuttiChorus. Reading layout, figures, lightbox and the per-language
-   blocks come from ../manuais/styles.css; this file only adds the model
-   overview cards and the spec lists.
+   eTUTTI MODELS — the eTuttino's case (Seixo and Madeira) and the
+   family. Reading layout, figures, tables, lightbox and the per-language
+   blocks come from ../manuais/styles.css; this file only adds the
+   two-finish grid, the anatomy legend and the "in development" tag.
    ============================================================ */
-.model-nav {
+.finish-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
-  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  gap: 1.2rem;
 }
 
-.model-nav a {
+.finish {
+  min-width: 0;
+}
+
+.manual .finish h3 {
+  margin-top: 0.4rem;
+}
+
+.manual .finish figure {
+  margin: 0.7rem 0;
+}
+
+.manual ol.anatomy-list {
   display: grid;
-  gap: 0.4rem;
-  padding: 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: 0.85rem;
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-soft);
-  color: inherit;
-  text-decoration: none;
+  gap: 0.35rem;
+  padding-left: 1.6rem;
 }
 
-.model-nav a:hover {
-  border-color: var(--accent-strong);
-}
-
-.model-nav img {
-  width: 100%;
-  height: auto;
-  border-radius: 0.5rem;
-}
-
-.model-nav .nav-name {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 1.4rem;
+.manual ol.anatomy-list > li::marker {
+  color: #8a2d1c;
   font-weight: 700;
 }
 
-.model-nav .nav-desc {
-  color: var(--ink-soft);
-  font-size: 0.92rem;
+.tag-dev {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(140, 59, 47, 0.12);
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
-.spec-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
-  gap: 0.6rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.manual .spec-list li {
-  margin: 0;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: 0.65rem;
-  background: var(--surface-solid);
-}
-
-.spec-list strong {
-  display: block;
-  font-size: 1.05rem;
-}
-
-.spec-list span {
-  color: var(--ink-soft);
-  font-size: 0.85rem;
-}
-
-.manual figure img.plan {
-  background: #f6f1e8;
+.manual figure img,
+.lang-block > figure img {
+  background: #f3f1ec;
 }
