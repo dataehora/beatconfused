@@ -14,14 +14,14 @@ One board fits both versions: the outline is the Madeira's cavity (4 mm
 walls; the Seixo's is larger) less PCB_CLR, with notches round the screw
 bosses. Heights are above the board's top face (z = case.Z_PCB_TOP):
 
-  outline               the board's edge
+  outline               the board's edge (notched round the bosses)
   boss_keepouts         screw columns from the bottom plate to the top:
                         the board is notched round them
   supports              pillars on the bottom plate the board rests on:
                         no parts on the BACK inside these circles
   max_below             parts on the back: up to this (to the bottom plate)
-  plate_outline         the switch plate's edge: under it, parts on top up to
-                        plate_clear (the plate's underside)
+  plate_outline         the switch plate's edge (as case.py cuts it): under
+                        it, parts on top up to plate_clear (the plate's underside)
   levels                {h: [polygons]}: where parts on top up to h mm tall
                         fit (cavity sections at z_pcb_top + h). Outside the
                         plate, up to the lid (h 5.0) fits everywhere; higher
@@ -66,7 +66,16 @@ def section(solid, z):
 
 def envelope():
     mad = C.VERSIONS["madeira"]
-    outline = C.contour_wp(C.box_contour()).offset2D(-mad["wall"] - PCB_CLR).wires().val()
+    # the board: the Madeira's cavity less PCB_CLR, notched round the screw bosses
+    inner = C.contour_wp(C.box_contour()).offset2D(-mad["wall"] - PCB_CLR).wires().val()
+    face = cq.Face.makeFromWires(inner)
+    for k in [{"x": x, "y": y} for x, y in C.screw_points()]:
+        face = face.cut(cq.Face.makeFromWires(cq.Wire.makeCircle(C.BOSS_D / 2 + 0.5, cq.Vector(k["x"], k["y"], 0), cq.Vector(0, 0, 1))))
+    face = max(face.Faces(), key=lambda f: f.Area())
+    outline = face.outerWire()
+    # the switch plate's edge as case.py cuts it (notched round the bosses too)
+    plate = C.switch_plate()
+    plate_face = [f for f in plate.Faces() if f.normalAt(f.Center()).z < -0.99][0]
     cav = C.cavity(mad)
     cav = cav.intersect(C.cavity(C.VERSIONS["seixo"]))      # the tighter of the two everywhere
     zt = C.Z_PCB_TOP
@@ -87,7 +96,8 @@ def envelope():
         "boss_keepouts": [{"x": x, "y": y, "r": C.BOSS_D / 2 + 0.5} for x, y in C.screw_points()],
         "supports": [{"x": round(x, 3), "y": round(y, 3), "r": C.PILLAR_D / 2 + 0.5} for x, y in C.pillar_points()],
         "max_below": C.UNDER_PCB,
-        "plate_outline": wire_points(C.contour_wp(C.hex_contour(C.PLATE_OVERLAP)).wire().val()),
+        "plate_outline": wire_points(plate_face.outerWire()),
+        "plate_cutout": 14.0,
         "plate_clear": C.Z_PLATE_TOP - C.PLATE_T - zt,
         "levels": levels,
         "pitch": C.P, "row_pitch": round(C.ROW_PITCH, 4),

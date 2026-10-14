@@ -148,4 +148,10 @@ A Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão in
 
 ## 5. Perguntas para o design
 
-Nenhuma sobre a forma: a v7 está congelada. As perguntas que a PCB fizer para a caixa vêm no PR da PCB.
+Nenhuma sobre a forma: a v7 está congelada. O que a PCB v0.6 (`etutti/hardware/`) pede da caixa:
+
+1. **Pilares do fundo (já no modelo).** Havia um erro: entre as fileiras 2 e 3 os pilares ficavam a 5,3 mm de um sensor, e não no centro do triângulo de teclas. Agora há um em cada triângulo de três teclas vizinhas (61, a 10,7 mm de cada sensor) mais 3 sob a interface. A placa cede no máximo 0,044 mm sob 3 N (eram 0,37 mm com um a cada três colunas). É só o fundo, a forma não muda. Ok?
+2. **Fixação da placa.** A placa não tem parafusos: a tampa aperta o plate, o plate os switches, e eles a placa contra os pilares. Sob a interface (os ~95 mm da esquerda) nada aperta a placa por cima, só a pilha. Proposta: dois parafusos M2 de baixo, pelo fundo, nos pilares (30; 60) e (12; 70), com furos na placa. Ou uma espuma fina sob a tampa. Qual?
+3. **Plaquinha de controles.** A placa principal já tem o J3 (JST PH, 8 vias: 3,3 V, GND, pot, encoder A/B/botão, LED vermelho/verde). Fazer a plaquinha (RK09K, EC11 com eixo L = 15, LED de 3 mm, JST PH) como a próxima PCB? O firmware ainda não lê o pot nem o encoder (pinos 22, 17, 9 e 6).
+4. **Plate.** Em FR-4 o fabricante faz 1,6 mm, e o case conta com 1,5 mm: os botões ficariam 0,1 mm mais altos. Aceitar, ou plate de alumínio de 1,5 mm a partir do DXF?
+5. **Manuais.** Os manuais de montagem (`etutti/manuais/`) e as figuras 3D ainda descrevem a placa v0.5 e o case antigo. Refazer como etapa própria, depois do protótipo?

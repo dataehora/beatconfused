@@ -507,7 +507,27 @@ def main():
     w("\nA Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão interno).\n")
 
     w("## 5. Perguntas para o design\n")
-    w("Nenhuma sobre a forma: a v7 está congelada. As perguntas que a PCB fizer para a caixa vêm no PR da PCB.\n")
+    w("Nenhuma sobre a forma: a v7 está congelada. O que a PCB v0.6 (`etutti/hardware/`) pede da caixa:\n")
+    pq = [
+        "**Pilares do fundo (já no modelo).** Havia um erro: entre as fileiras 2 e 3 os pilares ficavam a 5,3 mm de um "
+        "sensor, e não no centro do triângulo de teclas. Agora há um em cada triângulo de três teclas vizinhas "
+        "(%d, a 10,7 mm de cada sensor) mais 3 sob a interface. A placa cede no máximo 0,044 mm sob 3 N "
+        "(eram 0,37 mm com um a cada três colunas). É só o fundo, a forma não muda. Ok?" % (len(C.pillar_points()) - 3),
+        "**Fixação da placa.** A placa não tem parafusos: a tampa aperta o plate, o plate os switches, e eles a placa "
+        "contra os pilares. Sob a interface (os ~95 mm da esquerda) nada aperta a placa por cima, só a pilha. "
+        "Proposta: dois parafusos M2 de baixo, pelo fundo, nos pilares (30; 60) e (12; 70), com furos na placa. "
+        "Ou uma espuma fina sob a tampa. Qual?",
+        "**Plaquinha de controles.** A placa principal já tem o J3 (JST PH, 8 vias: 3,3 V, GND, pot, encoder A/B/botão, "
+        "LED vermelho/verde). Fazer a plaquinha (RK09K, EC11 com eixo L = 15, LED de 3 mm, JST PH) como a próxima "
+        "PCB? O firmware ainda não lê o pot nem o encoder (pinos 22, 17, 9 e 6).",
+        "**Plate.** Em FR-4 o fabricante faz 1,6 mm, e o case conta com 1,5 mm: os botões ficariam 0,1 mm mais altos. "
+        "Aceitar, ou plate de alumínio de 1,5 mm a partir do DXF?",
+        "**Manuais.** Os manuais de montagem (`etutti/manuais/`) e as figuras 3D ainda descrevem a placa v0.5 e o case "
+        "antigo. Refazer como etapa própria, depois do protótipo?",
+    ]
+    for i, t in enumerate(pq, 1):
+        w("%d. %s" % (i, t))
+    w("")
 
     text = "\n".join(out).replace("RESUMO_AQUI", summarise(results))
     with open(os.path.join(HERE, "FIT_CHECK.md"), "w", encoding="utf-8") as f:

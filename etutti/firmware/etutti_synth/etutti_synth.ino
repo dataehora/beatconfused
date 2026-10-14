@@ -104,10 +104,10 @@ const uint8_t MUX_COM_PINS[MUX_COUNT] = {14, 15, 16};  // A0, A1, A2
 const uint8_t LED_PINS[2] = {4, 5};                    // red, green
 const uint32_t LED_STARTUP_MS = 600;                   // orange shows at least this long
 const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
-  { -1,   8,   9,  10,  11,   7,   6,   5,   4,   3,   1,   2},
-  { 15,  14,  13,  12,   0,  28,  46,  45,  44,  34,  37,  39},
-  { -1,  20,  18,  21,  26,  25,  24,  40,  32,  36,  38,  47},
-  { -1,  16,  17,  19,  22,  23,  33,  35,  43,  41,  42,  -1},
+  { -1,  12,  11,  10,   9,   7,   6,   5,   4,   3,   2,   1},
+  { 15,  14,  13,   8,   0,  30,  41,  42,  38,  43,  45,  46},
+  { -1,  24,  25,  27,  29,  18,  17,  39,  35,  36,  44,  32},
+  { -1,  23,  28,  22,  26,  31,  37,  40,  47,  34,  33,  -1},
 };
 
 // Chromatic button accordion layouts. Along a row each key is a minor

@@ -421,17 +421,23 @@ BOSS_TOP = {(7.0, 8.0): 24.5,       # ...and the front-left one under the grille
 
 
 def pillar_points():
-    """Board supports: the centres of triangles of three neighbouring
-    buttons (11 mm from each sensor), every third column, between each
-    pair of rows; plus a few under the interface area."""
-    pts = []
-    for (ra, rb) in ((1, 2), (2, 3), (3, 4)):
-        ya, yb = ROW_Y[ra], ROW_Y[rb]
-        # rows 1 and 3 have xp = 0, 1, ..; 2 and 4 are half a pitch off
-        for i in range(0, 11, 3):
-            x = O_KEYS + i * P + (0.0 if rb != 2 else 0.0)
-            # triangle (x, ya) (x +- P/2, yb): centroid
-            pts.append((x, ya + (yb - ya) * 2 / 3) if ra in (1, 3) else (x + P / 2, ya + (yb - ya) / 3))
+    """Board supports on the bottom plate: the centre of every triangle of
+    three neighbouring buttons (10.7 mm from each one's Hall sensor, clear
+    of its parts on the back of the board), plus three under the interface.
+    With all of them the board sags ~0.01 mm under a firm 3 N press (the
+    PCB's mechanics check), against ~0.37 mm with one every third column."""
+    ks = [(row, x, y) for _, row, x, y, _ in keys()]
+    have = {(row, round(x, 3)) for row, x, _ in ks}
+    pts = set()
+    for row, x, y in ks:
+        for other in (row - 1, row + 1):
+            if other not in ROW_Y:
+                continue
+            # this key, its right-hand neighbour in the row, and the key
+            # between them in the next row: a triangle of three real keys
+            if (row, round(x + P, 3)) in have and (other, round(x + P / 2, 3)) in have:
+                pts.add((round(x + P / 2, 3), round(y + (ROW_Y[other] - y) / 3, 3)))
+    pts = sorted(pts, key=lambda p: (p[1], p[0]))
     pts += [(30.0, 60.0), (60.0, 75.0), (12.0, 70.0)]
     return pts
 

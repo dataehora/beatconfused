@@ -97,7 +97,7 @@ axis.
 - **Versions**: `VERSIONS = {"seixo": {wall 2.5, top 2.5}, "madeira": {wall 4, top 3}}`.
 - **Fixings**
   - `screw_points()` — M2.5 bosses from the bottom up into the top, notched out of the plate. `BOSS_TOP` stops two of them short of the lid (one would hit the screen module, one the grille); they hang on the walls.
-  - `pillar_points()` — board supports on the bottom plate, at the centres of key triangles, 11 mm from every sensor.
+  - `pillar_points()` — board supports on the bottom plate: one at the centre of every triangle of three neighbouring keys (61, 10.7 mm from each sensor) plus 3 under the interface. The board sags ≤ 0.044 mm under a 3 N press on them (`../mechanics.py`).
 
 `keycap.py` has the switch numbers, from Gateron's KS-20T drawing
 (top housing 15.40 × 15.10, 11.10 mm from the board, travel 4.1). The top
