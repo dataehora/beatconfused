@@ -493,49 +493,78 @@
 
           <h3>Power and sound</h3>
           <ul>
-            <li><strong>Power</strong>: the Teensy's USB cable into a computer or a phone charger. On a charger the eTuttino plays on its own, without the page.</li>
-            <li><strong>Sound</strong>: headphones or a speaker on the Audio Board's output, on the left side, next to the USB. It starts on the <em>classic accordion</em>.</li>
-            <li><strong>Don't touch the keys for the first couple of seconds</strong>: that's when the Teensy measures every key's rest position.</li>
-            <li><strong>Power LED</strong>: <em>orange</em> while it reads all the keys at power-up, then <em>green</em> while playing. <em>Blinking red</em> means an error: the Audio Board didn't answer, or a key's sensor didn't (find it with Key test on the page).</li>
+            <li><strong>Power</strong>: a micro-USB cable from the left face to a computer or a phone charger. On a charger the eTuttino plays on its own, without the page.</li>
+            <li><strong>Sound</strong>: headphones or a speaker in the 3.5 mm socket beside the USB.</li>
+            <li><strong>Don't touch the keys for the first second</strong>: that's when the Teensy measures every key's rest position (the LED is orange).</li>
+            <li>It starts on the instrument you last kept with the selector, or on the <em>classic accordion</em>.</li>
           </ul>
+
+          <h3>The knobs</h3>
+          <ul>
+            <li><strong>Volume</strong> (left knob): the headphone volume. It only acts when you turn it, so a volume set on the page holds until you touch the knob.</li>
+            <li>
+              <strong>Instrument selector</strong> (right knob, endless, with a click):
+              <ul>
+                <li><strong>Turn</strong> it: the instrument changes at once, in the order accordion, piano, bass, guitar, synth. The LED blinks green while the new one isn't kept yet.</li>
+                <li><strong>Click after turning</strong>: keeps that instrument; the eTuttino will start with it next time.</li>
+                <li><strong>Click without turning</strong>: back to the default sound, the classic accordion (register MM, dry), and that becomes the start-up instrument.</li>
+              </ul>
+            </li>
+            <li>With the page connected, the page follows both knobs: its volume slider and instrument move with them.</li>
+          </ul>
+
+          <h3>The LED</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>LED</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td>Orange</td><td>Power-up: the keys' rest positions are being read. Keep your hands off.</td></tr>
+                <tr><td>Green</td><td>Ready, playing.</td></tr>
+                <tr><td>Green, blinking slowly</td><td>A new instrument picked with the selector, not kept yet: click to keep it.</td></tr>
+                <tr><td>Red, blinking</td><td>Something didn't answer: the Audio Board, or a key's sensor. Turn on Key test on the page: a key whose ring never moves has a sensor problem. If every key works, the Audio Board isn't answering: check the stack's solder joints.</td></tr>
+                <tr><td>Off</td><td>No USB power, or the controls board's cable isn't seated in J3 (or J1).</td></tr>
+              </tbody>
+            </table>
+          </div>
 
           <h3>The keyboard</h3>
           <ul>
-            <li>There are 4 rows. <strong>Row 1</strong> is the one nearest you: A3 to D♯6. Row 2 runs G3 to E6 and row 3 G♯3 to D6. Row 4 repeats row 1's notes from A3 to C6, on row 2's columns: its A3 sits above row 2's A♯3.</li>
+            <li>There are 4 rows. <strong>Row 1</strong> is the one nearest you: A3 to D♯6. Row 2 runs G3 to E6 and row 3 G♯3 to D6. Row 4 repeats row 1's notes from A3 to C6, on row 2's columns.</li>
             <li>In <strong>C-griff</strong>, each key along a row is a minor third (3 semitones) above the previous one. Diagonally, from one row to the next, the step is 1 semitone.</li>
-            <li>The page switches to <strong>B-griff</strong>, C-griff's mirror image, and the real keys follow.</li>
+            <li><strong>White</strong> buttons are the natural notes, <strong>black</strong> ones the sharps. Every <strong>C and F</strong> has a raised diagonal check on top, so you can find your place by touch without looking.</li>
+            <li>The page switches to <strong>B-griff</strong>, C-griff's mirror image (rows 1 and 3 swap), and the real keys follow. The checked caps then still sit on the keys that played C and F in C-griff.</li>
           </ul>
 
           <h3>With the beatconfused.com/etutti page</h3>
           <ol class="steps">
             <li>Open the page in <strong>Chrome</strong> or <strong>Edge</strong> (Safari has no Web MIDI), click <strong>Connect</strong> and allow MIDI. The device shows up as "eTutti" (or "Teensy MIDI").</li>
-            <li>On connecting, the page sends all its settings to the Teensy. They aren't stored there: after a power cycle it's back to the classic accordion until the page connects again.</li>
+            <li>On connecting, the page sends all its settings to the Teensy. Apart from the instrument kept with the selector, they aren't stored there: after a power cycle the eTuttino starts with its own sound until the page connects again.</li>
           </ol>
           <ul>
-            <li><strong>Instrument</strong>: classic accordion, jazz accordion, piano, bass, guitar (nylon) or synth. "Reset to default" goes back to the classic accordion.</li>
+            <li><strong>Instrument</strong>: classic accordion, jazz accordion, piano, bass, guitar (nylon) or synth. "Reset to default" goes back to the classic accordion; "modified" shows when you've changed something from the instrument's preset.</li>
             <li><strong>Accordion register</strong>: the round switch turns each reed set on and off (16', 8' open, 8' in cassotto, 4'). The named buttons (Master, Violin, Clarinet…) pick ready-made combinations.</li>
             <li><strong>Envelope, volume, tone and ambience</strong>: shape the sound live.</li>
-            <li><strong>Computer keyboard</strong>: plays from the Z…/, A…], W…[ and 3…= rows (on an ABNT2 keyboard; the page shows your own keyboard's labels). The page's octave and velocity only apply to these notes and the on-screen ones.</li>
-            <li><strong>Listen in this browser</strong>: plays the sounds through the computer's speakers, with or without a Teensy. It stays off until you switch it on.</li>
+            <li><strong>Knobs</strong>: the page shows what the volume knob and the selector do, without sending anything back.</li>
+            <li><strong>Computer keyboard</strong>: plays from four rows of keys (the page shows your own keyboard's labels). The page's octave and velocity only apply to these notes and the on-screen ones.</li>
+            <li><strong>Listen in this browser</strong>: plays the sounds through the computer's speakers, with or without the eTuttino. It stays off until you switch it on.</li>
           </ul>
 
           <h3>Velocity (how hard you play)</h3>
           <p>
-            The eTuttino times how long each key takes to go down: fast sounds loud, slow sounds soft. Piano, guitar, bass
-            and synth respond to velocity, and so does the accordion, through each note's volume. In the
+            The eTuttino times how long each key takes to go down: fast sounds loud, slow sounds soft. In the
             <strong>eTuttino keys</strong> panel:
           </p>
           <ul>
-            <li><strong>Fixed</strong>: every note at the same level (100), like an ordinary keyboard.</li>
+            <li><strong>Fixed</strong>: every note at the same level, like an ordinary keyboard.</li>
             <li><strong>Light touch</strong>: loud notes with little effort.</li>
             <li><strong>Normal</strong>: the default.</li>
             <li><strong>Firm touch</strong>: you have to play faster to sound loud.</li>
           </ul>
 
-          <h3>Calibration</h3>
+          <h3>Calibration and key test</h3>
           <ul>
-            <li>The Teensy learns the bottom of each key on its own (the deepest press it has seen) and keeps it even when unplugged. The rest position is measured every time it starts.</li>
-            <li>Click <strong>Calibrate keys</strong> and press every key all the way down once when you swap a switch, take the board apart, or a key triggers too early or too late.</li>
+            <li>The Teensy learns the bottom of each key on its own (the deepest press it has seen) and keeps it even when unplugged. The rest position is measured at every start.</li>
+            <li>Click <strong>Calibrate keys</strong> and press every key all the way down once after you swap a switch, open the case, or notice a key that triggers too early or too late.</li>
             <li><strong>Key test</strong> shows, with a ring around each on-screen key, how far the real key is pressed.</li>
           </ul>
 
@@ -545,20 +574,29 @@
             notes on channel 1, with velocity. It also plays any notes it receives, on any channel, with its own sound.
           </p>
 
+          <h3>Care</h3>
+          <ul>
+            <li><strong>Seixo</strong>: wipe with a soft cloth, slightly damp with water and a drop of mild soap. No solvents.</li>
+            <li><strong>Madeira</strong>: a dry or barely damp cloth. Keep it away from water, heaters and long hours of direct sun. When the wood looks dry, wipe on a thin coat of the same oil it was finished with and buff off the excess.</li>
+            <li><strong>Buttons</strong>: they pull straight up for cleaning; push each one back on the same key (white, black, checked).</li>
+            <li><strong>USB cable</strong>: pull the plug straight out, never the cable sideways, and don't carry the eTuttino by its cable. The socket sits in the insert and a sideways pull strains it and the short cable inside.</li>
+          </ul>
+
           <h3>Troubleshooting</h3>
           <div class="table-wrap">
             <table>
               <thead><tr><th>What happens</th><th>What to do</th></tr></thead>
               <tbody>
                 <tr><td>The page can't find the eTutti</td><td>Use Chrome or Edge and allow MIDI. Check the firmware was flashed with USB Type = MIDI.</td></tr>
-                <tr><td>A key doesn't play</td><td>Turn on Key test. If its ring doesn't move, check that key's sensor joints (or ask for help at the address below).</td></tr>
-                <tr><td>A key triggers on its own, or too early or late</td><td>Click Calibrate keys and press every key to the bottom. Check the board sits right against the switches.</td></tr>
+                <tr><td>A key doesn't play</td><td>Turn on Key test. If its ring doesn't move, that key's sensor needs checking.</td></tr>
+                <tr><td>A key triggers on its own, or too early or late</td><td>Click Calibrate keys and press every key to the bottom.</td></tr>
                 <tr><td>Every note sounds the same, no dynamics</td><td>Key velocity is on "Fixed". Pick Normal.</td></tr>
-                <tr><td>No sound</td><td>Check the headphones on the Audio Board's output and the volume on the page. Click "All notes off" (Esc).</td></tr>
-                <tr><td>Every note sounds twice</td><td>"Listen in this browser" is on with the Teensy connected: switch one of them off.</td></tr>
+                <tr><td>No sound</td><td>Check the headphones and turn the volume knob. Click "All notes off" (Esc) on the page.</td></tr>
+                <tr><td>The knobs do nothing</td><td>The controls board's cable isn't seated in J3 or J1.</td></tr>
+                <tr><td>One click of the selector jumps two instruments, or two clicks one</td><td>The encoder isn't the 15-pulse / 15-detent one: change <code>ENC_STEPS_PER_DETENT</code> in the firmware (2 for a 30-detent EC11E) and flash it again.</td></tr>
+                <tr><td>Every note sounds twice</td><td>"Listen in this browser" is on with the eTuttino connected: switch one of them off.</td></tr>
                 <tr><td>A note is stuck</td><td>Esc, or "All notes off" on the page.</td></tr>
-                <tr><td>The LED blinks red</td><td>Turn on Key test: a key whose ring never moves has a sensor problem. If every key works, check the Audio Board is seated (its codec didn't answer).</td></tr>
-                <tr><td>The LED stays off</td><td>No USB power, or the LED is in the wrong way round (the middle leg is the cathode).</td></tr>
+                <tr><td>The LED blinks red or stays off</td><td>See <em>The LED</em> above.</td></tr>
               </tbody>
             </table>
           </div>
@@ -1016,57 +1054,94 @@
 
           <h3>Ligar</h3>
           <ul>
-            <li><strong>Energia</strong>: cabo USB do Teensy no computador ou num carregador de celular. Com o carregador, o eTuttino toca sozinho, sem página.</li>
-            <li><strong>Som</strong>: fone ou caixa ligados na saída da Audio Board, na lateral esquerda, ao lado do USB. Ao ligar, ele começa no <em>acordeão clássico</em>.</li>
-            <li><strong>Não toque nas teclas nos primeiros segundos</strong>: é quando o Teensy mede a posição de repouso de cada uma.</li>
-            <li><strong>LED de energia</strong>: <em>laranja</em> enquanto lê todas as teclas ao ligar, depois <em>verde</em> enquanto você toca. <em>Vermelho piscando</em> indica erro: a Audio Board não respondeu, ou o sensor de alguma tecla não respondeu (descubra qual com o Teste das teclas na página).</li>
+            <li><strong>Energia</strong>: um cabo micro-USB da face esquerda até um computador ou um carregador de celular. No carregador, o eTuttino toca sozinho, sem a página.</li>
+            <li><strong>Som</strong>: fone ou caixa na entrada de 3,5 mm ao lado do USB.</li>
+            <li><strong>Não toque nas teclas no primeiro segundo</strong>: é quando o Teensy mede a posição de repouso de cada tecla (o LED fica laranja).</li>
+            <li>Ele liga no último instrumento que você guardou com o seletor, ou no <em>acordeão clássico</em>.</li>
           </ul>
+
+          <h3>Os knobs</h3>
+          <ul>
+            <li><strong>Volume</strong> (knob da esquerda): o volume do fone. Ele só age quando você gira, então um volume ajustado na página vale até você mexer no knob.</li>
+            <li>
+              <strong>Seletor de instrumento</strong> (knob da direita, giro infinito, com clique):
+              <ul>
+                <li><strong>Gire</strong>: o instrumento troca na hora, na ordem acordeão, piano, baixo, violão, synth. O LED pisca verde enquanto o novo ainda não foi guardado.</li>
+                <li><strong>Clique depois de girar</strong>: guarda esse instrumento; o eTuttino vai ligar com ele da próxima vez.</li>
+                <li><strong>Clique sem girar</strong>: volta ao som padrão, o acordeão clássico (registro MM, seco), que passa a ser o instrumento ao ligar.</li>
+              </ul>
+            </li>
+            <li>Com a página conectada, ela acompanha os dois knobs: o controle de volume e o instrumento na tela se mexem junto.</li>
+          </ul>
+
+          <h3>O LED</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>LED</th><th>Significado</th></tr></thead>
+              <tbody>
+                <tr><td>Laranja</td><td>Ligando: o Teensy está lendo a posição de repouso das teclas. Não toque nelas.</td></tr>
+                <tr><td>Verde</td><td>Pronto, tocando.</td></tr>
+                <tr><td>Verde piscando devagar</td><td>Um instrumento novo escolhido com o seletor, ainda não guardado: clique para guardar.</td></tr>
+                <tr><td>Vermelho piscando</td><td>Algo não respondeu: a Audio Board ou o sensor de alguma tecla. Ligue o Teste das teclas na página: uma tecla cujo anel nunca se mexe tem problema no sensor. Se todas funcionam, é a Audio Board que não responde: confira as soldas da pilha.</td></tr>
+                <tr><td>Apagado</td><td>Sem energia no USB, ou o cabo da plaquinha de controles não está encaixado no J3 (ou no J1).</td></tr>
+              </tbody>
+            </table>
+          </div>
 
           <h3>O teclado</h3>
           <ul>
-            <li>São 4 fileiras. A <strong>fileira 1</strong> é a mais perto de você: vai de Lá3 a Ré♯6. A fileira 2 vai de Sol3 a Mi6 e a 3 de Sol♯3 a Ré6. A fileira 4 repete as notas da fileira 1 de Lá3 a Dó6, alinhada com a fileira 2: o Lá3 dela fica acima do Lá♯3 da fileira 2.</li>
+            <li>São 4 fileiras. A <strong>fileira 1</strong> é a mais perto de você: de Lá3 a Ré♯6. A fileira 2 vai de Sol3 a Mi6 e a 3 de Sol♯3 a Ré6. A fileira 4 repete as notas da fileira 1 de Lá3 a Dó6, nas colunas da fileira 2.</li>
             <li>No <strong>C-griff</strong>, cada tecla ao longo de uma fileira fica uma terça menor (3 semitons) acima da anterior. Na diagonal, de uma fileira para a seguinte, o passo é de 1 semitom.</li>
-            <li>A página troca para <strong>B-griff</strong>, o espelho do C-griff, e as teclas de verdade passam a seguir o novo sistema.</li>
+            <li>Os botões <strong>brancos</strong> são as notas naturais, os <strong>pretos</strong> os sustenidos. Todo <strong>Dó e Fá</strong> tem um xadrez diagonal em relevo no topo, para você achar a posição no tato, sem olhar.</li>
+            <li>A página troca para o <strong>B-griff</strong>, o espelho do C-griff (as fileiras 1 e 3 trocam de lugar), e as teclas de verdade acompanham. As capas com xadrez continuam nas teclas que eram Dó e Fá no C-griff.</li>
           </ul>
 
           <h3>Com a página beatconfused.com/etutti</h3>
           <ol class="steps">
             <li>Abra a página no <strong>Chrome</strong> ou no <strong>Edge</strong> (o Safari não tem Web MIDI), clique em <strong>Conectar</strong> e permita o MIDI. O dispositivo aparece como "eTutti" (ou "Teensy MIDI").</li>
-            <li>Na conexão, a página manda todos os ajustes para o Teensy. Os ajustes não ficam gravados nele: ao religar, ele volta ao acordeão clássico até a página se conectar de novo.</li>
+            <li>Na conexão, a página manda todos os ajustes para o Teensy. Tirando o instrumento guardado com o seletor, eles não ficam gravados: ao religar, o eTuttino volta ao seu próprio som até a página se conectar de novo.</li>
           </ol>
           <ul>
-            <li><strong>Instrumento</strong>: acordeão clássico, acordeão jazz, piano, baixo, violão (nylon) ou synth. "Restaurar padrão" volta ao acordeão clássico.</li>
+            <li><strong>Instrumento</strong>: acordeão clássico, acordeão jazz, piano, baixo, violão (nylon) ou synth. "Restaurar padrão" volta ao acordeão clássico; "modificado" aparece quando você mudou algo do preset do instrumento.</li>
             <li><strong>Registros do acordeão</strong>: o botão redondo liga e desliga cada jogo de palhetas (16', 8' aberta, 8' em cassotto, 4'). Os botões com nome (Master, Violino, Clarinete…) escolhem combinações prontas.</li>
             <li><strong>Envelope, volume, tom e ambiência</strong>: ajustam o som em tempo real.</li>
-            <li><strong>Teclado do computador</strong>: toca pelas fileiras Z…/, A…], W…[ e 3…= (no teclado ABNT2). Oitava e velocity da página valem só para essas notas e para as da tela.</li>
-            <li><strong>Ouvir no navegador</strong>: toca os sons pelos alto-falantes do computador, com ou sem Teensy. Fica desligado até você ligar.</li>
+            <li><strong>Knobs</strong>: a página mostra o que o knob de volume e o seletor fazem, sem mandar nada de volta.</li>
+            <li><strong>Teclado do computador</strong>: toca por quatro fileiras de teclas (a página mostra as legendas do seu teclado). Oitava e velocity da página valem só para essas notas e para as da tela.</li>
+            <li><strong>Ouvir no navegador</strong>: toca os sons pelos alto-falantes do computador, com ou sem o eTuttino. Fica desligado até você ligar.</li>
           </ul>
 
           <h3>Velocity (a força do toque)</h3>
           <p>
-            O eTuttino mede o tempo que cada tecla leva para descer: rápido soa forte, devagar soa suave. Piano, violão,
-            baixo e synth respondem à velocity, e o acordeão também, com o volume de cada nota. No painel
+            O eTuttino mede o tempo que cada tecla leva para descer: rápido soa forte, devagar soa suave. No painel
             <strong>Teclas do eTuttino</strong>:
           </p>
           <ul>
-            <li><strong>Fixa</strong>: toda nota sai com a mesma força (100), como num teclado comum.</li>
+            <li><strong>Fixa</strong>: toda nota sai com a mesma força, como num teclado comum.</li>
             <li><strong>Toque leve</strong>: notas fortes com pouco esforço.</li>
             <li><strong>Normal</strong>: o padrão.</li>
             <li><strong>Toque firme</strong>: é preciso tocar mais rápido para soar forte.</li>
           </ul>
 
-          <h3>Calibração</h3>
+          <h3>Calibração e teste das teclas</h3>
           <ul>
             <li>O Teensy aprende sozinho o fundo de cada tecla (a pressão mais funda que já viu) e guarda isso mesmo desligado. A posição de repouso é medida a cada vez que liga.</li>
-            <li>Clique em <strong>Calibrar teclas</strong> e aperte cada tecla até o fundo uma vez quando trocar uma chave, mexer na placa ou notar uma tecla que dispara cedo ou tarde demais.</li>
+            <li>Clique em <strong>Calibrar teclas</strong> e aperte cada tecla até o fundo uma vez depois de trocar um switch, abrir o case ou notar uma tecla que dispara cedo ou tarde demais.</li>
             <li>O <strong>Teste das teclas</strong> mostra, num anel em volta de cada tecla da tela, o quanto a tecla de verdade está apertada.</li>
           </ul>
 
           <h3>Como controlador MIDI</h3>
           <p>
             O eTuttino é um dispositivo MIDI USB padrão. Num programa de música (DAW), ele aparece como entrada MIDI e manda
-            as notas no canal 1, com velocity. Ele também toca as notas que receber, em qualquer canal, usando o som interno.
+            as notas no canal 1, com velocity. Ele também toca as notas que receber, em qualquer canal, com o som interno.
           </p>
+
+          <h3>Cuidados</h3>
+          <ul>
+            <li><strong>Seixo</strong>: limpe com um pano macio, levemente úmido com água e uma gota de sabão neutro. Nada de solventes.</li>
+            <li><strong>Madeira</strong>: pano seco ou quase seco. Longe de água, aquecedores e de horas de sol direto. Quando a madeira parecer seca, passe uma camada fina do mesmo óleo do acabamento e tire o excesso.</li>
+            <li><strong>Botões</strong>: saem puxando reto para cima, para limpar; ponha cada um de volta na mesma tecla (branco, preto, com xadrez).</li>
+            <li><strong>Cabo USB</strong>: tire o plugue puxando reto, nunca o cabo de lado, e não carregue o eTuttino pelo cabo. O conector fica no inserto, e um puxão de lado força o conector e o cabo curto lá dentro.</li>
+          </ul>
 
           <h3>Problemas comuns</h3>
           <div class="table-wrap">
@@ -1074,14 +1149,15 @@
               <thead><tr><th>O que acontece</th><th>O que fazer</th></tr></thead>
               <tbody>
                 <tr><td>A página não acha o eTutti</td><td>Use Chrome ou Edge e permita o MIDI. Confira se o firmware foi gravado com USB Type = MIDI.</td></tr>
-                <tr><td>Uma tecla não toca</td><td>Ligue o Teste das teclas. Se o anel não se mexe, revise a solda do sensor dessa tecla (ou peça ajuda pelo e-mail abaixo).</td></tr>
-                <tr><td>Uma tecla dispara sozinha, ou cedo ou tarde demais</td><td>Clique em Calibrar teclas e aperte cada tecla até o fundo. Confira se a placa está bem encostada nas chaves.</td></tr>
+                <tr><td>Uma tecla não toca</td><td>Ligue o Teste das teclas. Se o anel não se mexe, o sensor dessa tecla precisa de revisão.</td></tr>
+                <tr><td>Uma tecla dispara sozinha, ou cedo ou tarde demais</td><td>Clique em Calibrar teclas e aperte cada tecla até o fundo.</td></tr>
                 <tr><td>Todas as notas soam iguais, sem dinâmica</td><td>A velocity das teclas está em "Fixa". Escolha Normal.</td></tr>
-                <tr><td>Sem som</td><td>Confira o fone na saída da Audio Board e o volume na página. Clique em "Silenciar tudo" (Esc).</td></tr>
-                <tr><td>Som em dobro</td><td>"Ouvir no navegador" está ligado com o Teensy conectado: desligue um dos dois.</td></tr>
+                <tr><td>Sem som</td><td>Confira o fone e gire o knob de volume. Clique em "Silenciar tudo" (Esc) na página.</td></tr>
+                <tr><td>Os knobs não fazem nada</td><td>O cabo da plaquinha de controles não está encaixado no J3 ou no J1.</td></tr>
+                <tr><td>Um clique do seletor pula dois instrumentos, ou dois cliques mudam um</td><td>O encoder não é o de 15 pulsos / 15 cliques: mude <code>ENC_STEPS_PER_DETENT</code> no firmware (2 para um EC11E de 30 cliques) e grave de novo.</td></tr>
+                <tr><td>Som em dobro</td><td>"Ouvir no navegador" está ligado com o eTuttino conectado: desligue um dos dois.</td></tr>
                 <tr><td>Uma nota fica presa</td><td>Esc ou "Silenciar tudo" na página.</td></tr>
-                <tr><td>O LED pisca vermelho</td><td>Ligue o Teste das teclas: uma tecla cujo anel nunca se mexe tem problema no sensor. Se todas funcionam, confira se a Audio Board está bem encaixada (o chip de áudio não respondeu).</td></tr>
-                <tr><td>O LED fica apagado</td><td>Sem energia no USB, ou o LED está invertido (a perna do meio é o cátodo).</td></tr>
+                <tr><td>O LED pisca vermelho ou fica apagado</td><td>Veja <em>O LED</em> acima.</td></tr>
               </tbody>
             </table>
           </div>
@@ -1540,73 +1616,110 @@
 
           <h3>Encender</h3>
           <ul>
-            <li><strong>Alimentación</strong>: el cable USB del Teensy al ordenador o a un cargador de móvil. Con el cargador, el eTuttino suena solo, sin la página.</li>
-            <li><strong>Sonido</strong>: auriculares o altavoz en la salida de la Audio Board, en el lado izquierdo, junto al USB. Al encender, empieza en el <em>acordeón clásico</em>.</li>
-            <li><strong>No toques las teclas durante los primeros segundos</strong>: es cuando el Teensy mide la posición de reposo de cada una.</li>
-            <li><strong>LED de encendido</strong>: <em>naranja</em> mientras lee todas las teclas al encender, luego <em>verde</em> mientras tocas. <em>Rojo parpadeando</em> indica un error: la Audio Board no respondió, o el sensor de alguna tecla no respondió (encuéntralo con la Prueba de teclas en la página).</li>
+            <li><strong>Alimentación</strong>: un cable micro-USB desde la cara izquierda a un ordenador o a un cargador de móvil. Con el cargador, el eTuttino suena solo, sin la página.</li>
+            <li><strong>Sonido</strong>: auriculares o un altavoz en la toma de 3,5 mm junto al USB.</li>
+            <li><strong>No toques las teclas el primer segundo</strong>: es cuando el Teensy mide la posición de reposo de cada tecla (el LED está naranja).</li>
+            <li>Arranca con el último instrumento que guardaste con el selector, o con el <em>acordeón clásico</em>.</li>
           </ul>
+
+          <h3>Las perillas</h3>
+          <ul>
+            <li><strong>Volumen</strong> (perilla izquierda): el volumen de los auriculares. Solo actúa cuando la giras, así que un volumen puesto en la página se mantiene hasta que toques la perilla.</li>
+            <li>
+              <strong>Selector de instrumento</strong> (perilla derecha, sin fin, con clic):
+              <ul>
+                <li><strong>Gírala</strong>: el instrumento cambia al instante, en el orden acordeón, piano, bajo, guitarra, synth. El LED parpadea en verde mientras el nuevo no está guardado.</li>
+                <li><strong>Clic después de girar</strong>: guarda ese instrumento; el eTuttino arrancará con él la próxima vez.</li>
+                <li><strong>Clic sin girar</strong>: vuelve al sonido por defecto, el acordeón clásico (registro MM, seco), que pasa a ser el instrumento de arranque.</li>
+              </ul>
+            </li>
+            <li>Con la página conectada, esta sigue a las dos perillas: el control de volumen y el instrumento en pantalla se mueven con ellas.</li>
+          </ul>
+
+          <h3>El LED</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>LED</th><th>Significado</th></tr></thead>
+              <tbody>
+                <tr><td>Naranja</td><td>Encendiendo: el Teensy está leyendo la posición de reposo de las teclas. No las toques.</td></tr>
+                <tr><td>Verde</td><td>Listo, tocando.</td></tr>
+                <tr><td>Verde parpadeando despacio</td><td>Un instrumento nuevo elegido con el selector, aún sin guardar: haz clic para guardarlo.</td></tr>
+                <tr><td>Rojo parpadeando</td><td>Algo no respondió: la Audio Board o el sensor de alguna tecla. Activa la Prueba de teclas en la página: una tecla cuyo anillo nunca se mueve tiene un problema de sensor. Si todas funcionan, es la Audio Board la que no responde: revisa las soldaduras de la pila.</td></tr>
+                <tr><td>Apagado</td><td>Sin alimentación USB, o el cable de la placa de controles no está bien conectado en J3 (o en J1).</td></tr>
+              </tbody>
+            </table>
+          </div>
 
           <h3>El teclado</h3>
           <ul>
-            <li>Tiene 4 filas. La <strong>fila 1</strong> es la más cercana a ti: va de La3 a Re♯6. La fila 2 va de Sol3 a Mi6 y la 3 de Sol♯3 a Re6. La fila 4 repite las notas de la fila 1 de La3 a Do6, alineada con la fila 2: su La3 queda encima del La♯3 de la fila 2.</li>
+            <li>Hay 4 filas. La <strong>fila 1</strong> es la más cercana a ti: de La3 a Re♯6. La fila 2 va de Sol3 a Mi6 y la 3 de Sol♯3 a Re6. La fila 4 repite las notas de la fila 1 de La3 a Do6, en las columnas de la fila 2.</li>
             <li>En <strong>C-griff</strong>, cada tecla a lo largo de una fila está una tercera menor (3 semitonos) por encima de la anterior. En diagonal, de una fila a la siguiente, el paso es de 1 semitono.</li>
-            <li>La página cambia a <strong>B-griff</strong>, el espejo del C-griff, y las teclas de verdad pasan a seguir el nuevo sistema.</li>
+            <li>Los botones <strong>blancos</strong> son las notas naturales y los <strong>negros</strong> los sostenidos. Todo <strong>Do y Fa</strong> lleva un damero diagonal en relieve arriba, para encontrar la posición al tacto, sin mirar.</li>
+            <li>La página cambia a <strong>B-griff</strong>, el espejo del C-griff (las filas 1 y 3 se intercambian), y las teclas reales lo siguen. Las tapas con damero siguen en las teclas que eran Do y Fa en C-griff.</li>
           </ul>
 
           <h3>Con la página beatconfused.com/etutti</h3>
           <ol class="steps">
             <li>Abre la página en <strong>Chrome</strong> o <strong>Edge</strong> (Safari no tiene Web MIDI), pulsa <strong>Conectar</strong> y permite el MIDI. El dispositivo aparece como "eTutti" (o "Teensy MIDI").</li>
-            <li>Al conectar, la página envía todos los ajustes al Teensy. Los ajustes no se guardan en él: al volver a encenderlo, vuelve al acordeón clásico hasta que la página se conecte otra vez.</li>
+            <li>Al conectar, la página envía todos sus ajustes al Teensy. Salvo el instrumento guardado con el selector, no quedan grabados: al volver a encenderlo, el eTuttino arranca con su propio sonido hasta que la página se conecte otra vez.</li>
           </ol>
           <ul>
-            <li><strong>Instrumento</strong>: acordeón clásico, acordeón jazz, piano, bajo, guitarra (nylon) o synth. "Restaurar por defecto" vuelve al acordeón clásico.</li>
-            <li><strong>Registros del acordeón</strong>: el botón redondo enciende y apaga cada juego de lengüetas (16', 8' abierta, 8' en cassotto, 4'). Los botones con nombre (Master, Violín, Clarinete…) eligen combinaciones listas.</li>
+            <li><strong>Instrumento</strong>: acordeón clásico, acordeón jazz, piano, bajo, guitarra (nailon) o synth. "Restaurar por defecto" vuelve al acordeón clásico; "modificado" aparece cuando has cambiado algo del preset del instrumento.</li>
+            <li><strong>Registros del acordeón</strong>: el botón redondo activa y desactiva cada juego de lengüetas (16', 8' abierta, 8' en cassotto, 4'). Los botones con nombre (Master, Violín, Clarinete…) eligen combinaciones listas.</li>
             <li><strong>Envolvente, volumen, tono y ambiente</strong>: ajustan el sonido en directo.</li>
-            <li><strong>Teclado del ordenador</strong>: toca con las filas Z…/, A…], W…[ y 3…= (en un teclado ABNT2; la página muestra las etiquetas de tu teclado). La octava y la velocity de la página solo valen para esas notas y las de la pantalla.</li>
-            <li><strong>Escuchar en el navegador</strong>: toca los sonidos por los altavoces del ordenador, con o sin Teensy. Está apagado hasta que lo actives.</li>
+            <li><strong>Perillas</strong>: la página muestra lo que hacen la perilla de volumen y el selector, sin enviar nada de vuelta.</li>
+            <li><strong>Teclado del ordenador</strong>: toca con cuatro filas de teclas (la página muestra las etiquetas de tu teclado). La octava y la velocity de la página solo valen para esas notas y las de la pantalla.</li>
+            <li><strong>Escuchar en el navegador</strong>: toca los sonidos por los altavoces del ordenador, con o sin el eTuttino. Está apagado hasta que lo actives.</li>
           </ul>
 
           <h3>Velocity (la fuerza del toque)</h3>
           <p>
-            El eTuttino mide el tiempo que tarda cada tecla en bajar: rápido suena fuerte, despacio suena suave. Piano,
-            guitarra, bajo y synth responden a la velocity, y el acordeón también, con el volumen de cada nota. En el panel
+            El eTuttino mide el tiempo que tarda cada tecla en bajar: rápido suena fuerte, despacio suena suave. En el panel
             <strong>Teclas del eTuttino</strong>:
           </p>
           <ul>
-            <li><strong>Fija</strong>: todas las notas con la misma fuerza (100), como un teclado normal.</li>
+            <li><strong>Fija</strong>: todas las notas al mismo nivel, como un teclado normal.</li>
             <li><strong>Toque ligero</strong>: notas fuertes con poco esfuerzo.</li>
             <li><strong>Normal</strong>: el valor por defecto.</li>
             <li><strong>Toque firme</strong>: hay que tocar más rápido para que suene fuerte.</li>
           </ul>
 
-          <h3>Calibración</h3>
+          <h3>Calibración y prueba de teclas</h3>
           <ul>
-            <li>El Teensy aprende solo el fondo de cada tecla (la pulsación más profunda que ha visto) y lo recuerda incluso desconectado. La posición de reposo se mide cada vez que arranca.</li>
-            <li>Pulsa <strong>Calibrar teclas</strong> y pulsa cada tecla hasta el fondo una vez cuando cambies un interruptor, desmontes la placa o notes una tecla que dispara demasiado pronto o tarde.</li>
-            <li>La <strong>Prueba de teclas</strong> muestra, con un anillo alrededor de cada tecla de la pantalla, cuánto está pulsada la tecla de verdad.</li>
+            <li>El Teensy aprende solo el fondo de cada tecla (la pulsación más profunda que ha visto) y lo guarda incluso desconectado. La posición de reposo se mide en cada arranque.</li>
+            <li>Pulsa <strong>Calibrar teclas</strong> y lleva cada tecla hasta el fondo una vez después de cambiar un interruptor, abrir la caja o notar una tecla que se dispara demasiado pronto o tarde.</li>
+            <li>La <strong>Prueba de teclas</strong> muestra, con un anillo alrededor de cada tecla de la pantalla, cuánto está pulsada la tecla real.</li>
           </ul>
 
           <h3>Como controlador MIDI</h3>
           <p>
             El eTuttino es un dispositivo MIDI USB estándar. En un programa de música (DAW) aparece como entrada MIDI y envía
-            las notas por el canal 1, con velocity. También toca las notas que reciba, en cualquier canal, con su sonido
-            interno.
+            sus notas por el canal 1, con velocity. También toca las notas que recibe, en cualquier canal, con su propio sonido.
           </p>
 
-          <h3>Problemas comunes</h3>
+          <h3>Cuidados</h3>
+          <ul>
+            <li><strong>Seixo</strong>: límpialo con un paño suave, apenas húmedo con agua y una gota de jabón neutro. Nada de disolventes.</li>
+            <li><strong>Madeira</strong>: un paño seco o casi seco. Lejos del agua, de la calefacción y de horas de sol directo. Cuando la madera se vea seca, pasa una capa fina del mismo aceite del acabado y retira el exceso.</li>
+            <li><strong>Botones</strong>: salen tirando recto hacia arriba, para limpiarlos; vuelve a poner cada uno en la misma tecla (blanco, negro, con damero).</li>
+            <li><strong>Cable USB</strong>: saca la clavija tirando recto, nunca del cable hacia un lado, y no lleves el eTuttino colgado del cable. La toma va en el inserto, y un tirón lateral fuerza la toma y el cable corto de dentro.</li>
+          </ul>
+
+          <h3>Problemas frecuentes</h3>
           <div class="table-wrap">
             <table>
               <thead><tr><th>Qué pasa</th><th>Qué hacer</th></tr></thead>
               <tbody>
                 <tr><td>La página no encuentra el eTutti</td><td>Usa Chrome o Edge y permite el MIDI. Comprueba que el firmware se grabó con USB Type = MIDI.</td></tr>
-                <tr><td>Una tecla no suena</td><td>Activa la Prueba de teclas. Si su anillo no se mueve, revisa la soldadura del sensor de esa tecla (o pide ayuda en la dirección de abajo).</td></tr>
-                <tr><td>Una tecla dispara sola, o demasiado pronto o tarde</td><td>Pulsa Calibrar teclas y pulsa cada tecla hasta el fondo. Comprueba que la placa está pegada a los interruptores.</td></tr>
+                <tr><td>Una tecla no suena</td><td>Activa la Prueba de teclas. Si su anillo no se mueve, hay que revisar el sensor de esa tecla.</td></tr>
+                <tr><td>Una tecla se dispara sola, o demasiado pronto o tarde</td><td>Pulsa Calibrar teclas y lleva cada tecla hasta el fondo.</td></tr>
                 <tr><td>Todas las notas suenan igual, sin dinámica</td><td>La velocity de las teclas está en "Fija". Elige Normal.</td></tr>
-                <tr><td>No hay sonido</td><td>Comprueba los auriculares en la salida de la Audio Board y el volumen en la página. Pulsa "Silenciar todo" (Esc).</td></tr>
-                <tr><td>Cada nota suena dos veces</td><td>"Escuchar en el navegador" está activado con el Teensy conectado: apaga uno de los dos.</td></tr>
-                <tr><td>Una nota se queda pegada</td><td>Esc o "Silenciar todo" en la página.</td></tr>
-                <tr><td>El LED parpadea en rojo</td><td>Activa la Prueba de teclas: una tecla cuyo anillo nunca se mueve tiene un problema de sensor. Si todas funcionan, comprueba que la Audio Board está bien encajada (el chip de audio no respondió).</td></tr>
-                <tr><td>El LED queda apagado</td><td>No hay alimentación USB, o el LED está al revés (la pata del medio es el cátodo).</td></tr>
+                <tr><td>No hay sonido</td><td>Revisa los auriculares y gira la perilla de volumen. Pulsa "Silenciar todo" (Esc) en la página.</td></tr>
+                <tr><td>Las perillas no hacen nada</td><td>El cable de la placa de controles no está bien conectado en J3 o en J1.</td></tr>
+                <tr><td>Un clic del selector salta dos instrumentos, o hacen falta dos clics para uno</td><td>El encoder no es el de 15 pulsos / 15 clics: cambia <code>ENC_STEPS_PER_DETENT</code> en el firmware (2 para un EC11E de 30 clics) y vuelve a grabarlo.</td></tr>
+                <tr><td>Cada nota suena dos veces</td><td>"Escuchar en el navegador" está activado con el eTuttino conectado: apaga uno de los dos.</td></tr>
+                <tr><td>Una nota se queda pegada</td><td>Esc, o "Silenciar todo" en la página.</td></tr>
+                <tr><td>El LED parpadea en rojo o está apagado</td><td>Mira <em>El LED</em> más arriba.</td></tr>
               </tbody>
             </table>
           </div>
