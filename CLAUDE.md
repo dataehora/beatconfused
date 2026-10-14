@@ -403,7 +403,74 @@ despite the file on disk being correct, suspect the browser's own cache
 first (try a brand new tab, or bump the preview port) rather than the
 code.
 
-## eTutti handoff (session of Oct 2026, PRs #63–#76) — start here to continue
+## eTuttino case + PCB handoff (session of 13–14 Oct 2026, PRs #81–#90) — start here
+
+**Milestone reached:** the eTuttino hardware is designed end to end and
+ready to order. All of it is merged on `main`.
+
+- **Case** (`etutti/hardware/case/`, CadQuery):
+  - SPEC v8. The shape has been frozen since v7.
+  - Seixo (resin/MJF) and Madeira (oak, CNC, two setups), with STEP/STL
+    in `case/out/`.
+  - Button caps in three files, plus a 4-cap fit test for the real
+    Gateron switches.
+  - Renders in `case/renders/`.
+  - `FIT_CHECK.md` (Portuguese) ends with the open questions.
+- **Main board v0.7** (`generate.py` + `build_pcb.py`):
+  - 18.5 mm hexagonal key grid, outline taken from the case through
+    `case/out/pcb_envelope.json`.
+  - 3 multiplexers + LDO on the back; J3 to the controls board; 2 M2
+    holes.
+  - DRC 0/0/0, firmware cross-check 44/44.
+  - Gerbers, BOM and CPL in `fab/`.
+  - Plate: 1.6 mm FR-4 (`fab/etuttino_plate_gerbers.zip`).
+- **Controls board** (`controls_pcb.py`):
+  - RK09K pot, EC11E encoder, 3 mm R/G LED, vertical JST PH facing down.
+  - DRC 0/0/0, `fab/etuttino_controls_gerbers.zip`.
+- **Firmware:**
+  - knobs: pot = volume, encoder = instrument, click = confirm (saved
+    in EEPROM) or back to the default;
+  - compiled, and flashed on the user's Teensy (enumerates as "eTutti").
+- **Process:** design iterations run through the protocol under "New
+  case, Seixo/Madeira" above.
+  - Claude Chat edits `SPEC.md`.
+  - Code models it, checks it, answers in `FIT_CHECK.md`, then commits,
+    opens a PR and merges.
+  - The user relays a one-line note between the two.
+
+**Open questions for the design (v9), in `case/FIT_CHECK.md` §5:**
+
+1. `ENC_STEPS_PER_DETENT`: 2 or 4, depending on the EC11E bought.
+2. Should the page follow the knobs? The Teensy sends CC 7 / CC 25 back;
+   `handleIncoming` in `etutti/script.js` only logs them.
+3. Is the encoder button's behaviour right?
+4. Order the prototype?
+
+**Next session (the user's plan): update the site, the manuals and
+everything else.**
+
+- **`etutti/manuais/` (en/pt/es):** still describes board v0.5 and the
+  old FreeCAD case. To redo:
+  - BOM (no on-board LED; J3 + controls board; printed caps; M2 screws);
+  - assembly steps;
+  - the case (Seixo / Madeira from `case/out/`);
+  - the pictures. `assembly3d.py` is v0.5-only and
+    `build_pcb.py --renders` is disabled; `case/render.py` and the
+    KiCad renders in `fab/` can replace them.
+  - SPEC v8 said "only after the prototype", but the user now wants it
+    done.
+- **`/etutti/` page:**
+  - follow the knobs (CC 7 → volume slider, CC 25 → instrument), if the
+    design agrees;
+  - mention the hex layout where the page describes the hardware.
+- **`/etutti/models/` concept page** (`concepts*.py`): still shows the
+  PR #80 concept models. Replace or update it with the Seixo / Madeira
+  renders (SPEC v5 listed this as optional).
+- **`etutti/hardware/README.md`** is current (v0.7). Re-check the
+  `sitemap.xml` / noindex rules if any eTutti page becomes public. They
+  are deliberately unlisted now.
+
+## eTutti handoff (session of Oct 2026, PRs #63–#76) — earlier state
 
 **State at hand-off** (everything merged to `main`):
 - **Page** `/etutti/` (unlisted, noindex) works with the user's real
