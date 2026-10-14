@@ -1,15 +1,16 @@
-# eTutti · case paramétrico (Seixo e Madeira) · v7
+# eTutti · case paramétrico (Seixo e Madeira) · v8
 
-**Versão 7 — forma congelada.** Substitui a v6, implementada no PR #84 (as versões anteriores continuam no histórico do git). Cada versão nova deste arquivo ganha um número e a seção "Mudanças desde a versão anterior". O resultado da verificação de cada versão fica no `FIT_CHECK.md`, com as "Perguntas para o design" no fim. Os desenhos de referência continuam em `canvas-v5/` (forma geral; as medidas desta SPEC prevalecem).
+**Versão 8 — forma congelada desde a v7.** Substitui a v7, implementada nos PRs #86 e #87 (as versões anteriores continuam no histórico do git). Cada versão nova deste arquivo ganha um número e a seção "Mudanças desde a versão anterior". O resultado da verificação de cada versão fica no `FIT_CHECK.md`, com as "Perguntas para o design" no fim. Os desenhos de referência continuam em `canvas-v5/` (forma geral; as medidas desta SPEC prevalecem).
 
-## Mudanças desde a versão anterior (v6)
+## Mudanças desde a versão anterior (v7)
 
-Decisões a partir do `FIT_CHECK.md` da v6 (PR #84). **A forma do case está congelada**: teclado, contorno, alturas e posição da eletrônica não mudam mais sem uma nova versão. Daqui em diante, ajustes de acabamento externo não podem mexer no contorno interno usado pela PCB.
+Respostas às perguntas da PCB v0.6 no `FIT_CHECK.md` (PRs #86 e #87). **A forma externa continua congelada**; só mudam o fundo e o que vem depois.
 
-1. **Borda da abertura** (seção 3): chanfro de 4 × 2 mm e **2,7 mm de reto** abaixo dele, igual nas duas versões. A tampa continua apoiada na placa de switches.
-2. **Tampa em volta das teclas**: fica em **z = 17,4**.
-3. **LED da Madeira** (seção 5 e 8): **condutor de luz redondo de 3 mm pronto (light pipe)** num furo, com a ponta lixada rente à superfície, em vez de recortar acrílico.
-4. **Próxima etapa: PCB** (seção 9 e 10), com o contorno interno e a grade desta versão.
+1. **Pilares do fundo**: aprovados como estão no modelo, um no centro de cada triângulo de três teclas vizinhas (61) mais 3 sob a interface.
+2. **Fixação da placa sob a interface**: **dois parafusos M2 por baixo**, pelo fundo, nos pilares (30; 60) e (12; 70), com furos correspondentes na placa principal. Sem espuma.
+3. **Plate em FR-4 de 1,6 mm**, aceito: os botões ficam 0,1 mm mais altos (topo em z ≈ 26,6). Nada muda na caixa.
+4. **Próxima etapa: a plaquinha de controles** (seção 10), e o firmware lendo o potenciômetro e o encoder.
+5. **Manuais de montagem e figuras 3D**: refazer só depois do protótipo.
 
 Especificação para o Claude Code gerar o modelo 3D do case do eTuttino, nas duas versões:
 
@@ -174,12 +175,17 @@ Premissas que continuam valendo (do `FIT_CHECK.md` da v5):
 
 O que verificar nesta versão:
 
-1. Nada novo na forma. Conferir que o modelo continua igual ao da v6, com as três decisões acima aplicadas.
-2. Exportar o **contorno interno** da caixa (a área livre para a PCB, com as colunas, os furos de fixação e as zonas de altura máxima por baixo da rampa e da tampa) num formato que o `generate.py`/`build_pcb.py` consigam ler, para a próxima etapa.
+1. Furos M2 nos pilares (30; 60) e (12; 70): passagem pelo fundo, rebaixo para a cabeça do parafuso e furos na placa principal, longe de trilhas e componentes.
+2. Plate de 1,6 mm: confirmar que a tampa e as saias continuam com folga.
 
-## 10. Entregáveis pedidos ao Claude Code (v7)
+## 10. Entregáveis pedidos ao Claude Code (v8)
 
-1. `case.py`: aplicar as três decisões (reto de 2,7 mm nas duas versões, tampa em 17,4, light pipe de 3 mm no LED da Madeira) e reexportar STEP, STL e renders.
-2. Exportar o contorno interno e as zonas de altura para a PCB (seção 9, item 2).
-3. `FIT_CHECK.md`: registrar a v7 como forma congelada.
-4. Em seguida, como etapa própria (PR separado): refazer a PCB e a placa de switches em `generate.py`/`build_pcb.py` com passo 18,5 (fileiras a 16,02 mm), dentro do contorno interno da v7, com a pilha baixa na posição testada no `fit_check.py`, a plaquinha de controles separada e as notas e o firmware inalterados. Conferir o `KEY_INPUT` com o sketch, como sempre. Ao fim, as "Perguntas para o design" do que a PCB exigir da caixa.
+1. **Fundo e placa principal**: os dois furos M2 da seção 9 (caixa: fundo com passagem e rebaixo; placa: furos de montagem). Regerar a PCB (DRC e conferência do firmware como sempre) e exportar o case.
+2. **Plate**: espessura 1,6 mm (FR-4) no modelo e nos arquivos de fabricação.
+3. **Plaquinha de controles**, como PCB própria:
+   - potenciômetro RK09K (volume, contínuo), encoder EC11 com clique e botão (seletor de instrumento), ambos com eixo L = 15, nas posições (20; 45) e (37; 45);
+   - LED de 3 mm vermelho/verde em (52; 45), num espaçador que leve a ponta até o furo da tampa (no Seixo; na Madeira, logo abaixo do light pipe);
+   - conector JST PH de 8 vias, ligado por cabo ao J3 da placa principal;
+   - presa por baixo da tampa da interface; conferir no `fit_check.py` contra a pilha, o USB e o jack de painel.
+4. **Firmware**: ler o potenciômetro como volume e o encoder como seletor de instrumento (girar troca, clique confirma ou volta ao padrão), sem mudar o mapa de notas. Compilar e conferir.
+5. `FIT_CHECK.md`: registrar a v8 e terminar com "Perguntas para o design".
