@@ -116,7 +116,8 @@ def interface_board(v):
     tip = surface + KNOB_GAP + KNOB_BORE
     info = {"sub_top": sub_top, "L_sub": tip - sub_top, "L_main": tip - C.Z_PCB_TOP,
             # LED tip: flush in the Seixo's hole; under the Madeira's acrylic window (as thick as the top)
-            "surface": surface, "led_stand": (C.z_interface(ly) - (v["top"] if v is C.VERSIONS["madeira"] else 0.0))
+            # LED tip: flush in the Seixo's hole; under the Madeira's light pipe (0.3 mm gap)
+            "surface": surface, "led_stand": (C.z_interface(ly) - (C.LIGHT_PIPE_L + 0.3 if v is C.VERSIONS["madeira"] else 0.0))
             - sub_top - 5.3}
     return parts, info
 
@@ -359,13 +360,15 @@ def main():
     ms = {(ch, v): max_stack(ch, v) for ch in (False, True) for v in ("seixo", "madeira")}
     length = C.ROW2_X[1] + C.D_BTN / 2 + C.CLR_SIDE + C.BOX_OFF
 
-    w("# eTuttino — conferência do case (SPEC v6)\n")
+    w("# eTuttino — conferência do case (SPEC v7, forma congelada)\n")
     w("Gerado por `fit_check.py` a partir de `case.py` (CadQuery). As peças são sólidos com medidas "
       "de datasheet, da placa atual ou medidas por você; as incertas estão marcadas CHECK no código. "
       "Coordenadas da SPEC (y para quem toca). Folga = menor distância entre a peça e o case (tampa + fundo).\n")
-    w("Mudanças da v6 aplicadas: tampa em volta das teclas em z = %.1f, saia das capas Ø%.1f, vinco R %.0f, "
-      "LED da Madeira com furo e janela de acrílico (`madeira_led_janela`). Passo 18,5 e fim da rampa a 75° já "
-      "estavam no modelo (PR #82).\n" % (C.Z_DECK, C.D_SKIRT, C.IF_CREASE_R))
+    w("**v7: forma congelada.** O modelo é o da v6 (PR #84) com as três decisões da v7: reto de %.1f mm na borda "
+      "da abertura nas duas versões, tampa em volta das teclas em z = %.1f, e na Madeira um condutor de luz (light pipe) "
+      "de Ø%.1f mm num furo de Ø%.1f no lugar da janela de acrílico. O contorno interno e as zonas de altura para a PCB "
+      "estão em `out/pcb_envelope.json` (desenho em `renders/pcb_envelope.png`), gerados por `pcb_envelope.py`.\n" % (
+          C.LID_T - C.CHAMFER_DROP, C.Z_DECK, C.LIGHT_PIPE_D, C.LIGHT_PIPE_HOLE))
     w("## Resumo\n")
     w("RESUMO_AQUI\n")
     w("Pilha mais alta que cabe (de baixo da Audio Board ao topo do USB do Teensy): **%.1f mm** no eTuttino Seixo, "
@@ -398,7 +401,7 @@ def main():
           C.D_SKIRT, K.SKIRT_WALL, K.TRAVEL, zb - C.Z_PLATE_TOP, zb, zb - C.Z_PLATE_TOP - K.TRAVEL,
           C.Z_KEY_TOP - zb, C.Z_KEY_TOP, C.Z_DECK, zb - C.Z_DECK))
 
-    w("### Conferências pedidas na v6 (seção 9)\n")
+    w("### Conferências da v6 (continuam valendo na v7)\n")
     pressed = zb - K.TRAVEL
     w("1. **Tampa em z = %.1f × saia apertada.** A base da saia, com a tecla no fim do curso, fica em z = %.2f: "
       "**%.2f mm acima da tampa**. Ela não chega ao nível da tampa, então também não encosta na borda da abertura "
@@ -414,11 +417,9 @@ def main():
       "não mudam; a grade continua a 6 mm da rampa.\n" % (
           C.RAMP_FRONT_SWEEP, C.RAMP_STRAIGHT_TO + C.RAMP_FRONT_R * math.sin(math.radians(C.RAMP_FRONT_SWEEP)),
           ramp_front_x(C.RAMP_TOP_OFF), ramp_front_x(C.RAMP_FOOT_OFF)))
-    w("4. **Madeira.** O reto da borda da abertura fica com **%.1f mm** (pedido: 2 mm), porque a tampa de %.1f mm "
-      "apoia na placa e o chanfro desce %.1f mm (ver pergunta 1). O LED tem furo Ø%.1f passante e uma janela de "
-      "acrílico difuso de Ø%.1f × %.1f mm colada rente (`out/madeira_led_janela.*`).\n" % (
-          C.LID_T - C.CHAMFER_DROP, C.LID_T, C.CHAMFER_DROP, C.LED_HOLE_D,
-          C.LED_HOLE_D - 2 * C.LED_WINDOW_CLR, C.VERSIONS["madeira"]["top"]))
+    w("4. **Madeira.** O reto da borda da abertura tem **%.1f mm**, como no Seixo (v7). O LED fica sob um condutor de "
+      "luz redondo de Ø%.1f × %.1f mm (CHECK com a peça comprada) num furo de Ø%.1f, com a ponta lixada rente.\n" % (
+          C.LID_T - C.CHAMFER_DROP, C.LIGHT_PIPE_D, C.LIGHT_PIPE_L, C.LIGHT_PIPE_HOLE))
 
     w("## 2. Teensy + Audio Board, tela, knobs, LED, alto-falante e conectores\n")
     lS, rS = interior_widths(C.VERSIONS["seixo"])
@@ -502,30 +503,11 @@ def main():
     w("| Tampa em volta das teclas | %.1f mm, apoiada na placa | igual |" % C.LID_T)
     w("| Borda da abertura | arredondado %.0f × %.1f + %.1f mm reto | igual |" % (C.CHAMFER_W, C.CHAMFER_DROP, C.LID_T - C.CHAMFER_DROP))
     w("| Teia da grade | %.1f mm | igual |" % (C.GRILLE_PITCH - C.GRILLE_D))
-    w("| LED | furo Ø%.1f | furo Ø%.1f + janela de acrílico difuso |" % (C.LED_HOLE_D, C.LED_HOLE_D))
+    w("| LED | furo Ø%.1f | furo Ø%.1f + light pipe de Ø%.1f |" % (C.LED_HOLE_D, C.LIGHT_PIPE_HOLE, C.LIGHT_PIPE_D))
     w("\nA Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão interno).\n")
 
     w("## 5. Perguntas para o design\n")
-    q = []
-    q.append("**Reto da borda da abertura.** A v6 pede 1 mm (Seixo) e 2 mm (Madeira) de reto abaixo do chanfro de 2 mm. "
-             "Mas a tampa agora tem %.1f mm sobre a placa e apoia nela; com o chanfro de %.1f mm, sobram **%.1f mm de reto nas "
-             "duas versões**. Para chegar a 1 / 2 mm haveria duas saídas: (a) um chanfro maior, de 4 × %.1f mm no Seixo e "
-             "4 × %.1f mm na Madeira; (b) um rebaixo por baixo da tampa perto da abertura, e aí a tampa deixa de apoiar "
-             "na placa ali. Ficamos com %.1f mm nas duas, ou qual das saídas?" % (
-                 C.LID_T, C.CHAMFER_DROP, C.LID_T - C.CHAMFER_DROP, C.LID_T - 1.0, C.LID_T - 2.0, C.LID_T - C.CHAMFER_DROP))
-    q.append("**Altura da tampa.** Com a saia Ø%.1f a base da saia sobe um pouco (uma saia mais estreita só passa pelos cantos "
-             "do Gateron mais acima): solta em z = %.2f, apertada em z = %.2f. Entre a tampa (z %.1f) e a saia aparecem "
-             "agora ~%.1f mm da carcaça. A tampa só pode subir mais ~%.1f mm (até a saia apertada menos 1 mm). Fica em %.1f?" % (
-                 C.D_SKIRT, zb, zb - K.TRAVEL, C.Z_DECK, zb - C.Z_DECK, zb - K.TRAVEL - 1.0 - C.Z_DECK, C.Z_DECK))
-    q.append("**Janela do LED (Madeira).** A janela tem a espessura da tampa (%.1f mm) e Ø%.1f. Recortar acrílico difuso "
-             "nesse tamanho é chato. Uma alternativa é um condutor de luz redondo de 3 mm comprado pronto (light pipe), "
-             "com a ponta lixada rente. Pode?" % (C.VERSIONS["madeira"]["top"], C.LED_HOLE_D - 2 * C.LED_WINDOW_CLR))
-    q.append("**Próximo passo: PCB.** Com a v6, a caixa, a grade de teclas (passo 18,5, fileiras a %.2f mm) e a posição da "
-             "pilha estão definidas. Dá para começar a refazer a PCB (`generate.py`/`build_pcb.py`) com este contorno "
-             "interno, ou ainda há mudanças de forma previstas?" % C.ROW_PITCH)
-    for i, t in enumerate(q, 1):
-        w("%d. %s" % (i, t))
-    w("")
+    w("Nenhuma sobre a forma: a v7 está congelada. As perguntas que a PCB fizer para a caixa vêm no PR da PCB.\n")
 
     text = "\n".join(out).replace("RESUMO_AQUI", summarise(results))
     with open(os.path.join(HERE, "FIT_CHECK.md"), "w", encoding="utf-8") as f:

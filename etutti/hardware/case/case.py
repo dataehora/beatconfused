@@ -9,7 +9,6 @@ writes into out/:
   seixo_fundo.step/.stl      bottom plate, screwed on from below
   madeira_corpo.step/.stl    the oak body (3-axis CNC)
   madeira_fundo.step/.stl    the thin bottom cover
-  madeira_led_janela.*       diffuse acrylic window for the LED hole
   insert.step/.stl           black connector insert (USB + headphones), left face
   plate.step/.dxf            1.5 mm black switch plate (MX 14 x 14 holes)
 
@@ -99,7 +98,8 @@ VOLUME_XY = (20.0, 45.0)
 SELECT_XY = (37.0, 45.0)
 SHAFT_HOLE_D = 6.8            # 6 mm shafts
 LED_XY, LED_HOLE_D = (52.0, 45.0), 3.5
-LED_WINDOW_CLR = 0.05         # Madeira: diffuse acrylic window glued flush in the LED hole (v6)
+LIGHT_PIPE_D, LIGHT_PIPE_HOLE = 3.0, 3.1   # Madeira (v7): a bought 3 mm round light pipe, tip sanded flush -- CHECK
+LIGHT_PIPE_L = 6.0            # its length down to just above the LED -- CHECK the part bought
 GRILLE_RECT = (8.0, 61.0, 53.0, 94.0)     # on the 13 deg slope; corners R 3,
 GRILLE_R, GRILLE_R_FR = 3.0, 8.0          # the front-right one R 8 (concentric with the ramp's curve)
 GRILLE_D, GRILLE_PITCH = 1.9, 4.0         # pitch measured on the sloping surface
@@ -117,7 +117,7 @@ INSERT_WALL = 2.5             # the wall is thinned to this round the insert (Ma
 # versions (SPEC 8)
 VERSIONS = {
     "seixo": {"wall": 2.5, "top": 2.5},     # resin / MJF
-    "madeira": {"wall": 4.0, "top": 3.0},   # oak, 3-axis CNC
+    "madeira": {"wall": 4.0, "top": 3.0, "led_hole": LIGHT_PIPE_HOLE},   # oak, 3-axis CNC
 }
 FUNDO_CLR = 0.3               # bottom plate to the walls
 BOSS_D, PILOT_D = 6.0, 2.2    # M2.5 self-tapping (or a heat-set / wood insert)
@@ -545,7 +545,7 @@ def top_features(v):
     for x, y in (VOLUME_XY, SELECT_XY):
         cuts.append(cyl(x, y, 0, 50, SHAFT_HOLE_D))
     lx, ly = LED_XY
-    cuts.append(cyl(lx, ly, 0, 50, LED_HOLE_D))
+    cuts.append(cyl(lx, ly, 0, 50, v.get("led_hole", LED_HOLE_D)))
     cuts += [cyl(x, y, 19.0, 50, GRILLE_D) for x, y in grille_holes()]     # through the lid only
     return cuts
 
@@ -627,17 +627,17 @@ def connector_insert():
 
 
 def madeira_body():
-    """One oak block: same outside, thicker walls, an LED hole for the
-    acrylic window."""
+    """One oak block: same outside, thicker walls, a hole for the LED's
+    light pipe."""
     return shell(VERSIONS["madeira"])
 
 
-def led_window():
-    """Madeira: the diffuse acrylic disc glued flush into the LED hole."""
+def light_pipe():
+    """Madeira: stand-in for the bought 3 mm light pipe, flush with the top
+    (for the renders and the fit check; not a part to make)."""
     lx, ly = LED_XY
-    t = VERSIONS["madeira"]["top"]
     z1 = z_interface(ly)
-    return cyl(lx, ly, z1 - t, z1, LED_HOLE_D - 2 * LED_WINDOW_CLR)
+    return cyl(lx, ly, z1 - LIGHT_PIPE_L, z1, LIGHT_PIPE_D)
 
 # ---------------------------------------------------------------- export
 
@@ -666,7 +666,6 @@ def build_all():
         "seixo_fundo": fundo(seixo),
         "madeira_corpo": madeira_body(),
         "madeira_fundo": fundo(madeira, t=FLOOR_T),
-        "madeira_led_janela": led_window(),
         "insert": connector_insert(),
         "plate": switch_plate(),
     }
