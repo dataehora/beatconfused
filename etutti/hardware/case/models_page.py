@@ -312,7 +312,7 @@ HEAD = """<!doctype html>
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="../manuais/styles.css?v=20261023" />
+  <link rel="stylesheet" href="../manuais/styles.css?v=20261024" />
   <link rel="stylesheet" href="styles.css?v=20261014" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />

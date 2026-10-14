@@ -1159,10 +1159,10 @@ def route_with_retries(max_attempts=20):
 
 
 def renders():
-    """The manuals' pictures come from case/manual_render.py now (the
-    CadQuery venv: it exports this board with kicad-cli and puts it in the
-    case); this script only makes fab/etuttino_top.png / _bottom.png."""
-    raise SystemExit("--renders: run case/manual_render.py with the CadQuery venv (see case/README.md)")
+    """The manuals' pictures come from manual3d/build.py now (Blender: it
+    exports this board with kicad-cli and puts it in the case); this script
+    only makes fab/etuttino_top.png / _bottom.png."""
+    raise SystemExit("--renders: run manual3d/build.py with the CadQuery venv (see manual3d/STYLE.md)")
 
 
 if __name__ == "__main__" and "--renders" in sys.argv:

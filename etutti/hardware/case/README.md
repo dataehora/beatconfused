@@ -44,14 +44,12 @@ C:/Users/julia/.venvs/cadquery/Scripts/python.exe fit_check.py   # FIT_CHECK.md 
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe pcb_envelope.py # out/pcb_envelope.json for the board
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe models_render.py  # pictures + numbers for /etutti/models/
 python models_page.py                                                # writes etutti/models/index.html (texts live here)
-C:/Users/julia/.venvs/cadquery/Scripts/python.exe manual_render.py  # the manuals' pictures -> etutti/manuais/img/
 ```
 
 Run `case.py` and `keycap.py` before `render.py`, and `render.py` before
-`models_render.py` (it crops render.py's PNGs). `manual_render.py` also
-needs KiCad 10's `kicad-cli` (it exports the main and controls boards to
-STL) and imports `fit_check.py` for the stack, controls-board and panel
-solids.
+`models_render.py` (it crops render.py's PNGs). The assembly manual's
+pictures are made in Blender by [`../manual3d/`](../manual3d/) (`build.py`),
+from these STLs and the KiCad boards.
 
 ## Files
 
