@@ -9,6 +9,7 @@ writes into out/:
   seixo_fundo.step/.stl      bottom plate, screwed on from below
   madeira_corpo.step/.stl    the oak body (3-axis CNC)
   madeira_fundo.step/.stl    the thin bottom cover
+  madeira_led_janela.*       diffuse acrylic window for the LED hole
   insert.step/.stl           black connector insert (USB + headphones), left face
   plate.step/.dxf            1.5 mm black switch plate (MX 14 x 14 holes)
 
@@ -38,7 +39,7 @@ OUT = os.path.join(HERE, "out")
 P = 18.5                      # button pitch, the same to all six neighbours (the user's
                               # choice after SPEC v5, which still says 19.05)
 D_BTN = 15.0                  # button (dome) diameter
-D_SKIRT = 17.0                # keycap skirt at its base
+D_SKIRT = 16.5                # keycap skirt at its base (v6: 2 mm between neighbours)
 O_KEYS = 104.0                # x of xp = 0
 ROW_PITCH = P * math.cos(math.radians(30))     # 16.02: rows half a pitch apart in x -> equilateral
 KEYS_CY = 50.0                                 # keys centred front to back
@@ -53,14 +54,14 @@ CLR_FB = None                 # button edge to the opening, front and back: set 
 SIDE_ANGLE = 30.0             # the "<" and ">" lean 30 deg from the y axis
 R_OPEN_CORNER = 6.0           # the four 120 deg corners (the lateral vertices are concentric)
 CHAMFER_W = 4.0               # rounded edge round the opening, in plan
-CHAMFER_DROP = 2.0            # ...and its drop; the last LID_T - CHAMFER_DROP is a vertical land
+CHAMFER_DROP = 2.0            # ...and its drop; the rest, LID_T - CHAMFER_DROP (2.7), is a vertical land
 
 # box (SPEC 4)
 WIDTH = 100.0
 BOX_OFF = 10.3                # right/front/back: box = opening + 10.3
 R_LEFT = 16.0                 # left corners
 CLR_FB = WIDTH / 2 - BOX_OFF - 1.5 * ROW_PITCH - D_BTN / 2
-Z_DECK = 15.7                 # top of the lid round the keys
+Z_DECK = 17.4                 # top of the lid round the keys (v6; was 15.7): hides more of the switch
 # interface top (SPEC v5 4): flat at Z_IF to the crease, then down at IF_SLOPE to the front
 Z_IF = 33.0
 IF_CREASE_Y = 55.0
@@ -84,7 +85,7 @@ Z_PCB_BOT = FLOOR_T + UNDER_PCB           # 6.5
 Z_PCB_TOP = Z_PCB_BOT + PCB_T             # 7.7
 PLATE_T = 1.5
 Z_PLATE_TOP = Z_PCB_TOP + 5.0             # MX: plate top 5 mm above the board -> 12.7
-LID_T = Z_DECK - Z_PLATE_TOP              # 3.0: the lid rests on the plate's edge
+LID_T = Z_DECK - Z_PLATE_TOP              # 4.7: the lid rests on the plate's edge
 Z_KEY_TOP = 26.5
 PLATE_OVERLAP = 3.0           # plate edge under the lid, beyond the opening
 
@@ -98,7 +99,7 @@ VOLUME_XY = (20.0, 45.0)
 SELECT_XY = (37.0, 45.0)
 SHAFT_HOLE_D = 6.8            # 6 mm shafts
 LED_XY, LED_HOLE_D = (52.0, 45.0), 3.5
-GHOST_SKIN = 0.8              # Madeira: wood left over the LED
+LED_WINDOW_CLR = 0.05         # Madeira: diffuse acrylic window glued flush in the LED hole (v6)
 GRILLE_RECT = (8.0, 61.0, 53.0, 94.0)     # on the 13 deg slope; corners R 3,
 GRILLE_R, GRILLE_R_FR = 3.0, 8.0          # the front-right one R 8 (concentric with the ramp's curve)
 GRILLE_D, GRILLE_PITCH = 1.9, 4.0         # pitch measured on the sloping surface
@@ -315,32 +316,43 @@ def below_plane(dz=0.0, x0=-50, x1=450):
     return wp.val()
 
 
-def ramp_edge(d, r_front, y_from=-30.0, k_back=24, k_front=24):
-    """One edge of the ramp in plan, back to front: the opening's "<" grown
-    by d (straight, then the arc round G3 to row 2), straight along y to
-    RAMP_STRAIGHT_TO, then a quarter circle of r_front ending on the front
-    face. Points of the two edges (d = foot and top) pair up one to one."""
+def ramp_segments(d, r_front, y_from=-30.0, n_back=40, n_str=14, k_arc=24):
+    """One edge of the ramp in plan, back to front, as five tangent pieces:
+    the opening's "<" grown by d (straight, then the arc round G3 down to
+    row 2), straight along y to RAMP_STRAIGHT_TO, an arc of r_front through
+    RAMP_FRONT_SWEEP, then straight on out through the front face. Each
+    piece is (kind, points); the two edges (foot and top) have the same
+    pieces and the same (fixed) point counts, so their points pair up one
+    to one."""
     c = hex_contour(d)
     a_in, mid, a_out, centre = fillets(c)[5]
     r = c[5][1]
     a_back = math.atan2(a_out[1] - centre[1], a_out[0] - centre[0]) % (2 * math.pi)   # ~210 deg
-    pts = []
+
+    def line(p, q, n):
+        return [(p[0] + (q[0] - p[0]) * i / n, p[1] + (q[1] - p[1]) * i / n) for i in range(n + 1)]
     xb, yb = a_out
-    pts.append((xb + (yb - y_from) * TAN, y_from))
-    for i in range(k_back + 1):
-        t = a_back + (math.pi - a_back) * i / k_back
-        pts.append((centre[0] + r * math.cos(t), centre[1] + r * math.sin(t)))
+    start = (xb + (yb - y_from) * TAN, y_from)
+    segs = [("line", line(start, a_out, n_back))]
+    segs.append(("arc", [(centre[0] + r * math.cos(a_back + (math.pi - a_back) * i / k_arc),
+                          centre[1] + r * math.sin(a_back + (math.pi - a_back) * i / k_arc)) for i in range(k_arc + 1)]))
     xv = centre[0] - r
+    segs.append(("line", line((xv, centre[1]), (xv, RAMP_STRAIGHT_TO), n_str)))
     cx = xv - r_front
     sweep = math.radians(RAMP_FRONT_SWEEP)
-    for i in range(k_front + 1):
-        t = sweep * i / k_front
-        pts.append((cx + r_front * math.cos(t), RAMP_STRAIGHT_TO + r_front * math.sin(t)))
-    # straight on along the tangent, out through the front face
-    x, y = pts[-1]
-    L = (WIDTH + 30.0 - y) / math.cos(sweep)
-    for i in range(1, 9):            # in steps, so one smooth spline carries on through it
-        pts.append((x - L * i / 8 * math.sin(sweep), y + L * i / 8 * math.cos(sweep)))
+    segs.append(("arc", [(cx + r_front * math.cos(sweep * i / k_arc), RAMP_STRAIGHT_TO + r_front * math.sin(sweep * i / k_arc))
+                         for i in range(k_arc + 1)]))
+    x, y = segs[-1][1][-1]
+    L = (WIDTH + 6.0 - y) / math.cos(sweep)      # just past the front face (far out, it ran into the closing edges)
+    segs.append(("line", line((x, y), (x - L * math.sin(sweep), y + L * math.cos(sweep)), 8)))
+    return segs
+
+
+def ramp_edge(d, r_front):
+    """ramp_segments() as one list of points (joints not repeated)."""
+    pts = []
+    for _, seg in ramp_segments(d, r_front):
+        pts += seg[1:] if pts else seg
     return pts
 
 
@@ -356,33 +368,37 @@ def raised_region(foot_d, z_foot, top_d, dz_top, r_front=RAMP_FRONT_R, z_hi=40.0
         s_ = (z_hi - z_foot) / (zq - z_foot)
         lo.append(cq.Vector(x, y, z_foot))
         hi.append(cq.Vector(x + (qx - x) * s_, y + (qy - y) * s_, z_hi))
+    # one spline per edge through densely, evenly paired points: a single
+    # smooth ramp face (exact lines + arcs here make OCC's fillets invalid)
+    lo_edges, hi_edges = [cq.Edge.makeSpline(lo)], [cq.Edge.makeSpline(hi)]
     far = -60.0
 
-    def wire(pts, z):
-        spline = cq.Edge.makeSpline(pts)
-        tail = [pts[-1], cq.Vector(far, pts[-1].y, z), cq.Vector(far, pts[0].y, z), pts[0]]
-        return cq.Wire.assembleEdges([spline] + [cq.Edge.makeLine(p, q) for p, q in zip(tail, tail[1:])])
-    loft = cq.Solid.makeLoft([wire(lo, z_foot), wire(hi, z_hi)], ruled=True)
+    def close(edges, z):
+        a = edges[-1].endPoint()
+        b = edges[0].startPoint()
+        tail = [a, cq.Vector(far, a.y, z), cq.Vector(far, b.y, z), b]
+        return cq.Wire.assembleEdges(edges + [cq.Edge.makeLine(p, q) for p, q in zip(tail, tail[1:])])
+    loft = cq.Solid.makeLoft([close(lo_edges, z_foot), close(hi_edges, z_hi)], ruled=True)
     return loft.intersect(below_plane(dz_top))
 
 
 def rounded_opening_cutter():
     """The keyboard opening with its 4 mm rounded edge (quarter ellipse,
     CHAMFER_W across, CHAMFER_DROP down, then a vertical land to the
-    plate), as two solids to cut one after the other (fused first, the
-    overlapping loft and prism come out empty; touching, they leave a
-    zero-thickness film at the land)."""
-    secs = []
-    n = 8
+    plate), as ONE ruled loft through stacked opening contours: straight
+    down through the lid, the rounding in 16 steps (0.02 mm off a true
+    ellipse), and on up above the deck. One solid, one cut: a separate
+    prism and loft, fused or cut in turn, left films or split pieces."""
     z_land = Z_DECK - CHAMFER_DROP
-    for i in range(n + 1):
+    levels = [(0.0, Z_PLATE_TOP - 3.0), (0.0, z_land)]
+    n = 16
+    for i in range(1, n + 1):
         phi = math.pi / 2 * i / n
-        d = CHAMFER_W * (1 - math.cos(phi))
-        z = z_land + CHAMFER_DROP * math.sin(phi)
-        secs.append(contour_wp(hex_contour(d), z).wire().val())
-    loft = cq.Solid.makeLoft(secs, ruled=False)
-    below = prism(hex_contour(0.0), Z_PLATE_TOP - 3.0, z_land + 0.3)     # overlaps the loft: no film left at z_land
-    return [loft, below]
+        levels.append((CHAMFER_W * (1 - math.cos(phi)), z_land + CHAMFER_DROP * math.sin(phi)))
+    levels.append((CHAMFER_W, Z_DECK + 5.0))
+    secs = [contour_wp(hex_contour(d), z).wire().val() for d, z in levels]
+    return [cq.Solid.makeLoft(secs, ruled=True)]
+
 
 # ---------------------------------------------------------------- fixings
 
@@ -434,27 +450,40 @@ def outer_body():
 
 
 def round_ramp(body):
-    """R 5 on the ramp's top and bottom edges: the edges the ramp face shares
-    with the interface top and with the deck."""
+    """R 5 on the ramp's bottom and top edges: the edges the ramp shares with
+    the deck and with the interface top. One after the other (OCC can do
+    each alone, not both at once)."""
     if RAMP_EDGE_R <= 0:
         return body
-    ramp = [f for f in body.Faces() if f.geomType() not in ("PLANE", "CYLINDER")
-            and f.Center().z > Z_DECK + 0.5 and f.Center().x < 120]
-    edges = []
-    for f in ramp:
-        for e in f.Edges():
-            c = e.Center()
-            if c.x < 0.5 or c.y < 0.5 or c.y > WIDTH - 0.5:
-                continue          # the outer walls: no rounding there
-            if abs(c.z - Z_DECK) < 0.05 or abs(c.z - z_interface(c.y)) < 0.3:
-                edges.append(e)
-    try:
-        out = body.fillet(RAMP_EDGE_R, edges)
-        assert out.isValid()
+
+    def is_ramp(f):
+        c = f.Center()
+        if c.x > 130 or c.z < Z_DECK + 0.5 or abs(c.z - z_interface(c.y)) < 0.5:
+            return False                  # far right, the deck, or the interface top
+        n = f.normalAt(c)
+        return 0.05 < abs(n.z) < 0.98     # sloping: not the walls, not the flat tops
+
+    def edges(b, where):
+        out = []
+        for f in b.Faces():
+            if not is_ramp(f):
+                continue
+            for e in f.Edges():
+                c = e.Center()
+                if c.x < 0.5 or c.y < 0.5 or c.y > WIDTH - 0.5:
+                    continue              # the outer walls: no rounding there
+                if where(c) and not any(e.isSame(o) for o in out):
+                    out.append(e)
         return out
-    except Exception as exc:      # keep going without the rounding, but say so
-        print("ramp fillet failed (%s): edges left sharp" % exc)
-        return body
+    for where in (lambda c: abs(c.z - Z_DECK) < 0.05,
+                  lambda c: abs(c.z - z_interface(c.y)) < 0.3):
+        try:
+            nb = body.fillet(RAMP_EDGE_R, edges(body, where))
+            assert nb.isValid(), "invalid result"
+            body = nb
+        except Exception as exc:  # keep going without that rounding, but say so
+            print("ramp fillet failed (%s): edges left sharp" % exc)
+    return body
 
 
 def cavity(v):
@@ -502,7 +531,7 @@ def rrect(x0, y0, x1, y1, r, z0, z1):
             .rect(x1 - x0, y1 - y0).extrude(z1 - z0).edges("|Z").fillet(r).val())
 
 
-def top_features(v, ghost_led=False):
+def top_features(v):
     """Cuts in the top: screen recess/window, shafts, LED, grille."""
     cuts = []
     x0, y0, x1, y1 = SCREEN_ZONE
@@ -516,10 +545,7 @@ def top_features(v, ghost_led=False):
     for x, y in (VOLUME_XY, SELECT_XY):
         cuts.append(cyl(x, y, 0, 50, SHAFT_HOLE_D))
     lx, ly = LED_XY
-    if ghost_led:
-        cuts.append(cyl(lx, ly, 0, z_interface(ly) - GHOST_SKIN, LED_HOLE_D))
-    else:
-        cuts.append(cyl(lx, ly, 0, 50, LED_HOLE_D))
+    cuts.append(cyl(lx, ly, 0, 50, LED_HOLE_D))
     cuts += [cyl(x, y, 19.0, 50, GRILLE_D) for x, y in grille_holes()]     # through the lid only
     return cuts
 
@@ -545,13 +571,16 @@ def bosses(v, body):
     return out
 
 
-def shell(v, ghost_led=False):
+def shell(v):
     body = outer_body()
     s = body.cut(cavity(v))
     s = s.fuse(*bosses(v, body)).clean()
     for c in rounded_opening_cutter():
         s = s.cut(c)
-    cuts = [insert_cut(v)] + top_features(v, ghost_led)
+    # OCC sometimes splits a cut-away piece off as a second solid instead of
+    # removing it: keep the shell itself
+    s = sorted(s.Solids(), key=lambda x: x.Volume(), reverse=True)[0]
+    cuts = [insert_cut(v)] + top_features(v)
     cuts += [cyl(x, y, FLOOR_T - 0.01, FLOOR_T + 9.0, PILOT_D) for x, y in screw_points()]
     s = s.cut(fuse(cuts))
     # flush bottom plate sits inside the walls
@@ -598,9 +627,17 @@ def connector_insert():
 
 
 def madeira_body():
-    """One oak block: same outside, thicker walls, ghost LED, a rebate in
-    the bottom for the thin cover."""
-    return shell(VERSIONS["madeira"], ghost_led=True)
+    """One oak block: same outside, thicker walls, an LED hole for the
+    acrylic window."""
+    return shell(VERSIONS["madeira"])
+
+
+def led_window():
+    """Madeira: the diffuse acrylic disc glued flush into the LED hole."""
+    lx, ly = LED_XY
+    t = VERSIONS["madeira"]["top"]
+    z1 = z_interface(ly)
+    return cyl(lx, ly, z1 - t, z1, LED_HOLE_D - 2 * LED_WINDOW_CLR)
 
 # ---------------------------------------------------------------- export
 
@@ -629,6 +666,7 @@ def build_all():
         "seixo_fundo": fundo(seixo),
         "madeira_corpo": madeira_body(),
         "madeira_fundo": fundo(madeira, t=FLOOR_T),
+        "madeira_led_janela": led_window(),
         "insert": connector_insert(),
         "plate": switch_plate(),
     }

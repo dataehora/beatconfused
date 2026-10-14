@@ -115,7 +115,8 @@ def interface_board(v):
     surface = C.z_interface(y)
     tip = surface + KNOB_GAP + KNOB_BORE
     info = {"sub_top": sub_top, "L_sub": tip - sub_top, "L_main": tip - C.Z_PCB_TOP,
-            "surface": surface, "led_stand": (C.z_interface(ly) - (C.GHOST_SKIN if v is C.VERSIONS["madeira"] else 0.0))
+            # LED tip: flush in the Seixo's hole; under the Madeira's acrylic window (as thick as the top)
+            "surface": surface, "led_stand": (C.z_interface(ly) - (v["top"] if v is C.VERSIONS["madeira"] else 0.0))
             - sub_top - 5.3}
     return parts, info
 
@@ -176,7 +177,7 @@ def clearance(a, b):
 
 def run(stack_kind, chorus, version):
     v = C.VERSIONS[version]
-    shell = C.shell(v, ghost_led=(version == "madeira"))
+    shell = C.shell(v)
     fundo = C.fundo(v)
     parts, sinfo = stack(stack_kind)
     ib, iinfo = interface_board(v)
@@ -337,7 +338,7 @@ def keyboard_check():
            "skirts": C.P - C.D_SKIRT, "buttons": C.P - C.D_BTN}
     sw = K.all_switches()
     for version in ("seixo", "madeira"):
-        out["shell_" + version] = sw.distance(C.shell(C.VERSIONS[version], ghost_led=(version == "madeira")))
+        out["shell_" + version] = sw.distance(C.shell(C.VERSIONS[version]))
     return out
 
 
@@ -358,13 +359,13 @@ def main():
     ms = {(ch, v): max_stack(ch, v) for ch in (False, True) for v in ("seixo", "madeira")}
     length = C.ROW2_X[1] + C.D_BTN / 2 + C.CLR_SIDE + C.BOX_OFF
 
-    w("# eTuttino — conferência do case (SPEC v5 + passo 18,5)\n")
+    w("# eTuttino — conferência do case (SPEC v6)\n")
     w("Gerado por `fit_check.py` a partir de `case.py` (CadQuery). As peças são sólidos com medidas "
       "de datasheet, da placa atual ou medidas por você; as incertas estão marcadas CHECK no código. "
       "Coordenadas da SPEC (y para quem toca). Folga = menor distância entre a peça e o case (tampa + fundo).\n")
-    w("Modelo da SPEC v5 com três decisões do usuário tomadas depois dela, para entrar na v6: **passo 18,5 mm** "
-      "(grade hexagonal mantida), **fim da rampa com a curva até 75° e reta até a face** (ver §5), e pilha Teensy + "
-      "Audio Board de **~13 mm no eTuttino** e **reduzida em 3–4 mm (≤ 10 mm) no Chorus**.\n")
+    w("Mudanças da v6 aplicadas: tampa em volta das teclas em z = %.1f, saia das capas Ø%.1f, vinco R %.0f, "
+      "LED da Madeira com furo e janela de acrílico (`madeira_led_janela`). Passo 18,5 e fim da rampa a 75° já "
+      "estavam no modelo (PR #82).\n" % (C.Z_DECK, C.D_SKIRT, C.IF_CREASE_R))
     w("## Resumo\n")
     w("RESUMO_AQUI\n")
     w("Pilha mais alta que cabe (de baixo da Audio Board ao topo do USB do Teensy): **%.1f mm** no eTuttino Seixo, "
@@ -384,18 +385,40 @@ def main():
     w("| Carcaça × carcaça, diagonal (fileira vizinha) | %.2f mm (é o limite: passo mínimo ≈ 17,8 mm) |" % kb["diagonal"])
     w("| Teia da placa entre furos 14 × 14 | %.2f mm entre fileiras, %.2f mm na fileira |" % (kb["web_rows"], kb["web_row"]))
     w("| Botão Ø%.0f × vizinho | %.2f mm |" % (C.D_BTN, kb["buttons"]))
-    w("| Saia Ø%.0f × vizinha | %.2f mm |" % (C.D_SKIRT, kb["skirts"]))
+    w("| Saia Ø%.1f × vizinha (as seis, mesma fileira e diagonais) | %.2f mm |" % (C.D_SKIRT, kb["skirts"]))
     w("| Saia × borda da abertura | %.1f mm frente/trás, %.1f mm laterais |" % (
         C.CLR_FB - (C.D_SKIRT - C.D_BTN) / 2, C.CLR_SIDE - (C.D_SKIRT - C.D_BTN) / 2))
     w("| Switches × case | %.1f mm (Seixo), %.1f mm (Madeira) |" % (kb["shell_seixo"], kb["shell_madeira"]))
     w("")
-    w("**Capas.** A saia redonda (Ø%.0f, parede de %.1f mm) não pode descer até os cantos da carcaça retangular do Gateron. "
+    w("**Capas.** A saia redonda (Ø%.1f, parede de %.1f mm) não pode descer até os cantos da carcaça retangular do Gateron. "
       "Com o curso de %.1f mm, a base da saia fica a **%.2f mm acima da placa** com a tecla solta (z = %.2f; apertada, %.2f mm). "
       "A capa tem **%.2f mm** da base da saia ao topo (z = %.1f), com o tubo da haste por baixo. "
       "Entre a tampa (z %.1f) e a saia aparecem ~%.1f mm da carcaça escura. O topo da carcaça e a altura da haste não estão "
       "cotados no desenho do Gateron: o `keycap_test_4.stl` (4 capas) confirma isso nos switches reais.\n" % (
           C.D_SKIRT, K.SKIRT_WALL, K.TRAVEL, zb - C.Z_PLATE_TOP, zb, zb - C.Z_PLATE_TOP - K.TRAVEL,
           C.Z_KEY_TOP - zb, C.Z_KEY_TOP, C.Z_DECK, zb - C.Z_DECK))
+
+    w("### Conferências pedidas na v6 (seção 9)\n")
+    pressed = zb - K.TRAVEL
+    w("1. **Tampa em z = %.1f × saia apertada.** A base da saia, com a tecla no fim do curso, fica em z = %.2f: "
+      "**%.2f mm acima da tampa**. Ela não chega ao nível da tampa, então também não encosta na borda da abertura "
+      "(que de qualquer forma está a %.1f mm na horizontal). A tampa mais grossa só cresce para cima: a face de baixo "
+      "continua em z = %.1f, apoiada na placa, e nada da placa principal sob a faixa de %.1f mm muda. "
+      "Switches × case: %.1f mm.\n" % (
+          C.Z_DECK, pressed, pressed - C.Z_DECK, C.CLR_FB - (C.D_SKIRT - C.D_BTN) / 2, C.Z_PLATE_TOP, C.BOX_OFF,
+          min(kb["shell_seixo"], kb["shell_madeira"])))
+    w("2. **Saias Ø%.1f.** Na grade hexagonal os seis vizinhos ficam a %.1f mm, então a folga é **%.2f mm** em todas as "
+      "direções, diagonais incluídas.\n" % (C.D_SKIRT, C.P, kb["skirts"]))
+    w("3. **Fim da rampa.** A reta depois dos %.0f° só existe entre y ≈ %.1f e a face da frente; as bordas chegam à face em "
+      "x ≈ %.1f (cima) e %.1f (baixo). A largura útil da interface (seção 2) e a faixa livre à esquerda da fileira 1 "
+      "não mudam; a grade continua a 6 mm da rampa.\n" % (
+          C.RAMP_FRONT_SWEEP, C.RAMP_STRAIGHT_TO + C.RAMP_FRONT_R * math.sin(math.radians(C.RAMP_FRONT_SWEEP)),
+          ramp_front_x(C.RAMP_TOP_OFF), ramp_front_x(C.RAMP_FOOT_OFF)))
+    w("4. **Madeira.** O reto da borda da abertura fica com **%.1f mm** (pedido: 2 mm), porque a tampa de %.1f mm "
+      "apoia na placa e o chanfro desce %.1f mm (ver pergunta 1). O LED tem furo Ø%.1f passante e uma janela de "
+      "acrílico difuso de Ø%.1f × %.1f mm colada rente (`out/madeira_led_janela.*`).\n" % (
+          C.LID_T - C.CHAMFER_DROP, C.LID_T, C.CHAMFER_DROP, C.LED_HOLE_D,
+          C.LED_HOLE_D - 2 * C.LED_WINDOW_CLR, C.VERSIONS["madeira"]["top"]))
 
     w("## 2. Teensy + Audio Board, tela, knobs, LED, alto-falante e conectores\n")
     lS, rS = interior_widths(C.VERSIONS["seixo"])
@@ -479,30 +502,27 @@ def main():
     w("| Tampa em volta das teclas | %.1f mm, apoiada na placa | igual |" % C.LID_T)
     w("| Borda da abertura | arredondado %.0f × %.1f + %.1f mm reto | igual |" % (C.CHAMFER_W, C.CHAMFER_DROP, C.LID_T - C.CHAMFER_DROP))
     w("| Teia da grade | %.1f mm | igual |" % (C.GRILLE_PITCH - C.GRILLE_D))
-    w("| LED | furo Ø%.1f | pele de %.1f mm |" % (C.LED_HOLE_D, C.GHOST_SKIN))
+    w("| LED | furo Ø%.1f | furo Ø%.1f + janela de acrílico difuso |" % (C.LED_HOLE_D, C.LED_HOLE_D))
     w("\nA Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão interno).\n")
 
     w("## 5. Perguntas para o design\n")
-    w("Já decidido nesta rodada (para escrever na v6): passo 18,5 com fileiras a %.2f mm; caixa mantida com 100 mm "
-      "(a folga frente/trás do teclado sobe de 7,5 para %.2f mm, a faixa de tampa continua %.1f mm, o comprimento cai "
-      "para %.1f mm); curva da frente da rampa até %.0f° e depois reta, chegando à face em x ≈ %.1f (cima) e %.1f (baixo); "
-      "pilha de 13 mm no eTuttino e ≤ 10 mm no Chorus.\n" % (
-          C.ROW_PITCH, C.CLR_FB, C.BOX_OFF, length, C.RAMP_FRONT_SWEEP,
-          ramp_front_x(C.RAMP_TOP_OFF), ramp_front_x(C.RAMP_FOOT_OFF)))
     q = []
-    q.append("**Raio do vinco.** A SPEC pede o vinco em y = 55 arredondado, sem dar o raio. Usei R %.0f (`IF_CREASE_R`)." % C.IF_CREASE_R)
-    q.append("**Saia das capas.** Com passo 18,5 e saia Ø%.0f sobram %.2f mm entre saias vizinhas. Manter, ou saia Ø16,5 (%.2f mm)?" % (
-        C.D_SKIRT, C.P - C.D_SKIRT, C.P - 16.5))
-    q.append("**Switch à mostra.** Entre a tampa e a saia aparecem ~%.1f mm da carcaça. A tampa em volta das teclas "
-             "(`Z_DECK`, hoje %.1f) pode subir até ~%.1f sem tocar as saias apertadas, escondendo boa parte do switch. Sobe?" % (
-                 zb - C.Z_DECK, C.Z_DECK, zb - K.TRAVEL - 1.0))
-    q.append("**Madeira.** A borda da abertura (%.1f mm reto) é frágil em carvalho, e a pele de %.1f mm sobre o LED "
-             "provavelmente fica escura. Borda mais grossa só na Madeira? LED com furo e janela de acrílico em vez da pele?" % (
-                 C.LID_T - C.CHAMFER_DROP, C.GHOST_SKIN))
-    q.append("**Texto da SPEC para a v6.** Seção 2: passo 18,5 e fileiras em y = %s. Seção 4: comprimento ~%.1f e o fim "
-             "da rampa como acima. Seção 8 (Madeira): ainda diz \"fresagem de 3 eixos de cima: ... bolsão interno\", "
-             "contra as duas fixações da intro e da mudança 7. Seção 9: pilha de 13 / ≤ 10 mm e PCB refeita com fileiras "
-             "a %.2f mm (não 16,5)." % (", ".join("%.2f" % C.ROW_Y[r] for r in (1, 2, 3, 4)), length, C.ROW_PITCH))
+    q.append("**Reto da borda da abertura.** A v6 pede 1 mm (Seixo) e 2 mm (Madeira) de reto abaixo do chanfro de 2 mm. "
+             "Mas a tampa agora tem %.1f mm sobre a placa e apoia nela; com o chanfro de %.1f mm, sobram **%.1f mm de reto nas "
+             "duas versões**. Para chegar a 1 / 2 mm haveria duas saídas: (a) um chanfro maior, de 4 × %.1f mm no Seixo e "
+             "4 × %.1f mm na Madeira; (b) um rebaixo por baixo da tampa perto da abertura, e aí a tampa deixa de apoiar "
+             "na placa ali. Ficamos com %.1f mm nas duas, ou qual das saídas?" % (
+                 C.LID_T, C.CHAMFER_DROP, C.LID_T - C.CHAMFER_DROP, C.LID_T - 1.0, C.LID_T - 2.0, C.LID_T - C.CHAMFER_DROP))
+    q.append("**Altura da tampa.** Com a saia Ø%.1f a base da saia sobe um pouco (uma saia mais estreita só passa pelos cantos "
+             "do Gateron mais acima): solta em z = %.2f, apertada em z = %.2f. Entre a tampa (z %.1f) e a saia aparecem "
+             "agora ~%.1f mm da carcaça. A tampa só pode subir mais ~%.1f mm (até a saia apertada menos 1 mm). Fica em %.1f?" % (
+                 C.D_SKIRT, zb, zb - K.TRAVEL, C.Z_DECK, zb - C.Z_DECK, zb - K.TRAVEL - 1.0 - C.Z_DECK, C.Z_DECK))
+    q.append("**Janela do LED (Madeira).** A janela tem a espessura da tampa (%.1f mm) e Ø%.1f. Recortar acrílico difuso "
+             "nesse tamanho é chato. Uma alternativa é um condutor de luz redondo de 3 mm comprado pronto (light pipe), "
+             "com a ponta lixada rente. Pode?" % (C.VERSIONS["madeira"]["top"], C.LED_HOLE_D - 2 * C.LED_WINDOW_CLR))
+    q.append("**Próximo passo: PCB.** Com a v6, a caixa, a grade de teclas (passo 18,5, fileiras a %.2f mm) e a posição da "
+             "pilha estão definidas. Dá para começar a refazer a PCB (`generate.py`/`build_pcb.py`) com este contorno "
+             "interno, ou ainda há mudanças de forma previstas?" % C.ROW_PITCH)
     for i, t in enumerate(q, 1):
         w("%d. %s" % (i, t))
     w("")

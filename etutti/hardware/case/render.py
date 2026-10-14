@@ -66,7 +66,7 @@ def scene(version, pl):
         pl.add_mesh(pv.Cylinder(center=(x, F(y), z + 3.6), direction=(0, 0, 1), radius=4.5, height=6.4,
                                 resolution=48), color=look["knob"], specular=0.3)
     lx, ly = C.LED_XY
-    if version == "seixo":
+    if True:      # Seixo: the LED in its hole; Madeira: lit through the acrylic window
         pl.add_mesh(pv.Disc(center=(lx, F(ly), C.z_interface(ly) + 0.02), inner=0, outer=1.7, normal=(0, -0.05, 1)),
                     color=LED)
 
