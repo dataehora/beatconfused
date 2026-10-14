@@ -1,9 +1,14 @@
 # eTuttino case — Seixo and Madeira (CadQuery)
 
 Parametric model of the case described in [SPEC.md](SPEC.md) — currently
-**v7, shape frozen**: pitch 18.5 mm on a hexagonal grid, the deck round
-the keys at z 17.4 with a 2.7 mm land under the opening's rounded edge, Ø16.5
-cap skirts, the ramp's front curve to 75° then straight. The
+**v8** (shape frozen since v7): pitch 18.5 mm on a hexagonal grid, the deck
+round the keys at z 17.4, Ø16.5 cap skirts, the ramp's front curve to 75°
+then straight. v8 adds:
+
+- the 1.6 mm FR-4 plate: the buttons' tops are at z 26.6;
+- two M2 screws from below through thicker pillars, to hold the main
+  board under the interface;
+- two posts under the interface lid for the controls board. The
 reference drawings (general shape, v5) are in [canvas-v5/](canvas-v5/).
 There are two versions:
 

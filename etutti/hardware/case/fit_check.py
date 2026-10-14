@@ -99,26 +99,39 @@ def stack(kind):
     return parts, info
 
 
+JST_VERT = (17.9, 4.8, 6.0)   # B8B-PH-K, vertical, on the controls board's back, facing down: x, y, height -- CHECK
+JST_PLUG = 4.0                # the cable plug's housing below it (mated ~10 mm) -- CHECK
+
+
 def interface_board(v):
-    """Pot + encoder + LED on a small board hung under the lid: the bodies'
-    tops touch the lid's underside."""
-    y = C.VOLUME_XY[1]
-    half = max(POT[1], ENC[1]) / 2
-    ceiling = C.z_interface(y + half, v["top"]) - 0.2       # the lid is lowest at the bodies' front edge
-    sub_top = ceiling - max(POT[2], ENC[2])
-    parts = [("placa de interface", "sub", box(14.5, y - half - 0.4, sub_top - BOARD_T, 56.0, y + half + 0.4, sub_top))]
-    for (x, yy), (bx, by, bh), name in ((C.VOLUME_XY, POT, "potenciômetro"), (C.SELECT_XY, ENC, "encoder")):
-        parts.append((name, "knobpart", box(x - bx / 2, yy - by / 2, sub_top, x + bx / 2, yy + by / 2, sub_top + bh)))
-        parts.append((name + " (pernas)", "knobpart", box(x - bx / 2, yy - by / 2, sub_top - BOARD_T - SUB_PINS, x + bx / 2, yy + by / 2, sub_top - BOARD_T)))
-    lx, ly = C.LED_XY
-    parts.append(("LED 3 mm", "led", cyl(lx, ly, sub_top, ceiling - 1.0, 3.0)))
-    surface = C.z_interface(y)
+    """The controls board (etutti/hardware/controls_pcb.py; case.CONTROLS):
+    hung under the lid on two posts, the pot / encoder bodies' tops 0.2 mm
+    under the lid, the LED on a spacer, the JST and its plug on the back."""
+    ct = C.CONTROLS
+    top = C.controls_top(v)
+    t = ct["thickness"]
+    x0, y0, x1, y1 = ct["rect"]
+    parts = [("plaquinha de controles", "sub", box(x0, y0, top - t, x1, y1, top))]
+    for (x, yy), (bx, by, bh), name in ((ct["pot"], POT, "potenciômetro"), (ct["encoder"], ENC, "encoder")):
+        parts.append((name, "knobpart", box(x - bx / 2, yy - by / 2, top, x + bx / 2, yy + by / 2, top + bh)))
+        parts.append((name + " (pernas)", "knobpart", box(x - bx / 2, yy - by / 2, top - t - SUB_PINS, x + bx / 2, yy + by / 2, top - t)))
+    jx, jy = ct["jst"]
+    jw, jd, jh = JST_VERT
+    y_a = jy - 1.35
+    parts.append(("JST da plaquinha", "panel", box(jx - jw / 2, y_a, top - t - jh, jx + jw / 2, y_a + jd, top - t)))
+    parts.append(("plugue do cabo", "plug", box(jx - jw / 2 + 0.5, y_a + 0.4, top - t - jh - JST_PLUG, jx + jw / 2 - 0.5, y_a + jd - 0.4, top - t - jh)))
+    lx, ly = ct["led"]
+    led_tip = C.z_interface(ly) - (C.LIGHT_PIPE_L + 0.3 if v is C.VERSIONS["madeira"] else 0.0)
+    parts.append(("LED 3 mm + espaçador", "led", cyl(lx, ly, top, led_tip - 0.05, 3.0)))
+    # the main board's two M2 screws: nut on top, the screw's tip above it
+    for x, y in C.SCREW_PILLARS:
+        parts.append(("porca M2 (placa principal)", "usb", cyl(x, y, C.Z_PCB_TOP, C.Z_PCB_TOP + 1.6, 4.6)))
+        parts.append(("ponta do parafuso M2", "usb", cyl(x, y, C.Z_PCB_TOP + 1.6, C.Z_PCB_TOP + 3.0, 2.0)))
+    surface = C.z_interface(ct["pot"][1])
     tip = surface + KNOB_GAP + KNOB_BORE
-    info = {"sub_top": sub_top, "L_sub": tip - sub_top, "L_main": tip - C.Z_PCB_TOP,
-            # LED tip: flush in the Seixo's hole; under the Madeira's acrylic window (as thick as the top)
+    info = {"sub_top": top, "L_sub": tip - top, "L_main": tip - C.Z_PCB_TOP, "surface": surface,
             # LED tip: flush in the Seixo's hole; under the Madeira's light pipe (0.3 mm gap)
-            "surface": surface, "led_stand": (C.z_interface(ly) - (C.LIGHT_PIPE_L + 0.3 if v is C.VERSIONS["madeira"] else 0.0))
-            - sub_top - 5.3}
+            "led_stand": led_tip - top - 5.3}
     return parts, info
 
 
@@ -360,15 +373,16 @@ def main():
     ms = {(ch, v): max_stack(ch, v) for ch in (False, True) for v in ("seixo", "madeira")}
     length = C.ROW2_X[1] + C.D_BTN / 2 + C.CLR_SIDE + C.BOX_OFF
 
-    w("# eTuttino — conferência do case (SPEC v7, forma congelada)\n")
+    w("# eTuttino — conferência do case (SPEC v8)\n")
     w("Gerado por `fit_check.py` a partir de `case.py` (CadQuery). As peças são sólidos com medidas "
       "de datasheet, da placa atual ou medidas por você; as incertas estão marcadas CHECK no código. "
       "Coordenadas da SPEC (y para quem toca). Folga = menor distância entre a peça e o case (tampa + fundo).\n")
-    w("**v7: forma congelada.** O modelo é o da v6 (PR #84) com as três decisões da v7: reto de %.1f mm na borda "
-      "da abertura nas duas versões, tampa em volta das teclas em z = %.1f, e na Madeira um condutor de luz (light pipe) "
-      "de Ø%.1f mm num furo de Ø%.1f no lugar da janela de acrílico. O contorno interno e as zonas de altura para a PCB "
-      "estão em `out/pcb_envelope.json` (desenho em `renders/pcb_envelope.png`), gerados por `pcb_envelope.py`.\n" % (
-          C.LID_T - C.CHAMFER_DROP, C.Z_DECK, C.LIGHT_PIPE_D, C.LIGHT_PIPE_HOLE))
+    w("**v8.** A forma externa continua a da v7 (congelada). Mudanças da v8: plate de FR-4 de %.1f mm (os botões sobem "
+      "para z = %.1f e o reto da borda da abertura fica com %.1f mm); dois parafusos M2 por baixo prendem a placa principal "
+      "nos pilares (30; 60) e (12; 70), mais grossos (Ø%.0f) e com passagem e rebaixo no fundo; a plaquinha de controles "
+      "(`etutti/hardware/controls_pcb.py`) presa por baixo da tampa em dois postes; o firmware lê o potenciômetro e o "
+      "encoder. O contorno interno para a PCB continua em `out/pcb_envelope.json`.\n" % (
+          C.PLATE_T, C.Z_KEY_TOP, C.LID_T - C.CHAMFER_DROP, C.SCREW_PILLAR_D))
     w("## Resumo\n")
     w("RESUMO_AQUI\n")
     w("Pilha mais alta que cabe (de baixo da Audio Board ao topo do USB do Teensy): **%.1f mm** no eTuttino Seixo, "
@@ -438,9 +452,9 @@ def main():
           (C.RAMP_TOP_OFF - C.RAMP_FOOT_OFF)))
     w("**Arranjo testado** (`renders/fit_top.png`): placa principal estendida por baixo da interface; pilha no canto de trás, "
       "fileira VIN atrás, USB para a face esquerda: Audio Board em x %.0f–%.0f, y %.0f–%.1f, Teensy em y %.1f–%.1f. "
-      "Potenciômetro, encoder e LED numa plaquinha sob a tampa (y %.0f–%.0f), por cima da borda da Audio Board.\n" % (
+      "A plaquinha de controles (y %.1f–%.1f) fica presa por baixo da tampa, por cima da borda da Audio Board.\n" % (
           sM["x"][0], sM["x"][1], sM["y"][0], sM["y"][1], sM["cy"] - 8.89, sM["cy"] + 8.89,
-          C.VOLUME_XY[1] - 7, C.VOLUME_XY[1] + 7))
+          C.CONTROLS["rect"][1], C.CONTROLS["rect"][3]))
     w("Ordem dos controles (v5): volume (%.0f; %.0f), seletor (%.0f; %.0f), LED (%.0f; %.0f); tela em x %.0f–%.0f.\n" % (
         C.VOLUME_XY + C.SELECT_XY + C.LED_XY + (C.SCREEN_ZONE[0], C.SCREEN_ZONE[2])))
     for sk in STACKS:
@@ -507,23 +521,17 @@ def main():
     w("\nA Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão interno).\n")
 
     w("## 5. Perguntas para o design\n")
-    w("Nenhuma sobre a forma: a v7 está congelada. O que a PCB v0.6 (`etutti/hardware/`) pede da caixa:\n")
+    w("Feito nesta rodada: furos M2, plate de 1,6 mm, plaquinha de controles e firmware dos knobs. Para a v9:\n")
     pq = [
-        "**Pilares do fundo (já no modelo).** Havia um erro: entre as fileiras 2 e 3 os pilares ficavam a 5,3 mm de um "
-        "sensor, e não no centro do triângulo de teclas. Agora há um em cada triângulo de três teclas vizinhas "
-        "(%d, a 10,7 mm de cada sensor) mais 3 sob a interface. A placa cede no máximo 0,044 mm sob 3 N "
-        "(eram 0,37 mm com um a cada três colunas). É só o fundo, a forma não muda. Ok?" % (len(C.pillar_points()) - 3),
-        "**Fixação da placa.** A placa não tem parafusos: a tampa aperta o plate, o plate os switches, e eles a placa "
-        "contra os pilares. Sob a interface (os ~95 mm da esquerda) nada aperta a placa por cima, só a pilha. "
-        "Proposta: dois parafusos M2 de baixo, pelo fundo, nos pilares (30; 60) e (12; 70), com furos na placa. "
-        "Ou uma espuma fina sob a tampa. Qual?",
-        "**Plaquinha de controles.** A placa principal já tem o J3 (JST PH, 8 vias: 3,3 V, GND, pot, encoder A/B/botão, "
-        "LED vermelho/verde). Fazer a plaquinha (RK09K, EC11 com eixo L = 15, LED de 3 mm, JST PH) como a próxima "
-        "PCB? O firmware ainda não lê o pot nem o encoder (pinos 22, 17, 9 e 6).",
-        "**Plate.** Em FR-4 o fabricante faz 1,6 mm, e o case conta com 1,5 mm: os botões ficariam 0,1 mm mais altos. "
-        "Aceitar, ou plate de alumínio de 1,5 mm a partir do DXF?",
-        "**Manuais.** Os manuais de montagem (`etutti/manuais/`) e as figuras 3D ainda descrevem a placa v0.5 e o case "
-        "antigo. Refazer como etapa própria, depois do protótipo?",
+        "**Encoder.** O firmware conta %d transições por clique do EC11E (o de 15 pulsos e 30 cliques). Se o encoder "
+        "comprado for o de 15 pulsos e 15 cliques, são 4: confirmar com a peça (`ENC_STEPS_PER_DETENT`)." % 2,
+        "**A página.** O Teensy agora manda CC 7 (volume) e CC 25 (instrumento) quando os knobs mudam, mas a página "
+        "do eTutti ainda não acompanha: só registra no monitor MIDI. Fazer a página seguir os knobs?",
+        "**Botão do encoder.** Clique depois de girar: confirma, e o instrumento passa a ser o da próxima vez que "
+        "liga. Clique sem ter girado: volta ao som padrão (acordeom clássico). É isso?",
+        "**Protótipo.** Os arquivos de fabricação estão prontos: placa principal (`fab/etuttino_gerbers.zip` + BOM/CPL), "
+        "plate de 1,6 mm (`fab/etuttino_plate_gerbers.zip`), plaquinha de controles (`fab/etuttino_controls_gerbers.zip`), "
+        "case e capas (`case/out/`). Encomendar?",
     ]
     for i, t in enumerate(pq, 1):
         w("%d. %s" % (i, t))

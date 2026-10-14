@@ -13,7 +13,7 @@ The firmware is in [`../firmware`](../firmware), the web page is
 [beatconfused.com/etutti](https://beatconfused.com/etutti/), and the case
 (Seixo / Madeira, SPEC v7) is in [`case/`](case/).
 
-> **Board v0.6 (this one) is made for the v7 case.** The keys sit on the
+> **Board v0.7 (this one) is made for the v7/v8 case.** The keys sit on the
 > case's hexagonal grid (18.5 mm pitch), and the board takes the case's
 > inner outline. The assembly manuals in
 > [`../manuais`](../manuais/) and their pictures still describe the
@@ -31,7 +31,8 @@ Generated, routed and checked: KiCad DRC 0 errors, 0 warnings,
 | --- | --- |
 | [`fab/etuttino_gerbers.zip`](fab/etuttino_gerbers.zip) | **the PCB**: Gerbers + drill files. 2 layers, FR-4, **1.2 mm**, shaped outline (328 × 97 mm bounding box) |
 | [`fab/etuttino_bom.csv`](fab/etuttino_bom.csv) + [`fab/etuttino_cpl_bottom.csv`](fab/etuttino_cpl_bottom.csv) | **assembly** (JLCPCB PCBA, *Bottom Side*): every SMD part is on the back |
-| [`fab/etuttino_plate_gerbers.zip`](fab/etuttino_plate_gerbers.zip) | **the switch plate**: a copper-less FR-4 board (the fab's standard 1.6 mm; the case assumes 1.5) with the 14 mm cutouts, cut to the case's plate outline |
+| [`fab/etuttino_plate_gerbers.zip`](fab/etuttino_plate_gerbers.zip) | **the switch plate**: a copper-less **1.6 mm** FR-4 board with the 14 mm cutouts, cut to the case's plate outline (the case is drawn for 1.6 since SPEC v8) |
+| [`fab/etuttino_controls_gerbers.zip`](fab/etuttino_controls_gerbers.zip) | **the controls board**: 2 layers, FR-4 1.6 mm, 41.5 × 25.5 mm, all through-hole (see below) |
 | [`case/out/`](case/out/) | **the case** (STEP + STL) and the button caps; see [`case/README.md`](case/README.md) |
 
 The BOM has LCSC numbers for the JLCPCB basic parts. Match the two TI parts
@@ -61,6 +62,7 @@ also works.
 | [`case/pcb_envelope.py`](case/pcb_envelope.py) → `case/out/pcb_envelope.json` | the room the case leaves for the board: outline (notched round the case's screw bosses), plate outline, bottom-plate pillars, height levels, key centres, the stack's and J3's places. Run with the CadQuery venv (see `case/README.md`) |
 | [`generate.py`](generate.py) | reads that envelope. Single source of the key layout and of the sensor → multiplexer map (plain Python 3). Prints the `KEY_INPUT` table for the firmware |
 | [`build_pcb.py`](build_pcb.py) | builds and **routes** the KiCad board inside that outline, runs DRC, checks it against the firmware, exports everything in `fab/` |
+| [`controls_pcb.py`](controls_pcb.py) | the controls board: places, routes (the same router), DRCs and exports it |
 | [`mechanics.py`](mechanics.py) | how far the board bends under a key press on the case's pillars (KiCad's Python, numpy) |
 | [`assembly3d.py`](assembly3d.py) | the manuals' 3D pictures. Still the v0.5 board's, to be redone |
 | [`etuttino.pretty/`](etuttino.pretty) | footprint library: `Gateron_Magnetic_MX_1u` (two 1.75 mm peg holes, no centre post, no pins), origin at the switch centre |
@@ -80,7 +82,7 @@ python generate.py
 Each routing attempt takes about four minutes. The router is greedy: if
 a net can't be routed, the script starts again with that net first, up to
 20 times. `DEFAULT_ROUTE_FIRST` keeps the order that worked
-(`OUT_U41,OUT_U42,GND,LED_R,LED_G_DRV,OUT_U34` for v0.6).
+(`OUT_U41,OUT_U42,GND,LED_R,LED_G_DRV,OUT_U34` for v0.6 and v0.7).
 
 `build_pcb.py` exits with an error if any of these happens:
 
@@ -130,10 +132,15 @@ Audio Board stack sits in the back corner:
 - The Audio Board sits ~3 mm above the PCB on its header legs.
 - These positions come from `case/fit_check.py`.
 
-**Held by the case, no screws through the board:**
+**Held by the case:**
 
-- The lid presses the plate's edge, the plate presses the switches, and
-  the switches' bottom housings press the board.
+- Under the keys, the lid presses the plate's edge, the plate presses
+  the switches, and the switches' bottom housings press the board.
+- Under the interface, two M2 screws come up from below. They go through
+  the bottom plate's pillars at (30; 60) and (12; 70) and through the
+  board's holes H1 and H2, with a nut on top. These two pillars are
+  Ø6, with a counterbore for the head. The router keeps copper 3.5 mm
+  away from both holes.
 - The board rests on **64 pillars** of the bottom plate, one at the
   centre of every triangle of three neighbouring keys (10.7 mm from each
   sensor). The case has 3 more pillars under the interface.
@@ -170,9 +177,8 @@ Audio Board stack sits in the back corner:
 | ENC_A / ENC_B / ENC_SW → J3 | 17 / 9 / 6 |
 
 **J3, the controls board.** A JST PH 2.0 mm 8-pin vertical header, in front
-of the Audio Board, under the interface lid. It takes a short cable to the
-small board hung under the lid. That board carries the volume pot, the
-encoder and the power LED (see `case/FIT_CHECK.md`).
+of the Audio Board, under the interface lid. A short 1:1 cable goes up
+to the controls board.
 
 | Pin | Net |
 | --- | --- |
@@ -185,9 +191,28 @@ encoder and the power LED (see `case/FIT_CHECK.md`).
 | 7 | LED_R |
 | 8 | LED_G |
 
-The firmware drives the LED but doesn't read the pot or the encoder yet.
-Pin 6 is the Audio Board's optional memory-chip select, so leave that
-chip unfitted.
+The firmware reads the pot as the volume and the encoder as the
+instrument selector (see `../firmware/README.md`). With no controls board
+plugged in, the pot input is ignored. Pin 6 is the Audio Board's optional
+memory-chip select, so leave that chip unfitted.
+
+## Controls board
+
+`controls_pcb.py` → `kicad/etuttino_controls.kicad_pcb` and
+`fab/etuttino_controls_gerbers.zip`. KiCad DRC 0 / 0 / 0. In case
+coordinates it spans x 14.5–56, y 35.5–61. It hangs under the interface lid
+on two posts of the case, with M2 screws through H1 and H2 from below. Its
+top faces the lid:
+
+| Ref | Part | Where |
+| --- | --- | --- |
+| RV1 | Alps RK09K vertical pot, 10 k linear, 6 mm shaft L = 15 | shaft at (20; 45): volume |
+| SW1 | Alps EC11E encoder with push switch, L = 15 | shaft at (37; 45): instrument |
+| D1 | 3 mm red/green LED, common cathode | (52; 45), on a spacer up to the lid's hole (Seixo) or just under the light pipe (Madeira); `case/FIT_CHECK.md` gives the spacer length |
+| J1 | JST PH B8B-PH-K vertical, on the back, facing down | the cable drops straight to the main board's J3, pin for pin |
+
+The encoder's common and one switch leg go to GND. The Teensy's pull-ups
+do the rest. The LED's 330 Ω resistors are on the main board.
 
 **Power LED.** A 3 mm red/green bicolour LED (common cathode) on the
 controls board, under the lid's LED hole, or the Madeira's light pipe:
@@ -243,10 +268,21 @@ from VIN for the sensors and the multiplexers:
 | 1 | AMS1117-3.3, SOT-223 | back |
 | 1 + 1 | 10 µF, 22 µF 0805 | regulator input / output |
 | 2 | 330 Ω 0805 | LED resistors R1, R2 (back) |
-| 1 | JST PH 8-pin vertical header (B8B-PH-K-S) + a matching cable | J3, to the controls board |
+| 1 | JST PH 8-pin vertical header (B8B-PH-K-S) + a 1:1 PH cable, ~60 mm | J3, to the controls board |
+| 2 + 2 | M2 × 10 mm screw + M2 nut | through the bottom plate's two thick pillars and H1 / H2 |
 | 1 | Teensy 4.0 + PJRC Audio Adaptor Board **Rev D** | with headers |
 | 1 | switch plate | 1.6 mm FR-4 from `fab/etuttino_plate_gerbers.zip`, or 1.5 mm aluminium from `build/etuttino_plate.dxf` |
 | 44 | button caps | 3D-printed from `case/out/keycap_*.stl` (26 natural / C-F, 18 sharp) |
 
-The controls board itself (pot, encoder, LED) and the case are listed in
-[`case/README.md`](case/README.md) and `case/FIT_CHECK.md`.
+**Controls board:**
+
+| Qty | Part |
+| --- | --- |
+| 1 | Alps RK09K1130 (or equivalent) vertical pot, 10 k linear, 15 mm shaft |
+| 1 | Alps EC11E with push switch, 15 mm shaft (check its pulses per detent: `ENC_STEPS_PER_DETENT` in the firmware) |
+| 1 | 3 mm LED, red/green, common cathode, + an LED spacer |
+| 1 | JST PH B8B-PH-K-S |
+| 2 | M2 × 5 mm self-tapping screws, into the lid's posts |
+| 2 | knobs, Ø9, for 6 mm shafts |
+
+The case is listed in [`case/README.md`](case/README.md).

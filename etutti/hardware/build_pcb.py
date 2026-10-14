@@ -720,6 +720,8 @@ def build():
         h = place(lib("MountingHole"), "MountingHole_2.2mm_M2", "H%d" % i, x, y)
         h.Reference().SetVisible(False)
         footprints.append(h)
+        # no copper under the nut (top) or on the pillar (back)
+        router.mark_hole(x, y, 2 * G.MOUNT_KEEPOUT[(x, y)])
 
     for fp in footprints:
         for p in fp.Pads():
@@ -903,7 +905,7 @@ def build():
         seg.SetWidth(pcbnew.FromMM(0.1))
         board.Add(seg)
 
-    text("eTuttino v0.6 HE", G.KEY_O + 3 * G.U, G.ROW_Y[4] - 10.5, 1.2)
+    text("eTuttino v0.7 HE", G.KEY_O + 3 * G.U, G.ROW_Y[4] - 10.5, 1.2)
     text("controls board", G.J3["x"] + 7.0, G.J3["y"] + 4.6, 0.9)
     text("< USB - Teensy 4.0 on Audio Board Rev D", G.STACK_CX, G.STACK_ZONE[1] + 2.6, 0.9)
     j1_gnd = [p for p in pins if p[0] == "J1" and p[1] == 1][0]
@@ -912,7 +914,7 @@ def build():
     text("VIN", j2_vin[3], j2_vin[4] - 2.4, 0.8)
     text("0", j1_gnd[3] + 2.54, j1_gnd[4] + 2.4, 0.8)
     text("23", j2_vin[3] + 7.62, j2_vin[4] - 2.4, 0.8)
-    text("eTuttino v0.6 HE - C-griff G3-E6 - beatconfused.com/etutti", G.KEY_O + 5 * G.U, G.ROW_Y[1] + 14.0, 1.0, pcbnew.B_SilkS)
+    text("eTuttino v0.7 HE - C-griff G3-E6 - beatconfused.com/etutti", G.KEY_O + 5 * G.U, G.ROW_Y[1] + 14.0, 1.0, pcbnew.B_SilkS)
     text("Sensors DRV5056A3 on this side, under each switch", G.KEY_O + 5 * G.U, G.ROW_Y[4] - 14.0, 1.0, pcbnew.B_SilkS)
 
     os.makedirs(KICAD_DIR, exist_ok=True)
@@ -1082,6 +1084,7 @@ def build_plate():
     global board
     main_board = board
     board = pcbnew.BOARD()
+    board.GetDesignSettings().SetBoardThickness(pcbnew.FromMM(G.PLATE_THICKNESS))
     ox = min(x for x, _ in G.PLATE_OUTLINE)
     oy = min(y for _, y in G.PLATE_OUTLINE)
     pw = max(x for x, _ in G.PLATE_OUTLINE) - ox
@@ -1111,7 +1114,7 @@ def build_plate():
             h.Reference().SetVisible(False)
             h.SetPosition(mm(x, y))
             board.Add(h)
-    text("eTuttino plate v0.6", ox + pw / 2, oy + ph - 2.0, 1.2)
+    text("eTuttino plate v0.7 (1.6 mm)", ox + pw / 2, oy + ph - 2.0, 1.2)
     pcbnew.SaveBoard(PLATE_PATH, board)
     print("saved", PLATE_PATH)
     board = main_board

@@ -82,10 +82,11 @@ UNDER_PCB = 4.5               # bottom plate to board: parts on the back + heade
 PCB_T = 1.2
 Z_PCB_BOT = FLOOR_T + UNDER_PCB           # 6.5
 Z_PCB_TOP = Z_PCB_BOT + PCB_T             # 7.7
-PLATE_T = 1.5
-Z_PLATE_TOP = Z_PCB_TOP + 5.0             # MX: plate top 5 mm above the board -> 12.7
-LID_T = Z_DECK - Z_PLATE_TOP              # 4.7: the lid rests on the plate's edge
-Z_KEY_TOP = 26.5
+PLATE_T = 1.6                 # FR-4 (v8): the fab's standard; MX expects 1.5
+SWITCH_UNDER_PLATE = 3.5      # MX bottom housing: board to the plate's underside
+Z_PLATE_TOP = Z_PCB_TOP + SWITCH_UNDER_PLATE + PLATE_T   # 12.8 (12.7 with a 1.5 plate)
+LID_T = Z_DECK - Z_PLATE_TOP              # 4.6: the lid rests on the plate's edge
+Z_KEY_TOP = 26.5 + (PLATE_T - 1.5)        # the buttons ride up with the plate: 26.6
 PLATE_OVERLAP = 3.0           # plate edge under the lid, beyond the opening
 
 # interface area (SPEC 5)
@@ -123,6 +124,25 @@ FUNDO_CLR = 0.3               # bottom plate to the walls
 BOSS_D, PILOT_D = 6.0, 2.2    # M2.5 self-tapping (or a heat-set / wood insert)
 SCREW_CLR_D, HEAD_D, HEAD_DEPTH = 2.9, 5.2, 1.4
 PILLAR_D = 4.0                # board supports on the bottom plate
+# v8: the board is screwed down under the interface, M2 from below through
+# these two pillars (made fatter), a nut on top of the board
+SCREW_PILLARS = [(30.0, 60.0), (12.0, 70.0)]
+SCREW_PILLAR_D = 6.0
+M2_CLR_D, M2_HEAD_D, M2_HEAD_DEPTH = 2.4, 4.2, 1.4
+# v8: the controls board (etutti/hardware/controls_pcb.py) hangs under the
+# interface lid on two posts; its parts' tops touch the lid's underside
+CONTROLS = {
+    "rect": (14.5, 35.5, 56.0, 61.0),           # x0, y0, x1, y1 (front edge clear of the Chorus speaker)
+    "pot": (20.0, 45.0), "pot_rot": 180,        # RK09K, pins to the right
+    "encoder": (37.0, 45.0), "encoder_rot": 270,  # EC11E, A/B/C to the back, switch legs to the front
+    "led": (52.0, 45.0),
+    "jst": (37.0, 55.5), "jst_rot": 0,          # B8B-PH-K on the back, facing down: the cable drops to J3
+    "holes": [(17.0, 58.5), (53.0, 40.0)],      # M2 into the lid's posts
+    "thickness": 1.6,
+    "body_h": 6.5,                              # pot / encoder bodies above the board
+    "body_front_y": 51.6,                       # their front edge (the lid is lowest there)
+}
+POST_D, POST_PILOT_D, POST_PILOT_DEPTH = 5.0, 1.7, 6.0
 FOOT_D, FOOT_DEPTH = 10.5, 0.6
 
 # ---------------------------------------------------------------- keyboard
@@ -567,6 +587,16 @@ def insert_cut(v):
     return hole.fuse(box3(INSERT_WALL, yc - w / 2 - m, zc - h / 2 - m, v["wall"] + 0.5, yc + w / 2 + m, zc + h / 2 + m))
 
 
+def controls_top(v):
+    """z of the controls board's top face in version v (the lid's underside
+    over the parts' front edge, less 0.2, less the bodies' height)."""
+    return z_interface(CONTROLS["body_front_y"], v["top"]) - 0.2 - CONTROLS["body_h"]
+
+
+def controls_posts(v, body):
+    return [cyl(x, y, controls_top(v), 60, POST_D).intersect(body) for x, y in CONTROLS["holes"]]
+
+
 def bosses(v, body):
     """Screw columns: from the bottom plate up into the top, inside the
     wall line, trimmed to the outside shape."""
@@ -580,7 +610,7 @@ def bosses(v, body):
 def shell(v):
     body = outer_body()
     s = body.cut(cavity(v))
-    s = s.fuse(*bosses(v, body)).clean()
+    s = s.fuse(*bosses(v, body), *controls_posts(v, body)).clean()
     for c in rounded_opening_cutter():
         s = s.cut(c)
     # OCC sometimes splits a cut-away piece off as a second solid instead of
@@ -588,6 +618,7 @@ def shell(v):
     s = sorted(s.Solids(), key=lambda x: x.Volume(), reverse=True)[0]
     cuts = [insert_cut(v)] + top_features(v)
     cuts += [cyl(x, y, FLOOR_T - 0.01, FLOOR_T + 9.0, PILOT_D) for x, y in screw_points()]
+    cuts += [cyl(x, y, controls_top(v) - 0.01, controls_top(v) + POST_PILOT_DEPTH, POST_PILOT_D) for x, y in CONTROLS["holes"]]
     s = s.cut(fuse(cuts))
     # flush bottom plate sits inside the walls
     return s.clean()
@@ -597,9 +628,13 @@ def fundo(v, t=FLOOR_T):
     """Bottom plate, inside the walls, flush with their bottom edge."""
     inner = contour_wp(box_contour()).offset2D(-v["wall"] - FUNDO_CLR).wires().val()
     plate = cq.Workplane("XY").add(inner).toPending().extrude(t).val()
-    adds = [cyl(x, y, t - 0.01, Z_PCB_BOT, PILLAR_D) for x, y in pillar_points()]
+    adds = [cyl(x, y, t - 0.01, Z_PCB_BOT, SCREW_PILLAR_D if (x, y) in SCREW_PILLARS else PILLAR_D)
+            for x, y in pillar_points()]
     plate = plate.fuse(*adds)
     cuts = []
+    for x, y in SCREW_PILLARS:            # M2 from below, through the pillar and the board
+        cuts.append(cyl(x, y, -1, Z_PCB_BOT + 1, M2_CLR_D))
+        cuts.append(cyl(x, y, -1, M2_HEAD_DEPTH, M2_HEAD_D))
     for x, y in screw_points():
         cuts.append(cyl(x, y, -1, t + 1, SCREW_CLR_D))
         cuts.append(cyl(x, y, -1, HEAD_DEPTH, HEAD_D))

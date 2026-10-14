@@ -237,7 +237,24 @@ that doesn't belong there.
       - The two R 5 ramp fillets are applied one after the other.
       - Check every export: ray-probe the opening and count open mesh
         edges (the render once hid a film over the keys).
-    - **Board v0.6 (PR #87) is built for this case.** The README of
+    - **SPEC v8 (PR #88), done in PR #89:**
+      - **Plate:** 1.6 mm FR-4 (`case.PLATE_T`). The plate's top is at
+        12.8 and the key tops at 26.6.
+      - **Board fixing:** two M2 screws from below through Ø6 pillars at
+        (30; 60) and (12; 70), into board holes H1/H2. The router keeps
+        3.5 mm of copper-free ring round them.
+      - **Controls board:** `etutti/hardware/controls_pcb.py`, which
+        reuses `build_pcb`'s router through module globals. Its geometry
+        is `case.CONTROLS`, exported in the envelope. It hangs on two lid
+        posts. Parts: RK09K rot 180, EC11E rot 270, LED, and a vertical
+        JST on the back facing down, so its cable can't hit the Chorus
+        speaker. DRC 0/0/0.
+      - **Firmware knobs:** pot on 22 (ignored when no pot is detected
+        via pull-up/pull-down at boot, verified on the real Teensy: the
+        floating pin reads 400–680), encoder on 17/9 (ISR Gray table,
+        `ENC_STEPS_PER_DETENT` 2), switch on 6. It sends CC 7 / CC 25
+        back; the page doesn't follow them yet.
+    - **Board v0.6 (PR #87) is built for this case** (v0.7 adds the M2 holes). The README of
       `etutti/hardware/` has the details.
       - `generate.py` reads `case/out/pcb_envelope.json`: keys, outline,
         pillars, stack spot. `ROWS`, the notes and the firmware

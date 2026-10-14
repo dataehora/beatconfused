@@ -62,6 +62,19 @@
      CC 102-104 Synth osc 1-3 octave  0-42 one down, 43-84 unison, 85-127 one up
      CC 120 All sound off    instant silence
      CC 123 All notes off    release every voice
+   Controls board (etutti/hardware/controls_pcb.py, on the main board's J3):
+     volume pot (pin 22 / A8)   sets the headphone volume, like CC 7 (and sends
+                                CC 7 back); only when it moves, so the page's
+                                CC 7 holds until the pot is turned. With no
+                                controls board plugged in it is ignored.
+     encoder (pins 17 / 9)      turning steps through the instruments
+                                (accordion, piano, bass, guitar, synth) and
+                                plays the new one at once; the LED blinks green
+                                until it is confirmed. Sends CC 25 back.
+     encoder button (pin 6)     after turning: confirms, and that instrument
+                                is the one the eTuttino starts with next time;
+                                otherwise: back to the default sound (classic
+                                accordion, register MM, dry).
    Sent back: the keys' notes (channel 1) and, in key test mode, each key's
    position as Polyphonic Aftertouch on channel 16: data 1 = key index
    (0-43, row by row from row 1, as in etutti/hardware/build/
@@ -103,6 +116,12 @@ const uint8_t MUX_COM_PINS[MUX_COUNT] = {14, 15, 16};  // A0, A1, A2
 //   codec didn't answer, or a key's sensor didn't (see the key test).
 const uint8_t LED_PINS[2] = {4, 5};                    // red, green
 const uint32_t LED_STARTUP_MS = 600;                   // orange shows at least this long
+// Controls board (through J3): volume pot, instrument encoder with a push
+// switch (to GND, Teensy pull-ups). The pins stay clear of the Audio Board;
+// 6 is its optional memory chip's select, which the eTuttino doesn't fit.
+const uint8_t POT_PIN = 22;                            // A8
+const uint8_t ENC_A_PIN = 17, ENC_B_PIN = 9, ENC_SW_PIN = 6;
+const int ENC_STEPS_PER_DETENT = 2;     // EC11E 15 pulses / 30 detents -- CHECK with the part bought
 const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
   { -1,  12,  11,  10,   9,   7,   6,   5,   4,   3,   2,   1},
   { 15,  14,  13,   8,   0,  30,  41,  42,  38,  43,  45,  46},
@@ -761,14 +780,122 @@ void scanKeys() {
   if (changed) usbMIDI.send_now();
 }
 
+// ---- Controls board: volume pot and instrument encoder ----
+bool potPresent = false;
+float potFiltered = 0;
+int potVolume = -1;                     // last volume the pot set (0..127)
+uint32_t potReadAt = 0;
+volatile int16_t encSteps = 0;          // quarter steps, counted in the interrupt
+volatile uint8_t encPrev = 0;
+bool instrumentPending = false;         // turned, not yet confirmed with a click
+bool swDown = false;
+uint32_t swChangedAt = 0;
+const int EEPROM_INSTRUMENT = 200;      // after the key calibration (4 + 2 * 44 bytes)
+const uint8_t INSTRUMENT_MAGIC = 0xA5;
+
+void encoderIsr() {
+  // Gray-code state table: +1 / -1 per valid transition, 0 for bounces.
+  static const int8_t table[16] = {0, -1, 1, 0, 1, 0, 0, -1, -1, 0, 0, 1, 0, 1, -1, 0};
+  uint8_t s = (digitalReadFast(ENC_A_PIN) << 1) | digitalReadFast(ENC_B_PIN);
+  encSteps += table[(encPrev << 2) | s];
+  encPrev = s;
+}
+
+void saveInstrument(int inst) {
+  EEPROM.write(EEPROM_INSTRUMENT, INSTRUMENT_MAGIC);
+  EEPROM.write(EEPROM_INSTRUMENT + 1, (uint8_t)inst);
+}
+
+int savedInstrument() {
+  if (EEPROM.read(EEPROM_INSTRUMENT) != INSTRUMENT_MAGIC) return INST_ACCORDION;
+  return min((int)EEPROM.read(EEPROM_INSTRUMENT + 1), INST_SYNTH);
+}
+
+// The page's "Reset to default": classic accordion, register MM, dry.
+void defaultSound() {
+  setInstrument(INST_ACCORDION);
+  registerMask = 0b0110;
+  wetCents = 0;
+  applyOscGains();
+  retuneAll();
+}
+
+void setupControls() {
+  // A pot holds its pin against the Teensy's weak pull-up / pull-down; with
+  // nothing on J3 the pin simply follows them.
+  pinMode(POT_PIN, INPUT_PULLUP);
+  delayMicroseconds(200);
+  int up = analogRead(POT_PIN);
+  pinMode(POT_PIN, INPUT_PULLDOWN);
+  delayMicroseconds(200);
+  int down = analogRead(POT_PIN);
+  pinMode(POT_PIN, INPUT_DISABLE);
+  potPresent = !(up > 3900 && down < 200);
+  if (potPresent) {
+    potFiltered = analogRead(POT_PIN);
+    potVolume = lroundf(potFiltered * 127.0f / 4095.0f);
+    codec.volume(0.8f * potVolume / 127.0f);
+  }
+  pinMode(ENC_A_PIN, INPUT_PULLUP);
+  pinMode(ENC_B_PIN, INPUT_PULLUP);
+  pinMode(ENC_SW_PIN, INPUT_PULLUP);
+  encPrev = (digitalReadFast(ENC_A_PIN) << 1) | digitalReadFast(ENC_B_PIN);
+  attachInterrupt(digitalPinToInterrupt(ENC_A_PIN), encoderIsr, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENC_B_PIN), encoderIsr, CHANGE);
+}
+
+void updateControls() {
+  uint32_t now = millis();
+  // volume pot, every 5 ms, smoothed; only moves of 2 steps or more count
+  if (potPresent && now - potReadAt >= 5) {
+    potReadAt = now;
+    potFiltered += (analogRead(POT_PIN) - potFiltered) * 0.15f;
+    int v = lroundf(potFiltered * 127.0f / 4095.0f);
+    if (abs(v - potVolume) >= 2 || ((v == 0 || v == 127) && v != potVolume)) {
+      potVolume = v;
+      codec.volume(0.8f * v / 127.0f);
+      usbMIDI.sendControlChange(7, v, 1);
+    }
+  }
+  // encoder: whole detents only
+  noInterrupts();
+  int detents = encSteps / ENC_STEPS_PER_DETENT;
+  encSteps -= detents * ENC_STEPS_PER_DETENT;
+  interrupts();
+  if (detents) {
+    int next = ((instrument + detents) % 5 + 5) % 5;
+    setInstrument(next);
+    instrumentPending = true;
+    usbMIDI.sendControlChange(25, next * 16 + 8, 1);
+  }
+  // push switch, debounced: act on the press
+  bool down = digitalReadFast(ENC_SW_PIN) == LOW;
+  if (down != swDown && now - swChangedAt > 20) {
+    swDown = down;
+    swChangedAt = now;
+    if (down) {
+      if (instrumentPending) {
+        saveInstrument(instrument);           // the one to start with next time
+        instrumentPending = false;
+      } else {
+        defaultSound();
+        saveInstrument(INST_ACCORDION);
+        usbMIDI.sendControlChange(25, INST_ACCORDION * 16 + 8, 1);
+      }
+    }
+  }
+}
+
 void setLed(bool red, bool green) {
   digitalWriteFast(LED_PINS[0], red);
   digitalWriteFast(LED_PINS[1], green);
 }
 
-// Green while all is well; red, blinking twice a second, on an error.
+// Green while all is well (blinking slowly while a new instrument picked
+// with the encoder waits for its click); red, blinking twice a second, on
+// an error.
 void updateLed() {
-  if (codecOk && missingKeys == 0) setLed(false, true);
+  if (codecOk && missingKeys == 0) setLed(false, !instrumentPending || (millis() / 300) % 2 == 0);
   else setLed((millis() / 250) % 2 == 0, false);
 }
 
@@ -828,6 +955,9 @@ void setup() {
   room.damping(0.6f);
   setAmbience(25);
 
+  setupControls();                   // the pot, if fitted, sets the volume
+  setInstrument(savedInstrument());  // the last instrument confirmed with the encoder
+
   usbMIDI.setHandleNoteOn(handleNoteOn);
   usbMIDI.setHandleNoteOff(handleNoteOff);
   usbMIDI.setHandleControlChange(handleControlChange);
@@ -841,5 +971,6 @@ void loop() {
   while (usbMIDI.read()) {
   }
   scanKeys();
+  updateControls();
   updateLed();
 }
