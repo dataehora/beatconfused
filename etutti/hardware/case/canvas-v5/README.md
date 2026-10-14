@@ -1,6 +1,8 @@
 # Canvas v5 · desenhos de referência da SPEC v5
 
-Desenhos do Claude Chat que acompanham a `../SPEC.md` (v5). Os números da SPEC são a referência; os desenhos servem para entender a forma. O canvas ao vivo (com os acabamentos trocáveis) é https://claude.ai/artifact/PjadX8XZX34prrsCt1ASE2 (privado).
+> **Estes são os desenhos de referência da v5, não a forma final.** A forma final é a da `../SPEC.md` **v9** (congelada desde a v7: passo 18,5 em grade hexagonal, tampo a z 17,4, rampa reta na frente, plate de 1,6 mm…), modelada no `../case.py`. Para ver o case como ficou, use os renders em `../renders/` ou a página `/etutti/models/`.
+
+Desenhos do Claude Chat que acompanharam a SPEC v5. Os números da SPEC são a referência; os desenhos servem para entender a forma geral. O canvas ao vivo (com os acabamentos trocáveis) é https://claude.ai/artifact/PjadX8XZX34prrsCt1ASE2 (privado).
 
 | Arquivo | O que é |
 |---|---|

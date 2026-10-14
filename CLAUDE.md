@@ -152,42 +152,30 @@ that doesn't belong there.
     (`ETUTTINO_ROUTE_FIRST`), up to 20 attempts (~4-15 min each). A net
     that fails even when first is a physical blockage: export
     `kicad/etuttino_failed.kicad_pcb` to SVG and look.
-  - `etutti/hardware/assembly3d.py` — VRML stand-ins (switches incl. the
-    bottom housing standing on the PCB, round keycaps, plate, Audio Board,
-    Teensy, and ALL 28 stacking-header legs through the board with solder
-    under it, the Teensy's 2.5 mm pin spacers and pin tips — the user wants
-    the renders to show that those legs are the only link between the
-    stack and the keyboard; KiCad VRML unit = 2.54 mm, y up) + the case
-    (read from its STLs, real-world winding kept) + `kicad-cli pcb render`
-    → `etutti/manuais/img/*.jpg` (+ `-sm` copies; `case_*` = in the case,
-    `stack_pins` = the legs close up; the tray alone is rendered on a 1 mm
-    dummy board hidden in its floor). The manual's `lightbox.js` opens the
-    full image on click.
-  - **Case (PR #78)**: `etutti/hardware/case.py`, run with FreeCAD 1.0's
-    Python (`C:/Program Files/FreeCAD 1.0/bin/python.exe`, has Part +
-    MeshPart; build_pcb.py calls it) → `fab/etuttino_case_{top,bottom}.
-    {stl,step}`. Tray (floor, bosses under every hole, pillars) + top shell
-    (3 mm deck on the plate edge, stepped key opening = key cells + 0.6 mm,
-    LED window, pod over the stack 1 mm clear of row 3's first keycap,
-    USB/jack openings on the left), joined by 8 M2 self-tappers through the
-    walls + 2 through the board's left holes. Purchase options given to the
-    user: JLC3DP, PCBWay, Craftcloud, a local FDM service (PETG). The user is in London; manuals stay country-neutral (no import/customs talk).
-  - **Concept models page** `/etutti/models/` (PR #80, unlisted/noindex,
-    linked from the eTutti page): layouts only, no manual/BOM. One
-    parametric design in `etutti/hardware/concepts.py` (pure Python:
-    geometry + top-view SVGs), `concepts_cad.py` (FreeCAD: appearance
-    solids → `concepts_build/`, gitignored), `concepts_render.py` (KiCad:
-    STL→VRML→`kicad-cli` renders, dummy board hidden in the solid body),
-    `concepts_page.py` (writes the static en/pt/es page; edit texts there).
-    Models: **eTuttino** (44 keys + a left grip 76 mm long, 30.5 mm tall —
-    as low as the stacked Teensy + Audio Board allow — ramp down to the
-    keyboard ~20 mm before the key tops; LED, USB + audio on the grip's left
-    face); **eTutti** (each row +1 key: F♯6/G6/F6/D♯6, 48 keys, G3–G6 — the
-    user wrote "F#5…D#5", read as a typo); **eTuttiChorus** (eTutti +
-    battery, round speaker grille, 1.9" 320×170 screen at the grip's back
-    like the Corsair Vanguard 96 LCD). The stack sits in the same place in
-    every model (front half of the grip, against the left face) so the
-    board can be shared; the back half is free until the Chorus.
+  - **Manual pictures**: `etutti/hardware/case/manual_render.py` (CadQuery
+    venv + PyVista). It exports the main and controls boards with
+    `kicad-cli pcb export stl` (`--board-only` and `--no-board-body`
+    separately, so the board and its parts get their own colours; the GLB
+    export of the main board hangs VTK's reader), places them in the case
+    STLs, and takes the stack / controls-board bodies / panel parts from
+    `fit_check.py`. One figure per assembly step + a capped section
+    (`clip_closed_surface`) → `etutti/manuais/img/*.jpg` (+ `-sm`). The
+    manual's `lightbox.js` opens the full image on click. (`assembly3d.py`,
+    the v0.5 VRML version, is gone.)
+  - **Old case (PR #78, removed in #89)**: a FreeCAD two-piece case. Purchase
+    options given to the user then and still in the manual: JLC3DP, PCBWay,
+    Craftcloud. The user is in London; manuals stay country-neutral (no
+    import/customs talk).
+  - **Models page** `/etutti/models/` (PR #94, unlisted/noindex, linked
+    from the eTutti page): the SPEC v9 case. Written by
+    `etutti/hardware/case/models_page.py` (texts en/pt/es live there);
+    pictures + numbers (size, heights, case weight from the STL volume) by
+    `case/models_render.py`. Sections: hero (Seixo iso), Seixo/Madeira side
+    by side, numbered anatomy (call-outs projected from 3D points, legend
+    per language), caps, the family as a table (eTutti = 48 keys, each row
+    +1: F♯6/G6/F6/D♯6; eTuttiChorus = eTutti + screen, 28 mm speaker under
+    the grille, battery, stack ≤ 10 mm; both "in development"), measures.
+    The PR #80 concept generator (`concepts*.py`, 76 mm grip) is gone.
   - **New case, Seixo/Madeira (Oct 2026)**: `etutti/hardware/case/`.
     - Files: `SPEC.md` (the design spec, versioned, Portuguese),
       `canvas-v5/` (Claude Chat's reference drawings), `case.py`
@@ -274,19 +262,27 @@ that doesn't belong there.
         worst sag (`mechanics.py`). `build_pcb.py` fails if a back-side
         part sits on one.
       - Removed: the #78 FreeCAD case (`case.py`, `case_check.py`, its
-        `fab/` STLs). `build_pcb.py --renders` is disabled. The manuals
-        and `assembly3d.py` still show v0.5 and need redoing.
+        `fab/` STLs). `build_pcb.py --renders` only points to
+        `case/manual_render.py` now.
     - Electronics in the interface: pot, encoder and LED go on a small
       board under the lid. Use a 90° micro-USB plug.
   - **Stiffness**: `etutti/hardware/mechanics.py` (KiCad python + numpy,
     no scipy) runs a grillage FE (4 mm mesh) per key on the case's pillars
     → `build/etuttino_supports.json`. The user asked that the board "not
     flex much": keep the worst key ≤ 0.05 mm at 3 N (v0.6: 0.044).
-  - `etutti/manuais/` — assembly manuals (route A: JLCPCB PCBA, bottom
-    side; route B: everything soldered at home) + user manual, one
-    `.lang-block` per language (en/pt/es) shown by `html[lang]`; noindex,
-    linked from the eTutti page only. Keep it in step with hardware/firmware
-    changes.
+  - `etutti/manuais/` — assembly manual (board v0.7, Seixo/Madeira case,
+    controls board; PR #95: before you start, route A JLCPCB PCBA bottom
+    side, route B soldered at home, then 9 build steps in the brief's
+    order) + user manual (PR #96: knobs, LED table, page, C/B-griff, care,
+    troubleshooting), one `.lang-block` per language (en/pt/es) shown by
+    `html[lang]`; hand-written HTML, noindex, linked from the eTutti page
+    only. It says the design is ready to make and that only the firmware
+    has run on real hardware. Keep it in step with hardware/firmware
+    changes. Stack as written there: Teensy soldered straight on the Audio
+    Board with extra-long headers (plastic = the only spacer, ~8–9 mm),
+    legs on through the main board, Audio Board ~3 mm up; measure ≤ 16.9
+    (Seixo) / 16.4 (Madeira). The headphone jack is wired to the Audio
+    Board's own socket pins: its ground is virtual, never GND.
   - **Tooling available on this machine** (use it to verify, don't just
     write code blind): KiCad 10 at `C:/Program Files/KiCad/10.0/bin/`
     (its `python.exe` has `pcbnew`; `kicad-cli.exe` does DRC/Gerbers/
@@ -403,72 +399,60 @@ despite the file on disk being correct, suspect the browser's own cache
 first (try a brand new tab, or bump the preview port) rather than the
 code.
 
-## eTuttino case + PCB handoff (session of 13–14 Oct 2026, PRs #81–#90) — start here
+## eTuttino handoff (14 Oct 2026, PRs #81–#97) — start here
 
-**Milestone reached:** the eTuttino hardware is designed end to end and
-ready to order. All of it is merged on `main`.
+**Milestone reached:** the eTuttino is designed end to end and ready to
+order, and the site and manuals describe it. Everything is merged on
+`main`. Nothing has been built: only the firmware has run on the user's
+Teensy + Audio Board.
 
-- **Case** (`etutti/hardware/case/`, CadQuery):
-  - SPEC v8. The shape has been frozen since v7.
-  - Seixo (resin/MJF) and Madeira (oak, CNC, two setups), with STEP/STL
-    in `case/out/`.
-  - Button caps in three files, plus a 4-cap fit test for the real
-    Gateron switches.
-  - Renders in `case/renders/`.
-  - `FIT_CHECK.md` (Portuguese) ends with the open questions.
-- **Main board v0.7** (`generate.py` + `build_pcb.py`):
-  - 18.5 mm hexagonal key grid, outline taken from the case through
-    `case/out/pcb_envelope.json`.
-  - 3 multiplexers + LDO on the back; J3 to the controls board; 2 M2
-    holes.
-  - DRC 0/0/0, firmware cross-check 44/44.
-  - Gerbers, BOM and CPL in `fab/`.
-  - Plate: 1.6 mm FR-4 (`fab/etuttino_plate_gerbers.zip`).
-- **Controls board** (`controls_pcb.py`):
-  - RK09K pot, EC11E encoder, 3 mm R/G LED, vertical JST PH facing down.
-  - DRC 0/0/0, `fab/etuttino_controls_gerbers.zip`.
-- **Firmware:**
-  - knobs: pot = volume, encoder = instrument, click = confirm (saved
-    in EEPROM) or back to the default;
-  - compiled, and flashed on the user's Teensy (enumerates as "eTutti").
+- **Case** (`etutti/hardware/case/`, CadQuery): SPEC v9 (shape frozen since
+  v7; v9 changed only the firmware and the page). Seixo (resin/MJF) and
+  Madeira (oak, CNC, two setups), STEP/STL in `case/out/`; caps in three
+  files + a 4-cap fit test; renders in `case/renders/`; `FIT_CHECK.md`
+  (Portuguese) ends with the open questions.
+- **Main board v0.7** (`generate.py` + `build_pcb.py`): 18.5 mm hex grid,
+  outline from `case/out/pcb_envelope.json`, 3 muxes + LDO on the back,
+  J3 to the controls board, 2 M2 holes. DRC 0/0/0, firmware 44/44.
+  Gerbers/BOM/CPL in `fab/`; plate 1.6 mm FR-4.
+- **Controls board** (`controls_pcb.py`): RK09K pot, EC11E encoder (15
+  pulses / 15 detents), 3 mm R/G LED, vertical JST PH facing down.
+- **Firmware:** pot = volume (CC 7 back), encoder = instrument (CC 25
+  back), `ENC_STEPS_PER_DETENT = 4` (#93); click after turning = keep
+  (EEPROM), click without turning = classic accordion. Flashed on the
+  user's Teensy (enumerates as "eTutti"); the click count itself can only
+  be checked with a real controls board.
+- **Site** (#93–#96): `/etutti/` follows CC 7 / CC 25 without echoing them
+  (`followKnob` in `script.js`; a CC 25 equal to the current instrument =
+  the firmware's default sound); `/etutti/models/` and `etutti/manuais/`
+  rebuilt (see Architecture above).
 - **Process:** design iterations run through the protocol under "New
-  case, Seixo/Madeira" above.
-  - Claude Chat edits `SPEC.md`.
-  - Code models it, checks it, answers in `FIT_CHECK.md`, then commits,
-    opens a PR and merges.
-  - The user relays a one-line note between the two.
+  case, Seixo/Madeira" above (Claude Chat edits `SPEC.md`; Code models,
+  checks, answers in `FIT_CHECK.md`, commits, PRs, merges; the user relays
+  a one-line note). The site/manuals brief that drove #93–#96 is
+  `etutti/BRIEF-site-manuais.md`.
 
-**Open questions for the design (v9), in `case/FIT_CHECK.md` §5:**
+**Open questions for the design (v10), in `case/FIT_CHECK.md` §5:**
 
-1. `ENC_STEPS_PER_DETENT`: 2 or 4, depending on the EC11E bought.
-2. Should the page follow the knobs? The Teensy sends CC 7 / CC 25 back;
-   `handleIncoming` in `etutti/script.js` only logs them.
-3. Is the encoder button's behaviour right?
-4. Order the prototype?
+1. The Madeira's light pipe: with the LED straight on the controls board
+   there is room for a ~4 mm pipe, not `LIGHT_PIPE_L` = 6 (CHECK). The
+   manual says ~4 mm.
+2. The low stack (Teensy soldered on the Audio Board, ~8–9 mm): confirm
+   with the real parts.
+3. Order the prototype?
 
-**Next session (the user's plan): update the site, the manuals and
-everything else.**
+**Verifying the pages:** the in-app browser pane works (preview_start
+"static-site"); when the pane is hidden, screenshots come back stale or at
+the wrong size, so check with `javascript_tool` instead (each
+`.lang-block` via `BC_I18N.setLang`, `scrollWidth` at 375 px, elements
+past `innerWidth`, `fetch` every `img`/download link). A fake
+`navigator.requestMIDIAccess` whose input's `onmidimessage` you call by
+hand tests the knob following.
 
-- **`etutti/manuais/` (en/pt/es):** still describes board v0.5 and the
-  old FreeCAD case. To redo:
-  - BOM (no on-board LED; J3 + controls board; printed caps; M2 screws);
-  - assembly steps;
-  - the case (Seixo / Madeira from `case/out/`);
-  - the pictures. `assembly3d.py` is v0.5-only and
-    `build_pcb.py --renders` is disabled; `case/render.py` and the
-    KiCad renders in `fab/` can replace them.
-  - SPEC v8 said "only after the prototype", but the user now wants it
-    done.
-- **`/etutti/` page:**
-  - follow the knobs (CC 7 → volume slider, CC 25 → instrument), if the
-    design agrees;
-  - mention the hex layout where the page describes the hardware.
-- **`/etutti/models/` concept page** (`concepts*.py`): still shows the
-  PR #80 concept models. Replace or update it with the Seixo / Madeira
-  renders (SPEC v5 listed this as optional).
-- **`etutti/hardware/README.md`** is current (v0.7). Re-check the
-  `sitemap.xml` / noindex rules if any eTutti page becomes public. They
-  are deliberately unlisted now.
+**Tool gotcha:** in this environment Bash heredocs lose backslashes
+(`'\n'` arrives as `'
+'`), so Python edit scripts with escapes go
+through the Write tool into the scratchpad.
 
 ## eTutti handoff (session of Oct 2026, PRs #63–#76) — earlier state
 

@@ -1,15 +1,17 @@
 # eTuttino case — Seixo and Madeira (CadQuery)
 
 Parametric model of the case described in [SPEC.md](SPEC.md) — currently
-**v8** (shape frozen since v7): pitch 18.5 mm on a hexagonal grid, the deck
+**v9** (shape frozen since v7; v9 changed only the firmware and the page): pitch 18.5 mm on a hexagonal grid, the deck
 round the keys at z 17.4, Ø16.5 cap skirts, the ramp's front curve to 75°
 then straight. v8 adds:
 
 - the 1.6 mm FR-4 plate: the buttons' tops are at z 26.6;
 - two M2 screws from below through thicker pillars, to hold the main
   board under the interface;
-- two posts under the interface lid for the controls board. The
-reference drawings (general shape, v5) are in [canvas-v5/](canvas-v5/).
+- two posts under the interface lid for the controls board.
+
+The reference drawings in [canvas-v5/](canvas-v5/) are v5's (general
+shape only); the measurements in SPEC v9 and this model win.
 There are two versions:
 
 - **Seixo**: resin or MJF, one colour.
@@ -40,9 +42,16 @@ C:/Users/julia/.venvs/cadquery/Scripts/python.exe keycap.py      # caps + switch
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe render.py      # renders/{seixo,madeira}_{iso,top,left}.png
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe fit_check.py   # FIT_CHECK.md + renders/fit_*.png (~3 min)
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe pcb_envelope.py # out/pcb_envelope.json for the board
+C:/Users/julia/.venvs/cadquery/Scripts/python.exe models_render.py  # pictures + numbers for /etutti/models/
+python models_page.py                                                # writes etutti/models/index.html (texts live here)
+C:/Users/julia/.venvs/cadquery/Scripts/python.exe manual_render.py  # the manuals' pictures -> etutti/manuais/img/
 ```
 
-Run `case.py` and `keycap.py` before `render.py`.
+Run `case.py` and `keycap.py` before `render.py`, and `render.py` before
+`models_render.py` (it crops render.py's PNGs). `manual_render.py` also
+needs KiCad 10's `kicad-cli` (it exports the main and controls boards to
+STL) and imports `fit_check.py` for the stack, controls-board and panel
+solids.
 
 ## Files
 
@@ -52,11 +61,12 @@ Run `case.py` and `keycap.py` before `render.py`.
 | `out/madeira_corpo.*` / `out/madeira_fundo.*` | oak body / thin bottom cover |
 | `out/pcb_envelope.json` | the room for the main board: outline, boss notches, supports, plate edge, height levels, key centres, stack / controls-board / panel footprints (`pcb_envelope.py`; plan in `renders/pcb_envelope.png`). `etutti/hardware/generate.py` reads it. |
 | `out/insert.*` | black connector insert for the left face (USB + headphones) |
-| `out/plate.step`, `out/plate.dxf` | 1.5 mm switch plate, MX 14 × 14 holes on the 18.5 mm hex grid (rows 16.02 apart) |
+| `out/plate.step`, `out/plate.dxf` | 1.6 mm switch plate (FR-4 since v8), MX 14 × 14 holes on the 18.5 mm hex grid (rows 16.02 apart) |
 | `out/keycap_{natural,sharp,cf}.stl` | the three caps (C/F has the raised diagonal chequer) |
 | `out/keycap_test_4.stl` | four caps on sprues, laid out like four neighbouring buttons, for the fit test on real switches |
 | `out/switches.stl` | stand-in switches, used by the renders only |
 | `renders/fit_*.png` | the fit check's plans and sections (see FIT_CHECK.md) |
+| `renders/models_*.png` | the anatomy call-outs and the keycap picture for /etutti/models/ |
 
 **Coordinates.** The code works in SPEC coordinates: x to the right, y
 towards the player, z up. That system is left-handed, so a model built
@@ -79,18 +89,18 @@ axis.
   - `SIDE_ANGLE` (30°) — angle of the opening's sides.
   - `R_OPEN_CORNER` (6) — corner radius.
   - The lateral fillets are concentric with the end buttons.
-  - `CHAMFER_W` (4) / `CHAMFER_DROP` (2) — the rounded edge. A vertical land under it (`LID_T - CHAMFER_DROP`, 2.7) brings the lid down to the plate.
+  - `CHAMFER_W` (4) / `CHAMFER_DROP` (2) — the rounded edge. A vertical land under it (`LID_T - CHAMFER_DROP`, 2.6) brings the lid down to the plate.
 - **Box**
   - `BOX_OFF` (10.3) — the box is the opening grown by this amount.
   - `R_LEFT` (16) — radius of the two left corners.
-  - `Z_DECK` (17.4) — deck height; the lid round the keys is `LID_T` = 4.7 thick and rests on the plate's edge.
+  - `Z_DECK` (17.4) — deck height; the lid round the keys is `LID_T` = 4.6 thick and rests on the plate's edge.
   - `Z_IF` (33), `IF_CREASE_Y` (55), `IF_SLOPE` (13°), `IF_CREASE_R` (10) — interface top: flat, rounded crease, then down to the front.
   - The ramp: top edge = opening + `RAMP_TOP_OFF` (12.7), foot = opening + `RAMP_FOOT_OFF` (4). In the front half both run straight to `RAMP_STRAIGHT_TO` (86), then curve with `RAMP_FRONT_R` (14) through `RAMP_FRONT_SWEEP` (75°) and run straight into the front face. `RAMP_EDGE_R` (5) rounds both edges.
   - Every ramp and box line is an offset of the keyboard opening, so changing `P` moves them all.
 - **Stack-up**
   - These match the current board.
-  - `Z_PCB_TOP` = 7.7, plate top `Z_PLATE_TOP` = 12.7 (5 mm, MX), `Z_KEY_TOP` = 26.5.
-  - So the lid round the keys is `LID_T` = 4.7 mm thick (deck at 17.4) and rests on the plate's edge.
+  - `Z_PCB_TOP` = 7.7, plate top `Z_PLATE_TOP` = 12.8 (1.6 mm FR-4 plate), `Z_KEY_TOP` = 26.6.
+  - So the lid round the keys is `LID_T` = 4.6 mm thick (deck at 17.4) and rests on the plate's edge.
 - **Interface**
   - `SCREEN_ZONE` / `SCREEN_MODE` (`"recess"` for a sticker or engraving, `"window"` for a real screen, `"none"`).
   - `VOLUME_XY`, `SELECT_XY`, `LED_XY`.

@@ -156,6 +156,8 @@ A Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão in
 
 ## 5. Perguntas para o design
 
-Feito nesta rodada (v9): encoder com 4 transições por clique, gravado no Teensy (enumera como "eTutti"; o clique exato só se confere com a plaquinha montada); a página segue os knobs (verificado no navegador com um MIDI simulado: volume, instrumento, volta ao acordeom clássico, nenhum CC devolvido). O site e os manuais seguem o `etutti/BRIEF-site-manuais.md`.
+Feito nesta rodada (v9): encoder com 4 transições por clique, gravado no Teensy (enumera como "eTutti"; o clique exato só se confere com a plaquinha montada); a página segue os knobs (verificado no navegador com um MIDI simulado: volume, instrumento, volta ao acordeom clássico, nenhum CC devolvido). Site e manuais refeitos seguindo o `etutti/BRIEF-site-manuais.md` (PRs #93–#97).
 
-1. **Protótipo.** Os arquivos de fabricação continuam prontos (placa principal, plate de 1,6 mm, plaquinha de controles, case e capas). Encomendar depois do site e dos manuais, como a v9 pede?
+1. **Light pipe da Madeira.** Com a plaquinha na Madeira (topo em z = 23.3), um LED de 3 mm direto na placa chega a z = 28.6, 1.4 mm abaixo da face de baixo da tampa (z = 30.0). Então o condutor de luz cabe com **~4 mm** de comprimento (os 3.0 mm da tampa mais a folga), não os 6 mm de `LIGHT_PIPE_L` (CHECK): com 6 mm ele bateria no LED. O manual diz ~4 mm. Comprar o de 4 mm (ou cortar), ou mudar algo na v10?
+2. **Pilha.** O manual pede o Teensy soldado direto na Audio Board com barras de pinos extralongas (o plástico da barra como único espaçador): dá ~8–9 mm, abaixo dos 13 mm conferidos e dos 10 mm do Chorus. Confirmar com a peça antes do protótipo.
+3. **Protótipo.** Os arquivos de fabricação continuam prontos (placa principal, plate de 1,6 mm, plaquinha de controles, case e capas), e agora o site e os manuais também. Encomendar?

@@ -11,14 +11,15 @@ A 44-key chromatic button-accordion controller (C-griff, G3–E6).
 
 The firmware is in [`../firmware`](../firmware), the web page is
 [beatconfused.com/etutti](https://beatconfused.com/etutti/), and the case
-(Seixo / Madeira, SPEC v7) is in [`case/`](case/).
+(Seixo / Madeira, SPEC v9; shape frozen since v7) is in [`case/`](case/).
 
-> **Board v0.7 (this one) is made for the v7/v8 case.** The keys sit on the
-> case's hexagonal grid (18.5 mm pitch), and the board takes the case's
-> inner outline. The assembly manuals in
-> [`../manuais`](../manuais/) and their pictures still describe the
-> earlier v0.5 board (rectangular, 19.05 mm grid, FreeCAD case). They
-> need redoing before anyone builds from them.
+> **Board v0.7 (this one) is made for the SPEC v7–v9 case.** The keys sit
+> on the case's hexagonal grid (18.5 mm pitch), and the board takes the
+> case's inner outline. The assembly and user manuals in
+> [`../manuais`](../manuais/) describe this board, the case and the
+> controls board; their pictures come from
+> [`case/manual_render.py`](case/manual_render.py). Nothing has been built
+> yet: only the firmware has run on a real Teensy + Audio Board.
 
 ![PCB preview](build/etuttino_pcb_preview.svg)
 
@@ -64,7 +65,7 @@ also works.
 | [`build_pcb.py`](build_pcb.py) | builds and **routes** the KiCad board inside that outline, runs DRC, checks it against the firmware, exports everything in `fab/` |
 | [`controls_pcb.py`](controls_pcb.py) | the controls board: places, routes (the same router), DRCs and exports it |
 | [`mechanics.py`](mechanics.py) | how far the board bends under a key press on the case's pillars (KiCad's Python, numpy) |
-| [`assembly3d.py`](assembly3d.py) | the manuals' 3D pictures. Still the v0.5 board's, to be redone |
+| [`case/manual_render.py`](case/manual_render.py) | the manuals' 3D pictures: this board and the controls board (exported with `kicad-cli`), in the case, step by step (CadQuery venv) |
 | [`etuttino.pretty/`](etuttino.pretty) | footprint library: `Gateron_Magnetic_MX_1u` (two 1.75 mm peg holes, no centre post, no pins), origin at the switch centre |
 | [`kicad/etuttino.kicad_pcb`](kicad/etuttino.kicad_pcb), [`kicad/etuttino_plate.kicad_pcb`](kicad/etuttino_plate.kicad_pcb) | the routed board and the plate |
 | `build/etuttino_pcb_preview.svg`, `build/etuttino_keys.csv`, `build/etuttino_plate.dxf` | preview; each key's switch, sensor, multiplexer channel, Teensy pin, note and X/Y; the plate as DXF (for aluminium) |
@@ -248,11 +249,15 @@ from VIN for the sensors and the multiplexers:
 - Two rows of 14 holes (2.54 mm pitch, 15.24 mm apart), with the 0–12 row
   at the front and the VIN–13 row at the back. The silkscreen marks
   "GND"/"0", "VIN"/"23" and "< USB".
-- The Audio Board's header legs go through these holes with the Audio
-  Board ~3 mm above the PCB, and are soldered and trimmed on the back.
-- The Teensy sits on top:
-  - eTuttino: on 8.5 mm female stacking headers, ~13 mm stack in all;
-  - eTuttiChorus: lower, 10 mm or less, so it clears the screen.
+- Two 1×14 extra-long male headers (≈ 20–25 mm pins) join all three
+  boards: the Teensy is soldered straight onto the Audio Board, the
+  header's plastic as the only spacer, and the long legs go on down
+  through these holes with the Audio Board ~3 mm above the PCB, soldered
+  and trimmed on the back.
+- Stack height, from under the Audio Board to the top of the Teensy's
+  USB: the case was checked with 13 mm and has room for 16.9 mm (Seixo) /
+  16.4 mm (Madeira); the eTuttiChorus needs 10 mm or less, to clear the
+  screen.
 - USB goes to the panel socket through a short cable with a 90° micro-USB
   plug. The panel headphone jack is wired to the Audio Board's headphone
   pads.
@@ -270,7 +275,7 @@ from VIN for the sensors and the multiplexers:
 | 2 | 330 Ω 0805 | LED resistors R1, R2 (back) |
 | 1 | JST PH 8-pin vertical header (B8B-PH-K-S) + a 1:1 PH cable, ~60 mm | J3, to the controls board |
 | 2 + 2 | M2 × 10 mm screw + M2 nut | through the bottom plate's two thick pillars and H1 / H2 |
-| 1 | Teensy 4.0 + PJRC Audio Adaptor Board **Rev D** | with headers |
+| 1 | Teensy 4.0 + PJRC Audio Adaptor Board **Rev D** | + 2 × 1×14 extra-long male headers |
 | 1 | switch plate | 1.6 mm FR-4 from `fab/etuttino_plate_gerbers.zip`, or 1.5 mm aluminium from `build/etuttino_plate.dxf` |
 | 44 | button caps | 3D-printed from `case/out/keycap_*.stl` (26 natural / C-F, 18 sharp) |
 
@@ -279,8 +284,8 @@ from VIN for the sensors and the multiplexers:
 | Qty | Part |
 | --- | --- |
 | 1 | Alps RK09K1130 (or equivalent) vertical pot, 10 k linear, 15 mm shaft |
-| 1 | Alps EC11E with push switch, 15 mm shaft (check its pulses per detent: `ENC_STEPS_PER_DETENT` in the firmware) |
-| 1 | 3 mm LED, red/green, common cathode, + an LED spacer |
+| 1 | Alps EC11E with push switch, **15 pulses / 15 detents**, 15 mm shaft (`ENC_STEPS_PER_DETENT` = 4 in the firmware; 2 for a 30-detent one) |
+| 1 | 3 mm LED, red/green, common cathode, + a ≈ 4 mm LED spacer (Seixo); the Madeira has a 3 mm light pipe in the lid instead |
 | 1 | JST PH B8B-PH-K-S |
 | 2 | M2 × 5 mm self-tapping screws, into the lid's posts |
 | 2 | knobs, Ø9, for 6 mm shafts |
