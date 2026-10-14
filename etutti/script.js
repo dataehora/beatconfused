@@ -409,6 +409,10 @@
     }
     logMidi("in", bytes);
     const type = bytes[0] & 0xf0;
+    if (type === 0xb0) {
+      followKnob(bytes[1], bytes[2]);
+      return;
+    }
     if (type === 0x90 && bytes[2] > 0) remoteNotes.add(bytes[1]);
     else if (type === 0x80 || type === 0x90) remoteNotes.delete(bytes[1]);
     else return;
@@ -986,6 +990,13 @@
         radio.checked = Number(radio.value) === preset[name];
       });
     });
+    showInstrumentPanels();
+    renderRegister();
+    refreshPresetState();
+    if (doSend) sendAllControls();
+  }
+
+  function showInstrumentPanels() {
     const isSynth = instrument === SYNTH_INSTRUMENT;
     els.accordionControls.hidden = instrument !== 0;
     els.synthControls.hidden = !isSynth;
@@ -993,9 +1004,52 @@
     els.synthEnvelopeOnly.forEach((el) => {
       el.hidden = !isSynth;
     });
-    renderRegister();
-    refreshPresetState();
-    if (doSend) sendAllControls();
+  }
+
+  // ---- following the eTuttino's knobs ----
+  // The Teensy sends CC 7 when its volume pot moves and CC 25 when the
+  // encoder picks an instrument. The page shows the new value (and the
+  // browser sound follows it) but sends nothing back: the Teensy already
+  // has it. Only what the firmware itself changed is touched, so the
+  // "modified" marker stays honest.
+  function followKnob(number, value) {
+    if (number === CC.volume) {
+      const slider = document.getElementById("ccVolume");
+      if (!slider) return;
+      slider.value = String(value);
+      sliderLabelUpdaters.get(slider.id)();
+      if (webSynth) webSynth.cc(CC.volume, value);
+      refreshPresetState();
+    } else if (number === CC.instrument) {
+      const inst = Math.min(Math.floor(value / 16), SYNTH_INSTRUMENT);
+      if (inst === instrument) {
+        // A click without turning: the firmware's default sound (classic
+        // accordion, register MM, dry). Volume, tone and ambience stay.
+        if (inst !== 0) return;
+        registerMask = ACCORDION_DEFAULTS.register;
+        const tuning = document.getElementById("ccReedTuning");
+        tuning.value = String(ACCORDION_DEFAULTS.ccReedTuning);
+        sliderLabelUpdaters.get(tuning.id)();
+        if (webSynth) {
+          webSynth.cc(CC.register, registerMask);
+          webSynth.cc(Number(tuning.dataset.cc), Number(tuning.value));
+        }
+      } else {
+        if (webSynth) webSynth.allOff();
+        instrument = inst;
+        if (webSynth) webSynth.cc(CC.instrument, value);
+      }
+      const reedTuning = Number(document.getElementById("ccReedTuning").value);
+      const id = Object.keys(PRESETS).find((key) => PRESETS[key].instrument === instrument && (instrument !== 0 || (key === "accordionJazz") === reedTuning > 0));
+      activePreset = id || activePreset;
+      save(STORAGE.preset, activePreset);
+      els.presetInputs.forEach((radio) => {
+        radio.checked = radio.value === activePreset;
+      });
+      showInstrumentPanels();
+      renderRegister();
+      refreshPresetState();
+    }
   }
 
   els.presetInputs.forEach((radio) => {
