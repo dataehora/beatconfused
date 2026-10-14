@@ -200,21 +200,31 @@ that doesn't belong there.
       the model, runs the check, and updates `FIT_CHECK.md`, ending with
       "Perguntas para o design". Then commit, PR, merge. The user relays a
       one-line note between the two.
-    - Current state: SPEC **v5** plus the user's later decisions, which
-      are listed at the top of FIT_CHECK and go into v6:
+    - Current state: SPEC **v6** (PR #83), modelled in PR #84:
       - pitch **18.5** on the hex grid (rows 16.02 apart, Gateron KS-20
         housings 0.92 mm apart);
+      - deck round the keys at z 17.4 (lid 4.7 mm on the plate);
+      - cap skirts Ø16.5;
       - the ramp's front curve stops at 75° and runs straight into the
         face (90° is tangent to it, and OCC can't fillet that);
+      - Madeira LED: hole + acrylic window (`madeira_led_janela`);
       - stack ~13 mm in the eTuttino, ≤ 10 mm in the Chorus.
     - Coordinates: the SPEC's frame (x right, y towards the player, z up)
       is LEFT-handed. Model in SPEC coordinates, mirror on export
       (`y_file = 100 - y_spec`).
-    - OCC gotchas:
-      - Cut the opening's loft and prism one after the other. Fused when
-        overlapping, the result comes out empty; touching, they leave a
-        zero-thickness film.
-      - The ramp edges are one spline each, so the R 5 fillets work.
+    - OCC gotchas (each one bit in #82–#84):
+      - The opening cutter is ONE ruled loft through stacked contours.
+        A loft plus a separate prism, fused or cut in turn, left a
+        film, came out empty, or split off a slab. The shell keeps only
+        its largest solid after that cut.
+      - Each ramp edge is one spline through densely, evenly paired
+        points, with the same point count on both edges.
+        - Sparse points on the straight parts made the spline bulge
+          into the opening.
+        - Exact lines + arcs made the fillets invalid.
+      - The two R 5 ramp fillets are applied one after the other.
+      - Check every export: ray-probe the opening and count open mesh
+        edges (the render once hid a film over the keys).
     - Board consequence: `generate.py`/`build_pcb.py` must be redone for
       18.5 mm hex rows. That is a separate step, not done yet.
     - Electronics in the interface: pot, encoder and LED go on a small

@@ -1,8 +1,8 @@
-# eTuttino — conferência do case (SPEC v5 + passo 18,5)
+# eTuttino — conferência do case (SPEC v6)
 
 Gerado por `fit_check.py` a partir de `case.py` (CadQuery). As peças são sólidos com medidas de datasheet, da placa atual ou medidas por você; as incertas estão marcadas CHECK no código. Coordenadas da SPEC (y para quem toca). Folga = menor distância entre a peça e o case (tampa + fundo).
 
-Modelo da SPEC v5 com três decisões do usuário tomadas depois dela, para entrar na v6: **passo 18,5 mm** (grade hexagonal mantida), **fim da rampa com a curva até 75° e reta até a face** (ver §5), e pilha Teensy + Audio Board de **~13 mm no eTuttino** e **reduzida em 3–4 mm (≤ 10 mm) no Chorus**.
+Mudanças da v6 aplicadas: tampa em volta das teclas em z = 17.4, saia das capas Ø16.5, vinco R 10, LED da Madeira com furo e janela de acrílico (`madeira_led_janela`). Passo 18,5 e fim da rampa a 75° já estavam no modelo (PR #82).
 
 ## Resumo
 
@@ -25,11 +25,21 @@ Medidas do Gateron KS-20 (desenho oficial KS-20TF10B045NW-X72): carcaça de cima
 | Carcaça × carcaça, diagonal (fileira vizinha) | 0.92 mm (é o limite: passo mínimo ≈ 17,8 mm) |
 | Teia da placa entre furos 14 × 14 | 2.02 mm entre fileiras, 4.50 mm na fileira |
 | Botão Ø15 × vizinho | 3.50 mm |
-| Saia Ø17 × vizinha | 1.50 mm |
-| Saia × borda da abertura | 7.2 mm frente/trás, 14.0 mm laterais |
-| Switches × case | 0.0 mm (Seixo), 0.0 mm (Madeira) |
+| Saia Ø16.5 × vizinha (as seis, mesma fileira e diagonais) | 2.00 mm |
+| Saia × borda da abertura | 7.4 mm frente/trás, 14.2 mm laterais |
+| Switches × case | 8.3 mm (Seixo), 8.3 mm (Madeira) |
 
-**Capas.** A saia redonda (Ø17, parede de 0.8 mm) não pode descer até os cantos da carcaça retangular do Gateron. Com o curso de 4.1 mm, a base da saia fica a **9.78 mm acima da placa** com a tecla solta (z = 22.48; apertada, 5.68 mm). A capa tem **4.02 mm** da base da saia ao topo (z = 26.5), com o tubo da haste por baixo. Entre a tampa (z 15.7) e a saia aparecem ~6.8 mm da carcaça escura. O topo da carcaça e a altura da haste não estão cotados no desenho do Gateron: o `keycap_test_4.stl` (4 capas) confirma isso nos switches reais.
+**Capas.** A saia redonda (Ø16.5, parede de 0.8 mm) não pode descer até os cantos da carcaça retangular do Gateron. Com o curso de 4.1 mm, a base da saia fica a **10.21 mm acima da placa** com a tecla solta (z = 22.91; apertada, 6.11 mm). A capa tem **3.59 mm** da base da saia ao topo (z = 26.5), com o tubo da haste por baixo. Entre a tampa (z 17.4) e a saia aparecem ~5.5 mm da carcaça escura. O topo da carcaça e a altura da haste não estão cotados no desenho do Gateron: o `keycap_test_4.stl` (4 capas) confirma isso nos switches reais.
+
+### Conferências pedidas na v6 (seção 9)
+
+1. **Tampa em z = 17.4 × saia apertada.** A base da saia, com a tecla no fim do curso, fica em z = 18.81: **1.41 mm acima da tampa**. Ela não chega ao nível da tampa, então também não encosta na borda da abertura (que de qualquer forma está a 7.4 mm na horizontal). A tampa mais grossa só cresce para cima: a face de baixo continua em z = 12.7, apoiada na placa, e nada da placa principal sob a faixa de 10.3 mm muda. Switches × case: 8.3 mm.
+
+2. **Saias Ø16.5.** Na grade hexagonal os seis vizinhos ficam a 18.5 mm, então a folga é **2.00 mm** em todas as direções, diagonais incluídas.
+
+3. **Fim da rampa.** A reta depois dos 75° só existe entre y ≈ 99.5 e a face da frente; as bordas chegam à face em x ≈ 47.4 (cima) e 56.1 (baixo). A largura útil da interface (seção 2) e a faixa livre à esquerda da fileira 1 não mudam; a grade continua a 6 mm da rampa.
+
+4. **Madeira.** O reto da borda da abertura fica com **2.7 mm** (pedido: 2 mm), porque a tampa de 4.7 mm apoia na placa e o chanfro desce 2.0 mm (ver pergunta 1). O LED tem furo Ø3.5 passante e uma janela de acrílico difuso de Ø3.4 × 3.0 mm colada rente (`out/madeira_led_janela.*`).
 
 ## 2. Teensy + Audio Board, tela, knobs, LED, alto-falante e conectores
 
@@ -121,7 +131,7 @@ Potenciômetro, encoder, tela e alto-falante aparecem como "justo" (0,2–0,3 mm
 | plaquinha sob a tampa, Madeira | 16.5 mm | L = 15 (-1.5 mm no knob) |
 | na placa principal | 32.1 mm | L = 30 (-2.1 mm no knob) |
 
-Knob Ø9 a 0.8 mm da superfície, eixo 6 mm dentro dele. O LED de 3 mm fica num espaçador de 3.9 mm (Seixo) / 3.6 mm (Madeira) sobre a plaquinha.
+Knob Ø9 a 0.8 mm da superfície, eixo 6 mm dentro dele. O LED de 3 mm fica num espaçador de 3.9 mm (Seixo) / 1.4 mm (Madeira) sobre a plaquinha.
 
 ## 4. Espessura de parede
 
@@ -129,19 +139,16 @@ Knob Ø9 a 0.8 mm da superfície, eixo 6 mm dentro dele. O LED de 3 mm fica num 
 |---|---|---|
 | Paredes | 2.5 mm | 4.0 mm (2.5 em volta do inserto) |
 | Tampa da interface | 2.5 mm | 3.0 mm |
-| Tampa em volta das teclas | 3.0 mm, apoiada na placa | igual |
-| Borda da abertura | arredondado 4 × 2.0 + 1.0 mm reto | igual |
+| Tampa em volta das teclas | 4.7 mm, apoiada na placa | igual |
+| Borda da abertura | arredondado 4 × 2.0 + 2.7 mm reto | igual |
 | Teia da grade | 2.1 mm | igual |
-| LED | furo Ø3.5 | pele de 0.8 mm |
+| LED | furo Ø3.5 | furo Ø3.5 + janela de acrílico difuso |
 
 A Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão interno).
 
 ## 5. Perguntas para o design
 
-Já decidido nesta rodada (para escrever na v6): passo 18,5 com fileiras a 16.02 mm; caixa mantida com 100 mm (a folga frente/trás do teclado sobe de 7,5 para 8.17 mm, a faixa de tampa continua 10.3 mm, o comprimento cai para 331.1 mm); curva da frente da rampa até 75° e depois reta, chegando à face em x ≈ 47.4 (cima) e 56.1 (baixo); pilha de 13 mm no eTuttino e ≤ 10 mm no Chorus.
-
-1. **Raio do vinco.** A SPEC pede o vinco em y = 55 arredondado, sem dar o raio. Usei R 10 (`IF_CREASE_R`).
-2. **Saia das capas.** Com passo 18,5 e saia Ø17 sobram 1.50 mm entre saias vizinhas. Manter, ou saia Ø16,5 (2.00 mm)?
-3. **Switch à mostra.** Entre a tampa e a saia aparecem ~6.8 mm da carcaça. A tampa em volta das teclas (`Z_DECK`, hoje 15.7) pode subir até ~17.4 sem tocar as saias apertadas, escondendo boa parte do switch. Sobe?
-4. **Madeira.** A borda da abertura (1.0 mm reto) é frágil em carvalho, e a pele de 0.8 mm sobre o LED provavelmente fica escura. Borda mais grossa só na Madeira? LED com furo e janela de acrílico em vez da pele?
-5. **Texto da SPEC para a v6.** Seção 2: passo 18,5 e fileiras em y = 74.03, 58.01, 41.99, 25.97. Seção 4: comprimento ~331.1 e o fim da rampa como acima. Seção 8 (Madeira): ainda diz "fresagem de 3 eixos de cima: ... bolsão interno", contra as duas fixações da intro e da mudança 7. Seção 9: pilha de 13 / ≤ 10 mm e PCB refeita com fileiras a 16.02 mm (não 16,5).
+1. **Reto da borda da abertura.** A v6 pede 1 mm (Seixo) e 2 mm (Madeira) de reto abaixo do chanfro de 2 mm. Mas a tampa agora tem 4.7 mm sobre a placa e apoia nela; com o chanfro de 2.0 mm, sobram **2.7 mm de reto nas duas versões**. Para chegar a 1 / 2 mm haveria duas saídas: (a) um chanfro maior, de 4 × 3.7 mm no Seixo e 4 × 2.7 mm na Madeira; (b) um rebaixo por baixo da tampa perto da abertura, e aí a tampa deixa de apoiar na placa ali. Ficamos com 2.7 mm nas duas, ou qual das saídas?
+2. **Altura da tampa.** Com a saia Ø16.5 a base da saia sobe um pouco (uma saia mais estreita só passa pelos cantos do Gateron mais acima): solta em z = 22.91, apertada em z = 18.81. Entre a tampa (z 17.4) e a saia aparecem agora ~5.5 mm da carcaça. A tampa só pode subir mais ~0.4 mm (até a saia apertada menos 1 mm). Fica em 17.4?
+3. **Janela do LED (Madeira).** A janela tem a espessura da tampa (3.0 mm) e Ø3.4. Recortar acrílico difuso nesse tamanho é chato. Uma alternativa é um condutor de luz redondo de 3 mm comprado pronto (light pipe), com a ponta lixada rente. Pode?
+4. **Próximo passo: PCB.** Com a v6, a caixa, a grade de teclas (passo 18,5, fileiras a 16.02 mm) e a posição da pilha estão definidas. Dá para começar a refazer a PCB (`generate.py`/`build_pcb.py`) com este contorno interno, ou ainda há mudanças de forma previstas?
