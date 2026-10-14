@@ -1,16 +1,15 @@
-# eTutti · case paramétrico (Seixo e Madeira) · v8
+# eTutti · case paramétrico (Seixo e Madeira) · v9
 
-**Versão 8 — forma congelada desde a v7.** Substitui a v7, implementada nos PRs #86 e #87 (as versões anteriores continuam no histórico do git). Cada versão nova deste arquivo ganha um número e a seção "Mudanças desde a versão anterior". O resultado da verificação de cada versão fica no `FIT_CHECK.md`, com as "Perguntas para o design" no fim. Os desenhos de referência continuam em `canvas-v5/` (forma geral; as medidas desta SPEC prevalecem).
+**Versão 9 — forma congelada desde a v7.** Substitui a v8, implementada nos PRs #89–#91 (as versões anteriores continuam no histórico do git). Cada versão nova deste arquivo ganha um número e a seção "Mudanças desde a versão anterior". O resultado da verificação de cada versão fica no `FIT_CHECK.md`, com as "Perguntas para o design" no fim. Os desenhos de referência continuam em `canvas-v5/` (forma geral; as medidas desta SPEC prevalecem).
 
-## Mudanças desde a versão anterior (v7)
+## Mudanças desde a versão anterior (v8)
 
-Respostas às perguntas da PCB v0.6 no `FIT_CHECK.md` (PRs #86 e #87). **A forma externa continua congelada**; só mudam o fundo e o que vem depois.
+Respostas às perguntas da v8 no `FIT_CHECK.md` (PRs #89–#91). **Nada muda no case nem nas placas**; só o firmware e o que vem depois.
 
-1. **Pilares do fundo**: aprovados como estão no modelo, um no centro de cada triângulo de três teclas vizinhas (61) mais 3 sob a interface.
-2. **Fixação da placa sob a interface**: **dois parafusos M2 por baixo**, pelo fundo, nos pilares (30; 60) e (12; 70), com furos correspondentes na placa principal. Sem espuma.
-3. **Plate em FR-4 de 1,6 mm**, aceito: os botões ficam 0,1 mm mais altos (topo em z ≈ 26,6). Nada muda na caixa.
-4. **Próxima etapa: a plaquinha de controles** (seção 10), e o firmware lendo o potenciômetro e o encoder.
-5. **Manuais de montagem e figuras 3D**: refazer só depois do protótipo.
+1. **Encoder**: o comprado é o EC11E de **15 pulsos / 15 cliques**. `ENC_STEPS_PER_DETENT = 4`.
+2. **A página do eTutti acompanha os knobs**: quando o Teensy manda CC 7 (volume) e CC 25 (instrumento), a página atualiza o volume e o instrumento na tela, sem mandar o CC de volta (sem eco).
+3. **Botão do encoder confirmado como está**: girar troca o instrumento na hora; clique depois de girar grava como o instrumento ao ligar; clique sem ter girado volta ao acordeom clássico.
+4. **Protótipo**: ainda não será encomendado. Primeiro site e manuais (ver `etutti/BRIEF-site-manuais.md`).
 
 Especificação para o Claude Code gerar o modelo 3D do case do eTuttino, nas duas versões:
 
@@ -175,17 +174,11 @@ Premissas que continuam valendo (do `FIT_CHECK.md` da v5):
 
 O que verificar nesta versão:
 
-1. Furos M2 nos pilares (30; 60) e (12; 70): passagem pelo fundo, rebaixo para a cabeça do parafuso e furos na placa principal, longe de trilhas e componentes.
-2. Plate de 1,6 mm: confirmar que a tampa e as saias continuam com folga.
+1. Nada no case nem nas placas. Firmware: compilar, gravar no Teensy e conferir que um clique do encoder avança exatamente um instrumento.
 
-## 10. Entregáveis pedidos ao Claude Code (v8)
+## 10. Entregáveis pedidos ao Claude Code (v9)
 
-1. **Fundo e placa principal**: os dois furos M2 da seção 9 (caixa: fundo com passagem e rebaixo; placa: furos de montagem). Regerar a PCB (DRC e conferência do firmware como sempre) e exportar o case.
-2. **Plate**: espessura 1,6 mm (FR-4) no modelo e nos arquivos de fabricação.
-3. **Plaquinha de controles**, como PCB própria:
-   - potenciômetro RK09K (volume, contínuo), encoder EC11 com clique e botão (seletor de instrumento), ambos com eixo L = 15, nas posições (20; 45) e (37; 45);
-   - LED de 3 mm vermelho/verde em (52; 45), num espaçador que leve a ponta até o furo da tampa (no Seixo; na Madeira, logo abaixo do light pipe);
-   - conector JST PH de 8 vias, ligado por cabo ao J3 da placa principal;
-   - presa por baixo da tampa da interface; conferir no `fit_check.py` contra a pilha, o USB e o jack de painel.
-4. **Firmware**: ler o potenciômetro como volume e o encoder como seletor de instrumento (girar troca, clique confirma ou volta ao padrão), sem mudar o mapa de notas. Compilar e conferir.
-5. `FIT_CHECK.md`: registrar a v8 e terminar com "Perguntas para o design".
+1. **Firmware**: `ENC_STEPS_PER_DETENT = 4`. Compilar e gravar.
+2. **Página `/etutti/`**: seguir CC 7 e CC 25 vindos do Teensy (seção de mudanças, item 2).
+3. **Site e manuais**: seguir o `etutti/BRIEF-site-manuais.md`, numa sessão própria.
+4. `FIT_CHECK.md`: registrar a v9 e terminar com "Perguntas para o design" (se houver).
