@@ -6,3 +6,4 @@ kicad/fp-info-cache
 fab/gerbers/
 fab/plate_gerbers/
 concepts_build/
+fab/controls_gerbers/
