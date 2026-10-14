@@ -1,4 +1,4 @@
-# Canvas v5 · desenhos de referência da SPEC-v5
+# Canvas v5 · desenhos de referência da SPEC v5
 
 Desenhos do Claude Chat que acompanham a `../SPEC.md` (v5). Os números da SPEC são a referência; os desenhos servem para entender a forma. O canvas ao vivo (com os acabamentos trocáveis) é https://claude.ai/artifact/PjadX8XZX34prrsCt1ASE2 (privado).
 
