@@ -1,8 +1,8 @@
-# eTuttino — conferência do case (SPEC v7, forma congelada)
+# eTuttino — conferência do case (SPEC v8)
 
 Gerado por `fit_check.py` a partir de `case.py` (CadQuery). As peças são sólidos com medidas de datasheet, da placa atual ou medidas por você; as incertas estão marcadas CHECK no código. Coordenadas da SPEC (y para quem toca). Folga = menor distância entre a peça e o case (tampa + fundo).
 
-**v7: forma congelada.** O modelo é o da v6 (PR #84) com as três decisões da v7: reto de 2.7 mm na borda da abertura nas duas versões, tampa em volta das teclas em z = 17.4, e na Madeira um condutor de luz (light pipe) de Ø3.0 mm num furo de Ø3.1 no lugar da janela de acrílico. O contorno interno e as zonas de altura para a PCB estão em `out/pcb_envelope.json` (desenho em `renders/pcb_envelope.png`), gerados por `pcb_envelope.py`.
+**v8.** A forma externa continua a da v7 (congelada). Mudanças da v8: plate de FR-4 de 1.6 mm (os botões sobem para z = 26.6 e o reto da borda da abertura fica com 2.6 mm); dois parafusos M2 por baixo prendem a placa principal nos pilares (30; 60) e (12; 70), mais grossos (Ø6) e com passagem e rebaixo no fundo; a plaquinha de controles (`etutti/hardware/controls_pcb.py`) presa por baixo da tampa em dois postes; o firmware lê o potenciômetro e o encoder. O contorno interno para a PCB continua em `out/pcb_envelope.json`.
 
 ## Resumo
 
@@ -29,25 +29,25 @@ Medidas do Gateron KS-20 (desenho oficial KS-20TF10B045NW-X72): carcaça de cima
 | Saia × borda da abertura | 7.4 mm frente/trás, 14.2 mm laterais |
 | Switches × case | 8.3 mm (Seixo), 8.3 mm (Madeira) |
 
-**Capas.** A saia redonda (Ø16.5, parede de 0.8 mm) não pode descer até os cantos da carcaça retangular do Gateron. Com o curso de 4.1 mm, a base da saia fica a **10.21 mm acima da placa** com a tecla solta (z = 22.91; apertada, 6.11 mm). A capa tem **3.59 mm** da base da saia ao topo (z = 26.5), com o tubo da haste por baixo. Entre a tampa (z 17.4) e a saia aparecem ~5.5 mm da carcaça escura. O topo da carcaça e a altura da haste não estão cotados no desenho do Gateron: o `keycap_test_4.stl` (4 capas) confirma isso nos switches reais.
+**Capas.** A saia redonda (Ø16.5, parede de 0.8 mm) não pode descer até os cantos da carcaça retangular do Gateron. Com o curso de 4.1 mm, a base da saia fica a **10.21 mm acima da placa** com a tecla solta (z = 23.01; apertada, 6.11 mm). A capa tem **3.59 mm** da base da saia ao topo (z = 26.6), com o tubo da haste por baixo. Entre a tampa (z 17.4) e a saia aparecem ~5.6 mm da carcaça escura. O topo da carcaça e a altura da haste não estão cotados no desenho do Gateron: o `keycap_test_4.stl` (4 capas) confirma isso nos switches reais.
 
 ### Conferências da v6 (continuam valendo na v7)
 
-1. **Tampa em z = 17.4 × saia apertada.** A base da saia, com a tecla no fim do curso, fica em z = 18.81: **1.41 mm acima da tampa**. Ela não chega ao nível da tampa, então também não encosta na borda da abertura (que de qualquer forma está a 7.4 mm na horizontal). A tampa mais grossa só cresce para cima: a face de baixo continua em z = 12.7, apoiada na placa, e nada da placa principal sob a faixa de 10.3 mm muda. Switches × case: 8.3 mm.
+1. **Tampa em z = 17.4 × saia apertada.** A base da saia, com a tecla no fim do curso, fica em z = 18.91: **1.51 mm acima da tampa**. Ela não chega ao nível da tampa, então também não encosta na borda da abertura (que de qualquer forma está a 7.4 mm na horizontal). A tampa mais grossa só cresce para cima: a face de baixo continua em z = 12.8, apoiada na placa, e nada da placa principal sob a faixa de 10.3 mm muda. Switches × case: 8.3 mm.
 
 2. **Saias Ø16.5.** Na grade hexagonal os seis vizinhos ficam a 18.5 mm, então a folga é **2.00 mm** em todas as direções, diagonais incluídas.
 
 3. **Fim da rampa.** A reta depois dos 75° só existe entre y ≈ 99.5 e a face da frente; as bordas chegam à face em x ≈ 47.4 (cima) e 56.1 (baixo). A largura útil da interface (seção 2) e a faixa livre à esquerda da fileira 1 não mudam; a grade continua a 6 mm da rampa.
 
-4. **Madeira.** O reto da borda da abertura tem **2.7 mm**, como no Seixo (v7). O LED fica sob um condutor de luz redondo de Ø3.0 × 6.0 mm (CHECK com a peça comprada) num furo de Ø3.1, com a ponta lixada rente.
+4. **Madeira.** O reto da borda da abertura tem **2.6 mm**, como no Seixo (v7). O LED fica sob um condutor de luz redondo de Ø3.0 × 6.0 mm (CHECK com a peça comprada) num furo de Ø3.1, com a ponta lixada rente.
 
 ## 2. Teensy + Audio Board, tela, knobs, LED, alto-falante e conectores
 
 Audio Board **38,0 × 36,8 × 6,7 mm** (anúncio da SB Components, conferido na sua placa), pilha montada de **~13 mm**. Largura útil da interface com altura total, na metade da frente (onde a rampa desce reta, o ponto mais estreito): 54.5 mm no Seixo, 51.5 mm na Madeira. Teto interno: z 30.5 sob a parte plana (Seixo), caindo a 13° até z 20.0 na frente.
 
-**Por baixo da rampa e da tampa à esquerda da fileira 1** (Seixo). Ali o teto é a tampa do teclado: sobram **5.0 mm** acima da PCB (3.5 mm onde a placa de switches passa por cima). Faixa livre de placa de switches, por y: y 62: x 65.8–67.6; y 70: x 65.8–72.2; y 78: x 65.8–76.8; y 86: x 65.8–81.5; y 92: a partir de x 64.1. Cabem peças baixas da placa principal (SMD, multiplexador, LDO, conectores baixos), não a pilha nem o alto-falante. Por baixo da rampa o teto sobe do nível da tampa até o da interface em ~8.7 mm na horizontal.
+**Por baixo da rampa e da tampa à esquerda da fileira 1** (Seixo). Ali o teto é a tampa do teclado: sobram **5.1 mm** acima da PCB (3.5 mm onde a placa de switches passa por cima). Faixa livre de placa de switches, por y: y 62: x 65.8–67.6; y 70: x 65.8–72.2; y 78: x 65.8–76.8; y 86: x 65.8–81.5; y 92: a partir de x 64.1. Cabem peças baixas da placa principal (SMD, multiplexador, LDO, conectores baixos), não a pilha nem o alto-falante. Por baixo da rampa o teto sobe do nível da tampa até o da interface em ~8.7 mm na horizontal.
 
-**Arranjo testado** (`renders/fit_top.png`): placa principal estendida por baixo da interface; pilha no canto de trás, fileira VIN atrás, USB para a face esquerda: Audio Board em x 20–58, y 5–41.8, Teensy em y 12.5–30.3. Potenciômetro, encoder e LED numa plaquinha sob a tampa (y 38–52), por cima da borda da Audio Board.
+**Arranjo testado** (`renders/fit_top.png`): placa principal estendida por baixo da interface; pilha no canto de trás, fileira VIN atrás, USB para a face esquerda: Audio Board em x 20–58, y 5–41.8, Teensy em y 12.5–30.3. A plaquinha de controles (y 35.5–61.0) fica presa por baixo da tampa, por cima da borda da Audio Board.
 
 Ordem dos controles (v5): volume (20; 45), seletor (37; 45), LED (52; 45); tela em x 8–62.
 
@@ -60,20 +60,24 @@ Topo do Teensy z = 21.1, topo do micro-USB z = 23.7, plugue USB de 90° até z =
 | Audio Board | ok (2.5 mm) | ok (1.0 mm) | ok (2.5 mm) | ok (1.0 mm) |
 | jack da Audio Board | ok (10.3 mm) | ok (10.3 mm) | ok (10.3 mm) | ok (10.3 mm) |
 | codec | ok (10.3 mm) | ok (10.3 mm) | ok (10.3 mm) | ok (10.3 mm) |
-| barra de pinos | ok (10.0 mm) | ok (8.5 mm) | ok (10.0 mm) | ok (8.5 mm) |
-| pinos + solda no Teensy | ok (8.0 mm) | ok (7.5 mm) | ok (8.0 mm) | ok (7.5 mm) |
-| Teensy 4.0 | ok (9.4 mm) | ok (8.5 mm) | ok (9.4 mm) | ok (8.5 mm) |
+| barra de pinos | ok (8.4 mm) | ok (8.2 mm) | ok (8.4 mm) | ok (8.2 mm) |
+| pinos + solda no Teensy | ok (7.9 mm) | ok (7.5 mm) | ok (7.9 mm) | ok (7.5 mm) |
+| Teensy 4.0 | ok (7.7 mm) | ok (7.6 mm) | ok (7.7 mm) | ok (7.6 mm) |
 | chips do Teensy | ok (8.5 mm) | ok (8.0 mm) | ok (8.5 mm) | ok (8.0 mm) |
 | micro-USB do Teensy | ok (6.8 mm) | ok (6.3 mm) | ok (6.8 mm) | ok (6.3 mm) |
 | plugue micro-USB 90° | ok (4.3 mm) | ok (3.8 mm) | ok (4.3 mm) | ok (3.8 mm) |
-| placa de interface | ok (4.4 mm) | ok (3.1 mm) | ok (4.4 mm) | ok (3.1 mm) |
+| plaquinha de controles | justo (0.00 mm) | justo (0.00 mm) | justo (0.00 mm) | justo (0.00 mm) |
 | potenciômetro | justo (0.20 mm) | justo (0.20 mm) | justo (0.20 mm) | justo (0.20 mm) |
-| potenciômetro (pernas) | ok (8.3 mm) | ok (8.3 mm) | ok (8.3 mm) | ok (8.3 mm) |
+| potenciômetro (pernas) | ok (5.7 mm) | ok (5.7 mm) | ok (5.7 mm) | ok (5.7 mm) |
 | encoder | justo (0.20 mm) | justo (0.20 mm) | justo (0.20 mm) | justo (0.20 mm) |
-| encoder (pernas) | ok (8.3 mm) | ok (8.3 mm) | ok (8.3 mm) | ok (8.3 mm) |
-| LED 3 mm | ok (1.2 mm) | ok (1.2 mm) | ok (1.2 mm) | ok (1.2 mm) |
+| encoder (pernas) | ok (7.5 mm) | ok (7.5 mm) | ok (7.5 mm) | ok (7.5 mm) |
+| JST da plaquinha | ok (7.1 mm) | ok (7.1 mm) | ok (7.1 mm) | ok (7.1 mm) |
+| plugue do cabo | ok (5.7 mm) | ok (5.2 mm) | ok (5.7 mm) | ok (5.2 mm) |
+| LED 3 mm + espaçador | justo (0.25 mm) | ok (1.1 mm) | justo (0.25 mm) | ok (1.1 mm) |
+| porca M2 (placa principal) | ok (1.2 mm) | ok (1.2 mm) | ok (1.2 mm) | ok (1.2 mm) |
+| ponta do parafuso M2 | ok (2.8 mm) | ok (2.8 mm) | ok (2.8 mm) | ok (2.8 mm) |
 | USB de painel | ok (2.2 mm) | ok (2.2 mm) | ok (2.2 mm) | ok (2.2 mm) |
-| jack de painel | ok (2.2 mm) | ok (2.2 mm) | ok (2.2 mm) | ok (2.2 mm) |
+| jack de painel | ok (0.9 mm) | ok (0.6 mm) | ok (0.9 mm) | ok (0.6 mm) |
 | placa principal | justo (0.00 mm) | justo (0.00 mm) | justo (0.00 mm) | justo (0.00 mm) |
 | tela 1,9" (módulo) | — | — | justo (0.20 mm) | justo (0.20 mm) |
 | conector da tela | — | — | ok (4.2 mm) | ok (4.2 mm) |
@@ -81,8 +85,8 @@ Topo do Teensy z = 21.1, topo do micro-USB z = 23.7, plugue USB de 90° até z =
 
 Entre peças (menos de 1 mm, sem contar as que se encostam de propósito):
 
-- placa de interface × USB de painel — Chorus Madeira: ok (0.5 mm); Chorus Seixo: ok (0.5 mm); eTuttino Madeira: ok (0.5 mm); eTuttino Seixo: ok (0.5 mm)
-- placa de interface × jack de painel — Chorus Madeira: ok (0.8 mm); Chorus Seixo: ok (1.0 mm); eTuttino Madeira: ok (0.8 mm); eTuttino Seixo: ok (1.0 mm)
+- plaquinha de controles × USB de painel — Chorus Madeira: ok (0.5 mm); Chorus Seixo: ok (0.5 mm); eTuttino Madeira: ok (0.5 mm); eTuttino Seixo: ok (0.5 mm)
+- plaquinha de controles × jack de painel — Chorus Madeira: ok (0.5 mm); Chorus Seixo: ok (0.5 mm); eTuttino Madeira: ok (0.5 mm); eTuttino Seixo: ok (0.5 mm)
 - plugue micro-USB 90° × tela 1,9" (módulo) — Chorus Madeira: **colide** (42.4 mm³); Chorus Seixo: justo (0.15 mm)
 - chips do Teensy × conector da tela — Chorus Madeira: ok (0.8 mm)
 
@@ -96,19 +100,23 @@ Topo do Teensy z = 18.1, topo do micro-USB z = 20.7, plugue USB de 90° até z =
 | jack da Audio Board | ok (10.3 mm) | ok (10.3 mm) | ok (10.3 mm) | ok (10.3 mm) |
 | codec | ok (10.3 mm) | ok (10.3 mm) | ok (10.3 mm) | ok (10.3 mm) |
 | barra de pinos | ok (10.0 mm) | ok (8.5 mm) | ok (10.0 mm) | ok (8.5 mm) |
-| pinos + solda no Teensy | ok (10.6 mm) | ok (9.1 mm) | ok (10.6 mm) | ok (9.1 mm) |
-| Teensy 4.0 | ok (10.0 mm) | ok (8.5 mm) | ok (10.0 mm) | ok (8.5 mm) |
+| pinos + solda no Teensy | ok (8.9 mm) | ok (8.7 mm) | ok (8.9 mm) | ok (8.7 mm) |
+| Teensy 4.0 | ok (9.2 mm) | ok (8.5 mm) | ok (9.2 mm) | ok (8.5 mm) |
 | chips do Teensy | ok (11.5 mm) | ok (11.0 mm) | ok (11.5 mm) | ok (11.0 mm) |
 | micro-USB do Teensy | ok (9.8 mm) | ok (9.3 mm) | ok (9.8 mm) | ok (9.3 mm) |
 | plugue micro-USB 90° | ok (5.5 mm) | ok (5.5 mm) | ok (5.5 mm) | ok (5.5 mm) |
-| placa de interface | ok (4.4 mm) | ok (3.1 mm) | ok (4.4 mm) | ok (3.1 mm) |
+| plaquinha de controles | justo (0.00 mm) | justo (0.00 mm) | justo (0.00 mm) | justo (0.00 mm) |
 | potenciômetro | justo (0.20 mm) | justo (0.20 mm) | justo (0.20 mm) | justo (0.20 mm) |
-| potenciômetro (pernas) | ok (8.3 mm) | ok (8.3 mm) | ok (8.3 mm) | ok (8.3 mm) |
+| potenciômetro (pernas) | ok (5.7 mm) | ok (5.7 mm) | ok (5.7 mm) | ok (5.7 mm) |
 | encoder | justo (0.20 mm) | justo (0.20 mm) | justo (0.20 mm) | justo (0.20 mm) |
-| encoder (pernas) | ok (8.3 mm) | ok (8.3 mm) | ok (8.3 mm) | ok (8.3 mm) |
-| LED 3 mm | ok (1.2 mm) | ok (1.2 mm) | ok (1.2 mm) | ok (1.2 mm) |
+| encoder (pernas) | ok (7.5 mm) | ok (7.5 mm) | ok (7.5 mm) | ok (7.5 mm) |
+| JST da plaquinha | ok (7.1 mm) | ok (7.1 mm) | ok (7.1 mm) | ok (7.1 mm) |
+| plugue do cabo | ok (5.7 mm) | ok (5.2 mm) | ok (5.7 mm) | ok (5.2 mm) |
+| LED 3 mm + espaçador | justo (0.25 mm) | ok (1.1 mm) | justo (0.25 mm) | ok (1.1 mm) |
+| porca M2 (placa principal) | ok (1.2 mm) | ok (1.2 mm) | ok (1.2 mm) | ok (1.2 mm) |
+| ponta do parafuso M2 | ok (2.8 mm) | ok (2.8 mm) | ok (2.8 mm) | ok (2.8 mm) |
 | USB de painel | ok (2.2 mm) | ok (2.2 mm) | ok (2.2 mm) | ok (2.2 mm) |
-| jack de painel | ok (2.2 mm) | ok (2.2 mm) | ok (2.2 mm) | ok (2.2 mm) |
+| jack de painel | ok (0.9 mm) | ok (0.6 mm) | ok (0.9 mm) | ok (0.6 mm) |
 | placa principal | justo (0.00 mm) | justo (0.00 mm) | justo (0.00 mm) | justo (0.00 mm) |
 | tela 1,9" (módulo) | — | — | justo (0.20 mm) | justo (0.20 mm) |
 | conector da tela | — | — | ok (4.2 mm) | ok (4.2 mm) |
@@ -116,8 +124,8 @@ Topo do Teensy z = 18.1, topo do micro-USB z = 20.7, plugue USB de 90° até z =
 
 Entre peças (menos de 1 mm, sem contar as que se encostam de propósito):
 
-- placa de interface × USB de painel — Chorus Madeira: ok (0.5 mm); Chorus Seixo: ok (0.5 mm); eTuttino Madeira: ok (0.5 mm); eTuttino Seixo: ok (0.5 mm)
-- placa de interface × jack de painel — Chorus Madeira: ok (0.8 mm); Chorus Seixo: ok (1.0 mm); eTuttino Madeira: ok (0.8 mm); eTuttino Seixo: ok (1.0 mm)
+- plaquinha de controles × USB de painel — Chorus Madeira: ok (0.5 mm); Chorus Seixo: ok (0.5 mm); eTuttino Madeira: ok (0.5 mm); eTuttino Seixo: ok (0.5 mm)
+- plaquinha de controles × jack de painel — Chorus Madeira: ok (0.5 mm); Chorus Seixo: ok (0.5 mm); eTuttino Madeira: ok (0.5 mm); eTuttino Seixo: ok (0.5 mm)
 
 Potenciômetro, encoder, tela e alto-falante aparecem como "justo" (0,2–0,3 mm) de propósito: ficam encostados por baixo da tampa. Figuras: `renders/fit_iso.png`, `fit_top.png` (eTuttino, pilha montada, Seixo, tampa transparente), `fit_section_M.png` (Chorus com a pilha de 13 mm, corte na linha do Teensy) `fit_section_R.png` (pilha reduzida), `fit_top_chorus.png` (Chorus em planta) e `fit_section_x.png` (corte de trás para a frente pelo alto-falante).
 
@@ -139,8 +147,8 @@ Knob Ø9 a 0.8 mm da superfície, eixo 6 mm dentro dele. O LED de 3 mm fica num 
 |---|---|---|
 | Paredes | 2.5 mm | 4.0 mm (2.5 em volta do inserto) |
 | Tampa da interface | 2.5 mm | 3.0 mm |
-| Tampa em volta das teclas | 4.7 mm, apoiada na placa | igual |
-| Borda da abertura | arredondado 4 × 2.0 + 2.7 mm reto | igual |
+| Tampa em volta das teclas | 4.6 mm, apoiada na placa | igual |
+| Borda da abertura | arredondado 4 × 2.0 + 2.6 mm reto | igual |
 | Teia da grade | 2.1 mm | igual |
 | LED | furo Ø3.5 | furo Ø3.1 + light pipe de Ø3.0 |
 
@@ -148,10 +156,9 @@ A Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão in
 
 ## 5. Perguntas para o design
 
-Nenhuma sobre a forma: a v7 está congelada. O que a PCB v0.6 (`etutti/hardware/`) pede da caixa:
+Feito nesta rodada: furos M2, plate de 1,6 mm, plaquinha de controles e firmware dos knobs. Para a v9:
 
-1. **Pilares do fundo (já no modelo).** Havia um erro: entre as fileiras 2 e 3 os pilares ficavam a 5,3 mm de um sensor, e não no centro do triângulo de teclas. Agora há um em cada triângulo de três teclas vizinhas (61, a 10,7 mm de cada sensor) mais 3 sob a interface. A placa cede no máximo 0,044 mm sob 3 N (eram 0,37 mm com um a cada três colunas). É só o fundo, a forma não muda. Ok?
-2. **Fixação da placa.** A placa não tem parafusos: a tampa aperta o plate, o plate os switches, e eles a placa contra os pilares. Sob a interface (os ~95 mm da esquerda) nada aperta a placa por cima, só a pilha. Proposta: dois parafusos M2 de baixo, pelo fundo, nos pilares (30; 60) e (12; 70), com furos na placa. Ou uma espuma fina sob a tampa. Qual?
-3. **Plaquinha de controles.** A placa principal já tem o J3 (JST PH, 8 vias: 3,3 V, GND, pot, encoder A/B/botão, LED vermelho/verde). Fazer a plaquinha (RK09K, EC11 com eixo L = 15, LED de 3 mm, JST PH) como a próxima PCB? O firmware ainda não lê o pot nem o encoder (pinos 22, 17, 9 e 6).
-4. **Plate.** Em FR-4 o fabricante faz 1,6 mm, e o case conta com 1,5 mm: os botões ficariam 0,1 mm mais altos. Aceitar, ou plate de alumínio de 1,5 mm a partir do DXF?
-5. **Manuais.** Os manuais de montagem (`etutti/manuais/`) e as figuras 3D ainda descrevem a placa v0.5 e o case antigo. Refazer como etapa própria, depois do protótipo?
+1. **Encoder.** O firmware conta 2 transições por clique do EC11E (o de 15 pulsos e 30 cliques). Se o encoder comprado for o de 15 pulsos e 15 cliques, são 4: confirmar com a peça (`ENC_STEPS_PER_DETENT`).
+2. **A página.** O Teensy agora manda CC 7 (volume) e CC 25 (instrumento) quando os knobs mudam, mas a página do eTutti ainda não acompanha: só registra no monitor MIDI. Fazer a página seguir os knobs?
+3. **Botão do encoder.** Clique depois de girar: confirma, e o instrumento passa a ser o da próxima vez que liga. Clique sem ter girado: volta ao som padrão (acordeom clássico). É isso?
+4. **Protótipo.** Os arquivos de fabricação estão prontos: placa principal (`fab/etuttino_gerbers.zip` + BOM/CPL), plate de 1,6 mm (`fab/etuttino_plate_gerbers.zip`), plaquinha de controles (`fab/etuttino_controls_gerbers.zip`), case e capas (`case/out/`). Encomendar?

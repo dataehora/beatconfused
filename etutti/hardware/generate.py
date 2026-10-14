@@ -256,11 +256,16 @@ def in_plate(x, y):
 
 
 def mounting_holes():
-    """None on the board: the case clamps it -- the lid presses the plate's
-    edge, the plate the switches, the switches' bottom housings the board,
-    and the board rests on the bottom plate's pillars (SUPPORTS). The board
-    is notched round the case's screw bosses (OUTLINE)."""
-    return []
+    """Two M2 holes under the interface (case SPEC v8): screws from below
+    through the bottom plate's pillars, a nut on top of the board. Elsewhere
+    the case clamps the board -- the lid presses the plate's edge, the plate
+    the switches, the switches' bottom housings the board, onto the
+    pillars (SUPPORTS). The board is notched round the case's screw bosses."""
+    return [(h["x"], h["y"]) for h in ENV["mounting_holes"]]
+
+
+MOUNT_KEEPOUT = {(h["x"], h["y"]): h["keepout"] for h in ENV["mounting_holes"]}   # no copper: nut / pillar
+PLATE_THICKNESS = ENV["plate_thickness"]
 
 
 def stack_pins():

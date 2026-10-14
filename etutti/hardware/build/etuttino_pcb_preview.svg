@@ -262,9 +262,9 @@
 <circle cx="971.0" cy="274.8" r="10.0" fill="none" stroke="#7aa0c8" stroke-dasharray="4 3"/>
 <circle cx="1045.0" cy="274.8" r="10.0" fill="none" stroke="#7aa0c8" stroke-dasharray="4 3"/>
 <circle cx="1119.0" cy="274.8" r="10.0" fill="none" stroke="#7aa0c8" stroke-dasharray="4 3"/>
-<circle cx="120.0" cy="240.0" r="10.0" fill="none" stroke="#7aa0c8" stroke-dasharray="4 3"/>
+<circle cx="120.0" cy="240.0" r="14.0" fill="none" stroke="#7aa0c8" stroke-dasharray="4 3"/>
 <circle cx="240.0" cy="300.0" r="10.0" fill="none" stroke="#7aa0c8" stroke-dasharray="4 3"/>
-<circle cx="48.0" cy="280.0" r="10.0" fill="none" stroke="#7aa0c8" stroke-dasharray="4 3"/>
+<circle cx="48.0" cy="280.0" r="14.0" fill="none" stroke="#7aa0c8" stroke-dasharray="4 3"/>
 </g>
 <text x="14" y="428" font-size="18" font-weight="700" fill="#2f2218">eTuttino PCB (Hall effect, case v7) — top view</text>
 <text x="14" y="453" font-size="13" font-weight="400" fill="#2f2218">44 keys · C-griff G3–E6 · hex grid, pitch 18.5 mm, rows 16.02 mm apart · board 1.2 mm, shaped to the case</text>

@@ -30,6 +30,9 @@ bosses. Heights are above the board's top face (z = case.Z_PCB_TOP):
                         under it)
   stack, sub_board,     the parts placed in fit_check.py, whose footprints
   panel                 the board has to respect
+  mounting_holes        (v8) the two M2 holes over the screw pillars
+  controls              (v8) the controls board: rectangle, parts, its two
+                        M2 holes (the lid's posts), its top's z per version
 """
 import json
 import math
@@ -94,11 +97,19 @@ def envelope():
         "z_pcb_top": zt, "pcb_thickness": C.PCB_T,
         "outline": wire_points(outline),
         "boss_keepouts": [{"x": x, "y": y, "r": C.BOSS_D / 2 + 0.5} for x, y in C.screw_points()],
-        "supports": [{"x": round(x, 3), "y": round(y, 3), "r": C.PILLAR_D / 2 + 0.5} for x, y in C.pillar_points()],
+        "supports": [{"x": round(x, 3), "y": round(y, 3),
+                      "r": (C.SCREW_PILLAR_D if (x, y) in C.SCREW_PILLARS else C.PILLAR_D) / 2 + 0.5}
+                     for x, y in C.pillar_points()],
         "max_below": C.UNDER_PCB,
         "plate_outline": wire_points(plate_face.outerWire()),
         "plate_cutout": 14.0,
         "plate_clear": C.Z_PLATE_TOP - C.PLATE_T - zt,
+        "plate_thickness": C.PLATE_T,
+        "mounting_holes": [{"x": x, "y": y, "d": 2.2, "keepout": C.SCREW_PILLAR_D / 2 + 0.5,
+                            "note": "M2 from below through the bottom plate's pillar, nut on top of the board"}
+                           for x, y in C.SCREW_PILLARS],
+        "controls": dict({k: (list(v) if isinstance(v, tuple) else v) for k, v in C.CONTROLS.items()},
+                         top_z={name: round(C.controls_top(v), 3) for name, v in C.VERSIONS.items()}),
         "levels": levels,
         "pitch": C.P, "row_pitch": round(C.ROW_PITCH, 4),
         "keys": [{"n": n, "note": C.note_name(n), "row": row, "x": round(x, 4), "y": round(y, 4), "kind": kind}

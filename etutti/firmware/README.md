@@ -49,6 +49,28 @@ to multiplexer × 16 + channel. It comes from `../hardware/generate.py`, and
 **Power LED** (pins 4 red, 5 green): orange while the keys are first read
 at power-up (at least 0.6 s), green while playing, red blinking on an
 error: the Audio Board's codec didn't answer, or a key's sensor didn't.
+It blinks green slowly while an instrument picked with the encoder waits
+to be confirmed.
+
+**Controls board** (on the main board's J3; see `../hardware/README.md`):
+
+- **Volume pot** (pin 22 / A8). It sets the headphone volume, like CC 7,
+  and sends CC 7 back. It only acts when it is turned, so a CC 7 from the
+  page holds until the pot moves. At power-up the firmware checks whether
+  a pot is there at all: with nothing on J3, the pin just follows the
+  Teensy's pull-up and pull-down. In that case the pot input is ignored
+  and the volume doesn't wander.
+- **Encoder** (pins 17 / 9). Turning steps through accordion → piano →
+  bass → guitar → synth and plays the new instrument at once. It also
+  sends CC 25 back. The page doesn't follow these CCs yet; it only logs
+  them in its MIDI monitor.
+- **Encoder button** (pin 6):
+  - Pressed after turning, it confirms the new instrument. That
+    instrument is then the one the eTuttino starts with (EEPROM).
+  - Pressed without turning first, it goes back to the default sound:
+    classic accordion, register MM, dry.
+- `ENC_STEPS_PER_DETENT` is 2 for the EC11E with 15 pulses and 30
+  detents. Use 4 for the model with 15 pulses and 15 detents.
 
 Every key plays the built-in synth and is also sent as USB MIDI (channel 1,
 with its velocity), so the page lights the key up and any DAW can record it.
@@ -117,7 +139,7 @@ The synth listens on every channel.
 | Message | Effect |
 | --- | --- |
 | Note On / Off | play / release; velocity sets loudness |
-| CC 7 | volume |
+| CC 7 | volume (also sent back when the controls board's pot moves) |
 | CC 9 | velocity curve of the physical keys = value / 32: 0 fixed (100), 1 light touch, 2 normal, 3 firm touch |
 | CC 14 | 64–127: restart the keys' calibration (forget the learnt bottoms) |
 | CC 15 | key test: 64–127 on, streams key positions as Poly Aftertouch on channel 16 |
