@@ -18,7 +18,7 @@ The firmware is in [`../firmware`](../firmware), the web page is
 > case's inner outline. The assembly and user manuals in
 > [`../manuais`](../manuais/) describe this board, the case and the
 > controls board; their pictures come from
-> [`case/manual_render.py`](case/manual_render.py). Nothing has been built
+> [`manual3d/`](manual3d/) (Blender). Nothing has been built
 > yet: only the firmware has run on a real Teensy + Audio Board.
 
 ![PCB preview](build/etuttino_pcb_preview.svg)
@@ -65,7 +65,7 @@ also works.
 | [`build_pcb.py`](build_pcb.py) | builds and **routes** the KiCad board inside that outline, runs DRC, checks it against the firmware, exports everything in `fab/` |
 | [`controls_pcb.py`](controls_pcb.py) | the controls board: places, routes (the same router), DRCs and exports it |
 | [`mechanics.py`](mechanics.py) | how far the board bends under a key press on the case's pillars (KiCad's Python, numpy) |
-| [`case/manual_render.py`](case/manual_render.py) | the manuals' 3D pictures: this board and the controls board (exported with `kicad-cli`), in the case, step by step (CadQuery venv) |
+| [`manual3d/`](manual3d/) | the assembly manual's pictures: photo-like renders and numbered line drawings of every step, made in Blender from the case STLs, both KiCad boards (`kicad-cli` GLB) and a library of datasheet-sized parts (`parts.py`). `build.py` runs it all; the visual standard and the balloon numbers are in [`manual3d/STYLE.md`](manual3d/STYLE.md) |
 | [`etuttino.pretty/`](etuttino.pretty) | footprint library: `Gateron_Magnetic_MX_1u` (two 1.75 mm peg holes, no centre post, no pins), origin at the switch centre |
 | [`kicad/etuttino.kicad_pcb`](kicad/etuttino.kicad_pcb), [`kicad/etuttino_plate.kicad_pcb`](kicad/etuttino_plate.kicad_pcb) | the routed board and the plate |
 | `build/etuttino_pcb_preview.svg`, `build/etuttino_keys.csv`, `build/etuttino_plate.dxf` | preview; each key's switch, sensor, multiplexer channel, Teensy pin, note and X/Y; the plate as DXF (for aluminium) |

@@ -152,16 +152,25 @@ that doesn't belong there.
     (`ETUTTINO_ROUTE_FIRST`), up to 20 attempts (~4-15 min each). A net
     that fails even when first is a physical blockage: export
     `kicad/etuttino_failed.kicad_pcb` to SVG and look.
-  - **Manual pictures**: `etutti/hardware/case/manual_render.py` (CadQuery
-    venv + PyVista). It exports the main and controls boards with
-    `kicad-cli pcb export stl` (`--board-only` and `--no-board-body`
-    separately, so the board and its parts get their own colours; the GLB
-    export of the main board hangs VTK's reader), places them in the case
-    STLs, and takes the stack / controls-board bodies / panel parts from
-    `fit_check.py`. One figure per assembly step + a capped section
-    (`clip_closed_surface`) → `etutti/manuais/img/*.jpg` (+ `-sm`). The
-    manual's `lightbox.js` opens the full image on click. (`assembly3d.py`,
-    the v0.5 VRML version, is gone.)
+  - **Manual pictures** (PR #99): `etutti/hardware/manual3d/`, Blender 5.2
+    (Steam install: `C:/Program Files (x86)/Steam/steamapps/common/Blender/
+    blender.exe`; Cycles on the RTX 3060 via OptiX). `build.py` (CadQuery
+    venv) runs: `kicad-cli pcb export glb` of both boards (pads, silkscreen,
+    mask only: tracks/zones exported above the mask showed as bare copper;
+    controls board with `--component-filter J1`) → `parts.py` (datasheet-
+    sized Teensy, Audio Board, 2×14 extra-long headers + solder, Gateron,
+    RK09K, EC11E, LED, knobs, PH plugs, panel parts, screws/nuts →
+    `build/lib/<part>.<material>.stl` + `build/assembly.json`) →
+    `render_blender.py` (SHOTS: `r_*` photo-like with transparent film +
+    shadow catcher, `l_*` Freestyle line drawings with the step's new
+    groups amber/heavy) → `annotate.py` (balloon numbers + arrows from the
+    projected 3D anchors; numbers only so the images serve en/pt/es; the
+    manual's "Parts list" table names them; numbering in `STYLE.md`).
+    `build/` is gitignored. ~7 min for all shots; `--fast` for previews.
+    Gotchas: STL import gives object scale 0.001 with mesh data in mm;
+    KiCad's GLB mask material is semi-transparent (forced opaque and
+    re-coloured); Blender auto-converts glTF to Z-up (x, -y_spec, z).
+    `case/manual_render.py` (PyVista, #95) is gone.
   - **Old case (PR #78, removed in #89)**: a FreeCAD two-piece case. Purchase
     options given to the user then and still in the manual: JLC3DP, PCBWay,
     Craftcloud. The user is in London; manuals stay country-neutral (no
@@ -263,7 +272,7 @@ that doesn't belong there.
         part sits on one.
       - Removed: the #78 FreeCAD case (`case.py`, `case_check.py`, its
         `fab/` STLs). `build_pcb.py --renders` only points to
-        `case/manual_render.py` now.
+        `manual3d/build.py` now.
     - Electronics in the interface: pot, encoder and LED go on a small
       board under the lid. Use a 90° micro-USB plug.
   - **Stiffness**: `etutti/hardware/mechanics.py` (KiCad python + numpy,

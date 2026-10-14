@@ -27,7 +27,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261023" />
+  <link rel="stylesheet" href="styles.css?v=20261024" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
 </head>
@@ -50,9 +50,9 @@
         </p>
 
         <figure class="wide">
-          <a class="zoomable" href="img/finished.jpg"><img src="img/finished-sm.jpg" alt="The finished eTuttino in the Seixo case, in perspective: 44 round buttons, and the interface on the left with two knobs, the LED and the grille" loading="lazy" /></a>
-          <figcaption>The eTuttino in the Seixo case, rendered from the design files. Click any picture to see it in high resolution.</figcaption>
-        </figure>
+            <a class="zoomable" href="img/r_finished.jpg"><img src="img/r_finished-sm.jpg" alt="The finished eTuttino in the Seixo case" loading="lazy" /></a>
+            <figcaption>The eTuttino in the Seixo case, rendered from the design files. Click any picture to see it in high resolution.</figcaption>
+          </figure>
 
         <div class="callout"><p>The design is complete and ready to make: boards, case, caps and firmware. The firmware has been flashed and tested on a Teensy 4.0 with its Audio Board; the full instrument has not been built yet, so treat the first one as a prototype and check each step as you go.</p></div>
 
@@ -98,9 +98,12 @@
             <li>Inside: one main board under everything, the Teensy and Audio Board stacked in the back left corner, the controls board hanging under the lid.</li>
           </ul>
           <figure class="wide">
-            <a class="zoomable" href="img/parts.jpg"><img src="img/parts-sm.jpg" alt="Exploded view: the bottom shell, the main board with the Teensy stack and the connectors, the plate and switches, the controls board, the button caps and the lid" loading="lazy" /></a>
-            <figcaption>Every part, from the bottom up: bottom shell, main board with the Teensy + Audio Board and the panel connectors, plate and switches, controls board, button caps, lid.</figcaption>
+            <a class="zoomable" href="img/r_exploded.jpg"><img src="img/r_exploded-sm.jpg" alt="Exploded view of the whole eTuttino with numbered parts" loading="lazy" /></a>
+            <figcaption>Every part, from the bottom up. The numbers are the parts list below.</figcaption>
           </figure>
+          <h3>Parts list</h3>
+          <p>The numbers in the drawings below.</p>
+          <div class="table-wrap parts-list"><table><thead><tr><th>#</th><th>Part</th></tr></thead><tbody><tr><td>1</td><td>bottom (case)</td></tr><tr><td>2</td><td>lid (case)</td></tr><tr><td>3</td><td>main board</td></tr><tr><td>4</td><td>switch plate</td></tr><tr><td>5</td><td>Gateron KS-20 switch (×44)</td></tr><tr><td>6</td><td>button cap (×44)</td></tr><tr><td>7</td><td>Teensy 4.0</td></tr><tr><td>8</td><td>Audio Board Rev D</td></tr><tr><td>9</td><td>extra-long 1×14 header (×2)</td></tr><tr><td>10</td><td>controls board</td></tr><tr><td>11</td><td>volume pot RK09K</td></tr><tr><td>12</td><td>encoder EC11E</td></tr><tr><td>13</td><td>LED + spacer</td></tr><tr><td>14</td><td>knob (×2)</td></tr><tr><td>15</td><td>8-way JST PH cable</td></tr><tr><td>16</td><td>J3 header</td></tr><tr><td>17</td><td>connector insert</td></tr><tr><td>18</td><td>panel micro-USB socket</td></tr><tr><td>19</td><td>panel 3.5 mm jack</td></tr><tr><td>20</td><td>90° micro-USB cable</td></tr><tr><td>21</td><td>M2 × 10 screw (×2)</td></tr><tr><td>22</td><td>M2 nut (×2)</td></tr><tr><td>23</td><td>M2 × 5 self-tapping screw (×2)</td></tr><tr><td>24</td><td>M2.5 × 8 self-tapping screw (×9)</td></tr></tbody></table></div>
 
           <h3>Two ways to get the main board</h3>
           <ul>
@@ -155,6 +158,10 @@
             <li><strong>The connector insert</strong>, black: <a href="../hardware/case/out/insert.stl">insert.stl</a>.</li>
             <li><strong>The button caps</strong>: 18 <a href="../hardware/case/out/keycap_natural.stl">natural</a> (white), 18 <a href="../hardware/case/out/keycap_sharp.stl">sharp</a> (black) and 8 <a href="../hardware/case/out/keycap_cf.stl">C/F</a> (white, with the raised check), after the test below.</li>
           </ul>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_finished_madeira.jpg"><img src="img/r_finished_madeira-sm.jpg" alt="The eTuttino in the Madeira case (white oak), rendered" loading="lazy" /></a>
+            <figcaption>The same instrument in the Madeira case: white oak, oil finish, mother-of-pearl and ebony buttons.</figcaption>
+          </figure>
           <p>
             Any online 3D-printing service takes the STL files in millimetres: <a href="https://jlc3dp.com/" target="_blank" rel="noopener">JLC3DP</a>
             (can ship with the boards), <a href="https://www.pcbway.com/rapid-prototyping/3d-printing/" target="_blank" rel="noopener">PCBWay</a>
@@ -321,8 +328,12 @@
             like four neighbouring buttons.
           </p>
           <figure>
-            <a class="zoomable" href="img/keycap_test.jpg"><img src="img/keycap_test-sm.jpg" alt="The test print: four caps joined by thin sprues, in the layout of four neighbouring buttons" loading="lazy" /></a>
+            <a class="zoomable" href="img/r_keycap_test.jpg"><img src="img/r_keycap_test-sm.jpg" alt="The four-cap test print" loading="lazy" /></a>
             <figcaption>The four-cap test print.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_keycaps.jpg"><img src="img/l_keycaps-sm.jpg" alt="Line drawing: four caps going straight down onto four neighbouring switches" loading="lazy" /></a>
+            <figcaption>Test fit: caps (6) straight down onto four neighbouring switches (5).</figcaption>
           </figure>
           <ol class="steps">
             <li>Snap four switches into the plate in neighbouring positions and cut the caps off the sprue.</li>
@@ -373,6 +384,10 @@
           <ol class="steps">
             <li>Solder <strong>J3</strong>, the JST PH 8-pin vertical header, on the <strong>front</strong>, in front of the Teensy holes, its opening facing up. It's the only through-hole part on the main board.</li>
           </ol>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_j3.jpg"><img src="img/l_j3-sm.jpg" alt="Line drawing: the J3 header going into the main board from the front" loading="lazy" /></a>
+            <figcaption>J3 (16) goes in from the front of the main board (3) and is soldered on the back.</figcaption>
+          </figure>
 
           <h3>3. The Teensy and the Audio Board: a low stack</h3>
           <p>
@@ -382,8 +397,12 @@
             the main board.
           </p>
           <figure class="wide">
-            <a class="zoomable" href="img/stack.jpg"><img src="img/stack-sm.jpg" alt="The Teensy on the Audio Board, standing about 3 mm above the main board on its pins, with J3 in front" loading="lazy" /></a>
-            <figcaption>The stack on the main board, drawn at 13 mm: the Audio Board about 3 mm above the board, the Teensy on top, J3 in front.</figcaption>
+            <a class="zoomable" href="img/l_stack.jpg"><img src="img/l_stack-sm.jpg" alt="Line drawing: Teensy, headers and Audio Board exploded above the main board" loading="lazy" /></a>
+            <figcaption>From the top: Teensy (7), the two extra-long headers (9), Audio Board (8), and the main board (3) they go into.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_stack.jpg"><img src="img/r_stack-sm.jpg" alt="The finished stack on the main board" loading="lazy" /></a>
+            <figcaption>The finished stack: Teensy on the Audio Board, about 3 mm above the main board, J3 in front.</figcaption>
           </figure>
           <ol class="steps">
             <li>Push the two extra-long headers into the <strong>Audio Board</strong> from the top: the plastic rests on the Audio Board and the long ends point down.</li>
@@ -420,8 +439,8 @@
             <li>Lower the plate with its switches onto the main board: each switch's two plastic pegs drop into the board's holes. The board must sit <strong>right against the bottom of the switches</strong>: the distance from magnet to sensor is part of the measurement. The case's lid will hold the plate down by its edge.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/switches.jpg"><img src="img/switches-sm.jpg" alt="The main board with the plate and the 44 switches on it, and the Teensy stack at the left" loading="lazy" /></a>
-            <figcaption>Plate and switches on the main board.</figcaption>
+            <a class="zoomable" href="img/l_switches.jpg"><img src="img/l_switches-sm.jpg" alt="Line drawing: switches above the plate above the main board" loading="lazy" /></a>
+            <figcaption>Switches (5) into the plate (4), then the plate onto the main board (3).</figcaption>
           </figure>
 
           <h3>6. The controls board</h3>
@@ -439,8 +458,12 @@
             <li>Plug the 8-way cable into J1; its other end goes to <strong>J3</strong> on the main board, pin for pin.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/controls.jpg"><img src="img/controls-sm.jpg" alt="The controls board above the Teensy stack: pot, encoder and LED on top, the JST on its back with the cable down to J3" loading="lazy" /></a>
-            <figcaption>Where the controls board ends up (shown without the lid): over the edge of the Audio Board, the cable dropping to J3.</figcaption>
+            <a class="zoomable" href="img/l_controls.jpg"><img src="img/l_controls-sm.jpg" alt="Line drawing: pot, encoder and LED going onto the controls board, the cable below" loading="lazy" /></a>
+            <figcaption>Pot (11), encoder (12) and LED on its spacer (13) onto the controls board (10); the cable (15) plugs into J1 underneath; its other end goes to J3.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_controls.jpg"><img src="img/r_controls-sm.jpg" alt="The controls board in place over the Teensy stack" loading="lazy" /></a>
+            <figcaption>The controls board in place (shown without the lid).</figcaption>
           </figure>
 
           <h3>7. The panel connectors</h3>
@@ -455,8 +478,8 @@
             <li>The insert goes into its opening in the case's left face in the next step; the parts behind it don't need to touch the boards.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/panel.jpg"><img src="img/panel-sm.jpg" alt="The left end: the black insert with the micro-USB and jack, the short USB cable to the Teensy and the jack wires to the Audio Board" loading="lazy" /></a>
-            <figcaption>The left end, without the lid: the insert, the short USB cable to the Teensy and the jack's wires.</figcaption>
+            <a class="zoomable" href="img/l_panel.jpg"><img src="img/l_panel-sm.jpg" alt="Line drawing: the connector insert, the panel sockets and the USB cable at the left end" loading="lazy" /></a>
+            <figcaption>The insert (17) with the panel micro-USB (18) and the jack (19); the 90° cable (20) goes to the Teensy.</figcaption>
           </figure>
 
           <h3>8. Close the case</h3>
@@ -468,12 +491,24 @@
             <li>From below, drive the nine <strong>M2.5 × 8 mm</strong> screws through the bottom into the lid's bosses. Don't overtighten. Stick on the feet, push the two knobs on and fit the caps: white on the naturals, black on the sharps, the checked ones on the Cs and Fs.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/closing.jpg"><img src="img/closing-sm.jpg" alt="The main board in the bottom shell, with the two M2 nuts on top of the board under the interface" loading="lazy" /></a>
-            <figcaption>The board in the bottom, held under the interface by the two M2 screws (nuts on top).</figcaption>
+            <a class="zoomable" href="img/l_bottom.jpg"><img src="img/l_bottom-sm.jpg" alt="Line drawing: the main board lowered into the bottom, two M2 screws from below and nuts on top" loading="lazy" /></a>
+            <figcaption>The main board (3) into the bottom (1); two M2 × 10 screws (21) from below, nuts (22) on top.</figcaption>
           </figure>
           <figure class="wide">
-            <a class="zoomable" href="img/section.jpg"><img src="img/section-sm.jpg" alt="The closed Seixo cut front to back: the Teensy stack at the back, the controls board under the lid with a knob above, the cable to J3 and an M2 screw through the board" loading="lazy" /></a>
-            <figcaption>The closed case, cut front to back at x = 30 mm (back on the left): the Teensy stack, the controls board under the lid with the selector knob above, the cable down to J3, and one M2 screw through the bottom and the board.</figcaption>
+            <a class="zoomable" href="img/l_lid_controls.jpg"><img src="img/l_lid_controls-sm.jpg" alt="Line drawing seen from below: the controls board screwed to the lid's posts" loading="lazy" /></a>
+            <figcaption>Seen from below: the controls board (10) onto the lid's (2) posts with the two M2 × 5 screws (23).</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_close.jpg"><img src="img/l_close-sm.jpg" alt="Line drawing: the lid lowered onto the bottom, nine screws from below" loading="lazy" /></a>
+            <figcaption>The lid (2) onto the bottom (1); nine M2.5 × 8 screws (24) from below.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_caps.jpg"><img src="img/l_caps-sm.jpg" alt="Line drawing: caps and knobs going on" loading="lazy" /></a>
+            <figcaption>Last, the caps (6) and the two knobs (14).</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_section.jpg"><img src="img/r_section-sm.jpg" alt="The closed case cut front to back" loading="lazy" /></a>
+            <figcaption>The closed case, cut front to back at x = 30 mm (back on the left): the Teensy stack, the controls board under the lid with a knob above, the cable to J3 and an M2 screw through the board.</figcaption>
           </figure>
 
           <h3>9. First use</h3>
@@ -613,9 +648,9 @@
         </p>
 
         <figure class="wide">
-          <a class="zoomable" href="img/finished.jpg"><img src="img/finished-sm.jpg" alt="O eTuttino pronto no case Seixo, em perspectiva: 44 botões redondos e, à esquerda, a interface com dois knobs, o LED e a grade" loading="lazy" /></a>
-          <figcaption>O eTuttino no case Seixo, renderizado a partir dos arquivos do projeto. Clique numa figura para vê-la em alta resolução.</figcaption>
-        </figure>
+            <a class="zoomable" href="img/r_finished.jpg"><img src="img/r_finished-sm.jpg" alt="O eTuttino pronto no case Seixo" loading="lazy" /></a>
+            <figcaption>O eTuttino no case Seixo, renderizado a partir dos arquivos do projeto. Clique numa figura para vê-la em alta resolução.</figcaption>
+          </figure>
 
         <div class="callout"><p>O projeto está completo e pronto para fabricar: placas, case, capas e firmware. O firmware foi gravado e testado num Teensy 4.0 com a Audio Board; o instrumento inteiro ainda não foi montado, então trate o primeiro como protótipo e confira cada passo.</p></div>
 
@@ -661,9 +696,12 @@
             <li>Dentro: uma placa principal sob tudo, o Teensy e a Audio Board empilhados no canto de trás à esquerda, a plaquinha de controles presa sob a tampa.</li>
           </ul>
           <figure class="wide">
-            <a class="zoomable" href="img/parts.jpg"><img src="img/parts-sm.jpg" alt="Vista explodida: o fundo, a placa principal com a pilha do Teensy e os conectores, o plate e os switches, a plaquinha de controles, as capas e a tampa" loading="lazy" /></a>
-            <figcaption>Todas as peças, de baixo para cima: fundo, placa principal com Teensy + Audio Board e os conectores de painel, plate e switches, plaquinha de controles, capas, tampa.</figcaption>
+            <a class="zoomable" href="img/r_exploded.jpg"><img src="img/r_exploded-sm.jpg" alt="Vista explodida do eTuttino inteiro com as peças numeradas" loading="lazy" /></a>
+            <figcaption>Todas as peças, de baixo para cima. Os números são os da lista de peças abaixo.</figcaption>
           </figure>
+          <h3>Lista de peças</h3>
+          <p>Os números dos desenhos abaixo.</p>
+          <div class="table-wrap parts-list"><table><thead><tr><th>#</th><th>Peça</th></tr></thead><tbody><tr><td>1</td><td>fundo (case)</td></tr><tr><td>2</td><td>tampa (case)</td></tr><tr><td>3</td><td>placa principal</td></tr><tr><td>4</td><td>plate dos switches</td></tr><tr><td>5</td><td>switch Gateron KS-20 (×44)</td></tr><tr><td>6</td><td>capa do botão (×44)</td></tr><tr><td>7</td><td>Teensy 4.0</td></tr><tr><td>8</td><td>Audio Board Rev D</td></tr><tr><td>9</td><td>barra de pinos 1×14 extralonga (×2)</td></tr><tr><td>10</td><td>plaquinha de controles</td></tr><tr><td>11</td><td>potenciômetro de volume RK09K</td></tr><tr><td>12</td><td>encoder EC11E</td></tr><tr><td>13</td><td>LED + espaçador</td></tr><tr><td>14</td><td>knob (×2)</td></tr><tr><td>15</td><td>cabo JST PH de 8 vias</td></tr><tr><td>16</td><td>conector J3</td></tr><tr><td>17</td><td>inserto dos conectores</td></tr><tr><td>18</td><td>micro-USB de painel</td></tr><tr><td>19</td><td>jack de 3,5 mm de painel</td></tr><tr><td>20</td><td>cabo micro-USB de 90°</td></tr><tr><td>21</td><td>parafuso M2 × 10 (×2)</td></tr><tr><td>22</td><td>porca M2 (×2)</td></tr><tr><td>23</td><td>parafuso autoatarraxante M2 × 5 (×2)</td></tr><tr><td>24</td><td>parafuso autoatarraxante M2,5 × 8 (×9)</td></tr></tbody></table></div>
 
           <h3>Duas maneiras de ter a placa principal</h3>
           <ul>
@@ -718,6 +756,10 @@
             <li><strong>O inserto dos conectores</strong>, preto: <a href="../hardware/case/out/insert.stl">insert.stl</a>.</li>
             <li><strong>As capas</strong>: 18 <a href="../hardware/case/out/keycap_natural.stl">naturais</a> (brancas), 18 <a href="../hardware/case/out/keycap_sharp.stl">sustenidos</a> (pretas) e 8 de <a href="../hardware/case/out/keycap_cf.stl">Dó/Fá</a> (brancas, com o xadrez em relevo), depois do teste abaixo.</li>
           </ul>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_finished_madeira.jpg"><img src="img/r_finished_madeira-sm.jpg" alt="O eTuttino no case Madeira (carvalho branco), renderizado" loading="lazy" /></a>
+            <figcaption>O mesmo instrumento no case Madeira: carvalho branco com acabamento a óleo, botões madrepérola e ébano.</figcaption>
+          </figure>
           <p>
             Qualquer serviço de impressão 3D on-line aceita os STL em milímetros: <a href="https://jlc3dp.com/" target="_blank" rel="noopener">JLC3DP</a>
             (pode vir junto com as placas), <a href="https://www.pcbway.com/rapid-prototyping/3d-printing/" target="_blank" rel="noopener">PCBWay</a>
@@ -884,8 +926,12 @@
             injeção, dispostas como quatro botões vizinhos.
           </p>
           <figure>
-            <a class="zoomable" href="img/keycap_test.jpg"><img src="img/keycap_test-sm.jpg" alt="A impressão de teste: quatro capas unidas por canais finos, na disposição de quatro botões vizinhos" loading="lazy" /></a>
+            <a class="zoomable" href="img/r_keycap_test.jpg"><img src="img/r_keycap_test-sm.jpg" alt="A impressão de teste com quatro capas" loading="lazy" /></a>
             <figcaption>A impressão de teste com quatro capas.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_keycaps.jpg"><img src="img/l_keycaps-sm.jpg" alt="Desenho: quatro capas descendo retas sobre quatro switches vizinhos" loading="lazy" /></a>
+            <figcaption>Teste de encaixe: as capas (6) descem retas sobre quatro switches vizinhos (5).</figcaption>
           </figure>
           <ol class="steps">
             <li>Encaixe quatro switches no plate em posições vizinhas e corte as capas do canal.</li>
@@ -935,6 +981,10 @@
           <ol class="steps">
             <li>Solde o <strong>J3</strong>, o conector JST PH vertical de 8 vias, na <strong>frente</strong>, diante dos furos do Teensy, com a abertura para cima. É a única peça PTH da placa principal.</li>
           </ol>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_j3.jpg"><img src="img/l_j3-sm.jpg" alt="Desenho: o conector J3 entrando na placa principal pela frente" loading="lazy" /></a>
+            <figcaption>O J3 (16) entra pela frente da placa principal (3) e é soldado no verso.</figcaption>
+          </figure>
 
           <h3>3. O Teensy e a Audio Board: uma pilha baixa</h3>
           <p>
@@ -944,8 +994,12 @@
             principal.
           </p>
           <figure class="wide">
-            <a class="zoomable" href="img/stack.jpg"><img src="img/stack-sm.jpg" alt="O Teensy sobre a Audio Board, a cerca de 3 mm da placa principal nos seus pinos, com o J3 na frente" loading="lazy" /></a>
-            <figcaption>A pilha na placa principal, desenhada com 13 mm: a Audio Board cerca de 3 mm acima da placa, o Teensy em cima, o J3 na frente.</figcaption>
+            <a class="zoomable" href="img/l_stack.jpg"><img src="img/l_stack-sm.jpg" alt="Desenho: Teensy, barras de pinos e Audio Board explodidos sobre a placa principal" loading="lazy" /></a>
+            <figcaption>De cima para baixo: Teensy (7), as duas barras extralongas (9), Audio Board (8) e a placa principal (3) onde elas entram.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_stack.jpg"><img src="img/r_stack-sm.jpg" alt="A pilha pronta sobre a placa principal" loading="lazy" /></a>
+            <figcaption>A pilha pronta: o Teensy sobre a Audio Board, cerca de 3 mm acima da placa principal, com o J3 na frente.</figcaption>
           </figure>
           <ol class="steps">
             <li>Enfie as duas barras extralongas na <strong>Audio Board</strong> por cima: o plástico apoia na Audio Board e as pontas longas ficam para baixo.</li>
@@ -981,8 +1035,8 @@
             <li>Baixe o plate com os switches sobre a placa principal: os dois pinos plásticos de cada switch entram nos furos da placa. A placa tem de ficar <strong>encostada no fundo dos switches</strong>: a distância do ímã ao sensor faz parte da medida. A tampa do case vai prender o plate pela borda.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/switches.jpg"><img src="img/switches-sm.jpg" alt="A placa principal com o plate e os 44 switches, e a pilha do Teensy à esquerda" loading="lazy" /></a>
-            <figcaption>Plate e switches sobre a placa principal.</figcaption>
+            <a class="zoomable" href="img/l_switches.jpg"><img src="img/l_switches-sm.jpg" alt="Desenho: switches sobre o plate sobre a placa principal" loading="lazy" /></a>
+            <figcaption>Os switches (5) no plate (4) e depois o plate sobre a placa principal (3).</figcaption>
           </figure>
 
           <h3>6. A plaquinha de controles</h3>
@@ -1000,8 +1054,12 @@
             <li>Encaixe o cabo de 8 vias no J1; a outra ponta vai ao <strong>J3</strong> da placa principal, pino a pino.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/controls.jpg"><img src="img/controls-sm.jpg" alt="A plaquinha de controles sobre a pilha do Teensy: potenciômetro, encoder e LED em cima, o JST no verso e o cabo descendo ao J3" loading="lazy" /></a>
-            <figcaption>Onde a plaquinha fica (sem a tampa): sobre a borda da Audio Board, com o cabo descendo ao J3.</figcaption>
+            <a class="zoomable" href="img/l_controls.jpg"><img src="img/l_controls-sm.jpg" alt="Desenho: potenciômetro, encoder e LED descendo na plaquinha, o cabo embaixo" loading="lazy" /></a>
+            <figcaption>Potenciômetro (11), encoder (12) e LED no espaçador (13) na plaquinha (10); o cabo (15) encaixa no J1 embaixo; a outra ponta vai ao J3.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_controls.jpg"><img src="img/r_controls-sm.jpg" alt="A plaquinha de controles no lugar, sobre a pilha do Teensy" loading="lazy" /></a>
+            <figcaption>A plaquinha de controles no lugar (sem a tampa).</figcaption>
           </figure>
 
           <h3>7. Os conectores de painel</h3>
@@ -1016,8 +1074,8 @@
             <li>O inserto entra na abertura da face esquerda do case no próximo passo; as peças atrás dele não precisam encostar nas placas.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/panel.jpg"><img src="img/panel-sm.jpg" alt="A ponta esquerda: o inserto preto com o micro-USB e o jack, o cabo USB curto até o Teensy e os fios do jack até a Audio Board" loading="lazy" /></a>
-            <figcaption>A ponta esquerda, sem a tampa: o inserto, o cabo USB curto até o Teensy e os fios do jack.</figcaption>
+            <a class="zoomable" href="img/l_panel.jpg"><img src="img/l_panel-sm.jpg" alt="Desenho: o inserto, os conectores de painel e o cabo USB na ponta esquerda" loading="lazy" /></a>
+            <figcaption>O inserto (17) com o micro-USB de painel (18) e o jack (19); o cabo de 90° (20) vai ao Teensy.</figcaption>
           </figure>
 
           <h3>8. Fechar o case</h3>
@@ -1029,12 +1087,24 @@
             <li>Por baixo, aperte os nove parafusos <strong>M2,5 × 8 mm</strong> pelo fundo nos ressaltos da tampa. Sem forçar. Cole os pés, encaixe os dois knobs e ponha as capas: brancas nas naturais, pretas nos sustenidos, as de xadrez nos Dós e Fás.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/closing.jpg"><img src="img/closing-sm.jpg" alt="A placa principal no fundo, com as duas porcas M2 sobre a placa sob a interface" loading="lazy" /></a>
-            <figcaption>A placa no fundo, presa sob a interface pelos dois parafusos M2 (porcas por cima).</figcaption>
+            <a class="zoomable" href="img/l_bottom.jpg"><img src="img/l_bottom-sm.jpg" alt="Desenho: a placa principal descendo no fundo, dois parafusos M2 por baixo e porcas por cima" loading="lazy" /></a>
+            <figcaption>A placa principal (3) no fundo (1); dois parafusos M2 × 10 (21) por baixo e as porcas (22) por cima.</figcaption>
           </figure>
           <figure class="wide">
-            <a class="zoomable" href="img/section.jpg"><img src="img/section-sm.jpg" alt="O Seixo fechado, cortado de trás para a frente: a pilha do Teensy atrás, a plaquinha sob a tampa com um knob em cima, o cabo até o J3 e um parafuso M2 atravessando a placa" loading="lazy" /></a>
-            <figcaption>O case fechado, cortado de trás para a frente em x = 30 mm (trás à esquerda): a pilha do Teensy, a plaquinha sob a tampa com o knob do seletor em cima, o cabo descendo ao J3 e um parafuso M2 pelo fundo e pela placa.</figcaption>
+            <a class="zoomable" href="img/l_lid_controls.jpg"><img src="img/l_lid_controls-sm.jpg" alt="Desenho visto por baixo: a plaquinha parafusada nos postes da tampa" loading="lazy" /></a>
+            <figcaption>Visto por baixo: a plaquinha (10) nos postes da tampa (2) com os dois parafusos M2 × 5 (23).</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_close.jpg"><img src="img/l_close-sm.jpg" alt="Desenho: a tampa descendo sobre o fundo, nove parafusos por baixo" loading="lazy" /></a>
+            <figcaption>A tampa (2) sobre o fundo (1); nove parafusos M2,5 × 8 (24) por baixo.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_caps.jpg"><img src="img/l_caps-sm.jpg" alt="Desenho: capas e knobs entrando" loading="lazy" /></a>
+            <figcaption>Por último, as capas (6) e os dois knobs (14).</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_section.jpg"><img src="img/r_section-sm.jpg" alt="O case fechado, cortado de trás para a frente" loading="lazy" /></a>
+            <figcaption>O case fechado, cortado de trás para a frente em x = 30 mm (trás à esquerda): a pilha do Teensy, a plaquinha sob a tampa com um knob em cima, o cabo até o J3 e um parafuso M2 atravessando a placa.</figcaption>
           </figure>
 
           <h3>9. Primeiro uso</h3>
@@ -1174,9 +1244,9 @@
         </p>
 
         <figure class="wide">
-          <a class="zoomable" href="img/finished.jpg"><img src="img/finished-sm.jpg" alt="El eTuttino terminado en la caja Seixo, en perspectiva: 44 botones redondos y, a la izquierda, la interfaz con dos perillas, el LED y la rejilla" loading="lazy" /></a>
-          <figcaption>El eTuttino en la caja Seixo, renderizado a partir de los archivos del diseño. Haz clic en una figura para verla en alta resolución.</figcaption>
-        </figure>
+            <a class="zoomable" href="img/r_finished.jpg"><img src="img/r_finished-sm.jpg" alt="El eTuttino terminado en la caja Seixo" loading="lazy" /></a>
+            <figcaption>El eTuttino en la caja Seixo, renderizado a partir de los archivos del diseño. Haz clic en una figura para verla en alta resolución.</figcaption>
+          </figure>
 
         <div class="callout"><p>El diseño está completo y listo para fabricar: placas, caja, tapas y firmware. El firmware se ha grabado y probado en un Teensy 4.0 con su Audio Board; el instrumento completo aún no se ha montado, así que trata el primero como un prototipo y comprueba cada paso.</p></div>
 
@@ -1222,9 +1292,12 @@
             <li>Dentro: una placa principal bajo todo, el Teensy y la Audio Board apilados en la esquina trasera izquierda, la placa de controles colgada bajo la tapa.</li>
           </ul>
           <figure class="wide">
-            <a class="zoomable" href="img/parts.jpg"><img src="img/parts-sm.jpg" alt="Vista explosionada: el fondo, la placa principal con la pila del Teensy y los conectores, la plate y los interruptores, la placa de controles, las tapas y la tapa superior" loading="lazy" /></a>
-            <figcaption>Todas las piezas, de abajo arriba: fondo, placa principal con Teensy + Audio Board y los conectores de panel, plate e interruptores, placa de controles, tapas de los botones, tapa superior.</figcaption>
+            <a class="zoomable" href="img/r_exploded.jpg"><img src="img/r_exploded-sm.jpg" alt="Vista explosionada de todo el eTuttino con las piezas numeradas" loading="lazy" /></a>
+            <figcaption>Todas las piezas, de abajo arriba. Los números son los de la lista de piezas de abajo.</figcaption>
           </figure>
+          <h3>Lista de piezas</h3>
+          <p>Los números de los dibujos de abajo.</p>
+          <div class="table-wrap parts-list"><table><thead><tr><th>#</th><th>Pieza</th></tr></thead><tbody><tr><td>1</td><td>fondo (caja)</td></tr><tr><td>2</td><td>tapa (caja)</td></tr><tr><td>3</td><td>placa principal</td></tr><tr><td>4</td><td>plate de los interruptores</td></tr><tr><td>5</td><td>interruptor Gateron KS-20 (×44)</td></tr><tr><td>6</td><td>tapa de botón (×44)</td></tr><tr><td>7</td><td>Teensy 4.0</td></tr><tr><td>8</td><td>Audio Board Rev D</td></tr><tr><td>9</td><td>tira de pines 1×14 extralarga (×2)</td></tr><tr><td>10</td><td>placa de controles</td></tr><tr><td>11</td><td>potenciómetro de volumen RK09K</td></tr><tr><td>12</td><td>encoder EC11E</td></tr><tr><td>13</td><td>LED + separador</td></tr><tr><td>14</td><td>perilla (×2)</td></tr><tr><td>15</td><td>cable JST PH de 8 vías</td></tr><tr><td>16</td><td>conector J3</td></tr><tr><td>17</td><td>inserto de los conectores</td></tr><tr><td>18</td><td>micro-USB de panel</td></tr><tr><td>19</td><td>jack de 3,5 mm de panel</td></tr><tr><td>20</td><td>cable micro-USB de 90°</td></tr><tr><td>21</td><td>tornillo M2 × 10 (×2)</td></tr><tr><td>22</td><td>tuerca M2 (×2)</td></tr><tr><td>23</td><td>tornillo autorroscante M2 × 5 (×2)</td></tr><tr><td>24</td><td>tornillo autorroscante M2,5 × 8 (×9)</td></tr></tbody></table></div>
 
           <h3>Dos maneras de tener la placa principal</h3>
           <ul>
@@ -1279,6 +1352,10 @@
             <li><strong>El inserto de los conectores</strong>, negro: <a href="../hardware/case/out/insert.stl">insert.stl</a>.</li>
             <li><strong>Las tapas de los botones</strong>: 18 <a href="../hardware/case/out/keycap_natural.stl">naturales</a> (blancas), 18 <a href="../hardware/case/out/keycap_sharp.stl">sostenidos</a> (negras) y 8 de <a href="../hardware/case/out/keycap_cf.stl">Do/Fa</a> (blancas, con el damero en relieve), después de la prueba de abajo.</li>
           </ul>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_finished_madeira.jpg"><img src="img/r_finished_madeira-sm.jpg" alt="El eTuttino en la caja Madeira (roble blanco), renderizado" loading="lazy" /></a>
+            <figcaption>El mismo instrumento en la caja Madeira: roble blanco con acabado al aceite, botones nácar y ébano.</figcaption>
+          </figure>
           <p>
             Cualquier servicio de impresión 3D en línea acepta los STL en milímetros: <a href="https://jlc3dp.com/" target="_blank" rel="noopener">JLC3DP</a>
             (puede llegar con las placas), <a href="https://www.pcbway.com/rapid-prototyping/3d-printing/" target="_blank" rel="noopener">PCBWay</a>
@@ -1445,8 +1522,12 @@
             bebedero, dispuestas como cuatro botones vecinos.
           </p>
           <figure>
-            <a class="zoomable" href="img/keycap_test.jpg"><img src="img/keycap_test-sm.jpg" alt="La impresión de prueba: cuatro tapas unidas por canales finos, con la disposición de cuatro botones vecinos" loading="lazy" /></a>
+            <a class="zoomable" href="img/r_keycap_test.jpg"><img src="img/r_keycap_test-sm.jpg" alt="La impresión de prueba de cuatro tapas" loading="lazy" /></a>
             <figcaption>La impresión de prueba de cuatro tapas.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_keycaps.jpg"><img src="img/l_keycaps-sm.jpg" alt="Dibujo: cuatro tapas bajando rectas sobre cuatro interruptores vecinos" loading="lazy" /></a>
+            <figcaption>Prueba de encaje: las tapas (6) bajan rectas sobre cuatro interruptores vecinos (5).</figcaption>
           </figure>
           <ol class="steps">
             <li>Encaja cuatro interruptores en la plate en posiciones vecinas y corta las tapas del bebedero.</li>
@@ -1497,6 +1578,10 @@
           <ol class="steps">
             <li>Suelda <strong>J3</strong>, el conector JST PH vertical de 8 vías, en la cara <strong>delantera</strong>, delante de los agujeros del Teensy, con la abertura hacia arriba. Es la única pieza de inserción de la placa principal.</li>
           </ol>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_j3.jpg"><img src="img/l_j3-sm.jpg" alt="Dibujo: el conector J3 entrando en la placa principal por delante" loading="lazy" /></a>
+            <figcaption>J3 (16) entra por la cara delantera de la placa principal (3) y se suelda en el reverso.</figcaption>
+          </figure>
 
           <h3>3. El Teensy y la Audio Board: una pila baja</h3>
           <p>
@@ -1506,8 +1591,12 @@
             entre la pila y la placa principal.
           </p>
           <figure class="wide">
-            <a class="zoomable" href="img/stack.jpg"><img src="img/stack-sm.jpg" alt="El Teensy sobre la Audio Board, a unos 3 mm de la placa principal sobre sus pines, con J3 delante" loading="lazy" /></a>
-            <figcaption>La pila sobre la placa principal, dibujada con 13 mm: la Audio Board unos 3 mm sobre la placa, el Teensy encima, J3 delante.</figcaption>
+            <a class="zoomable" href="img/l_stack.jpg"><img src="img/l_stack-sm.jpg" alt="Dibujo: Teensy, tiras de pines y Audio Board explosionados sobre la placa principal" loading="lazy" /></a>
+            <figcaption>De arriba abajo: Teensy (7), las dos tiras extralargas (9), Audio Board (8) y la placa principal (3) donde entran.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_stack.jpg"><img src="img/r_stack-sm.jpg" alt="La pila terminada sobre la placa principal" loading="lazy" /></a>
+            <figcaption>La pila terminada: el Teensy sobre la Audio Board, unos 3 mm por encima de la placa principal, con J3 delante.</figcaption>
           </figure>
           <ol class="steps">
             <li>Mete las dos tiras extralargas en la <strong>Audio Board</strong> desde arriba: el plástico apoya en la Audio Board y las puntas largas quedan hacia abajo.</li>
@@ -1543,8 +1632,8 @@
             <li>Baja la plate con los interruptores sobre la placa principal: los dos pivotes de plástico de cada interruptor entran en los agujeros de la placa. La placa tiene que quedar <strong>pegada a la base de los interruptores</strong>: la distancia del imán al sensor forma parte de la medida. La tapa de la caja sujetará la plate por el borde.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/switches.jpg"><img src="img/switches-sm.jpg" alt="La placa principal con la plate y los 44 interruptores, y la pila del Teensy a la izquierda" loading="lazy" /></a>
-            <figcaption>Plate e interruptores sobre la placa principal.</figcaption>
+            <a class="zoomable" href="img/l_switches.jpg"><img src="img/l_switches-sm.jpg" alt="Dibujo: interruptores sobre la plate sobre la placa principal" loading="lazy" /></a>
+            <figcaption>Los interruptores (5) en la plate (4) y luego la plate sobre la placa principal (3).</figcaption>
           </figure>
 
           <h3>6. La placa de controles</h3>
@@ -1562,8 +1651,12 @@
             <li>Conecta el cable de 8 vías a J1; el otro extremo va a <strong>J3</strong> de la placa principal, pin a pin.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/controls.jpg"><img src="img/controls-sm.jpg" alt="La placa de controles sobre la pila del Teensy: potenciómetro, encoder y LED arriba, el JST en el reverso y el cable bajando a J3" loading="lazy" /></a>
-            <figcaption>Dónde queda la placa de controles (sin la tapa): sobre el borde de la Audio Board, con el cable bajando a J3.</figcaption>
+            <a class="zoomable" href="img/l_controls.jpg"><img src="img/l_controls-sm.jpg" alt="Dibujo: potenciómetro, encoder y LED bajando a la placa de controles, el cable debajo" loading="lazy" /></a>
+            <figcaption>Potenciómetro (11), encoder (12) y LED con su separador (13) en la placa de controles (10); el cable (15) se conecta a J1 por debajo; el otro extremo va a J3.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_controls.jpg"><img src="img/r_controls-sm.jpg" alt="La placa de controles en su sitio sobre la pila del Teensy" loading="lazy" /></a>
+            <figcaption>La placa de controles en su sitio (sin la tapa).</figcaption>
           </figure>
 
           <h3>7. Los conectores de panel</h3>
@@ -1578,8 +1671,8 @@
             <li>El inserto entra en su abertura de la cara izquierda de la caja en el paso siguiente; las piezas de detrás no necesitan tocar las placas.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/panel.jpg"><img src="img/panel-sm.jpg" alt="El extremo izquierdo: el inserto negro con el micro-USB y el jack, el cable USB corto al Teensy y los cables del jack a la Audio Board" loading="lazy" /></a>
-            <figcaption>El extremo izquierdo, sin la tapa: el inserto, el cable USB corto al Teensy y los cables del jack.</figcaption>
+            <a class="zoomable" href="img/l_panel.jpg"><img src="img/l_panel-sm.jpg" alt="Dibujo: el inserto, las tomas de panel y el cable USB en el extremo izquierdo" loading="lazy" /></a>
+            <figcaption>El inserto (17) con el micro-USB de panel (18) y el jack (19); el cable de 90° (20) va al Teensy.</figcaption>
           </figure>
 
           <h3>8. Cerrar la caja</h3>
@@ -1591,12 +1684,24 @@
             <li>Desde abajo, aprieta los nueve tornillos <strong>M2,5 × 8 mm</strong> por el fondo en los resaltes de la tapa. Sin forzar. Pega las patas, pon las dos perillas y las tapas: blancas en las naturales, negras en los sostenidos, las de damero en los Do y Fa.</li>
           </ol>
           <figure class="wide">
-            <a class="zoomable" href="img/closing.jpg"><img src="img/closing-sm.jpg" alt="La placa principal en el fondo, con las dos tuercas M2 sobre la placa bajo la interfaz" loading="lazy" /></a>
-            <figcaption>La placa en el fondo, sujeta bajo la interfaz por los dos tornillos M2 (tuercas arriba).</figcaption>
+            <a class="zoomable" href="img/l_bottom.jpg"><img src="img/l_bottom-sm.jpg" alt="Dibujo: la placa principal bajando al fondo, dos tornillos M2 por debajo y tuercas por arriba" loading="lazy" /></a>
+            <figcaption>La placa principal (3) en el fondo (1); dos tornillos M2 × 10 (21) por debajo y las tuercas (22) por arriba.</figcaption>
           </figure>
           <figure class="wide">
-            <a class="zoomable" href="img/section.jpg"><img src="img/section-sm.jpg" alt="El Seixo cerrado, cortado de atrás adelante: la pila del Teensy detrás, la placa de controles bajo la tapa con una perilla encima, el cable a J3 y un tornillo M2 atravesando la placa" loading="lazy" /></a>
-            <figcaption>La caja cerrada, cortada de atrás adelante en x = 30 mm (detrás a la izquierda): la pila del Teensy, la placa de controles bajo la tapa con la perilla del selector encima, el cable bajando a J3 y un tornillo M2 por el fondo y la placa.</figcaption>
+            <a class="zoomable" href="img/l_lid_controls.jpg"><img src="img/l_lid_controls-sm.jpg" alt="Dibujo visto desde abajo: la placa de controles atornillada a los postes de la tapa" loading="lazy" /></a>
+            <figcaption>Visto desde abajo: la placa de controles (10) en los postes de la tapa (2) con los dos tornillos M2 × 5 (23).</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_close.jpg"><img src="img/l_close-sm.jpg" alt="Dibujo: la tapa bajando sobre el fondo, nueve tornillos por debajo" loading="lazy" /></a>
+            <figcaption>La tapa (2) sobre el fondo (1); nueve tornillos M2,5 × 8 (24) por debajo.</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/l_caps.jpg"><img src="img/l_caps-sm.jpg" alt="Dibujo: tapas y perillas" loading="lazy" /></a>
+            <figcaption>Por último, las tapas (6) y las dos perillas (14).</figcaption>
+          </figure>
+          <figure class="wide">
+            <a class="zoomable" href="img/r_section.jpg"><img src="img/r_section-sm.jpg" alt="La caja cerrada, cortada de atrás adelante" loading="lazy" /></a>
+            <figcaption>La caja cerrada, cortada de atrás adelante en x = 30 mm (detrás a la izquierda): la pila del Teensy, la placa de controles bajo la tapa con una perilla encima, el cable a J3 y un tornillo M2 atravesando la placa.</figcaption>
           </figure>
 
           <h3>9. Primer uso</h3>

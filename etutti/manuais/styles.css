@@ -448,3 +448,38 @@ a.zoomable::after {
 .lightbox-next {
   right: 0.5rem;
 }
+
+/* ---- Parts list: the numbers in the drawings' balloons ---- */
+.manual .parts-list td:first-child {
+  width: 2.6rem;
+  text-align: center;
+}
+
+.manual .parts-list td:first-child::before {
+  content: none;
+}
+
+.manual .parts-list tbody td:first-child {
+  font-weight: 700;
+}
+
+@media (min-width: 760px) {
+  .manual .parts-list tbody {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(12, auto);
+  }
+
+  .manual .parts-list thead {
+    display: none;
+  }
+
+  .manual .parts-list tr {
+    display: flex;
+  }
+
+  .manual .parts-list td:last-child {
+    flex: 1;
+  }
+}
