@@ -1,15 +1,25 @@
 # eTuttino case — Seixo and Madeira (CadQuery)
 
-Parametric model of the case described in [SPEC.md](SPEC.md). There are two versions:
+Parametric model of the case described in [SPEC.md](SPEC.md) — currently
+**v5**, plus three decisions the user made after it (they go into v6):
+
+- pitch **18.5 mm** on the same hexagonal grid (v5 says 19.05);
+- the ramp's front curve stops at 75° and runs straight into the front face,
+  so its R 5 edges can be rounded (the full 90° meets the face tangentially);
+- a Teensy + Audio Board stack of ~13 mm in the eTuttino, lowered to
+  ≤ 10 mm in the eTuttiChorus.
+
+The reference drawings are in [canvas-v5/](canvas-v5/). There are two versions:
 
 - **Seixo**: resin or MJF, one colour.
-- **Madeira**: white oak, cut on a 3-axis CNC.
+- **Madeira**: white oak, cut on a 3-axis CNC in two setups (top, then the inner pocket from below).
 
 Both have the same outside. Only the wall thickness, the LED window and the
 pocket round the connector insert differ.
 
 The electronics check (SPEC item 9) is in **[FIT_CHECK.md](FIT_CHECK.md)**.
-It is in Portuguese because it answers the SPEC.
+It is in Portuguese because it answers the SPEC. It ends with "Perguntas
+para o design", the open questions for the next SPEC version.
 
 ## Regenerate
 
@@ -26,7 +36,7 @@ Then, from this folder:
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe case.py        # case parts -> out/
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe keycap.py      # caps + switch stand-ins -> out/
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe render.py      # renders/{seixo,madeira}_{iso,top,left}.png
-C:/Users/julia/.venvs/cadquery/Scripts/python.exe fit_check.py   # FIT_CHECK.md + renders/fit_*.png (~1 min)
+C:/Users/julia/.venvs/cadquery/Scripts/python.exe fit_check.py   # FIT_CHECK.md + renders/fit_*.png (~3 min)
 ```
 
 Run `case.py` and `keycap.py` before `render.py`.
@@ -38,10 +48,11 @@ Run `case.py` and `keycap.py` before `render.py`.
 | `out/seixo_tampa.*` / `out/seixo_fundo.*` | Seixo top shell / bottom plate (STEP + STL) |
 | `out/madeira_corpo.*` / `out/madeira_fundo.*` | oak body / thin bottom cover |
 | `out/insert.*` | black connector insert for the left face (USB + headphones) |
-| `out/plate.step`, `out/plate.dxf` | 1.5 mm switch plate, MX 14 × 14 holes on the 16.5 mm hex grid |
+| `out/plate.step`, `out/plate.dxf` | 1.5 mm switch plate, MX 14 × 14 holes on the 18.5 mm hex grid (rows 16.02 apart) |
 | `out/keycap_{natural,sharp,cf}.stl` | the three caps (C/F has the raised diagonal chequer) |
 | `out/keycap_test_4.stl` | four caps on sprues, laid out like four neighbouring buttons, for the fit test on real switches |
 | `out/switches.stl` | stand-in switches, used by the renders only |
+| `renders/fit_*.png` | the fit check's plans and sections (see FIT_CHECK.md) |
 
 **Coordinates.** The code works in SPEC coordinates: x to the right, y
 towards the player, z up. That system is left-handed, so a model built
@@ -54,13 +65,13 @@ axis.
 ## Parameters (top of `case.py`)
 
 - **Keyboard**
-  - `P` (19.05) — button pitch.
+  - `P` (18.5) — button pitch, the same to all six neighbours.
   - `D_BTN` (15) / `D_SKIRT` (17) — button and skirt diameters.
   - `O_KEYS` — x of the first key column.
-  - `ROW_Y` — y of each row.
+  - `ROW_Y` — y of each row, `ROW_PITCH` = P · cos 30° apart, centred on `KEYS_CY`.
   - `keys()` — puts the 44 notes on rows using the SPEC 2 rules.
 - **Opening**
-  - `CLR_SIDE` (15) / `CLR_FB` (7.5) — side and front/back clearances.
+  - `CLR_SIDE` (15) / `CLR_FB` — side and front/back clearances. `CLR_FB` is derived so the deck round the keys stays `BOX_OFF` wide in the 100 mm box (8.17 at P = 18.5).
   - `SIDE_ANGLE` (30°) — angle of the opening's sides.
   - `R_OPEN_CORNER` (6) — corner radius.
   - The lateral fillets are concentric with the end buttons.
@@ -68,9 +79,10 @@ axis.
 - **Box**
   - `BOX_OFF` (10.3) — the box is the opening grown by this amount.
   - `R_LEFT` (16) — radius of the two left corners.
-  - `TRANS_TOP_OFF` (10.3) — sets the top edge of the slope (see FIT_CHECK §5 on the SPEC's "+20.3").
   - `Z_DECK` (15.7) — deck height.
-  - `Z_IF_BACK` / `Z_IF_FRONT` (33 / 28) — interface top height, back and front.
+  - `Z_IF` (33), `IF_CREASE_Y` (55), `IF_SLOPE` (13°), `IF_CREASE_R` (10) — interface top: flat, rounded crease, then down to the front.
+  - The ramp: top edge = opening + `RAMP_TOP_OFF` (12.7), foot = opening + `RAMP_FOOT_OFF` (4). In the front half both run straight to `RAMP_STRAIGHT_TO` (86), then curve with `RAMP_FRONT_R` (14) through `RAMP_FRONT_SWEEP` (75°) and run straight into the front face. `RAMP_EDGE_R` (5) rounds both edges.
+  - Every ramp and box line is an offset of the keyboard opening, so changing `P` moves them all.
 - **Stack-up**
   - These match the current board.
   - `Z_PCB_TOP` = 7.7, plate top `Z_PLATE_TOP` = 12.7 (5 mm, MX), `Z_KEY_TOP` = 26.5.
@@ -78,19 +90,20 @@ axis.
 - **Interface**
   - `SCREEN_ZONE` / `SCREEN_MODE` (`"recess"` for a sticker or engraving, `"window"` for a real screen, `"none"`).
   - `VOLUME_XY`, `SELECT_XY`, `LED_XY`.
-  - `GRILLE` (polygon), `GRILLE_D` / `GRILLE_PITCH`.
-  - `GRILLE_KEEP` — drops holes that would land on the slope.
+  - `GRILLE_RECT` with corners `GRILLE_R` / `GRILLE_R_FR`, holes `GRILLE_D` at `GRILLE_PITCH` measured on the 13° surface.
 - **Connectors**
   - `USB_YZ`, `JACK_YZ`, `INSERT`.
   - `USB_PLUG_CUT` / `JACK_HOLE_D` (CHECK against the panel parts bought).
   - `INSERT_WALL` — the Madeira wall is thinned to this round the insert.
 - **Versions**: `VERSIONS = {"seixo": {wall 2.5, top 2.5}, "madeira": {wall 4, top 3}}`.
 - **Fixings**
-  - `screw_points()` — M2.5 bosses from the bottom up into the top, notched out of the plate.
+  - `screw_points()` — M2.5 bosses from the bottom up into the top, notched out of the plate. `BOSS_TOP` stops two of them short of the lid (one would hit the screen module, one the grille); they hang on the walls.
   - `pillar_points()` — board supports on the bottom plate, at the centres of key triangles, 11 mm from every sensor.
 
-`keycap.py` has the switch numbers. They are MX nominal values and must be
-checked against the Gateron KS-20. The skirt height is calculated, not
+`keycap.py` has the switch numbers, from Gateron's KS-20T drawing
+(top housing 15.40 × 15.10, 11.10 mm from the board, travel 4.1). The top
+face and the stem height aren't dimensioned there: the four-cap print test
+checks them. The skirt height is calculated, not
 picked: the round skirt must clear the square top housing's corners at full
 travel.
 

@@ -25,18 +25,29 @@ import keycap as K  # noqa: E402
 box, cyl = C.box3, C.cyl
 
 # ------------------------------------------------------------- the parts
-# Teensy 4.0 + Audio Board Rev D, as on the current board (generate.py /
-# assembly3d.py): pin rows 15.24 apart, 14 pins at 2.54; Audio Board 5 mm
-# past pin 1 (USB end), 2 mm past pin 14, 14 mm beyond the 0-12 row (jack
-# side), 9.5 mm beyond the VIN row.
+# Teensy 4.0 + Audio Board Rev D. Audio Board 38.0 x 36.8 x 6.7 mm (SB
+# Components listing, checked by the user on their own board); pin rows
+# 15.24 apart, 14 pins at 2.54 along the 38.0 side. Where the header sits
+# on it is scaled from PJRC's pin diagram (CHECK): 3.6 mm past pin 1 (USB
+# end), 1.4 mm past pin 14, 12.8 mm beyond the 0-12 row (jack side), 8.8 mm
+# beyond the VIN row.
+AUDIO_L, AUDIO_W, AUDIO_H = 38.0, 36.8, 6.7
+PAST_USB, PAST_VIN = 3.6, 8.76
 AUDIO_LIFT = 3.0          # Audio Board above the main board on its header legs
 BOARD_T = 1.6
+USB_ON_TEENSY = 2.6       # micro-USB socket height on the Teensy
 STACKS = {
-    # female stacking headers 8.5 + the Teensy's 2.5 spacer: 19.8 mm to the USB top
-    "A": {"label": "pilha atual (soquetes 8,5 mm, 19,8 mm)", "gap": 8.5 + 2.5},
-    # Teensy soldered straight onto the Audio Board's pins (2.5 mm spacer only)
-    "B": {"label": "pilha baixa (Teensy soldado na Audio Board, 11,3 mm)", "gap": 2.5},
+    # the user's soldered stack: ~13 mm from under the Audio Board to the top of the Teensy's USB
+    "M": {"label": "pilha montada (13 mm)", "height": 13.0},
+    # the same stack lowered by 3-4 mm (the user says it can be): the Chorus case, at its tallest
+    "R": {"label": "pilha reduzida (10 mm)", "height": 10.0},
 }
+
+
+def stack_gap(kind):
+    return STACKS[kind]["height"] - 2 * BOARD_T - USB_ON_TEENSY
+
+
 STACK_X0 = 20.0           # Audio Board's USB-end edge: room for the USB plug + panel parts
 STACK_Y0 = 5.0            # Audio Board's back edge (VIN row at the back, jack side forward)
 
@@ -61,18 +72,17 @@ COLOURS = {"pcb": "#1d6b3a", "stack": "#2e8b57", "teensy": "#3cb371", "usb": "#c
 
 
 def stack(kind):
-    s = STACKS[kind]
     zb = C.Z_PCB_TOP + AUDIO_LIFT              # Audio Board bottom
     za = zb + BOARD_T                          # ...top
-    zt = za + s["gap"]                         # Teensy bottom
+    zt = za + stack_gap(kind)                  # Teensy bottom
     ax0 = STACK_X0
-    p1 = ax0 + 5.0                             # pin 1 (USB end)
+    p1 = ax0 + PAST_USB                        # pin 1 (USB end)
     cx = p1 + 6.5 * 2.54
-    cy = STACK_Y0 + 9.5 + 7.62
+    cy = STACK_Y0 + PAST_VIN + 7.62
     parts = []
-    parts.append(("Audio Board", "audio", box(ax0, STACK_Y0, zb, ax0 + 40.0, STACK_Y0 + 9.5 + 15.24 + 14.0, za)))
+    parts.append(("Audio Board", "audio", box(ax0, STACK_Y0, zb, ax0 + AUDIO_L, STACK_Y0 + AUDIO_W, za)))
     jy = cy + 7.62 + 7.2
-    parts.append(("jack da Audio Board", "audio", box(ax0, jy - 3.0, za, ax0 + 13.0, jy + 3.0, za + 5.0)))
+    parts.append(("jack da Audio Board", "audio", box(ax0, jy - 3.0, za, ax0 + 13.0, jy + 3.0, zb + AUDIO_H)))
     parts.append(("codec", "audio", box(cx - 4, cy + 11, za, cx + 2, cy + 17, za + 0.9)))
     for ry in (cy - 7.62, cy + 7.62):
         parts.append(("barra de pinos", "stack", box(cx - 17.78, ry - 1.27, za, cx + 17.78, ry + 1.27, zt)))
@@ -80,12 +90,12 @@ def stack(kind):
     parts.append(("Teensy 4.0", "teensy", box(cx - 17.78, cy - 8.89, zt, cx + 17.78, cy + 8.89, zt + BOARD_T)))
     parts.append(("chips do Teensy", "teensy", box(cx - 4, cy - 5, zt + BOARD_T, cx + 6, cy + 5, zt + BOARD_T + 0.9)))
     usb_x0 = cx - 18.8
-    parts.append(("micro-USB do Teensy", "usb", box(usb_x0, cy - 3.8, zt + BOARD_T, cx - 13.5, cy + 3.8, zt + BOARD_T + 2.6)))
+    parts.append(("micro-USB do Teensy", "usb", box(usb_x0, cy - 3.8, zt + BOARD_T, cx - 13.5, cy + 3.8, zt + BOARD_T + USB_ON_TEENSY)))
     zc = zt + BOARD_T + 1.3
     px, py, pz = USB_PLUG
     parts.append(("plugue micro-USB 90°", "plug", box(usb_x0 - px, cy - py / 2, zc - pz / 2, usb_x0, cy + py / 2, zc + pz / 2)))
-    info = {"usb_top": zt + BOARD_T + 2.6, "teensy_top": zt + BOARD_T, "cx": cx, "cy": cy, "usb_z": zc,
-            "x": (ax0, ax0 + 40.0), "y": (STACK_Y0, STACK_Y0 + 38.74)}
+    info = {"usb_top": zt + BOARD_T + USB_ON_TEENSY, "teensy_top": zt + BOARD_T, "cx": cx, "cy": cy, "usb_z": zc,
+            "x": (ax0, ax0 + AUDIO_L), "y": (STACK_Y0, STACK_Y0 + AUDIO_W)}
     return parts, info
 
 
@@ -111,15 +121,15 @@ def interface_board(v):
 
 
 def tilted(solid, y_pivot, z_pivot):
-    ang = math.degrees(math.atan((C.Z_IF_BACK - C.Z_IF_FRONT) / C.WIDTH))
-    return solid.rotate(cq.Vector(0, y_pivot, z_pivot), cq.Vector(1, y_pivot, z_pivot), -ang)
+    """Turned to lie under the 13 deg part of the interface top."""
+    return solid.rotate(cq.Vector(0, y_pivot, z_pivot), cq.Vector(1, y_pivot, z_pivot), -C.IF_SLOPE)
 
 
 def chorus_parts(v):
     x0, y0, x1, y1 = C.SCREEN_ZONE
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
     mx, my, mh = SCREEN_MOD
-    ztop = C.z_interface(cy, v["top"]) - 0.2
+    ztop = C.z_interface(cy, v["top"]) - 0.2           # flat part: under the lid
     mod = box(cx - mx / 2, cy - my / 2, ztop - mh, cx + mx / 2, cy + my / 2, ztop)
     cxn, cyn, chn = SCREEN_CONN
     conn = box(cx - cxn / 2, cy - cyn / 2, ztop - mh - chn, cx + cxn / 2, cy + cyn / 2, ztop - mh)
@@ -127,10 +137,11 @@ def chorus_parts(v):
     gx = sum(p[0] for p in holes) / len(holes)
     gy = sum(p[1] for p in holes) / len(holes)
     d, h = SPEAKER
-    zs = C.z_interface(gy + d / 2, v["top"]) - 0.3
-    return [("tela 1,9\" (módulo)", "screen", tilted(mod, cy, ztop)),
-            ("conector da tela", "screen", tilted(conn, cy, ztop)),
-            ("alto-falante 28 mm", "speaker", cyl(gx, gy, zs - h, zs, d))], (gx, gy)
+    zs = C.z_interface(gy, v["top"]) - 0.3              # its face parallel to the 13 deg lid, 0.3 under it
+    spk = tilted(cyl(gx, gy, zs - h, zs, d), gy, zs)
+    return [("tela 1,9\" (módulo)", "screen", mod),
+            ("conector da tela", "screen", conn),
+            ("alto-falante 28 mm", "speaker", spk)], (gx, gy)
 
 
 def panel_parts(v):
@@ -204,12 +215,12 @@ def verdict(vol, gap):
     return "ok (%.1f mm)" % gap
 
 
-def max_gap(chorus, version):
-    """Largest Teensy-to-Audio-Board spacing that still fits (0.5 mm
+def max_stack(chorus, version):
+    """Tallest stack (under the Audio Board to the USB top) that still fits (0.5 mm
     clear): the USB plug under the lid, and in the Chorus everything on
     the Teensy under the screen module and its connector."""
     v = C.VERSIONS[version]
-    _, info = stack("B")
+    _, info = stack("R")
     cy = info["cy"]
     za = C.Z_PCB_TOP + AUDIO_LIFT + BOARD_T
     # plug top = za + gap + BOARD_T + 1.3 + USB_PLUG/2
@@ -220,13 +231,14 @@ def max_gap(chorus, version):
         ztop = C.z_interface(cy + 8.89, v["top"]) - 0.2 - SCREEN_MOD[2] - SCREEN_CONN[2]
         g = min(g, ztop - 0.5 - (za + BOARD_T + 2.6))       # the Teensy's USB socket / pins
         g = min(g, ztop + SCREEN_CONN[2] - 0.5 - (za + BOARD_T + 1.3 + USB_PLUG[2] / 2))
-    return g
+    return g + 2 * BOARD_T + USB_ON_TEENSY       # as a stack height, like STACKS
 
 
 def interior_widths(v):
-    """Free full-height width of the interface area at row 2 (the narrowest)."""
+    """Free full-height width of the interface area in its front half,
+    where the ramp's top edge runs straight (the narrowest part)."""
     left = v["wall"]
-    right = C.ROW2_X[0] - (C.D_BTN / 2 + C.CLR_SIDE) - (C.TRANS_TOP_OFF + v["wall"])
+    right = C.ROW2_X[0] - (C.D_BTN / 2 + C.CLR_SIDE) - (C.RAMP_TOP_OFF + v["wall"])
     return left, right
 
 
@@ -245,23 +257,33 @@ def render_fit(parts, shell, path, mode="iso", section_y=None, title=""):
         return pv.read(p)
     sh = mesh(shell, "shell")
     yf = C.WIDTH - section_y if section_y is not None else None
+    xcut = section_y if mode == "xsection" else None
     if mode == "section":
         pl.add_mesh(sh.clip(normal=(0, 1, 0), origin=(0, yf, 0), invert=False), color="#d9d4cb")
+    elif mode == "xsection":
+        pl.add_mesh(sh.clip(normal=(1, 0, 0), origin=(xcut, 0, 0), invert=False), color="#d9d4cb")
     else:
         pl.add_mesh(sh.clip(normal=(1, 0, 0), origin=(118, 0, 0), invert=True), color="#d9d4cb", opacity=0.22)
     for i, (name, col, s) in enumerate(parts):
         m = mesh(s, "p%d" % i)
-        if mode == "section":
-            m = m.clip(normal=(0, 1, 0), origin=(0, yf, 0), invert=False)
+        if mode in ("section", "xsection"):
+            m = (m.clip(normal=(0, 1, 0), origin=(0, yf, 0), invert=False) if mode == "section"
+                 else m.clip(normal=(1, 0, 0), origin=(xcut, 0, 0), invert=False))
             if m.n_points == 0:
                 continue
-        op = {"pcb": 0.3, "screen": 0.55}.get(col, 1.0) if mode != "section" else 1.0
+        op = {"pcb": 0.3, "screen": 0.55}.get(col, 1.0) if mode not in ("section", "xsection") else 1.0
         pl.add_mesh(m, color=COLOURS[col], opacity=op)
     pl.enable_anti_aliasing("ssaa")
     if mode == "section":
         pl.camera_position = [(46, -300, 17), (46, yf, 17), (0, 0, 1)]
         pl.enable_parallel_projection()
         pl.camera.parallel_scale = 29
+        pl.add_text(title, position="upper_left", font_size=14, color="#333333")
+    elif mode == "xsection":
+        # looking along +x at the cut: the player's side (file y = 0) on the right
+        pl.camera_position = [(-300, 50, 18), (xcut, 50, 18), (0, 0, 1)]
+        pl.enable_parallel_projection()
+        pl.camera.parallel_scale = 30
         pl.add_text(title, position="upper_left", font_size=14, color="#333333")
     elif mode == "top":
         pl.camera_position = [(58, 50, 400), (58, 50, 0), (0, 1, 0)]
@@ -274,184 +296,243 @@ def render_fit(parts, shell, path, mode="iso", section_y=None, title=""):
     pl.close()
 
 
+def ramp_front_x(d):
+    """Where a ramp edge (opening + d) meets the front face."""
+    pts = C.ramp_edge(d, C.RAMP_FRONT_R)
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+        if y0 <= C.WIDTH <= y1:
+            return x0 + (C.WIDTH - y0) * (x1 - x0) / (y1 - y0)
+
+
+def deck_pocket(v):
+    """The PCB area left of row 1, under the flat deck (between the ramp's
+    inner foot and the plate's edge): its x span at a few y, and the
+    headroom above the board."""
+    foot = C.ROW2_X[0] - (C.D_BTN / 2 + C.CLR_SIDE) - (C.RAMP_FOOT_OFF + v["wall"])
+    out = []
+    for y in (62.0, 70.0, 78.0, 86.0, 92.0):
+        plate = C.ROW2_X[0] - (C.D_BTN / 2 + C.CLR_SIDE) / C.COS + (y - C.ROW_Y[2]) * C.TAN - C.PLATE_OVERLAP / C.COS
+        if y > C.ROW_Y[1] + C.D_BTN / 2 + C.CLR_FB:
+            plate = 999.0
+        sw = min(x for _, row, x, yy, _ in C.keys() if row == 1) - 7.0 if abs(y - C.ROW_Y[1]) < 8 else 999.0
+        x_foot = foot
+        if y > C.RAMP_STRAIGHT_TO:      # the foot curves away towards the front face
+            r = C.RAMP_FRONT_R - v["wall"]
+            cxf = foot - r
+            dy = y - C.RAMP_STRAIGHT_TO
+            x_foot = cxf + math.sqrt(max(r * r - dy * dy, 0.0)) if dy < r else cxf
+        out.append((y, x_foot, min(plate, sw)))
+    return out, C.Z_PLATE_TOP - C.Z_PCB_TOP, C.Z_PLATE_TOP - C.PLATE_T - C.Z_PCB_TOP
+
+
+def keyboard_check():
+    """Switches against each other (Gateron housing), plate web, caps
+    against each other and the opening, switches against both shells."""
+    x0 = C.O_KEYS + 3 * C.P
+    a = K.switch(x0, C.ROW_Y[3])
+    same = K.switch(x0 + C.P, C.ROW_Y[3])
+    diag = K.switch(x0 + C.P / 2, C.ROW_Y[2])
+    out = {"same_row": a.distance(same), "diagonal": a.distance(diag),
+           "web_rows": C.ROW_PITCH - K.BOTTOM_W, "web_row": C.P - K.BOTTOM_W,
+           "skirts": C.P - C.D_SKIRT, "buttons": C.P - C.D_BTN}
+    sw = K.all_switches()
+    for version in ("seixo", "madeira"):
+        out["shell_" + version] = sw.distance(C.shell(C.VERSIONS[version], ghost_led=(version == "madeira")))
+    return out
+
+
 def main():
     out = []
     w = out.append
     zb = K.skirt_base_z()
     results = {}
-    for sk in ("A", "B"):
+    for sk in STACKS:
         for chorus in (False, True):
             for version in ("seixo", "madeira"):
                 results[(sk, chorus, version)] = run(sk, chorus, version)
                 print("done", sk, chorus, version)
-    sA = stack("A")[1]
-    sB = stack("B")[1]
+    kb = keyboard_check()
+    sM = stack("M")[1]
     iS = interface_board(C.VERSIONS["seixo"])[1]
     iM = interface_board(C.VERSIONS["madeira"])[1]
+    ms = {(ch, v): max_stack(ch, v) for ch in (False, True) for v in ("seixo", "madeira")}
+    length = C.ROW2_X[1] + C.D_BTN / 2 + C.CLR_SIDE + C.BOX_OFF
 
-    w("# eTuttino — conferência da eletrônica no case (SPEC item 9)\n")
-    w("Gerado por `fit_check.py` a partir de `case.py` (CadQuery). As peças são sólidos com as medidas "
-      "de datasheet ou da placa atual; as incertas estão marcadas *conferir* no código. "
+    w("# eTuttino — conferência do case (SPEC v5 + passo 18,5)\n")
+    w("Gerado por `fit_check.py` a partir de `case.py` (CadQuery). As peças são sólidos com medidas "
+      "de datasheet, da placa atual ou medidas por você; as incertas estão marcadas CHECK no código. "
       "Coordenadas da SPEC (y para quem toca). Folga = menor distância entre a peça e o case (tampa + fundo).\n")
+    w("Modelo da SPEC v5 com três decisões do usuário tomadas depois dela, para entrar na v6: **passo 18,5 mm** "
+      "(grade hexagonal mantida), **fim da rampa com a curva até 75° e reta até a face** (ver §5), e pilha Teensy + "
+      "Audio Board de **~13 mm no eTuttino** e **reduzida em 3–4 mm (≤ 10 mm) no Chorus**.\n")
     w("## Resumo\n")
     w("RESUMO_AQUI\n")
+    w("Pilha mais alta que cabe (de baixo da Audio Board ao topo do USB do Teensy): **%.1f mm** no eTuttino Seixo, "
+      "%.1f mm no eTuttino Madeira, **%.1f mm** no Chorus Seixo e %.1f mm no Chorus Madeira. A sua pilha tem ~13 mm.\n" % (
+          ms[(False, "seixo")], ms[(False, "madeira")], ms[(True, "seixo")], ms[(True, "madeira")]))
 
-    w("**Condições para caber (pilha B):**\n\n"
-      "1. Teensy mais baixo que hoje. O espaço entre a Audio Board e o Teensy pode ser no máximo "
-      "%.1f mm no eTuttino (Seixo) / %.1f mm (Madeira) e %.1f / %.1f mm no Chorus. Hoje são 11 mm "
-      "(soquete 8,5 + espaçador 2,5). Teensy soldado direto nos pinos da Audio Board (2,5 mm, como a PJRC monta) cabe em todos. "
-      "No eTuttino, um soquete baixo (~4–5 mm) ainda deixa o Teensy removível.\n"
-      "2. Plugue micro-USB de 90° (≤ 11 mm a partir do conector, ≤ 7,5 mm de altura) no cabo até o USB de painel.\n"
-      "3. Peças de painel com no máximo ~10 mm de corpo atrás do inserto: senão batem no potenciômetro (x = 20). "
-      "Na Madeira a parede é afinada para %.1f mm em volta do inserto (bolsão por dentro).\n"
-      "4. Potenciômetro, encoder e LED numa plaquinha sob a tampa, com pernas cortadas rente (~1,5 mm). "
-      "Por baixo dela passa a borda da Audio Board, com o jack dela.\n"
-      "5. O jack de painel ligado por fio aos pinos de fone da Audio Board, ou por um plugue de 90°. Um plugue reto de 3,5 mm "
-      "não cabe entre a Audio Board e a parede.\n" % (
-          max_gap(False, "seixo"), max_gap(False, "madeira"), max_gap(True, "seixo"), max_gap(True, "madeira"), C.INSERT_WALL))
+    w("## 1. Teclado: passo %.2f mm, grade hexagonal\n" % C.P)
+    w("Cada botão fica a **%.2f mm** dos seis vizinhos (lados e diagonais iguais, triângulos equiláteros). "
+      "As fileiras ficam a %.2f × cos 30° = **%.2f mm** uma da outra, em y = %s (fileira 1 → 4). "
+      "Folga da abertura: %.1f mm na frente e atrás, %.0f nas laterais. Comprimento total **%.1f mm**.\n" % (
+          C.P, C.P, C.ROW_PITCH, ", ".join("%.2f" % C.ROW_Y[r] for r in (1, 2, 3, 4)), C.CLR_FB, C.CLR_SIDE, length))
+    w("Medidas do Gateron KS-20 (desenho oficial KS-20TF10B045NW-X72): carcaça de cima 15,40 × 15,10 mm, "
+      "11,10 mm da PCB ao topo da carcaça, placa a 5,00 mm, furo 14,00, curso 4,1 ± 0,2.\n")
+    w("| Conferência | Folga |")
+    w("|---|---|")
+    w("| Carcaça × carcaça, mesma fileira | %.2f mm |" % kb["same_row"])
+    w("| Carcaça × carcaça, diagonal (fileira vizinha) | %.2f mm (é o limite: passo mínimo ≈ 17,8 mm) |" % kb["diagonal"])
+    w("| Teia da placa entre furos 14 × 14 | %.2f mm entre fileiras, %.2f mm na fileira |" % (kb["web_rows"], kb["web_row"]))
+    w("| Botão Ø%.0f × vizinho | %.2f mm |" % (C.D_BTN, kb["buttons"]))
+    w("| Saia Ø%.0f × vizinha | %.2f mm |" % (C.D_SKIRT, kb["skirts"]))
+    w("| Saia × borda da abertura | %.1f mm frente/trás, %.1f mm laterais |" % (
+        C.CLR_FB - (C.D_SKIRT - C.D_BTN) / 2, C.CLR_SIDE - (C.D_SKIRT - C.D_BTN) / 2))
+    w("| Switches × case | %.1f mm (Seixo), %.1f mm (Madeira) |" % (kb["shell_seixo"], kb["shell_madeira"]))
+    w("")
+    w("**Capas.** A saia redonda (Ø%.0f, parede de %.1f mm) não pode descer até os cantos da carcaça retangular do Gateron. "
+      "Com o curso de %.1f mm, a base da saia fica a **%.2f mm acima da placa** com a tecla solta (z = %.2f; apertada, %.2f mm). "
+      "A capa tem **%.2f mm** da base da saia ao topo (z = %.1f), com o tubo da haste por baixo. "
+      "Entre a tampa (z %.1f) e a saia aparecem ~%.1f mm da carcaça escura. O topo da carcaça e a altura da haste não estão "
+      "cotados no desenho do Gateron: o `keycap_test_4.stl` (4 capas) confirma isso nos switches reais.\n" % (
+          C.D_SKIRT, K.SKIRT_WALL, K.TRAVEL, zb - C.Z_PLATE_TOP, zb, zb - C.Z_PLATE_TOP - K.TRAVEL,
+          C.Z_KEY_TOP - zb, C.Z_KEY_TOP, C.Z_DECK, zb - C.Z_DECK))
 
-    w("## 0. Antes de tudo: a grade das teclas mudou\n")
-    w("A SPEC põe as fileiras a **16,5 mm** uma da outra (74,8 / 58,3 / 41,8 / 25,3), com meio passo de "
-      "deslocamento: uma grade hexagonal (19,05 × cos 30° = 16,50), onde cada botão fica a 19,05 mm dos seis "
-      "vizinhos. A PCB atual (`generate.py`, PR #77/#78) tem as fileiras a **19,05 mm** (grade MX retangular, "
-      "267 × 97,2 mm). Ou seja, **a placa atual não serve neste case**: a PCB e a placa de switches têm que ser "
-      "refeitas na grade nova. Notas, fileiras e firmware não mudam (a ordem C-griff é a mesma), só a geometria. "
-      "Cabe com folga: switches a 2,5 mm entre fileiras (16,5 − 14), carcaça de cima a 1,5 mm, "
-      "e sobram ~15 mm atrás da fileira 4 e na frente da fileira 1 para os multiplexadores, como hoje.\n")
-
-    w("## 1. Teensy + Audio Board, tela, knobs, LED, alto-falante e conectores (9.1)\n")
+    w("## 2. Teensy + Audio Board, tela, knobs, LED, alto-falante e conectores\n")
     lS, rS = interior_widths(C.VERSIONS["seixo"])
     lM, rM = interior_widths(C.VERSIONS["madeira"])
-    w("**Largura útil.** O ponto mais estreito da área de interface, na fileira 2, tem %.1f mm em cima "
-      "(x = 0 até o começo do declive, x = %.1f: o arco R 32,8 em volta do botão G3 corta o vértice vivo 56,6 da SPEC). "
-      "A cavidade com altura total vai de x = %.1f a %.1f no Seixo (%.1f mm) e de %.1f a %.1f na Madeira (%.1f mm). "
-      "Os ~68 mm da SPEC são o vértice da abertura das teclas (68,49), não o espaço interno. Abaixo do declive "
-      "a cavidade continua (o teto desce até a tampa das teclas, z = %.1f), então peças baixas podem ir mais para a direita.\n" % (
-          C.ROW2_X[0] - 22.5 - C.TRANS_TOP_OFF, C.ROW2_X[0] - 22.5 - C.TRANS_TOP_OFF, lS, rS, rS - lS, lM, rM, rM - lM, C.Z_PLATE_TOP))
-    w("**Arranjo testado** (vista de cima em `renders/fit_top.png`): placa principal estendida para a esquerda por baixo "
-      "da interface (uma placa só; a pilha continua presa só pelas pernas dos headers). A pilha fica no canto de trás, "
-      "fileira VIN atrás, USB virado para a face esquerda: Audio Board em x %.0f–%.0f, y %.0f–%.1f; Teensy em y %.1f–%.1f. "
-      "A borda esquerda fica a 20 mm da parede para caber o plugue USB de 90° e as peças de painel. "
-      "Potenciômetro, encoder e LED vão numa plaquinha de interface pendurada sob a tampa (y 37–53), "
-      "por cima da borda da Audio Board.\n" % (
-          sA["x"][0], sA["x"][1], sA["y"][0], sA["y"][1], sA["cy"] - 8.89, sA["cy"] + 8.89))
-    for sk in ("A", "B"):
+    w("Audio Board **38,0 × 36,8 × 6,7 mm** (anúncio da SB Components, conferido na sua placa), pilha montada de **~13 mm**. "
+      "Largura útil da interface com altura total, na metade da frente (onde a rampa desce reta, o ponto mais estreito): "
+      "%.1f mm no Seixo, %.1f mm na Madeira. Teto interno: z %.1f sob a parte plana (Seixo), caindo a 13° até z %.1f na frente.\n" % (
+          rS - lS, rM - lM, C.z_interface(30, C.VERSIONS["seixo"]["top"]), C.z_interface(C.WIDTH, C.VERSIONS["seixo"]["top"])))
+    pocket, head, head_plate = deck_pocket(C.VERSIONS["seixo"])
+    w("**Por baixo da rampa e da tampa à esquerda da fileira 1** (Seixo). Ali o teto é a tampa do teclado: sobram "
+      "**%.1f mm** acima da PCB (%.1f mm onde a placa de switches passa por cima). Faixa livre de placa de switches, por y: %s. "
+      "Cabem peças baixas da placa principal (SMD, multiplexador, LDO, conectores baixos), não a pilha nem o alto-falante. "
+      "Por baixo da rampa o teto sobe do nível da tampa até o da interface em ~%.1f mm na horizontal.\n" % (
+          head, head_plate,
+          "; ".join("y %.0f: x %.1f–%.1f" % (y, a_, b_) if b_ < 900 else "y %.0f: a partir de x %.1f" % (y, a_) for y, a_, b_ in pocket),
+          (C.RAMP_TOP_OFF - C.RAMP_FOOT_OFF)))
+    w("**Arranjo testado** (`renders/fit_top.png`): placa principal estendida por baixo da interface; pilha no canto de trás, "
+      "fileira VIN atrás, USB para a face esquerda: Audio Board em x %.0f–%.0f, y %.0f–%.1f, Teensy em y %.1f–%.1f. "
+      "Potenciômetro, encoder e LED numa plaquinha sob a tampa (y %.0f–%.0f), por cima da borda da Audio Board.\n" % (
+          sM["x"][0], sM["x"][1], sM["y"][0], sM["y"][1], sM["cy"] - 8.89, sM["cy"] + 8.89,
+          C.VOLUME_XY[1] - 7, C.VOLUME_XY[1] + 7))
+    w("Ordem dos controles (v5): volume (%.0f; %.0f), seletor (%.0f; %.0f), LED (%.0f; %.0f); tela em x %.0f–%.0f.\n" % (
+        C.VOLUME_XY + C.SELECT_XY + C.LED_XY + (C.SCREEN_ZONE[0], C.SCREEN_ZONE[2])))
+    for sk in STACKS:
         info = stack(sk)[1]
-        w("### Pilha %s — %s\n" % (sk, STACKS[sk]["label"]))
-        w("Topo do Teensy z = %.1f, topo do micro-USB z = %.1f, plugue USB de 90° até z = %.1f. Teto interno sobre o Teensy: "
+        label = STACKS[sk]["label"]
+        w("### %s\n" % (label[0].upper() + label[1:]))
+        w("Topo do Teensy z = %.1f, topo do micro-USB z = %.1f, plugue USB de 90° até z = %.1f. Teto sobre o Teensy: "
           "z = %.1f (Seixo) / %.1f (Madeira).\n" % (
               info["teensy_top"], info["usb_top"], info["usb_z"] + USB_PLUG[2] / 2,
               C.z_interface(info["cy"], C.VERSIONS["seixo"]["top"]), C.z_interface(info["cy"], C.VERSIONS["madeira"]["top"])))
         w("| Peça | eTuttino Seixo | eTuttino Madeira | Chorus Seixo | Chorus Madeira |")
         w("|---|---|---|---|---|")
-        names = [r[0] for r in results[(sk, True, "seixo")][0]]
-        seen = set()
-        for name in names:
-            if name in seen:
-                continue
-            seen.add(name)
+        seen = []
+        for r in results[(sk, True, "seixo")][0]:
+            if r[0] not in seen:
+                seen.append(r[0])
+        for name in seen:
             cells = []
             for chorus in (False, True):
                 for version in ("seixo", "madeira"):
                     rows = [r for r in results[(sk, chorus, version)][0] if r[0] == name]
-                    if not rows:
-                        cells.append("—")
-                        continue
-                    vol = max(r[1] for r in rows)
-                    gap = min(r[2] for r in rows)
-                    cells.append(verdict(vol, gap))
+                    cells.append(verdict(max(r[1] for r in rows), min(r[2] for r in rows)) if rows else "—")
             w("| %s | %s |" % (name, " | ".join(cells)))
         w("")
         hits = {}
         for chorus in (False, True):
             for version in ("seixo", "madeira"):
-                for a, b, vol, gap in results[(sk, chorus, version)][1]:
-                    key = (a, b)
-                    hits.setdefault(key, []).append(("Chorus " if chorus else "eTuttino ") + version.capitalize() + ": " + verdict(vol, gap))
+                for x, y, vol, gap in results[(sk, chorus, version)][1]:
+                    if vol > 0.01 or gap >= 0.05:
+                        hits.setdefault((x, y), []).append(("Chorus " if chorus else "eTuttino ") + version.capitalize() + ": " + verdict(vol, gap))
         if hits:
-            w("Entre peças (menos de 1 mm):\n")
-            for (a, b), lst in hits.items():
-                w("- %s × %s — %s" % (a, b, "; ".join(sorted(set(lst)))))
+            w("Entre peças (menos de 1 mm, sem contar as que se encostam de propósito):\n")
+            for (x, y), lst in hits.items():
+                w("- %s × %s — %s" % (x, y, "; ".join(sorted(set(lst)))))
             w("")
+    w("Potenciômetro, encoder, tela e alto-falante aparecem como \"justo\" (0,2–0,3 mm) de propósito: ficam encostados "
+      "por baixo da tampa. Figuras: `renders/fit_iso.png`, `fit_top.png` (eTuttino, pilha montada, Seixo, tampa transparente), "
+      "`fit_section_M.png` (Chorus com a pilha de 13 mm, corte na linha do Teensy) `fit_section_R.png` (pilha reduzida), `fit_top_chorus.png` (Chorus em planta) e `fit_section_x.png` (corte de trás para a frente pelo alto-falante).\n")
+    w("**Condições que continuam valendo:** plugue micro-USB de 90° (≤ 11 mm a partir do conector, ≤ 7,5 mm de altura); "
+      "peças de painel com no máximo ~10 mm de corpo atrás do inserto (na Madeira a parede é afinada para %.1f mm ali); "
+      "potenciômetro, encoder e LED numa plaquinha sob a tampa, com pernas cortadas rente; fone de painel ligado por fio "
+      "à Audio Board (um plugue reto de 3,5 mm não cabe).\n" % C.INSERT_WALL)
 
-    w("## 2. Altura dos eixos (9.2)\n")
-    w("Knob Ø9 a %.1f mm da superfície, eixo entrando %.0f mm no knob. Superfície em y = 45: z = %.2f.\n" % (KNOB_GAP, KNOB_BORE, iS["surface"]))
-    w("| Montagem | Comprimento L do eixo (da face de montagem) | Padrão EC11 / RK09 |")
+    w("## 3. Altura dos eixos\n")
+    w("| Montagem | Eixo L (da face de montagem) | Padrão EC11 / RK09 |")
     w("|---|---|---|")
     for label, L in (("plaquinha sob a tampa, Seixo", iS["L_sub"]), ("plaquinha sob a tampa, Madeira", iM["L_sub"]),
-                     ("na placa principal (z %.1f)" % C.Z_PCB_TOP, iS["L_main"])):
-        std = min(STD_L, key=lambda s: abs(s - L))
+                     ("na placa principal", iS["L_main"])):
+        std = min(STD_L, key=lambda v: abs(v - L))
         w("| %s | %.1f mm | L = %d (%+.1f mm no knob) |" % (label, L, std, std - L))
-    w("\nNa placa principal os corpos (z %.1f–%.1f) bateriam na Audio Board/jack na pilha do canto de trás, "
-      "e o eixo de 30 mm fica comprido e com folga lateral; a plaquinha sob a tampa usa eixos L = 15 (os mais comuns) e "
-      "deixa os knobs baixos. O LED de 3 mm na mesma plaquinha precisa ficar %.1f mm acima dela no Seixo "
-      "(ponta rente ao furo) e %.1f mm na Madeira (por baixo da pele de %.1f mm): um espaçador de LED resolve.\n" % (
-          C.Z_PCB_TOP, C.Z_PCB_TOP + ENC[2], iS["led_stand"], iM["led_stand"], C.GHOST_SKIN))
+    w("\nKnob Ø9 a %.1f mm da superfície, eixo %.0f mm dentro dele. O LED de 3 mm fica num espaçador de %.1f mm (Seixo) "
+      "/ %.1f mm (Madeira) sobre a plaquinha.\n" % (KNOB_GAP, KNOB_BORE, iS["led_stand"], iM["led_stand"]))
 
-    w("## 3. Saias de 17 mm (9.3)\n")
-    w("- Vizinhos: passo 19,05 nas seis direções (a grade é hexagonal), saias Ø17 → **2,05 mm** entre saias. Ok para dedos e para imprimir; "
-      "não dá para aumentar a saia além de ~18 mm.\n"
-      "- Saia × borda da abertura: %.1f mm na frente/atrás e %.1f mm nas laterais (a folga da SPEC é medida do Ø15).\n"
-      "- Saia × carcaça do switch: uma saia redonda Ø17 (Ø15,4 por dentro) sobre a carcaça quadrada do MX bate nos cantos "
-      "se descer muito. Com curso de %.1f mm a base da saia tem que ficar a **%.1f mm acima da placa** com a tecla solta "
-      "(z = %.2f), e a capa fica com %.2f mm de altura até o topo (z = 26,5) — um domo baixo de fato, com o tubo da haste "
-      "por baixo. Consequência visual: entre a tampa (z 15,7) e a saia aparecem ~%.0f mm da carcaça do switch — "
-      "por isso carcaça escura. Números de carcaça e haste são MX nominais: conferir com o Gateron KS-20 e com o teste de 4 capas.\n" % (
-          C.CLR_FB - (C.D_SKIRT - C.D_BTN) / 2, C.CLR_SIDE - (C.D_SKIRT - C.D_BTN) / 2,
-          K.TRAVEL, zb - C.Z_PLATE_TOP, zb, C.Z_KEY_TOP - zb, zb - C.Z_DECK))
-
-    w("## 4. Espessura de parede (9.4)\n")
-    s, m = C.VERSIONS["seixo"], C.VERSIONS["madeira"]
+    w("## 4. Espessura de parede\n")
+    s_, m_ = C.VERSIONS["seixo"], C.VERSIONS["madeira"]
     w("| | Seixo (resina/MJF) | Madeira (carvalho, CNC) |")
     w("|---|---|---|")
-    w("| Paredes laterais | %.1f mm | %.1f mm |" % (s["wall"], m["wall"]))
-    w("| Tampa da interface | %.1f mm | %.1f mm |" % (s["top"], m["top"]))
-    w("| Tampa em volta das teclas | %.1f mm (z %.1f–%.1f, apoiada na placa) | igual |" % (C.LID_T, C.Z_PLATE_TOP, C.Z_DECK))
-    w("| Borda da abertura | arredondado 4 × %.1f + %.1f mm reto | igual — é o ponto mais frágil na madeira |" % (C.CHAMFER_DROP, C.LID_T - C.CHAMFER_DROP))
-    w("| Teia da grade | %.1f mm entre furos | igual |" % (C.GRILLE_PITCH - C.GRILLE_D))
-    w("| Fundo | %.1f mm, encaixado dentro das paredes | %.1f mm |" % (C.FLOOR_T, C.FLOOR_T))
-    w("| LED | furo Ø%.1f | pele de %.1f mm por cima |" % (C.LED_HOLE_D, C.GHOST_SKIN))
+    w("| Paredes | %.1f mm | %.1f mm (%.1f em volta do inserto) |" % (s_["wall"], m_["wall"], C.INSERT_WALL))
+    w("| Tampa da interface | %.1f mm | %.1f mm |" % (s_["top"], m_["top"]))
+    w("| Tampa em volta das teclas | %.1f mm, apoiada na placa | igual |" % C.LID_T)
+    w("| Borda da abertura | arredondado %.0f × %.1f + %.1f mm reto | igual |" % (C.CHAMFER_W, C.CHAMFER_DROP, C.LID_T - C.CHAMFER_DROP))
+    w("| Teia da grade | %.1f mm | igual |" % (C.GRILLE_PITCH - C.GRILLE_D))
+    w("| LED | furo Ø%.1f | pele de %.1f mm |" % (C.LED_HOLE_D, C.GHOST_SKIN))
+    w("\nA Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão interno).\n")
+
+    w("## 5. Perguntas para o design\n")
+    w("Já decidido nesta rodada (para escrever na v6): passo 18,5 com fileiras a %.2f mm; caixa mantida com 100 mm "
+      "(a folga frente/trás do teclado sobe de 7,5 para %.2f mm, a faixa de tampa continua %.1f mm, o comprimento cai "
+      "para %.1f mm); curva da frente da rampa até %.0f° e depois reta, chegando à face em x ≈ %.1f (cima) e %.1f (baixo); "
+      "pilha de 13 mm no eTuttino e ≤ 10 mm no Chorus.\n" % (
+          C.ROW_PITCH, C.CLR_FB, C.BOX_OFF, length, C.RAMP_FRONT_SWEEP,
+          ramp_front_x(C.RAMP_TOP_OFF), ramp_front_x(C.RAMP_FOOT_OFF)))
+    q = []
+    q.append("**Raio do vinco.** A SPEC pede o vinco em y = 55 arredondado, sem dar o raio. Usei R %.0f (`IF_CREASE_R`)." % C.IF_CREASE_R)
+    q.append("**Saia das capas.** Com passo 18,5 e saia Ø%.0f sobram %.2f mm entre saias vizinhas. Manter, ou saia Ø16,5 (%.2f mm)?" % (
+        C.D_SKIRT, C.P - C.D_SKIRT, C.P - 16.5))
+    q.append("**Switch à mostra.** Entre a tampa e a saia aparecem ~%.1f mm da carcaça. A tampa em volta das teclas "
+             "(`Z_DECK`, hoje %.1f) pode subir até ~%.1f sem tocar as saias apertadas, escondendo boa parte do switch. Sobe?" % (
+                 zb - C.Z_DECK, C.Z_DECK, zb - K.TRAVEL - 1.0))
+    q.append("**Madeira.** A borda da abertura (%.1f mm reto) é frágil em carvalho, e a pele de %.1f mm sobre o LED "
+             "provavelmente fica escura. Borda mais grossa só na Madeira? LED com furo e janela de acrílico em vez da pele?" % (
+                 C.LID_T - C.CHAMFER_DROP, C.GHOST_SKIN))
+    q.append("**Texto da SPEC para a v6.** Seção 2: passo 18,5 e fileiras em y = %s. Seção 4: comprimento ~%.1f e o fim "
+             "da rampa como acima. Seção 8 (Madeira): ainda diz \"fresagem de 3 eixos de cima: ... bolsão interno\", "
+             "contra as duas fixações da intro e da mudança 7. Seção 9: pilha de 13 / ≤ 10 mm e PCB refeita com fileiras "
+             "a %.2f mm (não 16,5)." % (", ".join("%.2f" % C.ROW_Y[r] for r in (1, 2, 3, 4)), length, C.ROW_PITCH))
+    for i, t in enumerate(q, 1):
+        w("%d. %s" % (i, t))
     w("")
-    w("- Resina e MJF: 2,5 mm é confortável (mínimo prático ~1,5–2). A borda de 1 mm da abertura passa, mas é melhor 1,2+ em resina frágil.\n"
-      "- Madeira: 4 mm nas paredes e 3 mm na tampa são o mínimo sensato para carvalho. A borda da abertura (1 mm de altura reta, "
-      "fibra cruzada nas pontas do hexágono) pode lascar: aumentar `CHAMFER_DROP`/`LID_T` só na Madeira ou deixar a borda mais grossa. "
-      "Pele de 0,8 mm de carvalho branco quase não deixa a luz passar: testar numa sobra (0,5 mm e um LED forte costumam ser necessários).\n"
-      "- A SPEC diz \"fresagem de 3 eixos de cima, numa fixação só\" incluindo o bolsão interno — não dá: o bolsão é por baixo. "
-      "São **duas fixações**: de cima (contorno, abertura, arredondado, rebaixo da tela, furos) e virada (bolsão, rebaixo do fundo, "
-      "bosses, teto inclinado da interface com fresa de topo esférico). Os cantos internos do bolsão já têm raio ≥ 12 mm.\n")
 
-    w("## 5. Outras observações da SPEC\n")
-    w("- O texto do item 4 diz que a borda de cima do declive é \"abertura + 20,3\", mas o vértice que ele dá, (56,6; 58,3), "
-      "é abertura + 10,3 — o espelho do lado direito. Usei o vértice (`TRANS_TOP_OFF = 10.3`).\n"
-      "- O contorno da grade passa ~1,2 mm da borda do declive no canto (75,5; 89). Os furos que cairiam no declive são "
-      "descartados (`GRILLE_KEEP`); sobram %d furos.\n"
-      "- Os vértices da caixa da SPEC usam a frente em y = 100,1 (74,8 + 15 + 10,3); o modelo prende a frente em y = 100 "
-      "(diferença de 0,05 mm no x do vértice da frente).\n"
-      "- O sistema de coordenadas da SPEC é canhoto (x direita, y para quem toca, z para cima). Modelado ao pé da letra, o instrumento "
-      "sai espelhado num CAD. Os arquivos exportados são espelhados para y = 100 − y_SPEC (y para trás), "
-      "e o instrumento fica certo: interface à esquerda de quem toca.\n" % len(C.grille_holes()))
-
-    text = "\n".join(out)
-    summary = summarise(results)
-    text = text.replace("RESUMO_AQUI", summary)
+    text = "\n".join(out).replace("RESUMO_AQUI", summarise(results))
     with open(os.path.join(HERE, "FIT_CHECK.md"), "w", encoding="utf-8") as f:
         f.write(text)
-    os.makedirs(os.path.join(HERE, "renders"), exist_ok=True)
     R = os.path.join(HERE, "renders")
-    rows, hits, sinfo, iinfo, parts, shell = results[("B", True, "seixo")]
+    os.makedirs(R, exist_ok=True)
+    for old in ("fit_section_A.png", "fit_section_B.png", "fit_section_S.png"):
+        if os.path.exists(os.path.join(R, old)):
+            os.remove(os.path.join(R, old))
+    rows, hits, sinfo, iinfo, parts, shell = results[("M", False, "seixo")]
     render_fit(parts, shell, os.path.join(R, "fit_iso.png"), "iso")
     render_fit(parts, shell, os.path.join(R, "fit_top.png"), "top")
-    render_fit(parts, shell, os.path.join(R, "fit_section_B.png"), "section", sinfo["cy"],
-               "Chorus, pilha baixa: corte na linha do Teensy (y = %.1f)" % sinfo["cy"])
-    rows, hits, sinfo, iinfo, partsA, shellA = results[("A", True, "seixo")]
-    render_fit(partsA, shellA, os.path.join(R, "fit_section_A.png"), "section", sinfo["cy"],
-               "Chorus, pilha atual (19,8 mm): o Teensy entra na tela")
+    rows, hits, sinfo, iinfo, parts, shell = results[("R", True, "seixo")]
+    render_fit(parts, shell, os.path.join(R, "fit_top_chorus.png"), "top")
+    gx = sum(p[0] for p in C.grille_holes()) / len(C.grille_holes())
+    render_fit(parts, shell, os.path.join(R, "fit_section_x.png"), "xsection", gx,
+               "Chorus: corte em x = %.1f (alto-falante sob o plano a 13 graus, pilha, tela); frente a direita" % gx)
+    for sk, title in (("M", "Chorus, pilha montada (13 mm): corte na linha do Teensy"),
+                      ("R", "Chorus, pilha reduzida (10 mm): corte na linha do Teensy")):
+        rows, hits, sinfo, iinfo, parts, shell = results[(sk, True, "seixo")]
+        render_fit(parts, shell, os.path.join(R, "fit_section_%s.png" % sk), "section", sinfo["cy"], title)
     print("FIT_CHECK.md written")
 
 
 def summarise(results):
     lines = []
-    for sk in ("A", "B"):
+    for sk in STACKS:
         for chorus in (False, True):
             bad = set()
             for version in ("seixo", "madeira"):

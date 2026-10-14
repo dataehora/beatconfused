@@ -35,16 +35,21 @@ OUT = os.path.join(HERE, "out")
 
 # ---------------------------------------------------------------- parameters
 # keyboard (SPEC 2)
-P = 19.05                     # button pitch
+P = 18.5                      # button pitch, the same to all six neighbours (the user's
+                              # choice after SPEC v5, which still says 19.05)
 D_BTN = 15.0                  # button (dome) diameter
 D_SKIRT = 17.0                # keycap skirt at its base
 O_KEYS = 104.0                # x of xp = 0
-ROW_Y = {1: 74.8, 2: 58.3, 3: 41.8, 4: 25.3}   # row 1 nearest the player
+ROW_PITCH = P * math.cos(math.radians(30))     # 16.02: rows half a pitch apart in x -> equilateral
+KEYS_CY = 50.0                                 # keys centred front to back
+ROW_Y = {r: KEYS_CY + (2.5 - r) * ROW_PITCH for r in (1, 2, 3, 4)}   # row 1 nearest the player
+# (74.03 / 58.01 / 41.99 / 25.97 at 18.5; SPEC v5's 74.8 / 58.3 / 41.8 / 25.3 are for 19.05)
 N_KEYS = 34                   # G3 (n = 0) .. E6 (n = 33)
 
 # keyboard opening (SPEC 3)
 CLR_SIDE = 15.0               # button edge to the opening, sides (perpendicular to the "<")
-CLR_FB = 7.5                  # button edge to the opening, front and back
+CLR_FB = None                 # button edge to the opening, front and back: set below so the
+                              # deck round the keys stays BOX_OFF wide in the 100 mm box (8.17)
 SIDE_ANGLE = 30.0             # the "<" and ">" lean 30 deg from the y axis
 R_OPEN_CORNER = 6.0           # the four 120 deg corners (the lateral vertices are concentric)
 CHAMFER_W = 4.0               # rounded edge round the opening, in plan
@@ -54,11 +59,22 @@ CHAMFER_DROP = 2.0            # ...and its drop; the last LID_T - CHAMFER_DROP i
 WIDTH = 100.0
 BOX_OFF = 10.3                # right/front/back: box = opening + 10.3
 R_LEFT = 16.0                 # left corners
-TRANS_TOP_OFF = 10.3          # top edge of the interface->keyboard slope = opening + this
-                              # (SPEC 4 says "+20.3" but gives the vertex (56.6; 58.3),
-                              # which is +10.3 -- the mirror of the right side. The vertex wins.)
+CLR_FB = WIDTH / 2 - BOX_OFF - 1.5 * ROW_PITCH - D_BTN / 2
 Z_DECK = 15.7                 # top of the lid round the keys
-Z_IF_BACK, Z_IF_FRONT = 33.0, 28.0   # interface top, sloping towards the player
+# interface top (SPEC v5 4): flat at Z_IF to the crease, then down at IF_SLOPE to the front
+Z_IF = 33.0
+IF_CREASE_Y = 55.0
+IF_SLOPE = 13.0               # degrees
+IF_CREASE_R = 10.0            # the rounded crease -- SPEC gives no radius: CHECK
+# the ramp from the interface down to the keyboard deck (SPEC v5 4)
+RAMP_TOP_OFF = 12.7           # top edge = opening + 12.7 in the back half (R 35.2 round G3)
+RAMP_FOOT_OFF = 4.0           # bottom edge = the chamfer's outer edge (opening + 4, R 26.5)
+RAMP_STRAIGHT_TO = 86.0       # front half: both edges run straight (along y) to here...
+RAMP_FRONT_R = 14.0           # ...then curve with R 14 towards the front face
+RAMP_FRONT_SWEEP = 75.0       # degrees of that curve; it leaves straight from there and meets the
+                              # face at 15 deg (a full 90 deg meets it tangentially, and OCC can't
+                              # round the ramp's foot where it runs along the wall)
+RAMP_EDGE_R = 5.0             # both ramp edges rounded
 
 # stack-up inside (same as the current board, etutti/hardware/assembly3d.py)
 FLOOR_T = 2.0                 # bottom plate
@@ -73,7 +89,7 @@ Z_KEY_TOP = 26.5
 PLATE_OVERLAP = 3.0           # plate edge under the lid, beyond the opening
 
 # interface area (SPEC 5)
-SCREEN_ZONE = (10.0, 5.0, 64.0, 35.0)     # x0, y0, x1, y1
+SCREEN_ZONE = (8.0, 5.0, 62.0, 35.0)      # x0, y0, x1, y1
 SCREEN_R = 3.0
 SCREEN_MODE = "recess"        # "recess" (sticker/engraving, eTuttino), "window" (real screen), "none"
 SCREEN_RECESS = 1.5           # CHECK
@@ -83,9 +99,9 @@ SELECT_XY = (37.0, 45.0)
 SHAFT_HOLE_D = 6.8            # 6 mm shafts
 LED_XY, LED_HOLE_D = (52.0, 45.0), 3.5
 GHOST_SKIN = 0.8              # Madeira: wood left over the LED
-GRILLE = [(13, 60), (55, 60), (58, 63), (75.5, 89), (73, 92), (13, 92), (10, 89), (10, 63)]
-GRILLE_D, GRILLE_PITCH = 1.9, 4.0
-GRILLE_KEEP = 1.0             # hole edge to the top edge of the slope (the SPEC outline crosses it by ~1.2 mm)
+GRILLE_RECT = (8.0, 61.0, 53.0, 94.0)     # on the 13 deg slope; corners R 3,
+GRILLE_R, GRILLE_R_FR = 3.0, 8.0          # the front-right one R 8 (concentric with the ramp's curve)
+GRILLE_D, GRILLE_PITCH = 1.9, 4.0         # pitch measured on the sloping surface
 
 # connectors (SPEC 6)
 USB_YZ, JACK_YZ = (36.0, 19.5), (56.0, 19.5)
@@ -248,8 +264,16 @@ def dist_to_poly(p, poly):
     return best
 
 
+TAN_IF = math.tan(math.radians(IF_SLOPE))
+COS_IF = math.cos(math.radians(IF_SLOPE))
+
+
 def z_interface(y, dz=0.0):
-    return Z_IF_BACK + (Z_IF_FRONT - Z_IF_BACK) * y / WIDTH - dz
+    """Height of the interface top at y (the crease's rounding ignored), or
+    of the lid's underside when dz is the lid thickness."""
+    flat = Z_IF - dz
+    slope = Z_IF - (y - IF_CREASE_Y) * TAN_IF - dz / COS_IF
+    return min(flat, slope)
 
 
 def opening_offset(p):
@@ -277,65 +301,77 @@ def fuse(shapes):
 
 
 def below_plane(dz=0.0, x0=-50, x1=450):
-    """Everything under the interface's sloping top (lowered by dz)."""
+    """Everything under the interface's top (flat, rounded crease, 13 deg
+    down to the front), lowered by dz (the same profile offset: the lid
+    keeps its thickness round the crease)."""
     y0, y1 = -50.0, WIDTH + 50.0
-    wp = (cq.Workplane("YZ", origin=(x0, 0, 0))
-          .polyline([(y0, -10), (y1, -10), (y1, z_interface(y1, dz)), (y0, z_interface(y0, dz))])
-          .close().extrude(x1 - x0))
+    yc = IF_CREASE_Y - dz * (1 / COS_IF - 1) / TAN_IF          # the offset lines' corner
+    corner = (yc, Z_IF - dz)
+    a = (y0, Z_IF - dz)
+    b = (y1, z_interface(y1, dz))
+    t1, mid, t2, _ = _fillet(a, corner, b, max(IF_CREASE_R - dz, 0.5))
+    wp = (cq.Workplane("YZ", origin=(x0, 0, 0)).moveTo(y0, -10).lineTo(*a).lineTo(*t1)
+          .threePointArc(mid, t2).lineTo(*b).lineTo(y1, -10).close().extrude(x1 - x0))
     return wp.val()
 
 
-def left_lines(d, y_from=-30.0, y_to=WIDTH + 30.0):
-    """The "<" of the opening grown by d, as a polyline from behind the box
-    to in front of it (lateral fillet sampled), plus outward normals."""
+def ramp_edge(d, r_front, y_from=-30.0, k_back=24, k_front=24):
+    """One edge of the ramp in plan, back to front: the opening's "<" grown
+    by d (straight, then the arc round G3 to row 2), straight along y to
+    RAMP_STRAIGHT_TO, then a quarter circle of r_front ending on the front
+    face. Points of the two edges (d = foot and top) pair up one to one."""
     c = hex_contour(d)
-    # the left lateral arc is round vertex 5; keep the points left of the corners' x
     a_in, mid, a_out, centre = fillets(c)[5]
     r = c[5][1]
-    a0 = math.atan2(a_in[1] - centre[1], a_in[0] - centre[0])
-    a1 = math.atan2(a_out[1] - centre[1], a_out[0] - centre[0])
-    if a1 < a0:
-        a1 += 2 * math.pi
-    k = 36
-    arc = [(centre[0] + r * math.cos(a0 + (a1 - a0) * i / k), centre[1] + r * math.sin(a0 + (a1 - a0) * i / k))
-           for i in range(k + 1)]
-    # arc runs front (a_in, from the bottom-left corner) -> back (a_out); make it back -> front
-    arc = arc[::-1]
-    normals = [((x - centre[0]) / r, (y - centre[1]) / r) for x, y in arc]
-    # extend the straight sides to y_from / y_to
-    (xb, yb), (xf, yf) = arc[0], arc[-1]
-    back = (xb + (yb - y_from) * TAN, y_from)
-    front = (xf + (y_to - yf) * TAN, y_to)
-    return [back] + arc + [front], [normals[0]] + normals + [normals[-1]]
+    a_back = math.atan2(a_out[1] - centre[1], a_out[0] - centre[0]) % (2 * math.pi)   # ~210 deg
+    pts = []
+    xb, yb = a_out
+    pts.append((xb + (yb - y_from) * TAN, y_from))
+    for i in range(k_back + 1):
+        t = a_back + (math.pi - a_back) * i / k_back
+        pts.append((centre[0] + r * math.cos(t), centre[1] + r * math.sin(t)))
+    xv = centre[0] - r
+    cx = xv - r_front
+    sweep = math.radians(RAMP_FRONT_SWEEP)
+    for i in range(k_front + 1):
+        t = sweep * i / k_front
+        pts.append((cx + r_front * math.cos(t), RAMP_STRAIGHT_TO + r_front * math.sin(t)))
+    # straight on along the tangent, out through the front face
+    x, y = pts[-1]
+    L = (WIDTH + 30.0 - y) / math.cos(sweep)
+    for i in range(1, 9):            # in steps, so one smooth spline carries on through it
+        pts.append((x - L * i / 8 * math.sin(sweep), y + L * i / 8 * math.cos(sweep)))
+    return pts
 
 
-def raised_region(foot_d, z_foot, top_d, dz_top, z_hi=60.0):
-    """The interface block with its "<" slope: the ruled surface from the
-    opening+foot_d line (at z_foot) up to the opening+top_d line (on the
-    sloping top lowered by dz_top), extended to z_hi; everything left of
-    it, below the sloping top. Returned as a solid to intersect with the
-    box."""
-    foot, normals = left_lines(foot_d)
+def raised_region(foot_d, z_foot, top_d, dz_top, r_front=RAMP_FRONT_R, z_hi=40.0):
+    """The interface block and its ramp: the ruled surface from the foot
+    edge (at z_foot) up through the top edge (on the interface top lowered
+    by dz_top), extended to z_hi; everything left of it, under the top."""
+    foot = ramp_edge(foot_d, r_front)
+    top = ramp_edge(top_d, r_front)
     lo, hi = [], []
-    for (x, y), (nx, ny) in zip(foot, normals):
-        qx, qy = x + nx * (top_d - foot_d), y + ny * (top_d - foot_d)
-        zq = z_interface(qy, dz_top)
-        s = (z_hi - z_foot) / (zq - z_foot)
+    for (x, y), (qx, qy) in zip(foot, top):
+        zq = z_interface(min(qy, WIDTH), dz_top)   # past the front face: keep the front's height
+        s_ = (z_hi - z_foot) / (zq - z_foot)
         lo.append(cq.Vector(x, y, z_foot))
-        hi.append(cq.Vector(x + (qx - x) * s, y + (qy - y) * s, z_hi))
+        hi.append(cq.Vector(x + (qx - x) * s_, y + (qy - y) * s_, z_hi))
     far = -60.0
-    lo += [cq.Vector(far, lo[-1].y, z_foot), cq.Vector(far, lo[0].y, z_foot)]
-    hi += [cq.Vector(far, hi[-1].y, z_hi), cq.Vector(far, hi[0].y, z_hi)]
-    w_lo = cq.Wire.makePolygon(lo, close=True)
-    w_hi = cq.Wire.makePolygon(hi, close=True)
-    loft = cq.Solid.makeLoft([w_lo, w_hi], ruled=True)
+
+    def wire(pts, z):
+        spline = cq.Edge.makeSpline(pts)
+        tail = [pts[-1], cq.Vector(far, pts[-1].y, z), cq.Vector(far, pts[0].y, z), pts[0]]
+        return cq.Wire.assembleEdges([spline] + [cq.Edge.makeLine(p, q) for p, q in zip(tail, tail[1:])])
+    loft = cq.Solid.makeLoft([wire(lo, z_foot), wire(hi, z_hi)], ruled=True)
     return loft.intersect(below_plane(dz_top))
 
 
 def rounded_opening_cutter():
     """The keyboard opening with its 4 mm rounded edge (quarter ellipse,
     CHAMFER_W across, CHAMFER_DROP down, then a vertical land to the
-    plate), as one solid to cut from the lid."""
+    plate), as two solids to cut one after the other (fused first, the
+    overlapping loft and prism come out empty; touching, they leave a
+    zero-thickness film at the land)."""
     secs = []
     n = 8
     z_land = Z_DECK - CHAMFER_DROP
@@ -345,9 +381,8 @@ def rounded_opening_cutter():
         z = z_land + CHAMFER_DROP * math.sin(phi)
         secs.append(contour_wp(hex_contour(d), z).wire().val())
     loft = cq.Solid.makeLoft(secs, ruled=False)
-    below = prism(hex_contour(0.0), Z_PLATE_TOP - 3.0, z_land + 0.001)
-    above = prism(hex_contour(CHAMFER_W), Z_DECK - 0.001, Z_DECK + 5.0)
-    return fuse([loft, below, above])
+    below = prism(hex_contour(0.0), Z_PLATE_TOP - 3.0, z_land + 0.3)     # overlaps the loft: no film left at z_land
+    return [loft, below]
 
 # ---------------------------------------------------------------- fixings
 
@@ -357,10 +392,16 @@ def screw_points():
     clear of the keys, the plate edge (notched round them), the stack and
     the connector insert."""
     return [(7.0, 8.0), (7.0, 92.0),                  # left corners, clear of the screen module
-            (78.0, 7.0), (78.0, 93.0),                # under the slope, back and front
+            (78.0, 7.0), (76.0, 93.0),                # under the ramp / the deck left of row 1
             (165.0, 6.0), (165.0, 94.0),
             (255.0, 6.0), (255.0, 94.0),
-            (332.0, ROW_Y[2])]                        # right vertex, merged into the wall
+            (ROW2_X[1] + 28.0, ROW_Y[2])]            # right vertex, merged into the wall
+
+
+# bosses that stop short of the lid (they hang on the walls instead): the
+# back-left one would otherwise run up through the screen module (x 9.4..60.6)
+BOSS_TOP = {(7.0, 8.0): 24.5,       # ...and the front-left one under the grille
+            (7.0, 92.0): 18.0}
 
 
 def pillar_points():
@@ -383,12 +424,37 @@ def pillar_points():
 
 def outer_body():
     """The solid outside shape (SPEC 4): box to the deck height, the
-    raised interface block with its "<" slope, the rounded keyboard opening."""
+    raised interface block with its ramp, both ramp edges rounded R 5."""
     outline = box_contour()
     base = prism(outline, 0.0, Z_DECK)
-    tall = prism(outline, 0.0, Z_IF_BACK + 5.0)
-    raised = raised_region(CHAMFER_W, Z_DECK, TRANS_TOP_OFF, 0.0).intersect(tall)
-    return base.fuse(raised).clean()
+    tall = prism(outline, 0.0, Z_IF + 5.0)
+    raised = raised_region(RAMP_FOOT_OFF, Z_DECK, RAMP_TOP_OFF, 0.0).intersect(tall)
+    body = base.fuse(raised).clean()
+    return round_ramp(body)
+
+
+def round_ramp(body):
+    """R 5 on the ramp's top and bottom edges: the edges the ramp face shares
+    with the interface top and with the deck."""
+    if RAMP_EDGE_R <= 0:
+        return body
+    ramp = [f for f in body.Faces() if f.geomType() not in ("PLANE", "CYLINDER")
+            and f.Center().z > Z_DECK + 0.5 and f.Center().x < 120]
+    edges = []
+    for f in ramp:
+        for e in f.Edges():
+            c = e.Center()
+            if c.x < 0.5 or c.y < 0.5 or c.y > WIDTH - 0.5:
+                continue          # the outer walls: no rounding there
+            if abs(c.z - Z_DECK) < 0.05 or abs(c.z - z_interface(c.y)) < 0.3:
+                edges.append(e)
+    try:
+        out = body.fillet(RAMP_EDGE_R, edges)
+        assert out.isValid()
+        return out
+    except Exception as exc:      # keep going without the rounding, but say so
+        print("ramp fillet failed (%s): edges left sharp" % exc)
+        return body
 
 
 def cavity(v):
@@ -398,28 +464,36 @@ def cavity(v):
     inner = contour_wp(box_contour()).offset2D(-wall).wires().val()
     inner_wp = lambda z0, z1: cq.Workplane("XY", origin=(0, 0, z0)).add(inner.translate(cq.Vector(0, 0, z0))).toPending().extrude(z1 - z0).val()
     low = inner_wp(-1.0, Z_PLATE_TOP)
-    tall = inner_wp(-1.0, Z_IF_BACK)
-    # the inside of the slope: its foot (at the lid's underside) and top
-    # edge pulled left by the wall thickness
-    raised = raised_region(CHAMFER_W + wall, Z_PLATE_TOP, TRANS_TOP_OFF + wall, top).intersect(tall)
+    tall = inner_wp(-1.0, Z_IF)
+    # the inside of the ramp: its foot (at the lid's underside) and top
+    # edge pulled towards the interface by the wall thickness
+    raised = raised_region(RAMP_FOOT_OFF + wall, Z_PLATE_TOP, RAMP_TOP_OFF + wall, top,
+                           r_front=RAMP_FRONT_R - wall).intersect(tall)
     return low.fuse(raised).clean()
 
 
+def grille_outline():
+    x0, y0, x1, y1 = GRILLE_RECT
+    return [((x0, y0), GRILLE_R), ((x1, y0), GRILLE_R), ((x1, y1), GRILLE_R_FR), ((x0, y1), GRILLE_R)]
+
+
 def grille_holes():
-    poly = [tuple(map(float, p)) for p in GRILLE]
-    xs, ys = [p[0] for p in poly], [p[1] for p in poly]
-    out = []
+    """Holes on a GRILLE_PITCH grid measured on the 13 deg surface (so a
+    little closer in plan from back to front), centred in the outline."""
+    poly = contour_points(grille_outline(), 0.3)
+    x0, y0, x1, y1 = GRILLE_RECT
     r = GRILLE_D / 2
-    y = min(ys) + 2.0
-    while y <= max(ys) - 1.9:
-        x = min(xs) + 2.0
-        while x <= max(xs):
-            ok = point_in_poly((x, y), poly) and dist_to_poly((x, y), poly) >= r + 0.6
-            ok = ok and opening_offset((x, y)) >= TRANS_TOP_OFF + r + GRILLE_KEEP
-            if ok:
-                out.append((x, y))
-            x += GRILLE_PITCH
-        y += GRILLE_PITCH
+    px, py = GRILLE_PITCH, GRILLE_PITCH * COS_IF
+    nx = int((x1 - x0 - 2 * (r + 0.8)) / px)
+    ny = int((y1 - y0 - 2 * (r + 0.8)) / py)
+    sx = (x0 + x1) / 2 - nx * px / 2
+    sy = (y0 + y1) / 2 - ny * py / 2
+    out = []
+    for j in range(ny + 1):
+        for i in range(nx + 1):
+            p = (sx + i * px, sy + j * py)
+            if point_in_poly(p, poly) and dist_to_poly(p, poly) >= r + 0.8:
+                out.append(p)
     return out
 
 
@@ -446,7 +520,7 @@ def top_features(v, ghost_led=False):
         cuts.append(cyl(lx, ly, 0, z_interface(ly) - GHOST_SKIN, LED_HOLE_D))
     else:
         cuts.append(cyl(lx, ly, 0, 50, LED_HOLE_D))
-    cuts += [cyl(x, y, 0, 50, GRILLE_D) for x, y in grille_holes()]
+    cuts += [cyl(x, y, 19.0, 50, GRILLE_D) for x, y in grille_holes()]     # through the lid only
     return cuts
 
 
@@ -466,7 +540,7 @@ def bosses(v, body):
     wall line, trimmed to the outside shape."""
     out = []
     for x, y in screw_points():
-        col = cyl(x, y, FLOOR_T, 60, BOSS_D).intersect(body)
+        col = cyl(x, y, FLOOR_T, BOSS_TOP.get((x, y), 60), BOSS_D).intersect(body)
         out.append(col)
     return out
 
@@ -475,7 +549,9 @@ def shell(v, ghost_led=False):
     body = outer_body()
     s = body.cut(cavity(v))
     s = s.fuse(*bosses(v, body)).clean()
-    cuts = [rounded_opening_cutter(), insert_cut(v)] + top_features(v, ghost_led)
+    for c in rounded_opening_cutter():
+        s = s.cut(c)
+    cuts = [insert_cut(v)] + top_features(v, ghost_led)
     cuts += [cyl(x, y, FLOOR_T - 0.01, FLOOR_T + 9.0, PILOT_D) for x, y in screw_points()]
     s = s.cut(fuse(cuts))
     # flush bottom plate sits inside the walls
@@ -560,7 +636,7 @@ def build_all():
 
 
 def main():
-    print("length %.2f mm (SPEC ~336.8)" % (ROW2_X[1] + D_BTN / 2 + CLR_SIDE + BOX_OFF))
+    print("length %.2f mm" % (ROW2_X[1] + D_BTN / 2 + CLR_SIDE + BOX_OFF))
     for name, shape in build_all().items():
         export(shape, name)
     # the plate as a 2D drawing for laser/waterjet cutting (mm, top view)
