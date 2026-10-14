@@ -62,15 +62,15 @@ to be confirmed.
   and the volume doesn't wander.
 - **Encoder** (pins 17 / 9). Turning steps through accordion → piano →
   bass → guitar → synth and plays the new instrument at once. It also
-  sends CC 25 back. The page doesn't follow these CCs yet; it only logs
-  them in its MIDI monitor.
+  sends CC 25 back. The page follows both CCs (its volume slider and
+  instrument move) without sending them back.
 - **Encoder button** (pin 6):
   - Pressed after turning, it confirms the new instrument. That
     instrument is then the one the eTuttino starts with (EEPROM).
   - Pressed without turning first, it goes back to the default sound:
     classic accordion, register MM, dry.
-- `ENC_STEPS_PER_DETENT` is 2 for the EC11E with 15 pulses and 30
-  detents. Use 4 for the model with 15 pulses and 15 detents.
+- `ENC_STEPS_PER_DETENT` is 4, for the EC11E with 15 pulses and 15
+  detents (SPEC v9). Use 2 for the model with 15 pulses and 30 detents.
 
 Every key plays the built-in synth and is also sent as USB MIDI (channel 1,
 with its velocity), so the page lights the key up and any DAW can record it.

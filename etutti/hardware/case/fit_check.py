@@ -524,11 +524,23 @@ def main():
     w("## 5. Perguntas para o design\n")
     w("Feito nesta rodada (v9): encoder com 4 transições por clique, gravado no Teensy (enumera como \"eTutti\"; o clique "
       "exato só se confere com a plaquinha montada); a página segue os knobs (verificado no navegador com um MIDI simulado: "
-      "volume, instrumento, volta ao acordeom clássico, nenhum CC devolvido). O site e os manuais seguem o "
-      "`etutti/BRIEF-site-manuais.md`.\n")
+      "volume, instrumento, volta ao acordeom clássico, nenhum CC devolvido). Site e manuais refeitos seguindo o "
+      "`etutti/BRIEF-site-manuais.md` (PRs #93–#97).\n")
+    mi = interface_board(C.VERSIONS["madeira"])[1]
+    lid_under = C.z_interface(C.LED_XY[1]) - C.VERSIONS["madeira"]["top"]
+    led_top = mi["sub_top"] + 5.3
     pq = [
+        "**Light pipe da Madeira.** Com a plaquinha na Madeira (topo em z = %.1f), um LED de 3 mm direto na placa "
+        "chega a z = %.1f, %.1f mm abaixo da face de baixo da tampa (z = %.1f). Então o condutor de luz cabe com "
+        "**~%.0f mm** de comprimento (os %.1f mm da tampa mais a folga), não os %.0f mm de `LIGHT_PIPE_L` (CHECK): "
+        "com 6 mm ele bateria no LED. O manual diz ~4 mm. Comprar o de 4 mm (ou cortar), ou mudar algo na v10?" % (
+            mi["sub_top"], led_top, lid_under - led_top, lid_under,
+            C.z_interface(C.LED_XY[1]) - led_top - 0.3, C.VERSIONS["madeira"]["top"], C.LIGHT_PIPE_L),
+        "**Pilha.** O manual pede o Teensy soldado direto na Audio Board com barras de pinos extralongas (o "
+        "plástico da barra como único espaçador): dá ~8–9 mm, abaixo dos 13 mm conferidos e dos 10 mm do Chorus. "
+        "Confirmar com a peça antes do protótipo.",
         "**Protótipo.** Os arquivos de fabricação continuam prontos (placa principal, plate de 1,6 mm, plaquinha de "
-        "controles, case e capas). Encomendar depois do site e dos manuais, como a v9 pede?",
+        "controles, case e capas), e agora o site e os manuais também. Encomendar?",
     ]
     for i, t in enumerate(pq, 1):
         w("%d. %s" % (i, t))

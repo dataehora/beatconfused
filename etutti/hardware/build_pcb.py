@@ -1159,11 +1159,10 @@ def route_with_retries(max_attempts=20):
 
 
 def renders():
-    """The manuals' pictures (assembly3d.py) were made for the #78 board and
-    its FreeCAD case, both gone: the case is case/ now (CadQuery, with its
-    own renders). They need redoing for the v7 board before --renders works
-    again."""
-    raise SystemExit("--renders: assembly3d.py still describes the #78 board; see renders.__doc__")
+    """The manuals' pictures come from case/manual_render.py now (the
+    CadQuery venv: it exports this board with kicad-cli and puts it in the
+    case); this script only makes fab/etuttino_top.png / _bottom.png."""
+    raise SystemExit("--renders: run case/manual_render.py with the CadQuery venv (see case/README.md)")
 
 
 if __name__ == "__main__" and "--renders" in sys.argv:
