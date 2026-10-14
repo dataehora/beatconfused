@@ -200,7 +200,19 @@ that doesn't belong there.
       the model, runs the check, and updates `FIT_CHECK.md`, ending with
       "Perguntas para o design". Then commit, PR, merge. The user relays a
       one-line note between the two.
-    - Current state: SPEC **v6** (PR #83), modelled in PR #84:
+    - **SPEC v7 (PR #85) froze the shape.** Changes since v6 are
+      listed below. The Madeira's LED is now a bought 3 mm light pipe
+      in a Ø3.1 hole.
+    - The room left for the main board is exported by
+      `pcb_envelope.py` → `out/pcb_envelope.json`, which the PCB scripts
+      read. It holds:
+      - the outline (Madeira cavity − 0.5);
+      - boss notches and fundo supports;
+      - the plate edge;
+      - height levels;
+      - keys, stack, controls board and panel footprints.
+    - Exterior finishing changes must not touch that interior.
+    - Model state as of v6 (PR #84):
       - pitch **18.5** on the hex grid (rows 16.02 apart, Gateron KS-20
         housings 0.92 mm apart);
       - deck round the keys at z 17.4 (lid 4.7 mm on the plate);

@@ -1,8 +1,9 @@
 # eTuttino case — Seixo and Madeira (CadQuery)
 
 Parametric model of the case described in [SPEC.md](SPEC.md) — currently
-**v6**: pitch 18.5 mm on a hexagonal grid, the deck round the keys at
-z 17.4, Ø16.5 cap skirts, the ramp's front curve to 75° then straight. The
+**v7, shape frozen**: pitch 18.5 mm on a hexagonal grid, the deck round
+the keys at z 17.4 with a 2.7 mm land under the opening's rounded edge, Ø16.5
+cap skirts, the ramp's front curve to 75° then straight. The
 reference drawings (general shape, v5) are in [canvas-v5/](canvas-v5/).
 There are two versions:
 
@@ -10,7 +11,7 @@ There are two versions:
 - **Madeira**: white oak, cut on a 3-axis CNC in two setups (top, then the inner pocket from below).
 
 Both have the same outside. Only the wall thickness, the LED (a plain hole
-in the Seixo, a hole with a diffuse acrylic window in the Madeira) and the
+in the Seixo, a hole with a bought 3 mm light pipe in the Madeira) and the
 pocket round the connector insert differ.
 
 The electronics check (SPEC item 9) is in **[FIT_CHECK.md](FIT_CHECK.md)**.
@@ -33,6 +34,7 @@ C:/Users/julia/.venvs/cadquery/Scripts/python.exe case.py        # case parts ->
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe keycap.py      # caps + switch stand-ins -> out/
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe render.py      # renders/{seixo,madeira}_{iso,top,left}.png
 C:/Users/julia/.venvs/cadquery/Scripts/python.exe fit_check.py   # FIT_CHECK.md + renders/fit_*.png (~3 min)
+C:/Users/julia/.venvs/cadquery/Scripts/python.exe pcb_envelope.py # out/pcb_envelope.json for the board
 ```
 
 Run `case.py` and `keycap.py` before `render.py`.
@@ -43,7 +45,7 @@ Run `case.py` and `keycap.py` before `render.py`.
 |---|---|
 | `out/seixo_tampa.*` / `out/seixo_fundo.*` | Seixo top shell / bottom plate (STEP + STL) |
 | `out/madeira_corpo.*` / `out/madeira_fundo.*` | oak body / thin bottom cover |
-| `out/madeira_led_janela.*` | the Madeira's LED window (diffuse acrylic, glued flush) |
+| `out/pcb_envelope.json` | the room for the main board: outline, boss notches, supports, plate edge, height levels, key centres, stack / controls-board / panel footprints (`pcb_envelope.py`; plan in `renders/pcb_envelope.png`). `etutti/hardware/generate.py` reads it. |
 | `out/insert.*` | black connector insert for the left face (USB + headphones) |
 | `out/plate.step`, `out/plate.dxf` | 1.5 mm switch plate, MX 14 × 14 holes on the 18.5 mm hex grid (rows 16.02 apart) |
 | `out/keycap_{natural,sharp,cf}.stl` | the three caps (C/F has the raised diagonal chequer) |
