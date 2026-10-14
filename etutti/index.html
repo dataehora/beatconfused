@@ -56,7 +56,7 @@
         </button>
       </div>
       <p class="etutti-manuals-link"><a class="etutti-link" href="manuais/" data-i18n="model.manuals">Build your own eTuttino: assembly and user manuals →</a></p>
-      <p class="etutti-manuals-link"><a class="etutti-link" href="models/" data-i18n="model.concepts">Concept layouts: eTuttino, eTutti and eTuttiChorus →</a></p>
+      <p class="etutti-manuals-link"><a class="etutti-link" href="models/" data-i18n="model.concepts">The eTuttino's case, Seixo and Madeira, and the family →</a></p>
 
       <div id="etuttiWip" class="control-block wide-block etutti-wip" hidden>
         <p class="etutti-wip-title" data-i18n="wip.title">In development</p>
@@ -168,7 +168,7 @@
             <span class="collapse-icon" aria-hidden="true">▾</span>
           </button>
         </div>
-        <p class="hint" data-i18n="keys.hint">The real keys are magnetic: a sensor under each one measures how far and how fast it moves. These settings only matter with the eTuttino board.</p>
+        <p class="hint" data-i18n="keys.hint">The real keys are magnetic, on an 18.5 mm hexagonal grid: a sensor under each one measures how far and how fast it moves. These settings only matter with the eTuttino board.</p>
         <div class="etutti-group" role="radiogroup" aria-labelledby="keyVelocityLegend">
           <span class="etutti-group-label" id="keyVelocityLegend" data-i18n="keys.velocity">Key velocity</span>
           <div class="etutti-pills">
@@ -366,6 +366,8 @@
           <li data-i18n="setup.step2">Install Arduino IDE with Teensyduino, open the etutti_synth sketch from this site's repository, and choose your board under Tools › Board.</li>
           <li data-i18n="setup.step3">Under Tools › USB Type choose "MIDI" (or "Serial + MIDI"), then upload.</li>
           <li data-i18n="setup.step4">Plug the Teensy into this computer, press Connect above and allow MIDI access. Use Chrome or Edge; Safari has no Web MIDI.</li>
+          <li data-i18n="setup.step5">With the eTuttino's knobs: the left one is the volume; the right one picks the instrument. Turn it to change the sound at once (the LED blinks green), click to keep it as the instrument the eTuttino starts with, or click without turning to go back to the classic accordion. This page follows both knobs.</li>
+          <li data-i18n="setup.step6">The LED: orange while the keys are read at power-up, green while playing, blinking red if the Audio Board or a key sensor doesn't answer (see the user manual).</li>
         </ol>
         <p class="hint">
           <a class="etutti-link" href="manuais/" data-i18n="setup.manualsLink">Assembly and user manuals</a>
@@ -389,7 +391,7 @@
   </main>
 
   <script src="websynth.js?v=20261021"></script>
-  <script src="script.js?v=20261023"></script>
+  <script src="script.js?v=20261024"></script>
 
   <script>
     window.BC_STRINGS = {
@@ -437,9 +439,11 @@
         "setup.step2": "Install Arduino IDE with Teensyduino, open the etutti_synth sketch from this site's repository, and choose your board under Tools › Board.",
         "setup.step3": "Under Tools › USB Type choose \"MIDI\" (or \"Serial + MIDI\"), then upload.",
         "setup.step4": "Plug the Teensy into this computer, press Connect above and allow MIDI access. Use Chrome or Edge; Safari has no Web MIDI.",
+        "setup.step5": "With the eTuttino's knobs: the left one is the volume; the right one picks the instrument. Turn it to change the sound at once (the LED blinks green), click to keep it as the instrument the eTuttino starts with, or click without turning to go back to the classic accordion. This page follows both knobs.",
+        "setup.step6": "The LED: orange while the keys are read at power-up, green while playing, blinking red if the Audio Board or a key sensor doesn't answer (see the user manual).",
         "setup.firmwareLink": "Firmware source on GitHub",
         "model.manuals": "Build your own eTuttino: assembly and user manuals →",
-        "model.concepts": "Concept layouts: eTuttino, eTutti and eTuttiChorus →",
+        "model.concepts": "The eTuttino's case, Seixo and Madeira, and the family →",
         "setup.manualsLink": "Assembly and user manuals",
         "web.title": "Listen in this browser",
         "web.hint": "No Teensy? Hear the eTuttino's sounds through this computer's speakers, to try them before building one. Turn the volume down first: nothing plays until you switch this on.",
@@ -447,7 +451,7 @@
         "web.note": "Accordion and synth use the same synthesis as the Teensy. Piano, bass and guitar are only approximations here: the Teensy plays recorded samples. With a Teensy connected too, both play.",
         "keys.title": "eTuttino keys",
         "keys.collapseAria": "Collapse eTuttino keys",
-        "keys.hint": "The real keys are magnetic: a sensor under each one measures how far and how fast it moves. These settings only matter with the eTuttino board.",
+        "keys.hint": "The real keys are magnetic, on an 18.5 mm hexagonal grid: a sensor under each one measures how far and how fast it moves. These settings only matter with the eTuttino board.",
         "keys.velocity": "Key velocity",
         "keys.velFixed": "Fixed",
         "keys.velSoft": "Light touch",
@@ -565,9 +569,11 @@
         "setup.step2": "Instale o Arduino IDE com o Teensyduino, abra o sketch etutti_synth do repositório deste site e escolha a sua placa em Tools › Board.",
         "setup.step3": "Em Tools › USB Type escolha \"MIDI\" (ou \"Serial + MIDI\") e faça o upload.",
         "setup.step4": "Plugue o Teensy neste computador, clique em Conectar acima e permita o acesso MIDI. Use o Chrome ou o Edge; o Safari não tem Web MIDI.",
+        "setup.step5": "Com os knobs do eTuttino: o da esquerda é o volume; o da direita escolhe o instrumento. Gire para trocar o som na hora (o LED pisca verde), clique para guardá-lo como o instrumento com que o eTuttino liga, ou clique sem girar para voltar ao acordeão clássico. Esta página acompanha os dois knobs.",
+        "setup.step6": "O LED: laranja enquanto as teclas são lidas ao ligar, verde tocando, vermelho piscando se a Audio Board ou o sensor de alguma tecla não responder (ver o manual de uso).",
         "setup.firmwareLink": "Código do firmware no GitHub",
         "model.manuals": "Monte o seu eTuttino: manuais de montagem e de uso →",
-        "model.concepts": "Layouts conceituais: eTuttino, eTutti e eTuttiChorus →",
+        "model.concepts": "O case do eTuttino, Seixo e Madeira, e a família →",
         "setup.manualsLink": "Manuais de montagem e de uso",
         "web.title": "Ouvir no navegador",
         "web.hint": "Sem Teensy? Ouça os sons do eTuttino pelos alto-falantes deste computador, para experimentar antes de montar o seu. Abaixe o volume antes: nada toca até você ligar esta chave.",
@@ -575,7 +581,7 @@
         "web.note": "Acordeão e synth usam a mesma síntese do Teensy. Piano, baixo e violão aqui são só aproximações: o Teensy toca amostras gravadas. Com um Teensy conectado também, os dois tocam.",
         "keys.title": "Teclas do eTuttino",
         "keys.collapseAria": "Recolher Teclas do eTuttino",
-        "keys.hint": "As teclas de verdade são magnéticas: um sensor embaixo de cada uma mede o quanto e com que velocidade ela desce. Estes ajustes só valem com a placa do eTuttino.",
+        "keys.hint": "As teclas de verdade são magnéticas, numa grade hexagonal de 18,5 mm: um sensor embaixo de cada uma mede o quanto e com que velocidade ela desce. Estes ajustes só valem com a placa do eTuttino.",
         "keys.velocity": "Velocity das teclas",
         "keys.velFixed": "Fixa",
         "keys.velSoft": "Toque leve",
@@ -693,9 +699,11 @@
         "setup.step2": "Instala Arduino IDE con Teensyduino, abre el sketch etutti_synth del repositorio de este sitio y elige tu placa en Tools › Board.",
         "setup.step3": "En Tools › USB Type elige \"MIDI\" (o \"Serial + MIDI\") y súbelo.",
         "setup.step4": "Conecta el Teensy a este ordenador, pulsa Conectar arriba y permite el acceso MIDI. Usa Chrome o Edge; Safari no tiene Web MIDI.",
+        "setup.step5": "Con las perillas del eTuttino: la de la izquierda es el volumen; la de la derecha elige el instrumento. Gírala para cambiar el sonido al instante (el LED parpadea en verde), haz clic para guardarlo como el instrumento con el que arranca el eTuttino, o haz clic sin girar para volver al acordeón clásico. Esta página sigue las dos perillas.",
+        "setup.step6": "El LED: naranja mientras se leen las teclas al encender, verde al tocar, rojo parpadeando si la Audio Board o el sensor de alguna tecla no responde (ver el manual de uso).",
         "setup.firmwareLink": "Código del firmware en GitHub",
         "model.manuals": "Arma tu eTuttino: manuales de montaje y de uso →",
-        "model.concepts": "Layouts conceptuales: eTuttino, eTutti y eTuttiChorus →",
+        "model.concepts": "La caja del eTuttino, Seixo y Madeira, y la familia →",
         "setup.manualsLink": "Manuales de montaje y de uso",
         "web.title": "Escuchar en el navegador",
         "web.hint": "¿Sin Teensy? Escucha los sonidos del eTuttino por los altavoces de este ordenador, para probarlos antes de montar el tuyo. Baja el volumen antes: no suena nada hasta que actives este interruptor.",
@@ -703,7 +711,7 @@
         "web.note": "El acordeón y el synth usan la misma síntesis que el Teensy. Piano, bajo y guitarra aquí son solo aproximaciones: el Teensy toca muestras grabadas. Con un Teensy conectado también, suenan los dos.",
         "keys.title": "Teclas del eTuttino",
         "keys.collapseAria": "Contraer Teclas del eTuttino",
-        "keys.hint": "Las teclas de verdad son magnéticas: un sensor debajo de cada una mide cuánto y a qué velocidad baja. Estos ajustes solo cuentan con la placa del eTuttino.",
+        "keys.hint": "Las teclas reales son magnéticas, en una rejilla hexagonal de 18,5 mm: un sensor bajo cada una mide cuánto y qué tan rápido baja. Estos ajustes solo cuentan con la placa del eTuttino.",
         "keys.velocity": "Velocity de las teclas",
         "keys.velFixed": "Fija",
         "keys.velSoft": "Toque ligero",

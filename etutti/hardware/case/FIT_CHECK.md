@@ -1,8 +1,8 @@
-# eTuttino — conferência do case (SPEC v8)
+# eTuttino — conferência do case (SPEC v9)
 
 Gerado por `fit_check.py` a partir de `case.py` (CadQuery). As peças são sólidos com medidas de datasheet, da placa atual ou medidas por você; as incertas estão marcadas CHECK no código. Coordenadas da SPEC (y para quem toca). Folga = menor distância entre a peça e o case (tampa + fundo).
 
-**v8.** A forma externa continua a da v7 (congelada). Mudanças da v8: plate de FR-4 de 1.6 mm (os botões sobem para z = 26.6 e o reto da borda da abertura fica com 2.6 mm); dois parafusos M2 por baixo prendem a placa principal nos pilares (30; 60) e (12; 70), mais grossos (Ø6) e com passagem e rebaixo no fundo; a plaquinha de controles (`etutti/hardware/controls_pcb.py`) presa por baixo da tampa em dois postes; o firmware lê o potenciômetro e o encoder. O contorno interno para a PCB continua em `out/pcb_envelope.json`.
+**v9.** Nada muda no case nem nas placas: a forma é a da v7 (congelada) com as mudanças da v8 (plate de FR-4 de 1.6 mm, botões em z = 26.6, reto de 2.6 mm na borda da abertura, dois parafusos M2 por baixo nos pilares (30; 60) e (12; 70) de Ø6, plaquinha de controles `etutti/hardware/controls_pcb.py` em dois postes sob a tampa). Mudanças da v9, só no firmware e na página: `ENC_STEPS_PER_DETENT = 4` (EC11E de 15 pulsos / 15 cliques), gravado no Teensy; a página `/etutti/` acompanha CC 7 (volume) e CC 25 (instrumento) sem mandar o CC de volta. O contorno interno para a PCB continua em `out/pcb_envelope.json`.
 
 ## Resumo
 
@@ -156,9 +156,6 @@ A Madeira precisa de duas fixações no CNC (de cima, e virada para o bolsão in
 
 ## 5. Perguntas para o design
 
-Feito nesta rodada: furos M2, plate de 1,6 mm, plaquinha de controles e firmware dos knobs. Para a v9:
+Feito nesta rodada (v9): encoder com 4 transições por clique, gravado no Teensy (enumera como "eTutti"; o clique exato só se confere com a plaquinha montada); a página segue os knobs (verificado no navegador com um MIDI simulado: volume, instrumento, volta ao acordeom clássico, nenhum CC devolvido). O site e os manuais seguem o `etutti/BRIEF-site-manuais.md`.
 
-1. **Encoder.** O firmware conta 2 transições por clique do EC11E (o de 15 pulsos e 30 cliques). Se o encoder comprado for o de 15 pulsos e 15 cliques, são 4: confirmar com a peça (`ENC_STEPS_PER_DETENT`).
-2. **A página.** O Teensy agora manda CC 7 (volume) e CC 25 (instrumento) quando os knobs mudam, mas a página do eTutti ainda não acompanha: só registra no monitor MIDI. Fazer a página seguir os knobs?
-3. **Botão do encoder.** Clique depois de girar: confirma, e o instrumento passa a ser o da próxima vez que liga. Clique sem ter girado: volta ao som padrão (acordeom clássico). É isso?
-4. **Protótipo.** Os arquivos de fabricação estão prontos: placa principal (`fab/etuttino_gerbers.zip` + BOM/CPL), plate de 1,6 mm (`fab/etuttino_plate_gerbers.zip`), plaquinha de controles (`fab/etuttino_controls_gerbers.zip`), case e capas (`case/out/`). Encomendar?
+1. **Protótipo.** Os arquivos de fabricação continuam prontos (placa principal, plate de 1,6 mm, plaquinha de controles, case e capas). Encomendar depois do site e dos manuais, como a v9 pede?

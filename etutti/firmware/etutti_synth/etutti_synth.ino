@@ -121,7 +121,7 @@ const uint32_t LED_STARTUP_MS = 600;                   // orange shows at least 
 // 6 is its optional memory chip's select, which the eTuttino doesn't fit.
 const uint8_t POT_PIN = 22;                            // A8
 const uint8_t ENC_A_PIN = 17, ENC_B_PIN = 9, ENC_SW_PIN = 6;
-const int ENC_STEPS_PER_DETENT = 2;     // EC11E 15 pulses / 30 detents -- CHECK with the part bought
+const int ENC_STEPS_PER_DETENT = 4;     // EC11E 15 pulses / 15 detents (SPEC v9): one full Gray cycle per click
 const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
   { -1,  12,  11,  10,   9,   7,   6,   5,   4,   3,   2,   1},
   { 15,  14,  13,   8,   0,  30,  41,  42,  38,  43,  45,  46},
