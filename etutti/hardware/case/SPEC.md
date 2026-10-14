@@ -1,11 +1,25 @@
-# eTutti · case paramétrico (Seixo e Madeira)
+# eTutti · case paramétrico (Seixo e Madeira) · v5
+
+**Versão 5.** Substitui a v4, implementada no PR #81 (a v4 continua no histórico do git). Cada versão nova deste arquivo ganha um número e a seção "Mudanças desde a versão anterior". O resultado da verificação de cada versão fica no `FIT_CHECK.md`, com as "Perguntas para o design" no fim. Os desenhos desta versão estão em `canvas-v5/`.
+
+## Mudanças desde a versão anterior (v4)
+
+1. **Interface plana + 13°** (seção 4): plana a z = 33 só sob a tela e os controles, até y = 55; dali desce a 13° até a borda da frente (z ≈ 22,6). Antes era um plano único inclinado ~3° (33 → 28).
+2. **Rampa entre interface e teclado** (seção 4): a borda de cima passa a ser abertura + 12,7 (era "+ 20,3", com o vértice errado). Na metade da frente a rampa desce reta e curva para a borda (R 14) em vez de voltar pela diagonal. Bordas arredondadas com R 5.
+3. **Controles** (seção 5): da esquerda para a direita, volume (20; 45), seletor (37; 45) e LED (52; 45).
+4. **Zona da tela** (seção 5): x 8–62 (era 10–64).
+5. **Grade** (seção 5): retângulo x 8–53, y 61–94, no plano a 13°, com 6 mm de folga do vinco, da rampa e da borda. Não invade mais a rampa.
+6. **Dó e Fá** com xadrez diagonal em relevo (eram só os Dós, com ranhuras).
+7. **Madeira**: carvalho branco (white oak); CNC em **duas** fixações (correção do FIT_CHECK).
+8. **Seção 9** atualizada com as conclusões do `FIT_CHECK.md` (pilha baixa, plaquinha de controles, plugue USB de 90°).
+
 
 Especificação para o Claude Code gerar o modelo 3D do case do eTuttino, nas duas versões:
 
 - **Seixo**: plástico, impressão em resina ou MJF, uma cor só.
-- **Madeira**: carvalho branco (white oak), CNC de 3 eixos numa fixação só, acabamento a óleo.
+- **Madeira**: carvalho branco (white oak), CNC de 3 eixos em duas fixações (a de cima e o bolsão interno por baixo), acabamento a óleo.
 
-As duas versões têm exatamente a mesma geometria; só mudam o material e a fabricação. Os desenhos de referência estão no canvas "eTutti case concepts" (Seixo v5, Madeira v5, Botões sobre Gateron).
+As duas versões têm exatamente a mesma geometria; só mudam o material e a fabricação. Os desenhos de referência estão em `canvas-v5/` (Seixo v5, Madeira v5, Botões sobre Gateron, Cores).
 
 Medidas em mm. Tudo que estiver marcado **(conferir)** é estimativa do conceito e precisa ser confirmado com a peça real ou o datasheet.
 
@@ -14,6 +28,8 @@ Medidas em mm. Tudo que estiver marcado **(conferir)** é estimativa do conceito
 - **x**: da face esquerda (x = 0) para a direita, ao longo do comprimento.
 - **y**: de trás (y = 0) para a frente (y = 100), onde fica quem toca.
 - **z**: da mesa (z = 0) para cima.
+
+Esse sistema é canhoto. Mantenha a convenção já usada no `case.py`: modelar em coordenadas da SPEC e espelhar na exportação (`y_arquivo = 100 − y_SPEC`).
 
 ## 2. Teclado C-griff (eTuttino, 44 teclas, G3–E6)
 
@@ -97,16 +113,23 @@ Hexágono com vértices vivos:
 
 - Paredes externas verticais, a 90° da mesa, sem chanfro nem arredondamento de perfil.
 - **Área do teclado**: tampa em z = 15,7. Topo dos botões em z = 26,5.
-- **Área de interface** (à esquerda da área do teclado): bloco elevado com o topo inclinado para quem toca, de z = 33 em y = 0 até z = 28 em y = 100 (~3°).
-- **Transição** entre interface e teclado: face inclinada, seguindo o mesmo "<".
-  - borda de cima: linha a abertura + 20,3 (vértice (56,6; 58,3));
-  - borda de baixo: o chanfro externo.
+- **Área de interface** (à esquerda da área do teclado): bloco elevado.
+  - **Plano** em z = 33 de y = 0 até y = 55, só sob a tela e os controles. O vinco em y = 55 deixa os controles centrados entre a tela e o vinco (folgas de ~5 mm).
+  - De y = 55 até a borda da frente, **desce a 13°** e chega a z ≈ 22,6 em y = 100. A grade fica nesse plano inclinado, voltada para quem toca.
+  - O vinco entre o plano e a parte a 13° é arredondado.
+- **Transição** entre interface e teclado: rampa seguindo o mesmo "<".
+  - **metade de trás** (y de 0 a 58,3): segue a diagonal "<".
+    - borda de cima: abertura + 12,7, com arco R 35,2 concêntrico ao botão da ponta da fileira 2 (94,475; 58,3);
+    - borda de baixo: o chanfro externo (abertura + 4), arco R 26,5.
+  - **metade da frente**: em vez de voltar pela diagonal, a rampa desce reta (borda de cima em x ≈ 59,3; borda de baixo em x ≈ 68,0) até y = 86. Dali curva com R 14 até a borda da frente, chegando em x ≈ 45,3 (cima) e x ≈ 54,0 (baixo).
+  - Isso deixa uma área de tampa plana, na altura do teclado, à esquerda da fileira 1, com espaço para a mão que toca os graves;
+  - **as duas bordas da rampa arredondadas com R 5**, e nenhum canto vivo na interface do lado do teclado, para não machucar a mão que toca.
 
 ## 5. Área de interface, de trás para a frente
 
 | Item | Posição / medidas |
 |---|---|
-| Zona da tela | x 10–64, y 5–35. Opções: rebaixo raso de 1,5 (conferir), tela rente, ou sem tela (eTuttino) com gravação ou adesivo |
+| Zona da tela | x 8–62, y 5–35. Opções: rebaixo raso de 1,5 (conferir), tela rente, ou sem tela (eTuttino) com gravação ou adesivo |
 | Tela | 1,9″ 320 × 170. Área visível ~43 × 23 centrada na zona (conferir datasheet do módulo) |
 | Volume | potenciômetro contínuo, eixo em (20; 45), knob Ø 9 |
 | Seletor de instrumento | encoder com clique e giro infinito, eixo em (37; 45), knob Ø 9 |
@@ -115,11 +138,9 @@ Hexágono com vértices vivos:
 
 Contorno da grade:
 
-```
-(13; 60) → (55; 60) → (58; 63) → (75,5; 89) → (73; 92) → (13; 92) → (10; 89) → (10; 63)
-```
+Retângulo de x 8 a 53 e y 61 a 94, com cantos R 3. O canto da frente à direita tem R 8, concêntrico à curva da rampa.
 
-A borda direita da grade segue a diagonal. A grade é a saída do alto-falante de 28 mm no eTuttiChorus e a ventilação no eTuttino.
+A grade fica toda no plano a 13°, com folga de 6 mm do vinco, da rampa e da borda da frente. A borda esquerda fica alinhada com a da tela, em x = 8. A grade é a saída do alto-falante de 28 mm no eTuttiChorus e a ventilação no eTuttino.
 
 ## 6. Conexões (face esquerda, x = 0)
 
@@ -160,18 +181,28 @@ A borda direita da grade segue a diagonal. A grade é a saída do alto-falante d
 
 ## 9. A conferir no modelo
 
-1. Teensy 4.0 + Audio Board (pilha de 19,8 mm), módulo da tela, potenciômetro, encoder, LED, alto-falante de 28 mm (Chorus) e os dois conectores de painel cabem na área de interface. Ela tem ~68 mm no ponto mais estreito, na altura da fileira 2.
-2. Altura dos eixos do potenciômetro e do encoder para os knobs ficarem baixos.
-3. Folga das saias de 17 mm entre vizinhos (passo 19,05).
-4. Espessura de parede para impressão e para CNC.
+Premissas que vêm do `FIT_CHECK.md` (v4) e continuam valendo:
 
-## 10. Entregáveis pedidos ao Claude Code
+- Pilha baixa: Teensy soldado direto na Audio Board, ~11,3 mm.
+- Potenciômetro, encoder e LED numa plaquinha presa por baixo da tampa, com eixos de L = 15.
+- Plugue micro-USB de 90° no cabo até o USB de painel; conectores de painel com no máximo ~10 mm de corpo atrás do inserto.
+- Fone de painel ligado por fio à Audio Board.
+- Paredes: Seixo 2,5 mm; Madeira 4 mm (2,5 mm em volta do inserto) e tampa de 3 mm.
+- PCB e placa de switches refeitas na grade de 16,5 mm entre fileiras (etapa separada).
 
-Em `etutti/hardware/case/`:
+O que precisa ser verificado de novo, porque a geometria mudou:
 
-1. `case.py` paramétrico (CadQuery), com todas as medidas acima como parâmetros no topo do arquivo.
-2. Exportar STEP e STL do Seixo (tampa e fundo) e da Madeira (corpo e tampa de fundo).
-3. `keycap.py` com as três capas em STL, para imprimir o teste de quatro capas em quatro switches vizinhos.
-4. Renders PNG (isométrico frente-esquerda, vista de cima, face esquerda) das duas versões.
-5. `README.md` curto explicando os parâmetros e como regenerar os arquivos.
-6. Opcional: atualizar a página `/etutti/models/` com os novos renders.
+1. Rodar o `fit_check.py` contra a v5. A rampa agora desce reta na metade da frente, então a interface fica mais estreita na frente (borda de cima em x ≈ 45–59 em vez de ~81). Conferir se a pilha baixa, o alto-falante de 28 mm (Chorus) e os conectores continuam cabendo, e se a eletrônica pode avançar por baixo da rampa e da área livre de tampa à esquerda da fileira 1.
+2. Teto interno sob o plano de 13° (z cai para ~22,6 na frente) contra a pilha e o alto-falante.
+3. Folga das saias de 17 mm (passo 19,05) com o Gateron KS-20 real, usando o `keycap_test_4.stl`.
+4. LED fantasma na Madeira: testar numa sobra se a pele de 0,8 mm deixa a luz passar.
+
+## 10. Entregáveis pedidos ao Claude Code (v5)
+
+Em `etutti/hardware/case/`, atualizando os arquivos que já existem (não criar outros do zero):
+
+1. `case.py`: aplicar as mudanças da v5, mantendo todos os parâmetros no topo.
+2. `fit_check.py` e `FIT_CHECK.md`: rodar de novo contra a v5 (seção 9) e registrar o resultado.
+3. `keycap.py`: marcação de Dó e Fá com xadrez diagonal.
+4. Reexportar STEP e STL (Seixo: tampa e fundo; Madeira: corpo e tampa de fundo; inserto; placa de switches) e regerar os renders.
+5. `FIT_CHECK.md`: terminar com a seção "Perguntas para o design".

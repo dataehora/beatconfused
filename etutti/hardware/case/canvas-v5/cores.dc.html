@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Cores e acabamentos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#7a5a1e}a:hover{color:#4d3812}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 1100px; height: 1000px; box-sizing: border-box; padding: 56px; background: #F3F2EF; color: #17191E; font-family: 'Archivo', sans-serif; display: flex; flex-direction: column; gap: 24px">
+  <div style="display: flex; flex-direction: column; gap: 6px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: #5B5F68">CORES E ACABAMENTOS · CLIQUE PARA COMPARAR (use Play)</div>
+    <h1 style="margin: 0; font-size: 48px; font-weight: 700; letter-spacing: -0.02em; line-height: 1">Plástico e madeira, lado a lado</h1>
+  </div>
+
+  <div style="position: relative; height: 320px; background: {{bg}}; border-radius: 14px">
+    <div style="position: absolute; left: 24px; top: 18px; display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 22px; font-weight: 600; color: {{bgInk}}">{{cur.name}}</div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: {{bgInk}}; opacity: 0.75">{{cur.tag}}</div>
+    </div>
+    <div style="position: absolute; left: 211px; top: 92px; width: 678px; height: 200px">
+      <svg width="678" height="200" viewBox="0 0 678 200" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+        <defs>
+          <pattern id="cHoles" width="8" height="8" patternUnits="userSpaceOnUse">
+            <rect x="0" y="0" width="8" height="8" fill="{{cur.case}}"></rect>
+            <circle cx="4" cy="4" r="1.9" fill="#0E0F12"></circle>
+          </pattern>
+          <clipPath id="cClip"><path d="M32.0 0.0 L597.7 0.0 A32.6 32.6 0 0 1 625.9 16.3 L664.9 83.8 A65.6 65.6 0 0 1 664.9 149.4 L645.1 183.7 A32.6 32.6 0 0 1 616.8 200.0 L32.0 200.0 A32.0 32.0 0 0 1 0.0 168.0 L0.0 32.0 A32.0 32.0 0 0 1 32.0 0.0 Z"></path></clipPath>
+        </defs>
+        <path d="M32.0 0.0 L597.7 0.0 A32.6 32.6 0 0 1 625.9 16.3 L664.9 83.8 A65.6 65.6 0 0 1 664.9 149.4 L645.1 183.7 A32.6 32.6 0 0 1 616.8 200.0 L32.0 200.0 A32.0 32.0 0 0 1 0.0 168.0 L0.0 32.0 A32.0 32.0 0 0 1 32.0 0.0 Z" fill="{{cur.case}}" stroke="{{cur.wall}}" stroke-width="1.5"></path>
+        <path d="M174.9 0.0 L128.0 81.4 L125.8 85.5 L123.9 89.7 L122.3 94.0 L120.9 98.4 L119.9 102.9 L119.2 107.4 L118.7 112.0 L118.5 116.6 L118.5 172.0 L118.0 177.5 L116.4 182.7 L113.8 187.6 L110.3 191.8 L106.1 195.3 L101.3 197.9 L96.0 199.5 L90.5 200.0 L107.9 200.0 L113.4 199.5 L118.7 197.9 L123.5 195.3 L127.7 191.8 L131.2 187.6 L133.8 182.7 L135.4 177.5 L135.9 172.0 L135.9 116.6 L136.1 113.1 L136.4 109.7 L137.0 106.3 L137.8 102.9 L138.8 99.6 L140.0 96.3 L141.4 93.2 L143.1 90.1 L195.1 0.0 Z" fill="{{cur.wall}}" opacity="0.6" clip-path="url(#cClip)"></path>
+        <path d="M22 122 L100 122 Q106 122 106 128 L106 172 A16 16 0 0 1 90 188 L22 188 Q16 188 16 182 L16 128 Q16 122 22 122 Z" fill="url(#cHoles)"></path>
+        <rect x="16" y="10" width="108" height="60" rx="10" fill="#000000" opacity="0.15"></rect>
+        <rect x="27" y="17" width="86" height="46" rx="4" fill="#0B0C0E"></rect>
+        <circle cx="104" cy="90" r="3" fill="{{cur.led}}"></circle>
+        <circle cx="40" cy="90" r="9" fill="#26282C" stroke="#0E0F12" stroke-width="1.5"></circle>
+        <circle cx="74" cy="90" r="9" fill="#26282C" stroke="#0E0F12" stroke-width="1.5" stroke-dasharray="2 2"></circle>
+        <path d="M199.3 12.6 L597.7 12.6 A20.0 20.0 0 0 1 615.0 22.6 L653.9 90.1 A53.0 53.0 0 0 1 653.9 143.1 L634.0 177.6 A20.0 20.0 0 0 1 616.7 187.6 L180.3 187.6 A20.0 20.0 0 0 1 163.0 177.6 L143.1 143.1 A53.0 53.0 0 0 1 143.1 90.1 L182.0 22.6 A20.0 20.0 0 0 1 199.3 12.6 Z" fill="{{cur.cham}}"></path>
+        <path d="M199.3 20.6 L597.7 20.6 A12.0 12.0 0 0 1 608.0 26.6 L647.0 94.1 A45.0 45.0 0 0 1 647.0 139.1 L627.1 173.6 A12.0 12.0 0 0 1 616.7 179.6 L180.3 179.6 A12.0 12.0 0 0 1 169.9 173.6 L150.0 139.1 A45.0 45.0 0 0 1 150.0 94.1 L188.9 26.6 A12.0 12.0 0 0 1 199.3 20.6 Z" fill="{{cur.plate}}"></path>
+      </svg>
+      <sc-for list="{{sw}}" as="s" hint-placeholder-count="44">
+        <div style="position: absolute; {{s.style}}"></div>
+      </sc-for>
+      <sc-for list="{{keys}}" as="k" hint-placeholder-count="44">
+        <div style="position: absolute; {{k.style}}"></div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px">
+    <sc-for list="{{opts}}" as="o" hint-placeholder-count="5">
+      <button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; min-height: 64px; border-radius: 12px; background: #FFFFFF; color: #17191E; text-align: left; border: 2px solid {{o.ring}}">
+        <span style="width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; background: {{o.case}}; border: 1px solid #00000022"></span>
+        <span style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 14px; font-weight: 500">{{o.name}}</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5B5F68">{{o.tag}}</span>
+        </span>
+      </button>
+    </sc-for>
+  </div>
+
+  <p style="margin: 0; font-size: 14px; color: #3A3D44; line-height: 1.5; max-width: 900px">Em todas: C-griff em preto e branco, placa e switches escuros, botões de controle pretos. Cada acabamento é uma cor só, sem peças de enfeite.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1100,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 0 };
+  }
+  renderVals() {
+    const O = [
+      { name: 'Areia', tag: 'Seixo · plástico', case: '#E6DECF', wall: '#C7BCA8', cham: '#CFC4B0', plate: '#2A2C30', sw: '#34373C', led: '#7FE0D2' },
+      { name: 'Laranja retrô', tag: 'Seixo · plástico', case: '#E2672C', wall: '#B9521F', cham: '#C85823', plate: '#22252B', sw: '#2D3036', led: '#FFF4E0' },
+      { name: 'Preto fosco', tag: 'Seixo · plástico', case: '#26282C', wall: '#141517', cham: '#1E2023', plate: '#121315', sw: '#1C1E21', led: '#8FD6B8' },
+      { name: 'Carvalho branco', tag: 'Madeira · CNC', case: '#C8B08A', wall: '#A88E68', cham: '#D6C09C', plate: '#16171A', sw: '#222326', led: '#FFB45C' },
+      { name: 'Carvalho escuro', tag: 'Madeira · CNC', case: '#6A4A30', wall: '#4F3622', cham: '#7A5739', plate: '#16171A', sw: '#222326', led: '#FFC37A' }
+    ];
+    const picked = this.state.picked;
+    const cur = O[picked];
+    const dark = ['#26282C', '#6A4A30'].indexOf(cur.case) >= 0;
+    const bg = dark ? '#E9E7E2' : '#2A2C31';
+    const bgInk = dark ? '#17191E' : '#F3F2EF';
+    const S = 2, P = 19.05, D = 15;
+    const isBlack = (n) => [1, 3, 6, 8, 10].indexOf((n + 7) % 12) >= 0;
+    const white = 'radial-gradient(circle at 40% 36%, #FFFFFF 0%, #F6F2EA 45%, #DDD5C7 100%)';
+    const black = 'radial-gradient(circle at 40% 36%, #5E6168 0%, #26282C 45%, #0B0C0D 100%)';
+    const ridges = 'repeating-linear-gradient(45deg, rgba(0,0,0,0.16) 0 1.2px, transparent 1.2px 4.5px), repeating-linear-gradient(-45deg, rgba(0,0,0,0.16) 0 1.2px, transparent 1.2px 4.5px), ';
+    const rowsY = [0, 74.8, 58.3, 41.8, 25.3];
+    const keys = [], sw = [];
+    const put = (n, row, xp) => {
+      const cx = (104 + xp * P) * S, cy = rowsY[row] * S, r = D * S / 2;
+      const isC = [5, 10, 17, 22, 29].indexOf(n) >= 0;
+      const bk = isBlack(n);
+      sw.push({ style: 'left: ' + (cx - 14) + 'px; top: ' + (cy - 14) + 'px; width: 28px; height: 28px; border-radius: 3px; background: ' + cur.sw + ';' });
+      keys.push({ style: 'left: ' + (cx - r) + 'px; top: ' + (cy - r) + 'px; width: 30px; height: 30px; border-radius: 50%; box-sizing: border-box; background: ' + (isC ? ridges : '') + (bk ? black : white) + '; box-shadow: 0 0 0 2px ' + (bk ? '#0B0C0D' : '#CFC6B6') + ', 0 3px 3px rgba(0,0,0,0.35);' });
+    };
+    for (let n = 0; n <= 33; n++) {
+      const m = n % 3;
+      if (m === 2 && n <= 32) put(n, 1, (n - 2) / 3);
+      else if (m === 0) put(n, 2, n / 3 - 0.5);
+      else if (m === 1 && n <= 31) put(n, 3, (n - 1) / 3);
+    }
+    for (let n = 2; n <= 29; n += 3) put(n, 4, (n - 2) / 3 + 0.5);
+    const opts = O.map((o, i) => ({ ...o, ring: i === picked ? '#17191E' : '#FFFFFF', pressed: i === picked ? 'true' : 'false', pick: () => this.setState({ picked: i }) }));
+    return { cur, keys, sw, opts, bg, bgInk };
+  }
+}
+</script>
+</body>
+</html>

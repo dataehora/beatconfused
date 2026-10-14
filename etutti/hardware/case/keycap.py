@@ -30,13 +30,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import case as C  # noqa: E402
 
-# switch (MX nominal -- CHECK the Gateron KS-20 datasheet)
-HOUSING_H = 6.6           # top housing above the plate
-HOUSING_W_BOT = 15.0      # its width just above the plate
-HOUSING_W_TOP = 11.4      # ...and at its top
+# switch: Gateron KS-20T drawing KS-20TF10B045NW-X72 (2023-09-13). Top
+# housing 15.40 x 15.10 (15.10 across the rows, pins left-right), 11.10
+# from the board to its top with the plate top 5.00 up, 14.00 cutout,
+# 1.5 plate, total travel 4.1 +- 0.2. Its top face and the stem height
+# aren't dimensioned: CHECK on a real switch.
+HOUSING_H = 11.10 - 5.00  # top housing above the plate
+HOUSING_W_BOT = (15.40, 15.10)   # just above the plate (x, y)
+HOUSING_W_TOP = 11.4      # ...and at its top -- CHECK
 HOUSING_CHAMFER = 1.2     # corner chamfer (45 deg) of the top housing
 STEM_ABOVE = 3.6          # cross stem above the top housing, key up
-TRAVEL = 4.0              # total travel
+TRAVEL = 4.1              # total travel (4.1 +- 0.2)
 BOTTOM_W = 14.0           # bottom housing (through the plate)
 
 # cap
@@ -59,8 +63,9 @@ def z_stem_top():
 
 def housing_corner_r(h):
     """Distance from the switch axis to a top-housing corner, h above the plate."""
-    w = HOUSING_W_BOT / 2 - (HOUSING_W_BOT - HOUSING_W_TOP) / 2 * min(h, HOUSING_H) / HOUSING_H
-    return math.sqrt(2) * w - HOUSING_CHAMFER / math.sqrt(2)
+    f = min(h, HOUSING_H) / HOUSING_H
+    wx, wy = [(wb - (wb - HOUSING_W_TOP) * f) / 2 for wb in HOUSING_W_BOT]
+    return math.hypot(wx, wy) - HOUSING_CHAMFER / math.sqrt(2)
 
 
 def skirt_base_z():
@@ -108,7 +113,9 @@ def cap(kind):
                 cx, cy = i * s, j * s
                 if math.hypot(cx, cy) > CHEQUER_R - s / 2:
                     continue
-                sq = (cq.Workplane("XY", origin=(0, 0, zt - 1.5)).center(cx, cy).rect(s, s)
+                # a hair smaller than the cell: squares that touch only at their
+                # corners would make a non-manifold mesh
+                sq = (cq.Workplane("XY", origin=(0, 0, zt - 1.5)).center(cx, cy).rect(s * 0.92, s * 0.92)
                       .extrude(CHEQUER_H + 2).val())
                 squares.append(sq)
         pattern = C.fuse(squares).rotate(cq.Vector(0, 0, 0), cq.Vector(0, 0, 1), 45)
@@ -121,7 +128,7 @@ def switch(x=0.0, y=0.0):
     zp = C.Z_PLATE_TOP
     bot = C.box3(x - BOTTOM_W / 2, y - BOTTOM_W / 2, C.Z_PCB_TOP, x + BOTTOM_W / 2, y + BOTTOM_W / 2, zp - C.PLATE_T)
     top = cq.Solid.makeLoft([
-        cq.Wire.makePolygon([cq.Vector(x + sx * HOUSING_W_BOT / 2, y + sy * HOUSING_W_BOT / 2, zp - C.PLATE_T)
+        cq.Wire.makePolygon([cq.Vector(x + sx * HOUSING_W_BOT[0] / 2, y + sy * HOUSING_W_BOT[1] / 2, zp - C.PLATE_T)
                              for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1))], close=True),
         cq.Wire.makePolygon([cq.Vector(x + sx * HOUSING_W_TOP / 2, y + sy * HOUSING_W_TOP / 2, z_housing_top())
                              for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1))], close=True)])
@@ -135,13 +142,13 @@ def all_switches():
 
 def test_print():
     """Four caps as four neighbouring buttons: a natural, a sharp, a C/F and
-    another natural (rows 2/3 of the hex grid), joined by thin sprues so
+    another natural (rows 2/3 of the hex grid, at the real pitch), joined by thin sprues so
     they print as one job. Cut the sprues off before fitting."""
-    pos = [(0, 0, "natural"), (C.P, 0, "sharp"), (C.P / 2, -16.5, "cf"), (C.P * 1.5, -16.5, "natural")]
+    pos = [(0, 0, "natural"), (C.P, 0, "sharp"), (C.P / 2, -C.ROW_PITCH, "cf"), (C.P * 1.5, -C.ROW_PITCH, "natural")]
     caps = [cap(k).translate(cq.Vector(x, y, 0)) for x, y, k in pos]
     zb = skirt_base_z()
     sprues = [C.box3(C.D_SKIRT / 2 - 0.5, -0.6, zb, C.P - C.D_SKIRT / 2 + 0.5, 0.6, zb + 0.8),
-              C.box3(C.P / 2 + C.D_SKIRT / 2 - 0.5, -16.5 - 0.6, zb, C.P * 1.5 - C.D_SKIRT / 2 + 0.5, -16.5 + 0.6, zb + 0.8)]
+              C.box3(C.P / 2 + C.D_SKIRT / 2 - 0.5, -C.ROW_PITCH - 0.6, zb, C.P * 1.5 - C.D_SKIRT / 2 + 0.5, -C.ROW_PITCH + 0.6, zb + 0.8)]
     return C.fuse(caps + sprues)
 
 
