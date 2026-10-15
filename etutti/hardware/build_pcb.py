@@ -58,6 +58,7 @@ from array import array
 import pcbnew
 
 import generate as G
+import jlc
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 LOCAL_LIB = os.path.join(HERE, "etuttino.pretty")
@@ -991,6 +992,7 @@ def fab():
     cpl_path = os.path.join(FAB_DIR, "etuttino_cpl_bottom.csv")
     cli("pcb", "export", "pos", "--side", "back", "--format", "csv", "--units", "mm",
         "--smd-only", "--output", cpl_path, BOARD_PATH)
+    jlc.cpl(cpl_path)      # JLCPCB's column names and layer spelling
     ks = G.keys()
     with open(os.path.join(FAB_DIR, "etuttino_bom.csv"), "w", encoding="utf-8", newline="") as f:
         f.write("Comment,Designator,Footprint,LCSC Part #\n")
