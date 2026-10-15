@@ -463,6 +463,23 @@ hand tests the knob following.
 '`), so Python edit scripts with escapes go
 through the Write tool into the scratchpad.
 
+## eTuttino Pocket (started 15 Oct 2026)
+
+Compact third model: same C-griff geometry (P 18.5, rows 16.02, 100 mm
+deep), **28 keys G3–E5** (row 1 A3..D#5, row 2 G3..E5, row 3 G#3..D5,
+row 4 A3..C5), `O = 84`, ~237 × 100 mm, no screen zone, 2 muxes, LiPo
+1S ~2000 mAh (4 h with earphones; budget in `pocket/POWER.md`, the 28
+Hall sensors are >half the draw), battery bay under the front of the
+interface so the keyboard keeps the eTuttino's height. Lives in
+`etutti/hardware/pocket/`: `SPEC.md` (same Chat→Code protocol as the
+case SPEC, Portuguese, §9 lists the Code deliverables, §10 the open
+questions), `layout.py` (stdlib; writes `build/pocket_keys.csv`,
+`build/pocket_top.svg`, `build/pocket.json`, `POWER.md`; its eTuttino
+reference outline reproduces the case's 331.1 mm, which validates the
+hull method). Next: `case.py` gets `MODEL = "pocket"`, then the board
+(charger + buck-boost, Teensy fed on 3V3 with VUSB–VIN cut — CHECK),
+firmware `ETUTTI_MODEL_POCKET`, page model picker.
+
 ## eTutti handoff (session of Oct 2026, PRs #63–#76) — earlier state
 
 **State at hand-off** (everything merged to `main`):
