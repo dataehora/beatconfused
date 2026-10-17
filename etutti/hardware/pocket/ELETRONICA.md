@@ -4,7 +4,224 @@ Relatório do agente `eletronica`. Cada tarefa tem uma seção; o fim do arquivo
 para a gestão. Medidas em mm. **(conferir)** = número de datasheet de distribuidor, estimativa,
 ou peça ainda sem medida conferida.
 
-## E1 · Energia e som (SPEC v2, 17 out 2026)
+## E2 · Fechar as peças (SPEC v3, 17 out 2026)
+
+**SPEC atendida:** v3, tarefa E2 ("Passo 1 · Eletrônica"). A placa (E2b) vem depois do
+`pcb_envelope.json` do D2.
+
+**Contrato com o design:** `pcb/PECAS.json` traz cada peça que o case abriga: código, LCSC, datasheet,
+corpo (do desenho do datasheet), orientação, altura, keep-outs, saída dos cabos, `status`
+(final / conferir) e `needs_from_design` (o que o case precisa dar).
+
+### O que foi feito
+
+1. **Potenciômetro com chave que cabe sem subir a tampa** (SPEC §3, opção 1).
+2. **USB-C** numa plaquinha do painel, junto com o fone, com o 5 V do carregador tirado antes do Teensy.
+3. **Bateria com NTC (3 fios)**: modelo, fornecedores, berço e ligação ao TS.
+4. **Luz de carga** pelo CHG do BQ24074 no vermelho do LED que já existe, também desligado.
+5. **Pilha mais baixa** avaliada: recomendada, não crítica.
+6. **`pcb/PINOS.md`** deixa de ser provisório (nenhum pino mudou de lugar).
+7. **`POWER.md`** regenerado por `pcb/power_budget.py`, com a carga pela USB-C e a opção de 1200 mAh.
+
+### 1. Potenciômetro de volume com chave
+
+**Solução: 9 mm com chave, tipo horizontal, numa plaquinha vertical** (opção 1 da SPEC §3).
+
+- O corpo do 9 mm com chave mede **15,8 ao longo do eixo** (chave incluída), 9,5 de largura e
+  11,25 a partir da placa dele, com o eixo a 6,5 da placa ([desenho RK0972S](https://kyohritsu.com/eclib/OTHER/DATASHEET/rk0972s.pdf)).
+- Essa medida ao longo do eixo não muda com a montagem. O que muda é o que fica embaixo:
+  - **vertical, na plaquinha dos knobs** (como o RK09K do eTuttino): 16,6 acima da placa. Não cabe
+    nos 13 reservados, e baixar a plaquinha 3,6 a põe em cima da Audio Board;
+  - **horizontal, numa plaquinha vertical** atrás do eixo: não há placa embaixo do corpo. O corpo
+    desce de logo abaixo da tampa (z 30,3) até z 14,5, dentro da faixa de z que a plaquinha dos
+    knobs já usa (14,08–30,18). Em planta ocupa x 10,4–19,9 e y 42,5–53,8, quase exatamente o
+    retângulo reservado no `pocket.json` (10,1–20,1 × 42,8–55,3). **A tampa não sobe.**
+- A plaquinha do volume (≈ 13,6 × 16 × 1,6) fica em pé em y 40,9–42,5 e se liga à plaquinha dos
+  knobs em ângulo reto: uma aba dela entra numa fenda da plaquinha dos knobs e é soldada em 5 pads
+  (ou 5 fios curtos). A plaquinha dos knobs perde a ponta esquerda (recorte em volta do corpo).
+- O eixo passa pela tampa e a **porca M7 prende o potenciômetro na tampa**: o knob fica firme e a
+  plaquinha não carrega esforço. Furo Ø7,3 e um furo cego Ø1,2 para o pino antigiro (ou corta-se o pino).
+- Knob Ø9 em eixo Ø6 serrilhado, igual ao RK09K: serve. Com L = 15 a ponta do eixo fica 12,3 acima
+  da tampa.
+- A chave só leva o sinal de liga/desliga (alguns mA, ver a arquitetura do E1). Não passa a corrente do aparelho.
+- **Peça:** RK0972S-A10K (L 15, KC), ou Alps RK097 com chave. Na LCSC achei o Alps **RK0971221Z05**
+  ([C336003](https://www.lcsc.com/product-detail/C336003.html), 60 em estoque), com curva e eixo a
+  conferir **(conferir)**. A curva log (A) é a preferida; com linear (B) a firmware corrige a curva.
+- **Por que não o de 16 mm com chave:** corpo Ø16–17 e 13–17 ao longo do eixo com a caixa da chave.
+  Não é mais baixo que o de 9 mm, é mais largo, e com o encoder a 16 mm sobra ~1 mm entre os corpos.
+
+### 2. USB-C e a ligação ao Teensy
+
+**Solução: uma plaquinha do painel com o USB-C e o fone, deitada (paralela ao fundo), com a borda da
+frente num ressalto plano por dentro da parede curva de trás-esquerda.**
+
+```
+ USB-C (plaquinha do painel) ── CC1, CC2: 5,1 kΩ ao GND · ESD USBLC6-2SC6
+   ├── VBUS, D+, D−, GND ── cabo curto com plugue micro-B de 90° ── micro-B do Teensy
+   │                        (o VUSB do Teensy só vai ao sensor de VBUS do i.MX: ponte VUSB–VIN cortada)
+   └── VBUS, GND (2+2 vias) ── cabo JST SH 8 vias ── placa principal: BQ24074 IN
+       HP_L, HP_R, HP_VGND, HP_TIPSW (fone) ─┘
+```
+
+- A parede é um arco (R ~89): numa corda de 30 a flecha é ~1,3. Um ressalto plano por dentro deixa a
+  borda reta; os dois conectores ficam lado a lado, com ~14 entre centros.
+- **Receptáculo:** Korean Hroparts **TYPE-C-31-M-12** (16 vias, SMD com pernas da carcaça
+  passantes), [C165948](https://www.lcsc.com/product-detail/C165948.html). Corpo 8,94 × 7,35 × 3,26
+  **(conferir no desenho)**. Furo oblongo 9,4 × 3,7 na parede; a frente do receptáculo fica 0–0,3
+  atrás da face de fora, e por fora um rebaixo de 13 × 7 × 0,5 para a capa do plugue assentar na curva.
+- **CC1 e CC2 com 5,1 kΩ** ao GND (0402, [C25905](https://www.lcsc.com/product-detail/C25905.html)):
+  carregadores e cabos C-C entregam 5 V. **ESD:** USBLC6-2SC6 ([C7519](https://www.lcsc.com/product-detail/C7519.html)).
+- **O 5 V do carregador sai do USB-C, antes do Teensy.** O fio no pad VUSB do Teensy (E1) não existe
+  mais. Continua o corte da ponte VUSB–VIN: o Teensy é alimentado pelo 3,3 V do conversor.
+- **Até o Teensy:** um cabo curto (~40 mm) com plugue micro-B de 90°, comprado e cortado, com os 4 fios
+  soldados em pads da plaquinha (D+/D− trançados). A USB do Teensy 4.0 é de 480 Mbit/s; com ~40 mm
+  trançados deve funcionar, e se não negociar alta velocidade ela cai para 12 Mbit/s, que basta para
+  MIDI **(conferir no protótipo)**. A direção do ângulo do plugue depende da posição final da pilha.
+- **Força de encaixe** (~20 N) vai para o ressalto pela plaquinha: 2 parafusos M2 autoatarraxantes
+  ou um trilho impresso preso pelo fundo (o design escolhe).
+- **Alternativa recusada:** USB-C na língua da placa principal. A placa fica em z 6,5–7,7; o
+  conector sairia baixo na parede e a língua não chega à parede perto do USB.
+
+### 3. Fone de painel
+
+- **PJ-327A** (5 terminais: manga, ponta, comutação da ponta, anel, comutação do anel), passante,
+  horizontal, na plaquinha do painel. Corpo 14,3 × 9 × 6 **(conferir)**. Na LCSC: SHOU HAN
+  PJ-327A-CJ [C17701691](https://www.lcsc.com/product-detail/C17701691.html) **(conferir no desenho
+  que a comutação da ponta é fechada sem plugue)**.
+- Furo Ø6 com rebaixo externo Ø10 × 0,5 para plugues gordos; parede ≤ 1,5 no furo.
+- Manga → **HP_VGND** (terra virtual da Audio Board), **nunca no GND**. Ponta/anel → HP_L/HP_R.
+  Comutação da ponta → rede do HP_DET na placa principal (pino 17).
+- Os sinais do fone saem dos terminais do jack da própria Audio Board (3 fios curtos até a placa
+  principal, que alimenta o amplificador) e seguem pelo cabo SH até a plaquinha do painel.
+
+### 4. Bateria com NTC
+
+- **Pedido:** LiPo 1S 603450 com PCM e **NTC de 10 kΩ (B 3435), 3 fios**, plugue JST PH 2,0 de 3 vias.
+- **Onde comprar** (todos a conferir):
+  - EEMB LP603450 sob encomenda com o fio do NTC ([página](https://www.eemb.com/product-252)), célula
+    6,3 × 34,5 × 52 máx., ~22 g;
+  - pacote 603450 de 3 fios com NTC à venda pronto, mas de **1200 mAh** (mesmo tamanho; vendedor
+    zengtrader, [eBay 112702247608](https://www.ebay.com/itm/112702247608));
+  - reserva que também cabe no berço: Core Electronics **CE06795** (1000 mAh, NTC, PCM, 7 × 30 × 50,
+    JST-PH 3, [página](https://core-electronics.com.au/catalog/product/view/sku/CE06795)).
+- **Berço:** 7 × 36 × 58 (célula + PCM + dobra dos fios), +8 % de inchaço na espessura (as células
+  incham na espessura): **7,6 × 36,5 × 58,5**, mais um canal de ~6 × 4 para os 3 fios. Fora de baixo
+  da placa principal, acesso pelo fundo, presa pelo fundo com uma espuma (sem cola na célula).
+- **NTC no TS do BQ24074:** o carregador injeta 75 µA no TS ([datasheet](https://www.ti.com/lit/ds/symlink/bq24074.pdf)).
+  Para a carga a 2,1 V (28 kΩ ≈ 0 °C) e a 0,3 V (4 kΩ ≈ 50 °C), a janela padrão do NTC de 10 kΩ B 3435.
+  Ligação: NTC entre TS e GND (o fio do NTC e o negativo da bateria). Sem resistor extra.
+- **Plugue:** JST PH B3B-PH-K-S na placa ([C131339](https://www.lcsc.com/product-detail/C131339.html)).
+  A ordem dos fios varia entre vendedores: **conferir antes de ligar**. A montagem alternativa
+  (sem NTC) troca o NTC por 10 kΩ fixo do TS ao GND.
+
+### 5. Luz de carga pelo CHG
+
+O CHG do BQ24074 é um dreno aberto que vai ao GND enquanto carrega (e pisca a 2 Hz se o tempo de
+segurança estoura). O LED do Pocket é de catodo comum (os pinos do Teensy fornecem corrente), então
+o CHG não pode acendê-lo direto: precisa de uma chave do lado de cima.
+
+```
+ VBUS (5 V, só com USB) ── 100 kΩ ──┬── porta do AO3401A (P-MOSFET)
+                                    └── CHG do BQ24074 (baixo = carregando)
+ VBUS ── fonte do AO3401A ── dreno ── 1 kΩ ──► BAT54C (diodo 1) ──┐
+ pino 13 do Teensy ── 270 Ω ─────────────────► BAT54C (diodo 2) ──┴── LED_R (anodo vermelho, plaquinha dos knobs)
+```
+
+- Carregando: o CHG puxa a porta, o MOSFET conduz, ~2,8 mA da USB acendem o vermelho, **com o Pocket
+  ligado ou desligado**. Sem USB não há nada no circuito.
+- Os dois diodos fazem um "OU": o Teensy desligado não recebe corrente pelo pino 13, e o pino 13 não
+  alimenta o circuito da carga.
+- Peças: AO3401A ([C15127](https://www.lcsc.com/product-detail/C15127.html)), BAT54C
+  ([C134405](https://www.lcsc.com/product-detail/C134405.html)), resistores 0402.
+- **Efeito na firmware:** enquanto carrega, o vermelho fica aceso e a firmware não o apaga. As
+  piscadas de confirmação passam para o verde (ver `PINOS.md`). Pergunta 4 abaixo.
+- O CHG não vai a um pino do Teensy (não há pino livre). A página mostra "carregando" pela dedução
+  VBUS + VBAT descrita no `PINOS.md`.
+
+### 6. Pilha mais baixa
+
+| Pilha | Audio Board até o topo do USB | topo do USB do Teensy | observação |
+|---|---:|---:|---|
+| como no D1 (espaçador de 2,5 + 3 de altura da Audio Board) | 13,0 | z 23,7 | medida na pilha do J |
+| **baixa:** Teensy soldado direto na Audio Board com headers extralongos (só o plástico de espaçador) | **~8,7 (conferir)** | **~z 19,4** | como no manual do eTuttino |
+
+- Ganho de ~4,3 em altura. O topo do USB passa folgado sob a rampa; o design pode usar isso para
+  encolher a faixa da interface alguns milímetros.
+- Cuidado de montagem: **cortar a ponte VUSB–VIN antes** de soldar o Teensy (depois a face de baixo
+  fica contra a Audio Board). Com a v3 nada mais precisa ser soldado embaixo do Teensy (o fio do VUSB saiu).
+- Recomendo a pilha baixa; não é crítico.
+
+### Peças escolhidas (E2)
+
+| Função | Peça | LCSC | Medidas | Datasheet | Status |
+|---|---|---|---|---|---|
+| Volume com chave | RK0972S-A10K L15 / Alps RK0971221Z05 | [C336003](https://www.lcsc.com/product-detail/C336003.html) | 15,8 × 9,5 × 11,25, M7 | [RK0972S](https://kyohritsu.com/eclib/OTHER/DATASHEET/rk0972s.pdf) | conferir (curva, eixo) |
+| Encoder | Alps EC11E com chave, 15 pulsos / 15 detentes, eixo 20 | não achado | 12,4 × 13,2 × 6,5 | [EC11E](https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/) | conferir (sufixo) |
+| LED | 3 mm vermelho/verde, catodo comum (Kingbright WP937EGW ou equiv.) | conferir | Ø3 × 5,3 | [WP937EGW](https://www.kingbrightusa.com/images/catalog/SPEC/WP937EGW.pdf) | conferir |
+| USB-C | Hroparts TYPE-C-31-M-12 | [C165948](https://www.lcsc.com/product-detail/C165948.html) | 8,94 × 7,35 × 3,26 | LCSC | conferir |
+| ESD da USB | USBLC6-2SC6 | [C7519](https://www.lcsc.com/product-detail/C7519.html) | SOT-23-6 | [ST](https://www.st.com/resource/en/datasheet/usblc6-2.pdf) | final |
+| CC 5,1 kΩ (2×) | 0402 1 % | [C25905](https://www.lcsc.com/product-detail/C25905.html) | 0402 | — | final |
+| Fone | PJ-327A, 5 terminais | [C17701691](https://www.lcsc.com/product-detail/C17701691.html) | 14,3 × 9 × 6 | [LCSC](https://datasheet.lcsc.com/lcsc/2309121405_SHOU-HAN-PJ-327A-CJ_C17701691.pdf) | conferir |
+| Bateria | 603450 1S, PCM, NTC 10 kΩ B 3435, 3 fios | — (pronta) | 7 × 36 × 58 com PCM | [EEMB](https://www.eemb.com/product-252) | conferir |
+| Alto-falante | Same Sky CLS0361-L152 | — (Mouser/DigiKey) | Ø36 × 6,0 (aro 2,7; ímã Ø15,9), 8,6 g, fios 152 | [CLS0361-L152](https://www.sameskydevices.com/product/resource/cls0361-l152.pdf) | final |
+| Luz de carga | AO3401A + BAT54C | [C15127](https://www.lcsc.com/product-detail/C15127.html), [C134405](https://www.lcsc.com/product-detail/C134405.html) | SOT-23 | [AO3401A](https://www.aosmd.com/res/datasheets/AO3401A.pdf), [BAT54C](https://www.diodes.com/assets/Datasheets/ds11005.pdf) | final |
+| Conector da bateria | JST PH B3B-PH-K-S | [C131339](https://www.lcsc.com/product-detail/C131339.html) | 7,9 × 4,5 × 6 | [JST PH](https://www.jst-mfg.com/product/pdf/eng/ePH.pdf) | final |
+| Conector do alto-falante | JST PH B2B-PH-K-S | C131337 (conferir) | 5,9 × 4,5 × 6 | [JST PH](https://www.jst-mfg.com/product/pdf/eng/ePH.pdf) | conferir |
+| Cabo do painel | JST SH BM08B-SRSS-TB (2×) + cabo SH 8 vias | [C160394](https://www.lcsc.com/product-detail/C160394.html) | 10 × 4,25 × 4,25 | [JST SH](https://www.jst-mfg.com/product/pdf/eng/eSH.pdf) | final |
+| Cabo dos knobs | JST SH BM10B-SRSS-TB (2×) + cabo SH 10 vias | [C160396](https://www.lcsc.com/product-detail/C160396.html) | 12 × 4,25 × 4,25 | [JST SH](https://www.jst-mfg.com/product/pdf/eng/eSH.pdf) | final |
+| Cabo micro-B de 90° | comprado, cortado e soldado | — | plugue 11 × 11 × 7,5 | — | conferir |
+
+Seguem do E1, sem mudança: BQ24074RGTR (C54313), TPS63802DLAR (C2845237), PAM8302AASCR (C113367),
+TMAG5253BA3 (consignado), 2 × CD74HC4067M96. As portas do EN por grupo saem no E2b.
+
+**Plaquinha dos knobs, 10 vias** (antes 8 no eTuttino): VCC, GND, POT, ENC_A, ENC_B, ENC_SW, LED_R,
+LED_G e os 2 fios da chave (PWR_A = saída do carregador por 100 Ω, PWR_B = SW_ON). O conector
+fica no **lado de cima** da plaquinha: um conector para baixo, como o do eTuttino, esbarraria na Audio
+Board, que passa por baixo dela.
+
+### Consumo e autonomia
+
+Sem mudança de arquitetura desde o E1: os números são os mesmos (detalhes no `POWER.md`).
+
+| Cenário recomendado (TMAG5253BA3 por grupo, 396 MHz) | fone | alto-falante |
+|---|---:|---:|
+| 1000 mAh, típico | **6,9 h** | **4,5 h** |
+| 1000 mAh, pior caso | 4,2 h | 2,4 h |
+| 1200 mAh (se a bateria de 3 fios vier assim), típico | 8,2 h | 5,4 h |
+
+- Carga: ~2,5 h desligado (1000 mAh, 500 mA), ~3 h tocando com fone. Pela USB-C com qualquer cabo.
+- A luz de carga usa ~2,8 mA da USB, não da bateria.
+- Desligado (chave ou KEEP): ~10 µA. Todas as correntes ainda são de datasheet e modelo: medir no protótipo.
+
+### O que o design precisa dar (detalhe em `PECAS.json`, `needs_from_design`)
+
+1. Ressalto plano ≥ 32 × 10 por dentro da parede de trás-esquerda; parede ≤ 1,0 no furo do USB-C
+   (oblongo 9,4 × 3,7, rebaixo externo 13 × 7 × 0,5) e ≤ 1,5 no do fone (Ø6, rebaixo Ø10 × 0,5);
+   2 pilares M2 ou um trilho para a plaquinha do painel.
+2. Na tampa, no knob de volume: furo Ø7,3 para a bucha M7 (com porca) e furo cego Ø1,2 para o pino antigiro.
+3. Espaço para a plaquinha vertical do volume em y 40,9–42,5, de z 13,8 para cima, e nada em
+   z 14,5–17,2 sob o corpo do potenciômetro.
+4. Berço da bateria 7,6 × 36,5 × 58,5 com canal para 3 fios.
+5. Caixa do alto-falante para 6,0 ± 0,3 de profundidade (o D1 reservou 5,5) e ≥ 8 cm³ (10 de preferência), vedada.
+6. Caminho para o cabo SH de 10 vias da borda direita da plaquinha dos knobs até a placa principal,
+   e para o cabo SH de 8 vias da plaquinha do painel até a placa principal.
+7. Escolher a pilha (normal 13,0 ou baixa ~8,7).
+
+### O que a programação precisa ajustar (`pcb/PINOS.md`)
+
+Os pinos são os da versão provisória, agora finais. Novo na v3:
+
+1. Enquanto carrega, o vermelho do LED fica aceso pelo carregador e a firmware não o apaga: as
+   piscadas de confirmação do encoder devem usar o verde.
+2. O vermelho passa por um diodo; o brilho fica igual ao do eTuttino (resistor de 270 Ω).
+3. "Carregando" para a página: VBUS (registrador da USB do i.MX RT) + VBAT < 4,15 V.
+4. Encoder de 15 pulsos / 15 detentes: `ENC_STEPS_PER_DETENT = 4`, como no eTuttino.
+
+## E1 · Energia e som (SPEC v2, 17 out 2026) · histórico
+
+Decisões da v3 sobre o E1: TMAG5253BA3 por grupo, KEEP com desligamento em dois estágios,
+bateria com NTC, USB-C no case, luz de carga pelo STAT, alto-falante CLS0361-L152, 396 MHz com
+condições. O texto abaixo é o do E1; o que mudou está no E2 acima.
 
 **SPEC atendida:** v2, tarefa E1 ("Passo 1 · Eletrônica"). Sem placa nem Gerbers (esperam D2).
 
@@ -213,26 +430,20 @@ Detalhes e todos os cenários no `POWER.md`. Bateria 1000 mAh, 85 % úteis (3,15
 
 ## Perguntas para a gestão
 
-1. **Sensor TMAG5253 no lugar do DRV5056?** Dá o maior ganho (168 → 36 mA, a autonomia com fone
-   passa de 3,0 h para 6,9 h), mas não achei estoque na LCSC/JLCPCB: a montagem na JLCPCB fica
-   com peça consignada ou "global sourcing" (mais prazo e custo), e o X2SON não se solda em casa.
-   Alternativa em SOT-23 com estoque parcial: DRV5053 (2,7 mA, sem EN: ~5,3 h com fone a
-   396 MHz, típico, estimativa).
-2. **Desligamento automático de verdade (KEEP)?** Com o KEEP, depois de N minutos o Pocket
-   desliga de verdade e religa girando o volume até o clique e de volta. Sem ele, o desligamento
-   automático só baixa para ~23 mA e um Pocket esquecido ligado esvazia em ~1,5 dia. Recomendo
-   o KEEP; a firmware pode ter os dois (leve depois de 15 min, de verdade depois de mais 30).
-3. **Um fio no Teensy:** o carregador recebe o 5 V da USB por um fio do pad VUSB (verso do
-   Teensy), depois de cortar a ponte VUSB–VIN. É aceitável para o kit/manual, ou prefere um
-   conector USB próprio na placa (só carga) além do micro-USB do Teensy?
-4. **LED de carga?** Não sobrou pino para o status do carregador; a página mostra "carregando"
-   deduzindo pela tensão. Com o aparelho desligado e carregando, nada acende. Quer um LED
-   pequeno de carga ligado direto no carregador (sem pino do Teensy, visível com o Pocket
-   desligado)?
-5. **Potenciômetro com chave:** os 9 mm com chave (tipo RK0972S/RV097NS) são ~10 mm mais altos
-   que o RK09K e não achei um com estoque na LCSC. Aceita essa altura (31–36 da placa à ponta do
-   eixo), ou o design prefere outro formato (16 mm com chave, mais baixo e mais largo)?
-6. **Alto-falante:** recomendo o Ø36 × 6 (CLS0361-L152, 2 W) com 8–12 cm³ fechados. Se o D1 não
-   der esse volume sob a grade, prefere o Ø36 fino (4,6) com menos grave, ou o 30 × 20?
-7. **Bateria com NTC?** Pacotes de 3 fios (com termistor) deixam o carregador parar a carga se a
-   bateria esquentar. São menos comuns no tamanho 603450. Exigir, ou aceitar 2 fios com o TS fixo?
+As 7 perguntas do E1 foram respondidas pela SPEC v3. Novas, do E2:
+
+1. **Potenciômetro com chave:** aprova o 9 mm com chave montado deitado numa plaquinha vertical, preso
+   na tampa pela porca M7? A tampa não sobe; o custo é uma plaquinha a mais (soldada em ângulo reto
+   na dos knobs) e um furo com porca na tampa.
+2. **USB-C e fone numa plaquinha do painel**, com um cabo micro-B de 90° comprado, cortado e soldado
+   em 4 pads até o Teensy: aceitável para o protótipo? A alternativa comercial (adaptador USB-C fêmea
+   → micro-B macho em fita) não deixa tirar o 5 V antes do Teensy nem garante os resistores de 5,1 kΩ.
+3. **Bateria de 3 fios:** no tamanho 603450 ela aparece mais em **1200 mAh** (mesmo tamanho, +1,3 h
+   com fone). Aceita 1000 a 1200 mAh? O J escolhe o fornecedor (EEMB sob encomenda, o pacote pronto
+   de 1200 do eBay, ou o CE06795 de 1000 mAh, 7 × 30 × 50).
+4. **LED durante a carga:** como pedido, o vermelho acende pelo carregador mesmo com o Pocket ligado;
+   tocando enquanto carrega, o LED fica laranja e a firmware confirma com o verde. Prefere que a luz
+   de carga apareça **só com o Pocket desligado** (um transistor a mais apaga a luz de carga quando o
+   3,3 V está ligado; aí a firmware mostra a carga do jeito dela)?
+5. **Pilha baixa** (Teensy soldado direto na Audio Board, ~8,7 em vez de 13): recomendo. Fica para o
+   design dizer se aproveita a altura para encurtar a faixa da interface.

@@ -1,5 +1,9 @@
 """eTuttino Pocket -- SPEC v2, task D1: the new left side and the interface.
 
+Kept as the record of the D1 study. J picked variant B (SPEC v3); the case
+is case/case.py now and the review page is written by case/revisao.py
+(this script rewrites the old D1 page only with --d1-page).
+
 Stdlib only:  python etutti/hardware/pocket/variants.py
 
 For each left-side variant in shape.VARIANTS it lays out the interface
@@ -937,7 +941,7 @@ def render_png(svg, path, width=1400):
 
 
 def main():
-    keys = sys.argv[1:] or list(S.VARIANTS)
+    keys = [a for a in sys.argv[1:] if not a.startswith("--")] or list(S.VARIANTS)
     results = []
     for k in keys:
         r = study(k)
@@ -963,10 +967,11 @@ def main():
             fh.write(svg)
         ok = render_png(svg, os.path.join(RENDERS, name + ".png"))
         print(f"  {name}: svg{' + png' if ok else ''}")
-    os.makedirs(os.path.dirname(REVIEW), exist_ok=True)
-    with open(REVIEW, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write(review_page(results, RECOMMENDED))
-    print(f"wrote {os.path.relpath(REVIEW, HERE)}")
+    if "--d1-page" in sys.argv:      # the review page is the D2 one now (case/revisao.py)
+        os.makedirs(os.path.dirname(REVIEW), exist_ok=True)
+        with open(REVIEW, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(review_page(results, RECOMMENDED))
+        print(f"wrote {os.path.relpath(REVIEW, HERE)}")
 
 
 if __name__ == "__main__":

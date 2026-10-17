@@ -1,6 +1,6 @@
 # eTuttino Pocket · orçamento de energia
 
-Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v2, tarefa E1.
+Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v3, tarefa E2 (sensor TMAG5253BA3 por grupo e 396 MHz decididos na v3; o clock final sai da medição da P1).
 
 Bateria LiPo 1S de **1000 mAh** (3,7 V médios), capacidade útil 85 % (corte em ~3,3 V, envelhecimento, frio) = 3,15 Wh.
 Trilho único de 3,3 V pelo buck-boost TPS63802 (eficiência 92 % típica, 88 % no pior caso, conferir). O amplificador do alto-falante (PAM8302A) vai direto na bateria (saída do carregador), fora do trilho de 3,3 V.
@@ -87,7 +87,31 @@ Erro de velocidade em unidades MIDI (1–127), com o mapa logarítmico da firmwa
 | Desligamento automático "de verdade" (a firmware solta o KEEP e o conversor desliga) | ~10 µA (carregador + divisor) | anos (fica a autodescarga da bateria) |
 | Chave do volume desligada | ~10 µA | anos |
 
-O "leve" não é desligado: um Pocket esquecido ligado gasta a bateria em pouco mais de um dia. Daí a proposta do KEEP (ver `ELETRONICA.md`).
+O "leve" não é desligado: sozinho, um Pocket esquecido ligado gastaria a bateria em pouco mais de um dia. Por isso a SPEC v3 usa os dois estágios: leve depois de 15 min, KEEP baixo (desligado de verdade) depois de mais 30.
+
+## Carga pela USB-C
+
+BQ24074 em modo USB500 (EN1 = 1, EN2 = 0): no máximo 500 mA da USB-C; corrente de carga programada 500 mA (R_ISET = 1,78 kΩ, K_ISET = 890 AΩ; datasheet). Os 5,1 kΩ nos CC da USB-C pedem a corrente padrão da porta (500 mA em USB 2.0, até 1,5–3 A em carregadores USB-C), então qualquer cabo C-C ou A-C carrega.
+
+| Situação | corrente na bateria | carga completa (estimativa, conferir) |
+|---|---:|---:|
+| 1000 mAh, desligado | 500 mA | ~2,5 h |
+| 1000 mAh, tocando com fone (o aparelho tira ~104 mA da OUT a 4,4 V) | ~396 mA | ~3,0 h |
+| 1200 mAh, desligado | 500 mA | ~2,9 h |
+| 1200 mAh, tocando com fone (o aparelho tira ~104 mA da OUT a 4,4 V) | ~396 mA | ~3,5 h |
+
+Fase de tensão constante no fim da carga: +0,5 h (estimativa). A carga para fora de 0–50 °C (NTC de 10 kΩ, B 3435, no TS: corrente de 75 µA, desliga a 2,1 V = 28 kΩ ≈ 0 °C e a 0,3 V = 4 kΩ ≈ 50 °C; datasheet).
+
+**Luz de carga** (CHG do BQ24074 → P-MOSFET → 1000 Ω → diodo → vermelho do LED): ~2,8 mA, tirados da USB, não da bateria. Acende também desligado.
+
+## Autonomia com outra capacidade
+
+A bateria de 3 fios que se acha em 603450 às vezes é de 1200 mAh (mesmo tamanho). Cenário recomendado, típico:
+
+| Bateria | com fone | com alto-falante |
+|---|---:|---:|
+| 1000 mAh | 6,9 h | 4,5 h |
+| 1200 mAh | 8,2 h | 5,4 h |
 
 ## Para conferir no protótipo
 
@@ -95,3 +119,4 @@ O "leve" não é desligado: um Pocket esquecido ligado gasta a bateria em pouco 
 2. Corrente dos 28 sensores e o campo do ímã do Gateron no fundo do curso (escolhe TMAG5253UA5 ou BA3).
 3. Volume confortável no alto-falante: potência média real (tensão RMS na bobina).
 4. Eficiência do TPS63802 com a carga real.
+5. Tempo de carga real e a temperatura da bateria tocando enquanto carrega.

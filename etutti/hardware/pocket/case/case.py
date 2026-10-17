@@ -1,0 +1,1089 @@
+"""eTuttino Pocket case, Seixo only (SPEC v3, task D2), CadQuery.
+
+    C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/pocket/case/case.py
+
+writes into out/ (STEP + STL, mirrored to a right-handed frame, see below):
+  seixo_tampa        top shell: walls, keyboard lid, interface lid with the
+                     engraved logo, knob/LED holes, speaker grille and seat,
+                     sealed speaker box walls, panel boss with the USB-C and
+                     jack holes, posts for the controls board and the panel
+                     board, screw columns
+  seixo_fundo        bottom plate: board pillars, battery bay (walls + roof),
+                     the hatch opening, countersunk screw holes, feet
+  seixo_tampa_bateria  the battery hatch (2 M2 screws)
+  seixo_caixa_fundo  the speaker box's floor (glued/sealed under its walls)
+  plate              1.6 mm FR-4 switch plate (also plate.dxf)
+
+fit_check.py checks the electronics (pcb/PECAS.json) against these solids,
+pcb_envelope.py writes out/pcb_envelope.json (the contract with the
+electronics), render.py makes the pictures, mechanics.py the board's sag.
+
+Plan geometry: ../shape.py, variant B ("Seixo"): the same rules, but here
+the outline, the opening and the ramp edges are built EXACTLY (lines and
+arcs) instead of shape.py's sampled polygons; check_plan() compares them.
+
+Coordinates as in the eTuttino SPEC: x right from the case's leftmost point,
+y from the back (0) to the player (100), z up from the table, mm. That
+frame is left-handed, so everything is modelled in it and mirrored on
+export: y_file = 100 - y_spec (x right, y away from the player, z up).
+"""
+import math
+import os
+import sys
+
+import cadquery as cq
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+POCKET = os.path.dirname(HERE)
+OUT = os.path.join(HERE, "out")
+sys.path.insert(0, POCKET)
+import shape as S  # noqa: E402
+
+# ================================================================ parameters
+VARIANT = "B"
+V = S.VARIANTS[VARIANT]
+ORIGIN, KEYS, PLAN = S.place(V)                 # PLAN: shape.py's sampled outline (checked against ours)
+P, D_BTN, WIDTH = S.P, S.D_BTN, S.WIDTH
+ROW_Y = S.ROW_Y
+D_SKIRT = 16.5
+
+# keyboard opening (eTuttino rules)
+CLR_SIDE, CLR_FB = S.CLR_SIDE, S.CLR_FB         # 15 / 8.17
+R_OPEN_CORNER = 6.0                             # the four 120 deg corners
+CHAMFER_W, CHAMFER_DROP = 4.0, 2.0
+BOX_OFF = S.BOX_OFF                             # 10.3 right/front/back
+R_CORNER = V["corner"]                          # 24: every other corner of the outline
+BAND = V["band"]                                # 54: interface width (ramp top edge -> wall)
+
+# heights (the eTuttino stack-up)
+FLOOR_T = S.FLOOR_T                             # 2.0
+Z_PCB_BOT, Z_PCB_TOP = S.Z_PCB_BOT, S.Z_PCB_TOP  # 6.5 / 7.7 (1.2 mm board)
+PCB_T = Z_PCB_TOP - Z_PCB_BOT
+PLATE_T = S.PLATE_T
+Z_PLATE_TOP = S.Z_PLATE_TOP                     # 12.8
+Z_DECK = S.Z_DECK                               # 17.4
+Z_KEY_TOP = S.Z_KEY_TOP                         # 26.6
+Z_IF, IF_CREASE_Y, IF_CREASE_R, IF_SLOPE = S.Z_IF, S.IF_CREASE_Y, S.IF_CREASE_R, S.IF_SLOPE
+TAN_IF, COS_IF = S.TAN_IF, S.COS_IF
+WALL = S.WALL                                   # 2.5 (Seixo)
+TOP_T = S.TOP_T                                 # 2.5 lid over the interface
+PLATE_OVERLAP = 3.0
+
+# ramp (eTuttino): foot = the chamfer's outer edge, top edge = opening + 12.7, both R 5
+RAMP_FOOT_OFF, RAMP_TOP_OFF = S.RAMP_FOOT_OFF, S.RAMP_TOP_OFF
+RAMP_EDGE_R = 5.0
+OUTER_EDGE_R = 1.0     # the outside top edges (walls -> deck / interface): no sharp edge under the hand
+
+# ---------------------------------------------------------------- interface (SPEC v3 4, 7)
+KNOB_Y = 49.0
+VOLUME_XY = (15.12, KNOB_Y)
+SELECT_XY = (31.12, KNOB_Y)
+LED_XY = (43.12, KNOB_Y)
+POT_HOLE_D = 7.3                                # M7 x 0.75 bushing, nut on top (PECAS volume_pot)
+POT_PIN = (0.0, -6.0, 1.3, 1.5)                 # anti-rotation pin: offset from the shaft (dx, dy), hole d, depth -- CHECK the part
+POT_NUT_D = 11.0                                # M7 thin nut across corners (~10.4): flat land round the hole
+SHAFT_HOLE_D = 6.8                              # encoder shaft (not nutted: the encoder sits on the controls board)
+LED_HOLE_D = 3.5
+KNOB_D = 9.0
+
+# logo, engraved in the flat lid, following the outline's curve (concentric with G3)
+LOGO_DEPTH = 0.4                                # CHECK: SPEC says ~0.4
+LOGO_FONT = r"C:/Windows/Fonts/georgiab.ttf"
+LOGO_FONT2 = r"C:/Windows/Fonts/arialbd.ttf"
+LOGO_R = (63.5, 56.0)                           # baseline radii of "eTuttino" / "POCKET" round G3
+LOGO_SIZE = (7.6, 3.6)                          # font sizes (em): cap heights 5.3 / 2.6
+LOGO_ANGLE = 215.5                              # centre of the text on the arc, degrees round G3
+LOGO_TRACK = (0.35, 1.1)                        # extra letter spacing
+
+# speaker (PECAS speaker: Same Sky CLS0361-L152, final)
+SPK_C = (26.88, 77.54)
+SPK_D, SPK_DEPTH, SPK_FRAME_H, SPK_MAGNET_D = 36.0, 6.0, 2.7, 15.9
+SPK_CONE_D = 31.0                               # radiating area (inside the rim) -- CHECK on the part
+GASKET_T = 0.8                                  # foam ring, ~0.5 compressed: grille -> rim
+SPK_SEAT_CLR = 0.3                              # radial, round the frame (36 +- 0.2)
+SPK_RING_W, SPK_RING_H = 1.2, 3.0               # locating ring round the frame, hanging from the lid
+GRILLE_HOLE_D, GRILLE_PITCH = 2.1, 3.0          # hex on the sloping lid; only over the cone (bridges 0.9)
+GRILLE_EDGE = 0.8                               # hole edge -> cone edge
+BOX_WALL = 1.5
+BOX_FLOOR_T = 1.2
+BOX_GROW = (13.0, 1.0)                          # the box's inside grows past the frame: +x (sideways), and all round
+# the box floor sits on the battery bay's roof (below)
+
+# panel board (PECAS panel_board / usb_c / headphone_jack): on the back-left curved wall
+PANEL_CHORD = (9.0, 37.0)                       # y of the wall points the board's front edge spans (~31 mm chord)
+PANEL_DEPTH = 13.0
+PANEL_T = 1.6
+PANEL_Z_TOP = 23.9                              # board top: its underside clears the Teensy's micro-B plug (21.85) by 0.45
+PANEL_USB_S = -7.0                              # along the board edge from its centre (- = towards the back)
+PANEL_JACK_S = 7.0
+USB_C_HOLE = (9.4, 3.7)                         # stadium
+USB_C_ZC = PANEL_Z_TOP + 1.63
+USB_C_RECESS = (13.0, 7.0, 3.0)                 # outside: overmould recess w, h, corner R
+USB_C_WALL = 1.0                                # wall left at the USB-C hole
+JACK_HOLE_D = 6.0
+JACK_ZC = PANEL_Z_TOP + 2.6
+JACK_SPOT_D = 10.0
+JACK_WALL = 1.5
+PANEL_SCREW_D, PANEL_POST_D, PANEL_PILOT_D = 2.2, 4.4, 1.7
+# M2 holes (s along the board from its centre, d in from its front edge): both
+# clear of the connectors' bodies (the jack, 14.3 + 2 long, leaves no room behind it)
+PANEL_POSTS = [(-11.0, 10.3), (-0.6, 10.3)]
+
+# Teensy 4.0 + Audio Board Rev D, the LOW stack (PECAS stack.low: Teensy soldered
+# straight on the Audio Board, 8.7 from under the Audio Board to the top of the USB)
+STACK_XY, STACK_ANGLE = (30.0, 4.0), 0.0        # Audio Board corner at its USB end / VIN side
+AUDIO_L, AUDIO_W, AUDIO_LIFT = 38.0, 36.8, 3.0
+PAST_USB, PAST_VIN = 3.6, 8.76
+STACK_H = 8.7
+Z_AB = Z_PCB_TOP + AUDIO_LIFT                   # 10.7
+Z_AB_TOP = Z_AB + 1.6
+Z_TEENSY_TOP = Z_AB + STACK_H - 2.6             # 16.8 (board top; the USB socket is 2.6 on it)
+Z_USB_TOP = Z_AB + STACK_H                      # 19.4
+Z_TEENSY_PARTS = Z_TEENSY_TOP + 0.9             # solder of the long headers, chips
+USB_PLUG = (11.0, 11.0, 7.5)                    # 90 deg micro-B overmould (PECAS micro_b_link)
+
+# controls (PECAS volume_pot / encoder / led / controls_connector)
+# the switched pot lies on its side on a small vertical board RIGHT of it (between
+# it and the encoder): its body runs 11.25 to the left of that board, the shaft
+# 6.5 from it. (PECAS put that board behind the shaft, at y 40.9-42.5, where the
+# panel board needs the room.)
+POT_BODY = (10.37, 44.25, 21.62, 53.75, 14.5, 30.3)       # x0, y0, x1, y1, z0, z1
+POT_BOARD = (21.62, 43.0, 23.22, 55.0, 13.8, 29.8)
+POT_LEGS_X = 24.3                               # its legs clipped to 1.0 past the board (the encoder is at 24.92)
+CTRL_BOARD = (23.22, 42.5, 50.6, 56.0)          # its left edge meets the pot board at 90 deg
+CTRL_CONN = (46.4, 43.0, 50.6, 55.0)            # 10-way SH header on top at the right edge (12 along y)
+CTRL_T = 1.6
+CTRL_TOP = 17.18
+CTRL_LEGS = 1.5
+ENC = (12.4, 13.2, 6.5)
+CTRL_POSTS = [(40.4, 44.8), (40.4, 53.2)]       # M2 into lid posts
+POST_D, POST_PILOT_D, POST_PILOT_DEPTH = 5.0, 1.7, 6.0
+CTRL_CABLE = (50.6, 40.9, 56.0, 45.8)           # where its cable drops to the main board (J_CTL below it)
+
+# battery bay (PECAS battery: cradle 7.6 x 36.5 x 58.5), on the bottom plate, off the main board
+BATT_C, BATT_ANGLE = (38.0, 65.8), 0.0
+BATT_IN = (58.5, 36.5, 7.6)                     # length (x), width (y), height
+BATT_WALL, BATT_ROOF = 1.2, 1.0
+BATT_ROOF_GAP = 0.2
+BATT_PCM_END = -1                               # -1: the PCM end (wire exit) at the left
+# the battery's plug mates INSIDE the bay, in a pocket behind its left end
+# (x range, back y): out through the hatch, unplug, no lid to open. A short
+# pigtail from the main board comes down into the pocket through BATT_SLOT.
+BATT_POCKET = (10.0, 22.3, 40.8)
+BATT_SLOT = (12.0, 18.0)                        # x range of the pigtail's way in (6 x 4, PECAS), in the pocket's roof
+HATCH_CLR = 0.3
+HATCH_SCREWS_DX = 24.0
+
+# board, case screws, pillars
+PCB_CLR = 0.5                                   # board edge -> inside of the walls / bay walls
+BOSS_D, PILOT_D = 6.0, 2.2                      # M2.5 self-tapping into the shell (or heat-set insert)
+SCREW_CLR_D, HEAD_D, HEAD_DEPTH = 2.9, 5.2, 1.6
+FUNDO_CLR = 0.3
+PILLAR_D = 4.0
+SCREW_PILLAR_D = 6.0
+M2_CLR_D, M2_HEAD_D, M2_HEAD_DEPTH = 2.4, 4.2, 1.4
+FOOT_D, FOOT_DEPTH = 10.5, 0.6
+
+# ================================================================ keys
+G3 = min((k for k in KEYS if k["row"] == 2), key=lambda k: k["x"])
+E5 = max((k for k in KEYS if k["row"] == 2), key=lambda k: k["x"])
+ROW2_X = (G3["x"], E5["x"])
+GC = (G3["x"], G3["y"])                         # centre of the left side's arcs
+R_LEFT = S.R_RAMP + BAND                        # 89.2
+
+
+def keys():
+    """(n, row, x, y, kind) like the eTuttino's case.keys()."""
+    out = []
+    for k in KEYS:
+        kind = "sharp" if k["sharp"] else ("cf" if k["cf"] else "natural")
+        out.append((k["n"], k["row"], k["x"], k["y"], kind))
+    return out
+
+
+def note_name(n):
+    return S.note_name(S.G3 + n)
+
+# ================================================================ 2D: exact contours
+TAN = math.tan(math.radians(30))
+COS = math.cos(math.radians(30))
+
+
+def _fillet(prev, v, nxt, r):
+    """Tangent points, arc midpoint and centre of a fillet of radius r at v."""
+    def unit(a, b):
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        L = math.hypot(dx, dy)
+        return dx / L, dy / L
+    u1, u2 = unit(v, prev), unit(v, nxt)
+    theta = math.acos(max(-1.0, min(1.0, u1[0] * u2[0] + u1[1] * u2[1])))
+    t = r / math.tan(theta / 2)
+    bx, by = u1[0] + u2[0], u1[1] + u2[1]
+    bl = math.hypot(bx, by)
+    bx, by = bx / bl, by / bl
+    c = r / math.sin(theta / 2)
+    centre = (v[0] + bx * c, v[1] + by * c)
+    return ((v[0] + u1[0] * t, v[1] + u1[1] * t), (centre[0] - bx * r, centre[1] - by * r),
+            (v[0] + u2[0] * t, v[1] + u2[1] * t), centre)
+
+
+def fillets(contour):
+    n = len(contour)
+    return [_fillet(contour[i - 1][0], contour[i][0], contour[(i + 1) % n][0], contour[i][1]) for i in range(n)]
+
+
+def hex_contour(d):
+    """The keyboard opening grown by d: [(vertex, radius)], the eTuttino's
+    rule (lateral vertices concentric with the row-2 end keys, R 6 at the
+    four 120 deg corners)."""
+    ytop = ROW_Y[4] - D_BTN / 2 - CLR_FB - d
+    ybot = ROW_Y[1] + D_BTN / 2 + CLR_FB + d
+    side = D_BTN / 2 + CLR_SIDE + d
+    yl = ROW_Y[2]
+    xl = ROW2_X[0] - side / COS
+    xr = ROW2_X[1] + side / COS
+    return [((xl + (yl - ytop) * TAN, ytop), R_OPEN_CORNER + d),
+            ((xr - (yl - ytop) * TAN, ytop), R_OPEN_CORNER + d),
+            ((xr, yl), side),
+            ((xr - (ybot - yl) * TAN, ybot), R_OPEN_CORNER + d),
+            ((xl + (ybot - yl) * TAN, ybot), R_OPEN_CORNER + d),
+            ((xl, yl), side)]
+
+
+def contour_pieces(contour):
+    """[(kind, points)] of a vertex/radius contour: 'line' (2 pts) / 'arc' (3 pts)."""
+    f = fillets(contour)
+    out = []
+    for i in range(len(f)):
+        a_in, mid, a_out, _ = f[i]
+        out.append(("arc", [a_in, mid, a_out]))
+        nxt = f[(i + 1) % len(f)][0]
+        out.append(("line", [a_out, nxt]))
+    return out
+
+
+def _line_meet(p, d, y):
+    """Point where the line through p with direction d reaches the given y."""
+    t = (y - p[1]) / d[1]
+    return (p[0] + d[0] * t, y)
+
+
+def outline_pieces():
+    """The case in plan, exactly: variant B of shape.py. Clockwise in the
+    SPEC frame (x right, y towards the player): back wall, the right ">" (a
+    line tangent to the circles R 32.8 round C5 and E5, the arc round E5,
+    the line to D#5), front wall, then the left side: ONE arc of R 89.2
+    round G3 (concentric with the ramp's tip). R 24 at the four corners
+    where it meets y = 0 / 100 (shape.round_corners does the same with a
+    rolling disk; the short R 32.8 arc pieces near y = 0 / 100 vanish in it)."""
+    rb = S.R_BOX
+    row4_last = max((k for k in KEYS if k["row"] == 4), key=lambda k: k["x"])
+    row1_last = max((k for k in KEYS if k["row"] == 1), key=lambda k: k["x"])
+    E = (E5["x"], E5["y"])
+    nb, nf = (COS, -0.5), (COS, 0.5)                     # outward normals of the right edges
+    tb_e = (E[0] + rb * nb[0], E[1] + rb * nb[1])
+    tf_e = (E[0] + rb * nf[0], E[1] + rb * nf[1])
+    dir_b = (row4_last["x"] - E[0], row4_last["y"] - E[1])   # E5 -> C5 (back, up the page)
+    dir_f = (row1_last["x"] - E[0], row1_last["y"] - E[1])   # E5 -> D#5
+    vbr = _line_meet(tb_e, dir_b, 0.0)
+    vfr = _line_meet(tf_e, dir_f, WIDTH)
+    # left: the big arc round G3, its back tangent at 210 deg reaching y = 0 at B0
+    R = R_LEFT
+    t210 = (GC[0] + R * math.cos(math.radians(210)), GC[1] + R * math.sin(math.radians(210)))
+    vbl = _line_meet(t210, (math.sin(math.radians(30)), -math.cos(math.radians(30))), 0.0)
+    bl = _fillet(t210, vbl, (vbl[0] + 50, 0.0), R_CORNER)
+    br = _fillet((vbr[0] - 50, 0.0), vbr, tb_e, R_CORNER)
+    fr = _fillet(tf_e, vfr, (vfr[0] - 50, WIDTH), R_CORNER)
+    # front-left: R 24 tangent to y = 100 and inside the big circle
+    cy = WIDTH - R_CORNER
+    cx = GC[0] - math.sqrt((R - R_CORNER) ** 2 - (cy - GC[1]) ** 2)
+    fl_line = (cx, WIDTH)
+    k = R / (R - R_CORNER)
+    fl_arc = (GC[0] + (cx - GC[0]) * k, GC[1] + (cy - GC[1]) * k)
+    a_mid = math.atan2((fl_line[1] + fl_arc[1]) / 2 - cy, (fl_line[0] + fl_arc[0]) / 2 - cx)
+    fl_mid = (cx + R_CORNER * math.cos(a_mid), cy + R_CORNER * math.sin(a_mid))
+    # the big arc from fl_arc through the far left point to t210
+    a0 = math.atan2(fl_arc[1] - GC[1], fl_arc[0] - GC[0])
+    a1 = math.radians(210)
+    am = (a0 % (2 * math.pi) + a1) / 2
+    big_mid = (GC[0] + R * math.cos(am), GC[1] + R * math.sin(am))
+    return [
+        ("line", [bl[2], br[0]]),
+        ("arc", [br[0], br[1], br[2]]),
+        ("line", [br[2], tb_e]),
+        ("arc", [tb_e, (E[0] + rb, E[1]), tf_e]),
+        ("line", [tf_e, fr[0]]),
+        ("arc", [fr[0], fr[1], fr[2]]),
+        ("line", [fr[2], fl_line]),
+        ("arc", [fl_line, fl_mid, fl_arc]),
+        ("arc", [fl_arc, big_mid, t210]),
+        ("line", [t210, bl[0]]),
+        ("arc", [bl[0], bl[1], bl[2]]),
+    ]
+
+
+def pieces_wire(pieces, z=0.0):
+    wp = cq.Workplane("XY", origin=(0, 0, z)).moveTo(*pieces[0][1][0])
+    for kind, pts in pieces:
+        if kind == "line":
+            if math.hypot(pts[1][0] - pts[0][0], pts[1][1] - pts[0][1]) > 1e-6:
+                wp = wp.lineTo(*pts[1])
+        else:
+            wp = wp.threePointArc(pts[1], pts[2])
+    return wp.close()
+
+
+def pieces_points(pieces, seg=0.5):
+    """The contour as a polygon (arcs split into ~seg chords)."""
+    pts = []
+    for kind, p in pieces:
+        if kind == "line":
+            a, b = p
+            n = max(1, int(math.hypot(b[0] - a[0], b[1] - a[1]) / seg))
+            pts += [(a[0] + (b[0] - a[0]) * i / n, a[1] + (b[1] - a[1]) * i / n) for i in range(n)]
+        else:
+            a, m, b = p
+            c, r = _circle3(a, m, b)
+            t0 = math.atan2(a[1] - c[1], a[0] - c[0])
+            tm = math.atan2(m[1] - c[1], m[0] - c[0])
+            t1 = math.atan2(b[1] - c[1], b[0] - c[0])
+            d1 = (tm - t0) % (2 * math.pi)
+            d2 = (t1 - t0) % (2 * math.pi)
+            sweep = d2 if d1 <= d2 else d2 - 2 * math.pi
+            n = max(2, int(abs(sweep) * r / seg))
+            pts += [(c[0] + r * math.cos(t0 + sweep * i / n), c[1] + r * math.sin(t0 + sweep * i / n)) for i in range(n)]
+    return pts
+
+
+def _circle3(a, b, c):
+    ax, ay = a
+    bx, by = b
+    cx, cy = c
+    d = 2 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by))
+    ux = ((ax * ax + ay * ay) * (by - cy) + (bx * bx + by * by) * (cy - ay) + (cx * cx + cy * cy) * (ay - by)) / d
+    uy = ((ax * ax + ay * ay) * (cx - bx) + (bx * bx + by * by) * (ax - cx) + (cx * cx + cy * cy) * (bx - ax)) / d
+    return (ux, uy), math.hypot(ax - ux, ay - uy)
+
+
+def outline_points(seg=0.5):
+    return pieces_points(outline_pieces(), seg)
+
+
+def opening_points(d=0.0, seg=0.5):
+    return pieces_points(contour_pieces(hex_contour(d)), seg)
+
+
+def contour_wp(contour, z=0.0):
+    return pieces_wire(contour_pieces(contour), z)
+
+
+def outline_wp(z=0.0, inset=0.0):
+    wp = pieces_wire(outline_pieces(), z)
+    if inset:
+        w = wp.wires().val().offset2D(-inset)[0]
+        return cq.Workplane("XY").add(w)
+    return wp
+
+
+def prism_wire(wire, z0, z1):
+    w = wire.translate(cq.Vector(0, 0, z0 - wire.Center().z))
+    return cq.Solid.extrudeLinear(cq.Face.makeFromWires(w), cq.Vector(0, 0, z1 - z0))
+
+
+def outline_solid(z0, z1, inset=0.0):
+    w = pieces_wire(outline_pieces()).wires().val()
+    if inset:
+        w = w.offset2D(-inset)[0]
+    return prism_wire(w, z0, z1)
+
+
+def length():
+    xs = [x for x, _ in outline_points(0.2)]
+    return max(xs) - min(xs)
+
+
+def check_plan():
+    """Our exact outline against shape.py's sampled one: largest gap."""
+    ours = outline_points(0.25)
+    worst = max(S.edge_dist(ours, p) for p in PLAN)
+    return worst
+
+
+# ================================================================ 3D helpers
+def box3(x0, y0, z0, x1, y1, z1):
+    return cq.Solid.makeBox(x1 - x0, y1 - y0, z1 - z0, cq.Vector(x0, y0, z0))
+
+
+def cyl(x, y, z0, z1, d):
+    return cq.Solid.makeCylinder(d / 2, z1 - z0, cq.Vector(x, y, z0))
+
+
+def fuse(shapes):
+    shapes = [s for s in shapes if s is not None]
+    out = shapes[0]
+    if len(shapes) > 1:
+        out = out.fuse(*shapes[1:])
+    return out.clean()
+
+
+def poly_prism(pts, z0, z1):
+    w = cq.Wire.makePolygon([cq.Vector(x, y, z0) for x, y in pts], close=True)
+    return cq.Solid.extrudeLinear(cq.Face.makeFromWires(w), cq.Vector(0, 0, z1 - z0))
+
+
+def z_interface(y, dz=0.0):
+    return S.z_interface(y, dz)
+
+
+def below_plane(dz=0.0, x0=-60, x1=300):
+    """Everything under the interface's top (flat to the crease, R 10, then
+    13 deg down to the front), lowered by dz along its normal."""
+    y0, y1 = -50.0, WIDTH + 50.0
+    yc = IF_CREASE_Y - dz * (1 / COS_IF - 1) / TAN_IF
+    corner = (yc, Z_IF - dz)
+    a = (y0, Z_IF - dz)
+    b = (y1, z_interface(y1, dz))
+    t1, mid, t2, _ = _fillet(a, corner, b, max(IF_CREASE_R - dz, 0.5))
+    wp = (cq.Workplane("YZ", origin=(x0, 0, 0)).moveTo(y0, -10).lineTo(*a).lineTo(*t1)
+          .threePointArc(mid, t2).lineTo(*b).lineTo(y1, -10).close().extrude(x1 - x0))
+    return wp.val()
+
+
+# ================================================================ ramp
+def ramp_edge(d, y_from=-30.0, y_to=WIDTH + 30.0, n_line=48, k_arc=60):
+    """One ramp edge in plan, back to front: the opening's "<" grown by d,
+    as the back 30 deg line (from beyond the back wall), the arc round G3
+    (210 -> 150 deg) and the front 30 deg line (on through the front wall).
+    Fixed point counts, so the foot and top edges pair up point for point."""
+    r = D_BTN / 2 + CLR_SIDE + d
+    a_b, a_f = math.radians(210), math.radians(150)
+    tb = (GC[0] + r * math.cos(a_b), GC[1] + r * math.sin(a_b))
+    tf = (GC[0] + r * math.cos(a_f), GC[1] + r * math.sin(a_f))
+    sb = _line_meet(tb, (math.sin(math.radians(30)), -COS), y_from)
+    sf = _line_meet(tf, (math.sin(math.radians(30)), COS), y_to)
+    pts = [(sb[0] + (tb[0] - sb[0]) * i / n_line, sb[1] + (tb[1] - sb[1]) * i / n_line) for i in range(n_line)]
+    pts += [(GC[0] + r * math.cos(a_b + (a_f - a_b) * i / k_arc), GC[1] + r * math.sin(a_b + (a_f - a_b) * i / k_arc))
+            for i in range(k_arc)]
+    pts += [(tf[0] + (sf[0] - tf[0]) * i / n_line, tf[1] + (sf[1] - tf[1]) * i / n_line) for i in range(n_line + 1)]
+    return pts
+
+
+def raised_region(foot_d, z_foot, top_d, dz_top, z_hi=45.0):
+    """The interface block and its ramp: the ruled surface from the foot
+    edge (z_foot) through the top edge (on the interface top lowered by
+    dz_top), extended to z_hi; everything left of it, under the top. ONE
+    ruled loft through two splines of paired points (the OCC lessons)."""
+    foot = ramp_edge(foot_d)
+    top = ramp_edge(top_d)
+    lo, hi = [], []
+    for (x, y), (qx, qy) in zip(foot, top):
+        zq = z_interface(min(max(qy, 0.0), WIDTH), dz_top)
+        s_ = (z_hi - z_foot) / (zq - z_foot)
+        lo.append(cq.Vector(x, y, z_foot))
+        hi.append(cq.Vector(x + (qx - x) * s_, y + (qy - y) * s_, z_hi))
+    lo_edges, hi_edges = [cq.Edge.makeSpline(lo)], [cq.Edge.makeSpline(hi)]
+    far = -60.0
+
+    def close(edges, z):
+        a = edges[-1].endPoint()
+        b = edges[0].startPoint()
+        tail = [a, cq.Vector(far, a.y, z), cq.Vector(far, b.y, z), b]
+        return cq.Wire.assembleEdges(edges + [cq.Edge.makeLine(p, q) for p, q in zip(tail, tail[1:])])
+    loft = cq.Solid.makeLoft([close(lo_edges, z_foot), close(hi_edges, z_hi)], ruled=True)
+    return loft.intersect(below_plane(dz_top))
+
+
+def round_ramp(body):
+    """R 5 on the ramp's foot and top edges, one after the other."""
+    def is_ramp(f):
+        c = f.Center()
+        if c.x > ROW2_X[0] + 10 or c.z < Z_DECK + 0.5 or abs(c.z - z_interface(c.y)) < 0.5:
+            return False
+        n = f.normalAt(c)
+        return 0.05 < abs(n.z) < 0.98
+
+    def edges(b, where):
+        out = []
+        for f in b.Faces():
+            if not is_ramp(f):
+                continue
+            for e in f.Edges():
+                c = e.Center()
+                if c.y < 0.5 or c.y > WIDTH - 0.5:
+                    continue
+                if where(c) and not any(e.isSame(o) for o in out):
+                    out.append(e)
+        return out
+    for where in (lambda c: abs(c.z - Z_DECK) < 0.05,
+                  lambda c: abs(c.z - z_interface(c.y)) < 0.3):
+        es = edges(body, where)
+        try:
+            nb = body.fillet(RAMP_EDGE_R, es)
+            assert nb.isValid(), "invalid result"
+            body = nb
+        except Exception as exc:
+            print("ramp fillet failed (%s): edges left sharp" % exc)
+    return body
+
+
+def round_outer_top(body, r=OUTER_EDGE_R):
+    """R 1 on the top edges of the outer walls (deck and interface)."""
+    if r <= 0:
+        return body
+    pts = outline_points(1.0)
+    es = []
+    for e in body.Edges():
+        c = e.Center()
+        if c.z < Z_DECK - 0.05:
+            continue
+        if S.edge_dist(pts, (c.x, c.y)) > 0.05:
+            continue
+        # a horizontal-ish edge on the outside wall at its top
+        b = e.BoundingBox()
+        if b.zlen > 12:
+            continue
+        es.append(e)
+    try:
+        nb = body.fillet(r, es)
+        assert nb.isValid()
+        return nb
+    except Exception as exc:
+        print("outer edge rounding failed (%s): left sharp" % exc)
+        return body
+
+
+def outer_body():
+    base = outline_solid(0.0, Z_DECK)
+    tall = outline_solid(0.0, Z_IF + 5.0)
+    raised = raised_region(RAMP_FOOT_OFF, Z_DECK, RAMP_TOP_OFF, 0.0).intersect(tall)
+    body = base.fuse(raised).clean()
+    body = round_ramp(body)
+    return round_outer_top(body)
+
+
+def cavity():
+    """The inside: walls WALL, lid TOP_T under the interface, the keyboard
+    lid down to the plate's top; open at the bottom."""
+    low = outline_solid(-1.0, Z_PLATE_TOP, WALL)
+    tall = outline_solid(-1.0, Z_IF, WALL)
+    raised = raised_region(RAMP_FOOT_OFF + WALL, Z_PLATE_TOP, RAMP_TOP_OFF + WALL, TOP_T).intersect(tall)
+    return low.fuse(raised).clean()
+
+
+def rounded_opening_cutter():
+    """The keyboard opening with its 4 mm rounded edge: ONE ruled loft
+    through stacked opening contours (eTuttino)."""
+    z_land = Z_DECK - CHAMFER_DROP
+    levels = [(0.0, Z_PLATE_TOP - 3.0), (0.0, z_land)]
+    n = 16
+    for i in range(1, n + 1):
+        phi = math.pi / 2 * i / n
+        levels.append((CHAMFER_W * (1 - math.cos(phi)), z_land + CHAMFER_DROP * math.sin(phi)))
+    levels.append((CHAMFER_W, Z_DECK + 5.0))
+    secs = [contour_wp(hex_contour(d), z).wire().val() for d, z in levels]
+    return cq.Solid.makeLoft(secs, ruled=True)
+
+
+
+
+# ================================================================ interior layout (plan)
+def local_rect(origin, ang, u0, v0, u1, v1):
+    c, s = math.cos(math.radians(ang)), math.sin(math.radians(ang))
+    ox, oy = origin
+    return [(ox + u * c - v * s, oy + u * s + v * c) for u, v in ((u0, v0), (u1, v0), (u1, v1), (u0, v1))]
+
+
+def stack_parts():
+    """The Teensy + Audio Board stack: {name: (plan polygon, (z0, z1))}.
+    Local frame: u along the Audio Board's 38 mm side from its USB end, v
+    across from its VIN side (as variants.stack_parts)."""
+    R = lambda u0, v0, u1, v1: local_rect(STACK_XY, STACK_ANGLE, u0, v0, u1, v1)
+    tcx, tcy = PAST_USB + 6.5 * 2.54, PAST_VIN + 7.62
+    jy = tcy + 7.62 + 7.2
+    u_usb = tcx - 18.8
+    zc = Z_TEENSY_TOP + 1.3
+    return {
+        "audio_board": (R(0, 0, AUDIO_L, AUDIO_W), (Z_AB, Z_AB_TOP)),
+        "ab_jack": (R(0, jy - 3, 13, jy + 3), (Z_AB_TOP, Z_AB + 6.7)),
+        "teensy": (R(tcx - 17.78, tcy - 8.89, tcx + 17.78, tcy + 8.89), (Z_AB_TOP, Z_TEENSY_PARTS)),
+        "teensy_usb": (R(u_usb, tcy - 3.75, u_usb + 5.0, tcy + 3.75), (Z_TEENSY_TOP, Z_USB_TOP)),
+        "usb_plug": (R(u_usb - USB_PLUG[0], tcy - USB_PLUG[1] / 2, u_usb, tcy + USB_PLUG[1] / 2),
+                     (zc - USB_PLUG[2] / 2, zc + USB_PLUG[2] / 2)),
+    }
+
+
+def stack_pin_centres():
+    """The 28 header legs (they pin the main board under the stack)."""
+    tcy = PAST_VIN + 7.62
+    out = []
+    for i in range(14):
+        for s in (-1, 1):
+            out.append(local_rect(STACK_XY, STACK_ANGLE, PAST_USB + 2.54 * i, tcy + s * 7.62,
+                                  PAST_USB + 2.54 * i, tcy + s * 7.62)[0])
+    return out
+
+
+def inner_points(seg=0.5):
+    w = pieces_wire(outline_pieces()).wires().val().offset2D(-WALL)[0]
+    n = max(64, int(w.Length() / seg))
+    return [(p.x, p.y) for p in w.positions([i / n for i in range(n)])]
+
+
+def _wall_point_at_y(y):
+    """Where the inside of the left wall crosses the given y."""
+    pts = inner_points(0.25)
+    best = None
+    n = len(pts)
+    for i in range(n):
+        (x0, y0), (x1, y1) = pts[i], pts[(i + 1) % n]
+        if (y0 - y) * (y1 - y) <= 0 and y0 != y1:
+            x = x0 + (y - y0) * (x1 - x0) / (y1 - y0)
+            if x < 60 and (best is None or x < best[0]):
+                best = (x, y)
+    return best
+
+
+_PANEL = {}
+
+
+def panel_geometry():
+    """The panel board on the back-left wall: its front edge on the chord
+    between the wall points at PANEL_CHORD (a flat boss fills the wall's
+    bulge behind it)."""
+    if _PANEL:
+        return _PANEL
+    a = _wall_point_at_y(PANEL_CHORD[0])
+    b = _wall_point_at_y(PANEL_CHORD[1])
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    L = math.hypot(dx, dy)
+    t = (dx / L, dy / L)                       # along the board edge, back -> front
+    n = (t[1], -t[0])                          # inwards (into the case)
+    if n[0] < 0:
+        n = (-n[0], -n[1])
+    m = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+    at = lambda s, d: (m[0] + t[0] * s + n[0] * d, m[1] + t[1] * s + n[1] * d)
+    board = [at(-15, 0), at(15, 0), at(15, PANEL_DEPTH), at(-15, PANEL_DEPTH)]
+    outer = outline_points(0.2)
+
+    def wall_at(s):
+        p = at(s, 0)
+        lo, hi = 0.0, 12.0
+        for _ in range(40):
+            mid = (lo + hi) / 2
+            q = (p[0] - n[0] * mid, p[1] - n[1] * mid)
+            if S.inside(outer, q):
+                lo = mid
+            else:
+                hi = mid
+        return lo
+    _PANEL.update({"a": a, "b": b, "chord": L, "mid": m, "t": t, "n": n, "at": at, "board": board,
+                   "wall_usb": wall_at(PANEL_USB_S), "wall_jack": wall_at(PANEL_JACK_S), "wall_mid": wall_at(0.0),
+                   "wall_ends": (wall_at(-15), wall_at(15))})
+    return _PANEL
+
+
+def battery_rects():
+    """Battery bay: inside (the cradle) and outside (with its walls)."""
+    l, w, _ = BATT_IN
+    inside = local_rect(BATT_C, BATT_ANGLE, -l / 2, -w / 2, l / 2, w / 2)
+    o = BATT_WALL
+    outside = local_rect(BATT_C, BATT_ANGLE, -l / 2 - o, -w / 2 - o, l / 2 + o, w / 2 + o)
+    return inside, outside
+
+
+def pocket_rects():
+    """The connector pocket behind the bay's left end: inside and outside."""
+    l, w, _ = BATT_IN
+    x0, x1, y0 = BATT_POCKET
+    y1 = BATT_C[1] - w / 2 + 0.01
+    o = BATT_WALL
+    return ([(x0, y0), (x1, y0), (x1, y1), (x0, y1)],
+            [(x0 - o, y0 - o), (x1 + o, y0 - o), (x1 + o, y1), (x0 - o, y1)])
+
+
+BATT_Z = (FLOOR_T, FLOOR_T + BATT_IN[2])                  # 2.0 .. 9.6
+BATT_ROOF_Z = (BATT_Z[1] + BATT_ROOF_GAP, BATT_Z[1] + BATT_ROOF_GAP + BATT_ROOF)   # 9.8 .. 10.8
+HATCH_SCREWS = [(BATT_C[0] - 19.0, BATT_C[1] + BATT_IN[1] / 2 + BATT_WALL + 2.2),
+                (BATT_C[0] + 19.0, BATT_C[1] + BATT_IN[1] / 2 + BATT_WALL + 2.2)]
+HATCH_BOSS_D = 5.0
+HATCH_T = 1.2
+
+
+def hatch_rect(grow=0.0):
+    """The hatch door: the bay's inside + 2.0 round it, the front side
+    reaching over the two screw bosses."""
+    l, w, _ = BATT_IN
+    x0, x1 = BATT_C[0] - l / 2 - 2.0 - grow, BATT_C[0] + l / 2 + 2.0 + grow
+    y0 = BATT_C[1] - w / 2 - 2.0 - grow
+    y1 = HATCH_SCREWS[0][1] + HATCH_BOSS_D / 2 + 0.8 + grow
+    return x0, y0, x1, y1
+
+
+# speaker box
+def spk_inner_contour():
+    """The box's inside in plan: the frame's circle grown by BOX_GROW[1],
+    stretched BOX_GROW[0] towards +x (round, convex)."""
+    r = SPK_D / 2 + SPK_SEAT_CLR + BOX_GROW[1]
+    c0 = SPK_C
+    c1 = (SPK_C[0] + BOX_GROW[0], SPK_C[1])
+    return S.ccw(S.hull(S.circles([c0, c1], r, steps=96)))
+
+
+SPK_BOX_BOTTOM = BATT_ROOF_Z[1] + 0.1 + BOX_FLOOR_T      # the walls end here; the floor plate is glued under them
+
+
+def speaker_face_z(y):
+    """The speaker's front face (rim) at plan y: the lid's underside less the compressed gasket."""
+    return z_interface(y, TOP_T) - GASKET_T * 0.6 / COS_IF
+
+
+# ================================================================ fixings
+def screw_points():
+    """Case screws from below into columns of the top shell."""
+    return [(100.0, 6.0), (157.0, 6.0), (214.0, 6.0),
+            (100.0, 94.0), (157.0, 94.0), (214.0, 94.0),
+            (246.5, ROW_Y[2]),
+            (25.0, 6.5), (63.0, 93.5), (5.3, 38.5)]
+
+
+# columns that stop short (they hang on the wall): the one at the left wall
+# would run up through the vertical pot board
+BOSS_TOP = {(5.3, 38.5): 13.2}
+
+BOARD_SCREWS = [(26.0, 35.0), (232.0, ROW_Y[2])]          # M2 from below, nut on the board
+EXTRA_PILLARS = [(75.0, 51.0), (77.0, 68.0), (72.0, 41.0), (80.0, 85.0), (238.0, 46.0), (238.0, 70.0)]
+
+
+def pillar_points():
+    """Board supports on the bottom plate: the centre of every triangle of
+    three neighbouring keys (eTuttino), plus a few round the ends."""
+    ks = [(row, x, y) for _, row, x, y, _ in keys()]
+    have = {(row, round(x, 3)) for row, x, _ in ks}
+    pts = set()
+    for row, x, y in ks:
+        for other in (row - 1, row + 1):
+            if other not in ROW_Y:
+                continue
+            if (row, round(x + P, 3)) in have and (other, round(x + P / 2, 3)) in have:
+                pts.add((round(x + P / 2, 3), round(y + (ROW_Y[other] - y) / 3, 3)))
+    pts = sorted(pts, key=lambda p: (p[1], p[0]))
+    return pts + list(EXTRA_PILLARS)
+
+
+# ================================================================ shell parts
+def grille_holes():
+    """Holes over the cone only: a hex grid measured on the 13 deg lid."""
+    rc = SPK_CONE_D / 2 - GRILLE_EDGE - GRILLE_HOLE_D / 2
+    px, py = GRILLE_PITCH, GRILLE_PITCH * COS * COS_IF
+    out = []
+    for j in range(-12, 13):
+        y = SPK_C[1] + j * py
+        off = GRILLE_PITCH / 2 if j % 2 else 0.0
+        for i in range(-12, 13):
+            x = SPK_C[0] + i * px + off
+            if math.hypot(x - SPK_C[0], (y - SPK_C[1]) / COS_IF) <= rc + 1e-6:
+                out.append((round(x, 3), round(y, 3)))
+    return out
+
+
+def grille_open_ratio():
+    n = len(grille_holes())
+    cone = math.pi * (SPK_CONE_D / 2) ** 2
+    return n, n * math.pi * (GRILLE_HOLE_D / 2) ** 2 / cone
+
+
+_GLYPH = {}
+
+
+def _glyph(ch, font, size, depth):
+    key = (ch, font, size, depth)
+    if key not in _GLYPH:
+        _GLYPH[key] = cq.Workplane("XY").text(ch, size, depth, fontPath=font, halign="center", valign="bottom").val()
+    return _GLYPH[key]
+
+
+def logo_letters():
+    """(char, font, size, x, y, angle) for the engraved logo: each letter
+    on an arc round G3, upright for the player (its top pointing away from
+    G3), each line centred on LOGO_ANGLE."""
+    out = []
+    for text, font, size, r, track in (("eTuttino", LOGO_FONT, LOGO_SIZE[0], LOGO_R[0], LOGO_TRACK[0]),
+                                       ("POCKET", LOGO_FONT2, LOGO_SIZE[1], LOGO_R[1], LOGO_TRACK[1])):
+        widths = []
+        for ch in text:
+            bb = _glyph(ch, font, size, 1.0).BoundingBox()
+            widths.append(max(bb.xlen, size * 0.25))
+        total = sum(widths) + track * (len(text) - 1)
+        s = -total / 2
+        for ch, w in zip(text, widths):
+            sc = s + w / 2
+            # with the text's top pointing away from G3, writing runs the way
+            # the angle round G3 grows (SPEC frame)
+            a = math.radians(LOGO_ANGLE) + sc / r
+            out.append((ch, font, size, GC[0] + r * math.cos(a), GC[1] + r * math.sin(a), math.degrees(a)))
+            s += w + track
+    return out
+
+
+def logo_solid(z_top, depth):
+    """The engraving cutter: the letters from z_top - depth up."""
+    parts = []
+    for ch, font, size, x, y, a in logo_letters():
+        g = _glyph(ch, font, size, depth + 2.0)
+        # drawn y-up; the SPEC frame is mirrored (y towards the player): mirror
+        # the glyph so it reads right on the exported (mirrored) part, then
+        # turn its top (now -y) to point along the radius
+        g = g.mirror("XZ")
+        g = g.rotate(cq.Vector(0, 0, 0), cq.Vector(0, 0, 1), a + 90.0)
+        parts.append(g.translate(cq.Vector(x, y, z_top - depth)))
+    return fuse(parts)
+
+
+def panel_boss_and_cuts():
+    """The flat boss behind the panel board's front edge, the two posts it
+    hangs from, and the cuts: USB-C stadium + outside recess, jack hole +
+    spot face."""
+    pg = panel_geometry()
+    at, n = pg["at"], pg["n"]
+    lid = z_interface(0.0, TOP_T)
+    z0 = PANEL_Z_TOP - PANEL_T - 2.5
+    boss = poly_prism([at(-17, 0), at(17, 0), at(17, -8), at(-17, -8)], z0, lid + 0.5)
+    adds = [boss]
+    cuts = []
+    for s, d in PANEL_POSTS:
+        p = at(s, d)
+        adds.append(cyl(p[0], p[1], PANEL_Z_TOP, lid + 0.5, PANEL_POST_D))
+        cuts.append(cyl(p[0], p[1], PANEL_Z_TOP - 0.01, PANEL_Z_TOP + 5.0, PANEL_PILOT_D))
+    ang = math.degrees(math.atan2(-n[1], -n[0]))     # outwards, along -n
+
+    def place(sh, p, zc):
+        """sh is built along +x = outwards from the chord (x = 0 at the chord)."""
+        sh = sh.rotate(cq.Vector(0, 0, 0), cq.Vector(0, 0, 1), ang)
+        return sh.translate(cq.Vector(p[0], p[1], zc))
+    pu = at(PANEL_USB_S, 0)
+    w, h = USB_C_HOLE
+    hole = cq.Workplane("YZ", origin=(-2.0, 0, 0)).slot2D(w, h, 0).extrude(16.0).val()
+    rw, rh, rr = USB_C_RECESS
+    rec = cq.Workplane("YZ", origin=(USB_C_WALL, 0, 0)).rect(rw, rh).extrude(12.0).edges("|X").fillet(rr).val()
+    cuts.append(place(hole, pu, USB_C_ZC))
+    cuts.append(place(rec, pu, USB_C_ZC))
+    pj = at(PANEL_JACK_S, 0)
+    jh = cq.Solid.makeCylinder(JACK_HOLE_D / 2, 16.0, cq.Vector(-2.0, 0, 0), cq.Vector(1, 0, 0))
+    js = cq.Solid.makeCylinder(JACK_SPOT_D / 2, 12.0, cq.Vector(JACK_WALL, 0, 0), cq.Vector(1, 0, 0))
+    cuts.append(place(jh, pj, JACK_ZC))
+    cuts.append(place(js, pj, JACK_ZC))
+    return adds, cuts, pg
+
+
+def speaker_box_walls():
+    """Walls of the sealed back box, hanging from the lid down to
+    SPK_BOX_BOTTOM, and the locating ring round the frame."""
+    inner = spk_inner_contour()
+    outer = S.offset(inner, BOX_WALL, 24)
+    walls = poly_prism(outer, SPK_BOX_BOTTOM, 45.0).cut(poly_prism(inner, SPK_BOX_BOTTOM - 1, 46.0))
+    # the ring is square to the lid (the speaker's axis), from the lid down SPK_RING_H
+    r_ring = SPK_D / 2 + SPK_SEAT_CLR
+    zf = speaker_face_z(SPK_C[1])
+    ring = cq.Solid.makeCylinder(r_ring + SPK_RING_W, SPK_RING_H + 6.0, cq.Vector(0, 0, -SPK_RING_H))
+    ring = ring.cut(cq.Solid.makeCylinder(r_ring, SPK_RING_H + 8.0, cq.Vector(0, 0, -SPK_RING_H - 1)))
+    ring = ring.rotate(cq.Vector(0, 0, 0), cq.Vector(1, 0, 0), -IF_SLOPE).translate(cq.Vector(SPK_C[0], SPK_C[1], zf))
+    return walls, ring
+
+
+def controls_posts():
+    lid = z_interface(KNOB_Y, TOP_T)
+    return [cyl(x, y, CTRL_TOP, lid + 0.5, POST_D) for x, y in CTRL_POSTS]
+
+
+def bosses(body):
+    return [cyl(x, y, FLOOR_T, BOSS_TOP.get((x, y), 60.0), BOSS_D).intersect(body) for x, y in screw_points()]
+
+
+def top_cuts():
+    cuts = []
+    vx, vy = VOLUME_XY
+    cuts.append(cyl(vx, vy, 0, 50, POT_HOLE_D))
+    px, py = vx + POT_PIN[0], vy + POT_PIN[1]
+    zl = z_interface(py, TOP_T)
+    cuts.append(cyl(px, py, zl - 0.01, zl + POT_PIN[3], POT_PIN[2]))
+    cuts.append(cyl(SELECT_XY[0], SELECT_XY[1], 0, 50, SHAFT_HOLE_D))
+    cuts.append(cyl(LED_XY[0], LED_XY[1], 0, 50, LED_HOLE_D))
+    cuts += [cyl(x, y, 18.0, 50, GRILLE_HOLE_D) for x, y in grille_holes()]
+    return cuts
+
+
+def spk_wire_hole():
+    r_in = SPK_D / 2 + SPK_SEAT_CLR + BOX_GROW[1]
+    wx = SPK_C[0] + BOX_GROW[0] + r_in
+    return cq.Solid.makeCylinder(1.0, 6.0, cq.Vector(wx - 2.0, SPK_C[1] - 4.0, SPK_BOX_BOTTOM + 2.0), cq.Vector(1, 0, 0))
+
+
+_SHELL = {}
+
+
+def shell():
+    """The Seixo top shell."""
+    if "s" in _SHELL:
+        return _SHELL["s"]
+    body = outer_body()
+    cav = cavity()
+    s = body.cut(cav)
+    walls, ring = speaker_box_walls()
+    padds, pcuts, _ = panel_boss_and_cuts()
+    adds = [walls.intersect(cav), ring.intersect(cav)] + [a.intersect(cav) for a in padds]
+    adds += [p.intersect(cav) for p in controls_posts()]
+    adds += bosses(body)
+    s = s.fuse(*adds).clean()
+    s = s.cut(rounded_opening_cutter())
+    s = sorted(s.Solids(), key=lambda x: x.Volume(), reverse=True)[0]
+    cuts = top_cuts() + pcuts
+    cuts.append(logo_solid(Z_IF, LOGO_DEPTH))
+    cuts += [cyl(x, y, FLOOR_T - 0.01, FLOOR_T + 8.0, PILOT_D) for x, y in screw_points()]
+    cuts += [cyl(x, y, CTRL_TOP - 0.01, CTRL_TOP + POST_PILOT_DEPTH, POST_PILOT_D) for x, y in CTRL_POSTS]
+    cuts.append(spk_wire_hole())
+    s = s.cut(fuse(cuts)).clean()
+    _SHELL["s"] = s
+    return s
+
+
+# ================================================================ bottom plate, hatch, box floor, plate
+FEET = [(30.0, 14.0), (75.0, 90.0), (225.0, 14.0), (225.0, 86.0)]
+
+
+def fundo():
+    """Bottom plate inside the walls: board pillars, the battery bay (walls
+    + roof) round the hatch opening, countersunk case screws, feet."""
+    t = FLOOR_T
+    plate = outline_solid(0.0, t, WALL + FUNDO_CLR)
+    inside, outside = battery_rects()
+    p_in, p_out = pocket_rects()
+    bay = poly_prism(outside, t - 0.01, BATT_ROOF_Z[1]).fuse(poly_prism(p_out, t - 0.01, BATT_ROOF_Z[1]))
+    bay = bay.cut(poly_prism(inside, t - 0.02, BATT_ROOF_Z[0])).cut(poly_prism(p_in, t - 0.02, BATT_ROOF_Z[0]))
+    adds = [bay]
+    for x, y in HATCH_SCREWS:
+        adds.append(cyl(x, y, t - 0.01, BATT_Z[1], HATCH_BOSS_D))
+    for x, y in pillar_points():
+        adds.append(cyl(x, y, t - 0.01, Z_PCB_BOT, PILLAR_D))
+    for x, y in BOARD_SCREWS:
+        adds.append(cyl(x, y, t - 0.01, Z_PCB_BOT, SCREW_PILLAR_D))
+    plate = plate.fuse(*adds).clean()
+    cuts = [poly_prism(inside, -1.0, t + 0.5)]               # the hatch opening
+    x0, y0, x1, y1 = hatch_rect(HATCH_CLR)
+    cuts.append(box3(x0, y0, -1.0, x1, y1, HATCH_T).intersect(outline_solid(-2.0, 5.0, WALL + FUNDO_CLR - 0.5)))   # recess for the door
+    for x, y in HATCH_SCREWS:
+        cuts.append(cyl(x, y, 1.0, BATT_Z[1] - 0.5, 1.7))
+    py0 = BATT_POCKET[2]
+    cuts.append(box3(BATT_SLOT[0], py0 - BATT_WALL - 0.5, BATT_ROOF_Z[1] - 4.0,
+                     BATT_SLOT[1], py0 + 2.5, BATT_ROOF_Z[1] + 1.0))   # the pigtail's way in: back wall + roof
+    for x, y in BOARD_SCREWS:
+        cuts.append(cyl(x, y, -1, Z_PCB_BOT + 1, M2_CLR_D))
+        cuts.append(cyl(x, y, -1, M2_HEAD_DEPTH, M2_HEAD_D))
+    for x, y in screw_points():
+        cuts.append(cyl(x, y, -1, t + 1, SCREW_CLR_D))
+        cuts.append(cyl(x, y, -1, HEAD_DEPTH, HEAD_D))
+    for fx, fy in FEET:
+        cuts.append(cyl(fx, fy, -1, FOOT_DEPTH, FOOT_D))
+    return plate.cut(fuse(cuts)).clean()
+
+
+def hatch():
+    x0, y0, x1, y1 = hatch_rect(0.0)
+    door = cq.Workplane().add(box3(x0, y0, 0.0, x1, y1, HATCH_T)).edges("|Z").fillet(1.5).val()
+    door = door.intersect(outline_solid(-1.0, 5.0, WALL + FUNDO_CLR))      # the front-left corner follows the outline
+    cuts = []
+    for x, y in HATCH_SCREWS:
+        cuts.append(cyl(x, y, -1, 2, 2.3))
+        cuts.append(cq.Solid.makeCone(2.2, 1.15, 1.05, cq.Vector(x, y, -0.001)))
+    cuts.append(cyl((x0 + x1) / 2, y0 - 3.5, -1, 2, 10.0))   # finger notch at the back edge
+    return door.cut(fuse(cuts)).clean()
+
+
+def box_floor():
+    outer = S.offset(spk_inner_contour(), BOX_WALL, 24)
+    return poly_prism(outer, SPK_BOX_BOTTOM - BOX_FLOOR_T, SPK_BOX_BOTTOM)
+
+
+def switch_plate():
+    p = contour_wp(hex_contour(PLATE_OVERLAP), Z_PLATE_TOP - PLATE_T).extrude(PLATE_T).val()
+    cuts = [box3(x - 7, y - 7, 0, x + 7, y + 7, 30) for _, _, x, y, _ in keys()]
+    cuts += [cyl(x, y, 0, 30, BOSS_D + 1.0) for x, y in screw_points()]
+    return p.cut(fuse(cuts)).clean()
+
+
+# ================================================================ the main board's room
+def board_face():
+    """The main board's outline as a face: the inside of the walls less
+    PCB_CLR, without the front-left corner where the battery bay (and its
+    hatch bosses) stand, notched round the screw columns."""
+    inside, outside = battery_rects()
+    bx1 = max(p[0] for p in outside) + PCB_CLR
+    by0 = min(p[1] for p in outside) - PCB_CLR
+    _, p_out = pocket_rects()
+    px1 = max(p[0] for p in p_out) + PCB_CLR
+    py0 = min(p[1] for p in p_out) - PCB_CLR
+    w = pieces_wire(outline_pieces()).wires().val().offset2D(-(WALL + PCB_CLR))[0]
+    face = cq.Face.makeFromWires(w)
+    for x1, y0 in ((bx1, by0), (px1, py0)):
+        notch = cq.Face.makeFromWires(cq.Wire.makePolygon(
+            [cq.Vector(-10, y0, 0), cq.Vector(x1, y0, 0), cq.Vector(x1, 120, 0), cq.Vector(-10, 120, 0)], close=True))
+        face = face.cut(notch)
+    for x, y in screw_points():
+        face = face.cut(cq.Face.makeFromWires(cq.Wire.makeCircle(BOSS_D / 2 + 0.5, cq.Vector(x, y, 0), cq.Vector(0, 0, 1))))
+    face = max(face.Faces(), key=lambda f: f.Area())
+    return face
+
+
+def wire_points(w, step=0.5):
+    n = max(16, int(w.Length() / step))
+    return [(round(p.x, 3), round(p.y, 3)) for p in w.positions([i / n for i in range(n)])]
+
+
+def board_outline(step=0.5):
+    return wire_points(board_face().outerWire(), step)
+
+
+def main_board_solid():
+    f = board_face()
+    return cq.Solid.extrudeLinear(f.translate(cq.Vector(0, 0, Z_PCB_BOT)), cq.Vector(0, 0, PCB_T))
+
+
+# ================================================================ export
+def to_file(shape):
+    """SPEC coordinates -> the files' right-handed ones."""
+    return shape.mirror("XZ", (0, WIDTH / 2, 0))
+
+
+def export(shape, name, tol=0.05, mirror=True):
+    os.makedirs(OUT, exist_ok=True)
+    assert shape.isValid(), name
+    if mirror:
+        shape = to_file(shape)
+    cq.exporters.export(cq.Workplane().add(shape), os.path.join(OUT, name + ".step"))
+    cq.exporters.export(cq.Workplane().add(shape), os.path.join(OUT, name + ".stl"), tolerance=tol, angularTolerance=0.2)
+    bb = shape.BoundingBox()
+    print("%-20s %6.1f x %5.1f x %4.1f mm  %7.2f cm3" % (name, bb.xlen, bb.ylen, bb.zlen, shape.Volume() / 1000))
+
+
+def build_all():
+    return {
+        "seixo_tampa": shell(),
+        "seixo_fundo": fundo(),
+        "seixo_tampa_bateria": hatch(),
+        "seixo_caixa_fundo": box_floor(),
+        "plate": switch_plate(),
+    }
+
+
+def main():
+    print("length %.2f mm, plan vs shape.py %.3f mm" % (length(), check_plan()))
+    parts = build_all()
+    for name, shp in parts.items():
+        export(shp, name)
+    flat = cq.Workplane().add(to_file(parts["plate"])).faces("<Z")
+    cq.exporters.export(flat, os.path.join(OUT, "plate.dxf"))
+    n, ratio = grille_open_ratio()
+    print("grille: %d holes, %.0f %% of the cone" % (n, ratio * 100))
+
+
+if __name__ == "__main__":
+    main()

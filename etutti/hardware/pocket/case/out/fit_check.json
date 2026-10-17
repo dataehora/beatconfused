@@ -1,0 +1,353 @@
+{
+ "spec": "v3",
+ "task": "D2",
+ "length": 251.5,
+ "plan_vs_shape_py": 0.03,
+ "pot_in_lid": 0.0,
+ "board_vs_shell": 0.0,
+ "board_vs_fundo": 0.0,
+ "board_vs_plate": 0.0,
+ "collisions_with_case": [],
+ "gap_to_shell": {
+  "main_board": 0.5,
+  "board_underside": 0.5,
+  "audio_board": 0.5,
+  "ab_jack": 4.1,
+  "teensy": 1.27,
+  "teensy_usb": 5.71,
+  "usb_plug": 2.05,
+  "panel_board": 0.0,
+  "usb_c": 0.22,
+  "jack": 0.4,
+  "pot": 0.15,
+  "pot_board": 0.61,
+  "controls_board": 0.0,
+  "controls_legs": 0.74,
+  "encoder": 0.4,
+  "led": 0.25,
+  "controls_conn": 2.67,
+  "battery": 2.31,
+  "speaker": 0.3
+ },
+ "pairs": [
+  [
+   "audio_board",
+   "panel_board",
+   0.0,
+   10.0
+  ],
+  [
+   "teensy",
+   "panel_board",
+   0.0,
+   5.28
+  ],
+  [
+   "teensy_usb",
+   "panel_board",
+   0.0,
+   3.61
+  ],
+  [
+   "usb_plug",
+   "panel_board",
+   0.0,
+   0.45
+  ],
+  [
+   "ab_jack",
+   "panel_board",
+   0.0,
+   9.0
+  ],
+  [
+   "usb_plug",
+   "jack",
+   0.0,
+   4.11
+  ],
+  [
+   "usb_plug",
+   "usb_c",
+   0.0,
+   2.05
+  ],
+  [
+   "pot_board",
+   "panel_board",
+   0.0,
+   4.52
+  ],
+  [
+   "pot",
+   "panel_board",
+   0.0,
+   2.16
+  ],
+  [
+   "jack",
+   "pot_board",
+   0.0,
+   3.51
+  ],
+  [
+   "audio_board",
+   "controls_board",
+   0.0,
+   3.69
+  ],
+  [
+   "ab_jack",
+   "controls_legs",
+   0.0,
+   4.3
+  ],
+  [
+   "teensy",
+   "controls_legs",
+   0.0,
+   13.23
+  ],
+  [
+   "audio_board",
+   "controls_legs",
+   0.0,
+   2.46
+  ],
+  [
+   "audio_board",
+   "pot_board",
+   0.0,
+   7.28
+  ],
+  [
+   "ab_jack",
+   "pot_board",
+   0.0,
+   7.45
+  ],
+  [
+   "battery",
+   "main_board",
+   0.0,
+   1.95
+  ],
+  [
+   "battery",
+   "board_underside",
+   0.0,
+   1.95
+  ],
+  [
+   "speaker",
+   "controls_board",
+   0.0,
+   6.34
+  ],
+  [
+   "speaker",
+   "encoder",
+   0.0,
+   3.05
+  ],
+  [
+   "speaker",
+   "pot",
+   0.0,
+   5.49
+  ],
+  [
+   "controls_conn",
+   "led",
+   0.0,
+   1.28
+  ],
+  [
+   "encoder",
+   "led",
+   0.0,
+   3.8
+  ],
+  [
+   "pot",
+   "encoder",
+   0.0,
+   3.3
+  ],
+  [
+   "main_board",
+   "speaker",
+   0.0,
+   19.9
+  ],
+  [
+   "usb_c",
+   "jack",
+   0.0,
+   5.03
+  ],
+  [
+   "pot_board",
+   "encoder",
+   0.0,
+   0.62
+  ],
+  [
+   "pot",
+   "controls_board",
+   0.0,
+   1.6
+  ],
+  [
+   "pot_board",
+   "controls_board",
+   0.0,
+   0.0
+  ]
+ ],
+ "box_floor_vs_bay": 0.1,
+ "panel_vs_columns": {
+  "25,6.5": 2.61,
+  "63,93.5": 65.65,
+  "5.3,38.5": 9.1
+ },
+ "stack_vs_columns": {
+  "25,6.5": 2.0,
+  "63,93.5": 49.7,
+  "5.3,38.5": 16.65
+ },
+ "box_floor_vs_speaker": 2.74,
+ "hatch_vs_fundo": 0.0,
+ "switches_vs_shell": 8.28,
+ "caps_vs_shell": 10.32,
+ "caps_vs_opening_min": 10.32,
+ "speaker": {
+  "back_volume_nominal_cm3": 18.5,
+  "back_volume_conservative_cm3": 15.8,
+  "grille": {
+   "holes": 73,
+   "open_ratio": 0.335
+  },
+  "membrane_to_grille_mm": 1.07,
+  "rim_to_lid_mm": 0.3,
+  "frame_seat_radial_clr": 0.3,
+  "lowest_back_z": 14.84,
+  "box_bottom_z": 12.1
+ },
+ "panel": {
+  "chord_mm": 30.9,
+  "wall_at_usb": 3.89,
+  "wall_at_jack": 3.72,
+  "wall_mid": 4.08,
+  "wall_board_ends": [
+   2.77,
+   2.63
+  ],
+  "usb_recess_depth": 2.89,
+  "jack_spot_depth": 2.22,
+  "usb_c_vs_shell": 0.22,
+  "jack_vs_shell": 0.4,
+  "board_vs_shell": 0.0,
+  "board_over_plug": 0.45,
+  "front_edge_wall_pts": [
+   [
+    18.15,
+    9.0
+   ],
+   [
+    5.08,
+    37.0
+   ]
+  ]
+ },
+ "battery": {
+  "cradle_inside": [
+   58.5,
+   36.5,
+   7.6
+  ],
+  "pecas_cradle": [
+   7.6,
+   36.5,
+   58.5
+  ],
+  "z": [
+   2.0,
+   9.6
+  ],
+  "roof_z": [
+   9.8,
+   10.8
+  ],
+  "cell_vs_fundo_overlap": 0.0,
+  "swollen_vs_fundo_overlap": 0.0,
+  "swollen_to_roof": 0.24,
+  "bay_to_board": 0.5,
+  "plug_in_pocket_to_fundo": 0.24,
+  "bay_to_shell": 0.39
+ },
+ "heights": {
+  "pot_body_top": 30.3,
+  "lid_under_at_knobs": 30.5,
+  "encoder_top": 23.68,
+  "teensy_usb_top": 19.4,
+  "plug_top": 21.85,
+  "panel_board": [
+   22.3,
+   23.9
+  ],
+  "panel_parts_top": 30.1,
+  "controls_board": [
+   15.58,
+   17.18
+  ]
+ },
+ "stl": {
+  "seixo_tampa": {
+   "open_edges": 0,
+   "volume_cm3": 74.55,
+   "triangles": 48090
+  },
+  "seixo_fundo": {
+   "open_edges": 0,
+   "volume_cm3": 44.927,
+   "triangles": 19354
+  },
+  "seixo_tampa_bateria": {
+   "open_edges": 0,
+   "volume_cm3": 3.342,
+   "triangles": 1312
+  },
+  "seixo_caixa_fundo": {
+   "open_edges": 0,
+   "volume_cm3": 2.278,
+   "triangles": 484
+  },
+  "plate": {
+   "open_edges": 0,
+   "volume_cm3": 13.228,
+   "triangles": 1480
+  }
+ },
+ "rays": {
+  "keys": [
+   140,
+   0
+  ],
+  "grille": [
+   73,
+   0
+  ],
+  "holes": [
+   3,
+   0
+  ],
+  "blocked": []
+ },
+ "weight": {
+  "printed_cm3": 125.1,
+  "resin_g": 148.0,
+  "mjf_pa12_g": 126.0,
+  "plate_fr4_g": 24.0
+ }
+}
