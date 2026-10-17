@@ -1,25 +1,97 @@
 # eTuttino Pocket · orçamento de energia
 
-Gerado por `layout.py` (não editar à mão; mude o `BUDGET` no script).
-Trilho único de 3,3 V a partir de uma LiPo 1S por um conversor buck-boost (eficiência 90 %).
-Meta: 4,0 h tocando com fone. Capacidade útil = 85 % da nominal (corte, envelhecimento, frio).
+Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v2, tarefa E1.
 
-| Consumidor | típ. (mA) | máx. (mA) |
+Bateria LiPo 1S de **1000 mAh** (3,7 V médios), capacidade útil 85 % (corte em ~3,3 V, envelhecimento, frio) = 3,15 Wh.
+Trilho único de 3,3 V pelo buck-boost TPS63802 (eficiência 92 % típica, 88 % no pior caso, conferir). O amplificador do alto-falante (PAM8302A) vai direto na bateria (saída do carregador), fora do trilho de 3,3 V.
+
+Origem de cada número: **medido** no Teensy 4.0 + Audio Board Rev D do J (17 out 2026), **datasheet**, ou **estimativa (conferir)**.
+
+## Medido no Teensy do J (17 out 2026)
+
+Sketch descartável feito do `etutti_synth` atual (usb=serialmidi): `set_arm_clock()` em cada frequência, acorde de 8 notas com as 4 palhetas e reverb por 2,5 s, `AudioProcessorUsageMax()`, e o tempo de uma leitura de 28 teclas em 2 multiplexadores (14 canais × 2 `analogRead`, 3 µs de acomodação por canal, como no sketch). Sem placa de teclas: o tempo de leitura não depende do sensor.
+
+| Clock ARM | CPU do áudio (máx.) | leitura de 28 teclas | Teensy (estimativa) |
+|---:|---:|---:|---:|
+| 600 MHz | 8,5 % | 217 µs | 100 mA |
+| 528 MHz | 9,6 % | 226 µs | 84 mA |
+| 450 MHz | 11,3 % | 231 µs | 74 mA |
+| 396 MHz | 12,9 % | 235 µs | 69 mA |
+| 300 MHz | 17,0 % | 249 µs | 60 mA |
+| 240 MHz | 21,2 % | 266 µs | 53 mA |
+| 198 MHz | 25,8 % | 286 µs | 48 mA |
+| 150 MHz | 33,7 % | 344 µs | 42 mA |
+
+- A CPU do áudio escala com 1/clock: o motor de palhetas de hoje (8 vozes × 4 palhetas + reverb) usa só 8,5 % a 600 MHz e 34 % a 150 MHz. A 3ª palheta de 8' do Musette (P1) acrescenta ~25 % ao custo dos osciladores (estimativa).
+- O ADC fica mais lento com o clock (o barramento IPG cai junto), mas a leitura de 28 teclas continua abaixo de 0,35 ms em todas as frequências.
+- A corrente do Teensy **não foi medida** (não há medidor de corrente no PC do J). A coluna da direita é um modelo: 30 mA fixos + parcela dinâmica ∝ f·V², com a tensão do núcleo que o `set_arm_clock()` usa, ajustado aos ~100 mA a 600 MHz que a PJRC publica. Medir no protótipo.
+
+## Consumidores por cenário (mA no trilho de 3,3 V)
+
+### v1 (hoje): DRV5056, 600 MHz
+
+| Consumidor | típ. fone | máx. fone | típ. alto-falante | máx. alto-falante |
+|---|---:|---:|---:|---:|
+| Teensy 4.0 a 600 MHz (estimativa, conferir) | 100,0 | 120,0 | 100,0 | 120,0 |
+| Audio Board (SGTL5000) (conferir) | 20,0 | 40,0 | 12,0 | 20,0 |
+| 28 sensores DRV5056A3 | 168,0 | 280,0 | 168,0 | 280,0 |
+| 2 x CD74HC4067 | 0,1 | 0,2 | 0,1 | 0,2 |
+| LED (uma cor, PWM) | 2,0 | 8,0 | 2,0 | 8,0 |
+| **Total no trilho** | **290,1** | **448,2** | **282,1** | **428,2** |
+
+### TMAG5253BA3 por grupo, 396 MHz (recomendado)
+
+| Consumidor | típ. fone | máx. fone | típ. alto-falante | máx. alto-falante |
+|---|---:|---:|---:|---:|
+| Teensy 4.0 a 396 MHz (estimativa, conferir) | 69,1 | 82,9 | 69,1 | 82,9 |
+| Audio Board (SGTL5000) (conferir) | 20,0 | 40,0 | 12,0 | 20,0 |
+| 28 sensores TMAG5253BA3 ligados 50 % do tempo | 36,4 | 70,0 | 36,4 | 70,0 |
+| 2 x CD74HC4067 | 0,1 | 0,2 | 0,1 | 0,2 |
+| LED (uma cor, PWM) | 2,0 | 8,0 | 2,0 | 8,0 |
+| **Total no trilho** | **127,6** | **201,1** | **119,6** | **181,1** |
+
+Alto-falante (na bateria): 0,20 W médios típicos / 0,50 W no pior caso (volume alto), classe D com 80–85 % de eficiência, mais 4–8 mA de repouso do PAM8302A (datasheet). Os watts médios são estimativa (conferir com o alto-falante escolhido, de ouvido).
+
+## Autonomia tocando sem parar, bateria de 1000 mAh
+
+| Cenário | fone típ. | fone pior | alto-falante típ. | alto-falante pior |
+|---|---:|---:|---:|---:|
+| v1 (hoje): DRV5056, 600 MHz | 3,0 h | 1,9 h | 2,5 h | 1,4 h |
+| TMAG5253BA3 sempre ligado, 600 MHz | 4,5 h | 2,7 h | 3,4 h | 1,9 h |
+| TMAG5253BA3 por grupo (S3), 600 MHz | 5,5 h | 3,5 h | 3,9 h | 2,2 h |
+| **TMAG5253BA3 por grupo, 396 MHz** | **6,9 h** | **4,2 h** | **4,5 h** | **2,4 h** |
+| TMAG5253BA3 por grupo, 240 MHz | 7,9 h | 4,6 h | 5,0 h | 2,6 h |
+
+"Pior" = todos os consumidores no máximo do datasheet ao mesmo tempo e o conversor na pior eficiência; na prática fica entre as duas colunas.
+
+## Efeito do liga/desliga dos sensores na velocidade
+
+Os sensores de cada grupo (canais 0–7 e 8–15 dos dois multiplexadores, escolhidos pelo bit S3 do endereço) só ficam ligados enquanto o seu grupo é lido; depois de trocar de grupo a firmware espera o tempo de ligar (tON máximo do datasheet). Leitura de um grupo: 8 canais × (3 µs + 2 leituras de 6,25 µs) = 124 µs a 600 MHz (medido).
+
+| Sensor e modo | tON máx. | período de leitura | leituras por tecla/s | amostras numa batida de 1 ms | erro de velocidade, batida de 1 ms | erro, batida de 10 ms |
+|---|---:|---:|---:|---:|---:|---:|
+| DRV5056A3 sempre ligado | 300 µs | 217 µs | 4608 | 4,6 | ±2 | ±0 |
+| DRV5056A3 por grupo | 300 µs | 848 µs | 1179 | 1,2 | ±6 | ±1 |
+| TMAG5253BA3 sempre ligado | 45 µs | 217 µs | 4608 | 4,6 | ±2 | ±0 |
+| TMAG5253BA3 por grupo | 45 µs | 338 µs | 2959 | 3,0 | ±2 | ±0 |
+| TMAG5253UA5 por grupo | 130 µs | 508 µs | 1969 | 2,0 | ±3 | ±0 |
+
+Erro de velocidade em unidades MIDI (1–127), com o mapa logarítmico da firmware (1 ms = 127, 80 ms = 1) e um erro de tempo de ~¼ do período por cruzamento (interpolação linear entre leituras; estimativa). Com o DRV5056 (tON até 300 µs) o liga/desliga por grupo derruba a leitura para ~1,2 kHz: a batida mais rápida cabe em ~1 amostra. **Não recomendado com o DRV5056.** Com o TMAG5253BA3 (tON ≤ 45 µs) a leitura fica em ~3 kHz e o erro é pequeno.
+
+## Parado, desligamento automático e desligado
+
+| Estado | consumo | a bateria cheia dura |
 |---|---:|---:|
-| Teensy 4.0 a 600 MHz (conferir: medir) | 100,0 | 120,0 |
-| Audio Board (SGTL5000) com fone 32 ohm, volume normal (conferir) | 20,0 | 40,0 |
-| Sensores Hall DRV5056, 28 x 6 mA (máx. 10 mA, datasheet TI) | 168,0 | 280,0 |
-| 2 x CD74HC4067 | 0,1 | 0,2 |
-| LED bicolor (um lado aceso, 330 ohm) | 4,0 | 8,0 |
-| Carregador + conversor, quiescente | 0,1 | 0,5 |
-| **Total no trilho de 3,3 V** | **292,2** | **448,7** |
+| Ligado, sem tocar (amplificador desligado, sensores lidos a ~500 Hz com liga/desliga geral) | ~93 mA no trilho | ~9 h |
+| Desligamento automático "leve" (Teensy a 24 MHz, codec desligado, sensores a 20 Hz; acorda numa tecla) | ~23 mA (conferir) | ~35 h |
+| Desligamento automático "de verdade" (a firmware solta o KEEP e o conversor desliga) | ~10 µA (carregador + divisor) | anos (fica a autodescarga da bateria) |
+| Chave do volume desligada | ~10 µA | anos |
 
-Para 4,0 h: típico 4,3 Wh → **1363 mAh**; pior caso 6,6 Wh → **2093 mAh**.
+O "leve" não é desligado: um Pocket esquecido ligado gasta a bateria em pouco mais de um dia. Daí a proposta do KEEP (ver `ELETRONICA.md`).
 
-| Bateria | autonomia típica | pior caso |
-|---|---:|---:|
-| 1500 mAh | 4,4 h | 2,9 h |
-| 2000 mAh | 5,9 h | 3,8 h |
-| 2500 mAh | 7,3 h | 4,8 h |
+## Para conferir no protótipo
 
-Os 28 sensores Hall são mais da metade do consumo. O datasheet dá 6 mA típicos por sensor; medir a corrente real da placa é o primeiro teste do protótipo.
+1. Corrente real do trilho de 3,3 V com o Teensy a 600, 396 e 240 MHz (multímetro em série com a bateria).
+2. Corrente dos 28 sensores e o campo do ímã do Gateron no fundo do curso (escolhe TMAG5253UA5 ou BA3).
+3. Volume confortável no alto-falante: potência média real (tensão RMS na bobina).
+4. Eficiência do TPS63802 com a carga real.

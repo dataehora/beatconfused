@@ -1,0 +1,244 @@
+{
+ "spec": "v2",
+ "task": "D1",
+ "recommended": "B",
+ "variants": [
+  {
+   "variant": "A",
+   "name": "Chevron",
+   "params": {
+    "band": 51.0,
+    "nose": 30.0,
+    "corner": 18.0,
+    "bulge": 0.0
+   },
+   "length": 257.2,
+   "origin": 104.14,
+   "shorter_than_etuttino": 73.8,
+   "knob_y": 49.0,
+   "volume": [
+    18.8,
+    49.0
+   ],
+   "select": [
+    34.8,
+    49.0
+   ],
+   "led": [
+    46.8,
+    49.0
+   ],
+   "knob_margin_left": 11.3,
+   "knob_margin_ramp": 12.0,
+   "speaker_d_max": 38.9,
+   "speaker_d": 36.0,
+   "speaker_depth": 5.5,
+   "speaker_centre": [
+    32.9,
+    77.5
+   ],
+   "back_volume_cm3": 9.5,
+   "back_box_floor": 10.2,
+   "back_box_over_battery": true,
+   "air_h": 9.4,
+   "battery": {
+    "centre": [
+     44.0,
+     72.0
+    ],
+    "angle": 15,
+    "margin": 0.2
+   },
+   "stack": {
+    "origin": [
+     42,
+     4
+    ],
+    "angle": 30,
+    "plug_to_wall": 1.2
+   },
+   "pot": {
+    "z": [
+     17.2,
+     30.2
+    ],
+    "reserved_h": 13.0,
+    "board_z": [
+     14.1,
+     17.2
+    ]
+   },
+   "panel_cable": 11.8,
+   "holes": 64,
+   "clear": {
+    "grille_ramp": 13.3,
+    "grille_wall": 6.0,
+    "speaker_wall": 4.5,
+    "speaker_ramp": 11.8,
+    "speaker_ctrl": 2.0,
+    "ab_under_ctrl": 1.8,
+    "teensy_ramp": 0.5,
+    "pot_lid": 0.2
+   },
+   "checks": []
+  },
+  {
+   "variant": "B",
+   "name": "Seixo",
+   "params": {
+    "band": 54.0,
+    "nose": null,
+    "corner": 24.0,
+    "bulge": 0.0
+   },
+   "length": 251.5,
+   "origin": 98.45,
+   "shorter_than_etuttino": 79.5,
+   "knob_y": 49.0,
+   "volume": [
+    15.1,
+    49.0
+   ],
+   "select": [
+    31.1,
+    49.0
+   ],
+   "led": [
+    43.1,
+    49.0
+   ],
+   "knob_margin_left": 10.1,
+   "knob_margin_ramp": 10.0,
+   "speaker_d_max": 38.9,
+   "speaker_d": 36.0,
+   "speaker_depth": 5.5,
+   "speaker_centre": [
+    26.9,
+    77.5
+   ],
+   "back_volume_cm3": 9.5,
+   "back_box_floor": 10.2,
+   "back_box_over_battery": true,
+   "air_h": 9.4,
+   "battery": {
+    "centre": [
+     39.0,
+     73.0
+    ],
+    "angle": 7.5,
+    "margin": 0.7
+   },
+   "stack": {
+    "origin": [
+     35,
+     3
+    ],
+    "angle": 30,
+    "plug_to_wall": 2.4
+   },
+   "pot": {
+    "z": [
+     17.2,
+     30.2
+    ],
+    "reserved_h": 13.0,
+    "board_z": [
+     14.1,
+     17.2
+    ]
+   },
+   "panel_cable": 13.6,
+   "holes": 64,
+   "clear": {
+    "grille_ramp": 13.6,
+    "grille_wall": 6.0,
+    "speaker_wall": 4.5,
+    "speaker_ramp": 12.1,
+    "speaker_ctrl": 2.0,
+    "ab_under_ctrl": 1.8,
+    "teensy_ramp": 2.1,
+    "pot_lid": 0.2
+   },
+   "checks": []
+  },
+  {
+   "variant": "C",
+   "name": "Arco",
+   "params": {
+    "band": 47.0,
+    "nose": 24.0,
+    "corner": 22.0,
+    "bulge": 6.0
+   },
+   "length": 257.0,
+   "origin": 103.99,
+   "shorter_than_etuttino": 74.0,
+   "knob_y": 49.0,
+   "volume": [
+    18.8,
+    49.0
+   ],
+   "select": [
+    34.8,
+    49.0
+   ],
+   "led": [
+    46.8,
+    49.0
+   ],
+   "knob_margin_left": 11.7,
+   "knob_margin_ramp": 11.9,
+   "speaker_d_max": 38.9,
+   "speaker_d": 36.0,
+   "speaker_depth": 5.5,
+   "speaker_centre": [
+    32.9,
+    77.5
+   ],
+   "back_volume_cm3": 9.5,
+   "back_box_floor": 10.2,
+   "back_box_over_battery": true,
+   "air_h": 9.4,
+   "battery": {
+    "centre": [
+     44.0,
+     67.0
+    ],
+    "angle": 0,
+    "margin": 3.2
+   },
+   "stack": {
+    "origin": [
+     31,
+     7
+    ],
+    "angle": 0,
+    "plug_to_wall": 4.5
+   },
+   "pot": {
+    "z": [
+     17.2,
+     30.2
+    ],
+    "reserved_h": 13.0,
+    "board_z": [
+     14.1,
+     17.2
+    ]
+   },
+   "panel_cable": 14.0,
+   "holes": 64,
+   "clear": {
+    "grille_ramp": 13.2,
+    "grille_wall": 6.0,
+    "speaker_wall": 4.5,
+    "speaker_ramp": 11.7,
+    "speaker_ctrl": 2.0,
+    "ab_under_ctrl": 1.8,
+    "teensy_ramp": 0.8,
+    "pot_lid": 0.2
+   },
+   "checks": []
+  }
+ ]
+}
