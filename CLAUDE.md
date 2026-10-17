@@ -463,6 +463,73 @@ hand tests the knob following.
 '`), so Python edit scripts with escapes go
 through the Write tool into the scratchpad.
 
+## Project status (17 Oct 2026)
+
+**eTuttino, eTutti and eTuttiChorus are PAUSED.** Their code, case,
+boards, manuals and pages stay as they are. Read and reuse them, but
+don't change their behaviour without an explicit task. **The eTuttino
+Pocket is the only active instrument project.** The public `/etutti/`
+becomes a minimal family landing page (task:
+`etutti/TAREFA-pagina-inicial.md`). The Pocket's real page comes only
+after the prototype and the engineering detail are done.
+
+## eTuttino Pocket — como trabalhamos (protocol since 17 Oct 2026)
+
+- **Gestão = Claude Chat** (with J). It owns `etutti/hardware/pocket/SPEC.md`
+  (versioned v1, v2…, Portuguese, each with "Mudanças desde a versão
+  anterior" and a "Tarefas para o Code" section that tags each task
+  Design / Eletrônica / Programação e som). Chat never edits the agents'
+  files; Code never edits the SPEC.
+- **Code = one integrating session + three subagents** in
+  `.claude/agents/`: `design`, `eletronica`, `programacao-som`. Each one
+  owns its folders and its report and only *reads* the others' (the
+  agent files list them). The integrating session (whoever J opens):
+  1. reads the SPEC version and its "Tarefas para o Code";
+  2. hands each task to its agent, in dependency order (design → shape
+     and `pcb_envelope.json`; eletrônica → board and `pcb/PINOS.md`;
+     programação e som → firmware/pages; sound and pages don't wait for
+     the board);
+  3. runs the cross-checks itself (fit check, DRC 0/0/0, board ×
+     firmware, firmware compile for both models, pages in the browser);
+  4. commits, opens ONE PR per SPEC version or task, and merges it
+     (J's standing rule: commit → PR → merge without asking);
+  5. tells J the one line to relay to Chat: "SPEC vN atendida — PR #x;
+     relatórios atualizados".
+- **Contracts, one owner each:** `pocket/build/pocket.json` and
+  `pocket/case/out/pcb_envelope.json` (design), `pocket/pcb/PINOS.md`
+  and `pocket/POWER.md` (eletrônica), CC/SysEx map in `script.js` + the
+  sketch (programação e som). A change needed in someone else's
+  contract is asked for in your report, never made directly.
+- **Reports** (Portuguese, each ends with "Perguntas para a gestão"):
+  `pocket/FIT_CHECK.md` (design), `pocket/ELETRONICA.md` (eletrônica),
+  `pocket/FIRMWARE_SOM.md` (programação e som).
+- Run on J's Windows PC: KiCad, arduino-cli/Teensyduino, the CadQuery
+  venv and the Teensy are there. A cloud session can only do docs and
+  the web pages.
+- Parallel work: one worktree/branch per agent, merged in the order
+  above.
+- `pocket/rascunhos/layout_v2.py`: J's first left-side revision (logo,
+  knobs + LED, speaker grille, "<"-shaped left end), unfinished (the
+  36 mm speaker doesn't fit the front-left corner). Starting point for
+  the design agent; see the README there.
+
+## eTuttino Pocket (started 15 Oct 2026)
+
+Compact third model: same C-griff geometry (P 18.5, rows 16.02, 100 mm
+deep), **28 keys G3–E5** (row 1 A3..D#5, row 2 G3..E5, row 3 G#3..D5,
+row 4 A3..C5), `O = 84`, ~237 × 100 mm, no screen zone, 2 muxes, LiPo
+1S ~2000 mAh (4 h with earphones; budget in `pocket/POWER.md`, the 28
+Hall sensors are >half the draw), battery bay under the front of the
+interface so the keyboard keeps the eTuttino's height. Lives in
+`etutti/hardware/pocket/`: `SPEC.md` (same Chat→Code protocol as the
+case SPEC, Portuguese, §9 lists the Code deliverables, §10 the open
+questions), `layout.py` (stdlib; writes `build/pocket_keys.csv`,
+`build/pocket_top.svg`, `build/pocket.json`, `POWER.md`; its eTuttino
+reference outline reproduces the case's 331.1 mm, which validates the
+hull method). Next: `case.py` gets `MODEL = "pocket"`, then the board
+(charger + buck-boost, Teensy fed on 3V3 with VUSB–VIN cut — CHECK),
+firmware `ETUTTI_MODEL_POCKET`, page model picker.
+
 ## eTutti handoff (session of Oct 2026, PRs #63–#76) — earlier state
 
 **State at hand-off** (everything merged to `main`):

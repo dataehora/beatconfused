@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 355.1 124.0" width="1420" height="496" font-family="sans-serif">
+<rect width="355.1" height="124.0" fill="#f6f4ef"/>
+<polygon points="12.00,12.00 310.56,12.00 312.83,12.84 314.94,14.78 316.88,16.89 318.62,19.16 320.16,21.57 338.66,53.61 339.98,56.15 341.07,58.79 341.93,61.52 342.55,64.31 342.93,67.15 343.05,70.01 342.93,72.87 342.55,75.71 341.93,78.50 341.07,81.23 339.98,83.87 338.66,86.41 329.41,102.43 327.87,104.84 326.13,107.11 324.19,109.22 322.08,111.16 319.81,112.00 12.00,112.00" fill="none" stroke="#b9b2a6" stroke-width="0.5" stroke-dasharray="2 1.5"/>
+<text x="341.1" y="9" font-size="4" text-anchor="end" fill="#8a8377">eTuttino 331 mm</text>
+<polygon points="12.00,12.00 216.56,12.00 218.83,12.84 220.94,14.78 222.88,16.89 224.62,19.16 226.16,21.57 244.66,53.61 245.98,56.15 247.07,58.79 247.93,61.52 248.55,64.31 248.93,67.15 249.05,70.01 248.93,72.87 248.55,75.71 247.93,78.50 247.07,81.23 245.98,83.87 244.66,86.41 235.41,102.43 233.87,104.84 232.13,107.11 230.19,109.22 228.08,111.16 225.81,112.00 12.00,112.00" fill="#e7e1d6" stroke="#4a443c" stroke-width="0.6"/>
+<polygon points="64.25,70.01 64.34,68.05 64.59,66.10 65.02,64.19 65.61,62.31 66.36,60.50 67.26,58.76 76.51,42.74 85.76,26.72 86.82,25.06 88.01,23.51 89.34,22.30 213.66,22.30 214.99,23.51 216.18,25.06 217.24,26.72 226.49,42.74 235.74,58.76 236.64,60.50 237.39,62.31 237.98,64.19 238.41,66.10 238.66,68.05 238.75,70.01 238.66,71.97 238.41,73.92 237.98,75.83 237.39,77.70 236.64,79.52 235.74,81.26 226.49,97.28 225.43,98.94 224.24,100.49 222.91,101.70 80.09,101.70 78.76,100.49 77.57,98.94 76.51,97.28 67.26,81.26 66.36,79.52 65.61,77.70 65.02,75.83 64.59,73.92 64.34,71.97" fill="#26231f"/>
+<rect x="20.0" y="73.0" width="24.0" height="27.0" rx="3" fill="none" stroke="#9c9486" stroke-width="0.4"/>
+<circle cx="23.0" cy="76.0" r="0.95" fill="#9c9486"/>
+<circle cx="23.0" cy="80.0" r="0.95" fill="#9c9486"/>
+<circle cx="23.0" cy="84.0" r="0.95" fill="#9c9486"/>
+<circle cx="23.0" cy="88.0" r="0.95" fill="#9c9486"/>
+<circle cx="23.0" cy="92.0" r="0.95" fill="#9c9486"/>
+<circle cx="23.0" cy="96.0" r="0.95" fill="#9c9486"/>
+<circle cx="27.0" cy="76.0" r="0.95" fill="#9c9486"/>
+<circle cx="27.0" cy="80.0" r="0.95" fill="#9c9486"/>
+<circle cx="27.0" cy="84.0" r="0.95" fill="#9c9486"/>
+<circle cx="27.0" cy="88.0" r="0.95" fill="#9c9486"/>
+<circle cx="27.0" cy="92.0" r="0.95" fill="#9c9486"/>
+<circle cx="27.0" cy="96.0" r="0.95" fill="#9c9486"/>
+<circle cx="31.0" cy="76.0" r="0.95" fill="#9c9486"/>
+<circle cx="31.0" cy="80.0" r="0.95" fill="#9c9486"/>
+<circle cx="31.0" cy="84.0" r="0.95" fill="#9c9486"/>
+<circle cx="31.0" cy="88.0" r="0.95" fill="#9c9486"/>
+<circle cx="31.0" cy="92.0" r="0.95" fill="#9c9486"/>
+<circle cx="31.0" cy="96.0" r="0.95" fill="#9c9486"/>
+<circle cx="35.0" cy="76.0" r="0.95" fill="#9c9486"/>
+<circle cx="35.0" cy="80.0" r="0.95" fill="#9c9486"/>
+<circle cx="35.0" cy="84.0" r="0.95" fill="#9c9486"/>
+<circle cx="35.0" cy="88.0" r="0.95" fill="#9c9486"/>
+<circle cx="35.0" cy="92.0" r="0.95" fill="#9c9486"/>
+<circle cx="35.0" cy="96.0" r="0.95" fill="#9c9486"/>
+<circle cx="39.0" cy="76.0" r="0.95" fill="#9c9486"/>
+<circle cx="39.0" cy="80.0" r="0.95" fill="#9c9486"/>
+<circle cx="39.0" cy="84.0" r="0.95" fill="#9c9486"/>
+<circle cx="39.0" cy="88.0" r="0.95" fill="#9c9486"/>
+<circle cx="39.0" cy="92.0" r="0.95" fill="#9c9486"/>
+<circle cx="39.0" cy="96.0" r="0.95" fill="#9c9486"/>
+<circle cx="24.0" cy="57.0" r="4.5" fill="#3b3631"/>
+<text x="24.0" y="50.5" font-size="3" text-anchor="middle" fill="#6b645a">VOL</text>
+<circle cx="40.0" cy="57.0" r="4.5" fill="#3b3631"/>
+<text x="40.0" y="50.5" font-size="3" text-anchor="middle" fill="#6b645a">SOM</text>
+<circle cx="52.0" cy="57.0" r="1.75" fill="#5fb85f"/>
+<circle cx="86.75" cy="70.00999999999999" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="86.75" y="71.21" font-size="3.4" text-anchor="middle" fill="#333">G3</text>
+<circle cx="96.0" cy="53.99" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="96.0" y="55.190000000000005" font-size="3.4" text-anchor="middle" fill="#ddd">G#3</text>
+<circle cx="96.0" cy="86.03" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="96.0" y="87.23" font-size="3.4" text-anchor="middle" fill="#333">A3</text>
+<circle cx="105.25" cy="37.97" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="105.25" y="39.17" font-size="3.4" text-anchor="middle" fill="#333">A3</text>
+<circle cx="105.25" cy="70.00999999999999" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="105.25" y="71.21" font-size="3.4" text-anchor="middle" fill="#ddd">A#3</text>
+<circle cx="114.5" cy="53.99" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="114.5" y="55.190000000000005" font-size="3.4" text-anchor="middle" fill="#333">B3</text>
+<circle cx="114.5" cy="86.03" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<circle cx="114.5" cy="86.03" r="4" fill="none" stroke="#b9b2a6" stroke-width="0.5" stroke-dasharray="0.8 0.8"/>
+<text x="114.5" y="87.23" font-size="3.4" text-anchor="middle" fill="#333">C4</text>
+<circle cx="123.75" cy="37.97" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<circle cx="123.75" cy="37.97" r="4" fill="none" stroke="#b9b2a6" stroke-width="0.5" stroke-dasharray="0.8 0.8"/>
+<text x="123.75" y="39.17" font-size="3.4" text-anchor="middle" fill="#333">C4</text>
+<circle cx="123.75" cy="70.00999999999999" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="123.75" y="71.21" font-size="3.4" text-anchor="middle" fill="#ddd">C#4</text>
+<circle cx="133.0" cy="53.99" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="133.0" y="55.190000000000005" font-size="3.4" text-anchor="middle" fill="#333">D4</text>
+<circle cx="133.0" cy="86.03" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="133.0" y="87.23" font-size="3.4" text-anchor="middle" fill="#ddd">D#4</text>
+<circle cx="142.25" cy="37.97" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="142.25" y="39.17" font-size="3.4" text-anchor="middle" fill="#ddd">D#4</text>
+<circle cx="142.25" cy="70.00999999999999" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="142.25" y="71.21" font-size="3.4" text-anchor="middle" fill="#333">E4</text>
+<circle cx="151.5" cy="53.99" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<circle cx="151.5" cy="53.99" r="4" fill="none" stroke="#b9b2a6" stroke-width="0.5" stroke-dasharray="0.8 0.8"/>
+<text x="151.5" y="55.190000000000005" font-size="3.4" text-anchor="middle" fill="#333">F4</text>
+<circle cx="151.5" cy="86.03" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="151.5" y="87.23" font-size="3.4" text-anchor="middle" fill="#ddd">F#4</text>
+<circle cx="160.75" cy="37.97" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="160.75" y="39.17" font-size="3.4" text-anchor="middle" fill="#ddd">F#4</text>
+<circle cx="160.75" cy="70.00999999999999" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="160.75" y="71.21" font-size="3.4" text-anchor="middle" fill="#333">G4</text>
+<circle cx="170.0" cy="53.99" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="170.0" y="55.190000000000005" font-size="3.4" text-anchor="middle" fill="#ddd">G#4</text>
+<circle cx="170.0" cy="86.03" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="170.0" y="87.23" font-size="3.4" text-anchor="middle" fill="#333">A4</text>
+<circle cx="179.25" cy="37.97" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="179.25" y="39.17" font-size="3.4" text-anchor="middle" fill="#333">A4</text>
+<circle cx="179.25" cy="70.00999999999999" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="179.25" y="71.21" font-size="3.4" text-anchor="middle" fill="#ddd">A#4</text>
+<circle cx="188.5" cy="53.99" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="188.5" y="55.190000000000005" font-size="3.4" text-anchor="middle" fill="#333">B4</text>
+<circle cx="188.5" cy="86.03" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<circle cx="188.5" cy="86.03" r="4" fill="none" stroke="#b9b2a6" stroke-width="0.5" stroke-dasharray="0.8 0.8"/>
+<text x="188.5" y="87.23" font-size="3.4" text-anchor="middle" fill="#333">C5</text>
+<circle cx="197.75" cy="37.97" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<circle cx="197.75" cy="37.97" r="4" fill="none" stroke="#b9b2a6" stroke-width="0.5" stroke-dasharray="0.8 0.8"/>
+<text x="197.75" y="39.17" font-size="3.4" text-anchor="middle" fill="#333">C5</text>
+<circle cx="197.75" cy="70.00999999999999" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="197.75" y="71.21" font-size="3.4" text-anchor="middle" fill="#ddd">C#5</text>
+<circle cx="207.0" cy="53.99" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="207.0" y="55.190000000000005" font-size="3.4" text-anchor="middle" fill="#333">D5</text>
+<circle cx="207.0" cy="86.03" r="7.5" fill="#1d1b19" stroke="#55504a" stroke-width="0.3"/>
+<text x="207.0" y="87.23" font-size="3.4" text-anchor="middle" fill="#ddd">D#5</text>
+<circle cx="216.25" cy="70.00999999999999" r="7.5" fill="#fbfaf6" stroke="#55504a" stroke-width="0.3"/>
+<text x="216.25" y="71.21" font-size="3.4" text-anchor="middle" fill="#333">E5</text>
+<text x="12" y="121.0" font-size="4" fill="#4a443c">eTuttino Pocket · 28 teclas · 237 × 100 mm (contorno aproximado)</text>
+</svg>
