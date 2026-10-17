@@ -13,7 +13,7 @@
   <title data-i18n="meta.title">BeatConfused | eTutti</title>
   <meta
     name="description"
-    content="eTutti: play and control a Teensy synthesizer from the browser over USB MIDI."
+    content="eTutti: a family of electronic chromatic button accordions."
     data-i18n-attr="content:meta.description"
   />
   <!-- Work in progress: not linked from the home page, kept out of the
@@ -27,7 +27,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
-  <link rel="stylesheet" href="styles.css?v=20261023" />
+  <link rel="stylesheet" href="family.css?v=20261017" />
   <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
   <link rel="stylesheet" href="/i18n/i18n.css?v=20261003" />
 </head>
@@ -37,348 +37,242 @@
     <header class="hero">
       <p class="eyebrow" data-i18n="hero.eyebrow">BeatConfused Studio</p>
       <h1 data-i18n="hero.title">eTutti</h1>
+      <p class="family-lead" data-i18n="hero.lead">A family of electronic button accordions.</p>
     </header>
 
-    <section class="etutti" aria-labelledby="etutti-title">
-      <h2 id="etutti-title" class="sr-only" data-i18n="hero.title">eTutti</h2>
-
-      <!-- ---- Model picker ---- -->
-      <div class="model-picker" role="group" aria-label="Model" data-i18n-attr="aria-label:model.aria">
-        <button type="button" class="model-card is-selected" data-model="etuttino" aria-pressed="true">
-          <span class="model-render" id="renderEtuttino"></span>
-          <span class="model-name">eTuttino</span>
-          <span class="model-desc" data-i18n="model.etuttinoDesc">44 keys · C-griff · G3–E6</span>
-        </button>
-        <button type="button" class="model-card" data-model="etutti" aria-pressed="false">
-          <span class="model-render" id="renderEtutti"></span>
-          <span class="model-name">eTutti</span>
-          <span class="model-desc" data-i18n="model.etuttiDesc">Full instrument · in development</span>
-        </button>
-      </div>
-      <p class="etutti-manuals-link"><a class="etutti-link" href="manuais/" data-i18n="model.manuals">Build your own eTuttino: assembly and user manuals →</a></p>
-      <p class="etutti-manuals-link"><a class="etutti-link" href="models/" data-i18n="model.concepts">The eTuttino's case, Seixo and Madeira, and the family →</a></p>
-
-      <div id="etuttiWip" class="control-block wide-block etutti-wip" hidden>
-        <p class="etutti-wip-title" data-i18n="wip.title">In development</p>
-        <p class="hint" data-i18n="wip.text">The full eTutti is still being designed. Pick the eTuttino to play.</p>
-      </div>
-
-      <div id="etuttinoSections" class="etutti-sections">
-      <!-- ---- Connection ---- -->
-      <div class="control-block wide-block etutti-connection">
-        <div class="panel-header">
-          <span class="panel-title" data-i18n="conn.title">Teensy connection</span>
-        </div>
-        <div class="etutti-conn-row">
-          <span id="connLight" class="conn-light" aria-hidden="true"></span>
-          <p id="connStatus" class="hint conn-status" aria-live="polite">Not connected. Plug in the Teensy and press Connect.</p>
-          <button id="connectBtn" type="button" class="toggle-btn etutti-connect-btn" data-i18n="conn.connect">Connect</button>
-        </div>
-        <div class="etutti-conn-row etutti-conn-selects">
-          <label class="select-row">
-            <span class="select-row-label" data-i18n="conn.device">Device</span>
-            <select id="outputSelect" disabled>
-              <option value="" data-i18n="conn.pressConnect">Press Connect first</option>
-            </select>
-          </label>
-          <label class="select-row">
-            <span class="select-row-label" data-i18n="conn.channel">MIDI channel</span>
-            <select id="channelSelect"></select>
-          </label>
-        </div>
-      </div>
-
-      <!-- ---- Sound in the browser ---- -->
-      <div class="control-block wide-block etutti-websound">
-        <div class="panel-header">
-          <span class="panel-title" data-i18n="web.title">Listen in this browser</span>
-        </div>
-        <div class="etutti-websound-row">
-          <p class="hint" data-i18n="web.hint">No Teensy? Hear the eTuttino's sounds through this computer's speakers, to try them before building one. Turn the volume down first: nothing plays until you switch this on.</p>
-          <label class="style-toggle" id="webSoundToggle">
-            <span class="style-toggle-label is-active" data-style="off" data-checked="false" data-i18n="play.keyboardOff">Off</span>
-            <span class="style-toggle-switch">
-              <input type="checkbox" id="webSoundCheckbox" aria-label="Play the sounds through this computer's speakers" data-i18n-attr="aria-label:web.aria" />
-              <span class="style-toggle-track"><span class="style-toggle-thumb"></span></span>
-            </span>
-            <span class="style-toggle-label" data-style="on" data-checked="true" data-i18n="play.keyboardOn">On</span>
-          </label>
-        </div>
-        <p class="hint etutti-websound-note" data-i18n="web.note">Accordion and synth use the same synthesis as the Teensy. Piano, bass and guitar are only approximations here: the Teensy plays recorded samples. With a Teensy connected too, both play.</p>
-      </div>
-
-      <!-- ---- Keyboard ---- -->
-      <div class="etutti-play">
-        <div class="etutti-play-controls">
-          <div class="etutti-toggle-group">
-          <span class="etutti-group-label" data-i18n="play.system">Layout</span>
-          <label class="style-toggle" id="griffToggle">
-            <span class="style-toggle-label is-active" data-style="c" data-checked="false">C-griff</span>
-            <span class="style-toggle-switch">
-              <input type="checkbox" id="griffCheckbox" aria-label="Key layout: C-griff or B-griff" data-i18n-attr="aria-label:play.griffAria" />
-              <span class="style-toggle-track"><span class="style-toggle-thumb"></span></span>
-            </span>
-            <span class="style-toggle-label" data-style="b" data-checked="true">B-griff</span>
-          </label>
-          </div>
-          <div class="etutti-toggle-group">
-          <span class="etutti-group-label" data-i18n="play.keyboard">Computer keyboard</span>
-          <label class="style-toggle" id="keyboardToggle">
-            <span class="style-toggle-label" data-style="off" data-checked="false" data-i18n="play.keyboardOff">Off</span>
-            <span class="style-toggle-switch">
-              <input type="checkbox" id="keyboardCheckbox" checked aria-label="Play notes with the computer keyboard" data-i18n-attr="aria-label:play.keyboardAria" />
-              <span class="style-toggle-track"><span class="style-toggle-thumb"></span></span>
-            </span>
-            <span class="style-toggle-label is-active" data-style="on" data-checked="true" data-i18n="play.keyboardOn">On</span>
-          </label>
-          </div>
-        </div>
-        <div class="etutti-play-controls">
-          <div class="stepper">
-            <span class="stepper-label" data-i18n="play.octave">Octave</span>
-            <button id="octaveDown" type="button" class="small-btn" aria-label="Octave down (←)" title="←" data-i18n-attr="aria-label:play.octaveDownAria">−</button>
-            <span id="octaveValue" class="stepper-value">F♯3–G5</span>
-            <button id="octaveUp" type="button" class="small-btn" aria-label="Octave up (→)" title="→" data-i18n-attr="aria-label:play.octaveUpAria">+</button>
-          </div>
-          <div class="stepper">
-            <span class="stepper-label" data-i18n="play.velocity">Velocity</span>
-            <button id="velocityDown" type="button" class="small-btn" aria-label="Velocity down (↓)" title="↓" data-i18n-attr="aria-label:play.velocityDownAria">−</button>
-            <span id="velocityValue" class="stepper-value">100</span>
-            <button id="velocityUp" type="button" class="small-btn" aria-label="Velocity up (↑)" title="↑" data-i18n-attr="aria-label:play.velocityUpAria">+</button>
-          </div>
-          <button id="panicBtn" type="button" class="small-btn etutti-panic" title="Esc" data-i18n="play.panic">All notes off</button>
-        </div>
-
-        <div class="device-case">
-          <div class="device-plate">
-            <div id="buttonGrid" class="button-grid" role="group" aria-label="eTuttino keys" data-i18n-attr="aria-label:play.pianoAria"></div>
-          </div>
-        </div>
-        <p class="hint etutti-keys-hint" id="keysHint" data-i18n="play.hint">
-          Computer keys, from the row nearest you: Z … / is row 1, A … ] row 2, W … [ row 3 and 3 … = row 4.
-          ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.
-        </p>
-      </div>
-
-      <!-- ---- Physical keys ---- -->
-      <div class="control-block wide-block etutti-keys">
-        <div class="panel-header">
-          <span class="panel-title" data-i18n="keys.title">eTuttino keys</span>
-          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse eTuttino keys" data-i18n-attr="aria-label:keys.collapseAria">
-            <span class="collapse-icon" aria-hidden="true">▾</span>
-          </button>
-        </div>
-        <p class="hint" data-i18n="keys.hint">The real keys are magnetic, on an 18.5 mm hexagonal grid: a sensor under each one measures how far and how fast it moves. These settings only matter with the eTuttino board.</p>
-        <div class="etutti-group" role="radiogroup" aria-labelledby="keyVelocityLegend">
-          <span class="etutti-group-label" id="keyVelocityLegend" data-i18n="keys.velocity">Key velocity</span>
-          <div class="etutti-pills">
-            <label class="etutti-pill"><input type="radio" name="keyVelocity" value="0" /><span data-i18n="keys.velFixed">Fixed</span></label>
-            <label class="etutti-pill"><input type="radio" name="keyVelocity" value="1" /><span data-i18n="keys.velSoft">Light touch</span></label>
-            <label class="etutti-pill"><input type="radio" name="keyVelocity" value="2" checked /><span data-i18n="keys.velNormal">Normal</span></label>
-            <label class="etutti-pill"><input type="radio" name="keyVelocity" value="3" /><span data-i18n="keys.velHard">Firm touch</span></label>
-          </div>
-        </div>
-        <div class="etutti-keys-actions">
-          <button id="calibrateBtn" type="button" class="small-btn" data-i18n="keys.calibrate">Calibrate keys</button>
-          <div class="etutti-toggle-group">
-            <span class="etutti-group-label" data-i18n="keys.test">Key test</span>
-            <label class="style-toggle" id="keyTestToggle">
-              <span class="style-toggle-label is-active" data-style="off" data-checked="false" data-i18n="play.keyboardOff">Off</span>
-              <span class="style-toggle-switch">
-                <input type="checkbox" id="keyTestCheckbox" aria-label="Key test: show how far each real key is pressed" data-i18n-attr="aria-label:keys.testAria" />
-                <span class="style-toggle-track"><span class="style-toggle-thumb"></span></span>
-              </span>
-              <span class="style-toggle-label" data-style="on" data-checked="true" data-i18n="play.keyboardOn">On</span>
-            </label>
-          </div>
-        </div>
-        <p class="hint" id="calibrateStatus" data-i18n="keys.calibrateHint">After Calibrate, press every key all the way down once. The Teensy remembers it, even unplugged.</p>
-        <p class="hint" data-i18n="keys.testHint">Key test: each on-screen key fills up as you press the real one. A key that never moves has a sensor problem (see the assembly manual).</p>
-      </div>
-
-      <!-- ---- Synth ---- -->
-      <div class="control-block wide-block etutti-synth">
-        <div class="panel-header">
-          <span class="panel-title" data-i18n="synth.title">Synth</span>
-          <button type="button" class="collapse-toggle" aria-expanded="true" aria-label="Collapse Synth" data-i18n-attr="aria-label:synth.collapseAria">
-            <span class="collapse-icon" aria-hidden="true">▾</span>
-          </button>
-        </div>
-
-        <div class="etutti-group" role="radiogroup" aria-labelledby="presetLegend">
-          <div class="etutti-group-head">
-            <span class="etutti-group-label" id="presetLegend" data-i18n="synth.preset">Instrument</span>
-            <span id="presetModified" class="etutti-modified" hidden data-i18n="synth.modified">modified</span>
-            <button id="resetSynthBtn" type="button" class="small-btn etutti-reset" data-i18n="synth.reset">Reset to default</button>
-          </div>
-          <div class="etutti-pills">
-            <label class="etutti-pill"><input type="radio" name="preset" value="accordion" checked /><span data-i18n="preset.accordion">Classic accordion</span></label>
-            <label class="etutti-pill"><input type="radio" name="preset" value="accordionJazz" /><span data-i18n="preset.accordionJazz">Jazz accordion</span></label>
-            <label class="etutti-pill"><input type="radio" name="preset" value="piano" /><span data-i18n="preset.piano">Piano</span></label>
-            <label class="etutti-pill"><input type="radio" name="preset" value="bass" /><span data-i18n="preset.bass">Bass</span></label>
-            <label class="etutti-pill"><input type="radio" name="preset" value="guitar" /><span data-i18n="preset.guitar">Guitar</span></label>
-            <label class="etutti-pill"><input type="radio" name="preset" value="synth" /><span data-i18n="preset.synth">Synth</span></label>
-          </div>
-          <p class="hint" data-i18n="synth.presetHint">Accordions are synthesised reed by reed. Piano, bass and guitar play recorded samples (the bass uses the guitar's low strings two octaves down).</p>
-        </div>
-
-        <div id="accordionControls" class="etutti-accordion">
-          <div class="register-block">
-            <div class="register" role="group" aria-label="Accordion register" data-i18n-attr="aria-label:register.aria">
-              <span class="register-band" aria-hidden="true"></span>
-              <button type="button" class="register-dot register-dot-high" data-reed="8" aria-pressed="false" title="4' piccolo" data-i18n-attr="title:register.highTitle;aria-label:register.highTitle" aria-label="4' piccolo"></button>
-              <button type="button" class="register-dot register-dot-m1" data-reed="2" aria-pressed="false" title="8' middle reed, open" data-i18n-attr="title:register.m1Title;aria-label:register.m1Title" aria-label="8' middle reed, open"></button>
-              <button type="button" class="register-dot register-dot-m2" data-reed="4" aria-pressed="false" title="8' middle reed, in cassotto" data-i18n-attr="title:register.m2Title;aria-label:register.m2Title" aria-label="8' middle reed, in cassotto"></button>
-              <button type="button" class="register-dot register-dot-low" data-reed="1" aria-pressed="false" title="16' low reed, in cassotto" data-i18n-attr="title:register.lowTitle;aria-label:register.lowTitle" aria-label="16' low reed, in cassotto"></button>
-            </div>
-            <div class="register-info">
-              <span class="etutti-group-label" data-i18n="register.title">Register</span>
-              <span class="register-code" id="registerCode">MM</span>
-              <span class="register-name" id="registerName">Violin</span>
-              <ul class="register-legend">
-                <li data-i18n="register.legendHigh">top: 4' piccolo</li>
-                <li data-i18n="register.legendMiddle">middle: 8' open (left) · 8' cassotto (right)</li>
-                <li data-i18n="register.legendLow">bottom: 16' in cassotto</li>
-              </ul>
-            </div>
-          </div>
-          <div class="register-presets" id="registerPresets" aria-label="Named registers" data-i18n-attr="aria-label:register.presetsAria"></div>
-          <div class="etutti-sliders">
-            <label class="etutti-slider">
-              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.reedTuning">Reed tuning</span><span id="ccReedTuningValue" class="etutti-slider-value"></span></span>
-              <input id="ccReedTuning" type="range" min="0" max="30" step="1" value="0" data-cc="27" data-format="wetness" class="panel-slider" />
-            </label>
-          </div>
-        </div>
-
-        <div id="synthControls" class="etutti-synthosc" hidden>
-          <p class="hint" data-i18n="synth.synthHint">Three oscillators per note. Saw and square are band-limited so they stay smooth instead of metallic.</p>
-          <div class="synth-osc-grid">
-            <div class="synth-osc">
-              <span class="etutti-group-label"><span data-i18n="synth.oscillator">Oscillator</span> 1</span>
-              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 1 waveform"><label class="etutti-pill"><input type="radio" name="oscWave1" value="0" /><span data-i18n="synth.sine">Sine</span></label><label class="etutti-pill"><input type="radio" name="oscWave1" value="1" /><span data-i18n="synth.triangle">Triangle</span></label><label class="etutti-pill"><input type="radio" name="oscWave1" value="2" checked /><span data-i18n="synth.saw">Saw</span></label><label class="etutti-pill"><input type="radio" name="oscWave1" value="3" /><span data-i18n="synth.square">Square</span></label></div>
-              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 1 octave"><label class="etutti-pill"><input type="radio" name="oscOct1" value="-1" /><span data-i18n="synth.octaveDown">−1 oct</span></label><label class="etutti-pill"><input type="radio" name="oscOct1" value="0" checked /><span data-i18n="synth.unison">Unison</span></label><label class="etutti-pill"><input type="radio" name="oscOct1" value="1" /><span data-i18n="synth.octaveUp">+1 oct</span></label></div>
-              <label class="etutti-slider">
-                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.level">Level</span><span id="ccOsc1LevelValue" class="etutti-slider-value"></span></span>
-                <input id="ccOsc1Level" type="range" min="0" max="127" value="100" data-cc="28" data-format="percent" class="panel-slider" />
-              </label>
-              <label class="etutti-slider">
-                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.detune">Detune</span><span id="ccOsc1DetuneValue" class="etutti-slider-value"></span></span>
-                <input id="ccOsc1Detune" type="range" min="0" max="127" value="64" data-cc="85" data-format="detune" class="panel-slider" />
-              </label>
-            </div>
-            <div class="synth-osc">
-              <span class="etutti-group-label"><span data-i18n="synth.oscillator">Oscillator</span> 2</span>
-              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 2 waveform"><label class="etutti-pill"><input type="radio" name="oscWave2" value="0" /><span data-i18n="synth.sine">Sine</span></label><label class="etutti-pill"><input type="radio" name="oscWave2" value="1" /><span data-i18n="synth.triangle">Triangle</span></label><label class="etutti-pill"><input type="radio" name="oscWave2" value="2" checked /><span data-i18n="synth.saw">Saw</span></label><label class="etutti-pill"><input type="radio" name="oscWave2" value="3" /><span data-i18n="synth.square">Square</span></label></div>
-              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 2 octave"><label class="etutti-pill"><input type="radio" name="oscOct2" value="-1" /><span data-i18n="synth.octaveDown">−1 oct</span></label><label class="etutti-pill"><input type="radio" name="oscOct2" value="0" checked /><span data-i18n="synth.unison">Unison</span></label><label class="etutti-pill"><input type="radio" name="oscOct2" value="1" /><span data-i18n="synth.octaveUp">+1 oct</span></label></div>
-              <label class="etutti-slider">
-                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.level">Level</span><span id="ccOsc2LevelValue" class="etutti-slider-value"></span></span>
-                <input id="ccOsc2Level" type="range" min="0" max="127" value="80" data-cc="29" data-format="percent" class="panel-slider" />
-              </label>
-              <label class="etutti-slider">
-                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.detune">Detune</span><span id="ccOsc2DetuneValue" class="etutti-slider-value"></span></span>
-                <input id="ccOsc2Detune" type="range" min="0" max="127" value="73" data-cc="86" data-format="detune" class="panel-slider" />
-              </label>
-            </div>
-            <div class="synth-osc">
-              <span class="etutti-group-label"><span data-i18n="synth.oscillator">Oscillator</span> 3</span>
-              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 3 waveform"><label class="etutti-pill"><input type="radio" name="oscWave3" value="0" /><span data-i18n="synth.sine">Sine</span></label><label class="etutti-pill"><input type="radio" name="oscWave3" value="1" /><span data-i18n="synth.triangle">Triangle</span></label><label class="etutti-pill"><input type="radio" name="oscWave3" value="2" /><span data-i18n="synth.saw">Saw</span></label><label class="etutti-pill"><input type="radio" name="oscWave3" value="3" checked /><span data-i18n="synth.square">Square</span></label></div>
-              <div class="etutti-pills" role="radiogroup" aria-label="Oscillator 3 octave"><label class="etutti-pill"><input type="radio" name="oscOct3" value="-1" checked /><span data-i18n="synth.octaveDown">−1 oct</span></label><label class="etutti-pill"><input type="radio" name="oscOct3" value="0" /><span data-i18n="synth.unison">Unison</span></label><label class="etutti-pill"><input type="radio" name="oscOct3" value="1" /><span data-i18n="synth.octaveUp">+1 oct</span></label></div>
-              <label class="etutti-slider">
-                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.level">Level</span><span id="ccOsc3LevelValue" class="etutti-slider-value"></span></span>
-                <input id="ccOsc3Level" type="range" min="0" max="127" value="50" data-cc="30" data-format="percent" class="panel-slider" />
-              </label>
-              <label class="etutti-slider">
-                <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.detune">Detune</span><span id="ccOsc3DetuneValue" class="etutti-slider-value"></span></span>
-                <input id="ccOsc3Detune" type="range" min="0" max="127" value="64" data-cc="87" data-format="detune" class="panel-slider" />
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div id="envelopeControls" class="etutti-envelope">
-          <span class="etutti-group-label" data-i18n="synth.envelope">Envelope</span>
-          <div class="etutti-sliders">
-            <label class="etutti-slider">
-              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.attack">Attack</span><span id="ccAttackValue" class="etutti-slider-value"></span></span>
-              <input id="ccAttack" type="range" min="0" max="127" value="14" data-cc="73" data-format="attack" class="panel-slider" />
-            </label>
-            <label class="etutti-slider synth-envelope-only" hidden>
-              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.decay">Decay</span><span id="ccDecayValue" class="etutti-slider-value"></span></span>
-              <input id="ccDecay" type="range" min="0" max="127" value="49" data-cc="75" data-format="decay" class="panel-slider" />
-            </label>
-            <label class="etutti-slider synth-envelope-only" hidden>
-              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.sustain">Sustain</span><span id="ccSustainValue" class="etutti-slider-value"></span></span>
-              <input id="ccSustain" type="range" min="0" max="127" value="89" data-cc="79" data-format="percent" class="panel-slider" />
-            </label>
-            <label class="etutti-slider">
-              <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.release">Release</span><span id="ccReleaseValue" class="etutti-slider-value"></span></span>
-              <input id="ccRelease" type="range" min="0" max="127" value="21" data-cc="72" data-format="release" class="panel-slider" />
-            </label>
-          </div>
-        </div>
-
-        <div class="etutti-sliders">
-          <label class="etutti-slider">
-            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.volume">Volume</span><span id="ccVolumeValue" class="etutti-slider-value"></span></span>
-            <input id="ccVolume" type="range" min="0" max="127" value="90" data-cc="7" data-format="percent" class="panel-slider" />
-          </label>
-          <label class="etutti-slider">
-            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.tone">Tone</span><span id="ccToneValue" class="etutti-slider-value"></span></span>
-            <input id="ccTone" type="range" min="0" max="127" value="110" data-cc="74" data-format="cutoff" class="panel-slider" />
-          </label>
-          <label class="etutti-slider">
-            <span class="etutti-slider-head"><span class="slider-title" data-i18n="synth.ambience">Ambience</span><span id="ccAmbienceValue" class="etutti-slider-value"></span></span>
-            <input id="ccAmbience" type="range" min="0" max="127" value="25" data-cc="91" data-format="percent" class="panel-slider" />
-          </label>
-        </div>
-
-        <div class="etutti-synth-footer">
-          <button id="sendAllBtn" type="button" class="small-btn" data-i18n="synth.sendAll">Send all settings to the Teensy</button>
-        </div>
-      </div>
-
-      <!-- ---- MIDI monitor ---- -->
-      <div class="control-block wide-block etutti-monitor-block is-collapsed">
-        <div class="panel-header">
-          <span class="panel-title" data-i18n="monitor.title">MIDI monitor</span>
-          <button type="button" class="collapse-toggle" aria-expanded="false" aria-label="Expand MIDI monitor" data-i18n-attr="aria-label:monitor.expandAria">
-            <span class="collapse-icon" aria-hidden="true">▾</span>
-          </button>
-        </div>
-        <p class="hint" data-i18n="monitor.hint">→ messages sent to the Teensy, ← messages it sends back. Newest on top.</p>
-        <div id="midiMonitor" class="midi-monitor" aria-live="off"></div>
-        <div>
-          <button id="clearMonitorBtn" type="button" class="small-btn" data-i18n="monitor.clear">Clear</button>
-        </div>
-      </div>
-
-      <!-- ---- Setup ---- -->
-      <div class="control-block wide-block etutti-setup is-collapsed">
-        <div class="panel-header">
-          <span class="panel-title" data-i18n="setup.title">Setting up the Teensy</span>
-          <button type="button" class="collapse-toggle" aria-expanded="false" aria-label="Expand Setting up the Teensy" data-i18n-attr="aria-label:setup.expandAria">
-            <span class="collapse-icon" aria-hidden="true">▾</span>
-          </button>
-        </div>
-        <ol class="etutti-setup-list">
-          <li data-i18n="setup.step1">Mount the Audio Board on the Teensy (Rev D for Teensy 4.x) and plug headphones or an amplifier into its output.</li>
-          <li data-i18n="setup.step2">Install Arduino IDE with Teensyduino, open the etutti_synth sketch from this site's repository, and choose your board under Tools › Board.</li>
-          <li data-i18n="setup.step3">Under Tools › USB Type choose "MIDI" (or "Serial + MIDI"), then upload.</li>
-          <li data-i18n="setup.step4">Plug the Teensy into this computer, press Connect above and allow MIDI access. Use Chrome or Edge; Safari has no Web MIDI.</li>
-          <li data-i18n="setup.step5">With the eTuttino's knobs: the left one is the volume; the right one picks the instrument. Turn it to change the sound at once (the LED blinks green), click to keep it as the instrument the eTuttino starts with, or click without turning to go back to the classic accordion. This page follows both knobs.</li>
-          <li data-i18n="setup.step6">The LED: orange while the keys are read at power-up, green while playing, blinking red if the Audio Board or a key sensor doesn't answer (see the user manual).</li>
-        </ol>
-        <p class="hint">
-          <a class="etutti-link" href="manuais/" data-i18n="setup.manualsLink">Assembly and user manuals</a>
-          ·
-          <a class="etutti-link" href="https://github.com/dataehora/beatconfused/tree/main/etutti/firmware" target="_blank" rel="noopener" data-i18n="setup.firmwareLink">Firmware source on GitHub</a>
-          ·
-          <a class="etutti-link" href="https://github.com/dataehora/beatconfused/tree/main/etutti/hardware" target="_blank" rel="noopener" data-i18n="setup.hardwareLink">PCB design notes</a>
-        </p>
-      </div>
-      </div>
-    </section>
+    <!-- The drawings between BEGIN/END markers are written by
+         etutti/landing_svgs.py: re-run it rather than editing them. -->
+    <nav class="family-grid" aria-label="eTutti family" data-i18n-attr="aria-label:family.aria">
+      <a class="family-card" href="pocket/">
+        <span class="family-render"><!-- BEGIN svg:pocket -->
+<svg class="family-svg" viewBox="0 0 355.6 106" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+<polygon class="fs-body" points="59.2,3 263.8,3 266.1,3.8 268.2,5.8 270.1,7.9 271.8,10.2 273.4,12.6 291.9,44.6 293.2,47.1 294.3,49.8 295.2,52.5 295.8,55.3 296.2,58.2 296.3,61 296.2,63.9 295.8,66.7 295.2,69.5 294.3,72.2 293.2,74.9 291.9,77.4 282.6,93.4 281.1,95.8 279.4,98.1 277.4,100.2 275.3,102.2 273,103 59.2,103"/>
+<polygon class="fs-well" points="111.5,61 111.6,59 111.8,57.1 112.2,55.2 112.8,53.3 113.6,51.5 114.5,49.8 123.7,33.7 133,17.7 134,16.1 135.2,14.5 136.6,13.3 260.9,13.3 262.2,14.5 263.4,16.1 264.5,17.7 273.7,33.7 283,49.8 283.9,51.5 284.6,53.3 285.2,55.2 285.6,57.1 285.9,59 286,61 285.9,63 285.6,64.9 285.2,66.8 284.6,68.7 283.9,70.5 283,72.3 273.7,88.3 272.7,89.9 271.5,91.5 270.1,92.7 127.3,92.7 126,91.5 124.8,89.9 123.7,88.3 114.5,72.3 113.6,70.5 112.8,68.7 112.2,66.8 111.8,64.9 111.6,63"/>
+<rect class="fs-grille" x="67.2" y="64" width="24" height="27" rx="3"/>
+<circle class="fs-knob" cx="71.2" cy="48" r="4.5"/>
+<circle class="fs-knob" cx="87.2" cy="48" r="4.5"/>
+<circle class="fs-led" cx="99.2" cy="48" r="1.8"/>
+<circle class="fs-key" cx="134" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="143.2" cy="45" r="7.5"/>
+<circle class="fs-key" cx="143.2" cy="77" r="7.5"/>
+<circle class="fs-key" cx="152.5" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="152.5" cy="61" r="7.5"/>
+<circle class="fs-key" cx="161.7" cy="45" r="7.5"/>
+<circle class="fs-key" cx="161.7" cy="77" r="7.5"/>
+<circle class="fs-key" cx="171" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="171" cy="61" r="7.5"/>
+<circle class="fs-key" cx="180.2" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="180.2" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="189.5" cy="29" r="7.5"/>
+<circle class="fs-key" cx="189.5" cy="61" r="7.5"/>
+<circle class="fs-key" cx="198.7" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="198.7" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="208" cy="29" r="7.5"/>
+<circle class="fs-key" cx="208" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="217.2" cy="45" r="7.5"/>
+<circle class="fs-key" cx="217.2" cy="77" r="7.5"/>
+<circle class="fs-key" cx="226.5" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="226.5" cy="61" r="7.5"/>
+<circle class="fs-key" cx="235.7" cy="45" r="7.5"/>
+<circle class="fs-key" cx="235.7" cy="77" r="7.5"/>
+<circle class="fs-key" cx="245" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="245" cy="61" r="7.5"/>
+<circle class="fs-key" cx="254.2" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="254.2" cy="77" r="7.5"/>
+<circle class="fs-key" cx="263.5" cy="61" r="7.5"/>
+</svg>
+<!-- END svg:pocket --></span>
+        <span class="family-name">eTuttino Pocket</span>
+        <span class="family-desc" data-i18n="pocket.desc">28 buttons · G3–E5 · battery and speaker</span>
+        <span class="family-go" aria-hidden="true">→</span>
+      </a>
+      <button type="button" class="family-card" disabled>
+        <span class="family-render"><!-- BEGIN svg:etuttino -->
+<svg class="family-svg" viewBox="0 0 355.6 106" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+<polygon class="fs-body" points="12.2,3 310.8,3 313.1,3.8 315.2,5.8 317.1,7.9 318.9,10.2 320.4,12.6 338.9,44.6 340.2,47.1 341.3,49.8 342.2,52.5 342.8,55.3 343.2,58.2 343.3,61 343.2,63.9 342.8,66.7 342.2,69.5 341.3,72.2 340.2,74.9 338.9,77.4 329.7,93.4 328.1,95.8 326.4,98.1 324.4,100.2 322.3,102.2 320.1,103 12.2,103"/>
+<polygon class="fs-well" points="84.5,61 84.6,59 84.8,57.1 85.3,55.2 85.9,53.3 86.6,51.5 87.5,49.8 106,17.7 107.1,16.1 108.3,14.5 109.6,13.3 307.9,13.3 309.2,14.5 310.4,16.1 311.5,17.7 320.7,33.7 330,49.8 330.9,51.5 331.6,53.3 332.2,55.2 332.7,57.1 332.9,59 333,61 332.9,63 332.7,64.9 332.2,66.8 331.6,68.7 330.9,70.5 330,72.3 320.7,88.3 319.7,89.9 318.5,91.5 317.2,92.7 100.3,92.7 99,91.5 97.8,89.9 96.8,88.3 87.5,72.3 86.6,70.5 85.9,68.7 85.3,66.8 84.8,64.9 84.6,63"/>
+<rect class="fs-grille" x="20.2" y="64" width="45" height="33" rx="3"/>
+<circle class="fs-knob" cx="32.2" cy="48" r="4.5"/>
+<circle class="fs-knob" cx="49.2" cy="48" r="4.5"/>
+<circle class="fs-led" cx="64.2" cy="48" r="1.8"/>
+<circle class="fs-key" cx="107" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="116.2" cy="45" r="7.5"/>
+<circle class="fs-key" cx="116.2" cy="77" r="7.5"/>
+<circle class="fs-key" cx="125.5" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="125.5" cy="61" r="7.5"/>
+<circle class="fs-key" cx="134.8" cy="45" r="7.5"/>
+<circle class="fs-key" cx="134.8" cy="77" r="7.5"/>
+<circle class="fs-key" cx="144" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="144" cy="61" r="7.5"/>
+<circle class="fs-key" cx="153.2" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="153.2" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="162.5" cy="29" r="7.5"/>
+<circle class="fs-key" cx="162.5" cy="61" r="7.5"/>
+<circle class="fs-key" cx="171.8" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="171.8" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="181" cy="29" r="7.5"/>
+<circle class="fs-key" cx="181" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="190.2" cy="45" r="7.5"/>
+<circle class="fs-key" cx="190.2" cy="77" r="7.5"/>
+<circle class="fs-key" cx="199.5" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="199.5" cy="61" r="7.5"/>
+<circle class="fs-key" cx="208.8" cy="45" r="7.5"/>
+<circle class="fs-key" cx="208.8" cy="77" r="7.5"/>
+<circle class="fs-key" cx="218" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="218" cy="61" r="7.5"/>
+<circle class="fs-key" cx="227.2" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="227.2" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="236.5" cy="29" r="7.5"/>
+<circle class="fs-key" cx="236.5" cy="61" r="7.5"/>
+<circle class="fs-key" cx="245.8" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="245.8" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="255" cy="29" r="7.5"/>
+<circle class="fs-key" cx="255" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="264.2" cy="45" r="7.5"/>
+<circle class="fs-key" cx="264.2" cy="77" r="7.5"/>
+<circle class="fs-key" cx="273.5" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="273.5" cy="61" r="7.5"/>
+<circle class="fs-key" cx="282.8" cy="45" r="7.5"/>
+<circle class="fs-key" cx="282.8" cy="77" r="7.5"/>
+<circle class="fs-key" cx="292" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="292" cy="61" r="7.5"/>
+<circle class="fs-key" cx="301.2" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="301.2" cy="77" r="7.5"/>
+<circle class="fs-key" cx="310.5" cy="61" r="7.5"/>
+</svg>
+<!-- END svg:etuttino --></span>
+        <span class="family-name">eTuttino</span>
+        <span class="family-desc" data-i18n="etuttino.desc">44 buttons · G3–E6</span>
+        <span class="family-tag" data-i18n="dev">In development</span>
+      </button>
+      <button type="button" class="family-card" disabled>
+        <span class="family-render"><!-- BEGIN svg:etutti -->
+<svg class="family-svg" viewBox="0 0 355.6 106" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+<polygon class="fs-body" points="3,3 320.1,3 322.3,3.8 324.4,5.8 326.4,7.9 328.1,10.2 329.7,12.6 348.2,44.6 349.5,47.1 350.6,49.8 351.4,52.5 352.1,55.3 352.4,58.2 352.6,61 352.4,63.9 352.1,66.7 351.4,69.5 350.6,72.2 349.5,74.9 348.2,77.4 338.9,93.4 337.4,95.8 335.6,98.1 333.7,100.2 331.6,102.2 329.3,103 3,103"/>
+<polygon class="fs-well" points="75.2,61 75.3,59 75.6,57.1 76,55.2 76.6,53.3 77.4,51.5 78.3,49.8 96.8,17.7 97.8,16.1 99,14.5 100.3,13.3 317.2,13.3 318.5,14.5 319.7,16.1 320.7,17.7 330,33.7 339.2,49.8 340.1,51.5 340.9,53.3 341.5,55.2 341.9,57.1 342.2,59 342.2,61 342.2,63 341.9,64.9 341.5,66.8 340.9,68.7 340.1,70.5 339.2,72.3 330,88.3 328.9,89.9 327.7,91.5 326.4,92.7 91.1,92.7 89.8,91.5 88.6,89.9 87.5,88.3 78.3,72.3 77.4,70.5 76.6,68.7 76,66.8 75.6,64.9 75.3,63"/>
+<rect class="fs-grille" x="11" y="64" width="45" height="33" rx="3"/>
+<circle class="fs-knob" cx="23" cy="48" r="4.5"/>
+<circle class="fs-knob" cx="40" cy="48" r="4.5"/>
+<circle class="fs-led" cx="55" cy="48" r="1.8"/>
+<circle class="fs-key" cx="97.8" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="107" cy="45" r="7.5"/>
+<circle class="fs-key" cx="107" cy="77" r="7.5"/>
+<circle class="fs-key" cx="116.2" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="116.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="125.5" cy="45" r="7.5"/>
+<circle class="fs-key" cx="125.5" cy="77" r="7.5"/>
+<circle class="fs-key" cx="134.8" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="134.8" cy="61" r="7.5"/>
+<circle class="fs-key" cx="144" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="144" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="153.2" cy="29" r="7.5"/>
+<circle class="fs-key" cx="153.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="162.5" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="162.5" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="171.8" cy="29" r="7.5"/>
+<circle class="fs-key" cx="171.8" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="181" cy="45" r="7.5"/>
+<circle class="fs-key" cx="181" cy="77" r="7.5"/>
+<circle class="fs-key" cx="190.2" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="190.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="199.5" cy="45" r="7.5"/>
+<circle class="fs-key" cx="199.5" cy="77" r="7.5"/>
+<circle class="fs-key" cx="208.8" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="208.8" cy="61" r="7.5"/>
+<circle class="fs-key" cx="218" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="218" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="227.2" cy="29" r="7.5"/>
+<circle class="fs-key" cx="227.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="236.5" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="236.5" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="245.8" cy="29" r="7.5"/>
+<circle class="fs-key" cx="245.8" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="255" cy="45" r="7.5"/>
+<circle class="fs-key" cx="255" cy="77" r="7.5"/>
+<circle class="fs-key" cx="264.2" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="264.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="273.5" cy="45" r="7.5"/>
+<circle class="fs-key" cx="273.5" cy="77" r="7.5"/>
+<circle class="fs-key" cx="282.8" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="282.8" cy="61" r="7.5"/>
+<circle class="fs-key" cx="292" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="292" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="301.2" cy="29" r="7.5"/>
+<circle class="fs-key" cx="301.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="310.5" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="310.5" cy="77" r="7.5"/>
+<circle class="fs-key" cx="319.8" cy="61" r="7.5"/>
+</svg>
+<!-- END svg:etutti --></span>
+        <span class="family-name">eTutti</span>
+        <span class="family-desc" data-i18n="etutti.desc">48 buttons · three octaves</span>
+        <span class="family-tag" data-i18n="dev">In development</span>
+      </button>
+      <button type="button" class="family-card" disabled>
+        <span class="family-render"><!-- BEGIN svg:chorus -->
+<svg class="family-svg" viewBox="0 0 355.6 106" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+<polygon class="fs-body" points="3,3 320.1,3 322.3,3.8 324.4,5.8 326.4,7.9 328.1,10.2 329.7,12.6 348.2,44.6 349.5,47.1 350.6,49.8 351.4,52.5 352.1,55.3 352.4,58.2 352.6,61 352.4,63.9 352.1,66.7 351.4,69.5 350.6,72.2 349.5,74.9 348.2,77.4 338.9,93.4 337.4,95.8 335.6,98.1 333.7,100.2 331.6,102.2 329.3,103 3,103"/>
+<polygon class="fs-well" points="75.2,61 75.3,59 75.6,57.1 76,55.2 76.6,53.3 77.4,51.5 78.3,49.8 96.8,17.7 97.8,16.1 99,14.5 100.3,13.3 317.2,13.3 318.5,14.5 319.7,16.1 320.7,17.7 330,33.7 339.2,49.8 340.1,51.5 340.9,53.3 341.5,55.2 341.9,57.1 342.2,59 342.2,61 342.2,63 341.9,64.9 341.5,66.8 340.9,68.7 340.1,70.5 339.2,72.3 330,88.3 328.9,89.9 327.7,91.5 326.4,92.7 91.1,92.7 89.8,91.5 88.6,89.9 87.5,88.3 78.3,72.3 77.4,70.5 76.6,68.7 76,66.8 75.6,64.9 75.3,63"/>
+<rect class="fs-grille" x="11" y="64" width="45" height="33" rx="3"/>
+<rect class="fs-screen" x="11" y="8" width="54" height="30" rx="3"/>
+<circle class="fs-knob" cx="23" cy="48" r="4.5"/>
+<circle class="fs-knob" cx="40" cy="48" r="4.5"/>
+<circle class="fs-led" cx="55" cy="48" r="1.8"/>
+<circle class="fs-key" cx="97.8" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="107" cy="45" r="7.5"/>
+<circle class="fs-key" cx="107" cy="77" r="7.5"/>
+<circle class="fs-key" cx="116.2" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="116.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="125.5" cy="45" r="7.5"/>
+<circle class="fs-key" cx="125.5" cy="77" r="7.5"/>
+<circle class="fs-key" cx="134.8" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="134.8" cy="61" r="7.5"/>
+<circle class="fs-key" cx="144" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="144" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="153.2" cy="29" r="7.5"/>
+<circle class="fs-key" cx="153.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="162.5" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="162.5" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="171.8" cy="29" r="7.5"/>
+<circle class="fs-key" cx="171.8" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="181" cy="45" r="7.5"/>
+<circle class="fs-key" cx="181" cy="77" r="7.5"/>
+<circle class="fs-key" cx="190.2" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="190.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="199.5" cy="45" r="7.5"/>
+<circle class="fs-key" cx="199.5" cy="77" r="7.5"/>
+<circle class="fs-key" cx="208.8" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="208.8" cy="61" r="7.5"/>
+<circle class="fs-key" cx="218" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="218" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="227.2" cy="29" r="7.5"/>
+<circle class="fs-key" cx="227.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="236.5" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="236.5" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="245.8" cy="29" r="7.5"/>
+<circle class="fs-key" cx="245.8" cy="61" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="255" cy="45" r="7.5"/>
+<circle class="fs-key" cx="255" cy="77" r="7.5"/>
+<circle class="fs-key" cx="264.2" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="264.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="273.5" cy="45" r="7.5"/>
+<circle class="fs-key" cx="273.5" cy="77" r="7.5"/>
+<circle class="fs-key" cx="282.8" cy="29" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="282.8" cy="61" r="7.5"/>
+<circle class="fs-key" cx="292" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="292" cy="77" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="301.2" cy="29" r="7.5"/>
+<circle class="fs-key" cx="301.2" cy="61" r="7.5"/>
+<circle class="fs-key" cx="310.5" cy="45" r="7.5"/>
+<circle class="fs-key fs-sharp" cx="310.5" cy="77" r="7.5"/>
+<circle class="fs-key" cx="319.8" cy="61" r="7.5"/>
+</svg>
+<!-- END svg:chorus --></span>
+        <span class="family-name">eTuttiChorus</span>
+        <span class="family-desc" data-i18n="chorus.desc">eTutti + screen and speaker</span>
+        <span class="family-tag" data-i18n="dev">In development</span>
+      </button>
+    </nav>
 
     <footer class="footer">
       <p class="footer-links">
@@ -390,400 +284,46 @@
     </footer>
   </main>
 
-  <script src="websynth.js?v=20261021"></script>
-  <script src="script.js?v=20261024"></script>
-
   <script>
     window.BC_STRINGS = {
       en: {
         "meta.title": "BeatConfused | eTutti",
-        "meta.description": "eTutti: play and control a Teensy synthesizer from the browser over USB MIDI.",
+        "meta.description": "eTutti: a family of electronic chromatic button accordions.",
         "hero.eyebrow": "BeatConfused Studio",
         "hero.title": "eTutti",
-        "conn.title": "Teensy connection",
-        "conn.connect": "Connect",
-        "conn.device": "Device",
-        "conn.channel": "MIDI channel",
-        "conn.pressConnect": "Press Connect first",
-        "device.none": "No MIDI devices",
-        "device.choose": "— choose a device —",
-        "status.idle": "Not connected. Plug in the Teensy and press Connect.",
-        "status.unsupported": "This browser has no Web MIDI. Use Chrome or Edge on a computer.",
-        "status.denied": "MIDI access was refused. Allow it in the address bar and try again.",
-        "status.noDevice": "MIDI is on, but no device was found. Is the Teensy plugged in with USB Type set to MIDI?",
-        "status.pickDevice": "Choose your Teensy in the list.",
-        "status.connected": "Connected to {name}.",
-        "status.disconnected": "{name} was unplugged.",
-        "play.octave": "Octave",
-        "play.octaveDownAria": "Octave down (←)",
-        "play.octaveUpAria": "Octave up (→)",
-        "play.velocity": "Velocity",
-        "play.velocityDownAria": "Velocity down (↓)",
-        "play.velocityUpAria": "Velocity up (↑)",
-        "play.panic": "All notes off",
-        "play.pianoAria": "eTuttino keys",
-        "play.hint": "Computer keys, from the row nearest you: Z … / is row 1, A … ] row 2, W … [ row 3 and 3 … = row 4. ← / → change octave, ↓ / ↑ change velocity, Esc silences everything.",
-        "synth.title": "Synth",
-        "synth.collapseAria": "Collapse Synth",
-        "synth.volume": "Volume",
-        "synth.attack": "Attack",
-        "synth.release": "Release",
-        "synth.sendAll": "Send all settings to the Teensy",
-        "monitor.title": "MIDI monitor",
-        "monitor.expandAria": "Expand MIDI monitor",
-        "monitor.hint": "→ messages sent to the Teensy, ← messages it sends back. Newest on top.",
-        "monitor.clear": "Clear",
-        "setup.title": "Setting up the Teensy",
-        "setup.expandAria": "Expand Setting up the Teensy",
-        "setup.step1": "Mount the Audio Board on the Teensy (Rev D for Teensy 4.x) and plug headphones or an amplifier into its output.",
-        "setup.step2": "Install Arduino IDE with Teensyduino, open the etutti_synth sketch from this site's repository, and choose your board under Tools › Board.",
-        "setup.step3": "Under Tools › USB Type choose \"MIDI\" (or \"Serial + MIDI\"), then upload.",
-        "setup.step4": "Plug the Teensy into this computer, press Connect above and allow MIDI access. Use Chrome or Edge; Safari has no Web MIDI.",
-        "setup.step5": "With the eTuttino's knobs: the left one is the volume; the right one picks the instrument. Turn it to change the sound at once (the LED blinks green), click to keep it as the instrument the eTuttino starts with, or click without turning to go back to the classic accordion. This page follows both knobs.",
-        "setup.step6": "The LED: orange while the keys are read at power-up, green while playing, blinking red if the Audio Board or a key sensor doesn't answer (see the user manual).",
-        "setup.firmwareLink": "Firmware source on GitHub",
-        "model.manuals": "Build your own eTuttino: assembly and user manuals →",
-        "model.concepts": "The eTuttino's case, Seixo and Madeira, and the family →",
-        "setup.manualsLink": "Assembly and user manuals",
-        "web.title": "Listen in this browser",
-        "web.hint": "No Teensy? Hear the eTuttino's sounds through this computer's speakers, to try them before building one. Turn the volume down first: nothing plays until you switch this on.",
-        "web.aria": "Play the sounds through this computer's speakers",
-        "web.note": "Accordion and synth use the same synthesis as the Teensy. Piano, bass and guitar are only approximations here: the Teensy plays recorded samples. With a Teensy connected too, both play.",
-        "keys.title": "eTuttino keys",
-        "keys.collapseAria": "Collapse eTuttino keys",
-        "keys.hint": "The real keys are magnetic, on an 18.5 mm hexagonal grid: a sensor under each one measures how far and how fast it moves. These settings only matter with the eTuttino board.",
-        "keys.velocity": "Key velocity",
-        "keys.velFixed": "Fixed",
-        "keys.velSoft": "Light touch",
-        "keys.velNormal": "Normal",
-        "keys.velHard": "Firm touch",
-        "keys.calibrate": "Calibrate keys",
-        "keys.calibrateHint": "After Calibrate, press every key all the way down once. The Teensy remembers it, even unplugged.",
-        "keys.calibrateSent": "Calibration restarted: now press every key all the way down once.",
-        "keys.test": "Key test",
-        "keys.testAria": "Key test: show how far each real key is pressed",
-        "keys.testHint": "Key test: each on-screen key fills up as you press the real one. A key that never moves has a sensor problem (see the assembly manual).",
-        "model.aria": "Model",
-        "model.etuttinoDesc": "44 keys · C-griff · G3–E6",
-        "model.etuttiDesc": "Full instrument · in development",
-        "wip.title": "In development",
-        "wip.text": "The full eTutti is still being designed. Pick the eTuttino to play.",
-        "setup.hardwareLink": "PCB design notes",
-        "play.system": "Layout",
-        "play.griffAria": "Key layout: C-griff or B-griff",
-        "play.keyboard": "Computer keyboard",
-        "play.keyboardOff": "Off",
-        "play.keyboardOn": "On",
-        "play.keyboardAria": "Play notes with the computer keyboard",
-        "synth.preset": "Instrument",
-        "synth.modified": "modified",
-        "synth.reset": "Reset to default",
-        "synth.presetHint": "Accordions are synthesised reed by reed. Piano, bass and guitar play recorded samples (the bass uses the guitar's low strings two octaves down).",
-        "preset.accordion": "Classic accordion",
-        "preset.accordionJazz": "Jazz accordion",
-        "preset.piano": "Piano",
-        "preset.bass": "Bass",
-        "preset.guitar": "Guitar (nylon)",
-        "synth.reedTuning": "Reed tuning",
-        "synth.dry": "dry",
-        "synth.wet": "wet",
-        "synth.tone": "Tone",
-        "synth.ambience": "Ambience",
-        "register.aria": "Accordion register",
-        "register.title": "Register",
-        "register.highTitle": "4' piccolo reed",
-        "register.m1Title": "8' middle reed, open",
-        "register.m2Title": "8' middle reed, in cassotto",
-        "register.lowTitle": "16' low reed, in cassotto",
-        "register.legendHigh": "top: 4' piccolo",
-        "register.legendMiddle": "middle: 8' open (left) · 8' cassotto (right)",
-        "register.legendLow": "bottom: 16' in cassotto",
-        "register.presetsAria": "Named registers",
-        "register.master": "Master",
-        "register.violin": "Violin",
-        "register.clarinet": "Clarinet",
-        "register.bandoneon": "Bandoneon",
-        "register.oboe": "Oboe",
-        "register.organ": "Organ",
-        "register.piccolo": "Piccolo",
-        "register.bassoon": "Bassoon",
-        "register.harmonium": "Harmonium",
-        "register.accordion": "Accordion",
-        "preset.synth": "Synth",
-        "synth.synthHint": "Three oscillators per note. Saw and square are band-limited so they stay smooth instead of metallic.",
-        "synth.oscillator": "Oscillator",
-        "synth.level": "Level",
-        "synth.detune": "Detune",
-        "synth.envelope": "Envelope",
-        "synth.sine": "Sine",
-        "synth.triangle": "Triangle",
-        "synth.saw": "Saw",
-        "synth.square": "Square",
-        "synth.octaveDown": "−1 oct",
-        "synth.unison": "Unison",
-        "synth.octaveUp": "+1 oct",
-        "synth.decay": "Decay",
-        "synth.sustain": "Sustain",
+        "hero.lead": "A family of electronic button accordions.",
+        "family.aria": "eTutti family",
+        "pocket.desc": "28 buttons · G3–E5 · battery and speaker",
+        "etuttino.desc": "44 buttons · G3–E6",
+        "etutti.desc": "48 buttons · three octaves",
+        "chorus.desc": "eTutti + screen and speaker",
+        "dev": "In development",
       },
       pt: {
         "meta.title": "BeatConfused | eTutti",
-        "meta.description": "eTutti: toque e controle um sintetizador Teensy pelo navegador via MIDI USB.",
+        "meta.description": "eTutti: uma família de acordeões cromáticos eletrônicos de botões.",
         "hero.eyebrow": "BeatConfused Studio",
         "hero.title": "eTutti",
-        "conn.title": "Conexão com o Teensy",
-        "conn.connect": "Conectar",
-        "conn.device": "Dispositivo",
-        "conn.channel": "Canal MIDI",
-        "conn.pressConnect": "Clique em Conectar primeiro",
-        "device.none": "Nenhum dispositivo MIDI",
-        "device.choose": "— escolha um dispositivo —",
-        "status.idle": "Desconectado. Plugue o Teensy e clique em Conectar.",
-        "status.unsupported": "Este navegador não tem Web MIDI. Use o Chrome ou o Edge num computador.",
-        "status.denied": "O acesso MIDI foi negado. Permita na barra de endereço e tente de novo.",
-        "status.noDevice": "MIDI ativo, mas nenhum dispositivo encontrado. O Teensy está plugado com USB Type em MIDI?",
-        "status.pickDevice": "Escolha o seu Teensy na lista.",
-        "status.connected": "Conectado a {name}.",
-        "status.disconnected": "{name} foi desconectado.",
-        "play.octave": "Oitava",
-        "play.octaveDownAria": "Descer oitava (←)",
-        "play.octaveUpAria": "Subir oitava (→)",
-        "play.velocity": "Velocidade",
-        "play.velocityDownAria": "Diminuir velocidade (↓)",
-        "play.velocityUpAria": "Aumentar velocidade (↑)",
-        "play.panic": "Silenciar tudo",
-        "play.pianoAria": "Teclas do eTuttino",
-        "play.hint": "Teclas do computador, da fileira mais perto de você: Z … / é a fileira 1, A … ] a 2, W … [ a 3 e 3 … = a 4. ← / → mudam a oitava, ↓ / ↑ a velocidade, Esc silencia tudo.",
-        "synth.title": "Sintetizador",
-        "synth.collapseAria": "Recolher Sintetizador",
-        "synth.volume": "Volume",
-        "synth.attack": "Ataque",
-        "synth.release": "Liberação",
-        "synth.sendAll": "Enviar todos os ajustes ao Teensy",
-        "monitor.title": "Monitor MIDI",
-        "monitor.expandAria": "Expandir Monitor MIDI",
-        "monitor.hint": "→ mensagens enviadas ao Teensy, ← mensagens que ele envia de volta. Mais recentes no topo.",
-        "monitor.clear": "Limpar",
-        "setup.title": "Preparando o Teensy",
-        "setup.expandAria": "Expandir Preparando o Teensy",
-        "setup.step1": "Encaixe a Audio Board no Teensy (Rev D para Teensy 4.x) e ligue fones ou um amplificador na saída dela.",
-        "setup.step2": "Instale o Arduino IDE com o Teensyduino, abra o sketch etutti_synth do repositório deste site e escolha a sua placa em Tools › Board.",
-        "setup.step3": "Em Tools › USB Type escolha \"MIDI\" (ou \"Serial + MIDI\") e faça o upload.",
-        "setup.step4": "Plugue o Teensy neste computador, clique em Conectar acima e permita o acesso MIDI. Use o Chrome ou o Edge; o Safari não tem Web MIDI.",
-        "setup.step5": "Com os knobs do eTuttino: o da esquerda é o volume; o da direita escolhe o instrumento. Gire para trocar o som na hora (o LED pisca verde), clique para guardá-lo como o instrumento com que o eTuttino liga, ou clique sem girar para voltar ao acordeão clássico. Esta página acompanha os dois knobs.",
-        "setup.step6": "O LED: laranja enquanto as teclas são lidas ao ligar, verde tocando, vermelho piscando se a Audio Board ou o sensor de alguma tecla não responder (ver o manual de uso).",
-        "setup.firmwareLink": "Código do firmware no GitHub",
-        "model.manuals": "Monte o seu eTuttino: manuais de montagem e de uso →",
-        "model.concepts": "O case do eTuttino, Seixo e Madeira, e a família →",
-        "setup.manualsLink": "Manuais de montagem e de uso",
-        "web.title": "Ouvir no navegador",
-        "web.hint": "Sem Teensy? Ouça os sons do eTuttino pelos alto-falantes deste computador, para experimentar antes de montar o seu. Abaixe o volume antes: nada toca até você ligar esta chave.",
-        "web.aria": "Tocar os sons pelos alto-falantes deste computador",
-        "web.note": "Acordeão e synth usam a mesma síntese do Teensy. Piano, baixo e violão aqui são só aproximações: o Teensy toca amostras gravadas. Com um Teensy conectado também, os dois tocam.",
-        "keys.title": "Teclas do eTuttino",
-        "keys.collapseAria": "Recolher Teclas do eTuttino",
-        "keys.hint": "As teclas de verdade são magnéticas, numa grade hexagonal de 18,5 mm: um sensor embaixo de cada uma mede o quanto e com que velocidade ela desce. Estes ajustes só valem com a placa do eTuttino.",
-        "keys.velocity": "Velocity das teclas",
-        "keys.velFixed": "Fixa",
-        "keys.velSoft": "Toque leve",
-        "keys.velNormal": "Normal",
-        "keys.velHard": "Toque firme",
-        "keys.calibrate": "Calibrar teclas",
-        "keys.calibrateHint": "Depois de Calibrar, aperte cada tecla até o fundo uma vez. O Teensy guarda isso, mesmo desligado.",
-        "keys.calibrateSent": "Calibração reiniciada: agora aperte cada tecla até o fundo uma vez.",
-        "keys.test": "Teste das teclas",
-        "keys.testAria": "Teste das teclas: mostra o quanto cada tecla de verdade está apertada",
-        "keys.testHint": "Teste das teclas: cada tecla da tela se enche conforme você aperta a de verdade. Uma tecla que nunca se mexe tem problema no sensor (veja o manual de montagem).",
-        "model.aria": "Modelo",
-        "model.etuttinoDesc": "44 teclas · C-griff · G3–E6",
-        "model.etuttiDesc": "Instrumento completo · em desenvolvimento",
-        "wip.title": "Em desenvolvimento",
-        "wip.text": "O eTutti completo ainda está sendo projetado. Escolha o eTuttino para tocar.",
-        "setup.hardwareLink": "Notas do projeto da placa",
-        "play.system": "Sistema",
-        "play.griffAria": "Sistema das teclas: C-griff ou B-griff",
-        "play.keyboard": "Teclado do computador",
-        "play.keyboardOff": "Desligado",
-        "play.keyboardOn": "Ligado",
-        "play.keyboardAria": "Tocar notas com o teclado do computador",
-        "synth.preset": "Instrumento",
-        "synth.modified": "modificado",
-        "synth.reset": "Restaurar padrão",
-        "synth.presetHint": "Os acordeões são sintetizados palheta por palheta. Piano, baixo e guitarra tocam samples gravados (o baixo usa as cordas graves do violão duas oitavas abaixo).",
-        "preset.accordion": "Acordeão clássico",
-        "preset.accordionJazz": "Acordeão jazz",
-        "preset.piano": "Piano",
-        "preset.bass": "Baixo",
-        "preset.guitar": "Violão (nylon)",
-        "synth.reedTuning": "Afinação das palhetas",
-        "synth.dry": "seca",
-        "synth.wet": "molhada",
-        "synth.tone": "Tom",
-        "synth.ambience": "Ambiente",
-        "register.aria": "Registro do acordeão",
-        "register.title": "Registro",
-        "register.highTitle": "4' palheta piccolo",
-        "register.m1Title": "8' palheta média, simples",
-        "register.m2Title": "8' palheta média, em cassotto",
-        "register.lowTitle": "16' palheta baixa, em cassotto",
-        "register.legendHigh": "em cima: 4' piccolo",
-        "register.legendMiddle": "no meio: 8' simples (esq.) · 8' cassotto (dir.)",
-        "register.legendLow": "embaixo: 16' em cassotto",
-        "register.presetsAria": "Registros com nome",
-        "register.master": "Master",
-        "register.violin": "Violino",
-        "register.clarinet": "Clarinete",
-        "register.bandoneon": "Bandoneon",
-        "register.oboe": "Oboé",
-        "register.organ": "Órgão",
-        "register.piccolo": "Piccolo",
-        "register.bassoon": "Fagote",
-        "register.harmonium": "Harmônio",
-        "register.accordion": "Acordeão",
-        "preset.synth": "Sintetizador",
-        "synth.synthHint": "Três osciladores por nota. Dente de serra e quadrada têm banda limitada, para soarem suaves e não metálicas.",
-        "synth.oscillator": "Oscilador",
-        "synth.level": "Nível",
-        "synth.detune": "Desafinação",
-        "synth.envelope": "Envelope",
-        "synth.sine": "Senoidal",
-        "synth.triangle": "Triangular",
-        "synth.saw": "Dente de serra",
-        "synth.square": "Quadrada",
-        "synth.octaveDown": "−1 oit",
-        "synth.unison": "Uníssono",
-        "synth.octaveUp": "+1 oit",
-        "synth.decay": "Decaimento",
-        "synth.sustain": "Sustentação",
+        "hero.lead": "Uma família de acordeões eletrônicos de botões.",
+        "family.aria": "Família eTutti",
+        "pocket.desc": "28 botões · G3–E5 · bateria e alto-falante",
+        "etuttino.desc": "44 botões · G3–E6",
+        "etutti.desc": "48 botões · três oitavas",
+        "chorus.desc": "eTutti + tela e alto-falante",
+        "dev": "Em desenvolvimento",
       },
       es: {
         "meta.title": "BeatConfused | eTutti",
-        "meta.description": "eTutti: toca y controla un sintetizador Teensy desde el navegador por MIDI USB.",
+        "meta.description": "eTutti: una familia de acordeones cromáticos electrónicos de botones.",
         "hero.eyebrow": "BeatConfused Studio",
         "hero.title": "eTutti",
-        "conn.title": "Conexión con el Teensy",
-        "conn.connect": "Conectar",
-        "conn.device": "Dispositivo",
-        "conn.channel": "Canal MIDI",
-        "conn.pressConnect": "Pulsa Conectar primero",
-        "device.none": "Ningún dispositivo MIDI",
-        "device.choose": "— elige un dispositivo —",
-        "status.idle": "Desconectado. Conecta el Teensy y pulsa Conectar.",
-        "status.unsupported": "Este navegador no tiene Web MIDI. Usa Chrome o Edge en un ordenador.",
-        "status.denied": "Se denegó el acceso MIDI. Permítelo en la barra de direcciones e inténtalo de nuevo.",
-        "status.noDevice": "MIDI activo, pero no se encontró ningún dispositivo. ¿El Teensy está conectado con USB Type en MIDI?",
-        "status.pickDevice": "Elige tu Teensy en la lista.",
-        "status.connected": "Conectado a {name}.",
-        "status.disconnected": "{name} se desconectó.",
-        "play.octave": "Octava",
-        "play.octaveDownAria": "Bajar octava (←)",
-        "play.octaveUpAria": "Subir octava (→)",
-        "play.velocity": "Velocidad",
-        "play.velocityDownAria": "Bajar velocidad (↓)",
-        "play.velocityUpAria": "Subir velocidad (↑)",
-        "play.panic": "Silenciar todo",
-        "play.pianoAria": "Teclas del eTuttino",
-        "play.hint": "Teclas del ordenador, desde la fila más cercana: Z … / es la fila 1, A … ] la 2, W … [ la 3 y 3 … = la 4. ← / → cambian la octava, ↓ / ↑ la velocidad, Esc silencia todo.",
-        "synth.title": "Sintetizador",
-        "synth.collapseAria": "Contraer Sintetizador",
-        "synth.volume": "Volumen",
-        "synth.attack": "Ataque",
-        "synth.release": "Liberación",
-        "synth.sendAll": "Enviar todos los ajustes al Teensy",
-        "monitor.title": "Monitor MIDI",
-        "monitor.expandAria": "Expandir Monitor MIDI",
-        "monitor.hint": "→ mensajes enviados al Teensy, ← mensajes que devuelve. Los más recientes arriba.",
-        "monitor.clear": "Limpiar",
-        "setup.title": "Preparar el Teensy",
-        "setup.expandAria": "Expandir Preparar el Teensy",
-        "setup.step1": "Monta la Audio Board en el Teensy (Rev D para Teensy 4.x) y conecta auriculares o un amplificador a su salida.",
-        "setup.step2": "Instala Arduino IDE con Teensyduino, abre el sketch etutti_synth del repositorio de este sitio y elige tu placa en Tools › Board.",
-        "setup.step3": "En Tools › USB Type elige \"MIDI\" (o \"Serial + MIDI\") y súbelo.",
-        "setup.step4": "Conecta el Teensy a este ordenador, pulsa Conectar arriba y permite el acceso MIDI. Usa Chrome o Edge; Safari no tiene Web MIDI.",
-        "setup.step5": "Con las perillas del eTuttino: la de la izquierda es el volumen; la de la derecha elige el instrumento. Gírala para cambiar el sonido al instante (el LED parpadea en verde), haz clic para guardarlo como el instrumento con el que arranca el eTuttino, o haz clic sin girar para volver al acordeón clásico. Esta página sigue las dos perillas.",
-        "setup.step6": "El LED: naranja mientras se leen las teclas al encender, verde al tocar, rojo parpadeando si la Audio Board o el sensor de alguna tecla no responde (ver el manual de uso).",
-        "setup.firmwareLink": "Código del firmware en GitHub",
-        "model.manuals": "Arma tu eTuttino: manuales de montaje y de uso →",
-        "model.concepts": "La caja del eTuttino, Seixo y Madeira, y la familia →",
-        "setup.manualsLink": "Manuales de montaje y de uso",
-        "web.title": "Escuchar en el navegador",
-        "web.hint": "¿Sin Teensy? Escucha los sonidos del eTuttino por los altavoces de este ordenador, para probarlos antes de montar el tuyo. Baja el volumen antes: no suena nada hasta que actives este interruptor.",
-        "web.aria": "Tocar los sonidos por los altavoces de este ordenador",
-        "web.note": "El acordeón y el synth usan la misma síntesis que el Teensy. Piano, bajo y guitarra aquí son solo aproximaciones: el Teensy toca muestras grabadas. Con un Teensy conectado también, suenan los dos.",
-        "keys.title": "Teclas del eTuttino",
-        "keys.collapseAria": "Contraer Teclas del eTuttino",
-        "keys.hint": "Las teclas reales son magnéticas, en una rejilla hexagonal de 18,5 mm: un sensor bajo cada una mide cuánto y qué tan rápido baja. Estos ajustes solo cuentan con la placa del eTuttino.",
-        "keys.velocity": "Velocity de las teclas",
-        "keys.velFixed": "Fija",
-        "keys.velSoft": "Toque ligero",
-        "keys.velNormal": "Normal",
-        "keys.velHard": "Toque firme",
-        "keys.calibrate": "Calibrar teclas",
-        "keys.calibrateHint": "Después de Calibrar, pulsa cada tecla hasta el fondo una vez. El Teensy lo recuerda, incluso desconectado.",
-        "keys.calibrateSent": "Calibración reiniciada: ahora pulsa cada tecla hasta el fondo una vez.",
-        "keys.test": "Prueba de teclas",
-        "keys.testAria": "Prueba de teclas: muestra cuánto está pulsada cada tecla de verdad",
-        "keys.testHint": "Prueba de teclas: cada tecla de la pantalla se llena al pulsar la de verdad. Una tecla que nunca se mueve tiene un problema de sensor (ver el manual de montaje).",
-        "model.aria": "Modelo",
-        "model.etuttinoDesc": "44 teclas · C-griff · G3–E6",
-        "model.etuttiDesc": "Instrumento completo · en desarrollo",
-        "wip.title": "En desarrollo",
-        "wip.text": "El eTutti completo todavía se está diseñando. Elige el eTuttino para tocar.",
-        "setup.hardwareLink": "Notas del diseño de la placa",
-        "play.system": "Sistema",
-        "play.griffAria": "Sistema de teclas: C-griff o B-griff",
-        "play.keyboard": "Teclado del ordenador",
-        "play.keyboardOff": "Apagado",
-        "play.keyboardOn": "Encendido",
-        "play.keyboardAria": "Tocar notas con el teclado del ordenador",
-        "synth.preset": "Instrumento",
-        "synth.modified": "modificado",
-        "synth.reset": "Restaurar por defecto",
-        "synth.presetHint": "Los acordeones se sintetizan lengüeta por lengüeta. Piano, bajo y guitarra tocan muestras grabadas (el bajo usa las cuerdas graves de la guitarra dos octavas abajo).",
-        "preset.accordion": "Acordeón clásico",
-        "preset.accordionJazz": "Acordeón jazz",
-        "preset.piano": "Piano",
-        "preset.bass": "Bajo",
-        "preset.guitar": "Guitarra (nylon)",
-        "synth.reedTuning": "Afinación de lengüetas",
-        "synth.dry": "seca",
-        "synth.wet": "húmeda",
-        "synth.tone": "Tono",
-        "synth.ambience": "Ambiente",
-        "register.aria": "Registro del acordeón",
-        "register.title": "Registro",
-        "register.highTitle": "4' lengüeta piccolo",
-        "register.m1Title": "8' lengüeta media, abierta",
-        "register.m2Title": "8' lengüeta media, en cassotto",
-        "register.lowTitle": "16' lengüeta grave, en cassotto",
-        "register.legendHigh": "arriba: 4' piccolo",
-        "register.legendMiddle": "en medio: 8' abierta (izq.) · 8' cassotto (der.)",
-        "register.legendLow": "abajo: 16' en cassotto",
-        "register.presetsAria": "Registros con nombre",
-        "register.master": "Master",
-        "register.violin": "Violín",
-        "register.clarinet": "Clarinete",
-        "register.bandoneon": "Bandoneón",
-        "register.oboe": "Oboe",
-        "register.organ": "Órgano",
-        "register.piccolo": "Piccolo",
-        "register.bassoon": "Fagot",
-        "register.harmonium": "Armonio",
-        "register.accordion": "Acordeón",
-        "preset.synth": "Sintetizador",
-        "synth.synthHint": "Tres osciladores por nota. Diente de sierra y cuadrada tienen banda limitada para sonar suaves y no metálicas.",
-        "synth.oscillator": "Oscilador",
-        "synth.level": "Nivel",
-        "synth.detune": "Desafinación",
-        "synth.envelope": "Envolvente",
-        "synth.sine": "Senoidal",
-        "synth.triangle": "Triangular",
-        "synth.saw": "Diente de sierra",
-        "synth.square": "Cuadrada",
-        "synth.octaveDown": "−1 oct",
-        "synth.unison": "Unísono",
-        "synth.octaveUp": "+1 oct",
-        "synth.decay": "Caída",
-        "synth.sustain": "Sostenido",
+        "hero.lead": "Una familia de acordeones electrónicos de botones.",
+        "family.aria": "Familia eTutti",
+        "pocket.desc": "28 botones · G3–E5 · batería y altavoz",
+        "etuttino.desc": "44 botones · G3–E6",
+        "etutti.desc": "48 botones · tres octavas",
+        "chorus.desc": "eTutti + pantalla y altavoz",
+        "dev": "En desarrollo",
       },
     };
   </script>

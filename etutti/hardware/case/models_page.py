@@ -324,7 +324,7 @@ HEAD = """<!doctype html>
       <p class="eyebrow" data-i18n="hero.eyebrow">BeatConfused Studio</p>
       <h1 data-i18n="hero.title">The eTuttino's case</h1>
     </header>
-    <p class="manual-back"><a href="../" data-i18n="nav.back">← Back to eTutti</a></p>
+    <p class="manual-back"><a href="../etuttino/" data-i18n="nav.back">← Back to the eTuttino page</a></p>
 """
 
 TAIL = """  </main>
@@ -338,21 +338,21 @@ TAIL = """  </main>
         "meta.description": "The eTuttino's case in two finishes, Seixo (resin) and Madeira (white oak), its anatomy, buttons and measurements, and the eTutti family.",
         "hero.eyebrow": "BeatConfused Studio",
         "hero.title": "The eTuttino's case",
-        "nav.back": "← Back to eTutti",
+        "nav.back": "← Back to the eTuttino page",
       },
       pt: {
         "meta.title": "BeatConfused | Case do eTuttino",
         "meta.description": "O case do eTuttino em dois acabamentos, Seixo (resina) e Madeira (carvalho branco), a anatomia, os botões e as medidas, e a família eTutti.",
         "hero.eyebrow": "BeatConfused Studio",
         "hero.title": "O case do eTuttino",
-        "nav.back": "← Voltar ao eTutti",
+        "nav.back": "← Voltar à página do eTuttino",
       },
       es: {
         "meta.title": "BeatConfused | Caja del eTuttino",
         "meta.description": "La caja del eTuttino en dos acabados, Seixo (resina) y Madeira (roble blanco), su anatomía, botones y medidas, y la familia eTutti.",
         "hero.eyebrow": "BeatConfused Studio",
         "hero.title": "La caja del eTuttino",
-        "nav.back": "← Volver al eTutti",
+        "nav.back": "← Volver a la página del eTuttino",
       },
     };
   </script>

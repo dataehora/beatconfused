@@ -1,0 +1,204 @@
+/* ============================================================
+   eTUTTI FAMILY — the landing page (/etutti/) and the provisional
+   Pocket page (/etutti/pocket/). Page chrome, palette and footer come
+   from /shared/tuner-common.css; this file adds the four model cards
+   and the top-view drawings written by etutti/landing_svgs.py.
+   ============================================================ */
+.family-lead {
+  margin: 0.4rem auto 0;
+  max-width: 34rem;
+  color: var(--ink-soft);
+}
+
+.family-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 54rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.family-card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 0.3rem;
+  min-width: 0;
+  padding: 1.1rem 1rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: var(--surface-solid);
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: var(--shadow-soft);
+}
+
+a.family-card {
+  border-color: var(--gold);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+a.family-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 2px rgba(178, 122, 55, 0.35), var(--shadow-strong);
+}
+
+a.family-card:focus-visible {
+  outline: 2px solid rgba(163, 86, 34, 0.9);
+  outline-offset: 3px;
+}
+
+.family-card:disabled {
+  cursor: not-allowed;
+  background: rgba(255, 251, 244, 0.55);
+  box-shadow: none;
+}
+
+.family-card:disabled .family-render,
+.family-card:disabled .family-name,
+.family-card:disabled .family-desc {
+  opacity: 0.5;
+}
+
+.family-render {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.3rem;
+}
+
+.family-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.family-name {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.family-desc {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.family-go {
+  color: var(--accent);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.family-tag {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(140, 59, 47, 0.12);
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ---- top-view drawings (landing_svgs.py) ---- */
+.fs-body {
+  fill: #e9e1d3;
+  stroke: #4a443c;
+  stroke-width: 0.8;
+  stroke-linejoin: round;
+}
+
+.fs-well {
+  fill: #2a2520;
+}
+
+.fs-key {
+  fill: #fbfaf6;
+  stroke: #55504a;
+  stroke-width: 0.4;
+}
+
+.fs-key.fs-sharp {
+  fill: #1d1b19;
+  stroke: #8a8377;
+}
+
+.fs-knob {
+  fill: #3b3631;
+}
+
+.fs-led {
+  fill: #5fb85f;
+}
+
+.fs-grille {
+  fill: #d6ccbb;
+  stroke: #a39886;
+  stroke-width: 0.5;
+}
+
+.fs-screen {
+  fill: #1f2a33;
+  stroke: #4a443c;
+  stroke-width: 0.5;
+}
+
+.fs-note {
+  font-family: Inter, "Segoe UI", Roboto, system-ui, sans-serif;
+  font-size: 4px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: #3b3631;
+}
+
+.fs-note.fs-note-sharp {
+  fill: #e6e0d6;
+}
+
+/* ---- provisional Pocket page ---- */
+.pocket-figure {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 50rem;
+  text-align: center;
+}
+
+.pocket-render {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-soft);
+}
+
+.pocket-figure figcaption {
+  margin-top: 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+.family-back {
+  margin: 0;
+  text-align: center;
+}
+
+.family-back a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .family-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pocket-render {
+    padding: 0.5rem;
+  }
+}

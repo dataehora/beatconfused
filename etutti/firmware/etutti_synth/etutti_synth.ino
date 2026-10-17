@@ -40,7 +40,7 @@
    near its top frequency and turned piano/guitar (tone wide open) into
    full-scale noise.
 
-   MIDI implementation (any channel; keep in sync with CC in etutti/script.js):
+   MIDI implementation (any channel; keep in sync with CC in etutti/etuttino/script.js):
      Note On / Note Off      play / release (velocity -> loudness)
      CC 7   Volume           headphone volume
      CC 9   Key velocity     value / 32: 0 fixed (100), 1 soft, 2 normal, 3 hard
@@ -135,7 +135,7 @@ const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
 // a key further left (G3 .. E6); row 4 sits on row 2's columns, half a key
 // left of row 3, and runs A3 .. C6 (10 keys, column 1 on).
 // B-griff is the mirror image of C-griff: rows 1 and 3 swap places, so a
-// diagonal step goes the other way. Keep in sync with etutti/script.js.
+// diagonal step goes the other way. Keep in sync with etutti/etuttino/script.js.
 const int8_t FIRST_NOTE[2][LAYOUT_ROWS] = {
   {57, 55, 56, 57},   // C-griff: A3, G3, G#3, A3
   {56, 55, 57, 56},   // B-griff: G#3, G3, A3, G#3

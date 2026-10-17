@@ -1,6 +1,6 @@
 # eTutti firmware
 
-Teensy sketch for [beatconfused.com/etutti](https://beatconfused.com/etutti/):
+Teensy sketch for [beatconfused.com/etutti/etuttino](https://beatconfused.com/etutti/etuttino/):
 an 8-voice polyphonic synth that the web page plays and controls over USB
 MIDI. Sound comes out of the PJRC Audio Board.
 
@@ -160,5 +160,5 @@ The synth listens on every channel.
 | CC 120 | all sound off |
 | CC 123 | all notes off |
 
-The CC numbers are duplicated in `etutti/script.js` (`CC`). Change both
+The CC numbers are duplicated in `etutti/etuttino/script.js` (`CC`). Change both
 together.

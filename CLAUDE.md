@@ -49,7 +49,17 @@ that doesn't belong there.
   `MediaStreamAudioDestinationNode` stream of synthesized partials.
 - `etutti/` (eTutti) — **work in progress, deliberately unlisted**: no
   home-page card, not in `sitemap.xml`, `noindex` meta (the user asked
-  for no home button while it's being built). Two models: **eTuttino**
+  for no home button while it's being built). **Since Oct 2026
+  `/etutti/` is the family landing page** (`etutti/index.html` +
+  `family.css`: four cards, only the eTuttino Pocket opens, the other
+  three are disabled "in development"; the top-view SVGs are written
+  inline between `BEGIN/END svg:` markers by `etutti/landing_svgs.py`
+  from `pocket.json` + `pocket/layout.py`), `/etutti/pocket/` is the
+  provisional Pocket page, and **the MIDI app described below lives at
+  `/etutti/etuttino/`** (`etutti/etuttino/{index.html,script.js,
+  websynth.js,styles.css}`; reachable by direct URL and from the
+  manuals/models pages, not from the landing page). Read
+  `etutti/script.js` below as `etutti/etuttino/script.js`. Two models: **eTuttino**
   (the one being built — Teensy 4.0 + Audio Board Rev D, 44 **Gateron
   magnetic (Hall-effect) keys with velocity** — see "Hall-effect keys"
   below — in a chromatic-accordion **C-griff** layout (PR #77): row 1
