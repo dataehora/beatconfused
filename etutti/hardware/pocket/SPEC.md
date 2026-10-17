@@ -1,100 +1,100 @@
-# eTuttino Pocket · especificação · v2
+# eTuttino Pocket · especificação · v3
 
-**Versão 2 — 17 out 2026.** Substitui a v1 (PR #101, no histórico do git). Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Cada disciplina responde no seu relatório (`FIT_CHECK.md`, `ELETRONICA.md`, `FIRMWARE_SOM.md`), terminando com "Perguntas para a gestão". Protocolo completo no `CLAUDE.md`, seção "eTuttino Pocket — como trabalhamos".
+**Versão 3 — 17 out 2026.** Substitui a v2 (PRs #103 e #104, no histórico do git). Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Cada disciplina responde no seu relatório (`FIT_CHECK.md`, `ELETRONICA.md`, `FIRMWARE_SOM.md`), terminando com "Perguntas para a gestão". Protocolo completo no `CLAUDE.md`, seção "eTuttino Pocket — como trabalhamos".
 
 Medidas em mm. **(conferir)** = estimativa a confirmar com a peça real ou o datasheet.
 
-## Mudanças desde a versão anterior (v1)
+## Mudanças desde a versão anterior (v2)
 
-1. **Só plástico.** O Pocket é só **Seixo** (plástico, resina ou MJF, uma cor). A versão Madeira sai.
-2. **Alto-falante e bateria vêm no kit.** O Pocket tem alto-falante de qualidade razoável sob a grade (a grade deixa de ser só ventilação). Responde à pergunta 1 do `FIRMWARE_SOM.md`: o texto "bateria e alto-falante" da página inicial está certo.
-3. **Bateria de 1000 mAh, confirmada pelo J** (era ~2000). A autonomia é a que ela der depois das reduções de consumo da §6; não há mais meta fixa de 4 h.
-4. **Lado esquerdo redesenhado** (pedido do J em 15 out):
-   - os cantos retos da esquerda dão lugar a uma forma moderna e elegante, alinhada ao "<" do teclado;
-   - de trás para a frente, a área de interface tem o logo gravado, os knobs com o LED e a grade do alto-falante.
+Decisões do J sobre os relatórios do passo 1 da v2 (PR #104):
 
-   O rascunho `rascunhos/layout_v2.py` é o ponto de partida. Ali não coube um alto-falante de 36 mm no canto da frente-esquerda.
-5. **Seletor = presets.** O knob da direita escolhe entre até 8 presets de som. Os 6 de fábrica são registros de acordeom: Bassoon, Bandoneon, Organ, Violin, Musette, Piccolo (§8).
-6. **Só acordeom.** Piano e violão ficam fora do Pocket. Um preset de piano pode vir depois, fora do núcleo do Pocket. A firmware do Pocket não leva as amostras de piano e violão.
-7. **Só português** nas páginas do Pocket e da família enquanto durarem o design e o protótipo. As outras línguas e os textos para o usuário final vêm na versão final (§10).
-8. **Respostas do J às perguntas da v2:** segurar o clique e girar muda a **oitava**; o liga/desliga fica **no knob de volume** (girar além do clique, como rádio).
-9. **Ordem do trabalho:** a programação e o som ficam para um **segundo passo**, depois do design (D1) e da eletrônica (E1).
-10. Respostas às outras perguntas do `FIRMWARE_SOM.md` (PR #102):
-   - 2: "voltar" dos manuais para `/etutti/etuttino/` está bom;
-   - 3: o título de `/etutti/etuttino/` fica como está e muda quando essa página virar a base da página do Pocket;
-   - 4: o contorno dos desenhos passa a vir do case do Pocket, nas mesmas chaves `box`/`opening` do `pocket.json`.
+1. **Variante B · Seixo aprovada** (~251,5 de comprimento). Pequenas variações de tamanho não são problema. A e C saem.
+2. **Sensor TMAG5253BA3** no lugar do DRV5056, ligado por grupos. O J aceita esperar estoque. A placa do Pocket passa a ser montada só na fábrica (X2SON não se solda em casa). Reserva, se a compra falhar: DRV5053 (SOT-23, sem EN).
+3. **Desligamento automático em dois estágios, com o KEEP**: espera leve depois de 15 min sem tocar, desliga de verdade depois de mais 30. Religa girando o volume até o clique e de volta.
+4. **Bateria com termistor (NTC, 3 fios) exigida.** Se não houver estoque, o J resolve depois com outros fornecedores; o TS fixo fica só como alternativa de montagem.
+5. **Conector USB-C no case.** O Pocket fica preparado para o futuro: o conector externo, que carrega e passa o MIDI, é **USB-C**. O fio do VUSB (ou a solução equivalente da eletrônica) continua aceito por dentro.
+6. **Luz de carga sem LED novo**: o STAT do carregador acende o vermelho do LED que já existe, por um diodo, inclusive com o Pocket desligado.
+7. **Alto-falante Same Sky CLS0361-L152** (Ø36 × 6,0, 2 W, 8 Ω) com 8–12 cm³ fechados atrás.
+8. **Pilha mais baixa**: a eletrônica avalia, mas não é crítico; alguns milímetros a mais não importam.
+9. **Linha dos knobs em y = 49** aprovada. A página inicial passa a desenhar a grade de verdade (`controls.grille_outline`).
+10. **Teensy a 396 MHz**, com a condição da §6: medir no motor do Pocket e voltar a 600 MHz se houver qualquer perda de resposta ou de som.
+11. **Dois conflitos de contrato do passo 1**, que o D2 e o E2 resolvem juntos (§3):
+    - **bateria**: o berço reservado (54 × 35) é menor que o pedido pela eletrônica (58 × 36 × 7 com PCM e fios);
+    - **potenciômetro com chave**: o reservado (13 de corpo) é menor que o de 9 mm com chave (~16,6).
+12. O passo 2 da v2 (P1 e P2) **não foi feito** e entra aqui, atualizado com os pinos e as decisões acima.
 
 ## 1. Resumo
 
-| | Pocket v2 |
+| | Pocket v3 |
 |---|---|
-| Case | só plástico, Seixo |
-| Botões | 28 · G3–E5 |
-| Nota mais alta por fileira (4, 3, 2, 1) | C5 · D5 · E5 · D♯5 |
-| Passo, switches, sensores | grade hexagonal de 18,5, Gateron magnético, sensor Hall por tecla |
-| Interface | logo gravado, 2 knobs, LED, grade do alto-falante |
-| Som | só acordeom (6 registros de fábrica + 2 presets livres); alto-falante interno + saída de fone 3,5 (o fone desliga o alto-falante) |
-| Energia | LiPo 1S **1000 mAh**, carrega pelo USB, toca enquanto carrega; liga/desliga no knob de volume |
-| Conexões | USB Micro-B e fone do lado esquerdo |
+| Case | só plástico, Seixo, **variante B** (lado esquerdo em curva única), ~251,5 × 100 |
+| Botões | 28 · G3–E5 · notas mais altas por fileira (4, 3, 2, 1): C5 · D5 · E5 · D♯5 |
+| Passo, switches, sensores | grade hexagonal de 18,5, Gateron magnético, **TMAG5253BA3** por tecla, ligados por grupos |
+| Interface | logo gravado, 2 knobs (volume com chave, seletor com clique), LED, grade do alto-falante |
+| Som | só acordeom: 6 registros de fábrica + 2 presets livres; alto-falante Ø36 + fone 3,5 (o fone desliga o alto-falante) |
+| Energia | LiPo 1S 1000 mAh com NTC; carrega por **USB-C**, toca enquanto carrega; ~6,9 h com fone, ~4,5 h com alto-falante (típicos, estimativa) |
+| Teensy | 4.0 + Audio Board Rev D, a 396 MHz (§6) |
 
 ## 2. Teclado
 
-Igual à v1 §2: 28 botões, regra C-griff, fileira 1 mais perto de quem toca, Dós e Fás com xadrez diagonal, botões convexos (domo baixo com saia). A origem `O` pode mudar com o lado esquerdo novo. Quem define é o design, no `pocket.json`.
+Igual à v1 §2: 28 botões, regra C-griff, fileira 1 mais perto de quem toca, Dós e Fás com xadrez diagonal, botões convexos (domo baixo com saia). Na variante B a origem é `O = 98,45` (`pocket.json`); a grade de notas da firmware não muda.
 
-## 3. Case (Seixo)
+## 3. Case (Seixo, variante B)
 
-- Largura (profundidade) de 100, constante. Paredes externas verticais. Área do teclado aberta, com o mesmo chanfro e a mesma folga lateral de 1 botão do eTuttino.
-- **Lado direito**: segue o ">" do teclado, como na v1.
-- **Lado esquerdo, novo**: segue o "<" do teclado, a distância constante, com raios generosos nas três quinas: a ponta do "<" e as duas quinas onde a face esquerda encontra a de trás e a da frente.
-  - Nada de canto reto.
-  - O J pediu uma forma "moderna e elegante". O design propõe 2 ou 3 variantes em planta (por exemplo, "<" com ponta bem arredondada, curva contínua tipo seixo, "<" com faces levemente curvas) e recomenda uma.
-- Transição do teclado para a interface: rampa arredondada, sem quinas vivas onde a mão encosta (como no eTuttino).
-- Fundo parafusado, com acesso à bateria sem abrir a tampa.
-- Detalhar o Seixo para fabricação: espessuras de parede, bosses, pilares de apoio da placa, encaixe do alto-falante, berço da bateria, folgas de impressão (resina e MJF), e peso estimado.
+- Geometria em planta: `shape.py`, variante B, como no `pocket.json`. Largura de 100 constante, paredes externas verticais, área do teclado aberta com o chanfro e a folga lateral de 1 botão do eTuttino, rampa arredondada sem quinas vivas.
+- O lado esquerdo é uma curva só, concêntrica com a ponta da rampa, com quinas de R 24 nas faces de trás e da frente.
+- **Conectores na parede curva**: ressalto plano por dentro (ou inserto) para o **USB-C** e o fone de painel, na face de trás-esquerda.
+- **Bateria**: berço para **7 × 36 × 58** (célula com PCM, NTC e dobra dos fios), +8 % para inchaço, saída de ~60 mm de fio com JST, acesso pelo fundo sem abrir a tampa, fora de baixo da placa principal. O comprimento pode crescer um pouco para caber.
+- **Potenciômetro com chave**: resolver com a eletrônica, **sem mudar a altura da tampa**. Opções:
+  1. 9 mm com chave montado deitado (eixo paralelo à placa) numa plaquinha perpendicular à tampa;
+  2. 16 mm com chave, mais baixo e mais largo;
+  3. outra peça de altura ≤ 13 que a eletrônica achar.
+  A plaquinha dos knobs pode mudar de forma; a linha dos knobs fica em y = 49.
+- **Alto-falante**: CLS0361-L152, Ø36 × 6,0 (o D1 reservou 5,5: conferir), com 8–12 cm³ de volume traseiro fechado e vedado. A caixa pode crescer para os lados se precisar.
+- Fundo parafusado. Detalhar para fabricação: espessuras de parede, bosses, pilares de apoio da placa (rigidez como no eTuttino: ≤ 0,05 mm a 3 N), berço da bateria, caixa do alto-falante, folgas de impressão (resina e MJF), peso estimado.
 
 ## 4. Área de interface (de trás para a frente)
 
 | Zona | O que tem |
 |---|---|
-| Trás | **logo gravado** (eTuttino Pocket), em baixo-relevo de ~0,4 (conferir), numa área que acompanha a forma do lado esquerdo |
-| Meio | **knob esquerdo = volume**, **knob direito = seletor** (encoder com clique), **LED** à direita dos knobs |
-| Frente | **grade do alto-falante**, no plano a 13° voltado para quem toca, com a forma acompanhando o lado esquerdo |
+| Trás | **logo gravado** (eTuttino Pocket), baixo-relevo de ~0,4 (conferir), acompanhando a curva |
+| Meio | **knob esquerdo = volume com chave**, **knob direito = seletor** (encoder com clique), **LED** à direita; linha em y = 49 |
+| Frente | **grade do alto-falante**, no plano a 13° voltado para quem toca, só sobre o cone |
 
-Folga mínima de 5 entre knobs/LED e as bordas da área, e de 6 entre a grade e a rampa. O knob esquerdo é um **potenciômetro com chave** (liga/desliga ao girar além do clique, como rádio): o design reserva a altura dele (maior que a do RK09K do eTuttino, conferir).
+Folga mínima de 5 entre knobs/LED e as bordas da área, e de 6 entre a grade e a rampa.
 
 ## 5. Som
 
-- **Alto-falante de qualidade razoável**: o maior que couber sob a grade, com volume traseiro fechado. A eletrônica escolhe o modelo; o design faz o encaixe. Faixa sugerida: Ø 28–36 redondo, ou retangular tipo 20 × 30 (conferir).
-- **Amplificador classe D** mono, ligado à bateria, desligado quando o fone está plugado e no desligamento automático.
-- Fone 3,5 pela Audio Board, como no eTuttino (terra virtual, nunca GND).
-- A programação ajusta uma equalização para o alto-falante (corte de graves que ele não reproduz, limitador) separada da do fone.
+- Alto-falante **Same Sky CLS0361-L152** (Ø36 × 6,0, 2 W, 8 Ω), compra direta, ligado por fio. Grade com área aberta ≥ ~30 % do cone, a ≤ 1–2 mm da membrana, junta entre o aro e a parede.
+- Amplificador **PAM8302A** mono, na bateria, ganho reduzido por resistor (ajuste de ouvido). Desligado com o fone plugado, ~2 s depois da última voz e no desligamento automático.
+- Fone 3,5 pela Audio Board, com contato de comutação na ponta para a detecção (HP_DET). Manga sempre no terra virtual (HP_VGND), nunca no GND.
+- O volume vale para fone e alto-falante. A programação aplica uma equalização só para o alto-falante, quando não há fone: corte abaixo de ~400 Hz e limitador.
 
-## 6. Energia
+## 6. Energia e resposta
 
-- **LiPo 1S de 1000 mAh** (formato tipo 603450, ~6 × 34 × 50, conferir), com proteção própria (PCM).
-- Carregador com power-path (toca enquanto carrega), buck-boost de 3,3 V, divisor para medir a bateria. A arquitetura da v1 §5 continua como referência; a eletrônica pode mudar.
-- **Liga/desliga** pela chave do potenciômetro de volume: a chave corta o EN do conversor de 3,3 V e do amplificador; o carregador continua carregando com o aparelho desligado.
-- **Autonomia com o orçamento de hoje** (`POWER.md`, gerado pela v1):
+- **Arquitetura** (detalhe no `ELETRONICA.md`): carregador BQ24074 com power-path, buck-boost TPS63802 de 3,3 V, Teensy alimentado pelo 3,3 V com a ponte VUSB–VIN cortada, divisor da bateria no pino 16.
+- **USB-C** no case, para carga e MIDI.
+  - A eletrônica escolhe como ligar o USB-C ao Teensy 4.0, que tem micro-B. Por exemplo: USB-C de painel ou na placa, com um cabo interno curto até o micro-B do Teensy, tirando o 5 V para o carregador antes do Teensy.
+  - O USB-C precisa dos resistores de 5,1 kΩ nos CC, para carregar com cabos C-C.
+- **Bateria** LiPo 1S 1000 mAh tipo 603450, com PCM e **NTC (3 fios)** ligado ao TS do carregador.
+- **Liga/desliga** pela chave do potenciômetro, com o circuito de partida e o **KEEP** (pino 10). O carregador fica antes da chave e carrega com o aparelho desligado.
+- **Luz de carga**: o STAT do carregador acende o vermelho do LED por um diodo, sem pino do Teensy.
+- **Sensores** TMAG5253BA3 ligados por grupo (S3 escolhe canais 0–7 ou 8–15; SENS_EN desliga todos). Espera de 45 µs depois de trocar de grupo.
+- **Teensy a 396 MHz**, mantido só se as condições abaixo forem atendidas no motor do Pocket (Musette com 3 palhetas de 8', 8 vozes, reverb, equalização do alto-falante), **medidas no Teensy do J**:
+  - CPU do áudio ≤ 40 % no pior caso;
+  - leitura completa das 28 teclas por grupos ≤ ~400 µs (≥ 2,5 kHz por tecla);
+  - nenhuma diferença audível de som em relação a 600 MHz. A taxa de amostragem (44,1 kHz) e a resolução não dependem do clock; só a folga de CPU muda.
 
-  | | típico | pior caso |
-  |---|---|---|
-  | com fone | ~2,9 h | ~1,9 h |
-  | com alto-falante (~0,4 W médios) | ~2,0 h | ~1,5 h |
-
-  A bateria fica em 1000 mAh. Os 28 sensores Hall gastam ~168 mA dos ~292 mA. Referência: 4 h com fone exigiriam ≤ 214 mA no trilho de 3,3 V.
-- A eletrônica estuda e mede as reduções abaixo e informa a autonomia resultante, sem comprometer a resposta das teclas:
-  1. sensor Hall de menor consumo;
-  2. alimentar os sensores só durante a leitura do seu multiplexador (o DRV5056 leva 150–300 µs para ligar: conferir o efeito na velocidade);
-  3. Teensy em clock menor (coordenar com a programação: CPU do áudio);
-  4. desligar o amplificador do alto-falante em silêncio.
+  Se qualquer condição falhar, voltar a 600 MHz (custa ~1,4 h de autonomia, estimativa). 240 MHz só se sobrar folga, como opção.
+- **Autonomia estimada** (`POWER.md`, sem medição de corrente ainda): ~6,9 h com fone e ~4,5 h com alto-falante (típicos), com fone ~4,2 h no pior caso. Medir no protótipo.
 
 ## 7. Knobs
 
-- **Esquerdo**: volume contínuo, com chave liga/desliga no início do curso.
+- **Esquerdo**: volume contínuo, com chave liga/desliga no início do curso (girar além do clique, como rádio).
 - **Direito**: encoder com clique.
   - Girar troca o preset (1 → 8, só os presets ocupados).
   - Clique depois de girar grava o preset atual como o de ligar.
-  - Segurar o clique e girar muda a oitava (−2 … +2), confirmado pelo J. A transposição de ±12 semitons fica só na página.
+  - Segurar o clique e girar muda a **oitava** (−2 … +2). A transposição de ±12 semitons fica só na página.
   - O LED confirma cada mudança (piscada curta).
 
 ## 8. Presets
@@ -111,67 +111,72 @@ Folga mínima de 5 entre knobs/LED e as bordas da área, e de 6 entre a grade e 
   | Musette | 8' + 8' + 8' (M− M M+) |
   | Piccolo | 4' (H) |
 
-  O motor de palhetas do eTuttino tem hoje 4 palhetas (16' cassotto, 8' M1, 8' M2, 4'). O Musette precisa de uma 3ª palheta de 8'. A programação verifica vozes e CPU.
-- **Parâmetros editáveis na página**, por preset: combinação de palhetas, desafinação (cents), ataque, decay, sustain, release, filtro de tom, reverb, nível. Pode incluir outros parâmetros usuais de sintetizador que caibam no motor, desde que não afetem as notas.
-- **Memória**: cada preset ocupa poucos bytes. A programação mede quantos cabem na EEPROM emulada do Teensy 4.0 (e na flash, se precisar) sem comprometer o resto, e informa se dá para passar de 8. O seletor continua percorrendo no máximo 8. Presets extras ficariam só na página, para carregar nos 8 lugares.
-- Os presets e as configurações vão por SysEx; volume e preset continuam também por CC, como no eTuttino.
-- **Só acordeom**: os presets usam só o motor de palhetas (com envelope, filtro e reverb). As amostras de piano e violão do eTuttino não entram no Pocket. Um preset de piano poderá ser adicionado depois, fora do núcleo do Pocket.
+  O motor de palhetas tem hoje 4 palhetas (16' cassotto, 8' M1, 8' M2, 4'). O Musette precisa de uma 3ª palheta de 8'.
+- **Parâmetros editáveis na página**, por preset: combinação de palhetas, desafinação (cents), ataque, decay, sustain, release, filtro de tom, reverb, nível, e outros usuais de sintetizador que caibam no motor.
+- **Memória**: medir quantos presets cabem na EEPROM emulada do Teensy 4.0 (e na flash, se precisar) e informar se dá para passar de 8. O seletor percorre no máximo 8; presets extras ficariam só na página, para carregar nos 8 lugares.
+- Presets e configurações por SysEx; volume e preset também por CC, como no eTuttino.
+- **Só acordeom**: sem as amostras de piano e violão. Um preset de piano pode vir depois, fora do núcleo do Pocket.
 
 ## 9. Programado pelo beatconfused.com
 
 - Oitava (−2 … +2) e transposição (±12).
 - Presets (§8), incluindo voltar aos 6 originais.
-- Conversão C-griff ↔ B-griff (já existe, CC 24).
-- Calibração das teclas: considerar uma página de calibração guiada (apertar cada tecla até o fundo). Hoje a calibração é automática ao ligar (repouso) mais a aprendida (fundo). A programação propõe; a gestão decide.
-- Desligamento automático: silencia e baixa o consumo depois de N minutos sem tocar (padrão 15). N é configurável.
+- Conversão C-griff ↔ B-griff (CC 24).
+- Calibração das teclas: propor uma calibração guiada (apertar cada tecla até o fundo), além da automática de repouso ao ligar. A gestão decide.
+- **Desligamento automático em dois estágios**: espera leve depois de N minutos sem tocar (padrão 15; Teensy em clock baixo, codec e amplificador desligados, sensores lidos devagar, acorda numa tecla), e desliga de verdade (KEEP baixo) depois de mais M minutos (padrão 30). N e M configuráveis.
 - Bateria: nível e "carregando" na página.
 
 ## 10. Línguas e publicação
 
-- Até a versão final, as páginas do Pocket e a página inicial da família são publicadas **só em português**.
-- As outras línguas (en/es), os manuais e os textos para o usuário final só vêm na versão final.
+- Até a versão final, as páginas do Pocket e a página inicial da família são publicadas **só em português**. As outras línguas, os manuais e os textos para o usuário final vêm na versão final.
 - As páginas pausadas (`/etutti/etuttino/`, `manuais/`, `models/`) ficam como estão.
-- Publicar só o necessário para acompanhar o design e o protótipo.
 
-## Tarefas para o Code (v2)
+## Tarefas para o Code (v3)
 
-O trabalho vai em **dois passos**. Cada passo tem o seu prompt, o seu PR e o seu merge.
+Dois passos, cada um com o seu prompt, o seu PR e o seu merge.
 
-- **Passo 1, design e eletrônica:** D1 primeiro (forma e contratos). E1 pode começar em paralelo e usa o espaço de D1 quando sair.
-- **Passo 2, programação e som:** P1 e P2, só depois do merge do passo 1. Lê o `PINOS.md` provisório e o `POWER.md` de E1.
-- **Depois da escolha do J entre as variantes de D1:** D2 (modelo do Seixo) e, em seguida, a placa.
+- **Passo 1, design e eletrônica:** D2 e E2 juntos (os dois conflitos da §3 se resolvem entre eles), depois a placa (E2b).
+- **Passo 2, programação e som:** P1 e P2, depois do merge do passo 1.
+
+**A sessão de integração confere as reservas de cada contrato antes do PR**: cada peça escolhida pela eletrônica (medidas do datasheet) contra o espaço reservado pelo design, e cada pino do `PINOS.md` contra o sketch. Divergências vão no PR, como lista.
 
 ### Passo 1 · Design
 
-- **D1. Lado esquerdo e interface.**
-  - Partir de `rascunhos/layout_v2.py` e propor 2–3 variantes do lado esquerdo (§3) com a interface da §4; recomendar uma.
-  - Para cada variante: planta em escala com o eTuttino atrás, comprimento total, maior alto-falante que cabe sob a grade (com volume traseiro), e onde ficam a bateria de 1000 mAh, a pilha Teensy + Audio Board e o potenciômetro com chave.
-  - Preferir a bateria fora de baixo da placa, para o teclado manter a altura do eTuttino. Se não der, dizer quanto o teclado sobe.
-  - Publicar as plantas numa página de revisão em português (`/etutti/pocket/revisao/`, noindex) para o J escolher.
-  - Atualizar `pocket.json` com a variante recomendada (marcada como provisória) e o `FIT_CHECK.md`.
+- **D2. Modelo do Seixo, variante B.**
+  - `case.py` do Pocket (CadQuery, só Seixo), a partir de `shape.py`, com fit check, renders e o `pcb_envelope.json` do Pocket.
+  - Resolver com a eletrônica o berço da bateria e o potenciômetro com chave (§3), o ressalto do USB-C e do fone, e a caixa do alto-falante para o CLS0361-L152.
+  - Detalhamento de fabricação da §3, peso estimado e rigidez da placa sobre os pilares.
+  - Atualizar `pocket.json` (sem `provisional`), a página de revisão com a versão final da B, e o `FIT_CHECK.md`.
 
 ### Passo 1 · Eletrônica
 
-- **E1. Energia e som.**
-  - Escolher bateria de 1000 mAh, carregador, buck-boost, amplificador classe D, alto-falante, detecção do fone e potenciômetro de volume com chave, com códigos LCSC.
-  - Estudar e, se possível, medir as reduções de consumo da §6, e dizer quantas horas o Pocket faz com fone e com alto-falante.
-  - Mover o orçamento de energia para um script seu e atualizar o `POWER.md`.
-  - Rascunho do `pcb/PINOS.md` (2 multiplexadores, bateria, amplificador, detecção do fone, knobs, LED) e `ELETRONICA.md`.
-  - Placa e Gerbers só depois de D2.
+- **E2. Fechar as peças.**
+  - USB-C (§6) e a ligação ao Teensy.
+  - Bateria com NTC (modelo e fornecedor).
+  - Potenciômetro com chave que caiba (com o design).
+  - Luz de carga pelo STAT.
+  - Avaliar a pilha mais baixa (não crítico).
+  - Atualizar `PINOS.md` (deixa de ser provisório), `POWER.md` e `ELETRONICA.md`.
+- **E2b. Placa principal** (depois do `pcb_envelope.json` do D2).
+  - Placa do Pocket com 2 multiplexadores, 28 TMAG5253BA3 no verso, portas do EN por grupo, carregador, conversor, amplificador, JSTs da bateria e do alto-falante, fios do jack e do USB.
+  - Plaquinha dos knobs.
+  - DRC 0/0/0, conferência placa × firmware (`KEY_INPUT`), rigidez (`mechanics.py`), Gerbers e BOM/CPL da JLCPCB com o TMAG5253 marcado como peça consignada ou de "global sourcing".
 
 ### Passo 2 · Programação e som (depois do merge do passo 1)
 
-- **P1. Presets e registros de acordeom.**
-  - No sketch (`ETUTTI_MODEL_POCKET`) e no `websynth.js`: os 6 registros de fábrica da §8, incluindo a 3ª palheta de 8' do Musette, e a estrutura de preset com os parâmetros editáveis.
-  - Só acordeom: o modelo Pocket compila sem as amostras de piano e violão; o eTuttino continua compilando como está.
-  - Seguir o `PINOS.md` provisório de E1 (bateria, detecção do fone, amplificador, chave).
-  - Medir CPU e vozes no Teensy do J, e medir a memória: quantos presets cabem.
+- **P1. Firmware e som do Pocket.**
+  - Sketch com `ETUTTI_MODEL_POCKET` seguindo o `PINOS.md` final (2 multiplexadores, leitura por grupos com 45 µs, `SENSOR_ZERO`/`PRESENT_MIN` do TMAG5253BA3, VBAT, HP_DET, AMP_SD, KEEP em `startup_early_hook`, LED vermelho no 13).
+  - Os 6 registros de fábrica da §8 com a 3ª palheta de 8' do Musette, a estrutura de preset e os parâmetros editáveis, também no `websynth.js`.
+  - Só acordeom: o Pocket compila sem as amostras de piano e violão; o eTuttino continua compilando igual.
+  - Equalização do alto-falante, desligamento em dois estágios, bateria e "carregando" na página.
+  - **Medir no Teensy do J, a 396 e a 600 MHz**: CPU no pior caso, tempo de leitura por grupos, memória e quantos presets cabem. Ouvir e comparar os dois clocks. Decidir o clock pelas condições da §6.
   - Propor o formato SysEx e a calibração guiada.
   - Relatório no `FIRMWARE_SOM.md`.
-- **P2. Só português.**
-  - A página inicial `/etutti/` e a `/etutti/pocket/` (incluindo a de revisão de D1) passam a sair só em português (sem seletor de língua nessas páginas), conforme a §10.
-  - Acrescentar a regra ao agente `programacao-som` e ao `CLAUDE.md`.
+- **P2. Páginas.**
+  - `/etutti/` e `/etutti/pocket/` (com a revisão) só em português, sem seletor de língua.
+  - A página inicial desenha a grade de verdade (`controls.grille_outline`).
+  - Regra "só português" no agente `programacao-som` e no `CLAUDE.md`.
 
 ## 11. Perguntas para o J
 
-Nenhuma em aberto: as quatro perguntas da v2 foram respondidas (Mudanças 3, 6 e 8). As próximas virão dos relatórios do passo 1, sobretudo a escolha da variante do lado esquerdo.
+Nenhuma em aberto. As próximas virão dos relatórios do passo 1 (sobretudo a solução do potenciômetro com chave e o USB-C).
