@@ -18,7 +18,7 @@ Decisões do J sobre o PR #108:
    - o carregador recebe o 5 V por um **fio do pad VUSB** do Teensy, com a ponte VUSB–VIN cortada;
    - o fone vira um **jack de painel ligado por fios**, como no eTuttino, com o contato de comutação da ponta para a detecção.
 4. **Segurança da bateria igual à da v4**: as proteções estão na placa principal e na bateria, não no conector (§6, "Segurança da carga").
-5. **Porca do potenciômetro escondida** (§4): acabamento a definir pelo J (§11).
+5. **Porca do potenciômetro escondida com um rebaixo na tampa** (solução A do J): a porca M7 assenta rente, coberta pelo knob, e o knob da direita ganha o mesmo rebaixo, para os dois ficarem iguais (§4).
 6. **Botão de gravação do Teensy**: o design confere se dá para alcançá-lo com o case fechado (§3).
 
 ## 1. Resumo
@@ -58,7 +58,7 @@ Igual à v1 §2: 28 botões, regra C-griff, fileira 1 mais perto de quem toca, D
 | Zona | O que tem |
 |---|---|
 | Trás | **logo gravado** (eTuttino Pocket), baixo-relevo de ~0,4, **reto (horizontal)** e centrado na zona |
-| Knobs | a **porca M7 do potenciômetro não fica à mostra**; os dois knobs têm o mesmo acabamento (solução na §11) |
+| Knobs | **rebaixo redondo na tampa** sob os dois knobs: a porca M7 do potenciômetro assenta rente e fica coberta pelo knob; o do seletor tem o mesmo rebaixo, sem porca, para os dois parecerem iguais |
 | Meio | **knob esquerdo = volume com chave**, **knob direito = seletor** (encoder com clique), **LED** à direita; linha em y = 49 |
 | Frente | **grade do alto-falante**, no plano a 13° voltado para quem toca, só sobre o cone |
 
@@ -153,7 +153,7 @@ Um passo só, um PR, um merge. F3 e F4 juntos (design e eletrônica fecham os co
 - **F3. Case para o micro-USB, knobs e botão do Teensy.**
   - Tirar o ressalto da plaquinha do painel; janelas e fixação para o micro-USB de painel e o jack de fone de painel escolhidos pela eletrônica.
   - Passagem do cabo de extensão até o micro-B do Teensy (raio de curvatura, sem forçar o plugue de 90°).
-  - Acabamento dos knobs conforme a decisão do J (§11, pergunta 1), igual nos dois.
+  - Rebaixo redondo na tampa sob os dois knobs (porca M7 rente, coberta pelo knob; mesmo rebaixo no seletor). Conferir a folga entre a saia do knob e a porca, e a rosca útil do potenciômetro depois do rebaixo.
   - Acesso ao botão de gravação do Teensy com o case fechado, se possível.
   - Fit check sem divergências, renders, `pocket.json`, `pcb_envelope.json` e página de revisão atualizados.
 
@@ -173,7 +173,4 @@ Um passo só, um PR, um merge. F3 e F4 juntos (design e eletrônica fecham os co
 
 ## 11. Perguntas para o J
 
-1. **Porca do potenciômetro (knob da esquerda):** como esconder?
-   - (a) **rebaixo na tampa** onde a porca assenta rente, coberto pelo knob, com o mesmo rebaixo no knob da direita (recomendado);
-   - (b) knobs com saia que desce e cobre a porca;
-   - (c) encoder também com rosca e porca (os dois fixos do mesmo jeito), com o rebaixo de (a).
+Nenhuma em aberto. A pergunta da porca do potenciômetro foi respondida (solução A, Mudança 5).
