@@ -20,7 +20,14 @@ BATT_MAH = 1000
 V_BATT = 3.7            # average over the discharge
 DERATE = 0.85           # usable fraction: cut-off at ~3.3 V, ageing, cold
 V_RAIL = 3.3
-EFF_CONV = {"typ": 0.92, "max": 0.88}   # TPS63802 at 3.0-4.2 V in, 3.3 V / 0.1-0.4 A out (datasheet curve, conferir)
+BATT_OPTIONS = (1000, 1200)   # mAh: 603450 3-wire packs come as 1000 or 1200 (conferir)
+I_IN_MAX = 500          # mA, BQ24074 USB500 mode
+I_CHG = 500             # mA, fast-charge current
+K_ISET = 890            # A*ohm (datasheet)
+V_OUT_USB = 4.4         # V, BQ24074 OUT with USB present
+CV_TAPER_H = 0.5        # h, constant-voltage tail (estimate)
+R_CHG_LED = 1000        # ohm, charge light from VBUS 5 V
+EFF_CONV = {"typ": 0.90, "max": 0.86}   # TPS63001 at 3.0-4.2 V in, 3.3 V / 0.1-0.3 A out (datasheet curve, conferir)
 
 # ---- MEASURED on the Teensy (scratchpad pwrtest, 2.5 s per point) ----
 # clock MHz: (audio CPU % with 8 voices x 4 reeds + reverb, 28-key/2-mux scan us avg)
@@ -135,11 +142,14 @@ def main():
     w = L.append
     w("# eTuttino Pocket · orçamento de energia")
     w("")
-    w("Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v2, tarefa E1.")
+    w("Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v3, tarefa E2 "
+      "e E2b (sensor TMAG5253BA3 por grupo e 396 MHz decididos na v3; o clock final sai da medição da P1). "
+      "A placa usa o TPS63001 (3,3 V fixo, LCSC C28060) no lugar do TPS63802: o encapsulamento VSON-HR "
+      "do TPS63802 não tem desenho conferido na biblioteca do KiCad.")
     w("")
     w(f"Bateria LiPo 1S de **{BATT_MAH} mAh** (3,7 V médios), capacidade útil {int(DERATE * 100)} % "
       f"(corte em ~3,3 V, envelhecimento, frio) = {f(BATT_MAH / 1000 * V_BATT * DERATE, 2)} Wh.")
-    w(f"Trilho único de 3,3 V pelo buck-boost TPS63802 (eficiência {int(EFF_CONV['typ'] * 100)} % típica, "
+    w(f"Trilho único de 3,3 V pelo buck-boost TPS63001 (3,3 V fixo; eficiência {int(EFF_CONV['typ'] * 100)} % típica, "
       f"{int(EFF_CONV['max'] * 100)} % no pior caso, conferir). O amplificador do alto-falante (PAM8302A) vai "
       "direto na bateria (saída do carregador), fora do trilho de 3,3 V.")
     w("")
@@ -256,8 +266,47 @@ def main():
       "~10 µA (carregador + divisor) | anos (fica a autodescarga da bateria) |")
     w("| Chave do volume desligada | ~10 µA | anos |")
     w("")
-    w("O \"leve\" não é desligado: um Pocket esquecido ligado gasta a bateria em pouco mais de um dia. "
-      "Daí a proposta do KEEP (ver `ELETRONICA.md`).")
+    w("O \"leve\" não é desligado: sozinho, um Pocket esquecido ligado gastaria a bateria em pouco mais de um dia. "
+      "Por isso a SPEC v3 usa os dois estágios: leve depois de 15 min, KEEP baixo (desligado de verdade) depois de mais 30.")
+    w("")
+
+    w("## Carga pela USB-C")
+    w("")
+    i_play_rail = sum(r[1] for r in rail_rows("TMAG5253BA3", True, 396, "fone"))
+    i_play_out = i_play_rail * V_RAIL / EFF_CONV["typ"] / V_OUT_USB
+    w(f"BQ24074 em modo USB500 (EN1 = 1, EN2 = 0): no máximo {I_IN_MAX} mA da USB-C; corrente de carga "
+      f"programada {I_CHG} mA (R_ISET = {f(K_ISET / I_CHG, 2)} kΩ, K_ISET = {K_ISET} AΩ; datasheet). Os 5,1 kΩ "
+      "nos CC da USB-C pedem a corrente padrão da porta (500 mA em USB 2.0, até 1,5–3 A em carregadores "
+      "USB-C), então qualquer cabo C-C ou A-C carrega.")
+    w("")
+    w("| Situação | corrente na bateria | carga completa (estimativa, conferir) |")
+    w("|---|---:|---:|")
+    for mah in BATT_OPTIONS:
+        t_off = mah / I_CHG + CV_TAPER_H
+        i_left = max(0.0, I_IN_MAX - i_play_out)
+        i_bat = min(I_CHG, i_left)
+        t_on = mah / i_bat + CV_TAPER_H
+        w(f"| {mah} mAh, desligado | {I_CHG} mA | ~{f(t_off)} h |")
+        w(f"| {mah} mAh, tocando com fone (o aparelho tira ~{f(i_play_out, 0)} mA da OUT a 4,4 V) | ~{f(i_bat, 0)} mA | ~{f(t_on)} h |")
+    w("")
+    w(f"Fase de tensão constante no fim da carga: +{f(CV_TAPER_H)} h (estimativa). A carga para fora de 0–50 °C "
+      "(NTC de 10 kΩ, B 3435, no TS: corrente de 75 µA, desliga a 2,1 V = 28 kΩ ≈ 0 °C e a 0,3 V = 4 kΩ ≈ 50 °C; datasheet).")
+    w("")
+    w(f"**Luz de carga** (CHG do BQ24074 → P-MOSFET → {R_CHG_LED} Ω → diodo → vermelho do LED): "
+      f"~{f((5.0 - 0.35 - 1.9) / R_CHG_LED * 1000, 1)} mA, tirados da USB, não da bateria. Acende também desligado.")
+    w("")
+    w("## Autonomia com outra capacidade")
+    w("")
+    w("A bateria de 3 fios que se acha em 603450 às vezes é de 1200 mAh (mesmo tamanho). Cenário recomendado, típico:")
+    w("")
+    w("| Bateria | com fone | com alto-falante |")
+    w("|---|---:|---:|")
+    for mah in BATT_OPTIONS:
+        cells = []
+        for out in ("fone", "alto-falante"):
+            _, p = battery_w(rail_rows("TMAG5253BA3", True, 396, out), out, "typ")
+            cells.append(f"{f(hours(p) * mah / BATT_MAH)} h")
+        w(f"| {mah} mAh | " + " | ".join(cells) + " |")
     w("")
 
     w("## Para conferir no protótipo")
@@ -265,7 +314,8 @@ def main():
     w("1. Corrente real do trilho de 3,3 V com o Teensy a 600, 396 e 240 MHz (multímetro em série com a bateria).")
     w("2. Corrente dos 28 sensores e o campo do ímã do Gateron no fundo do curso (escolhe TMAG5253UA5 ou BA3).")
     w("3. Volume confortável no alto-falante: potência média real (tensão RMS na bobina).")
-    w("4. Eficiência do TPS63802 com a carga real.")
+    w("4. Eficiência do TPS63001 com a carga real.")
+    w("5. Tempo de carga real e a temperatura da bateria tocando enquanto carrega.")
     w("")
     with open(POWER_MD, "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(L))

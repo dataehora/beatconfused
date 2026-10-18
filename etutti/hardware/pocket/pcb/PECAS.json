@@ -1,0 +1,338 @@
+{
+  "version": 2,
+  "spec": "v3",
+  "task": "E2 + E2b",
+  "owner": "eletronica",
+  "date": "2026-10-18",
+  "note": "Mechanical contract: every part the case must house, with its body from the datasheet. Units mm. Frame for suggested positions = pocket.json (x right from the case's leftmost point, y from the back (0) to the player (100), z up from the table). status: final = datasheet drawing read; conferir = distributor figure, estimate, or the exact order code is still open. needs_from_design = what the case must provide. The design owns the positions; the numbers under 'suggested' are only where the electronics would put the part given pocket.json v2.",
+  "parts": {
+    "volume_pot": {
+      "name": "Potenciometro de volume com chave (liga/desliga no inicio do curso)",
+      "part_number": "Alps RK097 single, horizontal type, with SPST switch (KiCad Potentiometer_Alps_RK097_Single_Horizontal_Switch), 10 k log (A); LCSC option ALPSALPINE RK0971221Z05",
+      "lcsc": "C336003 (Alps RK0971221Z05, 60 in stock 17 Oct 2026; taper and shaft to conferir)",
+      "datasheet": "https://kyohritsu.com/eclib/OTHER/DATASHEET/rk0972s.pdf",
+      "status": "conferir",
+      "solution": "SPEC 3 option 1: 9 mm switched pot, HORIZONTAL type (shaft parallel to its own PCB), soldered on a small VERTICAL board (perpendicular to the lid). The shaft points up through the lid; the threaded bushing is clamped to the lid by its M7 nut. The body (15.8 along the shaft, switch included) hangs from just under the lid down to z ~14.5, i.e. inside the z range the controls board already uses (14.08-30.18), so the lid does NOT rise.",
+      "body": {
+        "along_shaft_incl_switch": 13.3,
+        "width": 9.5,
+        "depth_from_its_pcb": 11.25,
+        "shaft_axis_from_its_pcb": 6.5,
+        "bushing": "M7 x 0.75, 7 long (footprint drawing)",
+        "shaft": "D6, L = 20 from the body face (footprint drawing; L 15 also sold)",
+        "terminals": "pot 1-3 in a row 5 mm below the body face (pitch 2.5), switch 4/5 11.25 below it (pitch 5)"
+      },
+      "mounting": "shaft vertical (z); its PCB vertical in the x-z plane BEHIND the shaft; body towards the player",
+      "suggested": {
+        "shaft_xy": [
+          15.12,
+          49.0
+        ],
+        "body_z": [
+          17.0,
+          30.3
+        ],
+        "pot_board": "x 21.62-23.22, y 43-55, z 13.8-29.8 (design D2)"
+      },
+      "lid": "hole D7.3 for the bushing + M7 thin nut on top (or under a knob skirt); blind hole D1.2 x 1.5 for the anti-rotation pin, or the pin is clipped off",
+      "knob": "D9 knob on a D6 knurled shaft, same as the RK09K: works. Shaft tip at z 45.3 (L 15): 12.3 above the lid surface (z 33); the knob bore must take >= 8 of shaft (conferir with the knob).",
+      "electrical": "5 wires to the controls board: pot CW (VCC), wiper (POT, pin 22), CCW (GND), switch S1/S2 (power on/off, signal-level: a few mA, the switch is NOT in the load path)",
+      "keepouts": "the controls board needs a cutout round the pot body (x 9.4-21, y 40.5-55): its left end becomes the vertical pot board, joined at 90 deg by a tab through a slot with 5 solder pads (or 5 short wires)",
+      "alternatives_rejected": {
+        "16 mm with switch (Alpha RV16 / Vishay P16S style)": "body D16-17 and 13-17 along the shaft with the switch can: not lower than the 9 mm one and wider; with the encoder 16 mm away the two bodies leave ~1 mm",
+        "9 mm VERTICAL type on the existing controls board": "16.6 above the board: needs the board 3.6 lower, onto the Audio Board"
+      },
+      "needs_from_design": "lid boss with the D7.3 hole and the anti-rotation hole at the volume knob; room for the vertical pot board at y 40.9-42.5 from z 13.8 up; confirm nothing at z 14.5-17.2 under the pot (D1 had the controls board there only)",
+      "note_e2b": "E2b uses the Alps RK097 drawing (body 13.3 along the shaft, not the RK0972S's 15.8): the body ends at z 17.0, above the controls board (17.18 top) only by the switch legs, which sit at z 19.05."
+    },
+    "encoder": {
+      "name": "Encoder seletor com clique",
+      "part_number": "Alps EC11E with push switch, 15 pulses / 15 detents, D6 flatted shaft L = 20 (EC11E1520xxx family, exact suffix conferir; EC11E15244G1/B2 are 30 detents = ENC_STEPS_PER_DETENT 2)",
+      "lcsc": "conferir (not found on LCSC; Farnell/Mouser/TME)",
+      "datasheet": "https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/",
+      "status": "conferir",
+      "body": {
+        "plan": [
+          12.4,
+          13.2
+        ],
+        "height_above_pcb": 6.5,
+        "shaft_d": 6.0,
+        "shaft_l": 20.0,
+        "bushing": "M7 x 0.75, 5 long"
+      },
+      "mounting": "vertical on the controls board (top), shaft up through the lid",
+      "suggested": {
+        "shaft_xy": [
+          31.12,
+          49.0
+        ],
+        "pcb_top_z": 17.18
+      },
+      "needs_from_design": "unchanged from pocket.json controls_board.encoder"
+    },
+    "led": {
+      "name": "LED bicolor vermelho/verde, catodo comum, 3 mm",
+      "part_number": "Kingbright WP937EGW (3 mm, red/green, common cathode, 3 leads) or equivalent",
+      "lcsc": "conferir",
+      "datasheet": "https://www.kingbrightusa.com/images/catalog/SPEC/WP937EGW.pdf",
+      "status": "conferir",
+      "body": {
+        "d": 3.0,
+        "flange_d": 3.8,
+        "height": 5.3,
+        "leads": "3 x 0.5 sq, pitch 2.54, cathode in the middle"
+      },
+      "mounting": "on the controls board top, on a ~10 mm spacer so the dome reaches the lid hole (or a light pipe)",
+      "suggested": {
+        "xy": [
+          43.12,
+          49.0
+        ]
+      },
+      "electrical": "red = charge light (BQ24074 CHG) OR Teensy pin 13 through a dual Schottky; green = pin 5",
+      "needs_from_design": "LED hole D3.5 as in pocket.json"
+    },
+    "controls_connector": {
+      "name": "Conector da plaquinha dos knobs (10 vias)",
+      "part_number": "main board: JST SH BM10B-SRSS-TB (top) + 10-way SH cable ~100 mm crimped at that end; far end cut and soldered: wires 1-5 to the pot board (back face, z ~28.6), wires 6-10 to the controls board's right edge (top)",
+      "lcsc": "C160396 (main board only)",
+      "datasheet": "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf",
+      "status": "conferir",
+      "body": {
+        "width": 12.0,
+        "depth": 4.25,
+        "height": 4.25,
+        "plug_extra_height": 2.0
+      },
+      "pins": "1 VCC 2 POT 3 GND 4 PWR_A 5 PWR_B 6 ENC_A 7 ENC_B 8 ENC_SW 9 LED_R 10 LED_G",
+      "mounting": "on the controls board TOP side near its right edge (a downward header like the eTuttino's PH would hit the Audio Board, which runs under the controls board); the cable leaves upwards, bends towards +x under the lid and drops past the board's right edge to the main board",
+      "needs_from_design": "room for 5 wires leaving the pot board's back face at z ~28.6 (above the encoder, under the lid) and 5 leaving the controls board's right edge at y 45-53; both bundles join the SH-10 that drops to J_CTL",
+      "why": "a BM10B with its two lugs needs 12.8 + 1.0 mm along y and the controls board has 13.5; and the LED with the two lid posts beside it walls the encoder off from the board's right edge, so the pot's lines take the pot board"
+    },
+    "panel_board": {
+      "name": "Plaquinha do painel: USB-C + jack de fone na parede de tras-esquerda",
+      "part_number": "own PCB, 1.6 mm, ~30 x 13, lying flat (parallel to the floor) with its front edge on a flat boss inside the curved wall",
+      "status": "conferir",
+      "solution": "USB-C + SJ1-3525N on the panel board, all parts on top. Wires soldered to SMD pads: micro-B cable (VBUS, D+, D-, GND) on the bottom row, the SH-8 from J_PNL (its far end cut): VBUS and GND share those pads, HP_L/HP_R/HP_VGND/HP_TIPSW in a column between the USB-C and the jack. CC1/CC2 5.1 k 0402. No ESD diode (no room; the Teensy's own USB has none either).",
+      "body": {
+        "plan": [
+          30.0,
+          13.0
+        ],
+        "thickness": 1.6,
+        "below_board": 1.5,
+        "above_board_max": 6.2
+      },
+      "mounting": "2 x M2 self-tapping screws (D2.2 holes, 22 apart) into two pillars from the floor or wall, or slid into a printed groove and held by the bottom plate",
+      "suggested": {
+        "board_top_z": 20.0,
+        "connector_centres_z": {
+          "usb_c": 21.63,
+          "jack": 22.6
+        },
+        "spacing_usb_to_jack": 14.0
+      },
+      "cable_exits": "both cables leave from the board's back edge (away from the wall): micro-B cable ~40 mm to the Teensy plug (pocket.json stack.usb_plug), SH-8 cable ~100 mm to the main board",
+      "needs_from_design": "(1) the rear-left shell leg of the USB-C (through-hole) sits over the micro-B plug (0.45 gap): trim flush, or give 0.8 mm; (2) the M2 screw head under hole 1 (u 4.0, v 10.3) is also over the plug: a screw from below cannot go there"
+    },
+    "usb_c": {
+      "name": "Receptaculo USB-C (carga e MIDI)",
+      "part_number": "Korean Hroparts TYPE-C-31-M-12 (16P, SMD + through-hole shell legs, horizontal)",
+      "lcsc": "C165948",
+      "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811131825_Korean-Hroparts-Elec-TYPE-C-31-M-12_C165948.pdf",
+      "status": "conferir",
+      "body": {
+        "width": 8.94,
+        "depth": 7.35,
+        "height": 3.26,
+        "mating_face": "shell 8.94 x 3.26, R 1.63 ends"
+      },
+      "mounting": "on the panel board's front edge, mating face 0.0-0.3 behind the outer wall surface",
+      "panel_hole": "stadium 9.4 x 3.7 (R 1.85) through the wall; the shell's front sits in the hole. Outside, a 13 x 7 flat (R 3) recess 0.5 deep is enough for plug overmolds on the curve",
+      "keepouts": "no rib inside within 1 mm of the shell; plug insertion force ~20 N goes into the boss through the board (screws or groove)",
+      "electrical": "CC1, CC2: 5.1 k to GND; VBUS on the right pair (A9/B4) only: a USB-C plug ties its four VBUS and four GND contacts together, so one pair carries it either way up; VBUS to BQ24074 IN through the SH-8 cable",
+      "needs_from_design": "hole + recess as above"
+    },
+    "micro_b_link": {
+      "name": "Cabo curto USB-C (plaquinha) -> micro-B do Teensy",
+      "part_number": "short 90 deg micro-B male cable (angle towards the Teensy's board, conferir: left/right/up/down), cut and soldered to 4 pads on the panel board",
+      "lcsc": "none (bought cable)",
+      "status": "conferir",
+      "body": {
+        "plug_overmold": [
+          11.0,
+          11.0,
+          7.5
+        ],
+        "cable_d": 3.0,
+        "min_bend_r": 6
+      },
+      "mounting": "plug in the Teensy's micro-B (as pocket.json stack.usb_plug), cable to the panel board",
+      "needs_from_design": "same as D1's 90 deg plug + ~40 mm cable path to the panel board"
+    },
+    "headphone_jack": {
+      "name": "Jack de fone 3,5 estereo com contato de comutacao na ponta",
+      "part_number": "Same Sky (CUI) SJ1-3525N: 3.5 mm stereo, through-hole, horizontal, tip and ring switches (TN = tip normal)",
+      "lcsc": "none (DigiKey CP1-3525N-ND); LCSC alternative PJ-327A has no verified footprint",
+      "datasheet": "https://www.cuidevices.com/product/resource/pdf/sj1-352xn.pdf",
+      "status": "conferir",
+      "body": {
+        "width": 12.0,
+        "length_incl_barrel": 14.0,
+        "barrel_d": 6.0,
+        "barrel_len": 3.0,
+        "height": 5.0
+      },
+      "mounting": "panel board top, barrel 1.35 past the board's front edge (envelope panel.jack)",
+      "panel_hole": "D6.0 through, outer spot-face D10 x 0.5 for fat plugs; wall <= 1.5 at the hole",
+      "electrical": "sleeve -> HP_VGND (Audio Board virtual ground, NEVER GND); tip/ring -> HP_L/HP_R; tip switch -> HP_DET network on the main board (pin 17)",
+      "needs_from_design": "hole + spot-face, 14 mm from the USB-C centre along the wall"
+    },
+    "battery": {
+      "name": "LiPo 1S 1000 mAh tipo 603450 com PCM e NTC (3 fios)",
+      "part_number": "603450 3-wire with 10 k NTC (B 3435): e.g. EEMB LP603450 ordered with the NTC lead, or a 603450 3-wire pack (zengtrader, 1200 mAh, eBay 112702247608); fallback that also fits: Core Electronics CE06795 (1000 mAh, NTC, PCM, 7 x 30 x 50, JST-PH 3)",
+      "lcsc": "none (bought pack)",
+      "datasheet": "https://www.eemb.com/product-252",
+      "status": "conferir",
+      "body": {
+        "cell": [
+          6.3,
+          34.5,
+          52.0
+        ],
+        "with_pcm_and_wire_fold": [
+          7.0,
+          36.0,
+          58.0
+        ],
+        "swelling_allowance_pct": 8,
+        "cradle": [
+          7.6,
+          36.5,
+          58.5
+        ],
+        "wire": "3 x ~60 mm (+, -, NTC) to a JST PH 2.0 3-pin plug",
+        "mass_g": 22
+      },
+      "mounting": "flat on the bottom, PCM end towards the wire exit; held by the bottom plate + a foam pad (no glue on the cell)",
+      "cable_exits": "from the PCM end (one short side): ~60 mm to the main board's JST PH 3 (B3B-PH-K-S, LCSC C131339)",
+      "electrical": "NTC (10 k at 25 C, B 3435) between TS and GND of the BQ24074: charge stops below 0 C and above 45 C. Pinout of the plug varies between sellers: check before connecting.",
+      "needs_from_design": "cradle 7.6 x 36.5 x 58.5 (the SPEC's 7 x 36 x 58 + 8 % swelling in thickness only; cells swell in thickness) off the main board, reached from the bottom; a 6 x 4 channel for the 3 wires to the main board",
+      "needs_from_design_e2b": "the mated pair in the connector pocket: battery PHR-3 housing (7.95 x 4.5 x 6.0) + an in-line male PH 3-way (~6-8 long) = ~8 x 4.5 x 13-14 lying flat: the pocket (12.3 x 6.75 x 7.6) is 1-2 short in length and 1.2 short in width. Asked: pocket >= 14.5 x 9.0 x 6.0 (x, y, z)."
+    },
+    "speaker": {
+      "name": "Alto-falante Same Sky CLS0361-L152",
+      "part_number": "CLS0361-L152",
+      "lcsc": "none (Mouser/DigiKey/TME)",
+      "datasheet": "https://www.sameskydevices.com/product/resource/cls0361-l152.pdf",
+      "status": "final",
+      "body": {
+        "frame_d": 36.0,
+        "frame_d_tol": 0.2,
+        "total_depth": 6.0,
+        "frame_height": 2.7,
+        "magnet_d": 15.9,
+        "terminal_glue_blob": "at the rim, ~6 wide, ~3 out of the frame (conferir)",
+        "mass_g": 8.6
+      },
+      "mounting": "cone (flat side) towards the grille, the rim glued or clamped on a gasket ring; magnet backwards. No screw holes. Back volume 8-12 cm3 CLOSED and SEALED, nothing else inside it.",
+      "cable_exits": "2 x 28 AWG wires, 152 mm, from the rim (red +, black -), sealed where they leave the back box (glue), to the main board's JST PH 2 (B2B-PH-K-S) or soldered pads",
+      "electrical": "8 ohm, 2 W (3 W max), Fo 450 Hz, 88 dB 1 W/0.5 m. Driven by the PAM8302A (0.65 W at 3.6 V).",
+      "needs_from_design": "back box >= 8 cm3 (10 preferred) sealed; the D1 box (9.5 cm3, depth reserved 5.5) must take 6.0 +- 0.3"
+    },
+    "stack": {
+      "name": "Teensy 4.0 + Audio Board Rev D",
+      "status": "conferir",
+      "standard": {
+        "note": "as pocket.json v2 / eTuttino: Audio Board 3 above the main board, Teensy on 2.5 mm male-header spacer",
+        "height_audio_bottom_to_usb_top": 13.0
+      },
+      "low": {
+        "note": "Teensy soldered straight on the Audio Board with extra-long headers (the header plastic is the only spacer), as in the eTuttino manual. Recommended for the Pocket (not critical): saves ~4.3. Cut the Teensy's VUSB-VIN pad BEFORE soldering (it faces the Audio Board afterwards).",
+        "height_audio_bottom_to_usb_top": 8.7
+      },
+      "needs_from_design": "pick standard or low; the electronics prefers low"
+    },
+    "main_board_connectors": {
+      "name": "Conectores na placa principal (para o design reservar a saida dos cabos)",
+      "status": "conferir",
+      "items": [
+        {
+          "ref": "J_BAT",
+          "part": "JST PH B3B-PH-K-S vertical, top",
+          "lcsc": "C131339",
+          "at": [
+            12.6,
+            32.0
+          ],
+          "rot": 270,
+          "plug_height_total": 10.5,
+          "pins": "1 BAT+ 2 NTC 3 GND"
+        },
+        {
+          "ref": "J_SPK",
+          "part": "JST PH B2B-PH-K-S vertical, top",
+          "lcsc": "C131337 (conferir)",
+          "at": [
+            15.6,
+            23.5
+          ],
+          "rot": 0,
+          "plug_height_total": 10.5
+        },
+        {
+          "ref": "J_PNL",
+          "part": "JST SH BM08B-SRSS-TB vertical, top",
+          "lcsc": "C160394",
+          "at": [
+            17.7,
+            33.0
+          ],
+          "rot": 90,
+          "pins": "1-2 VBUS 3-4 GND 5 HP_L 6 HP_R 7 HP_VGND 8 HP_TIPSW"
+        },
+        {
+          "ref": "J_CTL",
+          "part": "JST SH BM10B-SRSS-TB vertical, top",
+          "lcsc": "C160396",
+          "at": [
+            57.0,
+            42.8
+          ],
+          "rot": 180
+        },
+        {
+          "ref": "J_HP",
+          "part": "3 wire pads (2.54) for the Audio Board jack's L, R, virtual ground",
+          "at": [
+            41.5,
+            43.3
+          ]
+        }
+      ],
+      "note": "placed in E2b (pcb/build_pocket_pcb.py); J_BAT/J_SPK/J_PNL in back_left (checked against levels and the micro-B plug), J_CTL in its connector zone"
+    },
+    "charge_light": {
+      "name": "Luz de carga (sem peca nova no case)",
+      "status": "final",
+      "note": "uses the existing LED's red: nothing for the case. Circuit on the main board: BQ24074 CHG -> AO3401A (LCSC C15127) gate, 100 k gate-source; drain -> 1 k -> BAT54C (LCSC C134405) -> LED_R; pin 13 -> 270 R -> the other BAT54C diode -> LED_R."
+    },
+    "controls_board": {
+      "name": "Plaquinha dos knobs (E2b)",
+      "status": "conferir",
+      "outline": "envelope rect x 23.22-50.6, y 42.5-56.0 PLUS two tabs at x 27.0-35.2: y 40.0-42.5 (back, over the Audio Board) and y 56.0-57.5 (front)",
+      "why": "the EC11E's legs span 17 mm along y (A/B/C 7.5 behind the shaft, the switch 7 in front, 2 mm pads); no rotation fits 13.5 mm (rot 0/180 put legs into the pot board)",
+      "led": "3 mm LED legs along x (40.58 / 43.12 / 45.66 at y 49) so the lines pass between the lid posts",
+      "needs_from_design": "confirm the two tabs: the back one sits over the Audio Board (its legs at z >= 14.08, the board at <= 12.3, OK) and clear of the Audio Board's jack (y <= 38.2); the front one (y 56-57.5) must clear the speaker box wall"
+    },
+    "main_board": {
+      "name": "Placa principal (E2b)",
+      "status": "conferir",
+      "layers": 4,
+      "thickness": 1.2,
+      "note": "4 layers (In1 GND plane, In2 3.3 V plane). Back side: all ICs and passives (max 2.0 tall, inductor 2.0); top: switches, the Audio Board legs, J_BAT/J_SPK (PH THT), J_PNL/J_CTL (SH SMD), J_HP wire pads.",
+      "sag_3N_mm": 0.021
+    }
+  }
+}
