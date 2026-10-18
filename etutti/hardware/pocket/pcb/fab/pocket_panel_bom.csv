@@ -1,0 +1,4 @@
+Comment,Designator,Footprint,LCSC Part #
+"TYPE-C-31-M-12 USB-C 16P","J1","USB_C_Receptacle_HRO_TYPE-C-31-M-12","C165948"
+"5.1k 1% 0402","R1,R2","R_0402_1005Metric","C25905"
+"PRTR5V0U2X ESD (D+/D-/VBUS)","U1","SOT-143","C2827688"

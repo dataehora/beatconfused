@@ -4,6 +4,182 @@ Relatório do agente `eletronica`. Cada tarefa tem uma seção; o fim do arquivo
 para a gestão. Medidas em mm. **(conferir)** = número de datasheet de distribuidor, estimativa,
 ou peça ainda sem medida conferida.
 
+## F2 · Fechamento das placas (SPEC v4, 18 out 2026)
+
+**SPEC atendida:** v4, tarefa F2 ("Eletrônica"), sobre o `pcb_envelope.json` do F1 (spec "pocket SPEC v4,
+task F1"). Nada foi encomendado nem montado.
+
+### Resultado
+
+| Placa | Versão | DRC (erros / avisos / não ligados) | Fab |
+|---|---|---|---|
+| Principal, 4 camadas, 1,2 mm | v0.2 | **0 / 0 / 0** | `pcb/fab/pocket_gerbers.zip`, `pocket_bom.csv`, `pocket_cpl_bottom.csv`, `pocket_cpl_top.csv` |
+| Plaquinha dos knobs, 1,6 mm | v0.2 | **0 / 0 / 0** | `pcb/fab/pocket_controls_gerbers.zip` |
+| Plaquinha do volume (em pé), 1,6 mm | v0.1 (sem mudança) | **0 / 0 / 0** | `pcb/fab/pocket_pot_gerbers.zip` |
+| Plaquinha do painel (USB-C + ESD + fone), 1,6 mm | v0.2 | **0 / 0 / 0** | `pcb/fab/pocket_panel_gerbers.zip`, `pocket_panel_bom.csv`, `pocket_panel_cpl_top.csv` (montagem JLCPCB, topo) |
+
+- **Placa × firmware: 28/28**, 0 divergências (`pcb/pocket_keys.h` e o bloco `KEY_INPUT` do `PINOS.md`, agora escrito pelo
+  `build_pocket_pcb.py`; na v3 o bloco do `PINOS.md` tinha ficado vazio). O roteador refeito mudou 3 canais: fileira 1 colunas 3 e 4 (17, 19 → 18, 17) e fileira 3 coluna 1 (18 → 19); a firmware só precisa usar o `pocket_keys.h` novo.
+- **Rigidez** no envelope final (45 apoios + 28 pernas da Audio Board): pior tecla **0,021 mm** a 3 N (D♯5,
+  fileira 1), média 0,008 mm. Meta 0,05.
+- **Kit completo:** `pcb/fab/pocket_kit_bom.csv` (escrito por `pcb/kit_bom.py`), tabela abaixo.
+- **Conteúdo elétrico do manual (M1):** `pcb/MANUAL_ELETRICO.md`, com passos de solda, testes com
+  multímetro, avisos da LiPo e a lista de figuras F-01 a F-16 para o design.
+
+### O que mudou por placa
+
+**Placa principal (v0.2)**
+
+1. **Luz de carga só com o Pocket desligado** (mudança 10): **Q31** (AO3400A, [C20917](https://www.lcsc.com/product-detail/C20917.html))
+   com a porta no trilho de 3,3 V e o dreno no fim do resistor de 1 kΩ da luz (CHGA). Ligado, ele desvia a luz
+   para o GND (~5 mA da USB, nada da bateria); desligado, o trilho está em 0 V (o TPS63001 desconecta a
+   saída, a ponte VUSB–VIN do Teensy está cortada) e o vermelho acende enquanto carrega. Um transistor, como
+   pedido.
+2. **Novo, não pedido, mas necessário: Q22 + R26** (AO3400A e 100 kΩ). Com a USB presente, a chave do volume
+   sozinha segura o 3,3 V (Q22 em paralelo com o transistor do KEEP). Sem isso:
+   - o Teensy **não poderia ser gravado**: durante a gravação o carregador de boot solta o pino 10, o
+     resistor de 100 kΩ baixa o KEEP e o conversor desliga no meio da gravação;
+   - os **testes sem a firmware do Pocket** (passo 9 do M1) veriam o 3,3 V só por ~0,5 s.
+   Efeito na firmware: com USB e a chave ligada, baixar o KEEP não desliga (ver `PINOS.md`). Pergunta 1.
+3. **TPS63001** mantido (aceito na v4). Códigos LCSC preenchidos onde faltavam: 1,8 kΩ C1358, 100 Ω C17408,
+   270 Ω C17590, 68 kΩ C17801, indutor 2,2 µH FNR4020S2R2MT [C167825](https://jlcpcb.com/partdetail/179208-FNR4020S2R2MT/C167825),
+   74LVC1G04 [C7827](https://www.lcsc.com/product-detail/C7827.html). Falta só o 33 kΩ 0805 (a JLCPCB
+   acha pelo valor; **conferir**).
+4. **Contorno do F1**: recorte da bateria em x < 70,95, y > 48,35 e do bolso do conector em x < 27,7,
+   y > 39,1 (lidos do envelope; nenhuma peça nem cobre ali). Planos refeitos.
+5. Nada mudou em cima da placa (conectores, alturas, posições).
+
+**Plaquinha do painel (v0.2)**
+
+1. **ESD no USB-C**: **PRTR5V0U2X** (SOT-143, 2,9 × 1,3 × 1,1; D+ e D− com ~1 pF e o grampo do VBUS no mesmo
+   componente), TECH PUBLIC [C2827688](https://www.lcsc.com/product-detail/C2827688.html) (77 500 em estoque),
+   [datasheet Nexperia](https://assets.nexperia.com/documents/data-sheet/PRTR5V0U2X.pdf). Fica entre o USB-C e o
+   jack, a 0,37 dos dois corpos, fora da faixa da nervura do design.
+2. **Furos (divergência 4 do PR #106):** H1 vira **furo de pino** (o pino do poste da tampa entra por cima e
+   para 0,2 antes da face de baixo: nada embaixo da placa sobre o plugue micro-B); **H2 mudou** para
+   u 14,24, v 3,8 = (15,38; 23,92), **M2 × 6 de baixo** numa nervura de 3,0 da tampa: a cabeça fica a 4,9 do
+   plugue micro-B e a 2,4 das pernas do USB-C. O design já aplicou (envelope `panel.holes`).
+3. **Perna de trás-esquerda da carcaça do USB-C** sobre o plugue: cortada rente no verso depois de soldar
+   (passo 6.2 do `MANUAL_ELETRICO.md`). As outras ficam.
+4. **Pads do fone** (HP_L, HP_R, HP_VGND, HP_TIPSW) mudaram para a ponta direita, depois do jack (o lugar
+   antigo é o do furo H2).
+5. **Montagem pela JLCPCB** do topo (USB-C de 0,5 mm de passo, 0402, ESD): BOM e CPL próprios. O jack é
+   soldado em casa.
+6. **Jack SJ1-3525N** (divergência 3), medidas do [datasheet](https://www.sameskydevices.com/product/resource/pdf/sj1-352xn.pdf)
+   no `PECAS.json`: corpo 12,0 × 11,0 × 5,0, nariz Ø6,0 × 3,3 à frente do corpo, eixo 2,5 acima da placa,
+   terminais 3,0 abaixo do topo da placa. **Pergunta 2 do design (nariz × borda):** no desenho do datasheet a
+   face da frente do corpo é a "borda do conector"; na nossa placa ela fica 1,45 para dentro da borda, então
+   o nariz passa **1,85 ± 0,3** da borda (não 1,35; o desenho do KiCad mostra 1,4). Com a parede de 1,5 no
+   furo, a ponta do nariz entra 0,35 no rebaixo externo (2,22 de fundo): **nada a mudar** no case. Furo Ø6,3
+   (o design já pôs).
+
+**Plaquinha dos knobs (v0.2)**: abas mantidas (divergência 2): x 27,0–35,2, y 40,0–42,5 e 56,0–57,5. O
+design fez um rebaixo na parede de trás da caixa do alto-falante (y ≤ 58,0, z ≤ 18,5): 0,5 de folga. Só a
+serigrafia mudou de versão.
+
+**Plaquinha do volume**: sem mudança.
+
+**Bolso do conector da bateria (divergência 1)**: medidas no `PECAS.json` (`battery.connector_pocket_v4`):
+PHR-3 da bateria 7,9 × 4,5 × 6,0 (JST, [ePH](https://www.jst-mfg.com/product/pdf/eng/ePH.pdf)), macho em
+linha do rabicho ~8,0 × 4,8 × 8,5 **(conferir: peça genérica)**, par encaixado ~8,0 × 4,8 × 12,5. Pedido
+≥ 14,5 × 9,0 × 6,0; o design fez x 10–26 × y 40,8–50,06 (16 × 9,3) com 7,6 de altura. Rabicho: extensão JST
+PH 3 vias macho-fêmea, ~70 mm, do J_BAT ao bolso.
+
+### Divergências do PR #106: situação
+
+| # | Divergência | Situação |
+|---|---|---|
+| 1 | Bolso do conector da bateria | **fechada**: 16 × 9,3 × 7,6 ≥ 14,5 × 9,0 × 6,0 |
+| 2 | Abas da plaquinha dos knobs | **fechada**: abas mantidas, rebaixo na caixa do alto-falante (y ≤ 58,0) |
+| 3 | Jack SJ1-3525N | **fechada**: furo Ø6,3, eixo z 26,4, nariz 1,85 além da borda (cabe no rebaixo) |
+| 4 | Painel sobre o plugue micro-B | **fechada**: H1 = pino, H2 movido (parafuso de baixo, nervura de 3,0), perna do USB-C cortada rente |
+| 5 | TPS63001 / ESD | TPS63001 aceito; **ESD posto** (PRTR5V0U2X) |
+| 6 | 4 camadas | aceito na v4 |
+
+### Peças novas ou fechadas na v4
+
+| Função | Peça | LCSC | Medidas | Datasheet | Status |
+|---|---|---|---|---|---|
+| ESD da USB-C (D+, D−, VBUS) | PRTR5V0U2X (TECH PUBLIC) | [C2827688](https://www.lcsc.com/product-detail/C2827688.html) | SOT-143, 2,9 × 1,3 × 1,1 | [Nexperia](https://assets.nexperia.com/documents/data-sheet/PRTR5V0U2X.pdf) | final |
+| Luz de carga só desligado | AO3400A (Q31) | [C20917](https://www.lcsc.com/product-detail/C20917.html) | SOT-23 | [AO3400A](https://www.aosmd.com/res/datasheets/AO3400A.pdf) | final |
+| Liga com USB sem KEEP | AO3400A (Q22) + 100 kΩ (R26) | C20917, C17407 | SOT-23, 0805 | idem | final |
+| Jack de fone | Same Sky SJ1-3525N | — (DigiKey CP1-3525N-ND) | 12,0 × 14,3 × 5,0 | [SJ1-352XN](https://www.sameskydevices.com/product/resource/pdf/sj1-352xn.pdf) | final |
+| Rabicho da bateria | extensão JST PH 3 vias macho-fêmea, 100 mm | — | par encaixado ~8 × 4,8 × 12,5 | [JST PH](https://www.jst-mfg.com/product/pdf/eng/ePH.pdf) | conferir |
+
+As outras peças seguem as tabelas do E2 e do E2b abaixo.
+
+### Consumo e autonomia (`POWER.md`, regenerado por `pcb/power_budget.py`)
+
+| Cenário recomendado (TMAG5253BA3 por grupo, 396 MHz), 1000 mAh | fone | alto-falante |
+|---|---:|---:|
+| típico | **6,7 h** | **4,5 h** |
+| pior caso | 4,1 h | 2,4 h |
+
+- Q31, Q22, R26 e o ESD não mudam a autonomia: a luz desviada (~5 mA) e o R26 (50 µA) saem da USB, não
+  da bateria; a fuga do ESD é < 0,1 µA.
+- Desligado: ~10 µA. Carga: ~2,5 h desligado. Tudo de datasheet e modelo: medir no protótipo.
+
+### Kit completo (`pcb/fab/pocket_kit_bom.csv`)
+
+"Comprar" já inclui a sobra das peças pequenas ou frágeis. As peças montadas pela JLCPCB estão nos BOMs de
+cada placa e contam aqui como uma linha por placa.
+
+| Grupo | Item | Peça | Por Pocket | Comprar | Fornecedor / código | Status |
+|---|---|---|---:|---:|---|---|
+| Placas | Placa principal montada (verso: CIs, passivos, 28 TMAG5253; topo: J_PNL, J_CTL) | 4 camadas, 1,2 mm, Gerbers fab/pocket_gerbers.zip + BOM fab/pocket_bom.csv + CPL fab/pocket_cpl_bottom.csv / _top.csv | 1 | 5 placas / 2 montadas | JLCPCB (PCBA) · [link](https://jlcpcb.com/) | final |
+| Placas | Sensor Hall para a placa principal (consignado na JLCPCB) | TI TMAG5253BA3IQDMRR, X2SON-4 | 28 | 40 | TI store / DigiKey / Mouser · [296-TMAG5253BA3IQDMRRCT-ND (DigiKey, conferir)](https://www.ti.com/product/TMAG5253) | conferir |
+| Placas | Plaquinha do painel montada (topo: USB-C, 2 x 5,1 k, ESD) | 2 camadas, 1,6 mm, fab/pocket_panel_gerbers.zip + fab/pocket_panel_bom.csv + fab/pocket_panel_cpl_top.csv | 1 | 5 placas / 2 montadas | JLCPCB (PCBA) · [C165948, C25905, C2827688](https://jlcpcb.com/) | final |
+| Placas | Plaquinha dos knobs (sem montagem) | 2 camadas, 1,6 mm, fab/pocket_controls_gerbers.zip | 1 | 5 | JLCPCB · [link](https://jlcpcb.com/) | final |
+| Placas | Plaquinha do volume, em pé (sem montagem) | 2 camadas, 1,6 mm, fab/pocket_pot_gerbers.zip | 1 | 5 | JLCPCB · [link](https://jlcpcb.com/) | final |
+| Placas | Plate dos switches | FR-4 1,6 mm, desenho do design (case/out/plate.dxf) | 1 | 5 | JLCPCB (como placa sem cobre) · [link](https://jlcpcb.com/) | conferir |
+| Teensy | Teensy 4.0 | PJRC TEENSY40 (sem pinos) | 1 | 1 | PJRC / distribuidor · [TEENSY40](https://www.pjrc.com/store/teensy40.html) | final |
+| Teensy | Audio Board Rev D | PJRC TEENSY4_AUDIO | 1 | 1 | PJRC / distribuidor · [TEENSY4_AUDIO](https://www.pjrc.com/store/teensy3_audio.html) | final |
+| Teensy | Barra de pinos extralonga 1 x 14, passo 2,54 (pilha baixa) | header macho 1x14, pino ~20 mm (plástico ~2,5) | 2 | 4 | PJRC / AliExpress / Mouser · [conferir](https://www.pjrc.com/store/header_14x1_d.html) | conferir |
+| Teclado | Switch magnético Gateron (Hall) KS-20 | Gateron Magnetic Jade (ou equivalente KS-20 com ímã) | 28 | 32 | Gateron / lojas de teclado · [conferir](https://www.gateron.com/) | conferir |
+| Teclado | Capas dos botões | impressas (arquivos do design, case/out) | 28 | 32 | impressão 3D · - | conferir |
+| Controles | Potenciômetro de volume com chave | Alps RK0971221Z05 (RK097, 10 k, chave SPST, horizontal) | 1 | 2 | LCSC · [C336003](https://www.lcsc.com/product-detail/C336003.html) | conferir |
+| Controles | Encoder com clique | Alps EC11E 15 pulsos / 15 detentes, com chave, eixo D 20 mm (família EC11E1520xxx) | 1 | 2 | Mouser / TME / Farnell · [conferir sufixo](https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/) | conferir |
+| Controles | LED 3 mm bicolor vermelho/verde, catodo comum | Kingbright WP937EGW | 1 | 3 | DigiKey / Mouser · [754-1234-ND (conferir)](https://www.kingbrightusa.com/images/catalog/SPEC/WP937EGW.pdf) | conferir |
+| Controles | Espaçador do LED 3 mm, ~10 mm | espaçador de nylon para LED 3 mm | 1 | 3 | AliExpress / Mouser · conferir | conferir |
+| Controles | Knobs para eixo serrilhado D6 | knob ~D10-12, furo D6 serrilhado (18 dentes) | 2 | 3 | AliExpress / Mouser · conferir | conferir |
+| Painel | Jack de fone 3,5 com comutação na ponta | Same Sky SJ1-3525N | 1 | 2 | DigiKey / Mouser · [CP1-3525N-ND](https://www.sameskydevices.com/product/resource/pdf/sj1-352xn.pdf) | final |
+| Painel | Cabo micro-B 90 graus curto | cabo USB micro-B macho 90 graus (para cortar), ~10-20 cm | 1 | 2 | AliExpress / Amazon · conferir | conferir |
+| Cabos | Conector da bateria na placa | JST B3B-PH-K-S | 1 | 2 | LCSC · [C131339](https://www.lcsc.com/product-detail/C131339.html) | final |
+| Cabos | Conector do alto-falante na placa | JST B2B-PH-K-S | 1 | 2 | LCSC · [C131337](https://www.lcsc.com/product-detail/C131337.html) | conferir |
+| Cabos | Rabicho da bateria | cabo de extensão JST PH 2,0 3 vias macho-fêmea, 100 mm (cortar para ~70) | 1 | 2 | AliExpress / Adafruit · conferir | conferir |
+| Cabos | Plugue do alto-falante | cabo JST PH 2,0 2 vias com fios, 100 mm (fêmea PHR-2) | 1 | 2 | AliExpress / LCSC · conferir | conferir |
+| Cabos | Cabo do painel | cabo JST SH 1,0 8 vias, 100 mm, com conector numa ponta (fios soltos na outra) | 1 | 2 | AliExpress / LCSC · [conferir](https://www.jst-mfg.com/product/pdf/eng/eSH.pdf) | conferir |
+| Cabos | Cabo dos knobs | cabo JST SH 1,0 10 vias, 100 mm, com conector numa ponta | 1 | 2 | AliExpress / LCSC · [conferir](https://www.jst-mfg.com/product/pdf/eng/eSH.pdf) | conferir |
+| Cabos | Fio fino de silicone | 28-30 AWG, 2 cores, 1 m | 1 | 1 | qualquer · - | final |
+| Cabos | Termorretrátil fino | D1,5 e D3 | 1 | 1 | qualquer · - | final |
+| Energia e som | Bateria LiPo 1S 1000-1200 mAh, PCM, NTC 10 k (3 fios), JST PH 3 | tipo 603450 (EEMB LP603450 com NTC, ou 603450 3 fios pronta) | 1 | 1 | EEMB / eBay / Core Electronics · [CE06795 (reserva)](https://www.eemb.com/product-252) | conferir |
+| Energia e som | Alto-falante 36 mm 8 ohm 2 W | Same Sky CLS0361-L152 | 1 | 1 | Mouser / DigiKey / TME · [CLS0361-L152](https://www.sameskydevices.com/product/resource/cls0361-l152.pdf) | final |
+| Energia e som | Junta de espuma do alto-falante | espuma adesiva 0,8 mm, anel D36/D30 | 1 | 2 | qualquer · - | conferir |
+| Energia e som | Espuma da bateria | espuma EVA/PU 1-2 mm, 36 x 58 | 1 | 2 | qualquer · - | conferir |
+| Fixação | Parafuso do fundo | M2,5 x 8 autoatarraxante para plástico, cabeça escareada (ou inserto a quente M2,5) | 10 | 12 | qualquer · - | conferir |
+| Fixação | Parafuso + porca da placa principal | M2 x 10 cabeça panela + porca M2 | 2 | 4 | qualquer · - | conferir |
+| Fixação | Parafuso da plaquinha dos knobs | M2 x 5 autoatarraxante para plástico | 2 | 4 | qualquer · - | conferir |
+| Fixação | Parafuso da plaquinha do painel (furo H2) | M2 x 6 autoatarraxante para plástico | 1 | 3 | qualquer · - | conferir |
+| Fixação | Parafuso da tampinha da bateria | M2 x 5 cabeça escareada, autoatarraxante | 2 | 4 | qualquer · - | conferir |
+| Impressos | Casca de cima (tampa) | resina (case/out/seixo_tampa.stl) | 1 | 1 | JLC3DP / PCBWay / Craftcloud · - | conferir |
+| Impressos | Fundo, tampinha da bateria, fundo da caixa do alto-falante | MJF (case/out) | 1 | 1 | JLC3DP / PCBWay / Craftcloud · - | conferir |
+| Consumíveis | Fita Kapton | 10 mm | 1 | 1 | qualquer · - | final |
+| Consumíveis | Cola para vedar a caixa do alto-falante | silicone neutro ou cola E6000 | 1 | 1 | qualquer · - | final |
+
+### O que a programação precisa ajustar (`pcb/PINOS.md`)
+
+Nenhum pino mudou. Para quando a programação começar:
+
+1. Com o Pocket ligado a luz de carga do hardware fica apagada: o vermelho é só da firmware (as
+   confirmações podem voltar a usar os dois LEDs); "carregando" ligado = verde pulsando (SPEC v4, mudança 10).
+2. Com USB e a chave ligada, baixar o KEEP não desliga: o desligamento "de verdade" só acontece sem USB.
+3. A tabela `KEY_INPUT` está no `PINOS.md` e no `pcb/pocket_keys.h` (28/28).
+
+### O que o design ainda precisa
+
+Nada bloqueante. Para o manual (M1): as figuras F-01 a F-16 do `MANUAL_ELETRICO.md`. No kit, o plate em
+FR-4 sai do `case/out/plate.dxf` do design (Gerber a gerar ou o DXF enviado à JLCPCB).
+
 ## E2b · Placas (SPEC v3, 18 out 2026)
 
 **SPEC atendida:** v3, tarefa E2b ("Passo 1 · Eletrônica"), sobre o `pcb_envelope.json` do D2
@@ -524,23 +700,17 @@ Detalhes e todos os cenários no `POWER.md`. Bateria 1000 mAh, 85 % úteis (3,15
 
 ## Perguntas para a gestão
 
-Do E2b (as do E2 continuam abertas, logo abaixo):
+Do F2 (as do E2 e do E2b foram respondidas pela v4):
 
-1. **Placa principal de 4 camadas?** Em 2 camadas o roteamento não fechou na zona do Teensy; com
-   planos de GND e 3,3 V fecha com DRC 0/0/0. A JLCPCB faz 4 camadas em 1,2 mm, mais cara que 2.
-   Aceita, ou prefere que eu tente 2 camadas espalhando mais as peças (mais tempo, sem garantia)?
-2. **TPS63001 no lugar do TPS63802:** mesma função, 3,3 V fixo, com desenho no KiCad e na LCSC
-   (C28060). Custa ~0,2 h de autonomia no modelo (6,7 h com fone). Aceita?
-3. **Cabos soldados nas plaquinhas** (knobs, volume e painel: o SH sai crimpado só do lado da placa
-   principal): aceitável para o protótipo, ou quer conectores (pede ~1 mm a mais na plaquinha dos knobs
-   e outro lugar para o J1 dela)?
-4. **Plaquinha dos knobs com abas** para as pernas do encoder (design confirma o espaço)?
-
-Do E2 (sem resposta ainda):
-
-5. **Potenciômetro com chave:** aprova o 9 mm com chave montado deitado numa plaquinha vertical, preso
-   na tampa pela porca M7?
-6. **USB-C e fone numa plaquinha do painel** com cabo micro-B de 90° cortado e soldado: aceitável?
-7. **Bateria de 3 fios:** aceita 1000 a 1200 mAh (603450)? E o fornecedor?
-8. **LED durante a carga:** vermelho aceso pelo carregador mesmo ligado (laranja tocando), ou só com
-   o Pocket desligado (um transistor a mais)?
+1. **Q22 (liga com USB sem o KEEP):** pus um transistor a mais, não pedido, para que a chave do volume sozinha
+   segure o 3,3 V quando há USB. Sem ele o Teensy não pode ser gravado (o KEEP cai durante a gravação e o
+   Pocket desliga no meio) e os testes sem firmware do manual não funcionam. Efeito: com USB e o volume ligado,
+   o desligamento automático "de verdade" não desliga (fica no leve até tirar a USB). Aceita?
+2. **Plaquinha do painel montada pela JLCPCB** (USB-C de 0,5 mm de passo, resistores 0402 e o ESD): é um
+   segundo pedido de montagem, pequeno. Aceita, ou prefere tentar soldar em casa (difícil no USB-C)?
+3. **Peças "conferir" para o pedido do protótipo:** o sufixo exato do encoder EC11E (15/15), a curva e o eixo
+   do RK0971221Z05, o macho em linha do rabicho da bateria e o cabo micro-B de 90° (sentido do ângulo).
+   Posso fechar comprando um de cada e medindo, ou a gestão prefere que eu escolha fornecedores específicos
+   antes (lista no `pcb/fab/pocket_kit_bom.csv`)?
+4. **TMAG5253BA3 fora do estoque da JLCPCB:** consignar (comprar 40 na TI/DigiKey e mandar à JLCPCB) ou o
+   "global sourcing" da JLCPCB (mais simples, prazo e preço a conferir)?

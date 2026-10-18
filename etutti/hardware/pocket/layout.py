@@ -93,9 +93,9 @@ def contract():
     pk = lambda poly: rnd(poly)
     sp = fc.get("speaker", {})
     return {
-        "version": 3, "spec": "v3", "task": "D2", "variant": C.VARIANT, "variant_name": C.V["name"],
+        "version": 4, "spec": "v4", "task": "F1", "variant": C.VARIANT, "variant_name": C.V["name"],
         "variant_params": {k: C.V[k] for k in ("band", "nose", "corner", "bulge")},
-        "note": "SPEC v3 D2: the Seixo case, variant B, as modelled in case/case.py. "
+        "note": "SPEC v4 F1: the Seixo case, variant B, as modelled in case/case.py. "
                 "Coordinates: x right from the case's leftmost point, y from the back (0) to the player (100), z up from the table, mm.",
         "keys": keys, "rows": grid, "length": round(C.length(), 1), "width": WIDTH,
         "etuttino_length": round(max(x for x, _ in ett) - min(x for x, _ in ett), 1),
@@ -116,10 +116,13 @@ def contract():
             "logo_letters": [{"char": ch, "x": round(x, 2), "y": round(y, 2), "up_deg": round(a, 2),
                               "size": size, "font": os.path.basename(font)} for ch, font, size, x, y, a in letters],
             "logo_depth": C.LOGO_DEPTH,
+            "logo_lines": [{"text": t, "font": os.path.basename(f), "size": sz, "x": round(cx, 2), "baseline_y": round(b, 2),
+                            "width": round(w, 2), "height": round(h, 2)} for t, f, sz, _, cx, b, w, h in C.logo_layout()["lines"]],
+            "logo_kind": "straight (horizontal), centred in the interface's back zone, engraved",
         },
         "controls_board": {
             "rect": _rect(*C.CTRL_BOARD), "z": [round(C.CTRL_TOP - C.CTRL_T, 2), C.CTRL_TOP],
-            "posts": [list(p) for p in C.CTRL_POSTS], "connector": _rect(*C.CTRL_CONN),
+            "posts": [list(p) for p in C.CTRL_POSTS], "tabs": [_rect(*t) for t in C.CTRL_TABS], "connector": _rect(*C.CTRL_CONN),
             "pot": {"rect": _rect(*C.POT_BODY[:4]), "z": list(C.POT_BODY[4:]),
                     "board": _rect(*C.POT_BOARD[:4]), "board_z": list(C.POT_BOARD[4:]),
                     "kind": "9 mm switched pot, horizontal type (PECAS volume_pot), on a vertical board right of its shaft; M7 bushing nutted on the lid"},
@@ -137,6 +140,7 @@ def contract():
             "rect": pk(inside), "outside": pk(outside), "centre": list(C.BATT_C), "angle": C.BATT_ANGLE,
             "cell": [7.0, 36.0, 58.0], "reserved": list(C.BATT_IN), "z": [C.BATT_Z[0], C.BATT_Z[1]],
             "roof_z": [round(v, 2) for v in C.BATT_ROOF_Z], "hatch_screws": [list(p) for p in C.HATCH_SCREWS],
+            "connector_pocket": pk(C.pocket_rects()[0]),
             "kind": "LiPo 1S 1000 mAh 603450 with PCM and NTC (3 wires), PECAS battery",
             "note": "bay on the bottom plate (walls + roof), off the main board; out through a hatch in the bottom, the lid stays shut"},
         "stack": {"audio_board": pk(st["audio_board"][0]), "teensy": pk(st["teensy"][0]), "ab_jack": pk(st["ab_jack"][0]),
@@ -146,11 +150,15 @@ def contract():
                   "note": "LOW stack (Teensy soldered straight on the Audio Board), 3 mm above the main board; u along the 38 mm side from the USB end"},
         "panel": {"board": pk(pg["board"]), "z": [round(C.PANEL_Z_TOP - C.PANEL_T, 2), C.PANEL_Z_TOP],
                   "usb": {"at": rnd([pg["at"](C.PANEL_USB_S, 0)])[0], "normal": [round(-v, 3) for v in pg["n"]], "z": round(C.USB_C_ZC, 2)},
-                  "jack": {"at": rnd([pg["at"](C.PANEL_JACK_S, 0)])[0], "normal": [round(-v, 3) for v in pg["n"]], "z": round(C.JACK_ZC, 2)},
+                  "jack": {"at": rnd([pg["at"](C.PANEL_JACK_S, 0)])[0], "normal": [round(-v, 3) for v in pg["n"]], "z": round(C.JACK_ZC, 2),
+                           "part": "Same Sky SJ1-3525N", "hole_d": C.JACK_HOLE_D},
+                  "holes": [{"kind": k, "at": rnd([pg["at"](s_, d)])[0]} for k, s_, d in C.PANEL_HOLES],
                   "note": "USB-C + 3.5 jack on one board on the back-left curved wall (flat boss inside); see pcb_envelope.json panel"},
         "main_board": {"outline": rnd(C.board_outline(1.0)), "note": "= case/out/pcb_envelope.json outline (the bay's corner left out)"},
-        "case": {"version": "Seixo", "files": "case/out/seixo_tampa, seixo_fundo, seixo_tampa_bateria, seixo_caixa_fundo, plate (.step/.stl)",
-                 "weight_g": fc.get("weight")},
+        "case": {"version": "Seixo", "files": "case/out/seixo_tampa, seixo_fundo, seixo_tampa_bateria, seixo_caixa_fundo, plate, keycap_natural/sharp/cf, keycap_test_4 (.step/.stl)",
+                 "weight_g": fc.get("weight"),
+                 "materials": {k: {"material": m, "qty": q, "what": w} for k, (m, q, w) in C.MATERIALS.items()},
+                 "cap_counts": C.cap_counts()},
     }
 
 

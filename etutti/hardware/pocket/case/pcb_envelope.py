@@ -1,4 +1,4 @@
-"""The room the Pocket's Seixo case leaves for the main board (SPEC v3, D2):
+"""The room the Pocket's Seixo case leaves for the main board (SPEC v4, F1):
 
     C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/pocket/case/pcb_envelope.py
 
@@ -68,13 +68,13 @@ def obstacles():
     pc = FC.pecas()
     pan, _ = FC.panel_solids(pc)
     ctl = FC.controls_solids(pc)
-    _, swollen = FC.battery(pc)
+    _, swollen, bplug = FC.battery(pc)
     _, full, _ = FC.speaker(pc)
     a0, b0, a1, b1 = C.CTRL_CABLE
     cable = C.box3(a0, b0, C.Z_PCB_TOP + 7.0, a1, b1, 40.0)       # the controls cable drops here (its plug sits lower)
     plate_zone = C.contour_wp(C.hex_contour(C.PLATE_OVERLAP), C.Z_PLATE_TOP - C.PLATE_T).extrude(10.0).val()   # the plate and the keys above it
-    parts = [C.shell(), C.fundo(), plate_zone, C.box_floor(), swollen, full,
-             pan["panel_board"], pan["usb_c"], pan["jack"], cable] + list(ctl.values())
+    parts = [C.shell(), C.fundo(), plate_zone, C.box_floor(), swollen, bplug, full,
+             pan["panel_board"], pan["usb_c"], pan["jack"], pan["panel_screw_head"], cable] + list(ctl.values())
     return parts
 
 
@@ -100,7 +100,7 @@ def envelope():
     r = lambda v, d=3: round(v, d)
     rp = lambda pts: [[r(x), r(y)] for x, y in pts]
     return {
-        "spec": "pocket SPEC v3, task D2 (Seixo, variant B)",
+        "spec": "pocket SPEC v4, task F1 (Seixo, variant B)",
         "frame": "SPEC: x right from the case's leftmost point, y towards the player, mm (= KiCad top view)",
         "case_length": r(C.length(), 2),
         "z_pcb_top": zt, "z_pcb_bottom": C.Z_PCB_BOT, "pcb_thickness": r(C.PCB_T, 2),
@@ -139,7 +139,11 @@ def envelope():
                          "note": "90 deg micro-B overmould 11 x 11 x 7.5 (PECAS micro_b_link); its cable goes up/back to the panel board"},
         },
         "controls": {
-            "rect": list(C.CTRL_BOARD), "top_z": C.CTRL_TOP, "thickness": C.CTRL_T, "legs_below": C.CTRL_LEGS,
+            "rect": list(C.CTRL_BOARD), "tabs": [list(t) for t in C.CTRL_TABS],
+            "tabs_note": "the EC11E's two tabs (E2b): the back one over the Audio Board, the front one in a dent of the speaker box's "
+                         "back wall (x %.1f-%.1f, y <= %.1f, z <= %.1f, open below to the box floor at z %.2f)" % (
+                             C.tab_dent()[0], C.tab_dent()[2], C.tab_dent()[3], C.tab_dent()[4], C.SPK_BOX_BOTTOM),
+            "top_z": C.CTRL_TOP, "thickness": C.CTRL_T, "legs_below": C.CTRL_LEGS,
             "encoder": list(C.SELECT_XY), "encoder_rot": "as the eTuttino (A/B/C to the back)",
             "led": list(C.LED_XY), "led_top_z": r(C.Z_IF - 0.5, 2),
             "holes": [list(p) for p in C.CTRL_POSTS], "hole_d": 2.2, "post_d": C.POST_D,
@@ -160,10 +164,23 @@ def envelope():
             "usb_c": {"xy": rp([at(C.PANEL_USB_S, 0)])[0], "z": r(C.USB_C_ZC, 2), "hole": list(C.USB_C_HOLE),
                       "wall_at_hole": C.USB_C_WALL, "outer_recess": list(C.USB_C_RECESS),
                       "front_past_board_edge": r(C.USB_C_WALL - 0.15, 2)},
-            "jack": {"xy": rp([at(C.PANEL_JACK_S, 0)])[0], "z": r(C.JACK_ZC, 2), "hole_d": C.JACK_HOLE_D,
+            "jack": {"part": "Same Sky SJ1-3525N", "xy": rp([at(C.PANEL_JACK_S, 0)])[0], "z": r(C.JACK_ZC, 2), "hole_d": C.JACK_HOLE_D,
                      "wall_at_hole": C.JACK_WALL, "outer_spot_face_d": C.JACK_SPOT_D,
-                     "barrel_front_past_board_edge": r(C.JACK_WALL - 0.15, 2)},
-            "holes": [{"xy": rp([at(s, d)])[0], "d": C.PANEL_SCREW_D, "post_d": C.PANEL_POST_D} for s, d in C.PANEL_POSTS],
+                     "outer_spot_face_depth": r(pg["wall_jack"] - C.JACK_WALL, 2),
+                     "barrel_front_past_board_edge": 1.35},
+            "holes": [{"kind": kind, "xy": rp([at(s, d)])[0], "uv": [r(s + 15.0, 2), r(d, 2)], "d": C.PANEL_SCREW_D,
+                       **({"post_d": C.PANEL_POST_D, "post_foot_d": C.PANEL_POST_FOOT[0], "post_foot_h": C.PANEL_POST_FOOT[1],
+                           "pin_d": C.PANEL_PIN_D, "pin_len": C.PANEL_PIN_L,
+                           "note": "LOCATING PIN from the lid post, from above; stops 0.2 short of the board's underside; nothing under the board"}
+                          if kind == "pin" else
+                          {"rib_w_across_u": C.PANEL_RIB_W, "rib_v": [-8.0, r(d + C.PANEL_RIB_W / 2, 2)], "pilot_d": C.PANEL_PILOT_D,
+                           "head_under_board": list(C.PANEL_HEAD),
+                           "note": "M2 x 6 self-tapping FROM BELOW into a rib of the lid that joins the wall boss; the rib lands on the "
+                                   "board TOP over u %.2f-%.2f, v 0-%.2f: keep parts out of that strip" % (
+                                       s + 15 - C.PANEL_RIB_W / 2, s + 15 + C.PANEL_RIB_W / 2, d + C.PANEL_RIB_W / 2)})}
+                      for kind, s, d in C.PANEL_HOLES],
+            "front_ledge": {"depth_v": C.PANEL_LEDGE[0], "thickness": C.PANEL_LEDGE[1],
+                            "note": "the board's front edge rests on a ledge 0.8 deep along its full 30 mm (clear of the USB-C front legs at v 1.15-2.35)"},
             "note": "board top at z %.1f: it passes 0.45 over the Teensy's micro-B plug, so NO parts on its underside; "
                     "front edge on the flat boss of the wall, M2 screws from below into posts from the lid" % C.PANEL_Z_TOP,
         },
@@ -173,8 +190,11 @@ def envelope():
                 max(p[0] for p in outside) + C.PCB_CLR, min(p[1] for p in outside) - C.PCB_CLR,
                 max(p[0] for p in C.pocket_rects()[1]) + C.PCB_CLR, min(p[1] for p in C.pocket_rects()[1]) - C.PCB_CLR),
             "connector_pocket": {"inside": rp(C.pocket_rects()[0]), "outside": rp(C.pocket_rects()[1]), "z_inside": [C.BATT_Z[0], C.BATT_Z[1]],
-                                 "note": "the battery's JST PH plug mates here with a short pigtail from the main board (12.3 x 6.75 x 7.6 of room): "
-                                         "pull the battery out of the hatch and unplug, without opening the lid"},
+                                 "size": [r(C.BATT_POCKET[1] - C.BATT_POCKET[0], 2), r(C.BATT_C[1] - C.BATT_IN[1] / 2 - C.BATT_POCKET[2], 2),
+                                          r(C.BATT_Z[1] - C.BATT_Z[0], 2)],
+                                 "note": "the battery's PHR-3 mates here with the pigtail's in-line male, lying flat, axis along x "
+                                         "(PECAS connector_pocket_v4 >= 14.5 x 9.0 x 6.0); open to the cradle along its front for the battery's "
+                                         "wires; pull the battery out of the hatch and unplug, without opening the lid"},
             "pigtail_way_in": {"rect": [C.BATT_SLOT[0], r(C.BATT_POCKET[2] - C.BATT_WALL - 0.5), C.BATT_SLOT[1], r(C.BATT_POCKET[2] + 2.5)],
                                "z": [r(C.BATT_ROOF_Z[1] - 4.0, 2), r(C.BATT_ROOF_Z[1], 2)],
                                "note": "through the pocket's back wall and roof, from J_BAT (or pads) in connector_zones.back_left"},
@@ -195,7 +215,7 @@ def envelope():
                           "for": ["J_BAT", "J_SPK", "J_PNL"],
                           "note": "under the panel board (nothing on its underside), left of the Teensy's plug: "
                                   "PH plugs (10.5 tall) and the SH-8 fit; check the exact edge against levels['10.5']"},
-            "J_CTL": {"rect": [C.CTRL_CABLE[0], 40.95, 64.0, 45.85], "z_top_max": 14.0,
+            "J_CTL": {"rect": [C.CTRL_CABLE[0], 40.95, 64.0, r(min(p[1] for p in outside) - C.PCB_CLR, 2)], "z_top_max": 14.0,
                       "note": "SH-10 vertical (4.25 + plug) between the Audio Board's front edge and the battery notch"},
         },
     }
@@ -235,6 +255,8 @@ def plot(env, path):
     poly(env["stack"]["usb_plug"]["rect"], "#16a085", 2)
     x0, y0, x1, y1 = env["controls"]["rect"]
     poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "#8e44ad", 3)
+    for x0, y0, x1, y1 in env["controls"]["tabs"]:
+        poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "#8e44ad", 3)
     poly(env["panel"]["board"], "#2e86c1", 3)
     poly(env["battery"]["bay_outside"], "#d35400", 3)
     poly(env["battery"]["connector_pocket"]["outside"], "#d35400", 3)
@@ -244,7 +266,7 @@ def plot(env, path):
     pl.camera_position = [(C.length() / 2, 50, 500), (C.length() / 2, 50, 0), (0, 1, 0)]
     pl.enable_parallel_projection()
     pl.camera.parallel_scale = 56
-    pl.add_text("Pocket PCB envelope (D2): board outline green, plate black, free room brown (darker = taller), "
+    pl.add_text("Pocket PCB envelope (SPEC v4 F1): board outline green, plate black, free room brown (darker = taller), "
                 "columns red, pillars blue, stack teal, controls purple, panel blue, battery bay orange, connector zones yellow",
                 font_size=9, color="#333333")
     pl.screenshot(path)

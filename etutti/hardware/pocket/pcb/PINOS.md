@@ -1,6 +1,6 @@
 # eTuttino Pocket · mapa de pinos do Teensy 4.0
 
-**Versão final para a P1** (SPEC v3, tarefas E2 e E2b, 18 out 2026). Dono: eletrônica. É o contrato
+**Versão final para a programação** (SPEC v4, tarefa F2, 18 out 2026; nenhum pino mudou desde a v3). Dono: eletrônica. É o contrato
 com a programação: a firmware do Pocket (`ETUTTI_MODEL_POCKET`) segue esta tabela e a tabela de teclas
 `KEY_INPUT` abaixo. O `pcb/build_pocket_pcb.py` escreve essa tabela em `pcb/pocket_keys.h` (e em
 `pcb/build/pocket_keys.csv`) a partir da placa roteada e confere a placa contra o arquivo; o sketch do
@@ -68,7 +68,12 @@ canais 8–15 = fileiras 2 e 4 (EN_B, S3 = 1). Notas: `FIRST_NOTE = {57, 55, 56,
 `FIRST_COL = {1, 0, 1, 1}`, 3 semitons por coluna (como no eTuttino, 4 × 8).
 
 ```c
-
+const int8_t POCKET_KEY_INPUT[POCKET_LAYOUT_ROWS][POCKET_LAYOUT_COLS] = {
+  { -1,  21,  20,  18,  17,   2,   1,   0},
+  { 25,  26,  31,  29,  13,  11,  14,  15},
+  { -1,  19,  23,  22,   4,   6,   5,   3},
+  { -1,  30,  28,  24,   9,   8,  10,  -1},
+};
 ```
 
 Conferência placa × firmware (`build_pocket_pcb.py`): 28/28 teclas chegam ao canal que a tabela diz,
@@ -110,18 +115,21 @@ no grupo de EN certo; endereço, COMs, LED, KEEP, AMP_SD, VBAT, HP_DET, POT e en
 - **VBAT.** `analogRead` × 2 × 3,3 / 4095 (calibrar no protótipo). ~4,2 V cheia, 3,7 V no meio,
   **desligar abaixo de 3,3 V** (o PCM corta em ~2,5–3,0 V). Com USB o carregador segura ~4,2 V.
 - **Carregando.** Não há pino do carregador (não sobrou). A luz de carga é feita só no hardware: o
-  CHG do BQ24074 acende o vermelho, inclusive com o Pocket desligado. Para a página, a firmware
+  CHG do BQ24074 acende o vermelho **só com o Pocket desligado** (v4: com o trilho de 3,3 V ligado,
+  o Q31 desvia a luz). Ligado, quem mostra "carregando" é a firmware (verde pulsando, SPEC v4). Para a página e o LED, a firmware
   deduz: USB presente (VBUS visto pelo i.MX RT, p.ex. o bit B-session-valid do `USB1_OTGSC`,
   conferir) e VBAT < 4,15 V = "carregando"; USB e VBAT ≥ 4,15 V = "carregada".
-- **LED durante a carga.** Enquanto carrega, o vermelho fica aceso pelo carregador e a firmware
-  **não consegue apagá-lo**: com o verde aceso ele aparece laranja. As piscadas de confirmação do
-  encoder (§7 da SPEC) devem usar o **verde** (apagar e acender), que continua sob controle da
-  firmware. O "vermelho piscando" de erro só é visível sem USB.
+- **LED durante a carga (v4).** Com o Pocket ligado a luz de carga do hardware fica apagada (Q31):
+  os dois LEDs são só da firmware, também com USB. Desligado e carregando, só o vermelho do carregador.
 - **KEEP.** Primeira coisa na partida (em `startup_early_hook`): `pinMode(10, OUTPUT);
   digitalWrite(10, HIGH)`. O pulso da chave segura o conversor por ~0,5 s (conferir); depois só o KEEP.
   Desligamento automático de verdade (SPEC §9, segundo estágio): silenciar, gravar o que precisar
   na EEPROM e baixar o KEEP: tudo desliga (~10 µA). Para religar, o usuário gira o volume até o
   clique (abre a chave) e volta. Com a chave aberta tudo desliga mesmo com o KEEP alto.
+  **v4: com USB presente e a chave fechada o Pocket fica ligado mesmo com o KEEP baixo** (Q22): é o que
+  permite gravar a firmware (o carregador de boot solta o pino 10 durante a gravação) e testar sem a
+  firmware. Consequência: com USB ligado, o desligamento "de verdade" não desliga; a firmware fica no
+  desligamento leve até a USB sair (e aí o KEEP baixo desliga).
 - **LED.** Vermelho no 13, verde no 5. O vermelho passa por um diodo Schottky (queda de ~0,35 V):
   com 270 Ω dá ~4 mA, o mesmo brilho do eTuttino. PWM nos dois funciona.
 - **Encoder.** A no 11 e B no 9, com `attachInterrupt` nos dois, mesma tabela de Gray. Clique no 6.
@@ -134,7 +142,14 @@ no grupo de EN certo; endereço, COMs, LED, KEEP, AMP_SD, VBAT, HP_DET, POT e en
 4. Novos: `SENS_EN_PIN = 4`, `KEEP_PIN = 10`, `AMP_SD_PIN = 12`, `VBAT_PIN = 16` (A2), `HP_DET_PIN = 17` (A3).
 5. Leitura por grupo (S3) com 45 µs de espera; `SENSOR_ZERO` / `PRESENT_MIN` do TMAG5253BA3.
 6. `set_arm_clock(396000000)` com as condições da SPEC §6 (medir e voltar a 600 MHz se falhar).
-7. Confirmações do LED pelo verde (o vermelho pode estar preso pela carga).
+7. (v4) O vermelho volta a ser só da firmware com o Pocket ligado; "carregando" ligado = verde pulsando.
+8. (v4) Com USB e a chave ligada, baixar o KEEP não desliga (ver KEEP acima).
+
+## Mudanças na v4 (F2)
+
+- Nenhum pino mudou. `KEY_INPUT` reconferido 28/28 com a placa v0.2.
+- Luz de carga só com o Pocket desligado (Q31): o vermelho fica livre para a firmware quando ligado.
+- Com USB e a chave ligada o 3,3 V se mantém sem o KEEP (Q22): gravação e testes sem firmware.
 
 ## Mudanças desde o E1 (provisório)
 

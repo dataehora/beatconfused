@@ -1,7 +1,7 @@
 {
-  "version": 2,
-  "spec": "v3",
-  "task": "E2 + E2b",
+  "version": 3,
+  "spec": "v4",
+  "task": "F2",
   "owner": "eletronica",
   "date": "2026-10-18",
   "note": "Mechanical contract: every part the case must house, with its body from the datasheet. Units mm. Frame for suggested positions = pocket.json (x right from the case's leftmost point, y from the back (0) to the player (100), z up from the table). status: final = datasheet drawing read; conferir = distributor figure, estimate, or the exact order code is still open. needs_from_design = what the case must provide. The design owns the positions; the numbers under 'suggested' are only where the electronics would put the part given pocket.json v2.",
@@ -113,8 +113,8 @@
     "panel_board": {
       "name": "Plaquinha do painel: USB-C + jack de fone na parede de tras-esquerda",
       "part_number": "own PCB, 1.6 mm, ~30 x 13, lying flat (parallel to the floor) with its front edge on a flat boss inside the curved wall",
-      "status": "conferir",
-      "solution": "USB-C + SJ1-3525N on the panel board, all parts on top. Wires soldered to SMD pads: micro-B cable (VBUS, D+, D-, GND) on the bottom row, the SH-8 from J_PNL (its far end cut): VBUS and GND share those pads, HP_L/HP_R/HP_VGND/HP_TIPSW in a column between the USB-C and the jack. CC1/CC2 5.1 k 0402. No ESD diode (no room; the Teensy's own USB has none either).",
+      "status": "final",
+      "solution": "USB-C + ESD (PRTR5V0U2X) + CC 5.1 k on the panel board top, assembled by JLCPCB (top side only); the SJ1-3525N jack is hand-soldered. Wire pads: micro-B cable (VBUS, D+, D-, GND) on the back row; SH-8 from J_PNL: VBUS/GND share those pads, HP_L/HP_R/HP_VGND/HP_TIPSW on the right end past the jack.",
       "body": {
         "plan": [
           30.0,
@@ -134,14 +134,44 @@
         "spacing_usb_to_jack": 14.0
       },
       "cable_exits": "both cables leave from the board's back edge (away from the wall): micro-B cable ~40 mm to the Teensy plug (pocket.json stack.usb_plug), SH-8 cable ~100 mm to the main board",
-      "needs_from_design": "(1) the rear-left shell leg of the USB-C (through-hole) sits over the micro-B plug (0.45 gap): trim flush, or give 0.8 mm; (2) the M2 screw head under hole 1 (u 4.0, v 10.3) is also over the plug: a screw from below cannot go there"
+      "needs_from_design": "(1) envelope panel.holes -> H1 pin hole at xy [25.6, 17.386] (lid post with D2.0 x 1.4 pin), H2 screw at xy [15.38, 23.917] (post/rib <= 3.4 wide across the wall direction); (2) USB-C hole/recess unchanged; (3) jack hole D6.3 (not 6.0) + spot-face D10 x 0.5; (4) the board's front edge rests on the flat boss over its full 30 mm",
+      "holes_v4": {
+        "frame": "panel uv (u along the wall from envelope panel.front_edge[0], v inwards); xy = case SPEC frame",
+        "H1": {
+          "panel_uv": [
+            4.0,
+            10.3
+          ],
+          "xy": [
+            25.6,
+            17.386
+          ],
+          "kind": "LOCATING PIN hole D2.2 (no screw: it is over the micro-B plug)",
+          "case": "the lid post ends in a D2.0 x 1.4 pin that enters the hole from above and stops 0.2 short of the board's bottom face; post shoulder D4.4 on the board top"
+        },
+        "H2": {
+          "panel_uv": [
+            14.24,
+            3.8
+          ],
+          "xy": [
+            15.38,
+            23.917
+          ],
+          "kind": "M2 x 6 self-tapping screw FROM BELOW (lid upside down at assembly), head D3.8 under the board",
+          "case": "lid post or rib max 3.4 wide across u (it sits between the USB-C body, u <= 12.52, and the jack body, u >= 15.95), may join the wall boss; pilot D1.7",
+          "clearances": "head 4.9 from the micro-B plug outline, 2.8 from the USB-C shell legs; 2.8 above the J_SPK plug (main board) under it"
+        },
+        "why": "PR #106 divergence 4: the old H1 (u 4.0, v 10.3) and the head of the old H2 (u 14.4, v 10.3) sat over the micro-B plug (0.45 gap). The pin needs nothing below the board."
+      },
+      "underside_map": "over the micro-B plug (uv square (3.97,4.45) (-0.68,14.41) (9.28,19.07) (13.93,9.1)): only the trimmed USB-C rear-left leg; elsewhere <= 1.4 below the bottom face (jack terminals, USB-C legs, solder) and the H2 screw head (1.3)"
     },
     "usb_c": {
       "name": "Receptaculo USB-C (carga e MIDI)",
       "part_number": "Korean Hroparts TYPE-C-31-M-12 (16P, SMD + through-hole shell legs, horizontal)",
       "lcsc": "C165948",
       "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811131825_Korean-Hroparts-Elec-TYPE-C-31-M-12_C165948.pdf",
-      "status": "conferir",
+      "status": "final",
       "body": {
         "width": 8.94,
         "depth": 7.35,
@@ -152,7 +182,34 @@
       "panel_hole": "stadium 9.4 x 3.7 (R 1.85) through the wall; the shell's front sits in the hole. Outside, a 13 x 7 flat (R 3) recess 0.5 deep is enough for plug overmolds on the curve",
       "keepouts": "no rib inside within 1 mm of the shell; plug insertion force ~20 N goes into the boss through the board (screws or groove)",
       "electrical": "CC1, CC2: 5.1 k to GND; VBUS on the right pair (A9/B4) only: a USB-C plug ties its four VBUS and four GND contacts together, so one pair carries it either way up; VBUS to BQ24074 IN through the SH-8 cable",
-      "needs_from_design": "hole + recess as above"
+      "needs_from_design": "hole + recess as above",
+      "shell_legs": {
+        "note": "4 THT shell legs, drill 0.6 x 1.7 (back pair) / 0.6 x 1.2 (front pair); they pass 1.6 board and stick out ~0.8 below (conferir on the part)",
+        "rear_left_leg": {
+          "panel_uv": [
+            3.68,
+            5.93
+          ],
+          "xy": [
+            21.775,
+            15.248
+          ],
+          "over_micro_b_plug": true,
+          "action": "trim FLUSH with the board's bottom face after soldering (side cutters + file); the manual says so"
+        },
+        "other_legs": "clear of the plug; may stay (<= 1.0 below)"
+      },
+      "esd": {
+        "part": "PRTR5V0U2X (TECH PUBLIC, SOT-143, D+/D- 2-line rail-to-rail + VBUS clamp, ~1 pF) on the panel board top, between the USB-C and the jack",
+        "lcsc": "C2827688 (77 500 in stock 18 Oct 2026); Nexperia original PRTR5V0U2X,215 C12333 (out of stock)",
+        "datasheet": "https://assets.nexperia.com/documents/data-sheet/PRTR5V0U2X.pdf",
+        "body": [
+          2.9,
+          1.3,
+          1.1
+        ],
+        "case_impact": "none (1.1 tall, under the 6.2 above-board limit)"
+      }
     },
     "micro_b_link": {
       "name": "Cabo curto USB-C (plaquinha) -> micro-B do Teensy",
@@ -173,21 +230,36 @@
     },
     "headphone_jack": {
       "name": "Jack de fone 3,5 estereo com contato de comutacao na ponta",
-      "part_number": "Same Sky (CUI) SJ1-3525N: 3.5 mm stereo, through-hole, horizontal, tip and ring switches (TN = tip normal)",
-      "lcsc": "none (DigiKey CP1-3525N-ND); LCSC alternative PJ-327A has no verified footprint",
-      "datasheet": "https://www.cuidevices.com/product/resource/pdf/sj1-352xn.pdf",
-      "status": "conferir",
-      "body": {
-        "width": 12.0,
-        "length_incl_barrel": 14.0,
-        "barrel_d": 6.0,
-        "barrel_len": 3.0,
-        "height": 5.0
+      "part_number": "Same Sky (ex-CUI) SJ1-3525N: 3.5 mm stereo, THT, horizontal, tip switch (pin 10) and ring switch (pin 11; ring switch unused)",
+      "lcsc": "none (DigiKey CP1-3525N-ND, Mouser 490-SJ1-3525N)",
+      "datasheet": "https://www.sameskydevices.com/product/resource/pdf/sj1-352xn.pdf",
+      "status": "final",
+      "datasheet_dims": {
+        "body_width": 12.0,
+        "body_length_behind_nose": 11.0,
+        "nose_d": 6.0,
+        "nose_length_in_front_of_body": 3.3,
+        "nose_front_ring": 1.3,
+        "overall_length": 14.3,
+        "body_height_above_pcb": 5.0,
+        "axis_above_pcb": 2.5,
+        "plug_bore_d": "3.60 +0.1/-0.05",
+        "terminals_below_pcb_top": 3.0,
+        "terminal_pitch": "5.0 / 10.0 across, 3.5 / 8.5 along the axis",
+        "pegs": "NPTH 1.2 (KiCad footprint)",
+        "insertion_withdrawal_force_kg": [
+          0.3,
+          3.0
+        ],
+        "tolerance": "X.X +-0.3"
       },
-      "mounting": "panel board top, barrel 1.35 past the board's front edge (envelope panel.jack)",
-      "panel_hole": "D6.0 through, outer spot-face D10 x 0.5 for fat plugs; wall <= 1.5 at the hole",
-      "electrical": "sleeve -> HP_VGND (Audio Board virtual ground, NEVER GND); tip/ring -> HP_L/HP_R; tip switch -> HP_DET network on the main board (pin 17)",
-      "needs_from_design": "hole + spot-face, 14 mm from the USB-C centre along the wall"
+      "mounting": "panel board top, axis along the board's inward normal; KiCad footprint puts the body front 1.45 inside the board's front edge and the nose 1.85 past it per the datasheet (see nose_vs_board_edge; envelope says 1.35). Axis at z board_top + 2.5 = 26.4 with the board top at 23.9.",
+      "panel_hole": "D6.3 through (nose D6.0 +-0.3 tolerance; D6.0 would bind), outer spot-face D10 x 0.5 for fat plug collars; wall <= 1.5 at the hole so the nose (1.35 past the board edge) reaches the outer face",
+      "boss": "flat inner boss under the board's front edge, as for the USB-C; the jack body (12.0 x 5.0 high) needs 0.3 all round inside the lid; nothing above z 28.9 at x/y of the body",
+      "below_board": "5 terminals + 5 pegs come out 1.4 below the board's bottom face (z 20.9): trim to <= 1.0 after soldering; NOT over the micro-B plug (checked: jack legs at u 17-27, the plug's nearest corner at u 13.9)",
+      "electrical": "sleeve (1) -> HP_VGND (Audio Board virtual ground, NEVER GND); tip (2) / ring (3) -> HP_L / HP_R; tip switch (10, closed to the tip without plug) -> HP_TIPSW -> HP_DET network on the main board (pin 17)",
+      "needs_from_design": "hole D6.3 + spot-face D10 x 0.5 centred on envelope panel.jack.xy at z 26.4; wall <= 1.5 there; flat boss",
+      "nose_vs_board_edge": "Answer to the design's question 2 (F1): on the datasheet's recommended layout the body's FRONT FACE is the 'connector edge'; the pegs sit 1.0 and 3.5 behind it and the terminal row 8.5 behind it. On our board (KiCad footprint, pegs 2.45 and 4.95 inside the edge, terminals 9.95) the body front is 1.45 INSIDE the board's front edge, so the D6.0 nose (3.3 long) ends 1.85 +-0.3 PAST the board edge, not 1.35 (the KiCad Fab/3D drawing shows 1.4: the datasheet governs). With the 1.5 wall at the hole the nose tip sits 0.35 into the outer spot-face (2.22 deep), 1.87 below the outer surface: no change needed if the board edge is on the wall's inner face; the body front (12.0 x 5.0) stays 1.45 back from that face."
     },
     "battery": {
       "name": "LiPo 1S 1000 mAh tipo 603450 com PCM e NTC (3 fios)",
@@ -219,7 +291,53 @@
       "cable_exits": "from the PCM end (one short side): ~60 mm to the main board's JST PH 3 (B3B-PH-K-S, LCSC C131339)",
       "electrical": "NTC (10 k at 25 C, B 3435) between TS and GND of the BQ24074: charge stops below 0 C and above 45 C. Pinout of the plug varies between sellers: check before connecting.",
       "needs_from_design": "cradle 7.6 x 36.5 x 58.5 (the SPEC's 7 x 36 x 58 + 8 % swelling in thickness only; cells swell in thickness) off the main board, reached from the bottom; a 6 x 4 channel for the 3 wires to the main board",
-      "needs_from_design_e2b": "the mated pair in the connector pocket: battery PHR-3 housing (7.95 x 4.5 x 6.0) + an in-line male PH 3-way (~6-8 long) = ~8 x 4.5 x 13-14 lying flat: the pocket (12.3 x 6.75 x 7.6) is 1-2 short in length and 1.2 short in width. Asked: pocket >= 14.5 x 9.0 x 6.0 (x, y, z)."
+      "needs_from_design_e2b": "superseded by connector_pocket_v4",
+      "connector_pocket_v4": {
+        "parts": {
+          "battery_plug": {
+            "part": "JST PHR-3 housing + 3 SPH-002T-P0.5S crimps (comes on the battery)",
+            "dims_wxhxl": [
+              7.9,
+              4.5,
+              6.0
+            ],
+            "datasheet": "https://www.jst-mfg.com/product/pdf/eng/ePH.pdf",
+            "status": "final (JST drawing: A = 2.0 x (n-1) + 3.9)"
+          },
+          "pigtail_end": {
+            "part": "in-line PH 2.0 3-way 'male' (pin) housing on the extension cable (not a JST part)",
+            "dims_wxhxl": [
+              8.0,
+              4.8,
+              8.5
+            ],
+            "status": "conferir (generic; measure the bought cable)"
+          },
+          "mated": {
+            "dims_wxhxl": [
+              8.0,
+              4.8,
+              12.5
+            ],
+            "latch": "PHR-3 has no latch; friction ~5 N",
+            "status": "conferir"
+          }
+        },
+        "pocket_min": {
+          "x_along_axis": 14.5,
+          "y": 9.0,
+          "z": 6.0,
+          "note": "mated pair + ~1 each side; wires leave axially at both ends: 3 mm straight before the bend"
+        },
+        "pigtail": {
+          "part": "JST PH 2.0 3-way extension, male-female, 100 mm (cut to ~70)",
+          "route": "J_BAT (main board top, x 12.6 y 32-36) -> pigtail_way_in -> pocket",
+          "length_mm": 70,
+          "status": "conferir"
+        },
+        "polarity": "pin order on the battery varies between sellers: the kit pigtail is wired 1:1; check BAT+ on J_BAT pin 1 with a multimeter before connecting (manual)",
+        "needs_from_design": "pocket >= 14.5 x 9.0 x 6.0 (x along the plug axis, y, z) with a 4 x 4 wire channel at each end; the pigtail_way_in kept"
+      }
     },
     "speaker": {
       "name": "Alto-falante Same Sky CLS0361-L152",
@@ -314,17 +432,52 @@
       "note": "placed in E2b (pcb/build_pocket_pcb.py); J_BAT/J_SPK/J_PNL in back_left (checked against levels and the micro-B plug), J_CTL in its connector zone"
     },
     "charge_light": {
-      "name": "Luz de carga (sem peca nova no case)",
+      "name": "Luz de carga so com o Pocket DESLIGADO (SPEC v4 mudanca 10)",
       "status": "final",
-      "note": "uses the existing LED's red: nothing for the case. Circuit on the main board: BQ24074 CHG -> AO3401A (LCSC C15127) gate, 100 k gate-source; drain -> 1 k -> BAT54C (LCSC C134405) -> LED_R; pin 13 -> 270 R -> the other BAT54C diode -> LED_R."
+      "note": "no case impact. Main board: BQ24074 CHG -> AO3401A Q30 (gate, 100 k to VBUS) -> 1 k -> BAT54C D30 -> LED_R; NEW Q31 AO3400A (LCSC C20917) drain on the 1 k's far end (CHGA), source GND, gate = 3.3 V rail: when the Pocket is on the 3.3 V rail turns Q31 on and it shunts the charge light (5 mA from USB, not from the battery); off, the rail is 0 V (TPS63001 load disconnect, VUSB-VIN cut) and the red lights while charging."
     },
     "controls_board": {
       "name": "Plaquinha dos knobs (E2b)",
-      "status": "conferir",
-      "outline": "envelope rect x 23.22-50.6, y 42.5-56.0 PLUS two tabs at x 27.0-35.2: y 40.0-42.5 (back, over the Audio Board) and y 56.0-57.5 (front)",
+      "status": "final",
+      "outline": "envelope rect x 23.22-50.6, y 42.5-56.0 PLUS two tabs at x 27.0-35.2: y 40.0-42.5 (back) and y 56.0-57.5 (front). UNCHANGED in v4.",
       "why": "the EC11E's legs span 17 mm along y (A/B/C 7.5 behind the shaft, the switch 7 in front, 2 mm pads); no rotation fits 13.5 mm (rot 0/180 put legs into the pot board)",
       "led": "3 mm LED legs along x (40.58 / 43.12 / 45.66 at y 49) so the lines pass between the lid posts",
-      "needs_from_design": "confirm the two tabs: the back one sits over the Audio Board (its legs at z >= 14.08, the board at <= 12.3, OK) and clear of the Audio Board's jack (y <= 38.2); the front one (y 56-57.5) must clear the speaker box wall"
+      "needs_from_design": "the speaker box wall must stay at y >= 57.8 (0.3 clear) for x 26.7-35.5 and z 14.0-17.5, or the box roof below z 14.0 there",
+      "tabs_v4": {
+        "back": {
+          "x": [
+            27.0,
+            35.2
+          ],
+          "y": [
+            40.0,
+            42.5
+          ],
+          "z": [
+            15.58,
+            17.18
+          ],
+          "below": "encoder A/B/C legs 1.5 below (z >= 14.08), over the Audio Board (top z 12.3): 1.8 clear",
+          "copper": "pads A/B/C at y 41.5 (D2.0), board edge 40.0"
+        },
+        "front": {
+          "x": [
+            27.0,
+            35.2
+          ],
+          "y": [
+            56.0,
+            57.5
+          ],
+          "z": [
+            15.58,
+            17.18
+          ],
+          "below": "switch legs S1/S2 at y 56.0, 1.5 below (z >= 14.08)",
+          "copper": "pads S1/S2 at (28.62, 56.0) and (33.62, 56.0), D2.0; the tab cannot be shorter than y 57.3 (0.3 copper to edge)"
+        },
+        "needs_from_design": "the speaker box wall must stay at y >= 57.8 (0.3 clear) for x 26.7-35.5 and z 14.0-17.5, or the box roof below z 14.0 there"
+      }
     },
     "main_board": {
       "name": "Placa principal (E2b)",
@@ -332,7 +485,17 @@
       "layers": 4,
       "thickness": 1.2,
       "note": "4 layers (In1 GND plane, In2 3.3 V plane). Back side: all ICs and passives (max 2.0 tall, inductor 2.0); top: switches, the Audio Board legs, J_BAT/J_SPK (PH THT), J_PNL/J_CTL (SH SMD), J_HP wire pads.",
-      "sag_3N_mm": 0.021
+      "sag_3N_mm": 0.021,
+      "note_v4": "v4: Q31 (charge light only when off) and Q22 + R26 (with USB present the volume switch alone holds the 3.3 V on, so the Teensy can be flashed and tested without the Pocket firmware) added on the back; TPS63001 kept; no change to the outline, the top connectors or any height."
     }
-  }
+  },
+  "needs_from_design_v4": [
+    "panel_board.holes_v4: H1 = locating pin hole (lid post with pin, nothing under the board), H2 moved to u 14.24 v 3.8 = xy [15.38, 23.917], screw from below, post/rib <= 3.4 wide",
+    "headphone_jack: hole D6.3 + spot-face D10 x 0.5, axis z 26.4, datasheet dims in headphone_jack.datasheet_dims",
+    "usb_c: unchanged hole; the rear-left shell leg is trimmed flush (manual)",
+    "battery.connector_pocket_v4: pocket >= 14.5 x 9.0 x 6.0 + wire channels; pigtail ~70 mm from J_BAT",
+    "controls_board.tabs_v4: keep the tabs; speaker box wall y >= 57.8 at x 26.7-35.5, z 14.0-17.5"
+  ],
+  "kit_bom": "pcb/fab/pocket_kit_bom.csv (written by pcb/kit_bom.py)",
+  "assembly_manual_electrical": "pcb/MANUAL_ELETRICO.md"
 }

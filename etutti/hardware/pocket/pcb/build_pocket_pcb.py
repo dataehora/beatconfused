@@ -52,7 +52,7 @@ SENSOR_W = 0.2                  # stubs at the X2SON's 0.5 mm pitch pads
 LOCAL_W = 0.3
 
 POWER = {"VCC", "GND", "VSYS", "VBUS", "BAT", "SPK_P", "SPK_N", "L1", "L2", "VINA"}
-DEFAULT_ROUTE_FIRST = "SEL2,EN_B,SEL3,NS3,POT,EN_A,L1"
+DEFAULT_ROUTE_FIRST = "PWR_A,SPK_P,SPK_N,SEL2,EN_B,SEL3,NS3,POT,EN_A,L1"
 DEFAULT_OUT_FIRST = "OUT_U25,OUT_U17,OUT_U18"
 
 # ---------------------------------------------------------------- parts
@@ -75,21 +75,21 @@ PARTS = [
     ("C60", *C0805, "10uF", 71.8, 8.0, 90, "B", two("VBUS", "GND"), "C15850"),
     ("C61", *C0805, "10uF", 82.6, 6.8, 90, "B", two("VSYS", "GND"), "C15850"),
     ("C62", *C0805, "10uF", 71.8, 15.2, 90, "B", two("BAT", "GND"), "C15850"),
-    ("R10", *R0805, "1.8k", 71.8, 11.6, 90, "B", two("ISET", "GND"), ""),
+    ("R10", *R0805, "1.8k", 71.8, 11.6, 90, "B", two("ISET", "GND"), "C1358"),
     ("R11", *R0805, "1.5k", 82.6, 13.4, 90, "B", two("ILIM", "GND"), "C4310"),
     ("R12", *R0805, "10k", 77.0, 15.8, 0, "B", two("VBUS", "EN1"), "C17414"),
     # --- buck-boost TPS63001 (fixed 3.3 V) ---
     ("U61", "Package_SON", "Texas_DRC0010J", "TPS63001DRCR", 87.5, 10.0, 0, "B",
      {"1": "VCC", "2": "L2", "3": "GND", "4": "L1", "5": "VSYS", "6": "EN_BB", "7": "GND", "8": "VINA",
       "9": "GND", "10": "VCC", "11": "GND"}, "C28060"),
-    ("L10", "Inductor_SMD", "L_Changjiang_FNR4020S", "2.2uH 4x4", 93.6, 10.0, 90, "B", two("L1", "L2"), ""),
+    ("L10", "Inductor_SMD", "L_Changjiang_FNR4020S", "2.2uH 4x4", 93.6, 10.0, 90, "B", two("L1", "L2"), "C167825"),
     ("C63", *C0805, "10uF", 85.8, 16.4, 0, "B", two("VSYS", "GND"), "C15850"),
     ("C64", *C0805, "10uF", 92.6, 16.4, 0, "B", two("VCC", "GND"), "C15850"),
     ("C65", *C0805, "10uF", 96.0, 16.4, 0, "B", two("VCC", "GND"), "C15850"),
-    ("R13", *R0805, "100", 89.2, 16.4, 0, "B", two("VSYS", "VINA"), ""),
+    ("R13", *R0805, "100", 89.2, 16.4, 0, "B", two("VSYS", "VINA"), "C17408"),
     ("C66", *C0805, "100nF", 85.6, 5.2, 0, "B", two("VINA", "GND"), "C49678"),
     # --- power switch: volume-pot switch + RC start pulse + KEEP latch ---
-    ("R20", *R0805, "100", 73.5, 25.0, 90, "B", two("VSYS", "PWR_A"), ""),
+    ("R20", *R0805, "100", 73.5, 25.0, 90, "B", two("VSYS", "PWR_A"), "C17408"),
     ("R21", *R0805, "1M", 76.5, 25.0, 90, "B", two("PWR_B", "GND"), "C17514"),
     ("C81", *C0805, "1uF", 79.5, 25.0, 90, "B", two("PWR_B", "PULSE"), "C28323"),
     ("R22", *R0805, "1M", 82.5, 25.0, 90, "B", two("PULSE", "GND"), "C17514"),
@@ -99,12 +99,24 @@ PARTS = [
     ("R24", *R0805, "100k", 78.6, 31.0, 0, "B", two("QSG", "PWR_B"), "C17407"),
     ("Q21", *SOT23, "AO3400A", 82.8, 31.0, 0, "B", {"1": "KEEP", "2": "GND", "3": "QSG"}, "C20917"),
     ("R25", *R0805, "100k", 86.6, 31.0, 0, "B", two("KEEP", "GND"), "C17407"),
+    # SPEC v4 (F2): with USB present the switch alone holds the converter on
+    # (Q22 in parallel with the KEEP transistor). Without it, the Teensy could
+    # never be flashed: the bootloader lets go of pin 10 during an upload and
+    # KEEP's 100 k would switch the Pocket off mid-flash; and the first tests
+    # (no Pocket firmware) could not keep the 3.3 V up.
+    ("Q22", *SOT23, "AO3400A", 90.6, 31.0, 0, "B", {"1": "VBUS", "2": "GND", "3": "QSG"}, "C20917"),
+    ("R26", *R0805, "100k", 94.4, 31.0, 0, "B", two("VBUS", "GND"), "C17407"),
     # --- charge light (CHG -> red of the LED, works switched off) + LED resistors ---
     ("Q30", *SOT23, "AO3401A", 40.0, 17.0, 0, "B", {"1": "CHG", "2": "VBUS", "3": "CHGLED"}, "C15127"),
     ("R30", *R0805, "100k", 43.5, 17.0, 90, "B", two("VBUS", "CHG"), "C17407"),
     ("R31", *R0805, "1k", 46.5, 17.0, 90, "B", two("CHGLED", "CHGA"), "C17513"),
     ("D30", *SOT23, "BAT54C", 50.0, 17.0, 0, "B", {"1": "CHGA", "2": "LEDR_A", "3": "LED_R"}, "C134405"),
-    ("R32", *R0805, "270", 40.0, 23.5, 0, "B", two("LED_R_DRV", "LEDR_A"), ""),
+    # SPEC v4: the charge light only with the Pocket OFF. Q31's gate sits on
+    # the 3.3 V rail: switched on, it shunts CHGA to ground (5 mA from USB,
+    # never from the battery); switched off the rail is 0 V (TPS63001 load
+    # disconnect, Teensy VUSB-VIN cut) and the red lights while charging.
+    ("Q31", *SOT23, "AO3400A", 46.5, 20.6, 0, "B", {"1": "VCC", "2": "GND", "3": "CHGA"}, "C20917"),
+    ("R32", *R0805, "270", 40.0, 23.5, 0, "B", two("LED_R_DRV", "LEDR_A"), "C17590"),
     ("R33", *R0805, "330", 45.0, 23.5, 0, "B", two("LED_G_DRV", "LED_G"), "C17630"),
     # --- battery divider, headphone detect ---
     ("R40", *R0805, "1M", 51.0, 7.4, 0, "B", two("BAT", "VBAT_S"), "C17514"),
@@ -119,13 +131,13 @@ PARTS = [
     ("C67", *C0805, "10uF", 33.5, 37.8, 0, "B", two("VSYS", "GND"), "C15850"),
     ("C68", *C0805, "1uF", 37.7, 37.8, 0, "B", two("VSYS", "GND"), "C28323"),
     ("R44", *R0805, "100k", 43.2, 34.0, 90, "B", two("AMP_SD", "GND"), "C17407"),
-    ("R45", *R0805, "68k", 31.0, 43.2, 0, "B", two("HP_L", "AMP_P"), ""),
-    ("R46", *R0805, "68k", 34.4, 43.2, 0, "B", two("HP_R", "AMP_P"), ""),
+    ("R45", *R0805, "68k", 31.0, 43.2, 0, "B", two("HP_L", "AMP_P"), "C17801"),
+    ("R46", *R0805, "68k", 34.4, 43.2, 0, "B", two("HP_R", "AMP_P"), "C17801"),
     ("R47", *R0805, "33k", 37.8, 43.2, 0, "B", two("HP_VGND", "AMP_N"), ""),
     ("C42", *C0805, "100nF", 31.0, 40.6, 0, "B", two("AMP_P", "INP"), "C49678"),
     ("C43", *C0805, "100nF", 37.6, 40.6, 0, "B", two("AMP_N", "INN"), "C49678"),
     # --- sensor groups: EN_A = SENS_EN & !S3, EN_B = SENS_EN & S3 ---
-    ("U53", *SOT235, "74LVC1G04", 47.4, 32.2, 0, "B", {"2": "SEL3", "3": "GND", "4": "NS3", "5": "VCC"}, ""),
+    ("U53", *SOT235, "74LVC1G04", 47.4, 32.2, 0, "B", {"2": "SEL3", "3": "GND", "4": "NS3", "5": "VCC"}, "C7827"),
     ("U54", *SOT235, "74LVC1G08", 53.4, 32.2, 0, "B", {"1": "NS3", "2": "SENS_EN", "3": "GND", "4": "EN_A", "5": "VCC"}, "C7666"),
     ("U55", *SOT235, "74LVC1G08", 59.4, 32.2, 0, "B", {"1": "SEL3", "2": "SENS_EN", "3": "GND", "4": "EN_B", "5": "VCC"}, "C7666"),
     ("C55", *C0805, "100nF", 56.4, 36.4, 0, "B", two("VCC", "GND"), "C49678"),
@@ -694,8 +706,8 @@ def build():
         seg.SetLayer(pcbnew.Edge_Cuts)
         seg.SetWidth(pcbnew.FromMM(0.1))
         board.Add(seg)
-    B.text("eTuttino Pocket v0.1", 150.0, 88.0, 1.2)
-    B.text("eTuttino Pocket v0.1 - TMAG5253 on this side", 128.5, 88.0, 1.0, pcbnew.B_SilkS)
+    B.text("eTuttino Pocket v0.2", 150.0, 88.0, 1.2)
+    B.text("eTuttino Pocket v0.2 - TMAG5253 on this side", 128.5, 88.0, 1.0, pcbnew.B_SilkS)
     for f in fps:
         f.Reference().SetVisible(False)
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
@@ -834,6 +846,21 @@ def verify():
     return bad
 
 
+def sync_pinos():
+    """Copy POCKET_KEY_INPUT from pocket_keys.h into PINOS.md's ```c block
+    (the contract shows the table the board was checked against)."""
+    pinos = os.path.join(HERE, "PINOS.md")
+    hdr = open(HEADER_PATH, encoding="utf-8").read()
+    table = hdr[hdr.index("const int8_t POCKET_KEY_INPUT"):].strip()
+    s = open(pinos, encoding="utf-8").read()
+    a = s.index("```c", s.index("## Tabela de teclas"))
+    b = s.index("```", a + 4)
+    s = s[:a] + "```c\n" + table + "\n" + s[b:]
+    with open(pinos, "w", encoding="utf-8", newline="\n") as f:
+        f.write(s)
+    print("PINOS.md: KEY_INPUT block updated")
+
+
 def route_with_retries(max_attempts=16):
     """Greedy router: a net routed early can wall off a later one. On a
     failure start again in a fresh process with that net first -- among
@@ -870,4 +897,6 @@ if __name__ == "__main__":
         sys.exit(3)
     e, w, u = fab()
     bad = verify()
+    if not bad:
+        sync_pinos()
     sys.exit(1 if e or w or u or bad else 0)

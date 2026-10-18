@@ -1,4 +1,4 @@
-"""eTuttino Pocket case, Seixo only (SPEC v3, task D2), CadQuery.
+"""eTuttino Pocket case, Seixo only (SPEC v4, task F1; D2 before it), CadQuery.
 
     C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/pocket/case/case.py
 
@@ -44,6 +44,7 @@ VARIANT = "B"
 V = S.VARIANTS[VARIANT]
 ORIGIN, KEYS, PLAN = S.place(V)                 # PLAN: shape.py's sampled outline (checked against ours)
 P, D_BTN, WIDTH = S.P, S.D_BTN, S.WIDTH
+ROW_PITCH = S.ROW_PITCH
 ROW_Y = S.ROW_Y
 D_SKIRT = 16.5
 
@@ -86,14 +87,16 @@ SHAFT_HOLE_D = 6.8                              # encoder shaft (not nutted: the
 LED_HOLE_D = 3.5
 KNOB_D = 9.0
 
-# logo, engraved in the flat lid, following the outline's curve (concentric with G3)
-LOGO_DEPTH = 0.4                                # CHECK: SPEC says ~0.4
+# logo, engraved in the flat lid: STRAIGHT (horizontal), centred in the
+# interface's back zone (SPEC v4 change 1): "eTuttino" over "POCKET"
+LOGO_DEPTH = 0.4                                # SPEC v4 4: ~0.4, resin top shell
 LOGO_FONT = r"C:/Windows/Fonts/georgiab.ttf"
 LOGO_FONT2 = r"C:/Windows/Fonts/arialbd.ttf"
-LOGO_R = (63.5, 56.0)                           # baseline radii of "eTuttino" / "POCKET" round G3
-LOGO_SIZE = (7.6, 3.6)                          # font sizes (em): cap heights 5.3 / 2.6
-LOGO_ANGLE = 215.5                              # centre of the text on the arc, degrees round G3
-LOGO_TRACK = (0.35, 1.1)                        # extra letter spacing
+LOGO_SIZE = (9.0, 4.0)                          # font sizes (em): "eTuttino" 6.9 tall, "POCKET" cap 2.9
+LOGO_TRACK = (0.3, 1.6)                         # extra letter spacing
+LOGO_GAP = 2.6                                  # "eTuttino" baseline -> top of "POCKET"
+LOGO_ZONE_Y = (4.0, 39.5)                       # back zone: behind the knob skirts (49 - 4.5) less the SPEC's 5
+LOGO_MIN_MARGIN = 5.0                           # text -> outer edge / ramp top edge, at least
 
 # speaker (PECAS speaker: Same Sky CLS0361-L152, final)
 SPK_C = (26.88, 77.54)
@@ -120,14 +123,22 @@ USB_C_HOLE = (9.4, 3.7)                         # stadium
 USB_C_ZC = PANEL_Z_TOP + 1.63
 USB_C_RECESS = (13.0, 7.0, 3.0)                 # outside: overmould recess w, h, corner R
 USB_C_WALL = 1.0                                # wall left at the USB-C hole
-JACK_HOLE_D = 6.0
-JACK_ZC = PANEL_Z_TOP + 2.6
+JACK_HOLE_D = 6.3                               # Same Sky SJ1-3525N nose D6.0 +- 0.3 (PECAS v3 headphone_jack)
+JACK_ZC = PANEL_Z_TOP + 2.5                     # its axis 2.5 above the board
 JACK_SPOT_D = 10.0
 JACK_WALL = 1.5
 PANEL_SCREW_D, PANEL_POST_D, PANEL_PILOT_D = 2.2, 4.4, 1.7
 # M2 holes (s along the board from its centre, d in from its front edge): both
 # clear of the connectors' bodies (the jack, 14.3 + 2 long, leaves no room behind it)
-PANEL_POSTS = [(-11.0, 10.3), (-0.6, 10.3)]
+# SPEC v4 F1 / PECAS v3 panel_board.holes_v4: hole 1 (over the micro-B plug)
+# takes a LOCATING PIN from a lid post (no screw head under the board there);
+# hole 2 moved between the USB-C and the jack, M2 x 6 from below into a 3.0 wide rib
+PANEL_HOLES = [("pin", -11.0, 10.3), ("screw", -0.76, 3.8)]
+PANEL_PIN_D, PANEL_PIN_L = 2.0, 1.4             # the pin enters from above, stops 0.2 short of the board's underside
+PANEL_POST_FOOT = (3.6, 1.0)                    # the pin post's foot (d, height): clear of R1 (0402) beside it
+PANEL_RIB_W = 3.0                               # the screw rib, across u (USB-C body u <= 12.52, jack u >= 15.95)
+PANEL_HEAD = (3.8, 1.3)                         # M2 pan head under the board at hole 2
+PANEL_LEDGE = (0.8, 1.5)                        # ledge under the board's front edge: depth (inwards), thickness
 
 # Teensy 4.0 + Audio Board Rev D, the LOW stack (PECAS stack.low: Teensy soldered
 # straight on the Audio Board, 8.7 from under the Audio Board to the top of the USB)
@@ -151,6 +162,11 @@ POT_BODY = (10.37, 44.25, 21.62, 53.75, 14.5, 30.3)       # x0, y0, x1, y1, z0, 
 POT_BOARD = (21.62, 43.0, 23.22, 55.0, 13.8, 29.8)
 POT_LEGS_X = 24.3                               # its legs clipped to 1.0 past the board (the encoder is at 24.92)
 CTRL_BOARD = (23.22, 42.5, 50.6, 56.0)          # its left edge meets the pot board at 90 deg
+# two tabs for the EC11E's legs (PECAS controls_board, E2b): the back one over
+# the Audio Board, the front one into a dent in the speaker box's back wall
+CTRL_TABS = [(27.0, 40.0, 35.2, 42.5), (27.0, 56.0, 35.2, 57.5)]
+TAB_CLR = 0.5                                   # tab -> the dent's walls
+TAB_DENT_TOP = 18.5                             # the dent's ceiling (tab top 17.18; encoder legs are under the tab)
 CTRL_CONN = (46.4, 43.0, 50.6, 55.0)            # 10-way SH header on top at the right edge (12 along y)
 CTRL_T = 1.6
 CTRL_TOP = 17.18
@@ -161,7 +177,7 @@ POST_D, POST_PILOT_D, POST_PILOT_DEPTH = 5.0, 1.7, 6.0
 CTRL_CABLE = (50.6, 40.9, 56.0, 45.8)           # where its cable drops to the main board (J_CTL below it)
 
 # battery bay (PECAS battery: cradle 7.6 x 36.5 x 58.5), on the bottom plate, off the main board
-BATT_C, BATT_ANGLE = (38.0, 65.8), 0.0
+BATT_C, BATT_ANGLE = (40.0, 68.3), 0.0           # v4: +2 x, +2.5 y (D2: 38, 65.8) so the plug pocket gets its 9.0 in y
 BATT_IN = (58.5, 36.5, 7.6)                     # length (x), width (y), height
 BATT_WALL, BATT_ROOF = 1.2, 1.0
 BATT_ROOF_GAP = 0.2
@@ -169,8 +185,8 @@ BATT_PCM_END = -1                               # -1: the PCM end (wire exit) at
 # the battery's plug mates INSIDE the bay, in a pocket behind its left end
 # (x range, back y): out through the hatch, unplug, no lid to open. A short
 # pigtail from the main board comes down into the pocket through BATT_SLOT.
-BATT_POCKET = (10.0, 22.3, 40.8)
-BATT_SLOT = (12.0, 18.0)                        # x range of the pigtail's way in (6 x 4, PECAS), in the pocket's roof
+BATT_POCKET = (10.0, 26.0, 40.8)                # v4: 16.0 x 9.25 x 7.6 (PECAS connector_pocket_v4: >= 14.5 x 9.0 x 6.0); x0 clear of the column at (5.3, 38.5)
+BATT_SLOT = (10.0, 16.0)                        # x range of the pigtail's way in (6 x 4, PECAS), in the pocket's roof
 HATCH_CLR = 0.3
 HATCH_SCREWS_DX = 24.0
 
@@ -703,8 +719,8 @@ def pocket_rects():
 
 BATT_Z = (FLOOR_T, FLOOR_T + BATT_IN[2])                  # 2.0 .. 9.6
 BATT_ROOF_Z = (BATT_Z[1] + BATT_ROOF_GAP, BATT_Z[1] + BATT_ROOF_GAP + BATT_ROOF)   # 9.8 .. 10.8
-HATCH_SCREWS = [(BATT_C[0] - 19.0, BATT_C[1] + BATT_IN[1] / 2 + BATT_WALL + 2.2),
-                (BATT_C[0] + 19.0, BATT_C[1] + BATT_IN[1] / 2 + BATT_WALL + 2.2)]
+HATCH_SCREWS = [(BATT_C[0] - 17.0, BATT_C[1] + BATT_IN[1] / 2 + BATT_WALL + 2.2),     # +-17 (D2: 19): clear of the column at (63, 93.5)
+                (BATT_C[0] + 17.0, BATT_C[1] + BATT_IN[1] / 2 + BATT_WALL + 2.2)]
 HATCH_BOSS_D = 5.0
 HATCH_T = 1.2
 
@@ -802,25 +818,81 @@ def _glyph(ch, font, size, depth):
     return _GLYPH[key]
 
 
+def _line_glyphs(text, font, size, track):
+    widths, heights = [], []
+    for ch in text:
+        bb = _glyph(ch, font, size, 1.0).BoundingBox()
+        widths.append(max(bb.xlen, size * 0.25))
+        heights.append(bb.ymax)
+    return widths, sum(widths) + track * (len(text) - 1), max(heights)
+
+
+def interface_band(y):
+    """x range of the interface's flat top at plan y: the outside of the
+    left wall -> the ramp's top edge (before its R 5)."""
+    pts = outline_points(0.25)
+    xl = None
+    for i in range(len(pts)):
+        (x0, y0), (x1, y1) = pts[i], pts[(i + 1) % len(pts)]
+        if (y0 - y) * (y1 - y) <= 0 and y0 != y1:
+            x = x0 + (y - y0) * (x1 - x0) / (y1 - y0)
+            if x < 80 and (xl is None or x < xl):
+                xl = x
+    top = ramp_edge(RAMP_TOP_OFF)
+    for (x0, y0), (x1, y1) in zip(top, top[1:]):
+        if (y0 - y) * (y1 - y) <= 0 and y0 != y1:
+            return xl, x0 + (y - y0) * (x1 - x0) / (y1 - y0)
+    return xl, None
+
+
+_LOGO = {}
+
+
+def logo_layout():
+    """The straight logo: two centred lines, the block centred in the back
+    zone (vertically on LOGO_ZONE_Y's middle, horizontally on the band's
+    middle there). Returns {"lines": [(text, font, size, track, cx, baseline, width, height)],
+    "bbox": (x0, y0, x1, y1), "margins": (left, right, back, front)}."""
+    if _LOGO:
+        return _LOGO
+    w1, W1, H1 = _line_glyphs("eTuttino", LOGO_FONT, LOGO_SIZE[0], LOGO_TRACK[0])
+    w2, W2, H2 = _line_glyphs("POCKET", LOGO_FONT2, LOGO_SIZE[1], LOGO_TRACK[1])
+    block_h = H1 + LOGO_GAP + H2
+    ym = (LOGO_ZONE_Y[0] + LOGO_ZONE_Y[1]) / 2
+    y0 = ym - block_h / 2                       # top of "eTuttino" (SPEC: smaller y = away from the player)
+    b1 = y0 + H1                                # its baseline
+    b2 = b1 + LOGO_GAP + H2
+    xl, xr = interface_band(ym)
+    cx = (xl + xr) / 2
+    # margins: the narrowest band over each line's height
+    def margin(width, ya, yb):
+        lm, rm = 1e9, 1e9
+        for k in range(11):
+            y = ya + (yb - ya) * k / 10
+            a, b = interface_band(y)
+            lm = min(lm, cx - width / 2 - a)
+            rm = min(rm, b - (cx + width / 2))
+        return lm, rm
+    m1, m2 = margin(W1, y0, b1), margin(W2, b2 - H2, b2)
+    _LOGO.update({"lines": [("eTuttino", LOGO_FONT, LOGO_SIZE[0], LOGO_TRACK[0], cx, b1, W1, H1),
+                            ("POCKET", LOGO_FONT2, LOGO_SIZE[1], LOGO_TRACK[1], cx, b2, W2, H2)],
+                  "bbox": (cx - max(W1, W2) / 2, y0, cx + max(W1, W2) / 2, b2),
+                  "margins": (round(min(m1[0], m2[0]), 2), round(min(m1[1], m2[1]), 2),
+                              round(y0, 2), round(KNOB_Y - KNOB_D / 2 - b2, 2))})
+    assert min(_LOGO["margins"][:2]) >= LOGO_MIN_MARGIN, _LOGO["margins"]
+    return _LOGO
+
+
 def logo_letters():
-    """(char, font, size, x, y, angle) for the engraved logo: each letter
-    on an arc round G3, upright for the player (its top pointing away from
-    G3), each line centred on LOGO_ANGLE."""
+    """(char, font, size, x, y, up_deg) for the engraved logo: straight
+    lines, each centred on the zone; (x, y) = the letter's centre on its
+    baseline, up_deg = -90 (the letters' tops point away from the player)."""
     out = []
-    for text, font, size, r, track in (("eTuttino", LOGO_FONT, LOGO_SIZE[0], LOGO_R[0], LOGO_TRACK[0]),
-                                       ("POCKET", LOGO_FONT2, LOGO_SIZE[1], LOGO_R[1], LOGO_TRACK[1])):
-        widths = []
-        for ch in text:
-            bb = _glyph(ch, font, size, 1.0).BoundingBox()
-            widths.append(max(bb.xlen, size * 0.25))
-        total = sum(widths) + track * (len(text) - 1)
-        s = -total / 2
+    for text, font, size, track, cx, base, W, _ in logo_layout()["lines"]:
+        widths, _, _ = _line_glyphs(text, font, size, track)
+        s = cx - W / 2
         for ch, w in zip(text, widths):
-            sc = s + w / 2
-            # with the text's top pointing away from G3, writing runs the way
-            # the angle round G3 grows (SPEC frame)
-            a = math.radians(LOGO_ANGLE) + sc / r
-            out.append((ch, font, size, GC[0] + r * math.cos(a), GC[1] + r * math.sin(a), math.degrees(a)))
+            out.append((ch, font, size, s + w / 2, base, -90.0))
             s += w + track
     return out
 
@@ -848,12 +920,21 @@ def panel_boss_and_cuts():
     lid = z_interface(0.0, TOP_T)
     z0 = PANEL_Z_TOP - PANEL_T - 2.5
     boss = poly_prism([at(-17, 0), at(17, 0), at(17, -8), at(-17, -8)], z0, lid + 0.5)
-    adds = [boss]
+    zb = PANEL_Z_TOP - PANEL_T
+    ledge = poly_prism([at(-15, -1), at(15, -1), at(15, PANEL_LEDGE[0]), at(-15, PANEL_LEDGE[0])], zb - PANEL_LEDGE[1], zb)
+    adds = [boss, ledge]
     cuts = []
-    for s, d in PANEL_POSTS:
+    for kind, s, d in PANEL_HOLES:
         p = at(s, d)
-        adds.append(cyl(p[0], p[1], PANEL_Z_TOP, lid + 0.5, PANEL_POST_D))
-        cuts.append(cyl(p[0], p[1], PANEL_Z_TOP - 0.01, PANEL_Z_TOP + 5.0, PANEL_PILOT_D))
+        if kind == "pin":
+            fh = PANEL_POST_FOOT[1]
+            adds.append(cyl(p[0], p[1], PANEL_Z_TOP + fh, lid + 0.5, PANEL_POST_D))
+            adds.append(cyl(p[0], p[1], PANEL_Z_TOP, PANEL_Z_TOP + fh + 0.01, PANEL_POST_FOOT[0]))
+            adds.append(cyl(p[0], p[1], PANEL_Z_TOP - PANEL_PIN_L, PANEL_Z_TOP + 0.01, PANEL_PIN_D))
+        else:
+            w = PANEL_RIB_W / 2
+            adds.append(poly_prism([at(s - w, -8), at(s + w, -8), at(s + w, d + w), at(s - w, d + w)], PANEL_Z_TOP, lid + 0.5))
+            cuts.append(cyl(p[0], p[1], PANEL_Z_TOP - 0.01, PANEL_Z_TOP + 5.0, PANEL_PILOT_D))
     ang = math.degrees(math.atan2(-n[1], -n[0]))     # outwards, along -n
 
     def place(sh, p, zc):
@@ -875,12 +956,26 @@ def panel_boss_and_cuts():
     return adds, cuts, pg
 
 
+def tab_dent():
+    """(x0, y0, x1, y1, z_top) of the room the front tab needs in the box's
+    back wall: the tab grown by TAB_CLR; y0 = the tab's back edge."""
+    x0, y0, x1, y1 = CTRL_TABS[1]
+    return x0 - TAB_CLR, y0, x1 + TAB_CLR, y1 + TAB_CLR, TAB_DENT_TOP
+
+
 def speaker_box_walls():
     """Walls of the sealed back box, hanging from the lid down to
     SPK_BOX_BOTTOM, and the locating ring round the frame."""
     inner = spk_inner_contour()
     outer = S.offset(inner, BOX_WALL, 24)
     walls = poly_prism(outer, SPK_BOX_BOTTOM, 45.0).cut(poly_prism(inner, SPK_BOX_BOTTOM - 1, 46.0))
+    # the dent for the controls board's front tab: a walled pocket pushed into
+    # the box's back wall, open towards the back (the box stays sealed: the
+    # dent's walls stand on the same glued floor)
+    dx0, dy0, dx1, dy1, dz = tab_dent()
+    shell_dent = box3(dx0 - BOX_WALL, dy0 - 5.0, SPK_BOX_BOTTOM, dx1 + BOX_WALL, dy1 + BOX_WALL, dz + BOX_WALL)
+    walls = walls.fuse(shell_dent.intersect(poly_prism(outer, SPK_BOX_BOTTOM - 1, 46.0)))
+    walls = walls.cut(box3(dx0, dy0 - 10.0, SPK_BOX_BOTTOM - 1, dx1, dy1, dz)).clean()
     # the ring is square to the lid (the speaker's axis), from the lid down SPK_RING_H
     r_ring = SPK_D / 2 + SPK_SEAT_CLR
     zf = speaker_face_z(SPK_C[1])
@@ -947,7 +1042,7 @@ def shell():
 
 
 # ================================================================ bottom plate, hatch, box floor, plate
-FEET = [(30.0, 14.0), (75.0, 90.0), (225.0, 14.0), (225.0, 86.0)]
+FEET = [(30.0, 14.0), (80.0, 90.0), (225.0, 14.0), (225.0, 86.0)]
 
 
 def fundo():
@@ -999,8 +1094,11 @@ def hatch():
 
 
 def box_floor():
+    """The box's floor, glued under its walls; where the box meets the
+    case's front wall the floor stops 0.2 short of it (glue fills that)."""
     outer = S.offset(spk_inner_contour(), BOX_WALL, 24)
-    return poly_prism(outer, SPK_BOX_BOTTOM - BOX_FLOOR_T, SPK_BOX_BOTTOM)
+    fl = poly_prism(outer, SPK_BOX_BOTTOM - BOX_FLOOR_T, SPK_BOX_BOTTOM)
+    return fl.intersect(outline_solid(0.0, 20.0, WALL + 0.2))
 
 
 def switch_plate():
@@ -1064,6 +1162,41 @@ def export(shape, name, tol=0.05, mirror=True):
     print("%-20s %6.1f x %5.1f x %4.1f mm  %7.2f cm3" % (name, bb.xlen, bb.ylen, bb.zlen, shape.Volume() / 1000))
 
 
+# what each printed / bought part is made of (SPEC v4 change 5): the top shell
+# in resin for the engraved logo; the rest in MJF PA12 (stronger, cheaper)
+MATERIALS = {
+    "seixo_tampa": ("resina (SLA/DLP, engenharia: Tough/Grey)", 1, "casca de cima: logo de 0,4, grade, furos dos knobs, janelas do USB-C e do fone"),
+    "seixo_fundo": ("MJF PA12", 1, "fundo com os pilares da placa e o berço da bateria"),
+    "seixo_tampa_bateria": ("MJF PA12", 1, "tampinha da bateria, 2 parafusos M2"),
+    "seixo_caixa_fundo": ("MJF PA12", 1, "fundo da caixa do alto-falante, colado e vedado"),
+    "plate": ("FR-4 1,6 mm (Gerber da eletrônica / plate.dxf)", 1, "placa dos switches"),
+    "keycap_natural": ("resina branca", None, "capas das naturais (sem Dó/Fá)"),
+    "keycap_sharp": ("resina preta", None, "capas dos sustenidos"),
+    "keycap_cf": ("resina branca", None, "capas de Dó e Fá, xadrez diagonal em relevo"),
+    "keycap_test_4": ("resina (branca)", 1, "teste: 4 capas num canal, antes das 28"),
+}
+
+
+def cap_counts():
+    """How many caps of each kind the Pocket takes."""
+    out = {"natural": 0, "sharp": 0, "cf": 0}
+    for _, _, _, _, kind in keys():
+        out[kind] += 1
+    return out
+
+
+def export_caps():
+    """The eTuttino's caps (same heights: keycap.py run against this
+    module's parameters), into out/ for the Pocket's file set."""
+    sys.modules.setdefault("case", sys.modules[__name__])     # keycap's "import case" = this module, not the eTuttino's
+    sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..", "case")))
+    import keycap as K
+    assert K.C.Z_KEY_TOP == Z_KEY_TOP and K.C.WIDTH == WIDTH
+    for kind in ("natural", "sharp", "cf"):
+        export(K.cap(kind), "keycap_" + kind, tol=0.01, mirror=False)
+    export(K.test_print(), "keycap_test_4", tol=0.01, mirror=False)
+
+
 def build_all():
     return {
         "seixo_tampa": shell(),
@@ -1079,6 +1212,7 @@ def main():
     parts = build_all()
     for name, shp in parts.items():
         export(shp, name)
+    export_caps()
     flat = cq.Workplane().add(to_file(parts["plate"])).faces("<Z")
     cq.exporters.export(flat, os.path.join(OUT, "plate.dxf"))
     n, ratio = grille_open_ratio()
