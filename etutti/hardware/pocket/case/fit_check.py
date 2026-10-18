@@ -1,4 +1,4 @@
-"""eTuttino Pocket, SPEC v3 D2: does everything fit the Seixo case?
+"""eTuttino Pocket, SPEC v4 F1: does everything fit the Seixo case?
 
     C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/pocket/case/fit_check.py [--no-renders]
 
@@ -78,7 +78,11 @@ def panel_solids(pc):
     pg = C.panel_geometry()
     at, n = pg["at"], pg["n"]
     ang = math.degrees(math.atan2(-n[1], -n[0]))
-    out = {"panel_board": C.poly_prism(pg["board"], C.PANEL_Z_TOP - C.PANEL_T, C.PANEL_Z_TOP)}
+    pb = C.poly_prism(pg["board"], C.PANEL_Z_TOP - C.PANEL_T, C.PANEL_Z_TOP)
+    for _, s_, d in C.PANEL_HOLES:                       # the two D2.2 holes (pin / screw)
+        q = at(s_, d)
+        pb = pb.cut(cyl(q[0], q[1], 0, 40, 2.2))
+    out = {"panel_board": pb}
 
     def place(sh, p, zc):
         sh = sh.rotate(cq.Vector(0, 0, 0), cq.Vector(0, 0, 1), ang)
@@ -88,12 +92,28 @@ def panel_solids(pc):
     usb = box(face - u["depth"], -u["width"] / 2, -u["height"] / 2, face, u["width"] / 2, u["height"] / 2)
     usb = cq.Workplane().add(usb).edges("|X").fillet(u["height"] / 2 - 0.01).val()
     out["usb_c"] = place(usb, at(C.PANEL_USB_S, 0), C.USB_C_ZC)
-    j = pc["headphone_jack"]["body"]
-    bf = C.JACK_WALL - 0.15
-    barrel = cq.Solid.makeCylinder(j["barrel_d"] / 2, j["barrel_len"], cq.Vector(bf - j["barrel_len"], 0, 0), cq.Vector(1, 0, 0))
-    body = box(bf - j["barrel_len"] - j["length"], -j["width"] / 2, C.PANEL_Z_TOP - C.JACK_ZC,
-               bf - j["barrel_len"], j["width"] / 2, C.PANEL_Z_TOP - C.JACK_ZC + pc["panel_board"]["body"]["above_board_max"])
-    out["jack"] = place(barrel.fuse(body), at(C.PANEL_JACK_S, 0), C.JACK_ZC)
+    # Same Sky SJ1-3525N (PECAS v3 headphone_jack.datasheet_dims): body 12 x 11 x 5 high whose
+    # front is 1.95 inside the board edge, nose D6 3.3 long in front of it (1.35 past the edge),
+    # axis 2.5 over the board. The nose's bottom would dip 0.5 under the board top: modelled
+    # flat-bottomed there (it sits on the board) -- CHECK on the part.
+    j = pc["headphone_jack"]["datasheet_dims"]
+    zc = C.JACK_ZC
+    body = box(-1.95 - j["body_length_behind_nose"], -j["body_width"] / 2, C.PANEL_Z_TOP - zc,
+               -1.95, j["body_width"] / 2, C.PANEL_Z_TOP - zc + j["body_height_above_pcb"])
+    nose = cq.Solid.makeCylinder(j["nose_d"] / 2, j["nose_length_in_front_of_body"], cq.Vector(-1.95, 0, 0), cq.Vector(1, 0, 0))
+    nose = nose.intersect(box(-3, -5, C.PANEL_Z_TOP - zc, 3, 5, 5))
+    out["jack"] = place(body.fuse(nose), at(C.PANEL_JACK_S, 0), zc)
+    # the fixings: pin hole 1 (nothing under the board), M2 head under hole 2
+    for kind, s_, d in C.PANEL_HOLES:
+        p = at(s_, d)
+        if kind == "screw":
+            out["panel_screw_head"] = cyl(p[0], p[1], C.PANEL_Z_TOP - C.PANEL_T - C.PANEL_HEAD[1], C.PANEL_Z_TOP - C.PANEL_T, C.PANEL_HEAD[0])
+    # the USB-C's shell legs under the board: rear-left trimmed flush, the others 0.8 below (PECAS usb_c.shell_legs)
+    legs = []
+    for u, v, L in ((12.32, 5.93, 0.8), (3.68, 1.75, 0.8), (12.32, 1.75, 0.8)):
+        q = at(u - 15.0, v)
+        legs.append(cyl(q[0], q[1], C.PANEL_Z_TOP - C.PANEL_T - L, C.PANEL_Z_TOP - C.PANEL_T, 1.0))
+    out["usb_legs"] = C.fuse(legs)
     return out, pg
 
 
@@ -110,6 +130,9 @@ def controls_solids(pc):
     cx0, cy0, cx1, cy1 = C.CTRL_BOARD
     ctrl = box(cx0, cy0, C.CTRL_TOP - C.CTRL_T, cx1, cy1, C.CTRL_TOP)
     legs = box(cx0, cy0, C.CTRL_TOP - C.CTRL_T - C.CTRL_LEGS, cx1, cy1, C.CTRL_TOP - C.CTRL_T)
+    for tx0, ty0, tx1, ty1 in C.CTRL_TABS:          # the EC11E's two tabs (E2b), with legs under them
+        ctrl = ctrl.fuse(box(tx0, ty0, C.CTRL_TOP - C.CTRL_T, tx1, ty1, C.CTRL_TOP))
+        legs = legs.fuse(box(tx0, ty0, C.CTRL_TOP - C.CTRL_T - C.CTRL_LEGS, tx1, ty1, C.CTRL_TOP - C.CTRL_T))
     e = pc["encoder"]["body"]
     sx, sy = C.SELECT_XY
     enc = box(sx - e["plan"][0] / 2, sy - e["plan"][1] / 2, C.CTRL_TOP, sx + e["plan"][0] / 2, sy + e["plan"][1] / 2,
@@ -135,10 +158,33 @@ def battery(pc):
     c = C.BATT_C
     cell = box(c[0] - l / 2, c[1] - w / 2, C.BATT_Z[0], c[0] + l / 2, c[1] + w / 2, C.BATT_Z[0] + t)
     swollen = box(c[0] - l / 2, c[1] - w / 2, C.BATT_Z[0], c[0] + l / 2, c[1] + w / 2, C.BATT_Z[0] + swell)
-    # the mated JST PH 3-pin pair in the pocket (plug + receptacle, ~11.5 x 4.5 x 6, CHECK)
+    # the mated JST PH 3-way pair lying flat in the pocket, its axis along x (PECAS v3
+    # battery.connector_pocket_v4.mated: 8.0 wide x 4.8 high x 12.5 long), centred
+    m = pc["battery"]["connector_pocket_v4"]["parts"]["mated"]["dims_wxhxl"]
     x0, x1, y0 = C.BATT_POCKET
-    plug = box(x0 + 0.4, y0 + 0.6, C.BATT_Z[0] + 0.5, x0 + 0.4 + 11.5, y0 + 0.6 + 4.5, C.BATT_Z[0] + 0.5 + 6.0)
-    return cell, swollen.fuse(plug)
+    y1 = C.BATT_C[1] - C.BATT_IN[1] / 2
+    xm, ym = (x0 + x1) / 2, (y0 + y1) / 2
+    plug = box(xm - m[2] / 2, ym - m[0] / 2, C.BATT_Z[0], xm + m[2] / 2, ym + m[0] / 2, C.BATT_Z[0] + m[1])
+    return cell, swollen, plug
+
+
+def board_connectors(pc):
+    """J_BAT and J_SPK on the main board's top with their PH plugs in (PECAS
+    main_board_connectors: B3B / B2B-PH-K-S vertical, 10.5 tall with the plug)."""
+    out = {}
+    for it in pc["main_board_connectors"]["items"]:
+        if it["ref"] not in ("J_BAT", "J_SPK"):
+            continue
+        n = 3 if it["ref"] == "J_BAT" else 2
+        L = 2.0 * (n - 1) + 3.9 + 0.05                      # PH body along the pin row
+        x, y = it["at"]
+        h = it.get("plug_height_total", 10.5)
+        if it["rot"] in (90, 270):                          # pins along y from pin 1 (rot 270: +y)
+            sol = box(x - 2.82, y - 1.95, C.Z_PCB_TOP, x + 1.72, y - 1.95 + L, C.Z_PCB_TOP + h)   # as the KiCad footprint
+        else:
+            sol = box(x - 1.95, y - 2.25, C.Z_PCB_TOP, x - 1.95 + L, y + 2.25, C.Z_PCB_TOP + h)
+        out["j_" + it["ref"][2:].lower()] = sol
+    return out
 
 
 def main_board():
@@ -189,7 +235,7 @@ def ray_probe():
     nothing may stop them (a film over the keys once hid in a render)."""
     import pyvista as pv
     m = pv.read(os.path.join(C.OUT, "seixo_tampa.stl"))
-    res = {"keys": [0, 0], "grille": [0, 0], "holes": [0, 0], "blocked": []}
+    res = {"keys": [0, 0], "grille": [0, 0], "holes": [0, 0], "panel": [0, 0], "blocked": []}
 
     def free(x, y, z0=45.0, z1=C.Z_PLATE_TOP + 0.3, key=None):
         pts, _ = m.ray_trace((x, C.WIDTH - y, z0), (x, C.WIDTH - y, z1), first_point=False)
@@ -205,6 +251,16 @@ def ray_probe():
         free(x, y, z1=C.z_interface(y, C.TOP_T) - 0.6, key="grille")
     for (x, y) in (C.VOLUME_XY, C.SELECT_XY, C.LED_XY):
         free(x, y, z1=C.z_interface(y, C.TOP_T) - 0.6, key="holes")
+    # sideways through the USB-C and jack windows: from outside the wall to the board's front edge
+    at = C.panel_geometry()["at"]
+    for s_, zc, r in ((C.PANEL_USB_S, C.USB_C_ZC, (3.5, 1.2)), (C.PANEL_JACK_S, C.JACK_ZC, (2.6, 2.6))):
+        for ds, dz in ((0, 0), (r[0], 0), (-r[0], 0), (0, r[1]), (0, -r[1])):
+            a, b = at(s_ + ds, -12.0), at(s_ + ds, 0.3)
+            pts, _ = m.ray_trace((a[0], C.WIDTH - a[1], zc + dz), (b[0], C.WIDTH - b[1], zc + dz), first_point=False)
+            ok = len(pts) == 0
+            res["panel"][0 if ok else 1] += 1
+            if not ok:
+                res["blocked"].append(["panel", round(s_ + ds, 2), round(zc + dz, 2)])
     return res
 
 
@@ -220,13 +276,14 @@ def run(renders=True):
     st = stack_solids()
     pan, pg = panel_solids(pc)
     ctl = controls_solids(pc)
-    cell, swollen = battery(pc)
+    cell, swollen, bplug = battery(pc)
+    bconn = board_connectors(pc)
     board, below = main_board()
     sw, caps, cap_list = keyboard()
     parts = {"main_board": board, "board_underside": below, **st, **pan, **ctl,
-             "battery": swollen, "speaker": spk_full}
+             "battery": swollen, "battery_plug": bplug, "speaker": spk_full, **bconn}
     case_parts = {"shell": shell, "fundo": fundo, "plate": plate, "box_floor": bfloor, "hatch": hatch}
-    R = {"spec": "v3", "task": "D2", "length": round(C.length(), 2), "plan_vs_shape_py": round(C.check_plan(), 3)}
+    R = {"spec": "v4", "task": "F1", "length": round(C.length(), 2), "plan_vs_shape_py": round(C.check_plan(), 3)}
 
     # 1. every part against the case parts
     allowed = {("board_underside", "fundo"), ("main_board", "fundo"),   # pillars touch the board
@@ -254,14 +311,32 @@ def run(renders=True):
              ("battery", "main_board"), ("battery", "board_underside"), ("speaker", "controls_board"),
              ("speaker", "encoder"), ("speaker", "pot"), ("controls_conn", "led"), ("encoder", "led"),
              ("pot", "encoder"), ("main_board", "speaker"), ("usb_c", "jack"), ("pot_board", "encoder"),
-             ("pot", "controls_board"), ("pot_board", "controls_board")]
+             ("pot", "controls_board"), ("pot_board", "controls_board"),
+             ("usb_plug", "panel_screw_head"), ("usb_plug", "usb_legs"), ("j_spk", "panel_screw_head"),
+             ("j_bat", "panel_board"), ("j_spk", "panel_board"), ("j_bat", "battery_plug"), ("battery_plug", "main_board"),
+             ("battery_plug", "battery"), ("battery_plug", "pot"), ("battery_plug", "pot_board"), ("jack", "panel_screw_head"),
+             ("usb_c", "panel_screw_head")]
     pair_res = []
     for a, b in pairs:
         pair_res.append([a, b, round(overlap(parts[a], parts[b]), 3), round(gap(parts[a], parts[b]), 2)])
+    # the controls board's two tabs (E2b): back one over the stack, front one in the speaker box's dent
+    tabs = []
+    for tx0, ty0, tx1, ty1 in C.CTRL_TABS:
+        t = box(tx0, ty0, C.CTRL_TOP - C.CTRL_T - C.CTRL_LEGS, tx1, ty1, C.CTRL_TOP)
+        tabs.append({"rect": [tx0, ty0, tx1, ty1], "to_shell": round(gap(t, shell), 2),
+                     "to_ab_jack": round(gap(t, parts["ab_jack"]), 2), "to_teensy": round(gap(t, parts["teensy"]), 2),
+                     "to_audio_board": round(gap(t, parts["audio_board"]), 2), "to_speaker": round(gap(t, parts["speaker"]), 2),
+                     "to_box_floor": round(gap(t, bfloor), 2), "to_pot_board": round(gap(t, parts["pot_board"]), 2)})
+    R["controls_tabs"] = tabs
+    R["logo"] = {"lines": [[l[0], round(l[4], 2), round(l[5], 2), l[2], round(l[6], 2), round(l[7], 2)] for l in C.logo_layout()["lines"]],
+                 "bbox": [round(v, 2) for v in C.logo_layout()["bbox"]], "margins_lr_back_front": C.logo_layout()["margins"],
+                 "depth": C.LOGO_DEPTH}
     R["collisions_with_case"] = coll
     R["gap_to_shell"] = gaps
     R["pairs"] = pair_res
     R["box_floor_vs_bay"] = round(gap(bfloor, fundo), 2)
+    cp = list(case_parts.items())
+    R["case_parts_overlap"] = {"%s/%s" % (a, b): round(overlap(sa, sb), 4) for i, (a, sa) in enumerate(cp) for b, sb in cp[i + 1:]}
     cols = {"%g,%g" % xy: round(gap(pan["panel_board"].fuse(pan["jack"]).fuse(pan["usb_c"]), cyl(xy[0], xy[1], C.FLOOR_T, C.BOSS_TOP.get(xy, 40.0), C.BOSS_D)), 2)
             for xy in C.screw_points() if xy[0] < 70}
     R["panel_vs_columns"] = cols
@@ -277,7 +352,7 @@ def run(renders=True):
     # 3. speaker
     cav = C.cavity()
     inner = C.spk_inner_contour()
-    box_in = C.poly_prism(inner, C.SPK_BOX_BOTTOM, 45.0).intersect(cav)
+    box_in = C.poly_prism(inner, C.SPK_BOX_BOTTOM, 45.0).intersect(cav).cut(shell)   # less the ring and the tab's dent
     R["speaker"] = {
         "back_volume_nominal_cm3": round(box_in.cut(spk_nom).Volume() / 1000, 1),
         "back_volume_conservative_cm3": round(box_in.cut(spk_full).Volume() / 1000, 1),
@@ -308,7 +383,12 @@ def run(renders=True):
         "swollen_to_roof": round(C.BATT_ROOF_Z[0] - (C.BATT_Z[0] + b["with_pcm_and_wire_fold"][0] * (1 + b["swelling_allowance_pct"] / 100)), 2),
         "bay_to_board": round(gap(C.poly_prism(C.battery_rects()[1], C.FLOOR_T, C.BATT_ROOF_Z[1]).fuse(
             C.poly_prism(C.pocket_rects()[1], C.FLOOR_T, C.BATT_ROOF_Z[1])), board), 2),
-        "plug_in_pocket_to_fundo": round(gap(swollen, fundo), 2),
+        "plug_in_pocket_to_fundo": round(gap(bplug, fundo), 2),
+        "plug_in_pocket_overlap": round(overlap(bplug, fundo), 4),
+        "pocket_inside": [round(C.BATT_POCKET[1] - C.BATT_POCKET[0], 2), round(C.BATT_C[1] - C.BATT_IN[1] / 2 - C.BATT_POCKET[2], 2),
+                          round(C.BATT_Z[1] - C.BATT_Z[0], 2)],
+        "pocket_min_pecas": [pc["battery"]["connector_pocket_v4"]["pocket_min"][k] for k in ("x_along_axis", "y", "z")],
+        "pocket_to_shell": round(gap(fundo.intersect(C.poly_prism(C.pocket_rects()[1], 0, 20)), shell), 2),
         "bay_to_shell": round(gap(fundo.intersect(C.poly_prism(C.battery_rects()[1], 0, 20)), shell), 2),
     }
     # 6. heights under the lid
@@ -322,13 +402,22 @@ def run(renders=True):
     }
     # 7. exports
     names = ["seixo_tampa", "seixo_fundo", "seixo_tampa_bateria", "seixo_caixa_fundo", "plate"]
-    R["stl"] = stl_checks(names)
+    capn = ["keycap_natural", "keycap_sharp", "keycap_cf", "keycap_test_4"]
+    R["stl"] = stl_checks(names + capn)
     R["rays"] = ray_probe()
     # 8. weight
     vol = sum(R["stl"][n]["volume_cm3"] for n in names if n != "plate")
     R["weight"] = {"printed_cm3": round(vol, 1),
                    **{k: round(vol * d, 0) for k, d in DENSITY.items()},
                    "plate_fr4_g": round(R["stl"]["plate"]["volume_cm3"] * 1.85, 0)}
+    # SPEC v4 change 5: top shell in resin, the rest in MJF; the 28 caps in resin
+    cc = C.cap_counts()
+    caps_cm3 = sum(R["stl"]["keycap_" + k]["volume_cm3"] * n for k, n in cc.items())
+    shell_g = R["stl"]["seixo_tampa"]["volume_cm3"] * DENSITY["resin_g"]
+    mjf_g = sum(R["stl"][n]["volume_cm3"] for n in ("seixo_fundo", "seixo_tampa_bateria", "seixo_caixa_fundo")) * DENSITY["mjf_pa12_g"]
+    R["weight"]["v4_materials"] = {"top_shell_resin_g": round(shell_g, 1), "mjf_parts_g": round(mjf_g, 1),
+                                   "caps_resin_g": round(caps_cm3 * DENSITY["resin_g"], 1), "cap_counts": cc,
+                                   "printed_total_g": round(shell_g + mjf_g + caps_cm3 * DENSITY["resin_g"], 0)}
     with open(os.path.join(C.OUT, "fit_check.json"), "w", encoding="utf-8") as f:
         json.dump(R, f, indent=1, ensure_ascii=False)
     if renders:
@@ -342,7 +431,8 @@ COLOURS = {"pcb": "#2f7d4a", "ab": "#1d5d3b", "teensy": "#3aa86b", "batt": "#d08
 PART_COL = {"main_board": "pcb", "audio_board": "ab", "teensy": "teensy", "teensy_usb": "metal", "usb_plug": "plug",
             "ab_jack": "dark", "panel_board": "panel", "usb_c": "metal", "jack": "dark", "pot": "ctrl", "pot_board": "ctrl",
             "controls_board": "ctrl", "encoder": "metal", "led": "metal", "controls_conn": "dark", "battery": "batt",
-            "speaker": "spk"}
+            "speaker": "spk", "battery_plug": "dark", "j_bat": "plug", "j_spk": "plug", "panel_screw_head": "metal",
+            "usb_legs": "metal"}
 
 
 def render_all(shell, fundo, plate, bfloor, hatch, parts, sw, caps, pc):
@@ -400,6 +490,9 @@ def render_all(shell, fundo, plate, bfloor, hatch, parts, sw, caps, pc):
         ("fit_corte_y49", "ysec", 49.0, [(50, -300, 16), (50, 51, 16), (0, 0, 1)], None, 30),
         ("fit_corte_y78", "ysec", C.SPK_C[1], [(50, -300, 16), (50, 22, 16), (0, 0, 1)], None, 30),
         ("fit_corte_y21", "ysec", 21.0, [(50, -300, 16), (50, 79, 16), (0, 0, 1)], None, 30),
+        ("fit_corte_x31", "xsec", 31.12, [(-300, 50, 16), (31, 50, 16), (0, 0, 1)], None, 30),
+        ("fit_corte_x18", "xsec", 18.0, [(-300, 50, 16), (18, 50, 16), (0, 0, 1)], None, 30),
+        ("fit_corte_y44", "ysec", 44.5, [(50, -300, 16), (50, 55.5, 16), (0, 0, 1)], None, 30),
     ]
     for name, mode, cut, cam, va, ps in shots:
         pl = pv.Plotter(off_screen=True, window_size=(1600, 1000))

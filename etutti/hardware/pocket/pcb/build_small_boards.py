@@ -11,7 +11,10 @@
             pot with switch on its left face, its shaft up through the lid,
             5 joint pads on its right face, 1.0-1.3 mm above the controls
             board's back face, soldered across the 90 degree corner.
-            Frame: X = 55 - y, Y = 29.8 - z (seen from the pot's side).
+            Frame: X = y - 43, Y = 29.8 - z (seen from the pot's side, F face
+            towards -x: the SPEC frame is left-handed, so the player (+y) is on
+            the RIGHT. v0.1 had X = 55 - y, a mirrored board: the joint's GND
+            pad landed on a pad without a net -- fixed in v0.2, SPEC v4 F2).
   panel     USB-C + headphone jack on the back-left wall's flat boss
             (envelope "panel"), all parts on top (nothing may hang below:
             it passes 0.45 mm over the Teensy's micro-B plug). Frame:
@@ -50,10 +53,11 @@ PN = G.ENV["panel"]
 # other joint pads are only solder for strength.
 CTL_NETS = {1: "VCC", 2: "POT", 3: "GND", 4: "PWR_A", 5: "PWR_B", 6: "ENC_A", 7: "ENC_B", 8: "ENC_SW",
             9: "LED_R", 10: "LED_G"}
-# joint pads, by the controls board's y (the pot board's X = 55 - y); clear
+# joint pads, by the controls board's y (the pot board's X = y - 43); clear
 # of the encoder's left lug (y 47.4-50.6)
 JOINT = {44.0: None, 45.2: None, 46.4: "GND", 51.6: None, 52.8: None, 54.0: None}
 TAB_BACK, TAB_FRONT = 40.0, 57.5
+ESD_AT = (14.24, 3.4)   # panel board frame: between the USB-C (u <= 12.52) and the jack (u >= 15.95)
 JOINT_Y = 14.8          # pot board: z 15.0, just under the controls board's back face (z 15.58)
 
 
@@ -143,7 +147,46 @@ def strip_silk(fps, x0, y0, x1, y1):
                     fp.Remove(g)
 
 
-ORDER = {"controls": [], "panel": ["GND", "VBUS"]}
+ORDER = {"controls": ["LED_R"], "panel": ["DP", "DM", "GND", "VBUS"]}
+
+
+def drop_one_sided_vias():
+    """A via the router dropped as an item but that only one layer's
+    copper ever reached: remove it (DRC warns about it)."""
+    def ends(t):
+        return [B.xy(t.GetStart()), B.xy(t.GetEnd())]
+    tracks = [t for t in B.board.GetTracks() if t.GetClass() == "PCB_TRACK"]
+    for v in [t for t in B.board.GetTracks() if t.GetClass() == "PCB_VIA"]:
+        vx, vy = B.xy(v.GetPosition())
+        layers = {t.GetLayer() for t in tracks if t.GetNetname() == v.GetNetname()
+                  and any(math.hypot(px - vx, py - vy) < 0.05 for px, py in ends(t))}
+        if len(layers) < 2:
+            B.board.Remove(v)
+
+
+def tight_courtyard(fp, margin):
+    """Replace a footprint's courtyard by the box round its pads and Fab body."""
+    xs, ys = [], []
+    for g in list(fp.GraphicalItems()):
+        if g.GetLayer() in (pcbnew.F_CrtYd, pcbnew.B_CrtYd):
+            fp.Remove(g)
+        elif g.GetLayer() == pcbnew.F_Fab:
+            bb = g.GetBoundingBox()
+            xs += [pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetRight())]
+            ys += [pcbnew.ToMM(bb.GetTop()), pcbnew.ToMM(bb.GetBottom())]
+    for p in fp.Pads():
+        bb = p.GetBoundingBox()
+        xs += [pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetRight())]
+        ys += [pcbnew.ToMM(bb.GetTop()), pcbnew.ToMM(bb.GetBottom())]
+    x0, y0, x1, y1 = min(xs) - margin, min(ys) - margin, max(xs) + margin, max(ys) + margin
+    for a, b in (((x0, y0), (x1, y0)), ((x1, y0), (x1, y1)), ((x1, y1), (x0, y1)), ((x0, y1), (x0, y0))):
+        s = pcbnew.PCB_SHAPE(fp)
+        s.SetShape(pcbnew.SHAPE_T_SEGMENT)
+        s.SetStart(B.mm(*a))
+        s.SetEnd(B.mm(*b))
+        s.SetLayer(pcbnew.F_CrtYd)
+        s.SetWidth(pcbnew.FromMM(0.05))
+        fp.Add(s)
 
 
 def lanes(R, pads_, side, depth=1.6):
@@ -264,7 +307,7 @@ def controls():
             (x1, y1), (ex1, y1), (ex1, TAB_FRONT), (ex0, TAB_FRONT), (ex0, y1), (x0, y1)]
     route_all(fps, x1 + 1, TAB_FRONT + 1, (x0, TAB_BACK), poly, ORDER.get("controls", ()))
     outline(poly)
-    B.text("CTL v0.1", 45.0, 43.6, 0.8, pcbnew.B_SilkS)
+    B.text("CTL v0.2", 45.0, 43.6, 0.8, pcbnew.B_SilkS)
     strip_silk(fps, x0, y0, x1, y1)
     path = os.path.join(KICAD_DIR, "pocket_controls.kicad_pcb")
     pcbnew.SaveBoard(path, B.board)
@@ -277,8 +320,10 @@ def pot():
     pb = CT["pot"]
     W = pb["board"][3] - pb["board"][1]               # 12 (y extent)
     H = pb["board_z"][1] - pb["board_z"][0]           # 16 (z extent)
-    ymax, ztop = pb["board"][3], pb["board_z"][1]
-    X = lambda y: ymax - y
+    ymin, ztop = pb["board"][1], pb["board_z"][1]
+    # seen from the pot's side (looking +x) the player (+y) is on the right:
+    # KiCad X grows with y (the SPEC frame is left-handed)
+    X = lambda y: y - ymin
     Y = lambda z: ztop - z
     shaft_X, shoulder_Y = X(pb["shaft"][1]), Y(pb["body_z"][1])
     # RK097 horizontal-with-switch footprint: shaft along -x, body front 5 mm
@@ -301,7 +346,7 @@ def pot():
     poly = [(0, 0), (W, 0), (W, H), (0, H)]
     route_all(fps, W + 1, H + 1, (0, 0), poly, ("GND", "VCC"))
     outline(poly)
-    B.text("VOL", W / 2, 1.2, 0.8)
+    B.text("VOL v0.2", W / 2, 1.2, 0.8)
     strip_silk(fps, 0, 0, W, H)
     path = os.path.join(KICAD_DIR, "pocket_pot.kicad_pcb")
     pcbnew.SaveBoard(path, B.board)
@@ -351,17 +396,30 @@ def panel():
         hi.SetNet(B.net(n))
         lo.SetNet(B.net("GND"))
     fps += [r1, r2]
+    # SPEC v4: ESD on the USB-C -- PRTR5V0U2X (SOT-143): D+ / D- rail-to-rail
+    # clamps + the VBUS clamp, in the gap between the USB-C and the jack
+    esd = clean(B.place(B.lib("Package_TO_SOT_SMD"), "SOT-143", "U1", ESD_AT[0], ESD_AT[1], "PRTR5V0U2X", rot=180))
+    for p in esd.Pads():
+        p.SetNet(B.net({"1": "GND", "2": "DP", "3": "DM", "4": "VBUS"}[p.GetNumber()]))
+    fps.append(esd)
     # wire pads (two wires each on VBUS and GND: the micro-B cable's and the SH-8 cable's)
-    # bottom row under the USB fan-out: VBUS, D+, D-, GND; column between USB-C and jack: headphone
+    # back row under the USB fan-out: VBUS, D+, D-, GND; headphone: right end, past the jack
     for i, n in enumerate(("VBUS", "DP", "DM", "GND")):
         fps.append(smd_pad("TP%d" % (i + 1), 6.2 + 1.5 * i, 1.1, 1.1, 1.0, n))
     for i, n in enumerate(("HP_L", "HP_R", "HP_VGND", "HP_TIPSW")):
-        fps.append(smd_pad("TP%d" % (i + 5), 14.6, 12.0 - 2.0 * i, 1.2, 1.0, n))
+        fps.append(smd_pad("TP%d" % (i + 5), W - 1.0, 2.0 + 2.5 * i, 0.9, 1.0, n))
+    # holes: PECAS.json panel_board.holes_v4 (H1 a locating pin over the
+    # micro-B plug, H2 the screw from below, clear of the plug)
     holes = []
-    for i, h in enumerate(PN["holes"], start=1):
-        hu, hv = uv(h["xy"])
-        hp = clean(B.place(B.lib("MountingHole"), "MountingHole_2.2mm_M2", "H%d" % i, hu, D - hv))
-        for g in list(hp.GraphicalItems()):     # the post (4.4) sits clear of the parts; its courtyard would not
+    pecas = json.load(open(os.path.join(HERE, "PECAS.json"), encoding="utf-8"))["parts"]["panel_board"]["holes_v4"]
+    for i, name in enumerate(("H1", "H2"), start=1):
+        hu, hv = pecas[name]["panel_uv"]
+        env_uv = uv(PN["holes"][i - 1]["xy"])
+        if math.hypot(env_uv[0] - hu, env_uv[1] - hv) > 0.05:
+            print("NOTE: envelope panel hole %d at uv (%.2f, %.2f), PECAS asks (%.2f, %.2f): using PECAS" % (i, env_uv[0], env_uv[1], hu, hv))
+        fpname = "MountingHole_2.2mm_M2"   # H1 is the same 2.2 hole, used for a pin
+        hp = clean(B.place(B.lib("MountingHole"), fpname, name, hu, D - hv))
+        for g in list(hp.GraphicalItems()):     # the post / rib sits clear of the parts; its courtyard would not
             if g.GetLayer() in (pcbnew.F_CrtYd, pcbnew.B_CrtYd):
                 hp.Remove(g)
         fps.append(hp)
@@ -412,7 +470,8 @@ def panel():
         item_net[k] = "GND"
     first = ORDER["panel"]
     for n in sorted(set(item_net.values()), key=lambda n: (n not in first, first.index(n) if n in first else 0, n)):
-        its = sorted(i for i, nn in item_net.items() if nn == n)
+        # the hand-made fan-out (its via) seeds the tree: the wire pads sit in a pocket only it reaches
+        its = sorted((i for i, nn in item_net.items() if nn == n), key=lambda i: (i[0] != "usb", i))
         if n in ("CC1", "CC2", "VBUS_L"):
             continue                    # tracked straight onto the resistor
         R.tree[n] = set(R.items[its[0]])
@@ -420,12 +479,45 @@ def panel():
             B.connect(n, i, R.tree[n] - R.items[i], "%s %s" % (n, i))
             R.tree[n] |= R.items[i]
             print("routed", n, i)
+    drop_one_sided_vias()
+    # courtyards: the ESD sits 0.37 from the USB-C body and the jack (JLCPCB
+    # places it before the jack is hand-soldered): no courtyard on U1, and
+    # the USB-C's drawn tight round its pads and body so the H2 hole is not "inside" it
+    for g in list(esd.GraphicalItems()):
+        if g.GetLayer() in (pcbnew.F_CrtYd, pcbnew.B_CrtYd):
+            esd.Remove(g)
+    tight_courtyard(usb, 0.1)
     outline(poly)
-    B.text("PANEL v0.1", 22.0, 11.8, 0.8, pcbnew.B_SilkS)
+    B.text("PANEL v0.2", 22.0, 11.8, 0.8, pcbnew.B_SilkS)
     strip_silk(fps, 0, 0, W, D)
     path = os.path.join(KICAD_DIR, "pocket_panel.kicad_pcb")
     pcbnew.SaveBoard(path, B.board)
     return path
+
+
+PANEL_BOM = [  # JLCPCB assembly, top side (the jack is hand-soldered)
+    ("TYPE-C-31-M-12 USB-C 16P", "J1", "USB_C_Receptacle_HRO_TYPE-C-31-M-12", "C165948"),
+    ("5.1k 1% 0402", "R1,R2", "R_0402_1005Metric", "C25905"),
+    ("PRTR5V0U2X ESD (D+/D-/VBUS)", "U1", "SOT-143", "C2827688"),
+]
+
+
+def panel_assembly(path):
+    """JLCPCB BOM + CPL for the panel board's top side (USB-C, CC resistors,
+    ESD): the 0.5 mm USB-C row and the 0402s are not for a home iron."""
+    import jlc
+    with open(os.path.join(FAB_DIR, "pocket_panel_bom.csv"), "w", encoding="utf-8", newline="") as f:
+        f.write("Comment,Designator,Footprint,LCSC Part #\n")
+        for row in PANEL_BOM:
+            f.write('"%s","%s","%s","%s"\n' % row)
+    cpl = os.path.join(FAB_DIR, "pocket_panel_cpl_top.csv")
+    B.cli("pcb", "export", "pos", "--side", "front", "--format", "csv", "--units", "mm", "--output", cpl, path)
+    with open(cpl, encoding="utf-8") as f:
+        lines = f.read().splitlines()
+    keep = [lines[0]] + [l for l in lines[1:] if l.split(",")[0].strip('"') in ("J1", "R1", "R2", "U1")]
+    with open(cpl, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(keep) + "\n")
+    jlc.cpl(cpl)
 
 
 if __name__ == "__main__":
@@ -457,5 +549,7 @@ if __name__ == "__main__":
             continue
         print(name, "route order", ORDER.get(name))
         res[name] = drc_and_gerbers(path, "pocket_" + name)
+        if name == "panel":
+            panel_assembly(path)
     print(res)
     sys.exit(0 if all(v == (0, 0, 0) for v in res.values()) else 1)

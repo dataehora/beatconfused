@@ -142,10 +142,9 @@ def main():
     w = L.append
     w("# eTuttino Pocket · orçamento de energia")
     w("")
-    w("Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v3, tarefa E2 "
-      "e E2b (sensor TMAG5253BA3 por grupo e 396 MHz decididos na v3; o clock final sai da medição da P1). "
-      "A placa usa o TPS63001 (3,3 V fixo, LCSC C28060) no lugar do TPS63802: o encapsulamento VSON-HR "
-      "do TPS63802 não tem desenho conferido na biblioteca do KiCad.")
+    w("Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v4, tarefa F2 "
+      "(sensor TMAG5253BA3 por grupo e 396 MHz decididos na v3; o clock final sai da medição na etapa de "
+      "programação). Conversor TPS63001 (3,3 V fixo, LCSC C28060), aceito na v4.")
     w("")
     w(f"Bateria LiPo 1S de **{BATT_MAH} mAh** (3,7 V médios), capacidade útil {int(DERATE * 100)} % "
       f"(corte em ~3,3 V, envelhecimento, frio) = {f(BATT_MAH / 1000 * V_BATT * DERATE, 2)} Wh.")
@@ -293,7 +292,10 @@ def main():
       "(NTC de 10 kΩ, B 3435, no TS: corrente de 75 µA, desliga a 2,1 V = 28 kΩ ≈ 0 °C e a 0,3 V = 4 kΩ ≈ 50 °C; datasheet).")
     w("")
     w(f"**Luz de carga** (CHG do BQ24074 → P-MOSFET → {R_CHG_LED} Ω → diodo → vermelho do LED): "
-      f"~{f((5.0 - 0.35 - 1.9) / R_CHG_LED * 1000, 1)} mA, tirados da USB, não da bateria. Acende também desligado.")
+      f"~{f((5.0 - 0.35 - 1.9) / R_CHG_LED * 1000, 1)} mA, tirados da USB, não da bateria, **só com o Pocket "
+      "desligado** (SPEC v4). Ligado, o trilho de 3,3 V liga o Q31, que desvia a luz para o GND: "
+      f"~{f(5.0 / R_CHG_LED * 1000, 1)} mA da USB enquanto carrega e toca, nada da bateria. "
+      "O ESD da USB-C (PRTR5V0U2X) fuga < 0,1 µA: desprezível.")
     w("")
     w("## Autonomia com outra capacidade")
     w("")

@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title>BeatConfused | eTuttino Pocket · manual de montagem</title>
+  <meta name="description" content="Manual de montagem do eTuttino Pocket: o que comprar e imprimir, a solda, a montagem passo a passo e os primeiros testes." />
+  <!-- SPEC v4, task M1. Portuguese only, unlisted (noindex, not in the
+       sitemap), linked from /etutti/pocket/ only. The pictures come from
+       etutti/hardware/pocket/manual3d/build.py; the parts tables (kit BOM,
+       wiring) are written into this file by manual3d/page_tables.py between
+       the BEGIN/END markers -- edit that script for those, this file for the rest. -->
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#10131d" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/shared/tuner-common.css?v=20260913" />
+  <link rel="stylesheet" href="styles.css?v=20261018" />
+  <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
+</head>
+<body>
+  <main class="page">
+    <a class="site-title" href="/">beatconfused.com</a>
+    <header class="hero">
+      <p class="eyebrow">BeatConfused Studio</p>
+      <h1>eTuttino Pocket · manual de montagem</h1>
+    </header>
+    <p class="manual-back"><a href="../">← Voltar à página do eTuttino Pocket</a></p>
+
+    <div class="manual-body">
+      <p class="manual-intro">
+        O eTuttino Pocket é um acordeão cromático eletrônico de botões: 28 botões em C-griff (G3 a E5), teclas
+        <strong>magnéticas</strong> sensíveis ao toque, alto-falante, saída de fone e bateria própria. Este manual vai das
+        peças compradas até os primeiros testes, numa rota só: a placa principal chega montada da JLCPCB, e o que se solda em
+        casa está marcado em cada passo.
+      </p>
+
+      <figure class="wide">
+        <a class="zoomable" href="img/r_hero.jpg"><img src="img/r_hero-sm.jpg" alt="O eTuttino Pocket montado, no case Seixo" loading="lazy" /></a>
+        <figcaption>O Pocket montado, desenhado a partir dos arquivos do projeto. Clique em qualquer figura para vê-la em alta resolução.</figcaption>
+      </figure>
+
+      <div class="callout"><p>O projeto físico está fechado: case, placas, peças e cabos. <strong>Nenhum Pocket foi montado ainda.</strong> Trate o primeiro como protótipo: confira cada medida marcada <em>(conferir)</em> com a peça real antes de seguir. A firmware do Pocket vem depois; o passo 9 testa a parte elétrica sem ela.</p></div>
+
+      <nav class="manual-toc" aria-label="Partes do manual">
+        <a href="#antes"><span class="toc-kicker">Passo 1</span><span class="toc-title">Antes de começar</span><span class="toc-desc">O que comprar, imprimir e ter na bancada. Bateria LiPo: avisos.</span></a>
+        <a href="#capas"><span class="toc-kicker">Passos 2 a 5</span><span class="toc-title">Capas, Teensy, placa, switches</span><span class="toc-desc">Teste das capas, a pilha baixa, a placa principal, o plate.</span></a>
+        <a href="#plaquinhas"><span class="toc-kicker">Passos 6 a 8</span><span class="toc-title">Plaquinhas, bateria, fechar</span><span class="toc-desc">Knobs, volume, painel; alto-falante e bateria; o case.</span></a>
+        <a href="#testes"><span class="toc-kicker">Passo 9</span><span class="toc-title">Primeiros testes</span><span class="toc-desc">Carga, liga/desliga, 3,3 V, sem a firmware do Pocket.</span></a>
+      </nav>
+
+      <!-- =========================================================== 1 -->
+      <section class="manual" id="antes">
+        <p class="manual-kicker">Passo 1</p>
+        <h2>Antes de começar</h2>
+
+        <h3>Como o Pocket é por dentro</h3>
+        <p>
+          Embaixo, o <strong>fundo</strong> (1) segura a <strong>placa principal</strong> (3) sobre pilares e guarda a
+          <strong>bateria</strong> (27) num berço com tampinha (29). Na placa ficam os 28 switches magnéticos (5) com o
+          <strong>plate</strong> (4) e a pilha <strong>Teensy 4.0</strong> (7) + <strong>Audio Board</strong> (8). Na casca de cima
+          (2) ficam presas três plaquinhas: a dos <strong>knobs</strong> (10, encoder e LED), a do <strong>volume</strong> (11, em pé,
+          com o potenciômetro com chave) e a do <strong>painel</strong> (16, USB-C e fone), além do <strong>alto-falante</strong> (24)
+          na caixa fechada sob a grade.
+        </p>
+        <figure class="wide">
+          <a class="zoomable" href="img/r_exploded.jpg"><img src="img/r_exploded-sm.jpg" alt="Vista explodida do Pocket com as peças numeradas" loading="lazy" /></a>
+          <figcaption>Vista explodida. Os números são os da lista de peças abaixo e valem para todas as figuras.</figcaption>
+        </figure>
+        <div class="figure-pair">
+          <figure>
+            <a class="zoomable" href="img/r_section_y21.jpg"><img src="img/r_section_y21-sm.jpg" alt="Corte do Pocket na altura do USB-C" loading="lazy" /></a>
+            <figcaption>Corte pela pilha: a plaquinha do painel (16) passa por cima do plugue micro-B (19) do Teensy (7).</figcaption>
+          </figure>
+          <figure>
+            <a class="zoomable" href="img/r_section_y49.jpg"><img src="img/r_section_y49-sm.jpg" alt="Corte do Pocket na linha dos knobs" loading="lazy" /></a>
+            <figcaption>Corte na linha dos knobs: potenciômetro (12) deitado na plaquinha em pé (11), encoder (13), LED (14), bateria (27) e o plugue dela no bolso (28).</figcaption>
+          </figure>
+        </div>
+        <figure>
+          <a class="zoomable" href="img/r_section_x30.jpg"><img src="img/r_section_x30-sm.jpg" alt="Corte do Pocket de trás para a frente" loading="lazy" /></a>
+          <figcaption>Corte de trás para a frente: a pilha (7, 8) atrás; na frente, o alto-falante (24) na caixa fechada (fundo 26) sobre o berço da bateria (27).</figcaption>
+        </figure>
+
+        <h3>Lista de peças (os números das figuras)</h3>
+        <div class="table-wrap parts-list"><table><thead><tr><th>#</th><th>Peça</th><th>#</th><th>Peça</th></tr></thead><tbody>
+          <tr><td>1</td><td>fundo (case, MJF)</td><td>20</td><td>cabo do painel JST SH 8 vias / conector J_PNL</td></tr>
+          <tr><td>2</td><td>casca de cima (case, resina)</td><td>21</td><td>cabo dos knobs JST SH 10 vias / conector J_CTL</td></tr>
+          <tr><td>3</td><td>placa principal (montada pela JLCPCB)</td><td>22</td><td>conector da bateria J_BAT (JST PH 3)</td></tr>
+          <tr><td>4</td><td>plate dos switches (FR-4)</td><td>23</td><td>conector do alto-falante J_SPK (JST PH 2)</td></tr>
+          <tr><td>5</td><td>switch magnético Gateron KS-20 (×28)</td><td>24</td><td>alto-falante CLS0361-L152</td></tr>
+          <tr><td>6</td><td>capa do botão (×28)</td><td>25</td><td>junta de espuma do alto-falante</td></tr>
+          <tr><td>7</td><td>Teensy 4.0</td><td>26</td><td>fundo da caixa do alto-falante (MJF)</td></tr>
+          <tr><td>8</td><td>Audio Board Rev D</td><td>27</td><td>bateria LiPo 603450 com NTC (+ espuma)</td></tr>
+          <tr><td>9</td><td>barra de pinos 1×14 extralonga (×2)</td><td>28</td><td>rabicho da bateria e o par JST no bolso</td></tr>
+          <tr><td>10</td><td>plaquinha dos knobs</td><td>29</td><td>tampinha da bateria (MJF)</td></tr>
+          <tr><td>11</td><td>plaquinha do volume (em pé)</td><td>30</td><td>espuma da bateria</td></tr>
+          <tr><td>12</td><td>potenciômetro de volume com chave (RK097)</td><td>31</td><td>fios do fone (Audio Board → pads J_HP)</td></tr>
+          <tr><td>13</td><td>encoder EC11E</td><td>32</td><td>parafuso M2,5 × 8 escareado, autoatarraxante (×10)</td></tr>
+          <tr><td>14</td><td>LED 3 mm bicolor + espaçador</td><td>33</td><td>parafuso M2 × 10 + porca M2 (×2)</td></tr>
+          <tr><td>15</td><td>knob (×2)</td><td>34</td><td>parafuso M2 × 5 autoatarraxante (×2)</td></tr>
+          <tr><td>16</td><td>plaquinha do painel (montada pela JLCPCB)</td><td>35</td><td>parafuso M2 × 6 autoatarraxante (×1)</td></tr>
+          <tr><td>17</td><td>receptáculo USB-C (já soldado)</td><td>36</td><td>parafuso M2 × 6 escareado (×2)</td></tr>
+          <tr><td>18</td><td>jack de fone SJ1-3525N</td><td>37</td><td>porca M7 (vem com o potenciômetro)</td></tr>
+          <tr><td>19</td><td>cabo micro-B de 90°</td><td>38</td><td>calço de 3 mm (só durante a solda)</td></tr>
+        </tbody></table></div>
+        <p>As letras <strong>A</strong> a <strong>H</strong> nas figuras do passo 9 são pontos de teste, e <strong>H1</strong>/<strong>H2</strong> os dois furos da plaquinha do painel.</p>
+
+        <h3>O que comprar (kit)</h3>
+        <p>
+          A lista completa, com quantidades por Pocket, quanto comprar (com sobra das peças pequenas), fornecedor, código e
+          link, também em <a href="../../hardware/pocket/pcb/fab/pocket_kit_bom.csv">pocket_kit_bom.csv</a>. As linhas
+          <span class="tag tag-none">conferir</span> ainda têm o código exato ou uma medida a confirmar.
+        </p>
+        <!-- BEGIN table:bom -->
+        <div class="table-wrap"><table><thead><tr><th>Grupo</th><th>Item</th><th>Por Pocket</th><th>Comprar</th><th>Onde / código</th><th>Obs.</th></tr></thead><tbody>
+        <tr><td>Placas</td><td><strong>Placa principal montada (verso: CIs, passivos, 28 TMAG5253; topo: J_PNL, J_CTL)</strong><br /><small>4 camadas, 1,2 mm, Gerbers fab/pocket_gerbers.zip + BOM fab/pocket_bom.csv + CPL fab/pocket_cpl_bottom.csv / _top.csv</small></td><td>1</td><td>5 placas / 2 montadas</td><td><a href="https://jlcpcb.com/" rel="noopener">JLCPCB (PCBA)</a></td><td>TMAG5253BA3IQDMRR fora do estoque da JLCPCB: consignar (linha abaixo) ou &#x27;global sourcing&#x27;</td></tr>
+        <tr><td>Placas</td><td><strong>Sensor Hall para a placa principal (consignado na JLCPCB)</strong><br /><small>TI TMAG5253BA3IQDMRR, X2SON-4</small> <span class="tag tag-none">conferir</span></td><td>28</td><td>40</td><td><a href="https://www.ti.com/product/TMAG5253" rel="noopener">TI store / DigiKey / Mouser · 296-TMAG5253BA3IQDMRRCT-ND (DigiKey, conferir)</a></td><td>28 + perdas de montagem (a JLCPCB pede ~5-10 % a mais); 2 placas montadas = 56 + 6</td></tr>
+        <tr><td>Placas</td><td><strong>Plaquinha do painel montada (topo: USB-C, 2 x 5,1 k, ESD)</strong><br /><small>2 camadas, 1,6 mm, fab/pocket_panel_gerbers.zip + fab/pocket_panel_bom.csv + fab/pocket_panel_cpl_top.csv</small></td><td>1</td><td>5 placas / 2 montadas</td><td><a href="https://jlcpcb.com/" rel="noopener">JLCPCB (PCBA) · C165948, C25905, C2827688</a></td><td>o jack de fone é soldado em casa</td></tr>
+        <tr><td>Placas</td><td><strong>Plaquinha dos knobs (sem montagem)</strong><br /><small>2 camadas, 1,6 mm, fab/pocket_controls_gerbers.zip</small></td><td>1</td><td>5</td><td><a href="https://jlcpcb.com/" rel="noopener">JLCPCB</a></td><td>pedido mínimo de 5</td></tr>
+        <tr><td>Placas</td><td><strong>Plaquinha do volume, em pé (sem montagem)</strong><br /><small>2 camadas, 1,6 mm, fab/pocket_pot_gerbers.zip</small></td><td>1</td><td>5</td><td><a href="https://jlcpcb.com/" rel="noopener">JLCPCB</a></td><td>pedido mínimo de 5</td></tr>
+        <tr><td>Placas</td><td><strong>Plate dos switches</strong><br /><small>FR-4 1,6 mm, desenho do design (case/out/plate.dxf)</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>5</td><td><a href="https://jlcpcb.com/" rel="noopener">JLCPCB (como placa sem cobre)</a></td><td>arquivo do design</td></tr>
+        <tr><td>Teensy</td><td><strong>Teensy 4.0</strong><br /><small>PJRC TEENSY40 (sem pinos)</small></td><td>1</td><td>1</td><td><a href="https://www.pjrc.com/store/teensy40.html" rel="noopener">PJRC / distribuidor · TEENSY40</a></td><td>cortar a ponte VUSB-VIN antes de soldar</td></tr>
+        <tr><td>Teensy</td><td><strong>Audio Board Rev D</strong><br /><small>PJRC TEENSY4_AUDIO</small></td><td>1</td><td>1</td><td><a href="https://www.pjrc.com/store/teensy3_audio.html" rel="noopener">PJRC / distribuidor · TEENSY4_AUDIO</a></td><td></td></tr>
+        <tr><td>Teensy</td><td><strong>Barra de pinos extralonga 1 x 14, passo 2,54 (pilha baixa)</strong><br /><small>header macho 1x14, pino ~20 mm (plástico ~2,5)</small> <span class="tag tag-none">conferir</span></td><td>2</td><td>4</td><td><a href="https://www.pjrc.com/store/header_14x1_d.html" rel="noopener">PJRC / AliExpress / Mouser · conferir</a></td><td>as pernas atravessam a Audio Board e a placa principal: medir antes</td></tr>
+        <tr><td>Teclado</td><td><strong>Switch magnético Gateron (Hall) KS-20</strong><br /><small>Gateron Magnetic Jade (ou equivalente KS-20 com ímã)</small> <span class="tag tag-none">conferir</span></td><td>28</td><td>32</td><td><a href="https://www.gateron.com/" rel="noopener">Gateron / lojas de teclado · conferir</a></td><td>ímã com o norte para baixo (sensor no verso)</td></tr>
+        <tr><td>Teclado</td><td><strong>Capas dos botões</strong><br /><small>impressas (arquivos do design, case/out)</small> <span class="tag tag-none">conferir</span></td><td>28</td><td>32</td><td>impressão 3D</td><td>imprimir 4 de teste primeiro</td></tr>
+        <tr><td>Controles</td><td><strong>Potenciômetro de volume com chave</strong><br /><small>Alps RK0971221Z05 (RK097, 10 k, chave SPST, horizontal)</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td><a href="https://www.lcsc.com/product-detail/C336003.html" rel="noopener">LCSC · C336003</a></td><td>curva e comprimento do eixo a conferir; vem com porca M7</td></tr>
+        <tr><td>Controles</td><td><strong>Encoder com clique</strong><br /><small>Alps EC11E 15 pulsos / 15 detentes, com chave, eixo D 20 mm (família EC11E1520xxx)</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td><a href="https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/" rel="noopener">Mouser / TME / Farnell · conferir sufixo</a></td><td></td></tr>
+        <tr><td>Controles</td><td><strong>LED 3 mm bicolor vermelho/verde, catodo comum</strong><br /><small>Kingbright WP937EGW</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>3</td><td><a href="https://www.kingbrightusa.com/images/catalog/SPEC/WP937EGW.pdf" rel="noopener">DigiKey / Mouser · 754-1234-ND (conferir)</a></td><td></td></tr>
+        <tr><td>Controles</td><td><strong>Espaçador do LED 3 mm, ~10 mm</strong><br /><small>espaçador de nylon para LED 3 mm</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>3</td><td>AliExpress / Mouser · conferir</td><td>ou tubo de luz</td></tr>
+        <tr><td>Controles</td><td><strong>Knobs para eixo serrilhado D6</strong><br /><small>knob ~D10-12, furo D6 serrilhado (18 dentes)</small> <span class="tag tag-none">conferir</span></td><td>2</td><td>3</td><td>AliExpress / Mouser · conferir</td><td>ou impresso pelo design</td></tr>
+        <tr><td>Painel</td><td><strong>Jack de fone 3,5 com comutação na ponta</strong><br /><small>Same Sky SJ1-3525N</small></td><td>1</td><td>2</td><td><a href="https://www.sameskydevices.com/product/resource/pdf/sj1-352xn.pdf" rel="noopener">DigiKey / Mouser · CP1-3525N-ND</a></td><td>manga no terra virtual (HP_VGND), nunca no GND</td></tr>
+        <tr><td>Painel</td><td><strong>Cabo micro-B 90 graus curto</strong><br /><small>cabo USB micro-B macho 90 graus (para cortar), ~10-20 cm</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td>AliExpress / Amazon · conferir</td><td>sentido do ângulo conforme a pilha (design: stack.usb_plug)</td></tr>
+        <tr><td>Cabos</td><td><strong>Conector da bateria na placa</strong><br /><small>JST B3B-PH-K-S</small></td><td>1</td><td>2</td><td><a href="https://www.lcsc.com/product-detail/C131339.html" rel="noopener">LCSC · C131339</a></td><td>soldar em casa (passante)</td></tr>
+        <tr><td>Cabos</td><td><strong>Conector do alto-falante na placa</strong><br /><small>JST B2B-PH-K-S</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td><a href="https://www.lcsc.com/product-detail/C131337.html" rel="noopener">LCSC · C131337</a></td><td>soldar em casa (passante)</td></tr>
+        <tr><td>Cabos</td><td><strong>Rabicho da bateria</strong><br /><small>cabo de extensão JST PH 2,0 3 vias macho-fêmea, 100 mm (cortar para ~70)</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td>AliExpress / Adafruit · conferir</td><td>ligação 1:1; conferir a polaridade com o multímetro</td></tr>
+        <tr><td>Cabos</td><td><strong>Plugue do alto-falante</strong><br /><small>cabo JST PH 2,0 2 vias com fios, 100 mm (fêmea PHR-2)</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td>AliExpress / LCSC · conferir</td><td>ou PHR-2 + 2 terminais SPH crimpados</td></tr>
+        <tr><td>Cabos</td><td><strong>Cabo do painel</strong><br /><small>cabo JST SH 1,0 8 vias, 100 mm, com conector numa ponta (fios soltos na outra)</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td><a href="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf" rel="noopener">AliExpress / LCSC · conferir</a></td><td>ou com conector nas duas pontas, cortar uma</td></tr>
+        <tr><td>Cabos</td><td><strong>Cabo dos knobs</strong><br /><small>cabo JST SH 1,0 10 vias, 100 mm, com conector numa ponta</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td><a href="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf" rel="noopener">AliExpress / LCSC · conferir</a></td><td></td></tr>
+        <tr><td>Cabos</td><td><strong>Fio fino de silicone</strong><br /><small>28-30 AWG, 2 cores, 1 m</small></td><td>1</td><td>1</td><td>qualquer</td><td>fios do fone (Audio Board -&gt; J_HP)</td></tr>
+        <tr><td>Cabos</td><td><strong>Termorretrátil fino</strong><br /><small>D1,5 e D3</small></td><td>1</td><td>1</td><td>qualquer</td><td></td></tr>
+        <tr><td>Energia e som</td><td><strong>Bateria LiPo 1S 1000-1200 mAh, PCM, NTC 10 k (3 fios), JST PH 3</strong><br /><small>tipo 603450 (EEMB LP603450 com NTC, ou 603450 3 fios pronta)</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>1</td><td><a href="https://www.eemb.com/product-252" rel="noopener">EEMB / eBay / Core Electronics · CE06795 (reserva)</a></td><td>célula &lt;= 7 x 36 x 58 com PCM; nunca furar, dobrar ou carregar sem o NTC</td></tr>
+        <tr><td>Energia e som</td><td><strong>Alto-falante 36 mm 8 ohm 2 W</strong><br /><small>Same Sky CLS0361-L152</small></td><td>1</td><td>1</td><td><a href="https://www.sameskydevices.com/product/resource/cls0361-l152.pdf" rel="noopener">Mouser / DigiKey / TME · CLS0361-L152</a></td><td></td></tr>
+        <tr><td>Energia e som</td><td><strong>Junta de espuma do alto-falante</strong><br /><small>espuma adesiva 0,8 mm, anel D36/D30</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td>qualquer</td><td>medida do design</td></tr>
+        <tr><td>Energia e som</td><td><strong>Espuma da bateria</strong><br /><small>espuma EVA/PU 1-2 mm, 36 x 58</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>2</td><td>qualquer</td><td>sem cola na célula</td></tr>
+        <tr><td>Fixação</td><td><strong>Parafuso do fundo</strong><br /><small>M2,5 x 8 autoatarraxante para plástico, cabeça escareada (ou inserto a quente M2,5)</small> <span class="tag tag-none">conferir</span></td><td>10</td><td>12</td><td>qualquer</td><td>conferir comprimento com o design</td></tr>
+        <tr><td>Fixação</td><td><strong>Parafuso + porca da placa principal</strong><br /><small>M2 x 10 cabeça panela + porca M2</small> <span class="tag tag-none">conferir</span></td><td>2</td><td>4</td><td>qualquer</td><td>de baixo para cima, porca em cima da placa</td></tr>
+        <tr><td>Fixação</td><td><strong>Parafuso da plaquinha dos knobs</strong><br /><small>M2 x 5 autoatarraxante para plástico</small> <span class="tag tag-none">conferir</span></td><td>2</td><td>4</td><td>qualquer</td><td></td></tr>
+        <tr><td>Fixação</td><td><strong>Parafuso da plaquinha do painel (furo H2)</strong><br /><small>M2 x 6 autoatarraxante para plástico</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>3</td><td>qualquer</td><td>o H1 é só um pino do poste</td></tr>
+        <tr><td>Fixação</td><td><strong>Parafuso da tampinha da bateria</strong><br /><small>M2 x 5 cabeça escareada, autoatarraxante</small> <span class="tag tag-none">conferir</span></td><td>2</td><td>4</td><td>qualquer</td><td></td></tr>
+        <tr><td>Impressos</td><td><strong>Casca de cima (tampa)</strong><br /><small>resina (case/out/seixo_tampa.stl)</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>1</td><td>JLC3DP / PCBWay / Craftcloud</td><td>arquivos e materiais do design</td></tr>
+        <tr><td>Impressos</td><td><strong>Fundo, tampinha da bateria, fundo da caixa do alto-falante</strong><br /><small>MJF (case/out)</small> <span class="tag tag-none">conferir</span></td><td>1</td><td>1</td><td>JLC3DP / PCBWay / Craftcloud</td><td>arquivos e materiais do design</td></tr>
+        <tr><td>Consumíveis</td><td><strong>Fita Kapton</strong><br /><small>10 mm</small></td><td>1</td><td>1</td><td>qualquer</td><td>isolar o fundo do Teensy e o PCM da bateria</td></tr>
+        <tr><td>Consumíveis</td><td><strong>Cola para vedar a caixa do alto-falante</strong><br /><small>silicone neutro ou cola E6000</small></td><td>1</td><td>1</td><td>qualquer</td><td></td></tr>
+        </tbody></table></div>
+        <!-- END table:bom -->
+
+        <h3>O que já vem montado e o que se solda em casa</h3>
+        <div class="table-wrap"><table><thead><tr><th>Peça</th><th>Quem solda</th></tr></thead><tbody>
+          <tr><td>Placa principal: CIs, passivos e os 28 sensores TMAG5253 no verso; J_PNL e J_CTL em cima</td><td><span class="tag tag-fab">JLCPCB</span> (os sensores X2SON de 1,1 × 1,4 mm não se soldam em casa)</td></tr>
+          <tr><td>Plaquinha do painel: USB-C, 2 resistores de 5,1 kΩ, protetor ESD</td><td><span class="tag tag-fab">JLCPCB</span></td></tr>
+          <tr><td>Pilha Teensy + Audio Board e a pilha na placa principal</td><td><span class="tag tag-home">em casa</span> (passos 3 e 4)</td></tr>
+          <tr><td>J_BAT e J_SPK (JST PH passantes), fios do fone</td><td><span class="tag tag-home">em casa</span> (passo 4)</td></tr>
+          <tr><td>Potenciômetro, encoder, LED, junta de 90°, jack de fone, cabos das plaquinhas, cabo micro-B</td><td><span class="tag tag-home">em casa</span> (passo 6)</td></tr>
+          <tr><td>Placa dos knobs, do volume e o plate</td><td><span class="tag tag-none">sem peças SMD</span> (só a placa nua)</td></tr>
+        </tbody></table></div>
+        <p>Arquivos das placas: <a href="../../hardware/pocket/pcb/fab/pocket_gerbers.zip">principal</a> (com <a href="../../hardware/pocket/pcb/fab/pocket_bom.csv">BOM</a>, <a href="../../hardware/pocket/pcb/fab/pocket_cpl_bottom.csv">CPL do verso</a> e <a href="../../hardware/pocket/pcb/fab/pocket_cpl_top.csv">CPL de cima</a>), <a href="../../hardware/pocket/pcb/fab/pocket_panel_gerbers.zip">painel</a> (com <a href="../../hardware/pocket/pcb/fab/pocket_panel_bom.csv">BOM</a> e <a href="../../hardware/pocket/pcb/fab/pocket_panel_cpl_top.csv">CPL</a>), <a href="../../hardware/pocket/pcb/fab/pocket_controls_gerbers.zip">knobs</a> e <a href="../../hardware/pocket/pcb/fab/pocket_pot_gerbers.zip">volume</a>. O plate dos switches é <a href="../../hardware/pocket/case/out/plate.dxf">plate.dxf</a>, feito como placa de FR-4 de 1,6 mm sem cobre.</p>
+
+        <h3>O que imprimir</h3>
+        <div class="table-wrap"><table><thead><tr><th>Arquivo (STL / STEP)</th><th>Material</th><th>Qtd</th></tr></thead><tbody>
+          <tr><td><a href="../../hardware/pocket/case/out/seixo_tampa.stl">seixo_tampa</a> · <a href="../../hardware/pocket/case/out/seixo_tampa.step">STEP</a>: casca de cima, com o logo de 0,4 mm</td><td>resina (SLA/DLP, de engenharia, tipo Tough ou Grey)</td><td>1</td></tr>
+          <tr><td><a href="../../hardware/pocket/case/out/seixo_fundo.stl">seixo_fundo</a> · <a href="../../hardware/pocket/case/out/seixo_fundo.step">STEP</a>: fundo com os pilares e o berço</td><td>MJF PA12</td><td>1</td></tr>
+          <tr><td><a href="../../hardware/pocket/case/out/seixo_tampa_bateria.stl">seixo_tampa_bateria</a> · <a href="../../hardware/pocket/case/out/seixo_tampa_bateria.step">STEP</a>: tampinha da bateria</td><td>MJF PA12</td><td>1</td></tr>
+          <tr><td><a href="../../hardware/pocket/case/out/seixo_caixa_fundo.stl">seixo_caixa_fundo</a> · <a href="../../hardware/pocket/case/out/seixo_caixa_fundo.step">STEP</a>: fundo da caixa do alto-falante</td><td>MJF PA12</td><td>1</td></tr>
+          <tr><td><a href="../../hardware/pocket/case/out/keycap_test_4.stl">keycap_test_4</a>: 4 capas de teste (passo 2)</td><td>resina</td><td>1</td></tr>
+          <tr><td><a href="../../hardware/pocket/case/out/keycap_natural.stl">keycap_natural</a>: naturais</td><td>resina branca</td><td>12</td></tr>
+          <tr><td><a href="../../hardware/pocket/case/out/keycap_sharp.stl">keycap_sharp</a>: sustenidos</td><td>resina preta</td><td>11</td></tr>
+          <tr><td><a href="../../hardware/pocket/case/out/keycap_cf.stl">keycap_cf</a>: Dós e Fás, com o xadrez diagonal</td><td>resina branca</td><td>5</td></tr>
+        </tbody></table></div>
+        <p>Serviços que imprimem resina e MJF a partir de STL: JLC3DP, PCBWay, Craftcloud. No MJF, peça os furos-piloto M2 abertos para Ø 1,8.</p>
+
+        <h3>Ferramentas</h3>
+        <ul>
+          <li>Ferro de solda de ponta fina (cônica de 0,5–1 mm ou chanfrada de 1,5 mm), 330–350 °C; estanho de 0,5–0,8 mm com fluxo; fluxo em pasta ou caneta; malha dessoldadora.</li>
+          <li>Pinça, alicate de corte rente, estilete afiado, lupa.</li>
+          <li>Multímetro com tensão contínua, resistência e continuidade (bipe).</li>
+          <li>Fita Kapton, termorretrátil fino, fio de silicone 28–30 AWG.</li>
+          <li>Chave Phillips pequena (M2 e M2,5), chave de boca ou alicate para a porca M7.</li>
+          <li>Cola para vedar (a caixa do alto-falante e o furo dos fios).</li>
+          <li>Cabo USB-C e um carregador USB comum.</li>
+        </ul>
+
+        <h3 id="lipo">Bateria de lítio (LiPo): leia antes</h3>
+        <div class="callout warn">
+          <ul>
+            <li><strong>Não furar, não dobrar, não amassar, não aquecer.</strong> Nada de ferro de solda perto da célula.</li>
+            <li><strong>Não carregar sem o NTC ligado</strong> (o fio do meio): sem ele o carregador não sabe a temperatura. A placa só carrega com o NTC entre 0 e 45–50 °C.</li>
+            <li><strong>Conferir a polaridade do plugue antes de ligar</strong> (passo 7): a ordem dos fios muda entre vendedores. Invertida, queima o carregador e pode aquecer a bateria.</li>
+            <li>Os fios + e − nunca podem se tocar; isole com fita a ponta de qualquer fio cortado.</li>
+            <li>Bateria estufada, amassada, quente ou com cheiro doce: <strong>não usar</strong>; descartar num ponto de coleta.</li>
+            <li>Nas primeiras cargas, carregue sobre uma superfície não inflamável e por perto.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- =========================================================== 2-5 -->
+      <section class="manual" id="capas">
+        <p class="manual-kicker">Passos 2 a 5</p>
+        <h2>Capas, Teensy, placa principal e switches</h2>
+
+        <h3>2. Capas de teste</h3>
+        <p>
+          As capas encaixam na cruz MX do switch, mas cada impressora erra alguns décimos. Antes das 28, imprima o
+          <a href="../../hardware/pocket/case/out/keycap_test_4.stl">keycap_test_4.stl</a>: quatro capas num canal, como
+          quatro botões vizinhos.
+        </p>
+        <figure>
+          <a class="zoomable" href="img/r_keycap_test.jpg"><img src="img/r_keycap_test-sm.jpg" alt="As quatro capas de teste" loading="lazy" /></a>
+          <figcaption>As quatro capas de teste (duas naturais, um sustenido, um Dó/Fá).</figcaption>
+        </figure>
+        <ol class="steps">
+          <li>Encaixe quatro switches vizinhos no plate e corte as capas do canal.</li>
+          <li>Cada capa entra firme e não balança; tire e ponha algumas vezes.</li>
+          <li>Aperte cada tecla até o fundo: as saias não se tocam e as teclas voltam.</li>
+          <li>Folgada ou apertada: avise o serviço de impressão (ou ajuste <code>CROSS</code> em <code>etutti/hardware/case/keycap.py</code>) e repita o teste. Depois imprima as 28.</li>
+        </ol>
+
+        <h3>3. Teensy: cortar a ponte VUSB–VIN e soldar a pilha baixa</h3>
+        <div class="callout warn"><p><strong>Corte a ponte antes de tudo.</strong> Depois de soldado na Audio Board, o verso do Teensy fica inacessível. No Pocket o Teensy recebe 3,3 V do conversor da placa; com a ponte inteira, a USB e o conversor brigam no mesmo trilho.</p></div>
+        <figure>
+          <a class="zoomable" href="img/l_teensy_cut.jpg"><img src="img/l_teensy_cut-sm.jpg" alt="O verso do Teensy com os pads VUSB e VIN em destaque" loading="lazy" /></a>
+          <figcaption>Verso do Teensy (7), perto do micro-B: os pads VUSB e VIN e a trilha fina entre eles (em destaque). A posição exata está no desenho da PJRC <em>(conferir)</em>.</figcaption>
+        </figure>
+        <ol class="steps">
+          <li><span class="tag tag-home">em casa</span> Passe o estilete 3 a 4 vezes, firme, na trilha entre os pads VUSB e VIN, até ver a fibra da placa entre eles.</li>
+          <li><strong>Teste:</strong> multímetro em continuidade entre o pino <strong>VIN</strong> (na borda, ao lado do GND) e o pad <strong>VUSB</strong>: <strong>sem bipe</strong>. Se bipar, corte de novo.</li>
+          <li>Cubra o verso do Teensy com uma camada de fita Kapton: ele fica de frente para a Audio Board, ~2,5 mm acima.</li>
+        </ol>
+        <figure>
+          <a class="zoomable" href="img/l_audio_wires.jpg"><img src="img/l_audio_wires-sm.jpg" alt="O verso da Audio Board com os três fios do fone" loading="lazy" /></a>
+          <figcaption>Fios do fone (31) nos terminais do jack da Audio Board (8), por baixo: L (ponta), R (anel) e VGND (manga) <em>(conferir os três terminais no esquema da Rev D)</em>.</figcaption>
+        </figure>
+        <ol class="steps" start="4">
+          <li><span class="tag tag-home">em casa</span> Antes de empilhar, solde três fios de ~40 mm (28–30 AWG, cores diferentes) nos terminais do jack da Audio Board, pelo lado de baixo: <strong>L</strong>, <strong>R</strong> e <strong>VGND</strong>.</li>
+          <li><strong>Teste:</strong> continuidade entre o fio VGND e qualquer pino GND da Audio Board: <strong>sem bipe</strong>. O terra do fone é virtual (~1,6 V); ligado ao GND, queima a saída de fone.</li>
+        </ol>
+        <div class="figure-pair">
+          <figure>
+            <a class="zoomable" href="img/l_stack.jpg"><img src="img/l_stack-sm.jpg" alt="A pilha baixa: Teensy sobre as barras extralongas na Audio Board" loading="lazy" /></a>
+            <figcaption>A pilha baixa: as barras extralongas (9) passam pela Audio Board (8) de baixo para cima; o Teensy (7) apoia no plástico delas.</figcaption>
+          </figure>
+          <figure>
+            <a class="zoomable" href="img/r_stack.jpg"><img src="img/r_stack-sm.jpg" alt="A pilha vista de lado com a cota de 8,7 mm" loading="lazy" /></a>
+            <figcaption>De lado: da face de baixo da Audio Board ao topo do USB, no máximo 8,7 mm.</figcaption>
+          </figure>
+        </div>
+        <ol class="steps" start="6">
+          <li><span class="tag tag-home">em casa</span> Passe as duas barras extralongas pela Audio Board, de baixo para cima; apoie o Teensy em cima, com o USB do mesmo lado do jack da Audio Board. O plástico das barras é o único espaçador.</li>
+          <li>Solde os 28 pinos no Teensy e depois na Audio Board. As pernas compridas ficam para baixo: elas atravessam a placa principal no passo 4.</li>
+          <li><strong>Meça</strong> da face de baixo da Audio Board ao topo do conector USB: <strong>≤ 8,7 mm</strong> <em>(conferir)</em>. Anote. Se der mais, o plástico ficou alto: o case foi desenhado para 8,7.</li>
+        </ol>
+
+        <h3>4. Placa principal: conferir, soldar a pilha, testar sem bateria</h3>
+        <p><strong>4.1 Conferir a placa montada</strong> (sem ferro). Olhe o verso com lupa: os 28 sensores TMAG5253 no lugar, um sob cada switch, sem pontes de solda; U60 (carregador), U61 (conversor) com o indutor L10, U62 (amplificador), U51/U52 (multiplexadores), Q20/Q21/Q22, Q30/Q31 (luz de carga), D20/D30. Em cima: J_PNL (20) e J_CTL (21) soldados.</p>
+        <div class="figure-pair">
+          <figure>
+            <a class="zoomable" href="img/board_bottom.jpg"><img src="img/board_bottom-sm.jpg" alt="O verso da placa principal montada" loading="lazy" /></a>
+            <figcaption>O verso, como sai da JLCPCB: sensores e CIs.</figcaption>
+          </figure>
+          <figure>
+            <a class="zoomable" href="img/board_top.jpg"><img src="img/board_top-sm.jpg" alt="O lado de cima da placa principal" loading="lazy" /></a>
+            <figcaption>O lado de cima: as pegadas dos switches, os furos da pilha e os conectores.</figcaption>
+          </figure>
+        </div>
+        <p>Resistências com a placa sem nada ligado (ponta preta no GND):</p>
+        <div class="table-wrap"><table><thead><tr><th>Onde medir</th><th>Esperado</th><th>Se der errado</th></tr></thead><tbody>
+          <tr><td>J_BAT pino 1 (BAT+) × pino 3 (GND)</td><td>&gt; 100 kΩ</td><td>&lt; 1 kΩ: curto no carregador ou em C62</td></tr>
+          <tr><td>Furo do <strong>3V3</strong> da pilha (J2, 3º furo da fileira de trás) × furo GND</td><td>&gt; 1 kΩ</td><td>&lt; 50 Ω: curto no trilho de 3,3 V</td></tr>
+          <tr><td>Pad VBUS da plaquinha do painel (TP1) × GND (TP4)</td><td>&gt; 50 kΩ</td><td>&lt; 1 kΩ: curto no USB-C ou no ESD</td></tr>
+        </tbody></table></div>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_connectors.jpg"><img src="img/l_connectors-sm.jpg" alt="O canto esquerdo da placa principal com os conectores" loading="lazy" /></a>
+          <figcaption>4.2 Os dois JST PH entram por cima: J_BAT (22) e J_SPK (23). Ao lado, J_PNL (20), J_CTL (21) e os pads do fone J_HP (31).</figcaption>
+        </figure>
+        <ol class="steps">
+          <li><span class="tag tag-home">em casa</span> <strong>J_BAT</strong> (3 vias) e <strong>J_SPK</strong> (2 vias), com a trava como na serigrafia; solde pelo verso sem encostar o ferro nos vizinhos.</li>
+          <li><span class="tag tag-home">em casa</span> Encaixe as 28 pernas da pilha nos furos J1/J2, com o USB do Teensy para a esquerda (para o lado do painel). Ponha o <strong>calço de 3 mm</strong> (38: papelão ou uma tira impressa) entre a placa e a Audio Board, solde 2 pernas nas pontas, confira o paralelismo e solde as outras 26 pelo verso.</li>
+          <li>Corte as pernas rente no verso (≤ 1 mm): <strong>o verso encosta nos pilares do fundo</strong>. Tire o calço.</li>
+          <li>Fios do fone (31) nos pads <strong>J_HP</strong>, na frente da Audio Board: 1 = L, 2 = R, 3 = VGND (serigrafia). Torça os três juntos.</li>
+        </ol>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_stack_main.jpg"><img src="img/l_stack_main-sm.jpg" alt="A pilha descendo sobre a placa principal com o calço" loading="lazy" /></a>
+          <figcaption>A pilha (7) desce na placa (3) sobre o calço de 3 mm (38); os fios do fone (31) vão aos pads J_HP.</figcaption>
+        </figure>
+        <p><strong>4.3 Primeiro teste com USB, sem bateria e sem firmware.</strong> Ligue a plaquinha do painel já soldada (passo 6) ao J_PNL e um cabo USB-C a um carregador. Sem a chave do volume, nada liga: este teste confere a USB e o carregador.</p>
+        <div class="table-wrap"><table><thead><tr><th>Onde medir (ponta preta no GND)</th><th>Esperado</th></tr></thead><tbody>
+          <tr><td>TP1 (VBUS) da plaquinha do painel</td><td>4,75–5,25 V</td></tr>
+          <tr><td>J_BAT pino 1 (BAT+), sem bateria</td><td>0–4,2 V oscilando (o carregador procura a bateria; normal)</td></tr>
+          <tr><td>3V3 da pilha, chave aberta</td><td>0 V</td></tr>
+        </tbody></table></div>
+        <p>A luz de carga pode piscar sem bateria: normal.</p>
+
+        <h3>5. Plate e switches</h3>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_switches.jpg"><img src="img/l_switches-sm.jpg" alt="O plate e os 28 switches descendo sobre a placa principal" loading="lazy" /></a>
+          <figcaption>O plate (4) desce sobre a placa (3); os 28 switches (5) encaixam no plate, com os dois pinos plásticos nos furos da placa.</figcaption>
+        </figure>
+        <ol class="steps">
+          <li>Apoie o plate sobre a placa principal e encaixe os switches de cima, um a um, até o clique.</li>
+          <li>Os Gateron magnéticos não têm pernas elétricas: o ímã fica com o <strong>norte para baixo</strong> e o sensor está no verso da placa, de propósito. Não inverta nada.</li>
+        </ol>
+      </section>
+
+      <!-- =========================================================== 6-8 -->
+      <section class="manual" id="plaquinhas">
+        <p class="manual-kicker">Passos 6 a 8</p>
+        <h2>Plaquinhas, bateria e alto-falante, fechar o case</h2>
+
+        <h3>6. As plaquinhas, com os cabos soldados</h3>
+        <p><strong>6.1 Volume e knobs.</strong></p>
+        <div class="figure-pair">
+          <figure>
+            <a class="zoomable" href="img/l_pot_board.jpg"><img src="img/l_pot_board-sm.jpg" alt="O potenciômetro entrando na plaquinha do volume" loading="lazy" /></a>
+            <figcaption>O potenciômetro com chave (12) na plaquinha do volume (11), eixo para cima.</figcaption>
+          </figure>
+          <figure>
+            <a class="zoomable" href="img/l_controls.jpg"><img src="img/l_controls-sm.jpg" alt="Encoder e LED entrando na plaquinha dos knobs" loading="lazy" /></a>
+            <figcaption>O encoder (13) e o LED no espaçador (14) na plaquinha dos knobs (10), ao lado da do volume (11).</figcaption>
+          </figure>
+        </div>
+        <ol class="steps">
+          <li><span class="tag tag-home">em casa</span> <strong>Potenciômetro</strong> (RK097) na plaquinha do volume: 5 pernas (3 do potenciômetro, 2 da chave) e as 2 abas da carcaça, eixo para cima.</li>
+          <li><span class="tag tag-home">em casa</span> <strong>Encoder</strong> EC11E na plaquinha dos knobs: 5 pernas e as 2 abas grandes; as pernas ocupam as duas "orelhas" da placa, atrás e na frente.</li>
+          <li><span class="tag tag-home">em casa</span> <strong>LED</strong> 3 mm no espaçador de ~10 mm: a perna <strong>comprida do meio é o catodo</strong> (GND), no furo do meio; vermelho e verde nos furos R e G. A ponta do LED precisa chegar ao furo da tampa: confira a altura com a casca antes de soldar.</li>
+        </ol>
+        <figure>
+          <a class="zoomable" href="img/l_joint.jpg"><img src="img/l_joint-sm.jpg" alt="A junta de 90 graus entre as plaquinhas, vista por baixo" loading="lazy" /></a>
+          <figcaption>A junta de 90°, por baixo: a plaquinha do volume (11) encosta na borda esquerda da dos knobs (10).</figcaption>
+        </figure>
+        <ol class="steps" start="4">
+          <li><span class="tag tag-home">em casa</span> Encoste a plaquinha do volume na borda esquerda da dos knobs, por baixo, em esquadro, e solde os 6 pads JP de uma na outra (um é o GND; os outros dão firmeza).</li>
+          <li><span class="tag tag-home">em casa</span> <strong>Cabo dos knobs</strong> (21, JST SH 10 vias, conector só na ponta da placa principal): corte a ~100 mm, desencape 1,5 mm, estanhe e solde como no esquema abaixo.</li>
+          <li><strong>Teste:</strong> continuidade de cada pad ao pino do J_CTL; nenhum par vizinho em curto. O fio 1 é o do lado marcado do conector (triângulo): confira com o multímetro até o pad JW1.</li>
+        </ol>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_cable_ctl.jpg"><img src="img/l_cable_ctl-sm.jpg" alt="O cabo dos knobs soldado nas duas plaquinhas" loading="lazy" /></a>
+          <figcaption>O cabo dos knobs (21): fios 1–5 na face de trás da plaquinha do volume (11), fios 6–10 na borda direita da dos knobs (10).</figcaption>
+        </figure>
+        <!-- BEGIN svg:ctl -->
+        <figure><svg class="wiring" viewBox="0 0 640 274" role="img" aria-label="Esquema do cabo dos knobs" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="640" height="274" fill="#fff"/>
+        <text x="12" y="20" font-weight="700">J_CTL (SH 10)</text>
+        <rect x="12" y="24" width="60" height="220" rx="4" fill="#f1eee5" stroke="#221e1b"/>
+        <text x="22" y="39">1</text>
+        <text x="84" y="39">VCC</text>
+        <line x1="72" y1="35" x2="380" y2="35" stroke="#c0392b" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="32" x2="380" y2="32" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="30" text-anchor="end" fill="#6b6b6b">vermelho</text>
+        <text x="392" y="39" font-weight="600">JW1</text>
+        <text x="22" y="61">2</text>
+        <text x="84" y="61">POT</text>
+        <line x1="72" y1="57" x2="380" y2="57" stroke="#e67e22" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="54" x2="380" y2="54" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="52" text-anchor="end" fill="#6b6b6b">laranja</text>
+        <text x="392" y="61" font-weight="600">JW2</text>
+        <text x="22" y="83">3</text>
+        <text x="84" y="83">GND</text>
+        <line x1="72" y1="79" x2="380" y2="79" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="76" x2="380" y2="76" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="74" text-anchor="end" fill="#6b6b6b">preto</text>
+        <text x="392" y="83" font-weight="600">JW3</text>
+        <text x="22" y="105">4</text>
+        <text x="84" y="105">PWR_A (chave)</text>
+        <line x1="72" y1="101" x2="380" y2="101" stroke="#f1c40f" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="98" x2="380" y2="98" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="96" text-anchor="end" fill="#6b6b6b">amarelo</text>
+        <text x="392" y="105" font-weight="600">JW4</text>
+        <text x="22" y="127">5</text>
+        <text x="84" y="127">PWR_B (chave)</text>
+        <line x1="72" y1="123" x2="380" y2="123" stroke="#27ae60" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="120" x2="380" y2="120" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="118" text-anchor="end" fill="#6b6b6b">verde</text>
+        <text x="392" y="127" font-weight="600">JW5</text>
+        <text x="22" y="149">6</text>
+        <text x="84" y="149">ENC_A</text>
+        <line x1="72" y1="145" x2="380" y2="145" stroke="#2e86c1" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="142" x2="380" y2="142" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="140" text-anchor="end" fill="#6b6b6b">azul</text>
+        <text x="392" y="149" font-weight="600">JW6</text>
+        <text x="22" y="171">7</text>
+        <text x="84" y="171">ENC_B</text>
+        <line x1="72" y1="167" x2="380" y2="167" stroke="#8e44ad" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="164" x2="380" y2="164" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="162" text-anchor="end" fill="#6b6b6b">roxo</text>
+        <text x="392" y="171" font-weight="600">JW7</text>
+        <text x="22" y="193">8</text>
+        <text x="84" y="193">ENC_SW</text>
+        <line x1="72" y1="189" x2="380" y2="189" stroke="#9aa1a6" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="186" x2="380" y2="186" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="184" text-anchor="end" fill="#6b6b6b">cinza</text>
+        <text x="392" y="193" font-weight="600">JW8</text>
+        <text x="22" y="215">9</text>
+        <text x="84" y="215">LED_R</text>
+        <line x1="72" y1="211" x2="380" y2="211" stroke="#d8d8d8" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="208" x2="380" y2="208" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="206" text-anchor="end" fill="#6b6b6b">branco</text>
+        <text x="392" y="215" font-weight="600">JW9</text>
+        <text x="22" y="237">10</text>
+        <text x="84" y="237">LED_G</text>
+        <line x1="72" y1="233" x2="380" y2="233" stroke="#7b4a2a" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="230" x2="380" y2="230" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="228" text-anchor="end" fill="#6b6b6b">marrom</text>
+        <text x="392" y="237" font-weight="600">JW10</text>
+        <rect x="450" y="25" width="180" height="108" rx="5" fill="#f6d58f" stroke="#221e1b"/>
+        <text x="540" y="83" text-anchor="middle" font-weight="600">plaquinha do volume (11)</text>
+        <rect x="450" y="135" width="180" height="108" rx="5" fill="#f6d58f" stroke="#221e1b"/>
+        <text x="540" y="193" text-anchor="middle" font-weight="600">plaquinha dos knobs (10)</text>
+        </svg><figcaption>Cabo dos knobs (21): o conector fica no J_CTL da placa principal; a outra ponta é cortada e soldada. As cores são só exemplo: o que vale é o número do fio, contado do pino 1 (lado marcado do conector).</figcaption></figure>
+        <!-- END svg:ctl -->
+
+        <p><strong>6.2 Painel.</strong></p>
+        <div class="figure-pair">
+          <figure>
+            <a class="zoomable" href="img/l_panel.jpg"><img src="img/l_panel-sm.jpg" alt="A plaquinha do painel com o jack, o cabo micro-B e o cabo do painel" loading="lazy" /></a>
+            <figcaption>Na plaquinha do painel (16): o jack (18) por cima, o cabo micro-B (19) e o cabo do painel (20). O USB-C (17) já vem soldado.</figcaption>
+          </figure>
+          <figure>
+            <a class="zoomable" href="img/l_panel_under.jpg"><img src="img/l_panel_under-sm.jpg" alt="O verso da plaquinha do painel" loading="lazy" /></a>
+            <figcaption>O verso: a perna de trás-esquerda do USB-C (17) cortada rente; o furo H1 (pino) e o H2 (parafuso).</figcaption>
+          </figure>
+        </div>
+        <ol class="steps">
+          <li><span class="tag tag-home">em casa</span> <strong>Jack</strong> SJ1-3525N por cima (5 pernas e 5 pinos): solde e corte as pernas a ≤ 1 mm.</li>
+          <li><span class="tag tag-home">em casa</span> A <strong>perna de trás-esquerda da carcaça do USB-C</strong> (a mais longe da parede, do lado oposto ao fone) fica sobre o plugue micro-B do Teensy, com 0,45 mm de folga: <strong>corte rente ao verso</strong> com o alicate e lixe. As outras três podem ficar (≤ 1 mm).</li>
+          <li><span class="tag tag-home">em casa</span> <strong>Cabo micro-B de 90°</strong>: corte a ~40 mm do plugue <em>(conferir com o case)</em>, desencape e solde os 4 fios na fileira de trás: TP1 VBUS, TP2 D+, TP3 D−, TP4 GND. Torça D+ com D−. Confira as cores com o multímetro (VBUS e GND são os pinos 1 e 5 do micro-B).</li>
+          <li><span class="tag tag-home">em casa</span> <strong>Cabo do painel</strong> (20, JST SH 8 vias, conector na ponta da placa principal): corte a ~100 mm e solde como no esquema abaixo.</li>
+        </ol>
+        <!-- BEGIN svg:pnl -->
+        <figure><svg class="wiring" viewBox="0 0 640 318" role="img" aria-label="Esquema do cabo do painel e do cabo micro-B" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="640" height="318" fill="#fff"/>
+        <text x="12" y="20" font-weight="700">J_PNL (SH 8) · cabo micro-B (19)</text>
+        <rect x="12" y="24" width="60" height="264" rx="4" fill="#f1eee5" stroke="#221e1b"/>
+        <text x="22" y="39">1</text>
+        <text x="84" y="39">VBUS</text>
+        <line x1="72" y1="35" x2="380" y2="35" stroke="#c0392b" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="32" x2="380" y2="32" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="30" text-anchor="end" fill="#6b6b6b">vermelho</text>
+        <text x="392" y="39" font-weight="600">TP1</text>
+        <text x="22" y="61">2</text>
+        <text x="84" y="61">VBUS</text>
+        <line x1="72" y1="57" x2="380" y2="57" stroke="#c0392b" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="54" x2="380" y2="54" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="52" text-anchor="end" fill="#6b6b6b">vermelho</text>
+        <text x="392" y="61" font-weight="600">TP1</text>
+        <text x="22" y="83">3</text>
+        <text x="84" y="83">GND</text>
+        <line x1="72" y1="79" x2="380" y2="79" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="76" x2="380" y2="76" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="74" text-anchor="end" fill="#6b6b6b">preto</text>
+        <text x="392" y="83" font-weight="600">TP4</text>
+        <text x="22" y="105">4</text>
+        <text x="84" y="105">GND</text>
+        <line x1="72" y1="101" x2="380" y2="101" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="98" x2="380" y2="98" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="96" text-anchor="end" fill="#6b6b6b">preto</text>
+        <text x="392" y="105" font-weight="600">TP4</text>
+        <text x="22" y="127">5</text>
+        <text x="84" y="127">HP_L</text>
+        <line x1="72" y1="123" x2="380" y2="123" stroke="#2e86c1" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="120" x2="380" y2="120" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="118" text-anchor="end" fill="#6b6b6b">azul</text>
+        <text x="392" y="127" font-weight="600">TP5</text>
+        <text x="22" y="149">6</text>
+        <text x="84" y="149">HP_R</text>
+        <line x1="72" y1="145" x2="380" y2="145" stroke="#27ae60" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="142" x2="380" y2="142" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="140" text-anchor="end" fill="#6b6b6b">verde</text>
+        <text x="392" y="149" font-weight="600">TP6</text>
+        <text x="22" y="171">7</text>
+        <text x="84" y="171">HP_VGND</text>
+        <line x1="72" y1="167" x2="380" y2="167" stroke="#8e44ad" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="164" x2="380" y2="164" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="162" text-anchor="end" fill="#6b6b6b">roxo</text>
+        <text x="392" y="171" font-weight="600">TP7</text>
+        <text x="22" y="193">8</text>
+        <text x="84" y="193">HP_TIPSW</text>
+        <line x1="72" y1="189" x2="380" y2="189" stroke="#f1c40f" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="186" x2="380" y2="186" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="184" text-anchor="end" fill="#6b6b6b">amarelo</text>
+        <text x="392" y="193" font-weight="600">TP8</text>
+        <text x="22" y="215">µB 1</text>
+        <text x="84" y="215">VBUS</text>
+        <line x1="72" y1="211" x2="380" y2="211" stroke="#c0392b" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="208" x2="380" y2="208" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="206" text-anchor="end" fill="#6b6b6b">vermelho</text>
+        <text x="392" y="215" font-weight="600">TP1</text>
+        <text x="22" y="237">µB 3</text>
+        <text x="84" y="237">D+</text>
+        <line x1="72" y1="233" x2="380" y2="233" stroke="#27ae60" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="230" x2="380" y2="230" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="228" text-anchor="end" fill="#6b6b6b">verde</text>
+        <text x="392" y="237" font-weight="600">TP2</text>
+        <text x="22" y="259">µB 2</text>
+        <text x="84" y="259">D−</text>
+        <line x1="72" y1="255" x2="380" y2="255" stroke="#d8d8d8" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="252" x2="380" y2="252" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="250" text-anchor="end" fill="#6b6b6b">branco</text>
+        <text x="392" y="259" font-weight="600">TP3</text>
+        <text x="22" y="281">µB 5</text>
+        <text x="84" y="281">GND</text>
+        <line x1="72" y1="277" x2="380" y2="277" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="274" x2="380" y2="274" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="272" text-anchor="end" fill="#6b6b6b">preto</text>
+        <text x="392" y="281" font-weight="600">TP4</text>
+        <rect x="450" y="25" width="180" height="262" rx="5" fill="#f6d58f" stroke="#221e1b"/>
+        <text x="540" y="160" text-anchor="middle" font-weight="600">plaquinha do painel (16)</text>
+        </svg><figcaption>Em cima, o cabo do painel (20), do J_PNL: VBUS e GND usam dois fios cada (TP1 e TP4, junto com os do cabo micro-B); TP5 a TP8 ficam na ponta direita, depois do jack. Embaixo, o cabo micro-B (19), cortado a ~40 mm do plugue: vermelho VBUS, verde D+, branco D−, preto GND (cores USB comuns; confira com o multímetro).</figcaption></figure>
+        <!-- END svg:pnl -->
+        <p>Testes da plaquinha do painel, sem nada ligado:</p>
+        <div class="table-wrap"><table><thead><tr><th>Onde medir</th><th>Esperado</th></tr></thead><tbody>
+          <tr><td>Manga do jack (TP7, HP_VGND) × TP4 (GND)</td><td><strong>aberto</strong> (sem bipe). Bipe = erro grave: o fone não pode ir ao GND</td></tr>
+          <tr><td>Ponta do jack (TP5) × TP8 (comutação), sem plugue</td><td>bipe (o contato fecha sem plugue)</td></tr>
+          <tr><td>O mesmo, com um plugue de fone encaixado</td><td>aberto</td></tr>
+          <tr><td>TP1 (VBUS) × TP4 (GND)</td><td>&gt; 50 kΩ</td></tr>
+        </tbody></table></div>
+
+        <h3>7. Bateria e alto-falante</h3>
+        <p><strong>7.1 Alto-falante.</strong> A casca de cima fica de cabeça para baixo sobre um pano.</p>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_speaker.jpg"><img src="img/l_speaker-sm.jpg" alt="O alto-falante e o fundo da caixa entrando na casca de cima" loading="lazy" /></a>
+          <figcaption>Na casca de cima (2), de cabeça para baixo: a junta (25), o alto-falante (24) no anel, e o fundo da caixa (26) colado por último.</figcaption>
+        </figure>
+        <ol class="steps">
+          <li>Cole a junta de espuma (25) no anel, sob a grade; apoie o alto-falante (24) nela, com o cone para a grade.</li>
+          <li>Passe os dois fios pelo furo da parede da caixa e <strong>vede o furo com cola</strong>: a caixa tem de ficar fechada.</li>
+          <li>Cole o fundo da caixa (26) sob as paredes, em volta toda, sem frestas.</li>
+          <li>Na ponta dos fios, o plugue JST PH 2 vias: <strong>vermelho no pino 1 (SPK+)</strong>, preto no 2.</li>
+          <li><strong>Teste:</strong> resistência entre os dois fios: <strong>~8 Ω</strong> (7–9). Aberto = fio partido.</li>
+        </ol>
+        <p><strong>7.2 Bateria.</strong> Releia os <a href="#lipo">avisos da LiPo</a>. A bateria entra pela tampinha, com o case já fechado (passo 8); antes, confira as pontas.</p>
+        <!-- BEGIN svg:bat -->
+        <figure><svg class="wiring" viewBox="0 0 640 120" role="img" aria-label="Polaridade da bateria" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="640" height="120" fill="#fff"/>
+        <text x="12" y="20" font-weight="700">J_BAT · rabicho</text>
+        <rect x="12" y="24" width="60" height="66" rx="4" fill="#f1eee5" stroke="#221e1b"/>
+        <text x="22" y="39">1</text>
+        <text x="84" y="39">BAT+</text>
+        <line x1="72" y1="35" x2="380" y2="35" stroke="#c0392b" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="32" x2="380" y2="32" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="30" text-anchor="end" fill="#6b6b6b">vermelho</text>
+        <text x="392" y="39" font-weight="600">verm. +</text>
+        <text x="22" y="61">2</text>
+        <text x="84" y="61">NTC</text>
+        <line x1="72" y1="57" x2="380" y2="57" stroke="#f1c40f" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="54" x2="380" y2="54" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="52" text-anchor="end" fill="#6b6b6b">amarelo</text>
+        <text x="392" y="61" font-weight="600">NTC</text>
+        <text x="22" y="83">3</text>
+        <text x="84" y="83">GND</text>
+        <line x1="72" y1="79" x2="380" y2="79" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/>
+        <line x1="72" y1="76" x2="380" y2="76" stroke="#221e1b" stroke-width="0.6" stroke-opacity="0.5"/>
+        <text x="300" y="74" text-anchor="end" fill="#6b6b6b">preto</text>
+        <text x="392" y="83" font-weight="600">preto −</text>
+        <rect x="450" y="25" width="180" height="64" rx="5" fill="#f6d58f" stroke="#221e1b"/>
+        <text x="540" y="61" text-anchor="middle" font-weight="600">plugue da bateria (27)</text>
+        </svg><figcaption>Antes de encaixar a bateria: o fio vermelho dela tem de cair no pino que vai ao J_BAT 1, o NTC no 2 e o preto no 3. A ordem dos fios muda entre vendedores; se não bater, troque os terminais na carcaça do rabicho (28).</figcaption></figure>
+        <!-- END svg:bat -->
+        <ol class="steps">
+          <li>No plugue da bateria, com o multímetro: <strong>vermelho (+) × preto (−)</strong> = 3,0–4,2 V; <strong>NTC × preto</strong> = ~10 kΩ a 25 °C (8–12 kΩ).</li>
+          <li>Com o rabicho (28) já no J_BAT e <strong>sem a bateria</strong>: continuidade de cada pino da ponta do rabicho ao J_BAT: 1 = BAT+, 2 = NTC, 3 = GND.</li>
+          <li>Compare as duas pontas: o vermelho da bateria precisa cair no pino que vai ao <strong>J_BAT 1</strong>, o NTC no 2, o preto no 3. Se não, <strong>troque os terminais na carcaça do rabicho</strong> (levante a lingueta com uma agulha), nunca os da bateria.</li>
+        </ol>
+
+        <h3>8. Fechar o case</h3>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_lid_boards.jpg"><img src="img/l_lid_boards-sm.jpg" alt="As plaquinhas entrando na casca de cima de cabeça para baixo" loading="lazy" /></a>
+          <figcaption>Na casca de cima (2), de cabeça para baixo: a plaquinha dos knobs (10) nos dois postes com os parafusos M2 × 5 (34); a do painel (16) no pino H1 e no parafuso M2 × 6 (35) do H2.</figcaption>
+        </figure>
+        <ol class="steps">
+          <li>Passe o eixo do potenciômetro pelo furo de Ø 7,3 da tampa e aperte a <strong>porca M7</strong> (37) por fora, sem forçar; o pino anti-giro entra no furinho ao lado (ou corte o pino).</li>
+          <li>Apoie a plaquinha dos knobs nos dois postes e aperte os 2 parafusos <strong>M2 × 5</strong> (34). O eixo do encoder e o LED saem pelos furos da tampa.</li>
+          <li>Encaixe a plaquinha do painel: o USB-C e o fone nas duas janelas da parede curva, a borda da frente apoiada na aba, o <strong>pino</strong> do poste no furo H1 e o parafuso <strong>M2 × 6</strong> (35) no H2. Nada vai embaixo dela: ela passa 0,45 mm acima do plugue do Teensy.</li>
+        </ol>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_board_mount.jpg"><img src="img/l_board_mount-sm.jpg" alt="A placa principal descendo nos pilares do fundo, com dois parafusos" loading="lazy" /></a>
+          <figcaption>A placa principal (3) nos pilares do fundo (1): dois parafusos M2 × 10 por baixo e porcas por cima (33).</figcaption>
+        </figure>
+        <ol class="steps" start="4">
+          <li>Apoie a placa principal nos pilares do fundo e prenda com os 2 parafusos <strong>M2 × 10</strong> de baixo para cima, porcas por cima (33).</li>
+          <li>Ligue os cabos, com a casca ao lado: cabo do painel no <strong>J_PNL</strong>, cabo dos knobs no <strong>J_CTL</strong> (até a trava estalar), plugue micro-B no Teensy, alto-falante no <strong>J_SPK</strong>. O rabicho da bateria vai do <strong>J_BAT</strong> pelo rasgo até o bolso, ao lado do berço.</li>
+          <li>Antes de fechar: nenhum fio preso entre o fundo e os pilares nem sobre o verso da placa.</li>
+        </ol>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_close.jpg"><img src="img/l_close-sm.jpg" alt="A casca de cima descendo sobre o fundo, com os parafusos por baixo" loading="lazy" /></a>
+          <figcaption>A casca de cima (2) desce sobre o fundo (1); dez parafusos M2,5 × 8 escareados (32) por baixo.</figcaption>
+        </figure>
+        <ol class="steps" start="7">
+          <li>Desça a casca sobre o fundo, sem prender cabos, e aperte os 10 parafusos <strong>M2,5 × 8</strong> (32) por baixo, sem forçar.</li>
+        </ol>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_battery.jpg"><img src="img/l_battery-sm.jpg" alt="A bateria e a tampinha entrando pelo fundo" loading="lazy" /></a>
+          <figcaption>Por baixo: a bateria (27) entra no berço, o plugue dela encaixa no rabicho dentro do bolso (28), e a tampinha (29) fecha com dois parafusos escareados M2 × 6 (36).</figcaption>
+        </figure>
+        <ol class="steps" start="8">
+          <li>Com a polaridade conferida (7.2), encaixe o plugue da bateria no rabicho e deite o par no bolso. Ponha a bateria no berço sobre a espuma, <strong>sem cola</strong>, com o PCM (a plaquinha dela) do lado do bolso.</li>
+          <li><strong>Meça</strong> J_BAT 1 × 3 = a tensão da bateria (3,0–4,2 V). Feche a tampinha com os 2 parafusos <strong>M2 × 6 escareados</strong> (36).</li>
+        </ol>
+        <figure class="wide">
+          <a class="zoomable" href="img/l_caps.jpg"><img src="img/l_caps-sm.jpg" alt="As capas e os knobs descendo" loading="lazy" /></a>
+          <figcaption>Por último, as capas (6): brancas nas naturais, pretas nos sustenidos, as de xadrez nos Dós e Fás; os knobs (15) sobre a porca (37) e o encoder.</figcaption>
+        </figure>
+      </section>
+
+      <!-- =========================================================== 9 -->
+      <section class="manual" id="testes">
+        <p class="manual-kicker">Passo 9</p>
+        <h2>Primeiros testes, sem a firmware do Pocket</h2>
+        <p>
+          O Teensy ainda tem o programa de fábrica (pisca o LED laranja dele) ou nenhum. Sem a firmware do Pocket o pino KEEP não
+          sobe, então ligado só pela bateria ele se desliga sozinho em meio segundo (teste 5). Os pontos de teste, com o case aberto:
+        </p>
+        <div class="figure-pair">
+          <figure>
+            <a class="zoomable" href="img/l_testpoints.jpg"><img src="img/l_testpoints-sm.jpg" alt="Os pontos de teste na placa principal, vistos de cima" loading="lazy" /></a>
+            <figcaption>Na placa principal, de cima: A, B e C são os pinos 3, 1 e 2 do J_BAT (22); E é o pino 3V do Teensy.</figcaption>
+          </figure>
+          <figure>
+            <a class="zoomable" href="img/l_tp_panel.jpg"><img src="img/l_tp_panel-sm.jpg" alt="Os pontos de teste nas plaquinhas, vistos de cima" loading="lazy" /></a>
+            <figcaption>Nas plaquinhas: D (TP1) e F (TP7) na do painel (16), G (pad JW4) na do volume (11).</figcaption>
+          </figure>
+        </div>
+        <div class="table-wrap"><table><thead><tr><th>Ponto</th><th>Onde</th><th>Valor</th></tr></thead><tbody>
+          <tr><td>A · GND</td><td>J_BAT pino 3 (também TP4 do painel, pino G do Teensy)</td><td>referência</td></tr>
+          <tr><td>B · BAT+</td><td>J_BAT pino 1</td><td>3,0–4,2 V com bateria</td></tr>
+          <tr><td>C · NTC</td><td>J_BAT pino 2</td><td>~10 kΩ ao GND sem energia; ~0,75 V com USB (25 °C)</td></tr>
+          <tr><td>D · VBUS</td><td>TP1 da plaquinha do painel</td><td>4,75–5,25 V com USB</td></tr>
+          <tr><td>E · 3,3 V</td><td>pino 3V do Teensy (por cima)</td><td>3,25–3,35 V ligado; 0 V desligado</td></tr>
+          <tr><td>F · terra do fone</td><td>TP7 / manga do jack</td><td>nunca em continuidade com o GND</td></tr>
+          <tr><td>G · VSYS</td><td>pad JW4 da plaquinha do volume</td><td>~4,4 V com USB; = bateria sem USB</td></tr>
+          <tr><td>H · alto-falante</td><td>entre os dois fios dele</td><td>~8 Ω</td></tr>
+        </tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Teste</th><th>Como</th><th>Esperado</th></tr></thead><tbody>
+          <tr><td>1</td><td>Luz de carga, Pocket <strong>desligado</strong></td><td>volume todo para a esquerda (clique = desligado), bateria encaixada, USB-C num carregador</td><td><strong>vermelho aceso</strong> enquanto carrega; apaga com a bateria cheia (~2,5 h)</td></tr>
+          <tr><td>2</td><td>Luz de carga, Pocket <strong>ligado</strong></td><td>com a USB ligada, gire o volume além do clique</td><td>a luz de carga <strong>apaga</strong>. Com o programa de fábrica do Teensy o vermelho pisca junto com o LED laranja dele: normal</td></tr>
+          <tr><td>3</td><td>3,3 V presente</td><td>ligado e com USB: E × A</td><td><strong>3,25–3,35 V</strong></td></tr>
+          <tr><td>4</td><td>Liga/desliga pelo volume</td><td>com USB, gire o volume até o clique</td><td>E cai a 0 V em menos de 1 s</td></tr>
+          <tr><td>5</td><td>Só com a bateria</td><td>sem USB, gire o volume além do clique</td><td>o 3,3 V aparece por ~0,5 s e cai: normal <strong>sem a firmware do Pocket</strong></td></tr>
+          <tr><td>6</td><td>Tensão da bateria</td><td>B × A</td><td>3,0–4,2 V</td></tr>
+          <tr><td>7</td><td>Fone sem GND</td><td>desligado; continuidade entre a manga de um plugue no jack e A</td><td><strong>aberto</strong></td></tr>
+          <tr><td>8</td><td>Carga</td><td>depois de 10–20 min carregando, encoste o dedo na tampinha</td><td>no máximo morna. Quente: tire a USB e confira o NTC (C)</td></tr>
+        </tbody></table></div>
+        <div class="callout warn"><p>Teste 3 com ~4,4 V ou 5 V no 3V do Teensy: <strong>desligue já</strong> e confira o corte da ponte VUSB–VIN (passo 3). Teste 3 com 0 V: confira o cabo dos knobs (fios 4 e 5 = chave) e a chave do potenciômetro.</p></div>
+        <div class="figure-pair">
+          <figure>
+            <a class="zoomable" href="img/r_led_red.jpg"><img src="img/r_led_red-sm.jpg" alt="O LED aceso em vermelho com o Pocket desligado e carregando" loading="lazy" /></a>
+            <figcaption>Desligado e carregando: o LED acende em vermelho.</figcaption>
+          </figure>
+          <figure>
+            <a class="zoomable" href="img/r_led_off.jpg"><img src="img/r_led_off-sm.jpg" alt="O LED apagado com o Pocket ligado" loading="lazy" /></a>
+            <figcaption>Ligado, sem a firmware do Pocket: a luz de carga fica apagada.</figcaption>
+          </figure>
+        </div>
+
+        <h3>Gravar a firmware e calibrar as teclas <span class="tag tag-none">em breve</span></h3>
+        <p>
+          A firmware do Pocket ainda não existe. Quando existir, esta seção vai explicar como gravá-la pela USB-C (com o volume
+          ligado e o cabo no computador, o Pocket fica ligado durante a gravação) e como calibrar as 28 teclas. Até lá, o Pocket
+          não toca: os testes acima conferem só a parte elétrica.
+        </p>
+      </section>
+    </div>
+
+    <p class="manual-back"><a href="../">← Voltar à página do eTuttino Pocket</a></p>
+
+    <footer class="footer">
+      <p class="footer-links"><a href="https://beatconfused.com">beatconfused.com</a></p>
+      <p class="footer-contact"><a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a></p>
+    </footer>
+  </main>
+  <script src="lightbox.js?v=20261018"></script>
+</body>
+</html>
