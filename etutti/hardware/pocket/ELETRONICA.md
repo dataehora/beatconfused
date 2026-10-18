@@ -4,6 +4,100 @@ Relatório do agente `eletronica`. Cada tarefa tem uma seção; o fim do arquivo
 para a gestão. Medidas em mm. **(conferir)** = número de datasheet de distribuidor, estimativa,
 ou peça ainda sem medida conferida.
 
+## E2b · Placas (SPEC v3, 18 out 2026)
+
+**SPEC atendida:** v3, tarefa E2b ("Passo 1 · Eletrônica"), sobre o `pcb_envelope.json` do D2
+(commit 0ec8e14). Nada foi encomendado nem montado.
+
+### Resultado
+
+| Placa | Arquivo | DRC (erros / avisos / não ligados) | Fab |
+|---|---|---|---|
+| Principal, 4 camadas, 1,2 mm | `pcb/kicad/pocket.kicad_pcb` | **0 / 0 / 0** | `pcb/fab/pocket_gerbers.zip`, `pocket_bom.csv`, `pocket_cpl_bottom.csv`, `pocket_cpl_top.csv` |
+| Plaquinha dos knobs, 1,6 mm | `pcb/kicad/pocket_controls.kicad_pcb` | **0 / 0 / 0** | `pcb/fab/pocket_controls_gerbers.zip` |
+| Plaquinha do volume (vertical), 1,6 mm | `pcb/kicad/pocket_pot.kicad_pcb` | **0 / 0 / 0** | `pcb/fab/pocket_pot_gerbers.zip` |
+| Plaquinha do painel (USB-C + fone), 1,6 mm | `pcb/kicad/pocket_panel.kicad_pcb` | **0 / 0 / 0** | `pcb/fab/pocket_panel_gerbers.zip` |
+
+- **Placa × firmware: 28/28** teclas chegam ao canal que o `pcb/pocket_keys.h` diz, no grupo de EN
+  certo, e os pinos de endereço, COM, LED, KEEP, AMP_SD, VBAT, HP_DET, POT e encoder batem com o
+  `PINOS.md`. A tabela está no `PINOS.md` e no `pcb/pocket_keys.h` (o sketch do Pocket ainda não
+  existe; a P1 o inclui).
+- **Rigidez** (`pcb/pocket_mechanics.py`, o modelo do eTuttino sobre os 45 apoios do case + as 28 pernas
+  da Audio Board): pior tecla **0,021 mm** a 3 N (D♯5, fileira 1), média 0,008 mm. Meta 0,05.
+- Scripts: `pcb/pocket_geom.py` (geometria e rede, só stdlib), `pcb/build_pocket_pcb.py` (placa
+  principal), `pcb/build_small_boards.py` (as três plaquinhas), `pcb/pocket_mechanics.py`. Usam o
+  roteador e o modelo de flexão do eTuttino (`build_pcb.py`, `mechanics.py`) pelas variáveis de módulo,
+  sem mudar nada neles.
+
+### O que mudou em relação ao E2 (decisões de placa)
+
+1. **4 camadas.** Em 2 camadas o roteador não fechou a zona da esquerda (carregador, conversor,
+   amplificador e as duas fileiras de pinos do Teensy no mesmo lugar). Com um plano de GND (In1) e um
+   de 3,3 V (In2), cada pino de GND/3,3 V desce por uma via ao lado e só os sinais são roteados. A
+   JLCPCB faz 4 camadas em 1,2 mm; custa mais que 2 camadas (pergunta 1).
+2. **Conversor TPS63001** (3,3 V fixo, VSON-10 3 × 3, [datasheet](https://www.ti.com/lit/ds/symlink/tps63001.pdf),
+   LCSC [C28060](https://www.lcsc.com/product-detail/C28060.html)) no lugar do TPS63802: o encapsulamento
+   VSON-HR do TPS63802 não tem desenho conferido no KiCad. Mesma função; repouso maior (50 µA, só com o
+   aparelho ligado). Indutor 2,2 µH 4 × 4 (Changjiang FNR4020S ou equivalente, código LCSC a escolher).
+   Autonomia recalculada no `POWER.md`: **6,7 h com fone, 4,5 h com alto-falante** (típicos).
+3. **Sensores ligados por grupo** como pedido: as fileiras 1 e 3 ficam nos canais 0–7 (EN_A =
+   SENS_EN · /S3), as 2 e 4 nos canais 8–15 (EN_B = SENS_EN · S3). Cada fileira tem um barramento de EN no
+   verso; um 74LVC1G04 e dois 74LVC1G08 ficam perto do Teensy.
+4. **Multiplexadores por lado**: U51 lê a metade direita (COM no pino 14), U52 a esquerda (pino 15),
+   ambos em pé na faixa atrás da fileira 4.
+5. **Pino VIN do Teensy sem ligação** (o E1 o ligava ao 3,3 V): o 3,3 V entra pelo pino 3V3, com a ponte
+   VUSB–VIN cortada, o modo que a PJRC descreve.
+6. **Lugar das peças no verso**: carregador e conversor entre o Teensy e a fileira 4 (x 71–97, y 4–17);
+   chave/partida/KEEP em x 73–90, y 25–31; luz de carga e resistores do LED sob a pilha; amplificador e a
+   entrada dele na frente do Teensy (x 30–44, y 32–44); divisores da bateria e do HP_DET sob a pilha.
+7. **Cabo dos knobs**: o J_CTL (SH 10 vias) fica na zona do design; na outra ponta o cabo é cortado e
+   soldado — vias 1–5 na plaquinha do volume, 6–10 na borda direita da plaquinha dos knobs (pinos no
+   `PINOS.md`). O LED e os dois postes da tampa formam uma parede na plaquinha dos knobs que as linhas
+   do encoder não conseguiam atravessar até um conector na borda; um BM10B com as abas também não cabia
+   nos 13,5 mm.
+8. **Plaquinha dos knobs com duas abas** (x 27,0–35,2): y 40,0–42,5 atrás e 56,0–57,5 na frente. O EC11E
+   ocupa 17 mm em y (A/B/C 7,5 atrás do eixo, a chave 7 à frente); nenhuma rotação cabe no retângulo de
+   13,5 mm (de lado, as pernas entram na plaquinha do volume). LED com as pernas ao longo de x.
+9. **Plaquinha do volume**: Alps RK097 horizontal com chave (desenho do KiCad), corpo de 13,3 ao longo do
+   eixo (não 15,8): o corpo vai de z 30,3 a 17,0; os pinos da chave ficam em z 19,05, acima da plaquinha
+   dos knobs. A junta de 90° tem 6 pads (só um é GND; os outros são solda de reforço), embaixo da
+   plaquinha dos knobs (z ~15).
+10. **Plaquinha do painel**: SJ1-3525N (Same Sky, [datasheet](https://www.cuidevices.com/product/resource/pdf/sj1-352xn.pdf),
+    tem desenho no KiCad) no lugar do PJ-327A; USB-C TYPE-C-31-M-12 com o leque feito à mão; VBUS só no
+    par A9/B4 (o plugue liga os quatro VBUS entre si); sem diodo de ESD (não coube). Fios soldados em pads:
+    micro-B (VBUS, D+, D−, GND) e o SH-8 do J_PNL (cortado nesta ponta).
+11. **Conectores de cima na placa principal**: J_BAT (PH 3, x 12,6, y 32–36), J_SPK (PH 2, 15,6 / 17,6,
+    y 23,5), J_PNL (SH 8, x 17,7, y 33) na zona de trás-esquerda (conferidos contra os níveis e o plugue
+    micro-B), J_CTL (SH 10) na zona dele, J_HP (3 fios do jack da Audio Board) em x 41,5–46,6, y 43,3.
+
+### BOM / LCSC (placa principal)
+
+Montagem na JLCPCB pelo verso (`pocket_cpl_bottom.csv`) e, para os dois SH, por cima
+(`pocket_cpl_top.csv`; ou soldar à mão). Sem código LCSC ainda (a JLCPCB acha pelo valor/pacote, ou
+**conferir**): resistores 1,8 k, 100 Ω, 270 Ω, 68 k, 33 k; indutor 2,2 µH 4 × 4; 74LVC1G04.
+**TMAG5253BA3IQDMRR: consignado / "global sourcing"** (marcado no BOM). Fora da JLCPCB: SJ1-3525N,
+RK097 com chave, EC11E, LED, cabos SH/micro-B, bateria, alto-falante.
+
+### Pedidos ao design (detalhe em `pcb/PECAS.json`)
+
+1. **Plaquinha dos knobs:** confirmar as duas abas (x 27,0–35,2; y 40,0–42,5 e 56,0–57,5). A da frente
+   precisa passar pela parede da caixa do alto-falante.
+2. **Bolso do conector da bateria:** o par PH 3 vias encaixado (PHR-3 de 7,95 × 4,5 + macho em linha,
+   ~13–14 de comprimento) não cabe em 12,3 × 6,75 × 7,6. Pedido: ≥ 14,5 × 9,0 × 6,0.
+3. **Plaquinha do painel:** a perna de trás-esquerda da carcaça do USB-C (passante) e a cabeça do
+   parafuso M2 do furo 1 (u 4,0; v 10,3) ficam sobre o plugue micro-B (folga de 0,45). Cortar a perna
+   rente resolve a primeira; o parafuso de baixo não cabe ali (trocar por pino/encaixe, ou subir a
+   plaquinha ~1,5).
+4. **Cabo dos knobs:** caminho para 5 fios saindo da face de trás da plaquinha do volume (z ~28,6,
+   acima do encoder) e 5 da borda direita da plaquinha dos knobs (y 45–53), juntando-se no SH-10 que
+   desce ao J_CTL.
+
+### O que a programação precisa ajustar
+
+- Usar `pcb/pocket_keys.h` (`POCKET_KEY_INPUT`, pinos). Mux 0 = U51 (pino 14), mux 1 = U52 (pino 15);
+  ler canais 0–7 com S3 = 0 (EN_A) e 8–15 com S3 = 1 (EN_B), 45 µs depois de trocar S3.
+- Nenhum pino mudou. O VIN fica solto (não afeta a firmware).
+
 ## E2 · Fechar as peças (SPEC v3, 17 out 2026)
 
 **SPEC atendida:** v3, tarefa E2 ("Passo 1 · Eletrônica"). A placa (E2b) vem depois do
@@ -430,20 +524,23 @@ Detalhes e todos os cenários no `POWER.md`. Bateria 1000 mAh, 85 % úteis (3,15
 
 ## Perguntas para a gestão
 
-As 7 perguntas do E1 foram respondidas pela SPEC v3. Novas, do E2:
+Do E2b (as do E2 continuam abertas, logo abaixo):
 
-1. **Potenciômetro com chave:** aprova o 9 mm com chave montado deitado numa plaquinha vertical, preso
-   na tampa pela porca M7? A tampa não sobe; o custo é uma plaquinha a mais (soldada em ângulo reto
-   na dos knobs) e um furo com porca na tampa.
-2. **USB-C e fone numa plaquinha do painel**, com um cabo micro-B de 90° comprado, cortado e soldado
-   em 4 pads até o Teensy: aceitável para o protótipo? A alternativa comercial (adaptador USB-C fêmea
-   → micro-B macho em fita) não deixa tirar o 5 V antes do Teensy nem garante os resistores de 5,1 kΩ.
-3. **Bateria de 3 fios:** no tamanho 603450 ela aparece mais em **1200 mAh** (mesmo tamanho, +1,3 h
-   com fone). Aceita 1000 a 1200 mAh? O J escolhe o fornecedor (EEMB sob encomenda, o pacote pronto
-   de 1200 do eBay, ou o CE06795 de 1000 mAh, 7 × 30 × 50).
-4. **LED durante a carga:** como pedido, o vermelho acende pelo carregador mesmo com o Pocket ligado;
-   tocando enquanto carrega, o LED fica laranja e a firmware confirma com o verde. Prefere que a luz
-   de carga apareça **só com o Pocket desligado** (um transistor a mais apaga a luz de carga quando o
-   3,3 V está ligado; aí a firmware mostra a carga do jeito dela)?
-5. **Pilha baixa** (Teensy soldado direto na Audio Board, ~8,7 em vez de 13): recomendo. Fica para o
-   design dizer se aproveita a altura para encurtar a faixa da interface.
+1. **Placa principal de 4 camadas?** Em 2 camadas o roteamento não fechou na zona do Teensy; com
+   planos de GND e 3,3 V fecha com DRC 0/0/0. A JLCPCB faz 4 camadas em 1,2 mm, mais cara que 2.
+   Aceita, ou prefere que eu tente 2 camadas espalhando mais as peças (mais tempo, sem garantia)?
+2. **TPS63001 no lugar do TPS63802:** mesma função, 3,3 V fixo, com desenho no KiCad e na LCSC
+   (C28060). Custa ~0,2 h de autonomia no modelo (6,7 h com fone). Aceita?
+3. **Cabos soldados nas plaquinhas** (knobs, volume e painel: o SH sai crimpado só do lado da placa
+   principal): aceitável para o protótipo, ou quer conectores (pede ~1 mm a mais na plaquinha dos knobs
+   e outro lugar para o J1 dela)?
+4. **Plaquinha dos knobs com abas** para as pernas do encoder (design confirma o espaço)?
+
+Do E2 (sem resposta ainda):
+
+5. **Potenciômetro com chave:** aprova o 9 mm com chave montado deitado numa plaquinha vertical, preso
+   na tampa pela porca M7?
+6. **USB-C e fone numa plaquinha do painel** com cabo micro-B de 90° cortado e soldado: aceitável?
+7. **Bateria de 3 fios:** aceita 1000 a 1200 mAh (603450)? E o fornecedor?
+8. **LED durante a carga:** vermelho aceso pelo carregador mesmo ligado (laranja tocando), ou só com
+   o Pocket desligado (um transistor a mais)?

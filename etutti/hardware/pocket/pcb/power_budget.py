@@ -27,7 +27,7 @@ K_ISET = 890            # A*ohm (datasheet)
 V_OUT_USB = 4.4         # V, BQ24074 OUT with USB present
 CV_TAPER_H = 0.5        # h, constant-voltage tail (estimate)
 R_CHG_LED = 1000        # ohm, charge light from VBUS 5 V
-EFF_CONV = {"typ": 0.92, "max": 0.88}   # TPS63802 at 3.0-4.2 V in, 3.3 V / 0.1-0.4 A out (datasheet curve, conferir)
+EFF_CONV = {"typ": 0.90, "max": 0.86}   # TPS63001 at 3.0-4.2 V in, 3.3 V / 0.1-0.3 A out (datasheet curve, conferir)
 
 # ---- MEASURED on the Teensy (scratchpad pwrtest, 2.5 s per point) ----
 # clock MHz: (audio CPU % with 8 voices x 4 reeds + reverb, 28-key/2-mux scan us avg)
@@ -143,11 +143,13 @@ def main():
     w("# eTuttino Pocket · orçamento de energia")
     w("")
     w("Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v3, tarefa E2 "
-      "(sensor TMAG5253BA3 por grupo e 396 MHz decididos na v3; o clock final sai da medição da P1).")
+      "e E2b (sensor TMAG5253BA3 por grupo e 396 MHz decididos na v3; o clock final sai da medição da P1). "
+      "A placa usa o TPS63001 (3,3 V fixo, LCSC C28060) no lugar do TPS63802: o encapsulamento VSON-HR "
+      "do TPS63802 não tem desenho conferido na biblioteca do KiCad.")
     w("")
     w(f"Bateria LiPo 1S de **{BATT_MAH} mAh** (3,7 V médios), capacidade útil {int(DERATE * 100)} % "
       f"(corte em ~3,3 V, envelhecimento, frio) = {f(BATT_MAH / 1000 * V_BATT * DERATE, 2)} Wh.")
-    w(f"Trilho único de 3,3 V pelo buck-boost TPS63802 (eficiência {int(EFF_CONV['typ'] * 100)} % típica, "
+    w(f"Trilho único de 3,3 V pelo buck-boost TPS63001 (3,3 V fixo; eficiência {int(EFF_CONV['typ'] * 100)} % típica, "
       f"{int(EFF_CONV['max'] * 100)} % no pior caso, conferir). O amplificador do alto-falante (PAM8302A) vai "
       "direto na bateria (saída do carregador), fora do trilho de 3,3 V.")
     w("")
@@ -312,7 +314,7 @@ def main():
     w("1. Corrente real do trilho de 3,3 V com o Teensy a 600, 396 e 240 MHz (multímetro em série com a bateria).")
     w("2. Corrente dos 28 sensores e o campo do ímã do Gateron no fundo do curso (escolhe TMAG5253UA5 ou BA3).")
     w("3. Volume confortável no alto-falante: potência média real (tensão RMS na bobina).")
-    w("4. Eficiência do TPS63802 com a carga real.")
+    w("4. Eficiência do TPS63001 com a carga real.")
     w("5. Tempo de carga real e a temperatura da bateria tocando enquanto carrega.")
     w("")
     with open(POWER_MD, "w", encoding="utf-8", newline="\n") as fh:

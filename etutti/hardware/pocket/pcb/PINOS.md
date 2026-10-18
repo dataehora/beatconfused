@@ -1,9 +1,10 @@
 # eTuttino Pocket · mapa de pinos do Teensy 4.0
 
-**Versão final para a P1** (SPEC v3, tarefa E2, 17 out 2026). Dono: eletrônica. É o contrato com a
-programação: a firmware do Pocket (`ETUTTI_MODEL_POCKET`) segue esta tabela. Quando a placa existir
-(E2b), o `build_pcb.py` do Pocket vai escrever o `KEY_INPUT` no sketch e conferir a placa contra ele,
-como no eTuttino. Os outros pinos ficam fixos aqui.
+**Versão final para a P1** (SPEC v3, tarefas E2 e E2b, 18 out 2026). Dono: eletrônica. É o contrato
+com a programação: a firmware do Pocket (`ETUTTI_MODEL_POCKET`) segue esta tabela e a tabela de teclas
+`KEY_INPUT` abaixo. O `pcb/build_pocket_pcb.py` escreve essa tabela em `pcb/pocket_keys.h` (e em
+`pcb/build/pocket_keys.csv`) a partir da placa roteada e confere a placa contra o arquivo; o sketch do
+Pocket (P1) deve incluir ou copiar o `pocket_keys.h`.
 
 Os pinos são os mesmos da versão provisória (E1). O que muda na v3 está em "Mudanças desde o E1",
 no fim do arquivo.
@@ -58,6 +59,36 @@ no 6, encoder B no 9, potenciômetro no 22 (com a detecção por pull-up/pull-do
 Gray e `ENC_STEPS_PER_DETENT` (o encoder do Pocket é 15 pulsos / 15 detentes, como o do eTuttino: 4).
 Mudam só os pinos que a v2 já tinha listado (abaixo).
 
+## Tabela de teclas (`KEY_INPUT`, da placa roteada)
+
+`POCKET_KEY_INPUT[fileira][coluna]` = multiplexador × 16 + canal (−1 = sem tecla); fileira 0 = fileira 1
+(a mais perto de quem toca). Multiplexador 0 = U51 (metade direita do teclado, COM no pino 14),
+1 = U52 (metade esquerda, COM no pino 15). Canais 0–7 = fileiras 1 e 3 (ligadas pelo EN_A, S3 = 0);
+canais 8–15 = fileiras 2 e 4 (EN_B, S3 = 1). Notas: `FIRST_NOTE = {57, 55, 56, 57}`,
+`FIRST_COL = {1, 0, 1, 1}`, 3 semitons por coluna (como no eTuttino, 4 × 8).
+
+```c
+
+```
+
+Conferência placa × firmware (`build_pocket_pcb.py`): 28/28 teclas chegam ao canal que a tabela diz,
+no grupo de EN certo; endereço, COMs, LED, KEEP, AMP_SD, VBAT, HP_DET, POT e encoder nos pinos acima.
+
+## Cabo da plaquinha dos knobs (J_CTL, SH 10 vias, 1:1)
+
+| Via | Sinal | Vai para |
+|---:|---|---|
+| 1 | VCC (3,3 V) | plaquinha do volume (ponta do potenciômetro) |
+| 2 | POT (pino 22) | cursor do potenciômetro |
+| 3 | GND | potenciômetro; a plaquinha dos knobs recebe o GND pela junta de 90° |
+| 4 | PWR_A (saída do carregador por 100 Ω) | chave do potenciômetro |
+| 5 | PWR_B (SW_ON) | chave do potenciômetro |
+| 6 | ENC_A (pino 11) | plaquinha dos knobs |
+| 7 | ENC_B (pino 9) | plaquinha dos knobs |
+| 8 | ENC_SW (pino 6) | plaquinha dos knobs |
+| 9 | LED_R (anodo vermelho, depois dos diodos) | LED |
+| 10 | LED_G (anodo verde, depois de 330 Ω) | LED |
+
 ## Como cada sinal se comporta
 
 - **Sensores (TMAG5253BA3, EN).** Com EN baixo a saída do sensor fica em alta impedância e o
@@ -106,6 +137,10 @@ Mudam só os pinos que a v2 já tinha listado (abaixo).
 7. Confirmações do LED pelo verde (o vermelho pode estar preso pela carga).
 
 ## Mudanças desde o E1 (provisório)
+
+- **E2b:** o pino VIN do Teensy fica **sem ligação** (o Teensy recebe 3,3 V no pino 3V3, com a ponte
+  VUSB–VIN cortada). Os multiplexadores dividem o teclado por lado (U51 direita, U52 esquerda), e não
+  por fileira; a firmware só precisa da tabela acima.
 
 - Nenhum pino mudou de lugar. O mapa deixa de ser provisório.
 - **LED_R:** passa por um diodo (o "OU" com a luz de carga) e o resistor vai de 330 Ω para 270 Ω.
