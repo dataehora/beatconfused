@@ -11,7 +11,10 @@
             pot with switch on its left face, its shaft up through the lid,
             5 joint pads on its right face, 1.0-1.3 mm above the controls
             board's back face, soldered across the 90 degree corner.
-            Frame: X = 55 - y, Y = 29.8 - z (seen from the pot's side).
+            Frame: X = y - 43, Y = 29.8 - z (seen from the pot's side, F face
+            towards -x: the SPEC frame is left-handed, so the player (+y) is on
+            the RIGHT. v0.1 had X = 55 - y, a mirrored board: the joint's GND
+            pad landed on a pad without a net -- fixed in v0.2, SPEC v4 F2).
   panel     USB-C + headphone jack on the back-left wall's flat boss
             (envelope "panel"), all parts on top (nothing may hang below:
             it passes 0.45 mm over the Teensy's micro-B plug). Frame:
@@ -50,7 +53,7 @@ PN = G.ENV["panel"]
 # other joint pads are only solder for strength.
 CTL_NETS = {1: "VCC", 2: "POT", 3: "GND", 4: "PWR_A", 5: "PWR_B", 6: "ENC_A", 7: "ENC_B", 8: "ENC_SW",
             9: "LED_R", 10: "LED_G"}
-# joint pads, by the controls board's y (the pot board's X = 55 - y); clear
+# joint pads, by the controls board's y (the pot board's X = y - 43); clear
 # of the encoder's left lug (y 47.4-50.6)
 JOINT = {44.0: None, 45.2: None, 46.4: "GND", 51.6: None, 52.8: None, 54.0: None}
 TAB_BACK, TAB_FRONT = 40.0, 57.5
@@ -317,8 +320,10 @@ def pot():
     pb = CT["pot"]
     W = pb["board"][3] - pb["board"][1]               # 12 (y extent)
     H = pb["board_z"][1] - pb["board_z"][0]           # 16 (z extent)
-    ymax, ztop = pb["board"][3], pb["board_z"][1]
-    X = lambda y: ymax - y
+    ymin, ztop = pb["board"][1], pb["board_z"][1]
+    # seen from the pot's side (looking +x) the player (+y) is on the right:
+    # KiCad X grows with y (the SPEC frame is left-handed)
+    X = lambda y: y - ymin
     Y = lambda z: ztop - z
     shaft_X, shoulder_Y = X(pb["shaft"][1]), Y(pb["body_z"][1])
     # RK097 horizontal-with-switch footprint: shaft along -x, body front 5 mm
@@ -341,7 +346,7 @@ def pot():
     poly = [(0, 0), (W, 0), (W, H), (0, H)]
     route_all(fps, W + 1, H + 1, (0, 0), poly, ("GND", "VCC"))
     outline(poly)
-    B.text("VOL", W / 2, 1.2, 0.8)
+    B.text("VOL v0.2", W / 2, 1.2, 0.8)
     strip_silk(fps, 0, 0, W, H)
     path = os.path.join(KICAD_DIR, "pocket_pot.kicad_pcb")
     pcbnew.SaveBoard(path, B.board)

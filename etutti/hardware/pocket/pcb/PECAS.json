@@ -43,7 +43,8 @@
         "9 mm VERTICAL type on the existing controls board": "16.6 above the board: needs the board 3.6 lower, onto the Audio Board"
       },
       "needs_from_design": "lid boss with the D7.3 hole and the anti-rotation hole at the volume knob; room for the vertical pot board at y 40.9-42.5 from z 13.8 up; confirm nothing at z 14.5-17.2 under the pot (D1 had the controls board there only)",
-      "note_e2b": "E2b uses the Alps RK097 drawing (body 13.3 along the shaft, not the RK0972S's 15.8): the body ends at z 17.0, above the controls board (17.18 top) only by the switch legs, which sit at z 19.05."
+      "note_e2b": "E2b uses the Alps RK097 drawing (body 13.3 along the shaft, not the RK0972S's 15.8): the body ends at z 17.0, above the controls board (17.18 top) only by the switch legs, which sit at z 19.05.",
+      "pot_board_v4": "v0.2 (F2 follow-up, design question 5): the pot board was drawn mirrored (KiCad X = 55 - y). Seen from the pot's side (F face towards -x) the player (+y) is on the right because the SPEC frame is left-handed, so X = y - 43. Fixed: the joint's GND pad now lands on the controls board's GND pad at y 46.4 (before it met the net-less pad at 51.6). The shaft stays at y 49 (symmetric); pot pins: 3 (VCC) at y 46.5, 2 (wiper) at 49.0, 1 (GND) at 51.5, switch 5/4 at 46.5/51.5. Rotation sense was NOT affected: it is set by the part's own terminals (Alps: CW seen from the shaft end moves the wiper from 1 to 3, conferir), and 3 = VCC, so turning clockwise seen from above raises the volume. Cable wires 1-5: JW pads unchanged by net (JW1 VCC, JW2 POT, JW3 GND, JW4 PWR_A, JW5 PWR_B), only their physical order along y is now JW5, JW1, JW2, JW3, JW4 from y 44.2 to 53.0."
     },
     "encoder": {
       "name": "Encoder seletor com clique",

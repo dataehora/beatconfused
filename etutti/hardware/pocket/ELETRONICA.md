@@ -15,7 +15,7 @@ task F1"). Nada foi encomendado nem montado.
 |---|---|---|---|
 | Principal, 4 camadas, 1,2 mm | v0.2 | **0 / 0 / 0** | `pcb/fab/pocket_gerbers.zip`, `pocket_bom.csv`, `pocket_cpl_bottom.csv`, `pocket_cpl_top.csv` |
 | Plaquinha dos knobs, 1,6 mm | v0.2 | **0 / 0 / 0** | `pcb/fab/pocket_controls_gerbers.zip` |
-| Plaquinha do volume (em pé), 1,6 mm | v0.1 (sem mudança) | **0 / 0 / 0** | `pcb/fab/pocket_pot_gerbers.zip` |
+| Plaquinha do volume (em pé), 1,6 mm | v0.2 (desespelhada) | **0 / 0 / 0** | `pcb/fab/pocket_pot_gerbers.zip` |
 | Plaquinha do painel (USB-C + ESD + fone), 1,6 mm | v0.2 | **0 / 0 / 0** | `pcb/fab/pocket_panel_gerbers.zip`, `pocket_panel_bom.csv`, `pocket_panel_cpl_top.csv` (montagem JLCPCB, topo) |
 
 - **Placa × firmware: 28/28**, 0 divergências (`pcb/pocket_keys.h` e o bloco `KEY_INPUT` do `PINOS.md`, agora escrito pelo
@@ -77,7 +77,7 @@ task F1"). Nada foi encomendado nem montado.
 design fez um rebaixo na parede de trás da caixa do alto-falante (y ≤ 58,0, z ≤ 18,5): 0,5 de folga. Só a
 serigrafia mudou de versão.
 
-**Plaquinha do volume**: sem mudança.
+**Plaquinha do volume (v0.2): estava espelhada** (pergunta 5 do design, confirmada). O `build_small_boards.py` desenhava com X = 55 − y; como o referencial da SPEC é de mão esquerda, visto do lado do potenciômetro (face F para −x) quem toca fica à direita, então X = y − 43. Na v0.1 o pad de GND da junta de 90° caía no pad sem rede da plaquinha dos knobs (y 51,6): os knobs ficariam sem GND. Corrigido: GND da junta em y 46,4 nas duas placas. O eixo continua em y 49. **O sentido do volume não mudava:** ele depende só dos terminais da própria peça (Alps: horário, visto da ponta do eixo, leva o cursor do 1 ao 3; **conferir**), e o 3 é o VCC, então girar para a direita, visto de cima, aumenta o volume. Os pads JW1–JW5 do cabo têm as mesmas redes; só a ordem física ao longo de y mudou (JW5, JW1, JW2, JW3, JW4 de trás para a frente). J_CTL e `PINOS.md` sem mudança. As figuras `l_pot_board` e `l_joint` do manual precisam ser renderizadas de novo.
 
 **Bolso do conector da bateria (divergência 1)**: medidas no `PECAS.json` (`battery.connector_pocket_v4`):
 PHR-3 da bateria 7,9 × 4,5 × 6,0 (JST, [ePH](https://www.jst-mfg.com/product/pdf/eng/ePH.pdf)), macho em
@@ -700,7 +700,7 @@ Detalhes e todos os cenários no `POWER.md`. Bateria 1000 mAh, 85 % úteis (3,15
 
 ## Perguntas para a gestão
 
-Do F2 (as do E2 e do E2b foram respondidas pela v4):
+Do F2 (as do E2 e do E2b foram respondidas pela v4; a pergunta 5 do design, plaquinha do volume espelhada, está respondida acima: confirmada e corrigida):
 
 1. **Q22 (liga com USB sem o KEEP):** pus um transistor a mais, não pedido, para que a chave do volume sozinha
    segure o 3,3 V quando há USB. Sem ele o Teensy não pode ser gravado (o KEEP cai durante a gravação e o

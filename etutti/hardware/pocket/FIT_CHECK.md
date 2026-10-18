@@ -1,6 +1,6 @@
 # eTuttino Pocket · fit check (design)
 
-**SPEC atendida: v4, tarefa F1** (acabamento e fechamento do case, Seixo variante B). 18 out 2026.
+**SPEC atendida: v4, tarefas F1** (acabamento e fechamento do case, Seixo variante B) **e M1** (manual de montagem, §12). 18 out 2026.
 O D2 (SPEC v3, o modelo) e o D1 (SPEC v2, as variantes) estão no histórico do git.
 
 Página de revisão para o J: `/etutti/pocket/revisao/` (só português, noindex).
@@ -259,9 +259,96 @@ Ver §6. **Para a eletrônica (F2):**
    até v 0,8;
 3. o furo 1 da plaquinha do painel continua Ø 2,2 (pino Ø 2,0).
 
+## 12. Manual de montagem (M1)
+
+Página: **`/etutti/pocket/manual/`** (`etutti/pocket/manual/index.html`), só em português, noindex/nofollow, linkada da
+página provisória `/etutti/pocket/` ("Manual de montagem →", nas três línguas da página). É independente do manual do
+eTuttino: `styles.css` e `lightbox.js` são cópias locais (mesmo estilo e mesmo lightbox, sem as `.lang-block`); usa
+`shared/site-title.css?v=20261008`.
+
+- **Rota única:** placa principal e plaquinha do painel montadas pela JLCPCB. Cada passo marca o que se solda em casa
+  (etiqueta "em casa"). O conteúdo elétrico (solda, testes, valores, avisos da LiPo) é o do `pcb/MANUAL_ELETRICO.md`.
+- **Ordem da SPEC:** 1 antes de começar, 2 capas de teste, 3 Teensy, 4 placa principal, 5 plate e switches,
+  6 plaquinhas, 7 bateria e alto-falante, 8 fechar o case e 9 primeiros testes sem a firmware. A seção de firmware e
+  calibração está marcada "em breve".
+- **Tabelas geradas:**
+  - lista do kit, lida de `pcb/fab/pocket_kit_bom.csv`;
+  - esquemas dos cabos dos knobs, do painel e do micro-B;
+  - polaridade da bateria.
+
+  Quem escreve é o `manual3d/page_tables.py`, entre marcadores. A lista de peças (balões 1–38), o que imprimir (com o
+  material) e os pontos de teste A–H estão escritos na página.
+
+### Figuras: `etutti/hardware/pocket/manual3d/`
+
+Adaptei o pipeline do eTuttino (`etutti/hardware/manual3d/`, sem mudar nada nele).
+
+- `build.py` exporta as quatro placas do Pocket com `kicad-cli` (glb) e chama os outros três scripts:
+  - `parts.py`: peças sem modelo 3D (Teensy, Audio Board, barras, switches, RK097, EC11E, LED, USB-C, plugues, bateria,
+    alto-falante, parafusos). As posições vêm do `case.py`, do `pcb_envelope.json` e do `PECAS.json`.
+  - `render_blender.py`, no Blender 5.2 (Cycles/OptiX).
+  - `annotate.py`, cópia com cotas: balões, setas e cotas, saindo em `etutti/pocket/manual/img/`.
+- Também copia os renders do KiCad (`pcb/fab/pocket_{top,bottom}.png`).
+- A plaquinha do volume entra no Blender por uma rotação própria (ela fica em pé no plano y–z); a do painel, pelo
+  referencial da corda.
+- `build/` fica fora do git.
+
+| Figura | Passo | Cobre (MANUAL_ELETRICO) |
+|---|---|---|
+| `r_hero` | abertura | — |
+| `r_exploded` (balões) | 1 | — (lista de peças) |
+| `r_section_y21`, `r_section_y49`, `r_section_x30` | 1 | **F-14** (Pocket montado em corte: pilha, bateria, alto-falante, plaquinhas) e o corte lateral do **F-06** |
+| `r_keycap_test` | 2 | — |
+| `l_teensy_cut` | 3 | **F-01** |
+| `l_audio_wires` | 3 | **F-02** |
+| `l_stack` + `r_stack` (cota 8,7) | 3 | **F-03** |
+| `board_bottom`, `board_top` (renders do KiCad) | 4 | **F-04** |
+| `l_connectors` | 4 | **F-05** |
+| `l_stack_main` (calço de 3 mm, fios do fone) | 4 | **F-06** |
+| `l_switches` | 5 | — |
+| `l_pot_board` | 6 | **F-07** |
+| `l_controls` | 6 | **F-08** |
+| `l_joint` | 6 | **F-09** |
+| `l_cable_ctl` + esquema SVG do cabo dos knobs | 6 | **F-12** |
+| `l_panel` + esquema SVG do cabo do painel e do micro-B | 6 | **F-13** |
+| `l_panel_under` (perna cortada, H1, H2) | 6 | **F-10** |
+| `l_speaker` | 7 | — |
+| esquema SVG da polaridade + `l_battery` | 7, 8 | **F-11** |
+| `l_lid_boards`, `l_board_mount`, `l_close`, `l_caps` | 8 | — |
+| `l_testpoints` + `l_tp_panel` (pontos A–H) | 9 | **F-15** (dividido em dois: na vista de cima, a plaquinha do painel cobre o J_BAT) |
+| `r_led_red` / `r_led_off` | 9 | **F-16** |
+
+Os números dos balões estão na "Lista de peças" do manual, e as letras A–H na tabela de pontos de teste. A figura F-11 virou
+um esquema, sem render 3D da bateria com o multímetro.
+
+### Achado ao montar a cena: a plaquinha do volume estava espelhada (corrigido)
+
+`pcb/build_small_boards.py` usava X = 55 − y "visto do lado do potenciômetro". Visto desse lado, quem toca fica à direita,
+então o X do KiCad tem de crescer para a frente. O pad de GND da junta de 90° caía num pad sem rede.
+
+**A eletrônica corrigiu (plaquinha do volume v0.2, X = y − 43):**
+- o GND da junta está em y 46,4 nas duas placas;
+- pinos do potenciômetro ao longo de y: 3 VCC em 46,5, 2 cursor em 49,0, 1 GND em 51,5;
+- chave: 5 em 46,5 e 4 em 51,5;
+- pads do cabo, de y 44,2 a 53,0: JW5, JW1, JW2, JW3, JW4.
+
+O sentido do volume não mudou (os pinos só entram de um jeito): girar para a direita, visto de cima, aumenta, pela
+convenção da Alps. Conferir na peça.
+
+Renderizei de novo, a partir do `pocket_pot.kicad_pcb` v0.2, todas as figuras que mostram essa plaquinha:
+- `l_pot_board` e `l_joint`;
+- `l_controls`, `l_cable_ctl`, `l_lid_boards` e `l_tp_panel`;
+- `r_exploded` e `r_section_y49`.
+
+A serigrafia "VOL v0.2" agora sai legível do lado do potenciômetro, e as pontas dos fios 1–5 seguem a ordem nova
+(`parts.py`). O texto do manual não fala da ordem dos pads nem do sentido do volume, por isso não mudou. A página foi
+conferida de novo: 375 px sem rolagem lateral, imagens e links com 200, console sem erros.
+
 ## Perguntas para a gestão
 
 1. **Berço da bateria 2 mm para a direita e 2,5 para a frente** para o bolso do plugue ter os 9,0 pedidos. Muda o contorno da placa principal (só a borda, sem cobre na área), que a eletrônica refaz no F2. Aprova?
 2. **Nariz do fone SJ1-3525N:** com Ø 6,0 e o eixo a 2,5 da plaquinha, ele passaria 0,5 abaixo do topo da plaquinha. Pela pegada do KiCad, a frente do corpo fica 1,95 para dentro da borda, então o nariz fica em parte sobre a placa. Modelei o nariz com o fundo reto. A eletrônica confere no desenho ou na peça antes do pedido das plaquinhas?
 3. **Costela de 3,0 com o M2 da plaquinha do painel:** sobram 0,65 de parede em volta do piloto, na resina. Para o protótipo serve. Se rachar, a troca é um inserto ou um piloto de Ø 1,6. Aceita?
 4. **Protótipo:** falta só o F2 trocar o contorno da placa principal. O ESD (U1, v 9,6 na plaquinha do painel de 18:29) já está fora da faixa da costela. Com isso, a parte física fica congelada. Pode encomendar? Casca de cima em resina; fundo, tampinha e fundo da caixa em MJF; capas em resina, primeiro o `keycap_test_4`.
+5. ~~**Plaquinha do volume espelhada**~~ **Respondida:** a eletrônica corrigiu na v0.2 (X = y − 43, GND da junta em y 46,4 nas duas placas); as figuras foram refeitas (§12). Falta só conferir na peça que o volume sobe girando para a direita.
+6. **Manual (M1):** as figuras F-11 e F-15 da eletrônica viraram, respectivamente, um esquema de polaridade e duas vistas de cima (placa principal / plaquinhas), porque a plaquinha do painel cobre o J_BAT na vista de cima. As posições exatas dos pads VUSB–VIN no verso do Teensy e dos três terminais do fone na Audio Board estão marcadas "(conferir)" no manual. Serve assim para o protótipo?
