@@ -477,13 +477,14 @@ through the Write tool into the scratchpad.
 
 **eTutti Viaggio** (`etutti/hardware/viaggio/`, SPEC v1) is now the only
 active instrument: the Pocket's 28-key keyboard and right side, one
-4-layer board with ALL electronics assembled by JLCPCB ("Teensy 4.0 on
-the board": i.MX RT1062 + PJRC MKL02 bootloader + 16 Mbit flash, SGTL5000,
+4-layer board with ALL electronics assembled by JLCPCB ("Teensy 4.1 on
+the board": i.MX RT1062 + PJRC MKL02 bootloader + 64 Mbit flash + unfitted
+PSRAM footprint, SGTL5000,
 MAX98357A, BQ24074, TPS63001, USB-C, TMAG5253 via JLC Global Sourcing),
 soft power (hold the selector click 2 s), thin ~1000 mAh battery, case only
 conceptual. Same Chat→Code protocol as the Pocket (below); the Viaggio's
-reports live in `viaggio/`. Pin map keeps Teensy 4.0 pin numbers so the
-firmware stays compatible. The **eTuttino Pocket is finished at SPEC v5
+reports live in `viaggio/`. Pin map keeps Teensy 4.1 pin numbers so the
+firmware stays compatible (compile with `teensy:avr:teensy41`). The **eTuttino Pocket is finished at SPEC v5
 (PR #110) and paused**; its files are reference for the Viaggio.
 
 ## Project status (17 Oct 2026)
