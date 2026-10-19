@@ -6,7 +6,7 @@ Adapted from etutti/hardware/manual3d/parts.py (the eTuttino's, unchanged):
 models the parts that have no KiCad 3D model, from their datasheet sizes
 (PECAS.json; CHECK where a size is a guess), one STL per material, and
 writes where every instance goes, the cables as polylines and the
-placement of the four KiCad boards. Everything is in the case files'
+placement of the three KiCad boards (SPEC v5: no panel board). Everything is in the case files'
 frame (x right, y away from the player, z up, mm; y_file = 100 - y_spec),
 so it lines up with ../case/out/*.stl.
 
@@ -196,27 +196,31 @@ def pot_rk097():
 
 
 def encoder():
-    """Alps EC11E with switch, D6 shaft 20 long, M7 bushing (PECAS encoder);
+    """Alps EC11E with switch, D6 shaft (L 25, cut to the knob), M7 bushing (PECAS encoder);
     local: board top at z = 0."""
     e = PECAS["encoder"]["body"]
     body = cbox(0, 0, 0, e["plan"][0], e["plan"][1], e["height_above_pcb"])
     base = cbox(0, 0, 0, e["plan"][0], e["plan"][1], 1.5)
     bush = cyl(0, 0, e["height_above_pcb"], 5.0, 7.0)
-    shaft = cyl(0, 0, e["height_above_pcb"] + 5.0, e["shaft_l"] - 5.0, 6.0).cut(
-        box(1.5, -4, e["height_above_pcb"] + 10.0, 4, 4, e["height_above_pcb"] + e["shaft_l"] + 1))
+    L = min(e["shaft_l"], C.Z_IF + C.KNOB_LIFT + C.KNOB_H - 1.0 - C.CTRL_TOP)     # cut to the knob's bore (L 25 - 2.2)
+    shaft = cyl(0, 0, e["height_above_pcb"] + 5.0, L - e["height_above_pcb"] - 5.0, 6.0).cut(
+        box(1.5, -4, e["height_above_pcb"] + 10.0, 4, 4, L + 1))
     legs = union(*[cbox(dx, 7.5, -1.5, 0.8, 0.3, 1.5) for dx in (-2.5, 0, 2.5)],
                  *[cbox(dx, -7.0, -1.5, 0.8, 0.3, 1.5) for dx in (-2.5, 2.5)])
     return {"steel": body.cut(base), "plastic_black": base, "brass": bush, "alu": shaft, "tin": legs}
 
 
 def knob():
-    """D9 knob, 12 tall (takes the shafts' tips: pot 45.3, encoder 43.7), local: underside at z = 0."""
-    k = cyl(0, 0, 0, 12.0, 9.0)
-    k = k.faces(">Z").edges().fillet(0.8)
-    k = k.cut(cbox(0, 2.6, 11.5, 0.7, 2.4, 1.0))
-    for i in range(24):
-        a = 2 * math.pi * i / 24
-        k = k.cut(cyl(4.6 * math.cos(a), 4.6 * math.sin(a), 0.8, 10.2, 0.6))
+    """The proposed knob (case.KNOB_*: D15 x 14, set screw, a cavity underneath
+    for the thread left above the nut); local: underside at z = 0."""
+    k = cyl(0, 0, 0, C.KNOB_H, C.KNOB_D)
+    k = k.faces(">Z").edges().fillet(1.2)
+    k = k.cut(cyl(0, 0, -1, C.KNOB_CAVITY[1] + 1, C.KNOB_CAVITY[0]))
+    k = k.cut(cbox(0, 2.6, C.KNOB_H - 0.5, 0.8, 3.0, 1.0))                       # pointer line
+    for i in range(30):
+        a = 2 * math.pi * i / 30
+        k = k.cut(cyl((C.KNOB_D / 2 + 0.15) * math.cos(a), (C.KNOB_D / 2 + 0.15) * math.sin(a), 1.0, C.KNOB_H - 2.5, 0.7))
+    k = k.cut(cyl(0, 0, C.KNOB_H / 2, 10, 2.0, (1, 0, 0)))                          # set screw hole
     return {"knob": k}
 
 
@@ -229,28 +233,97 @@ def led(spacer):
 
 
 def nut_m7():
-    n = cq.Workplane("XY").polygon(6, 9.0 / math.cos(math.pi / 6)).extrude(1.6)
+    n = cq.Workplane("XY").polygon(6, C.POT_NUT_AF / math.cos(math.pi / 6)).extrude(C.POT_NUT_T)
     return {"steel": n.cut(cyl(0, 0, -1, 4, 7.0))}
 
 
-# ------------------------------------------------------------- panel parts
-def usb_c():
-    """HRO TYPE-C-31-M-12 shell, local: x = inwards from the mouth (mouth at
-    x = 0), y across, z up from the panel board's top."""
-    u = PECAS["usb_c"]["body"]
-    sh = cq.Workplane("YZ").slot2D(u["width"], u["height"], 0).extrude(u["depth"]).translate((0, 0, u["height"] / 2))
-    mouth = cq.Workplane("YZ").slot2D(u["width"] - 0.8, u["height"] - 0.8, 0).extrude(6.0).translate((-0.1, 0, u["height"] / 2))
-    tongue = box(0.6, -3.3, u["height"] / 2 - 0.35, 6.0, 3.3, u["height"] / 2 + 0.35)
-    legs = union(*[box(x - 0.3, y - 0.5, -0.8 if x > 3 or y > 0 else 0.0, x + 0.3, y + 0.5, 0.2)
-                   for x, y in ((2.6, -4.32), (2.6, 4.32), (6.8, -4.32), (6.8, 4.32))])
-    return {"steel": sh.cut(mouth).union(legs), "plastic_black": tongue}
+def nut_tool():
+    """The printed nut driver (case/out/seixo_chave_porca), hex end down; local: z = 0 at its hex end."""
+    return {"case_mjf": cq.Workplane().add(C.nut_tool())}
 
 
-def usb_plug_90():
-    """Right-angle micro-B plug: tip at the origin pointing +x, overmould -x."""
-    tongue = box(0, -3.5, -0.9, 6.0, 3.5, 0.9)
-    over = box(-11.0, -5.5, -3.75, 0, 5.5, 3.75).edges("|Y").fillet(1.5)
-    return {"steel": tongue, "plastic_black": over}
+# ------------------------------------------------------------- the panel parts (SPEC v5: FPC micro-B + wired jack)
+def placed(shape):
+    """A case.py solid in SPEC coordinates -> the files' frame, as a Workplane."""
+    return cq.Workplane().add(C.to_file(shape))
+
+
+def fpc_female():
+    """The FPC female head in its tunnel (case.female_solids) with the
+    receptacle opening on its front, and the trava bar; file frame."""
+    head, bar = C.female_solids()
+    g = C.conn_geometry()
+    hole = C.local_solid(cq.Solid.makeBox(1.5, 7.5, 2.6, cq.Vector(-0.5, -3.75, -1.3)), g["fem_origin"], g["n"], C.FEM_Z)
+    tongue = C.local_solid(cq.Solid.makeBox(1.0, 5.0, 0.6, cq.Vector(0.2, -2.5, -0.3)), g["fem_origin"], g["n"], C.FEM_Z)
+    return {"plastic_black": placed(head.cut(hole)), "steel": placed(tongue)}, {"case_mjf": placed(bar)}
+
+
+def jack_cliff():
+    """Cliff FC681375V (case.jack_solids): body + tabs, thread, ring nut outside; file frame."""
+    body, thread, nut_ = C.jack_solids()
+    g = C.conn_geometry()
+    o = g["jack_origin"]
+    bore = cq.Solid.makeCylinder(1.8, 8.0, cq.Vector(o[0] - 7.0, o[1], C.JACK_Z), cq.Vector(1, 0, 0))
+    ring = nut_.cut(cq.Solid.makeCylinder(4.0, 4.0, cq.Vector(o[0] - 6.0, o[1], C.JACK_Z), cq.Vector(1, 0, 0)))
+    ring = ring.cut(cq.Solid.makeBox(2.2, 1.0, 12.0, cq.Vector(o[0] - C.JACK_WALL - 2.1, o[1] - 0.5, C.JACK_Z - 6.0)))   # spanner slot
+    return {"plastic_black": placed(body), "steel": placed(thread.cut(bore)).union(placed(ring))}
+
+
+def ribbon_segments():
+    """The FPC ribbon's centre line as (p0, p1, width direction) in SPEC
+    coordinates: up from the plug's top, three flat layers over the Teensy
+    (the spare of the 10 cm), back under the block, up at the block's end and
+    into the trava's slot. Width ~10 (PECAS ~10-12), thickness 0.3."""
+    rect, (pz0, pz1) = C.stack_parts()["usb_plug"]
+    xc = (min(p[0] for p in rect) + max(p[0] for p in rect)) / 2
+    yc = (min(p[1] for p in rect) + max(p[1] for p in rect)) / 2
+    g = C.conn_geometry()
+    o, n = g["fem_origin"], g["n"]
+    t = (-n[1], n[0])
+    e = C.FEM_POCKET[1] + C.TRAVA[1] + 1.2
+    riser = (o[0] + n[0] * e, o[1] + n[1] * e)
+    z0 = pz1 + 0.25
+    segs = [((xc, yc, pz1), (xc, yc, z0), (0, 1, 0)),
+            ((xc, yc, z0), (46.0, yc, z0), (0, 1, 0)),
+            ((46.0, yc, z0 + 0.5), (33.0, yc, z0 + 0.5), (0, 1, 0)),
+            ((33.0, yc, z0 + 1.0), (45.0, yc, z0 + 1.0), (0, 1, 0)),
+            ((45.0, yc, z0 + 1.5), (riser[0] + 2.0, yc, z0 + 1.5), (0, 1, 0)),
+            ((riser[0] + 2.0, yc, z0 + 1.5), (riser[0], riser[1], z0 + 1.5), (1, 0, 0)),
+            ((riser[0], riser[1], z0 + 1.5), (riser[0], riser[1], C.FEM_Z), (t[0], t[1], 0)),
+            ((riser[0], riser[1], C.FEM_Z), (o[0] + n[0] * (C.FEM_HEAD[1] - 0.5), o[1] + n[1] * (C.FEM_HEAD[1] - 0.5), C.FEM_Z), (t[0], t[1], 0))]
+    return segs
+
+
+def ribbon(width=10.0, thick=0.3):
+    out = None
+    for p0, p1, wd in ribbon_segments():
+        a, b = cq.Vector(*p0), cq.Vector(*p1)
+        d = b - a
+        L = d.Length
+        if L < 1e-6:
+            continue
+        u = d.normalized()
+        w = cq.Vector(*wd).normalized()
+        th = u.cross(w).normalized()
+        # a box along u, width w, thickness th, centred on the segment (plus overlap at the joints)
+        corner = a - u * 0.6 - w * (width / 2) - th * (thick / 2)
+        pl = cq.Plane(origin=corner, xDir=u, normal=th)
+        bx = cq.Workplane(pl).rect(L + 1.2, width, centered=False).extrude(thick).val()
+        bx = C.to_file(bx)
+        out = cq.Workplane().add(bx) if out is None else out.union(cq.Workplane().add(bx))
+    return {"fpc": out}
+
+
+def plug_up():
+    """The 'UP' 90 deg micro-B male in the Teensy (PECAS male_90: ~11 x 8.5 x 5.5,
+    conferir), tip into the Teensy's socket, ribbon out of its top."""
+    rect, (pz0, pz1) = C.stack_parts()["usb_plug"]
+    x0, x1 = min(p[0] for p in rect), max(p[0] for p in rect)
+    yc = (min(p[1] for p in rect) + max(p[1] for p in rect)) / 2
+    zc = (pz0 + pz1) / 2
+    over = C.box3(x1 - 11.0, yc - 4.25, zc - 2.75, x1, yc + 4.25, pz1)
+    tongue = C.box3(x1, yc - 3.4, zc - 0.9, x1 + 6.0, yc + 3.4, zc + 0.9)
+    return {"plastic_black": placed(over), "steel": placed(tongue)}
 
 
 # ------------------------------------------------------------- connectors, battery, speaker
@@ -326,16 +399,6 @@ def export(name, parts):
         cq.exporters.export(w, os.path.join(LIB, "%s.%s.stl" % (name, mat)), tolerance=0.02, angularTolerance=0.1)
 
 
-def panel_frame():
-    """Panel board frame: point(s, d) and the in-plane rotation (deg, file
-    frame) that turns local +x into the inward normal (local +y = -s)."""
-    pg = C.panel_geometry()
-    n = pg["n"]
-    rz = math.degrees(math.atan2(-n[1], n[0]))
-    pt = lambda s, d: (pg["at"](s, d)[0], F(pg["at"](s, d)[1]))
-    return pg, pt, rz
-
-
 def mat4(cols, t):
     """4x4 row-major from three column vectors and a translation (mm)."""
     return [[cols[0][i], cols[1][i], cols[2][i], t[i]] for i in range(3)] + [[0, 0, 0, 1]]
@@ -346,11 +409,12 @@ def main():
     lib = {
         "teensy": teensy(), "vusb_pads": vusb_pads(), "audio_board": audio_board(), "header": header(),
         "solder": solder_joints(), "shim": shim(), "gateron": gateron(), "pot": pot_rk097(), "encoder": encoder(),
-        "knob": knob(), "led": led(C.Z_IF - 0.5 - 5.3 - C.CTRL_TOP), "nut_m7": nut_m7(), "usb_c": usb_c(),
-        "usb_plug_90": usb_plug_90(), "ph_mated": ph_mated(), "ph3": ph_plug(3), "ph2": ph_plug(2),
+        "knob": knob(), "led": led(C.Z_IF - 0.5 - 5.3 - C.CTRL_TOP), "nut_m7": nut_m7(), "nut_tool": nut_tool(),
+        "fpc_female": fpc_female()[0], "trava": fpc_female()[1], "jack_cliff": jack_cliff(), "fpc_ribbon": ribbon(),
+        "plug_up": plug_up(), "ph_mated": ph_mated(), "ph3": ph_plug(3), "ph2": ph_plug(2),
         "battery": battery(), "batt_foam": foam(54.0, 32.0, 1.0), "speaker": speaker(), "gasket": gasket(),
         "screw_m25x8": screw(2.5, 8.0, 5.0, 1.4, csk=True), "screw_m2x10": screw(2.0, 10.0, 3.8, 1.3),
-        "screw_m2x5": screw(2.0, 5.0, 3.8, 1.3), "screw_m2x6": screw(2.0, 6.0, 3.8, 1.3),
+        "screw_m2x5": screw(2.0, 5.0, 3.8, 1.3),
         "screw_m2x6_csk": screw(2.0, 6.0, 4.0, 1.1, csk=True), "nut_m2": nut(2.0, 4.0, 1.6),
     }
     for name, parts in lib.items():
@@ -375,20 +439,28 @@ def main():
     # controls
     sx, sy = C.VOLUME_XY
     add("pot", sx, sy, C.POT_BODY[5], "pot", tag="pot")
-    add("nut_m7", sx, sy, C.Z_IF, "pot_nut", tag="pot_nut")
+    add("nut_m7", sx, sy, C.Z_IF - C.POT_NUT_T, "pot_nut", tag="pot_nut")          # flush in its recess (SPEC v5)
+    add("nut_tool", sx, sy, C.Z_IF - C.POT_NUT_T + 0.2, "nut_tool", tag="nut_tool")
     add("encoder", C.SELECT_XY[0], C.SELECT_XY[1], C.CTRL_TOP, "encoder", tag="encoder")
     add("led", C.LED_XY[0], C.LED_XY[1], C.CTRL_TOP, "led", tag="led")
-    for (x, y), z0 in ((C.VOLUME_XY, C.Z_IF + 1.8), (C.SELECT_XY, C.Z_IF + 1.8)):
+    for (x, y), z0 in ((C.VOLUME_XY, C.Z_IF + C.KNOB_LIFT), (C.SELECT_XY, C.Z_IF + C.KNOB_LIFT)):
         add("knob", x, y, z0, "knobs", tag="knob")
-    # panel
-    pg, pt, rz = panel_frame()
-    u = pt(C.PANEL_USB_S, -0.85)
-    inst.append({"part": "usb_c", "loc": [u[0], u[1], C.PANEL_Z_TOP], "rot": [0, 0, rz], "group": "usb_c", "tag": "usb_c"})
-    plug = C.stack_parts()["usb_plug"]
-    px1 = max(p[0] for p in plug[0])
-    pyc = sum(p[1] for p in plug[0]) / 4
-    pzc = sum(plug[1]) / 2
-    add("usb_plug_90", px1, pyc, pzc, "usb_cable", tag="usb_plug")
+    # the panel parts (file frame already): FPC female + trava, the jack, the UP plug and the ribbon
+    add("fpc_female", 0, W, 0, "fpc_female", tag="fpc_female")
+    add("trava", 0, W, 0, "trava", tag="trava")
+    add("jack_cliff", 0, W, 0, "jack", tag="jack")
+    add("plug_up", 0, W, 0, "fpc_plug", tag="plug_up")
+    add("fpc_ribbon", 0, W, 0, "fpc_ribbon", tag="fpc_ribbon")
+    g = C.conn_geometry()
+    fo, fn = g["fem_origin"], g["n"]
+    ft = (-fn[1], fn[0])
+    for sgn in (-1, 1):
+        q = (fo[0] + fn[0] * (C.FEM_POCKET[1] + C.TRAVA[1]) + ft[0] * sgn * C.FEM_SCREWS[0] / 2,
+             fo[1] + fn[1] * (C.FEM_POCKET[1] + C.TRAVA[1]) + ft[1] * sgn * C.FEM_SCREWS[0] / 2)
+        rz_s = math.degrees(math.atan2(-fn[1], fn[0]))
+        # screw along -n (into the block's end face): head on the trava, shank towards the wall
+        inst.append({"part": "screw_m2x5", "loc": [q[0], F(q[1]), C.FEM_Z], "rot": [0, -90, rz_s], "group": "trava_screws",
+                     "tag": "m2x5t"})
     # main-board headers with their plugs: J_BAT (rot 270: pins along y), J_SPK
     for it in PECAS["main_board_connectors"]["items"]:
         if it["ref"] == "J_BAT":
@@ -413,18 +485,14 @@ def main():
         add("nut_m2", x, y, C.Z_PCB_TOP, "board_nuts", tag="nut_m2")
     for x, y in C.CTRL_POSTS:
         add("screw_m2x5", x, y, C.CTRL_TOP - C.CTRL_T, "ctrl_screws", tag="m2x5")
-    for kind, s_, d in C.PANEL_HOLES:
-        if kind == "screw":
-            p = pt(s_, d)
-            inst.append({"part": "screw_m2x6", "loc": [p[0], p[1], C.PANEL_Z_TOP - C.PANEL_T], "rot": [0, 0, 0],
-                         "group": "panel_screw", "tag": "m2x6"})
     for x, y in C.HATCH_SCREWS:
         add("screw_m2x6_csk", x, y, 1.1, "hatch_screws", tag="m2x6csk")
 
     # ---------------------------------------------------------------- KiCad boards: placement (file frame, mm)
     boards = {
         "main": {"glb": "pocket.glb", "group": "board", "matrix": mat4([(1, 0, 0), (0, 1, 0), (0, 0, 1)], (0, W, C.Z_PCB_BOT)),
-                 "own_groups": {"J_BAT": "jbat", "J_SPK": "jspk", "J_PNL": "board", "J_CTL": "board", "J_HP": "board"},
+                 "own_groups": {"J_BAT": "jbat", "J_SPK": "jspk", "J_CTL": "board", "J_HP": "board", "J_VBUS": "jvbus",
+                                "J_JACK": "jjack"},
                  "hide": ["J1", "J2"]},
         "controls": {"glb": "pocket_controls.glb", "group": "ctrl_board",
                      "matrix": mat4([(1, 0, 0), (0, 1, 0), (0, 0, 1)], (0, W, C.CTRL_TOP - C.CTRL_T)), "hide": ["D1"]},
@@ -437,42 +505,32 @@ def main():
     ztop = pb["board_z"][1]
     boards["pot"] = {"glb": "pocket_pot.glb", "group": "pot_board",
                      "matrix": mat4([(0, -1, 0), (0, 0, 1), (-1, 0, 0)], (bx1, F(by0), ztop))}
-    # the panel board: KiCad X = u (along the wall, from at(-15, 0)), Y = 13 - v
-    t, n = pg["t"], pg["n"]
-    tf, nf = (t[0], -t[1], 0), (n[0], -n[1], 0)
-    o = pg["at"](-15.0, 13.0)
-    boards["panel"] = {"glb": "pocket_panel.glb", "group": "panel_board",
-                       "matrix": mat4([tf, nf, (0, 0, 1)], (o[0], F(o[1]), C.PANEL_Z_TOP - C.PANEL_T)),
-                       "own_groups": {"J2": "jack"}}
-
     # ---------------------------------------------------------------- cables (file frame polylines)
     P = lambda x, y, z: (x, F(y), z)
     zt = C.Z_PCB_TOP
     jbat = [it for it in PECAS["main_board_connectors"]["items"] if it["ref"] == "J_BAT"][0]["at"]
     jspk = [it for it in PECAS["main_board_connectors"]["items"] if it["ref"] == "J_SPK"][0]["at"]
-    jpnl = [it for it in PECAS["main_board_connectors"]["items"] if it["ref"] == "J_PNL"][0]["at"]
+    jvbus, jjack = (18.5, 18.0), (18.5, 28.6)          # build_pocket_pcb.py (J_JACK: 1x4 along +y)
     jctl = [it for it in PECAS["main_board_connectors"]["items"] if it["ref"] == "J_CTL"][0]["at"]
     jhp = [it for it in PECAS["main_board_connectors"]["items"] if it["ref"] == "J_HP"][0]["at"]
-    zpb = C.PANEL_Z_TOP
     cables = []
 
     def cab(name, pts, d, mat, group):
         cables.append({"name": name, "pts": [list(p) for p in pts], "d": d, "mat": mat, "group": group})
-    # micro-B cable: out of the overmould's back side, round the panel board's back end, to TP1-4 on top
-    for i, mat in enumerate(("wire1", "wire4", "wire7", "wire0")):
-        s_ = -8.8 + 1.5 * i
-        tp = pt(s_, 11.9)
-        cab("usb_w%d" % i, [P(25.0, plug[0][0][1], pzc), P(25.0, 11.2, pzc + 1), P(24.5 + 0.3 * i, 10.0, 25.5),
-                            (tp[0] + 2.0, tp[1] - 1.0, 26.0), (tp[0], tp[1], zpb + 0.3)], 0.8, mat, "usb_cable")
-    cab("usb_jacket", [P(px1 - 11.0, pyc, pzc), P(25.0, plug[0][0][1] + 1.0, pzc), P(25.0, 12.0, pzc + 0.5)], 3.0,
-        "cable_black", "usb_cable")
-    # SH-8 panel cable: J_PNL up past the board's inner edge to TP1/TP4 (VBUS/GND) and TP5-8 at the far end
-    e = pt(4.0, 14.5)
-    for i, (s_, v, mat) in enumerate(((-8.8, 11.9, "wire1"), (-8.8, 11.9, "wire1"), (-4.3, 11.9, "wire0"), (-4.3, 11.9, "wire0"),
-                                      (14.0, 11.0, "wire5"), (14.0, 8.5, "wire3"), (14.0, 6.0, "wire6"), (14.0, 3.5, "wire2"))):
-        tp = pt(s_, v)
-        cab("pnl_w%d" % i, [P(jpnl[0], jpnl[1] + (i - 3.5) * 0.5, zt + 6.0), P(jpnl[0] + 3.0, jpnl[1] - 2.0, 17.0),
-                            (e[0] + 0.3 * i, e[1], 21.0), (e[0] + 0.3 * i, e[1], 25.0), (tp[0], tp[1], zpb + 0.3)], 0.6, mat, "pnl_cable")
+    # VBUS wire (26 AWG): the Teensy's VUSB pad -> J_VBUS (case.vusb_wire_path)
+    cab("vusb_w", [P(x, y, z) for x, y, z in C.vusb_wire_path()], 1.1, "wire1", "vusb_wire")
+    # the jack's 4 wires: tabs (back face) -> J_JACK 1-4 (T, R, S, tip switch)
+    jo = g["jack_origin"]
+    xb = jo[0] + C.JACK_BODY[2] + C.JACK_TABS
+    for i, (dy, dz, mat) in enumerate(((-2.0, 2.0, "wire5"), (2.0, 2.0, "wire4"), (-2.0, -2.0, "wire6"), (2.0, -2.0, "wire3"))):
+        pad = (jjack[0], jjack[1] + 2.54 * i)
+        cab("jack_w%d" % i, [P(xb - 0.5, jo[1] + dy, C.JACK_Z + dz), P(xb + 2.5, jo[1] + dy, C.JACK_Z + dz - 1.0),
+                            P(xb + 2.0, jo[1] - 3.0 + 0.6 * i, 16.0), P(pad[0] + 1.5, pad[1], zt + 4.0), P(pad[0], pad[1], zt + 0.3)],
+            0.7, mat, "jack_wires")
+    # a paper clip into the Teensy's program-button pinhole (step 9)
+    bx, by = C.teensy_button_xy()
+    cab("clip", [P(bx + 18.0, by - 6.0, C.Z_IF + 16.0), P(bx + 6.0, by - 2.0, C.Z_IF + 14.0), P(bx, by, C.Z_IF + 9.0),
+                 P(bx, by, C.Z_TEENSY_PARTS + 0.6)], 0.9, "clip", "clip")
     # SH-10 controls cable: J_CTL up the cable zone; 6-10 to the controls board's right edge, 1-5 over the encoder to the pot board
     for i in range(10):
         k = i + 1
@@ -514,16 +572,21 @@ def main():
 
     data = {"instances": inst, "cables": cables, "boards": boards,
             "z": {"pcb_bot": C.Z_PCB_BOT, "pcb_top": C.Z_PCB_TOP, "plate_top": C.Z_PLATE_TOP, "key_top": C.Z_KEY_TOP,
-                  "controls_top": C.CTRL_TOP, "interface": C.Z_IF, "panel_top": C.PANEL_Z_TOP, "ab": Z_AB,
+                  "controls_top": C.CTRL_TOP, "interface": C.Z_IF, "fem_z": C.FEM_Z, "jack_z": C.JACK_Z, "ab": Z_AB,
                   "teensy_top": Z_TEENSY + BOARD_T},
             "stack_height": round(Z_TEENSY + BOARD_T + 2.6 - Z_AB, 2), "width": W,
             "points": {
                 "teensy_c": [CX, F(CY)], "teensy_3v": [PIN_X[2], F(ROW_Y[0])], "jbat": [jbat[0], F(jbat[1])],
-                "jspk": [jspk[0], F(jspk[1])], "jpnl": [jpnl[0], F(jpnl[1])], "jctl": [jctl[0], F(jctl[1])],
-                "jhp": [jhp[0], F(jhp[1])], "tp1": list(pt(-8.8, 11.9)), "tp4": list(pt(-4.3, 11.9)), "tp7": list(pt(14.0, 6.0)),
-                "usb_c": list(pt(C.PANEL_USB_S, 0.0)), "jack": list(pt(C.PANEL_JACK_S, 4.0)),
-                "h1": list(pt(*C.PANEL_HOLES[0][1:])), "h2": list(pt(*C.PANEL_HOLES[1][1:])),
-                "usb_leg_rl": list(pt(3.68 - 15.0, 5.93)), "pot": list(C.VOLUME_XY[:1]) + [F(C.VOLUME_XY[1])],
+                "jspk": [jspk[0], F(jspk[1])], "jvbus": [jvbus[0], F(jvbus[1])], "jctl": [jctl[0], F(jctl[1])],
+                "jjack": [jjack[0], F(jjack[1])], "jjack3": [jjack[0], F(jjack[1] + 2 * 2.54)],
+                "jhp": [jhp[0], F(jhp[1])], "teensy_vin": [PIN_X[0], F(ROW_Y[0])],
+                "fem": [fo[0], F(fo[1])], "fem_in": [fo[0] + fn[0] * 5.0, F(fo[1] + fn[1] * 5.0)],
+                "trava": [fo[0] + fn[0] * (C.FEM_POCKET[1] + C.TRAVA[1]), F(fo[1] + fn[1] * (C.FEM_POCKET[1] + C.TRAVA[1]))],
+                "fem_n": [fn[0], -fn[1]], "jack": [g["jack_origin"][0], F(g["jack_origin"][1])],
+                "plug": [(min(p[0] for p in C.stack_parts()["usb_plug"][0]) + max(p[0] for p in C.stack_parts()["usb_plug"][0])) / 2,
+                         F(sum(p[1] for p in C.stack_parts()["usb_plug"][0]) / 4)],
+                "button": [C.teensy_button_xy()[0], F(C.teensy_button_xy()[1])],
+                "pot": list(C.VOLUME_XY[:1]) + [F(C.VOLUME_XY[1])],
                 "encoder": [C.SELECT_XY[0], F(C.SELECT_XY[1])], "led": [C.LED_XY[0], F(C.LED_XY[1])],
                 "spk": [C.SPK_C[0], F(C.SPK_C[1])], "batt": [C.BATT_C[0], F(C.BATT_C[1])],
                 "pocket": [(x0 + x1) / 2, F((y0 + py1) / 2)], "spk_hole": [sw["xy"][0], F(sw["xy"][1])],

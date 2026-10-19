@@ -4,7 +4,7 @@
 
 Adapted from etutti/hardware/manual3d/render_blender.py (the eTuttino's,
 unchanged). Builds the assembled Pocket from the case STLs (../case/out),
-the four KiCad boards (build/*.glb, placed by build/assembly.json) and the
+the three KiCad boards (build/*.glb, placed by build/assembly.json) and the
 parts library (build/lib, parts.py), then renders each shot of SHOTS as
 
   "real"  photo-like: PBR materials, studio light, perspective camera;
@@ -53,6 +53,7 @@ COLOURS = {
     "cf": ("#f4f2ee", 0.32, 0.0), "plate": ("#121314", 0.42, 0.0), "cable_black": ("#151515", 0.45, 0.0),
     "case_mjf": ("#bfb8ab", 0.75, 0.0), "lipo": ("#b9bcc2", 0.3, 0.8), "kapton": ("#d9902a", 0.35, 0.0),
     "foam": ("#3a3a3c", 0.95, 0.0), "paper": ("#2b2622", 0.8, 0.0), "shim": ("#b58f5e", 0.9, 0.0),
+    "fpc": ("#c8862a", 0.35, 0.0), "clip": ("#c9cacc", 0.25, 1.0),
 }
 WIRE_COLOURS = ["#1a1a1a", "#c0392b", "#e67e22", "#f1c40f", "#27ae60", "#2e86c1", "#8e44ad", "#bdc3c7"]
 MATS = {}
@@ -420,11 +421,13 @@ def project(sc, pts):
 # ------------------------------------------------------------- the shots
 # Balloon numbers = the parts list in the manual (STYLE.md); letters = test points.
 CASE = ["lid", "bottom", "hatch", "box_floor"]
-INSIDE = ["board", "jbat", "jspk", "plugs", "stack", "hp_wires", "plate", "switches", "pot", "pot_board", "encoder", "led",
-          "ctrl_board", "ctl_cable", "panel_board", "usb_c", "jack", "usb_cable", "pnl_cable", "speaker", "gasket",
-          "spk_wires", "battery", "pigtail", "board_screws", "board_nuts", "ctrl_screws", "panel_screw"]
+PANEL = ["fpc_female", "trava", "trava_screws", "jack", "jack_wires", "fpc_plug", "fpc_ribbon", "vusb_wire"]
+INSIDE = ["board", "jbat", "jspk", "jvbus", "jjack", "plugs", "stack", "hp_wires", "plate", "switches", "pot", "pot_board", "encoder",
+          "led", "ctrl_board", "ctl_cable", "speaker", "gasket", "spk_wires", "battery", "pigtail", "board_screws", "board_nuts",
+          "ctrl_screws"] + PANEL
 ALL = CASE + INSIDE + ["caps", "knobs", "pot_nut", "case_screws", "hatch_screws"]
 STACK = ["stack", "vusb"]
+LID_PARTS = ["pot", "pot_board", "ctrl_board", "encoder", "led", "ctrl_screws", "fpc_female", "trava", "trava_screws", "jack"]
 
 
 def iso(tgt, scale, d=(-1.0, -1.25, 1.05), r=400):
@@ -434,7 +437,8 @@ def iso(tgt, scale, d=(-1.0, -1.25, 1.05), r=400):
 def shots():
     zt = Z["pcb_top"]
     zc = Z["controls_top"]
-    zp = Z["panel_top"]
+    zf = Z["fem_z"]
+    zj = Z["jack_z"]
     P = PTS
     tc = P["teensy_c"]
     S = {}
@@ -447,19 +451,21 @@ def shots():
                            explode={"case_screws": (0, 0, -40), "hatch_screws": (0, 0, -40), "hatch": (0, 0, -28),
                                     "board_screws": (0, 0, -30), "bottom": (0, 0, -14), "battery": (0, 0, -6),
                                     "board_nuts": (0, 0, 22), "board": (0, 0, 8), "jbat": (0, 0, 8), "jspk": (0, 0, 8),
-                                    "plugs": (0, 0, 8), "hp_wires": (0, 0, 8), "stack": (0, 0, 24), "usb_cable": (0, 0, 24),
+                                    "plugs": (0, 0, 8), "hp_wires": (0, 0, 8), "jvbus": (0, 0, 8), "jjack": (0, 0, 8),
+                                    "stack": (0, 0, 24), "vusb_wire": (0, 0, 24), "fpc_plug": (0, 0, 24), "fpc_ribbon": (0, 0, 24),
                                     "plate": (0, 0, 40), "switches": (0, 0, 58), "caps": (0, 0, 92),
                                     "box_floor": (0, 0, 70), "speaker": (0, 0, 84), "gasket": (0, 0, 86),
                                     "spk_wires": (0, 0, 84), "pot": (0, 0, 78), "pot_board": (0, 0, 78),
                                     "ctrl_board": (0, 0, 78), "encoder": (0, 0, 78), "led": (0, 0, 78),
-                                    "ctl_cable": (0, 0, 60), "ctrl_screws": (0, 0, 66), "panel_board": (0, 0, 70),
-                                    "usb_c": (0, 0, 70), "jack": (0, 0, 70), "pnl_cable": (0, 0, 60),
-                                    "panel_screw": (0, 0, 60), "pigtail": (0, 0, 0), "lid": (0, 0, 165),
+                                    "ctl_cable": (0, 0, 60), "ctrl_screws": (0, 0, 66), "fpc_female": (0, 0, 70),
+                                    "trava": (0, 0, 70), "trava_screws": (0, 0, 70), "jack": (0, 0, 70), "jack_wires": (0, 0, 40),
+                                    "pigtail": (0, 0, 0), "lid": (0, 0, 165),
                                     "pot_nut": (0, 0, 185), "knobs": (0, 0, 200)},
                            balloons=[(1, (150, F(98), -12)), (2, (200, F(99), 182)), (3, (200, F(88), zt + 8)),
                                      (4, (230, F(58), C_PL + 40)), (5, (240, F(58), C_PL + 64)), (6, (225, F(58), 26.6 + 92)),
                                      (24, (P["spk"][0], P["spk"][1] - 12, 106)), (27, (P["batt"][0], P["batt"][1] - 18, 0)),
-                                     (15, (P["pot"][0], P["pot"][1], 212))])
+                                     (15, (P["pot"][0], P["pot"][1], 212)), (18, (P["jack"][0] + 6, P["jack"][1], zj + 70)),
+                                     (16, (P["fem_in"][0], P["fem_in"][1], zf + 70))])
     S["r_keycap_test"] = dict(mode="real", solo=("keycap_test_4.stl", "natural"), res=(1600, 1100), samples=160,
                               cam=((-30, -95, 85), (0, 0, 2), 60), exposure=-1.0)
     S["r_stack"] = dict(mode="real", res=(2000, 1300), samples=192, show=STACK,
@@ -470,8 +476,8 @@ def shots():
     for name, y_spec in (("r_section_y21", 21.0), ("r_section_y49", 49.0)):
         S[name] = dict(mode="real", res=(2400, 1250), samples=192, show=ALL, floor=False,
                        cam=((52, -260, 20), (52, F(y_spec), 18), None, 104), section=("y", F(y_spec), True))
-    S["r_section_y21"]["balloons"] = [(16, (P["usb_c"][0] + 6, F(21), zp - 0.8)), (7, (45, F(21), Z["teensy_top"])),
-                                      (8, (60, F(21), Z["ab"] + 0.8)), (19, (24, F(21), 18)), (3, (80, F(21), zt)),
+    S["r_section_y21"]["balloons"] = [(16, (16.5, F(21), zf)), (17, (24.0, F(21), zf + 3.0)), (7, (45, F(21), Z["teensy_top"])),
+                                      (8, (60, F(21), Z["ab"] + 0.8)), (19, (30, F(21), 22.3)), (3, (80, F(21), zt)),
                                       (2, (95, F(21), 34)), (1, (95, F(21), 1))]
     S["r_section_y49"]["balloons"] = [(12, (P["pot"][0] - 3, F(49), 24)), (13, (P["encoder"][0], F(49), 21)),
                                       (14, (P["led"][0], F(49), 29)), (27, (40, F(49), 5)), (28, (18, F(49), 4)),
@@ -484,9 +490,10 @@ def shots():
         S[name] = dict(mode="real", res=(1400, 1000), samples=128, show=ALL, led=col, exposure=-0.6,
                        cam=((P["led"][0] - 40, P["led"][1] - 70, 95), (P["led"][0] - 8, P["led"][1], 33), 70))
     # ---------------- line drawings, one per step
-    S["l_teensy_cut"] = dict(mode="line", show=["stack", "vusb"], new=["vusb"], hide_tags=["audio_board", "header", "solder"],
+    S["l_teensy_cut"] = dict(mode="line", show=["stack", "vusb", "vusb_wire"], new=["vusb", "vusb_wire"],
+                             hide_tags=["audio_board", "header", "solder"],
                              cam=((tc[0] - 60, tc[1] - 70, Z["ab"] - 90), (tc[0] - 8, tc[1], 15.2), None, 40), res=(1800, 1300),
-                             balloons=[(7, (tc[0] + 10, tc[1] + 6, 15.2))],
+                             balloons=[(7, (tc[0] + 10, tc[1] + 6, 15.2)), (20, (tc[0] - 15, tc[1] + 1.4, 14.0))],
                              arrows=[((tc[0] - 11.6, tc[1] - 9, 15.2 - 6), (tc[0] - 11.6, tc[1] - 1.5, 15.2 - 0.2))])
     S["l_audio_wires"] = dict(mode="line", show=["stack", "hp_wires"], new=["hp_wires"], hide_tags=["teensy", "header", "solder"],
                               cam=((40, F(35) - 70, Z["ab"] - 85), (38, F(35), Z["ab"]), None, 48), res=(1800, 1300),
@@ -497,14 +504,19 @@ def shots():
                         balloons=[(7, (tc[0] + 8, tc[1], 15.2 + 24 + 1.6)), (9, (tc[0] - 12, F(12.76), Z["ab"] + 1.6 + 12 + 2.9)),
                                   (8, (60, F(36), Z["ab"] + 1.6))],
                         arrows=[((72, tc[1], 15.2 + 30), (72, tc[1], 15.2 + 12))])
-    S["l_connectors"] = dict(mode="line", show=["board", "jbat", "jspk"], new=["jbat", "jspk"],
+    S["l_connectors"] = dict(mode="line", show=["board", "jbat", "jspk", "jvbus", "jjack"], new=["jbat", "jspk", "jvbus", "jjack"],
                              explode={"jbat": (0, 0, 10), "jspk": (0, 0, 10)},
-                             cam=iso((25, F(32), zt), 70), res=(2000, 1500),
+                             cam=iso((25, F(30), zt), 70), res=(2000, 1500),
                              balloons=[(22, (P["jbat"][0], P["jbat"][1], zt + 16)), (23, (P["jspk"][0], P["jspk"][1], zt + 16)),
-                                       (20, (P["jpnl"][0], P["jpnl"][1], zt + 1)), (21, (P["jctl"][0], P["jctl"][1], zt + 1)),
-                                       (31, (P["jhp"][0], P["jhp"][1], zt)), (3, (60, F(10), zt))],
+                                       (20, (P["jvbus"][0], P["jvbus"][1], zt + 1)), (39, (P["jjack"][0], P["jjack"][1] - 3.8, zt + 1)),
+                                       (21, (P["jctl"][0], P["jctl"][1], zt + 1)), (31, (P["jhp"][0], P["jhp"][1], zt)), (3, (60, F(10), zt))],
                              arrows=[((P["jbat"][0] - 6, P["jbat"][1], zt + 14), (P["jbat"][0] - 6, P["jbat"][1], zt + 4))])
-    S["l_stack_main"] = dict(mode="line", show=["board", "jbat", "jspk", "stack", "shim", "hp_wires"],
+    # F-17: the VBUS wire, from the Teensy's USB end down past the Audio Board to J_VBUS, under the UP plug
+    S["l_vusb"] = dict(mode="line", show=["board", "jvbus", "stack", "vusb_wire", "fpc_plug"], new=["vusb_wire"],
+                       cam=((-60, F(-40), 40), (26, F(17), 12), None, 46), res=(2000, 1400),
+                       balloons=[(20, (24.0, F(16.8), 9.0)), (19, (P["plug"][0], P["plug"][1], 21.8)), (7, (40, F(20), 17)),
+                                 (8, (36, F(30), Z["ab"] + 1.6))])
+    S["l_stack_main"] = dict(mode="line", show=["board", "jbat", "jspk", "jvbus", "jjack", "stack", "shim", "hp_wires"],
                              new=["stack", "shim", "hp_wires"], explode={"stack": (0, 0, 16), "hp_wires": (0, 0, 0)},
                              cam=iso((48, F(24), 14), 95), res=(2000, 1500),
                              balloons=[(7, (tc[0] + 8, tc[1], 15.2 + 16 + 1.6)), (38, (60, F(37), zt + 3)),
@@ -531,30 +543,26 @@ def shots():
     S["l_cable_ctl"] = dict(mode="line", show=["pot", "pot_board", "ctrl_board", "encoder", "led", "ctl_cable", "board"],
                             new=["ctl_cable"], cam=iso((40, F(46), 18), 85), res=(2000, 1500),
                             balloons=[(21, (54, F(44.5), 20)), (10, (46, F(54), zc)), (11, (22.4, F(44), 15))])
-    S["l_panel"] = dict(mode="line", show=["panel_board", "usb_c", "jack", "usb_cable", "pnl_cable"],
-                        new=["jack", "usb_cable", "pnl_cable"], explode={"jack": (0, 0, 10)},
-                        cam=iso((16, F(26), zp), 70, d=(1.0, -1.2, 1.1)), res=(2000, 1500),
-                        balloons=[(18, (P["jack"][0], P["jack"][1], zp + 15)), (17, (P["usb_c"][0], P["usb_c"][1], zp + 3)),
-                                  (19, (25, F(15), 18)), (20, (P["jpnl"][0], P["jpnl"][1], zt + 6)), (16, (20, F(32), zp))],
-                        arrows=[((P["jack"][0] + 5, P["jack"][1], zp + 14), (P["jack"][0] + 5, P["jack"][1], zp + 6))])
-    S["l_panel_under"] = dict(mode="line", show=["panel_board", "usb_c", "jack"], new=["usb_c"],
-                              cam=((40, F(22) - 50, zp - 80), (16, F(24), zp), None, 50), res=(1800, 1300),
-                              balloons=[("H1", (*P["h1"], zp - 1.6)), ("H2", (*P["h2"], zp - 1.6)),
-                                        (17, (*P["usb_leg_rl"], zp - 1.6))])
+    S["l_jack"] = dict(mode="line", show=["jack", "jack_wires", "board", "jjack", "jbat"], new=["jack", "jack_wires"],
+                       cam=((70, F(60), 75), (14, F(36), 18), None, 52), res=(2000, 1500),
+                       balloons=[(18, (P["jack"][0] + 6, P["jack"][1], zj + 5.5)), (39, (25.5, F(33), 17)),
+                                 ])
+    S["l_fpc"] = dict(mode="line", show=["board", "jvbus", "stack", "fpc_plug", "fpc_ribbon", "fpc_female", "trava", "trava_screws"],
+                      new=["fpc_plug", "fpc_ribbon", "fpc_female", "trava"],
+                      cam=iso((32, F(22), 20), 62, d=(-0.9, -1.1, 1.25)), res=(2000, 1500),
+                      balloons=[(16, (P["fem_in"][0], P["fem_in"][1], zf + 2.5)), (17, (P["trava"][0], P["trava"][1], zf + 3.5)),
+                                (19, (40, F(20.4), 23.5)), (7, (55, F(20), 17)), (35, (P["trava"][0] + 3, P["trava"][1] - 5, zf))])
     lid_up = ((-160, -200, -220), None, None, 150)
-    S["l_lid_boards"] = dict(mode="line", show=["lid", "pot", "pot_board", "ctrl_board", "encoder", "led", "ctrl_screws",
-                                                "panel_board", "usb_c", "jack", "panel_screw", "ctl_cable", "pnl_cable", "usb_cable"],
-                             new=["pot", "pot_board", "ctrl_board", "encoder", "led", "ctrl_screws", "panel_board", "usb_c",
-                                  "jack", "panel_screw"],
-                             explode={g: (0, 0, -16) for g in ("pot", "pot_board", "ctrl_board", "encoder", "led", "panel_board",
-                                                                "usb_c", "jack", "ctl_cable", "pnl_cable", "usb_cable")}
-                             | {"ctrl_screws": (0, 0, -30), "panel_screw": (0, 0, -30)},
+    S["l_lid_boards"] = dict(mode="line", show=["lid"] + LID_PARTS + ["ctl_cable", "jack_wires"],
+                             new=LID_PARTS,
+                             explode={g: (0, 0, -16) for g in ("pot", "pot_board", "ctrl_board", "encoder", "led", "ctl_cable",
+                                                                "fpc_female", "trava", "jack", "jack_wires")}
+                             | {"ctrl_screws": (0, 0, -30), "trava_screws": (0, 0, -16)},
                              cam=((-120, -160, -200), (40, 55, 20), None, 125), res=(2000, 1600),
                              balloons=[(10, (45, F(54), zc - 16)), (34, (*P["ctrl_posts"][0], zc - 34)),
-                                       (35, (*P["h2"], zp - 34)), (16, (12, F(30), zp - 17)), ("H1", (*P["h1"], zp - 17)),
-                                       (2, (90, F(10), 30))],
-                             arrows=[((P["ctrl_posts"][0][0] + 4, P["ctrl_posts"][0][1], zc - 30), (P["ctrl_posts"][0][0] + 4, P["ctrl_posts"][0][1], zc - 20)),
-                                     ((P["h2"][0] + 4, P["h2"][1], zp - 30), (P["h2"][0] + 4, P["h2"][1], zp - 20))])
+                                       (16, (P["fem_in"][0], P["fem_in"][1], zf - 16)), (17, (P["trava"][0], P["trava"][1], zf - 16)),
+                                       (18, (P["jack"][0] + 8, P["jack"][1], zj - 16)), (2, (90, F(10), 30))],
+                             arrows=[((P["ctrl_posts"][0][0] + 4, P["ctrl_posts"][0][1], zc - 30), (P["ctrl_posts"][0][0] + 4, P["ctrl_posts"][0][1], zc - 20))])
     S["l_speaker"] = dict(mode="line", show=["lid", "speaker", "gasket", "box_floor", "spk_wires"],
                           new=["speaker", "gasket", "box_floor", "spk_wires"],
                           explode={"gasket": (0, 0, -14), "speaker": (0, 0, -30), "spk_wires": (0, 0, -30), "box_floor": (0, 0, -55)},
@@ -580,9 +588,7 @@ def shots():
                                     (1, (120, F(20), 0))],
                           arrows=[((P["batt"][0] + 26, P["batt"][1], -30), (P["batt"][0] + 26, P["batt"][1], -8))])
     S["l_close"] = dict(mode="line", show=ALL[:-3] + ["case_screws", "hatch_screws"], new=["lid", "case_screws"],
-                        explode={g: (0, 0, 40) for g in ("lid", "pot", "pot_board", "ctrl_board", "encoder", "led", "ctrl_screws",
-                                                          "panel_board", "usb_c", "jack", "panel_screw", "speaker", "gasket",
-                                                          "box_floor")} | {"case_screws": (0, 0, -26)},
+                        explode={g: (0, 0, 40) for g in ["lid", "speaker", "gasket", "box_floor"] + LID_PARTS} | {"case_screws": (0, 0, -26)},
                         cam=iso((125, 50, 20), 300), res=(2400, 1600),
                         balloons=[(2, (200, F(5), 75)), (32, (100, F(94), -26)), (1, (150, F(97), 2))],
                         arrows=[((160, F(50), 82), (160, F(50), 62)), ((95, F(94), -24), (95, F(94), -8))])
@@ -591,19 +597,32 @@ def shots():
                        cam=iso((125, 50, 30), 290), res=(2400, 1500),
                        balloons=[(6, (220, F(40), 56)), (15, (P["encoder"][0], P["encoder"][1], 62)), (37, (P["pot"][0], P["pot"][1], 45))],
                        arrows=[((200, F(20), 58), (200, F(20), 42))])
-    no_panel = [g for g in INSIDE if g not in ("panel_board", "usb_c", "jack", "pnl_cable", "usb_cable", "speaker", "gasket",
-                                              "pot", "pot_board", "ctrl_board", "encoder", "led", "ctl_cable")]
+    S["l_knob_nut"] = dict(mode="line", show=["lid", "pot", "pot_board", "ctrl_board", "encoder", "led", "pot_nut", "nut_tool", "knobs"],
+                           new=["pot_nut", "nut_tool", "knobs"],
+                           explode={"nut_tool": (0, 0, 20), "knobs": (0, 0, 62), "pot_nut": (0, 0, 9)},
+                           cam=((P["pot"][0] - 60, P["pot"][1] - 100, 115), (P["encoder"][0] - 6, P["pot"][1], 60), None, 104),
+                           res=(1800, 1800),
+                           balloons=[(37, (P["pot"][0] + 6, P["pot"][1], Z["interface"] + 8)),
+                                     (40, (P["pot"][0] + 6.7, P["pot"][1], Z["interface"] + 26)),
+                                     (15, (P["encoder"][0] + 7.5, P["encoder"][1], Z["interface"] + 72)),
+                                     (13, (P["encoder"][0], P["encoder"][1], Z["interface"] + 13))],
+                           arrows=[((P["pot"][0] - 9, P["pot"][1], Z["interface"] + 30), (P["pot"][0] - 9, P["pot"][1], Z["interface"] + 12))])
+    S["l_button"] = dict(mode="line", show=["lid", "knobs", "caps", "clip"], new=["clip"],
+                         cam=((P["button"][0] - 45, P["button"][1] - 95, 130), (P["button"][0] - 8, P["button"][1], 30), None, 72),
+                         res=(1800, 1400),
+                         balloons=[(41, (P["button"][0] + 6.0, P["button"][1] + 2.0, Z["interface"] + 14.0)), (2, (55, F(12), 33))])
+    no_panel = [g for g in INSIDE if g not in PANEL + ["speaker", "gasket", "pot", "pot_board", "ctrl_board", "encoder", "led", "ctl_cable"]]
     S["l_testpoints"] = dict(mode="line", show=no_panel + ["bottom"], new=["plugs"],
                              cam=((40, F(40), 300), (40, F(40), 0), None, 78), res=(2000, 1600),
                              balloons=[("A", (P["jbat"][0] - 0.5, P["jbat"][1] - 4.0, zt + 10.5)),
                                        ("B", (P["jbat"][0] - 0.5, P["jbat"][1], zt + 10.5)),
                                        ("C", (P["jbat"][0] - 0.5, P["jbat"][1] - 2.0, zt + 10.5)),
-                                       ("E", (*P["teensy_3v"], Z["teensy_top"])), (23, (P["jspk"][0] + 1, P["jspk"][1], zt + 4))])
-    S["l_tp_panel"] = dict(mode="line", show=["panel_board", "usb_c", "jack", "pnl_cable", "usb_cable", "pot", "pot_board",
-                                              "ctrl_board", "encoder", "led", "ctl_cable"], new=[],
-                           cam=((28, F(36), 300), (28, F(36), 0), None, 52), res=(1800, 1600),
-                           balloons=[("D", (*P["tp1"], zp)), ("F", (*P["tp7"], zp)), ("G", (*P["jw4"], 26)),
-                                     (16, (12, F(30), zp)), (11, (22.4, F(52), 29))])
+                                       ("D", (*P["jvbus"], zt + 0.5)), ("F", (*P["jjack3"], zt + 0.5)),
+                                       ("E", (*P["teensy_3v"], Z["teensy_top"])), ("I", (*P["teensy_vin"], Z["teensy_top"])),
+                                       (23, (P["jspk"][0] + 1, P["jspk"][1], zt + 4))])
+    S["l_tp_vol"] = dict(mode="line", show=["pot", "pot_board", "ctrl_board", "encoder", "led", "ctl_cable"], new=[],
+                         cam=((28, F(49), 300), (28, F(49), 0), None, 40), res=(1800, 1400),
+                         balloons=[("G", (*P["jw4"], 26)), (11, (22.4, F(52), 29)), (10, (40, F(54), zc))])
     return S
 
 

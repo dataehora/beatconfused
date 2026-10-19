@@ -5,7 +5,7 @@
 
   table:bom   the kit BOM, from pcb/fab/pocket_kit_bom.csv (eletrônica's)
   svg:ctl     wiring of the SH-10 controls cable (MANUAL_ELETRICO.md 6.1)
-  svg:pnl     wiring of the SH-8 panel cable and the micro-B cable (6.2)
+  svg:jack    wiring of the panel jack's 4 wires to J_JACK (6.2, SPEC v5)
   svg:bat     the battery plug x pigtail x J_BAT polarity check (7.2)
 """
 import csv
@@ -87,17 +87,15 @@ def ctl():
                   "As cores são só exemplo: o que vale é o número do fio, contado do pino 1 (lado marcado do conector).")
 
 
-def pnl():
-    rows = [(1, "VBUS", "vermelho", "plaquinha do painel (16)", "TP1"), (2, "VBUS", "vermelho", "plaquinha do painel (16)", "TP1"),
-            (3, "GND", "preto", "plaquinha do painel (16)", "TP4"), (4, "GND", "preto", "plaquinha do painel (16)", "TP4"),
-            (5, "HP_L", "azul", "plaquinha do painel (16)", "TP5"), (6, "HP_R", "verde", "plaquinha do painel (16)", "TP6"),
-            (7, "HP_VGND", "roxo", "plaquinha do painel (16)", "TP7"), (8, "HP_TIPSW", "amarelo", "plaquinha do painel (16)", "TP8"),
-            ("µB 1", "VBUS", "vermelho", "plaquinha do painel (16)", "TP1"), ("µB 3", "D+", "verde", "plaquinha do painel (16)", "TP2"),
-            ("µB 2", "D−", "branco", "plaquinha do painel (16)", "TP3"), ("µB 5", "GND", "preto", "plaquinha do painel (16)", "TP4")]
-    return wiring("Esquema do cabo do painel e do cabo micro-B", "J_PNL (SH 8) · cabo micro-B (19)", rows, None,
-                  "Em cima, o cabo do painel (20), do J_PNL: VBUS e GND usam dois fios cada (TP1 e TP4, junto com os do cabo micro-B); "
-                  "TP5 a TP8 ficam na ponta direita, depois do jack. Embaixo, o cabo micro-B (19), cortado a ~40 mm do plugue: "
-                  "vermelho VBUS, verde D+, branco D−, preto GND (cores USB comuns; confira com o multímetro).")
+def jack():
+    rows = [(1, "HP_L", "azul", "jack de painel (18), abas de trás", "aba 3 · T"),
+            (2, "HP_R", "verde", "jack de painel (18), abas de trás", "aba 2 · R"),
+            (3, "HP_VGND", "roxo", "jack de painel (18), abas de trás", "aba 1 · S"),
+            (4, "HP_TIPSW", "amarelo", "jack de painel (18), abas de trás", "aba 4 · comut.")]
+    return wiring("Esquema dos fios do jack de painel", "J_JACK (4 pads)", rows, None,
+                  "Fios do jack (39), 28–30 AWG, ~80 mm <em>(conferir o comprimento com o case)</em>: do J_JACK da placa principal "
+                  "às abas de trás do Cliff FC681375V, cada solda com termorretrátil. A manga (aba 1) vai ao HP_VGND, o terra "
+                  "virtual: <strong>nunca no GND</strong>.")
 
 
 def bat():
@@ -111,7 +109,7 @@ def bat():
 
 def main():
     page = open(PAGE, encoding="utf-8").read()
-    for key, fn in (("table:bom", bom_table), ("svg:ctl", ctl), ("svg:pnl", pnl), ("svg:bat", bat)):
+    for key, fn in (("table:bom", bom_table), ("svg:ctl", ctl), ("svg:jack", jack), ("svg:bat", bat)):
         pat = re.compile(r"(<!-- BEGIN %s -->)(.*?)(\s*<!-- END %s -->)" % (re.escape(key), re.escape(key)), re.S)
         assert pat.search(page), key
         page = pat.sub(lambda m: m.group(1) + "\n        " + fn() + m.group(3), page)

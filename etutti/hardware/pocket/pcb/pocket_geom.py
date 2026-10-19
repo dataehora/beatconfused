@@ -86,9 +86,11 @@ PIN_NETS = {
     "16": "VBAT_S",
     "17": "HP_DET",
     "22": "POT",
+    "VIN": "VIN_T",
 }
-# VIN is left unconnected: the Teensy runs from 3.3 V on its 3V3 pin, its
-# VUSB-VIN pad cut (PJRC's documented way to power it from outside).
+# The Teensy runs from 3.3 V on its 3V3 pin, its VUSB-VIN pad cut. SPEC v5
+# (F4): VIN gets VBUS through Q23/D61 while the Pocket is on, because the
+# i.MX's USB VBUS pins (its USB PHY supply) are on the VIN side of the cut.
 SEL_PINS = ["0", "1", "2", "3"]
 COM_PINS = ["14", "15"]
 LED_PINS = ["13", "5"]           # red, green

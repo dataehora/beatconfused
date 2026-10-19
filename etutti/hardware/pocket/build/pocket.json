@@ -1,7 +1,7 @@
 {
- "version": 4,
- "spec": "v4",
- "task": "F1",
+ "version": 5,
+ "spec": "v5",
+ "task": "F3",
  "variant": "B",
  "variant_name": "Seixo",
  "variant_params": {
@@ -10,7 +10,7 @@
   "corner": 24.0,
   "bulge": 0.0
  },
- "note": "SPEC v4 F1: the Seixo case, variant B, as modelled in case/case.py. Coordinates: x right from the case's leftmost point, y from the back (0) to the player (100), z up from the table, mm.",
+ "note": "SPEC v5 F3: the Seixo case, variant B, as modelled in case/case.py. Coordinates: x right from the case's leftmost point, y from the back (0) to the player (100), z up from the table, mm.",
  "keys": [
   {
    "n": 0,
@@ -11510,8 +11510,25 @@
    43.12,
    49.0
   ],
-  "knob_d": 9.0,
+  "knob_d": 15.0,
   "led_d": 3.5,
+  "knob_recess": {
+   "d": 14.0,
+   "depth": 2.0,
+   "pot_nut": [
+    10.0,
+    2.0
+   ],
+   "knob_proposal": {
+    "d": 15.0,
+    "h": 14.0,
+    "lift": 0.5,
+    "cavity": [
+     8.5,
+     5.0
+    ]
+   }
+  },
   "grille": [
    11.8,
    62.8,
@@ -12500,7 +12517,7 @@
     13.8,
     29.8
    ],
-   "kind": "9 mm switched pot, horizontal type (PECAS volume_pot), on a vertical board right of its shaft; M7 bushing nutted on the lid"
+   "kind": "9 mm switched pot, horizontal type (PECAS volume_pot), on a vertical board right of its shaft; M7 nut flush in a D13 lid recess"
   },
   "encoder": {
    "rect": [
@@ -13116,69 +13133,51 @@
   "note": "LOW stack (Teensy soldered straight on the Audio Board), 3 mm above the main board; u along the 38 mm side from the USB end"
  },
  "panel": {
-  "board": [
-   [
-    17.96,
-    9.41
-   ],
-   [
-    5.27,
-    36.59
-   ],
-   [
-    17.05,
-    42.09
-   ],
-   [
-    29.74,
-    14.9
-   ]
-  ],
-  "z": [
-   22.3,
-   23.9
-  ],
-  "usb": {
+  "micro_b": {
    "at": [
-    14.57,
-    16.66
+    14.29,
+    19.42
    ],
    "normal": [
-    -0.906,
-    -0.423
+    -0.919,
+    -0.393
    ],
-   "z": 25.53
+   "z": 27.25,
+   "window": [
+    12.0,
+    8.0,
+    1.0
+   ],
+   "outer_recess": [
+    13.5,
+    9.0,
+    2.0
+   ],
+   "kind": "FPC micro-B extension: female head in a tunnel on a flat boss, 0.5 lip, printed trava (2 x M2)"
   },
   "jack": {
    "at": [
-    8.66,
-    29.34
+    6.69,
+    38.0
    ],
    "normal": [
-    -0.906,
-    -0.423
+    -1.0,
+    0.0
    ],
-   "z": 26.4,
-   "part": "Same Sky SJ1-3525N",
-   "hole_d": 6.3
+   "z": 23.95,
+   "part": "Cliff FC681375V",
+   "hole_d": 8.2,
+   "spot_face_d": 11.5
   },
-  "holes": [
-   {
-    "kind": "pin",
-    "at": [
-     25.6,
-     17.39
-    ]
-   },
-   {
-    "kind": "screw",
-    "at": [
-     15.38,
-     23.92
-    ]
-   }
+  "note": "micro-USB (FPC extension) + 3.5 jack (wired) on the back-left curved wall; no panel board since v5; see pcb_envelope.json panel"
+ },
+ "teensy_button": {
+  "pinhole": [
+   65.39,
+   20.38
   ],
-  "note": "USB-C + 3.5 jack on one board on the back-left curved wall (flat boss inside); see pcb_envelope.json panel"
+  "d": 1.6,
+  "note": "paper clip from the top, through the lid, down a guide tube to the Teensy's program button (CHECK its position)"
  },
  "main_board": {
   "outline": [
@@ -16059,29 +16058,29 @@
  },
  "case": {
   "version": "Seixo",
-  "files": "case/out/seixo_tampa, seixo_fundo, seixo_tampa_bateria, seixo_caixa_fundo, plate, keycap_natural/sharp/cf, keycap_test_4 (.step/.stl)",
+  "files": "case/out/seixo_tampa, seixo_fundo, seixo_tampa_bateria, seixo_caixa_fundo, seixo_trava_usb, seixo_chave_porca, plate, keycap_natural/sharp/cf, keycap_test_4 (.step/.stl)",
   "weight_g": {
-   "printed_cm3": 125.3,
-   "resin_g": 148.0,
-   "mjf_pa12_g": 127.0,
+   "printed_cm3": 127.5,
+   "resin_g": 150.0,
+   "mjf_pa12_g": 129.0,
    "plate_fr4_g": 24.0,
    "v4_materials": {
     "top_shell_resin_g": 88.1,
-    "mjf_parts_g": 51.2,
+    "mjf_parts_g": 53.3,
     "caps_resin_g": 16.9,
     "cap_counts": {
      "natural": 12,
      "sharp": 11,
      "cf": 5
     },
-    "printed_total_g": 156.0
+    "printed_total_g": 158.0
    }
   },
   "materials": {
    "seixo_tampa": {
     "material": "resina (SLA/DLP, engenharia: Tough/Grey)",
     "qty": 1,
-    "what": "casca de cima: logo de 0,4, grade, furos dos knobs, janelas do USB-C e do fone"
+    "what": "casca de cima: logo de 0,4, grade, rebaixos dos knobs, janelas do micro-USB e do fone"
    },
    "seixo_fundo": {
     "material": "MJF PA12",
@@ -16102,6 +16101,16 @@
     "material": "FR-4 1,6 mm (Gerber da eletrônica / plate.dxf)",
     "qty": 1,
     "what": "placa dos switches"
+   },
+   "seixo_trava_usb": {
+    "material": "MJF PA12",
+    "qty": 1,
+    "what": "trava da fêmea micro-B (FPC) no túnel, 2 parafusos M2 x 5"
+   },
+   "seixo_chave_porca": {
+    "material": "MJF PA12",
+    "qty": 1,
+    "what": "chave da porca M7 do potenciômetro (entra no rebaixo de Ø 14)"
    },
    "keycap_natural": {
     "material": "resina branca",

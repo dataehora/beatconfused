@@ -1,5 +1,0 @@
-Designator,Val,Package,Mid X,Mid Y,Rotation,Layer
-J1,TYPE-C-31-M-12,USB_C_Receptacle_HRO_TYPE-C-31-M-12,7.9999mm,-10.2000mm,0,Top
-R1,5.1k,R_0402_1005Metric,6.2499mm,-4.0000mm,90,Top
-R2,5.1k,R_0402_1005Metric,9.7499mm,-3.1100mm,90,Top
-U1,PRTR5V0U2X,SOT-143,14.2400mm,-3.4000mm,180,Top

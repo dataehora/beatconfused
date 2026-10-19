@@ -1,6 +1,6 @@
 # eTuttino Pocket · orçamento de energia
 
-Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v4, tarefa F2 (sensor TMAG5253BA3 por grupo e 396 MHz decididos na v3; o clock final sai da medição na etapa de programação). Conversor TPS63001 (3,3 V fixo, LCSC C28060), aceito na v4.
+Gerado por `pcb/power_budget.py` (eletrônica; não editar à mão). SPEC v5, tarefa F4 (sensor TMAG5253BA3 por grupo e 396 MHz decididos na v3; o clock final sai da medição na etapa de programação). Conversor TPS63001 (3,3 V fixo, LCSC C28060), aceito na v4. Na v5 a entrada volta a ser o micro-USB do Teensy (cabo de extensão de painel), com o 5 V tirado do pad VUSB por um fio.
 
 Bateria LiPo 1S de **1000 mAh** (3,7 V médios), capacidade útil 85 % (corte em ~3,3 V, envelhecimento, frio) = 3,15 Wh.
 Trilho único de 3,3 V pelo buck-boost TPS63001 (3,3 V fixo; eficiência 90 % típica, 86 % no pior caso, conferir). O amplificador do alto-falante (PAM8302A) vai direto na bateria (saída do carregador), fora do trilho de 3,3 V.
@@ -89,9 +89,16 @@ Erro de velocidade em unidades MIDI (1–127), com o mapa logarítmico da firmwa
 
 O "leve" não é desligado: sozinho, um Pocket esquecido ligado gastaria a bateria em pouco mais de um dia. Por isso a SPEC v3 usa os dois estágios: leve depois de 15 min, KEEP baixo (desligado de verdade) depois de mais 30.
 
-## Carga pela USB-C
+## Carga pelo micro-USB
 
-BQ24074 em modo USB500 (EN1 = 1, EN2 = 0): no máximo 500 mA da USB-C; corrente de carga programada 500 mA (R_ISET = 1,78 kΩ, K_ISET = 890 AΩ; datasheet). Os 5,1 kΩ nos CC da USB-C pedem a corrente padrão da porta (500 mA em USB 2.0, até 1,5–3 A em carregadores USB-C), então qualquer cabo C-C ou A-C carrega.
+BQ24074 em modo USB500 (EN1 = 1, EN2 = 0): no máximo 500 mA da USB; corrente de carga programada 500 mA (R_ISET = 1,78 kΩ, K_ISET = 890 AΩ; datasheet). O 5 V chega pelo cabo de extensão micro-B de painel, entra no micro-B do Teensy e sai do pad VUSB (ponte VUSB–VIN cortada) por um fio de 26 AWG até o J_VBUS da placa principal. Qualquer carregador ou porta USB-A serve; carregador USB-C, com um cabo C → micro-B (o resistor de 5,1 kΩ que o carregador precisa está no próprio cabo).
+
+### Corrente no pad VUSB e no micro-B do Teensy 4.0
+
+- **Esquema da PJRC** (https://www.pjrc.com/teensy/schematic40.png): o VBUS do micro-B (J1 pino 1) vai **direto** ao nó VUSB (só o C25 de 2,2 µF), sem fusível. O fusível de 500 mA (F1) fica do lado do VIN, depois da ponte VUSB–VIN, no caminho do 5 V da USB host. Com a ponte cortada, a corrente do carregador passa só pelo contato do micro-B e pela trilha até o pad.
+- **PJRC, loja do Teensy 4.0** (https://www.pjrc.com/store/teensy40.html): o VUSB recebe a energia da USB e pode ser separado do VIN cortando os dois pads do verso; nenhuma corrente máxima é publicada para o pad.
+- **Paul Stoffregen, fórum PJRC** (https://forum.pjrc.com/index.php?threads/max-current-through-vusb-to-pcb.27859/, sobre o Teensy 3.1): resposta curta "500 mA", limitada pelo PTC e pela resistência do cabo, conector e trilhas. No 4.0 o PTC não está nesse caminho, então o limite prático é o do próprio USB 2.0 (500 mA de uma porta de computador) e o do contato do micro-B (1,8 A pela especificação Micro-USB, conferir no conector da PJRC).
+- **No Pocket:** o BQ24074 limita a entrada a 500 mA (USB500, típico 475), mais ~5 mA da luz de carga e 50 µA do R26: **≤ ~0,5 A, dentro do que a PJRC indica** e bem abaixo do contato do micro-B. O Teensy não tira nada do VUSB (é alimentado pelo 3,3 V do conversor). Fio de 26 AWG (~0,13 Ω/m): 50 mm = 7 mΩ, 3,5 mV de queda a 500 mA.
 
 | Situação | corrente na bateria | carga completa (estimativa, conferir) |
 |---|---:|---:|
@@ -102,7 +109,7 @@ BQ24074 em modo USB500 (EN1 = 1, EN2 = 0): no máximo 500 mA da USB-C; corrente 
 
 Fase de tensão constante no fim da carga: +0,5 h (estimativa). A carga para fora de 0–50 °C (NTC de 10 kΩ, B 3435, no TS: corrente de 75 µA, desliga a 2,1 V = 28 kΩ ≈ 0 °C e a 0,3 V = 4 kΩ ≈ 50 °C; datasheet).
 
-**Luz de carga** (CHG do BQ24074 → P-MOSFET → 1000 Ω → diodo → vermelho do LED): ~2,8 mA, tirados da USB, não da bateria, **só com o Pocket desligado** (SPEC v4). Ligado, o trilho de 3,3 V liga o Q31, que desvia a luz para o GND: ~5,0 mA da USB enquanto carrega e toca, nada da bateria. O ESD da USB-C (PRTR5V0U2X) fuga < 0,1 µA: desprezível.
+**Luz de carga** (CHG do BQ24074 → P-MOSFET → 1000 Ω → diodo → vermelho do LED): ~2,8 mA, tirados da USB, não da bateria, **só com o Pocket desligado** (SPEC v4). Ligado, o trilho de 3,3 V liga o Q31, que desvia a luz para o GND: ~5,0 mA da USB enquanto carrega e toca, nada da bateria. O TVS do VBUS (SMF5.0A) só vê tensão com USB: a fuga dele sai da USB, nunca da bateria.
 
 ## Autonomia com outra capacidade
 

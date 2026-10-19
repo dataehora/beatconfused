@@ -1,9 +1,9 @@
 {
-  "version": 3,
-  "spec": "v4",
-  "task": "F2",
+  "version": 4,
+  "spec": "v5",
+  "task": "F4",
   "owner": "eletronica",
-  "date": "2026-10-18",
+  "date": "2026-10-19",
   "note": "Mechanical contract: every part the case must house, with its body from the datasheet. Units mm. Frame for suggested positions = pocket.json (x right from the case's leftmost point, y from the back (0) to the player (100), z up from the table). status: final = datasheet drawing read; conferir = distributor figure, estimate, or the exact order code is still open. needs_from_design = what the case must provide. The design owns the positions; the numbers under 'suggested' are only where the electronics would put the part given pocket.json v2.",
   "parts": {
     "volume_pot": {
@@ -44,11 +44,13 @@
       },
       "needs_from_design": "lid boss with the D7.3 hole and the anti-rotation hole at the volume knob; room for the vertical pot board at y 40.9-42.5 from z 13.8 up; confirm nothing at z 14.5-17.2 under the pot (D1 had the controls board there only)",
       "note_e2b": "E2b uses the Alps RK097 drawing (body 13.3 along the shaft, not the RK0972S's 15.8): the body ends at z 17.0, above the controls board (17.18 top) only by the switch legs, which sit at z 19.05.",
-      "pot_board_v4": "v0.2 (F2 follow-up, design question 5): the pot board was drawn mirrored (KiCad X = 55 - y). Seen from the pot's side (F face towards -x) the player (+y) is on the right because the SPEC frame is left-handed, so X = y - 43. Fixed: the joint's GND pad now lands on the controls board's GND pad at y 46.4 (before it met the net-less pad at 51.6). The shaft stays at y 49 (symmetric); pot pins: 3 (VCC) at y 46.5, 2 (wiper) at 49.0, 1 (GND) at 51.5, switch 5/4 at 46.5/51.5. Rotation sense was NOT affected: it is set by the part's own terminals (Alps: CW seen from the shaft end moves the wiper from 1 to 3, conferir), and 3 = VCC, so turning clockwise seen from above raises the volume. Cable wires 1-5: JW pads unchanged by net (JW1 VCC, JW2 POT, JW3 GND, JW4 PWR_A, JW5 PWR_B), only their physical order along y is now JW5, JW1, JW2, JW3, JW4 from y 44.2 to 53.0."
+      "pot_board_v4": "v0.2 (F2 follow-up, design question 5): the pot board was drawn mirrored (KiCad X = 55 - y). Seen from the pot's side (F face towards -x) the player (+y) is on the right because the SPEC frame is left-handed, so X = y - 43. Fixed: the joint's GND pad now lands on the controls board's GND pad at y 46.4 (before it met the net-less pad at 51.6). The shaft stays at y 49 (symmetric); pot pins: 3 (VCC) at y 46.5, 2 (wiper) at 49.0, 1 (GND) at 51.5, switch 5/4 at 46.5/51.5. Rotation sense was NOT affected: it is set by the part's own terminals (Alps: CW seen from the shaft end moves the wiper from 1 to 3, conferir), and 3 = VCC, so turning clockwise seen from above raises the volume. Cable wires 1-5: JW pads unchanged by net (JW1 VCC, JW2 POT, JW3 GND, JW4 PWR_A, JW5 PWR_B), only their physical order along y is now JW5, JW1, JW2, JW3, JW4 from y 44.2 to 53.0.",
+      "nut_v5": "The RK0972S / RK097 drawings give only the bushing thread (M7 x 0.75, bushing 5 or 7 long); the nut is NOT dimensioned there. Typical M7 x 0.75 thin nut for 9 mm pots: 9-10 AF x 2.0 (conferir with the bought part). Design: size the lid recess for 10 AF (11.6 across corners) x 2.0 so either fits.",
+      "anti_rotation_v5": "anti-rotation pin clipped off (envelope anti_rotation_hole = null); the M7 nut holds it."
     },
     "encoder": {
       "name": "Encoder seletor com clique",
-      "part_number": "Alps EC11E with push switch, 15 pulses / 15 detents, D6 flatted shaft L = 20 (EC11E1520xxx family, exact suffix conferir; EC11E15244G1/B2 are 30 detents = ENC_STEPS_PER_DETENT 2)",
+      "part_number": "Alps EC11E with push switch, 15 pulses / 15 detents, flatted D6 shaft L = 25 (SPEC v5 F3: with the D15 x 14 knob L 20 engages only 5.2, L 25 gives 8.0); exact EC11E1520xxx/25-mm suffix conferir at Alps/Mouser; fallback: L 30 cut to 25 with a hacksaw",
       "lcsc": "conferir (not found on LCSC; Farnell/Mouser/TME)",
       "datasheet": "https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/",
       "status": "conferir",
@@ -59,7 +61,7 @@
         ],
         "height_above_pcb": 6.5,
         "shaft_d": 6.0,
-        "shaft_l": 20.0,
+        "shaft_l": 25.0,
         "bushing": "M7 x 0.75, 5 long"
       },
       "mounting": "vertical on the controls board (top), shaft up through the lid",
@@ -70,7 +72,8 @@
         ],
         "pcb_top_z": 17.18
       },
-      "needs_from_design": "unchanged from pocket.json controls_board.encoder"
+      "needs_from_design": "unchanged from pocket.json controls_board.encoder",
+      "note_v5": "Shaft L 25 chosen (F4) for the design's D15 x 14 knob (8.0 mm engagement >= 8)."
     },
     "led": {
       "name": "LED bicolor vermelho/verde, catodo comum, 3 mm",
@@ -112,155 +115,52 @@
       "why": "a BM10B with its two lugs needs 12.8 + 1.0 mm along y and the controls board has 13.5; and the LED with the two lid posts beside it walls the encoder off from the board's right edge, so the pot's lines take the pot board"
     },
     "panel_board": {
-      "name": "Plaquinha do painel: USB-C + jack de fone na parede de tras-esquerda",
-      "part_number": "own PCB, 1.6 mm, ~30 x 13, lying flat (parallel to the floor) with its front edge on a flat boss inside the curved wall",
-      "status": "final",
-      "solution": "USB-C + ESD (PRTR5V0U2X) + CC 5.1 k on the panel board top, assembled by JLCPCB (top side only); the SJ1-3525N jack is hand-soldered. Wire pads: micro-B cable (VBUS, D+, D-, GND) on the back row; SH-8 from J_PNL: VBUS/GND share those pads, HP_L/HP_R/HP_VGND/HP_TIPSW on the right end past the jack.",
-      "body": {
-        "plan": [
-          30.0,
-          13.0
-        ],
-        "thickness": 1.6,
-        "below_board": 1.5,
-        "above_board_max": 6.2
-      },
-      "mounting": "2 x M2 self-tapping screws (D2.2 holes, 22 apart) into two pillars from the floor or wall, or slid into a printed groove and held by the bottom plate",
-      "suggested": {
-        "board_top_z": 20.0,
-        "connector_centres_z": {
-          "usb_c": 21.63,
-          "jack": 22.6
-        },
-        "spacing_usb_to_jack": 14.0
-      },
-      "cable_exits": "both cables leave from the board's back edge (away from the wall): micro-B cable ~40 mm to the Teensy plug (pocket.json stack.usb_plug), SH-8 cable ~100 mm to the main board",
-      "needs_from_design": "(1) envelope panel.holes -> H1 pin hole at xy [25.6, 17.386] (lid post with D2.0 x 1.4 pin), H2 screw at xy [15.38, 23.917] (post/rib <= 3.4 wide across the wall direction); (2) USB-C hole/recess unchanged; (3) jack hole D6.3 (not 6.0) + spot-face D10 x 0.5; (4) the board's front edge rests on the flat boss over its full 30 mm",
-      "holes_v4": {
-        "frame": "panel uv (u along the wall from envelope panel.front_edge[0], v inwards); xy = case SPEC frame",
-        "H1": {
-          "panel_uv": [
-            4.0,
-            10.3
-          ],
-          "xy": [
-            25.6,
-            17.386
-          ],
-          "kind": "LOCATING PIN hole D2.2 (no screw: it is over the micro-B plug)",
-          "case": "the lid post ends in a D2.0 x 1.4 pin that enters the hole from above and stops 0.2 short of the board's bottom face; post shoulder D4.4 on the board top"
-        },
-        "H2": {
-          "panel_uv": [
-            14.24,
-            3.8
-          ],
-          "xy": [
-            15.38,
-            23.917
-          ],
-          "kind": "M2 x 6 self-tapping screw FROM BELOW (lid upside down at assembly), head D3.8 under the board",
-          "case": "lid post or rib max 3.4 wide across u (it sits between the USB-C body, u <= 12.52, and the jack body, u >= 15.95), may join the wall boss; pilot D1.7",
-          "clearances": "head 4.9 from the micro-B plug outline, 2.8 from the USB-C shell legs; 2.8 above the J_SPK plug (main board) under it"
-        },
-        "why": "PR #106 divergence 4: the old H1 (u 4.0, v 10.3) and the head of the old H2 (u 14.4, v 10.3) sat over the micro-B plug (0.45 gap). The pin needs nothing below the board."
-      },
-      "underside_map": "over the micro-B plug (uv square (3.97,4.45) (-0.68,14.41) (9.28,19.07) (13.93,9.1)): only the trimmed USB-C rear-left leg; elsewhere <= 1.4 below the bottom face (jack terminals, USB-C legs, solder) and the H2 screw head (1.3)"
+      "status": "removed (SPEC v5 change 3)",
+      "note": "The panel board (USB-C + ESD + jack) is gone from the project; its files stay in git history (last in PR #108). Its envelope entry 'panel', the holes H1/H2, the lid post/pin, the rib and the front ledge are no longer needed. Replaced by micro_b_panel_cable (panel female on the wall) + headphone_jack (wired panel jack) + vusb_wire.",
+      "name": "Plaquinha do painel (REMOVIDA na v5)"
     },
     "usb_c": {
-      "name": "Receptaculo USB-C (carga e MIDI)",
-      "part_number": "Korean Hroparts TYPE-C-31-M-12 (16P, SMD + through-hole shell legs, horizontal)",
-      "lcsc": "C165948",
-      "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811131825_Korean-Hroparts-Elec-TYPE-C-31-M-12_C165948.pdf",
-      "status": "final",
-      "body": {
-        "width": 8.94,
-        "depth": 7.35,
-        "height": 3.26,
-        "mating_face": "shell 8.94 x 3.26, R 1.63 ends"
-      },
-      "mounting": "on the panel board's front edge, mating face 0.0-0.3 behind the outer wall surface",
-      "panel_hole": "stadium 9.4 x 3.7 (R 1.85) through the wall; the shell's front sits in the hole. Outside, a 13 x 7 flat (R 3) recess 0.5 deep is enough for plug overmolds on the curve",
-      "keepouts": "no rib inside within 1 mm of the shell; plug insertion force ~20 N goes into the boss through the board (screws or groove)",
-      "electrical": "CC1, CC2: 5.1 k to GND; VBUS on the right pair (A9/B4) only: a USB-C plug ties its four VBUS and four GND contacts together, so one pair carries it either way up; VBUS to BQ24074 IN through the SH-8 cable",
-      "needs_from_design": "hole + recess as above",
-      "shell_legs": {
-        "note": "4 THT shell legs, drill 0.6 x 1.7 (back pair) / 0.6 x 1.2 (front pair); they pass 1.6 board and stick out ~0.8 below (conferir on the part)",
-        "rear_left_leg": {
-          "panel_uv": [
-            3.68,
-            5.93
-          ],
-          "xy": [
-            21.775,
-            15.248
-          ],
-          "over_micro_b_plug": true,
-          "action": "trim FLUSH with the board's bottom face after soldering (side cutters + file); the manual says so"
-        },
-        "other_legs": "clear of the plug; may stay (<= 1.0 below)"
-      },
-      "esd": {
-        "part": "PRTR5V0U2X (TECH PUBLIC, SOT-143, D+/D- 2-line rail-to-rail + VBUS clamp, ~1 pF) on the panel board top, between the USB-C and the jack",
-        "lcsc": "C2827688 (77 500 in stock 18 Oct 2026); Nexperia original PRTR5V0U2X,215 C12333 (out of stock)",
-        "datasheet": "https://assets.nexperia.com/documents/data-sheet/PRTR5V0U2X.pdf",
-        "body": [
-          2.9,
-          1.3,
-          1.1
-        ],
-        "case_impact": "none (1.1 tall, under the 6.2 above-board limit)"
-      }
+      "status": "removed (SPEC v5 change 3)",
+      "note": "The panel board (USB-C + ESD + jack) is gone from the project; its files stay in git history (last in PR #108). Its envelope entry 'panel', the holes H1/H2, the lid post/pin, the rib and the front ledge are no longer needed. Replaced by micro_b_panel_cable (panel female on the wall) + headphone_jack (wired panel jack) + vusb_wire.",
+      "name": "Receptaculo USB-C (REMOVIDO na v5)"
     },
     "micro_b_link": {
-      "name": "Cabo curto USB-C (plaquinha) -> micro-B do Teensy",
-      "part_number": "short 90 deg micro-B male cable (angle towards the Teensy's board, conferir: left/right/up/down), cut and soldered to 4 pads on the panel board",
-      "lcsc": "none (bought cable)",
-      "status": "conferir",
-      "body": {
-        "plug_overmold": [
-          11.0,
-          11.0,
-          7.5
-        ],
-        "cable_d": 3.0,
-        "min_bend_r": 6
-      },
-      "mounting": "plug in the Teensy's micro-B (as pocket.json stack.usb_plug), cable to the panel board",
-      "needs_from_design": "same as D1's 90 deg plug + ~40 mm cable path to the panel board"
+      "status": "removed (SPEC v5 change 3)",
+      "note": "The panel board (USB-C + ESD + jack) is gone from the project; its files stay in git history (last in PR #108). Its envelope entry 'panel', the holes H1/H2, the lid post/pin, the rib and the front ledge are no longer needed. Replaced by micro_b_panel_cable (panel female on the wall) + headphone_jack (wired panel jack) + vusb_wire.",
+      "name": "Cabo curto USB-C -> micro-B (REMOVIDO na v5: substituido por micro_b_panel_cable)"
     },
     "headphone_jack": {
-      "name": "Jack de fone 3,5 estereo com contato de comutacao na ponta",
-      "part_number": "Same Sky (ex-CUI) SJ1-3525N: 3.5 mm stereo, THT, horizontal, tip switch (pin 10) and ring switch (pin 11; ring switch unused)",
-      "lcsc": "none (DigiKey CP1-3525N-ND, Mouser 490-SJ1-3525N)",
-      "datasheet": "https://www.sameskydevices.com/product/resource/pdf/sj1-352xn.pdf",
-      "status": "final",
+      "name": "Jack de fone 3,5 estereo de PAINEL com contato de comutacao na ponta (ligado por fios)",
+      "part_number": "Cliff FC681375V (stereo switched 3.5 mm, ring nut M8 x 0.75) - or FC681375VH (hex nut)",
+      "lcsc": "none (Farnell 2518213; TME / DigiKey 'FC681375V')",
+      "datasheet": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5561/Vert%203,5mm%20Jack%20FC681375V-VH.pdf",
+      "status": "final (Cliff drawing read 18 Oct 2026; stock conferir)",
       "datasheet_dims": {
-        "body_width": 12.0,
-        "body_length_behind_nose": 11.0,
-        "nose_d": 6.0,
-        "nose_length_in_front_of_body": 3.3,
-        "nose_front_ring": 1.3,
-        "overall_length": 14.3,
-        "body_height_above_pcb": 5.0,
-        "axis_above_pcb": 2.5,
-        "plug_bore_d": "3.60 +0.1/-0.05",
-        "terminals_below_pcb_top": 3.0,
-        "terminal_pitch": "5.0 / 10.0 across, 3.5 / 8.5 along the axis",
-        "pegs": "NPTH 1.2 (KiCad footprint)",
-        "insertion_withdrawal_force_kg": [
-          0.3,
-          3.0
+        "body": [
+          10.5,
+          9.0,
+          13.0
         ],
-        "tolerance": "X.X +-0.3"
+        "body_note": "10.5 across (the axis 5.0 from one face, 5.5 from the other), 9.0 across (axis centred), 13.0 long behind the thread's shoulder",
+        "thread": "M8 x 0.75, 4.5 long",
+        "nut": "ring nut D10.0 x 2.0 (with a 1.0 spanner slot) or hex nut 10 A/F x 2.0",
+        "tabs": "4 solder tabs 1.0 x 1.5 with hole, 4.0 out of the body's back face",
+        "plug_bore_d": 3.6,
+        "terminals": "1 = S (sleeve), 2 = R (ring), 3 = T (tip), 4 = tip switch (closed to 3 with no plug, opens when a plug goes in)"
       },
-      "mounting": "panel board top, axis along the board's inward normal; KiCad footprint puts the body front 1.45 inside the board's front edge and the nose 1.85 past it per the datasheet (see nose_vs_board_edge; envelope says 1.35). Axis at z board_top + 2.5 = 26.4 with the board top at 23.9.",
-      "panel_hole": "D6.3 through (nose D6.0 +-0.3 tolerance; D6.0 would bind), outer spot-face D10 x 0.5 for fat plug collars; wall <= 1.5 at the hole so the nose (1.35 past the board edge) reaches the outer face",
-      "boss": "flat inner boss under the board's front edge, as for the USB-C; the jack body (12.0 x 5.0 high) needs 0.3 all round inside the lid; nothing above z 28.9 at x/y of the body",
-      "below_board": "5 terminals + 5 pegs come out 1.4 below the board's bottom face (z 20.9): trim to <= 1.0 after soldering; NOT over the micro-B plug (checked: jack legs at u 17-27, the plug's nearest corner at u 13.9)",
-      "electrical": "sleeve (1) -> HP_VGND (Audio Board virtual ground, NEVER GND); tip (2) / ring (3) -> HP_L / HP_R; tip switch (10, closed to the tip without plug) -> HP_TIPSW -> HP_DET network on the main board (pin 17)",
-      "needs_from_design": "hole D6.3 + spot-face D10 x 0.5 centred on envelope panel.jack.xy at z 26.4; wall <= 1.5 there; flat boss",
-      "nose_vs_board_edge": "Answer to the design's question 2 (F1): on the datasheet's recommended layout the body's FRONT FACE is the 'connector edge'; the pegs sit 1.0 and 3.5 behind it and the terminal row 8.5 behind it. On our board (KiCad footprint, pegs 2.45 and 4.95 inside the edge, terminals 9.95) the body front is 1.45 INSIDE the board's front edge, so the D6.0 nose (3.3 long) ends 1.85 +-0.3 PAST the board edge, not 1.35 (the KiCad Fab/3D drawing shows 1.4: the datasheet governs). With the 1.5 wall at the hole the nose tip sits 0.35 into the outer spot-face (2.22 deep), 1.87 below the outer surface: no change needed if the board edge is on the wall's inner face; the body front (12.0 x 5.0) stays 1.45 back from that face."
+      "panel_hole": "D8.2 through, in a FLAT area: inside >= 11 x 10 for the body's front face, outside >= D11 for the nut",
+      "wall_thickness_at_hole": {
+        "min": 1.0,
+        "max": 2.5,
+        "note": "thread 4.5 - nut 2.0 = 2.5 max; 1.5-2.0 recommended"
+      },
+      "behind_wall": "body 13.0 + tabs 4.0 + wires ~4 = ~21 along the axis, 10.5 x 9.0 section (tabs on the back face)",
+      "anti_rotation": "none on the part: the nut clamps it; a flat boss or a printed rib beside the body's 10.5 face stops it turning",
+      "mounting": "from inside, thread through the wall, nut outside (ring nut tightened with its slot)",
+      "electrical": "4 x 28-30 AWG wires, ~60-80 mm, to J_JACK on the main board: 1 S -> HP_VGND (Audio Board virtual ground, NEVER GND), 2 R -> HP_R, 3 T -> HP_L, 4 tip switch -> HP_TIPSW (-> HP_DET, pin 17). The Audio Board's own jack pads keep feeding J_HP as before (HP_L/HP_R/HP_VGND), so the panel jack and the amplifier input meet on the main board.",
+      "needs_from_design": "D8.2 hole in a flat area on the back-left wall (wall 1.0-2.5 there), ~21 mm straight room behind it along the axis, 10.5 x 9.0 section, + a wire path to J_JACK (main board, connector_zones.back_left)",
+      "replaces": "Same Sky SJ1-3525N (PCB jack on the removed panel board)",
+      "note_f3": "Design F3 places the jack rotated (9 wide x 10.5 tall), axis +x, z ~23.8, on its own facet at y ~38: fine electrically (orientation is free). The wall at the jack hole must be <= 2.5 (thread 4.5 - nut 2.0); if the facet is 3.0 thick, spot-face it from inside to <= 2.5 over D11."
     },
     "battery": {
       "name": "LiPo 1S 1000 mAh tipo 603450 com PCM e NTC (3 fios)",
@@ -401,17 +301,6 @@
           "plug_height_total": 10.5
         },
         {
-          "ref": "J_PNL",
-          "part": "JST SH BM08B-SRSS-TB vertical, top",
-          "lcsc": "C160394",
-          "at": [
-            17.7,
-            33.0
-          ],
-          "rot": 90,
-          "pins": "1-2 VBUS 3-4 GND 5 HP_L 6 HP_R 7 HP_VGND 8 HP_TIPSW"
-        },
-        {
           "ref": "J_CTL",
           "part": "JST SH BM10B-SRSS-TB vertical, top",
           "lcsc": "C160396",
@@ -430,7 +319,9 @@
           ]
         }
       ],
-      "note": "placed in E2b (pcb/build_pocket_pcb.py); J_BAT/J_SPK/J_PNL in back_left (checked against levels and the micro-B plug), J_CTL in its connector zone"
+      "note": "placed in E2b (pcb/build_pocket_pcb.py); J_BAT/J_SPK/J_PNL in back_left (checked against levels and the micro-B plug), J_CTL in its connector zone",
+      "note_v5": "v5 (F4): J_PNL (SH-8 to the panel board) removed; J_VBUS (1 wire pad with strain-relief hole) and J_JACK (4 wire pads, 2.54) in connector_zones.back_left. Positions written by build_pocket_pcb.py's run (see ELETRONICA.md F4).",
+      "heights_v5": "J_VBUS (wire pad, x 18.5 y 18.0) and J_JACK (4 wire pads x 18.5, y 28.6-36.2): copper + solder + wire bend <= 3.0 above the board top = z <= 10.7, under z_top_max_under_jack 18.4 (y > 33.2) and the back_left z_top_max 21.9. Confirmed."
     },
     "charge_light": {
       "name": "Luz de carga so com o Pocket DESLIGADO (SPEC v4 mudanca 10)",
@@ -487,16 +378,72 @@
       "thickness": 1.2,
       "note": "4 layers (In1 GND plane, In2 3.3 V plane). Back side: all ICs and passives (max 2.0 tall, inductor 2.0); top: switches, the Audio Board legs, J_BAT/J_SPK (PH THT), J_PNL/J_CTL (SH SMD), J_HP wire pads.",
       "sag_3N_mm": 0.021,
-      "note_v4": "v4: Q31 (charge light only when off) and Q22 + R26 (with USB present the volume switch alone holds the 3.3 V on, so the Teensy can be flashed and tested without the Pocket firmware) added on the back; TPS63001 kept; no change to the outline, the top connectors or any height."
+      "note_v4": "v4: Q31 (charge light only when off) and Q22 + R26 (with USB present the volume switch alone holds the 3.3 V on, so the Teensy can be flashed and tested without the Pocket firmware) added on the back; TPS63001 kept; no change to the outline, the top connectors or any height.",
+      "note_v5": "v5 (F4): VBUS now arrives by wire from the Teensy's VUSB pad (J_VBUS); TVS D60 (SMF5.0A) on VBUS at the BQ24074 input; panel jack wires to J_JACK; no panel board. 4 layers, 1.2 mm, outline from the envelope."
+    },
+    "vusb_wire": {
+      "name": "Fio do VBUS: pad VUSB do Teensy -> J_VBUS da placa principal (entrada do carregador)",
+      "part_number": "silicone or PTFE hook-up wire 26 AWG (0.13 mm2), OD <= 1.2, red, ~50 mm",
+      "status": "conferir (pad position on the real Teensy)",
+      "from": "the Teensy 4.0's VUSB pad on its BOTTOM side, at the USB end next to the VIN-row edge (PJRC back-side card, 'VUSB', beside the 'cut to separate VIN from VUSB' pads); soldered BEFORE the Teensy goes on the Audio Board (low stack), after cutting VUSB-VIN",
+      "route": "out of the gap between the Teensy and the Audio Board at the USB end (the header strips close the long sides), over the Audio Board's left edge (x 30), down to the main board (z 7.7) and left to J_VBUS; it stays below z 14.0 under the micro-B plug's overmould",
+      "strain_relief": "drop of epoxy / hot glue over the wire on the Teensy's bottom, 2-3 mm from the pad; on the main board the wire goes through J_VBUS's relief hole before its solder hole",
+      "current": "<= 500 mA (BQ24074 USB500 input limit) + ~5 mA charge light; 26 AWG: ~0.13 ohm/m, 50 mm = 7 mOhm, 3.5 mV drop at 500 mA",
+      "needs_from_design": "a ~1.2 mm wire from the Teensy's USB end down past the Audio Board's left edge to J_VBUS (back_left zone)"
+    },
+    "micro_b_panel_cable": {
+      "name": "Extensao micro-B de painel em FPC (fita chata): macho micro-B 90 graus 'UP' no Teensy -> femea micro-B presa na parede",
+      "decision": "FPC flat ribbon (design's proposal, F3): the round screw-ear cable (OD 3.5-4.5, R >= 18, 25-30 cm) does not fit: inside the Pocket R 18 is impossible and the free height over the Teensy is only z 19.5-30.5.",
+      "part_number": "FPV 'Flat Slim Thin Ribbon FPC Cable Micro USB 90 Degree Angled Up Male to Micro USB Female Receptacle', 10 cm (Permanent / generic FPV brand; same listing sold in 5, 10, 15 cm)",
+      "source": "Amazon (Permanent): 15 cm https://www.amazon.com/Ribbon-Degree-Angled-Receptacle-Charging/dp/B07Q61KTT7 ; 5 cm https://www.amazon.com/Ribbon-Degree-Angled-Female-Charging/dp/B07Q9YBC99 ; also AliExpress 'FPV FPC micro USB 90 up male to micro USB female'. Buy the 10 cm (or 15 cm and fold the extra flat); buy one 'DOWN' too as a spare in case the Teensy's receptacle is the other way up (a few dollars).",
+      "lcsc": "none (bought cable)",
+      "datasheet": "none published (FPV accessory): every dimension below is a seller figure or an estimate -> conferir with the bought part before the case is printed",
+      "status": "conferir (no drawing exists for this family; measure on arrival)",
+      "ribbon": {
+        "width": "~10-12 (conferir)",
+        "thickness": 0.3,
+        "fold": "can be folded flat (crease) once at assembly; static bend R >= 1.5 recommended, never flexed in use",
+        "conductors": "USB 2.0 (VBUS, D+, D-, GND, ID), 480 Mbit/s per the sellers; unshielded: keep the ribbon away from the TPS63001 inductor L10 (main board x 93.6 y 10) and the PAM8302A"
+      },
+      "male_90": {
+        "kind": "'UP' angled: the ribbon leaves from the plug's top face (the trapezoid's wide side), perpendicular to the Teensy board, i.e. straight UP (+z) out of the plug body",
+        "head": "~11 x 8.5 x 5.5 overmould incl. the metal plug's back end (conferir); metal plug 6.85 x 1.8, 6.3 long",
+        "why_up": "the plug's sides are boxed in (case column at (25, 6.5) and back wall on -y; tab, encoder, jack and female body on +y): the ribbon goes up from the plug top (z 21.85) into the free space z 19.5-30.5 and folds flat towards the female",
+        "orientation_check": "the Teensy 4.0's micro-B has the trapezoid's WIDE side away from the Teensy board (towards the Teensy's top) (conferir on the J's Teensy before ordering: look into the receptacle). If it is the other way, the 'DOWN' version is the one that leaves upwards."
+      },
+      "female": {
+        "kind": "micro-B receptacle on a small stiffened head at the ribbon's end, NO screw ears or holes (conferir)",
+        "head": "~12 x 9 x 4.0 (W x L x H, conferir); receptacle opening 7.5 x 2.6 in its front face, wide side up",
+        "fixing": "printed clamp of the case: the head sits in a pocket on the flat inner boss, front face against the wall's inner face, and a printed strap (or the clamp plate) with 2 x M2 x 5 self-tapping screws at 16 mm pitch (one each side of the head) presses it on the boss; a 0.5 mm lip in front of the head takes the plug insertion force (~20 N) and the withdrawal pull",
+        "screws": "2 x M2 x 5 self-tapping for plastic (kit BOM)"
+      },
+      "panel_cutout": {
+        "hole": [
+          12.0,
+          8.0
+        ],
+        "hole_corner_r": 1.0,
+        "why": "the user's plug overmould (~10.5 x 7, varies) must enter the wall to reach full mating depth (metal plug only 6.3 long) with the 3.0 wall the design has at the hole",
+        "wall_at_hole": "1.0-3.0 (design: 3.0)"
+      },
+      "behind_wall": "female head ~9 deep along the axis + ribbon leaving its back face (flat, folds immediately)",
+      "length": "10 cm (5 cm too short, 15 cm folds once more flat): from the female (axis z 26.4, design) back over the plug to its top face",
+      "electrical": "VBUS, D+, D-, GND straight through. Charge (<= 500 mA via the BQ24074), MIDI and flashing.",
+      "needs_from_design": "flat boss with the 12 x 8 R1 hole (wall 3.0 ok), a pocket ~12.4 x 9.4 x 4.4 for the female head + a clamp/strap with 2 x M2 at 16 mm pitch and a front lip; ribbon path from the head's back face to the plug top (flat, any fold R >= 1.5), clear of L10; room over the plug for the UP head (~11 x 8.5 x 5.5)",
+      "rejected_round_cable": {
+        "part": "screw-ear micro-B panel extension with 90 deg male (female as Premier/Adafruit P3258: flange 25.5 x 10, ears D3.5 at 17.3, 26.1 long, cable OD 4.5)",
+        "why": "OD 3.5-4.5 needs R >= 18 and is sold >= 25 cm; the design measured R ~7 at the plug and ~13 in the loop as the best possible"
+      }
     }
   },
-  "needs_from_design_v4": [
-    "panel_board.holes_v4: H1 = locating pin hole (lid post with pin, nothing under the board), H2 moved to u 14.24 v 3.8 = xy [15.38, 23.917], screw from below, post/rib <= 3.4 wide",
-    "headphone_jack: hole D6.3 + spot-face D10 x 0.5, axis z 26.4, datasheet dims in headphone_jack.datasheet_dims",
-    "usb_c: unchanged hole; the rear-left shell leg is trimmed flush (manual)",
-    "battery.connector_pocket_v4: pocket >= 14.5 x 9.0 x 6.0 + wire channels; pigtail ~70 mm from J_BAT",
-    "controls_board.tabs_v4: keep the tabs; speaker box wall y >= 57.8 at x 26.7-35.5, z 14.0-17.5"
-  ],
+  "needs_from_design_v4": "superseded by needs_from_design_v5",
   "kit_bom": "pcb/fab/pocket_kit_bom.csv (written by pcb/kit_bom.py)",
-  "assembly_manual_electrical": "pcb/MANUAL_ELETRICO.md"
+  "assembly_manual_electrical": "pcb/MANUAL_ELETRICO.md",
+  "needs_from_design_v5": [
+    "panel board REMOVED: drop envelope 'panel' (board, holes H1/H2, rib, front ledge, lid post/pin) and its boss",
+    "micro_b_panel_cable (FPC): 12 x 8 R1 hole (wall 3.0 ok), pocket ~12.4 x 9.4 x 4.4 for the female head, clamp/strap with 2 x M2 at 16 mm pitch + front lip; flat ribbon path from the head to the plug top, clear of L10; UP male head ~11 x 8.5 x 5.5 over the Teensy's receptacle",
+    "headphone_jack (Cliff FC681375V): D8.2 hole in a flat area, wall <= 2.5 at the hole (spot-face inside if the facet is 3.0), ~21 straight room behind, 10.5 x 9.0 section, nut D10 x 2.0 outside; rotated as F3 is fine",
+    "vusb_wire: ~1.2 mm wire path from the Teensy's USB end down past the Audio Board's left edge to J_VBUS",
+    "connector_zones.back_left: keep it (J_BAT, J_SPK, J_VBUS, J_JACK); nothing above it now but the cables"
+  ]
 }

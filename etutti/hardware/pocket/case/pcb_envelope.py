@@ -1,4 +1,4 @@
-"""The room the Pocket's Seixo case leaves for the main board (SPEC v4, F1):
+"""The room the Pocket's Seixo case leaves for the main board (SPEC v5, F3):
 
     C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/pocket/case/pcb_envelope.py
 
@@ -29,7 +29,9 @@ Heights are absolute z (table = 0) unless a key says "above_pcb".
   keys             every key: note, row, centre (switch + Hall sensor under it)
   stack            Teensy 4.0 + Audio Board Rev D, the LOW stack, its pins
   controls         the controls board under the lid (pot on its own vertical board)
-  panel            the USB-C + jack board on the back-left wall
+  panel            the micro-B FPC female (block + tunnel + trava) and the
+                   wired jack on the back-left wall, the FPC ribbon's room,
+                   the VBUS wire (the panel board is gone since v5)
   battery          the bay, its hatch, where its 3 wires come out
   speaker          where it sits and where its 2 wires leave the sealed box
   cables           the zones the cables take to the main board
@@ -66,7 +68,7 @@ def section(solid, z):
 def obstacles():
     """Everything fixed in the case that is not the main board's own."""
     pc = FC.pecas()
-    pan, _ = FC.panel_solids(pc)
+    pan, ribbon = FC.conn_solids(pc)
     ctl = FC.controls_solids(pc)
     _, swollen, bplug = FC.battery(pc)
     _, full, _ = FC.speaker(pc)
@@ -74,8 +76,17 @@ def obstacles():
     cable = C.box3(a0, b0, C.Z_PCB_TOP + 7.0, a1, b1, 40.0)       # the controls cable drops here (its plug sits lower)
     plate_zone = C.contour_wp(C.hex_contour(C.PLATE_OVERLAP), C.Z_PLATE_TOP - C.PLATE_T).extrude(10.0).val()   # the plate and the keys above it
     parts = [C.shell(), C.fundo(), plate_zone, C.box_floor(), swollen, bplug, full,
-             pan["panel_board"], pan["usb_c"], pan["jack"], pan["panel_screw_head"], cable] + list(ctl.values())
+             pan["fem_head"], pan["fem_trava"], pan["jack"], cable] + list(ribbon.values()) + [v for k, v in ctl.items() if not k.startswith("knob")]
     return parts
+
+
+_RIB = {}
+
+
+def ribbon_zones_cache():
+    if not _RIB:
+        _RIB.update(C.ribbon_zones())
+    return _RIB
 
 
 def envelope():
@@ -91,8 +102,7 @@ def envelope():
     st = C.stack_parts()
     ab = st["audio_board"][0]
     tcy = C.STACK_XY[1] + C.PAST_VIN + 7.62
-    pg = C.panel_geometry()
-    at = pg["at"]
+    g = C.conn_geometry()
     inside, outside = C.battery_rects()
     l, w, _ = C.BATT_IN
     xe = C.BATT_C[0] - l / 2
@@ -100,7 +110,7 @@ def envelope():
     r = lambda v, d=3: round(v, d)
     rp = lambda pts: [[r(x), r(y)] for x, y in pts]
     return {
-        "spec": "pocket SPEC v4, task F1 (Seixo, variant B)",
+        "spec": "pocket SPEC v5, task F3 (Seixo, variant B)",
         "frame": "SPEC: x right from the case's leftmost point, y towards the player, mm (= KiCad top view)",
         "case_length": r(C.length(), 2),
         "z_pcb_top": zt, "z_pcb_bottom": C.Z_PCB_BOT, "pcb_thickness": r(C.PCB_T, 2),
@@ -151,38 +161,36 @@ def envelope():
             "pot": {"shaft": list(C.VOLUME_XY), "body": list(C.POT_BODY[:4]), "body_z": list(C.POT_BODY[4:]),
                     "board": list(C.POT_BOARD[:4]), "board_z": list(C.POT_BOARD[4:]), "legs_to_x": C.POT_LEGS_X,
                     "lid_hole_d": C.POT_HOLE_D,
-                    "anti_rotation_hole": {"xy": [r(C.VOLUME_XY[0] + C.POT_PIN[0]), r(C.VOLUME_XY[1] + C.POT_PIN[1])],
-                                           "d": C.POT_PIN[2], "depth": C.POT_PIN[3]},
+                    "anti_rotation_hole": None,
+                    "lid_recess": {"d": C.KNOB_RECESS_D, "depth": C.KNOB_RECESS_DEPTH, "floor": round(C.TOP_T - C.KNOB_RECESS_DEPTH, 2),
+                                   "note": "SPEC v5: the M7 nut sits flush in it (no anti-rotation hole: clip the pot's pin; the soldered boards stop it turning)"},
                     "note": "horizontal-type 9 mm switched pot on a VERTICAL board right of the shaft (x 21.62-23.22), its body to the left, "
-                            "M7 bushing nutted on the lid; the pot board meets the controls board's left edge at 90 deg"},
+                            "M7 bushing nutted flush in a D13 recess of the lid; the pot board meets the controls board's left edge at 90 deg"},
         },
         "panel": {
-            "board": rp(pg["board"]), "z": [r(C.PANEL_Z_TOP - C.PANEL_T, 2), C.PANEL_Z_TOP],
-            "nothing_below": True, "above_max": pc["panel_board"]["body"]["above_board_max"],
-            "front_edge": [rp([pg["at"](-15, 0)])[0], rp([pg["at"](15, 0)])[0]],
-            "inward_normal": [r(v, 4) for v in pg["n"]], "along": [r(v, 4) for v in pg["t"]],
-            "usb_c": {"xy": rp([at(C.PANEL_USB_S, 0)])[0], "z": r(C.USB_C_ZC, 2), "hole": list(C.USB_C_HOLE),
-                      "wall_at_hole": C.USB_C_WALL, "outer_recess": list(C.USB_C_RECESS),
-                      "front_past_board_edge": r(C.USB_C_WALL - 0.15, 2)},
-            "jack": {"part": "Same Sky SJ1-3525N", "xy": rp([at(C.PANEL_JACK_S, 0)])[0], "z": r(C.JACK_ZC, 2), "hole_d": C.JACK_HOLE_D,
-                     "wall_at_hole": C.JACK_WALL, "outer_spot_face_d": C.JACK_SPOT_D,
-                     "outer_spot_face_depth": r(pg["wall_jack"] - C.JACK_WALL, 2),
-                     "barrel_front_past_board_edge": 1.35},
-            "holes": [{"kind": kind, "xy": rp([at(s, d)])[0], "uv": [r(s + 15.0, 2), r(d, 2)], "d": C.PANEL_SCREW_D,
-                       **({"post_d": C.PANEL_POST_D, "post_foot_d": C.PANEL_POST_FOOT[0], "post_foot_h": C.PANEL_POST_FOOT[1],
-                           "pin_d": C.PANEL_PIN_D, "pin_len": C.PANEL_PIN_L,
-                           "note": "LOCATING PIN from the lid post, from above; stops 0.2 short of the board's underside; nothing under the board"}
-                          if kind == "pin" else
-                          {"rib_w_across_u": C.PANEL_RIB_W, "rib_v": [-8.0, r(d + C.PANEL_RIB_W / 2, 2)], "pilot_d": C.PANEL_PILOT_D,
-                           "head_under_board": list(C.PANEL_HEAD),
-                           "note": "M2 x 6 self-tapping FROM BELOW into a rib of the lid that joins the wall boss; the rib lands on the "
-                                   "board TOP over u %.2f-%.2f, v 0-%.2f: keep parts out of that strip" % (
-                                       s + 15 - C.PANEL_RIB_W / 2, s + 15 + C.PANEL_RIB_W / 2, d + C.PANEL_RIB_W / 2)})}
-                      for kind, s, d in C.PANEL_HOLES],
-            "front_ledge": {"depth_v": C.PANEL_LEDGE[0], "thickness": C.PANEL_LEDGE[1],
-                            "note": "the board's front edge rests on a ledge 0.8 deep along its full 30 mm (clear of the USB-C front legs at v 1.15-2.35)"},
-            "note": "board top at z %.1f: it passes 0.45 over the Teensy's micro-B plug, so NO parts on its underside; "
-                    "front edge on the flat boss of the wall, M2 screws from below into posts from the lid" % C.PANEL_Z_TOP,
+            "note": "SPEC v5: no panel board. The micro-B extension is an FPC ribbon (PECAS micro_b_panel_cable): its female head "
+                    "sits in a tunnel of a block on the back-left wall's flat chord boss (a 0.5 lip at the wall, a printed bar 'trava' "
+                    "with 2 x M2 x 5 behind it); the 'UP' male's ribbon rises from the Teensy plug's top, folds flat under the block "
+                    "(2.0 room) and goes up to the trava's slot; the spare (10 cm cable) lies folded flat over the Teensy. The jack "
+                    "(Cliff FC681375V) is on its own facet, axis +x, nut outside. Nothing of this touches the main board.",
+            "micro_b_female": {
+                "head_axis_origin": rp([g["fem_origin"]])[0], "axis": [r(v, 4) for v in g["n"]], "z": C.FEM_Z,
+                "head": list(C.FEM_HEAD), "tunnel": list(C.FEM_POCKET), "window": list(C.FEM_HOLE), "lip": list(C.FEM_LIP),
+                "wall_at_window": C.FEM_WALL, "outer_recess": list(C.FEM_RECESS) + [r(g["fem_wall"] - C.FEM_WALL, 2)],
+                "block_plan": rp(C.fem_block_rect()[0]), "block_z": [r(v, 2) for v in C.fem_block_rect()[1]],
+                "screws": {"pitch": C.FEM_SCREWS[0], "pilot_d": C.FEM_SCREWS[1], "depth": C.FEM_SCREWS[2], "kind": "M2 x 5 self-tapping"},
+                "trava": {"w": C.TRAVA[0], "t": C.TRAVA[1], "h": C.TRAVA[2], "slot": [C.TRAVA[3], C.TRAVA[4]], "file": "case/out/seixo_trava_usb"}},
+            "ribbon": {k: {"bbox": [r(v, 2) for v in (z.BoundingBox().xmin, z.BoundingBox().ymin, z.BoundingBox().zmin,
+                                                      z.BoundingBox().xmax, z.BoundingBox().ymax, z.BoundingBox().zmax)]}
+                       for k, z in ribbon_zones_cache().items()},
+            "jack": {"part": "Cliff FC681375V", "xy": rp([g["jack_origin"]])[0], "axis": [1.0, 0.0], "z": C.JACK_Z,
+                     "body_section_yz": [C.JACK_BODY[0], C.JACK_BODY[1]], "body_len": C.JACK_BODY[2], "tabs": C.JACK_TABS,
+                     "hole_d": C.JACK_HOLE_D, "wall_at_hole": C.JACK_WALL, "outer_spot_face_d": C.JACK_SPOT_D,
+                     "outer_spot_face_depth": r(g["jack_wall"] - C.JACK_WALL, 2), "inner_facet": list(C.JACK_FACET),
+                     "note": "turned: 9.0 across (y), 10.5 tall; bottom at z %.2f over J_BAT (top %.1f); wires (4) from the back tabs to J_JACK" % (
+                         C.JACK_Z - C.JACK_BODY[1] / 2, C.Z_PCB_TOP + 10.5)},
+            "vusb_wire": {"path": [[r(v, 2) for v in p] for p in C.vusb_wire_path()], "d": 1.2,
+                          "note": "26 AWG from the Teensy's VUSB pad out of the stack's USB end, over the Audio Board's left edge, to J_VBUS"},
         },
         "battery": {
             "bay_inside": rp(inside), "bay_outside": rp(outside), "z_inside": [C.BATT_Z[0], C.BATT_Z[1]],
@@ -206,15 +214,18 @@ def envelope():
                                   "z": r(C.SPK_BOX_BOTTOM + 2.0, 2), "d": 2.0, "note": "sealed with glue after threading the 2 wires"}},
         "cables": {
             "controls": {"rect": list(C.CTRL_CABLE), "note": "the 10-way SH cable drops here from the controls board to J_CTL"},
-            "panel": "micro-B cable (~40) from the panel board's back edge to the Teensy's plug; SH-8 (~100) to J_PNL",
+            "panel": "FPC ribbon (10 cm) from the Teensy's 'UP' plug to the female on the wall (panel.ribbon); 4 jack wires to J_JACK; VBUS wire to J_VBUS",
             "battery": "3 wires (~60) from the bay's wire exit to J_BAT",
             "speaker": "2 wires (152) from the box's wire hole to J_SPK",
         },
         "connector_zones": {
             "back_left": {"rect": [11.0, 16.0, 19.8, 34.5], "z_top_max": 21.9,
-                          "for": ["J_BAT", "J_SPK", "J_PNL"],
-                          "note": "under the panel board (nothing on its underside), left of the Teensy's plug: "
-                                  "PH plugs (10.5 tall) and the SH-8 fit; check the exact edge against levels['10.5']"},
+                          "for": ["J_BAT", "J_SPK", "J_VBUS", "J_JACK"],
+                          "z_top_max_under_jack": {"y_from": r(C.JACK_Y - C.JACK_BODY[0] / 2 - 0.3, 2),
+                                                   "z": r(C.JACK_Z - C.JACK_BODY[1] / 2 - 0.3, 2)},
+                          "note": "left of the Teensy's plug, under the jack (bottom z %.2f) and the female's block (bottom z %.2f): "
+                                  "PH plugs (10.5 tall) and wire pads fit; check the exact edge against levels['10.5']" % (
+                                      C.JACK_Z - C.JACK_BODY[1] / 2, C.fem_block_rect()[1][0])},
             "J_CTL": {"rect": [C.CTRL_CABLE[0], 40.95, 64.0, r(min(p[1] for p in outside) - C.PCB_CLR, 2)], "z_top_max": 14.0,
                       "note": "SH-10 vertical (4.25 + plug) between the Audio Board's front edge and the battery notch"},
         },
@@ -257,7 +268,7 @@ def plot(env, path):
     poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "#8e44ad", 3)
     for x0, y0, x1, y1 in env["controls"]["tabs"]:
         poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "#8e44ad", 3)
-    poly(env["panel"]["board"], "#2e86c1", 3)
+    poly(env["panel"]["micro_b_female"]["block_plan"], "#2e86c1", 3)
     poly(env["battery"]["bay_outside"], "#d35400", 3)
     poly(env["battery"]["connector_pocket"]["outside"], "#d35400", 3)
     for nm, z in env["connector_zones"].items():
@@ -266,8 +277,8 @@ def plot(env, path):
     pl.camera_position = [(C.length() / 2, 50, 500), (C.length() / 2, 50, 0), (0, 1, 0)]
     pl.enable_parallel_projection()
     pl.camera.parallel_scale = 56
-    pl.add_text("Pocket PCB envelope (SPEC v4 F1): board outline green, plate black, free room brown (darker = taller), "
-                "columns red, pillars blue, stack teal, controls purple, panel blue, battery bay orange, connector zones yellow",
+    pl.add_text("Pocket PCB envelope (SPEC v5 F3): board outline green, plate black, free room brown (darker = taller), "
+                "columns red, pillars blue, stack teal, controls purple, micro-B block blue, battery bay orange, connector zones yellow",
                 font_size=9, color="#333333")
     pl.screenshot(path)
     pl.close()

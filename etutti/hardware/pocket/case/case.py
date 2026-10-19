@@ -1,18 +1,22 @@
-"""eTuttino Pocket case, Seixo only (SPEC v4, task F1; D2 before it), CadQuery.
+"""eTuttino Pocket case, Seixo only (SPEC v5, task F3; v4 F1 and D2 before it), CadQuery.
 
     C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/pocket/case/case.py
 
 writes into out/ (STEP + STL, mirrored to a right-handed frame, see below):
   seixo_tampa        top shell: walls, keyboard lid, interface lid with the
-                     engraved logo, knob/LED holes, speaker grille and seat,
-                     sealed speaker box walls, panel boss with the USB-C and
-                     jack holes, posts for the controls board and the panel
-                     board, screw columns
+                     engraved logo, the two knob recesses, knob/LED holes, the
+                     Teensy button pinhole + guide tube, speaker grille and
+                     seat, sealed speaker box walls, the micro-B female's
+                     chord boss (window, recess, M3 pilots) and the jack's
+                     facet (hole, spot face, rib), lid pockets over both,
+                     posts for the controls board, screw columns
   seixo_fundo        bottom plate: board pillars, battery bay (walls + roof),
                      the hatch opening, countersunk screw holes, feet
   seixo_tampa_bateria  the battery hatch (2 M2 screws)
   seixo_caixa_fundo  the speaker box's floor (glued/sealed under its walls)
   plate              1.6 mm FR-4 switch plate (also plate.dxf)
+  seixo_trava_usb    the bar that holds the FPC micro-B female in its tunnel
+  seixo_chave_porca  printed nut driver for the pot's M7 nut in its recess
 
 fit_check.py checks the electronics (pcb/PECAS.json) against these solids,
 pcb_envelope.py writes out/pcb_envelope.json (the contract with the
@@ -80,12 +84,39 @@ KNOB_Y = 49.0
 VOLUME_XY = (15.12, KNOB_Y)
 SELECT_XY = (31.12, KNOB_Y)
 LED_XY = (43.12, KNOB_Y)
-POT_HOLE_D = 7.3                                # M7 x 0.75 bushing, nut on top (PECAS volume_pot)
-POT_PIN = (0.0, -6.0, 1.3, 1.5)                 # anti-rotation pin: offset from the shaft (dx, dy), hole d, depth -- CHECK the part
-POT_NUT_D = 11.0                                # M7 thin nut across corners (~10.4): flat land round the hole
+POT_HOLE_D = 7.3                                # M7 x 0.75 bushing (PECAS volume_pot)
+# SPEC v5 change 5 (J's option A): the pot's M7 nut sits FLUSH in a round
+# recess in the lid, covered by the knob; the selector gets the same recess
+# (no nut) so the two look alike. No anti-rotation hole any more: the pot is
+# soldered to its vertical board, which is soldered to the controls board on
+# two lid posts, so it cannot turn; its pin (if the part has one) is clipped.
+POT_PIN = None
+POT_NUT_AF, POT_NUT_T = 10.0, 2.0               # M7 x 0.75 pot nut: across flats, thickness (PECAS nut_v5: size for 10 AF x 2.0; 9-10 AF typical, CHECK)
+POT_BUSHING_L = 7.0                             # M7 thread from the body face (PECAS: footprint drawing)
+KNOB_RECESS_D = 14.0                            # nut across corners 11.55 + room for the printed nut driver (OD 13.4)
+KNOB_RECESS_DEPTH = POT_NUT_T                   # the nut's top flush with the lid (z 33)
 SHAFT_HOLE_D = 6.8                              # encoder shaft (not nutted: the encoder sits on the controls board)
 LED_HOLE_D = 3.5
-KNOB_D = 9.0
+# the knob (proposal, both the same: SPEC v5 4): skirt D15 covers the D14
+# recess by 0.5 all round; skirt bottom 0.5 above the lid; D6 bore with a set
+# screw (fits the pot's knurled shaft and the encoder's flatted one alike)
+KNOB_D = 15.0
+KNOB_H = 14.0                                   # skirt bottom -> top
+KNOB_LIFT = 0.5                                 # skirt bottom above the lid surface
+KNOB_BORE_MIN = 8.0                             # shaft engagement asked by PECAS (>= 8)
+KNOB_CAVITY = (8.5, 5.0)                        # underside cavity for the bushing/thread left above the nut (d, depth)
+NUT_TOOL = (10.15, 13.4, 25.0)                  # printed nut driver: hex AF inside, round OD (0.3 radial in the recess), length
+
+# Teensy program button (SPEC v5 3): on the Teensy's TOP face at the end away
+# from its USB, centred across its width (PJRC's drawing: the button and the
+# orange LED sit at that end) -- 2.5 in from the end is CHECK on the part.
+# Pressed from the top through a pinhole in the flat interface lid, with a
+# guide tube down to just above the Teensy (from below it is impossible: the
+# Audio Board and the main board are under it).
+TEENSY_BTN_IN = 2.5                             # button centre, in from the Teensy's far end
+BTN_HOLE_D = 1.6                                # paper clip (D 0.8-1.0)
+BTN_TUBE_D = 4.0
+BTN_TUBE_GAP = 1.3                              # tube bottom above the Teensy's parts (17.7)
 
 # logo, engraved in the flat lid: STRAIGHT (horizontal), centred in the
 # interface's back zone (SPEC v4 change 1): "eTuttino" over "POCKET"
@@ -112,33 +143,41 @@ BOX_FLOOR_T = 1.2
 BOX_GROW = (13.0, 1.0)                          # the box's inside grows past the frame: +x (sideways), and all round
 # the box floor sits on the battery bay's roof (below)
 
-# panel board (PECAS panel_board / usb_c / headphone_jack): on the back-left curved wall
-PANEL_CHORD = (9.0, 37.0)                       # y of the wall points the board's front edge spans (~31 mm chord)
-PANEL_DEPTH = 13.0
-PANEL_T = 1.6
-PANEL_Z_TOP = 23.9                              # board top: its underside clears the Teensy's micro-B plug (21.85) by 0.45
-PANEL_USB_S = -7.0                              # along the board edge from its centre (- = towards the back)
-PANEL_JACK_S = 7.0
-USB_C_HOLE = (9.4, 3.7)                         # stadium
-USB_C_ZC = PANEL_Z_TOP + 1.63
-USB_C_RECESS = (13.0, 7.0, 3.0)                 # outside: overmould recess w, h, corner R
-USB_C_WALL = 1.0                                # wall left at the USB-C hole
-JACK_HOLE_D = 6.3                               # Same Sky SJ1-3525N nose D6.0 +- 0.3 (PECAS v3 headphone_jack)
-JACK_ZC = PANEL_Z_TOP + 2.5                     # its axis 2.5 above the board
-JACK_SPOT_D = 10.0
-JACK_WALL = 1.5
-PANEL_SCREW_D, PANEL_POST_D, PANEL_PILOT_D = 2.2, 4.4, 1.7
-# M2 holes (s along the board from its centre, d in from its front edge): both
-# clear of the connectors' bodies (the jack, 14.3 + 2 long, leaves no room behind it)
-# SPEC v4 F1 / PECAS v3 panel_board.holes_v4: hole 1 (over the micro-B plug)
-# takes a LOCATING PIN from a lid post (no screw head under the board there);
-# hole 2 moved between the USB-C and the jack, M2 x 6 from below into a 3.0 wide rib
-PANEL_HOLES = [("pin", -11.0, 10.3), ("screw", -0.76, 3.8)]
-PANEL_PIN_D, PANEL_PIN_L = 2.0, 1.4             # the pin enters from above, stops 0.2 short of the board's underside
-PANEL_POST_FOOT = (3.6, 1.0)                    # the pin post's foot (d, height): clear of R1 (0402) beside it
-PANEL_RIB_W = 3.0                               # the screw rib, across u (USB-C body u <= 12.52, jack u >= 15.95)
-PANEL_HEAD = (3.8, 1.3)                         # M2 pan head under the board at hole 2
-PANEL_LEDGE = (0.8, 1.5)                        # ledge under the board's front edge: depth (inwards), thickness
+# the panel connectors on the back-left curved wall (SPEC v5 change 3; PECAS v5
+# micro_b_panel_cable + headphone_jack). The panel board (USB-C + jack) is gone.
+#
+# micro-B extension on an FPC flat ribbon (PECAS v5, the design's F3 proposal:
+# a round cable with R >= 18 does not fit): 'UP' 90 deg male in the Teensy (the
+# ribbon rises from the plug's top), a small female head with no ears at the
+# other end. The head slides into a tunnel in a block on a flat chord boss of
+# the wall until it meets a 0.5 lip at the wall (the lip takes the plug's pull);
+# a printed bar ("trava", 2 x M2 x 5 at 16) behind it takes the push. The
+# block sits over the Teensy's plug with 2.0 under it for the ribbon's fold.
+CONN_CHORD = (10.0, 40.0, 1.0)                  # boss face: chord of the inner wall between y0 and y1, d inwards
+FEM_S, FEM_Z = -6.5, 27.25                      # head axis: along the chord from its middle (- = back), height
+FEM_HEAD = (12.0, 9.0, 4.0)                     # female head w x length x h (PECAS, conferir)
+FEM_POCKET = (12.4, 9.4, 4.4)                   # the tunnel (PECAS ~12.4 x 9.4 x 4.4)
+FEM_LIP = (0.5, 8.6, 3.6, 0.8)                  # lip at the wall's inner face: thickness, opening w, h, R (receptacle 7.5 x 2.6)
+FEM_HOLE = (12.0, 8.0, 1.0)                     # window w, h, R from outside to the lip (the plug's overmould enters it)
+FEM_WALL = 3.0                                  # window + lip (PECAS: 1.0-3.0, design 3.0)
+FEM_RECESS = (13.5, 9.0, 2.0)                   # outside: flat recess round the window (w, h, R) on the curved wall
+FEM_BLOCK = (19.2, 1.2, 0.8)                    # block width (across), floor and pilot outer wall
+FEM_SCREWS = (16.0, 1.6, 5.0)                   # M2 x 5 self-tapping into the block's end face: pitch, pilot d, depth
+TRAVA = (19.2, 1.5, 6.4, 12.4, 1.6)             # the bar: w, thickness, h, ribbon slot w, h (MJF)
+RIBBON_UNDER = 2.0                              # plug top -> block floor (the ribbon rises from the plug and folds flat)
+CONN_LID_CLR = 0.3                              # parts -> lid
+# headphone jack, Cliff FC681375V (M8 x 0.75 ring nut outside): its own flat
+# facet, axis along +x at y JACK_Y (radial would run it into the pot board),
+# turned so its 9.0 side is horizontal and 10.5 vertical: over J_BAT (top 18.2)
+# and 0.5 from the pot board
+JACK_Y, JACK_Z = 38.0, 23.95
+JACK_BODY = (9.0, 10.5, 13.0)                   # across (y), height (z), length behind the shoulder
+JACK_TABS = 4.0                                 # solder tabs out of the back face (+ ~4 of wires, bendable)
+JACK_HOLE_D = 8.2
+JACK_WALL = 2.0                                 # PECAS 1.0-2.5 (1.5-2.0 recommended)
+JACK_SPOT_D = 11.5                              # outside: nut D10 (or hex 10 A/F, 11.5 across corners)
+JACK_FACET = (12.0, 11.0)                       # inside flat (y, z) for the body's front face (PECAS >= 11 x 10)
+JACK_RIB = (1.2, 8.0)                           # anti-rotation rib beside the body's 10.5 face: thickness, length
 
 # Teensy 4.0 + Audio Board Rev D, the LOW stack (PECAS stack.low: Teensy soldered
 # straight on the Audio Board, 8.7 from under the Audio Board to the top of the USB)
@@ -659,43 +698,142 @@ def _wall_point_at_y(y):
     return best
 
 
-_PANEL = {}
+_CONN = {}
 
 
-def panel_geometry():
-    """The panel board on the back-left wall: its front edge on the chord
-    between the wall points at PANEL_CHORD (a flat boss fills the wall's
-    bulge behind it)."""
-    if _PANEL:
-        return _PANEL
-    a = _wall_point_at_y(PANEL_CHORD[0])
-    b = _wall_point_at_y(PANEL_CHORD[1])
-    dx, dy = b[0] - a[0], b[1] - a[1]
-    L = math.hypot(dx, dy)
-    t = (dx / L, dy / L)                       # along the board edge, back -> front
-    n = (t[1], -t[0])                          # inwards (into the case)
+def wall_x_at(y, side="inner"):
+    """x of the left wall's inner (or outer) surface at plan y."""
+    if side == "inner":
+        return _wall_point_at_y(y)[0]
+    pts = outline_points(0.2)
+    best = None
+    for i in range(len(pts)):
+        (x0, y0), (x1, y1) = pts[i], pts[(i + 1) % len(pts)]
+        if (y0 - y) * (y1 - y) <= 0 and y0 != y1:
+            x = x0 + (y - y0) * (x1 - x0) / (y1 - y0)
+            if x < 60 and (best is None or x < best):
+                best = x
+    return best
+
+
+def conn_geometry():
+    """The female's chord boss: its face (a vertical plane), the female's
+    origin on it (flange front, axis), the jack's facet. Frames: n = inwards,
+    t = along the face (back -> front)."""
+    if _CONN:
+        return _CONN
+    y0, y1, d = CONN_CHORD
+    a, b = _wall_point_at_y(y0), _wall_point_at_y(y1)
+    L = math.hypot(b[0] - a[0], b[1] - a[1])
+    t = ((b[0] - a[0]) / L, (b[1] - a[1]) / L)
+    n = (t[1], -t[0])
     if n[0] < 0:
         n = (-n[0], -n[1])
-    m = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
-    at = lambda s, d: (m[0] + t[0] * s + n[0] * d, m[1] + t[1] * s + n[1] * d)
-    board = [at(-15, 0), at(15, 0), at(15, PANEL_DEPTH), at(-15, PANEL_DEPTH)]
+    m = ((a[0] + b[0]) / 2 + n[0] * d, (a[1] + b[1]) / 2 + n[1] * d)
+    at = lambda s, dd=0.0: (m[0] + t[0] * s + n[0] * dd, m[1] + t[1] * s + n[1] * dd)
     outer = outline_points(0.2)
 
-    def wall_at(s):
-        p = at(s, 0)
-        lo, hi = 0.0, 12.0
+    def wall_behind(p, nn):
+        lo, hi = 0.0, 15.0
         for _ in range(40):
             mid = (lo + hi) / 2
-            q = (p[0] - n[0] * mid, p[1] - n[1] * mid)
+            q = (p[0] - nn[0] * mid, p[1] - nn[1] * mid)
             if S.inside(outer, q):
                 lo = mid
             else:
                 hi = mid
         return lo
-    _PANEL.update({"a": a, "b": b, "chord": L, "mid": m, "t": t, "n": n, "at": at, "board": board,
-                   "wall_usb": wall_at(PANEL_USB_S), "wall_jack": wall_at(PANEL_JACK_S), "wall_mid": wall_at(0.0),
-                   "wall_ends": (wall_at(-15), wall_at(15))})
-    return _PANEL
+    fo = at(FEM_S)
+    # the jack's facet: perpendicular to +x, just inside the wall over its height
+    yj0, yj1 = JACK_Y - JACK_FACET[0] / 2, JACK_Y + JACK_FACET[0] / 2
+    xf = max(wall_x_at(yj0 + k * (yj1 - yj0) / 10) for k in range(11)) + 0.2
+    jo = (xf, JACK_Y)
+    _CONN.update({"m": m, "t": t, "n": n, "at": at, "chord": L, "fem_origin": fo,
+                  "fem_wall": wall_behind(fo, n), "jack_origin": jo, "jack_wall": wall_behind(jo, (1.0, 0.0))})
+    return _CONN
+
+
+def local_solid(sh, origin, n, z):
+    """sh built with +x = inwards along n, +y = along t (n turned +90 deg), z about the axis."""
+    ang = math.degrees(math.atan2(n[1], n[0]))
+    return sh.rotate(cq.Vector(0, 0, 0), cq.Vector(0, 0, 1), ang).translate(cq.Vector(origin[0], origin[1], z))
+
+
+def stadium(w, h, r, x0, x1):
+    """A rounded rectangle w (y) x h (z), corners r, from x0 to x1 along x."""
+    sk = cq.Workplane("YZ", origin=(x0, 0, 0)).rect(w, h).extrude(x1 - x0)
+    if r > 0:
+        sk = sk.edges("|X").fillet(min(r, h / 2 - 0.01, w / 2 - 0.01))
+    return sk.val()
+
+
+def female_solids():
+    """The FPC female head in its tunnel (PECAS micro_b_panel_cable.female,
+    ~12 x 9 x 4, conferir) and the trava bar behind it."""
+    g = conn_geometry()
+    w, L, h = FEM_HEAD
+    head = cq.Solid.makeBox(L, w, h, cq.Vector(0.0, -w / 2, -h / 2))
+    tw, tt, th, sw, sh = TRAVA
+    bar = cq.Solid.makeBox(tt, tw, th, cq.Vector(FEM_POCKET[1], -tw / 2, -th / 2)).cut(
+        cq.Solid.makeBox(tt + 2, sw, sh, cq.Vector(FEM_POCKET[1] - 1, -sw / 2, -sh / 2)))
+    for y in (-FEM_SCREWS[0] / 2, FEM_SCREWS[0] / 2):
+        bar = bar.cut(cq.Solid.makeCylinder(1.15, tt + 2, cq.Vector(FEM_POCKET[1] - 1, y, 0), cq.Vector(1, 0, 0)))
+    return local_solid(head, g["fem_origin"], g["n"], FEM_Z), local_solid(bar, g["fem_origin"], g["n"], FEM_Z)
+
+
+def trava():
+    """The bar as a printable part (lying flat)."""
+    tw, tt, th, sw, sh = TRAVA
+    bar = cq.Solid.makeBox(tw, th, tt, cq.Vector(-tw / 2, -th / 2, 0)).cut(cq.Solid.makeBox(sw, sh, tt + 2, cq.Vector(-sw / 2, -sh / 2, -1)))
+    for x in (-FEM_SCREWS[0] / 2, FEM_SCREWS[0] / 2):
+        bar = bar.cut(cq.Solid.makeCylinder(1.15, tt + 2, cq.Vector(x, 0, -1)))
+    return bar
+
+
+def fem_block_rect():
+    """The block's plan footprint (4 points) and its z range."""
+    g = conn_geometry()
+    o, n = g["fem_origin"], g["n"]
+    t = (-n[1], n[0])
+    hw = FEM_BLOCK[0] / 2
+    L = FEM_POCKET[1]
+    pts = [(o[0] + n[0] * a + t[0] * b, o[1] + n[1] * a + t[1] * b) for a, b in ((0, -hw), (L, -hw), (L, hw), (0, hw))]
+    z0 = FEM_Z - FEM_POCKET[2] / 2 - FEM_BLOCK[1]
+    return pts, (z0, z_interface(o[1], TOP_T))
+
+
+def ribbon_zones():
+    """Where the FPC ribbon goes (PECAS: flat, any fold R >= 1.5): it rises
+    from the plug's top, folds flat under the block, comes out past the
+    block's inner end, rises and enters the trava's slot; the extra length
+    (10 cm cable, ~9 cm spare) lies folded flat over the Teensy. Solids for
+    the fit check (nothing of the case or the parts may be in them)."""
+    rect, (pz0, pz1) = stack_parts()["usb_plug"]
+    x0, x1 = min(p[0] for p in rect), max(p[0] for p in rect)
+    y0, y1 = min(p[1] for p in rect), max(p[1] for p in rect)
+    zf = fem_block_rect()[1][0]
+    g = conn_geometry()
+    e = FEM_POCKET[1] + TRAVA[1]
+    riser = local_solid(cq.Solid.makeBox(2.6, 13.0, FEM_Z + 2.0 - pz1, cq.Vector(e + 0.3, -6.5, pz1 + 0.05 - FEM_Z)),
+                        g["fem_origin"], g["n"], FEM_Z)
+    return {"fold_under_block": box3(x0 + 0.5, y0 + 1.0, pz1 + 0.05, x1 - 0.5, y1 - 1.0, zf - 0.05),
+            "riser_at_block_end": riser,
+            "spare_over_teensy": box3(x1 + 2.0, 13.5, Z_USB_TOP + 0.6, x1 + 16.0, 27.5, Z_USB_TOP + 4.0)}
+
+
+def jack_solids():
+    """The Cliff FC681375V: body + tabs inside, thread through the wall, nut outside."""
+    g = conn_geometry()
+    w, h, L = JACK_BODY
+    body = cq.Solid.makeBox(L, w, h, cq.Vector(0, -w / 2, -h / 2))
+    tabs = cq.Solid.makeBox(JACK_TABS, w - 2.0, h - 2.0, cq.Vector(L, -(w - 2.0) / 2, -(h - 2.0) / 2))
+    wall = g["jack_wall"]
+    wj = JACK_WALL
+    thread = cq.Solid.makeCylinder(4.0, 4.5, cq.Vector(-4.5, 0, 0), cq.Vector(1, 0, 0))
+    nut = cq.Solid.makeCylinder(5.0, 2.0, cq.Vector(-wj - 2.0, 0, 0), cq.Vector(1, 0, 0))
+    o = g["jack_origin"]
+    return (local_solid(body.fuse(tabs), o, (1.0, 0.0), JACK_Z), local_solid(thread, o, (1.0, 0.0), JACK_Z),
+            local_solid(nut, o, (1.0, 0.0), JACK_Z))
 
 
 def battery_rects():
@@ -911,49 +1049,67 @@ def logo_solid(z_top, depth):
     return fuse(parts)
 
 
-def panel_boss_and_cuts():
-    """The flat boss behind the panel board's front edge, the two posts it
-    hangs from, and the cuts: USB-C stadium + outside recess, jack hole +
-    spot face."""
-    pg = panel_geometry()
-    at, n = pg["at"], pg["n"]
-    lid = z_interface(0.0, TOP_T)
-    z0 = PANEL_Z_TOP - PANEL_T - 2.5
-    boss = poly_prism([at(-17, 0), at(17, 0), at(17, -8), at(-17, -8)], z0, lid + 0.5)
-    zb = PANEL_Z_TOP - PANEL_T
-    ledge = poly_prism([at(-15, -1), at(15, -1), at(15, PANEL_LEDGE[0]), at(-15, PANEL_LEDGE[0])], zb - PANEL_LEDGE[1], zb)
-    adds = [boss, ledge]
-    cuts = []
-    for kind, s, d in PANEL_HOLES:
-        p = at(s, d)
-        if kind == "pin":
-            fh = PANEL_POST_FOOT[1]
-            adds.append(cyl(p[0], p[1], PANEL_Z_TOP + fh, lid + 0.5, PANEL_POST_D))
-            adds.append(cyl(p[0], p[1], PANEL_Z_TOP, PANEL_Z_TOP + fh + 0.01, PANEL_POST_FOOT[0]))
-            adds.append(cyl(p[0], p[1], PANEL_Z_TOP - PANEL_PIN_L, PANEL_Z_TOP + 0.01, PANEL_PIN_D))
-        else:
-            w = PANEL_RIB_W / 2
-            adds.append(poly_prism([at(s - w, -8), at(s + w, -8), at(s + w, d + w), at(s - w, d + w)], PANEL_Z_TOP, lid + 0.5))
-            cuts.append(cyl(p[0], p[1], PANEL_Z_TOP - 0.01, PANEL_Z_TOP + 5.0, PANEL_PILOT_D))
-    ang = math.degrees(math.atan2(-n[1], -n[0]))     # outwards, along -n
+def cable_wire(pts):
+    return cq.Wire.makePolygon([cq.Vector(*p) for p in pts])
 
-    def place(sh, p, zc):
-        """sh is built along +x = outwards from the chord (x = 0 at the chord)."""
-        sh = sh.rotate(cq.Vector(0, 0, 0), cq.Vector(0, 0, 1), ang)
-        return sh.translate(cq.Vector(p[0], p[1], zc))
-    pu = at(PANEL_USB_S, 0)
-    w, h = USB_C_HOLE
-    hole = cq.Workplane("YZ", origin=(-2.0, 0, 0)).slot2D(w, h, 0).extrude(16.0).val()
-    rw, rh, rr = USB_C_RECESS
-    rec = cq.Workplane("YZ", origin=(USB_C_WALL, 0, 0)).rect(rw, rh).extrude(12.0).edges("|X").fillet(rr).val()
-    cuts.append(place(hole, pu, USB_C_ZC))
-    cuts.append(place(rec, pu, USB_C_ZC))
-    pj = at(PANEL_JACK_S, 0)
-    jh = cq.Solid.makeCylinder(JACK_HOLE_D / 2, 16.0, cq.Vector(-2.0, 0, 0), cq.Vector(1, 0, 0))
-    js = cq.Solid.makeCylinder(JACK_SPOT_D / 2, 12.0, cq.Vector(JACK_WALL, 0, 0), cq.Vector(1, 0, 0))
-    cuts.append(place(jh, pj, JACK_ZC))
-    cuts.append(place(js, pj, JACK_ZC))
-    return adds, cuts, pg
+
+def vusb_wire_path():
+    """The 26 AWG VBUS wire (PECAS vusb_wire): from the Teensy's VUSB pad
+    (bottom, 6.2 in from the USB end, beside the VUSB-VIN cut: as the manual's
+    Teensy model, CHECK on the real board) along the gap under the Teensy, out
+    of the USB end, over the Audio Board's left edge (between its top, 12.3,
+    and the plug, 14.35), down to J_VBUS (build_pocket_pcb: 18.5, 18.0)."""
+    t = stack_parts()["teensy"][0]
+    x0 = min(p[0] for p in t)
+    yc = (min(p[1] for p in t) + max(p[1] for p in t)) / 2
+    zt = Z_TEENSY_TOP - 1.6 - 0.6
+    return [(x0 + 6.2, yc - 1.4, zt), (x0 + 0.8, yc - 1.4, Z_AB_TOP + 1.2), (STACK_XY[0] + 1.0, yc - 1.6, Z_AB_TOP + 1.0),
+            (STACK_XY[0] - 1.5, yc - 1.9, 11.0), (24.0, 18.2, 9.0), (19.5, 18.0, Z_PCB_TOP + 1.2), (18.5, 18.0, Z_PCB_TOP + 0.6)]
+
+
+def connector_boss_and_cuts():
+    """The flat chord boss with the FPC female's block (tunnel, lip, window,
+    outer recess, 2 M2 pilots) and the jack's facet (D8.2 hole, outer spot
+    face, anti-rotation rib). Returns (adds, cuts, keepout): adds are
+    intersected with the cavity; cuts and keepout go through the shell."""
+    g = conn_geometry()
+    n, fo = g["n"], g["fem_origin"]
+    pw, pl, ph = FEM_POCKET
+    bw, bfl, _ = FEM_BLOCK
+    zb0, ztop = fem_block_rect()[1]
+    # boss behind the face (the wall's bulge) + the block in front of it, up to the lid
+    boss = local_solid(cq.Solid.makeBox(12.0, bw + 3.0, ztop + 1.0 - zb0, cq.Vector(-12.0, -(bw + 3.0) / 2, zb0 - FEM_Z)),
+                       fo, n, FEM_Z)
+    block = local_solid(cq.Solid.makeBox(pl, bw, ztop + 1.0 - zb0, cq.Vector(0.0, -bw / 2, zb0 - FEM_Z)), fo, n, FEM_Z)
+    o = g["jack_origin"]
+    jf = JACK_FACET
+    facet = local_solid(cq.Solid.makeBox(12.0, jf[0], jf[1], cq.Vector(-12.0, -jf[0] / 2, -jf[1] / 2)), o, (1.0, 0.0), JACK_Z)
+    rw, rl = JACK_RIB
+    w, h, L = JACK_BODY
+    rib = local_solid(cq.Solid.makeBox(rl, rw, 20.0, cq.Vector(0.0, -w / 2 - CONN_LID_CLR - rw, -h / 2 + 2.0)),
+                      o, (1.0, 0.0), JACK_Z)
+    adds = [boss, block, facet, rib]
+    cuts = []
+    # tunnel, open at the inner end
+    cuts.append(local_solid(cq.Solid.makeBox(pl + 1.0, pw, ph, cq.Vector(0.0, -pw / 2, -ph / 2)), fo, n, FEM_Z))
+    lt, lw, lh, lr = FEM_LIP
+    cuts.append(local_solid(stadium(lw, lh, lr, -lt - 0.5, 0.5), fo, n, FEM_Z))
+    hw_, hh, hr = FEM_HOLE
+    cuts.append(local_solid(stadium(hw_, hh, hr, -15.0, -lt), fo, n, FEM_Z))
+    rw2, rh2, rr2 = FEM_RECESS
+    cuts.append(local_solid(stadium(rw2, rh2, rr2, -20.0, -FEM_WALL), fo, n, FEM_Z))
+    sp, sd, sdep = FEM_SCREWS
+    for y in (-sp / 2, sp / 2):
+        cuts.append(local_solid(cq.Solid.makeCylinder(sd / 2, sdep + 0.01, cq.Vector(pl + 0.01, y, 0), cq.Vector(-1, 0, 0)),
+                                fo, n, FEM_Z))
+    cuts.append(local_solid(cq.Solid.makeCylinder(JACK_HOLE_D / 2, 15.0, cq.Vector(-14.0, 0, 0), cq.Vector(1, 0, 0)),
+                            o, (1.0, 0.0), JACK_Z))
+    cuts.append(local_solid(cq.Solid.makeCylinder(JACK_SPOT_D / 2, 15.0, cq.Vector(-JACK_WALL - 15.0, 0, 0), cq.Vector(1, 0, 0)),
+                            o, (1.0, 0.0), JACK_Z))
+    c = CONN_LID_CLR
+    jk = local_solid(cq.Solid.makeBox(L + JACK_TABS + c, w + 2 * c, h + 2 * c, cq.Vector(0.0, -w / 2 - c, -h / 2 - c)),
+                     o, (1.0, 0.0), JACK_Z)
+    return adds, cuts, jk
 
 
 def tab_dent():
@@ -994,13 +1150,41 @@ def bosses(body):
     return [cyl(x, y, FLOOR_T, BOSS_TOP.get((x, y), 60.0), BOSS_D).intersect(body) for x, y in screw_points()]
 
 
+def teensy_button_xy():
+    """The Teensy's program button in plan (see TEENSY_BTN_IN)."""
+    t = stack_parts()["teensy"][0]
+    u_far = max(p[0] for p in t)                 # the end away from the USB (STACK_ANGLE 0)
+    yc = (min(p[1] for p in t) + max(p[1] for p in t)) / 2
+    return (u_far - TEENSY_BTN_IN, yc)
+
+
+def button_tube():
+    """The guide tube under the pinhole: from the lid down to just above the Teensy."""
+    x, y = teensy_button_xy()
+    return cyl(x, y, Z_TEENSY_PARTS + BTN_TUBE_GAP, z_interface(y, TOP_T) + 0.5, BTN_TUBE_D)
+
+
+def knob_recesses():
+    """The round recesses in the lid under both knobs (SPEC v5 4)."""
+    out = []
+    for x, y in (VOLUME_XY, SELECT_XY):
+        z = z_interface(y)
+        out.append(cyl(x, y, z - KNOB_RECESS_DEPTH, z + 5.0, KNOB_RECESS_D))
+    return out
+
+
 def top_cuts():
     cuts = []
     vx, vy = VOLUME_XY
     cuts.append(cyl(vx, vy, 0, 50, POT_HOLE_D))
-    px, py = vx + POT_PIN[0], vy + POT_PIN[1]
-    zl = z_interface(py, TOP_T)
-    cuts.append(cyl(px, py, zl - 0.01, zl + POT_PIN[3], POT_PIN[2]))
+    if POT_PIN:
+        px, py = vx + POT_PIN[0], vy + POT_PIN[1]
+        zl = z_interface(py, TOP_T)
+        cuts.append(cyl(px, py, zl - 0.01, zl + POT_PIN[3], POT_PIN[2]))
+    cuts += knob_recesses()
+    bx, by = teensy_button_xy()
+    cuts.append(cyl(bx, by, Z_TEENSY_PARTS, 50, BTN_HOLE_D))
+    cuts.append(cq.Solid.makeCone(BTN_HOLE_D / 2, BTN_HOLE_D / 2 + 0.6, 0.6, cq.Vector(bx, by, Z_IF - 0.6)))   # small lead-in
     cuts.append(cyl(SELECT_XY[0], SELECT_XY[1], 0, 50, SHAFT_HOLE_D))
     cuts.append(cyl(LED_XY[0], LED_XY[1], 0, 50, LED_HOLE_D))
     cuts += [cyl(x, y, 18.0, 50, GRILLE_HOLE_D) for x, y in grille_holes()]
@@ -1024,14 +1208,15 @@ def shell():
     cav = cavity()
     s = body.cut(cav)
     walls, ring = speaker_box_walls()
-    padds, pcuts, _ = panel_boss_and_cuts()
+    padds, pcuts, keep = connector_boss_and_cuts()
     adds = [walls.intersect(cav), ring.intersect(cav)] + [a.intersect(cav) for a in padds]
     adds += [p.intersect(cav) for p in controls_posts()]
+    adds.append(button_tube().intersect(cav))
     adds += bosses(body)
     s = s.fuse(*adds).clean()
     s = s.cut(rounded_opening_cutter())
     s = sorted(s.Solids(), key=lambda x: x.Volume(), reverse=True)[0]
-    cuts = top_cuts() + pcuts
+    cuts = top_cuts() + pcuts + [keep]
     cuts.append(logo_solid(Z_IF, LOGO_DEPTH))
     cuts += [cyl(x, y, FLOOR_T - 0.01, FLOOR_T + 8.0, PILOT_D) for x, y in screw_points()]
     cuts += [cyl(x, y, CTRL_TOP - 0.01, CTRL_TOP + POST_PILOT_DEPTH, POST_PILOT_D) for x, y in CTRL_POSTS]
@@ -1165,11 +1350,13 @@ def export(shape, name, tol=0.05, mirror=True):
 # what each printed / bought part is made of (SPEC v4 change 5): the top shell
 # in resin for the engraved logo; the rest in MJF PA12 (stronger, cheaper)
 MATERIALS = {
-    "seixo_tampa": ("resina (SLA/DLP, engenharia: Tough/Grey)", 1, "casca de cima: logo de 0,4, grade, furos dos knobs, janelas do USB-C e do fone"),
+    "seixo_tampa": ("resina (SLA/DLP, engenharia: Tough/Grey)", 1, "casca de cima: logo de 0,4, grade, rebaixos dos knobs, janelas do micro-USB e do fone"),
     "seixo_fundo": ("MJF PA12", 1, "fundo com os pilares da placa e o berço da bateria"),
     "seixo_tampa_bateria": ("MJF PA12", 1, "tampinha da bateria, 2 parafusos M2"),
     "seixo_caixa_fundo": ("MJF PA12", 1, "fundo da caixa do alto-falante, colado e vedado"),
     "plate": ("FR-4 1,6 mm (Gerber da eletrônica / plate.dxf)", 1, "placa dos switches"),
+    "seixo_trava_usb": ("MJF PA12", 1, "trava da fêmea micro-B (FPC) no túnel, 2 parafusos M2 x 5"),
+    "seixo_chave_porca": ("MJF PA12", 1, "chave da porca M7 do potenciômetro (entra no rebaixo de Ø 14)"),
     "keycap_natural": ("resina branca", None, "capas das naturais (sem Dó/Fá)"),
     "keycap_sharp": ("resina preta", None, "capas dos sustenidos"),
     "keycap_cf": ("resina branca", None, "capas de Dó e Fá, xadrez diagonal em relevo"),
@@ -1197,6 +1384,18 @@ def export_caps():
     export(K.test_print(), "keycap_test_4", tol=0.01, mirror=False)
 
 
+def nut_tool():
+    """A printed nut driver for the pot nut in its D14 recess: hex socket at
+    one end, a bore through for the shaft, round outside (OD < the recess)."""
+    af, od, L = NUT_TOOL
+    t = cq.Solid.makeCylinder(od / 2, L, cq.Vector(0, 0, 0))
+    hexs = cq.Workplane("XY").polygon(6, af / math.cos(math.radians(30))).extrude(POT_NUT_T + 1.5).val()
+    t = t.cut(hexs).cut(cq.Solid.makeCylinder(7.8 / 2, L + 2, cq.Vector(0, 0, -1)))
+    grip = [cq.Solid.makeCylinder(0.8, L - 8.0, cq.Vector(od / 2 * math.cos(a), od / 2 * math.sin(a), 6.0))
+            for a in [k * math.pi / 6 for k in range(12)]]
+    return t.cut(fuse(grip)).clean()
+
+
 def build_all():
     return {
         "seixo_tampa": shell(),
@@ -1204,6 +1403,8 @@ def build_all():
         "seixo_tampa_bateria": hatch(),
         "seixo_caixa_fundo": box_floor(),
         "plate": switch_plate(),
+        "seixo_chave_porca": nut_tool(),
+        "seixo_trava_usb": trava(),
     }
 
 

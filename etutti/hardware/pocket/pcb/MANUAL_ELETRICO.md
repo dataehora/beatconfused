@@ -1,9 +1,15 @@
 # eTuttino Pocket · conteúdo elétrico do manual de montagem
 
-Dono: eletrônica (SPEC v4, tarefa F2). Entrada para o manual de montagem (M1), que o design escreve
-em `/etutti/pocket/manual/`. Português. Os passos seguem a ordem da SPEC v4 (M1, itens 1 a 9); aqui
+Dono: eletrônica (SPEC v5, tarefa F4; antes v4/F2). Entrada para o manual de montagem (M1/M2), que o design
+escreve em `/etutti/pocket/manual/`. Português. Os passos seguem a ordem da SPEC v4 (M1, itens 1 a 9); aqui
 está só o que é elétrico: o que soldar, como, o que medir e o que pode dar errado. As figuras que a
-eletrônica precisa estão no fim (F-01 a F-16).
+eletrônica precisa estão no fim (F-01 a F-17).
+
+**Mudanças na v5 (para o M2):** não há mais plaquinha do painel. O micro-USB do Teensy vai à parede por um
+**extensão micro-B em fita FPC** (fêmea presa na parede por uma presilha impressa, macho de 90° "UP" no Teensy); o 5 V do
+carregador sai do **pad VUSB** do Teensy por um **fio de 26 AWG** soldado antes de empilhar (passo 3); o fone
+é um **jack de painel** (Cliff FC681375V, porca na parede) ligado por **4 fios** ao J_JACK (passo 6.2). Na
+placa principal: J_PNL saiu, entraram J_VBUS (1 pad) e J_JACK (4 pads), o TVS D60 e a chave do VIN (Q23/Q24/D61).
 
 Referências das peças: `pcb/PECAS.json` e `pcb/fab/pocket_kit_bom.csv`. Placas: `pcb/kicad/`.
 Medidas em mm. **(conferir)** = valor a confirmar no primeiro protótipo.
@@ -17,18 +23,18 @@ Medidas em mm. **(conferir)** = valor a confirmar no primeiro protótipo.
 - Multímetro com medição de tensão contínua, resistência e continuidade (bipe).
 - Estilete afiado (corte da ponte VUSB–VIN), lupa ou lente de aumento.
 - Fita Kapton, termorretrátil fino, fios 28–30 AWG de silicone.
-- Cabo USB-C (de carregador ou de computador) e um carregador USB comum.
+- Cabo USB com micro-B (ou USB-C → micro-B) e um carregador USB comum.
+- Cola epóxi ou cola quente (alívio de tração do fio do VUSB).
 
 ### O que já vem montado da JLCPCB
 
 - **Placa principal**: todos os CIs e passivos no verso (carregador, conversor, amplificador,
-  multiplexadores, os 28 sensores TMAG5253) e, em cima, os dois conectores JST SH (J_PNL, J_CTL).
-  Os sensores TMAG5253 não se soldam em casa (encapsulamento X2SON de 1,1 × 1,4 mm).
-- **Plaquinha do painel**: USB-C, os dois resistores de 5,1 kΩ e o protetor ESD (PRTR5V0U2X).
+  multiplexadores, o TVS do VBUS, a chave do VIN, os 28 sensores TMAG5253) e, em cima, o conector
+  JST SH J_CTL. Os sensores TMAG5253 não se soldam em casa (encapsulamento X2SON de 1,1 × 1,4 mm).
 
-O que se solda em casa: a pilha Teensy + Audio Board, os dois JST PH da placa principal (bateria e
-alto-falante), os fios do fone, o jack de fone, o potenciômetro, o encoder, o LED, os cabos das
-plaquinhas e o cabo micro-B.
+O que se solda em casa: o fio do VUSB, a pilha Teensy + Audio Board, os dois JST PH da placa principal
+(bateria e alto-falante), os fios do fone (Audio Board → J_HP e jack de painel → J_JACK), o
+potenciômetro, o encoder, o LED e o cabo dos knobs. A extensão micro-B em FPC só se encaixa e se prende com a presilha.
 
 ## Passo 3 · Teensy: cortar a ponte VUSB–VIN e soldar a pilha baixa
 
@@ -40,15 +46,24 @@ plaquinhas e o cabo micro-B.
      **VUSB** (ou a carcaça do micro-B **não**: use o pad VUSB): **sem bipe**. Se bipar, corte de novo.
    - Por quê: no Pocket o Teensy recebe 3,3 V do conversor da placa principal; o 5 V da USB vai só
      ao carregador. Com a ponte inteira, a USB e o conversor brigam no mesmo trilho.
-2. **Isolar o verso do Teensy** com uma camada de fita Kapton (ele fica de frente para a Audio Board,
-   ~2,5 mm acima dela).
-3. **Fios do fone na Audio Board** (antes de empilhar): solde três fios de ~40 mm (28–30 AWG, cores
+2. **Fio do VUSB** (novo na v5), ainda com o Teensy solto: solde um fio de **26 AWG vermelho, ~50 mm**,
+   no pad **VUSB** do verso do Teensy (na ponta do micro-B, ao lado dos pads da ponte que você acabou de
+   cortar; figura F-01). Deite o fio para a ponta do USB e prenda-o com uma gota de epóxi ou cola quente
+   a 2–3 mm do pad (alívio de tração: o pad é pequeno e arranca com um puxão).
+   - **Teste:** ligue um cabo USB no micro-B do Teensy solto: entre a ponta do fio e o **GND** (borda),
+     **4,75–5,25 V**, e o Teensy **não** acende o LED dele (ponte cortada, VIN sem nada). Se o LED
+     acender, a ponte não foi cortada: volte ao 3.1. Tire o cabo.
+   - O fio sai depois pela ponta do USB, entre o Teensy e a Audio Board (as barras de pinos fecham os
+     lados compridos): na pilha baixa sobram ~2,5 mm, o fio de ≤ 1,2 mm passa.
+3. **Isolar o verso do Teensy** com uma camada de fita Kapton (ele fica de frente para a Audio Board,
+   ~2,5 mm acima dela), sem cobrir a solda do fio.
+4. **Fios do fone na Audio Board** (antes de empilhar): solde três fios de ~40 mm (28–30 AWG, cores
    diferentes) nos terminais do jack de fone da Audio Board, pelo lado de baixo: **L** (ponta),
    **R** (anel) e **VGND** (manga, o terra virtual). Figura F-02 **(conferir os três terminais no
    esquema da Audio Board Rev D)**. Os fios vão depois aos pads J_HP da placa principal.
    - **Teste:** continuidade entre o fio VGND e qualquer pino GND da Audio Board: **sem bipe**. O
      terra do fone é virtual (~1,6 V); ligado ao GND, queima a saída de fone do codec.
-4. **Pilha baixa:** passe as duas barras de pinos extralongas (1 × 14) pela Audio Board de baixo
+5. **Pilha baixa:** passe as duas barras de pinos extralongas (1 × 14) pela Audio Board de baixo
    para cima, apoie o Teensy em cima (o plástico das barras é o único espaçador) e solde os 28
    pinos no Teensy e depois na Audio Board. As pernas compridas ficam para baixo: elas atravessam a
    placa principal no passo 4.
@@ -65,7 +80,8 @@ Olhe o verso com lupa (figura F-04):
 - os 28 sensores TMAG5253 no lugar, um sob cada switch, sem pontes de solda;
 - U60 (carregador), U61 (conversor) com o indutor L10 ao lado, U62 (amplificador), U51/U52
   (multiplexadores), Q20/Q21/Q22, Q30/Q31 (luz de carga), D20/D30;
-- em cima: J_PNL (SH 8 vias) e J_CTL (SH 10 vias) soldados.
+- D60 (TVS do VBUS, perto do carregador), Q23/Q24/D61 (chave do VIN, sob a ponta USB da pilha);
+- em cima: J_CTL (SH 10 vias) soldado; J_VBUS (1 pad) e J_JACK (4 pads) vazios.
 
 Medidas de resistência, **placa sem nada ligado** (ponta preta no GND):
 
@@ -73,7 +89,8 @@ Medidas de resistência, **placa sem nada ligado** (ponta preta no GND):
 |---|---|---|
 | J_BAT pino 1 (BAT+) × pino 3 (GND) | > 100 kΩ (o divisor da bateria tem 2 MΩ) | < 1 kΩ: curto no carregador ou em C62 |
 | Furo do pino **3V3** da pilha (J2, 3º furo da fileira de trás) × furo **GND** | > 1 kΩ (sensores, multiplexadores e conversor desligados) | < 50 Ω: curto no trilho de 3,3 V |
-| Pad VBUS da plaquinha do painel (TP1) × GND (TP4) | > 50 kΩ | < 1 kΩ: curto no USB-C ou no ESD |
+| Pad **J_VBUS** × GND | > 50 kΩ | < 1 kΩ: TVS D60 em curto ou ponte de solda no carregador |
+| Pad **J_JACK 3** (HP_VGND) × GND | **aberto** (> 1 MΩ) | bipe = erro grave (terra do fone no GND) |
 
 ### 4.2 Soldar a pilha e os conectores de cima
 
@@ -85,18 +102,22 @@ Medidas de resistência, **placa sem nada ligado** (ponta preta no GND):
    papelão ou uma tira impressa) entre as duas, solde 2 pernas nas pontas, confira o paralelismo e
    solde as outras 26 pelo verso. Corte as pernas rente no verso (≤ 1 mm): **o verso encosta nos
    pilares do fundo** (figura F-06).
-3. **Fios do fone** (do passo 3.3) nos pads **J_HP** da placa principal, na frente da Audio Board:
+3. **Fios do fone** (do passo 3.4) nos pads **J_HP** da placa principal, na frente da Audio Board:
    1 = L, 2 = R, 3 = VGND (serigrafia). Torça os três fios juntos.
+4. **Fio do VUSB** (do passo 3.2) no pad **J_VBUS**, no canto de trás-esquerdo da placa (figura F-05):
+   leve o fio por fora da borda esquerda da Audio Board, **por baixo** de onde vai ficar o plugue micro-B
+   (nada acima de ~6 mm da placa ali), corte no comprimento sem esticar, solde e cole o fio na placa
+   com uma gota de cola a ~5 mm do pad.
 
 ### 4.3 Primeiro teste com USB, sem bateria e sem firmware do Pocket
 
-Ainda sem bateria, sem plaquinhas: ligue só a plaquinha do painel à placa principal (passo 6.3) ou,
-para um teste rápido, um cabo USB-C a uma plaquinha do painel já soldada. **Sem a chave do volume
-ligada, nada liga** (o 3,3 V depende dela); este teste confere a USB e o carregador.
+Ainda sem bateria e sem plaquinhas: ligue um cabo USB direto no micro-B do Teensy. **Sem a chave do
+volume ligada, nada liga** (o 3,3 V depende dela); este teste confere o fio do VUSB e o carregador.
 
 | Onde medir (ponta preta no GND) | Esperado |
 |---|---|
-| TP1 (VBUS) da plaquinha do painel | 4,75–5,25 V |
+| J_VBUS | 4,75–5,25 V |
+| Pino **VIN** do Teensy (por cima, ao lado do GND), chave aberta | ~0 V (o VIN só recebe o VBUS com o Pocket ligado) |
 | J_BAT pino 1 (BAT+), sem bateria | 0–4,2 V oscilando (o carregador procura a bateria; normal) |
 | 3V3 da pilha, chave aberta | 0 V |
 
@@ -107,7 +128,7 @@ A luz de carga pode piscar sem bateria (o BQ24074 alterna "carregando / sem bate
 Sem parte elétrica: os Gateron magnéticos não têm pernas elétricas (só pinos plásticos); o ímã
 fica com o **norte para baixo** e o sensor está no verso da placa, de propósito. Não inverter nada.
 
-## Passo 6 · Plaquinhas (knobs, volume, painel) com os cabos soldados
+## Passo 6 · Plaquinhas (knobs e volume) e painel, com os fios soldados
 
 ### 6.1 Plaquinha do volume (em pé) e plaquinha dos knobs
 
@@ -131,27 +152,32 @@ fica com o **norte para baixo** e o sensor está no verso da placa, de propósit
    - **Teste:** continuidade de cada pad ao pino do J_CTL (tabela no `PINOS.md`); nenhum par vizinho
      em curto.
 
-### 6.2 Plaquinha do painel
+### 6.2 Painel: jack de fone e micro-B de painel
 
-1. **Jack de fone SJ1-3525N** por cima (5 pernas + 5 pinos): solde e corte as pernas a ≤ 1 mm.
-2. **A perna de trás-esquerda da carcaça do USB-C** (a mais longe da parede, do lado oposto ao fone)
-   fica sobre o plugue micro-B do Teensy, com 0,45 de folga: **corte rente ao verso** com o
-   alicate e lixe (figura F-10). As outras três podem ficar (≤ 1 mm).
-3. **Cabo micro-B de 90°**: corte a ~40 mm do plugue **(conferir o comprimento com o case)**,
-   desencape e solde os 4 fios nos pads da fileira de trás: **TP1 VBUS (vermelho), TP2 D+ (verde),
-   TP3 D− (branco), TP4 GND (preto)**. Torça D+ com D−. Cores padrão USB: **conferir com o
-   multímetro** (VBUS e GND no plugue: os pinos 1 e 5 do micro-B).
-4. **Cabo do painel** (JST SH 8 vias, conector na ponta da placa principal): corte a ~100 mm e solde:
-   fios 1–2 (VBUS) no TP1, 3–4 (GND) no TP4, 5 HP_L no TP5, 6 HP_R no TP6, 7 HP_VGND no TP7,
-   8 HP_TIPSW no TP8 (os quatro pads do fone ficam na ponta direita, depois do jack).
-5. **Testes da plaquinha do painel** (sem nada ligado):
+1. **Jack de fone Cliff FC681375V** (figura F-10): antes de montar, solde 4 fios de 28–30 AWG, ~80 mm
+   **(conferir o comprimento com o case)**, nas abas de trás, e isole cada solda com termorretrátil:
+   - aba **3 (T, ponta)** → **J_JACK 1 (HP_L)**;
+   - aba **2 (R, anel)** → **J_JACK 2 (HP_R)**;
+   - aba **1 (S, manga)** → **J_JACK 3 (HP_VGND)**, o terra virtual: **nunca no GND**;
+   - aba **4 (comutação da ponta)** → **J_JACK 4 (HP_TIPSW)**.
+   Passe a rosca pelo furo da parede **por dentro**, ponha a porca anel por fora e aperte com uma chave
+   na fenda da porca (sem forçar: parede de plástico). Torça os 4 fios e solde no J_JACK.
+2. **Testes do jack** (sem nada ligado; um plugue de fone à mão):
 
 | Onde medir | Esperado |
 |---|---|
-| Manga do jack (TP7, HP_VGND) × TP4 (GND) | **aberto** (sem bipe). Bipe = erro grave: o fone não pode ir ao GND |
-| Ponta do jack (TP5) × TP8 (comutação), sem plugue | bipe (o contato fecha sem plugue) |
+| J_JACK 3 (HP_VGND) × GND (J_BAT 3) | **aberto**. Bipe = erro grave: o fone não pode ir ao GND |
+| J_JACK 1 (ponta) × J_JACK 4 (comutação), sem plugue | bipe (o contato fecha sem plugue) |
 | O mesmo, com um plugue de fone encaixado | aberto |
-| TP1 (VBUS) × TP4 (GND) | > 50 kΩ |
+| J_JACK 1 × J_HP 1, J_JACK 2 × J_HP 2, J_JACK 3 × J_HP 3 | bipe (o jack de painel e o da Audio Board ficam em paralelo) |
+
+3. **Extensão micro-B em fita FPC** (figura F-13): a cabeça da fêmea entra no bolso do ressalto, com a
+   boca rente ao furo da parede, e a presilha impressa a prende com **2 parafusos M2 × 5**. O macho de 90°
+   ("UP") entra no micro-B do Teensy **até o fim**, com a fita saindo **para cima**; dobre a fita **uma vez,
+   rente**, no caminho que o design desenhou (a fita aceita dobra chata, mas não fica sendo dobrada e
+   desdobrada), longe do indutor L10. Não puxe o plugue do Teensy pela fita.
+4. **Teste:** cabo USB na fêmea do painel: **J_VBUS = 4,75–5,25 V**. Com o Pocket ligado (passo 9) e o
+   cabo num computador, o computador vê o Teensy.
 
 ## Passo 7 · Bateria e alto-falante
 
@@ -194,8 +220,9 @@ fica com o **norte para baixo** e o sensor está no verso da placa, de propósit
 Elétrico, só conferir antes de fechar:
 
 - nenhum fio preso entre o fundo e os pilares, nem sobre o verso da placa;
-- os cabos SH encaixados até o fim no J_PNL e no J_CTL (trava audível);
-- o cabo micro-B encaixado no Teensy;
+- o cabo SH encaixado até o fim no J_CTL (trava audível);
+- o plugue micro-B de 90° encaixado até o fim no Teensy, a fêmea na presilha com os 2 parafusos M2, a fita dobrada rente;
+- o fio do VUSB colado nas duas pontas, longe do indutor L10 e de bordas cortantes;
 - o plugue do alto-falante no J_SPK e o rabicho no J_BAT.
 
 ## Passo 9 · Primeiros testes sem a firmware do Pocket
@@ -205,33 +232,36 @@ Pocket o pino KEEP não sobe; por isso o comportamento sem USB é diferente do f
 
 | # | Teste | Como | Esperado |
 |---|---|---|---|
-| 1 | Luz de carga com o Pocket **desligado** | volume todo para a esquerda (clique = desligado), bateria encaixada, USB-C num carregador | **vermelho aceso** enquanto carrega; apaga quando a bateria enche (pode levar ~2,5 h) |
+| 1 | Luz de carga com o Pocket **desligado** | volume todo para a esquerda (clique = desligado), bateria encaixada, cabo USB no micro-B do painel e num carregador | **vermelho aceso** enquanto carrega; apaga quando a bateria enche (pode levar ~2,5 h) |
 | 2 | Luz de carga com o Pocket **ligado** | com o USB ainda ligado, gire o volume além do clique | a luz de carga **apaga** (ligado, quem mostra a carga é a firmware, com o verde). Com o programa de fábrica do Teensy o vermelho **pisca** junto com o LED laranja dele (o programa pisca o pino 13): normal |
 | 3 | 3,3 V presente | ligado e com USB: medir o pino **3V** do Teensy (por cima) × **G** | **3,25–3,35 V** |
+| 3b | VIN do Teensy | ligado e com USB: pino **VIN** × **G** | **4,4–5,0 V** (VBUS menos o diodo D61). Desligado: ~0 V |
+| 3c | USB | ligado, cabo num computador | o computador vê o Teensy (programa de fábrica: serial "Teensy"; com a firmware: "eTutti" MIDI) |
 | 4 | Liga/desliga pelo volume | com USB: girar o volume até o clique (desligar) | 3V do Teensy cai a 0 V em < 1 s |
 | 5 | Ligado só com a bateria (sem USB) | girar o volume além do clique | o 3,3 V aparece por **~0,5 s e cai**: é o normal **sem a firmware do Pocket** (ela segura o KEEP). Com a firmware, fica ligado |
 | 6 | Tensão da bateria | J_BAT 1 × 3 | 3,0–4,2 V |
-| 7 | Fone sem GND | Pocket desligado, multímetro em continuidade entre a manga de um plugue encaixado no jack e o GND (TP4 ou J_BAT 3) | **aberto** |
+| 7 | Fone sem GND | Pocket desligado, multímetro em continuidade entre a manga de um plugue encaixado no jack e o GND (J_BAT 3) | **aberto** |
 | 8 | Carga | depois de 10–20 min carregando, encostar o dedo na bateria pelo bolso | morna no máximo. Quente = desligar a USB e conferir o NTC |
 
 Se o teste 3 der 0 V com USB e volume ligado: conferir o cabo dos knobs (fios 4 e 5 = chave) e a
 chave do potenciômetro (continuidade entre os pinos 4 e 5 dele ligado). Se der ~4,4 V ou 5 V no 3V:
 **desligar já** e conferir o corte da ponte VUSB–VIN (passo 3.1).
 
-**Em breve** (seção marcada assim no manual): gravar a firmware do Pocket pela USB-C (com o volume
+**Em breve** (seção marcada assim no manual): gravar a firmware do Pocket pelo micro-USB do painel (com o volume
 ligado e o cabo no computador o Pocket fica ligado durante a gravação), calibrar as teclas.
 
 ## Pontos de teste: resumo para o manual
 
 | Ponto | Onde fica | Valor |
 |---|---|---|
-| GND | J_BAT pino 3; TP4 da plaquinha do painel; pino G do Teensy | referência |
+| GND | J_BAT pino 3; pino G do Teensy | referência |
 | BAT+ | J_BAT pino 1 | 3,0–4,2 V com bateria |
 | NTC | J_BAT pino 2 | ~10 kΩ ao GND sem energia; ~0,75 V com USB (25 °C) |
-| VBUS | TP1 da plaquinha do painel | 4,75–5,25 V com USB |
+| VBUS | pad J_VBUS | 4,75–5,25 V com USB |
+| VIN do Teensy | pino VIN (por cima) | ~4,4–5 V ligado com USB; 0 V desligado |
 | VSYS (saída do carregador) | pad JW4 da plaquinha do volume (PWR_A, por 100 Ω) | ~4,4 V com USB; = bateria sem USB |
 | 3,3 V | pino 3V do Teensy (por cima) | 3,25–3,35 V ligado; 0 V desligado |
-| Terra do fone | manga do jack / TP7 | nunca em continuidade com o GND |
+| Terra do fone | manga do jack / J_JACK 3 | nunca em continuidade com o GND |
 | Alto-falante | entre os fios | ~8 Ω |
 
 ## Figuras que a eletrônica precisa (para o design desenhar)
@@ -241,19 +271,22 @@ Numeradas F-xx; o design escolhe a numeração final do manual. Todas com a peç
 
 | Fig. | Peça | Vista | Destacar |
 |---|---|---|---|
-| F-01 | Teensy 4.0, verso | close-up de cima (verso para cima), perto do micro-B | a ponte VUSB–VIN e a linha do corte (seta + tesoura) |
+| F-01 | Teensy 4.0, verso | close-up de cima (verso para cima), perto do micro-B | a ponte VUSB–VIN e a linha do corte (seta + tesoura); **o pad VUSB com o fio de 26 AWG soldado e a gota de cola** |
 | F-02 | Audio Board Rev D, verso | close-up do jack de fone | os 3 terminais L, R, VGND com os fios soldados (cores) |
 | F-03 | Pilha baixa (Teensy sobre a Audio Board) | lateral, de frente para o USB | as barras extralongas, o plástico como espaçador, a cota ≤ 8,7 |
 | F-04 | Placa principal montada, verso | vista inteira | sensores sob os switches, U60/U61/L10/U62, U51/U52, Q31/Q22 (para conferir) |
-| F-05 | Placa principal, topo, canto esquerdo | close-up | J_BAT e J_SPK (orientação da trava), J_PNL, J_CTL, pads J_HP |
+| F-05 | Placa principal, topo, canto esquerdo | close-up | J_BAT e J_SPK (orientação da trava), **J_VBUS com o fio do VUSB, J_JACK (1–4)**, J_CTL, pads J_HP |
 | F-06 | Pilha soldada na placa principal | lateral em corte | calço de 3 mm, pernas cortadas rente no verso |
 | F-07 | Plaquinha do volume com o RK097 | iso | eixo para cima, as 5 pernas, porca M7 |
 | F-08 | Plaquinha dos knobs com encoder e LED | iso | LED no espaçador (catodo no meio), encoder |
 | F-09 | Junta de 90° volume × knobs | close-up por baixo | os 6 pads JP soldados em esquadro |
-| F-10 | Plaquinha do painel, verso | close-up | a perna de trás-esquerda do USB-C cortada rente; o furo H1 (pino) e o H2 (parafuso) |
+| F-10 | Jack de painel FC681375V | iso por trás + vista da parede | as 4 abas numeradas (1 S, 2 R, 3 T, 4 comutação) com as cores dos fios; porca anel por fora |
 | F-11 | Bateria e rabicho | plano | os 3 fios (+, NTC, −) e a ordem 1-2-3 no J_BAT; multímetro nas pontas |
 | F-12 | Cabo dos knobs | esquema plano | fios 1–5 na plaquinha do volume, 6–10 na dos knobs, pino 1 marcado |
-| F-13 | Cabo do painel e cabo micro-B | esquema plano | TP1–TP8 com as cores |
+| F-13 | Extensão micro-B em FPC | iso, case aberto | fêmea na presilha com 2 M2, plugue "UP" no Teensy com a fita subindo e dobrada rente até a fêmea |
 | F-14 | Pocket montado em corte | corte em y ~21 e em y ~49 | pilha, bateria, alto-falante, plaquinhas, cabos (pedido da SPEC M1) |
-| F-15 | Pontos de teste | vista de cima, case aberto | GND, BAT+, 3V, VBUS, TP7 (balões com os valores da tabela) |
+| F-15 | Pontos de teste | vista de cima, case aberto | GND, BAT+, 3V, VIN, J_VBUS, J_JACK 3 (balões com os valores da tabela) |
 | F-16 | LED | duas fotos/renders | vermelho com o Pocket desligado carregando; apagado ligado |
+| F-17 | Fio do VUSB na pilha | lateral, ponta do USB | o fio saindo entre o Teensy e a Audio Board, por baixo do plugue de 90°, até o J_VBUS |
+
+Figuras que **saem** na v5: a da plaquinha do painel (antiga F-10) e o esquema TP1–TP8 (antiga F-13).
