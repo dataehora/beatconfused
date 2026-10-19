@@ -3,6 +3,10 @@
 **SPEC atendida: v5, tarefa F3** (case para o micro-USB, knobs e botão do Teensy, Seixo variante B). 19 out 2026.
 O F1 e o M1 (SPEC v4), o D2 (v3) e o D1 (v2) estão no histórico do git.
 
+**Atualização (pedido da integração, depois do F4):** porca do pot dimensionada para 10 sextavado × 2,0 (rebaixo Ø 14, knob
+proposto Ø 15, chave impressa refeita) e encoder L 25. O fone tem parede de 2,0 no furo (≤ 2,5, confirmado). Fit check,
+exportações e flexão rodados de novo: mesmos resultados.
+
 Página de revisão para o J: `/etutti/pocket/revisao/` (só português, noindex).
 
 **Resultado: nenhuma divergência aberta contra o `pcb/PECAS.json` v5 (F4).**
@@ -88,10 +92,11 @@ Como ficou no case:
 
 ### 1.4 Rebaixo sob os knobs (SPEC v5, Mudança 5)
 
-- **Rebaixo redondo de Ø 13 × 2,0** na tampa, sob os dois knobs.
+- **Rebaixo redondo de Ø 14 × 2,0** na tampa, sob os dois knobs. Era Ø 13 no primeiro F3; passou para Ø 14 porque a
+  eletrônica pediu porca de **10 sextavado × 2,0** (`PECAS volume_pot.nut_v5`: o desenho do RK0972S só dá a rosca M7 × 0,75;
+  o típico é 9–10 sextavado, conferir).
 - No do volume, a **porca M7 assenta rente**: topo a z 33,0, igual à tampa.
-  - Medidas usadas da porca: 9 sextavado × 2,0, 10,4 entre cantos (conferir com a porca que vem no RK097).
-  - Sobram 1,3 entre os cantos da porca e a parede do rebaixo. É o lugar da parede de uma chave de porca fina.
+  - 11,55 entre cantos; sobram 1,23 entre os cantos e a parede do rebaixo, o lugar da parede da chave impressa.
 - O do seletor tem o mesmo rebaixo, sem porca.
 - **Fundo do rebaixo: 0,5** (a tampa tem 2,5). É o que fica preso entre a face do potenciômetro e a porca. Trabalha em
   compressão, apoiado por baixo pelo corpo do pot.
@@ -101,18 +106,18 @@ Como ficou no case:
   - bucha M7 de 7,0 a partir da face do corpo;
   - 0,5 presos no fundo e 2,0 na porca (rosca toda engatada);
   - **sobram 4,5 de rosca acima da porca**, dentro do knob.
-- **Knob (proposta; o kit BOM fala em "~D10-12", que não cobre o rebaixo):**
-  - Medidas: **Ø 14 × 14**, saia a 0,5 da tampa, furo D6 com parafuso de fixação, que serve no eixo serrilhado do pot e
-    no eixo chato do encoder.
+- **Knob (proposta):**
+  - Medidas: **Ø 15 × 14**, saia a 0,5 da tampa, furo D6 com parafuso de fixação, que serve no eixo serrilhado do pot e
+    no eixo chato do encoder. Com o rebaixo de Ø 14, o knob de Ø 14 do primeiro F3 (o que está no kit BOM) não cobre mais
+    o rebaixo: é preciso Ø 15.
   - Por baixo, um alojamento de Ø 8,5 × 5 para a rosca que sobra: 0,75 de folga radial e 1,0 acima da bucha.
   - O knob cobre o rebaixo com 0,5 de sobra radial.
-  - **Saia → porca: 0,5.** Entre os dois knobs ficam 2,0; do knob ao furo do LED, 3,25.
-- **Encaixe no eixo:**
-  - pot L 20 cortado a 4 mm da ponta: 8,0 (o PECAS pede ≥ 8);
-  - pot L 15: 7,0;
-  - encoder L 20: só **5,2**; com L 25, 8,0.
-- **Chave de porca impressa** `seixo_chave_porca` (MJF): tubo de Ø 12,4 × 25 com sextavado de 9,15 numa ponta e furo
-  passante de Ø 7,8 para o eixo. Ela cabe no rebaixo de Ø 13.
+  - **Saia → porca: 0,5.** Entre os dois knobs ficam **1,0**; do knob ao furo do LED, 2,75. Ver a pergunta 1.
+- **Encaixe no eixo** (furo do knob de z 38,5 a 46,5):
+  - pot L 20 cortado 4,0: 8,0 (o PECAS pede ≥ 8); pot L 15: 7,0;
+  - **encoder L 25** (a eletrônica trocou no kit BOM): 8,0, com o eixo cortado 2,2.
+- **Chave de porca impressa** `seixo_chave_porca` (MJF): tubo de Ø 13,4 × 25 com sextavado de 10,15 numa ponta (0,84 de
+  parede nos cantos) e furo passante de Ø 7,8 para o eixo. Ela cabe no rebaixo de Ø 14 com 0,3 de folga.
 
 ### 1.5 Botão de gravação do Teensy: **dá para alcançar com o case fechado**
 
@@ -167,9 +172,9 @@ Igual ao F1: 251,5 × 100, contorno exato × `shape.py` 0,03 mm. As lições do 
 | Fone Cliff FC681375V | furo (6,69; 38), eixo +x, z 23,95 | corpo 9 × 10,5 × 13 + terminais 4; rosca M8 × 4,5; porca Ø 10 × 2 | J_BAT 0,5; plaq. do pot 1,5; pot 1,75; encoder 1,52; tampa 1,3 |
 | Fio do VBUS (26 AWG) | pad VUSB → J_VBUS | Ø 1,2 | → plugue 1,47; → placa 0,6 |
 | Potenciômetro RK097 | igual ao F1, bucha presa no fundo do rebaixo | 15,8 × 9,5 × 11,25; rosca M7 × 7 | rosca no furo 0,15; → encoder 3,3 |
-| Porca M7 | no rebaixo de Ø 13 | 9 sextavado × 2,0 (conferir) | rente; 1,3 dos cantos à parede do rebaixo |
-| Knobs (proposta) | Ø 14 × 14, saia a z 33,5 | furo D6 + parafuso | → porca 0,5; → rosca 0,75 / 1,0; entre eles 2,0 |
-| Encoder EC11E | igual ao F1 | 12,4 × 13,2 × 6,5; eixo de 20 | eixo no furo 0,4; → alto-falante 3,05 |
+| Porca M7 | no rebaixo de Ø 14 | 10 sextavado × 2,0 (conferir) | rente; 1,23 dos cantos à parede do rebaixo |
+| Knobs (proposta) | Ø 15 × 14, saia a z 33,5 | furo D6 + parafuso | → porca 0,5; → rosca 0,75 / 1,0; entre eles 1,0 |
+| Encoder EC11E | igual ao F1 | 12,4 × 13,2 × 6,5; eixo de 25 (cortado 2,2) | eixo no furo 0,4; → alto-falante 3,05 |
 | LED, plaquinhas dos knobs, SH-10 | iguais ao F1 | — | iguais (§3 do F1: 0,25 / 0,5 / 1,28) |
 | Teensy + Audio Board (baixa) | igual ao F1 | 8,7 | → tampa 0,5; → tubo do botão 1,3 |
 | Bateria, bolso do plugue, J_BAT/J_SPK | iguais ao F1 | — | iguais (inchada → teto 0,24; par JST → bateria 0,88) |
@@ -212,7 +217,7 @@ Sem mudança: 17,9 cm³ (15,2 no pior caso), 73 furos, 33,5 % do cone, membrana 
     topo a 18,2, cabe.
 - **`controls.pot`**:
   - `anti_rotation_hole` = null;
-  - novo `lid_recess` (Ø 13 × 2, fundo de 0,5).
+  - novo `lid_recess` (Ø 14 × 2, fundo de 0,5).
 - **`levels`**: só de h 10,5 para cima perderam um pouco de área: o fone, a face dele e as zonas da fita entraram; a
   plaquinha saiu. De 2,0 a 9,0, iguais.
 - **`cables.panel`**: fita FPC de 10 cm, 4 fios do fone ao J_JACK e o fio do VBUS ao J_VBUS.
@@ -285,7 +290,7 @@ Conferi as imagens olhando.
     rebaixo);
   - saíram `board` e `holes`.
 - Novo `teensy_button` (furo em (65,39; 20,38), Ø 1,6).
-- `controls.knob_d` = 14 (proposta) e novo `controls.knob_recess`.
+- `controls.knob_d` = 15 (proposta) e novo `controls.knob_recess` (Ø 14, porca 10 × 2,0).
 - `case.files` com a trava e a chave; `case.materials` com as duas.
 - Sem mudança: teclas, contornos, knobs e LED (posições), grade, logo, bateria, pilha e `main_board.outline`.
 
@@ -296,14 +301,48 @@ Ver §6.
 ### Pedidos a outras disciplinas
 
 - **Kit BOM (eletrônica):**
-  - knob **Ø 14** com furo D6 e parafuso de fixação, no lugar de "~D10-12", que não cobre o rebaixo de Ø 13;
+  - knob **Ø 15 × 14** com furo D6 e parafuso de fixação: o kit BOM está com Ø 14 × 14, que não cobre o rebaixo novo de Ø 14;
   - 2 × M2 × 5 da trava.
 - **Manual (M2, design):** o `manual3d/` ainda usa as constantes da plaquinha do painel. Ele é refeito no M2.
 
+## 13. Manual de montagem (M2, SPEC v5)
+
+`/etutti/pocket/manual/` atualizado a partir do `pcb/MANUAL_ELETRICO.md` (F4).
+- Sem a plaquinha do painel.
+- **Passo 3:** fio do VBUS no pad VUSB, com o teste de 5 V antes de empilhar.
+- **Passo 4:** J_VBUS e J_JACK; teste do 4.3 com USB direto no Teensy.
+- **Passo 6.2:** jack Cliff FC681375V com 4 fios (esquema gerado por `page_tables.py`, `svg:jack`).
+- **Passo 6.3:** extensão FPC "UP".
+- **Passo 8:**
+  - fêmea no túnel com a trava e 2 × M2 × 5;
+  - porca M7 rente no rebaixo, apertada com a chave impressa;
+  - eixos cortados (pot 4, encoder 2,2) e knobs de Ø 15.
+- **Passo 9:**
+  - pontos D (J_VBUS), F (J_JACK 3) e I (VIN);
+  - testes 3b e 3c;
+  - o botão do Teensy com um clipe.
+- Lista de peças renumerada: 16–20 e 35–41.
+- BOM do kit lida do CSV novo.
+- O `manual3d/` não usa mais a plaquinha do painel: entraram a fêmea, a trava, o jack, o plugue "UP", a fita, o fio do VBUS,
+  o clipe e a chave.
+
+**Figuras:**
+- novas: `l_vusb` (F-17), `l_jack` (F-10), `l_fpc` (F-13), `l_knob_nut`, `l_button`, `l_tp_vol`;
+- refeitas: todas as outras (a casca mudou), em especial `l_teensy_cut` (F-01), `l_connectors` (F-05), `l_testpoints`
+  (F-15), `l_lid_boards`, `r_exploded` e `r_section_y21`;
+- removidas: `l_panel`, `l_panel_under`, `l_tp_panel`, `panel_top` e `panel_bottom`.
+
+Conferido no navegador:
+- 375 px sem rolagem lateral;
+- 98 links e imagens locais com 200;
+- console sem erros.
+
+**Pedido à eletrônica:** o kit BOM ainda diz knob "D14 x 14"; com a porca de 10 sextavado, o knob passa a **Ø 15 × 14**.
+
 ## Perguntas para a gestão
 
-1. **Knob de Ø 14 × 14** (com alojamento por baixo para a rosca e parafuso de fixação), no lugar do "~D10-12" do kit: é o menor que cobre o rebaixo de Ø 13 da porca. Entre os dois knobs ficam 2,0 mm. Aprova o tamanho? Ou prefere um knob impresso por nós, com o mesmo desenho dos dois?
+1. **Knob de Ø 15 × 14** (com alojamento por baixo para a rosca e parafuso de fixação): com a porca de 10 sextavado pedida pela eletrônica, o rebaixo passou para Ø 14 e o knob para Ø 15. Entre os dois knobs ficam só 1,0 mm (a distância entre eixos é 16, fixada pela plaquinha). Aprova assim? A outra opção é voltar ao rebaixo de Ø 13 com knob de Ø 14 (2,0 entre eles), se a porca que vem no RK097 for de 9 sextavado (conferir na peça).
 2. **Fundo do rebaixo de 0,5 mm** sob a porca: para a porca M7 de 2,0 ficar rente, sobra 0,5 da tampa de 2,5. Ela trabalha em compressão entre a porca e o corpo do pot e imprime bem em resina. Se preferir mais folga, a alternativa é 0,8 de fundo e a porca 0,3 acima da tampa, ainda coberta pelo knob. Fica 0,5?
-3. **Eixo do encoder:** com o knob proposto, o eixo L 20 do EC11E entra só 5,2 mm no knob (o parafuso de fixação prende, mas o PECAS pede ≥ 8). Com L 25 entra 8,0. Trocamos o encoder para L 25 (pedido à eletrônica) ou fica o L 20?
+3. ~~**Eixo do encoder**~~ **Respondida pela eletrônica:** EC11E com eixo L 25 no kit BOM. Entra 8,0 no knob, com o eixo cortado 2,2.
 4. **Botão do Teensy:** o furo de Ø 1,6 com tubo-guia fica à direita do logo, na posição em que o botão deve estar (2,5 da ponta, centrado: a PJRC não publica a cota). Antes de imprimir, o J confere com uma régua no Teensy dele. Pode ser assim?
 5. **Protótipo:** com a extensão FPC e o fone de painel, a parte física da v5 está fechada no case, sem divergência aberta. As medidas da cabeça da fêmea FPC e do plugue "UP" são de vendedor: conferir na peça antes de imprimir a casca. Pode encomendar? Casca de cima em resina; fundo, tampinha, fundo da caixa, trava e chave em MJF; capas em resina, primeiro o `keycap_test_4`.

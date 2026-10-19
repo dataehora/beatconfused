@@ -48,7 +48,7 @@ ITEMS = [
     ("Controles", "LED 3 mm bicolor vermelho/verde, catodo comum", "Kingbright WP937EGW", 1, 3, "DigiKey / Mouser", "754-1234-ND (conferir)",
      "https://www.kingbrightusa.com/images/catalog/SPEC/WP937EGW.pdf", "", "conferir"),
     ("Controles", "Espaçador do LED 3 mm, ~10 mm", "espaçador de nylon para LED 3 mm", 1, 3, "AliExpress / Mouser", "conferir", "-", "ou tubo de luz", "conferir"),
-    ("Controles", "Knobs", "knob D14 x 14 com cavidade por baixo (rosca/porca) e parafuso de fixação, furo D6", 2, 3, "AliExpress / Mouser", "conferir", "-", "medida do design (F3); serve no eixo serrilhado do pot e no chanfrado do encoder", "conferir"),
+    ("Controles", "Knobs", "knob D15 x 14 com cavidade por baixo (rosca/porca) e parafuso de fixação, furo D6", 2, 3, "AliExpress / Mouser", "conferir", "-", "medida do design (F3: rebaixo D14 x 2 da porca 10 sextavado, 1,0 entre os knobs); serve no eixo serrilhado do pot e no chanfrado do encoder", "conferir"),
     # ---- panel
     ("Painel", "Jack de fone 3,5 estéreo de painel com comutação na ponta", "Cliff FC681375V (rosca M8 x 0,75, porca anel; FC681375VH = porca sextavada)", 1, 2,
      "Farnell / TME / DigiKey", "2518213 (Farnell)", "https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5561/Vert%203,5mm%20Jack%20FC681375V-VH.pdf",

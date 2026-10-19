@@ -11510,17 +11510,17 @@
    43.12,
    49.0
   ],
-  "knob_d": 14.0,
+  "knob_d": 15.0,
   "led_d": 3.5,
   "knob_recess": {
-   "d": 13.0,
+   "d": 14.0,
    "depth": 2.0,
    "pot_nut": [
-    9.0,
+    10.0,
     2.0
    ],
    "knob_proposal": {
-    "d": 14.0,
+    "d": 15.0,
     "h": 14.0,
     "lift": 0.5,
     "cavity": [
@@ -16060,13 +16060,13 @@
   "version": "Seixo",
   "files": "case/out/seixo_tampa, seixo_fundo, seixo_tampa_bateria, seixo_caixa_fundo, seixo_trava_usb, seixo_chave_porca, plate, keycap_natural/sharp/cf, keycap_test_4 (.step/.stl)",
   "weight_g": {
-   "printed_cm3": 127.1,
+   "printed_cm3": 127.5,
    "resin_g": 150.0,
-   "mjf_pa12_g": 128.0,
+   "mjf_pa12_g": 129.0,
    "plate_fr4_g": 24.0,
    "v4_materials": {
-    "top_shell_resin_g": 88.2,
-    "mjf_parts_g": 52.9,
+    "top_shell_resin_g": 88.1,
+    "mjf_parts_g": 53.3,
     "caps_resin_g": 16.9,
     "cap_counts": {
      "natural": 12,
@@ -16110,7 +16110,7 @@
    "seixo_chave_porca": {
     "material": "MJF PA12",
     "qty": 1,
-    "what": "chave da porca M7 do potenciômetro (entra no rebaixo de Ø 13)"
+    "what": "chave da porca M7 do potenciômetro (entra no rebaixo de Ø 14)"
    },
    "keycap_natural": {
     "material": "resina branca",

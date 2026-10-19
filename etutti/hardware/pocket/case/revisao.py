@@ -111,8 +111,8 @@ def page():
     ]
     table = "".join(f'<tr><th scope="row">{a}</th><td>{b}</td></tr>' for a, b in rows)
     figs = [
-        ("seixo_iso.png", "O Seixo, variante B, com as teclas, os knobs propostos (Ø 14), o LED e a grade."),
-        ("seixo_recessos.png", "Sem os knobs: os dois rebaixos de Ø 13 na tampa, a porca M7 rente no do volume e o furinho do botão do Teensy à direita do logo."),
+        ("seixo_iso.png", "O Seixo, variante B, com as teclas, os knobs propostos (Ø 15), o LED e a grade."),
+        ("seixo_recessos.png", "Sem os knobs: os dois rebaixos de Ø 14 na tampa, a porca M7 rente no do volume e o furinho do botão do Teensy à direita do logo."),
         ("seixo_left.png", "A parede curva de trás-esquerda: janela do micro-USB (com rebaixo) e o fone com a porca por fora."),
         ("fit_conectores.png", "Por cima, sem a tampa: o bloco da fêmea micro-B com a trava (azul), o fone, e em amarelo o espaço da fita FPC "
                                "(sobe do plugue do Teensy, dobra sob o bloco, sobra dobrada sobre o Teensy)."),
@@ -206,7 +206,7 @@ def page():
         segura por trás.</li>
         <li><strong>Fone de painel Cliff FC681375V</strong>, ligado por fios, numa face plana própria; porca de Ø 10 por fora, nervura
         contra o giro por dentro.</li>
-        <li><strong>Rebaixo de Ø 13 × 2 sob os dois knobs</strong>: a porca M7 do volume fica rente com a tampa, coberta pelo knob;
+        <li><strong>Rebaixo de Ø 14 × 2 sob os dois knobs</strong>: a porca M7 do volume fica rente com a tampa, coberta pelo knob;
         o seletor tem o mesmo rebaixo. Uma chave de porca impressa entra no rebaixo.</li>
         <li><strong>Botão de gravação do Teensy</strong>: furo de Ø 1,6 na tampa, à direita do logo, com tubo-guia até o Teensy.</li>
         <li>Saíram a plaquinha do painel, o ressalto dela, o pino, a costela e a aba.</li>

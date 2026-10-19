@@ -50,7 +50,7 @@
     },
     "encoder": {
       "name": "Encoder seletor com clique",
-      "part_number": "Alps EC11E with push switch, 15 pulses / 15 detents, flatted D6 shaft L = 25 (SPEC v5 F3: with the D14 x 14 knob L 20 engages only 5.2, L 25 gives 8.0); exact EC11E1520xxx/25-mm suffix conferir at Alps/Mouser; fallback: L 30 cut to 25 with a hacksaw",
+      "part_number": "Alps EC11E with push switch, 15 pulses / 15 detents, flatted D6 shaft L = 25 (SPEC v5 F3: with the D15 x 14 knob L 20 engages only 5.2, L 25 gives 8.0); exact EC11E1520xxx/25-mm suffix conferir at Alps/Mouser; fallback: L 30 cut to 25 with a hacksaw",
       "lcsc": "conferir (not found on LCSC; Farnell/Mouser/TME)",
       "datasheet": "https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/",
       "status": "conferir",
@@ -73,7 +73,7 @@
         "pcb_top_z": 17.18
       },
       "needs_from_design": "unchanged from pocket.json controls_board.encoder",
-      "note_v5": "Shaft L 25 chosen (F4) for the design's D14 x 14 knob (8.0 mm engagement >= 8)."
+      "note_v5": "Shaft L 25 chosen (F4) for the design's D15 x 14 knob (8.0 mm engagement >= 8)."
     },
     "led": {
       "name": "LED bicolor vermelho/verde, catodo comum, 3 mm",

@@ -113,8 +113,9 @@ def controls_solids(pc):
     sx, sy = C.SELECT_XY
     enc = box(sx - e["plan"][0] / 2, sy - e["plan"][1] / 2, C.CTRL_TOP, sx + e["plan"][0] / 2, sy + e["plan"][1] / 2,
               C.CTRL_TOP + e["height_above_pcb"])
+    enc_tip = min(C.CTRL_TOP + e["height_above_pcb"] + e["shaft_l"], C.Z_IF + C.KNOB_LIFT + C.KNOB_H - 1.0)   # cut to the knob's bore
     enc_shaft = cyl(sx, sy, C.CTRL_TOP + e["height_above_pcb"], C.CTRL_TOP + e["height_above_pcb"] + 5.0, 7.0).fuse(
-        cyl(sx, sy, C.CTRL_TOP + e["height_above_pcb"] + 5.0, C.CTRL_TOP + e["height_above_pcb"] + e["shaft_l"], 5.98))
+        cyl(sx, sy, C.CTRL_TOP + e["height_above_pcb"] + 5.0, enc_tip, 5.98))
     led = pc["led"]["body"]
     lx, ly = C.LED_XY
     led_top = C.Z_IF - 0.5
@@ -163,8 +164,9 @@ def knob_geometry(pc):
         "engagement": {"pot_L20_tip_z": round(pot_tip, 2), "pot_L15_tip_z": round(face + 15.0, 2),
                        "pot_bore_from_z": round(cav_top, 2),
                        "pot_L20_cut_to_knob_top": round(top - 1.0 - cav_top, 2), "pot_L15": round(face + 15.0 - cav_top, 2),
-                       "encoder_tip_z": round(enc_tip, 2), "encoder_L20": round(min(enc_tip, top - 1.0) - cav_top, 2),
-                       "encoder_L25": round(min(enc_tip + 5.0, top - 1.0) - cav_top, 2)},
+                       "encoder_shaft_l": e["shaft_l"], "encoder_tip_z": round(enc_tip, 2),
+                       "encoder": round(min(enc_tip, top - 1.0) - cav_top, 2),
+                       "encoder_cut": round(max(0.0, enc_tip - (top - 1.0)), 2), "pot_L20_cut": round(max(0.0, pot_tip - (top - 1.0)), 2)},
     }
 
 

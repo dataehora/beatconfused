@@ -91,21 +91,21 @@ POT_HOLE_D = 7.3                                # M7 x 0.75 bushing (PECAS volum
 # soldered to its vertical board, which is soldered to the controls board on
 # two lid posts, so it cannot turn; its pin (if the part has one) is clipped.
 POT_PIN = None
-POT_NUT_AF, POT_NUT_T = 9.0, 2.0                # M7 x 0.75 thin pot nut: across flats, thickness -- CHECK the part's own nut
+POT_NUT_AF, POT_NUT_T = 10.0, 2.0               # M7 x 0.75 pot nut: across flats, thickness (PECAS nut_v5: size for 10 AF x 2.0; 9-10 AF typical, CHECK)
 POT_BUSHING_L = 7.0                             # M7 thread from the body face (PECAS: footprint drawing)
-KNOB_RECESS_D = 13.0                            # nut across corners 10.4 + room for a thin-wall 9 mm nut driver (OD <= 12.6)
+KNOB_RECESS_D = 14.0                            # nut across corners 11.55 + room for the printed nut driver (OD 13.4)
 KNOB_RECESS_DEPTH = POT_NUT_T                   # the nut's top flush with the lid (z 33)
 SHAFT_HOLE_D = 6.8                              # encoder shaft (not nutted: the encoder sits on the controls board)
 LED_HOLE_D = 3.5
-# the knob (proposal, both the same: SPEC v5 4): skirt D14 covers the D13
+# the knob (proposal, both the same: SPEC v5 4): skirt D15 covers the D14
 # recess by 0.5 all round; skirt bottom 0.5 above the lid; D6 bore with a set
 # screw (fits the pot's knurled shaft and the encoder's flatted one alike)
-KNOB_D = 14.0
+KNOB_D = 15.0
 KNOB_H = 14.0                                   # skirt bottom -> top
 KNOB_LIFT = 0.5                                 # skirt bottom above the lid surface
 KNOB_BORE_MIN = 8.0                             # shaft engagement asked by PECAS (>= 8)
 KNOB_CAVITY = (8.5, 5.0)                        # underside cavity for the bushing/thread left above the nut (d, depth)
-NUT_TOOL = (9.15, 12.4, 25.0)                   # printed nut driver: hex AF inside, round OD, length
+NUT_TOOL = (10.15, 13.4, 25.0)                  # printed nut driver: hex AF inside, round OD (0.3 radial in the recess), length
 
 # Teensy program button (SPEC v5 3): on the Teensy's TOP face at the end away
 # from its USB, centred across its width (PJRC's drawing: the button and the
@@ -1054,15 +1054,17 @@ def cable_wire(pts):
 
 
 def vusb_wire_path():
-    """The 26 AWG VBUS wire (PECAS vusb_wire): from the Teensy's VUSB pad (bottom,
-    USB end, VIN-row edge) out of the gap at the USB end, over the Audio
-    Board's left edge, down to J_VBUS (PECAS / build_pocket_pcb: 18.5, 18.0)."""
+    """The 26 AWG VBUS wire (PECAS vusb_wire): from the Teensy's VUSB pad
+    (bottom, 6.2 in from the USB end, beside the VUSB-VIN cut: as the manual's
+    Teensy model, CHECK on the real board) along the gap under the Teensy, out
+    of the USB end, over the Audio Board's left edge (between its top, 12.3,
+    and the plug, 14.35), down to J_VBUS (build_pocket_pcb: 18.5, 18.0)."""
     t = stack_parts()["teensy"][0]
     x0 = min(p[0] for p in t)
-    y0 = min(p[1] for p in t) + 1.5
-    zt = Z_AB_TOP + 1.2
-    return [(x0 + 1.5, y0, zt), (x0 - 1.0, y0, zt), (STACK_XY[0] - 1.0, y0 + 1.0, 11.0), (24.0, 16.8, 9.0),
-            (19.5, 17.8, Z_PCB_TOP + 1.2), (18.5, 18.0, Z_PCB_TOP + 0.6)]
+    yc = (min(p[1] for p in t) + max(p[1] for p in t)) / 2
+    zt = Z_TEENSY_TOP - 1.6 - 0.6
+    return [(x0 + 6.2, yc - 1.4, zt), (x0 + 0.8, yc - 1.4, Z_AB_TOP + 1.2), (STACK_XY[0] + 1.0, yc - 1.6, Z_AB_TOP + 1.0),
+            (STACK_XY[0] - 1.5, yc - 1.9, 11.0), (24.0, 18.2, 9.0), (19.5, 18.0, Z_PCB_TOP + 1.2), (18.5, 18.0, Z_PCB_TOP + 0.6)]
 
 
 def connector_boss_and_cuts():
@@ -1354,7 +1356,7 @@ MATERIALS = {
     "seixo_caixa_fundo": ("MJF PA12", 1, "fundo da caixa do alto-falante, colado e vedado"),
     "plate": ("FR-4 1,6 mm (Gerber da eletrônica / plate.dxf)", 1, "placa dos switches"),
     "seixo_trava_usb": ("MJF PA12", 1, "trava da fêmea micro-B (FPC) no túnel, 2 parafusos M2 x 5"),
-    "seixo_chave_porca": ("MJF PA12", 1, "chave da porca M7 do potenciômetro (entra no rebaixo de Ø 13)"),
+    "seixo_chave_porca": ("MJF PA12", 1, "chave da porca M7 do potenciômetro (entra no rebaixo de Ø 14)"),
     "keycap_natural": ("resina branca", None, "capas das naturais (sem Dó/Fá)"),
     "keycap_sharp": ("resina preta", None, "capas dos sustenidos"),
     "keycap_cf": ("resina branca", None, "capas de Dó e Fá, xadrez diagonal em relevo"),
@@ -1383,7 +1385,7 @@ def export_caps():
 
 
 def nut_tool():
-    """A printed nut driver for the pot nut in its D13 recess: hex socket at
+    """A printed nut driver for the pot nut in its D14 recess: hex socket at
     one end, a bore through for the shaft, round outside (OD < the recess)."""
     af, od, L = NUT_TOOL
     t = cq.Solid.makeCylinder(od / 2, L, cq.Vector(0, 0, 0))

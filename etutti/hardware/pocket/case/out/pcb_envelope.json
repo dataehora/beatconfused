@@ -48241,7 +48241,7 @@
    "lid_hole_d": 7.3,
    "anti_rotation_hole": null,
    "lid_recess": {
-    "d": 13.0,
+    "d": 14.0,
     "depth": 2.0,
     "floor": 0.5,
     "note": "SPEC v5: the M7 nut sits flush in it (no anti-rotation hole: clip the pot's pin; the soldered boards stop it turning)"
@@ -48390,28 +48390,33 @@
   "vusb_wire": {
    "path": [
     [
-     33.83,
-     12.99,
+     38.53,
+     18.98,
+     14.6
+    ],
+    [
+     33.13,
+     18.98,
      13.5
     ],
     [
-     31.33,
-     12.99,
-     13.5
+     31.0,
+     18.78,
+     13.3
     ],
     [
-     29.0,
-     13.99,
+     28.5,
+     18.48,
      11.0
     ],
     [
      24.0,
-     16.8,
+     18.2,
      9.0
     ],
     [
      19.5,
-     17.8,
+     18.0,
      8.9
     ],
     [

@@ -32,7 +32,7 @@ relido no fim: contorno, apoios e furos da placa principal iguais aos do F1). Na
 | TVS do VBUS | **SMF5.0A** (Littelfuse), SOD-123F, D60, junto do C60/BQ24074 | 5,0 V de trabalho, ruptura 6,4–7,0 V, 200 W | [LCSC C151296](https://lcsc.com/product-detail/C151296.html), [Littelfuse SMF](https://www.littelfuse.com/products/tvs-diodes/surface-mount/smf.aspx) | conferir estoque |
 | Chave do VIN (nova, ver abaixo) | **AO3401A** Q23 + **AO3400A** Q24 + **B5819W** D61 + 100 kΩ R27 | SOT-23, SOD-123 | C15127, C20917, C8598 (conferir), C17407 | final |
 | Fio do VBUS | 26 AWG silicone/PTFE, ~50 mm | OD ≤ 1,2 | qualquer | final |
-| Encoder (pedido do design, F3) | Alps EC11E 15/15 com chave, **eixo L 25** (era 20) | com o knob Ø14 × 14 o L 20 entra só 5,2; o L 25 entra 8,0 | [Alps EC11E](https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/) | conferir sufixo (reserva: L 30 cortado) |
+| Encoder (pedido do design, F3) | Alps EC11E 15/15 com chave, **eixo L 25** (era 20) | com o knob Ø15 × 14 o L 20 entra só 5,2; o L 25 entra 8,0 | [Alps EC11E](https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/) | conferir sufixo (reserva: L 30 cortado) |
 
 **Recusado:** o cabo redondo com orelhas M3 (fêmea como a do Adafruit 3258: flange 25,5 × 10, orelhas Ø3,5 a 17,3,
 26,1 de comprimento, cabo Ø4,5). Ele precisa de R ≥ 18 e só existe com ≥ 25 cm; o design mediu R ~7 no plugue e
@@ -42,7 +42,7 @@ relido no fim: contorno, apoios e furos da placa principal iguais aos do F1). Na
 `z_top_max_under_jack` 18,4: **confirmado**. Porca do potenciômetro: o desenho do RK0972S só dá a rosca
 (M7 × 0,75, bucha de 5 ou 7); a porca não é cotada. Típica: 9–10 sextavado × 2,0 **(conferir)**; o rebaixo para
 10 sextavado (11,6 entre cantos) × 2,0 serve para as duas. Pino anti-giro do pot cortado (ok). Kit: knob
-Ø14 × 14, 2 × M2 × 5 da trava, peças impressas `seixo_trava_usb` e `seixo_chave_porca`.
+Ø15 × 14 (rebaixo da porca Ø14 × 2), 2 × M2 × 5 da trava, peças impressas `seixo_trava_usb` e `seixo_chave_porca`.
 
 ### Placa principal v0.3: o que mudou
 
@@ -116,7 +116,7 @@ Carga ~2,5 h desligado.
 | Controles | Encoder com clique | Alps EC11E 15 pulsos / 15 detentes, com chave, eixo D chanfrado L = 25 mm | 1 | 2 | Mouser / TME / Farnell · [conferir sufixo](https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/) | conferir |
 | Controles | LED 3 mm bicolor vermelho/verde, catodo comum | Kingbright WP937EGW | 1 | 3 | DigiKey / Mouser · [754-1234-ND (conferir)](https://www.kingbrightusa.com/images/catalog/SPEC/WP937EGW.pdf) | conferir |
 | Controles | Espaçador do LED 3 mm, ~10 mm | espaçador de nylon para LED 3 mm | 1 | 3 | AliExpress / Mouser · conferir | conferir |
-| Controles | Knobs | knob D14 x 14 com cavidade por baixo (rosca/porca) e parafuso de fixação, furo D6 | 2 | 3 | AliExpress / Mouser · conferir | conferir |
+| Controles | Knobs | knob D15 x 14 com cavidade por baixo (rosca/porca) e parafuso de fixação, furo D6 | 2 | 3 | AliExpress / Mouser · conferir | conferir |
 | Painel | Jack de fone 3,5 estéreo de painel com comutação na ponta | Cliff FC681375V (rosca M8 x 0,75, porca anel; FC681375VH = porca sextavada) | 1 | 2 | Farnell / TME / DigiKey · [2518213 (Farnell)](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5561/Vert%203,5mm%20Jack%20FC681375V-VH.pdf) | final |
 | Painel | Extensão micro-B em fita FPC, macho 90 graus 'UP' -> fêmea | FPV 'Flat Slim Ribbon FPC Micro USB 90 Degree Angled Up Male to Micro USB Female', 10 cm | 1 | 2 | Amazon (Permanent) / AliExpress · [B07Q61KTT7 (15 cm; 5/10 cm na mesma família)](https://www.amazon.com/Ribbon-Degree-Angled-Receptacle-Charging/dp/B07Q61KTT7) | conferir |
 | Cabos | Conector da bateria na placa | JST B3B-PH-K-S | 1 | 2 | LCSC · [C131339](https://www.lcsc.com/product-detail/C131339.html) | final |

@@ -4,7 +4,7 @@
 
 Adapted from etutti/hardware/manual3d/build.py (the eTuttino's, unchanged):
 
-1. kicad-cli: the four Pocket boards (pcb/kicad) -> build/*.glb
+1. kicad-cli: the three Pocket boards (SPEC v5: no panel board) (pcb/kicad) -> build/*.glb
 2. parts.py: parts library + where each instance, cable and board goes
 3. Blender: render_blender.py -> build/shots/*.png + *.json
 4. annotate.py: balloons, arrows, dimensions, crop -> etutti/pocket/manual/img/*.jpg
@@ -42,8 +42,7 @@ def boards():
     sys.path.insert(0, HERE)
     from annotate import content_box
     os.makedirs(IMG, exist_ok=True)
-    for src, dst in (("pocket_top", "board_top"), ("pocket_bottom", "board_bottom"),
-                     ("pocket_panel_top", "panel_top"), ("pocket_panel_bottom", "panel_bottom")):
+    for src, dst in (("pocket_top", "board_top"), ("pocket_bottom", "board_bottom")):
         im = Image.open(os.path.join(POCKET, "pcb", "fab", src + ".png")).convert("RGB")
         im = im.crop(content_box(im, im.getpixel((2, 2)), 20))
         im.save(os.path.join(IMG, dst + ".jpg"), quality=88, optimize=True)
@@ -55,7 +54,7 @@ def boards():
 def main():
     args = sys.argv[1:]
     os.makedirs(BUILD, exist_ok=True)
-    for b in ("pocket", "pocket_controls", "pocket_pot", "pocket_panel"):
+    for b in ("pocket", "pocket_controls", "pocket_pot"):
         glb(b)
     run([sys.executable, os.path.join(HERE, "parts.py")])
     run([BLENDER, "-b", "--python", os.path.join(HERE, "render_blender.py"), "--", *args])
