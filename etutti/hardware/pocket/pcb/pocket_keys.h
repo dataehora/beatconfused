@@ -14,8 +14,8 @@ const uint8_t POCKET_VBAT_PIN = 16, POCKET_HP_DET_PIN = 17, POCKET_POT_PIN = 22;
 const uint8_t POCKET_ENC_A_PIN = 11, POCKET_ENC_B_PIN = 9, POCKET_ENC_SW_PIN = 6;
 // Channels 0-7 (S3 = 0) = rows 1 and 3 (EN_A); 8-15 (S3 = 1) = rows 2 and 4 (EN_B).
 const int8_t POCKET_KEY_INPUT[POCKET_LAYOUT_ROWS][POCKET_LAYOUT_COLS] = {
-  { -1,  21,  20,  18,  17,   2,   1,   0},
+  { -1,  21,  20,  17,  19,   2,   1,   0},
   { 25,  26,  31,  29,  13,  11,  14,  15},
-  { -1,  19,  23,  22,   4,   6,   5,   3},
-  { -1,  30,  28,  24,   9,   8,  10,  -1},
+  { -1,  18,  23,  22,   4,   6,   5,   3},
+  { -1,  28,  27,  24,   9,   8,  10,  -1},
 };

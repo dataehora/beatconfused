@@ -13,7 +13,7 @@ Writes (all under etutti/hardware/pocket/pcb/):
   fab/pocket_gerbers.zip            Gerbers + drills
   fab/pocket_bom.csv                JLCPCB BOM (TMAG5253 consigned / global sourcing)
   fab/pocket_cpl_bottom.csv         placement, back (all ICs and passives)
-  fab/pocket_cpl_top.csv            placement, top (the two JST SH headers)
+  fab/pocket_cpl_top.csv            placement, top (the JST SH header J_CTL)
   fab/pocket_drc.json               KiCad DRC report
   fab/pocket_top.png / _bottom.png  renders
   build/pocket_keys.csv             every key: sensor, mux, channel, EN group
@@ -73,6 +73,8 @@ PARTS = [
      {"1": "TS", "2": "BAT", "3": "BAT", "4": "GND", "5": "GND", "6": "EN1", "8": "GND", "9": "CHG",
       "10": "VSYS", "11": "VSYS", "12": "ILIM", "13": "VBUS", "16": "ISET", "17": "GND"}, "C54313"),
     ("C60", *C0805, "10uF", 71.8, 8.0, 90, "B", two("VBUS", "GND"), "C15850"),
+    # SPEC v5: TVS on VBUS at the charger input (no panel board, no ESD part there any more)
+    ("D60", "Diode_SMD", "D_SOD-123F", "SMF5.0A", 68.6, 8.0, 90, "B", {"1": "VBUS", "2": "GND"}, "C151296"),
     ("C61", *C0805, "10uF", 82.6, 6.8, 90, "B", two("VSYS", "GND"), "C15850"),
     ("C62", *C0805, "10uF", 71.8, 15.2, 90, "B", two("BAT", "GND"), "C15850"),
     ("R10", *R0805, "1.8k", 71.8, 11.6, 90, "B", two("ISET", "GND"), "C1358"),
@@ -106,6 +108,18 @@ PARTS = [
     # (no Pocket firmware) could not keep the 3.3 V up.
     ("Q22", *SOT23, "AO3400A", 90.6, 31.0, 0, "B", {"1": "VBUS", "2": "GND", "3": "QSG"}, "C20917"),
     ("R26", *R0805, "100k", 94.4, 31.0, 0, "B", two("VBUS", "GND"), "C17407"),
+    # SPEC v5 (F4): the Teensy 4.0's USB PHY is powered from its USB1/2_VBUS
+    # pins, which sit on the VIN side of the VUSB-VIN cut (PJRC schematic:
+    # VIN -> F1 500 mA -> ferrite -> Q1 -> USB VBUS pins + its 3.3 V LDO). With
+    # VIN left open the USB (MIDI, flashing) would be dead. So VIN gets VBUS
+    # while the Pocket is ON (EN_BB high): Q24 pulls Q23's gate down. Off, VIN
+    # stays open (the Teensy does not start from USB, the charge light works).
+    # D61 stops the Teensy's 3.3 V leaking back through its LDO / Q1 and Q23's
+    # body diode onto VBUS (that would turn Q22 on without USB).
+    ("Q23", *SOT23, "AO3401A", 31.2, 6.0, 0, "B", {"1": "QVG", "2": "VBUS", "3": "VIN_D"}, "C15127"),
+    ("D61", "Diode_SMD", "D_SOD-123", "B5819W", 34.8, 6.6, 90, "B", {"1": "VIN_T", "2": "VIN_D"}, "C8598"),
+    ("R27", *R0805, "100k", 37.4, 10.4, 0, "B", two("VBUS", "QVG"), "C17407"),
+    ("Q24", *SOT23, "AO3400A", 92.8, 25.0, 0, "B", {"1": "EN_BB", "2": "GND", "3": "QVG"}, "C20917"),
     # --- charge light (CHG -> red of the LED, works switched off) + LED resistors ---
     ("Q30", *SOT23, "AO3401A", 40.0, 17.0, 0, "B", {"1": "CHG", "2": "VBUS", "3": "CHGLED"}, "C15127"),
     ("R30", *R0805, "100k", 43.5, 17.0, 90, "B", two("VBUS", "CHG"), "C17407"),
@@ -146,8 +160,12 @@ PARTS = [
      {"1": "BAT", "2": "TS", "3": "GND"}, "C131339"),
     ("J_SPK", "Connector_JST", "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical", "speaker", 15.6, 23.5, 0, "T",
      {"1": "SPK_P", "2": "SPK_N"}, "C131337"),
-    ("J_PNL", "Connector_JST", "JST_SH_BM08B-SRSS-TB_1x08-1MP_P1.00mm_Vertical", "panel board", 17.7, 33.0, 90, "T",
-     {"1": "VBUS", "2": "VBUS", "3": "GND", "4": "GND", "5": "HP_L", "6": "HP_R", "7": "HP_VGND", "8": "HP_TIPSW"}, "C160394"),
+    # SPEC v5 (F4): no panel board. VBUS arrives by a 26 AWG wire from the
+    # Teensy's VUSB pad (VUSB-VIN cut), the wired panel jack lands on J_JACK.
+    ("J_VBUS", "Connector_Wire", "SolderWire-0.25sqmm_1x01_D0.65mm_OD1.7mm", "VBUS wire from the Teensy's VUSB pad", 18.5, 18.0, 0, "T",
+     {"1": "VBUS"}, ""),
+    ("J_JACK", "Connector_PinHeader_2.54mm", "PinHeader_1x04_P2.54mm_Vertical", "wires from the panel jack (T, R, S, tip switch)", 18.5, 28.6, 0, "T",
+     {"1": "HP_L", "2": "HP_R", "3": "HP_VGND", "4": "HP_TIPSW"}, ""),
     ("J_CTL", "Connector_JST", "JST_SH_BM10B-SRSS-TB_1x10-1MP_P1.00mm_Vertical", "controls board", 57.0, 42.8, 180, "T",
      {"1": "VCC", "2": "POT", "3": "GND", "4": "PWR_A", "5": "PWR_B", "6": "ENC_A", "7": "ENC_B", "8": "ENC_SW",
       "9": "LED_R", "10": "LED_G"}, "C160396"),
@@ -155,7 +173,7 @@ PARTS = [
      {"1": "HP_L", "2": "HP_R", "3": "HP_VGND"}, ""),
 ]
 # heights above the board's top for the case check (mated plug included)
-TOP_HEIGHT = {"J_BAT": 10.5, "J_SPK": 10.5, "J_PNL": 6.0, "J_CTL": 6.0, "J_HP": 3.0}
+TOP_HEIGHT = {"J_BAT": 10.5, "J_SPK": 10.5, "J_VBUS": 3.0, "J_JACK": 3.0, "J_CTL": 6.0, "J_HP": 3.0}
 
 
 def place_part(ref, libname, fp, value, x, y, rot, side, nets):
@@ -399,7 +417,6 @@ def build():
     register(fps)
     for ref, spread in FANOUT.items():
         fanout(part_fp[ref], spread)
-    lanes(part_fp["J_PNL"], "+x")
     lanes(part_fp["J_CTL"], "-y")
 
     # ---- checks: parts on the board, back parts off the pillars, top parts in the case's room ----
@@ -706,8 +723,8 @@ def build():
         seg.SetLayer(pcbnew.Edge_Cuts)
         seg.SetWidth(pcbnew.FromMM(0.1))
         board.Add(seg)
-    B.text("eTuttino Pocket v0.2", 150.0, 88.0, 1.2)
-    B.text("eTuttino Pocket v0.2 - TMAG5253 on this side", 128.5, 88.0, 1.0, pcbnew.B_SilkS)
+    B.text("eTuttino Pocket v0.3", 150.0, 88.0, 1.2)
+    B.text("eTuttino Pocket v0.3 - TMAG5253 on this side", 128.5, 88.0, 1.0, pcbnew.B_SilkS)
     for f in fps:
         f.Reference().SetVisible(False)
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
@@ -760,7 +777,7 @@ def fab():
     lines = list(BOM_EXTRA)
     groups = {}
     for ref, libname, fp, value, x, y, rot, side, nets, lcsc in PARTS:
-        if libname.startswith("Connector_PinHeader"):
+        if libname.startswith("Connector_PinHeader") or libname == "Connector_Wire":
             continue
         key = (value, fp, lcsc)
         groups.setdefault(key, []).append(ref)
@@ -817,7 +834,7 @@ def verify():
         want("COM%d" % m, com[m])
     want("LED_R_DRV", led[0])
     want("LED_G_DRV", led[1])
-    for n, pin in (("SENS_EN", 4), ("KEEP", 10), ("AMP_SD", 12), ("VBAT_S", 16), ("HP_DET", 17), ("POT", 22),
+    for n, pin in (("VIN_T", "VIN"), ("SENS_EN", 4), ("KEEP", 10), ("AMP_SD", 12), ("VBAT_S", 16), ("HP_DET", 17), ("POT", 22),
                    ("ENC_A", 11), ("ENC_B", 9), ("ENC_SW", 6)):
         want(n, pin)
     chan = {p: int(f[1:]) for p, f in G.MUX_PINS.items() if f.startswith("I")}

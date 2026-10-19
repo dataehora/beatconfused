@@ -39,7 +39,7 @@ def switches():
     return pv.read(path)
 
 
-def scene(pl, sw, with_bottom=True):
+def scene(pl, sw, with_bottom=True, knobs=True):
     pl.add_mesh(mesh("seixo_tampa"), color=CASE, specular=0.25, specular_power=12)
     if with_bottom:
         pl.add_mesh(mesh("seixo_fundo"), color="#cfc9be")
@@ -50,10 +50,10 @@ def scene(pl, sw, with_bottom=True):
     for _, _, x, y, kind in C.keys():
         cap = caps[kind].copy().translate((x, F(y), 0.0))
         pl.add_mesh(cap, color=SHARP if kind == "sharp" else NATURAL, specular=0.3, specular_power=30)
-    for x, y in (C.VOLUME_XY, C.SELECT_XY):
+    for x, y in ((C.VOLUME_XY, C.SELECT_XY) if knobs else ()):
         z = C.z_interface(y)
-        pl.add_mesh(pv.Cylinder(center=(x, F(y), z + 3.6), direction=(0, 0, 1), radius=C.KNOB_D / 2, height=6.4,
-                                resolution=48), color=KNOB, specular=0.3)
+        pl.add_mesh(pv.Cylinder(center=(x, F(y), z + C.KNOB_LIFT + C.KNOB_H / 2), direction=(0, 0, 1), radius=C.KNOB_D / 2,
+                                height=C.KNOB_H, resolution=64), color="#2b2a28", specular=0.4)
     lx, ly = C.LED_XY
     pl.add_mesh(pv.Disc(center=(lx, F(ly), C.z_interface(ly) - 0.3), inner=0, outer=1.6, normal=(0, 0, 1)), color=LED)
     # the speaker's cone seen through the grille
@@ -66,7 +66,12 @@ def scene(pl, sw, with_bottom=True):
 def shoot(view, path, sw):
     pl = pv.Plotter(off_screen=True, window_size=(1800, 1000))
     pl.set_background(BG)
-    scene(pl, sw)
+    scene(pl, sw, knobs=(view != "recessos"))
+    if view == "recessos":
+        vx, vy = C.VOLUME_XY
+        pl.add_mesh(pv.Cylinder(center=(vx, F(vy), C.Z_IF - C.POT_NUT_T / 2), direction=(0, 0, 1), radius=C.POT_NUT_AF / 2 / 0.866,
+                                height=C.POT_NUT_T, resolution=6), color=METAL)
+        pl.add_mesh(pv.Cylinder(center=(vx, F(vy), C.Z_IF + 2.2), direction=(0, 0, 1), radius=3.5, height=4.5, resolution=32), color=METAL)
     pl.enable_anti_aliasing("ssaa")
     c = (C.length() / 2, 50.0, 15.0)
     if view == "iso":
@@ -79,9 +84,12 @@ def shoot(view, path, sw):
         pl.camera_position = [(c[0], 50.0, 700.0), (c[0], 50.0, 0), (0, 1, 0)]
         pl.enable_parallel_projection()
         pl.camera.parallel_scale = 70
-    elif view == "left":      # the back-left face with the USB-C and the jack
+    elif view == "left":      # the back-left face with the micro-USB and the jack
         pl.camera_position = [(-170.0, 210.0, 60.0), (20.0, 75.0, 18.0), (0, 0, 1)]
         pl.camera.view_angle = 30
+    elif view == "recessos":  # the lid without knobs: the two recesses, the pot nut, the Teensy pinhole
+        pl.camera_position = [(10.0, -40.0, 120.0), (40.0, 72.0, 30.0), (0, 0, 1)]
+        pl.camera.view_angle = 26
     elif view == "below":
         pl.camera_position = [(c[0], 50.0, -700.0), (c[0], 50.0, 0), (0, 1, 0)]
         pl.enable_parallel_projection()
@@ -95,7 +103,7 @@ def shoot(view, path, sw):
 def main():
     os.makedirs(RENDERS, exist_ok=True)
     sw = switches()
-    for view in ("iso", "iface", "top", "left", "below"):
+    for view in ("iso", "iface", "top", "left", "below", "recessos"):
         shoot(view, os.path.join(RENDERS, "seixo_%s.png" % view), sw)
 
 

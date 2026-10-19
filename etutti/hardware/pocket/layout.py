@@ -1,5 +1,5 @@
 """eTuttino Pocket -- key layout, plan outline and interface: the pocket.json
-contract (SPEC v3, task D2: the Seixo case, variant B, final).
+contract (SPEC v5, task F3: the Seixo case, variant B).
 
     C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/pocket/layout.py
 
@@ -88,14 +88,14 @@ def contract():
     shift = C.G3["x"] - min(k["x"] for k in ett_keys if k["row"] == 2)
     ett = [(x + shift, y) for x, y in ett]
     st = C.stack_parts()
-    pg = C.panel_geometry()
+    g = C.conn_geometry()
     inside, outside = C.battery_rects()
     pk = lambda poly: rnd(poly)
     sp = fc.get("speaker", {})
     return {
-        "version": 4, "spec": "v4", "task": "F1", "variant": C.VARIANT, "variant_name": C.V["name"],
+        "version": 5, "spec": "v5", "task": "F3", "variant": C.VARIANT, "variant_name": C.V["name"],
         "variant_params": {k: C.V[k] for k in ("band", "nose", "corner", "bulge")},
-        "note": "SPEC v4 F1: the Seixo case, variant B, as modelled in case/case.py. "
+        "note": "SPEC v5 F3: the Seixo case, variant B, as modelled in case/case.py. "
                 "Coordinates: x right from the case's leftmost point, y from the back (0) to the player (100), z up from the table, mm.",
         "keys": keys, "rows": grid, "length": round(C.length(), 1), "width": WIDTH,
         "etuttino_length": round(max(x for x, _ in ett) - min(x for x, _ in ett), 1),
@@ -110,6 +110,8 @@ def contract():
         "controls": {
             "volume": list(C.VOLUME_XY), "select": list(C.SELECT_XY), "led": list(C.LED_XY),
             "knob_d": C.KNOB_D, "led_d": C.LED_HOLE_D,
+            "knob_recess": {"d": C.KNOB_RECESS_D, "depth": C.KNOB_RECESS_DEPTH, "pot_nut": [C.POT_NUT_AF, C.POT_NUT_T],
+                            "knob_proposal": {"d": C.KNOB_D, "h": C.KNOB_H, "lift": C.KNOB_LIFT, "cavity": list(C.KNOB_CAVITY)}},
             "grille": [round(min(gx), 1), round(min(gy), 1), round(max(gx), 1), round(max(gy), 1)],   # bounding box (old readers)
             "grille_outline": rnd(gpoly), "holes": [[round(x, 2), round(y, 2)] for x, y in holes], "hole_d": C.GRILLE_HOLE_D,
             "logo": rnd(logo_zone), "logo_text": [round(lc[0], 2), round(lc[1], 2)],
@@ -125,7 +127,7 @@ def contract():
             "posts": [list(p) for p in C.CTRL_POSTS], "tabs": [_rect(*t) for t in C.CTRL_TABS], "connector": _rect(*C.CTRL_CONN),
             "pot": {"rect": _rect(*C.POT_BODY[:4]), "z": list(C.POT_BODY[4:]),
                     "board": _rect(*C.POT_BOARD[:4]), "board_z": list(C.POT_BOARD[4:]),
-                    "kind": "9 mm switched pot, horizontal type (PECAS volume_pot), on a vertical board right of its shaft; M7 bushing nutted on the lid"},
+                    "kind": "9 mm switched pot, horizontal type (PECAS volume_pot), on a vertical board right of its shaft; M7 nut flush in a D13 lid recess"},
             "encoder": {"rect": _rect(C.SELECT_XY[0] - 6.2, C.SELECT_XY[1] - 6.6, C.SELECT_XY[0] + 6.2, C.SELECT_XY[1] + 6.6),
                         "z": [C.CTRL_TOP, round(C.CTRL_TOP + 6.5, 2)]},
             "note": "hangs under the lid on 2 M2 posts; the pot board meets its left edge at 90 deg",
@@ -148,14 +150,16 @@ def contract():
                   "z": {"audio_bottom": round(C.Z_AB, 2), "audio_top": round(C.Z_AB_TOP, 2), "teensy_top": round(C.Z_TEENSY_TOP, 2),
                         "usb_top": round(C.Z_USB_TOP, 2), "height": C.STACK_H},
                   "note": "LOW stack (Teensy soldered straight on the Audio Board), 3 mm above the main board; u along the 38 mm side from the USB end"},
-        "panel": {"board": pk(pg["board"]), "z": [round(C.PANEL_Z_TOP - C.PANEL_T, 2), C.PANEL_Z_TOP],
-                  "usb": {"at": rnd([pg["at"](C.PANEL_USB_S, 0)])[0], "normal": [round(-v, 3) for v in pg["n"]], "z": round(C.USB_C_ZC, 2)},
-                  "jack": {"at": rnd([pg["at"](C.PANEL_JACK_S, 0)])[0], "normal": [round(-v, 3) for v in pg["n"]], "z": round(C.JACK_ZC, 2),
-                           "part": "Same Sky SJ1-3525N", "hole_d": C.JACK_HOLE_D},
-                  "holes": [{"kind": k, "at": rnd([pg["at"](s_, d)])[0]} for k, s_, d in C.PANEL_HOLES],
-                  "note": "USB-C + 3.5 jack on one board on the back-left curved wall (flat boss inside); see pcb_envelope.json panel"},
+        "panel": {"micro_b": {"at": rnd([g["fem_origin"]])[0], "normal": [round(-v, 3) for v in g["n"]], "z": C.FEM_Z,
+                              "window": list(C.FEM_HOLE), "outer_recess": list(C.FEM_RECESS),
+                              "kind": "FPC micro-B extension: female head in a tunnel on a flat boss, 0.5 lip, printed trava (2 x M2)"},
+                  "jack": {"at": rnd([g["jack_origin"]])[0], "normal": [-1.0, 0.0], "z": C.JACK_Z,
+                           "part": "Cliff FC681375V", "hole_d": C.JACK_HOLE_D, "spot_face_d": C.JACK_SPOT_D},
+                  "note": "micro-USB (FPC extension) + 3.5 jack (wired) on the back-left curved wall; no panel board since v5; see pcb_envelope.json panel"},
+        "teensy_button": {"pinhole": [round(v, 2) for v in C.teensy_button_xy()], "d": C.BTN_HOLE_D,
+                          "note": "paper clip from the top, through the lid, down a guide tube to the Teensy's program button (CHECK its position)"},
         "main_board": {"outline": rnd(C.board_outline(1.0)), "note": "= case/out/pcb_envelope.json outline (the bay's corner left out)"},
-        "case": {"version": "Seixo", "files": "case/out/seixo_tampa, seixo_fundo, seixo_tampa_bateria, seixo_caixa_fundo, plate, keycap_natural/sharp/cf, keycap_test_4 (.step/.stl)",
+        "case": {"version": "Seixo", "files": "case/out/seixo_tampa, seixo_fundo, seixo_tampa_bateria, seixo_caixa_fundo, seixo_trava_usb, seixo_chave_porca, plate, keycap_natural/sharp/cf, keycap_test_4 (.step/.stl)",
                  "weight_g": fc.get("weight"),
                  "materials": {k: {"material": m, "qty": q, "what": w} for k, (m, q, w) in C.MATERIALS.items()},
                  "cap_counts": C.cap_counts()},

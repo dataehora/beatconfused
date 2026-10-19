@@ -1,4 +1,4 @@
-"""The Pocket's review page for J: etutti/pocket/revisao/index.html (SPEC v4, F1).
+"""The Pocket's review page for J: etutti/pocket/revisao/index.html (SPEC v5, F3).
 
     python etutti/hardware/pocket/case/revisao.py        (stdlib; run after
     case.py, fit_check.py, mechanics.py, render.py and ../layout.py)
@@ -74,6 +74,7 @@ def page():
     top = top.split(">", 1)
     top = top[0].split(' width="')[0] + ">" + top[1]          # drop the fixed size: it scales to the column
     sp, pa, bt, w = fc["speaker"], fc["panel"], fc["battery"], fc["weight"]
+    kr, tb = pa["knob_recesses"], pa["teensy_button"]
     rows = [
         ("Comprimento × largura", f"{n(pj['length'])} × {n(pj['width'], 0)} mm (o eTuttino tem {n(pj['etuttino_length'])})"),
         ("Altura", "teclado igual ao eTuttino: tampa a 17,4 mm, topo das teclas a 26,6; interface a 33"),
@@ -90,28 +91,35 @@ def page():
         ("Bateria", f"berço {n(bt['cradle_inside'][0])} × {n(bt['cradle_inside'][1])} × {n(bt['cradle_inside'][2])} (o pedido), "
                     f"fora da placa principal, sai por uma tampinha no fundo; bolso do plugue {n(bt['pocket_inside'][0])} × "
                     f"{n(bt['pocket_inside'][1])} × {n(bt['pocket_inside'][2])} (pedido ≥ 14,5 × 9 × 6)"),
-        ("USB-C e fone", f"duas janelas na parede curva de trás-esquerda, numa plaquinha só; fone Same Sky SJ1-3525N em furo de Ø {n(6.3)}; "
-                         f"parede de {n(1.0)} mm no USB-C e {n(1.5)} no fone, rebaixos por fora de {n(pa['usb_recess_depth'])} e {n(pa['jack_spot_depth'])} mm; "
-                         f"plaquinha presa por um pino (sobre o plugue do Teensy) e um parafuso M2"),
+        ("Micro-USB e fone", f"na parede curva de trás-esquerda, sem plaquinha: extensão micro-B em fita FPC, a fêmea num túnel com "
+                             f"um ressalto de {n(0.5)} na parede e uma trava impressa (2 × M2); janela 12 × 8 com parede de {n(3.0)} "
+                             f"(rebaixo por fora de {n(pa['female']['outer_recess_depth'])}). Fone Cliff FC681375V em furo de Ø {n(8.2)}, "
+                             f"parede de {n(2.0)}, porca por fora (rebaixo de {n(pa['jack']['spot_face_depth'])})"),
+        ("Knobs", f"rebaixo de Ø {n(kr['recess_d'], 0)} × {n(kr['recess_depth'])} sob os dois; a porca M7 fica rente "
+                  f"({n(kr['nut']['flush_with_lid'])}); sobram {n(kr['thread']['left_above_nut'])} mm de rosca acima dela, dentro do knob; "
+                  f"knob proposto Ø {n(kr['knob']['d'], 0)}, saia {n(kr['knob']['skirt_to_nut_axial'])} acima da porca"),
+        ("Botão do Teensy", f"furo de Ø {n(tb['hole_d'])} na tampa, sobre o botão, com tubo-guia: um clipe desce {n(tb['depth_lid_to_teensy'])} mm "
+                            f"até o botão com o case fechado (posição do botão: conferir na peça)"),
         ("Arestas abertas nos STL", ", ".join(f"{k} {v['open_edges']}" for k, v in fc["stl"].items())),
         ("Raios pela abertura", f"{fc['rays']['keys'][0]} livres de {sum(fc['rays']['keys'])} (teclas), "
                                 f"{fc['rays']['grille'][0]} de {sum(fc['rays']['grille'])} (grade), "
-                                f"{fc['rays']['panel'][0]} de {sum(fc['rays']['panel'])} (janelas do USB-C e do fone)"),
+                                f"{fc['rays']['panel'][0]} de {sum(fc['rays']['panel'])} (janela do micro-USB e furo do fone), "
+                                f"{fc['rays']['button'][0]} de {sum(fc['rays']['button'])} (furo do botão do Teensy)"),
         ("Colisões", f"{len(fc['collisions_with_case'])} entre peças e case; "
                      f"{sum(1 for p in fc['pairs'] if p[2] > 0)} entre peças; "
                      f"{sum(1 for v in fc['case_parts_overlap'].values() if v > 0)} entre as peças do case"),
     ]
     table = "".join(f'<tr><th scope="row">{a}</th><td>{b}</td></tr>' for a, b in rows)
     figs = [
-        ("seixo_iso.png", "O Seixo, variante B, com as teclas, os knobs, o LED e a grade."),
-        ("seixo_iface.png", "A área de interface: logo reto gravado no centro da zona de trás, knobs e LED na linha y = 49, grade só sobre o cone."),
-        ("seixo_left.png", "A parede curva de trás-esquerda: USB-C e fone, com rebaixos por fora."),
-        ("fit_dentro.png", "Por dentro, sem a tampa: placa principal (verde), pilha Teensy + Audio Board (atrás), plaquinha do painel "
-                           "(azul), potenciômetro deitado e plaquinha dos knobs (roxo), caixa do alto-falante; a bateria fica embaixo, no fundo."),
-        ("fit_corte_y21.png", "Corte em y = 21: a plaquinha do painel passa por cima do plugue do Teensy, presa ali só por um pino."),
+        ("seixo_iso.png", "O Seixo, variante B, com as teclas, os knobs propostos (Ø 14), o LED e a grade."),
+        ("seixo_recessos.png", "Sem os knobs: os dois rebaixos de Ø 13 na tampa, a porca M7 rente no do volume e o furinho do botão do Teensy à direita do logo."),
+        ("seixo_left.png", "A parede curva de trás-esquerda: janela do micro-USB (com rebaixo) e o fone com a porca por fora."),
+        ("fit_conectores.png", "Por cima, sem a tampa: o bloco da fêmea micro-B com a trava (azul), o fone, e em amarelo o espaço da fita FPC "
+                               "(sobe do plugue do Teensy, dobra sob o bloco, sobra dobrada sobre o Teensy)."),
+        ("fit_corte_y21.png", "Corte em y = 21: a fêmea no túnel, presa pelo ressalto da parede e pela trava; o plugue do Teensy embaixo, com 2 mm para a fita dobrar; à direita, o tubo-guia do botão."),
+        ("fit_corte_y38.png", "Corte em y = 38: o fone por cima do J_BAT, com a porca por fora."),
+        ("fit_corte_y49.png", "Corte na linha dos knobs (y = 49): os rebaixos, a porca rente, o potenciômetro e o encoder."),
         ("fit_corte_x31.png", "Corte pelo encoder (x = 31): as duas abas da plaquinha dos knobs; a da frente entra num rebaixo da parede da caixa do alto-falante."),
-        ("fit_corte_x18.png", "Corte em x = 18: o bolso do plugue da bateria atrás do berço, com o par JST encaixado."),
-        ("fit_corte_y49.png", "Corte na linha dos knobs (y = 49): potenciômetro preso na tampa, encoder e LED na plaquinha, bateria embaixo."),
         ("fit_corte_y78.png", "Corte pelo alto-falante: grade, junta, caixa fechada e o berço da bateria embaixo."),
         ("seixo_below.png", "Por baixo: a tampinha da bateria com 2 parafusos, os parafusos do fundo e os pés."),
     ]
@@ -127,9 +135,9 @@ def page():
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BeatConfused | eTuttino Pocket · revisão F1</title>
-  <meta name="description" content="eTuttino Pocket: o case Seixo, variante B, fechado para o protótipo (SPEC v4, F1)." />
-  <!-- Review page for J (SPEC v4, task F1). Portuguese only, unlisted:
+  <title>BeatConfused | eTuttino Pocket · revisão F3</title>
+  <meta name="description" content="eTuttino Pocket: o case Seixo, variante B, com micro-USB de painel, rebaixos dos knobs e acesso ao botão do Teensy (SPEC v5, F3)." />
+  <!-- Review page for J (SPEC v5, task F3). Portuguese only, unlisted:
        not on the home page, not in the sitemap. Written by
        etutti/hardware/pocket/case/revisao.py -- edit that script, not this file. -->
   <meta name="robots" content="noindex,nofollow" />
@@ -166,9 +174,9 @@ def page():
     <header class="hero">
       <p class="eyebrow">eTuttino Pocket · revisão</p>
       <h1>O Seixo, variante B</h1>
-      <p class="family-lead">O case do Pocket fechado para o protótipo (SPEC v4, tarefa F1): logo reto, bolso do plugue da bateria,
-      abas da plaquinha dos knobs, fone SJ1-3525N e a plaquinha do painel presa sem nada sobre o plugue do Teensy, tudo conferido
-      peça por peça contra as medidas da eletrônica. {n(pj['length'])} × 100 mm.</p>
+      <p class="family-lead">O case do Pocket na SPEC v5 (tarefa F3): sem a plaquinha do painel, o micro-USB vem do Teensy por uma
+      fita FPC até a parede, o fone é de painel com fios, as porcas dos knobs ficam escondidas num rebaixo e dá para apertar o botão do
+      Teensy com um clipe sem abrir o case. Tudo conferido peça por peça contra as medidas da eletrônica. {n(pj['length'])} × 100 mm.</p>
       <p><span class="family-tag">Parte física fechada · para revisar</span></p>
     </header>
 
@@ -190,17 +198,27 @@ def page():
     </section>
 
     <section class="rv-box">
-      <h2>O que mudou na v4 (F1)</h2>
+      <h2>O que mudou na v5 (F3)</h2>
+      <ul>
+        <li><strong>Micro-USB de painel em fita FPC</strong>: o cabo redondo de 4,5 mm com raio ≥ 18 não cabia (o máximo possível era
+        R 13 no laço e R 7 no plugue). A eletrônica trocou pela extensão em fita: macho de 90° "UP" no Teensy, a fita sobe, dobra chata
+        sob o bloco e entra na fêmea. A fêmea desliza num túnel até um ressalto de 0,5 na parede, e uma trava impressa com 2 parafusos M2
+        segura por trás.</li>
+        <li><strong>Fone de painel Cliff FC681375V</strong>, ligado por fios, numa face plana própria; porca de Ø 10 por fora, nervura
+        contra o giro por dentro.</li>
+        <li><strong>Rebaixo de Ø 13 × 2 sob os dois knobs</strong>: a porca M7 do volume fica rente com a tampa, coberta pelo knob;
+        o seletor tem o mesmo rebaixo. Uma chave de porca impressa entra no rebaixo.</li>
+        <li><strong>Botão de gravação do Teensy</strong>: furo de Ø 1,6 na tampa, à direita do logo, com tubo-guia até o Teensy.</li>
+        <li>Saíram a plaquinha do painel, o ressalto dela, o pino, a costela e a aba.</li>
+      </ul>
+      <h2>Na v4 (F1)</h2>
       <ul>
         <li><strong>Logo reto</strong> (horizontal), centrado na zona de trás da interface, 0,4 de fundo; a casca de cima é de resina.</li>
         <li><strong>Bolso do plugue da bateria</strong> de {n(bt['pocket_inside'][0])} × {n(bt['pocket_inside'][1])} × {n(bt['pocket_inside'][2])}
-        para o par JST PH encaixado. Para caber, o berço andou 2 mm para a direita e 2,5 para a frente.</li>
+        para o par JST PH encaixado.</li>
         <li><strong>Abas da plaquinha dos knobs</strong>: a de trás passa por cima da Audio Board; a da frente entra num rebaixo
         da parede da caixa do alto-falante, que continua fechada.</li>
-        <li><strong>Fone SJ1-3525N</strong> em furo de Ø 6,3, eixo a 2,5 da plaquinha.</li>
-        <li><strong>Plaquinha do painel</strong>: sobre o plugue do Teensy, só um pino da tampa (nada embaixo); o parafuso M2 foi para
-        entre o USB-C e o fone, numa costela da tampa; a borda da frente apoia numa aba de 0,8.</li>
-        <li><strong>Materiais</strong>: casca de cima em resina; fundo, tampinha da bateria e fundo da caixa em MJF; capas em resina.</li>
+        <li><strong>Materiais</strong>: casca de cima em resina; fundo, tampinha da bateria, fundo da caixa, trava e chave em MJF; capas em resina.</li>
       </ul>
       <h2>Desde o D1</h2>
       <ul>
@@ -210,7 +228,6 @@ def page():
         interface, fora da placa principal. Sai por uma tampinha de 2 parafusos no fundo, sem abrir a tampa; o plugue dela se
         encaixa num bolso dentro do próprio berço.</li>
         <li><strong>Pilha baixa</strong> (Teensy soldado direto na Audio Board, como a eletrônica prefere): 8,7 mm em vez de 13.</li>
-        <li><strong>USB-C e fone numa plaquinha só</strong>, na parede curva de trás-esquerda, por cima do plugue do Teensy.</li>
         <li><strong>Alto-falante CLS0361-L152</strong> sob a grade, com caixa traseira fechada e vedada que cresce para o lado.</li>
       </ul>
     </section>

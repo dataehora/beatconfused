@@ -4,6 +4,158 @@ Relatório do agente `eletronica`. Cada tarefa tem uma seção; o fim do arquivo
 para a gestão. Medidas em mm. **(conferir)** = número de datasheet de distribuidor, estimativa,
 ou peça ainda sem medida conferida.
 
+## F4 · Fechamento para o micro-USB (SPEC v5, 19 out 2026)
+
+**SPEC atendida:** v5, tarefa F4 ("Eletrônica"), sobre o `pcb_envelope.json` do F3 (spec "pocket SPEC v5, task F3",
+relido no fim: contorno, apoios e furos da placa principal iguais aos do F1). Nada foi encomendado nem montado.
+
+### Resultado
+
+| Placa | Versão | DRC (erros / avisos / não ligados) | Fab |
+|---|---|---|---|
+| Principal, 4 camadas, 1,2 mm | v0.3 | **0 / 0 / 0** | `pcb/fab/pocket_gerbers.zip`, `pocket_bom.csv`, `pocket_cpl_bottom.csv`, `pocket_cpl_top.csv` |
+| Plaquinha dos knobs, 1,6 mm | v0.2 | **0 / 0 / 0** | `pcb/fab/pocket_controls_gerbers.zip` |
+| Plaquinha do volume (em pé), 1,6 mm | v0.2 | **0 / 0 / 0** | `pcb/fab/pocket_pot_gerbers.zip` |
+| ~~Plaquinha do painel~~ | removida | — | arquivos apagados da árvore (ficam no histórico do git, último no PR #108) |
+
+- **Placa × firmware: 28/28**, 0 divergências; o VIN do Teensy entrou na conferência (rede VIN_T no pino VIN).
+- **Rigidez:** pior tecla **0,021 mm** a 3 N (D♯5, fileira 1), média 0,008 mm (45 apoios + 28 pernas). Meta 0,05.
+- `build_small_boards.py` não gera mais a plaquinha do painel; `kit_bom.py`, `power_budget.py` (`POWER.md`),
+  `PINOS.md`, `PECAS.json` e `pcb/MANUAL_ELETRICO.md` atualizados.
+
+### Peças escolhidas
+
+| Função | Peça | Medidas (datasheet) | Fonte / datasheet | Status |
+|---|---|---|---|---|
+| Extensão micro-B de painel | **fita FPC** "FPV Flat Slim Ribbon FPC Micro USB 90° Angled **Up** Male → Micro USB Female", **10 cm** | fita ~10–12 × 0,3, dobra chata; macho "UP" ~11 × 8,5 × 5,5 (fita sai pela face de cima do plugue); cabeça da fêmea ~12 × 9 × 4, **sem orelhas** (presa pela trava impressa do design, 2 × M2 × 5) | [Amazon B07Q61KTT7 (15 cm)](https://www.amazon.com/Ribbon-Degree-Angled-Receptacle-Charging/dp/B07Q61KTT7), [B07Q9YBC99 (5 cm)](https://www.amazon.com/Ribbon-Degree-Angled-Female-Charging/dp/B07Q9YBC99); sem desenho publicado | **conferir** (medir ao chegar; comprar também um "DOWN") |
+| Jack de fone de painel | **Cliff FC681375V** (estéreo, comutação na ponta, porca anel M8 × 0,75) | corpo 10,5 × 9,0 × 13,0, rosca 4,5, porca Ø10 × 2,0, abas 4,0 atrás; furo Ø8,2; parede ≤ 2,5 | [datasheet Cliff](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5561/Vert%203,5mm%20Jack%20FC681375V-VH.pdf), Farnell 2518213 | final (estoque conferir) |
+| TVS do VBUS | **SMF5.0A** (Littelfuse), SOD-123F, D60, junto do C60/BQ24074 | 5,0 V de trabalho, ruptura 6,4–7,0 V, 200 W | [LCSC C151296](https://lcsc.com/product-detail/C151296.html), [Littelfuse SMF](https://www.littelfuse.com/products/tvs-diodes/surface-mount/smf.aspx) | conferir estoque |
+| Chave do VIN (nova, ver abaixo) | **AO3401A** Q23 + **AO3400A** Q24 + **B5819W** D61 + 100 kΩ R27 | SOT-23, SOD-123 | C15127, C20917, C8598 (conferir), C17407 | final |
+| Fio do VBUS | 26 AWG silicone/PTFE, ~50 mm | OD ≤ 1,2 | qualquer | final |
+| Encoder (pedido do design, F3) | Alps EC11E 15/15 com chave, **eixo L 25** (era 20) | com o knob Ø14 × 14 o L 20 entra só 5,2; o L 25 entra 8,0 | [Alps EC11E](https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/) | conferir sufixo (reserva: L 30 cortado) |
+
+**Recusado:** o cabo redondo com orelhas M3 (fêmea como a do Adafruit 3258: flange 25,5 × 10, orelhas Ø3,5 a 17,3,
+26,1 de comprimento, cabo Ø4,5). Ele precisa de R ≥ 18 e só existe com ≥ 25 cm; o design mediu R ~7 no plugue e
+~13 no laço como o melhor possível, e só 11 mm de altura livre (z 19,5–30,5) sobre o Teensy.
+
+**Para o design (respondido no `PECAS.json`):** J_VBUS e J_JACK ficam ≤ 3,0 acima da placa (z ≤ 10,7), abaixo do
+`z_top_max_under_jack` 18,4: **confirmado**. Porca do potenciômetro: o desenho do RK0972S só dá a rosca
+(M7 × 0,75, bucha de 5 ou 7); a porca não é cotada. Típica: 9–10 sextavado × 2,0 **(conferir)**; o rebaixo para
+10 sextavado (11,6 entre cantos) × 2,0 serve para as duas. Pino anti-giro do pot cortado (ok). Kit: knob
+Ø14 × 14, 2 × M2 × 5 da trava, peças impressas `seixo_trava_usb` e `seixo_chave_porca`.
+
+### Placa principal v0.3: o que mudou
+
+1. **J_PNL (SH-8) saiu.** Entraram, no `connector_zones.back_left`:
+   - **J_VBUS** (x 18,5; y 18,0): 1 pad passante (furo 0,85) para o fio de 26 AWG do pad VUSB do Teensy. Alívio
+     de tração com cola nas duas pontas (o footprint com furo de alívio do KiCad pede 10 mm, não cabe);
+   - **J_JACK** (x 18,5; y 28,6–36,2): 4 pads de 2,54 para os fios do jack de painel: 1 HP_L (ponta), 2 HP_R
+     (anel), 3 HP_VGND (manga, **terra virtual, nunca GND**), 4 HP_TIPSW (comutação → HP_DET, pino 17).
+     Os pads J_HP (fios do jack da própria Audio Board) continuam: os dois jacks ficam em paralelo.
+2. **TVS D60 (SMF5.0A)** no VBUS, ao lado do C60 e da entrada do BQ24074 (a SPEC pede "junto da entrada do
+   carregador"). O D+/D− ficam com a proteção do próprio Teensy (risco aceito na SPEC).
+3. **Chave do VIN (Q23, Q24, D61, R27), nova, não pedida, mas necessária.** Ver a próxima seção.
+4. Nada mudou no contorno, nos apoios, nos furos, no J_BAT/J_SPK/J_CTL/J_HP nem nas alturas.
+
+### Corrente no pad VUSB e no micro-B (pedido da SPEC) e o que a PJRC mostrou
+
+- **Esquema do Teensy 4.0** ([PJRC, schematic40.png](https://www.pjrc.com/teensy/schematic40.png)): o pino 1 do
+  micro-B vai **direto** ao nó VUSB (só o C25 de 2,2 µF), **sem fusível**. O fusível de 500 mA (F1), a ferrite e o
+  Q1 (DMG2305UX) ficam do lado do **VIN**, depois da ponte VUSB–VIN.
+- **[Loja PJRC, Teensy 4.0](https://www.pjrc.com/store/teensy40.html):** o VUSB recebe a USB e pode ser separado do
+  VIN cortando os pads do verso; não há corrente máxima publicada para o pad.
+- **[Fórum PJRC, "Max current through VUSB"](https://forum.pjrc.com/index.php?threads/max-current-through-vusb-to-pcb.27859/)**
+  (Teensy 3.1): Paul Stoffregen responde "500 mA", limitado pelo PTC e pela resistência de cabo, conector e
+  trilhas. No 4.0 o PTC não está no caminho do VUSB; o limite prático é o da porta USB 2.0 (500 mA) e o do
+  contato do micro-B (1,8 A pela especificação Micro-USB; **conferir** no conector da PJRC).
+- **No Pocket:** o BQ24074 limita a entrada a 500 mA (USB500, típico 475), + ~5 mA da luz de carga: **≤ 0,5 A,
+  dentro do que a PJRC indica.** O fio de 26 AWG (50 mm) cai 3,5 mV a 500 mA.
+
+**O que o esquema mostrou de mais importante:** os pinos **USB1_VBUS / USB2_VBUS do i.MX** (que alimentam o regulador
+interno do PHY da USB) e o regulador de 3,3 V do Teensy ficam **depois do Q1, do lado do VIN**. Com a ponte cortada
+e o VIN solto (como estava desde o E2b), **a USB do Teensy não funcionaria**: nada de MIDI nem de gravação pelo
+micro-USB. O fórum confirma ([Can't program Teensy 4.0 after Vin trace is cut and supplying external 3.3v](https://forum.pjrc.com/index.php?threads/cant-program-teensy-4-0-after-vin-trace-is-cut-and-supplyng-external-3-3v.60373/)):
+com a ponte cortada e 3,3 V no pino 3V3, a porta não aparece; com 5 V no VIN, aparece.
+
+**Correção na v0.3:** o VIN do Teensy recebe o VBUS por **Q23 (P-MOSFET) + D61 (Schottky)**, ligados por **Q24**
+quando o EN do conversor está alto, ou seja, **só com o Pocket ligado**:
+
+- ligado + USB: VIN ≈ VBUS − 0,3 V → o PHY funciona (MIDI, gravação, página). O regulador do próprio Teensy
+  também passa a alimentar o trilho de 3,3 V, em paralelo com o TPS63001 (cada um só fornece, nenhum absorve);
+- desligado + USB: VIN aberto → o Teensy não liga pela USB, o Pocket só carrega e a luz de carga funciona (SPEC);
+- sem USB: nada muda. O D61 impede que o 3,3 V do Teensy volte pelo regulador dele e pelo diodo do Q23 até o
+  VBUS (isso ligaria o Q22 e o desligamento automático falharia).
+- A ponte VUSB–VIN continua cortada e "nada volta para a USB" continua valendo.
+
+### Consumo e autonomia (`POWER.md`, regenerado por `pcb/power_budget.py`)
+
+| Cenário recomendado (TMAG5253BA3 por grupo, 396 MHz), 1000 mAh | fone | alto-falante |
+|---|---:|---:|
+| típico | **6,7 h** | **4,5 h** |
+| pior caso | 4,1 h | 2,4 h |
+
+Sem mudança: o TVS, a chave do VIN e o fio só trabalham com USB. Ligado e com USB, a corrente da porta pode passar
+um pouco dos 500 mA (carregador ≤ 500 + o que o regulador do Teensy fornecer ao trilho, até ~150 mA): pergunta 2.
+Carga ~2,5 h desligado.
+
+### Kit completo (`pcb/fab/pocket_kit_bom.csv`)
+
+| Grupo | Item | Peça | Por Pocket | Comprar | Fornecedor / código | Status |
+|---|---|---|---:|---:|---|---|
+| Placas | Placa principal montada (verso: CIs, passivos, TVS, 28 TMAG5253; topo: J_CTL) | 4 camadas, 1,2 mm, Gerbers fab/pocket_gerbers.zip + BOM fab/pocket_bom.csv + CPL fab/pocket_cpl_bottom.csv / _top.csv | 1 | 5 placas / 2 montadas | JLCPCB (PCBA) · [link](https://jlcpcb.com/) | final |
+| Placas | Sensor Hall para a placa principal (consignado na JLCPCB) | TI TMAG5253BA3IQDMRR, X2SON-4 | 28 | 40 | TI store / DigiKey / Mouser · [296-TMAG5253BA3IQDMRRCT-ND (DigiKey, conferir)](https://www.ti.com/product/TMAG5253) | conferir |
+| Placas | Plaquinha dos knobs (sem montagem) | 2 camadas, 1,6 mm, fab/pocket_controls_gerbers.zip | 1 | 5 | JLCPCB · [link](https://jlcpcb.com/) | final |
+| Placas | Plaquinha do volume, em pé (sem montagem) | 2 camadas, 1,6 mm, fab/pocket_pot_gerbers.zip | 1 | 5 | JLCPCB · [link](https://jlcpcb.com/) | final |
+| Placas | Plate dos switches | FR-4 1,6 mm, desenho do design (case/out/plate.dxf) | 1 | 5 | JLCPCB (como placa sem cobre) · [link](https://jlcpcb.com/) | conferir |
+| Teensy | Teensy 4.0 | PJRC TEENSY40 (sem pinos) | 1 | 1 | PJRC / distribuidor · [TEENSY40](https://www.pjrc.com/store/teensy40.html) | final |
+| Teensy | Audio Board Rev D | PJRC TEENSY4_AUDIO | 1 | 1 | PJRC / distribuidor · [TEENSY4_AUDIO](https://www.pjrc.com/store/teensy3_audio.html) | final |
+| Teensy | Barra de pinos extralonga 1 x 14, passo 2,54 (pilha baixa) | header macho 1x14, pino ~20 mm (plástico ~2,5) | 2 | 4 | PJRC / AliExpress / Mouser · [conferir](https://www.pjrc.com/store/header_14x1_d.html) | conferir |
+| Teclado | Switch magnético Gateron (Hall) KS-20 | Gateron Magnetic Jade (ou equivalente KS-20 com ímã) | 28 | 32 | Gateron / lojas de teclado · [conferir](https://www.gateron.com/) | conferir |
+| Teclado | Capas dos botões | impressas (arquivos do design, case/out) | 28 | 32 | impressão 3D · - | conferir |
+| Controles | Potenciômetro de volume com chave | Alps RK0971221Z05 (RK097, 10 k, chave SPST, horizontal) | 1 | 2 | LCSC · [C336003](https://www.lcsc.com/product-detail/C336003.html) | conferir |
+| Controles | Encoder com clique | Alps EC11E 15 pulsos / 15 detentes, com chave, eixo D chanfrado L = 25 mm | 1 | 2 | Mouser / TME / Farnell · [conferir sufixo](https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/) | conferir |
+| Controles | LED 3 mm bicolor vermelho/verde, catodo comum | Kingbright WP937EGW | 1 | 3 | DigiKey / Mouser · [754-1234-ND (conferir)](https://www.kingbrightusa.com/images/catalog/SPEC/WP937EGW.pdf) | conferir |
+| Controles | Espaçador do LED 3 mm, ~10 mm | espaçador de nylon para LED 3 mm | 1 | 3 | AliExpress / Mouser · conferir | conferir |
+| Controles | Knobs | knob D14 x 14 com cavidade por baixo (rosca/porca) e parafuso de fixação, furo D6 | 2 | 3 | AliExpress / Mouser · conferir | conferir |
+| Painel | Jack de fone 3,5 estéreo de painel com comutação na ponta | Cliff FC681375V (rosca M8 x 0,75, porca anel; FC681375VH = porca sextavada) | 1 | 2 | Farnell / TME / DigiKey · [2518213 (Farnell)](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5561/Vert%203,5mm%20Jack%20FC681375V-VH.pdf) | final |
+| Painel | Extensão micro-B em fita FPC, macho 90 graus 'UP' -> fêmea | FPV 'Flat Slim Ribbon FPC Micro USB 90 Degree Angled Up Male to Micro USB Female', 10 cm | 1 | 2 | Amazon (Permanent) / AliExpress · [B07Q61KTT7 (15 cm; 5/10 cm na mesma família)](https://www.amazon.com/Ribbon-Degree-Angled-Receptacle-Charging/dp/B07Q61KTT7) | conferir |
+| Cabos | Conector da bateria na placa | JST B3B-PH-K-S | 1 | 2 | LCSC · [C131339](https://www.lcsc.com/product-detail/C131339.html) | final |
+| Cabos | Conector do alto-falante na placa | JST B2B-PH-K-S | 1 | 2 | LCSC · [C131337](https://www.lcsc.com/product-detail/C131337.html) | conferir |
+| Cabos | Rabicho da bateria | cabo de extensão JST PH 2,0 3 vias macho-fêmea, 100 mm (cortar para ~70) | 1 | 2 | AliExpress / Adafruit · conferir | conferir |
+| Cabos | Plugue do alto-falante | cabo JST PH 2,0 2 vias com fios, 100 mm (fêmea PHR-2) | 1 | 2 | AliExpress / LCSC · conferir | conferir |
+| Cabos | Cabo dos knobs | cabo JST SH 1,0 10 vias, 100 mm, com conector numa ponta | 1 | 2 | AliExpress / LCSC · [conferir](https://www.jst-mfg.com/product/pdf/eng/eSH.pdf) | conferir |
+| Cabos | Fio fino de silicone | 28-30 AWG, 4 cores, 1 m | 1 | 1 | qualquer · - | final |
+| Cabos | Fio do VBUS | 26 AWG silicone ou PTFE, vermelho, OD <= 1,2, 0,2 m | 1 | 1 | qualquer · - | final |
+| Cabos | Termorretrátil fino | D1,5 e D3 | 1 | 1 | qualquer · - | final |
+| Energia e som | Bateria LiPo 1S 1000-1200 mAh, PCM, NTC 10 k (3 fios), JST PH 3 | tipo 603450 (EEMB LP603450 com NTC, ou 603450 3 fios pronta) | 1 | 1 | EEMB / eBay / Core Electronics · [CE06795 (reserva)](https://www.eemb.com/product-252) | conferir |
+| Energia e som | Alto-falante 36 mm 8 ohm 2 W | Same Sky CLS0361-L152 | 1 | 1 | Mouser / DigiKey / TME · [CLS0361-L152](https://www.sameskydevices.com/product/resource/cls0361-l152.pdf) | final |
+| Energia e som | Junta de espuma do alto-falante | espuma adesiva 0,8 mm, anel D36/D30 | 1 | 2 | qualquer · - | conferir |
+| Energia e som | Espuma da bateria | espuma EVA/PU 1-2 mm, 36 x 58 | 1 | 2 | qualquer · - | conferir |
+| Fixação | Parafuso do fundo | M2,5 x 8 autoatarraxante para plástico, cabeça escareada (ou inserto a quente M2,5) | 10 | 12 | qualquer · - | conferir |
+| Fixação | Parafuso + porca da placa principal | M2 x 10 cabeça panela + porca M2 | 2 | 4 | qualquer · - | conferir |
+| Fixação | Parafuso da plaquinha dos knobs | M2 x 5 autoatarraxante para plástico | 2 | 4 | qualquer · - | conferir |
+| Fixação | Parafusos da trava do micro-B (seixo_trava_usb) | M2 x 5 autoatarraxante para plástico | 2 | 4 | qualquer · - | conferir |
+| Fixação | Parafuso da tampinha da bateria | M2 x 5 cabeça escareada, autoatarraxante | 2 | 4 | qualquer · - | conferir |
+| Impressos | Casca de cima (tampa) | resina (case/out/seixo_tampa.stl) | 1 | 1 | JLC3DP / PCBWay / Craftcloud · - | conferir |
+| Impressos | Fundo, tampinha da bateria, fundo da caixa do alto-falante | MJF (case/out) | 1 | 1 | JLC3DP / PCBWay / Craftcloud · - | conferir |
+| Impressos | Trava do micro-B de painel | case/out/seixo_trava_usb | 1 | 2 | JLC3DP / PCBWay / Craftcloud · - | conferir |
+| Impressos | Chave da porca do potenciômetro | case/out/seixo_chave_porca | 1 | 1 | JLC3DP / PCBWay / Craftcloud · - | conferir |
+| Consumíveis | Fita Kapton | 10 mm | 1 | 1 | qualquer · - | final |
+| Consumíveis | Cola para vedar a caixa do alto-falante | silicone neutro ou cola E6000 | 1 | 1 | qualquer · - | final |
+
+### O que a programação precisa ajustar (`pcb/PINOS.md`)
+
+Nenhum pino de 0 a 23 mudou. **`KEY_INPUT` mudou em 5 canais** (o roteador refeito escolheu outros canais livres): fileira 1 colunas 3 e 4 (18, 17 → 17, 19), fileira 3 coluna 1 (19 → 18), fileira 4 colunas 1 e 2 (30, 28 → 28, 27). A firmware só precisa usar o `pcb/pocket_keys.h` novo (28/28 conferido). O VIN agora é ligado (só hardware):
+com o Pocket ligado e USB presente, o i.MX vê o VBUS como num Teensy comum, então "USB presente" pelo
+`USB1_OTGSC` vale. Nada a mudar na firmware.
+
+### Manual (M2): `pcb/MANUAL_ELETRICO.md`
+
+Fio do VUSB no passo do Teensy (antes de empilhar, com teste a 5 V), J_VBUS e J_JACK na placa, jack de painel com
+4 fios (abas 1 S, 2 R, 3 T, 4 comutação), extensão FPC com a trava, testes do VIN (3b) e da USB (3c). Figuras: F-01
+(pad VUSB com o fio), F-05, F-10 (jack), F-13 (FPC), F-15 e a nova F-17 (fio do VUSB na pilha); saem a antiga F-10
+(plaquinha do painel) e a F-13 (TP1–TP8).
+
 ## F2 · Fechamento das placas (SPEC v4, 18 out 2026)
 
 **SPEC atendida:** v4, tarefa F2 ("Eletrônica"), sobre o `pcb_envelope.json` do F1 (spec "pocket SPEC v4,
@@ -700,17 +852,21 @@ Detalhes e todos os cenários no `POWER.md`. Bateria 1000 mAh, 85 % úteis (3,15
 
 ## Perguntas para a gestão
 
-Do F2 (as do E2 e do E2b foram respondidas pela v4; a pergunta 5 do design, plaquinha do volume espelhada, está respondida acima: confirmada e corrigida):
+Do F4 (as do F2 foram respondidas pela v5: Q22 aprovado, plaquinha do painel removida):
 
-1. **Q22 (liga com USB sem o KEEP):** pus um transistor a mais, não pedido, para que a chave do volume sozinha
-   segure o 3,3 V quando há USB. Sem ele o Teensy não pode ser gravado (o KEEP cai durante a gravação e o
-   Pocket desliga no meio) e os testes sem firmware do manual não funcionam. Efeito: com USB e o volume ligado,
-   o desligamento automático "de verdade" não desliga (fica no leve até tirar a USB). Aceita?
-2. **Plaquinha do painel montada pela JLCPCB** (USB-C de 0,5 mm de passo, resistores 0402 e o ESD): é um
-   segundo pedido de montagem, pequeno. Aceita, ou prefere tentar soldar em casa (difícil no USB-C)?
-3. **Peças "conferir" para o pedido do protótipo:** o sufixo exato do encoder EC11E (15/15), a curva e o eixo
-   do RK0971221Z05, o macho em linha do rabicho da bateria e o cabo micro-B de 90° (sentido do ângulo).
-   Posso fechar comprando um de cada e medindo, ou a gestão prefere que eu escolha fornecedores específicos
-   antes (lista no `pcb/fab/pocket_kit_bom.csv`)?
-4. **TMAG5253BA3 fora do estoque da JLCPCB:** consignar (comprar 40 na TI/DigiKey e mandar à JLCPCB) ou o
-   "global sourcing" da JLCPCB (mais simples, prazo e preço a conferir)?
+1. **Chave do VIN (Q23/Q24/D61), não pedida, mas necessária:** no esquema da PJRC o PHY da USB do Teensy 4.0 é
+   alimentado pelo lado do VIN; com o VIN solto a USB não funcionaria (sem MIDI, sem gravação). Liguei o VBUS ao VIN
+   só com o Pocket ligado. Aceita?
+2. **Corrente da USB ligado e carregando:** com a chave do VIN, o regulador do Teensy ajuda o TPS63001 no 3,3 V e a
+   porta pode fornecer até ~650 mA (500 do carregador + ~150). Portas de computador e carregadores aguentam, mas
+   passa dos 500 mA do USB 2.0. Aceita, ou prefere limitar o carregador a ~350 mA (modo ILIM, carga ~3,5 h)?
+3. **Partida só pelo 3,3 V (sem USB):** Paul Stoffregen (fórum PJRC, mesmo tópico) diz que alimentar o Teensy 4.0
+   só pelo pino 3V3 funciona "em casos limitados": precisa do VBAT ligado antes, ou de uma subida rápida do 3,3 V.
+   O TPS63001 sobe em ~1 ms (conferir). Proposta: testar no protótipo (ligar e desligar 50 vezes só na bateria);
+   se falhar, um fio a mais do pad VBAT do Teensy (verso, antes de empilhar) a um regulador de 3,0 V sempre ligado
+   (o domínio SNVS do i.MX gasta de alguns µA a ~20 µA, conferir). Testar primeiro ou já pôr o regulador e o fio?
+4. **Extensão micro-B em FPC:** é peça de FPV sem desenho publicado (só fotos e medidas de vendedor). Proponho
+   comprar já uma "UP" e uma "DOWN" de 10 cm para medir antes de imprimir o case. Ok?
+5. **Peças "conferir" para o pedido:** sufixo do EC11E 15/15 com eixo L 25, porca do RK0971221Z05, o macho em linha
+   do rabicho da bateria. Compro um de cada para medir, ou a gestão prefere fornecedores fixos antes?
+6. **TMAG5253BA3 fora do estoque da JLCPCB:** consignar (40 peças da TI/DigiKey) ou o "global sourcing" da JLCPCB?

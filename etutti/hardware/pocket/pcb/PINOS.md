@@ -1,6 +1,6 @@
 # eTuttino Pocket · mapa de pinos do Teensy 4.0
 
-**Versão final para a programação** (SPEC v4, tarefa F2, 18 out 2026; nenhum pino mudou desde a v3). Dono: eletrônica. É o contrato
+**Versão final para a programação** (SPEC v5, tarefa F4, 19 out 2026; nenhum pino de 0 a 23 mudou desde a v3; na v5 o VIN passa a ser ligado, ver "Mudanças na v5"). Dono: eletrônica. É o contrato
 com a programação: a firmware do Pocket (`ETUTTI_MODEL_POCKET`) segue esta tabela e a tabela de teclas
 `KEY_INPUT` abaixo. O `pcb/build_pocket_pcb.py` escreve essa tabela em `pcb/pocket_keys.h` (e em
 `pcb/build/pocket_keys.csv`) a partir da placa roteada e confere a placa contra o arquivo; o sketch do
@@ -69,10 +69,10 @@ canais 8–15 = fileiras 2 e 4 (EN_B, S3 = 1). Notas: `FIRST_NOTE = {57, 55, 56,
 
 ```c
 const int8_t POCKET_KEY_INPUT[POCKET_LAYOUT_ROWS][POCKET_LAYOUT_COLS] = {
-  { -1,  21,  20,  18,  17,   2,   1,   0},
+  { -1,  21,  20,  17,  19,   2,   1,   0},
   { 25,  26,  31,  29,  13,  11,  14,  15},
-  { -1,  19,  23,  22,   4,   6,   5,   3},
-  { -1,  30,  28,  24,   9,   8,  10,  -1},
+  { -1,  18,  23,  22,   4,   6,   5,   3},
+  { -1,  28,  27,  24,   9,   8,  10,  -1},
 };
 ```
 
@@ -145,6 +145,18 @@ no grupo de EN certo; endereço, COMs, LED, KEEP, AMP_SD, VBAT, HP_DET, POT e en
 7. (v4) O vermelho volta a ser só da firmware com o Pocket ligado; "carregando" ligado = verde pulsando.
 8. (v4) Com USB e a chave ligada, baixar o KEEP não desliga (ver KEEP acima).
 
+## Mudanças na v5 (F4)
+
+- Nenhum pino de 0 a 23 mudou. **`KEY_INPUT` mudou em 5 canais** com a placa v0.3 (fileira 1 col. 3–4, fileira 3 col. 1, fileira 4 col. 1–2; tabela acima, 28/28 conferido): a firmware só precisa usar o `pcb/pocket_keys.h` novo.
+- **USB:** o 5 V vem do micro-USB do próprio Teensy (cabo de extensão de painel). O carregador recebe o
+  VBUS por um fio do pad VUSB (verso do Teensy, ponte VUSB–VIN cortada) até o J_VBUS.
+- **Pino VIN do Teensy agora ligado** (rede VIN_T): recebe o VBUS por Q23 + D61 **só com o Pocket ligado**
+  (EN do conversor alto). Motivo: no esquema da PJRC os pinos USB1/USB2_VBUS do i.MX (que alimentam o PHY
+  da USB) ficam do lado do VIN, depois do corte; com o VIN solto a USB (MIDI e gravação) não funcionaria.
+  Desligado, o VIN fica aberto: o Teensy não liga pela USB e a luz de carga continua funcionando.
+- Para a firmware: com o Pocket ligado e USB presente, o i.MX vê o VBUS normalmente (USB funciona como num
+  Teensy comum); "USB presente" pelo `USB1_OTGSC` continua valendo.
+
 ## Mudanças na v4 (F2)
 
 - Nenhum pino mudou. `KEY_INPUT` reconferido 28/28 com a placa v0.2.
@@ -153,13 +165,13 @@ no grupo de EN certo; endereço, COMs, LED, KEEP, AMP_SD, VBAT, HP_DET, POT e en
 
 ## Mudanças desde o E1 (provisório)
 
-- **E2b:** o pino VIN do Teensy fica **sem ligação** (o Teensy recebe 3,3 V no pino 3V3, com a ponte
+- **E2b:** o pino VIN do Teensy ficava **sem ligação** (na v5 ele recebe o VBUS com o Pocket ligado) (o Teensy recebe 3,3 V no pino 3V3, com a ponte
   VUSB–VIN cortada). Os multiplexadores dividem o teclado por lado (U51 direita, U52 esquerda), e não
   por fileira; a firmware só precisa da tabela acima.
 
 - Nenhum pino mudou de lugar. O mapa deixa de ser provisório.
 - **LED_R:** passa por um diodo (o "OU" com a luz de carga) e o resistor vai de 330 Ω para 270 Ω.
   Consequência para a firmware: item 7 acima.
-- **USB:** o 5 V do carregador sai da plaquinha USB-C (antes de chegar ao Teensy), não de um fio
-  no pad VUSB do Teensy. A firmware não muda.
+- **USB (v3/v4):** o 5 V do carregador saía da plaquinha USB-C. **Na v5 voltou ao fio do pad VUSB** (ver
+  "Mudanças na v5").
 - Encoder confirmado com 15 pulsos / 15 detentes: `ENC_STEPS_PER_DETENT = 4`, igual ao eTuttino.
