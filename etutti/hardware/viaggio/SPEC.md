@@ -1,6 +1,6 @@
-# eTutti Viaggio · especificação · v2 (Rev2)
+# eTutti Viaggio · especificação · v2.1 (Rev2)
 
-**Versão 2, 24 out 2026.** Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Mesmo protocolo do eTuttino Pocket (`CLAUDE.md`, seção "como trabalhamos"). Cada disciplina responde no seu relatório, terminando com "Perguntas para a gestão".
+**Versão 2.1, 24 out 2026** (v2 do mesmo dia + respostas do J ao relatório do passo 3.1). Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Mesmo protocolo do eTuttino Pocket (`CLAUDE.md`, seção "como trabalhamos"). Cada disciplina responde no seu relatório, terminando com "Perguntas para a gestão".
 
 A v1 levou a sessões longas demais. A **Rev2** recomeça a placa em passos curtos, com aprovação do J entre eles:
 
@@ -12,6 +12,18 @@ A v1 levou a sessões longas demais. A **Rev2** recomeça a placa em passos curt
 Medidas em mm. **(conferir)** = estimativa a confirmar com a peça real ou o datasheet.
 
 ## Mudanças desde a versão anterior
+
+### v2.1 (respostas ao `ELETRONICA.md` do passo 3.1)
+
+- **O liga/desliga passa para o clique do volume (I1).** Segurar 2 s liga; com o aparelho ligado, segurar 2 s desliga. O LED mostra cada operação; um aviso sonoro para os dois vem depois, na programação. O clique do seletor (I2) fica só para as funções de som.
+- **Desligar com USB ligada desliga de verdade** (pergunta 1): a firmware pede o desligamento do SNVS, que baixa o PMIC_ON_REQ. O clique de 2 s religa pelo ONOFF. Sem isso, a luz de carga (só com o aparelho desligado) nunca apareceria com USB.
+- **ONOFF preso desliga tudo depois de 10 s** (pergunta 2), não 5 s: a firmware grava `BTN_PRESS_TIME` = 10 s no `SNVS_LPCR` na partida. É a proteção contra firmware travada.
+- **Cristal de 32,768 kHz em 3215 e botão Program de 5,1 × 5,1** (pergunta 3): aceitos.
+- **Encoders** (pergunta 4): o mesmo modelo nos dois, de preferência o EC11E 15 pulsos / 15 detentes do Pocket. Se ele não estiver no estoque da JLCPCB, usar o EC11E com clique que estiver (ex.: 18/36, C255515), igual nos dois; a firmware se ajusta.
+- **Flash "-M"** (pergunta 5): W25Q64JVSSIM, que a página da PJRC aceita em qualquer versão do bootloader. Precisamos de ~5.
+- **Recuperação de firmware ruim** (para o manual): com USB ligada, segurar o clique do volume (liga o 3,3 V) e apertar o Program; ao soltar o clique, a USB mantém a placa ligada no bootloader.
+
+### v2 (Rev2)
 
 - **Placa retangular** de 246,5 × 95 com cantos R 5. A JLCPCB não cobra pelo formato do contorno numa placa desse tamanho. O contorno curvo da v1 (perfil A) fica pontilhado na serigrafia, como referência: as peças ficam dentro dele.
 - **USB-C e fone na borda esquerda do retângulo, no alto**, com a boca para fora, para o case usar direto. A posição da v1 fica tracejada na serigrafia.
@@ -41,8 +53,8 @@ Um eTutti fino e alongado, com **toda a eletrônica numa placa só, montada pela
 | Áudio | codec **SGTL5000** (fone); amplificador **MAX98357A** (I2S) junto do alto-falante; alto-falante fino Ø36 |
 | Som | só acordeom (6 registros de fábrica + 2 presets livres), como no Pocket |
 | Conexão | **USB-C** (carga, MIDI, gravação), 2 × 5,1 kΩ nos CC, ESD |
-| Liga/desliga | **segurar o clique do seletor por 2 s** (liga e desliga); USB mantém ligado; desligamento automático em dois estágios |
-| Knobs | **volume e seletor: o mesmo encoder EC11E vertical com clique**. A função do clique do volume é da programação (sugestão: mudo) |
+| Liga/desliga | **segurar o clique do volume (I1) por 2 s** liga e desliga, também com USB ligada (desligamento do SNVS); LED mostra cada operação; ONOFF preso 10 s desliga tudo; desligamento automático em dois estágios |
+| Knobs | **volume e seletor: o mesmo encoder EC11E vertical com clique**. Clique do volume = liga/desliga (2 s); clique do seletor = funções de som |
 | Bateria | LiPo 1S ~1000 mAh com NTC (3 fios), comprada à parte; **posição decidida no case** |
 | Placa | **retângulo 246,5 × 95, cantos R 5, 4 camadas, 1,2 mm** |
 
@@ -66,9 +78,9 @@ Três tipos de código, que não se misturam: **setor** = letra (P, E, F, I, A, 
 |---|---|---|---|---|---|
 | **P · Processador** | P1 | i.MX RT1062 MIMXRT1062DVJ6B | PJRC ou DigiKey, consignado | LFBGA-196, 12 × 12, passo 0,8 | baixo |
 | | P2 | Bootloader PJRC MKL02 | PJRC, consignado | QFN-16 | baixo |
-| | P3 | Flash 64 Mbit (ex.: W25Q64JV) | LCSC (conferir, lista do bootloader) | SOIC-8 ou WSON-8 | baixo |
+| | P3 | Flash 64 Mbit **W25Q64JVSSIM** ("-M") | LCSC (conferir código) | SOIC-8 208 mil | baixo |
 | | P4 | PSRAM APS6404L, **sem montar** | C3040877 (futuro) | USON-8, 2 × 3 | baixo |
-| | P5 | Cristais 24 MHz e 32,768 kHz | LCSC | 3225 / 2012 | baixo |
+| | P5 | Cristais 24 MHz e 32,768 kHz | C431156 / C32346 | 3225 / 3215 | baixo |
 | **E · Energia** | E1 | USB-C 16 vias + 2 × 5,1 kΩ | C165948 (TYPE-C-31-M-12) | SMD + carcaça passante | cima |
 | | E2 | ESD do USB | C7519 (USBLC6-2SC6) | SOT-23-6 | baixo |
 | | E3 | Carregador BQ24074 + trava liga/desliga | C54313 | QFN-16, 3 × 3 | baixo |
@@ -77,10 +89,10 @@ Três tipos de código, que não se misturam: **setor** = letra (P, E, F, I, A, 
 | | E6 | Conector da bateria JST PH 3 vias (+, −, NTC) | LCSC | SMD, ângulo reto | baixo |
 | **F · Fone** | F1 | Codec SGTL5000 | C511764 | QFN-20, 3 × 3 | baixo |
 | | F2 | Jack 3,5 com contato na ponta | LCSC (conferir) | SMD, ângulo reto | cima |
-| **I · Interface** | I1 | Volume: encoder EC11E vertical com clique | LCSC (conferir) | THT | cima |
+| **I · Interface** | I1 | Volume: encoder EC11E vertical com clique; **o clique liga/desliga** | LCSC (conferir) | THT | cima |
 | | I2 | Seletor: o mesmo encoder | LCSC (conferir) | THT | cima |
 | | I3 | LED bicolor sob light pipe | LCSC | 1615 ou 2020 | cima |
-| | I4 | Botão Program | LCSC | tátil SMD 4 × 4 | baixo |
+| | I4 | Botão Program | C318884 (TS-1187A) | tátil SMD 5,1 × 5,1 | baixo |
 | **A · Alto-falante** | A1 | Amplificador MAX98357A | LCSC (conferir) | QFN-16, 3 × 3 | baixo |
 | | A2 | Alto-falante fino Ø36 (~4,6) | a escolher (ex.: PUI AS03608MR) | fios soldados | (case) |
 | **T · Teclas** | T1, T2 | Mux CD74HC4067, esquerdo e direito | LCSC | TSSOP-24 | baixo |
@@ -100,7 +112,7 @@ Fora da placa: 28 Gateron KS-20, plate de FR-4, bateria, alto-falante, capas e c
   **Nunca ativar o modo seguro.** Numeração de pinos do Teensy 4.1. Os pinos 48–54 ficam para a PSRAM.
 - **E**:
   - BQ24074 com power-path, USB500, NTC no TS e carga de 500 mA. O STAT acende o vermelho do LED só com o aparelho desligado.
-  - Liga/desliga: o clique de I2 liga o EN de E4 por um diodo. A firmware segura o EN (KEEP) e o solta no clique longo. USB presente mantém ligado.
+  - Liga/desliga: o clique de **I1** liga o EN de E4 por um diodo e vai ao ONOFF do SNVS. A firmware segura o EN (KEEP) e o solta no clique longo. USB presente mantém ligado; para desligar com USB, a firmware desliga o SNVS. ONOFF preso 10 s desliga tudo.
   - Medida da bateria por divisor de alta impedância.
 - **F**: fone com terra virtual (HP_VGND), **nunca no GND**. O contato da ponta de F2 detecta o fone.
 - **A**: A1 no mesmo I2S do F1, mono (L+R)/2. SD_MODE desliga A1 com fone plugado, em silêncio e no desligamento.
@@ -156,8 +168,8 @@ Fora da placa: 28 Gateron KS-20, plate de FR-4, bateria, alto-falante, capas e c
 
 O J manda um prompt por passo e aprova o resultado antes do seguinte.
 
-- **3.1 Esquema** (agora): esquema elétrico completo, ERC, BOM preliminar, mapa de pinos. Sem placa.
-- **3.2 Placa e setor P**:
+- **3.1 Esquema** (feito, PR #113): esquema elétrico completo, ERC, BOM preliminar, mapa de pinos. Sem placa.
+- **3.2 Placa e setor P** (agora):
   - contorno, furos, serigrafia (perfil A, posições antigas de E1/F2);
   - empilhamento e regras (classes de ligação da §4);
   - posicionamento de todas as peças pelo `viaggio_rev2.json`;
@@ -168,35 +180,44 @@ O J manda um prompt por passo e aprova o resultado antes do seguinte.
   - DRC 0/0/0, conferência placa × firmware 28/28, flexão;
   - Gerbers, BOM e CPL da JLCPCB, `POWER.md`, alturas por lado, relatório.
 
-## Tarefas para o Code (v2): só o passo 3.1
+## Tarefas para o Code (v2.1): só o passo 3.2
 
-**Não posicione nem roteie nada nesta sessão.** Pare ao fim do passo 3.1, faça um PR e informe o J.
+O passo 3.1 foi feito no PR #113. **Agora: placa, regras, posicionamento e roteamento só do setor P.** Não rotear os setores E, F, A, I e T (ficam no ratsnest). Pare ao fim do passo 3.2, faça um PR e informe o J.
 
-### Integração
+### Eletrônica: VE2a, ajustes do esquema (v2.1)
 
-- Acrescentar o Viaggio ao arquivo do agente `eletronica` (`.claude/agents/eletronica.md`): ele passa a editar também `etutti/hardware/viaggio/pcb/`, `viaggio/POWER.md` e `viaggio/ELETRONICA.md`; lê esta SPEC e o `concept/rev2/out/viaggio_rev2.json` sem editar.
-- `CLAUDE.md`: apontar a SPEC v2 e o plano da §7.
+- Liga/desliga no clique de **I1** (VOL_SW): Q203, o diodo do EN e o diodo do ONOFF passam do clique do seletor para o do volume. O pino 6 (SEL_SW) fica uma entrada comum.
+- `PINOS.md`: atualizar os pinos 6 e 25 e a seção "Como cada sinal novo se comporta" (liga/desliga no volume, desligamento do SNVS com USB, `BTN_PRESS_TIME` = 10 s, recuperação com Program).
+- P3 = W25Q64JVSSIM; P5 32 kHz em 3215; I4 TS-1187A; encoders conforme a v2.1. Atualizar o `bom_preliminar.csv`.
+- ERC 0/0 e a conferência da netlist de novo.
 
-### Eletrônica: VE1, esquema (passo 3.1)
+### Eletrônica: VE2b, footprints que faltam
 
-- **Esquema KiCad** em `etutti/hardware/viaggio/pcb/`, com uma folha por setor (P, E, F, I, A, T).
-  - Referências das peças com o código do setor no campo de valor ou num campo próprio (P1…T4), para casar com o JSON.
-  - Partir do esquema público do Teensy 4.1 e da página do bootloader da PJRC para P e E5.
-  - O resto parte do Pocket (`pocket/pcb/`) onde der.
-- **Pinos**: `viaggio/pcb/PINOS.md` em numeração Teensy 4.1.
-  - Mantém os pinos da Audio Board: I2S MCLK 23, BCLK 21, LRCLK 20, TX 7; I2C 18/19.
-  - As 2 saídas dos mux em pinos analógicos.
-  - Dois encoders (A, B, clique cada).
-  - LED R/G, KEEP, STAT, medida da bateria (analógico), detecção do fone, SD_MODE, SENS_EN, S0–S3.
-  - Reaproveitar o mapa do Pocket quando possível e listar as diferenças.
-- **ERC sem erros.**
-- **BOM preliminar** (`viaggio/pcb/bom_preliminar.csv`) com:
-  - código LCSC;
-  - básica ou estendida;
-  - preço unitário;
-  - montagem: JLC, consignada (P1, P2) ou Global Sourcing (T4);
-  - P4 marcada "não montar".
-- **Relatório** `viaggio/ELETRONICA.md`: o que foi feito, peças escolhidas com datasheets, o que ficou **(conferir)** e "Perguntas para a gestão".
+- **P1**: LFBGA-196 12 × 12, passo 0,8, a partir do desenho da NXP (figura 54 do datasheet), bolas conferidas com `rt1062_balls.json`.
+- **F2** (PJ-313D-6A) e **I3** (LED 1615 de 4 pads), com a pinagem conferida no datasheet.
+- Footprints próprios numa biblioteca do Viaggio (`pcb/kicad/viaggio.pretty/`). O switch Gateron vem do Pocket/eTuttino.
+
+### Eletrônica: VE2c, placa e regras
+
+- **Contorno**: retângulo da §2 com cantos R 5; furos M2 de `viaggio_rev2.json` com anel livre de 3,5.
+- **Serigrafia**: perfil A pontilhado; posição antiga de E1 e F2 tracejada; área do logo; códigos P1…T4 ao lado das peças (lado de baixo espelhado).
+- **Empilhamento**: o padrão de 4 camadas e 1,2 mm da JLCPCB (registrar o nome). Camadas como na §5.
+- **Regras** (classes de ligação da §4):
+  - USB 90 Ω diferencial, largura e espaçamento calculados no empilhamento escolhido (registrar a conta);
+  - corrente ≥ 0,8 mm; sinais 0,2 mm; GND/energia por áreas;
+  - vias só nos tamanhos que a JLCPCB faz sem custo extra (registrar o mínimo usado); a saída do BGA de 0,8 com via entre bolas (dog-bone), sem via no pad.
+- **Posicionamento de todas as peças** pelo `viaggio_rev2.json`, com os passivos junto dos seus chips; T4 sob as teclas, na orientação do Pocket. Ajustes de alguns milímetros são livres; mudança de setor, lado ou corredor é pedida no relatório.
+
+### Eletrônica: VE2d, roteamento do setor P
+
+- Na ordem da §4: relógios (1º), saída do BGA e capacitores (2º), USB C1 (3º), memórias P3/P4 (4º), conversor interno de P1 (parte do 5º), MCLK com o resistor junto de P1.
+- GND contínuo sob o USB e sob as memórias.
+- **Conferência**: DRC sem nenhum erro de folga, curto ou regra; só podem sobrar ligações não roteadas fora do setor P (listar a contagem por setor).
+- **Imagens para revisão**: PNG ou SVG do lado de cima, do lado de baixo e do setor P ampliado (camadas 1 e 4 e as áreas internas), em `pcb/build/`.
+
+### Relatório
+
+`viaggio/ELETRONICA.md`: o que foi feito, empilhamento e conta dos 90 Ω, tamanhos de via, onde as peças saíram do `viaggio_rev2.json` e por quê, itens (conferir) e "Perguntas para a gestão".
 
 ## 8. Perguntas para o J
 
