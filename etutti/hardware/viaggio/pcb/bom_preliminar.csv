@@ -1,0 +1,85 @@
+codigo,referencias,qtd,valor_peca,encapsulamento,lcsc,classe_jlc,preco_unit_usd_est,montagem,status,nota
+P1,R105,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,"MCLK 11,3 MHz: em serie, junto do P1 (SPEC 4, 8o)"
+P1,R101,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,Teensy R7
+P1,C107 C111,2,10nF,C_0402_1005Metric,C15195,basica,0.001,JLC,final,Teensy C5
+P1,C101 C104 C117,3,10uF,C_0603_1608Metric,C19702,basica,0.005,JLC,final,Teensy C32
+P1,L101,1,120R@100MHz,L_0603_1608Metric,-,basica,0.005,JLC,conferir,Teensy L3; >=1 A
+P1,C108,1,2.2uF,C_0402_1005Metric,C12530,basica,0.003,JLC,conferir,Teensy C28 (NVCC)
+P1,C103 C106 C110 C113 C115 C116 C118 C119,8,220nF,C_0402_1005Metric,C16772,basica,0.002,JLC,conferir,Teensy C19
+P1,C102 C105 C109 C112 C114,5,4.7uF,C_0603_1608Metric,C19666,basica,0.004,JLC,final,Teensy C24
+P1,L102,1,4.7uH,L_0805_2012Metric,-,estendida,0.050,JLC,conferir,"Teensy L1; corrente do nucleo (conferir >= 0,5 A)"
+P1,D101 D102,2,BAT54C,SOT-23,C134405,estendida,0.020,JLC,final,Teensy D2: o anodo da pilha (VBAT) vai no SNVS_3V3 de E5
+P1,U101,1,MIMXRT1062DVJ6B,(a criar),-,-,11.000,consignada (PJRC ou DigiKey),conferir,footprint BGA-196 12x12 P0.8 a criar no passo 3.2; bolas livres sem ligacao (SD_B1_05/N3 e EMC_23/G2 de proposito)
+P2,R104,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,Teensy R6
+P2,C124,1,220nF,C_0402_1005Metric,C16772,basica,0.002,JLC,conferir,Teensy C8
+P2,R103,1,470,R_0402_1005Metric,C25117,basica,0.001,JLC,conferir,Teensy R2
+P2,U102,1,PJRC MKL02 bootloader (Teensy 4.1),QFN-16-1EP_3x3mm_P0.5mm_EP1.9x1.9mm,-,-,6.000,consignada (PJRC),conferir,"PTA3 -> DCDC_PSWITCH, PTB5 -> AD_B0_08 (pagina da PJRC)"
+P2,D103,1,vermelho,LED_0603_1608Metric,C2286,basica,0.010,JLC,conferir,"Teensy D4: LED de erro do bootloader (piscadas da pagina da PJRC), no verso"
+P3,C125,1,220nF,C_0402_1005Metric,C16772,basica,0.002,JLC,conferir,desacoplamento (o esquema da PJRC nao mostra o do U3)
+P3,U103,1,W25Q64JVSSIQ,SOIC-8_5.3x5.3mm_P1.27mm,C179171,estendida,0.800,JLC,conferir,"64 Mbit = modelo Teensy 4.1; '-Q' exige bootloader >= 1.09 (lista da PJRC), '-M' serve em todos"
+P4,C126,1,220nF,C_0402_1005Metric,C16772,basica,0.002,nao montar,conferir,Teensy C21; nao montar
+P4,U104,1,APS6404L-3SQR-ZR,Winbond_USON-8-1EP_3x2mm_P0.5mm_EP0.2x1.6mm,C3040877,estendida,1.900,nao montar,conferir,so o lugar (modelos futuros); sem estoque na LCSC em out/2026
+P5,C120 C121,2,12pF,C_0402_1005Metric,C1547,basica,0.001,JLC,conferir,Teensy C1
+P5,R102,1,2.2M,R_0402_1005Metric,-,estendida,0.002,JLC,conferir,"Teensy R5 (em paralelo com C2, como no esquema da PJRC)"
+P5,C122 C123,2,20pF,C_0402_1005Metric,C1554,basica,0.001,JLC,conferir,Teensy C3
+P5,Y101,1,24MHz,Crystal_SMD_3225-4Pin_3.2x2.5mm,C431156,estendida,0.100,JLC,conferir,Teensy Y1; 8 pF de carga com 12 pF + ~3 pF de placa (conferir)
+P5,Y102,1,32.768kHz,Crystal_SMD_3215-2Pin_3.2x1.5mm,C32346,basica,0.080,JLC,conferir,"Teensy Y2; FC-135 12,5 pF, 3215 (a SPEC pedia 2012: conferir)"
+E1,R201 R202,2,5.1k,R_0402_1005Metric,C25905,basica,0.001,JLC,final,
+E1,J201,1,TYPE-C-31-M-12,USB_C_Receptacle_HRO_TYPE-C-31-M-12,C165948,estendida,0.150,JLC,final,"lado de cima, borda esquerda, boca para fora"
+E2,D201,1,SMF5.0A,D_SOD-123F,C151296,estendida,0.050,JLC,final,TVS do VBUS (Pocket D60)
+E2,U201,1,USBLC6-2SC6,SOT-23-6,C7519,basica,0.050,JLC,conferir,
+E3,R204,1,1.5k,R_0402_1005Metric,C25867,basica,0.001,JLC,conferir,"so vale com EN2=1 (1,07 A); obrigatorio"
+E3,R203,1,1.8k,R_0402_1005Metric,C25811,basica,0.001,JLC,conferir,"ICHG = 890/1800 = 0,49 A"
+E3,R206 R210 R211 R213 R215,5,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
+E3,C204 C205,2,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E3,R205 R214,2,10k,R_0402_1005Metric,C25744,basica,0.001,JLC,final,
+E3,C201 C202 C203,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+E3,R208 R209 R212,3,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,medida da bateria: V(pino 16) = VBAT/2
+E3,R207,1,1k,R_0402_1005Metric,C11702,basica,0.001,JLC,final,
+E3,U203,1,74LVC1G08,SOT-23-5,C7666,estendida,0.030,JLC,final,USB_HOLD = USB presente E aparelho ligado (alimentado pelo 3V3)
+E3,Q202,1,AO3400A,SOT-23,C20917,basica,0.010,JLC,final,"ligado, a luz de carga apaga (Pocket Q31)"
+E3,Q201 Q203,2,AO3401A,SOT-23,C15127,basica,0.010,JLC,final,luz de carga (Pocket Q30)
+E3,D202 D203 D204 D205,4,BAT54C,SOT-23,C134405,estendida,0.020,JLC,final,leitura do ~CHG pelo pino 26 (so com USB)
+E3,U202,1,BQ24074RGTR,VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm,C54313,estendida,1.100,JLC,final,"USB500 (EN2=0, EN1=1), 500 mA, NTC no TS; TMR e ITERM abertos = padrao; OUT 4,4 V com USB"
+E4,R216,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,
+E4,C209,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E4,C206 C207 C208,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+E4,L201,1,2.2uH,L_Changjiang_FNR4020S,C167825,estendida,0.080,JLC,final,FNR4020S2R2MT (Pocket L10)
+E4,U204,1,TPS63001DRCR,Texas_DRC0010J,C28060,estendida,1.400,JLC,final,"3,3 V fixo; PS/SYNC baixo = economia"
+E5,C212,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E5,C210 C211,2,1uF,C_0402_1005Metric,C52923,basica,0.002,JLC,final,
+E5,U206,1,74LVC1G08,SOT-23-5,C7666,estendida,0.030,JLC,final,"EN de E4 = PMIC_ON_REQ E (clique OU KEEP OU USB_HOLD): 3,3 V so depois do SNVS"
+E5,U205,1,XC6206P332MR,SOT-23-3,C5446,basica,0.020,JLC,conferir,sempre ligado (1 uA): alimenta o SNVS antes de tudo e a porta U206
+E6,J202,1,S3B-PH-SM4-TB,JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal,C265101,estendida,0.300,JLC,final,"bateria 1 = +, 2 = NTC, 3 = - (ordem do Pocket; conferir o cabo)"
+F1,C302 C304 C305,3,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+F1,C307,1,150nF,C_0402_1005Metric,-,estendida,0.003,JLC,conferir,"Audio Board: 0,15 uF"
+F1,R301 R302,2,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,
+F1,C301 C303 C306,3,2.2uF,C_0402_1005Metric,C12530,basica,0.003,JLC,conferir,
+F1,FB301,1,600R@100MHz,L_0603_1608Metric,-,basica,0.005,JLC,conferir,Audio Board: Ferrite 600 no VDDA
+F1,U301,1,SGTL5000XNLA3,QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm,C511764,estendida,1.800,JLC,conferir,como a Audio Board Rev D2 (endereco I2C fixo 0x0A); sem entrada de linha/microfone
+F1,U302,1,XC6206P182MR,SOT-23-3,C347373,estendida,0.030,JLC,conferir,"1,8 V do VDDD (a Audio Board usa AP7313)"
+F2,R303,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
+F2,C308,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+F2,R304,1,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,
+F2,J301,1,PJ-313D-6A,(a criar),C95463,estendida,0.100,JLC,conferir,"SMD, angulo reto; contato da ponta = deteccao; manga no HP_VGND, nunca no GND; footprint a criar no 3.3"
+I1,SW401,1,EC11E 15/15 com chave,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,-,estendida,1.200,JLC,conferir,volume; codigo LCSC da versao 15/15 a achar (C255515 e a 18/36)
+I2,SW402,1,EC11E 15/15 com chave,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,-,estendida,1.200,JLC,conferir,seletor; clique de 2 s liga/desliga; codigo LCSC da versao 15/15 a achar (C255515 e a 18/36)
+I3,R401,1,270,R_0402_1005Metric,C25190,basica,0.001,JLC,conferir,
+I3,R402,1,330,R_0402_1005Metric,C25104,basica,0.001,JLC,conferir,
+I3,D402,1,BAT54C,SOT-23,C134405,estendida,0.020,JLC,final,OU do vermelho: luz de carga e firmware (Pocket D30)
+I3,D401,1,TJ-S1615SW6TGLCRG-A5,(a criar),C273605,estendida,0.020,JLC,conferir,"1615 vermelho/verde, 4 pads; pinagem e footprint a conferir"
+I4,SW403,1,Program,SW_Push_1P1T_XKB_TS-1187A,C318884,basica,0.020,JLC,conferir,"no verso, por um furo no fundo; 5,1 x 5,1 (a SPEC pedia 4 x 4)"
+A1,C502,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+A1,C501,1,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+A1,R501,1,680k,R_0402_1005Metric,-,estendida,0.002,JLC,conferir,"com os 100k internos: 0,42 V no SD_MODE = (L+R)/2; pino baixo = desligado"
+A1,U501,1,MAX98357AETE+T,TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm,C910544,estendida,1.400,JLC,final,GAIN_SLOT aberto = 9 dB; mono (L+R)/2 pelo divisor do SD_MODE
+A2,J501,1,alto-falante (fios),SolderWire-0.127sqmm_1x02_P3.7mm_D0.48mm_OD1mm,-,-,0.000,sem peca (pads; fios do A2 soldados em casa),conferir,
+T1,C601,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+T1,U601,1,74HC4067PW,TSSOP-24_4.4x7.8mm_P0.65mm,C547038,estendida,0.250,JLC,final,"esquerdo (metade baixa do teclado), COM no pino 15; canais = Pocket v0.3"
+T2,C602,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+T2,U602,1,74HC4067PW,TSSOP-24_4.4x7.8mm_P0.65mm,C547038,estendida,0.250,JLC,final,"direito (metade alta), COM no pino 14; canais = Pocket v0.3"
+T3,C603,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+T3,U603,1,74LVC1G04,SOT-23-5,C7827,estendida,0.030,JLC,final,
+T3,U604 U605,2,74LVC1G08,SOT-23-5,C7666,estendida,0.030,JLC,final,EN_A = SENS_EN e S3 baixo (canais 0-7)
+T4,C701 C702 C703 C704 C705 C706 C707 C708 C709 C710 C711 C712 C713 C714 C715 C716 C717 C718 C719 C720 C721 C722 C723 C724 C725 C726 C727 C728,28,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+T4,U701 U702 U703 U704 U705 U706 U707 U708 U709 U710 U711 U712 U713 U714 U715 U716 U717 U718 U719 U720 U721 U722 U723 U724 U725 U726 U727 U728,28,TMAG5253BA3IQDMRR,Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm,-,-,0.450,Global Sourcing (JLCPCB),conferir,"tecla SW1 (fileira 1, A3); verso, mesma orientacao do Pocket"

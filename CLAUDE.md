@@ -484,7 +484,32 @@ MAX98357A, BQ24074, TPS63001, USB-C, TMAG5253 via JLC Global Sourcing),
 soft power (hold the selector click 2 s), thin ~1000 mAh battery, case only
 conceptual. Same Chat→Code protocol as the Pocket (below); the Viaggio's
 reports live in `viaggio/`. Pin map keeps Teensy 4.1 pin numbers so the
-firmware stays compatible (compile with `teensy:avr:teensy41`). The **eTuttino Pocket is finished at SPEC v5
+firmware stays compatible (compile with `teensy:avr:teensy41`).
+**Current spec: `viaggio/SPEC.md` v2 (Rev2).** It specifies:
+- a rectangular 246.5 × 95 board, 4 layers, 1.2 mm;
+- parts coded by sector (P, E, F, I, A, T → P1…T4), with positions, sectors and corridors in
+  `concept/rev2/out/viaggio_rev2.json`.
+
+The board is done in the four steps of SPEC §7, one session = one PR each, and J approves each step
+before the next:
+- 3.1 schematic + ERC + preliminary BOM + pin map (done, see below);
+- 3.2 board outline, rules, placement and sector P routing;
+- 3.3 sectors E, F, A, I;
+- 3.4 sector T, then DRC/fab/POWER.md.
+
+**Step 3.1 state:**
+- `viaggio/pcb/schematic.py` (stdlib Python) writes the KiCad schematic in `viaggio/pcb/kicad/`:
+  - one sheet per sector;
+  - a `Codigo` field on every part;
+  - global labels;
+  - the project's own `viaggio.kicad_sym`.
+- It then runs ERC (0/0) and checks KiCad's netlist against its own net list. Don't hand-edit the
+  `.kicad_sch` files.
+- Also in `viaggio/pcb/`: `PINOS.md` (the contract with the firmware) and `bom_preliminar.csv`.
+  The report is `viaggio/ELETRONICA.md`.
+- The `eletronica` agent owns the Viaggio's `pcb/`, `POWER.md` and `ELETRONICA.md`.
+
+The **eTuttino Pocket is finished at SPEC v5
 (PR #110) and paused**; its files are reference for the Viaggio.
 
 ## Project status (17 Oct 2026)

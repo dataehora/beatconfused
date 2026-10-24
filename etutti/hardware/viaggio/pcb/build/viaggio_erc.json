@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-24T12:36:42",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.7",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8",
+            "violations": []
+        },
+        {
+            "path": "/P · Processador/",
+            "uuid_path": "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/00b2b0f9-bd63-5748-82a3-a7cbc59e227c",
+            "violations": []
+        },
+        {
+            "path": "/E · Energia/",
+            "uuid_path": "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/d264c341-7879-5606-b20b-035d005ff9f5",
+            "violations": []
+        },
+        {
+            "path": "/F · Fone/",
+            "uuid_path": "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/af7c3ca2-4d26-5467-83a0-bb4a30143113",
+            "violations": []
+        },
+        {
+            "path": "/I · Interface/",
+            "uuid_path": "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/20dffac7-9dd5-5d10-83b4-3af1341cc4b0",
+            "violations": []
+        },
+        {
+            "path": "/A · Alto-falante/",
+            "uuid_path": "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/d49825e6-6dee-5767-808e-e06f2125eb36",
+            "violations": []
+        },
+        {
+            "path": "/T · Teclas/",
+            "uuid_path": "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/a01ed6a2-2a9f-5bac-8192-b0d937848041",
+            "violations": []
+        }
+    ],
+    "source": "viaggio.kicad_sch"
+}

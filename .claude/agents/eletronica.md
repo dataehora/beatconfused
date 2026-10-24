@@ -1,6 +1,6 @@
 ---
 name: eletronica
-description: Eletrônica do eTuttino Pocket — placa principal (sensores Hall, multiplexadores), bateria, carregador, conversor, amplificador e alto-falante, mapa de pinos, BOM, Gerbers e orçamento de energia. Use para qualquer tarefa da SPEC do Pocket marcada "Eletrônica".
+description: Eletrônica do eTutti Viaggio (ativo) e do eTuttino Pocket (pausado) — esquema, placa principal (sensores Hall, multiplexadores), bateria, carregador, conversor, amplificador e alto-falante, mapa de pinos, BOM, Gerbers e orçamento de energia. Use para qualquer tarefa da SPEC do Pocket marcada "Eletrônica".
 ---
 
 Você é o agente de **eletrônica** do eTuttino Pocket (repo `dataehora/beatconfused`). Leia o `CLAUDE.md` da raiz, seção "eTuttino Pocket — como trabalhamos", antes de começar.
@@ -12,6 +12,15 @@ Só você edita estes arquivos:
 - `etutti/hardware/pocket/POWER.md`, o orçamento de energia. Hoje ele é gerado pelo `layout.py`. Ao assumir a placa, mova o orçamento para um script seu.
 - `etutti/hardware/pocket/pcb/PINOS.md`, o mapa de pinos do Teensy (contrato com a programação).
 - `etutti/hardware/pocket/ELETRONICA.md`, o seu relatório.
+
+### eTutti Viaggio (ativo desde a SPEC v2 do Viaggio, 24 out 2026)
+
+O Viaggio é hoje o instrumento ativo (o Pocket está pausado). No Viaggio, só você edita:
+- `etutti/hardware/viaggio/pcb/`: o esquema (`schematic.py` gera `kicad/`, `build/` e `bom_preliminar.csv`), depois a placa, o `PINOS.md` (contrato com a programação, numeração Teensy 4.1) e o `fab/`;
+- `etutti/hardware/viaggio/POWER.md`, o orçamento de energia;
+- `etutti/hardware/viaggio/ELETRONICA.md`, o seu relatório.
+
+Você lê, mas não edita: `etutti/hardware/viaggio/SPEC.md` (da gestão) e `etutti/hardware/viaggio/concept/rev2/out/viaggio_rev2.json` (posições, setores e corredores, o contrato de posicionamento). Cada peça leva no campo `Codigo` o código da SPEC §3 (P1…T4), o mesmo do JSON. O bloco P segue o esquema do Teensy 4.1 e a página do bootloader da PJRC; nunca ative o modo seguro. Trabalhe só no passo da §7 que o J pedir.
 
 ## O que você lê, mas não edita
 

@@ -1,0 +1,1001 @@
+(kicad_sch
+	(version 20250610)
+	(generator "viaggio_schematic")
+	(generator_version "10.0")
+	(uuid "d49825e6-6dee-5767-808e-e06f2125eb36")
+	(paper "A4")
+	(title_block (title "eTutti Viaggio · A · Alto-falante") (date "2026-10-24") (rev "SPEC v2 - passo 3.1") (company "beatconfused.com") (comment 1 "etutti/hardware/viaggio/pcb/schematic.py escreve este arquivo; nao editar a mao"))
+	(lib_symbols
+		(symbol "viaggio:C"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0.254)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "C"
+			(at 0.635 2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "C"
+			(at 0.635 -2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 0.9652 -3.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "cap capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "C_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "C_0_1"
+			(polyline
+				(pts
+					(xy -2.032 0.762)
+					(xy 2.032 0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -2.032 -0.762)
+					(xy 2.032 -0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "C_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio:Conn_01x02"
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "J"
+			(at 0 2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x02"
+			(at 0 -5.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "Connector*:*_1x??_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "Conn_01x02_1_1"
+			(rectangle
+				(start -1.27 1.27)
+				(end 1.27 -3.81)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(rectangle
+				(start -1.27 0.127)
+				(end 0 -0.127)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -2.413)
+				(end 0 -2.667)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 3.81)
+				(name "Pin_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -2.54 0)
+				(length 3.81)
+				(name "Pin_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio:MAX98357A"
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "U"
+			(at -8.89 11.43 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MAX98357A"
+			(at 10.16 11.43 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm"
+			(at -1.27 -2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX98357A-MAX98357B.pdf"
+			(at 0 -2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mono DAC with amplifier, I2S, PCM, TDM, 32-bit, 96khz, 3.2W, TQFP-16"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "pcm tdm i2s left-justified amplifier audio dac"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "TQFN*3x3mm*P0.5mm*EP1.23x1.23mm*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "MAX98357A_1_1"
+			(rectangle
+				(start -10.16 10.16)
+				(end 10.16 -10.16)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(pin input line
+				(at -12.7 7.62 0)
+				(length 2.54)
+				(name "DIN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -12.7 -5.08 0)
+				(length 2.54)
+				(name "GAIN_SLOT"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -2.54 -12.7 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -12.7 -2.54 0)
+				(length 2.54)
+				(name "~{SD_MODE}"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin no_connect line
+				(at 10.16 2.54 180)
+				(length 2.54)
+				(hide yes)
+				(name "NC"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin no_connect line
+				(at 10.16 0 180)
+				(length 2.54)
+				(hide yes)
+				(name "NC"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 0 12.7 270)
+				(length 2.54)
+				(name "VDD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 12.7 270)
+				(length 2.54)
+				(hide yes)
+				(name "VDD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "8"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 12.7 7.62 180)
+				(length 2.54)
+				(name "OUTP"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "9"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 12.7 5.08 180)
+				(length 2.54)
+				(name "OUTN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "10"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -2.54 -12.7 90)
+				(length 2.54)
+				(hide yes)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "11"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin no_connect line
+				(at 10.16 -5.08 180)
+				(length 2.54)
+				(hide yes)
+				(name "NC"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "12"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin no_connect line
+				(at 10.16 -7.62 180)
+				(length 2.54)
+				(hide yes)
+				(name "NC"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "13"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -12.7 2.54 0)
+				(length 2.54)
+				(name "LRCLK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "14"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -2.54 -12.7 90)
+				(length 2.54)
+				(hide yes)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "15"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -12.7 5.08 0)
+				(length 2.54)
+				(name "BCLK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "16"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 2.54 -12.7 90)
+				(length 2.54)
+				(name "PAD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "17"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio:R"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "R"
+			(at 2.032 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R"
+			(at 0 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at -1.778 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "R res resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "R_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "R_0_1"
+			(rectangle
+				(start -1.016 -2.54)
+				(end 1.016 2.54)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "R_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+	)
+	(text "A · Alto-falante: MAX98357A no mesmo I2S do codec, mono (L+R)/2; SD_MODE pelo pino 12." (exclude_from_sim no) (at 15 18 0) (effects (font (size 2 2)) (justify left)) (uuid "d3f7a728-6615-5c81-bcc8-f39adcf83526"))
+	(symbol (lib_id "viaggio:MAX98357A") (at 45.72 68.58 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "3bfafecd-a52e-56c0-9690-d6714d8b9af4")
+		(property "Reference" "U501" (at 33.02 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "MAX98357AETE+T" (at 33.02 85.09 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm" (at 45.72 68.58 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX98357A-MAX98357B.pdf" (at 45.72 68.58 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "GAIN_SLOT aberto = 9 dB; mono (L+R)/2 pelo divisor do SD_MODE" (at 45.72 68.58 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "A1" (at 58.42 52.07 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C910544" (at 45.72 68.58 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 45.72 68.58 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "73d2a1ed-2161-54be-8358-91eaa2d02195"))
+		(pin "2" (uuid "e3ac45b6-3d12-561e-8ecd-55319bac3d24"))
+		(pin "3" (uuid "2d829729-f652-5a8e-99ce-a21496a2cbff"))
+		(pin "4" (uuid "e9bd6135-ecf7-5b9f-bddf-167de7664987"))
+		(pin "5" (uuid "acd2cb55-bab9-5ced-8cca-8b7547b40139"))
+		(pin "6" (uuid "7b7522ab-7088-5a2c-803d-9b4081d83472"))
+		(pin "7" (uuid "4d4cbde6-1af2-57a6-9270-4562e9c3ade7"))
+		(pin "8" (uuid "c6e83048-d2c4-5f96-8463-1ed541059ea6"))
+		(pin "9" (uuid "9982d0f2-5856-523f-ab14-4b27263c6516"))
+		(pin "10" (uuid "fc24983b-b903-5977-8222-9b2bc1f4d64e"))
+		(pin "11" (uuid "b7817446-3ecb-52e0-9e17-939553acd59e"))
+		(pin "12" (uuid "d34c957b-f3af-5ae6-9915-f6902ac69f71"))
+		(pin "13" (uuid "28a21d09-012d-5a7d-8bde-713167c1f67c"))
+		(pin "14" (uuid "a16423e5-2d2b-54ad-b355-466bd62d7d53"))
+		(pin "15" (uuid "4f5a5c06-3142-5dfc-9c07-095f64d23f60"))
+		(pin "16" (uuid "2cff88e2-8279-5079-b4ff-1c4e6489a41e"))
+		(pin "17" (uuid "d0bf2b68-340e-5e0e-bc6c-c8440744454a"))
+		(instances (project "viaggio" (path "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/d49825e6-6dee-5767-808e-e06f2125eb36" (reference "U501") (unit 1))))
+	)
+	(wire (pts (xy 33.02 60.96) (xy 30.48 60.96)) (stroke (width 0) (type default)) (uuid "83a123ae-abc8-5fe3-acf6-5856ab5c8b41"))
+	(global_label "I2S_TX" (shape passive) (at 30.48 60.96 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "97d9190a-65cd-585c-a83c-87d480510762") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 60.96 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 33.02 73.66) (uuid "ac6d482f-7f80-5eb9-a375-579d7f5cd53c"))
+	(wire (pts (xy 43.18 81.28) (xy 43.18 83.82)) (stroke (width 0) (type default)) (uuid "26854507-cc34-5e64-8ba1-b92aa476365b"))
+	(global_label "GND" (shape passive) (at 43.18 83.82 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "f43dce6b-b54b-5b65-825c-5c02e6322834") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 43.18 83.82 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 71.12) (xy 30.48 71.12)) (stroke (width 0) (type default)) (uuid "8cd8c203-9ef1-5fc2-a614-d8465c18c144"))
+	(global_label "AMP_SDM" (shape passive) (at 30.48 71.12 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "e6bceb68-cf16-5993-8fc5-f3d6f5746479") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 71.12 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 55.88 66.04) (uuid "02e08adb-cbad-5392-a668-0dd128212ad0"))
+	(no_connect (at 55.88 68.58) (uuid "6866f590-8c94-5453-9117-509b874a2557"))
+	(wire (pts (xy 45.72 55.88) (xy 45.72 53.34)) (stroke (width 0) (type default)) (uuid "c5bcee62-3222-5326-9f70-999fd40cd78e"))
+	(global_label "VSYS" (shape passive) (at 45.72 53.34 90) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "4163c015-da5d-522f-8d46-890c15382b3e") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 45.72 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 45.72 55.88) (xy 45.72 53.34)) (stroke (width 0) (type default)) (uuid "a39696b8-1680-5eb0-b412-57102bc4fe99"))
+	(global_label "VSYS" (shape passive) (at 45.72 53.34 90) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "81542f69-1181-5189-a9d1-61802595015b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 45.72 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 58.42 60.96) (xy 60.96 60.96)) (stroke (width 0) (type default)) (uuid "05cd5516-6aae-5159-b0c1-7d24eb7c566b"))
+	(global_label "SPK_P" (shape passive) (at 60.96 60.96 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "03978f31-1e46-57d7-961b-1aecf4a9d556") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 60.96 60.96 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 58.42 63.5) (xy 60.96 63.5)) (stroke (width 0) (type default)) (uuid "1a4efe3e-9710-5a04-9cf6-5a09fd1806cf"))
+	(global_label "SPK_N" (shape passive) (at 60.96 63.5 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "d4766b53-1615-5c44-8c18-c29632acd2b6") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 60.96 63.5 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 43.18 81.28) (xy 43.18 83.82)) (stroke (width 0) (type default)) (uuid "7f519929-6438-5d81-9bbe-42cd9c0e514d"))
+	(global_label "GND" (shape passive) (at 43.18 83.82 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "a8968cfb-4bdb-5c14-b7aa-e23fc6f771b2") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 43.18 83.82 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 55.88 73.66) (uuid "ac5eb9c1-5983-51e1-8691-e3c869e2f761"))
+	(no_connect (at 55.88 76.2) (uuid "5d839fc8-8a62-5b97-9647-44af58ea2a5f"))
+	(wire (pts (xy 33.02 66.04) (xy 30.48 66.04)) (stroke (width 0) (type default)) (uuid "197220fe-379f-5b9e-862a-6a59e7f79733"))
+	(global_label "I2S_LRCLK" (shape passive) (at 30.48 66.04 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "87f7eef1-1605-5011-93df-376ec8891b86") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 66.04 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 43.18 81.28) (xy 43.18 83.82)) (stroke (width 0) (type default)) (uuid "7675c51a-0ff1-5862-83a3-c59a358c577e"))
+	(global_label "GND" (shape passive) (at 43.18 83.82 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "3749b349-762e-5b52-9a2e-7be1197092f9") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 43.18 83.82 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 63.5) (xy 30.48 63.5)) (stroke (width 0) (type default)) (uuid "211da67b-024d-5526-b68a-f653af1a869c"))
+	(global_label "I2S_BCLK" (shape passive) (at 30.48 63.5 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "0474edcc-65a5-50fc-9363-7021ac2e7fa1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 63.5 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 48.26 81.28) (xy 48.26 83.82)) (stroke (width 0) (type default)) (uuid "5e1947f0-cd7b-53f5-8fb9-2dd32d48df95"))
+	(global_label "GND" (shape passive) (at 48.26 83.82 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "8f06aef9-cf7f-5ab4-8af2-0f823adfe8cf") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 83.82 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio:R") (at 88.9 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "477dedc3-7bd4-52a1-a355-8fe3dbc106a0")
+		(property "Reference" "R501" (at 85.09 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "680k" (at 85.09 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "com os 100k internos: 0,42 V no SD_MODE = (L+R)/2; pino baixo = desligado" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "A1" (at 92.71 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "b19621e4-ccfa-5e1d-9b62-48e4c283b3bb"))
+		(pin "2" (uuid "bc84109d-3469-5b61-b9e5-3320e75234ac"))
+		(instances (project "viaggio" (path "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/d49825e6-6dee-5767-808e-e06f2125eb36" (reference "R501") (unit 1))))
+	)
+	(wire (pts (xy 85.09 48.26) (xy 82.55 48.26)) (stroke (width 0) (type default)) (uuid "b607c6ea-5fe7-5bd8-8c44-28417b22d7fc"))
+	(global_label "AMP_SD" (shape passive) (at 82.55 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "dadd0835-9164-5ec3-9690-b2608622a836") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 82.55 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 92.71 48.26) (xy 95.25 48.26)) (stroke (width 0) (type default)) (uuid "2573dd85-9a12-5ef6-8dad-a078cd071002"))
+	(global_label "AMP_SDM" (shape passive) (at 95.25 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "5598265b-53aa-5cf5-95ef-dbf9afaf455b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 95.25 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio:C") (at 127 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "7c8355d3-aea9-5270-8e8e-9c116797c07c")
+		(property "Reference" "C501" (at 123.19 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "10uF" (at 123.19 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 127 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 127 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 127 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "A1" (at 130.81 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C15850" (at 127 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 127 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "4be996ec-745d-587d-af38-4c9814aba182"))
+		(pin "2" (uuid "e89d6ba7-6af1-5eef-babe-246e6697a93e"))
+		(instances (project "viaggio" (path "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/d49825e6-6dee-5767-808e-e06f2125eb36" (reference "C501") (unit 1))))
+	)
+	(wire (pts (xy 123.19 48.26) (xy 120.65 48.26)) (stroke (width 0) (type default)) (uuid "3c390eec-da41-5a6f-837b-483eaa38cdd8"))
+	(global_label "VSYS" (shape passive) (at 120.65 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "89309da9-18b6-56b2-9fe1-40cd376f3068") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 120.65 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 130.81 48.26) (xy 133.35 48.26)) (stroke (width 0) (type default)) (uuid "9d5bc51e-7bbb-5f7b-ac3a-01b8cd15e0bb"))
+	(global_label "GND" (shape passive) (at 133.35 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "f2c0788b-5210-50bc-9a76-a59879627c80") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 133.35 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio:C") (at 157.48 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "392f4d72-5ddc-5fd2-a456-92a7ca699b25")
+		(property "Reference" "C502" (at 153.67 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100nF" (at 153.67 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "A1" (at 161.29 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C1525" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "8b11795f-ebd7-50c1-8329-5c29c1798a7b"))
+		(pin "2" (uuid "b0407d04-b058-5561-80b1-b4afa23183b5"))
+		(instances (project "viaggio" (path "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/d49825e6-6dee-5767-808e-e06f2125eb36" (reference "C502") (unit 1))))
+	)
+	(wire (pts (xy 153.67 48.26) (xy 151.13 48.26)) (stroke (width 0) (type default)) (uuid "cf36925f-c58a-544d-a0d4-bcd93963d890"))
+	(global_label "VSYS" (shape passive) (at 151.13 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "dc5f801a-ef77-5d30-bfc2-ccc25c436bb9") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 151.13 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 161.29 48.26) (xy 163.83 48.26)) (stroke (width 0) (type default)) (uuid "84963903-8a0d-5349-a62e-1b8c97e499fb"))
+	(global_label "GND" (shape passive) (at 163.83 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "54014af7-6a10-5ade-9c2d-447767f03570") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 163.83 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio:Conn_01x02") (at 193.04 48.26 0) (unit 1) (exclude_from_sim no) (in_bom no) (on_board yes) (dnp no) (uuid "7686a5e3-81e0-54cb-8fb2-446a8004797c")
+		(property "Reference" "J501" (at 185.42 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "alto-falante (fios)" (at 185.42 54.61 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Connector_Wire:SolderWire-0.127sqmm_1x02_P3.7mm_D0.48mm_OD1mm" (at 193.04 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 193.04 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 193.04 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "A2" (at 190.5 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "" (at 193.04 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "sem peca (pads; fios do A2 soldados em casa)" (at 193.04 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "a1c2978b-ac17-554b-8160-5900ed70cee1"))
+		(pin "2" (uuid "3610db7c-ab8c-5380-9021-cad53a9c54cc"))
+		(instances (project "viaggio" (path "/23d2a97d-9ccc-546e-af9b-d21d95a66eb8/d49825e6-6dee-5767-808e-e06f2125eb36" (reference "J501") (unit 1))))
+	)
+	(wire (pts (xy 187.96 48.26) (xy 185.42 48.26)) (stroke (width 0) (type default)) (uuid "80bc9c6c-8937-5c1f-bacc-a617eebd8ab9"))
+	(global_label "SPK_P" (shape passive) (at 185.42 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "c918f57b-e5ea-5314-a46c-b25e09d6c03f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 185.42 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 187.96 50.8) (xy 185.42 50.8)) (stroke (width 0) (type default)) (uuid "4fbcb3c4-8e81-5862-a3ec-d67603bcfef4"))
+	(global_label "SPK_N" (shape passive) (at 185.42 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "6da247c6-d12a-5d56-8787-f26cb0261740") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 185.42 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(embedded_fonts no)
+)

@@ -1,0 +1,4 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "viaggio") (type "KiCad") (uri "${KIPRJMOD}/viaggio.kicad_sym") (options "") (descr "eTutti Viaggio, written by schematic.py"))
+)

@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "filename": "viaggio.kicad_pro",
+    "version": 3
+  },
+  "sheets": [
+    [
+      "23d2a97d-9ccc-546e-af9b-d21d95a66eb8",
+      "Root"
+    ],
+    [
+      "00b2b0f9-bd63-5748-82a3-a7cbc59e227c",
+      "P \u00b7 Processador"
+    ],
+    [
+      "d264c341-7879-5606-b20b-035d005ff9f5",
+      "E \u00b7 Energia"
+    ],
+    [
+      "af7c3ca2-4d26-5467-83a0-bb4a30143113",
+      "F \u00b7 Fone"
+    ],
+    [
+      "20dffac7-9dd5-5d10-83b4-3af1341cc4b0",
+      "I \u00b7 Interface"
+    ],
+    [
+      "d49825e6-6dee-5767-808e-e06f2125eb36",
+      "A \u00b7 Alto-falante"
+    ],
+    [
+      "a01ed6a2-2a9f-5bac-8192-b0d937848041",
+      "T \u00b7 Teclas"
+    ]
+  ]
+}
