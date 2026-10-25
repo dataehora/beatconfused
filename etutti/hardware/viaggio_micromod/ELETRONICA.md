@@ -1,5 +1,84 @@
 # eTutti Viaggio MicroMod · relatório da eletrônica
 
+## Par USB roteado (SPEC v2.3, exceção autorizada pelo J, 25 out 2026)
+
+O J autorizou o Code a rotear **só** USB_DP e USB_DN. Nenhuma outra rede foi tocada. Não houve
+roteador nem busca de caminho: o `pcb/route_usb.py` (python do KiCad 10) escreve cada segmento com
+coordenadas calculadas a partir dos pads do J201, do U201 e do J101. Ele parte da placa do PR #119,
+não roda o `build_board.py`, trava (locked) todas as trilhas e vias e reenche só as zonas. Pode ser
+rodado de novo: apaga antes as trilhas e vias que ele mesmo gravou (UUIDs em
+`build/route_usb.json`) e para sem salvar se houver trilha USB que não seja dele. O diff do
+`.kicad_pcb` traz só as trilhas e vias novas e o preenchimento da zona de GND do In1. O
+`SaveBoard` do pcbnew reescrevia o `.kicad_pro`, o empilhamento e as fontes; o script não deixa
+isso acontecer.
+
+| Medida | USB_DP | USB_DN |
+|---|---|---|
+| Comprimento J201 → J101 (caminho do sinal) | **32,90 mm** | **32,74 mm** |
+| Cobre total da rede (com a junção dos dois pads do J201) | 34,87 mm | 35,50 mm |
+| Vias (0,5/0,3, dentro do pátio do J101) | **1** | **1** |
+
+- **Diferença de comprimento: 0,15 mm** no caminho do sinal e 0,63 mm no cobre total.
+- **Largura 0,24 e vão 0,15** em F.Cu, sobre o GND do In1, sempre a 45°. Dentro do pátio do J101,
+  os dois tocos em B.Cu que chegam aos pads 3 e 5 têm 0,20.
+- **J201:** os dois pads de D− (B7, A7) se unem em F.Cu por trás da fileira de pads, sob o corpo
+  do conector, a x 7,75. Os dois de D+ (A6, B6) se unem à direita da fileira. Não há via de união.
+- **J201 → U201 → J101, todo em F.Cu:** o par passa por baixo do U201, faz a volta pelo lado
+  direito dele e entra nos pads 6/4. Atravessa o chip pelos próprios pads (6→1, 4→3, ligação
+  direta), sai pela esquerda, sobe e volta por cima do U201 até o J101. As duas vias ficam entre
+  as fileiras de pinos do J101. Os tocos em B.Cu ligam D+ ao pad 3 e D− ao pad 5.
+- **Por que a volta.** Do J201 o D− sai sempre acima do D+: os pads vêm na ordem D−, D+, D−, D+, e
+  numa camada só é impossível outra saída. No U201 (rot 0) o D+ está na fileira de cima. O
+  `.kicad_dru` só deixa trilha USB fora do F.Cu dentro do pátio do J101. A volta em U é o único
+  jeito de inverter o par sem trocar de camada. O D− compensa o comprimento com um laço no lado
+  esquerdo do U201.
+- **DRC** (`kicad-cli pcb drc --schematic-parity --severity-all`, com o `.kicad_dru` da placa):
+
+  | | Violações | Paridade | Não roteadas |
+  |---|---|---|---|
+  | antes | 0 | 0 | 431 |
+  | depois | **0** | **0** | **423** |
+
+  As 8 ligações a menos são as do USB: USB_DP e USB_DN ficam com **0 ligações faltando**. Saiu
+  limpo na 1ª tentativa de DRC. A 1ª versão tinha 4,8 mm de diferença de comprimento; na 2ª
+  entraram o laço e a volta do D− junto da do D+.
+- **Imagens ampliadas**, conferidas: `pcb/build/route_usb_top.png` (F.Cu) e
+  `pcb/build/route_usb_bottom.png` (B.Cu visto de cima, sem espelhar), grade de 1 mm.
+- **Para o J, ao rotear o resto:** o par em F.Cu cerca dois pinos do U201. Cada um precisa de uma
+  via:
+  - **GND, pad 2:** o lugar da via fica dentro do laço do D−, à esquerda do pad, em torno de
+    (16,6; 12,25). Há bastante espaço.
+  - **VBUS, pad 5:** o lugar fica entre o pad e a volta do D+, em (21,05; 12,25). As folgas são de
+    0,14 ao pad e à trilha e de 0,11 ao pad 15 do J101, em B.Cu.
+  - Os pinos de cima do J201 (GND, VBUS, CC1) saem para cima e para a direita, acima do par. Os de
+    baixo (CC2, VBUS, GND) saem por baixo do par.
+- **Junção do D− sob o corpo do USB-C (conferir):** a trilha passa até 0,4 mm além do fim dos pads (x 7,63 a 7,87),
+  sob a traseira do HRO TYPE-C-31-M-12, coberta pela máscara. Conferir no desenho da HRO se a
+  carcaça metálica não encosta ali.
+- **Arquivo aberto no KiCad:** no começo havia um `~viaggio_micromod.kicad_pcb.lck` (VISION/julia),
+  que no fim já tinha sumido. Se alguma janela do KiCad ainda tiver a placa antiga aberta, feche
+  sem salvar e abra de novo, senão o par USB se perde.
+
+Refazer só o USB:
+
+```
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_micromod/pcb/route_usb.py
+```
+
+O script sai com erro se o DRC não der 0/0, se faltar ligação no USB, se uma rede passar de 40 mm,
+se a diferença passar de 2 mm, se uma rede tiver mais de 2 vias ou se algo ficar destravado.
+`PINOS.md`, `POWER.md` e o esquema não mudaram.
+
+### Perguntas para a gestão (par USB)
+
+1. **Volta em torno do U201 ou U201 girado 180°?** Girado, o D+ do U201 fica embaixo, na mesma
+   ordem em que o par sai do J201. O par iria reto do J201 pelo U201 até o J101, com cerca de 20 mm
+   (estimativa), sem volta nem laço de compensação. Isso muda o posicionamento (`build_board.py`)
+   e o `route_usb.py`. Como o J ainda não roteou, dá para fazer agora. Fica a volta atual (33 mm,
+   DRC limpo) ou giro o U201?
+2. **Junção do D− sob o corpo do USB-C:** aceitável, ou prefere a união por via? A união por via
+   pede afrouxar a regra "USB só em F.Cu" dentro do pátio do J201 e gasta mais 2 vias no D−.
+
 **SPEC v2.3, passo M2 (placa para rotear), 25 out 2026.** Dono: eletrônica. A placa está posicionada
 e **sem trilhas e sem vias**: nenhum roteador foi usado (o `router.py` do v2.1 não foi copiado nem
 importado). Nada foi encomendado.

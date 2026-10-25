@@ -6,6 +6,8 @@ KiCad com o Freerouting, pelo guia "Viaggio: roteamento no KiCad, passo a passo"
 **Não rode o `build_board.py` sobre a placa que o J rotear:** ele refaz o
 `kicad/viaggio_micromod.kicad_pcb` do zero e apaga as trilhas.
 
+**O par USB (USB_DP/USB_DN) já está roteado e travado** (`route_usb.py`, 25 out 2026): não apague nem mova essas trilhas e vias, não rode o `build_board.py`, e pule o item "USB: rote o par à mão" abaixo.
+
 ## Arquivos
 
 | Arquivo | O que é |
