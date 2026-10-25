@@ -1,12 +1,34 @@
-# eTutti Viaggio MicroMod · especificação · v2.2
+# eTutti Viaggio MicroMod · especificação · v2.3
 
-**Versão 2.2, 25 out 2026.** Primeira SPEC do **eTutti Viaggio MicroMod**. É o Viaggio Rev2 (`etutti/hardware/viaggio/`, SPEC v2.1) com o processador soldado na placa trocado por um módulo **SparkFun MicroMod Teensy** encaixado num conector M.2.
+**Versão 2.3, 25 out 2026** (v2.2 do mesmo dia + respostas ao relatório do passo M1). SPEC do **eTutti Viaggio MicroMod**. É o Viaggio Rev2 (`etutti/hardware/viaggio/`, SPEC v2.1) com o processador soldado na placa trocado por um módulo **SparkFun MicroMod Teensy** encaixado num conector M.2.
 
 Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Mesmo protocolo do eTuttino Pocket (`CLAUDE.md`, "como trabalhamos"): cada disciplina responde no seu relatório, terminando com "Perguntas para a gestão".
 
 Medidas em mm. **(conferir)** = estimativa a confirmar com a peça real ou o datasheet.
 
-## Mudanças desde a versão anterior (Viaggio v2.1 → Viaggio MicroMod v2.2)
+## Mudanças desde a versão anterior
+
+### v2.3 (respostas ao `ELETRONICA.md` do passo M1, PR #117)
+
+- **Liga/desliga aceito como o M1 fez** (pergunta 3):
+  - EN de E4 = clique do volume OU KEEP (pino 10) OU USB_HOLD;
+  - USB_HOLD = VBUS E PWR_EN (pino 28, pad 3.3V_EN, com pull-up);
+  - para desligar com USB, a firmware baixa o pino 28 e o KEEP;
+  - saem o SNVS sempre ligado, o E5 e a porta U206;
+  - desligado sem USB, só o BQ24074 consome (~6 µA).
+- **Proteção do botão preso fica:** o pad 6 do módulo é o ONOFF do RT1062, ligado ao clique do volume; `BTN_PRESS_TIME` = 10 s, mais o watchdog.
+- **TP101 fica só como pad de teste** (pergunta 4). Não há reset de verdade no conector; para recuperar, usa-se o botão Program.
+- **Espaçador:** o Würth 9774025151R (M2.5 × 2,5 mm) por Global Sourcing, que já usamos para os sensores (pergunta 1). Se a eletrônica achar um equivalente com estoque na LCSC no M2, pode trocar e registrar.
+- **USB fica em cima** (pergunta 2):
+  - **E2 (ESD) passa para o lado de cima**, junto do USB-C;
+  - o par D+/D− corre em F.Cu sobre o GND do In1 até junto do J101;
+  - desce com um par de vias colado ao conector.
+
+  Assim o In2 fica livre para trilhas e o USB tem GND contínuo por baixo.
+- **Conector J101:** a eletrônica escolhe no M2 o M.2 Key E 4,2 mm **com estoque na JLCPCB** (LOTES C841659, UMAX C48985906 ou outro) e faz o footprint pelo desenho da peça escolhida.
+- **Firmware:** `teensy:avr:teensyMM`, pinos 0–26 iguais ao v2.1, mais o pino 28 (PWR_EN).
+
+### v2.2 (Viaggio v2.1 → Viaggio MicroMod)
 
 - **Por quê.** A saída das bolas do RT1062 (BGA 12 × 12) não fechou em nenhuma tentativa:
   - três sessões do Code, com o roteador próprio;
@@ -79,7 +101,7 @@ Três tipos de código, que não se misturam: **setor** = letra (P, E, F, I, A, 
 |---|---|---|---|---|---|
 | **P · Processador** | P1 | Conector M.2 Key E 4,2 mm + espaçador SMD M2.5 + parafuso; **módulo MicroMod Teensy** encaixado em casa | conector TE 2199230-4 ou equivalente na LCSC (conferir); módulo SparkFun DEV-16402 | M.2 SMD | baixo |
 | **E · Energia** | E1 | USB-C 16 vias + 2 × 5,1 kΩ | C165948 (TYPE-C-31-M-12) | SMD + carcaça passante | cima |
-| | E2 | ESD do USB | C7519 (USBLC6-2SC6) | SOT-23-6 | baixo |
+| | E2 | ESD do USB | C7519 (USBLC6-2SC6) | SOT-23-6 | **cima** (v2.3) |
 | | E3 | Carregador BQ24074 + trava liga/desliga | C54313 | QFN-16, 3 × 3 | baixo |
 | | E4 | Conversor 3,3 V TPS63001 + indutor 2,2 µH | C28060 | VSON-10, 3 × 3 | baixo |
 | | E6 | Conector da bateria JST PH 3 vias (+, −, NTC) | LCSC | SMD, ângulo reto | baixo |
@@ -102,9 +124,12 @@ O código E5 deixa de existir. Fora da placa: módulo MicroMod Teensy, 28 Gatero
 - **P (módulo):**
   - **Alimentação:** o módulo recebe 3,3 V nos pads 2 e 74, vindos de E4. O USB_VIN (pad 9) vai no VBUS, para o módulo ver a USB. D+/D− (pads 3 e 5) vêm do E1 pelo E2.
   - **Gravação:** o BOOT (pad 11) vai ao botão I4.
-  - **Reset:** o RESET# (pad 6) fica num pad de teste.
-  - **Liga/desliga:** a eletrônica confere no esquema do MicroMod Teensy o que o pad 4 (3.3V_EN) faz. Se for o pedido de desligar do processador (PMIC_ON_REQ ou equivalente), o EN de E4 = 3.3V_EN **E** EN_REQ, como na v2.1. Se não for, a eletrônica propõe no relatório como manter "desligar de verdade com USB".
-  - **Proteção do botão preso** (ONOFF por 10 s na v2.1): só se o módulo expuser o ON/OFF do RT1062. Senão, sai, e a firmware usa watchdog.
+  - **ONOFF:** o pad 6 ("RESET#") é o ONOFF do RT1062. Vai ao clique do volume por diodo e ao pad de teste TP101.
+  - **Liga/desliga (v2.3):**
+    - EN de E4 = clique do volume OU KEEP OU USB_HOLD;
+    - USB_HOLD = VBUS E PWR_EN (pino 28 = pad 4, pull-up de 100 kΩ, 1 kΩ + 1 µF);
+    - desligar com USB = firmware baixa o pino 28 e o KEEP.
+  - **Botão preso 10 s** desliga o RT1062 pelo ONOFF (`BTN_PRESS_TIME`), mais o watchdog.
   - Seguir o guia "Designing with MicroMod" da SparkFun: comprimentos de D+/D− iguais e peças de até 1,9 mm sob o módulo.
 - **E**:
   - BQ24074 com power-path, USB500, NTC no TS e carga de 500 mA. O STAT acende o vermelho do LED só com o aparelho desligado.
@@ -134,7 +159,7 @@ O código E5 deixa de existir. Fora da placa: módulo MicroMod Teensy, 28 Gatero
 
 | Corredor | Leva | De → para | Linhas | Camada | Comprimento |
 |---|---|---|---|---|---|
-| C1 | USB D+ / D− | E1 → P1 | 2 | cima, desce perto de P1 | ~20 |
+| C1 | USB D+ / D− | E1 → E2 → P1 | 2 | cima (F.Cu sobre o In1); par de vias colado ao J101 | ~25 |
 | C2 | 5 V do USB, pela borda de trás | E1 → E3 | 1 larga | 3 | ~60 |
 | C3 | 2 saídas analógicas, S0–S3, SENS_EN | T1, T2, T3 → P1 | 7 + GND | baixo | ~160 |
 | C4 | esquerdo, direito, terra virtual, detecção | F1 → F2 | 4 | baixo | ~15 |
@@ -162,8 +187,8 @@ O código E5 deixa de existir. Fora da placa: módulo MicroMod Teensy, 28 Gatero
 
 O J manda um prompt por passo e aprova o resultado antes do seguinte. **Nenhum passo do Code roteia.**
 
-- **M1 · Esquema** (agora): pasta nova, esquema adaptado ao módulo, ERC, mapa de pinos, BOM preliminar.
-- **M2 · Placa para rotear:** contorno, serigrafia, regras corrigidas, empilhamento, posicionamento pelo `viaggio_micromod.json`, In2 como signal, DSN. Sem trilhas.
+- **M1 · Esquema** (feito, PR #117): pasta nova, esquema adaptado ao módulo, ERC, mapa de pinos, BOM preliminar.
+- **M2 · Placa para rotear** (agora): contorno, serigrafia, regras corrigidas, empilhamento, posicionamento pelo `viaggio_micromod.json`, In2 como signal, DSN. Sem trilhas.
 - **Roteamento pelo J**, no KiCad com o Freerouting, pelo guia "Viaggio: roteamento no KiCad, passo a passo".
 - **M3 · Conferência e fabricação:**
   - áreas de GND e 3,3 V no In2;
@@ -172,32 +197,50 @@ O J manda um prompt por passo e aprova o resultado antes do seguinte. **Nenhum p
   - Gerbers, BOM e CPL da JLCPCB;
   - `POWER.md`, alturas por lado e relatório.
 
-## Tarefas para o Code (v2.2): só o passo M1
+## Tarefas para o Code (v2.3): só o passo M2
 
-**Não posicione nem roteie nada nesta sessão.** Pare ao fim do M1, faça um PR e informe o J.
+O M1 foi feito no PR #117. **Agora: a placa posicionada para o J rotear.** Sem trilhas, sem vias e sem roteador. Pare ao fim do M2, faça um PR e informe o J.
 
-### Integração
+### Eletrônica: M2a, ajustes do esquema (v2.3)
 
-- `CLAUDE.md`:
-  - o projeto ativo passa a ser o **Viaggio MicroMod** (`etutti/hardware/viaggio_micromod/`, SPEC v2.2);
-  - o Viaggio v2.1 (`viaggio/`) fica arquivado;
-  - registrar a decisão de 25 out (o J roteia; o Code não roteia).
-- `.claude/agents/eletronica.md`: o agente passa a editar `viaggio_micromod/pcb/`, `viaggio_micromod/POWER.md` e `viaggio_micromod/ELETRONICA.md`; lê a SPEC e `concept/out/viaggio_micromod.json` sem editar. `viaggio/` passa a ser só leitura.
+- E2 no lado de cima.
+- J101: o M.2 Key E 4,2 mm com estoque na JLCPCB (conferir na página da peça), com o footprint pelo desenho dela.
+- H101: Würth 9774025151R por Global Sourcing, ou equivalente LCSC registrado.
+- ERC 0/0, conferência da netlist, `bom_preliminar.csv` e `PINOS.md` atualizados se algo mudar.
 
-### Eletrônica: M1, esquema
+### Eletrônica: M2b, a placa
 
-- **Pasta:** copiar `viaggio/pcb/` para `viaggio_micromod/pcb/`, renomeando o projeto KiCad para `viaggio_micromod`. Tirar o que só servia ao RT1062: `rt1062_balls.json`, `router.py`, `viaggio_rota_P_parcial.kicad_pcb` e o BGA da biblioteca.
-- **Folha P:** o conector M.2 (símbolo e footprint conferidos com o datasheet do conector e com o "Designing with MicroMod" da SparkFun), o espaçador M2.5 e as ligações da §3, regras P. Sair tudo o que a §"Mudanças" lista. E5 sai da folha E.
-- **Pinos:** `viaggio_micromod/pcb/PINOS.md` na numeração do Teensy MicroMod.
-  - Manter 7, 20, 21, 23 (I2S) e 18, 19 (I2C).
-  - Saídas dos mux em entradas analógicas.
-  - Dois encoders com clique; LED R/G; KEEP; AMP_SD; CHG_STAT; VBAT_S; HP_DET; SENS_EN; S0–S3.
-  - Listar a diferença em relação ao `viaggio/pcb/PINOS.md` e conferir que todos cabem nos pinos que o módulo expõe.
-- **Liga/desliga:** responder no relatório o que o pad 3.3V_EN do módulo faz e como fica o "desligar de verdade com USB" (§3, regras P).
-- **ERC 0/0** e a conferência da netlist.
-- **BOM preliminar** (`pcb/bom_preliminar.csv`): o conector M.2 e o espaçador com código LCSC, se houver (montagem JLC). O módulo vai como "em casa".
-- **Relatório** `viaggio_micromod/ELETRONICA.md`: o que foi feito, peças novas com datasheets, itens (conferir) e "Perguntas para a gestão".
+- **Scripts:** `build_board.py` e `handoff_freerouting.py` adaptados de `viaggio/pcb/`, **sem `router.py` e sem nenhum roteamento**.
+- **Contorno, furos M2 e serigrafia** como no Viaggio v2.1:
+  - perfil A pontilhado;
+  - posição antiga de E1/F2 tracejada;
+  - área do logo;
+  - códigos P1…T4.
+- **Posicionamento de todas as peças** por `concept/out/viaggio_micromod.json`, com os passivos junto dos seus chips.
+  - J101 e o cartão de 22 × 22 no verso, na área do setor P, com a orientação que der o USB e o I2S mais curtos.
+  - Área de regra sobre o retângulo do cartão: **peças de até 1,9 mm** embaixo dele.
+  - Ajustes de alguns milímetros são livres; mudança de setor, lado ou corredor é pedida no relatório.
+- **Empilhamento e camadas** (§5):
+  - JLC04121H-7628;
+  - In1 = GND, tipo power, área de GND inteira;
+  - **In2 = tipo signal, sem nenhuma área** (as áreas do In2 entram no M3);
+  - F.Cu e B.Cu como no v2.1.
+- **Classes e vias:** **0,5 / 0,3 em todas as classes**. USB 0,24 / vão 0,15 em F.Cu sobre o In1 (registrar a conta se mudar).
+- **Regras do `.kicad_dru`**, que o KiCad 10 tem de compilar sem erro:
+  - números **com unidade (mm)**;
+  - nada de nome de classe "Default" (usar "não é USB, Corrente nem Nucleo");
+  - sinais com mínimo de 0,15 mm, para as afinações na entrada de pinos finos;
+  - Corrente com mínimo de 0,8 mm, exceto dentro do pátio dos chips de energia e dos conectores (E1, E3, E4, E6, A1, J101), onde as afinações na entrada dos pinos são normais.
+- **Saídas:**
+  - `build/viaggio_micromod.dsn`;
+  - imagens do lado de cima e do lado de baixo;
+  - DRC da entrega: 0 erros, paridade com o esquema 0, número de ligações a rotear.
+- **`pcb/ROTEAMENTO.md` curto:** os arquivos, as camadas, as classes e "não rode o `build_board.py` sobre a placa que o J rotear". O passo a passo fica no guia do J.
+
+### Relatório
+
+`viaggio_micromod/ELETRONICA.md`: o que foi feito, o conector escolhido (código, estoque, desenho), onde as peças saíram do JSON e por quê, itens (conferir) e "Perguntas para a gestão".
 
 ## 8. Perguntas para o J
 
-Nenhuma em aberto.
+1. **Comprar um módulo MicroMod Teensy agora** (~US$ 25, mais o kit de parafusos da SparkFun)? Não é o protótipo. Serve para medir a altura real e a posição do espaçador antes de mandar fazer a placa (itens 3 e 4 do relatório do M1). O M2 não depende disso.
