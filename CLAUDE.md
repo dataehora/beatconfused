@@ -473,7 +473,28 @@ hand tests the knob following.
 '`), so Python edit scripts with escapes go
 through the Write tool into the scratchpad.
 
-## Project status (19 Oct 2026) — eTutti Viaggio is the active project
+## Project status (25 Oct 2026) — eTutti Viaggio MicroMod is the active project
+
+**eTutti Viaggio MicroMod** (`etutti/hardware/viaggio_micromod/`, SPEC v2.2) is now the only
+active instrument. It is the Viaggio Rev2 with the chip-down RT1062 swapped for a **SparkFun
+MicroMod Teensy** module (DEV-16402: RT1062, 16 MB flash, no PSRAM) in an M.2 Key E 4.2 mm
+connector held by an M2.5 SMD standoff. JLC fits the connector and standoff; J fits the module
+at home. Gone from the board: the RT1062, MKL02, W25Q64, PSRAM spot, crystals, SNVS regulator +
+start gate (E5), DCDC parts and the BGA-196 footprint.
+- Placement contract: `viaggio_micromod/concept/out/viaggio_micromod.json` (by
+  `concept/sectors.py`; same plan as Rev2 with sector P replaced by the module).
+- Firmware board: "Teensy MicroMod" in Teensyduino; PINOS.md uses MicroMod Teensy pin numbers,
+  I2S 7/20/21/23 and I2C 18/19 unchanged.
+- Rules: vias 0.5 / 0.3 drill; In2 is a **signal** layer (GND/3V3 pours after routing).
+- Steps (SPEC §7, one PR each, J approves each): **M1** schematic + ERC + pin map + BOM;
+  **M2** placed board for routing (no tracks) + DSN; **J routes** in KiCad with Freerouting;
+  **M3** checks (DRC, firmware 28/28, flex) + fab.
+- **Decision of 25 Oct 2026, still in force: J routes; no Code step routes.**
+- `etutti/hardware/viaggio/` (SPEC v2.1, the chip-down RT1062 attempt) is **archived**:
+  reference only, don't change it. Its routing never closed (the BGA fan-out) — that is why
+  the module exists.
+
+## Project status (19 Oct 2026) — eTutti Viaggio (archived since 25 Oct 2026)
 
 **eTutti Viaggio** (`etutti/hardware/viaggio/`, SPEC v1) is now the only
 active instrument: the Pocket's 28-key keyboard and right side, one

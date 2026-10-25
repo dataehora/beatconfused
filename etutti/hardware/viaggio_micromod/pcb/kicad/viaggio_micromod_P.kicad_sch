@@ -1,0 +1,2137 @@
+(kicad_sch
+	(version 20250610)
+	(generator "viaggio_micromod_schematic")
+	(generator_version "10.0")
+	(uuid "0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24")
+	(paper "A4")
+	(title_block (title "eTutti Viaggio MicroMod · P · Processador") (date "2026-10-25") (rev "SPEC v2.2 - passo M1") (company "beatconfused.com") (comment 1 "etutti/hardware/viaggio_micromod/pcb/schematic.py escreve este arquivo; nao editar a mao"))
+	(lib_symbols
+		(symbol "viaggio_micromod:C"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0.254)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "C"
+			(at 0.635 2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "C"
+			(at 0.635 -2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 0.9652 -3.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "cap capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "C_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "C_0_1"
+			(polyline
+				(pts
+					(xy -2.032 0.762)
+					(xy 2.032 0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -2.032 -0.762)
+					(xy 2.032 -0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "C_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:MicroMod_M.2_E"
+		(pin_names
+			(offset 1.016)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "J"
+			(at 0 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MicroMod_M.2_E"
+			(at 0 -39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "M.2 Key E socket (67 pins) for a SparkFun MicroMod processor; pin names = MicroMod name (Teensy MicroMod pin)"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "MicroMod_M.2_E_1_1"
+			(rectangle
+				(start -27.94 20.32)
+				(end 27.94 -20.32)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(pin power_in line
+				(at -30.48 17.78 0)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -30.48 15.24 0)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -30.48 12.7 0)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "33"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -30.48 10.16 0)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "36"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -30.48 7.62 0)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "39"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -30.48 5.08 0)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "45"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -30.48 2.54 0)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "75"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -30.48 0.0 0)
+				(length 2.54)
+				(name "3.3V"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -30.48 -2.54 0)
+				(length 2.54)
+				(name "3.3V"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "74"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -30.48 -5.08 0)
+				(length 2.54)
+				(name "USB_VIN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "9"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -7.62 0)
+				(length 2.54)
+				(name "3.3V_EN (28)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -10.16 0)
+				(length 2.54)
+				(name "RESET# (ONOFF)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -12.7 0)
+				(length 2.54)
+				(name "BOOT# (PROGRAM)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "11"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -30.48 -15.24 0)
+				(length 2.54)
+				(name "RTC_3V (VBAT SNVS)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "72"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -30.48 -17.78 0)
+				(length 2.54)
+				(name "MP"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "MP"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(symbol "MicroMod_M.2_E_2_1"
+			(rectangle
+				(start -27.94 35.56)
+				(end 27.94 -35.56)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(pin passive line
+				(at -30.48 33.02 0)
+				(length 2.54)
+				(name "USB_D+ (USB1 D+)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -30.48 30.48 0)
+				(length 2.54)
+				(name "USB_D- (USB1 D-)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 27.94 0)
+				(length 2.54)
+				(name "G11 (27/A13)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "8"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 25.4 0)
+				(length 2.54)
+				(name "D0 (4)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "10"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 22.86 0)
+				(length 2.54)
+				(name "I2C_SDA (18/A4)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "12"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -30.48 20.32 0)
+				(length 2.54)
+				(name "RTS1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "13"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 17.78 0)
+				(length 2.54)
+				(name "I2C_SCL (19/A5)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "14"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -30.48 15.24 0)
+				(length 2.54)
+				(name "CTS1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "15"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 12.7 0)
+				(length 2.54)
+				(name "I2C_INT# (29)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "16"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 10.16 0)
+				(length 2.54)
+				(name "TX1 (1)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "17"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 7.62 0)
+				(length 2.54)
+				(name "D1 (5)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "18"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 5.08 0)
+				(length 2.54)
+				(name "RX1 (0)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "19"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 2.54 0)
+				(length 2.54)
+				(name "RX2 (16/A2)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "20"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -30.48 0.0 0)
+				(length 2.54)
+				(name "SWDCK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "21"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -2.54 0)
+				(length 2.54)
+				(name "TX2 (17/A3)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "22"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -30.48 -5.08 0)
+				(length 2.54)
+				(name "SWDIO"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "23"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -7.62 0)
+				(length 2.54)
+				(name "PWM0 (3)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "32"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -10.16 0)
+				(length 2.54)
+				(name "A0 (14/A0)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "34"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -30.48 -12.7 0)
+				(length 2.54)
+				(name "USBHOST_D+ (USB2 D+)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "35"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -30.48 -15.24 0)
+				(length 2.54)
+				(name "USBHOST_D- (USB2 D-)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "37"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -17.78 0)
+				(length 2.54)
+				(name "A1 (15/A1)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "38"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -20.32 0)
+				(length 2.54)
+				(name "G0 (40)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "40"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -22.86 0)
+				(length 2.54)
+				(name "CAN_RX (30)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "41"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -25.4 0)
+				(length 2.54)
+				(name "G1 (41)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "42"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -27.94 0)
+				(length 2.54)
+				(name "CAN_TX (31)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "43"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -30.48 0)
+				(length 2.54)
+				(name "G2 (42)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "44"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at -30.48 -33.02 0)
+				(length 2.54)
+				(name "G3 (43)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "46"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 33.02 180)
+				(length 2.54)
+				(name "PWM1 (2)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "47"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 30.48 180)
+				(length 2.54)
+				(name "G4 (44)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "48"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 27.94 180)
+				(length 2.54)
+				(name "BATT_VIN/3 (22/A8)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "49"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 25.4 180)
+				(length 2.54)
+				(name "AUD_BCLK (21/A7)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "50"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 22.86 180)
+				(length 2.54)
+				(name "I2C_SDA1 (25/A11)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "51"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 20.32 180)
+				(length 2.54)
+				(name "AUD_LRCLK (20/A6)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "52"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 17.78 180)
+				(length 2.54)
+				(name "I2C_SCL1 (24/A10)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "53"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 15.24 180)
+				(length 2.54)
+				(name "AUD_IN (8)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "54"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 12.7 180)
+				(length 2.54)
+				(name "SPI_CS# (10)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "55"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 10.16 180)
+				(length 2.54)
+				(name "AUD_OUT (7)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "56"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 7.62 180)
+				(length 2.54)
+				(name "SPI_SCK (13)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "57"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 5.08 180)
+				(length 2.54)
+				(name "AUD_MCLK (23/A9)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "58"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 2.54 180)
+				(length 2.54)
+				(name "SPI_SDO (11)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "59"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 0.0 180)
+				(length 2.54)
+				(name "SDIO_SCK (36)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "60"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -2.54 180)
+				(length 2.54)
+				(name "SPI_SDI (12)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "61"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -5.08 180)
+				(length 2.54)
+				(name "SDIO_CMD (37)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "62"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -7.62 180)
+				(length 2.54)
+				(name "G10 (33)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "63"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -10.16 180)
+				(length 2.54)
+				(name "SDIO_DATA0 (35)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "64"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -12.7 180)
+				(length 2.54)
+				(name "G9 (32)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "65"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -15.24 180)
+				(length 2.54)
+				(name "SDIO_DATA1 (34)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "66"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -17.78 180)
+				(length 2.54)
+				(name "G8 (26/A12)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "67"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -20.32 180)
+				(length 2.54)
+				(name "SDIO_DATA2 (39)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "68"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -22.86 180)
+				(length 2.54)
+				(name "G7 (9)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "69"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -25.4 180)
+				(length 2.54)
+				(name "SDIO_DATA3 (38)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "70"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -27.94 180)
+				(length 2.54)
+				(name "G6 (6)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "71"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 30.48 -30.48 180)
+				(length 2.54)
+				(name "G5 (45)"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "73"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+	)
+		(symbol "viaggio_micromod:MountingHole_Pad"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "H"
+			(at 0 6.35 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MountingHole_Pad"
+			(at 0 4.445 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole with connection"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "mounting hole"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "MountingHole*Pad*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "MountingHole_Pad_0_1"
+			(circle
+				(center 0 1.27)
+				(radius 1.27)
+				(stroke
+					(width 1.27)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "MountingHole_Pad_1_1"
+			(pin input line
+				(at 0 -2.54 90)
+				(length 2.54)
+				(name "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:R"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "R"
+			(at 2.032 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R"
+			(at 0 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at -1.778 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "R res resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "R_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "R_0_1"
+			(rectangle
+				(start -1.016 -2.54)
+				(end 1.016 2.54)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "R_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:TestPoint"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0.762)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "TP"
+			(at 0 6.858 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 0 5.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 5.08 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 5.08 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "test point tp"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "Pin* Test*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "TestPoint_0_1"
+			(circle
+				(center 0 3.302)
+				(radius 0.762)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "TestPoint_1_1"
+			(pin passive line
+				(at 0 0 90)
+				(length 2.54)
+				(name "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+	)
+	(text "P · Processador: modulo SparkFun MicroMod Teensy (DEV-16402) no conector M.2 Key E J101 + espacador H101." (exclude_from_sim no) (at 15 18 0) (effects (font (size 2 2)) (justify left)) (uuid "47079960-2e85-58bb-b458-b3f480d3df22"))
+	(text "3,3 V nos pads 2/74; USB_VIN (9) no VBUS; D+/D- (3/5) do USB-C pelo U201; BOOT (11) no Program; RESET# (6) = ONOFF." (exclude_from_sim no) (at 15 23 0) (effects (font (size 2 2)) (justify left)) (uuid "6cca5a86-c722-5096-8963-01ca4725c28a"))
+	(text "Sinais nos pinos do Teensy MicroMod (PINOS.md): os mesmos numeros do Viaggio v2.1, mais o 28 (3.3V_EN = PWR_EN)." (exclude_from_sim no) (at 15 28 0) (effects (font (size 2 2)) (justify left)) (uuid "5fab2700-eef0-5542-a9a0-7339aa154733"))
+	(symbol (lib_id "viaggio_micromod:MicroMod_M.2_E") (at 58.42 66.04 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "5747493f-1530-5d65-b3b6-c944863c0943")
+		(property "Reference" "J101" (at 25.4 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "APCI0108-P001A" (at 25.4 87.63 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "viaggio_micromod:M.2_Socket_E_H4.2_MicroMod" (at 58.42 66.04 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C841659.pdf" (at 58.42 66.04 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (LOTES; equivalente ao TE 2199230-4 da SparkFun; conferir estoque e o desenho LOTES contra o footprint do TE); no verso; modulo SparkFun MicroMod Teensy DEV-16402 encaixado em casa" (at 58.42 66.04 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "P1" (at 30.48 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C841659" (at 58.42 66.04 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 58.42 66.04 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "2371757c-278a-5851-b89e-a03c681175ea"))
+		(pin "7" (uuid "619155fa-c195-51f4-b3a4-f4b19687a494"))
+		(pin "33" (uuid "db2a5d16-b394-5998-b2cc-b314ad762b5f"))
+		(pin "36" (uuid "1bf54825-5ef6-5c3b-9bac-08787715c589"))
+		(pin "39" (uuid "22bda714-a237-5f31-8936-61780f671050"))
+		(pin "45" (uuid "6cc73fcb-3b7d-5f0b-8e32-9df460ad38d8"))
+		(pin "75" (uuid "a19ec1e2-1726-517b-b5fd-d7db33e38449"))
+		(pin "2" (uuid "1c1c4bd2-e3bc-53c4-8ef8-0f2905a24b79"))
+		(pin "74" (uuid "1fe766f9-08e3-5803-ade7-db7d6edcec7d"))
+		(pin "9" (uuid "c06e0bb7-1001-5d78-bc9a-7f95fb493a66"))
+		(pin "4" (uuid "63db667c-3927-56ba-b4f7-b91b9ba7e197"))
+		(pin "6" (uuid "eb4cc5b7-be7a-5406-a9b3-a04209a88db8"))
+		(pin "11" (uuid "e7d5aa77-5cbe-5646-a85f-3d54489a343e"))
+		(pin "72" (uuid "beac21fc-f8d7-55f9-a056-aa49d73e86c6"))
+		(pin "MP" (uuid "defc792d-91ff-54f7-945f-3bea6084c788"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24" (reference "J101") (unit 1))))
+	)
+	(wire (pts (xy 27.94 48.26) (xy 25.4 48.26)) (stroke (width 0) (type default)) (uuid "64c4e9b3-36fa-5d95-b142-e83d963289b2"))
+	(global_label "GND" (shape passive) (at 25.4 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "5f351a88-2170-5ffd-ba9f-45cd89ffda5a") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 50.8) (xy 25.4 50.8)) (stroke (width 0) (type default)) (uuid "ea4af30c-94ae-5ed5-b4be-fb328450a23c"))
+	(global_label "GND" (shape passive) (at 25.4 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "0e83ba25-819e-502c-a618-40b739cfbf4f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 53.34) (xy 25.4 53.34)) (stroke (width 0) (type default)) (uuid "9414312f-636e-553e-96af-0c8d2a3c474a"))
+	(global_label "GND" (shape passive) (at 25.4 53.34 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "9f030871-e2b9-5a21-9c93-02effbbe855f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 55.88) (xy 25.4 55.88)) (stroke (width 0) (type default)) (uuid "3e8571da-de71-56b4-90a1-8980694f0ee7"))
+	(global_label "GND" (shape passive) (at 25.4 55.88 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "2184d635-86d3-5dc1-9865-1d9ba5ac1c9e") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 55.88 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 58.42) (xy 25.4 58.42)) (stroke (width 0) (type default)) (uuid "357978be-f5aa-587c-ae73-5ae2c440cf41"))
+	(global_label "GND" (shape passive) (at 25.4 58.42 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "aeda850c-0236-59ef-add5-522684dbabe8") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 60.96) (xy 25.4 60.96)) (stroke (width 0) (type default)) (uuid "901dbc0a-863f-536b-9ba5-0cc41fe1c48e"))
+	(global_label "GND" (shape passive) (at 25.4 60.96 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "ac7daecb-c54e-5f78-ba3d-3562f29872c5") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 60.96 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 63.5) (xy 25.4 63.5)) (stroke (width 0) (type default)) (uuid "ee8e194b-e69f-5a09-bec0-bbc69b70d2a8"))
+	(global_label "GND" (shape passive) (at 25.4 63.5 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "745b42a5-ce70-5f42-b7f6-b84f49f8f424") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 63.5 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 66.04) (xy 25.4 66.04)) (stroke (width 0) (type default)) (uuid "574282f9-f06c-564f-900b-b3eb16229c0c"))
+	(global_label "+3V3" (shape passive) (at 25.4 66.04 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "5d39da8e-9200-5a81-b4c1-74f1be3cfe74") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 66.04 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 68.58) (xy 25.4 68.58)) (stroke (width 0) (type default)) (uuid "d3329dab-22b5-5fd2-a1bd-22847c276088"))
+	(global_label "+3V3" (shape passive) (at 25.4 68.58 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "9c79013a-4731-5830-b1ae-6d8d3300b948") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 68.58 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 71.12) (xy 25.4 71.12)) (stroke (width 0) (type default)) (uuid "2b5ef1ec-933d-5d8a-abe4-d1a5ea3fa16f"))
+	(global_label "VBUS" (shape passive) (at 25.4 71.12 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "354d8a64-ab98-526f-9b58-f30bd3df1d54") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 71.12 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 73.66) (xy 25.4 73.66)) (stroke (width 0) (type default)) (uuid "9227a87e-3d1a-53e5-a5db-bc6681555c1f"))
+	(global_label "PWR_EN" (shape passive) (at 25.4 73.66 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "5338de74-e9cb-5eb8-a218-7804808758f7") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 73.66 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 76.2) (xy 25.4 76.2)) (stroke (width 0) (type default)) (uuid "6e47ff68-da16-573e-8cd1-4a9f14306dd4"))
+	(global_label "ONOFF" (shape passive) (at 25.4 76.2 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "014d7d93-85f6-5f74-89fc-78e398aea984") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 76.2 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 78.74) (xy 25.4 78.74)) (stroke (width 0) (type default)) (uuid "81a295c9-0254-5201-a9e9-e114886fb4dc"))
+	(global_label "PROG" (shape passive) (at 25.4 78.74 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "1045d7a0-a9c2-5213-8a83-feb04c499ab3") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 78.74 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 27.94 81.28) (uuid "e172ee9b-b881-5e74-a0c2-717e02e541f5"))
+	(wire (pts (xy 27.94 83.82) (xy 25.4 83.82)) (stroke (width 0) (type default)) (uuid "6e6e3d19-0b8c-5c15-a3c5-35c9ddb9254c"))
+	(global_label "GND" (shape passive) (at 25.4 83.82 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "8011f82e-e087-55c9-9d28-184dcabb04ee") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 83.82 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:MicroMod_M.2_E") (at 81.28 81.28 0) (unit 2) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "bf348d97-b807-5256-8698-3e0d26250da7")
+		(property "Reference" "J101" (at 50.8 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "APCI0108-P001A" (at 50.8 118.11 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "viaggio_micromod:M.2_Socket_E_H4.2_MicroMod" (at 81.28 81.28 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C841659.pdf" (at 81.28 81.28 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (LOTES; equivalente ao TE 2199230-4 da SparkFun; conferir estoque e o desenho LOTES contra o footprint do TE); no verso; modulo SparkFun MicroMod Teensy DEV-16402 encaixado em casa" (at 81.28 81.28 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "P1" (at 111.76 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C841659" (at 81.28 81.28 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 81.28 81.28 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "3" (uuid "ae0de0c4-1727-561e-9e25-5de4515b10e8"))
+		(pin "5" (uuid "2791acc9-71c0-5558-9da8-b37a33625767"))
+		(pin "8" (uuid "9af223e6-b20c-53ce-bda6-c8bd2aceabf5"))
+		(pin "10" (uuid "73f8e800-ea19-5514-852f-2ce2f1140375"))
+		(pin "12" (uuid "cf6ea2c8-6d7c-5043-8d26-6047ae880861"))
+		(pin "13" (uuid "15162a9d-c689-5ea8-beab-d54f6db59780"))
+		(pin "14" (uuid "0a49fe07-caf3-5183-8124-f98703623745"))
+		(pin "15" (uuid "1f54a3d9-99eb-57d2-8255-5215564418ee"))
+		(pin "16" (uuid "767e808b-32b1-514d-8f49-e5addb692aa9"))
+		(pin "17" (uuid "be77a3ab-9d92-5d48-ba1b-32bcc159a8fc"))
+		(pin "18" (uuid "d08b5a06-ad1a-516a-942a-ff72776faede"))
+		(pin "19" (uuid "8af13583-e2c5-514e-a62a-578a9051154f"))
+		(pin "20" (uuid "44be838a-2bbf-542a-b7af-b9ac6f47bca6"))
+		(pin "21" (uuid "e188dfaf-16e5-5612-aa2e-a5c9196dcfd1"))
+		(pin "22" (uuid "6abb5e84-4ec3-5abe-8377-48737e524acd"))
+		(pin "23" (uuid "14dffaf4-7e26-51e3-aef4-c8122b4e3816"))
+		(pin "32" (uuid "136a3e9c-39f5-511b-8fa3-643f7b9fd460"))
+		(pin "34" (uuid "14daffd1-b4dc-5a3b-be4d-0162af5ca428"))
+		(pin "35" (uuid "339e25fc-8617-5121-a55a-9bbb9acb5262"))
+		(pin "37" (uuid "36acb1ed-c261-50eb-b3ff-6363e78061b7"))
+		(pin "38" (uuid "f33b4378-e1bc-5f68-b975-a88e5b6d8178"))
+		(pin "40" (uuid "12482609-e3ab-5c67-aa54-32b35bf1a561"))
+		(pin "41" (uuid "42860cba-8b56-5733-a50a-5fe8369980c5"))
+		(pin "42" (uuid "bdddbd70-0a22-5439-beed-669d7e1883c2"))
+		(pin "43" (uuid "8a675ec4-5f19-59da-8b90-185f54900d32"))
+		(pin "44" (uuid "aa0295d2-dd6f-5327-b575-678df4a35088"))
+		(pin "46" (uuid "2890993e-d439-5fa3-94df-33431b7ba3a3"))
+		(pin "47" (uuid "3a2d9690-cea4-54f1-8df0-ea628db3dfdc"))
+		(pin "48" (uuid "dd128861-f399-5576-b62c-61231219005a"))
+		(pin "49" (uuid "31b2902a-665d-5247-a0c9-959446225be2"))
+		(pin "50" (uuid "200fc709-62dc-5168-9e40-366116e3626f"))
+		(pin "51" (uuid "d689e445-88ab-5709-baa7-615c79689d47"))
+		(pin "52" (uuid "b079d23f-9ebf-58d5-b8e6-a3c65b8c95ea"))
+		(pin "53" (uuid "5c5e260f-8653-50e9-9519-83fa420e6092"))
+		(pin "54" (uuid "6a667b23-7532-5f4d-a57e-46e912486d2d"))
+		(pin "55" (uuid "142766b5-cbdd-5730-9845-ec01bcd7a3b1"))
+		(pin "56" (uuid "592be631-1197-5a3a-aa93-d461dae269cd"))
+		(pin "57" (uuid "8bb7f27a-cb11-5ab3-bd42-74fb1d283cf1"))
+		(pin "58" (uuid "99ce4ff8-b586-5202-b668-d3ad53c8eeb5"))
+		(pin "59" (uuid "1dbeec0d-db59-567a-9bb4-0b879c989c30"))
+		(pin "60" (uuid "03bb8e06-d565-5b03-aa96-9bf559ef0b5e"))
+		(pin "61" (uuid "4a8be069-7763-5f6e-9d64-619944d3a373"))
+		(pin "62" (uuid "329d2920-c2a5-5353-8192-7c332b4c66b7"))
+		(pin "63" (uuid "4f415b35-1cf4-5989-bc30-57dd2222045b"))
+		(pin "64" (uuid "5afed6db-a2c5-5346-96f5-0df0c929b949"))
+		(pin "65" (uuid "515bcac2-6b98-5d42-9c9f-10d12e72d0ef"))
+		(pin "66" (uuid "f2b4ba1c-167a-5dc9-bc22-cb475edb3c35"))
+		(pin "67" (uuid "378e6609-e971-55ef-96ed-b3c34e4c78f9"))
+		(pin "68" (uuid "5fe7f3cb-4b38-5fd2-8a87-421739ec8cb3"))
+		(pin "69" (uuid "e5b4386d-eb23-5581-b5ce-59a5f40a0785"))
+		(pin "70" (uuid "bdef851b-0276-5d86-8153-2d519b35d937"))
+		(pin "71" (uuid "afd246fd-1e5c-57c0-b06b-a32030035319"))
+		(pin "73" (uuid "cbfc105a-2dc2-536a-b8ff-3c31926e1caa"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24" (reference "J101") (unit 2))))
+	)
+	(wire (pts (xy 50.8 48.26) (xy 48.26 48.26)) (stroke (width 0) (type default)) (uuid "36d8dfd7-ceb6-5ded-b3d5-140cd36ac9da"))
+	(global_label "USB_DP" (shape passive) (at 48.26 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "4822bab9-d149-58ea-8b58-33ab083c8f82") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 50.8 50.8) (xy 48.26 50.8)) (stroke (width 0) (type default)) (uuid "4a28eb81-8fa3-5a52-bfa8-8b7ed9359570"))
+	(global_label "USB_DN" (shape passive) (at 48.26 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "27514c45-5f54-5488-ae4d-64672b8b0f8d") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 50.8 53.34) (uuid "65f9defd-46d3-5092-b1e3-3e41c2ab6261"))
+	(wire (pts (xy 50.8 55.88) (xy 48.26 55.88)) (stroke (width 0) (type default)) (uuid "218e83de-cf1f-570e-af70-7772c8efa2d9"))
+	(global_label "SENS_EN" (shape passive) (at 48.26 55.88 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "d590d3be-aa7a-5931-8da5-e5c576fb1c6b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 55.88 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 50.8 58.42) (xy 48.26 58.42)) (stroke (width 0) (type default)) (uuid "4bfc8604-7714-52af-97a2-c09ddaaa419c"))
+	(global_label "I2C_SDA" (shape passive) (at 48.26 58.42 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "bd665d45-b7e1-5c36-ac24-4e0b8bfe33d5") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 50.8 60.96) (uuid "5c281440-89fd-5f3f-a5c2-77f6e647c333"))
+	(wire (pts (xy 50.8 63.5) (xy 48.26 63.5)) (stroke (width 0) (type default)) (uuid "b4fe167d-d81c-5a48-a112-436be4c0effc"))
+	(global_label "I2C_SCL" (shape passive) (at 48.26 63.5 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "046d5448-b5a4-50e4-b14c-82936c276320") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 63.5 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 50.8 66.04) (uuid "19be1e7d-b08d-5298-94c9-07cd3ec0946d"))
+	(no_connect (at 50.8 68.58) (uuid "c0cf4dc8-4304-5c53-835b-421477249f65"))
+	(wire (pts (xy 50.8 71.12) (xy 48.26 71.12)) (stroke (width 0) (type default)) (uuid "ac229ace-5a75-5ed9-84e8-47e77f202b6b"))
+	(global_label "MUX_S1" (shape passive) (at 48.26 71.12 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "dca28380-2c22-5409-b8fa-b5072656abb3") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 71.12 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 50.8 73.66) (xy 48.26 73.66)) (stroke (width 0) (type default)) (uuid "b51031a6-3354-5978-822a-a60732faab81"))
+	(global_label "LED_G" (shape passive) (at 48.26 73.66 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "990c0922-483c-5a9b-a5a5-0f1b984e77f9") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 73.66 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 50.8 76.2) (xy 48.26 76.2)) (stroke (width 0) (type default)) (uuid "a8c1c470-9261-5ab0-b8f0-6ce1bbaec19e"))
+	(global_label "MUX_S0" (shape passive) (at 48.26 76.2 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "6db53dc2-219d-51b2-99e4-39071b68db2f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 76.2 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 50.8 78.74) (xy 48.26 78.74)) (stroke (width 0) (type default)) (uuid "c42a9371-9552-550f-9763-f4b39fff7af8"))
+	(global_label "VBAT_S" (shape passive) (at 48.26 78.74 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "131c0a49-e5e3-5236-b2e8-46ce2d0c6408") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 78.74 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 50.8 81.28) (uuid "193c6ba3-e7dc-56f0-989e-a93ff029cd73"))
+	(wire (pts (xy 50.8 83.82) (xy 48.26 83.82)) (stroke (width 0) (type default)) (uuid "bf7576c8-d21f-545a-9279-f337d33302bd"))
+	(global_label "HP_DET" (shape passive) (at 48.26 83.82 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "d2fe3d55-a1ee-5d3e-98ba-c1e61979dc9a") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 83.82 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 50.8 86.36) (uuid "47b404ed-2b05-5cb4-ab66-d17fba7568d9"))
+	(wire (pts (xy 50.8 88.9) (xy 48.26 88.9)) (stroke (width 0) (type default)) (uuid "ae3f4dcd-e68e-5a2f-baf0-8a0b29a6f92a"))
+	(global_label "MUX_S3" (shape passive) (at 48.26 88.9 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "2de0e980-16d6-54b2-bdf5-908538e0b2e5") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 88.9 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 50.8 91.44) (xy 48.26 91.44)) (stroke (width 0) (type default)) (uuid "723b5c9c-5096-5db4-b4db-c16f6850b08c"))
+	(global_label "MUX_R_COM" (shape passive) (at 48.26 91.44 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "36441b33-c462-5d36-9536-e19c18892825") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 91.44 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 50.8 93.98) (uuid "95ab1388-6c80-5aca-bbe7-9894de2bdf97"))
+	(no_connect (at 50.8 96.52) (uuid "93c6ef22-613c-538d-a37e-81332801c65b"))
+	(wire (pts (xy 50.8 99.06) (xy 48.26 99.06)) (stroke (width 0) (type default)) (uuid "52bc7c12-5fff-5d94-9ed5-c8add617687b"))
+	(global_label "MUX_L_COM" (shape passive) (at 48.26 99.06 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "28938648-c4c7-532c-9570-acb1be45808e") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 99.06 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 50.8 101.6) (uuid "5b714598-1971-5233-a50c-f4bfbaa135d4"))
+	(no_connect (at 50.8 104.14) (uuid "8c304ae0-b5e9-5805-be54-3eb5725d87df"))
+	(no_connect (at 50.8 106.68) (uuid "e7581a3b-a948-572b-8190-530cd1e4408f"))
+	(no_connect (at 50.8 109.22) (uuid "e14ca4b1-8110-53a6-bf46-e7589343c2b3"))
+	(no_connect (at 50.8 111.76) (uuid "b76e9341-5720-55ef-b8f8-8b6ce541f4ba"))
+	(no_connect (at 50.8 114.3) (uuid "ddb8718d-183f-538e-ad39-c6d709434151"))
+	(wire (pts (xy 111.76 48.26) (xy 114.3 48.26)) (stroke (width 0) (type default)) (uuid "71555261-545c-5186-9e91-eff4404ece4d"))
+	(global_label "MUX_S2" (shape passive) (at 114.3 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "715fd1d4-9cd6-5b47-9d5e-5e081e13a997") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(no_connect (at 111.76 50.8) (uuid "6d8994f1-c40c-5020-8ac4-2f95617b2c86"))
+	(wire (pts (xy 111.76 53.34) (xy 114.3 53.34)) (stroke (width 0) (type default)) (uuid "f12ec778-2457-5cc4-aa28-3654ad7bc75d"))
+	(global_label "VOL_A" (shape passive) (at 114.3 53.34 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "3c1363e2-3066-5fa1-8057-189587c7d979") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 111.76 55.88) (xy 114.3 55.88)) (stroke (width 0) (type default)) (uuid "680fec83-56c8-52f4-86f4-68460032b44b"))
+	(global_label "I2S_BCLK" (shape passive) (at 114.3 55.88 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "c7677309-49c5-557c-863a-9c28cf26c1a9") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 55.88 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 111.76 58.42) (xy 114.3 58.42)) (stroke (width 0) (type default)) (uuid "7be1e0c0-d5ce-5f29-a80f-02cd425a90dd"))
+	(global_label "VOL_SW" (shape passive) (at 114.3 58.42 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "ec398536-6fc4-5821-82a1-c2fee219d13a") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 111.76 60.96) (xy 114.3 60.96)) (stroke (width 0) (type default)) (uuid "27a1cbc0-b76f-532c-bd90-063b67036fec"))
+	(global_label "I2S_LRCLK" (shape passive) (at 114.3 60.96 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "1b12a6bb-ef40-559b-80ab-20bd89dbdf3f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 60.96 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 111.76 63.5) (xy 114.3 63.5)) (stroke (width 0) (type default)) (uuid "a9393844-f746-5269-8656-be44ed708754"))
+	(global_label "VOL_B" (shape passive) (at 114.3 63.5 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "589bb0fb-6513-569e-98f3-d7ff83d6e98e") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 63.5 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(no_connect (at 111.76 66.04) (uuid "a70fbc6a-c51b-56ac-b2ef-8ad968cf4f03"))
+	(wire (pts (xy 111.76 68.58) (xy 114.3 68.58)) (stroke (width 0) (type default)) (uuid "a75933c9-9a69-5693-b913-5a8fe332decc"))
+	(global_label "KEEP" (shape passive) (at 114.3 68.58 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "75929c0a-298e-5e5f-b040-1c8303c8e0dc") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 68.58 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 111.76 71.12) (xy 114.3 71.12)) (stroke (width 0) (type default)) (uuid "ddd10227-e228-54fd-91f8-05e7ffac541b"))
+	(global_label "I2S_TX" (shape passive) (at 114.3 71.12 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "9a65936e-7862-54e4-998b-3a0ed53db6fe") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 71.12 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 111.76 73.66) (xy 114.3 73.66)) (stroke (width 0) (type default)) (uuid "12746199-e83d-535b-8e2b-8e8e153d5b26"))
+	(global_label "LED_R" (shape passive) (at 114.3 73.66 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "1a0a3aaa-6e1a-5a7f-b9a7-046033cc4bd9") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 73.66 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 111.76 76.2) (xy 114.3 76.2)) (stroke (width 0) (type default)) (uuid "99becfd6-6c94-5e6c-a26c-925e6208e0e5"))
+	(global_label "AUD_MCLK_P" (shape passive) (at 114.3 76.2 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "8004c5e2-5fb1-55d0-8a04-2b1250e66af2") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 76.2 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 111.76 78.74) (xy 114.3 78.74)) (stroke (width 0) (type default)) (uuid "2680da01-17c5-52dc-9d98-08c10da9b065"))
+	(global_label "SEL_A" (shape passive) (at 114.3 78.74 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "a6f97a60-3405-5a8f-89c2-723f8986fc30") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 78.74 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(no_connect (at 111.76 81.28) (uuid "d6a26c77-ebfa-5efa-8667-e327301fa9f1"))
+	(wire (pts (xy 111.76 83.82) (xy 114.3 83.82)) (stroke (width 0) (type default)) (uuid "8d93a519-09cc-594f-a833-b6f0a82c7108"))
+	(global_label "AMP_SD" (shape passive) (at 114.3 83.82 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "78045ec9-b05e-54de-828a-2d361b8c1986") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 83.82 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(no_connect (at 111.76 86.36) (uuid "56cbc483-6f12-5a72-ac35-b478c9c6ef25"))
+	(no_connect (at 111.76 88.9) (uuid "4222d095-ebed-5fd0-b3ba-19a8419728c4"))
+	(no_connect (at 111.76 91.44) (uuid "275d162c-f445-5ea7-89d4-eea8a667241e"))
+	(no_connect (at 111.76 93.98) (uuid "fb33197a-fcfc-576a-a136-a5101fb7decb"))
+	(no_connect (at 111.76 96.52) (uuid "f7d6d76b-4af1-502e-a6e3-f9d4d4c5d454"))
+	(wire (pts (xy 111.76 99.06) (xy 114.3 99.06)) (stroke (width 0) (type default)) (uuid "c523498e-976a-5f49-bb62-bf6ec7e9d1ba"))
+	(global_label "CHG_STAT" (shape passive) (at 114.3 99.06 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "b75fd263-13f1-5840-bc7c-17d5059c003e") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 99.06 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(no_connect (at 111.76 101.6) (uuid "11fb40b2-46d5-5164-95d6-f8dd209a3060"))
+	(wire (pts (xy 111.76 104.14) (xy 114.3 104.14)) (stroke (width 0) (type default)) (uuid "3b74d2ea-66d2-55e8-a518-c80d3dfc99e5"))
+	(global_label "SEL_B" (shape passive) (at 114.3 104.14 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "1457ecb1-d96e-5a1e-89d7-d769ad22fca4") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 104.14 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(no_connect (at 111.76 106.68) (uuid "7a34f476-58d2-58b1-bd4a-b93bfdccf785"))
+	(wire (pts (xy 111.76 109.22) (xy 114.3 109.22)) (stroke (width 0) (type default)) (uuid "3d64683a-8c7f-5e38-9e58-403a2a18c6ff"))
+	(global_label "SEL_SW" (shape passive) (at 114.3 109.22 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "cf771a7f-fbc8-57f1-9632-87a1c042b487") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 114.3 109.22 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(no_connect (at 111.76 111.76) (uuid "96c5ebb4-2d90-57cc-971f-ad4012a30af9"))
+	(symbol (lib_id "viaggio_micromod:MountingHole_Pad") (at 137.16 45.72 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "95a8e635-4380-5b1e-92f6-7e524ced1aca")
+		(property "Reference" "H101" (at 134.62 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "9774025151R" (at 134.62 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "viaggio_micromod:Standoff_SMD_M2.5_H2.5" (at 137.16 45.72 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.we-online.com/components/products/datasheet/9774025151R.pdf" (at 137.16 45.72 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "espacador SMD M2.5 x 2,5 mm (Wurth WA-SMSI, o da SparkFun); a (+4,0; -20,0) do J101 nas coordenadas do footprint; sem codigo LCSC confirmado (alternativa a medir: YIYUAN SMTSOM2.520BTR C5301776, 2,0 mm); parafuso M2.5 x 3 cabeca chata em casa" (at 137.16 45.72 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "P1" (at 139.7 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "" (at 137.16 45.72 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC (Global Sourcing)" (at 137.16 45.72 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "f43b7fa1-3c53-538a-aab7-1836cfe3ac18"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24" (reference "H101") (unit 1))))
+	)
+	(wire (pts (xy 137.16 48.26) (xy 137.16 50.8)) (stroke (width 0) (type default)) (uuid "00889f16-32b9-5038-a355-3b975e8520b2"))
+	(global_label "GND" (shape passive) (at 137.16 50.8 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "eaef0349-aa8a-5c96-9295-993762ce3b03") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 137.16 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:C") (at 157.48 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "79e8c10f-6032-5b83-a908-0da2b5f6b341")
+		(property "Reference" "C101" (at 153.67 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "10uF" (at 153.67 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "3,3 V junto dos pads 2/74 do J101" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "P1" (at 161.29 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C15850" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 157.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "e6cc8724-2878-5c95-a45c-43695b8c8dba"))
+		(pin "2" (uuid "3af3eccf-830b-5e80-a6c0-4fb5a0692b1e"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24" (reference "C101") (unit 1))))
+	)
+	(wire (pts (xy 153.67 48.26) (xy 151.13 48.26)) (stroke (width 0) (type default)) (uuid "03fa482b-02f0-5b83-bc8c-171d4077849d"))
+	(global_label "+3V3" (shape passive) (at 151.13 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "283bbe4d-4595-52cf-a4b5-de47934ba005") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 151.13 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 161.29 48.26) (xy 163.83 48.26)) (stroke (width 0) (type default)) (uuid "5cd1a9ab-b6bb-5c17-a687-2b973829d7cd"))
+	(global_label "GND" (shape passive) (at 163.83 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "b7541e4b-6c90-56d5-8903-25026f42e1c1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 163.83 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:C") (at 190.5 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "68b4537e-ea17-58fa-b09a-f40c69480536")
+		(property "Reference" "C102" (at 186.69 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100nF" (at 186.69 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 190.5 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 190.5 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 190.5 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "P1" (at 194.31 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C1525" (at 190.5 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 190.5 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "e93f625f-77f6-5261-b30b-41a745ddb909"))
+		(pin "2" (uuid "aa30e9e5-6c13-5878-86cf-13326a70f16f"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24" (reference "C102") (unit 1))))
+	)
+	(wire (pts (xy 186.69 48.26) (xy 184.15 48.26)) (stroke (width 0) (type default)) (uuid "4546d7ae-1cca-5b25-bf4b-b128db5565c2"))
+	(global_label "+3V3" (shape passive) (at 184.15 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "0dabd59b-d3f3-599f-a5bb-8c63684be927") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 184.15 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 194.31 48.26) (xy 196.85 48.26)) (stroke (width 0) (type default)) (uuid "7aab4da5-b6fc-563a-8a18-dd1b50306b54"))
+	(global_label "GND" (shape passive) (at 196.85 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "e40cf9be-9550-572f-ae60-0fbc5ce9323b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 196.85 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:TestPoint") (at 210.82 48.26 0) (unit 1) (exclude_from_sim no) (in_bom no) (on_board yes) (dnp no) (uuid "abb96fb2-80b2-5c53-a42b-7348b6539f7d")
+		(property "Reference" "TP101" (at 208.28 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "RESET#/ONOFF" (at 208.28 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm" (at 210.82 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 210.82 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "pad 6 do MicroMod = ONOFF do RT1062 no modulo Teensy (nao e o POR_B); ver ELETRONICA.md" (at 210.82 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "P1" (at 213.36 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "" (at 210.82 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "sem peca (pad)" (at 210.82 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "884f1d46-709d-55ba-b769-7a070240f3a5"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24" (reference "TP101") (unit 1))))
+	)
+	(wire (pts (xy 210.82 48.26) (xy 210.82 50.8)) (stroke (width 0) (type default)) (uuid "c98b4b87-378a-5750-acbd-88a38c5f21a6"))
+	(global_label "ONOFF" (shape passive) (at 210.82 50.8 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "5b689b5a-637f-5053-b0f6-03094929c139") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:R") (at 238.76 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "34c97e16-24cf-5add-8297-58c710e36166")
+		(property "Reference" "R105" (at 234.95 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100" (at 234.95 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "MCLK 11,3 MHz: em serie, junto do J101 (SPEC 4, 5o)" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "P1" (at 242.57 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25076" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "550fa2c9-6a1d-590c-927e-397cdb14eeaa"))
+		(pin "2" (uuid "247eb42e-b4d3-5910-97e3-7f853bfac64b"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24" (reference "R105") (unit 1))))
+	)
+	(wire (pts (xy 234.95 48.26) (xy 232.41 48.26)) (stroke (width 0) (type default)) (uuid "5fb9250a-c9ff-5fa0-a2f1-884d3762d1f3"))
+	(global_label "AUD_MCLK_P" (shape passive) (at 232.41 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "9e2610c9-8d9f-5d74-a7a7-beeb6a5e3e51") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 232.41 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 242.57 48.26) (xy 245.11 48.26)) (stroke (width 0) (type default)) (uuid "11b37011-486f-5270-a7cb-51c2c9a01539"))
+	(global_label "AUD_MCLK" (shape passive) (at 245.11 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "21b83c09-236a-53bd-a510-0da4315f28e4") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 245.11 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(embedded_fonts no)
+)
