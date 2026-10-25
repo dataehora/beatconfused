@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "filename": "viaggio_micromod.kicad_pro",
+    "version": 3
+  },
+  "sheets": [
+    [
+      "e693166a-2568-51ba-a195-f3779f9f1bbe",
+      "Root"
+    ],
+    [
+      "0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24",
+      "P \u00b7 Processador"
+    ],
+    [
+      "f8e86e05-da06-50f3-ac15-8ea0d986bd2c",
+      "E \u00b7 Energia"
+    ],
+    [
+      "5da1b986-40e4-59ed-afc2-0b6ae3263df1",
+      "F \u00b7 Fone"
+    ],
+    [
+      "6bee8ded-6107-5f0f-8cd2-5597276bbfc6",
+      "I \u00b7 Interface"
+    ],
+    [
+      "3719de62-0226-5294-928b-eb6903dc1feb",
+      "A \u00b7 Alto-falante"
+    ],
+    [
+      "e0b0db2a-bc95-5273-b96a-bece7e4c9d20",
+      "T \u00b7 Teclas"
+    ]
+  ]
+}

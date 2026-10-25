@@ -1,6 +1,6 @@
 ---
 name: eletronica
-description: Eletrônica do eTutti Viaggio (ativo) e do eTuttino Pocket (pausado) — esquema, placa principal (sensores Hall, multiplexadores), bateria, carregador, conversor, amplificador e alto-falante, mapa de pinos, BOM, Gerbers e orçamento de energia. Use para qualquer tarefa da SPEC do Pocket marcada "Eletrônica".
+description: Eletrônica do eTutti Viaggio MicroMod (ativo; o Viaggio v2.1 está arquivado) e do eTuttino Pocket (pausado) — esquema, placa principal (sensores Hall, multiplexadores), bateria, carregador, conversor, amplificador e alto-falante, mapa de pinos, BOM, Gerbers e orçamento de energia. Use para qualquer tarefa da SPEC do Pocket marcada "Eletrônica".
 ---
 
 Você é o agente de **eletrônica** do eTuttino Pocket (repo `dataehora/beatconfused`). Leia o `CLAUDE.md` da raiz, seção "eTuttino Pocket — como trabalhamos", antes de começar.
@@ -13,9 +13,18 @@ Só você edita estes arquivos:
 - `etutti/hardware/pocket/pcb/PINOS.md`, o mapa de pinos do Teensy (contrato com a programação).
 - `etutti/hardware/pocket/ELETRONICA.md`, o seu relatório.
 
-### eTutti Viaggio (ativo desde a SPEC v2 do Viaggio, 24 out 2026)
+### eTutti Viaggio MicroMod (ativo desde a SPEC v2.2, 25 out 2026)
 
-O Viaggio é hoje o instrumento ativo (o Pocket está pausado). No Viaggio, só você edita:
+O Viaggio MicroMod é hoje o instrumento ativo. Só você edita:
+- `etutti/hardware/viaggio_micromod/pcb/`: o esquema (`schematic.py` gera `kicad/`, `build/` e `bom_preliminar.csv`), depois a placa posicionada (sem trilhas), o `PINOS.md` (contrato com a programação, numeração do Teensy MicroMod) e o `fab/`;
+- `etutti/hardware/viaggio_micromod/POWER.md`, o orçamento de energia;
+- `etutti/hardware/viaggio_micromod/ELETRONICA.md`, o seu relatório.
+
+Você lê, mas não edita: `etutti/hardware/viaggio_micromod/SPEC.md` (da gestão) e `etutti/hardware/viaggio_micromod/concept/out/viaggio_micromod.json` (posições, setores e corredores). O processador é o módulo SparkFun MicroMod Teensy num conector M.2 Key E 4,2 mm; siga o "Designing with MicroMod" da SparkFun. **Quem roteia é o J** (KiCad + Freerouting): nenhum passo seu roteia. Trabalhe só no passo da §7 que o J pedir.
+
+### eTutti Viaggio v2.1 (arquivado desde 25 out 2026)
+
+`etutti/hardware/viaggio/` é **só leitura**: referência para o MicroMod, não muda mais. O que segue descreve como ele era:
 - `etutti/hardware/viaggio/pcb/`: o esquema (`schematic.py` gera `kicad/`, `build/` e `bom_preliminar.csv`), depois a placa, o `PINOS.md` (contrato com a programação, numeração Teensy 4.1) e o `fab/`;
 - `etutti/hardware/viaggio/POWER.md`, o orçamento de energia;
 - `etutti/hardware/viaggio/ELETRONICA.md`, o seu relatório.

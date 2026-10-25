@@ -1,0 +1,1604 @@
+(kicad_sch
+	(version 20250610)
+	(generator "viaggio_micromod_schematic")
+	(generator_version "10.0")
+	(uuid "5da1b986-40e4-59ed-afc2-0b6ae3263df1")
+	(paper "A3")
+	(title_block (title "eTutti Viaggio MicroMod · F · Fone") (date "2026-10-25") (rev "SPEC v2.2 - passo M1") (company "beatconfused.com") (comment 1 "etutti/hardware/viaggio_micromod/pcb/schematic.py escreve este arquivo; nao editar a mao"))
+	(lib_symbols
+		(symbol "viaggio_micromod:C"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0.254)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "C"
+			(at 0.635 2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "C"
+			(at 0.635 -2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 0.9652 -3.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "cap capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "C_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "C_0_1"
+			(polyline
+				(pts
+					(xy -2.032 0.762)
+					(xy 2.032 0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -2.032 -0.762)
+					(xy 2.032 -0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "C_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:FerriteBead_Small"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "FB"
+			(at 1.905 1.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "FerriteBead_Small"
+			(at 1.905 -1.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at -1.778 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Ferrite bead, small symbol"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "L ferrite bead inductor filter"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "Inductor_* L_* *Ferrite*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "FerriteBead_Small_0_1"
+			(polyline
+				(pts
+					(xy -1.8288 0.2794)
+					(xy -1.1176 1.4986)
+					(xy 1.8288 -0.2032)
+					(xy 1.1176 -1.4224)
+					(xy -1.8288 0.2794)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0 0.889)
+					(xy 0 1.2954)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0 -1.27)
+					(xy 0 -0.7874)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "FerriteBead_Small_1_1"
+			(pin passive line
+				(at 0 2.54 270)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -2.54 90)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:PJ-327A"
+		(pin_names
+			(offset 1.016)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "J"
+			(at 0 8.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PJ-327A"
+			(at 0 -8.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "3.5 mm stereo jack, tip switch (5 NC against 4)"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "PJ-327A_1_1"
+			(rectangle
+				(start -5.08 5.08)
+				(end 5.08 -5.08)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(pin passive line
+				(at -7.62 2.54 0)
+				(length 2.54)
+				(name "S"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -7.62 0.0 0)
+				(length 2.54)
+				(name "S"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 7.62 2.54 180)
+				(length 2.54)
+				(name "T"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 7.62 0.0 180)
+				(length 2.54)
+				(name "TN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 7.62 -2.54 180)
+				(length 2.54)
+				(name "R"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+	)
+		(symbol "viaggio_micromod:R"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "R"
+			(at 2.032 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R"
+			(at 0 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at -1.778 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "R res resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "R_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "R_0_1"
+			(rectangle
+				(start -1.016 -2.54)
+				(end 1.016 2.54)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "R_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:SGTL5000XNLA3"
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "U"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SGTL5000XNLA3"
+			(at -5.08 -27.94 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_DFN_QFN:QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.nxp.com/docs/en/data-sheet/SGTL5000.pdf"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low Power Stereo Codec with Headphone Amp, QFN-20"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "Codec"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "QFN*1EP*3x3mm*P0.4mm*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "SGTL5000XNLA3_0_1"
+			(rectangle
+				(start -12.7 25.4)
+				(end 12.7 -25.4)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+		)
+		(symbol "SGTL5000XNLA3_1_1"
+			(pin output line
+				(at 15.24 -2.54 180)
+				(length 2.54)
+				(name "HP_R"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_out line
+				(at 15.24 -5.08 180)
+				(length 2.54)
+				(name "HP_VGND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 5.08 27.94 270)
+				(length 2.54)
+				(name "VDDA"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 15.24 -7.62 180)
+				(length 2.54)
+				(name "HP_L"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -15.24 20.32 0)
+				(length 2.54)
+				(name "VAG"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 15.24 15.24 180)
+				(length 2.54)
+				(name "LINEOUT_R"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 15.24 12.7 180)
+				(length 2.54)
+				(name "LINEOUT_L"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 15.24 0)
+				(length 2.54)
+				(name "LINEIN_R"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "8"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 12.7 0)
+				(length 2.54)
+				(name "LINEIN_L"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "9"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 7.62 0)
+				(length 2.54)
+				(name "MIC"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "10"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 5.08 0)
+				(length 2.54)
+				(name "MIC_BIAS"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "11"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -5.08 27.94 270)
+				(length 2.54)
+				(name "VDDIO"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "12"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 0 0)
+				(length 2.54)
+				(name "SYS_MCLK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "13"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 -5.08 0)
+				(length 2.54)
+				(name "I2S_LRCLK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "14"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 -7.62 0)
+				(length 2.54)
+				(name "I2S_SCLK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "15"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at -15.24 -10.16 0)
+				(length 2.54)
+				(name "I2S_DOUT"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "16"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 -12.7 0)
+				(length 2.54)
+				(name "I2S_DIN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "17"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 -17.78 0)
+				(length 2.54)
+				(name "CTRL_DATA"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "18"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -15.24 -20.32 0)
+				(length 2.54)
+				(name "CTRL_CLK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "19"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 0 27.94 270)
+				(length 2.54)
+				(name "VDDD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "20"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 0 -27.94 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "21"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:XC6206P182MR"
+		(pin_names
+			(offset 0.254)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "U"
+			(at -3.81 3.175 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "XC6206PxxxMR"
+			(at 0 3.175 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3"
+			(at 0 5.715 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.torexsemi.com/file/xc6206/XC6206.pdf"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Positive 60-250mA Low Dropout Regulator, Fixed Output, SOT-23"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "Torex LDO Voltage Regulator Fixed Positive"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "SOT?23?3*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(embedded_fonts no)
+		(symbol "XC6206P182MR_0_1"
+			(rectangle
+				(start -5.08 1.905)
+				(end 5.08 -5.08)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+		)
+		(symbol "XC6206P182MR_1_1"
+			(pin power_in line
+				(at 0 -7.62 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_out line
+				(at 7.62 0 180)
+				(length 2.54)
+				(name "VO"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -7.62 0 0)
+				(length 2.54)
+				(name "VI"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+	)
+	)
+	(text "F · Fone: SGTL5000 como a Audio Board Rev D2. HP_VGND e terra virtual: NUNCA no GND." (exclude_from_sim no) (at 15 18 0) (effects (font (size 2 2)) (justify left)) (uuid "ab0a9516-a21b-5537-9a3c-160b586ed551"))
+	(text "Contato da ponta do jack -> HP_DET (fone plugado = 0 V)." (exclude_from_sim no) (at 15 23 0) (effects (font (size 2 2)) (justify left)) (uuid "292c07b4-67bb-54a2-957a-435cb02c9a1d"))
+	(symbol (lib_id "viaggio_micromod:SGTL5000XNLA3") (at 48.26 88.9 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "0d61c940-8a61-58fb-ae03-1b8ff3299c44")
+		(property "Reference" "U301" (at 33.02 57.15 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "SGTL5000XNLA3" (at 33.02 120.65 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Package_DFN_QFN:QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm" (at 48.26 88.9 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.pjrc.com/teensy/SGTL5000.pdf" (at 48.26 88.9 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "como a Audio Board Rev D2 (endereco I2C fixo 0x0A); sem entrada de linha/microfone" (at 48.26 88.9 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 63.5 57.15 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C511764" (at 48.26 88.9 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 48.26 88.9 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "a16be8d6-a2d5-5960-9a4b-bd4b0008f428"))
+		(pin "2" (uuid "b18e4da8-ac35-5046-9624-97262613c700"))
+		(pin "3" (uuid "417f723e-c6f4-5578-be1a-e6fca23a6c9a"))
+		(pin "4" (uuid "ffca0e21-5268-5b5a-8bf1-ecc2d9c958a1"))
+		(pin "5" (uuid "5ea9ba51-b2d1-521e-939f-52c3daa7be19"))
+		(pin "6" (uuid "8379689c-cc24-5f53-b166-de6de3195321"))
+		(pin "7" (uuid "12a2a425-a620-5fe6-9d02-a4024dee356d"))
+		(pin "8" (uuid "a8685b2b-4ee1-519b-a7db-24b99e0e2f7a"))
+		(pin "9" (uuid "9f56c7b5-ec1d-5ef3-80eb-e40678d20e30"))
+		(pin "10" (uuid "5c48a000-2d30-5902-a71f-92a6f102e119"))
+		(pin "11" (uuid "00b94449-8208-5b01-99a6-6b700b4d1475"))
+		(pin "12" (uuid "22fbe5e7-ec48-53b5-9b7b-b0716fd84df0"))
+		(pin "13" (uuid "b7d810df-1b69-5160-817c-e3053b733540"))
+		(pin "14" (uuid "417a0534-a2e3-5696-ae4f-7ab016116a43"))
+		(pin "15" (uuid "bb8e63ee-39b0-5c6a-94f9-71d4829272e5"))
+		(pin "16" (uuid "a3cf5596-e978-5b7b-981e-9eb399d3f80a"))
+		(pin "17" (uuid "ee1c3bc0-02b9-5a36-8d19-3f13d7e0239e"))
+		(pin "18" (uuid "38b32e2d-244d-56ae-b526-bbe82b3bed3b"))
+		(pin "19" (uuid "b6604dc0-0224-5c48-9286-baf2f072bcd7"))
+		(pin "20" (uuid "663c00c8-8e2b-5a03-95e5-809a8353c455"))
+		(pin "21" (uuid "c5681bcb-28cc-5f2a-896b-dd4d109c8902"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "U301") (unit 1))))
+	)
+	(wire (pts (xy 63.5 91.44) (xy 66.04 91.44)) (stroke (width 0) (type default)) (uuid "daa4d336-cbd9-50f8-9033-378e73d123ac"))
+	(global_label "HP_R" (shape passive) (at 66.04 91.44 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "21a0b549-f371-5483-85a2-a21002b52ecb") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 66.04 91.44 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 63.5 93.98) (xy 66.04 93.98)) (stroke (width 0) (type default)) (uuid "e48b9076-2c2a-51ac-b8a4-7768c9a704dd"))
+	(global_label "HP_VGND" (shape passive) (at 66.04 93.98 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "837f6bcf-833c-539c-b116-4a48078b5765") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 66.04 93.98 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 53.34 60.96) (xy 53.34 58.42)) (stroke (width 0) (type default)) (uuid "81d57717-e4d1-5339-9c47-dc76f1a9ccaf"))
+	(global_label "SGTL_VDDA" (shape passive) (at 53.34 58.42 90) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "9328c70f-abcc-540f-82db-5b3efdbb237b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 53.34 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 63.5 96.52) (xy 66.04 96.52)) (stroke (width 0) (type default)) (uuid "a0cf52a3-fa07-5907-a0b7-9cc722bc71ac"))
+	(global_label "HP_L" (shape passive) (at 66.04 96.52 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "4a3bb132-b1c4-50fb-a5a7-a4af8fb25f8b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 66.04 96.52 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 33.02 68.58) (xy 30.48 68.58)) (stroke (width 0) (type default)) (uuid "0e970fb2-fe7f-5b27-92f9-9b8813dab4be"))
+	(global_label "SGTL_VAG" (shape passive) (at 30.48 68.58 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "579d442b-d7db-5e47-afd4-0fc876550bda") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 68.58 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 63.5 73.66) (uuid "8ae3adfc-b14e-5af4-b32d-a38237c9c7c4"))
+	(no_connect (at 63.5 76.2) (uuid "53cf0190-200a-5454-82b6-86ab60bc75d3"))
+	(no_connect (at 33.02 73.66) (uuid "04f9286e-d0d9-5bd4-aa9e-0ae6b0d484b3"))
+	(no_connect (at 33.02 76.2) (uuid "4dc87755-e8c2-52c0-80d3-d94b3b1f6db7"))
+	(no_connect (at 33.02 81.28) (uuid "fdba5fe0-824d-52a3-9639-9b77e9946703"))
+	(no_connect (at 33.02 83.82) (uuid "14be4bc2-9ba9-53ea-95c9-f226c9d9f4cb"))
+	(wire (pts (xy 43.18 60.96) (xy 43.18 58.42)) (stroke (width 0) (type default)) (uuid "80199bcc-34d9-5e3e-820d-96ec6a8206cc"))
+	(global_label "+3V3" (shape passive) (at 43.18 58.42 90) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "db32cba2-be9b-5194-b40e-4f79f6b8d5e7") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 43.18 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 33.02 88.9) (xy 30.48 88.9)) (stroke (width 0) (type default)) (uuid "139bdbd4-9584-5b5c-b244-33df343f22c4"))
+	(global_label "AUD_MCLK" (shape passive) (at 30.48 88.9 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "0d117135-3855-57e3-a63f-3eb7d953ebfb") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 88.9 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 93.98) (xy 30.48 93.98)) (stroke (width 0) (type default)) (uuid "bd514042-1100-5d96-b2f8-21836c72778f"))
+	(global_label "I2S_LRCLK" (shape passive) (at 30.48 93.98 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "2b4f0096-d977-500c-9796-4e60422e0383") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 93.98 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 96.52) (xy 30.48 96.52)) (stroke (width 0) (type default)) (uuid "709df649-307d-5d96-8fdb-31fce5afecbe"))
+	(global_label "I2S_BCLK" (shape passive) (at 30.48 96.52 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "8aa706c0-84f6-5cf8-b3f2-19f698089b28") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 96.52 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 33.02 99.06) (uuid "094a7da9-66ab-53a6-8bd7-513a39f87782"))
+	(wire (pts (xy 33.02 101.6) (xy 30.48 101.6)) (stroke (width 0) (type default)) (uuid "469b530d-cf99-579a-ba3a-b60d759818ef"))
+	(global_label "I2S_TX" (shape passive) (at 30.48 101.6 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "89861652-ce94-5465-adb0-dae4dd0ccb6a") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 101.6 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 106.68) (xy 30.48 106.68)) (stroke (width 0) (type default)) (uuid "835623a9-e344-577f-ad73-a1e5bc88b09b"))
+	(global_label "I2C_SDA" (shape passive) (at 30.48 106.68 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "30b79f05-8fdb-5267-b095-9529fbab1b78") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 106.68 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 109.22) (xy 30.48 109.22)) (stroke (width 0) (type default)) (uuid "744728b2-e0d4-5146-b7b9-b4e020bd908d"))
+	(global_label "I2C_SCL" (shape passive) (at 30.48 109.22 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "76f8b437-15d7-5bdd-8909-49458865bbb9") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 109.22 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 48.26 60.96) (xy 48.26 58.42)) (stroke (width 0) (type default)) (uuid "0e2b84df-ab15-5115-8861-c4de9f750b1b"))
+	(global_label "SGTL_VDDD" (shape passive) (at 48.26 58.42 90) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "d2b74197-a846-5324-b647-8e8a6754dde8") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 48.26 116.84) (xy 48.26 119.38)) (stroke (width 0) (type default)) (uuid "b2210bc4-4c66-5489-958c-9fad3cf3a442"))
+	(global_label "GND" (shape passive) (at 48.26 119.38 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "b2707f96-308a-5359-8c04-9de577ddd0d1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 48.26 119.38 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:FerriteBead_Small") (at 93.98 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "bf8a72fd-3e6c-5681-b86b-03bd1ec8da28")
+		(property "Reference" "FB301" (at 91.44 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "600R@100MHz" (at 91.44 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Inductor_SMD:L_0603_1608Metric" (at 93.98 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 93.98 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "Audio Board: Ferrite 600 no VDDA" (at 93.98 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 96.52 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "" (at 93.98 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 93.98 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "bea79ed6-26ad-5d43-8bfa-043612c3a89d"))
+		(pin "2" (uuid "4b0b8f5c-c138-5f2f-ba55-a7d29290bb37"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "FB301") (unit 1))))
+	)
+	(wire (pts (xy 91.44 48.26) (xy 88.9 48.26)) (stroke (width 0) (type default)) (uuid "ba5e0a74-b81f-5e4a-bf76-7c758b8ad7d5"))
+	(global_label "+3V3" (shape passive) (at 88.9 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "b7bae50f-10a1-52be-af0b-fc1ff1c3745a") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 96.52 48.26) (xy 99.06 48.26)) (stroke (width 0) (type default)) (uuid "d0d9fc6c-f2c9-5645-bf19-495875cabad3"))
+	(global_label "SGTL_VDDA" (shape passive) (at 99.06 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "909301df-dc1f-5807-a466-22efc4d04b04") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 99.06 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:C") (at 137.16 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "1cc213bb-b3af-500d-b675-9e23580748c7")
+		(property "Reference" "C301" (at 133.35 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "2.2uF" (at 133.35 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 137.16 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 137.16 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 137.16 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 140.97 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C12530" (at 137.16 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 137.16 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "7819e06c-d0a4-5b50-8107-d070a55b3275"))
+		(pin "2" (uuid "f409de0d-7a26-58db-8bb2-0cc09e68b020"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "C301") (unit 1))))
+	)
+	(wire (pts (xy 133.35 48.26) (xy 130.81 48.26)) (stroke (width 0) (type default)) (uuid "8edf25f6-9c03-5cae-b974-4e2f7577393a"))
+	(global_label "SGTL_VDDA" (shape passive) (at 130.81 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "adee50e1-a8a0-5010-a4d4-ca8ea8164667") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 130.81 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 140.97 48.26) (xy 143.51 48.26)) (stroke (width 0) (type default)) (uuid "28c53967-ad0c-5c45-9684-22ab355fcd30"))
+	(global_label "GND" (shape passive) (at 143.51 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "fe4b8429-3c66-541f-86f9-247739d124db") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 143.51 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:C") (at 172.72 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "b7326bdb-4e47-55d7-a036-728123b82468")
+		(property "Reference" "C302" (at 168.91 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100nF" (at 168.91 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 172.72 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 172.72 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 172.72 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 176.53 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C1525" (at 172.72 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 172.72 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "d01d24ce-7a4c-5667-9985-3bd61a069075"))
+		(pin "2" (uuid "6db78def-bb38-5ed2-858e-489a7c4027da"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "C302") (unit 1))))
+	)
+	(wire (pts (xy 168.91 48.26) (xy 166.37 48.26)) (stroke (width 0) (type default)) (uuid "7c1f2a2f-43ba-50bb-a80b-7ecf6a13f006"))
+	(global_label "SGTL_VDDA" (shape passive) (at 166.37 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "b5333faf-25d7-5afc-a7d2-2f917ee16c0a") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 166.37 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 176.53 48.26) (xy 179.07 48.26)) (stroke (width 0) (type default)) (uuid "31023fc5-1f4a-5de3-a70e-7a1b8bf1392e"))
+	(global_label "GND" (shape passive) (at 179.07 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "40b7d416-31df-5131-b0f5-dbb6b068d891") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 179.07 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:C") (at 205.74 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "f66ea378-e5fb-58d0-b51e-6f1b88450f99")
+		(property "Reference" "C303" (at 201.93 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "2.2uF" (at 201.93 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 205.74 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 205.74 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "VDDIO" (at 205.74 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 209.55 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C12530" (at 205.74 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 205.74 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "47b5eff9-a1f6-5a1c-ad79-d53bcdaa2f9c"))
+		(pin "2" (uuid "31a3a7c1-3df4-58cb-881b-cbe0733eb4ed"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "C303") (unit 1))))
+	)
+	(wire (pts (xy 201.93 48.26) (xy 199.39 48.26)) (stroke (width 0) (type default)) (uuid "5dfd418d-4870-5d9f-8569-44f5ff06c28a"))
+	(global_label "+3V3" (shape passive) (at 199.39 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "edee0eda-c778-5e3a-bf60-efcd9ee9853e") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 199.39 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 209.55 48.26) (xy 212.09 48.26)) (stroke (width 0) (type default)) (uuid "bf7e81f6-aef4-5f7d-9f53-3f7af524ca22"))
+	(global_label "GND" (shape passive) (at 212.09 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "953d79ee-a4ab-5b11-b700-45501c566cb7") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 212.09 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:C") (at 238.76 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "7e0eedfc-7393-5a06-9b86-e36895a3952e")
+		(property "Reference" "C304" (at 234.95 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100nF" (at 234.95 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 242.57 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C1525" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 238.76 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "9ae80581-49bd-51f5-afaa-f0dc0b782f9d"))
+		(pin "2" (uuid "a01f8ab1-0f4b-5664-8cce-9f0d9cdd3be3"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "C304") (unit 1))))
+	)
+	(wire (pts (xy 234.95 48.26) (xy 232.41 48.26)) (stroke (width 0) (type default)) (uuid "844edc1a-7d8c-5def-862e-52652547fd27"))
+	(global_label "+3V3" (shape passive) (at 232.41 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "e69c5eba-fd69-523c-8f19-826b61231155") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 232.41 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 242.57 48.26) (xy 245.11 48.26)) (stroke (width 0) (type default)) (uuid "fd677ac3-7b9a-5896-a33b-dba95a0cec59"))
+	(global_label "GND" (shape passive) (at 245.11 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "94682bae-6c43-55df-a9f9-c859c42f82b1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 245.11 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:C") (at 269.24 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "b6367dbf-a348-5271-850a-a21ba9f878b6")
+		(property "Reference" "C305" (at 265.43 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100nF" (at 265.43 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 269.24 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 269.24 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 269.24 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 273.05 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C1525" (at 269.24 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 269.24 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "ded48164-eed9-540b-8c58-8b8074954217"))
+		(pin "2" (uuid "608cb348-86ec-525d-9b40-de97b9ed2730"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "C305") (unit 1))))
+	)
+	(wire (pts (xy 265.43 48.26) (xy 262.89 48.26)) (stroke (width 0) (type default)) (uuid "995fe3d3-ce52-50b6-a440-26182759dc7b"))
+	(global_label "+3V3" (shape passive) (at 262.89 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "296e5052-598b-5a1f-a368-5218addf38ea") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 262.89 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 273.05 48.26) (xy 275.59 48.26)) (stroke (width 0) (type default)) (uuid "ccf2c0cf-0114-5d94-b395-f93d181363d3"))
+	(global_label "GND" (shape passive) (at 275.59 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "287d3fe1-01b8-58e8-bb56-c3445af3b98e") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 275.59 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:XC6206P182MR") (at 304.8 48.26 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "ed89f574-a49a-59dd-ba4f-496641e7ed40")
+		(property "Reference" "U302" (at 297.18 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "XC6206P182MR" (at 297.18 59.69 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3" (at 304.8 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 304.8 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "1,8 V do VDDD (a Audio Board usa AP7313)" (at 304.8 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 312.42 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C347373" (at 304.8 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 304.8 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "41bc9103-6094-5168-9cdd-29d9502b81e1"))
+		(pin "2" (uuid "3d07590f-359b-58a5-9457-1f226aacdfa0"))
+		(pin "3" (uuid "c59a8d0d-c732-57de-94b3-686b0a11c169"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "U302") (unit 1))))
+	)
+	(wire (pts (xy 304.8 55.88) (xy 304.8 58.42)) (stroke (width 0) (type default)) (uuid "30bb1c0d-440e-537c-8c59-13123a048c9e"))
+	(global_label "GND" (shape passive) (at 304.8 58.42 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "d25206d6-ddce-52c2-b4cc-d741841ddb33") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 304.8 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 312.42 48.26) (xy 314.96 48.26)) (stroke (width 0) (type default)) (uuid "0ba3525d-5480-5323-accd-8d9dd232188f"))
+	(global_label "SGTL_VDDD" (shape passive) (at 314.96 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "bb87ba9f-9602-5d47-902c-f14463d7b729") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 314.96 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 297.18 48.26) (xy 294.64 48.26)) (stroke (width 0) (type default)) (uuid "187de341-5b3c-51c0-8bd2-1903c351592f"))
+	(global_label "+3V3" (shape passive) (at 294.64 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "e8749d00-ea3d-5bcb-b771-649b6165894d") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 294.64 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:C") (at 353.06 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "c49be52f-fdbc-569c-a999-4f4ff4b6e452")
+		(property "Reference" "C306" (at 349.25 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "2.2uF" (at 349.25 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 353.06 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 353.06 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 353.06 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 356.87 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C12530" (at 353.06 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 353.06 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "d996521d-e7b4-5d87-9977-cf79e71cf300"))
+		(pin "2" (uuid "b441add5-a715-5d31-8256-d350c230128d"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "C306") (unit 1))))
+	)
+	(wire (pts (xy 349.25 48.26) (xy 346.71 48.26)) (stroke (width 0) (type default)) (uuid "d1309a03-2299-55bc-982b-40c26e57d3fb"))
+	(global_label "SGTL_VDDD" (shape passive) (at 346.71 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "4d071946-bcc3-5c03-a746-dc3c509b89c2") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 346.71 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 356.87 48.26) (xy 359.41 48.26)) (stroke (width 0) (type default)) (uuid "e50cfb5f-5583-5cb0-8fe9-dd78c2d6db36"))
+	(global_label "GND" (shape passive) (at 359.41 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "4034c54f-b90f-56c3-a12c-4aa45e8fa99b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 359.41 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:C") (at 388.62 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "ca1e059f-17e1-516b-a6bb-a74ec6ed25ee")
+		(property "Reference" "C307" (at 384.81 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "150nF" (at 384.81 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 388.62 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 388.62 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "Audio Board: 0,15 uF" (at 388.62 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 392.43 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "" (at 388.62 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 388.62 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "50e06f33-baf9-55a3-90d9-8d2c258c95c3"))
+		(pin "2" (uuid "b557da8a-996a-5b23-80fb-57090c8dad0f"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "C307") (unit 1))))
+	)
+	(wire (pts (xy 384.81 48.26) (xy 382.27 48.26)) (stroke (width 0) (type default)) (uuid "9c61ac9c-2355-522a-b17e-69dd7b243316"))
+	(global_label "SGTL_VAG" (shape passive) (at 382.27 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "361428ef-0da3-52cd-b5cc-9b5e24050a17") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 382.27 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 392.43 48.26) (xy 394.97 48.26)) (stroke (width 0) (type default)) (uuid "9e6fcf42-de7f-538d-a02d-3a73636cd40e"))
+	(global_label "GND" (shape passive) (at 394.97 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "cec23e46-36e3-5f35-a689-f24a5e40511c") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 394.97 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:R") (at 30.48 139.7 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "9320b849-f724-5d9b-9d05-b76f4f8772e7")
+		(property "Reference" "R301" (at 26.67 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "2.2k" (at 26.67 143.51 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 30.48 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 30.48 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 30.48 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 34.29 135.89 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25879" (at 30.48 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 30.48 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "647b4508-1684-520e-aa48-8a2d23dd7265"))
+		(pin "2" (uuid "d86f7e70-4a57-5148-aa4c-3cba722c4118"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "R301") (unit 1))))
+	)
+	(wire (pts (xy 26.67 139.7) (xy 24.13 139.7)) (stroke (width 0) (type default)) (uuid "d0a8290d-e8ec-5599-a92a-b45df11f051f"))
+	(global_label "+3V3" (shape passive) (at 24.13 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "c8cbe7fb-68eb-57b9-9d52-15f2b003211e") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 24.13 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 34.29 139.7) (xy 36.83 139.7)) (stroke (width 0) (type default)) (uuid "9a1d02df-b930-5df8-98c8-3e65ca636e53"))
+	(global_label "I2C_SDA" (shape passive) (at 36.83 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "35574938-9ab5-5930-ac0b-5e3b617054be") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 36.83 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:R") (at 66.04 139.7 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "3bef467b-b8c0-5564-8674-cf52d82263e7")
+		(property "Reference" "R302" (at 62.23 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "2.2k" (at 62.23 143.51 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 66.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 66.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 66.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F1" (at 69.85 135.89 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25879" (at 66.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 66.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "5264da62-25a1-5b73-ab97-19b7c883ab83"))
+		(pin "2" (uuid "8ae60a37-6fcd-5c34-8821-6b585e56f2a6"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "R302") (unit 1))))
+	)
+	(wire (pts (xy 62.23 139.7) (xy 59.69 139.7)) (stroke (width 0) (type default)) (uuid "887ab12a-729c-59f1-b72d-6a6148d64be1"))
+	(global_label "+3V3" (shape passive) (at 59.69 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "53b75b93-ac36-5dd8-a5b8-ff1c1e4a9eff") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 59.69 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 69.85 139.7) (xy 72.39 139.7)) (stroke (width 0) (type default)) (uuid "bd31927b-ff3a-59f1-a17d-129d40a88f88"))
+	(global_label "I2C_SCL" (shape passive) (at 72.39 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "869d1ad3-07d1-5160-b621-174950300ae8") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 72.39 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:PJ-327A") (at 109.22 142.24 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "f78b6416-aee1-52ee-b1c0-6391e5d0db68")
+		(property "Reference" "J301" (at 101.6 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "PJ-327A 5JJ" (at 101.6 148.59 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "viaggio_micromod:Jack_3.5mm_PJ-327A_SMD" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F2" (at 116.84 135.89 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C668605" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "9cae2b94-1927-5590-a63f-e37003ce5a29"))
+		(pin "2" (uuid "1d72a8d0-7a4f-5a11-b847-96f922d2e2ba"))
+		(pin "4" (uuid "be43f029-b076-512a-a8d5-ca09353a4819"))
+		(pin "5" (uuid "929dff57-0160-53b5-92e1-27b0fbefb5fd"))
+		(pin "3" (uuid "850bc80b-2595-58ae-9faf-ab183b87ec7e"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "J301") (unit 1))))
+	)
+	(wire (pts (xy 101.6 139.7) (xy 99.06 139.7)) (stroke (width 0) (type default)) (uuid "976f1c57-3d9f-5a12-93fe-fee9710bce38"))
+	(global_label "HP_VGND" (shape passive) (at 99.06 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "3d9546c8-cd85-549a-bf52-bdc6fd511492") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 99.06 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 101.6 142.24) (xy 99.06 142.24)) (stroke (width 0) (type default)) (uuid "e0b3c8eb-b74c-5a78-84d3-d3f2f1df4621"))
+	(global_label "HP_VGND" (shape passive) (at 99.06 142.24 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "0c983171-3c23-5b94-8865-43f11a7b6398") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 99.06 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 116.84 139.7) (xy 119.38 139.7)) (stroke (width 0) (type default)) (uuid "830ecb90-caf5-5bfe-a86b-2d9a120e3b5b"))
+	(global_label "HP_L" (shape passive) (at 119.38 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "229d61e3-f8ed-59fa-a357-8e96df1b7c94") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 119.38 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 116.84 142.24) (xy 119.38 142.24)) (stroke (width 0) (type default)) (uuid "567ff7b4-b42e-5f3d-abf3-e597dbb382ad"))
+	(global_label "HP_TIPSW" (shape passive) (at 119.38 142.24 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "1c4bb03b-8b6b-5aac-a079-4c91a37a8cc0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 119.38 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 116.84 144.78) (xy 119.38 144.78)) (stroke (width 0) (type default)) (uuid "c09c9057-a621-51a1-b464-c11fcaaabf3d"))
+	(global_label "HP_R" (shape passive) (at 119.38 144.78 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "f95f063c-b519-54b4-9c4f-1637e20d5914") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 119.38 144.78 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:R") (at 154.94 139.7 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "bff14e18-0869-5090-9d01-124e299f8d86")
+		(property "Reference" "R303" (at 151.13 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100k" (at 151.13 143.51 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 154.94 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 154.94 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 154.94 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F2" (at 158.75 135.89 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25741" (at 154.94 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 154.94 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "7c494b7f-9e3f-5047-ba31-dd5db07eafc9"))
+		(pin "2" (uuid "6ccf92d6-4a69-5617-a16f-ddb421df71fb"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "R303") (unit 1))))
+	)
+	(wire (pts (xy 151.13 139.7) (xy 148.59 139.7)) (stroke (width 0) (type default)) (uuid "c747b0c2-ce12-5a12-b290-4612ac2f634a"))
+	(global_label "HP_TIPSW" (shape passive) (at 148.59 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "0e47101c-e55e-5314-8f08-2312f2952cda") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 148.59 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 158.75 139.7) (xy 161.29 139.7)) (stroke (width 0) (type default)) (uuid "c60d36be-71c0-555b-b59c-dd89b8b73c7b"))
+	(global_label "HP_DET" (shape passive) (at 161.29 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "e74f13e5-68b9-5d6f-823b-9352ef210bf1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 161.29 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:R") (at 193.04 139.7 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "847dac39-a54b-568e-9cc5-d7d63e68fb91")
+		(property "Reference" "R304" (at 189.23 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "1M" (at 189.23 143.51 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 193.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 193.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 193.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F2" (at 196.85 135.89 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C26083" (at 193.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 193.04 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "6602e2ed-b58f-523d-a32c-672062f67bf9"))
+		(pin "2" (uuid "76176766-fbc3-5345-b3a2-c24f19ae02be"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "R304") (unit 1))))
+	)
+	(wire (pts (xy 189.23 139.7) (xy 186.69 139.7)) (stroke (width 0) (type default)) (uuid "a0efeab5-96fd-5ad0-b0dc-878e9a65b013"))
+	(global_label "HP_DET" (shape passive) (at 186.69 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "fbe93537-3680-5dd6-8f88-c5d0919229eb") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 186.69 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 196.85 139.7) (xy 199.39 139.7)) (stroke (width 0) (type default)) (uuid "fa9604ee-5f56-5d73-8fe9-a3bd23b496e4"))
+	(global_label "GND" (shape passive) (at 199.39 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "4991a46e-658c-5e64-9ded-c8d0ac7f2c42") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 199.39 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:C") (at 226.06 139.7 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "9196cfb9-d06b-5f4e-9162-1025f600f4e3")
+		(property "Reference" "C308" (at 222.25 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100nF" (at 222.25 143.51 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 226.06 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 226.06 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "" (at 226.06 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "F2" (at 229.87 135.89 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C1525" (at 226.06 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 226.06 139.7 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "fa1a1c7a-ba5c-59c2-bf94-d7ec727a38a3"))
+		(pin "2" (uuid "b2b8b76e-cf5a-5dc3-9ba7-5a4d161503c3"))
+		(instances (project "viaggio_micromod" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "C308") (unit 1))))
+	)
+	(wire (pts (xy 222.25 139.7) (xy 219.71 139.7)) (stroke (width 0) (type default)) (uuid "24371117-97ca-5459-8853-1043da967a06"))
+	(global_label "HP_DET" (shape passive) (at 219.71 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "16ad14e9-5ab7-57a8-a59b-14759d619ca3") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 219.71 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 229.87 139.7) (xy 232.41 139.7)) (stroke (width 0) (type default)) (uuid "14c141fb-2e1e-50d9-b59f-ef3944301efb"))
+	(global_label "GND" (shape passive) (at 232.41 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "e6971d12-104e-57bf-a420-fff0c98c8932") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 232.41 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(embedded_fonts no)
+)
