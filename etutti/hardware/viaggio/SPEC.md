@@ -1,5 +1,7 @@
 # eTutti Viaggio · especificação · v2.1 (Rev2)
 
+> **Arquivada em 25 out 2026.** O processador soldado na placa (BGA) não fechou no roteamento. O projeto segue como **eTutti Viaggio MicroMod**, em `etutti/hardware/viaggio_micromod/SPEC.md` (v2.2). Esta pasta fica só como referência.
+
 **Versão 2.1, 24 out 2026** (v2 do mesmo dia + respostas do J ao relatório do passo 3.1). Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Mesmo protocolo do eTuttino Pocket (`CLAUDE.md`, seção "como trabalhamos"). Cada disciplina responde no seu relatório, terminando com "Perguntas para a gestão".
 
 A v1 levou a sessões longas demais. A **Rev2** recomeça a placa em passos curtos, com aprovação do J entre eles:
