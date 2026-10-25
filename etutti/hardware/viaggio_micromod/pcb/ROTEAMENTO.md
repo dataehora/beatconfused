@@ -6,7 +6,17 @@ KiCad com o Freerouting, pelo guia "Viaggio: roteamento no KiCad, passo a passo"
 **Não rode o `build_board.py` sobre a placa que o J rotear:** ele refaz o
 `kicad/viaggio_micromod.kicad_pcb` do zero e apaga as trilhas.
 
-**O par USB (USB_DP/USB_DN) já está roteado e travado** (`route_usb.py`, 25 out 2026): não apague nem mova essas trilhas e vias, não rode o `build_board.py`, e pule o item "USB: rote o par à mão" abaixo.
+**O par USB (USB_DP/USB_DN) já está roteado e travado** (`route_usb.py`, 25 out 2026, refeito com o
+U201 girado 180°): não apague nem mova essas trilhas e vias, não rode o `build_board.py`, e pule o
+item "USB: rote o par à mão" abaixo.
+
+O par passa pelo U201 e cerca dois pinos dele. Cada um precisa de uma via 0,5/0,3, e os dois lugares
+foram testados no DRC numa cópia da placa:
+- **VBUS, pad 5 (lado esquerdo do U201):** via em **(16,30; 12,25)**, ligada ao pad por trilha de
+  **0,8** (a regra Corrente vale também no pátio do U201). Folgas: 0,58 às trilhas USB e 0,55 ao pad.
+- **GND, pad 2 (lado direito):** via em **(21,07; 12,25)**, trilha curta até o pad. Folgas: 0,12 ao
+  pad, 0,16 ao D+ e 0,13 ao pad 15 do J101 (B.Cu). Não há outro lugar: à direita começa a fileira
+  de pads do J101.
 
 ## Arquivos
 

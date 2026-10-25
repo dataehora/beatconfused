@@ -12,17 +12,19 @@ are in build/route_usb.json), adds the pair again (all locked), refills the zone
 kicad-cli DRC with schematic parity and writes close-up pictures to build/. It exits non-zero if a
 USB track or via it did not write is on the board, or if a check fails. Nothing else is touched.
 
-Why the pair loops round U201 (read before "simplifying" it):
+How the pair runs (U201 turned 180 deg in build_board.py, gestao's answer to PR #120):
   * J201's pads run DN, DP, DN, DP from the top (B7 12.25, A6 12.75, A7 13.25, B6 13.75). On one
-    layer the two DN pads and the two DP pads can only be joined one pair under the plug body (left
-    of the pads) and the other pair to the right, and either way DN leaves J201 ABOVE DP.
-  * U201 (rot 0) has DP on its top row (pads 1/6, y 11.3) and DN on the bottom row (pads 3/4).
-  * The .kicad_dru allows USB tracks off F.Cu only inside J101's courtyard, so the pair cannot swap
-    layers on the way to U201.
-  So the pair runs under U201 to its right side, turns up and enters pads 6/4 from the right (the
-  U-turn puts DP on top), crosses the chip on its own pads (6->1, 4->3: flow-through), leaves to the
-  left, turns up and runs back above U201 to J101, where the vias and B.Cu stubs put DP on pad 3 and
-  DN on pad 5. With U201 turned 180 deg the pair would run straight (see ELETRONICA.md).
+    layer the two DN pads are joined under the plug body (left of the pads, over the plastic rear of
+    the housing: no shell metal there, HRO drawing TYPE-C-31-M-12 rev A, bottom view) and the two
+    DP pads to the right, so DN leaves J201 ABOVE DP.
+  * U201 (rot 180) has DN on its top row (pads 4 -> 3, y 11.3) and DP on the bottom row (6 -> 1,
+    y 13.2): the pair splits round VBUS (pad 5), crosses the chip on its own pads (flow-through) and
+    joins again right of GND (pad 2). Each of those two pins keeps a free spot for its via.
+  * J101 wants DP on pad 3 (y 9.25) above DN on pad 5 (y 9.75), the opposite order. The pair goes
+    north past the pad row, turns east and then south between the pin rows (DN outside on both
+    turns), drops through two side-by-side vias, and the B.Cu stubs run west into the pads. Those
+    two right turns are what keeps DN and DP within 0.5 mm of each other with no meander.
+  * The .kicad_dru allows USB tracks off F.Cu only inside J101's courtyard.
 """
 import json
 import math
@@ -53,8 +55,9 @@ MAX_LEN, MAX_SKEW, MAX_VIAS = 40.0, 2.0, 2
 EXPECT = {
     ("J201", "B7"): ("USB_DN", 8.745, 12.25), ("J201", "A6"): ("USB_DP", 8.745, 12.75),
     ("J201", "A7"): ("USB_DN", 8.745, 13.25), ("J201", "B6"): ("USB_DP", 8.745, 13.75),
-    ("U201", "1"): ("USB_DP", 17.762, 11.30), ("U201", "6"): ("USB_DP", 20.038, 11.30),
-    ("U201", "3"): ("USB_DN", 17.762, 13.20), ("U201", "4"): ("USB_DN", 20.038, 13.20),
+    ("U201", "6"): ("USB_DP", 17.762, 13.20), ("U201", "1"): ("USB_DP", 20.038, 13.20),
+    ("U201", "4"): ("USB_DN", 17.762, 11.30), ("U201", "3"): ("USB_DN", 20.038, 11.30),
+    ("U201", "5"): ("VBUS", 17.762, 12.25), ("U201", "2"): ("GND", 20.038, 12.25),
     ("J101", "3"): ("USB_DP", 22.225, 9.25), ("J101", "5"): ("USB_DN", 22.225, 9.75),
 }
 
@@ -91,44 +94,43 @@ def geometry():
     # 1. J201: DN pads joined under the plug body (left of the pad row), DP pads to the right.
     dn_join = [(8.745, 12.25), (7.95, 12.25), (7.75, 12.45), (7.75, 13.05), (7.95, 13.25), (8.745, 13.25)]
     dp_join = [(8.745, 13.75), (9.55, 13.75), (9.75, 13.55), (9.75, 12.95), (9.95, 12.75)]
-    # 2. the pair from J201 under U201 (DN north): centreline, DN = left offset when heading east.
-    c_in = [(10.10, 12.555), (10.60, 12.555), (12.09, 14.045), (19.388, 14.045)]
+    # 2. the pair east from J201 (DN north): centreline, DN = left offset when heading east.
+    xs = 14.00                                                          # where the pair splits
+    c_in = [(10.10, 12.555), (xs, 12.555)]
     dn_in, dp_in = offset_polyline(c_in, +h), offset_polyline(c_in, -h)
     dn_tail = [(8.745, 12.25), (9.99, 12.25), dn_in[0]]                 # B7 drops into the pair
     dp_head = [(8.745, 12.75), (9.95, 12.75), dp_in[0]]                 # A6 straight into the pair
-    # the U-turn on U201's right (DP outer, x 21.6, leaves room for a VBUS via right of pad 5); DN
-    # inner, one pitch inside, with the mitred inner chamfer of DP's 0.5 chamfer.
-    dn_to4 = [dn_in[-1], (20.9385, 13.85), (21.21, 13.5785), (21.21, 13.41), (21.00, 13.20), (20.038, 13.20)]
-    dp_to6 = [dp_in[-1], (21.10, 14.24), (21.60, 13.74), (21.60, 11.50), (21.40, 11.30), (20.038, 11.30)]
-    # 3. across U201 on its own pads (flow-through): 6 -> 1 and 4 -> 3.
-    dp_chip = [(20.038, 11.30), (17.762, 11.30)]
-    dn_chip = [(20.038, 13.20), (17.762, 13.20)]
-    # 4. out to the left, up, and back east above U201 (heading north DN is west = left offset).
-    c_back = [(16.195, 11.10), (16.195, 10.245), (16.495, 9.945), (22.90, 9.945)]
-    dn_back, dp_back = offset_polyline(c_back, +h), offset_polyline(c_back, -h)
-    # DN's leg carries the length match (DP's U-turn on the right is the longer one): a loop west
-    # to x 14.8 and back; the space it encloses left of pad 2 (GND) holds that pad's via.
-    xw = 14.80
-    dn_leg = [(17.762, 13.20), (xw + 0.2, 13.20), (xw, 13.00), (xw, 11.90), (xw + 0.2, 11.70),
-              (15.60, 11.70), (16.00, 11.30), dn_back[0]]
-    dp_leg = [(17.762, 11.30), (16.59, 11.30), dp_back[0]]
-    # 5. into J101's courtyard, vias between its pin rows, B.Cu stubs into the pads' inner ends.
-    v_dn, v_dp = (23.75, 9.75), (24.60, 9.70)
-    dn_end = [dn_back[-1], v_dn]
-    dp_end = [dp_back[-1], (23.11, 10.35), (23.95, 10.35), v_dp]
-    dn_bot = [v_dn, (22.60, 9.75)]
-    dp_bot = [v_dp, (24.15, 9.25), (22.60, 9.25)]
+    # split round U201's VBUS pad 5: DN up at 45 deg to pad 4's row, DP down to pad 6's row; the
+    # space between them, left of pad 5, holds VBUS's via.
+    dn_to4 = [dn_in[-1], (xs + (dn_in[-1][1] - 11.30), 11.30), (17.762, 11.30)]
+    dp_to6 = [dp_in[-1], (xs + (13.20 - dp_in[-1][1]), 13.20), (17.762, 13.20)]
+    # 3. across U201 on its own pads (flow-through): 4 -> 3 and 6 -> 1.
+    dn_chip = [(17.762, 11.30), (20.038, 11.30)]
+    dp_chip = [(17.762, 13.20), (20.038, 13.20)]
+    # 4. joined again right of GND (pad 2, its via between the two), north past J101's pad row,
+    # east, and south between the pin rows (heading north DN is west = left offset).
+    c_out = [(21.405, 13.00), (21.405, 8.90), (21.705, 8.60), (23.75, 8.60), (24.05, 8.90), (24.05, 9.13)]
+    dn_o, dp_o = offset_polyline(c_out, +h), offset_polyline(c_out, -h)
+    dn_out = [(20.038, 11.30), (21.01, 11.30), (21.21, 11.10)] + dn_o[1:]
+    dp_out = [(20.038, 13.20), (21.40, 13.20), (21.60, 13.00)] + dp_o[1:]
+    # 5. two vias side by side (0.62 apart) inside J101's courtyard, B.Cu stubs west into the pads'
+    # inner ends; DN's stub dips south of DP's via.
+    v_dp, v_dn = (dp_o[-1][0], 9.55), (24.475, 9.55)
+    dp_end = [dp_o[-1], v_dp]
+    dn_end = [dn_o[-1], (v_dn[0], dn_o[-1][1] + (v_dn[0] - dn_o[-1][0])), v_dn]
+    dp_bot = [v_dp, (v_dp[0] - 0.30, 9.25), (22.60, 9.25)]
+    dn_bot = [v_dn, (v_dn[0], 10.02), (23.30, 10.02), (23.03, 9.75), (22.60, 9.75)]
     F, B = "F.Cu", "B.Cu"
     tracks = {
         "USB_DN": [(F, W, dn_join), (F, W, dn_tail), (F, W, dn_in), (F, W, dn_to4), (F, W, dn_chip),
-                   (F, W, dn_leg), (F, W, dn_back), (F, W, dn_end), (B, W_IN, dn_bot)],
+                   (F, W, dn_out), (F, W, dn_end), (B, W_IN, dn_bot)],
         "USB_DP": [(F, W, dp_join), (F, W, dp_head), (F, W, dp_in), (F, W, dp_to6), (F, W, dp_chip),
-                   (F, W, dp_leg), (F, W, dp_back), (F, W, dp_end), (B, W_IN, dp_bot)],
+                   (F, W, dp_out), (F, W, dp_end), (B, W_IN, dp_bot)],
     }
     # the signal path J201 -> J101 (for the length match; the J201 join loops are stubs)
     path = {
-        "USB_DN": [dn_tail, dn_in, dn_to4, dn_chip, dn_leg, dn_back, dn_end, dn_bot],
-        "USB_DP": [dp_head, dp_in, dp_to6, dp_chip, dp_leg, dp_back, dp_end, dp_bot],
+        "USB_DN": [dn_tail, dn_in, dn_to4, dn_chip, dn_out, dn_end, dn_bot],
+        "USB_DP": [dp_head, dp_in, dp_to6, dp_chip, dp_out, dp_end, dp_bot],
     }
     vias = {"USB_DN": [v_dn], "USB_DP": [v_dp]}
     return tracks, vias, path

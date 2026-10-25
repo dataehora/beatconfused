@@ -356,6 +356,9 @@ def place_all(comps, pads):
                 rot = 270           # mouth to -x (left edge)
             elif ref == "J301":
                 rot = 90            # mouth to -x
+            elif ref == "U201":
+                rot = 180           # D- row (pads 3/4) on top, the order the pair leaves J201 in: the
+                                    # USB pair runs straight J201 -> U201 -> J101 (route_usb.py)
             elif code in ("T1", "T2"):
                 rot = 90            # long side along x (JSON box 7.8 x 4.4)
             elif code in ("I1", "I2"):
