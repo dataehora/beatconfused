@@ -1,6 +1,134 @@
 # eTutti Viaggio MicroMod · relatório da eletrônica
 
-## Par USB roteado (SPEC v2.3, exceção autorizada pelo J, 25 out 2026)
+## Par USB refeito com o U201 girado 180° (SPEC v2.3, respostas da gestão ao PR #120, 25 out 2026)
+
+A gestão respondeu às duas perguntas do PR #120. Primeiro, girar o U201 (E2, USBLC6-2SC6) 180° e
+refazer o par reto, sem a volta e sem o laço. Segundo, conferir no desenho da HRO a junção do D−
+sob o corpo do USB-C. As regras não mudaram:
+- F.Cu fora do pátio do J101, 0,24/0,15, 45°;
+- vias 0,5/0,3 só no pátio do J101;
+- no máximo 40 mm por rede, 2 mm de diferença e 2 vias por rede;
+- tudo travado.
+
+Nenhuma outra rede foi roteada.
+
+**Antes de rodar o `build_board.py`**, contei as trilhas da placa do PR #120: 53 segmentos, 2 vias,
+nenhum arco, **todos de USB_DP/USB_DN**. Então ele podia rodar.
+
+| Medida | USB_DP | USB_DN |
+|---|---|---|
+| Comprimento J201 → J101 (caminho do sinal) | **21,50 mm** | **21,97 mm** |
+| Cobre total da rede (com a junção dos dois pads do J201) | 23,47 mm | 24,73 mm |
+| Vias (0,5/0,3, dentro do pátio do J101) | **1** | **1** |
+
+- **Diferença de comprimento: 0,47 mm** no caminho do sinal e 1,26 mm no cobre total. Antes eram
+  32,90/32,74 mm, com laço.
+- **O caminho:**
+  - O par sai do J201 em F.Cu, com o D− em cima, e se abre a 45° em volta do pad 5 (VBUS) do U201:
+    o D− sobe para a fileira de cima (pads 4 → 3), o D+ desce para a de baixo (6 → 1).
+  - Atravessa o chip pelos próprios pads (passagem direta) e se fecha de novo à direita do pad 2
+    (GND).
+  - Sobe pela borda do J101, passa da fileira de pads, vira para leste e depois para o sul, entre as
+    fileiras de pinos.
+  - Desce pelas duas vias lado a lado: D+ em (23,86; 9,55), D− em (24,48; 9,55), 0,62 entre
+    centros. Tocos de 0,20 em B.Cu levam o D+ ao pad 3 e o D− ao pad 5.
+- **Por que o gancho no J101.** O J101 pede o D+ (pad 3) acima do D− (pad 5), a ordem contrária à
+  do par. Numa camada só, a ordem se inverte quando o par chega aos pads andando para oeste, e isso
+  pede uma volta perto do conector.
+  - No PR #120 essa volta era para a esquerda: o D+ ficava por fora e ganhava ~2,2 mm.
+  - Agora são duas viradas para a direita, e o D− fica por fora. Isso compensa os ~1,9 mm que o D+
+  sobe à direita do U201, de uma fileira de pads à outra. Por isso não há laço nem sanfona.
+- **Junção do D− (J201):** ficou como estava, em F.Cu sob a traseira do conector, sem via (ver o
+  desenho abaixo). As duas vias por rede continuam sendo só as do J101.
+- **Peças:** só o U201 mudou de rotação. Na mesma posição (18,9; 12,25), agora com rot 180. O D201
+  andou 0,015 mm (17,000 → 16,985): o `build_board.py` põe cada passivo no centro dos pads da
+  rede dele, e o pad de VBUS do U201 trocou de lado. Nenhuma outra peça mudou de lugar, lado ou
+  rotação.
+- **DRC** (`kicad-cli pcb drc --schematic-parity --severity-all`, com o `.kicad_dru` da placa):
+
+  | | Violações | Paridade | Não roteadas |
+  |---|---|---|---|
+  | antes (placa do PR #120) | 0 | 0 | 423 |
+  | `build_board.py` (U201 girado, sem trilhas) | 0 | 0 | 431 |
+  | depois do `route_usb.py` | **0** | **0** | **423** |
+
+  USB_DP e USB_DN ficam com **0 ligações faltando**. Saiu limpo na **1ª tentativa**.
+- **O que o `build_board.py` reescreveu (git diff).** Comparei a placa nova com a do PR #120 peça a
+  peça, no pcbnew:
+  - mesmas 177 peças, as mesmas 1047 figuras e textos e as mesmas zonas;
+  - posições, lados e redes de pads iguais, fora o U201 (rotação) e o D201 (0,015 mm);
+  - o cabeçalho do `.kicad_pcb` (setup, empilhamento, camadas) é idêntico byte a byte;
+  - o `.kicad_pro` não mudou;
+  - o `.kicad_dru` só mudou o fim de linha e foi restaurado do git.
+
+  O diff do `.kicad_pcb` é grande (~41 mil linhas) porque o `build_board.py` cria a placa do zero e
+  cada objeto ganha um UUID novo. Os caminhos que ligam as peças ao esquema são os mesmos 141. O DSN,
+  o SVG e o `_drc.json` mudam pelo mesmo motivo.
+- **Imagens**, conferidas: `pcb/build/route_usb_top.png` (F.Cu) e `pcb/build/route_usb_bottom.png`
+  (B.Cu visto de cima, sem espelhar), grade de 1 mm. `pcb/build/viaggio_micromod_top.png` mostra o
+  U201 girado. O `_bottom.png` saiu igual. Essas duas são do `build_board.py`, sem trilhas.
+
+### Vias que o J vai pôr no U201
+
+O par cerca dois pinos do U201. Os lugares abaixo foram testados numa cópia da placa (fora do
+repositório), com via 0,5/0,3 e trilha até o pad. O DRC deu 0 violações de folga; só acusou a via
+de VBUS "solta", porque ainda não liga a nada.
+
+| Pino | Via em | Trilha até o pad | Folgas |
+|---|---|---|---|
+| **VBUS, pad 5** (esquerda, entre D− e D+) | **(16,30; 12,25)** | **0,8** (a regra Corrente não isenta o pátio do U201) | 0,58 às trilhas USB, 0,55 ao pad 5, 0,58 ao pad GND do R201 (B.Cu) |
+| **GND, pad 2** (direita, entre D− e D+) | **(21,07; 12,25)** | curta, 0,3 | 0,12 ao pad 2, 0,16 ao D+, 0,13 ao pad 15 do J101 (B.Cu, sem rede) |
+
+A via de GND não tem outro lugar: logo à direita começa a fileira de pads do J101, no verso. Os
+pinos do J201 saem como antes: GND, VBUS e CC1 para cima, acima do par; CC2, VBUS e GND por baixo.
+
+### Junção do D− e o desenho da HRO
+
+O desenho é o **HRO TYPE-C-31-M-12, folha 1 de 1, rev. A, 08/12/2020**, lido com o WebFetch.
+- O link da LCSC (`lcsc.com/datasheet/C165948.pdf`) devolve só uma página HTML.
+- O PDF que abriu foi o da HQ Online:
+  [file1.huaqiu.com/.../wKgZPGmqPlGAaTPnAAHNXNNJTw8053.pdf](https://file1.huaqiu.com/web3/M00/4D/71/wKgZPGmqPlGAaTPnAAHNXNNJTw8053.pdf).
+- O WebFetch guarda a cópia em cache na pasta de resultados de ferramentas da sessão, fora do
+  repositório. Nenhum arquivo foi baixado para o projeto.
+
+O que o desenho mostra:
+- **Vista de cima** (alto, à esquerda): corpo de **8,94 × 7,35**. As pernas dos contatos passam
+  **0,40 ± 0,10** da traseira do corpo. No footprint do KiCad, a traseira do corpo (F.Fab) fica em
+  **x 8,35**, e os pads vão de 8,02 a 9,47.
+- **Vista de baixo** (embaixo, à esquerda, cota **6,28**): a chapa metálica cobre a parte de baixo
+  só por 6,28 a partir da frente. O resto até a traseira é a faixa de plástico do isolador, de onde
+  saem as pernas. Os dois pinos de plástico de posicionamento (Ø 0,50, a 5,78 um do outro; furos
+  Ø 0,65 do footprint em x 7,30) ficam nessa faixa.
+- **Na placa:** a frente do corpo está em x 1,05, então a chapa de baixo termina perto de **x 7,33**.
+  A junção do D− ocupa **x 7,63 a 8,07** (trilha de 0,24 centrada em 7,75). Fica ~0,3 atrás do fim
+  da chapa, sob o plástico, entre os pinos de posicionamento e a traseira. **Não há metal da
+  carcaça sobre esse trecho.** As pernas laterais da carcaça (pads SH em x 7,83) ficam nas pontas,
+  em y 8,68 e 17,32, longe da trilha.
+- **(conferir)** O desenho não cota a faixa de plástico diretamente. Os ~0,3 saem da diferença
+  7,35 − 6,28 e da posição dos pinos. A trilha também fica coberta pela máscara.
+- Por isso a **junção ficou como estava, sem via**, e a regra "USB só em F.Cu" não foi afrouxada.
+
+Refazer só o USB (depois do `build_board.py`, se ele precisar rodar de novo antes do J rotear):
+
+```
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_micromod/pcb/route_usb.py
+```
+
+`PINOS.md`, `POWER.md`, o esquema e o `.kicad_dru` não mudaram. `pcb/ROTEAMENTO.md` ganhou os dois
+lugares de via do U201.
+
+### Perguntas para a gestão (par USB, U201 girado)
+
+1. **Gancho na entrada do J101:** o par passa 0,6 mm além da fileira de pads (até y 8,4), vira e
+   desce entre as fileiras. É isso que iguala os comprimentos sem laço. Aceitável assim, ou prefere
+   a descida direta do PR #120? Ela deixaria uns 3,6 mm de diferença e pediria um laço de novo.
+2. **Via de GND do U201 em (21,07; 12,25):** fica com 0,12–0,16 de folga, acima do mínimo de 0,1.
+   Aceita, ou prefere que o par se feche mais à direita para abrir espaço? O par passaria por cima
+   da fileira de pads do J101, sem mudar de camada.
+3. **Junção do D−:** pela vista de baixo do desenho da HRO não há metal ali, e ela ficou sem via.
+   Confirmar com uma peça de verdade quando chegar **(conferir)**.
+
+## Par USB roteado, 1ª versão (PR #120, substituída pela seção acima)
 
 O J autorizou o Code a rotear **só** USB_DP e USB_DN. Nenhuma outra rede foi tocada. Não houve
 roteador nem busca de caminho: o `pcb/route_usb.py` (python do KiCad 10) escreve cada segmento com
@@ -69,7 +197,7 @@ O script sai com erro se o DRC não der 0/0, se faltar ligação no USB, se uma 
 se a diferença passar de 2 mm, se uma rede tiver mais de 2 vias ou se algo ficar destravado.
 `PINOS.md`, `POWER.md` e o esquema não mudaram.
 
-### Perguntas para a gestão (par USB)
+### Perguntas para a gestão (par USB), já respondidas: U201 girado e junção conferida (seção acima)
 
 1. **Volta em torno do U201 ou U201 girado 180°?** Girado, o D+ do U201 fica embaixo, na mesma
    ordem em que o par sai do J201. O par iria reto do J201 pelo U201 até o J101, com cerca de 20 mm
