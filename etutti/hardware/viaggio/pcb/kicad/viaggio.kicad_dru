@@ -1,0 +1,15 @@
+(version 1)
+# eTutti Viaggio -- custom rules (written by build_board.py)
+(rule "BGA: trilhas de 0,1 entre as bolas do P1"
+    (condition "A.Type == 'track' && A.intersectsCourtyard('U101')")
+    (constraint track_width (min 0.1)))
+(rule "Sinais: 0,2 fora do BGA"
+    (condition "A.Type == 'track' && A.NetClass == 'Default' && !A.intersectsCourtyard('U101')")
+    (constraint track_width (min 0.2)))
+(rule "USB 90 ohm (par diferencial)"
+    (condition "A.NetClass == 'USB' && A.Type == 'track' && !A.intersectsCourtyard('U101') && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U201')")
+    (constraint track_width (min 0.2) (opt 0.24) (max 0.25))
+    (constraint diff_pair_gap (min 0.14) (opt 0.15) (max 0.2)))
+(rule "Corrente: >= 0,8"
+    (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !A.intersectsCourtyard('U101')")
+    (constraint track_width (min 0.8)))

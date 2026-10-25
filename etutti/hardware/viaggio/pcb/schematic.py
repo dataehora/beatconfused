@@ -1,4 +1,4 @@
-"""Write the eTutti Viaggio schematic (SPEC v2, step 3.1), run ERC, check it.
+"""Write the eTutti Viaggio schematic (SPEC v2.1, steps 3.1-3.2), run ERC, check it.
 
     python etutti/hardware/viaggio/pcb/schematic.py
 
@@ -36,6 +36,7 @@ import uuid
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import sexpr as S  # noqa: E402
+import footprints  # noqa: E402
 
 KICAD = "C:/Program Files/KiCad/10.0"
 KICAD_SYM = KICAD + "/share/kicad/symbols"
@@ -46,7 +47,7 @@ BUILD = os.path.join(HERE, "build")
 PROJECT = "viaggio"
 LIB = "viaggio"
 DATE = "2026-10-24"
-REV = "SPEC v2 - passo 3.1"
+REV = "SPEC v2.1 - passo 3.2"
 
 NS = uuid.UUID("6f1d3a52-6b0e-4c55-9a51-7a1c0e2b9a11")
 
@@ -188,6 +189,26 @@ def rt1062_symbol():
     return box_symbol("MIMXRT1062DVJ6B", "U", units, "i.MX RT1062, 12 x 12 mm 196-ball BGA, 0.8 mm (Teensy 4.1)")
 
 
+def jack_symbol():
+    return box_symbol("PJ-327A", "J", [([("1", "S", "passive"), ("2", "S", "passive")],
+                                        [("4", "T", "passive"), ("5", "TN", "passive"), ("3", "R", "passive")])],
+                      "3.5 mm stereo jack, tip switch (5 NC against 4)")
+
+
+def led_pins(s):
+    """LED_Dual_AAKK renumbered to the 1615 part's pads: A1 = 1 (red), K1 = 2, A2 = 3 (green), K2 = 4."""
+    new = {"A1": "1", "K1": "2", "A2": "3", "K2": "4"}
+
+    def walk(n):
+        for x in n:
+            if isinstance(x, list) and x and x[0] == "pin":
+                nm = S.first(x, "name")[1]
+                S.first(x, "number")[1] = S.Q(new[nm])
+            elif isinstance(x, list):
+                walk(x)
+    walk(s)
+
+
 def tmag_symbol():
     return box_symbol("TMAG5253BA3", "U", [([("1", "VCC", "power_in"), ("3", "EN", "input")],
                                             [("4", "OUT", "output"), ("2", "GND", "power_in"),
@@ -253,6 +274,8 @@ PASSIVES = {
     ("C", "1uF", "0402"): ("C52923", "basica", 0.002, "final"),
     ("C", "2.2uF", "0402"): ("C12530", "basica", 0.003, "conferir"),
     ("C", "4.7uF", "0603"): ("C19666", "basica", 0.004, "final"),
+    ("C", "4.7uF", "0402"): ("C23733", "basica", 0.003, "conferir"),
+    ("C", "10uF", "0402"): ("C15525", "basica", 0.004, "conferir"),
     ("C", "10uF", "0603"): ("C19702", "basica", 0.005, "final"),
     ("C", "10uF", "0805"): ("C15850", "basica", 0.008, "final"),
     ("C", "12pF", "0402"): ("C1547", "basica", 0.001, "conferir"),
@@ -368,9 +391,9 @@ def p1_nets():
 
 
 CUR[0] = "P"
-part("U101", "MIMXRT1062DVJ6B", "MIMXRT1062DVJ6B", p1_nets(), "P1", lcsc="", cls="-", price=11.0,
-     mount="consignada (PJRC ou DigiKey)", status="conferir", nc_rest=True,
-     note="footprint BGA-196 12x12 P0.8 a criar no passo 3.2; bolas livres sem ligacao (SD_B1_05/N3 e EMC_23/G2 de proposito)",
+part("U101", "MIMXRT1062DVJ6B", "MIMXRT1062DVJ6B", p1_nets(), "P1", fp="viaggio:BGA-196_12x12mm_P0.8mm_RT1062",
+     lcsc="", cls="-", price=11.0, mount="consignada (PJRC ou DigiKey)", status="conferir", nc_rest=True,
+     note="BGA-196 12x12 P0.8 (footprint proprio, figura 54 da NXP); bolas livres sem ligacao (SD_B1_05/N3 e EMC_23/G2 de proposito)",
      datasheet="https://www.pjrc.com/teensy/IMXRT1060CEC_rev4.pdf")
 part("L101", sym("FerriteBead_Small", "Device"), "120R@100MHz", {"1": "+3V3", "2": "DCDC_IN"}, "P1",
      fp=FP["0603L"], lcsc="", cls="basica", price=0.005, note="Teensy L3; >=1 A", rot=90)
@@ -384,15 +407,15 @@ C("C105", "4.7uF", "VDD_SOC", "GND", "P1", "0603", note="Teensy C22")
 C("C106", "220nF", "VDD_SOC", "GND", "P1", note="Teensy C12")
 C("C107", "10nF", "VDD_SOC", "GND", "P1", note="Teensy C5")
 C("C108", "2.2uF", "+3V3", "GND", "P1", note="Teensy C28 (NVCC)")
-C("C109", "4.7uF", "+3V3", "GND", "P1", "0603", note="Teensy C23")
+C("C109", "4.7uF", "+3V3", "GND", "P1", note="Teensy C23 (0402: cabe sobre o BGA)")
 C("C110", "220nF", "+3V3", "GND", "P1", note="Teensy C11")
 C("C111", "10nF", "+3V3", "GND", "P1", note="Teensy C6")
-C("C112", "4.7uF", "VDD_HIGH_CAP", "GND", "P1", "0603", note="Teensy C25")
+C("C112", "4.7uF", "VDD_HIGH_CAP", "GND", "P1", note="Teensy C25 (0402: cabe sobre o BGA)")
 C("C113", "220nF", "VDD_HIGH_CAP", "GND", "P1", note="Teensy C16")
-C("C114", "4.7uF", "NVCC_PLL", "GND", "P1", "0603", note="Teensy C26")
+C("C114", "4.7uF", "NVCC_PLL", "GND", "P1", note="Teensy C26 (0402: cabe sobre o BGA)")
 C("C115", "220nF", "NVCC_PLL", "GND", "P1", note="Teensy C14")
 C("C116", "220nF", "VDD_SNVS_CAP", "GND", "P1", note="Teensy C13")
-C("C117", "10uF", "VDD_USB_CAP", "GND", "P1", "0603", note="Teensy C31")
+C("C117", "10uF", "VDD_USB_CAP", "GND", "P1", note="Teensy C31 (0402: cabe sobre o BGA)")
 C("C118", "220nF", "VDD_USB_CAP", "GND", "P1", note="Teensy C17")
 C("C119", "220nF", "VDD_SNVS_IN", "GND", "P1", note="Teensy C18")
 bat54c("D101", "SNVS_3V3", "+3V3", "VDD_SNVS_IN", "P1",
@@ -423,11 +446,11 @@ part("D103", sym("LED", "Device"), "vermelho", {"1": "BL_LED_K", "2": "+3V3"}, "
      note="Teensy D4: LED de erro do bootloader (piscadas da pagina da PJRC), no verso", rot=90)
 R("R103", "470", "BL_LED_K", "BL_LED_N", "P2", note="Teensy R2")
 R("R104", "100k", "PSWITCH", "GND", "P2", note="Teensy R6")
-part("U103", sym("W25Q64JVSS", "Memory_Flash", "W25Q32JVSS"), "W25Q64JVSSIQ",
+part("U103", sym("W25Q64JVSS", "Memory_Flash", "W25Q32JVSS"), "W25Q64JVSSIM",
      {"1": "FLASH_CS", "2": "FLASH_D1", "3": "FLASH_D2", "4": "GND", "5": "FLASH_D0", "6": "FLASH_CLK",
-      "7": "FLASH_D3", "8": "+3V3"}, "P3", fp="Package_SO:SOIC-8_5.3x5.3mm_P1.27mm", lcsc="C179171",
-     cls="estendida", price=0.80, status="conferir",
-     note="64 Mbit = modelo Teensy 4.1; '-Q' exige bootloader >= 1.09 (lista da PJRC), '-M' serve em todos",
+      "7": "FLASH_D3", "8": "+3V3"}, "P3", fp="Package_SO:SOIC-8_5.3x5.3mm_P1.27mm", lcsc="C5362615",
+     cls="estendida", price=2.97, status="final",
+     note="64 Mbit = modelo Teensy 4.1; '-M' (SPEC v2.1) serve em qualquer versao do bootloader; LCSC 11656 em estoque (24/10/2026)",
      datasheet="https://www.winbond.com/hq/product/code-storage-flash-memory/serial-nor-flash/?__locale=en&partNo=W25Q64JV")
 C("C125", "220nF", "+3V3", "GND", "P3", note="desacoplamento (o esquema da PJRC nao mostra o do U3)")
 part("U104", sym("APS6404L-3SQR-ZR", "Memory_RAM", "APS6404L-3SQRx-ZR"), "APS6404L-3SQR-ZR",
@@ -476,9 +499,9 @@ bat54c("D202", "CHG_STAT", "NC", "CHG_N", "E3", note="leitura do ~CHG pelo pino 
 R("R208", "1M", "VBAT", "VBAT_S", "E3", note="medida da bateria: V(pino 16) = VBAT/2")
 R("R209", "1M", "VBAT_S", "GND", "E3")
 C("C204", "100nF", "VBAT_S", "GND", "E3")
-# power latch: click of I2 -> PWR_KEY, firmware KEEP, USB hold (only while on)
-pmos("Q203", "SEL_SW_N", "VSYS", "PWR_KEY", "E3", note="o clique do seletor liga o EN")
-R("R210", "100k", "VSYS", "SEL_SW_N", "E3")
+# power latch (SPEC v2.1): click of I1 (volume) -> PWR_KEY, firmware KEEP, USB hold (only while on)
+pmos("Q203", "VOL_SW_N", "VSYS", "PWR_KEY", "E3", note="o clique do volume liga o EN")
+R("R210", "100k", "VSYS", "VOL_SW_N", "E3")
 R("R211", "100k", "PWR_KEY", "GND", "E3")
 bat54c("D203", "PWR_KEY", "KEEP", "EN_REQ", "E3", note="OU do clique e do KEEP")
 R("R212", "1M", "EN_REQ", "GND", "E3")
@@ -489,8 +512,8 @@ R("R214", "10k", "VBUS", "VBUS_S", "E3")
 R("R215", "100k", "VBUS_S", "GND", "E3")
 C("C205", "100nF", "+3V3", "GND", "E3")
 bat54c("D204", "USB_HOLD", "NC", "EN_REQ", "E3")
-bat54c("D205", "SEL_SW", "ONOFF", "SEL_SW_N", "E3",
-       note="o clique chega ao pino 6 e ao ONOFF do SNVS sem levar o VSYS a eles")
+bat54c("D205", "VOL_SW", "ONOFF", "VOL_SW_N", "E3",
+       note="o clique do volume chega ao pino 25 e ao ONOFF do SNVS sem levar o VSYS a eles")
 part("U204", sym("TPS63001", "Regulator_Switching"), "TPS63001DRCR",
      {"1": "+3V3", "2": "BB_L2", "3": "GND", "4": "BB_L1", "5": "VSYS", "6": "EN_E4", "7": "GND",
       "8": "BB_VINA", "9": "GND", "10": "+3V3", "11": "GND"}, "E4", fp="Package_SON:Texas_DRC0010J",
@@ -541,26 +564,33 @@ C("C306", "2.2uF", "SGTL_VDDD", "GND", "F1")
 C("C307", "150nF", "SGTL_VAG", "GND", "F1", note="Audio Board: 0,15 uF")
 R("R301", "2.2k", "+3V3", "I2C_SDA", "F1")
 R("R302", "2.2k", "+3V3", "I2C_SCL", "F1")
-part("J301", sym("AudioJack3_SwitchT", "Connector_Audio"), "PJ-313D-6A",
-     {"T": "HP_L", "R": "HP_R", "S": "HP_VGND", "TN": "HP_TIPSW"}, "F2", fp="", lcsc="C95463",
-     cls="estendida", price=0.10, status="conferir",
-     note="SMD, angulo reto; contato da ponta = deteccao; manga no HP_VGND, nunca no GND; footprint a criar no 3.3")
+# The PJ-313D-6A of step 3.1 (C95463) turned out to have no tip switch (datasheet: 3 contacts, 6 pads).
+sym("PJ-327A", "custom", jack_symbol)
+part("J301", "PJ-327A", "PJ-327A 5JJ",
+     {"1": "HP_VGND", "2": "HP_VGND", "3": "HP_R", "4": "HP_L", "5": "HP_TIPSW"}, "F2",
+     fp="viaggio:Jack_3.5mm_PJ-327A_SMD", lcsc="C668605", cls="estendida", price=0.10, status="conferir",
+     note="SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)",
+     datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf")
 R("R303", "100k", "HP_TIPSW", "HP_DET", "F2")
 R("R304", "1M", "HP_DET", "GND", "F2")
 C("C308", "100nF", "HP_DET", "GND", "F2")
 
 # ---------------------------------------------------------------- I: interface
 CUR[0] = "I"
-for ref, code, a, b, sw, what in (("SW401", "I1", "VOL_A", "VOL_B", "VOL_SW", "volume"),
-                                  ("SW402", "I2", "SEL_A", "SEL_B", "SEL_SW_N", "seletor; clique de 2 s liga/desliga")):
-    part(ref, sym("RotaryEncoder_Switch_MP", "Device"), "EC11E 15/15 com chave",
+# SPEC v2.1: the same encoder on both. The 15/15 with switch (EC11E1534408, C278348) has no
+# stock at LCSC (24/10/2026): EC11E18244A5 (18 pulses / 36 detents, push switch, C255515, 570 in stock).
+for ref, code, a, b, sw, what in (("SW401", "I1", "VOL_A", "VOL_B", "VOL_SW_N", "volume; clique de 2 s liga/desliga"),
+                                  ("SW402", "I2", "SEL_A", "SEL_B", "SEL_SW", "seletor; clique = funcoes de som")):
+    part(ref, sym("RotaryEncoder_Switch_MP", "Device"), "EC11E18244A5",
          {"A": a, "B": b, "C": "GND", "S1": "GND", "S2": sw, "MP": "GND"}, code,
-         fp="Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm", lcsc="", cls="estendida", price=1.20,
-         status="conferir", note=what + "; codigo LCSC da versao 15/15 a achar (C255515 e a 18/36)",
-         datasheet="https://tech.alpsalpine.com/e/products/detail/EC11E15244G1/")
-part("D401", sym("LED_Dual_AAKK", "Device"), "TJ-S1615SW6TGLCRG-A5", {"1": "LED_R_A", "2": "LED_G_A", "3": "GND",
-     "4": "GND"}, "I3", fp="", lcsc="C273605", cls="estendida", price=0.02, status="conferir",
-     note="1615 vermelho/verde, 4 pads; pinagem e footprint a conferir")
+         fp="Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm", lcsc="C255515", cls="estendida", price=1.20,
+         status="final", note=what + "; 18 pulsos / 36 detentes (o 15/15 nao tem estoque): ENC_STEPS_PER_DETENT = 2",
+         datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_1811072201_ALPSALPINE-EC11E18244A5_C255515.pdf")
+part("D401", sym("LED_RG_1615", "Device", "LED_Dual_AAKK", fix=led_pins), "TJ-S1615SW6TGLCRG-A5",
+     {"1": "LED_R_A", "3": "LED_G_A", "2": "GND", "4": "GND"}, "I3", fp="viaggio:LED_1615_RG_4pad", lcsc="C273605",
+     cls="estendida", price=0.02, status="final",
+     note="1615 vermelho/verde; pads do datasheet: 1 = anodo vermelho, 2 = catodo vermelho, 3 = anodo verde, 4 = catodo verde",
+     datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_1810191024_TOGIALED-TJ-S1615SW6TGLCRG-A5_C273605.pdf")
 R("R401", "270", "LED_R", "LEDR_A", "I3")
 bat54c("D402", "CHGA", "LEDR_A", "LED_R_A", "I3", note="OU do vermelho: luz de carga e firmware (Pocket D30)")
 R("R402", "330", "LED_G", "LED_G_A", "I3")
@@ -720,12 +750,12 @@ NOTES = {
           "SNVS antes de tudo (E5); PMIC_ON_REQ habilita o 3,3 V (U206); PSWITCH sobe pelo MKL02 (PTA3) depois do 3,3 V, sem RC.",
           "Nunca ativar o modo seguro. Pinos 48-54 (EMC_22..29) ficam para a PSRAM; EMC_23 (G2) e SD_B1_05 (N3) sem ligacao."],
     "E": ["E · Energia: USB-C -> BQ24074 (USB500, 500 mA, NTC) -> VSYS -> TPS63001 (3,3 V).",
-          "EN do TPS63001 = PMIC_ON_REQ E (clique do seletor OU KEEP OU USB com o aparelho ligado).",
+          "EN do TPS63001 = PMIC_ON_REQ E (clique do volume OU KEEP OU USB com o aparelho ligado).",
           "E5: LDO sempre ligado para o SNVS. Luz de carga so com o aparelho desligado (Q202)."],
     "F": ["F · Fone: SGTL5000 como a Audio Board Rev D2. HP_VGND e terra virtual: NUNCA no GND.",
           "Contato da ponta do jack -> HP_DET (fone plugado = 0 V)."],
     "I": ["I · Interface: dois EC11E com clique (volume, seletor), LED vermelho/verde, botao Program.",
-          "O clique do seletor vai ao GND; o liga/desliga esta na folha E."],
+          "O clique do volume (I1) liga/desliga (circuito na folha E); o do seletor (I2) e uma entrada comum (pino 6)."],
     "A": ["A · Alto-falante: MAX98357A no mesmo I2S do codec, mono (L+R)/2; SD_MODE pelo pino 12."],
     "T": ["T · Teclas: 28 TMAG5253BA3 no verso, 2 multiplexadores, grupos EN_A (canais 0-7) e EN_B (8-15).",
           "Espera de 45 us depois de trocar o S3. Canais iguais ao Pocket v0.3 (refazer no passo 3.4)."],
@@ -834,9 +864,9 @@ def write_root(flags):
                     (S.quote(net), fmt(x), fmt(y + 2.54), eff("right"), uid("flagl", net), fmt(x), fmt(y + 2.54),
                      eff("right", True)))
     notes = [
-        "eTutti Viaggio · esquema eletrico (SPEC v2, passo 3.1). Uma folha por setor da SPEC (secao 3).",
+        "eTutti Viaggio · esquema eletrico (SPEC v2.1, passo 3.2). Uma folha por setor da SPEC (secao 3).",
         "Campo 'Codigo' = codigo da peca na SPEC (P1...T4), o mesmo de concept/rev2/out/viaggio_rev2.json.",
-        "Sem placa: nada posicionado nem roteado neste passo. Ligacoes entre folhas por rotulos globais.",
+        "Placa: pcb/build_board.py (posicionamento + setor P). Ligacoes entre folhas por rotulos globais.",
         "PWR_FLAG abaixo: redes alimentadas por conector, ferrite, indutor ou diodo (o ERC nao ve a fonte).",
     ]
     ntxt = "\n".join('\t(text %s (exclude_from_sim no) (at 25 %s 0) %s (uuid "%s"))' %
@@ -860,6 +890,9 @@ def write_library():
     open(os.path.join(KDIR, "sym-lib-table"), "w", newline="\n").write(
         '(sym_lib_table\n\t(version 7)\n\t(lib (name "%s") (type "KiCad") (uri "${KIPRJMOD}/%s.kicad_sym") '
         '(options "") (descr "eTutti Viaggio, written by schematic.py"))\n)\n' % (LIB, LIB))
+    open(os.path.join(KDIR, "fp-lib-table"), "w", newline="\n").write(
+        '(fp_lib_table\n\t(version 7)\n\t(lib (name "%s") (type "KiCad") (uri "${KIPRJMOD}/%s.pretty") '
+        '(options "") (descr "eTutti Viaggio footprints, written by footprints.py"))\n)\n' % (LIB, LIB))
     pro = os.path.join(KDIR, PROJECT + ".kicad_pro")
     if not os.path.exists(pro):
         json.dump({"meta": {"filename": PROJECT + ".kicad_pro", "version": 3},
@@ -871,9 +904,12 @@ def check_footprints():
     missing = []
     for s in PARTS:
         for p in PARTS[s]:
-            if p["fp"]:
+            if not p["fp"]:
+                missing.append((p["ref"], "(sem footprint)"))
+            else:
                 lib, name = p["fp"].split(":")
-                if not os.path.exists(os.path.join(KICAD_FP, lib + ".pretty", name + ".kicad_mod")):
+                root = os.path.join(KDIR, LIB + ".pretty") if lib == LIB else os.path.join(KICAD_FP, lib + ".pretty")
+                if not os.path.exists(os.path.join(root, name + ".kicad_mod")):
                     missing.append((p["ref"], p["fp"]))
     if missing:
         raise SystemExit("footprints not found: %s" % missing)
@@ -938,6 +974,8 @@ def run_checks(declared):
 
 def main():
     os.makedirs(KDIR, exist_ok=True)
+    fps, nballs = footprints.write_all()
+    print("footprints: %s (BGA %d pads = rt1062_balls.json)" % (", ".join(fps), nballs))
     check_footprints()
     sym("PWR_FLAG", "power")
     declared = {}

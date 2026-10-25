@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\viaggio\\pcb\\kicad\\viaggio.kicad_sch")
-		(date "2026-10-24T12:36:43")
+		(date "2026-10-25T01:30:53")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -11,7 +11,7 @@
 			(title_block
 				(title "eTutti Viaggio · esquema")
 				(company "beatconfused.com")
-				(rev "SPEC v2 - passo 3.1")
+				(rev "SPEC v2.1 - passo 3.2")
 				(date "2026-10-24")
 				(source "viaggio.kicad_sch")
 				(comment
@@ -59,7 +59,7 @@
 			(title_block
 				(title "eTutti Viaggio · P · Processador")
 				(company "beatconfused.com")
-				(rev "SPEC v2 - passo 3.1")
+				(rev "SPEC v2.1 - passo 3.2")
 				(date "2026-10-24")
 				(source "viaggio_P.kicad_sch")
 				(comment
@@ -107,7 +107,7 @@
 			(title_block
 				(title "eTutti Viaggio · E · Energia")
 				(company "beatconfused.com")
-				(rev "SPEC v2 - passo 3.1")
+				(rev "SPEC v2.1 - passo 3.2")
 				(date "2026-10-24")
 				(source "viaggio_E.kicad_sch")
 				(comment
@@ -155,7 +155,7 @@
 			(title_block
 				(title "eTutti Viaggio · F · Fone")
 				(company "beatconfused.com")
-				(rev "SPEC v2 - passo 3.1")
+				(rev "SPEC v2.1 - passo 3.2")
 				(date "2026-10-24")
 				(source "viaggio_F.kicad_sch")
 				(comment
@@ -203,7 +203,7 @@
 			(title_block
 				(title "eTutti Viaggio · I · Interface")
 				(company "beatconfused.com")
-				(rev "SPEC v2 - passo 3.1")
+				(rev "SPEC v2.1 - passo 3.2")
 				(date "2026-10-24")
 				(source "viaggio_I.kicad_sch")
 				(comment
@@ -251,7 +251,7 @@
 			(title_block
 				(title "eTutti Viaggio · A · Alto-falante")
 				(company "beatconfused.com")
-				(rev "SPEC v2 - passo 3.1")
+				(rev "SPEC v2.1 - passo 3.2")
 				(date "2026-10-24")
 				(source "viaggio_A.kicad_sch")
 				(comment
@@ -299,7 +299,7 @@
 			(title_block
 				(title "eTutti Viaggio · T · Teclas")
 				(company "beatconfused.com")
-				(rev "SPEC v2 - passo 3.1")
+				(rev "SPEC v2.1 - passo 3.2")
 				(date "2026-10-24")
 				(source "viaggio_T.kicad_sch")
 				(comment
@@ -921,22 +921,22 @@
 		(comp
 			(ref "C109")
 			(value "4.7uF")
-			(footprint "Capacitor_SMD:C_0603_1608Metric")
-			(description "Teensy C23")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "Teensy C23 (0402: cabe sobre o BGA)")
 			(fields
 				(field
 					(name "Codigo") "P1")
 				(field
-					(name "LCSC") "C19666")
+					(name "LCSC") "C23733")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Capacitor_SMD:C_0603_1608Metric")
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "Teensy C23")
+					(name "Description") "Teensy C23 (0402: cabe sobre o BGA)")
 			)
 			(libsource
 				(lib "viaggio")
@@ -949,7 +949,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C19666")
+				(value "C23733")
 			)
 			(property
 				(name "Montagem")
@@ -1137,22 +1137,22 @@
 		(comp
 			(ref "C112")
 			(value "4.7uF")
-			(footprint "Capacitor_SMD:C_0603_1608Metric")
-			(description "Teensy C25")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "Teensy C25 (0402: cabe sobre o BGA)")
 			(fields
 				(field
 					(name "Codigo") "P1")
 				(field
-					(name "LCSC") "C19666")
+					(name "LCSC") "C23733")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Capacitor_SMD:C_0603_1608Metric")
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "Teensy C25")
+					(name "Description") "Teensy C25 (0402: cabe sobre o BGA)")
 			)
 			(libsource
 				(lib "viaggio")
@@ -1165,7 +1165,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C19666")
+				(value "C23733")
 			)
 			(property
 				(name "Montagem")
@@ -1281,22 +1281,22 @@
 		(comp
 			(ref "C114")
 			(value "4.7uF")
-			(footprint "Capacitor_SMD:C_0603_1608Metric")
-			(description "Teensy C26")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "Teensy C26 (0402: cabe sobre o BGA)")
 			(fields
 				(field
 					(name "Codigo") "P1")
 				(field
-					(name "LCSC") "C19666")
+					(name "LCSC") "C23733")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Capacitor_SMD:C_0603_1608Metric")
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "Teensy C26")
+					(name "Description") "Teensy C26 (0402: cabe sobre o BGA)")
 			)
 			(libsource
 				(lib "viaggio")
@@ -1309,7 +1309,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C19666")
+				(value "C23733")
 			)
 			(property
 				(name "Montagem")
@@ -1497,22 +1497,22 @@
 		(comp
 			(ref "C117")
 			(value "10uF")
-			(footprint "Capacitor_SMD:C_0603_1608Metric")
-			(description "Teensy C31")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "Teensy C31 (0402: cabe sobre o BGA)")
 			(fields
 				(field
 					(name "Codigo") "P1")
 				(field
-					(name "LCSC") "C19702")
+					(name "LCSC") "C15525")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Capacitor_SMD:C_0603_1608Metric")
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "Teensy C31")
+					(name "Description") "Teensy C31 (0402: cabe sobre o BGA)")
 			)
 			(libsource
 				(lib "viaggio")
@@ -1525,7 +1525,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C19702")
+				(value "C15525")
 			)
 			(property
 				(name "Montagem")
@@ -2949,8 +2949,9 @@
 		(comp
 			(ref "U101")
 			(value "MIMXRT1062DVJ6B")
+			(footprint "viaggio:BGA-196_12x12mm_P0.8mm_RT1062")
 			(datasheet "https://www.pjrc.com/teensy/IMXRT1060CEC_rev4.pdf")
-			(description "footprint BGA-196 12x12 P0.8 a criar no passo 3.2; bolas livres sem ligacao (SD_B1_05/N3 e EMC_23/G2 de proposito)")
+			(description "BGA-196 12x12 P0.8 (footprint proprio, figura 54 da NXP); bolas livres sem ligacao (SD_B1_05/N3 e EMC_23/G2 de proposito)")
 			(fields
 				(field
 					(name "Codigo") "P1")
@@ -2960,12 +2961,11 @@
 				(field
 					(name "Montagem") "consignada (PJRC ou DigiKey)")
 				(field
-					(name "Footprint")
-				)
+					(name "Footprint") "viaggio:BGA-196_12x12mm_P0.8mm_RT1062")
 				(field
 					(name "Datasheet") "https://www.pjrc.com/teensy/IMXRT1060CEC_rev4.pdf")
 				(field
-					(name "Description") "footprint BGA-196 12x12 P0.8 a criar no passo 3.2; bolas livres sem ligacao (SD_B1_05/N3 e EMC_23/G2 de proposito)")
+					(name "Description") "BGA-196 12x12 P0.8 (footprint proprio, figura 54 da NXP); bolas livres sem ligacao (SD_B1_05/N3 e EMC_23/G2 de proposito)")
 			)
 			(libsource
 				(lib "viaggio")
@@ -3741,15 +3741,15 @@
 		)
 		(comp
 			(ref "U103")
-			(value "W25Q64JVSSIQ")
+			(value "W25Q64JVSSIM")
 			(footprint "Package_SO:SOIC-8_5.3x5.3mm_P1.27mm")
 			(datasheet "https://www.winbond.com/hq/product/code-storage-flash-memory/serial-nor-flash/?__locale=en&partNo=W25Q64JV")
-			(description "64 Mbit = modelo Teensy 4.1; '-Q' exige bootloader >= 1.09 (lista da PJRC), '-M' serve em todos")
+			(description "64 Mbit = modelo Teensy 4.1; '-M' (SPEC v2.1) serve em qualquer versao do bootloader; LCSC 11656 em estoque (24/10/2026)")
 			(fields
 				(field
 					(name "Codigo") "P3")
 				(field
-					(name "LCSC") "C179171")
+					(name "LCSC") "C5362615")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -3757,7 +3757,7 @@
 				(field
 					(name "Datasheet") "https://www.winbond.com/hq/product/code-storage-flash-memory/serial-nor-flash/?__locale=en&partNo=W25Q64JV")
 				(field
-					(name "Description") "64 Mbit = modelo Teensy 4.1; '-Q' exige bootloader >= 1.09 (lista da PJRC), '-M' serve em todos")
+					(name "Description") "64 Mbit = modelo Teensy 4.1; '-M' (SPEC v2.1) serve em qualquer versao do bootloader; LCSC 11656 em estoque (24/10/2026)")
 			)
 			(libsource
 				(lib "viaggio")
@@ -3770,7 +3770,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C179171")
+				(value "C5362615")
 			)
 			(property
 				(name "Montagem")
@@ -5241,7 +5241,7 @@
 			(value "BAT54C")
 			(footprint "Package_TO_SOT_SMD:SOT-23")
 			(datasheet "https://www.diodes.com/assets/Datasheets/ds11005.pdf")
-			(description "o clique chega ao pino 6 e ao ONOFF do SNVS sem levar o VSYS a eles")
+			(description "o clique do volume chega ao pino 25 e ao ONOFF do SNVS sem levar o VSYS a eles")
 			(fields
 				(field
 					(name "Codigo") "E3")
@@ -5254,7 +5254,7 @@
 				(field
 					(name "Datasheet") "https://www.diodes.com/assets/Datasheets/ds11005.pdf")
 				(field
-					(name "Description") "o clique chega ao pino 6 e ao ONOFF do SNVS sem levar o VSYS a eles")
+					(name "Description") "o clique do volume chega ao pino 25 e ao ONOFF do SNVS sem levar o VSYS a eles")
 			)
 			(libsource
 				(lib "viaggio")
@@ -5733,7 +5733,7 @@
 			(value "AO3401A")
 			(footprint "Package_TO_SOT_SMD:SOT-23")
 			(datasheet "https://www.aosmd.com/res/datasheets/AO3401A.pdf")
-			(description "o clique do seletor liga o EN")
+			(description "o clique do volume liga o EN")
 			(fields
 				(field
 					(name "Codigo") "E3")
@@ -5746,7 +5746,7 @@
 				(field
 					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3401A.pdf")
 				(field
-					(name "Description") "o clique do seletor liga o EN")
+					(name "Description") "o clique do volume liga o EN")
 			)
 			(libsource
 				(lib "viaggio")
@@ -8144,28 +8144,28 @@
 		)
 		(comp
 			(ref "J301")
-			(value "PJ-313D-6A")
-			(description "SMD, angulo reto; contato da ponta = deteccao; manga no HP_VGND, nunca no GND; footprint a criar no 3.3")
+			(value "PJ-327A 5JJ")
+			(footprint "viaggio:Jack_3.5mm_PJ-327A_SMD")
+			(datasheet "https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf")
+			(description "SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)")
 			(fields
 				(field
 					(name "Codigo") "F2")
 				(field
-					(name "LCSC") "C95463")
+					(name "LCSC") "C668605")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint")
-				)
+					(name "Footprint") "viaggio:Jack_3.5mm_PJ-327A_SMD")
 				(field
-					(name "Datasheet")
-				)
+					(name "Datasheet") "https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf")
 				(field
-					(name "Description") "SMD, angulo reto; contato da ponta = deteccao; manga no HP_VGND, nunca no GND; footprint a criar no 3.3")
+					(name "Description") "SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)")
 			)
 			(libsource
 				(lib "viaggio")
-				(part "AudioJack3_SwitchT")
-				(description "Audio Jack, 3 Poles (Stereo / TRS), Switched T Pole (Normalling)")
+				(part "PJ-327A")
+				(description "3.5 mm stereo jack, tip switch (5 NC against 4)")
 			)
 			(property
 				(name "Codigo")
@@ -8173,7 +8173,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C95463")
+				(value "C668605")
 			)
 			(property
 				(name "Montagem")
@@ -8187,14 +8187,6 @@
 				(name "Sheetfile")
 				(value "viaggio_F.kicad_sch")
 			)
-			(property
-				(name "ki_keywords")
-				(value "audio jack receptacle stereo headphones phones TRS connector")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Jack*")
-			)
 			(sheetpath
 				(names "/F · Fone/")
 				(tstamps "/af7c3ca2-4d26-5467-83a0-bb4a30143113/")
@@ -8205,16 +8197,19 @@
 					(name "A")
 					(pins
 						(pin
-							(num "S")
+							(num "1")
 						)
 						(pin
-							(num "R")
+							(num "2")
 						)
 						(pin
-							(num "T")
+							(num "4")
 						)
 						(pin
-							(num "TN")
+							(num "5")
+						)
+						(pin
+							(num "3")
 						)
 					)
 				)
@@ -8715,7 +8710,9 @@
 		(comp
 			(ref "D401")
 			(value "TJ-S1615SW6TGLCRG-A5")
-			(description "1615 vermelho/verde, 4 pads; pinagem e footprint a conferir")
+			(footprint "viaggio:LED_1615_RG_4pad")
+			(datasheet "https://www.lcsc.com/datasheet/lcsc_datasheet_1810191024_TOGIALED-TJ-S1615SW6TGLCRG-A5_C273605.pdf")
+			(description "1615 vermelho/verde; pads do datasheet: 1 = anodo vermelho, 2 = catodo vermelho, 3 = anodo verde, 4 = catodo verde")
 			(fields
 				(field
 					(name "Codigo") "I3")
@@ -8724,17 +8721,15 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint")
-				)
+					(name "Footprint") "viaggio:LED_1615_RG_4pad")
 				(field
-					(name "Datasheet")
-				)
+					(name "Datasheet") "https://www.lcsc.com/datasheet/lcsc_datasheet_1810191024_TOGIALED-TJ-S1615SW6TGLCRG-A5_C273605.pdf")
 				(field
-					(name "Description") "1615 vermelho/verde, 4 pads; pinagem e footprint a conferir")
+					(name "Description") "1615 vermelho/verde; pads do datasheet: 1 = anodo vermelho, 2 = catodo vermelho, 3 = anodo verde, 4 = catodo verde")
 			)
 			(libsource
 				(lib "viaggio")
-				(part "LED_Dual_AAKK")
+				(part "LED_RG_1615")
 				(description "Dual LED, cathodes on pins 3 and 4")
 			)
 			(property
@@ -8778,10 +8773,10 @@
 							(num "1")
 						)
 						(pin
-							(num "2")
+							(num "3")
 						)
 						(pin
-							(num "3")
+							(num "2")
 						)
 						(pin
 							(num "4")
@@ -9011,24 +9006,23 @@
 		)
 		(comp
 			(ref "SW401")
-			(value "EC11E 15/15 com chave")
+			(value "EC11E18244A5")
 			(footprint "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm")
-			(datasheet "https://tech.alpsalpine.com/e/products/detail/EC11E15244G1/")
-			(description "volume; codigo LCSC da versao 15/15 a achar (C255515 e a 18/36)")
+			(datasheet "https://www.lcsc.com/datasheet/lcsc_datasheet_1811072201_ALPSALPINE-EC11E18244A5_C255515.pdf")
+			(description "volume; clique de 2 s liga/desliga; 18 pulsos / 36 detentes (o 15/15 nao tem estoque): ENC_STEPS_PER_DETENT = 2")
 			(fields
 				(field
 					(name "Codigo") "I1")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C255515")
 				(field
 					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm")
 				(field
-					(name "Datasheet") "https://tech.alpsalpine.com/e/products/detail/EC11E15244G1/")
+					(name "Datasheet") "https://www.lcsc.com/datasheet/lcsc_datasheet_1811072201_ALPSALPINE-EC11E18244A5_C255515.pdf")
 				(field
-					(name "Description") "volume; codigo LCSC da versao 15/15 a achar (C255515 e a 18/36)")
+					(name "Description") "volume; clique de 2 s liga/desliga; 18 pulsos / 36 detentes (o 15/15 nao tem estoque): ENC_STEPS_PER_DETENT = 2")
 			)
 			(libsource
 				(lib "viaggio")
@@ -9041,7 +9035,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C255515")
 			)
 			(property
 				(name "Montagem")
@@ -9096,24 +9090,23 @@
 		)
 		(comp
 			(ref "SW402")
-			(value "EC11E 15/15 com chave")
+			(value "EC11E18244A5")
 			(footprint "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm")
-			(datasheet "https://tech.alpsalpine.com/e/products/detail/EC11E15244G1/")
-			(description "seletor; clique de 2 s liga/desliga; codigo LCSC da versao 15/15 a achar (C255515 e a 18/36)")
+			(datasheet "https://www.lcsc.com/datasheet/lcsc_datasheet_1811072201_ALPSALPINE-EC11E18244A5_C255515.pdf")
+			(description "seletor; clique = funcoes de som; 18 pulsos / 36 detentes (o 15/15 nao tem estoque): ENC_STEPS_PER_DETENT = 2")
 			(fields
 				(field
 					(name "Codigo") "I2")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C255515")
 				(field
 					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm")
 				(field
-					(name "Datasheet") "https://tech.alpsalpine.com/e/products/detail/EC11E15244G1/")
+					(name "Datasheet") "https://www.lcsc.com/datasheet/lcsc_datasheet_1811072201_ALPSALPINE-EC11E18244A5_C255515.pdf")
 				(field
-					(name "Description") "seletor; clique de 2 s liga/desliga; codigo LCSC da versao 15/15 a achar (C255515 e a 18/36)")
+					(name "Description") "seletor; clique = funcoes de som; 18 pulsos / 36 detentes (o 15/15 nao tem estoque): ENC_STEPS_PER_DETENT = 2")
 			)
 			(libsource
 				(lib "viaggio")
@@ -9126,7 +9119,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C255515")
 			)
 			(property
 				(name "Montagem")
@@ -14877,50 +14870,6 @@
 		)
 		(libpart
 			(lib "viaggio")
-			(part "AudioJack3_SwitchT")
-			(description "Audio Jack, 3 Poles (Stereo / TRS), Switched T Pole (Normalling)")
-			(footprints
-				(fp "Jack*")
-			)
-			(fields
-				(field
-					(name "Reference") "J")
-				(field
-					(name "Value") "AudioJack3_SwitchT")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "Audio Jack, 3 Poles (Stereo / TRS), Switched T Pole (Normalling)")
-			)
-			(pins
-				(pin
-					(num "R")
-					(name "")
-					(type "passive")
-				)
-				(pin
-					(num "S")
-					(name "")
-					(type "passive")
-				)
-				(pin
-					(num "T")
-					(name "")
-					(type "passive")
-				)
-				(pin
-					(num "TN")
-					(name "")
-					(type "passive")
-				)
-			)
-		)
-		(libpart
-			(lib "viaggio")
 			(part "BAT54C")
 			(description "dual schottky barrier diode, common cathode")
 			(docs "http://www.diodes.com/_files/datasheets/ds11005.pdf")
@@ -15372,7 +15321,7 @@
 		)
 		(libpart
 			(lib "viaggio")
-			(part "LED_Dual_AAKK")
+			(part "LED_RG_1615")
 			(description "Dual LED, cathodes on pins 3 and 4")
 			(footprints
 				(fp "LED*")
@@ -15401,12 +15350,12 @@
 				)
 				(pin
 					(num "2")
-					(name "A2")
+					(name "K1")
 					(type "passive")
 				)
 				(pin
 					(num "3")
-					(name "K1")
+					(name "A2")
 					(type "passive")
 				)
 				(pin
@@ -16630,6 +16579,52 @@
 					(num "17")
 					(name "EPAD")
 					(type "power_in")
+				)
+			)
+		)
+		(libpart
+			(lib "viaggio")
+			(part "PJ-327A")
+			(description "3.5 mm stereo jack, tip switch (5 NC against 4)")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "PJ-327A")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "3.5 mm stereo jack, tip switch (5 NC against 4)")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "S")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "S")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "R")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "T")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "TN")
+					(type "passive")
 				)
 			)
 		)
@@ -18003,7 +17998,7 @@
 		(net
 			(code "7")
 			(name "BB_L1")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "L201")
 				(pin "1")
@@ -18020,7 +18015,7 @@
 		(net
 			(code "8")
 			(name "BB_L2")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "L201")
 				(pin "2")
@@ -18386,7 +18381,7 @@
 		(net
 			(code "29")
 			(name "DCDC_IN")
-			(class "Default")
+			(class "Nucleo")
 			(node
 				(ref "C101")
 				(pin "1")
@@ -18423,7 +18418,7 @@
 		(net
 			(code "30")
 			(name "DCDC_LP")
-			(class "Default")
+			(class "Nucleo")
 			(node
 				(ref "L102")
 				(pin "1")
@@ -19181,8 +19176,8 @@
 			)
 			(node
 				(ref "D401")
-				(pin "3")
-				(pinfunction "K1_3")
+				(pin "2")
+				(pinfunction "K1_2")
 				(pintype "passive")
 			)
 			(node
@@ -20039,7 +20034,8 @@
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "T")
+				(pin "4")
+				(pinfunction "T_4")
 				(pintype "passive")
 			)
 			(node
@@ -20055,7 +20051,8 @@
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "R")
+				(pin "3")
+				(pinfunction "R_3")
 				(pintype "passive")
 			)
 			(node
@@ -20071,7 +20068,8 @@
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "TN")
+				(pin "5")
+				(pinfunction "TN_5")
 				(pintype "passive")
 			)
 			(node
@@ -20086,7 +20084,14 @@
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "S")
+				(pin "1")
+				(pinfunction "S_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J301")
+				(pin "2")
+				(pinfunction "S_2")
 				(pintype "passive")
 			)
 			(node
@@ -20267,8 +20272,8 @@
 			(class "Default")
 			(node
 				(ref "D401")
-				(pin "2")
-				(pinfunction "A2_2")
+				(pin "3")
+				(pinfunction "A2_3")
 				(pintype "passive")
 			)
 			(node
@@ -21262,8 +21267,9 @@
 			(name "SEL_SW")
 			(class "Default")
 			(node
-				(ref "D205")
-				(pin "1")
+				(ref "SW402")
+				(pin "S2")
+				(pinfunction "S2_S2")
 				(pintype "passive")
 			)
 			(node
@@ -21275,33 +21281,6 @@
 		)
 		(net
 			(code "111")
-			(name "SEL_SW_N")
-			(class "Default")
-			(node
-				(ref "D205")
-				(pin "3")
-				(pintype "passive")
-			)
-			(node
-				(ref "Q203")
-				(pin "1")
-				(pinfunction "G_1")
-				(pintype "input")
-			)
-			(node
-				(ref "R210")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "S2")
-				(pinfunction "S2_S2")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "112")
 			(name "SENS_EN")
 			(class "Default")
 			(node
@@ -21322,7 +21301,7 @@
 			)
 		)
 		(net
-			(code "113")
+			(code "112")
 			(name "SGTL_VAG")
 			(class "Default")
 			(node
@@ -21338,7 +21317,7 @@
 			)
 		)
 		(net
-			(code "114")
+			(code "113")
 			(name "SGTL_VDDA")
 			(class "Default")
 			(node
@@ -21364,7 +21343,7 @@
 			)
 		)
 		(net
-			(code "115")
+			(code "114")
 			(name "SGTL_VDDD")
 			(class "Default")
 			(node
@@ -21386,7 +21365,7 @@
 			)
 		)
 		(net
-			(code "116")
+			(code "115")
 			(name "SNVS_3V3")
 			(class "Default")
 			(node
@@ -21418,7 +21397,7 @@
 			)
 		)
 		(net
-			(code "117")
+			(code "116")
 			(name "SPK_N")
 			(class "Default")
 			(node
@@ -21435,7 +21414,7 @@
 			)
 		)
 		(net
-			(code "118")
+			(code "117")
 			(name "SPK_P")
 			(class "Default")
 			(node
@@ -21452,9 +21431,9 @@
 			)
 		)
 		(net
-			(code "119")
+			(code "118")
 			(name "USB_DN")
-			(class "Default")
+			(class "USB")
 			(node
 				(ref "J201")
 				(pin "A7")
@@ -21487,9 +21466,9 @@
 			)
 		)
 		(net
-			(code "120")
+			(code "119")
 			(name "USB_DP")
-			(class "Default")
+			(class "USB")
 			(node
 				(ref "J201")
 				(pin "A6")
@@ -21522,7 +21501,7 @@
 			)
 		)
 		(net
-			(code "121")
+			(code "120")
 			(name "USB_HOLD")
 			(class "Default")
 			(node
@@ -21537,9 +21516,9 @@
 			)
 		)
 		(net
-			(code "122")
+			(code "121")
 			(name "VBAT")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "C203")
 				(pin "1")
@@ -21570,7 +21549,7 @@
 			)
 		)
 		(net
-			(code "123")
+			(code "122")
 			(name "VBAT_S")
 			(class "Default")
 			(node
@@ -21596,9 +21575,9 @@
 			)
 		)
 		(net
-			(code "124")
+			(code "123")
 			(name "VBUS")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "C201")
 				(pin "1")
@@ -21681,7 +21660,7 @@
 			)
 		)
 		(net
-			(code "125")
+			(code "124")
 			(name "VBUS_S")
 			(class "Default")
 			(node
@@ -21701,7 +21680,7 @@
 			)
 		)
 		(net
-			(code "126")
+			(code "125")
 			(name "VDD_HIGH_CAP")
 			(class "Default")
 			(node
@@ -21722,7 +21701,7 @@
 			)
 		)
 		(net
-			(code "127")
+			(code "126")
 			(name "VDD_SNVS_CAP")
 			(class "Default")
 			(node
@@ -21738,7 +21717,7 @@
 			)
 		)
 		(net
-			(code "128")
+			(code "127")
 			(name "VDD_SNVS_IN")
 			(class "Default")
 			(node
@@ -21764,9 +21743,9 @@
 			)
 		)
 		(net
-			(code "129")
+			(code "128")
 			(name "VDD_SOC")
-			(class "Default")
+			(class "Nucleo")
 			(node
 				(ref "C104")
 				(pin "1")
@@ -21855,7 +21834,7 @@
 			)
 		)
 		(net
-			(code "130")
+			(code "129")
 			(name "VDD_USB_CAP")
 			(class "Default")
 			(node
@@ -21881,7 +21860,7 @@
 			)
 		)
 		(net
-			(code "131")
+			(code "130")
 			(name "VOL_A")
 			(class "Default")
 			(node
@@ -21898,7 +21877,7 @@
 			)
 		)
 		(net
-			(code "132")
+			(code "131")
 			(name "VOL_B")
 			(class "Default")
 			(node
@@ -21915,13 +21894,12 @@
 			)
 		)
 		(net
-			(code "133")
+			(code "132")
 			(name "VOL_SW")
 			(class "Default")
 			(node
-				(ref "SW401")
-				(pin "S2")
-				(pinfunction "S2_S2")
+				(ref "D205")
+				(pin "1")
 				(pintype "passive")
 			)
 			(node
@@ -21932,9 +21910,36 @@
 			)
 		)
 		(net
+			(code "133")
+			(name "VOL_SW_N")
+			(class "Default")
+			(node
+				(ref "D205")
+				(pin "3")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q203")
+				(pin "1")
+				(pinfunction "G_1")
+				(pintype "input")
+			)
+			(node
+				(ref "R210")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "SW401")
+				(pin "S2")
+				(pinfunction "S2_S2")
+				(pintype "passive")
+			)
+		)
+		(net
 			(code "134")
 			(name "VSYS")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "C202")
 				(pin "1")

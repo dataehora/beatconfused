@@ -1,0 +1,4 @@
+~*.lck
+*-backups/
+viaggio_failed.*
+fp-info-cache

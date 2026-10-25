@@ -1,9 +1,87 @@
 # eTutti Viaggio · relatório da eletrônica
 
-**SPEC v2 (Rev2), passo 3.1: esquema. 24 out 2026.** Dono: eletrônica. Sem placa neste passo:
-nada foi posicionado nem roteado, nada foi encomendado.
+**SPEC v2.1, passo 3.2: placa posicionada, entregue para roteamento manual. 25 out 2026.** Dono:
+eletrônica. Nada foi encomendado. O passo 3.1 (esquema, PR #113) continua mais abaixo.
 
-## O que foi feito
+## Passo 3.2 (SPEC v2.1)
+
+### Mudança de estratégia: o J roteia
+
+- O roteador próprio do Code (`pcb/router.py`, grade A* do eTuttino adaptada; **não** era o
+  Freerouting) rodou em três sessões.
+- O setor P ficou com 18 erros de DRC: 13 sobreposições de pátio, 3 folgas, 1 cruzamento, 1 curto
+  do USB_DP com o GND. Faltaram 3 ligações dentro do P.
+- Decisão do J (25 out): **ele roteia a placa no KiCad com o plugin Freerouting.** O Code entrega a
+  placa posicionada, sem trilhas, com as regras e o DSN.
+- O VE2d (roteamento do setor P) **não foi feito pelo Code**. As imagens do setor P roteado também
+  não existem. O guia do roteamento é o [`pcb/ROTEAMENTO.md`](pcb/ROTEAMENTO.md).
+
+### O que foi feito
+
+- **VE2a, esquema:**
+  - o liga/desliga passou para o clique do **volume (I1)**: Q203, R210 e D205 estão no `VOL_SW_N`;
+    o pino 6 (seletor) ficou uma entrada comum;
+  - P3 = **W25Q64JVSSIM** (C5362615, 11 656 em estoque em 24/10);
+  - **encoders EC11E18244A5** (18/36, C255515) nos dois: o 15/15 com chave (C278348) não tinha
+    estoque. Para a firmware: `ENC_STEPS_PER_DETENT = 2`;
+  - cristal de 32 kHz em 3215 e botão TS-1187A, como na v2.1;
+  - **F2 trocado para o PJ-327A 5JJ** (C668605, SMD, 5 pads): o PJ-313D-6A do passo 3.1 não tem
+    contato na ponta (3 contatos, 6 pads no datasheet);
+  - os capacitores de 4,7/10 µF do P1 passaram a 0402, para caberem sobre o BGA;
+  - `PINOS.md` atualizado (pinos 6 e 25; liga/desliga; desligamento do SNVS com USB;
+    `BTN_PRESS_TIME` = 10 s; recuperação com Program) e `bom_preliminar.csv` regerado;
+  - **ERC 0/0, netlist do KiCad igual à declarada** (136 redes, 179 peças).
+- **VE2b, footprints** em `pcb/kicad/viaggio.pretty/`, escritos por `pcb/footprints.py`:
+  - **BGA-196** 12 × 12 P0,8 (figura 54 da NXP): pad NSMD de 0,35, máscara 0,45, nomes = bolas,
+    conferidos com o `rt1062_balls.json`;
+  - jack PJ-327A;
+  - LED 1615 R/G (1 = anodo vermelho, 2 = catodo vermelho, 3 = anodo verde, 4 = catodo verde);
+  - Gateron (cópia do eTuttino).
+- **VE2c, placa** (`pcb/build_board.py` + `pcb/handoff_freerouting.py`):
+  - retângulo de 246,5 × 95 com cantos R 5 e 8 furos M2 com anel livre de 3,5;
+  - serigrafia: perfil A pontilhado, posições antigas de E1 e F2 tracejadas, área do logo, códigos
+    P1…T4;
+  - empilhamento **JLC04121H-7628**, In1/In2 como planos;
+  - classes de rede e regras, zonas preenchidas;
+  - **todas as peças posicionadas** pelo `viaggio_rev2.json`, com os 28 TMAG5253 sob as teclas, na
+    orientação do Pocket;
+  - placa ligada ao esquema (a paridade dá 0), switches e furos marcados "só placa".
+- **DRC da entrega:** 0 erros, 2 avisos de ilha de cobre (normal sem trilhas), **499 ligações a
+  rotear**. Por setor (pelo código das peças das duas pontas):
+
+  | Setor | Ligações | Setor | Ligações |
+  |---|---|---|---|
+  | P | 128 | E-P | 10 |
+  | E | 94 | F-P | 10 |
+  | F | 32 | I-P | 6 |
+  | A | 10 | A-F | 3 |
+  | I | 6 | E-I, E-T | 2 + 2 |
+  | T | 190 | outras | 6 |
+
+- **Imagens:** `pcb/build/viaggio_top.png`, `viaggio_bottom.png` e `viaggio_posicionamento.svg`.
+
+### Empilhamento, 90 Ω e vias
+
+- JLC04121H-7628: 35 µm / prepreg 0,2104 (εr 4,4) / 15 µm / núcleo 0,6 / 15 µm / prepreg 0,2104 /
+  35 µm.
+- **USB:** 0,24 de largura e 0,15 de vão em F.Cu sobre o GND do In1 dão **Zdiff ≈ 91,2 Ω**. A conta
+  é do `pcb/impedance.py` (solver 2D com máscara de 15 µm), e está em `build/impedance.json` com a
+  tabela de alternativas. A IPC-2141 dá 93,7 Ω.
+- **Vias:** 0,45 / furo 0,2, segundo o script grátis na JLCPCB a partir de 0,45 **(conferir no
+  orçamento: se cobrar, 0,5/0,3)**. BGA em dog-bone, sem via no pad.
+
+### Onde as peças saíram do `viaggio_rev2.json`
+
+- **Setor P**, para o leque do BGA:
+  - MKL02 (37,05; 5,95), era (46; 9);
+  - flash (23; 20,6), era (47,5; 18);
+  - PSRAM (37,65; 24), era (47,5; 26,5);
+  - cristal de 24 MHz (25,7; 10,5), era (26; 23).
+- **Sobreposições de pátio:** Y101, C121, C104 e C120 andaram ≤ 0,5 mm.
+- **Furos M2:** o pátio passou a ser a cabeça do parafuso (Ø 3,8).
+- Os passivos ficam junto do seu chip. Nenhuma peça mudou de setor, de lado ou de corredor.
+
+## Passo 3.1 (PR #113): o que foi feito
 
 - **Esquema KiCad 10** em `pcb/kicad/`: `viaggio.kicad_sch` (raiz) e uma folha por setor
   (`viaggio_P/E/F/I/A/T.kicad_sch`), mais a biblioteca própria `viaggio.kicad_sym` e o `sym-lib-table`.
@@ -186,15 +264,16 @@ principais:
 
 ## Perguntas para a gestão
 
-1. **Liga/desliga com USB.** Com a USB ligada o aparelho fica ligado mesmo com o KEEP baixo (para
-   gravar a firmware). Para desligar de verdade com USB, a firmware pode pedir o desligamento do
-   SNVS (baixa o PMIC_ON_REQ). O próximo clique religa pelo ONOFF, que pus no clique do seletor por
-   um diodo. Isso fica como o comportamento padrão, ou basta o "desligamento leve" do Pocket?
-2. **ONOFF com o clique preso ~5 s desliga tudo** (padrão do RT1062, como no Teensy 4.1). Isso fica
-   como proteção contra firmware travada?
-3. **Duas trocas pequenas de encapsulamento:** cristal de 32 kHz em 3215 (a SPEC diz 2012) e botão
-   Program de 5,1 × 5,1 básico (a SPEC diz 4 × 4). Aceitas?
-4. **Encoder:** os dois EC11E seguem 15 pulsos / 15 detentes como no Pocket, ou um 18/36 (C255515,
-   em estoque na LCSC) para o volume?
-5. **Flash "-Q" ou "-M":** a "-M" funciona com qualquer bootloader, mas a LCSC tem menos estoque.
-   Perguntamos à PJRC a versão dos MKL02 que eles vendem hoje?
+1. **Plano da §7:** com o roteamento nas mãos do J, sugiro que 3.3 e 3.4 virem:
+   - o J roteia;
+   - o Code confere a placa roteada (DRC, paridade, 28/28 com a firmware, flexão) e gera os Gerbers,
+     a BOM, o CPL, o `POWER.md` e as alturas por lado.
+
+   A SPEC v2.2 registra isso?
+2. **Vias:** fica 0,45/0,2, ou 0,5/0,3 se o orçamento da JLC cobrar o furo de 0,2? É bom decidir antes
+   de rotear, porque muda o leque do BGA.
+3. **+3V3 no In2:** hoje a ilha de 3,3 V cobre só o setor P. Ela fica assim (3,3 V em trilha para
+   teclas, codec e mux), ou se estende pelos corredores C3/C5?
+4. **Jack PJ-327A 5JJ** no lugar do PJ-313D-6A, que não tem contato na ponta: aceito?
+5. **Encoders 18/36** (EC11E18244A5) nos dois, porque o 15/15 com chave não tem estoque: aceito?
+   (Para a firmware: `ENC_STEPS_PER_DETENT = 2`.)

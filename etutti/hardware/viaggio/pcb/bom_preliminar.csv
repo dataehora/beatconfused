@@ -2,21 +2,23 @@ codigo,referencias,qtd,valor_peca,encapsulamento,lcsc,classe_jlc,preco_unit_usd_
 P1,R105,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,"MCLK 11,3 MHz: em serie, junto do P1 (SPEC 4, 8o)"
 P1,R101,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,Teensy R7
 P1,C107 C111,2,10nF,C_0402_1005Metric,C15195,basica,0.001,JLC,final,Teensy C5
-P1,C101 C104 C117,3,10uF,C_0603_1608Metric,C19702,basica,0.005,JLC,final,Teensy C32
+P1,C101 C104,2,10uF,C_0603_1608Metric,C19702,basica,0.005,JLC,final,Teensy C32
+P1,C117,1,10uF,C_0402_1005Metric,C15525,basica,0.004,JLC,conferir,Teensy C31 (0402: cabe sobre o BGA)
 P1,L101,1,120R@100MHz,L_0603_1608Metric,-,basica,0.005,JLC,conferir,Teensy L3; >=1 A
 P1,C108,1,2.2uF,C_0402_1005Metric,C12530,basica,0.003,JLC,conferir,Teensy C28 (NVCC)
 P1,C103 C106 C110 C113 C115 C116 C118 C119,8,220nF,C_0402_1005Metric,C16772,basica,0.002,JLC,conferir,Teensy C19
-P1,C102 C105 C109 C112 C114,5,4.7uF,C_0603_1608Metric,C19666,basica,0.004,JLC,final,Teensy C24
+P1,C102 C105,2,4.7uF,C_0603_1608Metric,C19666,basica,0.004,JLC,final,Teensy C24
+P1,C109 C112 C114,3,4.7uF,C_0402_1005Metric,C23733,basica,0.003,JLC,conferir,Teensy C23 (0402: cabe sobre o BGA)
 P1,L102,1,4.7uH,L_0805_2012Metric,-,estendida,0.050,JLC,conferir,"Teensy L1; corrente do nucleo (conferir >= 0,5 A)"
 P1,D101 D102,2,BAT54C,SOT-23,C134405,estendida,0.020,JLC,final,Teensy D2: o anodo da pilha (VBAT) vai no SNVS_3V3 de E5
-P1,U101,1,MIMXRT1062DVJ6B,(a criar),-,-,11.000,consignada (PJRC ou DigiKey),conferir,footprint BGA-196 12x12 P0.8 a criar no passo 3.2; bolas livres sem ligacao (SD_B1_05/N3 e EMC_23/G2 de proposito)
+P1,U101,1,MIMXRT1062DVJ6B,BGA-196_12x12mm_P0.8mm_RT1062,-,-,11.000,consignada (PJRC ou DigiKey),conferir,"BGA-196 12x12 P0.8 (footprint proprio, figura 54 da NXP); bolas livres sem ligacao (SD_B1_05/N3 e EMC_23/G2 de proposito)"
 P2,R104,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,Teensy R6
 P2,C124,1,220nF,C_0402_1005Metric,C16772,basica,0.002,JLC,conferir,Teensy C8
 P2,R103,1,470,R_0402_1005Metric,C25117,basica,0.001,JLC,conferir,Teensy R2
 P2,U102,1,PJRC MKL02 bootloader (Teensy 4.1),QFN-16-1EP_3x3mm_P0.5mm_EP1.9x1.9mm,-,-,6.000,consignada (PJRC),conferir,"PTA3 -> DCDC_PSWITCH, PTB5 -> AD_B0_08 (pagina da PJRC)"
 P2,D103,1,vermelho,LED_0603_1608Metric,C2286,basica,0.010,JLC,conferir,"Teensy D4: LED de erro do bootloader (piscadas da pagina da PJRC), no verso"
 P3,C125,1,220nF,C_0402_1005Metric,C16772,basica,0.002,JLC,conferir,desacoplamento (o esquema da PJRC nao mostra o do U3)
-P3,U103,1,W25Q64JVSSIQ,SOIC-8_5.3x5.3mm_P1.27mm,C179171,estendida,0.800,JLC,conferir,"64 Mbit = modelo Teensy 4.1; '-Q' exige bootloader >= 1.09 (lista da PJRC), '-M' serve em todos"
+P3,U103,1,W25Q64JVSSIM,SOIC-8_5.3x5.3mm_P1.27mm,C5362615,estendida,2.970,JLC,final,64 Mbit = modelo Teensy 4.1; '-M' (SPEC v2.1) serve em qualquer versao do bootloader; LCSC 11656 em estoque (24/10/2026)
 P4,C126,1,220nF,C_0402_1005Metric,C16772,basica,0.002,nao montar,conferir,Teensy C21; nao montar
 P4,U104,1,APS6404L-3SQR-ZR,Winbond_USON-8-1EP_3x2mm_P0.5mm_EP0.2x1.6mm,C3040877,estendida,1.900,nao montar,conferir,so o lugar (modelos futuros); sem estoque na LCSC em out/2026
 P5,C120 C121,2,12pF,C_0402_1005Metric,C1547,basica,0.001,JLC,conferir,Teensy C1
@@ -61,13 +63,13 @@ F1,U302,1,XC6206P182MR,SOT-23-3,C347373,estendida,0.030,JLC,conferir,"1,8 V do V
 F2,R303,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
 F2,C308,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
 F2,R304,1,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,
-F2,J301,1,PJ-313D-6A,(a criar),C95463,estendida,0.100,JLC,conferir,"SMD, angulo reto; contato da ponta = deteccao; manga no HP_VGND, nunca no GND; footprint a criar no 3.3"
-I1,SW401,1,EC11E 15/15 com chave,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,-,estendida,1.200,JLC,conferir,volume; codigo LCSC da versao 15/15 a achar (C255515 e a 18/36)
-I2,SW402,1,EC11E 15/15 com chave,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,-,estendida,1.200,JLC,conferir,seletor; clique de 2 s liga/desliga; codigo LCSC da versao 15/15 a achar (C255515 e a 18/36)
+F2,J301,1,PJ-327A 5JJ,Jack_3.5mm_PJ-327A_SMD,C668605,estendida,0.100,JLC,conferir,"SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)"
+I1,SW401,1,EC11E18244A5,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C255515,estendida,1.200,JLC,final,volume; clique de 2 s liga/desliga; 18 pulsos / 36 detentes (o 15/15 nao tem estoque): ENC_STEPS_PER_DETENT = 2
+I2,SW402,1,EC11E18244A5,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C255515,estendida,1.200,JLC,final,seletor; clique = funcoes de som; 18 pulsos / 36 detentes (o 15/15 nao tem estoque): ENC_STEPS_PER_DETENT = 2
 I3,R401,1,270,R_0402_1005Metric,C25190,basica,0.001,JLC,conferir,
 I3,R402,1,330,R_0402_1005Metric,C25104,basica,0.001,JLC,conferir,
 I3,D402,1,BAT54C,SOT-23,C134405,estendida,0.020,JLC,final,OU do vermelho: luz de carga e firmware (Pocket D30)
-I3,D401,1,TJ-S1615SW6TGLCRG-A5,(a criar),C273605,estendida,0.020,JLC,conferir,"1615 vermelho/verde, 4 pads; pinagem e footprint a conferir"
+I3,D401,1,TJ-S1615SW6TGLCRG-A5,LED_1615_RG_4pad,C273605,estendida,0.020,JLC,final,"1615 vermelho/verde; pads do datasheet: 1 = anodo vermelho, 2 = catodo vermelho, 3 = anodo verde, 4 = catodo verde"
 I4,SW403,1,Program,SW_Push_1P1T_XKB_TS-1187A,C318884,basica,0.020,JLC,conferir,"no verso, por um furo no fundo; 5,1 x 5,1 (a SPEC pedia 4 x 4)"
 A1,C502,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
 A1,C501,1,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,

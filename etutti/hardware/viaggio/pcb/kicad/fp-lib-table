@@ -1,0 +1,4 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "viaggio") (type "KiCad") (uri "${KIPRJMOD}/viaggio.pretty") (options "") (descr "eTutti Viaggio footprints, written by footprints.py"))
+)

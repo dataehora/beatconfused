@@ -4,7 +4,7 @@
 	(generator_version "10.0")
 	(uuid "23d2a97d-9ccc-546e-af9b-d21d95a66eb8")
 	(paper "A4")
-	(title_block (title "eTutti Viaggio · esquema") (date "2026-10-24") (rev "SPEC v2 - passo 3.1") (company "beatconfused.com") (comment 1 "etutti/hardware/viaggio/pcb/schematic.py escreve este arquivo; nao editar a mao"))
+	(title_block (title "eTutti Viaggio · esquema") (date "2026-10-24") (rev "SPEC v2.1 - passo 3.2") (company "beatconfused.com") (comment 1 "etutti/hardware/viaggio/pcb/schematic.py escreve este arquivo; nao editar a mao"))
 	(lib_symbols
 		(symbol "viaggio:PWR_FLAG"
 		(power global)
@@ -127,9 +127,9 @@
 		(embedded_fonts no)
 	)
 	)
-	(text "eTutti Viaggio · esquema eletrico (SPEC v2, passo 3.1). Uma folha por setor da SPEC (secao 3)." (exclude_from_sim no) (at 25 15 0) (effects (font (size 2 2)) (justify left)) (uuid "53e94a16-706e-5685-907a-014d13e4b85b"))
+	(text "eTutti Viaggio · esquema eletrico (SPEC v2.1, passo 3.2). Uma folha por setor da SPEC (secao 3)." (exclude_from_sim no) (at 25 15 0) (effects (font (size 2 2)) (justify left)) (uuid "53e94a16-706e-5685-907a-014d13e4b85b"))
 	(text "Campo 'Codigo' = codigo da peca na SPEC (P1...T4), o mesmo de concept/rev2/out/viaggio_rev2.json." (exclude_from_sim no) (at 25 21 0) (effects (font (size 2 2)) (justify left)) (uuid "0637b018-fca6-5a52-bd71-460ddcd5517f"))
-	(text "Sem placa: nada posicionado nem roteado neste passo. Ligacoes entre folhas por rotulos globais." (exclude_from_sim no) (at 25 27 0) (effects (font (size 2 2)) (justify left)) (uuid "aaed4cab-33ac-5f48-a063-993cec1ce546"))
+	(text "Placa: pcb/build_board.py (posicionamento + setor P). Ligacoes entre folhas por rotulos globais." (exclude_from_sim no) (at 25 27 0) (effects (font (size 2 2)) (justify left)) (uuid "aaed4cab-33ac-5f48-a063-993cec1ce546"))
 	(text "PWR_FLAG abaixo: redes alimentadas por conector, ferrite, indutor ou diodo (o ERC nao ve a fonte)." (exclude_from_sim no) (at 25 33 0) (effects (font (size 2 2)) (justify left)) (uuid "c4c8ba10-161c-5958-8867-f949fc2de93c"))
 	(sheet (at 25 45) (size 70 25) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced yes) (stroke (width 0.1524) (type solid)) (fill (color 0 0 0 0.0000)) (uuid "00b2b0f9-bd63-5748-82a3-a7cbc59e227c")
 		(property "Sheetname" "P · Processador" (at 25 44.3 0) (effects (font (size 1.27 1.27)) (justify left bottom)))

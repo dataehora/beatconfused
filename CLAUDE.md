@@ -481,11 +481,11 @@ active instrument: the Pocket's 28-key keyboard and right side, one
 the board": i.MX RT1062 + PJRC MKL02 bootloader + 64 Mbit flash + unfitted
 PSRAM footprint, SGTL5000,
 MAX98357A, BQ24074, TPS63001, USB-C, TMAG5253 via JLC Global Sourcing),
-soft power (hold the selector click 2 s), thin ~1000 mAh battery, case only
+soft power (hold the volume click 2 s), thin ~1000 mAh battery, case only
 conceptual. Same Chat→Code protocol as the Pocket (below); the Viaggio's
 reports live in `viaggio/`. Pin map keeps Teensy 4.1 pin numbers so the
 firmware stays compatible (compile with `teensy:avr:teensy41`).
-**Current spec: `viaggio/SPEC.md` v2 (Rev2).** It specifies:
+**Current spec: `viaggio/SPEC.md` v2.1 (Rev2).** It specifies:
 - a rectangular 246.5 × 95 board, 4 layers, 1.2 mm;
 - parts coded by sector (P, E, F, I, A, T → P1…T4), with positions, sectors and corridors in
   `concept/rev2/out/viaggio_rev2.json`.
@@ -493,7 +493,7 @@ firmware stays compatible (compile with `teensy:avr:teensy41`).
 The board is done in the four steps of SPEC §7, one session = one PR each, and J approves each step
 before the next:
 - 3.1 schematic + ERC + preliminary BOM + pin map (done, see below);
-- 3.2 board outline, rules, placement and sector P routing;
+- 3.2 board outline, rules, placement (done, see below); **routing is J's job** since 25 Oct 2026;
 - 3.3 sectors E, F, A, I;
 - 3.4 sector T, then DRC/fab/POWER.md.
 
@@ -508,6 +508,32 @@ before the next:
 - Also in `viaggio/pcb/`: `PINOS.md` (the contract with the firmware) and `bom_preliminar.csv`.
   The report is `viaggio/ELETRONICA.md`.
 - The `eletronica` agent owns the Viaggio's `pcb/`, `POWER.md` and `ELETRONICA.md`.
+
+**Step 3.2 state (SPEC v2.1):** power switch on the volume click (I1); flash W25Q64JVSSIM; encoders
+EC11E18244A5 (18/36, `ENC_STEPS_PER_DETENT = 2`); jack PJ-327A (the PJ-313D had no tip switch).
+Run, in this order (all from the repo root):
+1. `python etutti/hardware/viaggio/pcb/schematic.py` — also writes `pcb/kicad/viaggio.pretty/`
+   (`footprints.py`: BGA-196, jack, LED 1615, Gateron), ERC + netlist check;
+2. `"C:/Users/julia/.venvs/cadquery/Scripts/python.exe" etutti/hardware/viaggio/pcb/impedance.py`
+   — 2D field solver for the USB pair on JLC04121H-7628 → `build/impedance.json` (only when the
+   stack-up changes);
+3. `"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio/pcb/build_board.py`:
+   - places every part from `viaggio_rev2.json`, then tries to route sector P with its own grid
+     router (`pcb/router.py`);
+   - after three sessions sector P still had 18 DRC errors and 3 unrouted connections.
+4. `"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio/pcb/handoff_freerouting.py`:
+   - turns the placed board into the board J routes: no tracks;
+   - links every footprint to the schematic (F8 is clean) and fixes 4 courtyard overlaps;
+   - In1/In2 become power (plane) layers;
+   - fills the zones and writes `build/viaggio.dsn`;
+   - result: DRC 0 errors, schematic parity 0, 499 unrouted.
+   - The partial sector P routing stays in `kicad/viaggio_rota_P_parcial.kicad_pcb`, for reference
+     only.
+
+**Decision of 25 Oct 2026:** J routes the board himself in KiCad with the Freerouting plugin. Code
+supplies the placed board, the rules and the DSN. The guide is `viaggio/pcb/ROTEAMENTO.md`. Don't
+re-run `build_board.py` over a board J has routed: it rebuilds `kicad/viaggio.kicad_pcb` from
+scratch.
 
 The **eTuttino Pocket is finished at SPEC v5
 (PR #110) and paused**; its files are reference for the Viaggio.

@@ -1,0 +1,28 @@
+{
+ "tracks_removed": 0,
+ "moved_mm": {},
+ "violations": {
+  "warning/isolated_copper": 2
+ },
+ "unrouted": 499,
+ "unrouted_by_sector": {
+  "?-P": 2,
+  "A": 10,
+  "A-E": 1,
+  "A-F": 3,
+  "A-I": 1,
+  "E": 94,
+  "E-I": 2,
+  "E-P": 10,
+  "E-T": 2,
+  "F": 32,
+  "F-I": 1,
+  "F-P": 10,
+  "I": 6,
+  "I-P": 6,
+  "P": 128,
+  "P-T": 1,
+  "T": 190
+ },
+ "dsn": true
+}
