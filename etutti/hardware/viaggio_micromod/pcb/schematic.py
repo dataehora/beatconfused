@@ -20,7 +20,8 @@ Sources:
              MicroMod_Teensy_Processor, Hardware/MicroMod-Teensy.sch, read
              net by net: connector J1 pad -> RT1062 ball -> Teensy pin), the
              MicroMod Teensy hookup guide and "Designing with MicroMod"
-             (learn.sparkfun.com); M.2 socket = TE 2199230-4 drawing rev B3.
+             (learn.sparkfun.com); M.2 socket = UMAX 91302-42-067RCE, drawing C-91302-42
+             rev C (same land as TE 2199230-4 rev B3).
   F          PJRC Audio Adaptor Rev D2 (20-pin SGTL5000), as used by the Pocket.
   E, I, A, T the eTuttino Pocket (pocket/pcb/build_pocket_pcb.py, PINOS.md)
              and the Viaggio v2.1.
@@ -402,17 +403,18 @@ def p1_nets():
 
 
 CUR[0] = "P"
-part("J101", "MicroMod_M.2_E", "APCI0108-P001A", p1_nets(), "P1", fp="%s:M.2_Socket_E_H4.2_MicroMod" % LIB,
-     lcsc="C841659", cls="estendida", price=0.60, status="conferir",
-     note="M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (LOTES; equivalente ao TE 2199230-4 da SparkFun; conferir estoque e "
-          "o desenho LOTES contra o footprint do TE); no verso; modulo SparkFun MicroMod Teensy DEV-16402 encaixado em casa",
-     datasheet="https://www.lcsc.com/datasheet/C841659.pdf")
+part("J101", "MicroMod_M.2_E", "91302-42-067RCE", p1_nets(), "P1", fp="%s:%s" % (LIB, footprints.M2_NAME),
+     lcsc="C48985906", cls="estendida", price=1.26, status="conferir",
+     note="UMAX M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (estoque LCSC 622 em 25 out 2026; o LOTES C841659 estava "
+          "com 0); footprint pelo desenho UMAX C-91302-42 rev C; no verso; modulo SparkFun MicroMod Teensy "
+          "DEV-16402 encaixado em casa",
+     datasheet="https://datasheet.lcsc.com/datasheet/pdf/fa57621554b717c54a395d0658cff748.pdf?productCode=C48985906")
 part("H101", sym("MountingHole_Pad", "Mechanical"), "9774025151R", {"1": "GND"}, "P1",
      fp="%s:Standoff_SMD_M2.5_H2.5" % LIB, lcsc="", cls="-", price=0.60, mount="JLC (Global Sourcing)",
      status="conferir",
-     note="espacador SMD M2.5 x 2,5 mm (Wurth WA-SMSI, o da SparkFun); a (+4,0; -20,0) do J101 nas coordenadas do "
-          "footprint; sem codigo LCSC confirmado (alternativa a medir: YIYUAN SMTSOM2.520BTR C5301776, 2,0 mm); "
-          "parafuso M2.5 x 3 cabeca chata em casa",
+     note="espacador SMD M2.5 x 2,5 mm (Wurth WA-SMSI, o da SparkFun; SPEC v2.3); a (+4,0; -20,0) do J101 "
+          "nas coordenadas do footprint; sem equivalente LCSC de 2,5 mm com estoque em 25 out 2026 (YIYUAN "
+          "SMTSOM2.520BTR C5301776: 2,0 mm, estoque 0); parafuso M2.5 x 3 cabeca chata em casa",
      datasheet="https://www.we-online.com/components/products/datasheet/9774025151R.pdf")
 C("C101", "10uF", "+3V3", "GND", "P1", "0805", note="3,3 V junto dos pads 2/74 do J101")
 C("C102", "100nF", "+3V3", "GND", "P1")
@@ -433,10 +435,11 @@ R("R202", "5.1k", "CC2", "GND", "E1")
 part("U201", sym("USBLC6-2SC6", "Power_Protection"), "USBLC6-2SC6",
      {"1": "USB_DP", "6": "USB_DP", "3": "USB_DN", "4": "USB_DN", "5": "VBUS", "2": "GND"}, "E2",
      fp=FP["SOT236"], lcsc="C7519", cls="basica", price=0.05, status="conferir",
+     note="lado de cima, junto do USB-C (SPEC v2.3)",
      datasheet="https://www.st.com/resource/en/datasheet/usblc6-2.pdf")
 part("D201", sym("SMF5.0A", "Diode", "SMAJ5.0A"), "SMF5.0A", {"1": "VBUS", "2": "GND"}, "E2",
      fp="Diode_SMD:D_SOD-123F", lcsc="C151296", cls="estendida", price=0.05, status="final",
-     note="TVS do VBUS (Pocket D60)", rot=90)
+     note="TVS do VBUS (Pocket D60); lado de cima, junto do USB-C (SPEC v2.3)", rot=90)
 part("U202", sym("BQ24074RGT", "Battery_Management"), "BQ24074RGTR",
      {"1": "BAT_NTC", "2": "VBAT", "3": "VBAT", "4": "GND", "5": "GND", "6": "CHG_EN1", "7": "NC", "8": "GND",
       "9": "CHG_N", "10": "VSYS", "11": "VSYS", "12": "CHG_ILIM", "13": "VBUS", "14": "NC", "15": "NC",

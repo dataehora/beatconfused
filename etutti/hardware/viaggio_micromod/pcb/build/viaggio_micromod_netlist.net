@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\viaggio_micromod\\pcb\\kicad\\viaggio_micromod.kicad_sch")
-		(date "2026-10-25T17:18:55")
+		(date "2026-10-25T17:53:03")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -491,7 +491,7 @@
 			(value "9774025151R")
 			(footprint "viaggio_micromod:Standoff_SMD_M2.5_H2.5")
 			(datasheet "https://www.we-online.com/components/products/datasheet/9774025151R.pdf")
-			(description "espacador SMD M2.5 x 2,5 mm (Wurth WA-SMSI, o da SparkFun); a (+4,0; -20,0) do J101 nas coordenadas do footprint; sem codigo LCSC confirmado (alternativa a medir: YIYUAN SMTSOM2.520BTR C5301776, 2,0 mm); parafuso M2.5 x 3 cabeca chata em casa")
+			(description "espacador SMD M2.5 x 2,5 mm (Wurth WA-SMSI, o da SparkFun; SPEC v2.3); a (+4,0; -20,0) do J101 nas coordenadas do footprint; sem equivalente LCSC de 2,5 mm com estoque em 25 out 2026 (YIYUAN SMTSOM2.520BTR C5301776: 2,0 mm, estoque 0); parafuso M2.5 x 3 cabeca chata em casa")
 			(fields
 				(field
 					(name "Codigo") "P1")
@@ -505,7 +505,7 @@
 				(field
 					(name "Datasheet") "https://www.we-online.com/components/products/datasheet/9774025151R.pdf")
 				(field
-					(name "Description") "espacador SMD M2.5 x 2,5 mm (Wurth WA-SMSI, o da SparkFun); a (+4,0; -20,0) do J101 nas coordenadas do footprint; sem codigo LCSC confirmado (alternativa a medir: YIYUAN SMTSOM2.520BTR C5301776, 2,0 mm); parafuso M2.5 x 3 cabeca chata em casa")
+					(name "Description") "espacador SMD M2.5 x 2,5 mm (Wurth WA-SMSI, o da SparkFun; SPEC v2.3); a (+4,0; -20,0) do J101 nas coordenadas do footprint; sem equivalente LCSC de 2,5 mm com estoque em 25 out 2026 (YIYUAN SMTSOM2.520BTR C5301776: 2,0 mm, estoque 0); parafuso M2.5 x 3 cabeca chata em casa")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -558,23 +558,23 @@
 		)
 		(comp
 			(ref "J101")
-			(value "APCI0108-P001A")
-			(footprint "viaggio_micromod:M.2_Socket_E_H4.2_MicroMod")
-			(datasheet "https://www.lcsc.com/datasheet/C841659.pdf")
-			(description "M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (LOTES; equivalente ao TE 2199230-4 da SparkFun; conferir estoque e o desenho LOTES contra o footprint do TE); no verso; modulo SparkFun MicroMod Teensy DEV-16402 encaixado em casa")
+			(value "91302-42-067RCE")
+			(footprint "viaggio_micromod:M.2_E_H4.2_UMAX_91302-42-067")
+			(datasheet "https://datasheet.lcsc.com/datasheet/pdf/fa57621554b717c54a395d0658cff748.pdf?productCode=C48985906")
+			(description "UMAX M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (estoque LCSC 622 em 25 out 2026; o LOTES C841659 estava com 0); footprint pelo desenho UMAX C-91302-42 rev C; no verso; modulo SparkFun MicroMod Teensy DEV-16402 encaixado em casa")
 			(fields
 				(field
 					(name "Codigo") "P1")
 				(field
-					(name "LCSC") "C841659")
+					(name "LCSC") "C48985906")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "viaggio_micromod:M.2_Socket_E_H4.2_MicroMod")
+					(name "Footprint") "viaggio_micromod:M.2_E_H4.2_UMAX_91302-42-067")
 				(field
-					(name "Datasheet") "https://www.lcsc.com/datasheet/C841659.pdf")
+					(name "Datasheet") "https://datasheet.lcsc.com/datasheet/pdf/fa57621554b717c54a395d0658cff748.pdf?productCode=C48985906")
 				(field
-					(name "Description") "M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (LOTES; equivalente ao TE 2199230-4 da SparkFun; conferir estoque e o desenho LOTES contra o footprint do TE); no verso; modulo SparkFun MicroMod Teensy DEV-16402 encaixado em casa")
+					(name "Description") "UMAX M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (estoque LCSC 622 em 25 out 2026; o LOTES C841659 estava com 0); footprint pelo desenho UMAX C-91302-42 rev C; no verso; modulo SparkFun MicroMod Teensy DEV-16402 encaixado em casa")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -587,7 +587,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C841659")
+				(value "C48985906")
 			)
 			(property
 				(name "Montagem")
@@ -1692,7 +1692,7 @@
 			(ref "D201")
 			(value "SMF5.0A")
 			(footprint "Diode_SMD:D_SOD-123F")
-			(description "TVS do VBUS (Pocket D60)")
+			(description "TVS do VBUS (Pocket D60); lado de cima, junto do USB-C (SPEC v2.3)")
 			(fields
 				(field
 					(name "Codigo") "E2")
@@ -1706,7 +1706,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "TVS do VBUS (Pocket D60)")
+					(name "Description") "TVS do VBUS (Pocket D60); lado de cima, junto do USB-C (SPEC v2.3)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -3853,6 +3853,7 @@
 			(value "USBLC6-2SC6")
 			(footprint "Package_TO_SOT_SMD:SOT-23-6")
 			(datasheet "https://www.st.com/resource/en/datasheet/usblc6-2.pdf")
+			(description "lado de cima, junto do USB-C (SPEC v2.3)")
 			(fields
 				(field
 					(name "Codigo") "E2")
@@ -3865,8 +3866,7 @@
 				(field
 					(name "Datasheet") "https://www.st.com/resource/en/datasheet/usblc6-2.pdf")
 				(field
-					(name "Description")
-				)
+					(name "Description") "lado de cima, junto do USB-C (SPEC v2.3)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -13650,7 +13650,7 @@
 		(net
 			(code "7")
 			(name "BB_L1")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "L201")
 				(pin "1")
@@ -13667,7 +13667,7 @@
 		(net
 			(code "8")
 			(name "BB_L2")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "L201")
 				(pin "2")
@@ -16245,7 +16245,7 @@
 		(net
 			(code "88")
 			(name "USB_DN")
-			(class "Default")
+			(class "USB")
 			(node
 				(ref "J101")
 				(pin "5")
@@ -16280,7 +16280,7 @@
 		(net
 			(code "89")
 			(name "USB_DP")
-			(class "Default")
+			(class "USB")
 			(node
 				(ref "J101")
 				(pin "3")
@@ -16330,7 +16330,7 @@
 		(net
 			(code "91")
 			(name "VBAT")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "C203")
 				(pin "1")
@@ -16389,7 +16389,7 @@
 		(net
 			(code "93")
 			(name "VBUS")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "C201")
 				(pin "1")
@@ -16565,7 +16565,7 @@
 		(net
 			(code "99")
 			(name "VSYS")
-			(class "Default")
+			(class "Corrente")
 			(node
 				(ref "C202")
 				(pin "1")

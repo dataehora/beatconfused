@@ -1,28 +1,33 @@
-"""Write the eTutti Viaggio MicroMod's own footprints (SPEC v2.2, step M1).
+"""Write the eTutti Viaggio MicroMod's own footprints (SPEC v2.3, step M2).
 
     python etutti/hardware/viaggio_micromod/pcb/footprints.py
 
 Plain CPython (stdlib only). schematic.py imports and runs it first, so the
 library always matches the schematic. Writes pcb/kicad/viaggio_micromod.pretty/:
 
-  M.2_Socket_E_H4.2_MicroMod      P1, M.2 Key E socket, 0.5 mm pitch, 67 pins,
-      4.2 mm high (TE 2199230-4 customer drawing rev B3, sheet 3 "recommended
-      PCB outline"; LOTES APCI0108-P001A, LCSC C841659, is the same M.2 land).
-      Checked pad by pad against SparkFun's carrier footprint
-      "M.2-CONNECTOR-E" (SparkFun-MicroMod library, as used on the MicroMod
-      Data Logging and ATP carriers):
-        - odd pins 1..23, 33..75: 34 pads 0.3 x 1.55 at y = +5.275
-          (4.5 .. 6.05 from the alignment holes' line);
-        - even pins 2..22, 32..74: 33 pads 0.3 x 1.55 at y = -2.275
-          (1.5 .. 3.05 from that line);
-        - pin n at x = 9.25 - 0.25 (n - 1); key E removes pins 24..31;
-        - 2 solder pegs "MP" 1.2 x 2.75 at (+-10.35, +4.5);
-        - NPTH 1.1 at (+10, 0) (pin 1 side) and 1.6 at (-10, 0).
-      Origin = centre of the pin field on the alignment holes' line. The
+  M.2_E_H4.2_UMAX_91302-42-067   P1 (J101), M.2 Key E socket, 0.5 mm pitch, 67
+      pins, 4.2 mm high: UMAX 91302-42-067RCE (LCSC C48985906), drawn from
+      UMAX drawing C-91302-42 rev C (Dec 2024), sheet 2 "PCB layout"
+      (step M2, SPEC v2.3). The land is the standard M.2 one, identical to
+      TE 2199230-4 rev B3 sheet 3 and to SparkFun's "M.2-CONNECTOR-E":
+        - odd pins 1..23, 33..75: 34 pads 0.30 x 1.55, row 4.5 .. 6.05 from
+          the locating holes' line (centre y = +5.275);
+        - even pins 2..22, 32..74: 33 pads 0.30 x 1.55, row 1.5 .. 3.05 on
+          the other side of that line (centre y = -2.275);
+        - pin 1 at 9.25 and pin 2 at 9.0 from the centre line, pitch 0.5 in
+          each row: pin n at x = 9.25 - 0.25 (n - 1); key E removes 24..31;
+        - 2 fitting nails "MP" 1.20 x 2.75 at (+-10.35, +4.5);
+        - NPTH 1.10 at (+10, 0) (pin 1 side) and 1.60 (datum X) at (-10, 0),
+          20.0 apart; the posts are 0.90 and 1.45 (sheet 1).
+      The drawing is shown with pin 1 left / odd row up; here it is turned
+      180 deg (pin 1 at +x, odd row at +y), a rotation, not a mirror.
+      Body 21.85 x 8.35 (tails included), 4.20 max high (sheet 1).
+      Origin = centre of the pin field on the locating holes' line. The
       MicroMod card (22 x 22) lies towards -y; its M2.5 screw notch is at
-      (+4.0, -20.0) from this origin (SparkFun carriers: standoff H5 at
-      (4.06, 19.94) and (4.01, 19.99) in connector coordinates; conferir com
-      a peca). Under the card only parts up to 1.9 mm (Designing with MicroMod).
+      (+4.0, -20.0) from this origin (SparkFun carriers: standoff at
+      (4.06, 19.94) and (4.01, 19.99) in connector coordinates; MicroMod
+      spec: screw 4 mm right of the card's centre line; conferir com a
+      peca). Under the card only parts up to 1.9 mm (Designing with MicroMod).
   Standoff_SMD_M2.5_H2.5          P1, Wurth WA-SMSI 9774025151R (M2.5 internal
       thread, 2.5 mm high, flange 5.1, barrel 3.5 x 1.4); Wurth land: pad 6.0
       round, hole 3.7. Made a plated 6.0/3.7 pad (SparkFun uses 6.0/3.9 plated)
@@ -52,6 +57,8 @@ M2_EVEN_Y = -2.275
 M2_PAD = (0.3, 1.55)
 M2_PINS = [n for n in range(1, 76) if not 24 <= n <= 31]     # key E: 24..31 removed
 M2_STANDOFF = (4.0, -20.0)
+M2_NAME = "M.2_E_H4.2_UMAX_91302-42-067"
+M2_CARD = (-11.0, -22.0, 11.0, -2.675)     # MicroMod card outline in footprint coordinates
 
 
 def f(v):
@@ -104,14 +111,14 @@ def m2_pad_xy(n):
 
 
 def m2_socket():
-    name = "M.2_Socket_E_H4.2_MicroMod"
-    L = head(name, "M.2 Key E socket, 0.5 mm pitch, 67 pins, 4.2 mm high, for a SparkFun MicroMod 22x22 "
-                   "processor board (TE 2199230-4 / LOTES APCI0108-P001A); card towards -y, M2.5 standoff at "
-                   "(4.0, -20.0); parts under the card <= 1.9 mm", "M.2 NGFF key E MicroMod 2199230-4",
+    name = M2_NAME
+    L = head(name, "M.2 Key E socket, 0.5 mm pitch, 67 pins, 4.2 mm high, UMAX 91302-42-067RCE (LCSC C48985906, "
+                   "drawing C-91302-42 rev C sheet 2) for a SparkFun MicroMod 22x22 processor board; card towards -y, "
+                   "M2.5 standoff at (4.0, -20.0); parts under the card <= 1.9 mm", "M.2 NGFF key E MicroMod UMAX 91302",
              ref_y=7.4, val_y=-23.6)
-    # connector body (TE: 21.9 x ~7.75) and the module card on the fab layer
-    L += [rect(-10.95, -2.5, 10.95, 5.25, "F.Fab", 0.1),
-          rect(-11.0, -22.0, 11.0, -2.5, "F.Fab", 0.05),
+    # connector body (UMAX sheet 1: 21.85 x 8.35 over the tails) and the module card on the fab layer
+    L += [rect(-10.925, -2.675, 10.925, 5.675, "F.Fab", 0.1),
+          rect(M2_CARD[0], M2_CARD[1], M2_CARD[2], M2_CARD[3], "F.Fab", 0.05),
           circle(M2_STANDOFF[0], M2_STANDOFF[1], 3.0, "F.Fab", 0.05),
           text("MicroMod 22x22 (pecas <= 1,9 mm)", 0, -12, "F.Fab"),
           text("standoff M2.5", M2_STANDOFF[0], M2_STANDOFF[1] + 4.0, "F.Fab", 0.6),
@@ -201,6 +208,9 @@ def check_m2():
 
 def write_all():
     names = [m2_socket(), standoff(), jack(), led(), gateron()]
+    for fn in os.listdir(PRETTY):              # drop footprints no longer written (M1's TE-named socket)
+        if fn.endswith(".kicad_mod") and fn[:-len(".kicad_mod")] not in names:
+            os.remove(os.path.join(PRETTY, fn))
     n = check_m2()
     return names, n
 
