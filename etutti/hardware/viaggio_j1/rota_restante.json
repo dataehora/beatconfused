@@ -3742,6 +3742,269 @@
     },
     "paridade": 0
    }
+  },
+  "6b": {
+   "txt": "codec: vias no pad central do U301 e GND do C304",
+   "uuids": [
+    "ecefd353-38f1-4aff-a205-c2ac56f7d440",
+    "202e2e81-fde9-4c66-9a25-7230fe4f747f",
+    "85607cf2-a9f0-468c-b83c-d7d9c38ed36b",
+    "39179c70-c814-413a-b9f5-891191526eb1",
+    "7f116336-cd32-4678-aae9-ab0d8323a861",
+    "495cee92-2902-40ea-9a31-ee3ec430848b",
+    "a9f16ea5-d7a5-4fc2-9ddb-6b0648ce2e73",
+    "e1cdfe15-fc56-4eb3-9624-bfad757b6f69",
+    "5cf2689c-7117-4650-bf2f-bd36fe3d5b03",
+    "9b939271-277f-4f72-82f5-93c4a34b23c9",
+    "61d44e46-12b0-4593-86b6-b8a076826fcd",
+    "53bd5696-1786-4977-a5a1-ff8a4612c555",
+    "7e908b85-4462-41d4-a7dd-de30cae1e124",
+    "5a6bc83d-f606-46bb-8250-f48a84e33706"
+   ],
+   "ligacoes": [],
+   "fora": [
+    {
+     "net": "GND",
+     "pinos": "C304.2",
+     "em": [
+      21.22,
+      35.89
+     ],
+     "motivo": "sem caminho mesmo arrancando as trilhas autorizadas (janela 33x33 mm)"
+    }
+   ],
+   "gravacao": {
+    "dropped": 1,
+    "zones_refilled": 4,
+    "new": 14,
+    "blocks_identical": 4071
+   },
+   "apagadas": [
+    {
+     "rede": "I2S_BCLK",
+     "camada": "In2.Cu",
+     "largura": 0.2,
+     "de": [
+      22.511,
+      34.245
+     ],
+     "ate": [
+      32.175,
+      43.909
+     ],
+     "comprimento_mm": 13.667,
+     "uuid": "ac4c2a51-b7d9-404d-9630-bbe049e7d7aa"
+    }
+   ],
+   "desvios": [
+    {
+     "rede": "I2S_BCLK",
+     "larguras": [
+      0.2
+     ],
+     "camada_original": "In2.Cu",
+     "de": [
+      22.51,
+      34.24
+     ],
+     "ate": [
+      32.18,
+      43.91
+     ],
+     "comprimento_mm": 21.13,
+     "camadas": [
+      "B.Cu",
+      "F.Cu",
+      "In2.Cu"
+     ],
+     "vias": 2,
+     "substitui": [
+      "ac4c2a51-b7d9-404d-9630-bbe049e7d7aa"
+     ],
+     "restos": [],
+     "uuids": [
+      "85607cf2-a9f0-468c-b83c-d7d9c38ed36b",
+      "39179c70-c814-413a-b9f5-891191526eb1",
+      "7f116336-cd32-4678-aae9-ab0d8323a861",
+      "495cee92-2902-40ea-9a31-ee3ec430848b",
+      "a9f16ea5-d7a5-4fc2-9ddb-6b0648ce2e73",
+      "e1cdfe15-fc56-4eb3-9624-bfad757b6f69",
+      "5cf2689c-7117-4650-bf2f-bd36fe3d5b03",
+      "9b939271-277f-4f72-82f5-93c4a34b23c9",
+      "61d44e46-12b0-4593-86b6-b8a076826fcd",
+      "53bd5696-1786-4977-a5a1-ff8a4612c555",
+      "7e908b85-4462-41d4-a7dd-de30cae1e124",
+      "5a6bc83d-f606-46bb-8250-f48a84e33706"
+     ],
+     "tentativa": 1
+    }
+   ],
+   "arrancadas_por_ligacao": [
+    {
+     "rede": "GND",
+     "pinos": [
+      "U301.21"
+     ],
+     "tentativa": 2,
+     "apagadas": [
+      {
+       "rede": "I2S_BCLK",
+       "camada": "In2.Cu",
+       "largura": 0.2,
+       "de": [
+        22.511,
+        34.245
+       ],
+       "ate": [
+        32.175,
+        43.909
+       ],
+       "comprimento_mm": 13.667,
+       "uuid": "ac4c2a51-b7d9-404d-9630-bbe049e7d7aa"
+      }
+     ],
+     "desvios": [
+      {
+       "rede": "I2S_BCLK",
+       "larguras": [
+        0.2
+       ],
+       "camada_original": "In2.Cu",
+       "de": [
+        22.51,
+        34.24
+       ],
+       "ate": [
+        32.18,
+        43.91
+       ],
+       "comprimento_mm": 21.13,
+       "camadas": [
+        "B.Cu",
+        "F.Cu",
+        "In2.Cu"
+       ],
+       "vias": 2,
+       "substitui": [
+        "ac4c2a51-b7d9-404d-9630-bbe049e7d7aa"
+       ],
+       "restos": [],
+       "uuids": [
+        "85607cf2-a9f0-468c-b83c-d7d9c38ed36b",
+        "39179c70-c814-413a-b9f5-891191526eb1",
+        "7f116336-cd32-4678-aae9-ab0d8323a861",
+        "495cee92-2902-40ea-9a31-ee3ec430848b",
+        "a9f16ea5-d7a5-4fc2-9ddb-6b0648ce2e73",
+        "e1cdfe15-fc56-4eb3-9624-bfad757b6f69",
+        "5cf2689c-7117-4650-bf2f-bd36fe3d5b03",
+        "9b939271-277f-4f72-82f5-93c4a34b23c9",
+        "61d44e46-12b0-4593-86b6-b8a076826fcd",
+        "53bd5696-1786-4977-a5a1-ff8a4612c555",
+        "7e908b85-4462-41d4-a7dd-de30cae1e124",
+        "5a6bc83d-f606-46bb-8250-f48a84e33706"
+       ],
+       "tentativa": 1
+      }
+     ]
+    }
+   ],
+   "codec": {
+    "vias": [
+     [
+      24.0,
+      35.5
+     ],
+     [
+      23.45,
+      34.95
+     ]
+    ],
+    "corte": "inteira",
+    "apagadas": [
+     {
+      "rede": "I2S_BCLK",
+      "camada": "In2.Cu",
+      "largura": 0.2,
+      "de": [
+       22.511,
+       34.245
+      ],
+      "ate": [
+       32.175,
+       43.909
+      ],
+      "comprimento_mm": 13.667,
+      "uuid": "ac4c2a51-b7d9-404d-9630-bbe049e7d7aa"
+     }
+    ],
+    "desvios": [
+     {
+      "rede": "I2S_BCLK",
+      "larguras": [
+       0.2
+      ],
+      "camada_original": "In2.Cu",
+      "de": [
+       22.51,
+       34.24
+      ],
+      "ate": [
+       32.18,
+       43.91
+      ],
+      "comprimento_mm": 21.13,
+      "camadas": [
+       "B.Cu",
+       "F.Cu",
+       "In2.Cu"
+      ],
+      "vias": 2,
+      "substitui": [
+       "ac4c2a51-b7d9-404d-9630-bbe049e7d7aa"
+      ],
+      "restos": [],
+      "uuids": [
+       "85607cf2-a9f0-468c-b83c-d7d9c38ed36b",
+       "39179c70-c814-413a-b9f5-891191526eb1",
+       "7f116336-cd32-4678-aae9-ab0d8323a861",
+       "495cee92-2902-40ea-9a31-ee3ec430848b",
+       "a9f16ea5-d7a5-4fc2-9ddb-6b0648ce2e73",
+       "e1cdfe15-fc56-4eb3-9624-bfad757b6f69",
+       "5cf2689c-7117-4650-bf2f-bd36fe3d5b03",
+       "9b939271-277f-4f72-82f5-93c4a34b23c9",
+       "61d44e46-12b0-4593-86b6-b8a076826fcd",
+       "53bd5696-1786-4977-a5a1-ff8a4612c555",
+       "7e908b85-4462-41d4-a7dd-de30cae1e124",
+       "5a6bc83d-f606-46bb-8250-f48a84e33706"
+      ],
+      "tentativa": 1
+     }
+    ],
+    "tentativa": 2
+   },
+   "vias_extra_ilhas": 0,
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 13
+    },
+    "nao_roteadas": {
+     "GND": 3,
+     "VSYS": 2,
+     "BB_L1": 1
+    },
+    "paridade": 0
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 13
+    },
+    "nao_roteadas": {
+     "GND": 2,
+     "VSYS": 2,
+     "BB_L1": 1
+    },
+    "paridade": 0
+   }
   }
  }
 }

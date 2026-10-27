@@ -1540,8 +1540,15 @@ def route_pts(st, jb, attempt):
     s_img, t_img = w.img(), w.img()
     w.disc(ImageDraw.Draw(s_img), p0[0], p0[1], max(1.5 * p, wsmall / 2))
     w.disc(ImageDraw.Draw(t_img), p1[0], p1[1], max(1.5 * p, wsmall / 2))
-    sm[li0] = np.array(s_img, dtype=bool)
-    tm[li0] = np.array(t_img, dtype=bool)
+    # an end point on a via (or a through pad) of the net may be left on any layer
+    def on_via(P_):
+        return any(it.GetNetname() == net and has_hole(it) and it.GetEffectiveShape(pcbnew.F_Cu).Collide(P_, 2000)
+                   for it in ctx.items if it.GetClass() in ("PCB_VIA", "PAD"))
+    for li in range(3):
+        if li == li0 or on_via(jb["P"][0]):
+            sm[li] = np.array(s_img, dtype=bool)
+        if li == li0 or on_via(jb["P"][1]):
+            tm[li] = np.array(t_img, dtype=bool)
     usable, wcell = [], []
     for li in range(3):
         big = ~blocked[(li, wbig)]
@@ -1880,8 +1887,11 @@ def codec_vias(st):
     if not cands:
         return "nenhum ponto de via no pad, mesmo sem as trilhas do In2"
     sets = sorted({cf for _, cf in cands}, key=lambda s: (len(s), -sum(1 for _, cf in cands if cf <= s)))
-    tries, last = 0, None
-    for S in sets:
+    # two via sets (fewest In2 tracks in the way first); each with the tracks cut only round the
+    # vias, then cut whole (a detour from a short cut can be shut in by its neighbours)
+    plan = [(S, mode) for S in sets for mode in ("local", "inteira")]
+    tries, last, nset = 0, None, 0
+    for S, mode in plan:
         pool = [q for q, cf in cands if cf <= S]
         chosen = [min(pool, key=lambda q: math.hypot(q[0] - cx, q[1] - cy))]
         while len(chosen) < 4:
@@ -1891,6 +1901,10 @@ def codec_vias(st):
             chosen.append(best)
         if len(chosen) < 2:
             continue
+        if mode == "local":
+            nset += 1
+            if nset > 2:
+                break
         tries += 1
         mk = st.mark()
         jobs = []
@@ -1899,7 +1913,10 @@ def codec_vias(st):
             a, e = seg_geom(t)
             R = TOMM(t.GetWidth()) / 2 + max(clr_of("GND"), clr_of(t.GetNetname())) + VIA_D / 2
             ts = [proj(a, e, q)[1] for q in chosen if proj(a, e, q)[0] < R + 0.03]
-            jobs.append(cut(st, t, min(ts) - R - 0.4, max(ts) + R + 0.4))
+            if mode == "local":
+                jobs.append(cut(st, t, min(ts) - R - 0.4, max(ts) + R + 0.4))
+            else:
+                jobs.append(cut(st, t, 0.0, 1e9))
         st.sync()
         jobs = merge_jobs(st, jobs)
         ok = True
@@ -1912,13 +1929,14 @@ def codec_vias(st):
         err = None if ok else "via no pad recusada na conferencia exata"
         if ok:
             err = detours(st, jobs)
+        print("  codec tentativa %d (%s, vias %s, trilhas %s): %s" % (
+            tries, mode, [[round(q[0], 2), round(q[1], 2)] for q in chosen],
+            sorted(rip[u].GetNetname() for u in S), err or "ok"))
         if err:
             st.undo(mk)
             last = err
-            if tries >= 2:
-                break
             continue
-        st.codec = {"vias": [[round(q[0], 3), round(q[1], 3)] for q in chosen],
+        st.codec = {"vias": [[round(q[0], 3), round(q[1], 3)] for q in chosen], "corte": mode,
                     "apagadas": st.apagadas[mk[3]:], "desvios": st.desvios[mk[4]:], "tentativa": tries}
         st.rips.append({"rede": "GND", "pinos": ["U301.21"], "tentativa": tries,
                         "apagadas": st.apagadas[mk[3]:], "desvios": st.desvios[mk[4]:]})
