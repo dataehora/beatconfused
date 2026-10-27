@@ -1530,6 +1530,117 @@
      "camada": "B.Cu"
     }
    ]
+  },
+  "5": {
+   "txt": "OUT_K03",
+   "uuids": [
+    "5db0cfd7-074b-4f96-8c4d-678a97da7f91",
+    "b7a6b62e-00f7-4041-a26a-c453aede378c",
+    "564ba46f-9370-449a-82c0-ca611ff04768",
+    "28bddeba-e784-404e-a759-c5fcfe9fc4c1",
+    "baf2ff78-5f03-4104-b292-1215f9e67983",
+    "777bc697-4073-49a2-9021-a7cd81d8c47e",
+    "c0976cad-9d56-48ef-a4cd-30f127cca3b7"
+   ],
+   "ligacoes": [
+    {
+     "net": "OUT_K03",
+     "de": [
+      135.2,
+      73.26
+     ],
+     "ate": [
+      118.98,
+      8.45
+     ],
+     "comprimento_mm": 71.37,
+     "larguras_mm": [
+      0.2
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    }
+   ],
+   "fora": [],
+   "toco_apagado": "3b288af8-70c2-4d06-b54e-e95343b1dec8",
+   "gravacao": {
+    "dropped": 8,
+    "zones_refilled": 4,
+    "new": 7,
+    "blocks_identical": 3956
+   },
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    }
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 18
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1
+    },
+    "paridade": 0
+   },
+   "vias_extra_ilhas": 0,
+   "protecoes": [],
+   "afinamentos_entrada_pino": [
+    {
+     "rede": "VBUS",
+     "x": 17.08,
+     "y": 12.25,
+     "largura": 0.5,
+     "camada": "F.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.41,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.96,
+     "y": 6.05,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 52.6,
+     "y": 6.9,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.71,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    }
+   ]
   }
  }
 }

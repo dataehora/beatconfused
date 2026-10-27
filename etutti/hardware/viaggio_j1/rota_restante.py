@@ -436,7 +436,9 @@ def cluster_mask(ctx, w, g, net, pads_only=False):
                 hp = [(TOMM(hc.CPoint(k).x), TOMM(hc.CPoint(k).y)) for k in range(hc.PointCount())]
                 if len(hp) >= 3:
                     ImageDraw.Draw(imgs[RL.index(L)]).polygon([w.px(x, y) for x, y in hp], fill=0)
-    return [np.array(i, dtype=bool) for i in imgs]
+    # a route may only end where its end point is surely inside the copper (KiCad tests the
+    # point): one cell in from the rasterised edge
+    return [~dilate(~np.array(i, dtype=bool), 1) for i in imgs]
 
 
 def in1_mask(b, w):
