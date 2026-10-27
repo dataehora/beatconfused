@@ -1,0 +1,1646 @@
+{
+ "lotes": {
+  "1": {
+   "txt": "BB_L1, BB_L2, VSYS, VBAT e GND do carregador/conversor",
+   "uuids": [
+    "13954aa6-472d-4c81-9bdd-06559b4abf4b",
+    "a29241dc-7275-4b3a-b65a-5e9b67212457",
+    "0a83345d-2a56-466f-8538-6e07550103f8",
+    "00548115-0a11-4e6c-ab16-1873fc453443",
+    "6e07ee18-61c4-4200-aa99-5fc2c9833ff1",
+    "fa9f2c48-7230-47c7-9fe1-33195cca5e75",
+    "e5c3ad8a-1596-4e20-a380-90971dc8466b",
+    "2ab22f33-e9e3-459a-a6bf-ed6d05e252dd",
+    "be44f75d-81c2-4729-ad53-42681928f32c",
+    "ab90f752-58ff-4e16-88aa-288bb9ce58dc",
+    "3c577b13-8f08-478e-ba87-cbc02297d232",
+    "0d904065-5497-42d1-98c1-a8e6bc875549",
+    "0084037c-f5c8-4785-bb39-5c79ded82c82",
+    "922eb4ed-f737-4880-8c6f-a3d6afca1f5f",
+    "1e2d6290-8664-4c61-a0ff-a68909ba4c35",
+    "64688105-87b1-4c2f-a1f7-72c35f0ae04d",
+    "a5a63e60-c5eb-420e-b997-6816bebc6e8c",
+    "8f62fbea-1d0f-4895-9c52-6d390c8001b4",
+    "80de1a70-9cf7-40d5-8da9-a0cd463d43ba",
+    "528b1258-3a5d-4863-b0c3-0b7fb085ca18",
+    "0d4cfb1e-86ac-4cf8-8a9b-caea7baf3ed7",
+    "5a5ff651-f768-4997-8dee-bc8401342be0",
+    "b8b00a35-14fa-4eb7-a31b-687673e05ec5",
+    "cae3e331-6f91-4352-923c-7b49f3fe3006",
+    "dd97b0bf-0443-47b5-a50d-53b71ee8059b",
+    "3466038b-f350-435b-ad20-994d75c9f0f7",
+    "6e24d139-4592-4211-92ae-8055c04c1ece",
+    "e2445fa0-5ee6-40a8-8247-5ed9d32cf24e",
+    "77c1b03d-2fc9-4fc9-a857-7068ce9ec82a",
+    "fdf5c93c-80af-49c1-8c7c-ab8dc5b5f1e3",
+    "2febc45a-f08b-49ad-8d38-742edfd3bd2b",
+    "057935c0-3897-408f-bef5-1b9e06321d82",
+    "bd05dd6c-61d2-4c74-940f-d5d56620ba66",
+    "1a658a52-ef3a-493e-ba55-b159defe7d49",
+    "c4f8d55f-9cbf-4f57-9c62-bae110e26e0c",
+    "60d367d1-ed89-4fb9-9661-05af1c2f4f8a",
+    "bfeded19-2cbc-4fce-8669-e89dde12507a",
+    "c9f25c3d-497b-4bc6-ad46-89418a9c4699",
+    "c2a471f2-b6be-4998-9a10-4ad4cd373b2f",
+    "e9f18d50-2302-494f-8665-28fa5bd0009c",
+    "e926f54a-b9ec-4fb6-b0fd-82b932c01808",
+    "aa9f9629-a74b-49e4-80ad-566f288c65f3",
+    "e1d9a60c-bdc1-44c8-b1f0-2327a36dc557"
+   ],
+   "ligacoes": [
+    {
+     "net": "VSYS",
+     "de": [
+      53.75,
+      89.44
+     ],
+     "ate": [
+      53.25,
+      89.44
+     ],
+     "comprimento_mm": 0.25,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VSYS",
+     "de": [
+      53.25,
+      89.44
+     ],
+     "ate": [
+      51.63,
+      90.62
+     ],
+     "comprimento_mm": 1.05,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VSYS",
+     "de": [
+      53.6,
+      89.34
+     ],
+     "ate": [
+      60.12,
+      16.94
+     ],
+     "comprimento_mm": 76.21,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 3,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBAT",
+     "de": [
+      66.5,
+      23.65
+     ],
+     "ate": [
+      66.83,
+      18.05
+     ],
+     "comprimento_mm": 4.6,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "In2.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBAT",
+     "de": [
+      63.44,
+      9.25
+     ],
+     "ate": [
+      66.25,
+      17.7
+     ],
+     "comprimento_mm": 22.93,
+     "larguras_mm": [
+      0.2,
+      0.5,
+      0.8
+     ],
+     "vias": 3,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 2
+    },
+    {
+     "net": "GND",
+     "de": [
+      70.31,
+      5.9
+     ],
+     "ate": [
+      69.5,
+      6.5
+     ],
+     "comprimento_mm": 1.8,
+     "larguras_mm": [
+      0.2
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 2
+    },
+    {
+     "net": "GND",
+     "de": [
+      60.96,
+      11.21
+     ],
+     "ate": [
+      60.91,
+      11.41
+     ],
+     "comprimento_mm": 0.05,
+     "larguras_mm": [
+      0.2
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "GND",
+     "de": [
+      71.33,
+      8.82
+     ],
+     "ate": [
+      71.45,
+      8.42
+     ],
+     "comprimento_mm": 0.25,
+     "larguras_mm": [
+      0.2
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "GND",
+     "de": [
+      68.39,
+      9.44
+     ],
+     "ate": [
+      69.47,
+      9.0
+     ],
+     "comprimento_mm": 0.25,
+     "larguras_mm": [
+      0.2
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "GND",
+     "de": [
+      68.3,
+      8.63
+     ],
+     "ate": [
+      68.3,
+      9.37
+     ],
+     "comprimento_mm": 0.25,
+     "larguras_mm": [
+      0.2
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "GND",
+     "de": [
+      69.14,
+      12.79
+     ],
+     "ate": [
+      69.14,
+      12.79
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    }
+   ],
+   "fora": [
+    {
+     "net": "BB_L1",
+     "pinos": "L201.1 - U204.4",
+     "de": [
+      75.68,
+      9.0
+     ],
+     "ate": [
+      70.88,
+      9.5
+     ],
+     "motivo": "sem caminho (janela 37x24 mm, passo 0.05)"
+    },
+    {
+     "net": "BB_L2",
+     "pinos": "L201.2 - U204.2",
+     "de": [
+      72.68,
+      9.0
+     ],
+     "ate": [
+      70.88,
+      8.5
+     ],
+     "motivo": "sem caminho (janela 34x23 mm, passo 0.05)"
+    },
+    {
+     "net": "VSYS",
+     "pinos": "C202.1 - R210.1",
+     "de": [
+      58.69,
+      15.51
+     ],
+     "ate": [
+      56.29,
+      12.96
+     ],
+     "motivo": "sem caminho (janela 34x30 mm, passo 0.10)"
+    },
+    {
+     "net": "VSYS",
+     "pinos": "C202.1 - U204.5",
+     "de": [
+      66.75,
+      9.48
+     ],
+     "ate": [
+      70.88,
+      10.0
+     ],
+     "motivo": "sem caminho (janela 36x24 mm, passo 0.05)"
+    },
+    {
+     "net": "VSYS",
+     "pinos": "C202.1 - U202.10",
+     "de": [
+      64.4,
+      11.38
+     ],
+     "ate": [
+      60.56,
+      9.25
+     ],
+     "motivo": "sem caminho (janela 36x25 mm, passo 0.10)"
+    },
+    {
+     "net": "VSYS",
+     "pinos": "R210.1 - U202.10",
+     "de": [
+      60.56,
+      9.25
+     ],
+     "ate": [
+      56.29,
+      12.96
+     ],
+     "motivo": "sem caminho (janela 36x27 mm, passo 0.10)"
+    },
+    {
+     "net": "VSYS",
+     "pinos": "U202.10 - U204.5",
+     "de": [
+      60.56,
+      9.25
+     ],
+     "ate": [
+      70.88,
+      10.0
+     ],
+     "motivo": "sem caminho (janela 42x24 mm, passo 0.10)"
+    },
+    {
+     "net": "VSYS",
+     "pinos": "R210.1 - U204.5",
+     "de": [
+      56.29,
+      12.96
+     ],
+     "ate": [
+      70.88,
+      10.0
+     ],
+     "motivo": "sem caminho (janela 47x27 mm, passo 0.10)"
+    },
+    {
+     "net": "VBAT",
+     "pinos": "C203.1 - U202.2",
+     "de": [
+      63.44,
+      9.25
+     ],
+     "ate": [
+      64.11,
+      13.88
+     ],
+     "motivo": "sem caminho (janela 33x28 mm, passo 0.10)"
+    },
+    {
+     "net": "VBAT",
+     "pinos": "C203.1 - R208.1",
+     "de": [
+      66.83,
+      18.05
+     ],
+     "ate": [
+      64.11,
+      13.88
+     ],
+     "motivo": "sem caminho (janela 35x32 mm, passo 0.10)"
+    },
+    {
+     "net": "VBAT",
+     "pinos": "C203.1 - J202.1",
+     "de": [
+      66.25,
+      17.7
+     ],
+     "ate": [
+      64.11,
+      13.88
+     ],
+     "motivo": "sem caminho (janela 34x32 mm, passo 0.10)"
+    },
+    {
+     "net": "GND",
+     "pinos": "R209.2",
+     "em": [
+      66.44,
+      19.37
+     ],
+     "motivo": "sem caminho (janela 33x33 mm, passo 0.10)"
+    },
+    {
+     "net": "GND",
+     "pinos": "R211.2",
+     "em": [
+      63.99,
+      19.31
+     ],
+     "motivo": "sem caminho (janela 33x33 mm, passo 0.10)"
+    }
+   ],
+   "toco_apagado": null,
+   "gravacao": {
+    "dropped": 0,
+    "zones_refilled": 4,
+    "new": 43,
+    "blocks_identical": 3795
+   },
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 13,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 9,
+     "VBUS": 10,
+     "+3V3": 18,
+     "VSYS": 6,
+     "I2C_SDA": 1,
+     "I2C_SCL": 1,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 3,
+     "OUT_K03": 1
+    }
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 13,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 10,
+     "+3V3": 18,
+     "VSYS": 3,
+     "I2C_SDA": 1,
+     "I2C_SCL": 1,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    },
+    "paridade": 0
+   },
+   "vias_extra_ilhas": 1
+  },
+  "2": {
+   "txt": "VBUS",
+   "uuids": [
+    "4cdcf202-e7a5-492d-bbc4-242ee503b26f",
+    "cf684626-6d51-443a-aa09-bfeb18a63765",
+    "fec4626d-e5af-4ac3-bdd6-92af0d1a8afd",
+    "727a1b3a-bfb1-4c83-a321-e84e8e618dea",
+    "2ddaee41-465a-4a82-b381-af68a13a816d",
+    "06870c72-9037-4487-8582-24e3a2977a95",
+    "e0e1a0ae-1e9c-4423-b8c5-edb6bde9f655",
+    "dd40dce6-3da7-4037-adeb-61d77265b49a",
+    "3915d1d7-b459-42d1-a2fd-6bd64e4f6a0d",
+    "fb71a6de-cba8-427f-9860-c47c06c8f658",
+    "66fff370-f024-4192-bd16-279e18818622",
+    "1ef99887-62bd-446b-b838-666c2f5a95bb",
+    "6d94973b-4dcd-4072-bb23-b10259bea2aa",
+    "41094728-2673-40a0-b678-e812eabeb866",
+    "b40a8561-9fc9-4223-884e-6b0c0c49be44",
+    "bbeb69f5-ce38-4802-8b4a-9281741c58a6",
+    "627c1cc2-bc80-427e-956d-e6c47a42bfdb",
+    "b0c28b60-8810-43af-a7b4-d50d62097c0f",
+    "9e3439ee-2481-4529-9efc-e4467b622035",
+    "be30ff15-e7d1-44d4-8b0d-15145d87d510",
+    "3fd449bf-fcec-495c-a4ab-12dea1ab8149",
+    "6c956043-f11d-42d2-9e08-108c38e96cf0",
+    "aff1edcf-3cf4-4aab-a9f4-6ea39d62f786",
+    "a0c0391c-787e-40c8-9c50-27d41747ee10",
+    "f1346c42-4da9-461a-bdc5-5f430d526fdd",
+    "72192bde-cd1c-4880-9d90-f31b4c40b06b",
+    "8c39d4bb-818a-4679-bdf8-8723333a6c71",
+    "ef49dfd2-7531-4d52-a77b-d3dd46bd3bb9",
+    "ab53e827-45d3-4c52-a504-49af2da260e0",
+    "562c2553-12d8-485a-b53f-e62511a92ad5",
+    "c57e7aa3-33de-4488-9892-3d7956427123",
+    "35110a96-214f-4dec-916a-21f252bfbacc",
+    "0a656e7d-5bde-4a94-8fe5-0d765471f221",
+    "d4812d96-b5e5-427e-8812-5f71032fdc38",
+    "97d6c2c5-179b-47b0-b81a-6fb39303821a",
+    "9486264d-10bc-4a80-ac7e-70f230d22510",
+    "3baf508d-a37a-4a62-b514-1e405309f876",
+    "2219f3af-bbcb-4685-85fc-8faee0729590",
+    "080a6f39-597a-4c14-b5c0-f40f39a87036",
+    "c8dca373-10d7-4adf-b25b-e1f3ac40b37a",
+    "c0bc30b8-ffa1-4b85-aecb-3bba26fbfc82",
+    "7973c3d7-2907-4289-97c8-b4e2423abadb",
+    "9121760e-ae6f-4e7e-ab89-f6de33a42b30",
+    "669878a8-a613-42cb-b031-7e9d3b9c31e5",
+    "dafc8417-cd57-4733-9688-2ab1987a191d",
+    "6f697026-bfbd-4298-b2e4-5cb12a44d0d8",
+    "a27320d7-2a5f-4999-aecb-8ea6a634cfc8",
+    "d0ff5b5d-c17d-4830-b052-f1454c7bfb57",
+    "589f2823-5c6c-48f1-8b5f-1d18e9d8d903",
+    "2902a9c7-b5d7-4a55-84c2-4a59e2a1bc90",
+    "bd762290-716d-4419-88a7-d7d49253856e",
+    "1d126c27-5919-4af0-9c27-75ebff52f21c",
+    "3cc8ec79-5a72-46a3-8e3e-c7d27dda6289",
+    "c69c21a6-d237-4b37-9d46-ec8eb64dcea6",
+    "fe0835d0-556a-4596-b6ee-3830003ea8a2",
+    "5e47f966-c663-4c6d-b492-10ac19828c26",
+    "6daafa6d-d0ff-4dc2-88c1-45537fd7f6ed",
+    "58327602-f7aa-48b4-9365-411706c207d8"
+   ],
+   "ligacoes": [
+    {
+     "net": "VBUS",
+     "de": [
+      53.11,
+      6.42
+     ],
+     "ate": [
+      54.4,
+      6.22
+     ],
+     "comprimento_mm": 0.71,
+     "larguras_mm": [
+      0.5,
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      60.3,
+      5.46
+     ],
+     "ate": [
+      61.25,
+      7.56
+     ],
+     "comprimento_mm": 1.16,
+     "larguras_mm": [
+      0.3,
+      0.5,
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      56.2,
+      3.55
+     ],
+     "ate": [
+      54.4,
+      6.22
+     ],
+     "comprimento_mm": 8.54,
+     "larguras_mm": [
+      0.5,
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      17.76,
+      12.25
+     ],
+     "ate": [
+      15.58,
+      15.5
+     ],
+     "comprimento_mm": 3.5,
+     "larguras_mm": [
+      0.5,
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      60.3,
+      5.46
+     ],
+     "ate": [
+      56.2,
+      3.55
+     ],
+     "comprimento_mm": 11.17,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 1,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      22.22,
+      10.75
+     ],
+     "ate": [
+      17.76,
+      12.25
+     ],
+     "comprimento_mm": 4.9,
+     "larguras_mm": [
+      0.15,
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 2
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      8.74,
+      10.55
+     ],
+     "ate": [
+      8.74,
+      15.45
+     ],
+     "comprimento_mm": 5.81,
+     "larguras_mm": [
+      0.2,
+      0.3,
+      0.5,
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      8.74,
+      15.45
+     ],
+     "ate": [
+      15.58,
+      15.5
+     ],
+     "comprimento_mm": 8.39,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      50.85,
+      5.25
+     ],
+     "ate": [
+      22.22,
+      10.75
+     ],
+     "comprimento_mm": 35.16,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "GND",
+     "de": [
+      51.52,
+      5.03
+     ],
+     "ate": [
+      51.31,
+      5.07
+     ],
+     "comprimento_mm": 0.49,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    }
+   ],
+   "fora": [
+    {
+     "net": "VBUS",
+     "pinos": "R205.1 - R206.1",
+     "de": [
+      53.11,
+      6.42
+     ],
+     "ate": [
+      54.22,
+      9.39
+     ],
+     "motivo": "sem caminho (janela 33x23 mm, passo 0.05)"
+    },
+    {
+     "net": "VBUS",
+     "pinos": "Q201.2 - R206.1",
+     "de": [
+      52.6,
+      6.9
+     ],
+     "ate": [
+      54.22,
+      9.39
+     ],
+     "motivo": "sem caminho (janela 34x23 mm, passo 0.05)"
+    },
+    {
+     "net": "VBUS",
+     "pinos": "C201.1 - R206.1",
+     "de": [
+      54.35,
+      9.0
+     ],
+     "ate": [
+      54.22,
+      9.39
+     ],
+     "motivo": "sem caminho (janela 32x23 mm, passo 0.05)"
+    }
+   ],
+   "toco_apagado": null,
+   "gravacao": {
+    "dropped": 56,
+    "zones_refilled": 4,
+    "new": 58,
+    "blocks_identical": 3838
+   },
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 6,
+     "VBUS": 1,
+     "+3V3": 18,
+     "VSYS": 3,
+     "I2C_SDA": 1,
+     "I2C_SCL": 1,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    }
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "+3V3": 18,
+     "VSYS": 3,
+     "I2C_SDA": 1,
+     "I2C_SCL": 1,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    },
+    "paridade": 0
+   },
+   "vias_extra_ilhas": 2,
+   "afinamentos_entrada_pino": [
+    {
+     "rede": "VBUS",
+     "x": 17.08,
+     "y": 12.25,
+     "largura": 0.5,
+     "camada": "F.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.41,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.96,
+     "y": 6.05,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 52.6,
+     "y": 6.9,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.71,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    }
+   ]
+  },
+  "3": {
+   "txt": "GND do codec, I2C_SDA, I2C_SCL e +3V3 junto do J101 e do codec",
+   "uuids": [
+    "e562aff2-c7ce-42de-9564-e9c94790fc3b",
+    "ff07bb8a-7934-44bf-a2a1-a61e8e8ae482",
+    "77a08bf2-05cf-4cb4-a8ec-a5377d395e83",
+    "f6a90f82-b474-454b-a358-d0660d5fa2a5",
+    "b37b7dbe-d737-4616-b22f-6164336dc308",
+    "311be2f3-8b8d-4da1-b725-08bae1f2f749",
+    "26297006-99a7-4e80-9e13-7d12acbdc1f0",
+    "5d127986-b383-4f85-bb05-9da8ce4efe13",
+    "3ee410f4-869c-489c-a57f-ad9b0958c66f",
+    "ff08ef97-ee75-44bb-9bfa-46f8577e4595",
+    "adda5604-5c4b-461e-b925-f6b07a374cf3",
+    "bef32212-ea7f-42ea-9ed6-97b053b4aed8",
+    "9bf4ad76-7bbc-4a1e-b3a3-8467203002f1",
+    "29aefa23-c435-4b2f-8bd6-553bc922d948",
+    "4b5c4a18-3f94-4ed4-a2f9-57c1d0828df0",
+    "1090f143-e2a0-4356-aaca-4ef4d42bd9e9",
+    "df1f55d3-eff6-43b8-bfa4-08fbdf6ea152",
+    "c2141ecf-60ca-41dc-a7ef-c4ceee847a73",
+    "65845e18-0f35-46db-ba74-37e904681678",
+    "6d922649-e30a-40b2-aa4d-74e324ff3c58",
+    "9e003263-e4fe-4f41-be76-6f994c4d93fc",
+    "29b0df05-f91c-4d04-b582-06e70ef13dd7",
+    "385c20c3-882d-4c1f-8914-a5d221654f15",
+    "9f133770-4f3a-463f-a1bc-1c7fe2a670a4",
+    "66f247c8-49a8-4e9b-b468-1917b2a38bcb",
+    "18b0ef78-f401-44c4-8ad7-3371ff2936a6",
+    "40b4ba5e-19ca-4ef2-a637-6d273646aee9",
+    "5ad73a25-50d2-4cfd-90c9-fe8bcfb47b13",
+    "38340fae-024f-476f-945d-8de8afaeedb2"
+   ],
+   "ligacoes": [
+    {
+     "net": "I2C_SDA",
+     "de": [
+      31.69,
+      22.26
+     ],
+     "ate": [
+      24.72,
+      15.42
+     ],
+     "comprimento_mm": 12.6,
+     "larguras_mm": [
+      0.15,
+      0.2
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "I2C_SCL",
+     "de": [
+      31.58,
+      19.51
+     ],
+     "ate": [
+      29.78,
+      12.0
+     ],
+     "comprimento_mm": 9.8,
+     "larguras_mm": [
+      0.2
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      31.13,
+      6.16
+     ],
+     "ate": [
+      31.27,
+      6.12
+     ],
+     "comprimento_mm": 0.78,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      68.08,
+      8.0
+     ],
+     "ate": [
+      68.46,
+      8.46
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      31.6,
+      24.33
+     ],
+     "ate": [
+      31.69,
+      23.28
+     ],
+     "comprimento_mm": 0.64,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      31.27,
+      62.66
+     ],
+     "ate": [
+      30.4,
+      64.69
+     ],
+     "comprimento_mm": 1.06,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 2,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    }
+   ],
+   "fora": [
+    {
+     "net": "GND",
+     "pinos": "U301.21",
+     "em": [
+      24.03,
+      35.53
+     ],
+     "motivo": "sem caminho (janela 33x32 mm, passo 0.10)"
+    },
+    {
+     "net": "GND",
+     "pinos": "C304.2",
+     "em": [
+      21.22,
+      35.89
+     ],
+     "motivo": "sem caminho (janela 33x32 mm, passo 0.10)"
+    }
+   ],
+   "toco_apagado": null,
+   "gravacao": {
+    "dropped": 29,
+    "zones_refilled": 4,
+    "new": 29,
+    "blocks_identical": 3896
+   },
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "+3V3": 14,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    }
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "+3V3": 14,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    },
+    "paridade": 0
+   },
+   "vias_extra_ilhas": 0,
+   "protecoes": [
+    {
+     "rede": "GND",
+     "pino": "J101.36 [GND]",
+     "caixa": [
+      27.5,
+      15.850000000000001,
+      32.05,
+      19.15
+     ],
+     "camadas": [
+      2
+     ]
+    }
+   ],
+   "afinamentos_entrada_pino": [
+    {
+     "rede": "VBUS",
+     "x": 17.08,
+     "y": 12.25,
+     "largura": 0.5,
+     "camada": "F.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.41,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.96,
+     "y": 6.05,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 52.6,
+     "y": 6.9,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.71,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    }
+   ]
+  },
+  "4": {
+   "txt": "bolsoes de +3V3 no teclado",
+   "uuids": [
+    "5a52c7c8-f47a-4660-9c3f-cce7844cec59",
+    "4e940f81-2aa4-481d-a9d6-4328fa786768",
+    "edc48c5d-39aa-496c-a1f9-82c4d01231b4",
+    "0fe3cdca-8090-45b2-b90b-6865f7404666",
+    "dbafe85e-5876-48f8-99ad-a452437a6c80",
+    "8b9cc955-4f2d-41d2-bb89-44579d76ad88",
+    "eb394b15-6b86-4bff-a420-a6dd5fd9515c",
+    "4e1268fd-5ca8-4e18-a584-478b6817cd0c",
+    "73c8ca23-8c7b-485c-b5fd-c421db30a23b",
+    "4b38aa34-d1ce-4439-bed7-34391020e93a",
+    "3dffe499-2385-45ba-b5b2-40d818bfb767",
+    "bd30557c-09f5-46da-8bd4-dbc8a7965de5",
+    "faf49056-e761-4d00-970a-5d01079f93a5",
+    "30d8ad44-4234-449d-9cf0-438bdc2f0942",
+    "80fc23e8-7d63-4aed-ac39-5524a2dae144",
+    "97f80d71-e48a-4080-82f2-69da21b2f85e",
+    "afb0a5fd-8c52-49a8-8818-7ffd978dfa23",
+    "543d1533-fb62-4120-b920-b87631cd6eb7",
+    "d02de734-7b8c-42a5-8789-fd718e5d538e",
+    "ecba25f5-2d89-4d2a-9c0d-5183ccbbd4c8",
+    "e7e42e19-ff17-4b06-b4c5-e23bceaaf6fb",
+    "952059b5-f4ab-4023-87f4-d31a797458c0",
+    "1d576204-fc40-45d3-a7bb-e98ef72f2339",
+    "84855810-d8a5-4f6e-ba4f-ec27b89edb3f",
+    "3b22724c-bcca-4ac1-8b41-8297c5663266",
+    "96dd247a-a6ea-4452-88ca-e6c9a1fc5787",
+    "0e3ae6c0-eecb-47f3-8a08-972534cf11f1",
+    "6ae4eb11-42f6-48f9-809d-0fd988771d01",
+    "eb2763cf-b3df-44b2-a325-2cd8e37eb9c6",
+    "caebe518-a8e3-4542-ab4d-6eef62ef9106",
+    "4a7d2f65-67aa-4a24-88cb-4c87aeae64bd",
+    "1d28bc32-40a4-4171-b2b1-d808e1d3ce9d"
+   ],
+   "ligacoes": [
+    {
+     "net": "+3V3",
+     "de": [
+      126.4,
+      22.89
+     ],
+     "ate": [
+      126.45,
+      22.97
+     ],
+     "comprimento_mm": 1.51,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      181.68,
+      24.87
+     ],
+     "ate": [
+      181.95,
+      25.2
+     ],
+     "comprimento_mm": 1.6,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      144.95,
+      55.01
+     ],
+     "ate": [
+      145.39,
+      54.93
+     ],
+     "comprimento_mm": 0.5,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      144.95,
+      57.24
+     ],
+     "ate": [
+      144.46,
+      57.27
+     ],
+     "comprimento_mm": 0.05,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "In2.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      163.45,
+      25.2
+     ],
+     "ate": [
+      163.95,
+      25.12
+     ],
+     "comprimento_mm": 0.85,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      98.7,
+      41.22
+     ],
+     "ate": [
+      98.18,
+      41.02
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      154.2,
+      73.26
+     ],
+     "ate": [
+      153.66,
+      72.92
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      163.35,
+      23.43
+     ],
+     "ate": [
+      162.7,
+      23.09
+     ],
+     "comprimento_mm": 1.73,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      173.27,
+      8.55
+     ],
+     "ate": [
+      172.92,
+      9.2
+     ],
+     "comprimento_mm": 1.06,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 2,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      218.95,
+      57.24
+     ],
+     "ate": [
+      218.25,
+      57.74
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      117.2,
+      41.22
+     ],
+     "ate": [
+      117.81,
+      42.67
+     ],
+     "comprimento_mm": 2.66,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      172.7,
+      73.26
+     ],
+     "ate": [
+      174.0,
+      74.43
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      200.45,
+      25.2
+     ],
+     "ate": [
+      198.6,
+      25.69
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      115.29,
+      14.75
+     ],
+     "ate": [
+      109.97,
+      19.69
+     ],
+     "comprimento_mm": 0.35,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    }
+   ],
+   "fora": [],
+   "toco_apagado": null,
+   "gravacao": {
+    "dropped": 0,
+    "zones_refilled": 4,
+    "new": 32,
+    "blocks_identical": 3925
+   },
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "+3V3": 14,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    }
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    },
+    "paridade": 0
+   },
+   "vias_extra_ilhas": 0,
+   "protecoes": [],
+   "afinamentos_entrada_pino": [
+    {
+     "rede": "VBUS",
+     "x": 17.08,
+     "y": 12.25,
+     "largura": 0.5,
+     "camada": "F.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.41,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.96,
+     "y": 6.05,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 52.6,
+     "y": 6.9,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.71,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    }
+   ]
+  },
+  "5": {
+   "txt": "OUT_K03",
+   "uuids": [
+    "5db0cfd7-074b-4f96-8c4d-678a97da7f91",
+    "b7a6b62e-00f7-4041-a26a-c453aede378c",
+    "564ba46f-9370-449a-82c0-ca611ff04768",
+    "28bddeba-e784-404e-a759-c5fcfe9fc4c1",
+    "baf2ff78-5f03-4104-b292-1215f9e67983",
+    "777bc697-4073-49a2-9021-a7cd81d8c47e",
+    "c0976cad-9d56-48ef-a4cd-30f127cca3b7"
+   ],
+   "ligacoes": [
+    {
+     "net": "OUT_K03",
+     "de": [
+      135.2,
+      73.26
+     ],
+     "ate": [
+      118.98,
+      8.45
+     ],
+     "comprimento_mm": 71.37,
+     "larguras_mm": [
+      0.2
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    }
+   ],
+   "fora": [],
+   "toco_apagado": "3b288af8-70c2-4d06-b54e-e95343b1dec8",
+   "gravacao": {
+    "dropped": 8,
+    "zones_refilled": 4,
+    "new": 7,
+    "blocks_identical": 3956
+   },
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    }
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 18
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1
+    },
+    "paridade": 0
+   },
+   "vias_extra_ilhas": 0,
+   "protecoes": [],
+   "afinamentos_entrada_pino": [
+    {
+     "rede": "VBUS",
+     "x": 17.08,
+     "y": 12.25,
+     "largura": 0.5,
+     "camada": "F.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.41,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.96,
+     "y": 6.05,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 52.6,
+     "y": 6.9,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.71,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    }
+   ]
+  }
+ }
+}
