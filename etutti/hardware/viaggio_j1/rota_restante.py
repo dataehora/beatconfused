@@ -61,6 +61,7 @@ VIA_D, VIA_DRILL = 0.5, 0.3
 EDGE_CLR, HOLE_CLR, HOLE2HOLE = 0.3, 0.2, 0.25
 SLACK = 0.01
 THIN_REFS = ("J201", "U202", "U204", "J202", "U501", "J101")
+PROTECT = []
 STUB_OUT_K03 = ("OUT_K03", 118.975, 8.4451, 118.6494, 8.7707)
 
 LOTS = {
@@ -222,6 +223,15 @@ def hole_geom(it):
     return (TOMM(a.x), TOMM(a.y)), (TOMM(b_.x), TOMM(b_.y)), TOMM(h.GetWidth()) / 2
 
 
+def big_gnd_pad(it):
+    """A GND exposed pad (both sides >= 1.2 mm): vias inside it are the normal way down."""
+    if it.GetNetname() != "GND":
+        return False
+    L = pcbnew.B_Cu if it.IsOnLayer(pcbnew.B_Cu) else pcbnew.F_Cu
+    sz = it.GetSize(L)
+    return min(TOMM(sz.x), TOMM(sz.y)) >= 1.2
+
+
 def build_masks(ctx, w, net, widths, margin):
     """Blocked masks for the net being routed: per routing layer and width; plus via mask."""
     my_clr = clr_of(net)
@@ -244,8 +254,8 @@ def build_masks(ctx, w, net, widths, margin):
                     for wd in widths:
                         w.polyset(drs[(li, wd)], inflated(it, L, c + wd / 2 + SLACK))
                 w.polyset(vdr, inflated(it, L, c + VIA_D / 2 + SLACK))
-        elif cls == "PAD" and not it.HasHole():
-            # no via in an SMD pad of our own net
+        elif cls == "PAD" and not it.HasHole() and not big_gnd_pad(it):
+            # no via in an SMD pad of our own net (except a GND exposed pad)
             for L in item_layers(it):
                 w.polyset(vdr, inflated(it, L, 0.05 + VIA_D / 2))
         if has_hole(it):
@@ -255,6 +265,17 @@ def build_masks(ctx, w, net, widths, margin):
                 for li in range(3):
                     for wd in widths:
                         w.stadium(drs[(li, wd)], a, b_, r + HOLE_CLR + margin + wd / 2 + SLACK)
+    # copper kept round pads a new track had cut loose (lot retry)
+    for pr in PROTECT:
+        if pr["rede"] == net:
+            continue
+        x0, y0, x1, y1 = pr["caixa"]
+        box = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+        for li in range(3):
+            if RL[li] in pr["camadas"]:
+                for wd in widths:
+                    w.poly(drs[(li, wd)], box)
+        w.poly(vdr, box)
     # rule areas (M2 rings): no tracks, no vias
     def rule_area(d, o, r):
         w.polyset(d, o)
@@ -624,7 +645,7 @@ class Checker:
         for L in ALLCU:
             for shape, it in self.query(L, bb):
                 if it.GetNetname() == net and it.GetNetCode() != 0:
-                    if it.GetClass() == "PAD" and not it.HasHole() and shape.Collide(circ, 0):
+                    if it.GetClass() == "PAD" and not it.HasHole() and not big_gnd_pad(it)                             and shape.Collide(circ, 0):
                         return False
                     continue
                 c = max(clr_of(net), clr_of(it.GetNetname())) + 0.005
@@ -1138,27 +1159,66 @@ def main():
     ctx = Ctx(b)
     chk = Checker(ctx)
     start = {n: [ident(g) for g in clusters(b, n)] for n in ("GND", "+3V3")}
-    made, log, fails = [], [], []
-    for net in spec["nets"]:
-        join_net(ctx, chk, net, None, made, log, fails)
-    if spec["v33"]:
-        join_net(ctx, chk, "+3V3", spec["v33"], made, log, fails)
-    if spec["gnd"]:
-        join_net(ctx, chk, "GND", spec["gnd"], made, log, fails, gnd_mode=True)
+    for tentativa_lote in range(4):
+        made, log, fails = [], [], []
+        for net in spec["nets"]:
+            join_net(ctx, chk, net, None, made, log, fails)
+        if spec["v33"]:
+            join_net(ctx, chk, "+3V3", spec["v33"], made, log, fails)
+        if spec["gnd"]:
+            join_net(ctx, chk, "GND", spec["gnd"], made, log, fails, gnd_mode=True)
 
-    # refill; GND / +3V3 pieces cut loose by the new tracks are part of the lot
-    pcbnew.ZONE_FILLER(b).Fill(b.Zones())
-    extra = 0
-    for _k in range(3):
-        before = len(made)
-        ctx.refresh()
-        chk = Checker(ctx)
-        join_net(ctx, chk, "GND", None, made, log, fails, gnd_mode=True, start=start["GND"])
-        join_net(ctx, chk, "+3V3", None, made, log, fails, start=start["+3V3"])
-        if len(made) == before:
-            break
-        extra += len(made) - before
+        # refill; GND / +3V3 pieces cut loose by the new tracks are part of the lot
         pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+        extra = 0
+        for _k in range(3):
+            before = len(made)
+            ctx.refresh()
+            chk = Checker(ctx)
+            join_net(ctx, chk, "GND", None, made, log, fails, gnd_mode=True, start=start["GND"])
+            join_net(ctx, chk, "+3V3", None, made, log, fails, start=start["+3V3"])
+            if len(made) == before:
+                break
+            extra += len(made) - before
+            pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+        # pieces still cut loose: protect the copper round their pads and do the lot again
+        cut = []
+        for n in ("GND", "+3V3"):
+            gs = clusters(b, n)
+            ids = [ident(g) for g in gs]
+            for k, g in enumerate(gs):
+                if n == "GND" and has_in1(b, g):
+                    continue
+                if not is_split(g, start[n]):
+                    continue
+                if n == "+3V3" and not any(S & ids[k] and S & ids[j] for S in start[n]
+                                           for j in range(len(gs)) if j != k):
+                    continue
+                cut.append((n, g))
+        if not cut:
+            break
+        r = 1.5 + 0.75 * tentativa_lote
+        for n, g in cut:
+            for it in g["items"]:
+                if it.GetClass() != "PAD":
+                    continue
+                x0, y0, x1, y1 = bbox_mm(it)
+                PROTECT.append({"rede": n, "pino": describe(it), "caixa": [x0 - r, y0 - r, x1 + r, y1 + r],
+                                "camadas": [L for L in item_layers(it) if L in RL]})
+        print("lote %d: %d pedaco(s) soltos, de novo com protecao %.2f mm: %s"
+              % (lot, len(cut), r, [label(g) for _n, g in cut]))
+        if tentativa_lote == 3:
+            for n, g in cut:
+                c = cluster_points(b, g).mean(0)
+                fails.append({"net": n, "pinos": label(g), "em": [r2(c[0]), r2(c[1])],
+                              "motivo": "pedaco de %s cortado pelas trilhas novas e nao religado" % n})
+            break
+        gone2 = [t for t in b.GetTracks() if t.m_Uuid.AsString() in set(made)]
+        for t in gone2:
+            b.Remove(t)
+        pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+        ctx = Ctx(b)
+        chk = Checker(ctx)
 
     info = save(b, original, drop, set(made))
     d = drc("lote%d" % lot)
@@ -1167,7 +1227,7 @@ def main():
            "toco_apagado": stub_removed, "gravacao": info,
            "drc_antes": {"violacoes": v0, "nao_roteadas": u0},
            "drc_depois": {"violacoes": v1, "nao_roteadas": u1, "paridade": p1},
-           "vias_extra_ilhas": extra}
+           "vias_extra_ilhas": extra, "protecoes": PROTECT}
     m["lotes"][str(lot)] = rec
     json.dump(m, open(MANIFEST, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print(json.dumps({k: rec[k] for k in ("gravacao", "drc_antes", "drc_depois")}, indent=1))
