@@ -1147,6 +1147,389 @@
      "camada": "B.Cu"
     }
    ]
+  },
+  "4": {
+   "txt": "bolsoes de +3V3 no teclado",
+   "uuids": [
+    "5a52c7c8-f47a-4660-9c3f-cce7844cec59",
+    "4e940f81-2aa4-481d-a9d6-4328fa786768",
+    "edc48c5d-39aa-496c-a1f9-82c4d01231b4",
+    "0fe3cdca-8090-45b2-b90b-6865f7404666",
+    "dbafe85e-5876-48f8-99ad-a452437a6c80",
+    "8b9cc955-4f2d-41d2-bb89-44579d76ad88",
+    "eb394b15-6b86-4bff-a420-a6dd5fd9515c",
+    "4e1268fd-5ca8-4e18-a584-478b6817cd0c",
+    "73c8ca23-8c7b-485c-b5fd-c421db30a23b",
+    "4b38aa34-d1ce-4439-bed7-34391020e93a",
+    "3dffe499-2385-45ba-b5b2-40d818bfb767",
+    "bd30557c-09f5-46da-8bd4-dbc8a7965de5",
+    "faf49056-e761-4d00-970a-5d01079f93a5",
+    "30d8ad44-4234-449d-9cf0-438bdc2f0942",
+    "80fc23e8-7d63-4aed-ac39-5524a2dae144",
+    "97f80d71-e48a-4080-82f2-69da21b2f85e",
+    "afb0a5fd-8c52-49a8-8818-7ffd978dfa23",
+    "543d1533-fb62-4120-b920-b87631cd6eb7",
+    "d02de734-7b8c-42a5-8789-fd718e5d538e",
+    "ecba25f5-2d89-4d2a-9c0d-5183ccbbd4c8",
+    "e7e42e19-ff17-4b06-b4c5-e23bceaaf6fb",
+    "952059b5-f4ab-4023-87f4-d31a797458c0",
+    "1d576204-fc40-45d3-a7bb-e98ef72f2339",
+    "84855810-d8a5-4f6e-ba4f-ec27b89edb3f",
+    "3b22724c-bcca-4ac1-8b41-8297c5663266",
+    "96dd247a-a6ea-4452-88ca-e6c9a1fc5787",
+    "0e3ae6c0-eecb-47f3-8a08-972534cf11f1",
+    "6ae4eb11-42f6-48f9-809d-0fd988771d01",
+    "eb2763cf-b3df-44b2-a325-2cd8e37eb9c6",
+    "caebe518-a8e3-4542-ab4d-6eef62ef9106",
+    "4a7d2f65-67aa-4a24-88cb-4c87aeae64bd",
+    "1d28bc32-40a4-4171-b2b1-d808e1d3ce9d"
+   ],
+   "ligacoes": [
+    {
+     "net": "+3V3",
+     "de": [
+      126.4,
+      22.89
+     ],
+     "ate": [
+      126.45,
+      22.97
+     ],
+     "comprimento_mm": 1.51,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      181.68,
+      24.87
+     ],
+     "ate": [
+      181.95,
+      25.2
+     ],
+     "comprimento_mm": 1.6,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      144.95,
+      55.01
+     ],
+     "ate": [
+      145.39,
+      54.93
+     ],
+     "comprimento_mm": 0.5,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      144.95,
+      57.24
+     ],
+     "ate": [
+      144.46,
+      57.27
+     ],
+     "comprimento_mm": 0.05,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "In2.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      163.45,
+      25.2
+     ],
+     "ate": [
+      163.95,
+      25.12
+     ],
+     "comprimento_mm": 0.85,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      98.7,
+      41.22
+     ],
+     "ate": [
+      98.18,
+      41.02
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      154.2,
+      73.26
+     ],
+     "ate": [
+      153.66,
+      72.92
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      163.35,
+      23.43
+     ],
+     "ate": [
+      162.7,
+      23.09
+     ],
+     "comprimento_mm": 1.73,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      173.27,
+      8.55
+     ],
+     "ate": [
+      172.92,
+      9.2
+     ],
+     "comprimento_mm": 1.06,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 2,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      218.95,
+      57.24
+     ],
+     "ate": [
+      218.25,
+      57.74
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      117.2,
+      41.22
+     ],
+     "ate": [
+      117.81,
+      42.67
+     ],
+     "comprimento_mm": 2.66,
+     "larguras_mm": [
+      0.2,
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      172.7,
+      73.26
+     ],
+     "ate": [
+      174.0,
+      74.43
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      200.45,
+      25.2
+     ],
+     "ate": [
+      198.6,
+      25.69
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    },
+    {
+     "net": "+3V3",
+     "de": [
+      115.29,
+      14.75
+     ],
+     "ate": [
+      109.97,
+      19.69
+     ],
+     "comprimento_mm": 0.35,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    }
+   ],
+   "fora": [],
+   "toco_apagado": null,
+   "gravacao": {
+    "dropped": 0,
+    "zones_refilled": 4,
+    "new": 32,
+    "blocks_identical": 3925
+   },
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "+3V3": 14,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    }
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "VSYS": 3,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    },
+    "paridade": 0
+   },
+   "vias_extra_ilhas": 0,
+   "protecoes": [],
+   "afinamentos_entrada_pino": [
+    {
+     "rede": "VBUS",
+     "x": 17.08,
+     "y": 12.25,
+     "largura": 0.5,
+     "camada": "F.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.41,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.96,
+     "y": 6.05,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 52.6,
+     "y": 6.9,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.71,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    }
+   ]
   }
  }
 }
