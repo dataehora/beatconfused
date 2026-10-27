@@ -1132,6 +1132,9 @@ def main():
         b.Remove(t)
     del tracks
 
+    if gone:
+        # a re-run: the zones in the file were filled round what is now taken out
+        pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     ctx = Ctx(b)
     chk = Checker(ctx)
     start = {n: [ident(g) for g in clusters(b, n)] for n in ("GND", "+3V3")}
@@ -1172,8 +1175,32 @@ def main():
         print("ok  ", x)
     for x in fails:
         print("FORA", x)
+    # track_width on our own new pieces: only Corrente necks (>= 0.3) at a pin entry, which
+    # the .kicad_dru only allows inside six courtyards; they are listed, not hidden
+    mine = {u for L_ in m["lotes"].values() for u in L_.get("uuids", [])}
+    necks, tw_j = [], 0
+    for x in d.get("violations", []):
+        if x["type"] != "track_width":
+            continue
+        it = x["items"][0]
+        if it.get("uuid") in mine:
+            mw = re.search(r"actual ([0-9.]+) mm", x["description"])
+            necks.append({"rede": net_of(it["description"]), "x": r2(it["pos"]["x"]), "y": r2(it["pos"]["y"]),
+                          "largura": float(mw.group(1)) if mw else None,
+                          "camada": it["description"].split(" on ")[1].split(",")[0]})
+        else:
+            tw_j += 1
+    rec["afinamentos_entrada_pino"] = necks
+    json.dump(m, open(MANIFEST, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    for x in necks:
+        print("neck", x)
+    v1 = dict(v1)
+    v1["track_width"] = tw_j
+    bad_neck = [x for x in necks if not x["largura"] or x["largura"] < 0.3 or klass(x["rede"]) != "Corrente"]
     allowed = {"track_width": 13, "track_dangling": 1 if lot < 5 else 0}
     bad = {k: n for k, n in v1.items() if n > allowed.get(k, 0)}
+    if bad_neck:
+        bad["track_width_novo"] = len(bad_neck)
     if bad:
         print("NEW DRC VIOLATIONS:", bad)
         sys.exit(1)

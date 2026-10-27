@@ -478,6 +478,407 @@
     "paridade": 0
    },
    "vias_extra_ilhas": 1
+  },
+  "2": {
+   "txt": "VBUS",
+   "uuids": [
+    "4cdcf202-e7a5-492d-bbc4-242ee503b26f",
+    "cf684626-6d51-443a-aa09-bfeb18a63765",
+    "fec4626d-e5af-4ac3-bdd6-92af0d1a8afd",
+    "727a1b3a-bfb1-4c83-a321-e84e8e618dea",
+    "2ddaee41-465a-4a82-b381-af68a13a816d",
+    "06870c72-9037-4487-8582-24e3a2977a95",
+    "e0e1a0ae-1e9c-4423-b8c5-edb6bde9f655",
+    "dd40dce6-3da7-4037-adeb-61d77265b49a",
+    "3915d1d7-b459-42d1-a2fd-6bd64e4f6a0d",
+    "fb71a6de-cba8-427f-9860-c47c06c8f658",
+    "66fff370-f024-4192-bd16-279e18818622",
+    "1ef99887-62bd-446b-b838-666c2f5a95bb",
+    "6d94973b-4dcd-4072-bb23-b10259bea2aa",
+    "41094728-2673-40a0-b678-e812eabeb866",
+    "b40a8561-9fc9-4223-884e-6b0c0c49be44",
+    "bbeb69f5-ce38-4802-8b4a-9281741c58a6",
+    "627c1cc2-bc80-427e-956d-e6c47a42bfdb",
+    "b0c28b60-8810-43af-a7b4-d50d62097c0f",
+    "9e3439ee-2481-4529-9efc-e4467b622035",
+    "be30ff15-e7d1-44d4-8b0d-15145d87d510",
+    "3fd449bf-fcec-495c-a4ab-12dea1ab8149",
+    "6c956043-f11d-42d2-9e08-108c38e96cf0",
+    "aff1edcf-3cf4-4aab-a9f4-6ea39d62f786",
+    "a0c0391c-787e-40c8-9c50-27d41747ee10",
+    "f1346c42-4da9-461a-bdc5-5f430d526fdd",
+    "72192bde-cd1c-4880-9d90-f31b4c40b06b",
+    "8c39d4bb-818a-4679-bdf8-8723333a6c71",
+    "ef49dfd2-7531-4d52-a77b-d3dd46bd3bb9",
+    "ab53e827-45d3-4c52-a504-49af2da260e0",
+    "562c2553-12d8-485a-b53f-e62511a92ad5",
+    "c57e7aa3-33de-4488-9892-3d7956427123",
+    "35110a96-214f-4dec-916a-21f252bfbacc",
+    "0a656e7d-5bde-4a94-8fe5-0d765471f221",
+    "d4812d96-b5e5-427e-8812-5f71032fdc38",
+    "97d6c2c5-179b-47b0-b81a-6fb39303821a",
+    "9486264d-10bc-4a80-ac7e-70f230d22510",
+    "3baf508d-a37a-4a62-b514-1e405309f876",
+    "2219f3af-bbcb-4685-85fc-8faee0729590",
+    "080a6f39-597a-4c14-b5c0-f40f39a87036",
+    "c8dca373-10d7-4adf-b25b-e1f3ac40b37a",
+    "c0bc30b8-ffa1-4b85-aecb-3bba26fbfc82",
+    "7973c3d7-2907-4289-97c8-b4e2423abadb",
+    "9121760e-ae6f-4e7e-ab89-f6de33a42b30",
+    "669878a8-a613-42cb-b031-7e9d3b9c31e5",
+    "dafc8417-cd57-4733-9688-2ab1987a191d",
+    "6f697026-bfbd-4298-b2e4-5cb12a44d0d8",
+    "a27320d7-2a5f-4999-aecb-8ea6a634cfc8",
+    "d0ff5b5d-c17d-4830-b052-f1454c7bfb57",
+    "589f2823-5c6c-48f1-8b5f-1d18e9d8d903",
+    "2902a9c7-b5d7-4a55-84c2-4a59e2a1bc90",
+    "bd762290-716d-4419-88a7-d7d49253856e",
+    "1d126c27-5919-4af0-9c27-75ebff52f21c",
+    "3cc8ec79-5a72-46a3-8e3e-c7d27dda6289",
+    "c69c21a6-d237-4b37-9d46-ec8eb64dcea6",
+    "fe0835d0-556a-4596-b6ee-3830003ea8a2",
+    "5e47f966-c663-4c6d-b492-10ac19828c26",
+    "6daafa6d-d0ff-4dc2-88c1-45537fd7f6ed",
+    "58327602-f7aa-48b4-9365-411706c207d8"
+   ],
+   "ligacoes": [
+    {
+     "net": "VBUS",
+     "de": [
+      53.11,
+      6.42
+     ],
+     "ate": [
+      54.4,
+      6.22
+     ],
+     "comprimento_mm": 0.71,
+     "larguras_mm": [
+      0.5,
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      60.3,
+      5.46
+     ],
+     "ate": [
+      61.25,
+      7.56
+     ],
+     "comprimento_mm": 1.16,
+     "larguras_mm": [
+      0.3,
+      0.5,
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      56.2,
+      3.55
+     ],
+     "ate": [
+      54.4,
+      6.22
+     ],
+     "comprimento_mm": 8.54,
+     "larguras_mm": [
+      0.5,
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      17.76,
+      12.25
+     ],
+     "ate": [
+      15.58,
+      15.5
+     ],
+     "comprimento_mm": 3.5,
+     "larguras_mm": [
+      0.5,
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      60.3,
+      5.46
+     ],
+     "ate": [
+      56.2,
+      3.55
+     ],
+     "comprimento_mm": 11.17,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 1,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      22.22,
+      10.75
+     ],
+     "ate": [
+      17.76,
+      12.25
+     ],
+     "comprimento_mm": 4.9,
+     "larguras_mm": [
+      0.15,
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 2
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      8.74,
+      10.55
+     ],
+     "ate": [
+      8.74,
+      15.45
+     ],
+     "comprimento_mm": 5.81,
+     "larguras_mm": [
+      0.2,
+      0.3,
+      0.5,
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      8.74,
+      15.45
+     ],
+     "ate": [
+      15.58,
+      15.5
+     ],
+     "comprimento_mm": 8.39,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      50.85,
+      5.25
+     ],
+     "ate": [
+      22.22,
+      10.75
+     ],
+     "comprimento_mm": 35.16,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "GND",
+     "de": [
+      51.52,
+      5.03
+     ],
+     "ate": [
+      51.31,
+      5.07
+     ],
+     "comprimento_mm": 0.49,
+     "larguras_mm": [
+      0.3
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    }
+   ],
+   "fora": [
+    {
+     "net": "VBUS",
+     "pinos": "R205.1 - R206.1",
+     "de": [
+      53.11,
+      6.42
+     ],
+     "ate": [
+      54.22,
+      9.39
+     ],
+     "motivo": "sem caminho (janela 33x23 mm, passo 0.05)"
+    },
+    {
+     "net": "VBUS",
+     "pinos": "Q201.2 - R206.1",
+     "de": [
+      52.6,
+      6.9
+     ],
+     "ate": [
+      54.22,
+      9.39
+     ],
+     "motivo": "sem caminho (janela 34x23 mm, passo 0.05)"
+    },
+    {
+     "net": "VBUS",
+     "pinos": "C201.1 - R206.1",
+     "de": [
+      54.35,
+      9.0
+     ],
+     "ate": [
+      54.22,
+      9.39
+     ],
+     "motivo": "sem caminho (janela 32x23 mm, passo 0.05)"
+    }
+   ],
+   "toco_apagado": null,
+   "gravacao": {
+    "dropped": 56,
+    "zones_refilled": 4,
+    "new": 58,
+    "blocks_identical": 3838
+   },
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 6,
+     "VBUS": 1,
+     "+3V3": 18,
+     "VSYS": 3,
+     "I2C_SDA": 1,
+     "I2C_SCL": 1,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    }
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 18,
+     "track_dangling": 1
+    },
+    "nao_roteadas": {
+     "GND": 4,
+     "VBUS": 1,
+     "+3V3": 18,
+     "VSYS": 3,
+     "I2C_SDA": 1,
+     "I2C_SCL": 1,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "VBAT": 1,
+     "OUT_K03": 1
+    },
+    "paridade": 0
+   },
+   "vias_extra_ilhas": 2,
+   "afinamentos_entrada_pino": [
+    {
+     "rede": "VBUS",
+     "x": 17.08,
+     "y": 12.25,
+     "largura": 0.5,
+     "camada": "F.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.41,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.96,
+     "y": 6.05,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 52.6,
+     "y": 6.9,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    },
+    {
+     "rede": "VBUS",
+     "x": 53.71,
+     "y": 6.2,
+     "largura": 0.5,
+     "camada": "B.Cu"
+    }
+   ]
   }
  }
 }
