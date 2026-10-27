@@ -1,0 +1,26 @@
+(version 1)
+# eTutti Viaggio MicroMod -- custom rules (written by build_board.py, SPEC v2.3 step M2)
+# Every number carries its unit; no rule names the "Default" class.
+(rule "Vias 0,5 / furo 0,3 em todas as classes"
+    (condition "A.Type == 'via'")
+    (constraint via_diameter (min 0.5mm))
+    (constraint hole_size (min 0.3mm)))
+(rule "Sinais: minimo 0,15 (afinacao na entrada de pinos finos)"
+    (condition "A.Type == 'track' && A.NetClass != 'USB' && A.NetClass != 'Corrente'")
+    (constraint track_width (min 0.15mm) (opt 0.2mm)))
+(rule "USB 90 ohm: 0,24 / vao 0,15 em F.Cu sobre o GND do In1"
+    (condition "A.NetClass == 'USB' && A.Type == 'track' && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U201') && !A.intersectsCourtyard('J101')")
+    (constraint track_width (min 0.22mm) (opt 0.24mm) (max 0.26mm))
+    (constraint diff_pair_gap (min 0.14mm) (opt 0.15mm) (max 0.2mm)))
+(rule "USB: so em F.Cu fora dos patios (desce junto do J101)"
+    (condition "A.NetClass == 'USB' && A.Type == 'track' && A.Layer != 'F.Cu' && !A.intersectsCourtyard('J101')")
+    (constraint disallow track))
+(rule "Corrente: minimo 0,8 fora dos patios de E1, E3, E4, E6, A1 e J101"
+    (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101')")
+    (constraint track_width (min 0.8mm)))
+(rule "Corrente: afinacao na entrada dos pinos (patios)"
+    (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !(!A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101'))")
+    (constraint track_width (min 0.15mm)))
+(rule "Sob o cartao MicroMod: so pecas de ate 1,9 mm (campo Cabe_sob_cartao, de Altura_mm)"
+    (condition "A.Type == 'Footprint' && A.Layer == 'B.Cu' && A.intersectsArea('cartao_MicroMod') && A.Reference != 'J101' && A.Reference != 'H101'")
+    (constraint assertion "A.getField('Cabe_sob_cartao') == 'sim'"))
