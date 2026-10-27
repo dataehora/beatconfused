@@ -1309,7 +1309,9 @@ V33_U204 = ["aec31083-1f7b-4dc5-8cb3-358c01c0e2db", "c40a17e3-3c5d-466d-ab19-d53
             "2a252c93-d6cb-4677-aef6-5241a5231d1a", "a4c0fa06-0fe6-4cf7-b05e-f5c8077415d7",
             "8c10bf73-8c0d-467d-8760-620d9198f542", "ac807682-fab9-4950-a4e4-5ece2d947b93"]
 POCKETS = {
-    "R210.1": {"box": 3.0}, "U202.10": {"box": 3.0}, "U202.11": {"box": 3.0},
+    # U202.10/11 (charger OUT): in 6c the power tracks round it may be ripped too
+    "R210.1": {"box": 3.0}, "U202.10": {"box": 3.0, "box_6c": 5.0, "corrente_6c": True},
+    "U202.11": {"box": 3.0, "box_6c": 5.0, "corrente_6c": True},
     "C203.1": {"box": 3.0}, "R206.1": {"box": 3.0}, "R209.2": {"box": 3.0},
     "R211.2": {"box": 3.0}, "C304.2": {"box": 2.0, "layers": [pcbnew.In2_Cu]},
 }
@@ -1645,11 +1647,14 @@ def pocket_sel(ctx, net, gs, st):
     for lab in labs:
         P = POCKETS[lab]
         q = find_pad(ctx.b, lab).GetPosition()
-        qx, qy, r = TOMM(q.x), TOMM(q.y), P["box"]
+        late = st.sub == "6c"
+        qx, qy = TOMM(q.x), TOMM(q.y)
+        r = P.get("box_6c", P["box"]) if late else P["box"]
+        power = late and P.get("corrente_6c", False)
         for t in ctx.items:
-            if t.GetClass() != "PCB_TRACK":
+            if t.GetClass() != "PCB_TRACK" or t.GetNetname() == net:
                 continue
-            if t.GetNetname() == net or klass(t.GetNetname()) == "Corrente" or TOMM(t.GetWidth()) > 0.3:
+            if not power and (klass(t.GetNetname()) == "Corrente" or TOMM(t.GetWidth()) > 0.3):
                 continue
             if "layers" in P and t.GetLayer() not in P["layers"]:
                 continue
@@ -1960,6 +1965,7 @@ def main6(sub, m):
     chk = Checker(ctx)
     made, log, fails = [], [], []
     st = St(ctx, chk, made, log)
+    st.sub = sub
     ST = st
     start = {n: [ident(g) for g in clusters(b, n)] for n in ("GND", "+3V3")}
     if spec.get("group"):

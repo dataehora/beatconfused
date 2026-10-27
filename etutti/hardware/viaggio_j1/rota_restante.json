@@ -4005,6 +4005,126 @@
     },
     "paridade": 0
    }
+  },
+  "6c": {
+   "txt": "o que restou",
+   "uuids": [
+    "0bee0984-1c54-4b4a-a545-0e0deb822343"
+   ],
+   "ligacoes": [
+    {
+     "net": "GND",
+     "de": [
+      67.31,
+      19.26
+     ],
+     "ate": [
+      67.63,
+      18.53
+     ],
+     "comprimento_mm": 0.0,
+     "larguras_mm": [],
+     "vias": 1,
+     "camadas": [],
+     "tentativa": 1
+    }
+   ],
+   "fora": [
+    {
+     "net": "BB_L1",
+     "pinos": "L201.1 - U204.4",
+     "de": [
+      75.68,
+      9.0
+     ],
+     "ate": [
+      70.88,
+      9.5
+     ],
+     "motivo": "sem trilhas autorizadas para arrancar"
+    },
+    {
+     "net": "VSYS",
+     "pinos": "C202.1 - U204.5",
+     "de": [
+      66.75,
+      9.48
+     ],
+     "ate": [
+      70.88,
+      10.0
+     ],
+     "motivo": "sem caminho mesmo arrancando as trilhas autorizadas (janela 36x24 mm)"
+    },
+    {
+     "net": "VSYS",
+     "pinos": "C202.1 - U202.10",
+     "de": [
+      64.4,
+      11.38
+     ],
+     "ate": [
+      60.56,
+      9.25
+     ],
+     "motivo": "sem caminho mesmo arrancando as trilhas autorizadas (janela 36x25 mm)"
+    },
+    {
+     "net": "VSYS",
+     "pinos": "U202.10 - U204.5",
+     "de": [
+      60.56,
+      9.25
+     ],
+     "ate": [
+      70.88,
+      10.0
+     ],
+     "motivo": "sem caminho mesmo arrancando as trilhas autorizadas (janela 42x24 mm)"
+    },
+    {
+     "net": "GND",
+     "pinos": "C304.2",
+     "em": [
+      21.22,
+      35.89
+     ],
+     "motivo": "sem caminho mesmo arrancando as trilhas autorizadas (janela 33x33 mm)"
+    }
+   ],
+   "gravacao": {
+    "dropped": 0,
+    "zones_refilled": 4,
+    "new": 1,
+    "blocks_identical": 4085
+   },
+   "apagadas": [],
+   "desvios": [],
+   "arrancadas_por_ligacao": [],
+   "codec": null,
+   "vias_extra_ilhas": 0,
+   "drc_antes": {
+    "violacoes": {
+     "track_width": 13
+    },
+    "nao_roteadas": {
+     "GND": 2,
+     "VSYS": 2,
+     "BB_L1": 1
+    },
+    "paridade": 0
+   },
+   "drc_depois": {
+    "violacoes": {
+     "track_width": 13
+    },
+    "nao_roteadas": {
+     "GND": 1,
+     "VSYS": 2,
+     "BB_L1": 1
+    },
+    "paridade": 0
+   }
   }
  }
 }
