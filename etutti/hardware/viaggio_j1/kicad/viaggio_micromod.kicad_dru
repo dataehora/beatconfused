@@ -19,7 +19,7 @@
     (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101')")
     (constraint track_width (min 0.8mm)))
 (rule "Corrente: afinacao na entrada dos pinos (patios)"
-    (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !(!A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101'))")
+    (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !(!A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101') && !A.intersectsCourtyard('R205') && !A.intersectsCourtyard('R206') && !A.intersectsCourtyard('R214') && !A.intersectsCourtyard('Q201') && !A.intersectsCourtyard('U201') && !A.intersectsCourtyard('C201'))")
     (constraint track_width (min 0.15mm)))
 (rule "Sob o cartao MicroMod: so pecas de ate 1,9 mm (campo Cabe_sob_cartao, de Altura_mm)"
     (condition "A.Type == 'Footprint' && A.Layer == 'B.Cu' && A.intersectsArea('cartao_MicroMod') && A.Reference != 'J101' && A.Reference != 'H101'")
