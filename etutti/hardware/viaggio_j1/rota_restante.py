@@ -2,7 +2,7 @@
 
 Run with KiCad 10's python, from anywhere:
     "C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/rota_restante.py <lot>
-    (<lot> = 1..5, or "fotos" for the pictures only)
+    (<lot> = 1..5, 6a, 6b, 6c, or "fotos" for the pictures only)
 
 Lots (task of 27 Oct 2026, authorised by J):
   1  BB_L1, BB_L2, VSYS, VBAT and the GND islands of the charger / converter (x 50-76, y 3-21)
@@ -10,6 +10,7 @@ Lots (task of 27 Oct 2026, authorised by J):
   3  GND of the codec (U301.21, C304.2), I2C_SDA, I2C_SCL and the +3V3 left of the keyboard
   4  the +3V3 pockets in the keyboard (x >= 95)
   5  OUT_K03 (its loose stub at (118.97; 8.45) is deleted first)
+  6a/6b/6c  closing (27 Oct 2026): authorised rip-up and reroute, see "lot 6" below
 
 What it does, and only this:
   * nothing existing is moved or deleted (except lot 5's stub); footprints are not touched;
@@ -60,8 +61,12 @@ LNAME = {pcbnew.F_Cu: "F.Cu", pcbnew.In1_Cu: "In1.Cu", pcbnew.In2_Cu: "In2.Cu", 
 VIA_D, VIA_DRILL = 0.5, 0.3
 EDGE_CLR, HOLE_CLR, HOLE2HOLE = 0.3, 0.2, 0.25
 SLACK = 0.01
-THIN_REFS = ("J201", "U202", "U204", "J202", "U501", "J101")
+THIN_REFS = ("J201", "U202", "U204", "J202", "U501", "J101",
+             # added to the .kicad_dru rule on 27 Oct 2026 (lot 6)
+             "R205", "R206", "R214", "Q201", "U201", "C201")
 PROTECT = []
+NECK = True      # lots 1-5: Corrente may neck to 0.3 next to a pin; lot 6: only inside THIN_REFS
+RIP = None       # lot 6: called when a connection failed twice (rip up and reroute)
 STUB_OUT_K03 = ("OUT_K03", 118.975, 8.4451, 118.6494, 8.7707)
 
 LOTS = {
@@ -232,8 +237,9 @@ def big_gnd_pad(it):
     return min(TOMM(sz.x), TOMM(sz.y)) >= 1.2
 
 
-def build_masks(ctx, w, net, widths, margin):
-    """Blocked masks for the net being routed: per routing layer and width; plus via mask."""
+def build_masks(ctx, w, net, widths, margin, skip=None):
+    """Blocked masks for the net being routed: per routing layer and width; plus via mask.
+    skip: uuids of tracks left out (lot 6: the tracks that may be ripped up)."""
     my_clr = clr_of(net)
     imgs = {(li, wd): w.img() for li in range(3) for wd in widths}
     drs = {k: ImageDraw.Draw(v) for k, v in imgs.items()}
@@ -243,6 +249,8 @@ def build_masks(ctx, w, net, widths, margin):
     for it in ctx.items:
         x0, y0, x1, y1 = bbox_mm(it)
         if not w.inside(x0 - reach, y0 - reach, x1 + reach, y1 + reach):
+            continue
+        if skip and it.GetClass() == "PCB_TRACK" and it.m_Uuid.AsString() in skip:
             continue
         own = it.GetNetname() == net and it.GetNetCode() != 0
         cls = it.GetClass()
@@ -465,7 +473,8 @@ DIRS = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
 TURN = {0: 0.0, 1: 0.05, 2: 0.3}
 
 
-def astar(w, usable, vok, src, tgt, tvia, layer_cost, via_cost, max_expand=4_000_000, cellcost=None):
+def astar(w, usable, vok, src, tgt, tvia, layer_cost, via_cost, max_expand=4_000_000, cellcost=None,
+          vcost=None):
     """usable[li]: flat list of bools; vok: flat via-ok list; src/tgt: per layer flat bool
     lists; tvia: flat list (a via there finishes). Returns [(li, i)] path and end-with-via flag."""
     W, H = w.W, w.H
@@ -536,8 +545,9 @@ def astar(w, usable, vok, src, tgt, tvia, layer_cost, via_cost, max_expand=4_000
                 parent[ns] = s
                 heapq.heappush(heap, (ng + h(jx, jy), ng, ns))
         if vok[i]:
+            vc_i = via_cost * (vcost[i] if vcost is not None else 1.0)
             if i in tvs:
-                ng = gc + via_cost
+                ng = gc + vc_i
                 if ng < g.get(VIA_END, 1e18):
                     g[VIA_END] = ng
                     parent[VIA_END] = s
@@ -546,7 +556,7 @@ def astar(w, usable, vok, src, tgt, tvia, layer_cost, via_cost, max_expand=4_000
                 if l2 == li or not usable[l2][i]:
                     continue
                 ns = (l2, i, 8)
-                ng = gc + via_cost
+                ng = gc + vc_i
                 if ng < g.get(ns, 1e18):
                     g[ns] = ng
                     parent[ns] = s
@@ -565,11 +575,17 @@ def astar(w, usable, vok, src, tgt, tvia, layer_cost, via_cost, max_expand=4_000
 
 # ------------------------------------------------------------------ exact check
 class Checker:
-    def __init__(self, ctx):
+    def __init__(self, ctx, skip=None):
         self.ctx = ctx
         self.cell = MM(2)
+        self.skip = skip
+        self.rebuild()
+
+    def rebuild(self):
         self.d = defaultdict(list)
-        for it in ctx.items:
+        for it in self.ctx.items:
+            if self.skip and it.GetClass() == "PCB_TRACK" and it.m_Uuid.AsString() in self.skip:
+                continue
             self.add(it)
 
     def add(self, it):
@@ -709,7 +725,8 @@ def route(ctx, chk, net, srcg, tgtg, tgt_in1, attempt, made, log):
             best = np.where(~blocked[(li, wd)], wd, best)
         allowed_min = np.full((w.H, w.W), wmin)
         if thin is not None:
-            allowed_min = np.where(near, 0.3, allowed_min)
+            if NECK:
+                allowed_min = np.where(near, 0.3, allowed_min)
             allowed_min = np.where(thin, wthin, allowed_min)
         else:
             allowed_min = np.where(near, wthin, allowed_min)
@@ -896,6 +913,8 @@ def join_net(ctx, chk, net, region, made, log, fails, gnd_mode=False, start=None
             key = label(g)
             tried[key] += 1
             err = route(ctx, chk, net, g, main[0] if main else None, True, tried[key], made, log)
+            if err and tried[key] >= 2 and RIP is not None:
+                err = RIP(ctx, chk, net, g, main[0] if main else None, True, made, log) or None
             if err and tried[key] >= 2:
                 c = cluster_points(b, g).mean(0)
                 fails.append({"net": net, "pinos": key, "em": [r2(c[0]), r2(c[1])], "motivo": err})
@@ -935,6 +954,8 @@ def join_net(ctx, chk, net, region, made, log, fails, gnd_mode=False, start=None
         # route from the smaller cluster to the bigger one
         a, c = (gs[i], gs[j]) if len(gs[i]["items"]) <= len(gs[j]["items"]) else (gs[j], gs[i])
         err = route(ctx, chk, net, a, c, False, tried[kk], made, log)
+        if err and tried[kk] >= 2 and RIP is not None:
+            err = RIP(ctx, chk, net, a, c, False, made, log) or None
         if err and tried[kk] >= 2:
             fails.append({"net": net, "pinos": "%s - %s" % kk, "de": [r2(pa[0]), r2(pa[1])],
                           "ate": [r2(pb[0]), r2(pb[1])], "motivo": err})
@@ -1126,6 +1147,9 @@ def main():
     if arg == "fotos":
         pictures(m)
         return
+    if arg in LOT6:
+        main6(arg, m)
+        return
     lot = int(arg)
     spec = LOTS[lot]
     original = open(BOARD, encoding="utf-8", newline="").read()
@@ -1265,6 +1289,756 @@ def main():
         bad["track_width_novo"] = len(bad_neck)
     if bad:
         print("NEW DRC VIOLATIONS:", bad)
+        sys.exit(1)
+
+
+# ------------------------------------------------------------------ lot 6: closing (27 Oct 2026)
+# Answers of the management to the 5 questions of "Rota restante" (COBRE.md), authorised by J:
+#  * rip up and reroute ONLY the tracks that block the 11 open connections: J's +3V3 track in
+#    B.Cu at x ~71.7 next to U204; the In2 tracks under the codec's exposed pad (U301.21) and
+#    under C304; the tracks closing the pockets of R209.2, R211.2, C203.1, R206.1, R210.1 and
+#    U202.10/11. Every ripped track is remade: same net and width, joining the same points;
+#  * at least 2 GND vias (0.5/0.3) in U301.21;
+#  * no part moves, nothing else is deleted.
+# A ripped segment is cut only where it is in the way: its two ends stay as new segments (same
+# net, width, layer, on its own line) and a detour of the same width joins the two cut points.
+# Sub-lots: 6a U204 / charger, 6b codec, 6c what is left. A sub-lot is done once: to redo it,
+# check the board out at the commit before it and drop its entry from rota_restante.json.
+RIPC, RIPV = 25.0, 40.0          # A* cost factor of a cell / of a via that needs a rip
+V33_U204 = ["aec31083-1f7b-4dc5-8cb3-358c01c0e2db", "c40a17e3-3c5d-466d-ab19-d537afde617b",
+            "2a252c93-d6cb-4677-aef6-5241a5231d1a", "a4c0fa06-0fe6-4cf7-b05e-f5c8077415d7",
+            "8c10bf73-8c0d-467d-8760-620d9198f542", "ac807682-fab9-4950-a4e4-5ece2d947b93"]
+POCKETS = {
+    # U202.10/11 (charger OUT): in 6c the power tracks round it may be ripped too
+    "R210.1": {"box": 3.0}, "U202.10": {"box": 3.0, "box_6c": 5.0, "corrente_6c": True},
+    "U202.11": {"box": 3.0, "box_6c": 5.0, "corrente_6c": True},
+    "C203.1": {"box": 3.0}, "R206.1": {"box": 3.0}, "R209.2": {"box": 3.0},
+    "R211.2": {"box": 3.0}, "C304.2": {"box": 2.0, "layers": [pcbnew.In2_Cu]},
+}
+LOT6 = {
+    "6a": {"txt": "regiao do U204 e do carregador",
+           "group": {"uuids": V33_U204, "nets": ["BB_L1", "BB_L2", "VSYS"], "region": (66, 5, 78, 14),
+                     "txt": "+3V3 do J em B.Cu junto do U204 (x ~71,7)"},
+           "nets": ["VSYS", "VBAT", "VBUS"], "gnd": (50, 3, 77, 22)},
+    "6b": {"txt": "codec: vias no pad central do U301 e GND do C304", "codec": True, "nets": [],
+           "gnd": (15, 30, 35, 40)},
+    "6c": {"txt": "o que restou", "nets": ["BB_L1", "BB_L2", "VSYS", "VBAT", "VBUS"], "gnd": "all"},
+}
+ST = None
+
+
+def seg_geom(t):
+    a, e = t.GetStart(), t.GetEnd()
+    return (TOMM(a.x), TOMM(a.y)), (TOMM(e.x), TOMM(e.y))
+
+
+def proj(a, e, p):
+    """(distance from p to the segment a-e, position of the nearest point along it in mm)."""
+    dx, dy = e[0] - a[0], e[1] - a[1]
+    L = math.hypot(dx, dy)
+    if L < 1e-9:
+        return math.hypot(p[0] - a[0], p[1] - a[1]), 0.0
+    t = ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / L
+    tc = min(max(t, 0.0), L)
+    q = (a[0] + dx * tc / L, a[1] + dy * tc / L)
+    return math.hypot(p[0] - q[0], p[1] - q[1]), tc
+
+
+def seg_rec(t):
+    a, e = seg_geom(t)
+    return {"rede": t.GetNetname(), "camada": LNAME[t.GetLayer()], "largura": round(TOMM(t.GetWidth()), 3),
+            "de": [round(a[0], 3), round(a[1], 3)], "ate": [round(e[0], 3), round(e[1], 3)],
+            "comprimento_mm": round(TOMM(t.GetLength()), 3), "uuid": t.m_Uuid.AsString()}
+
+
+def pads_of(g):
+    return ["%s.%s" % (it.GetParentFootprint().GetReference(), it.GetNumber())
+            for it in g["items"] if it.GetClass() == "PAD"]
+
+
+def find_pad(b, lab):
+    ref, num = lab.split(".")
+    return [p for p in b.FindFootprintByReference(ref).Pads() if p.GetNumber() == num][0]
+
+
+def new_track(b, net, L, A, E, wd):
+    t = pcbnew.PCB_TRACK(b)
+    t.SetStart(A)
+    t.SetEnd(E)
+    t.SetWidth(MM(wd))
+    t.SetLayer(L)
+    t.SetNet(b.FindNet(net))
+    return t
+
+
+def new_via(b, net, P):
+    t = pcbnew.PCB_VIA(b)
+    t.SetViaType(pcbnew.VIATYPE_THROUGH)
+    t.SetPosition(P)
+    t.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
+    try:
+        t.SetWidth(MM(VIA_D))
+    except TypeError:
+        t.SetWidth(pcbnew.F_Cu, MM(VIA_D))
+    t.SetDrill(MM(VIA_DRILL))
+    t.SetNet(b.FindNet(net))
+    return t
+
+
+class St:
+    """Lot 6 state: what was added and taken out, with undo back to a mark."""
+    def __init__(self, ctx, chk, made, log):
+        self.ctx, self.chk, self.made, self.log = ctx, chk, made, log
+        self.removed, self.apagadas, self.desvios, self.rips = [], [], [], []
+        self.codec = None
+
+    def mark(self):
+        return (len(self.made), len(self.log), len(self.removed), len(self.apagadas), len(self.desvios))
+
+    def sync(self):
+        self.ctx.refresh()
+        self.chk.rebuild()
+
+    def add(self, t):
+        self.ctx.b.Add(t)
+        self.made.append(t.m_Uuid.AsString())
+        self.ctx.items.append(t)
+        self.chk.add(t)
+
+    def remove(self, t):
+        self.apagadas.append(seg_rec(t))
+        self.removed.append(t)
+        self.ctx.b.Remove(t)
+
+    def undo(self, mk):
+        b = self.ctx.b
+        newu = set(self.made[mk[0]:])
+        for t in list(b.GetTracks()):
+            if t.m_Uuid.AsString() in newu:
+                b.Remove(t)
+        del self.made[mk[0]:]
+        del self.log[mk[1]:]
+        for o in self.removed[mk[2]:]:
+            b.Add(o)
+        del self.removed[mk[2]:]
+        del self.apagadas[mk[3]:]
+        del self.desvios[mk[4]:]
+        self.sync()
+
+
+def cut(st, t, t0, t1):
+    """Take segment t out and put back its two ends outside [t0, t1] (mm along it). Returns the
+    detour job that must join the two cut points again."""
+    b = st.ctx.b
+    a, e = seg_geom(t)
+    L = math.hypot(e[0] - a[0], e[1] - a[1])
+    t0 = 0.0 if t0 < 0.25 else t0
+    t1 = L if t1 > L - 0.25 else t1
+    A0, E0 = t.GetStart(), t.GetEnd()
+    A, E = V(A0.x, A0.y), V(E0.x, E0.y)
+
+    def at(s):
+        return V(A.x + (E.x - A.x) * s / L, A.y + (E.y - A.y) * s / L)
+    P0 = A if t0 <= 0 else at(t0)
+    P1 = E if t1 >= L else at(t1)
+    net, lay, wd = t.GetNetname(), t.GetLayer(), round(TOMM(t.GetWidth()), 4)
+    uu = t.m_Uuid.AsString()
+    st.remove(t)
+    rest = []
+    if t0 > 0:
+        r = new_track(b, net, lay, A, P0, wd)
+        st.add(r)
+        rest.append(r.m_Uuid.AsString())
+    if t1 < L:
+        r = new_track(b, net, lay, P1, E, wd)
+        st.add(r)
+        rest.append(r.m_Uuid.AsString())
+    return {"net": net, "L": lay, "w": [wd], "P": [P0, P1], "orig": [uu], "restos": rest}
+
+
+def touches(ctx, net, L, P):
+    for it in ctx.items:
+        if it.GetNetname() != net or not it.IsOnLayer(L):
+            continue
+        if it.GetEffectiveShape(L).Collide(P, 2000):
+            return True
+    return False
+
+
+def merge_jobs(st, jobs):
+    """Two cuts of one chain that meet at a point with no copper left become one detour."""
+    def same(P, Q):
+        return abs(P.x - Q.x) <= 2000 and abs(P.y - Q.y) <= 2000
+    jobs = [dict(j) for j in jobs]
+    again = True
+    while again:
+        again = False
+        for i in range(len(jobs)):
+            for j in range(i + 1, len(jobs)):
+                a, c = jobs[i], jobs[j]
+                if (a["net"], a["L"]) != (c["net"], c["L"]):
+                    continue
+                for ea in (0, 1):
+                    for ec in (0, 1):
+                        if same(a["P"][ea], c["P"][ec]) and not touches(st.ctx, a["net"], a["L"], a["P"][ea]):
+                            a["P"] = [a["P"][1 - ea], c["P"][1 - ec]]
+                            a["orig"] = a["orig"] + c["orig"]
+                            a["restos"] = a["restos"] + c["restos"]
+                            a["w"] = a["w"] + c["w"]
+                            del jobs[j]
+                            again = True
+                            break
+                    if again:
+                        break
+                if again:
+                    break
+            if again:
+                break
+    return [j for j in jobs if not same(j["P"][0], j["P"][1])]
+
+
+def run_segments(w, run, wcell, li):
+    """Grid cells of one layer -> [(start xy, end xy, width)], straight pieces of one width."""
+    out = []
+    k = 0
+    while k < len(run) - 1:
+        dx, dy = run[k + 1][1] - run[k][1], run[k + 1][2] - run[k][2]
+        wd = min(wcell[li][run[k][2], run[k][1]], wcell[li][run[k + 1][2], run[k + 1][1]])
+        m = k + 1
+        while m + 1 < len(run) and (run[m + 1][1] - run[m][1], run[m + 1][2] - run[m][2]) == (dx, dy) \
+                and wcell[li][run[m + 1][2], run[m + 1][1]] >= wd:
+            m += 1
+        out.append((w.xy(run[k][1], run[k][2]), w.xy(run[m][1], run[m][2]), wd))
+        k = m
+    return out
+
+
+def route_pts(st, jb, attempt):
+    """Detour: join jb's two points with the ripped track's width (its narrower pin-entry width
+    only within 1 mm of the two points)."""
+    ctx, chk, b = st.ctx, st.chk, st.ctx.b
+    net, L = jb["net"], jb["L"]
+    wbig, wsmall = max(jb["w"]), min(jb["w"])
+    widths = sorted({wbig, wsmall})
+    margin = 0.03 if attempt == 1 else 0.0
+    winm = 4.0 if attempt == 1 else 12.0
+    p0 = (TOMM(jb["P"][0].x), TOMM(jb["P"][0].y))
+    p1 = (TOMM(jb["P"][1].x), TOMM(jb["P"][1].y))
+    bb = ctx.outline.BBox()
+    x0 = max(min(p0[0], p1[0]) - winm, TOMM(bb.GetLeft()) - 0.5)
+    y0 = max(min(p0[1], p1[1]) - winm, TOMM(bb.GetTop()) - 0.5)
+    x1 = min(max(p0[0], p1[0]) + winm, TOMM(bb.GetRight()) + 0.5)
+    y1 = min(max(p0[1], p1[1]) + winm, TOMM(bb.GetBottom()) + 0.5)
+    p = 0.05 if (x1 - x0) * (y1 - y0) < 900 else 0.1
+    w = Win(x0, y0, x1, y1, p)
+    blocked, vblock = build_masks(ctx, w, net, widths, margin)
+    li0 = RL.index(L)
+    nearimg = w.img()
+    for P_ in (p0, p1):
+        w.disc(ImageDraw.Draw(nearimg), P_[0], P_[1], 1.0)
+    near = np.array(nearimg, dtype=bool)
+    sm = [np.zeros((w.H, w.W), bool) for _ in range(3)]
+    tm = [np.zeros((w.H, w.W), bool) for _ in range(3)]
+    s_img, t_img = w.img(), w.img()
+    w.disc(ImageDraw.Draw(s_img), p0[0], p0[1], max(1.5 * p, wsmall / 2))
+    w.disc(ImageDraw.Draw(t_img), p1[0], p1[1], max(1.5 * p, wsmall / 2))
+    # an end point on a via (or a through pad) of the net may be left on any layer
+    def on_via(P_):
+        return any(it.GetNetname() == net and has_hole(it) and it.GetEffectiveShape(pcbnew.F_Cu).Collide(P_, 2000)
+                   for it in ctx.items if it.GetClass() in ("PCB_VIA", "PAD"))
+    for li in range(3):
+        if li == li0 or on_via(jb["P"][0]):
+            sm[li] = np.array(s_img, dtype=bool)
+        if li == li0 or on_via(jb["P"][1]):
+            tm[li] = np.array(t_img, dtype=bool)
+    usable, wcell = [], []
+    for li in range(3):
+        big = ~blocked[(li, wbig)]
+        small = ~blocked[(li, wsmall)] & near
+        wc = np.where(big, wbig, np.where(small, wsmall, 0.0))
+        # the two end points lie on the ripped track's own line: free for its width
+        wc = np.where((sm[li] | tm[li]) & (wc == 0), wsmall, wc)
+        usable.append(wc > 0)
+        wcell.append(wc)
+    lc = [1.0, 1.0 if net == "+3V3" else 1.4, 1.0]
+    cc = [np.where(wcell[li] < wbig - 1e-9, 4.0, 1.0).ravel().tolist() for li in range(3)]
+    path, _ = astar(w, [u.ravel().tolist() for u in usable], (~vblock).ravel().tolist(),
+                    [m.ravel().tolist() for m in sm], [m.ravel().tolist() for m in tm], None, lc,
+                    via_cost=1.5, cellcost=cc)
+    if path is None:
+        return "sem caminho (janela %.0fx%.0f mm)" % (x1 - x0, y1 - y0)
+    pts = [(li, i % w.W, i // w.W) for li, i in path]
+    runs, cur, vias = [], [pts[0]], []
+    for q in pts[1:]:
+        if q[0] != cur[-1][0]:
+            runs.append(cur)
+            vias.append(w.xy(q[1], q[2]))
+            cur = [q]
+        else:
+            cur.append(q)
+    runs.append(cur)
+    pieces = []
+    for k, run in enumerate(runs):
+        li = run[0][0]
+        segs = run_segments(w, run, wcell, li)
+        first = w.xy(run[0][1], run[0][2])
+        last = w.xy(run[-1][1], run[-1][2])
+        if k == 0:
+            segs = [(p0, first, wcell[li][run[0][2], run[0][1]])] + segs
+        if k == len(runs) - 1:
+            segs = segs + [(last, p1, wcell[li][run[-1][2], run[-1][1]])]
+        pieces += [(RL[li], a, e, wd) for a, e, wd in segs]
+    for k1 in range(len(vias)):
+        for k2 in range(k1 + 1, len(vias)):
+            if math.hypot(vias[k1][0] - vias[k2][0], vias[k1][1] - vias[k2][1]) < VIA_DRILL + HOLE2HOLE + 0.01:
+                return "duas vias do desvio coladas"
+    new = []
+    for lay, a, e, wd in pieces:
+        A, E = V(MM(a[0]), MM(a[1])), V(MM(e[0]), MM(e[1]))
+        if A == E:
+            continue
+        if not chk.track_ok(A, E, wd, lay, net):
+            return "conferencia exata falhou (%s (%.2f;%.2f)-(%.2f;%.2f) toca %s)" % (
+                LNAME[lay], a[0], a[1], e[0], e[1], chk.why)
+        new.append(("t", lay, A, E, wd))
+    for vx, vy in vias:
+        P_ = V(MM(vx), MM(vy))
+        if not chk.via_ok(P_, net):
+            return "conferencia exata falhou (via (%.2f;%.2f))" % (vx, vy)
+        new.append(("v", P_))
+    length, nv, lays, uu = 0.0, 0, set(), []
+    for n_ in new:
+        if n_[0] == "t":
+            t = new_track(b, net, n_[1], n_[2], n_[3], n_[4])
+            length += TOMM(t.GetLength())
+            lays.add(LNAME[n_[1]])
+        else:
+            t = new_via(b, net, n_[1])
+            nv += 1
+        st.add(t)
+        uu.append(t.m_Uuid.AsString())
+    st.desvios.append({"rede": net, "larguras": sorted(set(jb["w"])), "camada_original": LNAME[L],
+                       "de": [r2(p0[0]), r2(p0[1])], "ate": [r2(p1[0]), r2(p1[1])],
+                       "comprimento_mm": round(length, 2), "camadas": sorted(lays), "vias": nv,
+                       "substitui": jb["orig"], "restos": jb["restos"], "uuids": uu, "tentativa": attempt})
+    return None
+
+
+def detours(st, jobs):
+    for jb in jobs:
+        err = None
+        for attempt in (1, 2):
+            err = route_pts(st, jb, attempt)
+            if not err:
+                break
+        if err:
+            return "desvio de %s (%s, %s) nao fechou: %s" % (jb["net"], LNAME[jb["L"]], jb["orig"][0][:8], err)
+    return None
+
+
+def pocket_sel(ctx, net, gs, st):
+    made = set(st.made)
+    labs = set()
+    for g in gs:
+        if g is not None:
+            labs.update(pads_of(g))
+    labs = sorted(labs & set(POCKETS))
+    sel = set()
+    for lab in labs:
+        P = POCKETS[lab]
+        q = find_pad(ctx.b, lab).GetPosition()
+        late = st.sub == "6c"
+        qx, qy = TOMM(q.x), TOMM(q.y)
+        r = P.get("box_6c", P["box"]) if late else P["box"]
+        power = late and P.get("corrente_6c", False)
+        for t in ctx.items:
+            if t.GetClass() != "PCB_TRACK" or t.GetNetname() == net:
+                continue
+            if not power and (klass(t.GetNetname()) == "Corrente" or TOMM(t.GetWidth()) > 0.3):
+                continue
+            if "layers" in P and t.GetLayer() not in P["layers"]:
+                continue
+            u = t.m_Uuid.AsString()
+            if u in made:
+                continue
+            x0, y0, x1, y1 = bbox_mm(t)
+            if x1 < qx - r or x0 > qx + r or y1 < qy - r or y0 > qy + r:
+                continue
+            sel.add(u)
+    return sel, labs
+
+
+def rip_search(ctx, net, srcg, tgtg, tgt_in1, attempt, ripids):
+    """A* where the authorised tracks may be crossed at a high cost. Returns {uuid: [(t, r)]}:
+    where (mm along the track) the path needs it gone, and the radius it needs round there."""
+    b = ctx.b
+    widths, wmin, wthin = widths_for(net)
+    margin = 0.03 if attempt == 1 else 0.0
+    winm = 6.0 if attempt == 1 else 16.0
+    sp = cluster_points(b, srcg)
+    tp = cluster_points(b, tgtg) if (tgtg is not None and not tgt_in1) else np.zeros((0, 2))
+    if len(tp):
+        A_, B_ = sp, tp
+        if len(A_) * len(B_) > 4e6:
+            A_, B_ = A_[::max(1, len(A_) // 2000)], B_[::max(1, len(B_) // 2000)]
+        d2 = ((A_[:, None, :] - B_[None, :, :]) ** 2).sum(2)
+        k = np.unravel_index(int(d2.argmin()), d2.shape)
+        pa, pb = A_[k[0]], B_[k[1]]
+        x0, x1 = min(pa[0], pb[0]) - winm, max(pa[0], pb[0]) + winm
+        y0, y1 = min(pa[1], pb[1]) - winm, max(pa[1], pb[1]) + winm
+    else:
+        x0, x1, y0, y1 = sp[:, 0].min() - winm, sp[:, 0].max() + winm, sp[:, 1].min() - winm, sp[:, 1].max() + winm
+    bb = ctx.outline.BBox()
+    x0, y0 = max(x0, TOMM(bb.GetLeft()) - 0.5), max(y0, TOMM(bb.GetTop()) - 0.5)
+    x1, y1 = min(x1, TOMM(bb.GetRight()) + 0.5), min(y1, TOMM(bb.GetBottom()) + 0.5)
+    p = 0.05 if (x1 - x0) * (y1 - y0) < 900 else 0.1
+    w = Win(x0, y0, x1, y1, p)
+    hard, hv = build_masks(ctx, w, net, widths, margin, skip=ripids)
+    full, fv = build_masks(ctx, w, net, widths, margin)
+    thin = thin_mask(ctx, w) if klass(net) == "Corrente" else None
+    if thin is not None:
+        thin = dilate(thin, int(math.ceil(0.1 / p)))
+    sm = cluster_mask(ctx, w, srcg, net)
+    tm = cluster_mask(ctx, w, tgtg, net) if (tgtg is not None and not tgt_in1) else [np.zeros((w.H, w.W), bool)] * 3
+    pm = cluster_mask(ctx, w, srcg, net, True)
+    if tgtg is not None and not tgt_in1:
+        pm = [a | c for a, c in zip(pm, cluster_mask(ctx, w, tgtg, net, True))]
+    near = dilate(pm[0] | pm[1] | pm[2], int(math.ceil((0.6 if klass(net) == "Corrente" else 1.0) / p)))
+
+    def cells(blk):
+        us, wc = [], []
+        for li in range(3):
+            best = np.zeros((w.H, w.W))
+            for wd in sorted(widths):
+                best = np.where(~blk[(li, wd)], wd, best)
+            amin = np.full((w.H, w.W), wmin)
+            if thin is not None:
+                if NECK:
+                    amin = np.where(near, 0.3, amin)
+                amin = np.where(thin, wthin, amin)
+            else:
+                amin = np.where(near, wthin, amin)
+            us.append(best >= amin - 1e-9)
+            wc.append(best)
+        return us, wc
+    uh, wh = cells(hard)
+    uf, _wf = cells(full)
+    rip = [uh[li] & ~uf[li] for li in range(3)]
+    vok = ~hv
+    tvia = (vok & in1_mask(b, w)).ravel().tolist() if tgt_in1 else None
+    if not any((sm[li] & uh[li]).any() for li in range(3)):
+        return None, "sem saida no ponto de partida mesmo arrancando trilhas"
+    cc = [(np.where(wh[li] < wmin - 1e-9, 4.0, 1.0) * np.where(rip[li], RIPC, 1.0)).ravel().tolist()
+          for li in range(3)]
+    vc = np.where(fv, RIPV, 1.0).ravel().tolist()
+    lc = [1.0, 1.0 if net == "+3V3" else 1.4, 1.0]
+    path, end_via = astar(w, [u.ravel().tolist() for u in uh], vok.ravel().tolist(),
+                          [m.ravel().tolist() for m in sm], [m.ravel().tolist() for m in tm], tvia, lc,
+                          via_cost=1.5, cellcost=cc, vcost=vc)
+    if path is None:
+        return None, "sem caminho mesmo arrancando as trilhas autorizadas (janela %.0fx%.0f mm)" % (x1 - x0, y1 - y0)
+    geo = []
+    for t in ctx.items:
+        if t.GetClass() == "PCB_TRACK" and t.m_Uuid.AsString() in ripids:
+            a, e = seg_geom(t)
+            geo.append((t.m_Uuid.AsString(), a, e, t.GetLayer(), TOMM(t.GetWidth()) / 2,
+                        max(clr_of(net), clr_of(t.GetNetname()))))
+    hits = defaultdict(list)
+    W = w.W
+    for li, i in path:
+        if not rip[li].flat[i]:
+            continue
+        ix, iy = i % W, i // W
+        x, y = w.xy(ix, iy)
+        wd = min(wh[li][iy, ix], max(widths))
+        for u, a, e, L, hw, c in geo:
+            if L != RL[li]:
+                continue
+            d, tt = proj(a, e, (x, y))
+            if d < hw + c + wd / 2 + margin + SLACK + 1.5 * p:
+                hits[u].append((tt, wd / 2 + c))
+    vcells = [path[k] for k in range(1, len(path)) if path[k][0] != path[k - 1][0]]
+    if end_via:
+        vcells.append(path[-1])
+    for li, i in vcells:
+        if not fv.flat[i]:
+            continue
+        x, y = w.xy(i % W, i // W)
+        for u, a, e, L, hw, c in geo:
+            d, tt = proj(a, e, (x, y))
+            if d < hw + c + VIA_D / 2 + margin + SLACK + 1.5 * p:
+                hits[u].append((tt, VIA_D / 2 + c))
+    return dict(hits), None
+
+
+def rip_route(ctx, chk, net, srcg, tgtg, tgt_in1, made, log):
+    """A connection that failed twice: rip up only the authorised tracks in its way, route it,
+    then remake every ripped track by a detour. Two attempts; all or nothing."""
+    st = ST
+    sel, labs = pocket_sel(ctx, net, [srcg] + ([] if tgt_in1 else [tgtg]), st)
+    if not sel:
+        return "sem trilhas autorizadas para arrancar"
+    last = None
+    for attempt in (1, 2):
+        hits, err = rip_search(ctx, net, srcg, tgtg, tgt_in1, attempt, sel)
+        if err:
+            last = err
+            continue
+        mk = st.mark()
+        byu = {t.m_Uuid.AsString(): t for t in ctx.items if t.GetClass() == "PCB_TRACK"}
+        jobs = []
+        for u, lst in hits.items():
+            t = byu[u]
+            ext = TOMM(t.GetWidth()) / 2 + max(r for _, r in lst) + 0.4
+            jobs.append(cut(st, t, min(tt for tt, _ in lst) - ext, max(tt for tt, _ in lst) + ext))
+        st.sync()
+        jobs = merge_jobs(st, jobs)
+        err = route(ctx, st.chk, net, srcg, tgtg, tgt_in1, attempt, made, log)
+        if err:
+            st.undo(mk)
+            last = "com %d trilha(s) arrancada(s): %s" % (len(hits), err)
+            continue
+        err = detours(st, jobs)
+        if err:
+            st.undo(mk)
+            last = err
+            continue
+        st.rips.append({"rede": net, "pinos": labs, "tentativa": attempt,
+                        "apagadas": st.apagadas[mk[3]:], "desvios": st.desvios[mk[4]:]})
+        print("  rip ok: %s %s, %d trilha(s) arrancada(s) e refeita(s)" % (net, labs, len(hits)))
+        return None
+    print("  rip falhou: %s %s: %s" % (net, labs, last))
+    return last
+
+
+def group_rip(st, grp, fails):
+    """J's +3V3 track next to U204: out first, the three connections it closed, then its detour
+    (or the detour first, on the 2nd attempt)."""
+    global RIP
+    ctx = st.ctx
+    RIP = None
+    last = None
+    for attempt in (1, 2):
+        mk = st.mark()
+        f0 = len(fails)
+        byu = {t.m_Uuid.AsString(): t for t in ctx.items if t.GetClass() == "PCB_TRACK"}
+        if any(u not in byu for u in grp["uuids"]):
+            raise SystemExit("group: a track of the +3V3 chain is missing")
+        jobs = [cut(st, byu[u], 0.0, 1e9) for u in grp["uuids"]]
+        st.sync()
+        jobs = merge_jobs(st, jobs)
+        if attempt == 2:
+            err = detours(st, jobs)
+            if err:
+                st.undo(mk)
+                last = err
+                break
+        nlog = len(st.log)
+        for net in grp["nets"]:
+            join_net(ctx, st.chk, net, grp["region"], st.made, st.log, fails)
+        closed = st.log[nlog:]
+        err = detours(st, jobs) if attempt == 1 else None
+        if err or not closed:
+            st.undo(mk)
+            del fails[f0:]
+            last = err or "nenhuma ligacao fechou"
+            continue
+        st.rips.append({"rede": ",".join(grp["nets"]), "pinos": grp["txt"], "tentativa": attempt,
+                        "apagadas": st.apagadas[mk[3]:], "desvios": st.desvios[mk[4]:],
+                        "fechadas": [x["net"] for x in closed]})
+        print("  grupo ok (tentativa %d): %s" % (attempt, [x["net"] for x in closed]))
+        return
+    for net in grp["nets"]:
+        fails.append({"net": net, "pinos": grp["txt"], "motivo": "trilha de +3V3 sem desvio: %s" % last})
+
+
+def codec_vias(st):
+    """At least 2 GND vias in the codec's exposed pad U301.21; the In2 tracks under it that are in
+    the way are cut there and remade around."""
+    ctx, b = st.ctx, st.ctx.b
+    pad = find_pad(b, "U301.21")
+    c = pad.GetPosition()
+    cx, cy = TOMM(c.x), TOMM(c.y)
+    sz = pad.GetSize(pcbnew.B_Cu)
+    hx, hy = TOMM(sz.x) / 2 - VIA_D / 2 - 0.02, TOMM(sz.y) / 2 - VIA_D / 2 - 0.02
+    x0, y0, x1, y1 = bbox_mm(pad)
+    made = set(st.made)
+    rip = {}
+    for t in ctx.items:
+        if t.GetClass() != "PCB_TRACK" or t.GetLayer() != pcbnew.In2_Cu or t.GetNetname() == "GND":
+            continue
+        u = t.m_Uuid.AsString()
+        bx0, by0, bx1, by1 = bbox_mm(t)
+        if u in made or bx1 < x0 - 1 or bx0 > x1 + 1 or by1 < y0 - 1 or by0 > y1 + 1:
+            continue
+        rip[u] = t
+    soft = Checker(ctx, skip=set(rip))
+
+    def conflicts(px, py):
+        out = set()
+        for u, t in rip.items():
+            a, e = seg_geom(t)
+            R = TOMM(t.GetWidth()) / 2 + max(clr_of("GND"), clr_of(t.GetNetname())) + VIA_D / 2 + 0.03
+            if proj(a, e, (px, py))[0] < R:
+                out.add(u)
+        return frozenset(out)
+    cands = []
+    nx, ny = int(hx / 0.025), int(hy / 0.025)
+    for ix in range(-nx, nx + 1):
+        for iy in range(-ny, ny + 1):
+            px, py = cx + ix * 0.025, cy + iy * 0.025
+            if soft.via_ok(V(MM(px), MM(py)), "GND"):
+                cands.append(((px, py), conflicts(px, py)))
+    if not cands:
+        return "nenhum ponto de via no pad, mesmo sem as trilhas do In2"
+    sets = sorted({cf for _, cf in cands}, key=lambda s: (len(s), -sum(1 for _, cf in cands if cf <= s)))
+    # two via sets (fewest In2 tracks in the way first); each with the tracks cut only round the
+    # vias, then cut whole (a detour from a short cut can be shut in by its neighbours)
+    plan = [(S, mode) for S in sets for mode in ("local", "inteira")]
+    tries, last, nset = 0, None, 0
+    for S, mode in plan:
+        pool = [q for q, cf in cands if cf <= S]
+        chosen = [min(pool, key=lambda q: math.hypot(q[0] - cx, q[1] - cy))]
+        while len(chosen) < 4:
+            best = max(pool, key=lambda q: min(math.hypot(q[0] - o[0], q[1] - o[1]) for o in chosen))
+            if min(math.hypot(best[0] - o[0], best[1] - o[1]) for o in chosen) < VIA_DRILL + HOLE2HOLE + 0.05:
+                break
+            chosen.append(best)
+        if len(chosen) < 2:
+            continue
+        if mode == "local":
+            nset += 1
+            if nset > 2:
+                break
+        tries += 1
+        mk = st.mark()
+        jobs = []
+        for u in S:
+            t = rip[u]
+            a, e = seg_geom(t)
+            R = TOMM(t.GetWidth()) / 2 + max(clr_of("GND"), clr_of(t.GetNetname())) + VIA_D / 2
+            ts = [proj(a, e, q)[1] for q in chosen if proj(a, e, q)[0] < R + 0.03]
+            if mode == "local":
+                jobs.append(cut(st, t, min(ts) - R - 0.4, max(ts) + R + 0.4))
+            else:
+                jobs.append(cut(st, t, 0.0, 1e9))
+        st.sync()
+        jobs = merge_jobs(st, jobs)
+        ok = True
+        for q in chosen:
+            P_ = V(MM(q[0]), MM(q[1]))
+            if not st.chk.via_ok(P_, "GND"):
+                ok = False
+                break
+            st.add(new_via(b, "GND", P_))
+        err = None if ok else "via no pad recusada na conferencia exata"
+        if ok:
+            err = detours(st, jobs)
+        print("  codec tentativa %d (%s, vias %s, trilhas %s): %s" % (
+            tries, mode, [[round(q[0], 2), round(q[1], 2)] for q in chosen],
+            sorted(rip[u].GetNetname() for u in S), err or "ok"))
+        if err:
+            st.undo(mk)
+            last = err
+            continue
+        st.codec = {"vias": [[round(q[0], 3), round(q[1], 3)] for q in chosen], "corte": mode,
+                    "apagadas": st.apagadas[mk[3]:], "desvios": st.desvios[mk[4]:], "tentativa": tries}
+        st.rips.append({"rede": "GND", "pinos": ["U301.21"], "tentativa": tries,
+                        "apagadas": st.apagadas[mk[3]:], "desvios": st.desvios[mk[4]:]})
+        print("  codec: %d vias em U301.21 %s, %d trilha(s) do In2 refeita(s)" % (len(chosen), st.codec["vias"], len(S)))
+        return None
+    return last or "nenhum conjunto de 2 vias"
+
+
+def main6(sub, m):
+    global RIP, NECK, ST
+    NECK = False
+    spec = LOT6[sub]
+    if sub in m["lotes"]:
+        raise SystemExit("sublote %s ja feito: para refazer, volte o .kicad_pcb ao commit anterior "
+                         "e tire a entrada dele do rota_restante.json" % sub)
+    original = open(BOARD, encoding="utf-8", newline="").read()
+    base = drc("lote%s_antes" % sub)
+    v0, u0, p0 = drc_summary(base)
+    b = pcbnew.LoadBoard(BOARD)
+    ctx = Ctx(b)
+    chk = Checker(ctx)
+    made, log, fails = [], [], []
+    st = St(ctx, chk, made, log)
+    st.sub = sub
+    ST = st
+    start = {n: [ident(g) for g in clusters(b, n)] for n in ("GND", "+3V3")}
+    if spec.get("group"):
+        group_rip(st, spec["group"], fails)
+    RIP = rip_route
+    if spec.get("codec"):
+        err = codec_vias(st)
+        if err:
+            fails.append({"net": "GND", "pinos": "U301.21", "em": [24.0, 35.5], "motivo": err})
+    for net in spec["nets"]:
+        join_net(ctx, st.chk, net, None, made, log, fails)
+    if spec.get("gnd"):
+        join_net(ctx, st.chk, "GND", None if spec["gnd"] == "all" else spec["gnd"], made, log, fails,
+                 gnd_mode=True)
+    RIP = None
+    # refill; GND / +3V3 pieces cut loose are joined here
+    pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+    extra = 0
+    for _k in range(3):
+        before = len(made)
+        st.sync()
+        join_net(ctx, st.chk, "GND", None, made, log, fails, gnd_mode=True, start=start["GND"])
+        join_net(ctx, st.chk, "+3V3", None, made, log, fails, start=start["+3V3"])
+        if len(made) == before:
+            break
+        extra += len(made) - before
+        pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+    for n in ("GND", "+3V3"):
+        gs = clusters(b, n)
+        ids = [ident(g) for g in gs]
+        for k, g in enumerate(gs):
+            if n == "GND" and has_in1(b, g):
+                continue
+            if not is_split(g, start[n]):
+                continue
+            if n == "+3V3" and not any(S & ids[k] and S & ids[j] for S in start[n]
+                                       for j in range(len(gs)) if j != k):
+                continue
+            cc_ = cluster_points(b, g).mean(0)
+            fails.append({"net": n, "pinos": label(g), "em": [r2(cc_[0]), r2(cc_[1])],
+                          "motivo": "pedaco de %s cortado e nao religado" % n})
+    drop = {r["uuid"] for r in st.apagadas}
+    info = save(b, original, drop, set(made))
+    d = drc("lote%s" % sub)
+    v1, u1, p1 = drc_summary(d)
+    rec = {"txt": spec["txt"], "uuids": made, "ligacoes": log, "fora": fails, "gravacao": info,
+           "apagadas": st.apagadas, "desvios": st.desvios, "arrancadas_por_ligacao": st.rips,
+           "codec": st.codec, "vias_extra_ilhas": extra,
+           "drc_antes": {"violacoes": v0, "nao_roteadas": u0, "paridade": p0},
+           "drc_depois": {"violacoes": v1, "nao_roteadas": u1, "paridade": p1}}
+    m["lotes"][sub] = rec
+    json.dump(m, open(MANIFEST, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    print(json.dumps({k: rec[k] for k in ("gravacao", "drc_antes", "drc_depois")}, indent=1))
+    for x in log:
+        print("ok  ", x)
+    for x in st.apagadas:
+        print("apagada", x)
+    for x in st.desvios:
+        print("desvio", {k: x[k] for k in ("rede", "larguras", "de", "ate", "comprimento_mm", "camadas", "vias")})
+    for x in fails:
+        print("FORA", x)
+    bad = {}
+    for k, n in v1.items():
+        lim = 13 if k == "track_width" else v0.get(k, 0)
+        if n > lim:
+            bad[k] = n
+    worse = {n: u1.get(n, 0) for n in set(u0) | set(u1) if u1.get(n, 0) > u0.get(n, 0)}
+    if worse:
+        bad["nao_roteadas_a_mais"] = worse
+    if p1:
+        bad["paridade"] = p1
+    if bad:
+        print("NEW DRC PROBLEMS:", bad)
         sys.exit(1)
 
 
