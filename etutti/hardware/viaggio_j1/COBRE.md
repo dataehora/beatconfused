@@ -295,3 +295,168 @@ Os relatórios brutos do DRC ficam em `build/drc_rota_lote*.json`, fora do Git, 
 3. **GND do codec (U301.21, C304.2):** as trilhas do In2 embaixo do pad central impedem as vias, e um pad central de codec sem via para o GND é ruim para o áudio. Vale tirar uma ou duas trilhas do In2 dali?
 4. **R209.2, R211.2, C203.1, R206.1 e R210.1 ficaram em bolsões fechados.** Ligamos depois que o J abrir espaço, ou ele mesmo as fecha no KiCad?
 5. **OUT_K03** foi refeito inteiro: 71 mm em B.Cu e F.Cu, atravessando o teclado. Serve assim? Se o J preferir outro caminho, basta apagar as trilhas listadas no lote 5 de `rota_restante.json`.
+
+# Fechamento (27 out 2026)
+
+Agente eletrônica, branch `viaggio-j1-fechamento`. Responde às 5 perguntas da "Rota restante" com as respostas da gestão. Antes: 18 track_width e 11 ligações não feitas. Depois: 13 track_width (só as do J) e 4 ligações não feitas.
+
+## O que mudou no `.kicad_dru`
+
+Só a regra "Corrente: afinacao na entrada dos pinos (patios)". Ela agora também vale nos pátios de R205, R206, R214, Q201, U201 e C201, na mesma forma `!(!A.intersectsCourtyard(...) && ...)`. O DRC roda sem erro de regra. As 5 track_width dos afinamentos de VBUS somem: 18 → 13. O `rota_restante.py` usa a mesma lista de pátios (`THIN_REFS`).
+
+## Como foi feito
+
+O `rota_restante.py` ganhou o lote 6, em três sublotes: `6a`, `6b` e `6c`.
+
+```
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/rota_restante.py 6a|6b|6c
+```
+
+- **Arrancar e refazer.** Uma ligação que falha duas vezes da forma normal passa por uma busca A* nova:
+  - as trilhas autorizadas podem ser atravessadas, mas cada célula atravessada custa 25 vezes mais e cada via 40 vezes mais;
+  - quando o caminho achado cruza uma trilha autorizada, o segmento é cortado só onde atrapalha: na passagem e mais a folga dela, acrescida de 0,4 mm;
+  - as duas pontas que sobram ficam como segmentos novos, na mesma linha, camada, largura e rede do original;
+  - a ligação é roteada. Depois, um desvio de mesma rede e mesma largura liga de novo os dois pontos de corte. O desvio só pode usar a largura menor do original (0,15) a menos de 1 mm desses pontos;
+  - se o corte encosta na ponta do segmento, o segmento sai inteiro. Dois cortes que se encontram num ponto sem cobre viram um desvio só;
+  - se a ligação ou algum desvio não fecha, tudo volta como estava (*undo*). São 2 tentativas: margem 0,03 com janela de 6 mm, depois margem 0 com janela de 16 mm.
+- **Corrente.** No lote 6, uma trilha de Corrente fica a 0,8 em toda parte, menos dentro dos pátios do `.kicad_dru`. O afinamento a 0,3 junto do pino saiu, e nenhum afinamento novo apareceu no DRC.
+- **Trilhas autorizadas:**
+  - a trilha de +3V3 do J junto do U204: 6 segmentos fixos por uuid, de (71,67; 8,08) a (70,64; 11,05). O resto dela até o C207.1 ficou;
+  - as trilhas finas, fora da classe Corrente, a até 3 mm do pino de cada bolsão: R210.1, U202.10/11, C203.1, R206.1, R209.2 e R211.2;
+  - no 6c, junto do U202.10/11, também as trilhas de Corrente a até 5 mm;
+  - só as do In2 junto do C304.2 e sob o U301.21.
+- **Gravação:** o mesmo método dos lotes 1 a 5. O script encaixa no arquivo só os segmentos e vias novos e as 4 zonas repreenchidas, e tira só os segmentos arrancados. Depois confere bloco a bloco, por uuid, que todo o resto ficou idêntico: 4085 blocos no fim. `.kicad_pro` e `.kicad_prl` ficaram idênticos aos do main, e os footprints também (nenhuma peça foi movida).
+- **Conferência por sublote:**
+  - DRC sem violação nova de folga, curto, furo ou ponta solta;
+  - paridade 0;
+  - nenhuma rede com mais ligações faltando do que antes. O script sai com erro se algo disso falhar.
+
+## Por sublote
+
+Contagens tiradas dos relatórios do DRC (`build/drc_rota_lote6*.json`, fora do Git).
+
+| Sublote | Commit | Fechou | Não roteadas antes → depois |
+|---|---|---|---|
+| 6a: U204 e carregador | 00002d0 | BB_L2, VSYS R210.1, VBAT C203.1, VBUS R206.1, GND R209.2*, GND R211.2 | 11 (GND 4, VSYS 3, VBUS 1, VBAT 1, BB_L1 1, BB_L2 1) → 6 (GND 3, VSYS 2, BB_L1 1) |
+| 6b: codec | a23a4b8 | GND U301.21 (2 vias no pad) | 6 → 5 (GND 2, VSYS 2, BB_L1 1) |
+| 6c: o que restou | d5f7967 | GND R209.2, de novo | 5 → 4 (GND 1, VSYS 2, BB_L1 1) |
+
+\* No 6a, o R209.2 foi ligado por 0,78 mm de trilha a uma ilha do cobre GND de B.Cu. Um desvio feito depois, no mesmo sublote, soltou essa ilha do plano, e no repreenchimento final o R209.2 voltou a ficar solto. Por isso o 6a fecha 6 ligações e o DRC conta 5 a menos. No 6c, o R209.2 desce ao In1 por uma via própria em (67,63; 18,53).
+
+Ligações novas:
+- **BB_L2** (U204.2 → L201.2): 3,1 mm em B.Cu. A trilha vai a 0,8 e só afina, até 0,15, dentro do pátio do U204.
+- **VSYS** (R210.1 → via VSYS em (58,69; 15,51)): 3,4 mm a 0,8, em B.Cu e F.Cu, 1 via.
+- **VBAT** (C203.1 → via VBAT em (66,25; 17,70)): 4,5 mm a 0,8, em B.Cu e In2, 1 via.
+- **VBUS** (R206.1 → trilha VBUS em F.Cu): 3,4 mm, 0,5 dentro do pátio do R206 e 0,8 fora, 1 via.
+- **GND R209.2:** 0,78 mm a 0,3, mais a via do 6c.
+- **GND R211.2:** 0,44 mm a 0,2, 1 via.
+- **GND U301.21:** 2 vias de 0,5/0,3 dentro do pad central. Uma fica no centro, em (24,00; 35,50), entre as 4 janelas de pasta. A outra fica em (23,45; 34,95). Num pad de 1,65 mm, com as trilhas do In2 que estavam lá, não coube uma terceira com a distância de furo a furo.
+
+## Trilhas apagadas e refeitas
+
+27 segmentos apagados, todos refeitos com a mesma rede e largura, ligando os mesmos pontos. "Restos" são as pontas do segmento original que voltaram como segmentos novos.
+
+| Sublote | Rede | Camada | Largura | De – até (mm) | Compr. | uuid |
+|---|---|---|---|---|---|---|
+| 6a | +3V3 | B.Cu | 0,15 | (71,67; 8,08) – (70,95; 8,08) | 0,72 | aec31083-1f7b-4dc5-8cb3-358c01c0e2db |
+| 6a | +3V3 | B.Cu | 0,20 | (71,67; 8,49) – (71,67; 8,08) | 0,41 | c40a17e3-3c5d-466d-ab19-d537afde617b |
+| 6a | +3V3 | B.Cu | 0,15 | (71,76; 8,58) – (71,67; 8,49) | 0,12 | 2a252c93-d6cb-4677-aef6-5241a5231d1a |
+| 6a | +3V3 | B.Cu | 0,15 | (71,76; 8,79) – (71,76; 8,58) | 0,21 | a4c0fa06-0fe6-4cf7-b05e-f5c8077415d7 |
+| 6a | +3V3 | B.Cu | 0,20 | (71,76; 9,93) – (71,76; 8,79) | 1,14 | 8c10bf73-8c0d-467d-8760-620d9198f542 |
+| 6a | +3V3 | B.Cu | 0,20 | (70,64; 11,04) – (71,76; 9,93) | 1,58 | ac807682-fab9-4950-a4e4-5ece2d947b93 |
+| 6a | PWR_EN_S | B.Cu | 0,20 | (55,67; 13,54) – (55,06; 14,15) | 0,86 | 9643d65c-3685-46d9-82d0-beb999db2b77 |
+| 6a | PWR_EN_S | B.Cu | 0,15 | (55,60; 12,80) – (55,67; 12,87) | 0,10 | ffe6c304-1a27-446b-b013-0033945e5d61 |
+| 6a | PWR_EN_S | B.Cu | 0,15 | (55,67; 12,87) – (55,67; 13,54) | 0,68 | 9ab55575-c2c0-487d-b13b-cb5ae4343ffa |
+| 6a | PWR_EN_S | B.Cu | 0,20 | (55,60; 12,41) – (55,60; 12,80) | 0,38 | cc9e2b12-531e-44e3-aa4a-8e35a48cac0c |
+| 6a | VOL_SW_N | B.Cu | 0,15 | (57,03; 12,76) – (56,88; 12,62) | 0,20 | ffc5c778-d9ca-4ba6-a829-8f7cb73e95c5 |
+| 6a | VOL_SW_N | B.Cu | 0,20 | (57,03; 12,89) – (57,03; 12,76) | 0,13 | f63fa47e-03b5-4a57-8788-3cb54d7674e8 |
+| 6a | VOL_SW_N | B.Cu | 0,20 | (57,33; 13,19) – (57,03; 12,89) | 0,42 | a750ee13-fae4-47b7-bf45-2903caa81d2f |
+| 6a | VOL_SW_N | B.Cu | 0,15 | (56,88; 12,62) – (56,88; 12,54) | 0,08 | 842de9bc-4722-4c5d-87d2-dfc55a3cb25f |
+| 6a | VOL_SW_N | B.Cu | 0,20 | (56,88; 12,54) – (56,29; 11,94) | 0,84 | 15787104-d74d-48de-a3cb-fa5f3593db58 |
+| 6a | USB_HOLD | In2.Cu | 0,20 | (63,37; 14,88) – (57,48; 14,88) | 5,88 | 38aa3656-4cb0-4c83-82bf-1b5b27632884 |
+| 6a | CHG_STAT | F.Cu | 0,20 | (57,98; 13,71) – (53,88; 13,71) | 4,10 | 4ee38af3-caaa-4fd5-8997-a4bf48481553 |
+| 6a | CHGLED | In2.Cu | 0,20 | (62,60; 11,59) – (62,60; 13,60) | 2,01 | 9350a0bb-bd7e-47bc-a24d-1bf4fe07ebd7 |
+| 6a | BAT_NTC | In2.Cu | 0,20 | (63,99; 11,97) – (63,99; 21,56) | 9,59 | 3aa8a0d5-a272-41b3-aa2f-b7457235e809 |
+| 6a | VBUS_S | B.Cu | 0,20 | (51,91; 5,91) – (51,91; 15,96) | 10,05 | 93275340-7819-4692-b86a-f235dd562596 |
+| 6a | PWR_KEY | B.Cu | 0,20 | (66,90; 19,99) – (68,37; 18,53) | 2,07 | 4313f05a-43db-4b07-b92d-52ffe8d98d35 |
+| 6a | PWR_KEY | B.Cu | 0,20 | (63,59; 19,99) – (66,90; 19,99) | 3,32 | 73a4ef74-ddd9-45e0-85d8-600e45684928 |
+| 6a | PWR_KEY | B.Cu | 0,20 | (61,03; 17,44) – (62,93; 19,34) | 2,68 | 2856ad09-9bf9-4ec8-8ed7-66677bceb2e6 |
+| 6a | VBAT_S | B.Cu | 0,20 | (62,72; 18,61) – (64,40; 18,61) | 1,68 | 6b67b6b7-474c-44b1-9d02-b2106ed6c481 |
+| 6a | VBAT_S | B.Cu | 0,20 | (61,70; 17,60) – (62,72; 18,61) | 1,43 | fbe138ee-5e4c-4987-b2a0-ccbcc6f3b24e |
+| 6b | I2S_BCLK | In2.Cu | 0,20 | (22,51; 34,24) – (32,17; 43,91) | 13,67 | ac4c2a51-b7d9-404d-9630-bbe049e7d7aa |
+
+Para que serviu cada grupo:
+- **+3V3:** a trilha junto do U204;
+- **PWR_EN_S, VOL_SW_N, USB_HOLD e CHG_STAT:** o bolsão do R210.1;
+- **CHGLED e BAT_NTC:** o C203.1;
+- **VBUS_S:** o R206.1;
+- **PWR_KEY 4313f05a e 73a4ef74, VBAT_S:** o R209.2 e o R211.2;
+- **PWR_KEY 2856ad09:** o R211.2;
+- **I2S_BCLK:** as vias do U301.21.
+
+Os caminhos novos (desvios):
+
+| Rede | Largura | Liga (mm) | Comprimento | Camadas | Vias | Restos |
+|---|---|---|---|---|---|---|
+| +3V3 | 0,15 | (71,67; 8,08) – (70,95; 8,08) | 0,87 | B.Cu | 0 | 0 |
+| +3V3 | 0,2 (0,15 junto das pontas) | (71,67; 8,08) – (70,64; 11,05) | **20,85** | B.Cu, In2 | 2 | 0 |
+| PWR_EN_S | 0,2 (0,15 junto das pontas) | (55,06; 14,15) – (55,60; 12,41) | 1,96 | B.Cu | 0 | 0 |
+| VOL_SW_N | 0,2 (0,15 junto das pontas) | (57,33; 13,19) – (56,29; 11,94) | **15,07** | B.Cu, In2 | 2 | 0 |
+| USB_HOLD | 0,2 | (60,69; 14,88) – (58,49; 14,88) | 2,22 | In2 | 0 | 2 |
+| CHG_STAT | 0,2 | (57,44; 13,71) – (55,54; 13,71) | 3,06 | F.Cu | 0 | 2 |
+| CHGLED | 0,2 | (62,60; 11,59) – (62,60; 13,60) | 2,04 | In2 | 0 | 0 |
+| BAT_NTC | 0,2 | (63,99; 11,97) – (63,99; 14,03) | 2,45 | In2 | 0 | 1 |
+| VBUS_S | 0,2 | (51,91; 7,80) – (51,91; 10,00) | 4,45 | B.Cu | 0 | 2 |
+| PWR_KEY | 0,2 | (67,69; 19,20) – (66,15; 19,99) | 2,94 | B.Cu | 0 | 2 |
+| VBAT_S | 0,2 | (64,40; 18,61) – (62,07; 17,97) | 7,07 | B.Cu, In2 | 2 | 1 |
+| PWR_KEY | 0,2 | (61,82; 18,23) – (62,93; 19,34) | 6,19 | B.Cu, In2 | 2 | 1 |
+| I2S_BCLK | 0,2 | (22,51; 34,24) – (32,18; 43,91) | **21,13** | F.Cu, In2, B.Cu | 2 | 0 |
+
+Os uuids de cada desvio e de cada resto estão em `rota_restante.json` (lotes `6a`, `6b` e `6c`: `desvios`, `apagadas` e `arrancadas_por_ligacao`). O DRC confirma que nenhuma das redes refeitas ficou com ligação faltando.
+
+Três desvios saíram longos:
+- **+3V3 do U204:** 20,85 mm, contornando o L201 em B.Cu. O U204.1 e o C207.1 já estão ligados ao +3V3 do In2 pelas vias do J em (71,625; 8,00) e (69,20; 12,29), então este desvio só repete o que o plano já faz.
+- **VOL_SW_N:** 15,07 mm no lugar de 1,7 mm.
+- **I2S_BCLK:** 21,1 mm no lugar de 13,7 mm. Um corte curto, só em volta das vias, deixava a ponta presa entre SEL_A e I2S_LRCLK, então o segmento saiu inteiro.
+
+## DRC final
+
+`kicad-cli pcb drc --schematic-parity --severity-all`, no commit d5f7967:
+
+| Tipo | Quantidade |
+|---|---|
+| track_width | 13, as mesmas do J (3 EN_B, 6 VSYS em B.Cu, 4 MUX_S0 em In2) |
+| clearance, short, hole_clearance, hole_to_hole, track_dangling, via_dangling e demais | 0 |
+| paridade com o esquema | 0 |
+| ligações não feitas | **4**: GND 1, VSYS 2, BB_L1 1 |
+
+## O que ficou de fora (4)
+
+Cada ligação teve 2 tentativas normais e mais 2 com as trilhas autorizadas arrancadas.
+
+| Rede | Pinos | Posição (mm) | Motivo |
+|---|---|---|---|
+| BB_L1 | U204.4 – L201.1 | (70,88; 9,50) – (75,67; 9,00) | Mesmo sem a trilha de +3V3, não há saída. Ao norte do L201.2 passa o BB_VINA (x 71,47). Ao sul e entre os dois pads do L201 está o VBAT do lote 1: a via em (73,84; 10,20) e o trecho de 0,8 em B.Cu em x 74,14, de y 10,5 a 12,1. Em F.Cu passa por cima o VBAT de 0,8 em y 9,3 (64,4–72,8), também do lote 1, e ele tira o lugar de uma via junto do pino. Agora o desvio de +3V3 também contorna o L201 em B.Cu. |
+| VSYS | U204.5 – C202.1 | (70,88; 10,00) – (66,75; 9,48) | O pino 5 está do lado leste do U204 e o C202 do lado oeste. Por baixo do chip fica o pad central; ao sul ficam o EN_REQ e o +3V3 que vai ao C207. Em F.Cu passam o VBAT do lote 1 (y 9,3) e o SENS_EN (y 10,49). Essas trilhas não estão na lista autorizada. |
+| VSYS | U202.10/11 – resto do VSYS | (60,56; 9,25) – (64,40; 11,38) | É a saída OUT do carregador. Os pinos 10/11 dão para o C205 e o C213, a 0,66 mm. Não cabe via, a 0,5 com folga de 0,2, nem trilha de 0,8 fora do pátio do U202. Pads não se arrancam. No 6c, nem arrancando também as trilhas de Corrente a até 5 mm houve caminho. **Sem esta ligação, o VSYS do carregador não chega ao resto da placa.** |
+| GND | C304.2 | (21,18; 36,05) | Em B.Cu, o pad está fechado pelo +3V3: o laço C305.1–C304.1 e a trilha U301.12–C304.1. Em F.Cu passa por cima o HP_L (y 36,135). Mesmo sem as trilhas do In2 (AMP_SD e VOL_B), não há ponto de via a menos de 0,34 mm do pad. As trilhas de +3V3 do B.Cu não estavam autorizadas. |
+
+## Imagens
+
+Em `build/`, regeradas com `rota_restante.py fotos` e olhadas, com zoom no carregador e no codec. Vermelho = trilhas e vias novas, dos lotes 1 a 6; cinza = do J.
+- `rota_cima.png`: F.Cu.
+- `rota_baixo.png`: B.Cu visto de cima. Nela aparece o laço de +3V3 em volta do L201.
+- `rota_in2.png`: In2.Cu.
+
+## Perguntas para a gestão
+
+1. **VSYS do carregador (U202.10/11)** é a ligação mais importante que falta: sem ela, a saída do BQ24074 não alimenta nada. Os pinos dão para o C205 e o C213, sem lugar para via nem para 0,8. Saídas possíveis:
+   - mover o C205 ou o C213 cerca de 0,5 mm;
+   - aceitar uma via no pad do U202.10/11;
+   - aceitar VSYS a 0,3 por 1–2 mm até uma via, com uma regra no `.kicad_dru`.
+
+   Qual o J prefere?
+2. **BB_L1 e VSYS do U204.5** estão presos pelo VBAT que o lote 1 passou entre os pads do L201 (via em (73,84; 10,20), B.Cu em x 74,14 e F.Cu em y 9,3), e agora também pelo desvio de +3V3. Autoriza arrancar e refazer esse VBAT e o desvio de +3V3?
+3. **Desvio de +3V3 de 20,85 mm em volta do L201:** ele repete o caminho que o plano do In2 já faz, pelas vias do J em (71,625; 8,00) e (69,20; 12,29), e fecha o L201.1 em B.Cu. Pode ser apagado sem refazer, deixando o +3V3 do U204.1 ao C207.1 só pelo plano?
+4. **C304.2 (GND):** autoriza uma via no pad do C304.2, ou arrancar o laço de +3V3 C305.1–C304.1 em B.Cu?
+5. **Desvios longos de sinal:** VOL_SW_N (15 mm, 2 vias) e I2S_BCLK (21 mm, 2 vias, em 3 camadas). Servem assim, ou o J prefere refazê-los à mão?
