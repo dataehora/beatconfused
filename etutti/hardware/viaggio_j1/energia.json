@@ -1,0 +1,1112 @@
+{
+ "etapas": {
+  "a": {
+   "txt": "regiao limpa, pecas movidas, capacitores colados aos pinos e vias de GND",
+   "apagadas_por_rede": {
+    "+3V3": {
+     "trilhas": 41,
+     "vias": 10,
+     "comprimento_mm": 61.14
+    },
+    "BAT_NTC": {
+     "trilhas": 11,
+     "vias": 2,
+     "comprimento_mm": 15.35
+    },
+    "BB_L2": {
+     "trilhas": 8,
+     "vias": 0,
+     "comprimento_mm": 3.1
+    },
+    "BB_VINA": {
+     "trilhas": 27,
+     "vias": 0,
+     "comprimento_mm": 21.91
+    },
+    "CHGA": {
+     "trilhas": 6,
+     "vias": 1,
+     "comprimento_mm": 12.69
+    },
+    "CHGLED": {
+     "trilhas": 8,
+     "vias": 2,
+     "comprimento_mm": 11.74
+    },
+    "CHG_EN1": {
+     "trilhas": 9,
+     "vias": 3,
+     "comprimento_mm": 11.67
+    },
+    "CHG_ILIM": {
+     "trilhas": 9,
+     "vias": 2,
+     "comprimento_mm": 5.63
+    },
+    "CHG_ISET": {
+     "trilhas": 6,
+     "vias": 2,
+     "comprimento_mm": 4.45
+    },
+    "CHG_N": {
+     "trilhas": 15,
+     "vias": 0,
+     "comprimento_mm": 18.33
+    },
+    "CHG_STAT": {
+     "trilhas": 15,
+     "vias": 1,
+     "comprimento_mm": 11.35
+    },
+    "EN_REQ": {
+     "trilhas": 13,
+     "vias": 0,
+     "comprimento_mm": 14.05
+    },
+    "GND": {
+     "trilhas": 11,
+     "vias": 30,
+     "comprimento_mm": 6.27
+    },
+    "KEEP": {
+     "trilhas": 8,
+     "vias": 2,
+     "comprimento_mm": 24.24
+    },
+    "MUX_L_COM": {
+     "trilhas": 12,
+     "vias": 0,
+     "comprimento_mm": 34.4
+    },
+    "MUX_R_COM": {
+     "trilhas": 2,
+     "vias": 0,
+     "comprimento_mm": 30.83
+    },
+    "MUX_S0": {
+     "trilhas": 2,
+     "vias": 0,
+     "comprimento_mm": 30.6
+    },
+    "MUX_S1": {
+     "trilhas": 9,
+     "vias": 0,
+     "comprimento_mm": 34.41
+    },
+    "MUX_S2": {
+     "trilhas": 1,
+     "vias": 0,
+     "comprimento_mm": 30.0
+    },
+    "MUX_S3": {
+     "trilhas": 2,
+     "vias": 0,
+     "comprimento_mm": 30.88
+    },
+    "ONOFF": {
+     "trilhas": 9,
+     "vias": 1,
+     "comprimento_mm": 5.87
+    },
+    "PWR_EN": {
+     "trilhas": 5,
+     "vias": 2,
+     "comprimento_mm": 6.23
+    },
+    "PWR_EN_S": {
+     "trilhas": 15,
+     "vias": 2,
+     "comprimento_mm": 14.66
+    },
+    "PWR_KEY": {
+     "trilhas": 22,
+     "vias": 2,
+     "comprimento_mm": 17.33
+    },
+    "SENS_EN": {
+     "trilhas": 5,
+     "vias": 0,
+     "comprimento_mm": 30.37
+    },
+    "USB_HOLD": {
+     "trilhas": 13,
+     "vias": 4,
+     "comprimento_mm": 19.11
+    },
+    "VBAT": {
+     "trilhas": 23,
+     "vias": 6,
+     "comprimento_mm": 32.55
+    },
+    "VBAT_S": {
+     "trilhas": 29,
+     "vias": 3,
+     "comprimento_mm": 30.58
+    },
+    "VBUS": {
+     "trilhas": 29,
+     "vias": 4,
+     "comprimento_mm": 26.02
+    },
+    "VBUS_S": {
+     "trilhas": 14,
+     "vias": 0,
+     "comprimento_mm": 16.04
+    },
+    "VOL_SW": {
+     "trilhas": 3,
+     "vias": 1,
+     "comprimento_mm": 7.72
+    },
+    "VOL_SW_N": {
+     "trilhas": 27,
+     "vias": 3,
+     "comprimento_mm": 30.03
+    },
+    "VSYS": {
+     "trilhas": 31,
+     "vias": 5,
+     "comprimento_mm": 32.61
+    }
+   },
+   "cortes_na_borda": 26,
+   "movidas": [
+    {
+     "ref": "L201",
+     "de": [
+      74.175,
+      9.0,
+      180.0
+     ],
+     "para": [
+      73.75,
+      9.0,
+      90
+     ],
+     "distancia_mm": 0.42,
+     "uuid": "3474b457-ec8c-4c42-961b-7d8e2aa2e6b1"
+    },
+    {
+     "ref": "C208",
+     "de": [
+      69.744,
+      5.41,
+      0.0
+     ],
+     "para": [
+      69.7,
+      6.0,
+      180
+     ],
+     "distancia_mm": 0.59,
+     "uuid": "2541ec95-47f3-44a6-afc7-9ba7eed3982b"
+    },
+    {
+     "ref": "C202",
+     "de": [
+      65.5,
+      9.333,
+      90.0
+     ],
+     "para": [
+      69.6,
+      12.25,
+      180
+     ],
+     "distancia_mm": 5.03,
+     "uuid": "45f8d110-2e2f-4445-bc7a-3dfdf4519ea8"
+    },
+    {
+     "ref": "C203",
+     "de": [
+      65.058,
+      13.883,
+      0.0
+     ],
+     "para": [
+      65.45,
+      9.3,
+      270
+     ],
+     "distancia_mm": 4.6,
+     "uuid": "c52ee733-08f4-4cde-9a34-35f09f913fb5"
+    },
+    {
+     "ref": "C209",
+     "de": [
+      66.275,
+      12.118,
+      0.0
+     ],
+     "para": [
+      67.0,
+      8.75,
+      270
+     ],
+     "distancia_mm": 3.44,
+     "uuid": "bb827c40-915d-4c61-9e83-65d1a08c7fcd"
+    },
+    {
+     "ref": "R216",
+     "de": [
+      64.787,
+      3.718,
+      0.0
+     ],
+     "para": [
+      67.0,
+      6.85,
+      270
+     ],
+     "distancia_mm": 3.83,
+     "uuid": "bfd80243-4254-4496-97e1-7762c35f39da"
+    },
+    {
+     "ref": "C207",
+     "de": [
+      69.203,
+      12.289,
+      0.0
+     ],
+     "para": [
+      65.4,
+      13.9,
+      0
+     ],
+     "distancia_mm": 4.13,
+     "uuid": "4e56a0c7-9cad-497c-9823-859dbdceacd6"
+    },
+    {
+     "ref": "C206",
+     "de": [
+      65.673,
+      5.576,
+      0.0
+     ],
+     "para": [
+      64.67,
+      5.18,
+      180
+     ],
+     "distancia_mm": 1.08,
+     "uuid": "89db6d98-5475-4d1d-85cf-78b88f25767f"
+    },
+    {
+     "ref": "C213",
+     "de": [
+      59.181,
+      7.974,
+      90.0
+     ],
+     "para": [
+      54.58,
+      7.17,
+      180
+     ],
+     "distancia_mm": 4.67,
+     "uuid": "7519e1fb-1dfb-46e4-9c7c-862847cdaa7a"
+    },
+    {
+     "ref": "C205",
+     "de": [
+      59.181,
+      10.026,
+      90.0
+     ],
+     "para": [
+      59.58,
+      11.23,
+      180
+     ],
+     "distancia_mm": 1.27,
+     "uuid": "94c15b5d-ec6d-448c-9cfb-e4a936b4ca35"
+    }
+   ],
+   "uuids": [
+    "a3880ea1-1432-4a24-b1cf-84bb19792e25",
+    "112487cb-92e6-481a-a6d9-9f076d505bf8",
+    "1c603fa3-0298-4fd8-8843-2326c0c2a22b",
+    "60cc5f48-8975-4c4a-99da-b42e827e1283",
+    "ef66624b-b81a-40e3-871c-1b57e23d4db7",
+    "aacfd9a4-675c-4507-b321-6d59e3a2276f",
+    "a4bfd1d3-7918-4500-9dab-49185719eeef",
+    "0d27d200-d23f-4650-9a6f-792cbf1fa832",
+    "c69caddf-c094-46c1-a418-91b6a7ff8b1a",
+    "890c0f56-b972-4b74-861e-418bbff0dacf",
+    "0cca7832-39f5-42b5-b0e2-268bd7057690",
+    "58c767fb-d78b-4e9c-8cbf-47b8f5b69d32",
+    "01b41a21-2bf4-45c5-ba13-525ca540407e",
+    "0e741c1e-0b2a-4eaf-8665-a4cd58aaa399",
+    "79313a3c-51bb-4999-af1f-8ae29ed7c333",
+    "5346bf34-d291-4e80-87eb-cfe14702f884",
+    "12daf0ab-9688-4ab7-86b6-1f089290a7ee",
+    "be7a7d48-eff8-4dc3-ac53-d1b3b8932da2",
+    "455f6c01-4be0-497f-a562-cba7a571433c",
+    "feff79be-4696-42b8-8f67-d92464ef33fd",
+    "168644cd-489b-49af-951b-c9ba2a269d42",
+    "73a64208-055d-41b4-8312-649811d97a62",
+    "25495d1e-9b2a-43ba-9982-81bef980574d",
+    "a036a3b7-229f-41ca-b260-aa6412d8109b",
+    "81dbbfaa-bcdf-42d5-bda8-8fa3068b65ef",
+    "83b8e74d-cce9-4428-8217-dcb13f6bd1f3",
+    "6cc1db3f-1040-4513-ad4c-e1f7d242ac5c",
+    "2445277a-5dbe-422e-ad33-1872c5537dea",
+    "6637874e-60e9-4c77-8a9f-b9378baa5fb8",
+    "c267d24f-7ae5-4c4e-8375-409a1d777cf3",
+    "4e53de9e-1bdd-4dac-a69e-17ea69dfc1e1",
+    "8eca1859-2d12-421d-80cd-2967fa81397d",
+    "42e24d11-149a-43d9-ad00-7b95d4884d27",
+    "81c588e5-13ae-4925-8084-821f5752b55f",
+    "1fd25c14-73f7-4c7c-8517-7a0788f77610",
+    "3bad8680-c154-42f4-8742-e2839554f49a",
+    "538ebe16-0931-4a12-ae45-8189549ec68d",
+    "cc6be9cf-ca3d-465f-893d-6fbef564570d",
+    "13f5b706-ff7d-4ad2-a6ce-7f1ae7f2b007",
+    "78aad82d-767a-4523-8904-c03983233b0d",
+    "75fa6818-0018-4979-8f43-321bda78bbd5",
+    "399bf8f0-6b4a-4575-89e7-a086fde47494",
+    "cdee29aa-92b2-46a7-9dbf-89539921a600",
+    "6b779f27-db05-4af0-8655-77fea8586b4b",
+    "de6eff3e-9b7e-4885-8965-cd48d8505a51",
+    "e0d60063-1d75-4d3c-b9b1-fc07bd329289",
+    "70a9c11f-9b09-46fc-93b6-85468690f36c",
+    "9d500d2e-9bc0-45b6-9ca7-51af86a05533",
+    "75216e3d-c0ce-40e0-88f0-f3b056099898",
+    "0192102c-a269-466c-8e4c-7687d8c9942d",
+    "0ebf3ebb-f2f1-42b8-83f7-8871e8171871",
+    "44cd16bb-fcc2-429f-9b7c-a5bd3390d7ae",
+    "c851c4a8-9742-4baf-a5ed-94d9a8b45f4f",
+    "6eabb6d6-3934-4f4b-a9ec-21564821acd9",
+    "ea07bd54-3fae-4b1c-8ea8-15bf9eb3e407",
+    "0e8513ff-8e04-491d-a783-a9af12259a4f",
+    "baef7c2e-543d-4f2c-82c5-e287e72a73e2",
+    "d4485e8e-c47c-4b32-b5a7-97678a5dfa1e",
+    "299e0f63-9593-4677-a511-84f89dfc3c6c",
+    "c45dd336-6a44-4268-914f-1f0ce672e79d",
+    "ece50cb4-f124-4a74-baf1-d6d78aeb542b",
+    "69bfd0f7-0976-45d1-a344-f630cf7f64b0",
+    "03bcc5cb-b84f-476f-908f-3cf8e616d7bd",
+    "ce2dbf3e-1388-4d08-b321-a1e815e1ecd5",
+    "4cb370d1-c633-45ef-b9c3-d51b8964c4da",
+    "6ba11fee-1480-4b84-8336-104deb844211",
+    "d7fb5ada-32c3-4ac6-a042-7e5c2a53088d",
+    "f27d73a6-6528-4ab3-9adb-bfb6f8cfccf1",
+    "3bf4b303-08b3-4f14-8ae5-ef5ff4d7e76a",
+    "5d24162c-61d5-4b3b-af7c-76ea7e028602",
+    "2232f481-1982-4f00-88ea-acc4c8272187",
+    "7bd390ac-a1af-40be-a605-bd31bf81f805",
+    "fd4c8283-e227-4e9c-97da-19cfa8354d10",
+    "0d47585a-b982-4dfb-bdc5-e5fc8859aced",
+    "3bbdd0b5-74d6-44d5-943a-f1b9d7404b9c",
+    "84d86f35-68e6-4f81-8538-97682ee4a5af",
+    "fd077c3a-bd60-4a5c-a97e-86184d467b3d",
+    "eb8d8fc5-d40c-4fe3-b061-ae6630958ce9",
+    "603e3fe0-584a-48af-bec8-aa9d75e09958",
+    "33ef98e7-0d98-4bc5-9007-a7ae127356cd",
+    "59f5a3ee-3c13-474b-9095-7ffc498573b8",
+    "a9578b99-ab1a-4dd5-84d5-f6a440c036a0",
+    "d6ee3e66-4a3f-4f30-ad16-c6d316b075f2",
+    "b2da418b-55ba-498e-86b4-78ca0cfccc99",
+    "0fbf559a-c4a6-4894-8bfa-246f8c2150e1",
+    "c9a77a41-b6ae-4b13-a216-78d4103d6a49",
+    "80a575c7-9d24-452d-9f0a-726f00649b63",
+    "24d0e4e5-57b2-4c21-8d11-4d5386342594",
+    "df917df3-c676-4766-be40-56a6d46e7dad",
+    "093bd563-1f08-4659-864b-505ccd4810eb",
+    "c15f99a6-6ec0-47e9-9e5f-361f603f37d2",
+    "c5f1f1e8-b4d3-471d-8c55-eaff74bd9c31",
+    "d4e4aea5-f535-4b85-8f55-4e7f4b5d26f5",
+    "5836b422-54cb-4e63-b5e7-8feb41b2cca6",
+    "65f7e004-cf55-4954-bbb7-290c0b36e794",
+    "6137d7a2-2906-426e-8745-59f97e23bb40",
+    "4bad8c0f-087e-4f56-9165-a4f518915fc1",
+    "861aba67-35a1-4cb4-b2e9-98332b4c1f68",
+    "18da250e-f577-440a-971c-aaa654a33d17"
+   ],
+   "geometria_e_rotas": [
+    {
+     "o_que": "U204 PowerPAD",
+     "rede": "GND",
+     "via": [
+      69.475,
+      8.2
+     ]
+    },
+    {
+     "o_que": "U204 PowerPAD",
+     "rede": "GND",
+     "via": [
+      69.475,
+      9.0
+     ]
+    },
+    {
+     "o_que": "U204 PowerPAD",
+     "rede": "GND",
+     "via": [
+      69.475,
+      9.8
+     ]
+    },
+    {
+     "o_que": "U204.3 PGND -> PowerPAD",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       70.875,
+       9.0
+      ],
+      [
+       70.0,
+       9.0
+      ]
+     ],
+     "comprimento_mm": 0.88
+    },
+    {
+     "o_que": "U204.7 PS/SYNC -> PowerPAD",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       68.075,
+       9.5
+      ],
+      [
+       68.9,
+       9.5
+      ]
+     ],
+     "comprimento_mm": 0.83
+    },
+    {
+     "o_que": "U204.9 GND -> PowerPAD",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       68.075,
+       8.5
+      ],
+      [
+       68.9,
+       8.5
+      ]
+     ],
+     "comprimento_mm": 0.83
+    },
+    {
+     "o_que": "U204.1 VOUT -> C208.1 (saida do pino)",
+     "rede": "+3V3",
+     "camada": "B.Cu",
+     "largura": 0.3,
+     "pontos": [
+      [
+       70.875,
+       8.0
+      ],
+      [
+       70.875,
+       7.35
+      ]
+     ],
+     "comprimento_mm": 0.65
+    },
+    {
+     "o_que": "U204.1 VOUT -> C208.1",
+     "rede": "+3V3",
+     "camada": "B.Cu",
+     "largura": 0.6,
+     "pontos": [
+      [
+       70.875,
+       7.35
+      ],
+      [
+       70.7,
+       6.3
+      ]
+     ],
+     "comprimento_mm": 1.06
+    },
+    {
+     "o_que": "C208.2 -> PowerPAD (dedo de cima)",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.4,
+     "pontos": [
+      [
+       68.85,
+       6.5
+      ],
+      [
+       69.225,
+       7.45
+      ]
+     ],
+     "comprimento_mm": 1.02
+    },
+    {
+     "o_que": "U204.10 FB -> via",
+     "rede": "+3V3",
+     "camada": "B.Cu",
+     "largura": 0.2,
+     "pontos": [
+      [
+       68.075,
+       8.0
+      ],
+      [
+       68.0,
+       7.25
+      ]
+     ],
+     "comprimento_mm": 0.75
+    },
+    {
+     "o_que": "U204.10 FB -> In2",
+     "rede": "+3V3",
+     "via": [
+      68.0,
+      7.25
+     ]
+    },
+    {
+     "o_que": "U204.5 VIN -> C202.1 (saida do pino)",
+     "rede": "VSYS",
+     "camada": "B.Cu",
+     "largura": 0.3,
+     "pontos": [
+      [
+       70.875,
+       10.0
+      ],
+      [
+       70.875,
+       10.55
+      ]
+     ],
+     "comprimento_mm": 0.55
+    },
+    {
+     "o_que": "U204.5 VIN -> C202.1",
+     "rede": "VSYS",
+     "camada": "B.Cu",
+     "largura": 0.8,
+     "pontos": [
+      [
+       70.875,
+       10.55
+      ],
+      [
+       70.6,
+       11.75
+      ]
+     ],
+     "comprimento_mm": 1.23
+    },
+    {
+     "o_que": "C202.2 -> PowerPAD (dedo de baixo)",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.4,
+     "pontos": [
+      [
+       68.75,
+       11.6
+      ],
+      [
+       69.225,
+       10.6
+      ]
+     ],
+     "comprimento_mm": 1.11
+    },
+    {
+     "o_que": "U204.8 VINA -> C209.1",
+     "rede": "BB_VINA",
+     "camada": "B.Cu",
+     "largura": 0.2,
+     "pontos": [
+      [
+       68.075,
+       9.0
+      ],
+      [
+       67.85,
+       9.0
+      ],
+      [
+       67.2,
+       8.4
+      ]
+     ],
+     "comprimento_mm": 1.11
+    },
+    {
+     "o_que": "R216.2 -> C209.1",
+     "rede": "BB_VINA",
+     "camada": "B.Cu",
+     "largura": 0.2,
+     "pontos": [
+      [
+       67.0,
+       7.36
+      ],
+      [
+       67.0,
+       8.27
+      ]
+     ],
+     "comprimento_mm": 0.91
+    },
+    {
+     "o_que": "C209.2 -> U204.7",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.2,
+     "pontos": [
+      [
+       67.0,
+       9.3
+      ],
+      [
+       67.5,
+       9.5
+      ],
+      [
+       68.075,
+       9.5
+      ]
+     ],
+     "comprimento_mm": 1.11
+    },
+    {
+     "o_que": "U202 pad termico",
+     "rede": "GND",
+     "via": [
+      61.6,
+      8.6
+     ]
+    },
+    {
+     "o_que": "U202 pad termico",
+     "rede": "GND",
+     "via": [
+      61.6,
+      9.4
+     ]
+    },
+    {
+     "o_que": "U202 pad termico",
+     "rede": "GND",
+     "via": [
+      62.4,
+      8.6
+     ]
+    },
+    {
+     "o_que": "U202 pad termico",
+     "rede": "GND",
+     "via": [
+      62.4,
+      9.4
+     ]
+    },
+    {
+     "o_que": "U202.4 -> pad termico",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       63.438,
+       9.75
+      ],
+      [
+       62.6,
+       9.75
+      ]
+     ],
+     "comprimento_mm": 0.84
+    },
+    {
+     "o_que": "U202.5 -> pad termico",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       62.75,
+       10.438
+      ],
+      [
+       62.75,
+       9.6
+      ]
+     ],
+     "comprimento_mm": 0.84
+    },
+    {
+     "o_que": "U202.8 -> pad termico",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       61.25,
+       10.438
+      ],
+      [
+       61.25,
+       9.6
+      ]
+     ],
+     "comprimento_mm": 0.84
+    },
+    {
+     "o_que": "U202.13 IN -> C201.1 (saida do pino)",
+     "rede": "VBUS",
+     "camada": "B.Cu",
+     "largura": 0.3,
+     "pontos": [
+      [
+       61.25,
+       7.562
+      ],
+      [
+       61.1,
+       6.55
+      ]
+     ],
+     "comprimento_mm": 1.02
+    },
+    {
+     "o_que": "U202.13 IN -> C201.1",
+     "rede": "VBUS",
+     "camada": "B.Cu",
+     "largura": 0.8,
+     "pontos": [
+      [
+       61.1,
+       6.55
+      ],
+      [
+       60.4,
+       5.8
+      ]
+     ],
+     "comprimento_mm": 1.03
+    },
+    {
+     "o_que": "U202.2-3 BAT",
+     "rede": "VBAT",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       63.438,
+       8.75
+      ],
+      [
+       63.438,
+       9.25
+      ]
+     ],
+     "comprimento_mm": 0.5
+    },
+    {
+     "o_que": "U202.2/3 BAT -> C203.1 (saida do pino)",
+     "rede": "VBAT",
+     "camada": "B.Cu",
+     "largura": 0.3,
+     "pontos": [
+      [
+       63.438,
+       9.0
+      ],
+      [
+       64.35,
+       8.85
+      ]
+     ],
+     "comprimento_mm": 0.92
+    },
+    {
+     "o_que": "U202.2/3 BAT -> C203.1",
+     "rede": "VBAT",
+     "camada": "B.Cu",
+     "largura": 0.8,
+     "pontos": [
+      [
+       64.35,
+       8.85
+      ],
+      [
+       65.3,
+       8.5
+      ]
+     ],
+     "comprimento_mm": 1.01
+    },
+    {
+     "o_que": "U202.4 -> C203.2",
+     "rede": "GND",
+     "camada": "B.Cu",
+     "largura": 0.3,
+     "pontos": [
+      [
+       63.438,
+       9.75
+      ],
+      [
+       64.2,
+       10.15
+      ],
+      [
+       64.9,
+       10.25
+      ]
+     ],
+     "comprimento_mm": 1.57
+    },
+    {
+     "o_que": "C208.2 -> In1",
+     "rede": "GND",
+     "pino": "C208.2",
+     "vias": [
+      [
+       68.0,
+       6.0
+      ],
+      [
+       68.167,
+       5.127
+      ]
+     ]
+    },
+    {
+     "o_que": "C208.1 -> In2 (+3V3 do U204 direto ao plano)",
+     "rede": "+3V3",
+     "pino": "C208.1",
+     "vias": [
+      [
+       71.4,
+       6.0
+      ],
+      [
+       70.845,
+       5.019
+      ]
+     ]
+    },
+    {
+     "o_que": "C202.2 -> In1",
+     "rede": "GND",
+     "pino": "C202.2",
+     "vias": [
+      [
+       68.455,
+       13.231
+      ],
+      [
+       67.9,
+       12.25
+      ]
+     ]
+    },
+    {
+     "o_que": "C209.2 -> In1",
+     "rede": "GND",
+     "pino": "C209.2",
+     "vias": [
+      [
+       66.399,
+       9.479
+      ]
+     ]
+    },
+    {
+     "o_que": "C201.2 -> In1",
+     "rede": "GND",
+     "pino": "C201.2",
+     "vias": [
+      [
+       62.95,
+       5.463
+      ],
+      [
+       62.783,
+       4.589
+      ]
+     ]
+    },
+    {
+     "o_que": "C203.2 -> In1",
+     "rede": "GND",
+     "pino": "C203.2",
+     "vias": [
+      [
+       65.45,
+       11.0
+      ],
+      [
+       65.45,
+       9.5
+      ]
+     ]
+    },
+    {
+     "o_que": "C206.2 -> In1",
+     "rede": "GND",
+     "pino": "C206.2",
+     "vias": [
+      [
+       63.525,
+       4.199
+      ],
+      [
+       64.47,
+       5.18
+      ]
+     ]
+    },
+    {
+     "o_que": "C207.2 -> In1",
+     "rede": "GND",
+     "pino": "C207.2",
+     "vias": [
+      [
+       67.15,
+       13.9
+      ],
+      [
+       66.933,
+       14.773
+      ]
+     ]
+    },
+    {
+     "o_que": "C207.1 -> In2",
+     "rede": "+3V3",
+     "pino": "C207.1",
+     "vias": [
+      [
+       63.7,
+       13.9
+      ],
+      [
+       63.867,
+       14.773
+      ]
+     ]
+    },
+    {
+     "o_que": "C205.2 -> In1",
+     "rede": "GND",
+     "pino": "C205.2",
+     "vias": [
+      [
+       58.739,
+       11.77
+      ]
+     ]
+    },
+    {
+     "o_que": "C205.1 -> In2",
+     "rede": "+3V3",
+     "pino": "C205.1",
+     "vias": [
+      [
+       60.421,
+       11.77
+      ]
+     ]
+    },
+    {
+     "o_que": "C213.2 -> In1",
+     "rede": "GND",
+     "pino": "C213.2",
+     "vias": [
+      [
+       53.45,
+       7.17
+      ]
+     ]
+    }
+   ],
+   "gravacao": {
+    "removidas": 528,
+    "zonas_repreenchidas": 4,
+    "novas": 99,
+    "footprints_movidos": 10,
+    "blocos_identicos": 3548
+   },
+   "drc": {
+    "violacoes": {
+     "track_width": 7,
+     "track_dangling": 24
+    },
+    "nao_roteadas": {
+     "GND": 1,
+     "VBUS": 5,
+     "VOL_SW_N": 3,
+     "+3V3": 3,
+     "VSYS": 7,
+     "PWR_EN": 1,
+     "ONOFF": 1,
+     "SENS_EN": 1,
+     "MUX_S1": 1,
+     "MUX_S0": 1,
+     "VBAT_S": 3,
+     "MUX_S3": 1,
+     "MUX_R_COM": 1,
+     "MUX_L_COM": 1,
+     "MUX_S2": 1,
+     "VOL_SW": 1,
+     "KEEP": 2,
+     "CHG_STAT": 1,
+     "VBUS_S": 2,
+     "PWR_EN_S": 3,
+     "EN_REQ": 3,
+     "CHGA": 2,
+     "CHGLED": 1,
+     "BB_L1": 1,
+     "BB_L2": 1,
+     "CHG_N": 3,
+     "PWR_KEY": 2,
+     "VBAT": 2,
+     "BAT_NTC": 1,
+     "USB_HOLD": 1,
+     "CHG_EN1": 1,
+     "CHG_ILIM": 1,
+     "CHG_ISET": 1
+    },
+    "paridade": 0
+   },
+   "razoes": []
+  }
+ },
+ "regiao": [
+  50.0,
+  2.0,
+  80.0,
+  22.0
+ ],
+ "base": "845bcd6",
+ "drc_base": {
+  "violacoes": {
+   "track_width": 13
+  },
+  "nao_roteadas": {
+   "GND": 1,
+   "VSYS": 2,
+   "BB_L1": 1
+  },
+  "paridade": 0
+ }
+}
