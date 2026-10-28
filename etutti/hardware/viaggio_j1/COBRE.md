@@ -460,3 +460,200 @@ Em `build/`, regeradas com `rota_restante.py fotos` e olhadas, com zoom no carre
 3. **Desvio de +3V3 de 20,85 mm em volta do L201:** ele repete o caminho que o plano do In2 já faz, pelas vias do J em (71,625; 8,00) e (69,20; 12,29), e fecha o L201.1 em B.Cu. Pode ser apagado sem refazer, deixando o +3V3 do U204.1 ao C207.1 só pelo plano?
 4. **C304.2 (GND):** autoriza uma via no pad do C304.2, ou arrancar o laço de +3V3 C305.1–C304.1 em B.Cu?
 5. **Desvios longos de sinal:** VOL_SW_N (15 mm, 2 vias) e I2S_BCLK (21 mm, 2 vias, em 3 camadas). Servem assim, ou o J prefere refazê-los à mão?
+
+# Bloco de energia (28 out 2026)
+
+Agente eletrônica, branch `viaggio-j1-energia`, a partir do `main` depois do PR #125 (845bcd6). Decisão da gestão: em vez de fechar na marra as 4 ligações que sobraram do "Fechamento", refazer o carregador E3 (BQ24074, U202) e o conversor E4 (TPS63001, U204 + L201) com layout limpo.
+
+Script: `energia.py` (python do KiCad 10). Ele usa o roteador e a gravação do `rota_restante.py` (importados, sem mudar o comportamento dele).
+
+```
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/energia.py a|b|c|d
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/energia.py fotos <nome>
+```
+
+- A etapa `a` sempre parte da placa do 845bcd6. As etapas `b`, `c` e `d` partem da placa que a etapa anterior deixou; rodar de novo uma delas volta antes à cópia guardada em `build/energia_antes_de_<etapa>.kicad_pcb` (fora do Git).
+- O que cada etapa fez fica em `energia.json`: uuids, geometria, rotas, razões, DRC.
+- **Gravação:** o mesmo método do PR #120/#123. O script encaixa no arquivo original só as trilhas e vias novas, tira as apagadas, troca os footprints movidos e repreenche as 4 zonas. Depois confere bloco a bloco, por uuid, que todo o resto ficou idêntico (3715 blocos no fim). `.kicad_pro`, `.kicad_prl` e `.kicad_dru` não mudaram.
+- **Roteador:** A* em grade de 0,05 mm em F.Cu, In2 e B.Cu, como no `rota_restante.py`. Aqui ele só pode andar dentro da região, mais 0,6 mm para fora (para pegar as pontas cortadas). Vias só dentro da região.
+- **Geometria calculada (etapas a e b):** cada trilha e via é conferida com as formas exatas do pcbnew antes de entrar. A folga é a da classe mais 0,005.
+
+## Datasheets
+
+Lidos com WebFetch. A ferramenta guardou os PDFs sozinha na pasta temporária da sessão, fora do repositório.
+- **BQ24074, SLUS810N, "Layout Guidelines":**
+  - capacitores de IN e de OUT colados ao chip, com trilhas curtas até IN, OUT e o pad térmico (GND);
+  - caminhos de IN e OUT largos para a corrente;
+  - o pad térmico é a ligação principal de GND.
+- **TPS63001, SLVS653, §10.1:**
+  - trilhas largas e curtas no caminho da corrente e no GND de potência;
+  - capacitor de entrada, capacitor de saída e indutor o mais perto possível do chip;
+  - GND de potência e GND de controle juntos num ponto, junto de um pino de GND do chip.
+
+## Região
+
+**x 50–80, y 2–22 mm** (frame do KiCad). A borda de cima fica fora da placa (y 2,5). Contém todos os passivos de E3/E4, o L201 e as trilhas deles. Fora dela ficam só as pontas que levam ao J201, ao J101 e ao amplificador, e o J202, cujos pads entram 0,1 mm na região.
+
+## O que foi apagado
+
+Foram apagadas 440 trilhas e 88 vias, de 33 redes. O par USB (USB_DP/USB_DN) ficou. As 26 trilhas que cruzavam a borda foram cortadas nela, e a parte de fora ficou como trilha nova.
+
+| Rede | Trilhas | Vias | Comprimento na região (mm) |
+|---|---|---|---|
+| +3V3 | 41 | 10 | 61,14 |
+| BAT_NTC | 11 | 2 | 15,35 |
+| BB_L2 | 8 | 0 | 3,10 |
+| BB_VINA | 27 | 0 | 21,91 |
+| CHGA | 6 | 1 | 12,69 |
+| CHGLED | 8 | 2 | 11,74 |
+| CHG_EN1 | 9 | 3 | 11,67 |
+| CHG_ILIM | 9 | 2 | 5,63 |
+| CHG_ISET | 6 | 2 | 4,45 |
+| CHG_N | 15 | 0 | 18,33 |
+| CHG_STAT | 15 | 1 | 11,35 |
+| EN_REQ | 13 | 0 | 14,05 |
+| GND | 11 | 30 | 6,27 |
+| KEEP | 8 | 2 | 24,24 |
+| MUX_L_COM | 12 | 0 | 34,40 |
+| MUX_R_COM | 2 | 0 | 30,83 |
+| MUX_S0 | 2 | 0 | 30,60 |
+| MUX_S1 | 9 | 0 | 34,41 |
+| MUX_S2 | 1 | 0 | 30,00 |
+| MUX_S3 | 2 | 0 | 30,88 |
+| ONOFF | 9 | 1 | 5,87 |
+| PWR_EN | 5 | 2 | 6,23 |
+| PWR_EN_S | 15 | 2 | 14,66 |
+| PWR_KEY | 22 | 2 | 17,33 |
+| SENS_EN | 5 | 0 | 30,37 |
+| USB_HOLD | 13 | 4 | 19,11 |
+| VBAT | 23 | 6 | 32,55 |
+| VBAT_S | 29 | 3 | 30,58 |
+| VBUS | 29 | 4 | 26,02 |
+| VBUS_S | 14 | 0 | 16,04 |
+| VOL_SW | 3 | 1 | 7,72 |
+| VOL_SW_N | 27 | 3 | 30,03 |
+| VSYS | 31 | 5 | 32,61 |
+
+Entre as trilhas apagadas estão o desvio de +3V3 de 20,85 mm em volta do L201 (Fechamento, 6a) e as 6 trilhas de VSYS em B.Cu com track_width do J.
+
+## O que foi movido
+
+Todas as peças continuam no verso, dentro do perfil e fora dos anéis M2. O DRC não acusa sobreposição de pátios.
+
+| Peça | De (x; y; rot) | Para (x; y; rot) | Distância | Por quê |
+|---|---|---|---|---|
+| L201 | 74,175; 9,00; 180 | 73,75; 9,00; 90 | 0,42 mm | pads um em cima do outro: L201.2 de frente ao U204.2 (L2), L201.1 de frente ao U204.4 (L1) |
+| C208 | 69,744; 5,41; 0 | 69,70; 6,00; 180 | 0,59 mm | capacitor de saída, VOUT logo acima do U204.1 |
+| C202 | 65,50; 9,333; 90 | 69,60; 12,25; 180 | 5,03 mm | vira o capacitor de entrada do U204: VSYS logo abaixo do U204.5 (VIN) |
+| C203 | 65,058; 13,883; 0 | 65,45; 9,30; 270 | 4,60 mm | capacitor da bateria de frente aos pinos BAT (2/3) e GND (4) do U202 |
+| C209 | 66,275; 12,118; 0 | 67,00; 8,75; 270 | 3,44 mm | filtro do VINA junto dos pinos 8 (VINA) e 7 (GND) do U204 |
+| R216 | 64,787; 3,718; 0 | 67,00; 6,85; 270 | 3,83 mm | logo acima do C209.1, com o VSYS ao lado do C206.1 |
+| C207 | 69,203; 12,289; 0 | 65,40; 13,90; 0 | 4,13 mm | saiu do lado da entrada do U204; fica como reserva de +3V3 no plano do In2 |
+| C206 | 65,673; 5,576; 0 | 64,67; 5,18; 180 | 1,08 mm | VSYS no norte do bloco, com o pad de VSYS colado ao R216.1 |
+| C213 | 59,181; 7,974; 90 | 54,58; 7,17; 180 | 4,67 mm | liberar o corredor a oeste dos pinos OUT (10/11) do U202 |
+| C205 | 59,181; 10,026; 90 | 58,58; 6,83; 180 | 3,25 mm | o mesmo corredor; no 1º lugar tentado (59,58; 11,23) ele fechava a saída do CHG_N |
+| C304 | 21,181; 36,526; 90 | 20,05; 35,45; 90 | 1,56 mm | GND do codec, veja a etapa d |
+
+O C202 tem 5,03 mm, um pouco acima dos ~5 mm. Ele tem o mesmo valor e a mesma rede do C206 (10 µF VSYS/GND 0805). Era a única peça que chegava ao pino VIN do U204; o C206 precisaria andar 8 mm.
+
+## Etapas
+
+As contagens são as do DRC (`kicad-cli pcb drc --schematic-parity --severity-all`), em `build/drc_energia_*.json`, fora do Git. O DRC de base (845bcd6) dava 13 track_width (do J), paridade 0 e 4 ligações faltando: VSYS 2, BB_L1 1, GND 1.
+
+| Etapa | Commit | Violações | Paridade | Não roteadas |
+|---|---|---|---|---|
+| a: região limpa, peças movidas, capacitores colados, vias de GND | c23e3de, refeita em f130550 | track_width 7, track_dangling 24 (cortes na borda) | 0 | 60 |
+| b: laço do indutor | bbdd2cf, refeita em f130550 | track_width 7, track_dangling 24 | 0 | 58 (BB_L1 e BB_L2 fechados) |
+| c: VBUS, VSYS, VBAT | 6a43f14, refeita em f130550 | track_width 7, track_dangling 22 | 0 | 44 (VBUS, VSYS e VBAT fechados) |
+| d: sinais, redes cortadas, +3V3/GND, C304 | 9b92c57 | track_width 7 | 0 | **0** |
+
+Em todas: 0 clearance, 0 short, 0 hole_clearance, 0 hole_to_hole, 0 courtyard. As 7 track_width são do J, fora da região: 3 de EN_B em B.Cu (144,1–144,7; 59,1) e 4 de MUX_S0 no In2 (25,0–25,2; 10,1–10,2 e 120,78; 8,16). Das 13 da base, sumiram as 6 de VSYS em B.Cu, que ficavam dentro da região. A track_dangling some na etapa d, quando todas as pontas cortadas foram religadas.
+
+A etapa a foi refeita depois da primeira tentativa da d. Nela, o C205 em (59,58; 11,23) e as vias dele fechavam a saída do CHG_N do U202.9. O C205 foi para (58,58; 6,83) e as etapas a–c rodaram de novo, num commit só (f130550).
+
+### a) Capacitores colados aos pinos, GND, pads térmicos (B.Cu, o lado dos chips)
+
+- **U204:**
+  - 3 vias no PowerPAD, em (69,475; 8,2 / 9,0 / 9,8);
+  - pinos de GND (3 PGND, 7 PS/SYNC, 9 GND) ao PowerPAD por 0,24;
+  - VOUT (pino 1) sobe 1,7 mm até o C208.1: 0,3 na saída do pino, depois 0,6;
+  - C208.2 vai ao dedo de cima do PowerPAD (0,4) e tem 2 vias ao In1;
+  - VIN (pino 5) desce 1,8 mm até o C202.1: 0,3 na saída do pino, depois 0,8;
+  - C202.2 vai ao dedo de baixo do PowerPAD (0,4) e tem 2 vias ao In1. O laço de entrada fica fechado no próprio chip.
+- **VINA:**
+  - U204.8 → C209.1 ← R216.2;
+  - C209.2 vai ao U204.7 e tem 1 via ao In1.
+- **U202:**
+  - 4 vias no pad térmico;
+  - pinos de GND 4, 5 e 8 ligados a ele;
+  - IN (pino 13) → C201.1: 0,3 na saída do pino, depois 0,8;
+  - BAT (pinos 2/3, unidos) → C203.1: 0,3, depois 0,8;
+  - GND do pino 4 → C203.2.
+- **Vias de GND ao In1 nos pads de GND:**
+  - 2 em cada um: C201, C203, C206, C207, C208, C202;
+  - 1 em cada um: C209, C205, C213.
+- **Vias de +3V3 ao In2:**
+  - 2 no C208.1 e 2 no C207.1;
+  - 1 no C205.1;
+  - 1 só do FB (U204.10), em (68,00; 7,25).
+
+### b) Laço do indutor
+
+U204.2 (L2) → L201.2 e U204.4 (L1) → L201.1, em B.Cu, sem vias. Cada lado tem 1,7 mm: 0,9 mm a 0,24 do pino até a borda do pátio do U204, e 0,85 mm a 0,8 até o pad do indutor. Mais largo junto do pino não cabe: o VOUT (pino 1) e o VIN (pino 5) estão a 0,26 mm.
+
+### c) VBUS, VSYS, VBAT
+
+As três redes saem a 0,8 fora dos pátios. Nenhum afinamento novo aparece no DRC.
+- **VSYS:**
+  - sai dos pinos OUT do U202 (10/11), pelo lado oeste, por 0,3 até 2 vias em (59,30; 9,0) e (58,60; 9,0), no corredor que o C205 e o C213 liberaram;
+  - em F.Cu chega à via do C202.1 (entrada do U204), ao R216/C206, ao R210, ao Q203 e ao corte da borda de baixo, que vai ao amplificador.
+- **VBAT:** do C203.1, desce em F.Cu até o R208 e o J202.
+- **VBUS:** do corte da borda esquerda (J201/J101) ao Q201, R214, R205, R206 e C201.
+- Razão comprimento/caminho direto: 0,47 a 1,32.
+
+### d) Sinais, redes cortadas, +3V3/GND e C304
+
+- **Sinais da região (20 redes), pelo roteador:**
+  - VOL_SW_N primeiro: numa ordem alfabética ele contornava o D205 (razão 2,17), e primeiro sai por baixo do D205 (razão ≤ 0,97);
+  - depois BAT_NTC, BB_VINA, CHGA, CHGLED, CHG_EN1, CHG_ILIM, CHG_ISET, CHG_N, CHG_STAT, EN_REQ, KEEP, ONOFF, PWR_EN, PWR_EN_S, PWR_KEY, USB_HOLD, VBAT_S, VBUS_S e VOL_SW.
+- **Redes de fora que só atravessavam a região:**
+  - **MUX_S0, MUX_R_COM e MUX_S3:** o barramento do J na borda de cima, no In2, a 0,3 de passo. Elas voltaram ao caminho original do J. As trilhas foram conferidas na folga exata do DRC, porque o barramento já está a exatamente 0,1.
+  - **MUX_L_COM e MUX_S1:** passavam por baixo do U202 e do U204, a 2,2 e 2,5 mm do centro do L201. As pontas cortadas, a 0,3 de passo, foram abertas em leque à mão (0,6 a 1,6 mm) e depois roteadas. O MUX_L_COM foi roteado com um raio de exclusão de 5,5 mm em volta do L201 e ficou a **5,5 mm** do centro do L201. O MUX_S1 é sinal de endereço e cruza por cima do L201 em F.Cu, a 1,8 mm do centro, com o GND do In1 entre os dois.
+  - **MUX_S2 e SENS_EN:** pelo roteador.
+- **Razão comprimento/caminho direto de todas as rotas da etapa d:** 0,54 a 1,31. Nenhuma passa de 2. A lista inteira está em `energia.json` (`razoes`).
+- **+3V3 e GND:** 3 ligações de +3V3 refeitas (0,35–0,55 mm). Depois vieram 68 vias de costura de GND, numa grade de 1,5 mm, só onde a via cai dentro do cobre de GND de F.Cu ou B.Cu e cabe com as folgas.
+- **+3V3 do U204:** nada de +3V3 contorna o L201. O VOUT vai ao C208.1, com 2 vias ao In2 ali, e o FB tem a via dele. A trilha de +3V3 mais perto do L201 é a saída do pino 1, a 3,0 mm do centro.
+- **C304 (GND do codec):**
+  - procurei todas as posições a até 2 mm com uma via própria fora do pad, e nenhuma serviu. O bolsão é fechado pelo laço de +3V3 em B.Cu, pelo HP_L e pelo VOL_SW_N em F.Cu e pelas linhas do In2;
+  - o C304 foi para (20,05; 35,45), a 1,56 mm. O pad 2 (GND) agora fica sobre a via de costura de GND que já existia em (20,00; 35,00) e vai ao In1;
+  - o pad 1 (+3V3) liga à trilha de +3V3 do J (C305.1–C304.1, x 20,631) por 0,58 mm de B.Cu a 0,2;
+  - as trilhas de +3V3 que terminavam no lugar antigo do pad continuam ligadas entre si.
+
+## DRC final (commit 9b92c57)
+
+| Tipo | Quantidade |
+|---|---|
+| track_width | 7, todas do J e fora da região (3 EN_B, 4 MUX_S0) |
+| track_dangling, via_dangling | 0 |
+| clearance, shorting_items, hole_clearance, hole_to_hole, courtyards_overlap, solder_mask_bridge | 0 |
+| paridade com o esquema | 0 |
+| ligações não feitas | **0** em todas as redes (antes: VSYS 2, BB_L1 1, GND 1) |
+
+Nenhuma rede de fora da região piorou: todas estão com 0 ligações faltando.
+
+## Imagens
+
+Em `build/`, olhadas uma a uma. Na região, a cor da trilha indica a rede: vermelho VBUS, magenta VSYS, marrom VBAT, verde BB_L1/L2, azul GND, laranja +3V3 e cinza sinais. O retângulo verde marca a região.
+- **Antes (845bcd6):** `energia_antes_fcu.png`, `energia_antes_bcu.png` (B.Cu visto de cima) e `energia_antes_in2.png`.
+- **Depois (etapa d):** `energia_d_fcu.png`, `energia_d_bcu.png` e `energia_d_in2.png`.
+- **Etapas intermediárias:** `energia_a_*.png`, `energia_b_*.png` e `energia_c_*.png`.
+- **C304:** `energia_c304_antes_*.png` e `energia_c304_depois_*.png` (F.Cu, B.Cu, In2).
+
+## Perguntas para a gestão
+
+1. **C202 e C206 trocaram de papel.** O C202, que no esquema é do E3 (saída do carregador), agora é o capacitor de entrada do U204. O C206, do E4, ficou como capacitor de VSYS no norte do bloco. Valor e rede são os mesmos. Trocamos o campo `Codigo` (e a referência) no esquema, ou fica assim?
+2. **Saída do carregador.** Os pinos OUT do BQ24074 (10/11) dão para oeste, e entre eles e o D205 só cabem as 2 vias. Nenhum capacitor de VSYS fica colado a esses pinos: o mais perto, por F.Cu a 0,8, é o C206, a ~6 mm. O BQ24074 é linear, então isso pesa menos que no conversor. Aceita assim, ou autoriza mover o D205, ou um capacitor 0603 de VSYS a mais junto dos pinos 10/11?
+3. **C207 (10 µF de +3V3)** não coube ao lado do C208 dentro dos 5 mm. Ele ficou em (65,40; 13,90), ligado ao plano do In2 por 2 vias. Autoriza levá-lo para junto do C208 (cerca de 7 mm)?
+4. **C304 com via no pad.** A via de GND agora fica dentro do pad 2 do C304, aberta na máscara, e pode puxar solda na montagem. Pedimos à JLC via preenchida e tampada (via-in-pad, custo a mais), aceitamos assim, ou o J abre espaço no laço de +3V3 C305.1–C304.1 para uma via fora do pad?
+5. **MUX_L_COM a 5,5 mm do centro do L201,** e não aos ≥ 10 mm da SPEC (C3): a ponta cortada na borda x = 80 já está a 6,3 mm dele. Para chegar a 10 mm, a região teria de ir até x ≈ 90, por cima do H1. Amplio a região ou fica assim? Antes, com o J, eram 2,2 mm.
+6. **Entradas de pino a 0,24–0,3** nos pinos do U202 e do U204 (VIN, VOUT, L1, L2, IN, BAT, OUT), dentro dos pátios, como o `.kicad_dru` permite. O laço do indutor não tem como ser mais largo junto do chip: os pinos têm 0,24 e estão a 0,5 de passo. Serve?
