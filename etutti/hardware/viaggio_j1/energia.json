@@ -1217,6 +1217,619 @@
     "paridade": 0
    },
    "razoes": []
+  },
+  "c": {
+   "txt": "VBUS, VSYS e VBAT",
+   "fora": [],
+   "uuids": [
+    "c6856530-6ac0-49ca-9939-321a37ae53ff",
+    "fe8c1011-edfe-4574-8492-7d45ccc642cb",
+    "c12de9d1-3972-4011-ad8e-1e6f20518501",
+    "f96d8773-e845-46fa-96a7-e37d4fb21d2d",
+    "d3f8324e-c363-4f09-835c-ab857b5b6313",
+    "203feb2c-02cb-4be5-a24e-3873f315f6d7",
+    "9664bc05-72d0-4f18-aae6-8dec59636bdf",
+    "065c4756-fc9f-4434-bbfc-5c709d2938c1",
+    "4432e83b-f467-4178-a235-241b04ceac58",
+    "99e14d54-ba96-4aa3-a48f-d7e9575227c9",
+    "fb23239a-d68a-43e6-ad28-36232059c43b",
+    "f93cdc19-7779-4e46-a416-12692f3e146e",
+    "0c7cd44c-a861-413a-b9ac-8d2b13a2399b",
+    "4b6b20a7-e69f-4487-b89e-7beba900514d",
+    "f8d128a3-f82a-44ff-ad48-e9ad9ac914a5",
+    "a4459014-1f67-426c-8052-027e970d85be",
+    "9bd33bbb-f497-4f84-848b-f5a873c2c0ad",
+    "9be157fc-cf8e-4218-8095-3e2d96ffddd2",
+    "dc1aebf7-1586-433f-8a51-86c36a846f1f",
+    "7f7a07fc-4106-4e6a-95fc-3c8022b9f094",
+    "b53d3c1e-1840-4734-a84b-ef4ed2db6b95",
+    "98196411-6136-4b24-a4c6-375e3fede901",
+    "db7964bc-9c97-4256-8fa1-e92067e766b2",
+    "74555a39-affb-4026-ad74-2fa1d90fae98",
+    "8ea4b0f4-a2ed-48ad-ba6b-a746bb231b4d",
+    "0ef7be16-05ce-4a89-8f9c-3a38c671647e",
+    "b1bae338-dea8-48b5-9a9a-bae2a3ab1c5d",
+    "315a9742-5c53-4a08-9a8a-a752edb7c8be",
+    "1d1b9527-09b2-431c-b921-af821eac8331",
+    "7055905b-9159-4e08-9458-a77e0f125c32",
+    "101057b3-a001-440c-8975-e69e9864b93d",
+    "bbbf2faa-c7a8-444b-98ce-064e82074566",
+    "4606f1a9-37e4-47b0-b449-baf210c27cf9",
+    "11b313d0-64ad-4050-8c32-d33301fc747a",
+    "07ccdb25-27da-455a-908f-84e3fc5b67a5",
+    "aef4eda6-ca21-4fee-ae10-4a57b4e62682",
+    "c050e320-095a-43da-8d16-c4be446377dc",
+    "6f746f58-6bf9-494f-bdf8-e5cc450b2a85",
+    "e28b468f-4e50-42b8-9888-ac5f721ce4c1",
+    "7f59f2a8-4550-4654-8323-5bdf319a58c0",
+    "42b04e06-2f27-45cd-93be-7b2091273cb5",
+    "1dfc0718-cd61-44c1-80f4-85e9c3bc05f8",
+    "1824b292-faa7-464b-bd70-69cf7322b034",
+    "63ba8851-1aa3-4c1f-9a68-b47a621d8337",
+    "5d28c3b0-0a62-49f3-8d96-49434c8d513c",
+    "6abd67e1-f58e-44cd-8a75-87664257f630",
+    "3e91f825-eaf0-48a4-8311-046c596a0bb4",
+    "370db795-ee41-4110-942e-42ebb45afee1",
+    "d303f940-dca9-4baf-855e-bd6c147ae579",
+    "a91b8dc1-2ec6-45f4-aa0f-17e13fcd1ba0",
+    "435e2513-883e-4f61-8071-91e27e91adf9",
+    "9eb5febb-4210-4194-a40f-d607ced805d7",
+    "1f3e2913-6633-4b82-ad88-db1690904cc8",
+    "03cf871f-8440-4185-add8-75eaff87ae78",
+    "06615611-c1d4-47ae-823f-0d4acda8ab38"
+   ],
+   "geometria_e_rotas": [
+    {
+     "o_que": "U202.10-11 OUT",
+     "rede": "VSYS",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       60.562,
+       8.75
+      ],
+      [
+       60.562,
+       9.25
+      ]
+     ],
+     "comprimento_mm": 0.5
+    },
+    {
+     "o_que": "U202.10/11 OUT (saida do pino)",
+     "rede": "VSYS",
+     "camada": "B.Cu",
+     "largura": 0.3,
+     "pontos": [
+      [
+       60.562,
+       9.0
+      ],
+      [
+       59.5,
+       9.0
+      ]
+     ],
+     "comprimento_mm": 1.06
+    },
+    {
+     "o_que": "U202.10/11 OUT -> vias",
+     "rede": "VSYS",
+     "camada": "B.Cu",
+     "largura": 0.8,
+     "pontos": [
+      [
+       59.5,
+       9.0
+      ],
+      [
+       58.6,
+       9.0
+      ]
+     ],
+     "comprimento_mm": 0.9
+    },
+    {
+     "o_que": "U202 OUT -> F.Cu",
+     "rede": "VSYS",
+     "via": [
+      59.3,
+      9.0
+     ]
+    },
+    {
+     "o_que": "U202 OUT -> F.Cu",
+     "rede": "VSYS",
+     "via": [
+      58.6,
+      9.0
+     ]
+    },
+    {
+     "net": "VSYS",
+     "de": [
+      65.62,
+      5.18
+     ],
+     "ate": [
+      67.0,
+      6.34
+     ],
+     "comprimento_mm": 0.84,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VSYS",
+     "de": [
+      56.29,
+      12.96
+     ],
+     "ate": [
+      58.88,
+      16.49
+     ],
+     "comprimento_mm": 3.75,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VSYS",
+     "de": [
+      56.29,
+      12.96
+     ],
+     "ate": [
+      58.6,
+      9.0
+     ],
+     "comprimento_mm": 4.91,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VSYS",
+     "de": [
+      67.0,
+      6.34
+     ],
+     "ate": [
+      70.88,
+      10.0
+     ],
+     "comprimento_mm": 7.04,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VSYS",
+     "de": [
+      66.3,
+      8.0
+     ],
+     "ate": [
+      60.56,
+      8.75
+     ],
+     "comprimento_mm": 7.09,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VSYS",
+     "de": [
+      60.9,
+      22.0
+     ],
+     "ate": [
+      58.88,
+      16.49
+     ],
+     "comprimento_mm": 7.04,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBAT",
+     "de": [
+      66.5,
+      23.65
+     ],
+     "ate": [
+      66.83,
+      18.05
+     ],
+     "comprimento_mm": 3.92,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBAT",
+     "de": [
+      63.44,
+      9.25
+     ],
+     "ate": [
+      66.83,
+      18.05
+     ],
+     "comprimento_mm": 9.51,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 2,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      53.11,
+      6.42
+     ],
+     "ate": [
+      54.4,
+      6.22
+     ],
+     "comprimento_mm": 0.79,
+     "larguras_mm": [
+      0.5,
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      53.11,
+      6.42
+     ],
+     "ate": [
+      50.0,
+      6.38
+     ],
+     "comprimento_mm": 2.69,
+     "larguras_mm": [
+      0.5,
+      0.8
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      54.22,
+      9.39
+     ],
+     "ate": [
+      52.6,
+      6.7
+     ],
+     "comprimento_mm": 3.06,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 0,
+     "camadas": [
+      "B.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      56.2,
+      3.55
+     ],
+     "ate": [
+      54.4,
+      6.22
+     ],
+     "comprimento_mm": 3.96,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    },
+    {
+     "net": "VBUS",
+     "de": [
+      60.3,
+      5.46
+     ],
+     "ate": [
+      56.2,
+      3.55
+     ],
+     "comprimento_mm": 4.74,
+     "larguras_mm": [
+      0.8
+     ],
+     "vias": 1,
+     "camadas": [
+      "B.Cu",
+      "F.Cu"
+     ],
+     "tentativa": 1
+    }
+   ],
+   "gravacao": {
+    "removidas": 0,
+    "zonas_repreenchidas": 4,
+    "novas": 55,
+    "footprints_movidos": 0,
+    "blocos_identicos": 3661
+   },
+   "drc": {
+    "violacoes": {
+     "track_width": 7,
+     "track_dangling": 22
+    },
+    "nao_roteadas": {
+     "GND": 1,
+     "VOL_SW_N": 3,
+     "+3V3": 3,
+     "PWR_EN": 1,
+     "ONOFF": 1,
+     "SENS_EN": 1,
+     "MUX_S1": 1,
+     "MUX_S0": 1,
+     "VBAT_S": 3,
+     "MUX_S3": 1,
+     "MUX_R_COM": 1,
+     "MUX_L_COM": 1,
+     "MUX_S2": 1,
+     "VOL_SW": 1,
+     "KEEP": 2,
+     "CHG_STAT": 1,
+     "VBUS_S": 2,
+     "PWR_EN_S": 3,
+     "EN_REQ": 3,
+     "CHGA": 2,
+     "CHGLED": 1,
+     "CHG_N": 3,
+     "PWR_KEY": 2,
+     "BAT_NTC": 1,
+     "USB_HOLD": 1,
+     "CHG_EN1": 1,
+     "CHG_ILIM": 1,
+     "CHG_ISET": 1
+    },
+    "paridade": 0
+   },
+   "razoes": [
+    {
+     "rede": "VSYS",
+     "de": [
+      65.62,
+      5.18
+     ],
+     "ate": [
+      67.0,
+      6.34
+     ],
+     "comprimento_mm": 0.84,
+     "razao": 0.47
+    },
+    {
+     "rede": "VSYS",
+     "de": [
+      56.29,
+      12.96
+     ],
+     "ate": [
+      58.88,
+      16.49
+     ],
+     "comprimento_mm": 3.75,
+     "razao": 0.86
+    },
+    {
+     "rede": "VSYS",
+     "de": [
+      56.29,
+      12.96
+     ],
+     "ate": [
+      58.6,
+      9.0
+     ],
+     "comprimento_mm": 4.91,
+     "razao": 1.07
+    },
+    {
+     "rede": "VSYS",
+     "de": [
+      67.0,
+      6.34
+     ],
+     "ate": [
+      70.88,
+      10.0
+     ],
+     "comprimento_mm": 7.04,
+     "razao": 1.32
+    },
+    {
+     "rede": "VSYS",
+     "de": [
+      66.3,
+      8.0
+     ],
+     "ate": [
+      60.56,
+      8.75
+     ],
+     "comprimento_mm": 7.09,
+     "razao": 1.22
+    },
+    {
+     "rede": "VSYS",
+     "de": [
+      60.9,
+      22.0
+     ],
+     "ate": [
+      58.88,
+      16.49
+     ],
+     "comprimento_mm": 7.04,
+     "razao": 1.2
+    },
+    {
+     "rede": "VBAT",
+     "de": [
+      66.5,
+      23.65
+     ],
+     "ate": [
+      66.83,
+      18.05
+     ],
+     "comprimento_mm": 3.92,
+     "razao": 0.7
+    },
+    {
+     "rede": "VBAT",
+     "de": [
+      63.44,
+      9.25
+     ],
+     "ate": [
+      66.83,
+      18.05
+     ],
+     "comprimento_mm": 9.51,
+     "razao": 1.01
+    },
+    {
+     "rede": "VBUS",
+     "de": [
+      53.11,
+      6.42
+     ],
+     "ate": [
+      54.4,
+      6.22
+     ],
+     "comprimento_mm": 0.79,
+     "razao": 0.61
+    },
+    {
+     "rede": "VBUS",
+     "de": [
+      53.11,
+      6.42
+     ],
+     "ate": [
+      50.0,
+      6.38
+     ],
+     "comprimento_mm": 2.69,
+     "razao": 0.86
+    },
+    {
+     "rede": "VBUS",
+     "de": [
+      54.22,
+      9.39
+     ],
+     "ate": [
+      52.6,
+      6.7
+     ],
+     "comprimento_mm": 3.06,
+     "razao": 0.97
+    },
+    {
+     "rede": "VBUS",
+     "de": [
+      56.2,
+      3.55
+     ],
+     "ate": [
+      54.4,
+      6.22
+     ],
+     "comprimento_mm": 3.96,
+     "razao": 1.23
+    },
+    {
+     "rede": "VBUS",
+     "de": [
+      60.3,
+      5.46
+     ],
+     "ate": [
+      56.2,
+      3.55
+     ],
+     "comprimento_mm": 4.74,
+     "razao": 1.05
+    }
+   ]
   }
  },
  "regiao": [

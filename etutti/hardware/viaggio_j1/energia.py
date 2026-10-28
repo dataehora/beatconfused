@@ -578,7 +578,9 @@ def region_nets(b):
 
 
 def regb():
-    return (REG[0] - BAND, REG[1] - BAND, REG[2] + BAND, REG[3] + BAND)
+    """Pairs to join: both nearest points within 2 mm of the region (a pad that reaches into it,
+    such as J202's, has its centre outside); the routing itself stays within BAND."""
+    return (REG[0] - 2.0, REG[1] - 2.0, REG[2] + 2.0, REG[3] + 2.0)
 
 
 def route_nets(g, nets, fails):
@@ -657,15 +659,15 @@ def main():
             g.made.append(t.m_Uuid.AsString())
         step_a(g)
     else:
-        original = open(BOARD, encoding="utf-8", newline="").read()
-        prev = m["etapas"].get(arg)
+        # a re-run starts again from the board as the previous step left it (kept in build/)
+        pre = os.path.join(BUILD, "energia_antes_de_%s.kicad_pcb" % arg)
+        if arg in m["etapas"]:
+            original = open(pre, encoding="utf-8", newline="").read()
+            open(BOARD, "w", encoding="utf-8", newline="").write(original)
+        else:
+            original = open(BOARD, encoding="utf-8", newline="").read()
+            open(pre, "w", encoding="utf-8", newline="").write(original)
         b = pcbnew.LoadBoard(BOARD)
-        if prev:
-            drop = set(prev["uuids"])
-            for t in list(b.GetTracks()):
-                if t.m_Uuid.AsString() in drop:
-                    b.Remove(t)
-            refill(b)
         g = Geo(b)
         fails = []
         if arg == "b":
