@@ -619,9 +619,25 @@ def step_c(g, fails):
     route_nets(g, ["VSYS", "VBAT", "VBUS"], fails)
 
 
+PRIORITY = ["VOL_SW_N"]
+
+
 def step_d(g, fails, skip=()):
     restore_bus(g)
     for net, pts in FANS:
+        # snap to the exact cut end (the bus is at exactly 0.1 clearance); the 2nd point follows it
+        best = None
+        for t in g.b.GetTracks():
+            if t.GetClass() != "PCB_TRACK" or t.GetNetname() != net:
+                continue
+            for q in (t.GetStart(), t.GetEnd()):
+                d = math.hypot(TOMM(q.x) - pts[0][0], TOMM(q.y) - pts[0][1])
+                if d < 0.05 and (best is None or d < best[0]):
+                    best = (d, TOMM(q.x), TOMM(q.y))
+        if best is None:
+            raise SystemExit("ponta cortada de %s nao achada em %s" % (net, pts[0]))
+        dx, dy = best[1] - pts[0][0], best[2] - pts[0][1]
+        pts = [(best[1], best[2]), (pts[1][0] + dx, pts[1][1] + dy)] + list(pts[2:])
         put_exact(g, net, pcbnew.In2_Cu, pts, 0.2, "%s: ponta cortada aberta em leque" % net)
     nets = sorted(region_nets(g.b) - {"VBUS", "VSYS", "VBAT", "BB_L1", "BB_L2", "GND", "+3V3"}
                   - set(BUS_TOP) - set(skip))
@@ -630,6 +646,8 @@ def step_d(g, fails, skip=()):
         has_pad = any(p.GetNetname() == n and REG[0] <= TOMM(p.GetPosition().x) <= REG[2]
                       and REG[1] <= TOMM(p.GetPosition().y) <= REG[3] for p in g.b.GetPads())
         (local if has_pad else through).append(n)
+    # nets whose pins face each other across a part (VOL_SW_N: R210.2 under D205 to D205.3) first
+    local = [n for n in PRIORITY if n in local] + [n for n in local if n not in PRIORITY]
     route_nets(g, local + through, fails)
     g.stitch = joins_and_stitch(g, fails, None)
     g.c304 = fix_c304(g)
@@ -740,98 +758,56 @@ def joins_and_stitch(g, fails, start):
     return n
 
 
+C304_TO = (20.05, 35.45, 90)      # GND pad on the existing GND via at (20,00; 35,00)
+C304_V33_STUB = (20.631, 35.93)     # +3V3 pad -> J's +3V3 track C305.1-C304.1 (x 20,631)
+
+
 def fix_c304(g):
-    """C304 (codec, outside the region): moved up to 2 mm so its GND pad gets a via to In1; its +3V3
-    pad is tied back to where J's +3V3 tracks end (the old pad centre)."""
+    """C304 (codec, outside the region) moved 1.56 mm, into the pocket west of the +3V3 loop
+    C305.1-C304.1: its GND pad lands on the GND stitching via already at (20,00; 35,00) (In1), its
+    +3V3 pad is tied by 0.27 mm of B.Cu to J's +3V3 track. A search of every position up to 2 mm
+    with a via of its own (outside the pad) found none: the pocket is closed by +3V3 (B.Cu),
+    HP_L/VOL_SW_N (F.Cu) and the In2 lines."""
     b = g.b
     fp = b.FindFootprintByReference("C304")
     p0 = fp.GetPosition()
     x0, y0, r0 = TOMM(p0.x), TOMM(p0.y), fp.GetOrientationDegrees()
-    pads = {p.GetNumber(): p for p in fp.Pads()}
-    old1 = pads["1"].GetPosition()
-    old1 = V(old1.x, old1.y)
+    x, y, rot = C304_TO
     g.ctx.items = [it for it in g.ctx.items
                    if not (it.GetClass() == "PAD" and it.GetParentFootprint().GetReference() == "C304")]
     g.chk.rebuild()
-    neigh = [f for f in b.GetFootprints() if f.IsFlipped() and f.GetReference() != "C304"
-             and abs(TOMM(f.GetPosition().x) - x0) < 8 and abs(TOMM(f.GetPosition().y) - y0) < 8]
-
-    def pads_ok():
-        for p in fp.Pads():
-            sh = p.GetEffectiveShape(BC)
-            bb = sh.BBox()
-            bb.Inflate(MM(0.5))
-            for shape, it in g.chk.query(BC, bb):
-                if it.GetNetname() == p.GetNetname():
-                    continue
-                if shape.Collide(sh, MM(max(rr.clr_of(p.GetNetname()), rr.clr_of(it.GetNetname())) + 0.005)):
-                    return False
-        c = pcbnew.SHAPE_POLY_SET(fp.GetCourtyard(pcbnew.B_CrtYd))
-        for f in neigh:
-            inter = pcbnew.SHAPE_POLY_SET(c)
-            inter.BooleanIntersection(f.GetCourtyard(pcbnew.B_CrtYd))
-            if inter.OutlineCount() and inter.Area() > 1e3:
-                return False
-        return True
-
-    best = None
-    for rot in (90, 270, 0, 180):
-        for ix in range(-20, 21):
-            for iy in range(-20, 21):
-                dx, dy = ix * 0.1, iy * 0.1
-                d = math.hypot(dx, dy)
-                if d > 2.0:
-                    continue
-                fp.SetPosition(V(MM(x0 + dx), MM(y0 + dy)))
-                fp.SetOrientationDegrees(rot)
-                fp.BuildCourtyardCaches()
-                if not pads_ok():
-                    continue
-                n1 = pads["1"].GetPosition()
-                n1 = V(n1.x, n1.y)
-                if (n1.x, n1.y) != (old1.x, old1.y) and not g.chk.track_ok(n1, old1, 0.2, BC, "+3V3"):
-                    continue
-                c2 = (TOMM(pads["2"].GetPosition().x), TOMM(pads["2"].GetPosition().y))
-                for k in range(0, 15):
-                    r = 0.5 + 0.05 * k
-                    hit = None
-                    for j in range(24):
-                        a = 2 * math.pi * j / 24
-                        P = V(MM(c2[0] + r * math.cos(a)), MM(c2[1] + r * math.sin(a)))
-                        stub = rr.new_track(b, "+3V3", BC, n1, old1, 0.2)
-                        if g.chk.via_ok(P, "GND") and g.chk.track_ok(V(MM(c2[0]), MM(c2[1])), P, 0.2, BC, "GND"):
-                            # the via must not touch the new +3V3 stub either
-                            if (n1.x, n1.y) == (old1.x, old1.y) or not stub.GetEffectiveShape(BC).Collide(
-                                    pcbnew.SHAPE_CIRCLE(P, MM(rr.VIA_D / 2)), MM(0.105)):
-                                hit = P
-                                break
-                    if hit is not None:
-                        cost = d + r
-                        if best is None or cost < best[0]:
-                            best = (cost, x0 + dx, y0 + dy, rot, hit, r)
-                        break
-    if best is None:
-        fp.SetPosition(V(MM(x0), MM(y0)))
-        fp.SetOrientationDegrees(r0)
-        fp.BuildCourtyardCaches()
-        g.sync()
-        return None
-    _c, x, y, rot, P, r = best
     fp.SetPosition(V(MM(x), MM(y)))
     fp.SetOrientationDegrees(rot)
     fp.BuildCourtyardCaches()
+    pads = {p.GetNumber(): p for p in fp.Pads()}
+    # pads against everything else (copper clearance and holes)
+    for p in fp.Pads():
+        sh = p.GetEffectiveShape(BC)
+        bb = sh.BBox()
+        bb.Inflate(MM(0.6))
+        for shape, it in g.chk.query(BC, bb):
+            if it.GetNetname() == p.GetNetname():
+                continue
+            if shape.Collide(sh, MM(max(rr.clr_of(p.GetNetname()), rr.clr_of(it.GetNetname())) + 0.005)):
+                raise SystemExit("C304.%s toca %s" % (p.GetNumber(), rr.describe(it)))
+        for shape, it in g.chk.query("HOLE", bb):
+            if it.GetNetname() != p.GetNetname() and shape.Collide(sh, MM(rr.HOLE_CLR + 0.005)):
+                raise SystemExit("C304.%s perto do furo de %s" % (p.GetNumber(), rr.describe(it)))
+    via = [t for t in b.GetTracks() if t.GetClass() == "PCB_VIA" and t.GetNetname() == "GND"
+           and abs(TOMM(t.GetPosition().x) - 20.0) < 0.01 and abs(TOMM(t.GetPosition().y) - 35.0) < 0.01]
+    if not via or not pads["2"].GetEffectiveShape(BC).Collide(via[0].GetPosition(), 0):
+        raise SystemExit("C304.2 nao cai sobre a via de GND em (20,00; 35,00)")
+    c1 = pads["1"].GetPosition()
+    A, E = V(c1.x, c1.y), V(MM(C304_V33_STUB[0]), MM(C304_V33_STUB[1]))
+    if not g.chk.track_ok(A, E, 0.2, BC, "+3V3"):
+        raise SystemExit("toco de +3V3 do C304.1 toca %s" % g.chk.why)
     g.sync()
-    n1 = pads["1"].GetPosition()
-    n1 = V(n1.x, n1.y)
-    if (n1.x, n1.y) != (old1.x, old1.y):
-        g._add(rr.new_track(b, "+3V3", BC, n1, old1, 0.2))
-    c2 = pads["2"].GetPosition()
-    g._add(rr.new_track(b, "GND", BC, V(c2.x, c2.y), P, 0.2))
-    g._add(rr.new_via(b, "GND", P))
-    rec = {"ref": "C304", "de": [round(x0, 3), round(y0, 3), round(r0, 1)], "para": [round(x, 3), round(y, 3), rot],
+    g._add(rr.new_track(b, "+3V3", BC, A, E, 0.2))
+    rec = {"ref": "C304", "de": [round(x0, 3), round(y0, 3), round(r0, 1)], "para": [x, y, rot],
            "distancia_mm": round(math.hypot(x - x0, y - y0), 2), "uuid": fp.m_Uuid.AsString(),
-           "via_gnd": [round(TOMM(P.x), 3), round(TOMM(P.y), 3)]}
-    g.log.append({"o_que": "C304.2 -> via de GND ao In1 (C304 movido)", **rec})
+           "via_gnd": [20.0, 35.0, "via de costura ja existente, agora dentro do pad 2"],
+           "toco_3v3": [[round(TOMM(A.x), 3), round(TOMM(A.y), 3)], list(C304_V33_STUB)]}
+    g.log.append({"o_que": "C304 movido: C304.2 sobre a via de GND, C304.1 ao +3V3", **rec})
     return rec
 
 
