@@ -1089,6 +1089,134 @@
     "paridade": 0
    },
    "razoes": []
+  },
+  "b": {
+   "txt": "laco do indutor",
+   "fora": [],
+   "uuids": [
+    "877ad3ba-9f3b-4164-8153-bc40b48c16f7",
+    "8045eb0d-0a5d-4fdd-9bbf-32a9cd8fb825",
+    "988a730c-1c57-447b-9b13-8cefcc6f4fb2",
+    "696360f9-4397-467b-9b6f-cbadcecd7aa5"
+   ],
+   "geometria_e_rotas": [
+    {
+     "o_que": "U204.2 L2 (saida do pino)",
+     "rede": "BB_L2",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       70.875,
+       8.5
+      ],
+      [
+       71.75,
+       8.5
+      ]
+     ],
+     "comprimento_mm": 0.88
+    },
+    {
+     "o_que": "U204.2 L2 -> L201.2",
+     "rede": "BB_L2",
+     "camada": "B.Cu",
+     "largura": 0.8,
+     "pontos": [
+      [
+       71.75,
+       8.4
+      ],
+      [
+       72.6,
+       8.4
+      ]
+     ],
+     "comprimento_mm": 0.85
+    },
+    {
+     "o_que": "U204.4 L1 (saida do pino)",
+     "rede": "BB_L1",
+     "camada": "B.Cu",
+     "largura": 0.24,
+     "pontos": [
+      [
+       70.875,
+       9.5
+      ],
+      [
+       71.75,
+       9.5
+      ]
+     ],
+     "comprimento_mm": 0.88
+    },
+    {
+     "o_que": "U204.4 L1 -> L201.1",
+     "rede": "BB_L1",
+     "camada": "B.Cu",
+     "largura": 0.8,
+     "pontos": [
+      [
+       71.75,
+       9.65
+      ],
+      [
+       72.6,
+       9.65
+      ]
+     ],
+     "comprimento_mm": 0.85
+    }
+   ],
+   "gravacao": {
+    "removidas": 0,
+    "zonas_repreenchidas": 4,
+    "novas": 4,
+    "footprints_movidos": 0,
+    "blocos_identicos": 3657
+   },
+   "drc": {
+    "violacoes": {
+     "track_width": 7,
+     "track_dangling": 24
+    },
+    "nao_roteadas": {
+     "GND": 1,
+     "VBUS": 5,
+     "VOL_SW_N": 3,
+     "+3V3": 3,
+     "VSYS": 7,
+     "PWR_EN": 1,
+     "ONOFF": 1,
+     "SENS_EN": 1,
+     "MUX_S1": 1,
+     "MUX_S0": 1,
+     "VBAT_S": 3,
+     "MUX_S3": 1,
+     "MUX_R_COM": 1,
+     "MUX_L_COM": 1,
+     "MUX_S2": 1,
+     "VOL_SW": 1,
+     "KEEP": 2,
+     "CHG_STAT": 1,
+     "VBUS_S": 2,
+     "PWR_EN_S": 3,
+     "EN_REQ": 3,
+     "CHGA": 2,
+     "CHGLED": 1,
+     "CHG_N": 3,
+     "PWR_KEY": 2,
+     "VBAT": 2,
+     "BAT_NTC": 1,
+     "USB_HOLD": 1,
+     "CHG_EN1": 1,
+     "CHG_ILIM": 1,
+     "CHG_ISET": 1
+    },
+    "paridade": 0
+   },
+   "razoes": []
   }
  },
  "regiao": [
