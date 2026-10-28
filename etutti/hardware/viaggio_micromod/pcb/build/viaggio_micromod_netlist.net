@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\viaggio_micromod\\pcb\\kicad\\viaggio_micromod.kicad_sch")
-		(date "2026-10-25T17:53:03")
+		(date "2026-10-28T02:26:49")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -1602,6 +1602,78 @@
 				(tstamps "/f8e86e05-da06-50f3-ac15-8ea0d986bd2c/")
 			)
 			(tstamps "d6eaff24-f5c9-5983-94a7-d2046f2e35b0")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C210")
+			(value "10uF")
+			(footprint "Capacitor_SMD:C_0603_1608Metric")
+			(description "VSYS junto dos pinos OUT (10/11) do U202, no lado de cima (M3)")
+			(fields
+				(field
+					(name "Codigo") "E3")
+				(field
+					(name "LCSC") "C19702")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "VSYS junto dos pinos OUT (10/11) do U202, no lado de cima (M3)")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "E3")
+			)
+			(property
+				(name "LCSC")
+				(value "C19702")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "viaggio_micromod_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/f8e86e05-da06-50f3-ac15-8ea0d986bd2c/")
+			)
+			(tstamps "b1a11b3b-0757-5869-80f1-7d523544d109")
 			(units
 				(unit
 					(name "A")
@@ -14136,6 +14208,11 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "C210")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
 				(ref "C213")
 				(pin "2")
 				(pintype "passive")
@@ -16573,6 +16650,11 @@
 			)
 			(node
 				(ref "C206")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C210")
 				(pin "1")
 				(pintype "passive")
 			)

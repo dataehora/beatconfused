@@ -17,6 +17,7 @@ E3,R206 R210 R211 R213 R215 R218,6,100k,R_0402_1005Metric,C25741,basica,0.001,JL
 E3,C204 C205,2,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
 E3,R205 R214,2,10k,R_0402_1005Metric,C25744,basica,0.001,JLC,final,
 E3,C201 C202 C203,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+E3,C210,1,10uF,C_0603_1608Metric,C19702,basica,0.005,JLC,final,"VSYS junto dos pinos OUT (10/11) do U202, no lado de cima (M3)"
 E3,R208 R209 R212,3,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,medida da bateria: V(pino 16) = VBAT/2
 E3,R207 R217,2,1k,R_0402_1005Metric,C11702,basica,0.001,JLC,final,
 E3,C213,1,1uF,C_0402_1005Metric,C52923,basica,0.002,JLC,final,"100 ms: depois do desligamento o PWR_EN_S nao sobe antes de o 3,3 V cair (sem religar)"

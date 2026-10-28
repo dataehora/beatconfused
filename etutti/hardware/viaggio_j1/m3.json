@@ -1,0 +1,456 @@
+{
+ "lote1": {
+  "base_commit": "93aa0e3",
+  "drc_base": {
+   "violacoes": {
+    "track_width": 7
+   },
+   "nao_roteadas": 0,
+   "paridade": 1
+  },
+  "drc": {
+   "violacoes": {
+    "track_width": 7
+   },
+   "nao_roteadas": 0,
+   "paridade": 0
+  },
+  "gravacao": {
+   "removidas": 15,
+   "zonas_repreenchidas": 4,
+   "novas": 14,
+   "footprints_mudados": 4,
+   "footprints_novos": 1,
+   "blocos_identicos": 4008
+  },
+  "pecas": [
+   {
+    "ref": "C202",
+    "de": [
+     69.6,
+     12.25,
+     180.0
+    ],
+    "para": [
+     64.67,
+     5.18,
+     180.0
+    ],
+    "distancia_mm": 8.62,
+    "por_que": "capacitor de VSYS do E3 (saida do carregador): vai para o lugar do C206"
+   },
+   {
+    "ref": "C206",
+    "de": [
+     64.67,
+     5.18,
+     180.0
+    ],
+    "para": [
+     69.6,
+     12.25,
+     180.0
+    ],
+    "distancia_mm": 8.62,
+    "por_que": "capacitor de entrada do U204 (E4): vai para o lugar do C202"
+   },
+   {
+    "ref": "C207",
+    "de": [
+     65.4,
+     13.9,
+     0.0
+    ],
+    "para": [
+     73.25,
+     5.7,
+     0
+    ],
+    "distancia_mm": 11.35,
+    "por_que": "junto do C208 (autorizado, SPEC v2.4)"
+   },
+   {
+    "ref": "C304",
+    "de": [
+     20.05,
+     35.45,
+     90.0
+    ],
+    "para": [
+     20.45,
+     35.89,
+     180
+    ],
+    "distancia_mm": 0.59,
+    "por_que": "0,55 mm para o espaco do laco: so assim o pad de GND tem via fora dele (VOL_B no In2, HP_L em F.Cu e I2S_BCLK em B.Cu fecham os outros lados)"
+   }
+  ],
+  "novas": {
+   "C210": {
+    "ref": "C210",
+    "lado": "cima (F.Cu)",
+    "em": [
+     60.76,
+     8.6,
+     270
+    ],
+    "pad_VSYS": [
+     60.76,
+     7.825
+    ],
+    "pad_GND": [
+     60.76,
+     9.375
+    ],
+    "uuid": "fe687774-1eb0-4f82-8e03-38a4738d5ad9"
+   },
+   "C207_vias_gnd": [
+    [
+     75.10000000000001,
+     5.7
+    ],
+    [
+     74.78334874467059,
+     4.8269569070823275
+    ]
+   ],
+   "C207_vias_3v3": [
+    [
+     71.46850842073984,
+     5.3555849108714195
+    ]
+   ],
+   "C304_via_gnd": [
+    19.97,
+    35.215
+   ]
+  },
+  "removidos": [
+   {
+    "trilha": "GND",
+    "camada": "B.Cu",
+    "largura": 0.3,
+    "de": [
+     66.35,
+     13.9
+    ],
+    "ate": [
+     66.933,
+     14.773
+    ],
+    "por_que": "toco do C207 no lugar antigo",
+    "uuid": "a36a1f77-7a12-4d9e-b88a-5bf7ccb199ef"
+   },
+   {
+    "via": "GND",
+    "em": [
+     66.933,
+     14.773
+    ],
+    "por_que": "via do C207 no lugar antigo",
+    "uuid": "7937760b-f9ff-4473-84df-724a13e32087"
+   },
+   {
+    "trilha": "GND",
+    "camada": "B.Cu",
+    "largura": 0.3,
+    "de": [
+     66.35,
+     13.9
+    ],
+    "ate": [
+     67.15,
+     13.9
+    ],
+    "por_que": "toco do C207 no lugar antigo",
+    "uuid": "f6d4d11f-f102-47b0-8849-f380698bea06"
+   },
+   {
+    "via": "GND",
+    "em": [
+     67.15,
+     13.9
+    ],
+    "por_que": "via do C207 no lugar antigo",
+    "uuid": "fefb3305-3410-4484-828d-49b59ce63e41"
+   },
+   {
+    "trilha": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.3,
+    "de": [
+     64.45,
+     13.9
+    ],
+    "ate": [
+     63.867,
+     14.773
+    ],
+    "por_que": "toco do C207 no lugar antigo",
+    "uuid": "1351f7c5-9ce8-44ab-827f-e70c7f7fbec5"
+   },
+   {
+    "via": "+3V3",
+    "em": [
+     63.867,
+     14.773
+    ],
+    "por_que": "via do C207 no lugar antigo",
+    "uuid": "31807186-d3f8-45dd-849e-dd49c47be9d7"
+   },
+   {
+    "trilha": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.3,
+    "de": [
+     64.45,
+     13.9
+    ],
+    "ate": [
+     63.7,
+     13.9
+    ],
+    "por_que": "toco do C207 no lugar antigo",
+    "uuid": "38d7865e-b668-4c91-ac46-10c99df3117b"
+   },
+   {
+    "via": "+3V3",
+    "em": [
+     63.7,
+     13.9
+    ],
+    "por_que": "via do C207 no lugar antigo",
+    "uuid": "58994f75-8bd7-42f6-8573-ef2e114b1706"
+   },
+   {
+    "via": "GND",
+    "em": [
+     73.25,
+     5.75
+    ],
+    "por_que": "via de costura de GND sob o novo lugar do C207",
+    "uuid": "e95359e5-3b4a-4114-a705-b2a9f5c6b53f"
+   },
+   {
+    "via": "GND",
+    "em": [
+     74.75,
+     5.75
+    ],
+    "por_que": "via de costura de GND sob o novo lugar do C207",
+    "uuid": "a6686a7b-4900-452b-b477-32038e1e8339"
+   },
+   {
+    "via": "GND",
+    "em": [
+     20.0,
+     35.0
+    ],
+    "por_que": "via de GND dentro do pad 2 do C304",
+    "uuid": "61d0b42e-036e-4830-855f-eceff99fc160"
+   },
+   {
+    "trilha": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.2,
+    "de": [
+     21.181,
+     34.954
+    ],
+    "ate": [
+     20.631,
+     35.503
+    ],
+    "por_que": "laco de +3V3 C305.1-C304.1 (trilha do J, autorizada)",
+    "uuid": "816ba85a-00a6-4827-8a45-c0f73f735b31"
+   },
+   {
+    "trilha": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.2,
+    "de": [
+     20.631,
+     35.503
+    ],
+    "ate": [
+     20.631,
+     36.457
+    ],
+    "por_que": "laco de +3V3 C305.1-C304.1 (trilha do J, autorizada)",
+    "uuid": "6f3d8ed4-a445-4a07-b21c-ffde147e42d6"
+   },
+   {
+    "trilha": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.2,
+    "de": [
+     20.631,
+     36.457
+    ],
+    "ate": [
+     21.181,
+     37.006
+    ],
+    "por_que": "laco de +3V3 C305.1-C304.1 (trilha do J, autorizada)",
+    "uuid": "7400e368-7f69-4481-bf18-67892a0a1a0d"
+   },
+   {
+    "trilha": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.2,
+    "de": [
+     20.05,
+     35.93
+    ],
+    "ate": [
+     20.631,
+     35.93
+    ],
+    "por_que": "laco de +3V3 C305.1-C304.1 (trilha do J, autorizada)",
+    "uuid": "626f871b-5360-4ff6-b125-d7b634f92b73"
+   }
+  ],
+  "feito": [
+   {
+    "o_que": "C210.2 -> via termica do U202 (GND)",
+    "rede": "GND",
+    "camada": "F.Cu",
+    "largura": 0.3,
+    "pontos": [
+     [
+      60.76,
+      9.375
+     ],
+     [
+      61.6,
+      9.4
+     ]
+    ],
+    "comprimento_mm": 0.84
+   },
+   {
+    "o_que": "C208.1 -> C207.1 (+3V3)",
+    "rede": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.6,
+    "pontos": [
+     [
+      70.65,
+      6.0
+     ],
+     [
+      71.4,
+      6.0
+     ],
+     [
+      72.3,
+      5.7
+     ]
+    ],
+    "comprimento_mm": 1.7
+   },
+   {
+    "o_que": "C207.2 -> In1 (GND)",
+    "rede": "GND",
+    "pino": "C207.2",
+    "vias": [
+     [
+      75.1,
+      5.7
+     ],
+     [
+      74.783,
+      4.827
+     ]
+    ]
+   },
+   {
+    "o_que": "C207.1 -> In2 (+3V3)",
+    "rede": "+3V3",
+    "pino": "C207.1",
+    "vias": [
+     [
+      71.469,
+      5.356
+     ]
+    ]
+   },
+   {
+    "o_que": "C305.1 -> C304.1 (+3V3)",
+    "rede": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.2,
+    "pontos": [
+     [
+      21.181,
+      34.954
+     ],
+     [
+      21.181,
+      35.89
+     ]
+    ],
+    "comprimento_mm": 0.94
+   },
+   {
+    "o_que": "C304.1 -> juncao com o U301 (+3V3)",
+    "rede": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.2,
+    "pontos": [
+     [
+      21.181,
+      35.89
+     ],
+     [
+      21.181,
+      36.859
+     ]
+    ],
+    "comprimento_mm": 0.97
+   },
+   {
+    "o_que": "C304.1 (centro do pad)",
+    "rede": "+3V3",
+    "camada": "B.Cu",
+    "largura": 0.2,
+    "pontos": [
+     [
+      20.93,
+      35.89
+     ],
+     [
+      21.181,
+      35.89
+     ]
+    ],
+    "comprimento_mm": 0.25
+   },
+   {
+    "o_que": "C304.2 -> In1 (GND), fora do pad",
+    "rede": "GND",
+    "via": [
+     19.97,
+     35.215
+    ]
+   },
+   {
+    "o_que": "C304.2 -> via de GND",
+    "rede": "GND",
+    "camada": "B.Cu",
+    "largura": 0.2,
+    "pontos": [
+     [
+      19.97,
+      35.89
+     ],
+     [
+      19.97,
+      35.215
+     ]
+    ],
+    "comprimento_mm": 0.67
+   }
+  ]
+ }
+}

@@ -450,6 +450,11 @@ part("U202", sym("BQ24074RGT", "Battery_Management"), "BQ24074RGTR",
 C("C201", "10uF", "VBUS", "GND", "E3", "0805")
 C("C202", "10uF", "VSYS", "GND", "E3", "0805")
 C("C203", "10uF", "VBAT", "GND", "E3", "0805")
+# M3 (SPEC v2.4): VSYS cap right at the charger's OUT pins (10/11). No room on the back (D205, the VSYS
+# vias and the signals round them), so it sits on the top side, its VSYS pad on the VSYS track over the
+# pins and its GND pad next to U202's thermal vias. Placed on the J1 board by viaggio_j1/m3.py.
+C("C210", "10uF", "VSYS", "GND", "E3", "0603",
+  note="VSYS junto dos pinos OUT (10/11) do U202, no lado de cima (M3)")
 R("R203", "1.8k", "CHG_ISET", "GND", "E3", note="ICHG = 890/1800 = 0,49 A")
 R("R204", "1.5k", "CHG_ILIM", "GND", "E3", note="so vale com EN2=1 (1,07 A); obrigatorio")
 R("R205", "10k", "VBUS", "CHG_EN1", "E3")
