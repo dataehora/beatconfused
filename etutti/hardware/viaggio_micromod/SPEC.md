@@ -1,12 +1,38 @@
-# eTutti Viaggio MicroMod · especificação · v2.3
+# eTutti Viaggio MicroMod · especificação · v2.4
 
-**Versão 2.3, 25 out 2026** (v2.2 do mesmo dia + respostas ao relatório do passo M1). SPEC do **eTutti Viaggio MicroMod**. É o Viaggio Rev2 (`etutti/hardware/viaggio/`, SPEC v2.1) com o processador soldado na placa trocado por um módulo **SparkFun MicroMod Teensy** encaixado num conector M.2.
+**Versão 2.4, 28 out 2026** (roteamento fechado na placa J1; tarefas do passo M3). SPEC do **eTutti Viaggio MicroMod**. É o Viaggio Rev2 (`etutti/hardware/viaggio/`, SPEC v2.1) com o processador soldado na placa trocado por um módulo **SparkFun MicroMod Teensy** encaixado num conector M.2.
 
 Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Mesmo protocolo do eTuttino Pocket (`CLAUDE.md`, "como trabalhamos"): cada disciplina responde no seu relatório, terminando com "Perguntas para a gestão".
 
 Medidas em mm. **(conferir)** = estimativa a confirmar com a peça real ou o datasheet.
 
 ## Mudanças desde a versão anterior
+
+### v2.4 (roteamento fechado, PRs #119–#126)
+
+- **A placa que segue é a do J1:** `etutti/hardware/viaggio_j1/kicad/viaggio_micromod.kicad_pcb`. A pasta `viaggio_micromod/pcb/` fica como a entrega do M2, sem roteamento além do USB.
+- **Como foi roteada:**
+  - par USB por script, com o U201 girado 180° (PRs #120/#121);
+  - Freerouting rodado pelo J (PR #122 e commit do J no `main`);
+  - cobre de GND/+3V3 e vias por script (PR #123);
+  - ligações restantes em lotes (PRs #124/#125);
+  - bloco de energia (E3/E4) refeito com layout de datasheet (PR #126).
+- **Resultado:** 0 ligações faltando, 0 erros de folga ou curto, paridade 0.
+- **Respostas às perguntas do M2 (PR #119):**
+  - J101 de pé e o E2 4,9 mm à direita: aceitos;
+  - altura do espaçador: decidida antes de encomendar, com o módulo na mão (§8);
+  - reserva do conector: não agora.
+- **Respostas às perguntas do USB (PRs #120/#121):** gancho na entrada do J101, via de GND do U201 com folga 0,12 e junção do D− sob o USB-C: aceitos.
+- **Respostas às perguntas do bloco de energia (PR #126):**
+  - C202/C206 trocaram de papel: acertar `Codigo` e referência no esquema para bater com a função (M3);
+  - saída OUT do BQ24074 sem capacitor colado: tentar no M3 mover o D205 e pôr um capacitor de VSYS (0603, 4,7–10 µF) junto dos pinos 10/11; se não couber, aceito como está (carregador linear);
+  - C207 vai para junto do C208 (~7 mm): autorizado;
+  - C304 sem via no pad: abrir espaço no laço de +3V3 C305.1–C304.1 (trilha do J, autorizada) para uma via fora do pad; sem via-in-pad na JLC;
+  - MUX_L_COM a 5,5 mm do centro do L201, com o GND do In1 no meio: aceito (sinal lento, lido pelo ADC);
+  - entradas de pino de 0,24–0,3 nos pátios do U202/U204: aceitas.
+- **Freerouting 2.5 roda o Fanout mesmo desmarcado.** Registrado no guia do J.
+
+### v2.3 (respostas ao `ELETRONICA.md` do passo M1, PR #117)
 
 ### v2.3 (respostas ao `ELETRONICA.md` do passo M1, PR #117)
 
@@ -188,58 +214,53 @@ O código E5 deixa de existir. Fora da placa: módulo MicroMod Teensy, 28 Gatero
 O J manda um prompt por passo e aprova o resultado antes do seguinte. **Nenhum passo do Code roteia.**
 
 - **M1 · Esquema** (feito, PR #117): pasta nova, esquema adaptado ao módulo, ERC, mapa de pinos, BOM preliminar.
-- **M2 · Placa para rotear** (agora): contorno, serigrafia, regras corrigidas, empilhamento, posicionamento pelo `viaggio_micromod.json`, In2 como signal, DSN. Sem trilhas.
+- **M2 · Placa para rotear** (feito, PR #119): contorno, serigrafia, regras corrigidas, empilhamento, posicionamento pelo `viaggio_micromod.json`, In2 como signal, DSN. Sem trilhas.
 - **Roteamento pelo J**, no KiCad com o Freerouting, pelo guia "Viaggio: roteamento no KiCad, passo a passo".
-- **M3 · Conferência e fabricação:**
+- **M3 · Conferência e fabricação** (agora, sobre a placa do J1):
   - áreas de GND e 3,3 V no In2;
   - DRC 0/0/0 e conferência placa × firmware 28/28;
   - flexão;
   - Gerbers, BOM e CPL da JLCPCB;
   - `POWER.md`, alturas por lado e relatório.
 
-## Tarefas para o Code (v2.3): só o passo M2
+## Tarefas para o Code (v2.4): só o passo M3
 
-O M1 foi feito no PR #117. **Agora: a placa posicionada para o J rotear.** Sem trilhas, sem vias e sem roteador. Pare ao fim do M2, faça um PR e informe o J.
+Sobre a placa do J1 (`etutti/hardware/viaggio_j1/kicad/`), como está no `main` depois do PR #126. **Nada de roteamento novo além dos ajustes listados.** Trabalhe em lotes, com commit e push a cada um. Pare ao fim do M3, faça um PR e informe o J.
 
-### Eletrônica: M2a, ajustes do esquema (v2.3)
+### Lote 1: ajustes pedidos (v2.4)
 
-- E2 no lado de cima.
-- J101: o M.2 Key E 4,2 mm com estoque na JLCPCB (conferir na página da peça), com o footprint pelo desenho dela.
-- H101: Würth 9774025151R por Global Sourcing, ou equivalente LCSC registrado.
-- ERC 0/0, conferência da netlist, `bom_preliminar.csv` e `PINOS.md` atualizados se algo mudar.
+1. C202/C206: `Codigo` e referência no esquema batendo com a função. ERC 0/0, paridade 0.
+2. Capacitor de VSYS junto dos pinos OUT do U202, movendo o D205 se preciso. Se não couber, registre e siga.
+3. C207 para junto do C208.
+4. C304: via de GND fora do pad, abrindo espaço no laço de +3V3 C305.1–C304.1.
+5. DRC: 0 ligações faltando, nenhuma violação nova.
 
-### Eletrônica: M2b, a placa
+### Lote 2: conferências
 
-- **Scripts:** `build_board.py` e `handoff_freerouting.py` adaptados de `viaggio/pcb/`, **sem `router.py` e sem nenhum roteamento**.
-- **Contorno, furos M2 e serigrafia** como no Viaggio v2.1:
-  - perfil A pontilhado;
-  - posição antiga de E1/F2 tracejada;
-  - área do logo;
-  - códigos P1…T4.
-- **Posicionamento de todas as peças** por `concept/out/viaggio_micromod.json`, com os passivos junto dos seus chips.
-  - J101 e o cartão de 22 × 22 no verso, na área do setor P, com a orientação que der o USB e o I2S mais curtos.
-  - Área de regra sobre o retângulo do cartão: **peças de até 1,9 mm** embaixo dele.
-  - Ajustes de alguns milímetros são livres; mudança de setor, lado ou corredor é pedida no relatório.
-- **Empilhamento e camadas** (§5):
-  - JLC04121H-7628;
-  - In1 = GND, tipo power, área de GND inteira;
-  - **In2 = tipo signal, sem nenhuma área** (as áreas do In2 entram no M3);
-  - F.Cu e B.Cu como no v2.1.
-- **Classes e vias:** **0,5 / 0,3 em todas as classes**. USB 0,24 / vão 0,15 em F.Cu sobre o In1 (registrar a conta se mudar).
-- **Regras do `.kicad_dru`**, que o KiCad 10 tem de compilar sem erro:
-  - números **com unidade (mm)**;
-  - nada de nome de classe "Default" (usar "não é USB, Corrente nem Nucleo");
-  - sinais com mínimo de 0,15 mm, para as afinações na entrada de pinos finos;
-  - Corrente com mínimo de 0,8 mm, exceto dentro do pátio dos chips de energia e dos conectores (E1, E3, E4, E6, A1, J101), onde as afinações na entrada dos pinos são normais.
-- **Saídas:**
-  - `build/viaggio_micromod.dsn`;
-  - imagens do lado de cima e do lado de baixo;
-  - DRC da entrega: 0 erros, paridade com o esquema 0, número de ligações a rotear.
-- **`pcb/ROTEAMENTO.md` curto:** os arquivos, as camadas, as classes e "não rode o `build_board.py` sobre a placa que o J rotear". O passo a passo fica no guia do J.
+- **DRC final** com o `.kicad_dru`: 0 erros de folga, curto ou furo; paridade 0; as afinações de entrada de pino registradas. As 7 track_width do J (EN_B, MUX_S0) corrigidas ou justificadas.
+- **Placa × firmware 28/28:** cada sensor T4 no canal certo de T1/T2, pelos nets da placa. Escreva o `KEY_INPUT` resultante no `pcb/PINOS.md` (o firmware do Viaggio ainda não existe).
+- **Flexão:** ≤ 0,05 mm a 3 N por tecla, sobre os 8 furos M2, adaptando o `etutti/hardware/mechanics.py`. Se não passar, diga onde faltam apoios do case.
+- **Alturas por lado:** a peça mais alta de cada lado e as áreas especiais (módulo, conector, USB-C, jack, encoders).
+
+### Lote 3: fabricação (sem encomendar)
+
+- `viaggio_j1/fab/`:
+  - Gerbers e furação (zip) para JLC04121H-7628, 1,2 mm, vias 0,5/0,3;
+  - BOM e CPL da JLCPCB (montagem nos dois lados);
+  - peças consignadas e de Global Sourcing marcadas (T4, H101);
+  - módulo e Gateron fora.
+- Plate de FR-4 de 1,6 mm (Gerbers), a partir do do Pocket, com os furos dos 28 Gateron nas posições da placa.
+- `viaggio_j1/POWER.md`: orçamento de energia com a placa real.
+- Imagens de cima e de baixo da placa final.
 
 ### Relatório
 
-`viaggio_micromod/ELETRONICA.md`: o que foi feito, o conector escolhido (código, estoque, desenho), onde as peças saíram do JSON e por quê, itens (conferir) e "Perguntas para a gestão".
+`viaggio_j1/FABRICACAO.md`:
+- o que foi feito em cada lote;
+- os resultados das conferências;
+- a lista dos arquivos de fabricação;
+- o custo estimado (placas + montagem + peças) para 5 placas;
+- itens (conferir) e "Perguntas para a gestão".
 
 ## 8. Perguntas para o J
 
