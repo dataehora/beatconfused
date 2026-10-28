@@ -17,8 +17,8 @@ no esquema da SparkFun (`Hardware/MicroMod-Teensy.sch` do repositório
 nas mesmas bolas do RT1062 que no Teensy 4.1, e todos saem no conector. O único pino novo é o **28**
 (pad 4, 3.3V_EN = PWR_EN).
 
-Os canais dos multiplexadores (`KEY_INPUT`) ainda são os do Pocket v0.3. A placa roteada (M3) os
-reescreve e confere 28/28.
+Os canais dos multiplexadores (`KEY_INPUT`) foram lidos da placa roteada do J1 no passo M3 (SPEC v2.4)
+e conferidos 28/28: tabela no fim deste arquivo. São os mesmos do Pocket v0.3.
 
 ## Tabela
 
@@ -129,3 +129,32 @@ mais ONOFF, PROGRAM, USB e alimentação. Sobram livres o 8, o 27 e o 29–45.
 - **AMP_SD (12):** alto = ligado, mono (L+R)/2 pelo resistor de 680 kΩ; baixo = desligado. Como no
   v2.1.
 - **Sensores:** iguais ao Pocket (TMAG5253BA3, 1,65 V em repouso, 45 µs depois de trocar o S3).
+
+## Tabela de teclas (`KEY_INPUT`, da placa roteada J1, passo M3)
+
+`VIAGGIO_KEY_INPUT[fileira][coluna]` = multiplexador × 16 + canal (−1 = sem tecla). Fileira 0 = fileira 1
+(a mais perto de quem toca). Mesma convenção do Pocket:
+- multiplexador 0 = **T2** (U602, metade direita, notas altas), COM no pino **14** (MUX_R_COM);
+- multiplexador 1 = **T1** (U601, metade esquerda, notas baixas), COM no pino **15** (MUX_L_COM);
+- canais 0–7 = fileiras 1 e 3 (EN_A, S3 = 0); canais 8–15 = fileiras 2 e 4 (EN_B, S3 = 1).
+
+Notas: `FIRST_NOTE = {57, 55, 56, 57}`, `FIRST_COL = {1, 0, 1, 1}`, 3 semitons por coluna (como no
+Pocket). Endereço S0–S3 nos pinos 0–3, SENS_EN no 4.
+
+<!-- BEGIN KEY_INPUT (viaggio_j1/m3.py) -->
+```c
+const int8_t VIAGGIO_KEY_INPUT[4][8] = {
+  { -1,  21,  20,  17,  19,   2,   1,   0},
+  { 25,  26,  31,  29,  13,  11,  14,  15},
+  { -1,  18,  23,  22,   4,   6,   5,   3},
+  { -1,  28,  27,  24,   9,   8,  10,  -1},
+};
+```
+
+Conferido pelo `viaggio_j1/m3.py lote2` na placa J1: 28/28.
+<!-- END KEY_INPUT -->
+
+O que a conferência olha, tecla por tecla: o sensor U7nn está sob a tecla SWnn (mesmo centro, no verso);
+a saída dele chega a um só canal de um só multiplexador; o EN do sensor é o do grupo daquele canal
+(EN_A para 0–7, EN_B para 8–15); a nota da tecla bate com `FIRST_NOTE`/`FIRST_COL`. Também confere o
+endereço e os COMs nos pads do J101 e as portas do T3 (EN_A = SENS_EN e não S3; EN_B = SENS_EN e S3).

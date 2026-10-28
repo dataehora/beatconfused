@@ -386,6 +386,190 @@ def lote1():
         raise SystemExit("lote 1: piorou %s, nao roteadas %d, paridade %d" % (bad, u, p))
 
 
+# ====================================================================== lot 2: checks
+POCKET_KEYS = os.path.join(REPO, "etutti", "hardware", "pocket", "pcb", "build", "pocket_keys.csv")
+PINOS = os.path.join(REPO, "etutti", "hardware", "viaggio_micromod", "pcb", "PINOS.md")
+FIRST_NOTE = [57, 55, 56, 57]     # Pocket (same keyboard): rows 1..4
+FIRST_COL = [1, 0, 1, 1]
+GRID_COLS = 8
+# 74HC4067: channel -> pin (schematic.py chan_pin)
+CHAN_PIN = {0: "9", 1: "8", 2: "7", 3: "6", 4: "5", 5: "4", 6: "3", 7: "2", 8: "23", 9: "22", 10: "21",
+            11: "20", 12: "19", 13: "18", 14: "17", 15: "16"}
+PIN_CHAN = {v: k for k, v in CHAN_PIN.items()}
+# multiplexer index as in the Pocket firmware: 0 = COM on pin 14 (A0), 1 = COM on pin 15 (A1)
+MUX_OF_COM = {"MUX_R_COM": 0, "MUX_L_COM": 1}
+# J101 pad -> net the contract (PINOS.md) puts on it
+J101_CONTRACT = {"19": "MUX_S0", "17": "MUX_S1", "47": "MUX_S2", "32": "MUX_S3", "10": "SENS_EN",
+                 "34": "MUX_R_COM", "38": "MUX_L_COM"}
+MUX_CTRL = {"10": "MUX_S0", "11": "MUX_S1", "14": "MUX_S2", "13": "MUX_S3", "15": "GND", "12": "GND", "24": "+3V3"}
+# gates of T3 (pad: net)
+GATES = {"U603": {"2": "MUX_S3", "4": "NS3"}, "U604": {"1": "NS3", "2": "SENS_EN", "4": "EN_A"},
+         "U605": {"1": "MUX_S3", "2": "SENS_EN", "4": "EN_B"}}
+
+
+def key_check(b):
+    """Board x firmware: every TMAG5253 (U7nn under SWnn) reaches one multiplexer channel, in the
+    channel half its EN group is switched on with (S3 = 0: EN_A, channels 0-7; S3 = 1: EN_B, 8-15).
+    Returns (rows, table, problems)."""
+    import csv
+    keys = list(csv.DictReader(open(POCKET_KEYS, encoding="utf-8")))
+    bad = []
+
+    def pad_net(fp, n):
+        return [p.GetNetname() for p in fp.Pads() if p.GetNumber() == n][0]
+    j101 = b.FindFootprintByReference("J101")
+    for pad, net in J101_CONTRACT.items():
+        if pad_net(j101, pad) != net:
+            bad.append("J101.%s: %s, contrato %s" % (pad, pad_net(j101, pad), net))
+    muxes = {}
+    for ref in ("U601", "U602"):
+        fp = b.FindFootprintByReference(ref)
+        com = pad_net(fp, "1")
+        muxes[ref] = (fp, MUX_OF_COM[com])
+        for pad, net in MUX_CTRL.items():
+            if pad_net(fp, pad) != net:
+                bad.append("%s.%s: %s, esperado %s" % (ref, pad, pad_net(fp, pad), net))
+    for ref, pads in GATES.items():
+        fp = b.FindFootprintByReference(ref)
+        for pad, net in pads.items():
+            if pad_net(fp, pad) != net:
+                bad.append("%s.%s: %s, esperado %s" % (ref, pad, pad_net(fp, pad), net))
+    table = [[-1] * GRID_COLS for _ in range(4)]
+    rows = []
+    for k in keys:
+        n = int(k["switch"][2:])
+        sw, se = b.FindFootprintByReference("SW%d" % n), b.FindFootprintByReference("U7%02d" % n)
+        row, col, midi = int(k["row"]), int(k["col"]), int(k["midi"])
+        dx = TOMM(se.GetPosition().x - sw.GetPosition().x)
+        dy = TOMM(se.GetPosition().y - sw.GetPosition().y)
+        out, en_net = pad_net(se, "4"), pad_net(se, "3")
+        found = [(ref, m, PIN_CHAN[p.GetNumber()]) for ref, (fp, m) in muxes.items() for p in fp.Pads()
+                 if p.GetNetname() == out and p.GetNumber() in PIN_CHAN]
+        note = FIRST_NOTE[row - 1] + 3 * (col - FIRST_COL[row - 1])
+        ok = len(found) == 1 and abs(dx) < 0.01 and abs(dy) < 0.01 and note == midi
+        ok = ok and en_net == ("EN_A" if found[0][2] < 8 else "EN_B") and se.IsFlipped()
+        if ok:
+            table[row - 1][col] = found[0][1] * 16 + found[0][2]
+        else:
+            bad.append("SW%d/U7%02d: mux %s, EN %s, desvio (%.3f; %.3f), nota %d/%d" % (n, n, found, en_net, dx, dy,
+                                                                                    note, midi))
+        rows.append({"tecla": "SW%d" % n, "sensor": "U7%02d" % n, "fileira": row, "coluna": col, "midi": midi,
+                     "nota": k["note"], "saida": out, "mux": found[0][0] if found else None,
+                     "canal": found[0][2] if found else None, "en": en_net,
+                     "rotacao_sensor": se.GetOrientationDegrees(),
+                     "key_input": table[row - 1][col],
+                     "pocket_v03": (0 if k["mux"] == "U51" else 1) * 16 + int(k["mux_channel"])})
+    return rows, table, bad
+
+
+def key_block(table):
+    body = ",\n".join("  {%s}" % ", ".join("%3d" % v for v in r) for r in table)
+    return "```c\nconst int8_t VIAGGIO_KEY_INPUT[4][8] = {\n" + body + ",\n};\n```"
+
+
+def write_pinos(table, n_ok):
+    t = open(PINOS, encoding="utf-8").read()
+    a, e = "<!-- BEGIN KEY_INPUT (viaggio_j1/m3.py) -->", "<!-- END KEY_INPUT -->"
+    blk = a + "\n" + key_block(table) + "\n\nConferido pelo `viaggio_j1/m3.py lote2` na placa J1: %d/28.\n" % n_ok + e
+    if a not in t:
+        raise SystemExit("PINOS.md sem o marcador do KEY_INPUT")
+    t = t[:t.index(a)] + blk + t[t.index(e) + len(e):]
+    open(PINOS, "w", encoding="utf-8", newline="").write(t)
+
+
+HEIGHT_FIX = {"SW403": 1.5}      # TS-1187A: Altura_mm 20 came from the "SW40" (encoder) row of build_board.py
+
+
+def heights(b):
+    side = {"cima": [], "baixo": []}
+    for fp in b.GetFootprints():
+        f = fp.GetField("Altura_mm")
+        h = HEIGHT_FIX.get(fp.GetReference(), float(f.GetText()) if f and f.GetText() else 0.0)
+        bb = fp.GetBoundingBox(False)
+        side["baixo" if fp.IsFlipped() else "cima"].append(
+            {"ref": fp.GetReference(), "altura_mm": h,
+             "codigo": fp.GetFieldText("Codigo") if fp.HasField("Codigo") else "",
+             "x": round(TOMM(fp.GetPosition().x), 2), "y": round(TOMM(fp.GetPosition().y), 2),
+             "caixa": [round(TOMM(bb.GetLeft()), 2), round(TOMM(bb.GetTop()), 2),
+                       round(TOMM(bb.GetRight()), 2), round(TOMM(bb.GetBottom()), 2)]})
+    for k in side:
+        side[k].sort(key=lambda r: -r["altura_mm"])
+    return side
+
+
+def thin_tracks(b):
+    """Pin-entry neckings: Corrente tracks under 0.8, USB under 0.22, other nets under 0.2, by net."""
+    out = {}
+    for t in b.GetTracks():
+        if t.GetClass() != "PCB_TRACK":
+            continue
+        net, w = t.GetNetname(), round(TOMM(t.GetWidth()), 3)
+        k = rr.klass(net)
+        lim = 0.8 if k == "Corrente" else (0.22 if k == "USB" else 0.2)
+        if w < lim - 1e-6:
+            L = TOMM(t.GetLength())
+            r = out.setdefault(net, {"classe": k, "trilhas": 0, "comprimento_mm": 0.0, "larguras": set(),
+                                     "mais_longa_mm": 0.0})
+            r["trilhas"] += 1
+            r["comprimento_mm"] += L
+            r["larguras"].add(w)
+            r["mais_longa_mm"] = max(r["mais_longa_mm"], L)
+    for r in out.values():
+        r["comprimento_mm"] = round(r["comprimento_mm"], 2)
+        r["mais_longa_mm"] = round(r["mais_longa_mm"], 2)
+        r["larguras"] = sorted(r["larguras"])
+    return out
+
+
+def lote2():
+    m = load_manifest()
+    original = open(BOARD, encoding="utf-8", newline="").read()
+    b = pcbnew.LoadBoard(BOARD)
+    d0 = json.load(open(os.path.join(BUILD, "drc_m3_lote1.json"), encoding="utf-8"))
+    ids = {it["uuid"] for v in d0["violations"] if v["type"] == "track_width" for it in v["items"]}
+    g = en.Geo(b)
+    widened, kept = [], []
+    for t in list(b.GetTracks()):
+        u = t.m_Uuid.AsString()
+        if u not in ids:
+            continue
+        rec = {"rede": t.GetNetname(), "camada": rr.LNAME[t.GetLayer()], "largura": round(TOMM(t.GetWidth()), 3),
+               "de": [round(TOMM(t.GetStart().x), 4), round(TOMM(t.GetStart().y), 4)],
+               "ate": [round(TOMM(t.GetEnd().x), 4), round(TOMM(t.GetEnd().y), 4)], "uuid": u}
+        g.chk.skip = {u}
+        g.chk.rebuild()
+        ok = g.chk.track_ok(t.GetStart(), t.GetEnd(), 0.15, t.GetLayer(), t.GetNetname())
+        rec["por_que"] = "" if ok else g.chk.why
+        g.chk.skip = None
+        if ok:
+            t.SetWidth(MM(0.15))
+            widened.append(rec)
+        else:
+            kept.append(rec)
+    g.chk.rebuild()
+    en.refill(b)
+    uu = {r["uuid"] for r in widened}
+    sv = save(b, original, uu, uu, set(), [])
+    d, v, u, p = drc("final")
+    print("DRC final:", v, "nao roteadas", u, "paridade", p, sv)
+    b = pcbnew.LoadBoard(BOARD)
+    rows, table, bad = key_check(b)
+    n_ok = sum(1 for r in rows if r["key_input"] >= 0)
+    print("placa x firmware: %d/28, %d problemas" % (n_ok, len(bad)))
+    for x in bad:
+        print("  ", x)
+    if not bad:
+        write_pinos(table, n_ok)
+    m["lote2"] = {"drc": {"violacoes": v, "nao_roteadas": u, "paridade": p}, "gravacao": sv,
+                  "track_width_alargadas": widened, "track_width_mantidas": kept,
+                  "afinacoes": thin_tracks(b), "teclas": rows, "key_input": table, "problemas": bad,
+                  "alturas": heights(b)}
+    write_manifest(m)
+    hard = {k: n for k, n in v.items() if k != "track_width"}
+    if bad or u or p or hard or v.get("track_width", 0) != len(kept):
+        raise SystemExit("lote 2: falhou (%s, %d problemas de teclas)" % (v, len(bad)))
+
+
 FOTOS_L1 = {"energia": (55.0, 3.0, 78.0, 14.0, 50.0), "c304": (17.5, 32.0, 24.0, 39.0, 100.0)}
 
 
@@ -402,5 +586,7 @@ if __name__ == "__main__":
     if arg == "lote1":
         lote1()
         fotos_lote1()
+    elif arg == "lote2":
+        lote2()
     else:
         raise SystemExit(__doc__)

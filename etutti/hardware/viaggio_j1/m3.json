@@ -452,5 +452,3423 @@
     "comprimento_mm": 0.67
    }
   ]
+ },
+ "lote2": {
+  "drc": {
+   "violacoes": {
+    "track_width": 3
+   },
+   "nao_roteadas": 0,
+   "paridade": 0
+  },
+  "gravacao": {
+   "removidas": 4,
+   "zonas_repreenchidas": 4,
+   "novas": 4,
+   "footprints_mudados": 0,
+   "footprints_novos": 0,
+   "blocos_identicos": 4023
+  },
+  "track_width_alargadas": [
+   {
+    "rede": "MUX_S0",
+    "camada": "In2.Cu",
+    "largura": 0.1,
+    "de": [
+     25.1535,
+     10.076
+    ],
+    "ate": [
+     25.2897,
+     10.076
+    ],
+    "uuid": "2ba806b4-b692-443f-a3d1-5603679ec489",
+    "por_que": ""
+   },
+   {
+    "rede": "MUX_S0",
+    "camada": "In2.Cu",
+    "largura": 0.1,
+    "de": [
+     25.0752,
+     10.1543
+    ],
+    "ate": [
+     25.1535,
+     10.076
+    ],
+    "uuid": "61c6b719-5d89-4929-9901-43fb8c88d690",
+    "por_que": ""
+   },
+   {
+    "rede": "MUX_S0",
+    "camada": "In2.Cu",
+    "largura": 0.12,
+    "de": [
+     24.9959,
+     10.2336
+    ],
+    "ate": [
+     25.0752,
+     10.1543
+    ],
+    "uuid": "b72dc80f-d324-4ead-b12c-3662931ae846",
+    "por_que": ""
+   },
+   {
+    "rede": "MUX_S0",
+    "camada": "In2.Cu",
+    "largura": 0.12,
+    "de": [
+     120.7753,
+     8.1582
+    ],
+    "ate": [
+     120.4874,
+     7.8703
+    ],
+    "uuid": "cf65e1fb-f813-42b2-9473-06ab1011910c",
+    "por_que": ""
+   }
+  ],
+  "track_width_mantidas": [
+   {
+    "rede": "EN_B",
+    "camada": "B.Cu",
+    "largura": 0.12,
+    "de": [
+     144.6753,
+     59.1102
+    ],
+    "ate": [
+     144.7001,
+     59.135
+    ],
+    "uuid": "0e876db6-a86d-4dec-b40b-352ba1b73e7d",
+    "por_que": "U711.2 [GND]"
+   },
+   {
+    "rede": "EN_B",
+    "camada": "B.Cu",
+    "largura": 0.12,
+    "de": [
+     144.1368,
+     59.1102
+    ],
+    "ate": [
+     144.6753,
+     59.1102
+    ],
+    "uuid": "3a82e2e2-0e61-454d-b3ef-c291fde0d1bc",
+    "por_que": "U711.2 [GND]"
+   },
+   {
+    "rede": "EN_B",
+    "camada": "B.Cu",
+    "largura": 0.12,
+    "de": [
+     144.7001,
+     59.135
+    ],
+    "ate": [
+     144.7001,
+     59.2852
+    ],
+    "uuid": "3d26d0cc-5e11-4dba-b5c8-55670486dc1e",
+    "por_que": "U711.2 [GND]"
+   }
+  ],
+  "afinacoes": {
+   "USB_DP": {
+    "classe": "USB",
+    "trilhas": 2,
+    "comprimento_mm": 1.38,
+    "larguras": [
+     0.2
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "USB_DN": {
+    "classe": "USB",
+    "trilhas": 4,
+    "comprimento_mm": 2.46,
+    "larguras": [
+     0.2
+    ],
+    "mais_longa_mm": 1.18
+   },
+   "VOL_B": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 1.14,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "CC1": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 1.37,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "HP_VGND": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 0.84,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.66
+   },
+   "HP_R": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 1.03,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.53
+   },
+   "HP_L": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 0.85,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.71
+   },
+   "SPK_P": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 1.04,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.79
+   },
+   "SPK_N": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 0.84,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.6
+   },
+   "SEL_A": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 1.84,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "SEL_SW": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 1.16,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "+3V3": {
+    "classe": "Default",
+    "trilhas": 19,
+    "comprimento_mm": 14.2,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 2.65
+   },
+   "EN_B": {
+    "classe": "Default",
+    "trilhas": 4,
+    "comprimento_mm": 4.42,
+    "larguras": [
+     0.12,
+     0.15
+    ],
+    "mais_longa_mm": 3.7
+   },
+   "SGTL_VDDA": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 1.33,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 1.19
+   },
+   "ONOFF": {
+    "classe": "Default",
+    "trilhas": 4,
+    "comprimento_mm": 1.59,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "SENS_EN": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 1.22,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "PROG": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 1.13,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "I2C_SCL": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 5.11,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 3.94
+   },
+   "LED_G": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 0.36,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.21
+   },
+   "MUX_S3": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 1.14,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.64
+   },
+   "MUX_R_COM": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 1.37,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "MUX_S2": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 1.2,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "VOL_SW": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 1.18,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "I2S_LRCLK": {
+    "classe": "Default",
+    "trilhas": 5,
+    "comprimento_mm": 2.07,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "I2S_TX": {
+    "classe": "Default",
+    "trilhas": 10,
+    "comprimento_mm": 3.3,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "LED_R": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 1.17,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "AMP_SD": {
+    "classe": "Default",
+    "trilhas": 5,
+    "comprimento_mm": 1.72,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.95
+   },
+   "CHG_STAT": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 2.21,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 1.13
+   },
+   "OUT_K13": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 0.9,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.64
+   },
+   "NS3": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 1.14,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.64
+   },
+   "AMP_SDM": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 1.05,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.8
+   },
+   "OUT_K18": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 0.2,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.16
+   },
+   "OUT_K16": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 0.51,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.42
+   },
+   "GND": {
+    "classe": "Default",
+    "trilhas": 1,
+    "comprimento_mm": 2.35,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 2.35
+   },
+   "VSYS": {
+    "classe": "Corrente",
+    "trilhas": 4,
+    "comprimento_mm": 2.36,
+    "larguras": [
+     0.24,
+     0.3
+    ],
+    "mais_longa_mm": 1.06
+   },
+   "VBUS": {
+    "classe": "Corrente",
+    "trilhas": 12,
+    "comprimento_mm": 5.04,
+    "larguras": [
+     0.15,
+     0.2,
+     0.3,
+     0.5
+    ],
+    "mais_longa_mm": 1.13
+   },
+   "I2C_SDA": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 0.1,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.05
+   },
+   "VBAT": {
+    "classe": "Corrente",
+    "trilhas": 2,
+    "comprimento_mm": 1.42,
+    "larguras": [
+     0.24,
+     0.3
+    ],
+    "mais_longa_mm": 0.92
+   },
+   "BB_L1": {
+    "classe": "Corrente",
+    "trilhas": 1,
+    "comprimento_mm": 0.88,
+    "larguras": [
+     0.24
+    ],
+    "mais_longa_mm": 0.88
+   },
+   "BB_L2": {
+    "classe": "Corrente",
+    "trilhas": 1,
+    "comprimento_mm": 0.88,
+    "larguras": [
+     0.24
+    ],
+    "mais_longa_mm": 0.88
+   },
+   "PWR_EN_S": {
+    "classe": "Default",
+    "trilhas": 3,
+    "comprimento_mm": 0.83,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.64
+   },
+   "CHG_ILIM": {
+    "classe": "Default",
+    "trilhas": 2,
+    "comprimento_mm": 0.12,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.07
+   },
+   "MUX_S0": {
+    "classe": "Default",
+    "trilhas": 4,
+    "comprimento_mm": 0.77,
+    "larguras": [
+     0.15
+    ],
+    "mais_longa_mm": 0.41
+   }
+  },
+  "teclas": [
+   {
+    "tecla": "SW1",
+    "sensor": "U701",
+    "fileira": 1,
+    "coluna": 1,
+    "midi": 57,
+    "nota": "A3",
+    "saida": "OUT_K01",
+    "mux": "U601",
+    "canal": 5,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 21,
+    "pocket_v03": 21
+   },
+   {
+    "tecla": "SW2",
+    "sensor": "U702",
+    "fileira": 1,
+    "coluna": 2,
+    "midi": 60,
+    "nota": "C4",
+    "saida": "OUT_K02",
+    "mux": "U601",
+    "canal": 4,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 20,
+    "pocket_v03": 20
+   },
+   {
+    "tecla": "SW3",
+    "sensor": "U703",
+    "fileira": 1,
+    "coluna": 3,
+    "midi": 63,
+    "nota": "D#4",
+    "saida": "OUT_K03",
+    "mux": "U601",
+    "canal": 1,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 17,
+    "pocket_v03": 17
+   },
+   {
+    "tecla": "SW4",
+    "sensor": "U704",
+    "fileira": 1,
+    "coluna": 4,
+    "midi": 66,
+    "nota": "F#4",
+    "saida": "OUT_K04",
+    "mux": "U601",
+    "canal": 3,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 19,
+    "pocket_v03": 19
+   },
+   {
+    "tecla": "SW5",
+    "sensor": "U705",
+    "fileira": 1,
+    "coluna": 5,
+    "midi": 69,
+    "nota": "A4",
+    "saida": "OUT_K05",
+    "mux": "U602",
+    "canal": 2,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 2,
+    "pocket_v03": 2
+   },
+   {
+    "tecla": "SW6",
+    "sensor": "U706",
+    "fileira": 1,
+    "coluna": 6,
+    "midi": 72,
+    "nota": "C5",
+    "saida": "OUT_K06",
+    "mux": "U602",
+    "canal": 1,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 1,
+    "pocket_v03": 1
+   },
+   {
+    "tecla": "SW7",
+    "sensor": "U707",
+    "fileira": 1,
+    "coluna": 7,
+    "midi": 75,
+    "nota": "D#5",
+    "saida": "OUT_K07",
+    "mux": "U602",
+    "canal": 0,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 0,
+    "pocket_v03": 0
+   },
+   {
+    "tecla": "SW8",
+    "sensor": "U708",
+    "fileira": 2,
+    "coluna": 0,
+    "midi": 55,
+    "nota": "G3",
+    "saida": "OUT_K08",
+    "mux": "U601",
+    "canal": 9,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 25,
+    "pocket_v03": 25
+   },
+   {
+    "tecla": "SW9",
+    "sensor": "U709",
+    "fileira": 2,
+    "coluna": 1,
+    "midi": 58,
+    "nota": "A#3",
+    "saida": "OUT_K09",
+    "mux": "U601",
+    "canal": 10,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 26,
+    "pocket_v03": 26
+   },
+   {
+    "tecla": "SW10",
+    "sensor": "U710",
+    "fileira": 2,
+    "coluna": 2,
+    "midi": 61,
+    "nota": "C#4",
+    "saida": "OUT_K10",
+    "mux": "U601",
+    "canal": 15,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 31,
+    "pocket_v03": 31
+   },
+   {
+    "tecla": "SW11",
+    "sensor": "U711",
+    "fileira": 2,
+    "coluna": 3,
+    "midi": 64,
+    "nota": "E4",
+    "saida": "OUT_K11",
+    "mux": "U601",
+    "canal": 13,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 29,
+    "pocket_v03": 29
+   },
+   {
+    "tecla": "SW12",
+    "sensor": "U712",
+    "fileira": 2,
+    "coluna": 4,
+    "midi": 67,
+    "nota": "G4",
+    "saida": "OUT_K12",
+    "mux": "U602",
+    "canal": 13,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 13,
+    "pocket_v03": 13
+   },
+   {
+    "tecla": "SW13",
+    "sensor": "U713",
+    "fileira": 2,
+    "coluna": 5,
+    "midi": 70,
+    "nota": "A#4",
+    "saida": "OUT_K13",
+    "mux": "U602",
+    "canal": 11,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 11,
+    "pocket_v03": 11
+   },
+   {
+    "tecla": "SW14",
+    "sensor": "U714",
+    "fileira": 2,
+    "coluna": 6,
+    "midi": 73,
+    "nota": "C#5",
+    "saida": "OUT_K14",
+    "mux": "U602",
+    "canal": 14,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 14,
+    "pocket_v03": 14
+   },
+   {
+    "tecla": "SW15",
+    "sensor": "U715",
+    "fileira": 2,
+    "coluna": 7,
+    "midi": 76,
+    "nota": "E5",
+    "saida": "OUT_K15",
+    "mux": "U602",
+    "canal": 15,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 15,
+    "pocket_v03": 15
+   },
+   {
+    "tecla": "SW16",
+    "sensor": "U716",
+    "fileira": 3,
+    "coluna": 1,
+    "midi": 56,
+    "nota": "G#3",
+    "saida": "OUT_K16",
+    "mux": "U601",
+    "canal": 2,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 18,
+    "pocket_v03": 18
+   },
+   {
+    "tecla": "SW17",
+    "sensor": "U717",
+    "fileira": 3,
+    "coluna": 2,
+    "midi": 59,
+    "nota": "B3",
+    "saida": "OUT_K17",
+    "mux": "U601",
+    "canal": 7,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 23,
+    "pocket_v03": 23
+   },
+   {
+    "tecla": "SW18",
+    "sensor": "U718",
+    "fileira": 3,
+    "coluna": 3,
+    "midi": 62,
+    "nota": "D4",
+    "saida": "OUT_K18",
+    "mux": "U601",
+    "canal": 6,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 22,
+    "pocket_v03": 22
+   },
+   {
+    "tecla": "SW19",
+    "sensor": "U719",
+    "fileira": 3,
+    "coluna": 4,
+    "midi": 65,
+    "nota": "F4",
+    "saida": "OUT_K19",
+    "mux": "U602",
+    "canal": 4,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 4,
+    "pocket_v03": 4
+   },
+   {
+    "tecla": "SW20",
+    "sensor": "U720",
+    "fileira": 3,
+    "coluna": 5,
+    "midi": 68,
+    "nota": "G#4",
+    "saida": "OUT_K20",
+    "mux": "U602",
+    "canal": 6,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 6,
+    "pocket_v03": 6
+   },
+   {
+    "tecla": "SW21",
+    "sensor": "U721",
+    "fileira": 3,
+    "coluna": 6,
+    "midi": 71,
+    "nota": "B4",
+    "saida": "OUT_K21",
+    "mux": "U602",
+    "canal": 5,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 5,
+    "pocket_v03": 5
+   },
+   {
+    "tecla": "SW22",
+    "sensor": "U722",
+    "fileira": 3,
+    "coluna": 7,
+    "midi": 74,
+    "nota": "D5",
+    "saida": "OUT_K22",
+    "mux": "U602",
+    "canal": 3,
+    "en": "EN_A",
+    "rotacao_sensor": 180.0,
+    "key_input": 3,
+    "pocket_v03": 3
+   },
+   {
+    "tecla": "SW23",
+    "sensor": "U723",
+    "fileira": 4,
+    "coluna": 1,
+    "midi": 57,
+    "nota": "A3",
+    "saida": "OUT_K23",
+    "mux": "U601",
+    "canal": 12,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 28,
+    "pocket_v03": 28
+   },
+   {
+    "tecla": "SW24",
+    "sensor": "U724",
+    "fileira": 4,
+    "coluna": 2,
+    "midi": 60,
+    "nota": "C4",
+    "saida": "OUT_K24",
+    "mux": "U601",
+    "canal": 11,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 27,
+    "pocket_v03": 27
+   },
+   {
+    "tecla": "SW25",
+    "sensor": "U725",
+    "fileira": 4,
+    "coluna": 3,
+    "midi": 63,
+    "nota": "D#4",
+    "saida": "OUT_K25",
+    "mux": "U601",
+    "canal": 8,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 24,
+    "pocket_v03": 24
+   },
+   {
+    "tecla": "SW26",
+    "sensor": "U726",
+    "fileira": 4,
+    "coluna": 4,
+    "midi": 66,
+    "nota": "F#4",
+    "saida": "OUT_K26",
+    "mux": "U602",
+    "canal": 9,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 9,
+    "pocket_v03": 9
+   },
+   {
+    "tecla": "SW27",
+    "sensor": "U727",
+    "fileira": 4,
+    "coluna": 5,
+    "midi": 69,
+    "nota": "A4",
+    "saida": "OUT_K27",
+    "mux": "U602",
+    "canal": 8,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 8,
+    "pocket_v03": 8
+   },
+   {
+    "tecla": "SW28",
+    "sensor": "U728",
+    "fileira": 4,
+    "coluna": 6,
+    "midi": 72,
+    "nota": "C5",
+    "saida": "OUT_K28",
+    "mux": "U602",
+    "canal": 10,
+    "en": "EN_B",
+    "rotacao_sensor": 180.0,
+    "key_input": 10,
+    "pocket_v03": 10
+   }
+  ],
+  "key_input": [
+   [
+    -1,
+    21,
+    20,
+    17,
+    19,
+    2,
+    1,
+    0
+   ],
+   [
+    25,
+    26,
+    31,
+    29,
+    13,
+    11,
+    14,
+    15
+   ],
+   [
+    -1,
+    18,
+    23,
+    22,
+    4,
+    6,
+    5,
+    3
+   ],
+   [
+    -1,
+    28,
+    27,
+    24,
+    9,
+    8,
+    10,
+    -1
+   ]
+  ],
+  "problemas": [],
+  "alturas": {
+   "cima": [
+    {
+     "ref": "SW401",
+     "altura_mm": 20.0,
+     "codigo": "I1",
+     "x": 17.5,
+     "y": 56.25,
+     "caixa": [
+      12.88,
+      40.23,
+      27.12,
+      57.77
+     ]
+    },
+    {
+     "ref": "SW402",
+     "altura_mm": 20.0,
+     "codigo": "I2",
+     "x": 33.5,
+     "y": 56.25,
+     "caixa": [
+      28.88,
+      40.23,
+      43.12,
+      57.77
+     ]
+    },
+    {
+     "ref": "SW8",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 89.2,
+     "y": 58.01,
+     "caixa": [
+      81.92,
+      50.73,
+      96.47,
+      65.28
+     ]
+    },
+    {
+     "ref": "SW14",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 200.2,
+     "y": 58.01,
+     "caixa": [
+      192.93,
+      50.73,
+      207.47,
+      65.28
+     ]
+    },
+    {
+     "ref": "SW26",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 163.2,
+     "y": 25.97,
+     "caixa": [
+      155.93,
+      18.7,
+      170.47,
+      33.24
+     ]
+    },
+    {
+     "ref": "SW16",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 98.45,
+     "y": 41.99,
+     "caixa": [
+      91.17,
+      34.72,
+      105.72,
+      49.27
+     ]
+    },
+    {
+     "ref": "SW5",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 172.45,
+     "y": 74.03,
+     "caixa": [
+      165.18,
+      66.75,
+      179.72,
+      81.31
+     ]
+    },
+    {
+     "ref": "SW9",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 107.7,
+     "y": 58.01,
+     "caixa": [
+      100.42,
+      50.73,
+      114.97,
+      65.28
+     ]
+    },
+    {
+     "ref": "SW13",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 181.7,
+     "y": 58.01,
+     "caixa": [
+      174.43,
+      50.73,
+      188.97,
+      65.28
+     ]
+    },
+    {
+     "ref": "SW6",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 190.95,
+     "y": 74.03,
+     "caixa": [
+      183.68,
+      66.75,
+      198.22,
+      81.31
+     ]
+    },
+    {
+     "ref": "SW17",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 116.95,
+     "y": 41.99,
+     "caixa": [
+      109.67,
+      34.72,
+      124.22,
+      49.27
+     ]
+    },
+    {
+     "ref": "SW25",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 144.7,
+     "y": 25.97,
+     "caixa": [
+      137.43,
+      18.7,
+      151.97,
+      33.24
+     ]
+    },
+    {
+     "ref": "SW20",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 172.45,
+     "y": 41.99,
+     "caixa": [
+      165.18,
+      34.72,
+      179.72,
+      49.27
+     ]
+    },
+    {
+     "ref": "SW3",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 135.45,
+     "y": 74.03,
+     "caixa": [
+      128.18,
+      66.75,
+      142.72,
+      81.31
+     ]
+    },
+    {
+     "ref": "SW1",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 98.45,
+     "y": 74.03,
+     "caixa": [
+      91.17,
+      66.75,
+      105.72,
+      81.31
+     ]
+    },
+    {
+     "ref": "SW22",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 209.45,
+     "y": 41.99,
+     "caixa": [
+      202.18,
+      34.72,
+      216.72,
+      49.27
+     ]
+    },
+    {
+     "ref": "SW21",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 190.95,
+     "y": 41.99,
+     "caixa": [
+      183.68,
+      34.72,
+      198.22,
+      49.27
+     ]
+    },
+    {
+     "ref": "SW11",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 144.7,
+     "y": 58.01,
+     "caixa": [
+      137.43,
+      50.73,
+      151.97,
+      65.28
+     ]
+    },
+    {
+     "ref": "SW7",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 209.45,
+     "y": 74.03,
+     "caixa": [
+      202.18,
+      66.75,
+      216.72,
+      81.31
+     ]
+    },
+    {
+     "ref": "SW12",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 163.2,
+     "y": 58.01,
+     "caixa": [
+      155.93,
+      50.73,
+      170.47,
+      65.28
+     ]
+    },
+    {
+     "ref": "SW18",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 135.45,
+     "y": 41.99,
+     "caixa": [
+      128.18,
+      34.72,
+      142.72,
+      49.27
+     ]
+    },
+    {
+     "ref": "SW2",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 116.95,
+     "y": 74.03,
+     "caixa": [
+      109.67,
+      66.75,
+      124.22,
+      81.31
+     ]
+    },
+    {
+     "ref": "SW4",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 153.95,
+     "y": 74.03,
+     "caixa": [
+      146.68,
+      66.75,
+      161.22,
+      81.31
+     ]
+    },
+    {
+     "ref": "SW15",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 218.7,
+     "y": 58.01,
+     "caixa": [
+      211.43,
+      50.73,
+      225.97,
+      65.28
+     ]
+    },
+    {
+     "ref": "SW24",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 126.2,
+     "y": 25.97,
+     "caixa": [
+      118.92,
+      18.7,
+      133.47,
+      33.24
+     ]
+    },
+    {
+     "ref": "SW19",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 153.95,
+     "y": 41.99,
+     "caixa": [
+      146.68,
+      34.72,
+      161.22,
+      49.27
+     ]
+    },
+    {
+     "ref": "SW28",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 200.2,
+     "y": 25.97,
+     "caixa": [
+      192.93,
+      18.7,
+      207.47,
+      33.24
+     ]
+    },
+    {
+     "ref": "SW27",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 181.7,
+     "y": 25.97,
+     "caixa": [
+      174.43,
+      18.7,
+      188.97,
+      33.24
+     ]
+    },
+    {
+     "ref": "SW10",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 126.2,
+     "y": 58.01,
+     "caixa": [
+      118.92,
+      50.73,
+      133.47,
+      65.28
+     ]
+    },
+    {
+     "ref": "SW23",
+     "altura_mm": 11.6,
+     "codigo": "",
+     "x": 107.7,
+     "y": 25.97,
+     "caixa": [
+      100.42,
+      18.7,
+      114.97,
+      33.24
+     ]
+    },
+    {
+     "ref": "J301",
+     "altura_mm": 5.1,
+     "codigo": "F2",
+     "x": 2.15,
+     "y": 25.0,
+     "caixa": [
+      -0.17,
+      19.82,
+      14.82,
+      30.18
+     ]
+    },
+    {
+     "ref": "J201",
+     "altura_mm": 3.3,
+     "codigo": "E1",
+     "x": 4.7,
+     "y": 13.0,
+     "caixa": [
+      0.53,
+      7.66,
+      9.99,
+      18.34
+     ]
+    },
+    {
+     "ref": "U201",
+     "altura_mm": 1.45,
+     "codigo": "E2",
+     "x": 18.9,
+     "y": 12.25,
+     "caixa": [
+      16.82,
+      10.53,
+      20.98,
+      14.15
+     ]
+    },
+    {
+     "ref": "D201",
+     "altura_mm": 1.1,
+     "codigo": "E2",
+     "x": 16.98,
+     "y": 15.5,
+     "caixa": [
+      14.71,
+      14.33,
+      19.21,
+      16.68
+     ]
+    },
+    {
+     "ref": "C210",
+     "altura_mm": 0.95,
+     "codigo": "E3",
+     "x": 60.76,
+     "y": 8.6,
+     "caixa": [
+      60.01,
+      7.09,
+      61.52,
+      10.11
+     ]
+    },
+    {
+     "ref": "D401",
+     "altura_mm": 0.6,
+     "codigo": "I3",
+     "x": 50.0,
+     "y": 49.0,
+     "caixa": [
+      48.42,
+      47.92,
+      51.58,
+      50.08
+     ]
+    },
+    {
+     "ref": "C308",
+     "altura_mm": 0.55,
+     "codigo": "F2",
+     "x": 7.92,
+     "y": 31.51,
+     "caixa": [
+      7.43,
+      30.58,
+      8.4,
+      32.45
+     ]
+    },
+    {
+     "ref": "R304",
+     "altura_mm": 0.4,
+     "codigo": "F2",
+     "x": 9.29,
+     "y": 31.91,
+     "caixa": [
+      8.79,
+      30.96,
+      9.78,
+      32.87
+     ]
+    },
+    {
+     "ref": "R303",
+     "altura_mm": 0.4,
+     "codigo": "F2",
+     "x": 11.0,
+     "y": 30.99,
+     "caixa": [
+      10.04,
+      30.49,
+      11.95,
+      31.48
+     ]
+    },
+    {
+     "ref": "H3",
+     "altura_mm": 0.0,
+     "codigo": "",
+     "x": 6.0,
+     "y": 60.0,
+     "caixa": [
+      4.08,
+      58.08,
+      7.92,
+      61.92
+     ]
+    },
+    {
+     "ref": "H8",
+     "altura_mm": 0.0,
+     "codigo": "",
+     "x": 209.45,
+     "y": 52.67,
+     "caixa": [
+      207.53,
+      50.74,
+      211.38,
+      54.59
+     ]
+    },
+    {
+     "ref": "H1",
+     "altura_mm": 0.0,
+     "codigo": "",
+     "x": 88.0,
+     "y": 6.5,
+     "caixa": [
+      86.08,
+      4.58,
+      89.92,
+      8.43
+     ]
+    },
+    {
+     "ref": "H6",
+     "altura_mm": 0.0,
+     "codigo": "",
+     "x": 153.95,
+     "y": 31.31,
+     "caixa": [
+      152.03,
+      29.39,
+      155.88,
+      33.23
+     ]
+    },
+    {
+     "ref": "H5",
+     "altura_mm": 0.0,
+     "codigo": "",
+     "x": 98.45,
+     "y": 52.67,
+     "caixa": [
+      96.53,
+      50.74,
+      100.38,
+      54.59
+     ]
+    },
+    {
+     "ref": "J501",
+     "altura_mm": 0.0,
+     "codigo": "A2",
+     "x": 46.5,
+     "y": 84.0,
+     "caixa": [
+      45.12,
+      82.62,
+      51.58,
+      85.38
+     ]
+    },
+    {
+     "ref": "H4",
+     "altura_mm": 0.0,
+     "codigo": "",
+     "x": 55.0,
+     "y": 63.0,
+     "caixa": [
+      53.08,
+      61.08,
+      56.92,
+      64.92
+     ]
+    },
+    {
+     "ref": "H2",
+     "altura_mm": 0.0,
+     "codigo": "",
+     "x": 74.0,
+     "y": 93.0,
+     "caixa": [
+      72.08,
+      91.08,
+      75.92,
+      94.92
+     ]
+    },
+    {
+     "ref": "H7",
+     "altura_mm": 0.0,
+     "codigo": "",
+     "x": 153.95,
+     "y": 63.35,
+     "caixa": [
+      152.03,
+      61.42,
+      155.88,
+      65.28
+     ]
+    }
+   ],
+   "baixo": [
+    {
+     "ref": "J202",
+     "altura_mm": 6.0,
+     "codigo": "E6",
+     "x": 64.5,
+     "y": 26.5,
+     "caixa": [
+      58.88,
+      21.38,
+      70.12,
+      31.62
+     ]
+    },
+    {
+     "ref": "J101",
+     "altura_mm": 4.2,
+     "codigo": "P1",
+     "x": 27.5,
+     "y": 18.0,
+     "caixa": [
+      20.49,
+      6.67,
+      50.52,
+      29.32
+     ]
+    },
+    {
+     "ref": "H101",
+     "altura_mm": 2.5,
+     "codigo": "P1",
+     "x": 47.5,
+     "y": 14.0,
+     "caixa": [
+      44.23,
+      10.72,
+      50.77,
+      17.27
+     ]
+    },
+    {
+     "ref": "L201",
+     "altura_mm": 2.0,
+     "codigo": "E4",
+     "x": 73.75,
+     "y": 9.0,
+     "caixa": [
+      71.47,
+      6.67,
+      76.03,
+      11.32
+     ]
+    },
+    {
+     "ref": "SW403",
+     "altura_mm": 1.5,
+     "codigo": "I4",
+     "x": 52.0,
+     "y": 36.0,
+     "caixa": [
+      48.23,
+      33.17,
+      55.77,
+      38.83
+     ]
+    },
+    {
+     "ref": "C101",
+     "altura_mm": 1.45,
+     "codigo": "P1",
+     "x": 32.17,
+     "y": 27.0,
+     "caixa": [
+      31.17,
+      25.27,
+      33.18,
+      28.73
+     ]
+    },
+    {
+     "ref": "C208",
+     "altura_mm": 1.45,
+     "codigo": "E4",
+     "x": 69.7,
+     "y": 6.0,
+     "caixa": [
+      67.97,
+      5.0,
+      71.42,
+      7.0
+     ]
+    },
+    {
+     "ref": "D402",
+     "altura_mm": 1.45,
+     "codigo": "I3",
+     "x": 51.48,
+     "y": 48.48,
+     "caixa": [
+      49.52,
+      46.75,
+      53.43,
+      50.2
+     ]
+    },
+    {
+     "ref": "D203",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 69.13,
+     "y": 15.3,
+     "caixa": [
+      67.17,
+      13.57,
+      71.08,
+      17.02
+     ]
+    },
+    {
+     "ref": "C201",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 61.25,
+     "y": 5.46,
+     "caixa": [
+      59.52,
+      4.46,
+      62.98,
+      6.47
+     ]
+    },
+    {
+     "ref": "D205",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 56.6,
+     "y": 9.0,
+     "caixa": [
+      54.88,
+      7.04,
+      58.33,
+      10.96
+     ]
+    },
+    {
+     "ref": "C202",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 64.67,
+     "y": 5.18,
+     "caixa": [
+      62.95,
+      4.17,
+      66.39,
+      6.18
+     ]
+    },
+    {
+     "ref": "C207",
+     "altura_mm": 1.45,
+     "codigo": "E4",
+     "x": 73.25,
+     "y": 5.7,
+     "caixa": [
+      71.53,
+      4.7,
+      74.97,
+      6.71
+     ]
+    },
+    {
+     "ref": "Q202",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 64.1,
+     "y": 16.82,
+     "caixa": [
+      62.14,
+      15.1,
+      66.05,
+      18.55
+     ]
+    },
+    {
+     "ref": "D204",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 73.14,
+     "y": 13.69,
+     "caixa": [
+      71.41,
+      11.74,
+      74.86,
+      15.65
+     ]
+    },
+    {
+     "ref": "D202",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 59.26,
+     "y": 13.42,
+     "caixa": [
+      57.3,
+      11.7,
+      61.21,
+      15.15
+     ]
+    },
+    {
+     "ref": "U203",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 55.06,
+     "y": 15.77,
+     "caixa": [
+      52.98,
+      14.04,
+      57.13,
+      17.67
+     ]
+    },
+    {
+     "ref": "C501",
+     "altura_mm": 1.45,
+     "codigo": "A1",
+     "x": 53.5,
+     "y": 91.54,
+     "caixa": [
+      51.77,
+      90.53,
+      55.23,
+      92.54
+     ]
+    },
+    {
+     "ref": "C206",
+     "altura_mm": 1.45,
+     "codigo": "E4",
+     "x": 69.6,
+     "y": 12.25,
+     "caixa": [
+      67.88,
+      11.24,
+      71.33,
+      13.26
+     ]
+    },
+    {
+     "ref": "U604",
+     "altura_mm": 1.45,
+     "codigo": "T3",
+     "x": 150.0,
+     "y": 10.5,
+     "caixa": [
+      147.93,
+      8.6,
+      152.07,
+      12.22
+     ]
+    },
+    {
+     "ref": "Q203",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 59.82,
+     "y": 17.44,
+     "caixa": [
+      57.86,
+      15.72,
+      61.77,
+      19.17
+     ]
+    },
+    {
+     "ref": "U605",
+     "altura_mm": 1.45,
+     "codigo": "T3",
+     "x": 154.55,
+     "y": 10.5,
+     "caixa": [
+      152.47,
+      8.6,
+      156.62,
+      12.22
+     ]
+    },
+    {
+     "ref": "C203",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 65.45,
+     "y": 9.3,
+     "caixa": [
+      64.44,
+      7.58,
+      66.45,
+      11.03
+     ]
+    },
+    {
+     "ref": "Q201",
+     "altura_mm": 1.45,
+     "codigo": "E3",
+     "x": 57.14,
+     "y": 4.5,
+     "caixa": [
+      55.19,
+      2.78,
+      59.1,
+      6.23
+     ]
+    },
+    {
+     "ref": "U302",
+     "altura_mm": 1.45,
+     "codigo": "F1",
+     "x": 20.37,
+     "y": 31.23,
+     "caixa": [
+      18.29,
+      29.5,
+      22.44,
+      32.95
+     ]
+    },
+    {
+     "ref": "U603",
+     "altura_mm": 1.45,
+     "codigo": "T3",
+     "x": 145.45,
+     "y": 10.5,
+     "caixa": [
+      143.38,
+      8.6,
+      147.53,
+      12.22
+     ]
+    },
+    {
+     "ref": "U602",
+     "altura_mm": 1.2,
+     "codigo": "T2",
+     "x": 182.0,
+     "y": 10.5,
+     "caixa": [
+      177.82,
+      6.25,
+      186.18,
+      14.38
+     ]
+    },
+    {
+     "ref": "U601",
+     "altura_mm": 1.2,
+     "codigo": "T1",
+     "x": 118.0,
+     "y": 10.5,
+     "caixa": [
+      113.83,
+      6.25,
+      122.17,
+      14.38
+     ]
+    },
+    {
+     "ref": "U301",
+     "altura_mm": 1.0,
+     "codigo": "F1",
+     "x": 24.0,
+     "y": 35.5,
+     "caixa": [
+      21.84,
+      33.34,
+      26.16,
+      37.66
+     ]
+    },
+    {
+     "ref": "U202",
+     "altura_mm": 1.0,
+     "codigo": "E3",
+     "x": 62.0,
+     "y": 9.0,
+     "caixa": [
+      59.84,
+      6.84,
+      64.16,
+      11.15
+     ]
+    },
+    {
+     "ref": "U204",
+     "altura_mm": 1.0,
+     "codigo": "E4",
+     "x": 69.47,
+     "y": 9.0,
+     "caixa": [
+      67.5,
+      7.03,
+      71.45,
+      10.97
+     ]
+    },
+    {
+     "ref": "U501",
+     "altura_mm": 1.0,
+     "codigo": "A1",
+     "x": 54.0,
+     "y": 88.0,
+     "caixa": [
+      51.88,
+      85.88,
+      56.12,
+      90.12
+     ]
+    },
+    {
+     "ref": "FB301",
+     "altura_mm": 0.95,
+     "codigo": "F1",
+     "x": 27.93,
+     "y": 33.41,
+     "caixa": [
+      26.43,
+      32.65,
+      29.44,
+      34.16
+     ]
+    },
+    {
+     "ref": "C602",
+     "altura_mm": 0.55,
+     "codigo": "T2",
+     "x": 183.07,
+     "y": 15.18,
+     "caixa": [
+      182.13,
+      14.69,
+      184.0,
+      15.66
+     ]
+    },
+    {
+     "ref": "C718",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 136.18,
+     "y": 38.99,
+     "caixa": [
+      135.25,
+      38.51,
+      137.12,
+      39.48
+     ]
+    },
+    {
+     "ref": "C723",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 108.43,
+     "y": 22.97,
+     "caixa": [
+      107.5,
+      22.48,
+      109.36,
+      23.45
+     ]
+    },
+    {
+     "ref": "C502",
+     "altura_mm": 0.55,
+     "codigo": "A1",
+     "x": 51.08,
+     "y": 90.14,
+     "caixa": [
+      50.6,
+      89.2,
+      51.57,
+      91.07
+     ]
+    },
+    {
+     "ref": "C301",
+     "altura_mm": 0.55,
+     "codigo": "F1",
+     "x": 26.95,
+     "y": 35.5,
+     "caixa": [
+      26.46,
+      34.56,
+      27.43,
+      36.44
+     ]
+    },
+    {
+     "ref": "C706",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 191.68,
+     "y": 71.03,
+     "caixa": [
+      190.75,
+      70.55,
+      192.62,
+      71.52
+     ]
+    },
+    {
+     "ref": "C713",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 182.43,
+     "y": 55.01,
+     "caixa": [
+      181.5,
+      54.52,
+      183.37,
+      55.49
+     ]
+    },
+    {
+     "ref": "C302",
+     "altura_mm": 0.55,
+     "codigo": "F1",
+     "x": 28.3,
+     "y": 35.74,
+     "caixa": [
+      27.82,
+      34.8,
+      28.79,
+      36.67
+     ]
+    },
+    {
+     "ref": "C701",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 99.18,
+     "y": 71.03,
+     "caixa": [
+      98.25,
+      70.55,
+      100.11,
+      71.52
+     ]
+    },
+    {
+     "ref": "C719",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 154.68,
+     "y": 38.99,
+     "caixa": [
+      153.75,
+      38.51,
+      155.62,
+      39.48
+     ]
+    },
+    {
+     "ref": "C307",
+     "altura_mm": 0.55,
+     "codigo": "F1",
+     "x": 27.27,
+     "y": 37.35,
+     "caixa": [
+      26.33,
+      36.87,
+      28.2,
+      37.84
+     ]
+    },
+    {
+     "ref": "C712",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 163.93,
+     "y": 55.01,
+     "caixa": [
+      163.0,
+      54.52,
+      164.87,
+      55.49
+     ]
+    },
+    {
+     "ref": "C726",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 163.93,
+     "y": 22.97,
+     "caixa": [
+      163.0,
+      22.48,
+      164.87,
+      23.45
+     ]
+    },
+    {
+     "ref": "C724",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 126.93,
+     "y": 22.97,
+     "caixa": [
+      126.0,
+      22.48,
+      127.86,
+      23.45
+     ]
+    },
+    {
+     "ref": "C204",
+     "altura_mm": 0.55,
+     "codigo": "E3",
+     "x": 62.52,
+     "y": 11.95,
+     "caixa": [
+      61.59,
+      11.47,
+      63.46,
+      12.44
+     ]
+    },
+    {
+     "ref": "C709",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 108.43,
+     "y": 55.01,
+     "caixa": [
+      107.5,
+      54.52,
+      109.36,
+      55.49
+     ]
+    },
+    {
+     "ref": "C603",
+     "altura_mm": 0.55,
+     "codigo": "T3",
+     "x": 146.48,
+     "y": 12.99,
+     "caixa": [
+      145.55,
+      12.51,
+      147.42,
+      13.48
+     ]
+    },
+    {
+     "ref": "C601",
+     "altura_mm": 0.55,
+     "codigo": "T1",
+     "x": 119.07,
+     "y": 15.18,
+     "caixa": [
+      118.13,
+      14.69,
+      120.0,
+      15.66
+     ]
+    },
+    {
+     "ref": "C722",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 210.18,
+     "y": 38.99,
+     "caixa": [
+      209.25,
+      38.51,
+      211.12,
+      39.48
+     ]
+    },
+    {
+     "ref": "C725",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 145.43,
+     "y": 22.97,
+     "caixa": [
+      144.5,
+      22.48,
+      146.37,
+      23.45
+     ]
+    },
+    {
+     "ref": "C303",
+     "altura_mm": 0.55,
+     "codigo": "F1",
+     "x": 24.52,
+     "y": 38.45,
+     "caixa": [
+      23.59,
+      37.97,
+      25.46,
+      38.94
+     ]
+    },
+    {
+     "ref": "C728",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 200.93,
+     "y": 22.97,
+     "caixa": [
+      200.0,
+      22.48,
+      201.87,
+      23.45
+     ]
+    },
+    {
+     "ref": "C213",
+     "altura_mm": 0.55,
+     "codigo": "E3",
+     "x": 54.58,
+     "y": 7.17,
+     "caixa": [
+      53.65,
+      6.68,
+      55.52,
+      7.66
+     ]
+    },
+    {
+     "ref": "C705",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 173.18,
+     "y": 71.03,
+     "caixa": [
+      172.25,
+      70.55,
+      174.12,
+      71.52
+     ]
+    },
+    {
+     "ref": "C720",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 173.18,
+     "y": 38.99,
+     "caixa": [
+      172.25,
+      38.51,
+      174.12,
+      39.48
+     ]
+    },
+    {
+     "ref": "C727",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 182.43,
+     "y": 22.97,
+     "caixa": [
+      181.5,
+      22.48,
+      183.37,
+      23.45
+     ]
+    },
+    {
+     "ref": "C305",
+     "altura_mm": 0.55,
+     "codigo": "F1",
+     "x": 21.18,
+     "y": 34.47,
+     "caixa": [
+      20.7,
+      33.54,
+      21.67,
+      35.41
+     ]
+    },
+    {
+     "ref": "C304",
+     "altura_mm": 0.55,
+     "codigo": "F1",
+     "x": 20.45,
+     "y": 35.89,
+     "caixa": [
+      19.52,
+      35.41,
+      21.39,
+      36.38
+     ]
+    },
+    {
+     "ref": "C704",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 154.68,
+     "y": 71.03,
+     "caixa": [
+      153.75,
+      70.55,
+      155.62,
+      71.52
+     ]
+    },
+    {
+     "ref": "C716",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 99.18,
+     "y": 38.99,
+     "caixa": [
+      98.25,
+      38.51,
+      100.11,
+      39.48
+     ]
+    },
+    {
+     "ref": "C205",
+     "altura_mm": 0.55,
+     "codigo": "E3",
+     "x": 58.58,
+     "y": 6.83,
+     "caixa": [
+      57.65,
+      6.34,
+      59.52,
+      7.32
+     ]
+    },
+    {
+     "ref": "C703",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 136.18,
+     "y": 71.03,
+     "caixa": [
+      135.25,
+      70.55,
+      137.12,
+      71.52
+     ]
+    },
+    {
+     "ref": "C707",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 210.18,
+     "y": 71.03,
+     "caixa": [
+      209.25,
+      70.55,
+      211.12,
+      71.52
+     ]
+    },
+    {
+     "ref": "C306",
+     "altura_mm": 0.55,
+     "codigo": "F1",
+     "x": 25.06,
+     "y": 32.57,
+     "caixa": [
+      24.13,
+      32.09,
+      26.0,
+      33.06
+     ]
+    },
+    {
+     "ref": "C715",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 219.43,
+     "y": 55.01,
+     "caixa": [
+      218.5,
+      54.52,
+      220.37,
+      55.49
+     ]
+    },
+    {
+     "ref": "C714",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 200.93,
+     "y": 55.01,
+     "caixa": [
+      200.0,
+      54.52,
+      201.87,
+      55.49
+     ]
+    },
+    {
+     "ref": "C702",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 117.68,
+     "y": 71.03,
+     "caixa": [
+      116.75,
+      70.55,
+      118.61,
+      71.52
+     ]
+    },
+    {
+     "ref": "C209",
+     "altura_mm": 0.55,
+     "codigo": "E4",
+     "x": 67.0,
+     "y": 8.75,
+     "caixa": [
+      66.52,
+      7.82,
+      67.48,
+      9.69
+     ]
+    },
+    {
+     "ref": "C708",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 89.93,
+     "y": 55.01,
+     "caixa": [
+      89.0,
+      54.52,
+      90.86,
+      55.49
+     ]
+    },
+    {
+     "ref": "C102",
+     "altura_mm": 0.55,
+     "codigo": "P1",
+     "x": 31.57,
+     "y": 9.0,
+     "caixa": [
+      31.09,
+      8.06,
+      32.06,
+      9.94
+     ]
+    },
+    {
+     "ref": "C710",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 126.93,
+     "y": 55.01,
+     "caixa": [
+      126.0,
+      54.52,
+      127.86,
+      55.49
+     ]
+    },
+    {
+     "ref": "C717",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 117.68,
+     "y": 38.99,
+     "caixa": [
+      116.75,
+      38.51,
+      118.61,
+      39.48
+     ]
+    },
+    {
+     "ref": "C711",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 145.43,
+     "y": 55.01,
+     "caixa": [
+      144.5,
+      54.52,
+      146.37,
+      55.49
+     ]
+    },
+    {
+     "ref": "C721",
+     "altura_mm": 0.55,
+     "codigo": "T4",
+     "x": 191.68,
+     "y": 38.99,
+     "caixa": [
+      190.75,
+      38.51,
+      192.62,
+      39.48
+     ]
+    },
+    {
+     "ref": "U721",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 190.95,
+     "y": 41.99,
+     "caixa": [
+      190.12,
+      40.66,
+      191.84,
+      43.31
+     ]
+    },
+    {
+     "ref": "U725",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 144.7,
+     "y": 25.97,
+     "caixa": [
+      143.88,
+      24.64,
+      145.59,
+      27.3
+     ]
+    },
+    {
+     "ref": "U715",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 218.7,
+     "y": 58.01,
+     "caixa": [
+      217.88,
+      56.69,
+      219.59,
+      59.34
+     ]
+    },
+    {
+     "ref": "U722",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 209.45,
+     "y": 41.99,
+     "caixa": [
+      208.62,
+      40.66,
+      210.34,
+      43.31
+     ]
+    },
+    {
+     "ref": "R215",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 51.91,
+     "y": 5.4,
+     "caixa": [
+      51.41,
+      4.45,
+      52.4,
+      6.36
+     ]
+    },
+    {
+     "ref": "R218",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 53.52,
+     "y": 10.66,
+     "caixa": [
+      52.56,
+      10.16,
+      54.47,
+      11.15
+     ]
+    },
+    {
+     "ref": "R212",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 73.11,
+     "y": 16.29,
+     "caixa": [
+      72.16,
+      15.8,
+      74.07,
+      16.79
+     ]
+    },
+    {
+     "ref": "U713",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 181.7,
+     "y": 58.01,
+     "caixa": [
+      180.88,
+      56.69,
+      182.59,
+      59.34
+     ]
+    },
+    {
+     "ref": "R207",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 62.08,
+     "y": 13.62,
+     "caixa": [
+      61.58,
+      12.66,
+      62.57,
+      14.57
+     ]
+    },
+    {
+     "ref": "U708",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 89.2,
+     "y": 58.01,
+     "caixa": [
+      88.38,
+      56.69,
+      90.09,
+      59.34
+     ]
+    },
+    {
+     "ref": "U712",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 163.2,
+     "y": 58.01,
+     "caixa": [
+      162.38,
+      56.69,
+      164.09,
+      59.34
+     ]
+    },
+    {
+     "ref": "R206",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 54.22,
+     "y": 8.88,
+     "caixa": [
+      53.72,
+      7.93,
+      54.71,
+      9.84
+     ]
+    },
+    {
+     "ref": "R210",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 56.29,
+     "y": 12.45,
+     "caixa": [
+      55.79,
+      11.49,
+      56.78,
+      13.4
+     ]
+    },
+    {
+     "ref": "R202",
+     "altura_mm": 0.4,
+     "codigo": "E1",
+     "x": 14.36,
+     "y": 16.86,
+     "caixa": [
+      13.41,
+      16.36,
+      15.32,
+      17.35
+     ]
+    },
+    {
+     "ref": "U727",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 181.7,
+     "y": 25.97,
+     "caixa": [
+      180.88,
+      24.64,
+      182.59,
+      27.3
+     ]
+    },
+    {
+     "ref": "R209",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 65.73,
+     "y": 19.43,
+     "caixa": [
+      64.77,
+      18.94,
+      66.68,
+      19.93
+     ]
+    },
+    {
+     "ref": "R211",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 63.44,
+     "y": 19.34,
+     "caixa": [
+      62.48,
+      18.84,
+      64.39,
+      19.83
+     ]
+    },
+    {
+     "ref": "U705",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 172.45,
+     "y": 74.03,
+     "caixa": [
+      171.62,
+      72.7,
+      173.34,
+      75.36
+     ]
+    },
+    {
+     "ref": "R214",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 53.11,
+     "y": 5.91,
+     "caixa": [
+      52.61,
+      4.96,
+      53.6,
+      6.87
+     ]
+    },
+    {
+     "ref": "U719",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 153.95,
+     "y": 41.99,
+     "caixa": [
+      153.12,
+      40.66,
+      154.84,
+      43.31
+     ]
+    },
+    {
+     "ref": "R217",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 54.97,
+     "y": 12.29,
+     "caixa": [
+      54.47,
+      11.34,
+      55.46,
+      13.25
+     ]
+    },
+    {
+     "ref": "U706",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 190.95,
+     "y": 74.03,
+     "caixa": [
+      190.12,
+      72.7,
+      191.84,
+      75.36
+     ]
+    },
+    {
+     "ref": "R402",
+     "altura_mm": 0.4,
+     "codigo": "I3",
+     "x": 51.14,
+     "y": 51.0,
+     "caixa": [
+      50.18,
+      50.51,
+      52.09,
+      51.5
+     ]
+    },
+    {
+     "ref": "R208",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 67.34,
+     "y": 18.05,
+     "caixa": [
+      66.38,
+      17.55,
+      68.29,
+      18.54
+     ]
+    },
+    {
+     "ref": "U710",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 126.2,
+     "y": 58.01,
+     "caixa": [
+      125.38,
+      56.69,
+      127.09,
+      59.34
+     ]
+    },
+    {
+     "ref": "R203",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 62.48,
+     "y": 3.67,
+     "caixa": [
+      61.53,
+      3.18,
+      63.44,
+      4.17
+     ]
+    },
+    {
+     "ref": "U703",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 135.45,
+     "y": 74.03,
+     "caixa": [
+      134.62,
+      72.7,
+      136.34,
+      75.36
+     ]
+    },
+    {
+     "ref": "U726",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 163.2,
+     "y": 25.97,
+     "caixa": [
+      162.38,
+      24.64,
+      164.09,
+      27.3
+     ]
+    },
+    {
+     "ref": "U724",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 126.2,
+     "y": 25.97,
+     "caixa": [
+      125.38,
+      24.64,
+      127.09,
+      27.3
+     ]
+    },
+    {
+     "ref": "U704",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 153.95,
+     "y": 74.03,
+     "caixa": [
+      153.12,
+      72.7,
+      154.84,
+      75.36
+     ]
+    },
+    {
+     "ref": "U711",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 144.7,
+     "y": 58.01,
+     "caixa": [
+      143.88,
+      56.69,
+      145.59,
+      59.34
+     ]
+    },
+    {
+     "ref": "R501",
+     "altura_mm": 0.4,
+     "codigo": "A1",
+     "x": 56.94,
+     "y": 88.75,
+     "caixa": [
+      56.44,
+      87.8,
+      57.43,
+      89.7
+     ]
+    },
+    {
+     "ref": "R105",
+     "altura_mm": 0.4,
+     "codigo": "P1",
+     "x": 26.16,
+     "y": 30.15,
+     "caixa": [
+      25.21,
+      29.66,
+      27.12,
+      30.64
+     ]
+    },
+    {
+     "ref": "U701",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 98.45,
+     "y": 74.03,
+     "caixa": [
+      97.62,
+      72.7,
+      99.34,
+      75.36
+     ]
+    },
+    {
+     "ref": "R301",
+     "altura_mm": 0.4,
+     "codigo": "F1",
+     "x": 31.69,
+     "y": 22.77,
+     "caixa": [
+      31.19,
+      21.82,
+      32.18,
+      23.73
+     ]
+    },
+    {
+     "ref": "U718",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 135.45,
+     "y": 41.99,
+     "caixa": [
+      134.62,
+      40.66,
+      136.34,
+      43.31
+     ]
+    },
+    {
+     "ref": "R216",
+     "altura_mm": 0.4,
+     "codigo": "E4",
+     "x": 67.0,
+     "y": 6.85,
+     "caixa": [
+      66.5,
+      5.89,
+      67.5,
+      7.8
+     ]
+    },
+    {
+     "ref": "R201",
+     "altura_mm": 0.4,
+     "codigo": "E1",
+     "x": 15.94,
+     "y": 13.86,
+     "caixa": [
+      15.45,
+      12.91,
+      16.44,
+      14.82
+     ]
+    },
+    {
+     "ref": "R213",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 69.51,
+     "y": 17.7,
+     "caixa": [
+      68.55,
+      17.2,
+      70.46,
+      18.19
+     ]
+    },
+    {
+     "ref": "U707",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 209.45,
+     "y": 74.03,
+     "caixa": [
+      208.62,
+      72.7,
+      210.34,
+      75.36
+     ]
+    },
+    {
+     "ref": "R205",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 54.4,
+     "y": 5.71,
+     "caixa": [
+      53.9,
+      4.75,
+      54.89,
+      6.66
+     ]
+    },
+    {
+     "ref": "U714",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 200.2,
+     "y": 58.01,
+     "caixa": [
+      199.38,
+      56.69,
+      201.09,
+      59.34
+     ]
+    },
+    {
+     "ref": "R302",
+     "altura_mm": 0.4,
+     "codigo": "F1",
+     "x": 31.58,
+     "y": 20.02,
+     "caixa": [
+      31.08,
+      19.07,
+      32.07,
+      20.98
+     ]
+    },
+    {
+     "ref": "U717",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 116.95,
+     "y": 41.99,
+     "caixa": [
+      116.12,
+      40.66,
+      117.84,
+      43.31
+     ]
+    },
+    {
+     "ref": "U728",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 200.2,
+     "y": 25.97,
+     "caixa": [
+      199.38,
+      24.64,
+      201.09,
+      27.3
+     ]
+    },
+    {
+     "ref": "R204",
+     "altura_mm": 0.4,
+     "codigo": "E3",
+     "x": 60.3,
+     "y": 3.76,
+     "caixa": [
+      59.35,
+      3.26,
+      61.26,
+      4.25
+     ]
+    },
+    {
+     "ref": "U709",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 107.7,
+     "y": 58.01,
+     "caixa": [
+      106.88,
+      56.69,
+      108.59,
+      59.34
+     ]
+    },
+    {
+     "ref": "R401",
+     "altura_mm": 0.4,
+     "codigo": "I3",
+     "x": 50.8,
+     "y": 46.05,
+     "caixa": [
+      49.84,
+      45.55,
+      51.75,
+      46.54
+     ]
+    },
+    {
+     "ref": "U720",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 172.45,
+     "y": 41.99,
+     "caixa": [
+      171.62,
+      40.66,
+      173.34,
+      43.31
+     ]
+    },
+    {
+     "ref": "U723",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 107.7,
+     "y": 25.97,
+     "caixa": [
+      106.88,
+      24.64,
+      108.59,
+      27.3
+     ]
+    },
+    {
+     "ref": "U716",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 98.45,
+     "y": 41.99,
+     "caixa": [
+      97.62,
+      40.66,
+      99.34,
+      43.31
+     ]
+    },
+    {
+     "ref": "U702",
+     "altura_mm": 0.4,
+     "codigo": "T4",
+     "x": 116.95,
+     "y": 74.03,
+     "caixa": [
+      116.12,
+      72.7,
+      117.84,
+      75.36
+     ]
+    },
+    {
+     "ref": "TP101",
+     "altura_mm": 0.0,
+     "codigo": "P1",
+     "x": 29.77,
+     "y": 5.2,
+     "caixa": [
+      28.5,
+      3.92,
+      31.05,
+      6.47
+     ]
+    }
+   ]
+  }
+ },
+ "flexao": {
+  "modelo": "grelha de vigas 4 mm na placa nua de 1.2 mm (FR-4, E = 18000 MPa), sem rigidez a torcao, plate de 1,6 mm ignorado; 3 N no centro de cada tecla, sozinha",
+  "alvo_mm": 0.05,
+  "so_furos": {
+   "apoios": [
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6",
+    "H7",
+    "H8"
+   ],
+   "max_mm": 1.2262,
+   "pior_tecla": "SW28",
+   "media_mm": 0.1773,
+   "por_tecla_mm": {
+    "SW1": 0.0834,
+    "SW2": 0.1285,
+    "SW3": 0.1091,
+    "SW4": 0.0582,
+    "SW5": 0.1888,
+    "SW6": 0.4226,
+    "SW7": 0.9445,
+    "SW8": 0.019,
+    "SW9": 0.0208,
+    "SW10": 0.0629,
+    "SW11": 0.0198,
+    "SW12": 0.0202,
+    "SW13": 0.0783,
+    "SW14": 0.049,
+    "SW15": 0.0838,
+    "SW16": 0.033,
+    "SW17": 0.0676,
+    "SW18": 0.0604,
+    "SW19": 0.0216,
+    "SW20": 0.0818,
+    "SW21": 0.1682,
+    "SW22": 0.3344,
+    "SW23": 0.0917,
+    "SW24": 0.1167,
+    "SW25": 0.0304,
+    "SW26": 0.0427,
+    "SW27": 0.4001,
+    "SW28": 1.2262
+   }
+  },
+  "pilares_propostos": [
+   [
+    197.5,
+    32.5
+   ],
+   [
+    207.5,
+    67.5
+   ],
+   [
+    112.5,
+    67.5
+   ],
+   [
+    167.5,
+    67.5
+   ],
+   [
+    127.5,
+    32.5
+   ],
+   [
+    132.5,
+    67.5
+   ]
+  ],
+  "com_pilares": {
+   "max_mm": 0.0481,
+   "pior_tecla": "SW6",
+   "media_mm": 0.0259,
+   "por_tecla_mm": {
+    "SW1": 0.0438,
+    "SW2": 0.0223,
+    "SW3": 0.0236,
+    "SW4": 0.0359,
+    "SW5": 0.0276,
+    "SW6": 0.0481,
+    "SW7": 0.0226,
+    "SW8": 0.0177,
+    "SW9": 0.0084,
+    "SW10": 0.0161,
+    "SW11": 0.0111,
+    "SW12": 0.0113,
+    "SW13": 0.0293,
+    "SW14": 0.0173,
+    "SW15": 0.0262,
+    "SW16": 0.0263,
+    "SW17": 0.018,
+    "SW18": 0.0187,
+    "SW19": 0.0215,
+    "SW20": 0.0391,
+    "SW21": 0.0268,
+    "SW22": 0.0217,
+    "SW23": 0.0463,
+    "SW24": 0.0212,
+    "SW25": 0.017,
+    "SW26": 0.0209,
+    "SW27": 0.0457,
+    "SW28": 0.0421
+   }
+  },
+  "lugares_livres_no_verso": 534,
+  "regra_do_lugar": "borda do pilar Ø4 a >= 0.6 mm de pad, via ou corpo de peca no verso; fora do anel dos furos M2 e da area do cartao MicroMod"
  }
 }

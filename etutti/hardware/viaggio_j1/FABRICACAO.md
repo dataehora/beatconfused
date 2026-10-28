@@ -8,8 +8,8 @@ Medidas em mm, no referencial do KiCad (x para a direita, y para baixo, isto é,
 
 | Lote | O quê | Estado |
 |---|---|---|
-| 1 | ajustes pedidos na v2.4 | **feito** (commit deste lote) |
-| 2 | conferências: DRC final, placa × firmware 28/28, flexão, alturas | a fazer |
+| 1 | ajustes pedidos na v2.4 | **feito** (commit f2d50a8) |
+| 2 | conferências: DRC final, placa × firmware 28/28, flexão, alturas | **feito** (commit do lote 2) |
 | 3 | fabricação: Gerbers, furação, BOM/CPL, plate, POWER.md, imagens | a fazer |
 
 Se a sessão cair, a próxima parte do último lote enviado (`git log` da branch) e desta tabela.
@@ -20,7 +20,11 @@ Se a sessão cair, a próxima parte do último lote enviado (`git log` da branch
 python etutti/hardware/viaggio_micromod/pcb/schematic.py          (esquema, ERC, BOM preliminar)
 copiar viaggio_micromod/pcb/kicad/viaggio_micromod_E.kicad_sch para viaggio_j1/kicad/
 "C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/m3.py lote1
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/m3.py lote2
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/mechanics.py
 ```
+
+O `lote2` parte da placa que o `lote1` deixou; ele não roda o `lote1` de novo.
 
 - O `lote1` sempre parte da placa do commit 93aa0e3 (tirada do Git), faz os ajustes e grava pelo **mesmo método dos PRs #120/#123/#126**: o pcbnew salva uma cópia, e só os objetos novos, removidos e mudados, mais as 4 zonas repreenchidas, entram no arquivo original. O script confere bloco a bloco, por uuid, que todo o resto ficou idêntico (4008 blocos).
 - `.kicad_pro`, `.kicad_prl` e `.kicad_dru` não mudaram.
@@ -92,3 +96,115 @@ Em `build/`, olhadas:
 
 - O `viaggio_micromod/pcb/schematic.py` ganhou o C210. O `bom_preliminar.csv` e a folha E de `viaggio_micromod/pcb/kicad/` foram regenerados.
 - A placa do M2 em `viaggio_micromod/pcb/kicad/` (sem roteamento) não tem o C210. Ela não é mais a placa que segue (SPEC v2.4) e não foi mexida.
+
+## Lote 2 · conferências
+
+### DRC final
+
+`kicad-cli pcb drc --schematic-parity --severity-all`, com o `.kicad_dru` da placa (`build/drc_m3_final.json`, fora do Git):
+
+| Tipo | Quantidade |
+|---|---|
+| clearance, shorting_items, hole_clearance, hole_to_hole, copper_edge_clearance | **0** |
+| courtyards_overlap, solder_mask_bridge, via_diameter, hole_size, annular_width | **0** |
+| track_dangling, via_dangling | **0** |
+| ligações não feitas | **0** |
+| paridade com o esquema | **0** |
+| track_width | **3**, todas da EN_B no U711 (justificadas abaixo) |
+
+**As 7 track_width do J:**
+- **4 de MUX_S0, no In2, alargadas para 0,15** sem mover nada:
+  - 3 em (25,0–25,3; 10,1–10,2), de 0,10–0,12;
+  - 1 em (120,5–120,8; 7,9–8,2), de 0,12.
+
+  O pcbnew conferiu cada uma a 0,15 com a folga de cada vizinho. A gravação trocou só esses 4 blocos e repreencheu as zonas; 4023 blocos ficaram idênticos.
+- **3 de EN_B, em B.Cu, de 0,12, ficam.** São 0,75 mm em (144,14–144,70; 59,11–59,29), entre o pad 2 (GND) e o pad 3 (EN_B) do sensor U711 (tecla SW11, X2SON de 0,5 de passo). Por que ficam:
+  - a 0,15 elas encostam no pad 2 (GND) do U711. Só alargar não cabe;
+  - ali a EN_B leva aos sensores do grupo B a leste uma parte dos ~36 mA do grupo (SPEC §4). 0,75 mm de cobre de 35 µm a 0,12 dão ~3 mΩ, o que não pesa;
+  - a JLCPCB fabrica trilha de 0,09 mm (3,5 mil) em 4 camadas. A regra de 0,15 é nossa, não da fábrica;
+  - corrigir de verdade seria refazer esse trecho do J por baixo do U711, e o lote 2 não autoriza isso.
+
+**Afinações na entrada de pinos.** São as trilhas mais finas que a largura da classe. Todas ficam dentro dos pátios que o `.kicad_dru` permite. A lista completa, rede por rede, está em `m3.json` (`lote2.afinacoes`).
+
+| Classe | Redes | Larguras | Trecho mais comprido |
+|---|---|---|---|
+| Corrente (mínimo 0,8 fora dos pátios) | VBUS 12 trechos (0,15–0,5; 5,0 mm no total), VSYS 4 (0,24–0,3; 2,4 mm), VBAT 2 (0,24–0,3; 1,4 mm), BB_L1 e BB_L2 1 cada (0,24; 0,9 mm) | 0,15–0,5 | 1,13 mm (VBUS) |
+| USB (0,24) | USB_DP 2 trechos e USB_DN 4, junto do J201, do U201 e do J101 | 0,2 | 1,18 mm |
+| Sinais (o normal é 0,2, o mínimo 0,15) | 36 redes, de 1 a 19 trechos cada | 0,15 | 3,94 mm (I2C_SCL); na EN_B, 3,7 mm a 0,15, além das 3 de 0,12 |
+
+### Placa × firmware: 28/28
+
+O `m3.py lote2` lê a placa e confere tecla por tecla:
+- o sensor U7nn está sob a tecla SWnn: mesmo centro, no verso, girado 180° como no Pocket;
+- a saída OUT_Knn chega a um só canal de um só multiplexador;
+- o EN do sensor é o do grupo daquele canal: EN_A nos canais 0–7, EN_B nos 8–15;
+- a nota da tecla bate com `FIRST_NOTE` e `FIRST_COL`.
+
+Confere também:
+- nos pads do J101: o endereço S0–S3 (pads 19, 17, 47 e 32), os COMs (pads 34 e 38) e o SENS_EN (pad 10);
+- as portas do T3: EN_A = SENS_EN e não S3; EN_B = SENS_EN e S3.
+
+**Resultado: 28/28, 0 problemas.** O `KEY_INPUT` foi escrito no `viaggio_micromod/pcb/PINOS.md`. É **igual ao do Pocket v0.3**, canal por canal:
+
+```c
+const int8_t VIAGGIO_KEY_INPUT[4][8] = {
+  { -1,  21,  20,  17,  19,   2,   1,   0},
+  { 25,  26,  31,  29,  13,  11,  14,  15},
+  { -1,  18,  23,  22,   4,   6,   5,   3},
+  { -1,  28,  27,  24,   9,   8,  10,  -1},
+};
+```
+
+Como no Pocket, o multiplexador 0 é o T2 (U602, COM no pino 14) e o 1 é o T1 (U601, COM no pino 15).
+
+**O que a programação precisa ajustar:** nada nos pinos. O `PINOS.md` só ganhou a tabela de teclas; antes dizia "a do Pocket v0.3, a conferir". A firmware do Viaggio, quando existir, usa essa tabela, que é a mesma do `pocket_keys.h`.
+
+### Flexão: não passa só com os 8 furos M2; passa com 6 pilares do case
+
+`viaggio_j1/mechanics.py` é uma cópia adaptada do `etutti/hardware/mechanics.py`, que não foi mexido.
+- **Modelo:** o mesmo do eTuttino e do Pocket. É uma grelha de vigas de 4 mm na placa nua de 1,2 mm (FR-4, E = 18 GPa), sem rigidez à torção e sem o plate de 1,6 mm. A placa real dobra menos.
+- **Carga:** 3 N no centro de cada tecla, uma de cada vez.
+- **Apoios:** os 8 furos M2 (H1–H8), presos.
+
+| Apoios | Pior tecla | Média |
+|---|---|---|
+| só os 8 furos M2 | **1,23 mm** (SW28, canto de trás à direita); SW7 0,94; SW6 0,42; SW27 0,40 | 0,18 mm |
+| 8 furos + **6 pilares** | **0,048 mm** (SW6) | 0,026 mm |
+
+**Onde faltam apoios do case:** os furos estão na metade esquerda e no meio do teclado (H5–H8), e as pontas da direita (SW7, SW15, SW22, SW28) ficam soltas. O script propõe pilares Ø4 no fundo do case, um por vez, no lugar livre do verso mais perto da pior tecla.
+- **Lugar livre:** a borda do pilar fica a ≥ 0,6 mm de pad, via ou corpo de peça (regra do eTuttino), fora do anel dos furos e fora do cartão MicroMod.
+- **Os 6 pilares**, em mm, no referencial do KiCad:
+  - P1 (197,5; 32,5) e P5 (127,5; 32,5), entre as fileiras 4 e 3;
+  - P2 (207,5; 67,5), P3 (112,5; 67,5), P4 (167,5; 67,5) e P6 (132,5; 67,5), entre as fileiras 2 e 1.
+- A imagem é `build/m3_flexao.png`. Cada tecla mostra a flexão em centésimos de mm: primeiro só com os furos, depois com os pilares.
+- A alternativa seria pôr mais furos M2 na placa. Os pilares não pedem mudança na placa, porque tocam só a máscara.
+
+### Alturas por lado
+
+Vêm do campo `Altura_mm` de cada footprint, que o `build_board.py` do M2 preencheu, com uma correção. O Program (SW403, TS-1187A) estava com 20 mm: a tabela do `build_board.py` casava "SW40" (os encoders) antes de "SW403". A altura real é 1,5 mm **(conferir)**. O campo na placa ficou como estava; aqui vale 1,5.
+
+**Lado de cima.** A peça mais alta são os **encoders I1/I2, com 20 mm**.
+
+| Peça | Altura acima da placa (mm) | Onde (x; y) |
+|---|---|---|
+| SW401 / SW402, encoders EC11E vertical (I1, I2) | 20 (ponta do eixo) | (17,5; 56,3) / (33,5; 56,3) |
+| SW1–SW28, Gateron KS-20 | 11,6 **(conferir)**, sobre o plate | o teclado, x 89–219 |
+| J301, jack PJ-327A (F2) | 5,1 **(conferir)** | borda esquerda, y 20–30 |
+| J201, USB-C TYPE-C-31-M-12 (E1) | 3,3 | borda esquerda, y 7,7–18,3 |
+| U201 (E2), D201 | 1,45 / 1,1 | junto do USB-C |
+| C210 (novo), D401 (LED) | 0,95 / 0,6 | (60,8; 8,6) / (50,0; 49,0) |
+
+**Lado de baixo.** A peça mais alta é o **J202, conector da bateria, com 6,0 mm (conferir)**. O módulo vem logo depois.
+
+| Peça | Altura abaixo da placa (mm) | Onde |
+|---|---|---|
+| J202, JST PH 3 vias SMD horizontal (E6) | 6,0 **(conferir)** | (64,5; 26,5) |
+| P1: J101 (M.2 de 4,2) + módulo MicroMod | o cartão fica a 4,2 mm; somando o cartão (0,8) e as peças do módulo, ~6–6,5 **(conferir com o módulo)** | x 20,5–50,5; y 6,7–29,3 |
+| H101, espaçador M2.5 | 2,5, mais a cabeça do parafuso (~1,5) sob o cartão | (47,5; 14,0) |
+| L201, indutor 4 × 4 | 2,0 | (73,8; 9,0) |
+| SW403, Program (I4) | 1,5 **(conferir)** | (52,0; 36,0) |
+| chips, capacitores 0805, SOT-23 | ≤ 1,45 | |
+| sensores TMAG5253 (X2SON) | 0,4 | sob cada tecla |
+
+- **Sob o cartão MicroMod** só há peças de até 1,45 mm. A regra da SparkFun é 1,9, e o DRC confere pela regra "Sob o cartão MicroMod".
+- **No teclado**, o verso só tem os sensores (0,4) e os capacitores 0402 deles (0,55). Os pilares do case passam entre eles.
