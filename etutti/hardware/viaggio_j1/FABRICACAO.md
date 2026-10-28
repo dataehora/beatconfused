@@ -9,8 +9,8 @@ Medidas em mm, no referencial do KiCad (x para a direita, y para baixo, isto é,
 | Lote | O quê | Estado |
 |---|---|---|
 | 1 | ajustes pedidos na v2.4 | **feito** (commit f2d50a8) |
-| 2 | conferências: DRC final, placa × firmware 28/28, flexão, alturas | **feito** (commit do lote 2) |
-| 3 | fabricação: Gerbers, furação, BOM/CPL, plate, POWER.md, imagens | a fazer |
+| 2 | conferências: DRC final, placa × firmware 28/28, flexão, alturas | **feito** (commit 7d7f39f) |
+| 3 | fabricação: Gerbers, furação, BOM/CPL, plate, POWER.md, imagens | **feito** (commit do lote 3) |
 
 Se a sessão cair, a próxima parte do último lote enviado (`git log` da branch) e desta tabela.
 
@@ -22,6 +22,7 @@ copiar viaggio_micromod/pcb/kicad/viaggio_micromod_E.kicad_sch para viaggio_j1/k
 "C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/m3.py lote1
 "C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/m3.py lote2
 "C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/mechanics.py
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/m3.py lote3
 ```
 
 O `lote2` parte da placa que o `lote1` deixou; ele não roda o `lote1` de novo.
@@ -208,3 +209,114 @@ Vêm do campo `Altura_mm` de cada footprint, que o `build_board.py` do M2 preenc
 
 - **Sob o cartão MicroMod** só há peças de até 1,45 mm. A regra da SparkFun é 1,9, e o DRC confere pela regra "Sob o cartão MicroMod".
 - **No teclado**, o verso só tem os sensores (0,4) e os capacitores 0402 deles (0,55). Os pilares do case passam entre eles.
+
+## Lote 3 · fabricação (nada foi encomendado)
+
+`"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/m3.py lote3`. Ele lê a placa como o lote 2 a deixou e não muda nada nela.
+
+### Arquivos em `fab/`
+
+| Arquivo | O quê |
+|---|---|
+| `viaggio_j1_gerbers.zip` | Gerbers das 4 camadas de cobre (F.Cu, In1, In2, B.Cu), pasta, máscara e serigrafia dos dois lados, contorno, mais a furação Excellon em mm (PTH e NPTH separados) e o job file. Gerado pelo `kicad-cli` |
+| `viaggio_j1_bom.csv` | BOM no formato da JLCPCB (Comment, Designator, Footprint, LCSC Part #): 42 linhas, 140 peças. Global Sourcing marcado no Comment |
+| `viaggio_j1_cpl.csv` | CPL da JLCPCB, os dois lados num arquivo (coluna Layer): 11 peças em cima, 129 embaixo |
+| `viaggio_j1_fora_da_montagem.csv` | o que a JLC não monta: 28 Gateron, 8 furos M2, TP101, J501 (fios do alto-falante), o módulo MicroMod, o parafuso do módulo, o plate, o alto-falante e a bateria |
+| `viaggio_j1_plate_gerbers.zip` | plate de FR-4 de 1,6 mm (ver abaixo) |
+| `viaggio_j1_top.png`, `viaggio_j1_bottom.png` | render 3D da placa final, de cima e de baixo (olhados) |
+| `viaggio_j1_plate_top.png` | render do plate (olhado) |
+
+A fonte do plate é `kicad/viaggio_j1_plate.kicad_pcb`.
+
+### Parâmetros do pedido da placa (JLCPCB)
+
+- 4 camadas, **1,2 mm**, empilhamento **JLC04121H-7628** (o mesmo do arquivo, que já tem a espessura 1,2 e 4 camadas de cobre).
+- 246,5 × 95 mm, cantos R 5.
+- Vias: **1313, todas 0,5 / furo 0,3**. Não há via no pad: a única, a do C304, saiu no lote 1.
+- Trilha mínima: **0,12** (só as 3 da EN_B do U711); o resto ≥ 0,15. Folga mínima 0,1.
+- Acabamento: **ENIG** recomendado (X2SON de 0,5 de passo, QFN de 0,4 do codec, conector M.2 de 0,5). HASL sai mais barato, mas deixa os pads finos menos planos **(decidir)**.
+- Máscara: vias tampadas (tented), o padrão da JLC.
+
+### BOM e CPL
+
+- **Global Sourcing:** T4 (28 × TMAG5253BA3IQDMRR) e H101 (Würth 9774025151R). Estão no BOM sem código LCSC, com "[GLOBAL SOURCING JLCPCB, sem codigo LCSC]" no Comment.
+- **Fora da montagem:** o módulo MicroMod (DEV-16402) e os Gateron (lista em `viaggio_j1_fora_da_montagem.csv`).
+- **Códigos LCSC que faltavam no esquema**, achados em páginas públicas da LCSC/JLCPCB em 28 out 2026 e postos só no BOM de fabricação. O esquema ainda não os tem:
+  - FB301, ferrite 600 Ω @ 100 MHz 0603: **C1002** (Sunlord GZ1608D601TF, 200 mA, básica);
+  - R501, 680 kΩ 0402: **C4131** (UNI-ROYAL 0402WGF6803TCE).
+- **Ainda sem código: C307, 150 nF 0402** (o VAG do codec). Sugestão: Samsung CL05B154KO5NNNC, 16 V X7R. Não achei o código LCSC dela **(conferir antes de encomendar)**.
+- **Encoders SW401/SW402** são THT: a JLC solda à mão (custo à parte, abaixo).
+- **Rotações:** o CPL tem a rotação do KiCad, espelhada no verso (180 − a), mais a correção dos modelos da JLC por encapsulamento, a mesma tabela do plugin kicad-jlcpcb-tools:
+
+  | Encapsulamento | Correção |
+  |---|---|
+  | SOT-23 (todas as variantes) | 180° |
+  | TSSOP, VQFN, QFN, TQFN, DRC0010J, X2SON | 270° |
+  | o resto (passivos, conectores, footprints próprios) | 0° |
+
+  No total: 82 + 10 sem correção, 13 + 1 com 180°, 34 com 270°.
+- **Conferir as rotações uma a uma na prévia da JLC antes de pagar (conferir).** Não há como ver os modelos da JLC daqui. Atenção especial a:
+  - J101 (M.2), H101, J301 (jack), D401 (LED 1615), J202, SW403 e o USB-C: são footprints próprios ou com a origem fora do centro da peça, e a posição também pode precisar de ajuste;
+  - TMAG5253 (X2SON): o pino 1 decide a leitura.
+
+### Plate de FR-4 de 1,6 mm
+
+- **Origem:** o plate do Pocket (`pocket/case/out/plate.dxf`, do design), lido linha a linha.
+- O DXF tem y espelhado (y = 100 − y_dxf). Desespelhado, os 28 recortes do Pocket caem exatamente nas 28 teclas do J1, como a SPEC diz.
+- **Mudanças:**
+  - os 7 entalhes de parafuso do Pocket (R 3,5) foram fechados pela corda, porque o Viaggio não tem aqueles parafusos;
+  - os 28 recortes de 14 × 14 foram refeitos nas posições das SW1–SW28 da placa;
+  - entraram furos de 2,2 mm nos 4 furos M2 da placa que caem dentro do plate: H5, H6, H7 e H8.
+- O DRC do plate dá 0 erros e o contorno é fechado.
+- **(conferir com o design):** o plate ainda tem o contorno de hexágono do Pocket. A forma final e o que passa pelos furos M2 (parafuso, espaçador) são do case.
+
+### Custo estimado para 5 placas (US$, sem frete e impostos)
+
+| Item | Valor | Fonte e data |
+|---|---:|---|
+| PCB 4 camadas, 1,2 mm, 246,5 × 95, vias 0,3, 5 unidades | ~34 | cotação do J na JLC (SPEC v2.2, 25 out 2026); ENIG deve somar (estimativa) |
+| Montagem Standard (dois lados): taxa de preparação | 50 | página de preços de montagem da JLCPCB (25 US$ por lado), lida em 28 out 2026 |
+| Estêncil, 2 lados | ~17 | mesma página (~8,66 por lado) |
+| Taxa de carregador por tipo de peça (~44 tipos, inclusive 2 de Global Sourcing) | ~66 | mesma página (1,5 por tipo na Standard; versões mais antigas da página falam em 3 só para as estendidas) **(estimativa)** |
+| Juntas SMT: 598 por placa × 5 × 0,0017 | ~5 | FAQ de montagem da JLCPCB (0,0017 por junta) |
+| Solda à mão dos 2 encoders (THT) | ~5 | FAQ (3,5 de mão de obra + 0,0173 por junta) |
+| Peças, 5 placas (~24,3 por placa; 13,2 delas são os 28 TMAG5253 + o espaçador, de Global Sourcing) | ~122 | preços estimados do `bom_preliminar.csv` (LCSC/JLC, 25 out 2026) **(estimativa)**; a JLC compra quantidades mínimas dos passivos (centavos) |
+| Global Sourcing: frete e manuseio até a JLC | ? | **(conferir na cotação)** |
+| Plate FR-4 1,6 mm, 2 camadas sem cobre, ~180 × 86, 5 unidades | ~8 | estimativa pelo preço de placa de 2 camadas da JLC **(estimativa)** |
+| **Total** | **~305 + frete + Global Sourcing** | ~61 por placa montada |
+
+Fora desse total:
+- 5 módulos MicroMod Teensy (~25 cada, ~125);
+- 140 Gateron KS-20 (28 por instrumento);
+- baterias, alto-falantes, capas e o case.
+
+Fontes dos preços de montagem: [JLCPCB, preço da montagem](https://jlcpcb.com/help/article/pcb-assembly-price), [JLCPCB, FAQ de montagem](https://jlcpcb.com/help/article/pcb-assembly-faqs), [TechOverflow, resumo dos preços](https://techoverflow.net/2024/04/09/jlcpcb-pcba-assembly-price-overview/). Códigos LCSC: [C1002](https://jlcpcb.com/partdetail/Sunlord-GZ1608D601TF/C1002) e [C4131](https://www.lcsc.com/product-detail/C4131.html). O total é uma ordem de grandeza: a cotação da JLC, com o BOM e o CPL enviados, é que vale.
+
+## Peças escolhidas no M3 (datasheets)
+
+- C210, 10 µF 0603 10 V X5R, Samsung CL10A106KP8NNNC, LCSC C19702: [LCSC C19702](https://www.lcsc.com/product-detail/C19702.html).
+- FB301, Sunlord GZ1608D601TF, LCSC C1002: [datasheet](https://datasheet.lcsc.com/lcsc/2310301640_Sunlord-GZ1608D601TF_C1002.pdf).
+- R501, UNI-ROYAL 0402WGF6803TCE, LCSC C4131: [LCSC C4131](https://www.lcsc.com/product-detail/C4131.html).
+
+O resto das peças é o do M1/M2 (`viaggio_micromod/ELETRONICA.md`).
+
+## Itens (conferir)
+
+1. Rotações e posições do CPL na prévia da JLC, sobretudo J101, H101, J301, D401, J202, SW403, J201 e os TMAG5253.
+2. C307 (150 nF 0402) sem código LCSC.
+3. Alturas: Gateron 11,6; jack 5,1; J202 6,0; SW403 1,5; módulo montado ~6–6,5 abaixo da placa.
+4. Flexão: o modelo ignora o plate. A medida real fica para o protótipo com o case.
+5. Consumo (POWER.md): nada medido nesta placa.
+6. Plate: forma e furos M2, com o design.
+7. Custos de Global Sourcing (frete e manuseio) e de ENIG.
+
+## Perguntas para a gestão
+
+1. **C202/C206:** troquei as duas peças de lugar na placa, sem mexer no esquema. Assim a referência e o `Codigo` batem com o esquema (C202 = E3 no norte do bloco; C206 = E4 na entrada do U204). Serve, ou preferem renumerar no esquema?
+2. **C210 no lado de cima:** o capacitor de VSYS dos pinos OUT não coube no verso sem refazer quatro redes em volta do D205. Ficou em cima, logo acima dos pinos, com o GND junto das vias térmicas do U202. Aceito?
+3. **C304 andou 0,59 mm** para o espaço do laço de +3V3, porque só assim a via de GND sai do pad. A v2.4 autorizou a trilha, não o movimento. Aceito?
+4. **EN_B no U711:** 3 trechos de 0,12 ficam (a JLC faz 0,09). Aceito, ou o J refaz esse trecho por baixo do sensor?
+5. **Apoios do case:** só com os 8 furos M2, a pior tecla dobra 1,23 mm. Com os 6 pilares Ø4 propostos (P1–P6), dobra 0,048 mm. O design põe esses pilares no fundo do case, ou preferem mais furos M2 na placa?
+6. **Acabamento:** ENIG (recomendado pelos pads de 0,4–0,5) ou HASL?
+7. **C307 sem código LCSC:** escolho um 150 nF 0402 com estoque e atualizo o esquema e a placa, junto com o FB301 e o R501, num passo curto antes de encomendar?
+8. **Serigrafia:** a placa ainda diz "SPEC v2.3 passo M2" no texto de cima e de baixo. Troco para "J1 · M3" antes de encomendar? É só texto, mas é uma mudança na placa.

@@ -1,0 +1,44 @@
+referencia,peca,por que
+H1,MountingHole_2.2mm_M2,fora da montagem
+H2,MountingHole_2.2mm_M2,fora da montagem
+H3,MountingHole_2.2mm_M2,fora da montagem
+H4,MountingHole_2.2mm_M2,fora da montagem
+H5,MountingHole_2.2mm_M2,fora da montagem
+H6,MountingHole_2.2mm_M2,fora da montagem
+H7,MountingHole_2.2mm_M2,fora da montagem
+H8,MountingHole_2.2mm_M2,fora da montagem
+J501,alto-falante (fios),sem peca (pads; fios do A2 soldados em casa)
+SW1,Gateron_Magnetic_MX_1u,fora da montagem
+SW10,Gateron_Magnetic_MX_1u,fora da montagem
+SW11,Gateron_Magnetic_MX_1u,fora da montagem
+SW12,Gateron_Magnetic_MX_1u,fora da montagem
+SW13,Gateron_Magnetic_MX_1u,fora da montagem
+SW14,Gateron_Magnetic_MX_1u,fora da montagem
+SW15,Gateron_Magnetic_MX_1u,fora da montagem
+SW16,Gateron_Magnetic_MX_1u,fora da montagem
+SW17,Gateron_Magnetic_MX_1u,fora da montagem
+SW18,Gateron_Magnetic_MX_1u,fora da montagem
+SW19,Gateron_Magnetic_MX_1u,fora da montagem
+SW2,Gateron_Magnetic_MX_1u,fora da montagem
+SW20,Gateron_Magnetic_MX_1u,fora da montagem
+SW21,Gateron_Magnetic_MX_1u,fora da montagem
+SW22,Gateron_Magnetic_MX_1u,fora da montagem
+SW23,Gateron_Magnetic_MX_1u,fora da montagem
+SW24,Gateron_Magnetic_MX_1u,fora da montagem
+SW25,Gateron_Magnetic_MX_1u,fora da montagem
+SW26,Gateron_Magnetic_MX_1u,fora da montagem
+SW27,Gateron_Magnetic_MX_1u,fora da montagem
+SW28,Gateron_Magnetic_MX_1u,fora da montagem
+SW3,Gateron_Magnetic_MX_1u,fora da montagem
+SW4,Gateron_Magnetic_MX_1u,fora da montagem
+SW5,Gateron_Magnetic_MX_1u,fora da montagem
+SW6,Gateron_Magnetic_MX_1u,fora da montagem
+SW7,Gateron_Magnetic_MX_1u,fora da montagem
+SW8,Gateron_Magnetic_MX_1u,fora da montagem
+SW9,Gateron_Magnetic_MX_1u,fora da montagem
+TP101,RESET#/ONOFF,sem peca (pad)
+MOD1,SparkFun MicroMod Teensy (DEV-16402),em casa: encaixar no J101
+SCR1,parafuso M2.5 x 3 (kit SparkFun),em casa: prende o modulo no H101
+PLATE,"plate FR-4 1,6 mm",pedido a parte (viaggio_j1_plate_gerbers.zip)
+A2,alto-falante fino 36 mm,em casa: fios soldados no J501
+BAT,LiPo 1S ~1000 mAh com NTC (3 fios),em casa: no J202
