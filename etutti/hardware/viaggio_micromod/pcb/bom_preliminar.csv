@@ -33,10 +33,10 @@ E4,L201,1,2.2uH,L_Changjiang_FNR4020S,C167825,estendida,0.080,JLC,final,FNR4020S
 E4,U204,1,TPS63001DRCR,Texas_DRC0010J,C28060,estendida,1.400,JLC,final,"3,3 V fixo; PS/SYNC baixo = economia; EN = EN_REQ (sem a porta U206 da v2.1)"
 E6,J202,1,S3B-PH-SM4-TB,JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal,C265101,estendida,0.300,JLC,final,"bateria 1 = +, 2 = NTC, 3 = - (ordem do Pocket; conferir o cabo)"
 F1,C302 C304 C305,3,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
-F1,C307,1,150nF,C_0402_1005Metric,-,estendida,0.003,JLC,conferir,"Audio Board: 0,15 uF"
+F1,C307,1,150nF,C_0402_1005Metric,C162182,estendida,0.013,JLC,final,"Audio Board: 0,15 uF"
 F1,R301 R302,2,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,
 F1,C301 C303 C306,3,2.2uF,C_0402_1005Metric,C12530,basica,0.003,JLC,conferir,
-F1,FB301,1,600R@100MHz,L_0603_1608Metric,-,basica,0.005,JLC,conferir,Audio Board: Ferrite 600 no VDDA
+F1,FB301,1,600R@100MHz,L_0603_1608Metric,C1002,basica,0.005,JLC,final,Audio Board: Ferrite 600 no VDDA
 F1,U301,1,SGTL5000XNLA3,QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm,C511764,estendida,1.800,JLC,conferir,como a Audio Board Rev D2 (endereco I2C fixo 0x0A); sem entrada de linha/microfone
 F1,U302,1,XC6206P182MR,SOT-23-3,C347373,estendida,0.030,JLC,conferir,"1,8 V do VDDD (a Audio Board usa AP7313)"
 F2,R303,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
@@ -52,7 +52,7 @@ I3,D401,1,TJ-S1615SW6TGLCRG-A5,LED_1615_RG_4pad,C273605,estendida,0.020,JLC,fina
 I4,SW403,1,Program,SW_Push_1P1T_XKB_TS-1187A,C318884,basica,0.020,JLC,conferir,"no verso, por um furo no fundo; 5,1 x 5,1 (a SPEC pedia 4 x 4)"
 A1,C502,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
 A1,C501,1,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
-A1,R501,1,680k,R_0402_1005Metric,-,estendida,0.002,JLC,conferir,"com os 100k internos: 0,42 V no SD_MODE = (L+R)/2; pino baixo = desligado"
+A1,R501,1,680k,R_0402_1005Metric,C4131,estendida,0.002,JLC,final,"com os 100k internos: 0,42 V no SD_MODE = (L+R)/2; pino baixo = desligado"
 A1,U501,1,MAX98357AETE+T,TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm,C910544,estendida,1.400,JLC,final,GAIN_SLOT aberto = 9 dB; mono (L+R)/2 pelo divisor do SD_MODE
 A2,J501,1,alto-falante (fios),SolderWire-0.127sqmm_1x02_P3.7mm_D0.48mm_OD1mm,-,-,0.000,sem peca (pads; fios do A2 soldados em casa),conferir,
 T1,C601,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,

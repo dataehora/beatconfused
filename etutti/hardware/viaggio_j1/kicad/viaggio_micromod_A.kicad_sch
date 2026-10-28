@@ -936,7 +936,7 @@
 		(property "Datasheet" "" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Description" "com os 100k internos: 0,42 V no SD_MODE = (L+R)/2; pino baixo = desligado" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Codigo" "A1" (at 92.71 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
-		(property "LCSC" "" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "LCSC" "C4131" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Montagem" "JLC" (at 88.9 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(pin "1" (uuid "4eb3bbc9-7f5a-5e0b-81fe-c6eefdfe9bb3"))
 		(pin "2" (uuid "ff090a74-e528-52af-953f-dbc51a09ef4b"))
