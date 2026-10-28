@@ -1,12 +1,27 @@
-# eTutti Viaggio MicroMod · especificação · v2.4
+# eTutti Viaggio MicroMod · especificação · v2.5
 
-**Versão 2.4, 28 out 2026** (roteamento fechado na placa J1; tarefas do passo M3). SPEC do **eTutti Viaggio MicroMod**. É o Viaggio Rev2 (`etutti/hardware/viaggio/`, SPEC v2.1) com o processador soldado na placa trocado por um módulo **SparkFun MicroMod Teensy** encaixado num conector M.2.
+**Versão 2.5, 28 out 2026** (respostas ao M3 do J1; passo curto M3b; conferência antes do pedido pendente). SPEC do **eTutti Viaggio MicroMod**. É o Viaggio Rev2 (`etutti/hardware/viaggio/`, SPEC v2.1) com o processador soldado na placa trocado por um módulo **SparkFun MicroMod Teensy** encaixado num conector M.2.
 
 Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Mesmo protocolo do eTuttino Pocket (`CLAUDE.md`, "como trabalhamos"): cada disciplina responde no seu relatório, terminando com "Perguntas para a gestão".
 
 Medidas em mm. **(conferir)** = estimativa a confirmar com a peça real ou o datasheet.
 
 ## Mudanças desde a versão anterior
+
+### v2.5 (respostas ao `viaggio_j1/FABRICACAO.md` do passo M3, PR #128)
+
+- **M3 aceito.** DRC 0 erros de folga, curto ou furo; 0 ligações faltando; paridade 0; teclas 28/28; Gerbers, BOM/CPL e plate em `viaggio_j1/fab/`. Nada foi encomendado.
+- **Respostas às "Perguntas para a gestão":**
+  1. C202/C206 trocados de lugar na placa, sem renumerar o esquema: **aceito**.
+  2. C210 (10 µF 0603, VSYS) no lado de cima, junto dos pinos OUT do U202: **aceito**.
+  3. C304 andou 0,59 mm para a via de GND sair do pad: **aceito**.
+  4. 3 trechos de 0,12 mm da EN_B no U711: **aceitos** (a JLC faz 0,09). O J não refaz o trecho.
+  5. Flexão: **pilares no fundo do case**, não mais furos M2 na placa. Os 6 pilares Ø4 (P1–P6 do `FABRICACAO.md`) passam a ser requisito do case (§6).
+  6. Acabamento: **ENIG** (decisão do J).
+  7. C307 sem código LCSC: escolher a peça e pôr os códigos que faltam no esquema e na placa (passo M3b).
+  8. Serigrafia "SPEC v2.3 passo M2": trocar (passo M3b).
+- **Módulo de teste: não comprar nada agora** (decisão do J). As alturas de baixo (módulo ~6–6,5, J202 ~6,0) e a do espaçador (2,5 mm) continuam (conferir) e vão para a conferência antes do pedido (M4).
+- **Novo passo M4 · Conferência antes do pedido**, pendente e **sem data**. O J abre quando quiser fechar o pedido; a gestão conduz (§7).
 
 ### v2.4 (roteamento fechado, PRs #119–#126)
 
@@ -31,8 +46,6 @@ Medidas em mm. **(conferir)** = estimativa a confirmar com a peça real ou o dat
   - MUX_L_COM a 5,5 mm do centro do L201, com o GND do In1 no meio: aceito (sinal lento, lido pelo ADC);
   - entradas de pino de 0,24–0,3 nos pátios do U202/U204: aceitas.
 - **Freerouting 2.5 roda o Fanout mesmo desmarcado.** Registrado no guia do J.
-
-### v2.3 (respostas ao `ELETRONICA.md` do passo M1, PR #117)
 
 ### v2.3 (respostas ao `ELETRONICA.md` do passo M1, PR #117)
 
@@ -207,7 +220,8 @@ O código E5 deixa de existir. Fora da placa: módulo MicroMod Teensy, 28 Gatero
 - Furos para I1, I2, I3; grade sobre A2; E1 e F2 na parede esquerda; furo para I4 no fundo.
 - **Módulo P1** embaixo, com ~6–7 mm: o fundo do case tem de abrir espaço para ele, e para tirá-lo se precisar trocar.
 - **Bateria**: posição decidida aqui (embaixo, em cima ou à esquerda da placa).
-- Apoios do teclado para a flexão de 0,05 mm.
+- Apoios do teclado para a flexão de 0,05 mm: **6 pilares Ø4 no fundo** (v2.5), nas posições P1–P6 de `viaggio_j1/FABRICACAO.md` (referencial do KiCad): (197,5; 32,5), (207,5; 67,5), (112,5; 67,5), (167,5; 67,5), (127,5; 32,5), (132,5; 67,5). Tocam só a máscara; borda a ≥ 0,6 mm de pad, via ou peça. Com eles a pior tecla dobra 0,048 mm (modelo sem o plate).
+- Plate: o contorno ainda é o hexágono do Pocket; a forma final e o que passa pelos furos M2 (H5–H8) são do case.
 
 ## 7. Plano (um passo = uma sessão curta do Code = um PR)
 
@@ -216,52 +230,35 @@ O J manda um prompt por passo e aprova o resultado antes do seguinte. **Nenhum p
 - **M1 · Esquema** (feito, PR #117): pasta nova, esquema adaptado ao módulo, ERC, mapa de pinos, BOM preliminar.
 - **M2 · Placa para rotear** (feito, PR #119): contorno, serigrafia, regras corrigidas, empilhamento, posicionamento pelo `viaggio_micromod.json`, In2 como signal, DSN. Sem trilhas.
 - **Roteamento pelo J**, no KiCad com o Freerouting, pelo guia "Viaggio: roteamento no KiCad, passo a passo".
-- **M3 · Conferência e fabricação** (agora, sobre a placa do J1):
+- **M3 · Conferência e fabricação** (feito, PR #128, sobre a placa do J1):
   - áreas de GND e 3,3 V no In2;
   - DRC 0/0/0 e conferência placa × firmware 28/28;
   - flexão;
   - Gerbers, BOM e CPL da JLCPCB;
   - `POWER.md`, alturas por lado e relatório.
+- **M3b · Últimos códigos e serigrafia** (agora): passo curto, abaixo.
+- **M4 · Conferência antes do pedido** (pendente, **sem data**; o J abre quando decidir encomendar; conduzido pela gestão com o J, com o Code só se algo mudar na placa):
+  - cotação real na JLCPCB com Gerbers, BOM e CPL, **ENIG**, JLC04121H-7628, 1,2 mm;
+  - rotações e posições do CPL conferidas peça a peça na prévia da JLC, sobretudo J101, H101, J301, D401, J202, SW403, J201 e os 28 TMAG5253 (pino 1);
+  - estoque das peças e custo do Global Sourcing (T4, H101);
+  - alturas de baixo (módulo, J202) e espaçador de 2,5 mm: decidir se encomenda assim ou se compra antes um módulo para medir;
+  - só então o J decide encomendar.
 
-## Tarefas para o Code (v2.4): só o passo M3
+## Tarefas para o Code (v2.5): só o passo M3b
 
-Sobre a placa do J1 (`etutti/hardware/viaggio_j1/kicad/`), como está no `main` depois do PR #126. **Nada de roteamento novo além dos ajustes listados.** Trabalhe em lotes, com commit e push a cada um. Pare ao fim do M3, faça um PR e informe o J.
+Sobre a placa do J1 (`etutti/hardware/viaggio_j1/kicad/`), como está no `main` depois do PR #128. **Sem roteamento novo e sem mover peças.** Mesmo método de gravação do M3 (só os objetos mudados entram no arquivo; o resto conferido idêntico por uuid). Pare ao fim, faça um PR e informe o J. **Não encomendar nada.**
 
-### Lote 1: ajustes pedidos (v2.4)
-
-1. C202/C206: `Codigo` e referência no esquema batendo com a função. ERC 0/0, paridade 0.
-2. Capacitor de VSYS junto dos pinos OUT do U202, movendo o D205 se preciso. Se não couber, registre e siga.
-3. C207 para junto do C208.
-4. C304: via de GND fora do pad, abrindo espaço no laço de +3V3 C305.1–C304.1.
-5. DRC: 0 ligações faltando, nenhuma violação nova.
-
-### Lote 2: conferências
-
-- **DRC final** com o `.kicad_dru`: 0 erros de folga, curto ou furo; paridade 0; as afinações de entrada de pino registradas. As 7 track_width do J (EN_B, MUX_S0) corrigidas ou justificadas.
-- **Placa × firmware 28/28:** cada sensor T4 no canal certo de T1/T2, pelos nets da placa. Escreva o `KEY_INPUT` resultante no `pcb/PINOS.md` (o firmware do Viaggio ainda não existe).
-- **Flexão:** ≤ 0,05 mm a 3 N por tecla, sobre os 8 furos M2, adaptando o `etutti/hardware/mechanics.py`. Se não passar, diga onde faltam apoios do case.
-- **Alturas por lado:** a peça mais alta de cada lado e as áreas especiais (módulo, conector, USB-C, jack, encoders).
-
-### Lote 3: fabricação (sem encomendar)
-
-- `viaggio_j1/fab/`:
-  - Gerbers e furação (zip) para JLC04121H-7628, 1,2 mm, vias 0,5/0,3;
-  - BOM e CPL da JLCPCB (montagem nos dois lados);
-  - peças consignadas e de Global Sourcing marcadas (T4, H101);
-  - módulo e Gateron fora.
-- Plate de FR-4 de 1,6 mm (Gerbers), a partir do do Pocket, com os furos dos 28 Gateron nas posições da placa.
-- `viaggio_j1/POWER.md`: orçamento de energia com a placa real.
-- Imagens de cima e de baixo da placa final.
+1. **C307 (150 nF 0402, VAG do codec):** escolher uma peça com código LCSC e estoque (preferir básica; X7R, ≥ 10 V), com o link da página.
+2. **Códigos LCSC no esquema:** C307, FB301 (C1002) e R501 (C4131) no `viaggio_micromod/pcb/schematic.py`; regenerar a folha E e o `bom_preliminar.csv`; copiar a folha para `viaggio_j1/kicad/`; atualizar o campo LCSC dos footprints na placa. ERC 0/0, paridade 0.
+3. **Serigrafia:** o texto "SPEC v2.3 passo M2", de cima e de baixo, passa a "eTutti Viaggio MicroMod · J1 · SPEC v2.5". O texto não pode encostar em pad nem sair da placa.
+4. **Altura do SW403** (Program): corrigir o campo `Altura_mm` para 1,5 (conferir), e a tabela do `build_board.py` que casava "SW40" antes de "SW403".
+5. **Refazer `fab/`** pelo `m3.py lote3`: Gerbers, BOM (sem nenhuma peça sem código, exceto as de Global Sourcing), CPL, imagens. Registrar **ENIG** como acabamento nos parâmetros do pedido.
+6. **DRC final** igual ao do M3: 0 erros de folga, curto ou furo; 0 ligações faltando; paridade 0; só as 3 track_width aceitas da EN_B.
 
 ### Relatório
 
-`viaggio_j1/FABRICACAO.md`:
-- o que foi feito em cada lote;
-- os resultados das conferências;
-- a lista dos arquivos de fabricação;
-- o custo estimado (placas + montagem + peças) para 5 placas;
-- itens (conferir) e "Perguntas para a gestão".
+Acrescentar ao `viaggio_j1/FABRICACAO.md` uma seção "M3b": o que mudou, a peça do C307, o DRC, a lista atualizada de itens (conferir) para o M4 e "Perguntas para a gestão".
 
 ## 8. Perguntas para o J
 
-1. **Comprar um módulo MicroMod Teensy agora** (~US$ 25, mais o kit de parafusos da SparkFun)? Não é o protótipo. Serve para medir a altura real e a posição do espaçador antes de mandar fazer a placa (itens 3 e 4 do relatório do M1). O M2 não depende disso.
+Nenhuma em aberto. Decididas na v2.5: não comprar nada agora; acabamento ENIG; conferência antes do pedido (M4) pendente, sem data.
