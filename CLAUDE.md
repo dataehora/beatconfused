@@ -475,14 +475,22 @@ through the Write tool into the scratchpad.
 
 ## eTutti StudentViaggio (14 Nov 2026) — cheap first prototype, resistive keys
 
-`etutti/hardware/student_viaggio/` = the routed **Viaggio J1** board with the 28 Hall keys swapped
+`etutti/hardware/student_viaggio/` = the **Viaggio J1** electronics with the 28 Hall keys swapped
 for bare interdigitated electrodes (`FSR_Comb_D12`, pad 1 GND, pad 2 = the J1's `OUT_Kxx`) under a
 pressure-sensitive sheet; R601/R602 (10 k to +3V3) on the mux commons; Teensy pin 4 free. Its
 `README.md` (Portuguese) is the report: checks, options for the keys and for the MicroMod, open
 questions. No fab files and no firmware for these keys yet.
-- Run, in order: `python .../pcb/schematic.py` (ERC + netlist compared with the J1's),
-  KiCad python `.../pcb/build_board.py` (reads the J1 board, never writes it; reuses
-  `viaggio_j1/rota_restante.py` as the router; DRC 0/0, parity 0), `python .../pcb/pinos.py`.
+- **v0.2 (compact):** 210 × 95 mm, pointed right end, keys on a 19.05 × 18 grid (rows of
+  7/8/7/6), 11 M2 holes, all from `pcb/layout.py` → `layout.json`. The J1's left block (x ≤ 78)
+  and the two muxes stay where they are with their routing; the 28 key nets are routed again.
+  Flex: 0.122 mm on the holes alone, 0.039 mm with the 6 case pillars in `pcb/flexao.json`.
+- Run, in order: `python .../pcb/layout.py`, `python .../pcb/schematic.py` (ERC + netlist
+  compared with the J1's), KiCad python `.../pcb/build_board.py` (reads the J1 board, never
+  writes it; reuses `viaggio_j1/rota_restante.py` as the router; DRC 0/0, parity 0; **10-15 min,
+  run it in the background**; it retries up to 6 times with the failed nets first), KiCad python
+  `.../pcb/mechanics.py`, `python .../pcb/pinos.py`.
+- Routing gotcha: stubs left by the pruned nets must go **before** routing (`drop_dangling`), or
+  they block the mux inputs and the last key nets find no path.
 - The footprint library keeps the nickname `viaggio_micromod` and the schematic keeps the J1's
   uuid namespace, so the J1 footprints stay linked. Don't rename either.
 - **pcbnew gotcha:** after `board.Remove(footprint)`, keep the Python object alive (the script's
