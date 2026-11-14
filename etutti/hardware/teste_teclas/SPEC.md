@@ -1,124 +1,126 @@
-# eTutti · placa de teste de teclas · especificação · v1 (rascunho para acordo)
+# eTutti · placa de teste de teclas · especificação · v2
 
-**Versão 1, 14 nov 2026.** Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Mesmo protocolo do Viaggio (`CLAUDE.md`, "como trabalhamos"): cada disciplina responde no seu relatório, terminando com "Perguntas para a gestão".
+**Versão 2, 14 nov 2026.** Mantida pela gestão (Claude Chat com o J); o Code não edita este arquivo. Mesmo protocolo do Viaggio (`CLAUDE.md`, "como trabalhamos"): cada disciplina responde no seu relatório, terminando com "Perguntas para a gestão".
 
 Medidas em mm. **(conferir)** = estimativa a confirmar com a peça real ou o datasheet.
 
-**Estado: rascunho.** O J aprova esta versão antes de o Code começar. Nada se encomenda sem o J.
-
 ## Mudanças desde a versão anterior
 
-- Primeira versão.
+### v2 (respostas do J à v1, 14 nov 2026)
+
+- **Sem acelerômetro.** A tecla tem de responder a um toque leve do dedo; força medida pela placa não serve.
+- **2 camadas**, no limite do orçamento baixo (§6). A placa não copia mais o bloco roteado da J1: o Code redesenha e **roteia** a placa inteira (decisão do J para esta placa; a regra "o J roteia" continua valendo para a Viaggio).
+- **Sem bateria: só USB.** Saem o BQ24074, o TPS63001, o indutor, o conector JST e a lógica de liga/desliga. Entra um regulador linear de 3,3 V.
+- **Botões que mapeiam o contato inteiro.** O J lembra que o dedo nem sempre aperta do centro para fora. Saem os anéis (T2 e T3 da v1, que supõem o toque no centro) e entram três botões de **vários pontos**: a flor de 7 pontos e duas grades mútuas (§3).
+- Um encoder só (volume e modo de teste); LED em duas peças 0603 comuns.
+
+### v1
+
+- Primeira versão (rascunho, PR #132).
 
 ## 0. Para que serve
 
 A **StudentViaggio** terá teclas feitas só com o cobre da placa: sem chave, sem sensor por tecla, sem silicone, sem membrana, sem folha sensível. A placa chega montada da JLC e já funciona (decisão do J, 14 nov 2026). O eTutti padrão continua com as teclas Hall.
 
-Esta placa de teste compara **seis formas de tecla de cobre**, um botão de cada, para escolher a que dá a melhor **velocidade** (e, se der, pressão). Ela já usa a eletrônica da versão final: **o bloco esquerdo da Viaggio J1**, com o módulo MicroMod Teensy e o áudio integrado (codec e amplificador).
+Esta placa compara **seis formas de tecla de cobre**, um botão de cada, para escolher a que dá a melhor **velocidade com um toque leve, em qualquer ponto do botão**. A eletrônica é a da versão final: módulo **MicroMod Teensy** e **áudio integrado** (SGTL5000 com fone, MAX98357A com alto-falante).
 
-Plano em três etapas (do J):
-1. **Desenho** desta placa: esta SPEC.
-2. **Arquivos para o pedido** (Code, eletrônica): esquema, placa, Gerbers, BOM/CPL.
-3. **Firmware e testes** (Code, programação e som), um algoritmo por tipo de tecla, que leva em conta a geometria de cada uma (§4); depois a comparação.
+Plano do J:
+1. **Desenho**: esta SPEC.
+2. **Arquivos para o pedido** (Code, eletrônica): esquema, placa roteada, Gerbers, BOM/CPL, cotação.
+3. **Firmware e testes** (Code, programação e som): um algoritmo por botão, que usa a geometria de cada um (§5), e a comparação.
 
-![placa](spec/v1_placa.png)
+![placa](spec/v2_placa.png)
 
 ## 1. Decisões
 
 | Item | Decisão |
 |---|---|
-| Eletrônica | **Bloco esquerdo da J1** (`viaggio_j1/`, x ≤ 78), com as mesmas posições e rotas: E (USB-C, proteção, BQ24074, TPS63001, bateria JST com NTC), F (SGTL5000 + fone PJ-327A), A (MAX98357A + alto-falante por fios), I (encoders de volume e seletor, LED R/G, botão Program), P (M.2 + espaçador + MicroMod Teensy, encaixado em casa). |
-| Sai da J1 | Setor T inteiro: os 2 mux, os 28 TMAG5253, as portas EN, os capacitores das teclas e as rotas `OUT_Kxx`, `MUX_*`, `EN_*` e `SENS_EN`. |
-| Placa | Retângulo de cerca de **150 × 95** (a altura é a da J1; o Code reduz a largura o quanto der), cantos R 5, **4 camadas, 1,2 mm, JLC04121H-7628** (a da J1, para não mexer no bloco já roteado), **ENIG**, máscara verde (montagem Economic de 4 camadas), vias 0,5 / 0,3. |
-| Montagem | Só no **lado de cima** (Economic). Se a J1 tiver peça embaixo no bloco esquerdo (o M.2 está no verso), o Code diz no relatório se ela vai para cima ou se a montagem passa a Standard, e quanto custa cada caminho. |
-| Botões | 6, numa grade de **19,05 × 18** (o passo da `studentBK`): fileira de cima T1 T2 T3, de baixo T4 T5 T6, deslocada meio passo. **Área ativa Ø12** em todos; serigrafia de um círculo Ø13 e o nome (T1…T6). |
-| Velocidade pela placa | Um **acelerômetro MEMS** de 3 eixos (U_ACC) no centro da área de teste, no I2C, com a interrupção num pino livre. |
-| Modo de teste | O **seletor** escolhe qual botão e qual algoritmo estão ativos; o LED mostra o estado. Detalhe na etapa 3. |
-| Pés | 4 furos (os M2 que a J1 já tem no bloco esquerdo e 2 novos nos cantos da direita), para pés de borracha ou espaçadores. A bateria vai embaixo da placa, presa por fita. |
+| Placa | **2 camadas, 1,6 mm**, até **100 × 100** (a faixa mais barata da JLC), cantos R 4, HASL sem chumbo, máscara verde. O Code diz na cotação quanto o ENIG custaria a mais (só o T6 tem cobre exposto). |
+| Montagem | JLC **Economic, só o lado de cima**, 2 placas montadas de 5. Peças básicas sempre que der; cada peça estendida custa US$ 3,07 de carga. |
+| Processador | Conector **M.2 Key E** da J1 (UMAX 91302-42-067) no lado de cima. O módulo é preso por **parafuso M2.5 e porca**, num furo (sem o espaçador SMD da J1, que exigia compra global). O J encaixa o módulo em casa. |
+| Alimentação | **Só USB-C** (resistores 5,1 k no CC, USBLC6 na linha de dados). 5 V da USB para o MAX98357A; um **LDO de 3,3 V** (peça básica, 500 mA ou mais) para o módulo e o SGTL5000. Ligar o cabo = ligar a placa. |
+| Áudio | O da J1 (setores F e A): SGTL5000 + regulador de 1,8 V + fone PJ-327A (manga no HP_VGND, nunca no GND); MAX98357A com o alto-falante por fios, em dois pads. |
+| Interface | **1 encoder** EC11E com clique (girar = volume; clique = próximo botão/algoritmo em teste), **LED verde e vermelho** (0603, peças básicas), botão Program. |
+| Botões | 6, na grade **19,05 × 18** (o passo da `studentBK`): T1 T2 T3 em cima, T4 T5 T6 embaixo, meio passo deslocados. **Área ativa Ø12** em todos; serigrafia de um círculo Ø13 e o nome. |
+| Pés | 4 furos M3 nos cantos, para pés de borracha. |
 
 ## 2. Planta
 
-Origem no canto de cima à esquerda, x para a direita, y para baixo (o sistema da J1).
-
-| Peça | Centro (x; y) |
-|---|---|
-| T1 | (89,0; 30,0) |
-| T2 | (108,05; 30,0) |
-| T3 | (127,1; 30,0) |
-| T4 | (98,525; 48,0) |
-| T5 | (117,575; 48,0) |
-| T6 | (136,625; 48,0) |
-| U_ACC | perto de (114; 65), a 7 mm ou mais de qualquer eletrodo **(conferir)** |
-
-O Code pode deslocar o grupo inteiro (sem mudar as distâncias entre os botões) para encurtar a placa ou as trilhas.
+A eletrônica numa faixa de cima (cerca de 36 de altura), a área de teste embaixo, longe do USB, do áudio e do encoder. O desenho é indicativo: o Code acomoda as peças. Regras que valem:
+- USB-C e fone na borda esquerda; encoder e LED na direita; o alto-falante fica fora da placa (fios).
+- Nenhuma trilha de I2S, MCLK, encoder ou LED a menos de **5 mm** de um botão.
+- Os 6 botões ficam juntos, no mesmo ambiente (§3), para a comparação ser justa.
 
 ## 3. Os seis botões
 
-![eletrodos](spec/v1_eletrodos.png)
+![eletrodos](spec/v2_eletrodos.png)
 
-| Botão | Forma | Canais | Medidas | Como é lido | O que testa |
+| Botão | Forma | Linhas | Medidas | Leitura | O que testa |
 |---|---|---|---|---|---|
-| **T1** | disco | 1 | Ø12 sólido | capacitância própria | a curva da área de contato: velocidade pela subida, pressão pelo valor final. É a referência. |
-| **T2** | centro + 1 anel | 2 | centro Ø6; anel Ø6,8–12 | capacitância própria, 2 canais | o tempo entre o centro e o anel = velocidade, como as duas chaves de um teclado de sintetizador. |
-| **T3** | centro + 2 anéis | 3 | Ø4; Ø4,8–8; Ø8,8–12 | capacitância própria, 3 canais | o mesmo com 3 tempos: mais resolução, e 2 medidas por toque. |
-| **T4** | 4 setores | 4 | quadrantes de Ø12, folga 0,4 | capacitância própria, 4 canais | onde o dedo cai e para que lado se espalha; a soma dos 4 é igual ao T1. Mostra se o dedo fora do centro estraga a leitura. |
-| **T5** | pente, mútuo | 2 | dedos 0,6, vão 0,5 **(conferir)** | capacitância mútua: um pente emite (TX), o outro recebe (RX); o dedo rouba campo | a medida mútua costuma ter menos ruído e não depende do aterramento de quem toca. |
-| **T6** | pente, cobre exposto | 1 + GND | dedos 0,3, vão 0,5 (o `FSR_Comb_D12`) | resistiva: o dedo liga os dois pentes; a condutância sobe com a área | a medida sem capacitância, só para comparar; depende da umidade da pele. |
+| **T1** | disco | 1 | Ø12 sólido | capacitância própria | a referência: só "quanto" contato, sem "onde". |
+| **T2** | **flor de 7 pontos** | 7 | 7 hexágonos, raio 2,2, folga 0,3 | capacitância própria, 7 canais | o mapa mais simples: cada ponto tem o seu fio. |
+| **T3** | **grade mútua 4×4** | 4 TX + 4 RX | losangos, passo 3,0, folga 0,25 | capacitância mútua: 16 cruzamentos | o mapa fino, como numa tela de toque. |
+| **T4** | **grade mútua 3×3** | 3 TX + 3 RX | losangos, passo 4,0 | capacitância mútua: 9 cruzamentos | se uma grade mais grossa (menos fios) basta. |
+| **T5** | 4 setores | 4 | quadrantes de Ø12, folga 0,4 | capacitância própria, 4 canais | o mapa mais grosso. |
+| **T6** | pente exposto | 1 + GND | dedos 0,3, vão 0,5 (o `FSR_Comb_D12`) | resistiva: o dedo liga os dois pentes | sem capacitância, para comparar; depende da pele. |
+
+**Por que vários pontos funcionam com o toque fora do centro.** Em cada leitura a firmware tem um pequeno mapa do botão. Ela soma o contato de **todos** os pontos (a área total) e acha o centro do dedo. A velocidade sai da rapidez com que a **área total** cresce, venha o dedo de onde vier. O mapa também mostra um dedo que escorrega ou que pega dois botões.
 
 Regras dos eletrodos:
-- **T1–T5 sob máscara de solda**, sem abertura. **T6 com a máscara aberta** (cobre ENIG exposto).
-- Cada eletrodo desce por **uma via no próprio cobre** (tampada pela máscara nos T1–T5) e segue numa camada interna ou no verso. Os anéis são fechados (sem fenda).
-- Embaixo de cada botão, num **círculo Ø16**: nada de cobre em In1, In2 e verso, a não ser a via de descida. Entre os botões e em volta deles, **GND hachurado** no verso (cerca de 25 % de cobre, **conferir**). O ambiente dos 6 botões tem de ser **igual**, para a comparação ser justa.
-- Trilhas dos eletrodos: 0,15 mm, as mais curtas possível, a 1 mm ou mais umas das outras e de qualquer sinal que muda (I2S, encoders, LED). Nada de trilha de outra rede passando sob a área de teste.
-- Um **ponto de teste** (pad Ø1,0 no verso) em cada linha de eletrodo, para o osciloscópio.
+- **T1–T5 sob máscara de solda**, sem abertura. **T6 com a máscara aberta.**
+- Os pontos da flor (T2), os setores (T5) e o disco (T1) descem por **uma via tampada no próprio cobre** e seguem no verso.
+- Grades (T3, T4): as linhas TX ficam ligadas no cobre de cima, por pescoços de 0,4; as colunas RX são ligadas por **pontes no verso**, uma via em cada losango.
+- Sob cada botão, num **círculo Ø16**, o verso só tem as descidas e as pontes do próprio botão. Em volta dos botões, **GND hachurado** no verso (cerca de 25 % de cobre, **conferir**). O ambiente dos 6 é igual.
+- Trilhas dos eletrodos: 0,15, as mais curtas possível, a 1 ou mais umas das outras. **Ponto de teste** (pad Ø1,0 no verso) em cada linha.
 
 ## 4. Ligação ao Teensy
 
-Sem mux: cada linha vai direto a um pino. Os pinos livres na J1 sem o setor T são 0–4, 8, 14 (A0), 15 (A1), 27 e 29–45 (ver `viaggio_micromod/pcb/PINOS.md`). A tabela final é do Code (eletrônica), num `pcb/PINOS.md` desta pasta.
+Sem multiplexador: cada linha vai direto a um pino. As 25 linhas cabem nos pinos do MicroMod (0–45 saem no conector; sem a bateria e com um encoder só, sobram mais pinos que na J1). A tabela final é do Code, no `pcb/PINOS.md` desta pasta.
 
-| Linha | Quantas | Pino | Peças na placa |
+| Linhas | Quantas | Pinos | Peças por linha |
 |---|---|---|---|
-| Eletrodos de capacitância própria (T1, T2×2, T3×3, T4×4) | 10 | pinos digitais livres; **se der, todos na mesma porta GPIO do RT1062** (a firmware lê os 10 de uma vez) | por linha: R_S 0402 em série (0 Ω de fábrica; lugar para 470 Ω) e R_C 0402 de **1 MΩ** (conferir) até a rede comum `CAP_SEND` |
-| `CAP_SEND` | 1 | pino digital | — |
-| T5 TX | 1 | pino digital | 100 Ω em série |
-| T5 RX | 1 | **14 (A0)** | lugar para um capacitor 0402 ao GND, **não montado** |
-| T6 | 1 | **15 (A1)** | 1 MΩ ao 3,3 V (conferir), 1 kΩ em série e um TVS de ESD ao GND (o cobre é exposto) |
-| U_ACC SDA/SCL | — | 18 / 19 (o I2C do SGTL5000, endereço 0x0A) | o endereço do acelerômetro não pode ser 0x0A |
-| U_ACC INT1 | 1 | pino digital livre | — |
+| Capacitância própria (T1 1, T2 7, T5 4) | 12 | digitais; **se der, na mesma porta GPIO do RT1062** (lidas de uma vez) | R_S 0402 em série (0 Ω; lugar para 470 Ω) e R_C 0402 de **1 MΩ** (conferir) até `CAP_SEND` |
+| `CAP_SEND` | 1 | digital | — |
+| TX das grades | 4 | digitais; **T3 e T4 dividem as mesmas 4 linhas** (o T4 usa 3) | 100 Ω em série |
+| RX das grades (T3 4, T4 3) | 7 | **analógicos** (14, 15, 16, 26, 27, 38–41: conferir quais saem no MicroMod) | lugar para um capacitor 0402 ao GND, não montado |
+| T6 | 1 | analógico | 1 MΩ ao 3,3 V (conferir), 1 kΩ em série, TVS de ESD ao GND |
 
-Com R_C montado, a leitura é pelo tempo de carga RC (a firmware mede em ciclos de CPU). Sem R_C, cabe a transferência de carga pelo próprio pino. O lugar para as duas formas fica na placa; a firmware escolhe.
+Se faltar pino analógico, o RX das grades pode ser lido por tempo de carga num pino digital (o Code diz no relatório).
 
-**Acelerômetro:** 3 eixos, I2C, **taxa de 1 kHz ou mais**, na JLC (de preferência peça básica ou estendida preferida). O Code escolhe e diz qual.
+**Para o produto (não para esta placa):** 28 teclas com 7 a 16 pontos cada dão 200 a 450 pontos, e isso não cabe em pinos soltos. O teclado inteiro viraria uma **grade única**, como numa tela de toque: linhas e colunas compartilhadas entre as teclas, lidas por um chip controlador de toque. Esta placa diz **quantos pontos por tecla são precisos** antes de escolher o chip.
 
 ## 5. Contrato com a etapa 3
 
-O Code (eletrônica) entrega `pcb/ELETRODOS.md`, que a firmware usa para "considerar o aspecto físico" de cada botão:
-- por eletrodo: área (mm²), perímetro, raio interno e externo, comprimento e camada da trilha, pino, R_S e R_C montados;
-- a capacitância parasita estimada de cada linha **(conferir)**;
-- a distância de cada botão ao U_ACC.
+O Code (eletrônica) entrega `pcb/ELETRODOS.md`, que a firmware usa para considerar a forma de cada botão:
+- por eletrodo ou cruzamento: **coordenadas do centro** em relação ao centro do botão, área (mm²), pino, R_S e R_C montados;
+- comprimento e camada de cada trilha, e a capacitância parasita estimada **(conferir)**.
 
-## 6. Custo (estimativa, a cotar)
+## 6. Custo (estimativa; o Code traz a cotação real)
 
-- Placa de 4 camadas, cerca de 150 × 95, 5 unidades, 2 montadas (Economic). As peças do bloco esquerdo têm os preços do BOM da J1; mais o acelerômetro e cerca de 25 resistores 0402.
-- Ordem de grandeza: **£110–150** com frete e IVA, sem o módulo MicroMod. O relatório do Code traz a cotação real da JLC.
+| Item | US$ |
+|---|---|
+| Placa 2 camadas, até 100 × 100, 5 unidades | 2–5 |
+| Montagem Economic: preparação + estêncil | ~10 |
+| Carga das peças estendidas: cerca de 9 tipos (M.2, USB-C, SGTL5000, regulador de 1,8 V, MAX98357A, fone, TVS, 2 passivos) × 3,07 | ~28 |
+| Solda manual do encoder (furo passante) | 3,50 |
+| Peças para 2 placas (cerca de US$ 7 cada) | ~14 |
+| Frete para o Reino Unido + IVA de 20 % | ~30 |
+| **Total JLC** | **~85–95 (cerca de £ 70–75)** |
+| Em casa: alto-falante, parafuso e porca M2.5, 4 pés | £ 5–8 |
 
-## Tarefas para o Code (v1), depois de o J aprovar
+Sem o módulo MicroMod (£ 24, se for preciso comprar). **Risco:** se a JLC não aceitar o SGTL5000 (QFN de 0,4 mm) na montagem Economic, a placa passa para a Standard e o total sobe cerca de £ 30.
+
+## Tarefas para o Code (v2)
 
 **Eletrônica** (pasta `etutti/hardware/teste_teclas/`; relatório `ELETRONICA.md`):
-1. Esquema: o da J1 sem o setor T, mais um setor novo (6 botões, U_ACC, resistores, TVS, pontos de teste). ERC 0/0. Netlist do bloco esquerdo igual à da J1.
-2. Footprints dos 6 eletrodos (§3), gerados por script, com as medidas da tabela.
-3. Placa: o bloco esquerdo copiado da J1 com as posições e rotas; área de teste conforme §2–§3; contorno, furos, regras. **O J roteia a área de teste** no KiCad, se preferir (decisão de 25 out 2026: o Code não roteia). Se o J quiser que o Code roteie só esta área, ele diz na aprovação.
+1. Esquema novo de 2 camadas: os setores F e A da J1 como estão; P com o M.2 e o furo do parafuso; alimentação só por USB (§1); 1 encoder, 2 LEDs, Program; o setor dos 6 botões (§3, §4). ERC 0/0. Netlist dos setores F e A igual à da J1.
+2. Footprints dos 6 eletrodos, gerados por script, com as medidas do §3.
+3. Placa: contorno até 100 × 100, furos, regras (as mínimas da JLC para 2 camadas, com folga), posição (§2). **O Code roteia a placa inteira.** DRC 0, paridade 0.
 4. `pcb/PINOS.md` (§4) e `pcb/ELETRODOS.md` (§5).
-5. Depois do roteamento: DRC 0, paridade 0, Gerbers, BOM/CPL, cotação real da JLC. **Não encomendar.**
+5. Gerbers, BOM/CPL e a **cotação real da JLC**: Economic; ENIG como opção; se o SGTL5000 obrigar a Standard, as duas cotações. **Não encomendar.**
 
-**Programação e som** (só depois da placa; entra na v2 desta SPEC, com o detalhe da etapa 3):
-- leitura dos 3 tipos (própria, mútua, resistiva) e do acelerômetro, com fluxo de dados crus pela USB para registrar as curvas;
-- um algoritmo de velocidade por botão, com os parâmetros do `ELETRODOS.md`;
-- o mesmo motor de som da Viaggio, para tocar com cada botão.
+**Programação e som:** nada nesta versão. A etapa 3 entra numa versão seguinte, depois da placa: leitura dos três tipos, fluxo de dados crus pela USB, um algoritmo por botão usando o `ELETRODOS.md`, e o som da Viaggio para tocar.
 
 ## 7. Perguntas para o J
 
-1. Os **6 tipos** estão bons? Algum sai, ou algum entra (por exemplo, um segundo T3 com outro diâmetro)?
-2. **Bateria:** fica (é a eletrônica final, e o teste mostra o ruído com e sem USB) ou sai, para baratear?
-3. **Roteamento da área de teste:** você roteia (como na J1), ou o Code roteia só esta área?
-4. O **acelerômetro** entra? Ele custa pouco e é a única medida de força que não depende da pele.
+Nenhuma aberta. A v2 está pronta para o Code.
