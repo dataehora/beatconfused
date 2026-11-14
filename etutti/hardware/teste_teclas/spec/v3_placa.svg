@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1150" viewBox="-6 -14 112.0 120.0" font-family="sans-serif">
+<rect x="-6" y="-14" width="200%" height="200%" fill="white"/>
+<text x="-3" y="-6" font-size="3.6" font-weight="bold">eTutti · placa de teste de teclas · SPEC v3 · vista de cima</text>
+<text x="-3" y="-1.5" font-size="2.6">só a placa nua · tudo furo passante, soldado em casa · mm, indicativo</text>
+<rect x="0" y="0" width="100.0" height="90.0" rx="4" fill="#2f6b3a" stroke="#123" stroke-width="0.4"/>
+<rect x="8" y="10" width="61" height="18" rx="1" fill="#1b3d22" stroke="#cfe" stroke-width="0.25"/>
+<circle cx="9.60" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="9.60" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="12.14" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="12.14" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="14.68" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="14.68" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="17.22" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="17.22" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="19.76" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="19.76" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="22.30" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="22.30" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="24.84" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="24.84" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="27.38" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="27.38" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="29.92" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="29.92" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="32.46" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="32.46" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="35.00" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="35.00" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="37.54" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="37.54" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="40.08" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="40.08" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="42.62" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="42.62" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="45.16" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="45.16" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="47.70" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="47.70" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="50.24" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="50.24" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="52.78" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="52.78" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="55.32" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="55.32" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="57.86" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="57.86" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="60.40" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="60.40" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="62.94" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="62.94" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="65.48" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="65.48" cy="26.51" r="0.55" fill="#e8d27a"/>
+<circle cx="68.02" cy="11.27" r="0.55" fill="#e8d27a"/>
+<circle cx="68.02" cy="26.51" r="0.55" fill="#e8d27a"/>
+<text x="40" y="18.2" font-size="2.6" fill="#e8ffe8" text-anchor="middle" font-weight="bold">Teensy 4.1 (seu), em 2 barras fêmea 1×24</text>
+<text x="40" y="22" font-size="2.1" fill="#e8ffe8" text-anchor="middle">USB micro-B na borda esquerda = alimentação + MIDI</text>
+<rect x="3.5" y="3" width="10" height="6" rx="0.8" fill="#888"/><text x="8.5" y="7" font-size="1.8" fill="white" text-anchor="middle">USB</text>
+<rect x="8" y="3" width="37" height="37" rx="1.5" fill="none" stroke="#ffb0b0" stroke-width="0.35" stroke-dasharray="1.2,0.8"/>
+<text x="26.5" y="35" font-size="2.3" fill="#ffd0d0" text-anchor="middle">Audio Board Rev D (seu) por cima</text>
+<text x="26.5" y="38" font-size="2.0" fill="#ffd0d0" text-anchor="middle">zona sem peças altas · fone na borda</text>
+<rect x="48" y="30" width="48" height="12" rx="1" fill="#1b3d22" stroke="#cfe" stroke-width="0.25"/>
+<rect x="50.0" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="52.8" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="55.6" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="58.4" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="61.2" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="64.0" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="66.8" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="69.6" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="72.4" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="75.2" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="78.0" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="80.8" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="83.6" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="86.4" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="89.19999999999999" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<rect x="92.0" y="32" width="1.6" height="8" rx="0.6" fill="#d8c8a0"/>
+<text x="72" y="44.8" font-size="2.1" fill="#e8ffe8" text-anchor="middle">resistores 1/4 W de furo (≈20), em pé</text>
+<rect x="75" y="8" width="13" height="13" rx="1" fill="#1b3d22" stroke="#cfe" stroke-width="0.25"/><circle cx="81.5" cy="14.5" r="3.5" fill="#556"/>
+<text x="81.5" y="25" font-size="2.1" fill="#e8ffe8" text-anchor="middle">encoder EC11</text>
+<circle cx="93" cy="14.5" r="1.6" fill="#40c040" stroke="white" stroke-width="0.2"/><text x="93" y="20" font-size="2" fill="#e8ffe8" text-anchor="middle">LED</text>
+<rect x="10" y="47" width="80" height="40" rx="2" fill="none" stroke="#ffe08a" stroke-width="0.3" stroke-dasharray="1.5,1"/>
+<text x="50" y="50.7" font-size="2.6" fill="#ffe08a" text-anchor="middle" font-weight="bold">área de teste · passo 19,05 × 18 · só cobre</text>
+<circle cx="26.2" cy="60.0" r="8" fill="#26562f"/><circle cx="26.2" cy="60.0" r="6" fill="#c8873a"/>
+<circle cx="26.2" cy="60.0" r="6.5" fill="none" stroke="white" stroke-width="0.25"/>
+<text x="16.7" y="55.0" font-size="2.6" fill="white" font-weight="bold">T1</text>
+<circle cx="45.25" cy="60.0" r="8" fill="#26562f"/><polygon points="47.155,61.100 45.250,62.200 43.345,61.100 43.345,58.900 45.250,57.800 47.155,58.900" fill="#c8873a"/><polygon points="51.266,61.100 49.361,62.200 47.455,61.100 47.455,58.900 49.361,57.800 51.266,58.900" fill="#3a7bc8"/><polygon points="49.211,64.660 47.305,65.760 45.400,64.660 45.400,62.460 47.305,61.360 49.211,62.460" fill="#5aa05a"/><polygon points="45.100,64.660 43.195,65.760 41.289,64.660 41.289,62.460 43.195,61.360 45.100,62.460" fill="#a05aa0"/><polygon points="43.045,61.100 41.139,62.200 39.234,61.100 39.234,58.900 41.139,57.800 43.045,58.900" fill="#d0a020"/><polygon points="45.100,57.540 43.195,58.640 41.289,57.540 41.289,55.340 43.195,54.240 45.100,55.340" fill="#40a0a0"/><polygon points="49.211,57.540 47.305,58.640 45.400,57.540 45.400,55.340 47.305,54.240 49.211,55.340" fill="#c05050"/>
+<circle cx="45.25" cy="60.0" r="6.5" fill="none" stroke="white" stroke-width="0.25"/>
+<text x="35.75" y="55.0" font-size="2.6" fill="white" font-weight="bold">T2</text>
+<circle cx="64.3" cy="60.0" r="8" fill="#26562f"/><clipPath id="kaT3"><circle cx="64.3" cy="60.0" r="6"/></clipPath><g clip-path="url(#kaT3)"><polygon points="56.8,54.25 58.05,55.5 56.8,56.75 55.55,55.5" fill="#c8873a"/><polygon points="59.8,54.25 61.05,55.5 59.8,56.75 58.55,55.5" fill="#c8873a"/><polygon points="62.8,54.25 64.05,55.5 62.8,56.75 61.55,55.5" fill="#c8873a"/><polygon points="65.8,54.25 67.05,55.5 65.8,56.75 64.55,55.5" fill="#c8873a"/><polygon points="68.8,54.25 70.05,55.5 68.8,56.75 67.55,55.5" fill="#c8873a"/><polygon points="71.8,54.25 73.05,55.5 71.8,56.75 70.55,55.5" fill="#c8873a"/><rect x="57.3" y="55.3" width="14" height="0.4" fill="#c8873a"/><polygon points="56.8,57.25 58.05,58.5 56.8,59.75 55.55,58.5" fill="#c8873a"/><polygon points="59.8,57.25 61.05,58.5 59.8,59.75 58.55,58.5" fill="#c8873a"/><polygon points="62.8,57.25 64.05,58.5 62.8,59.75 61.55,58.5" fill="#c8873a"/><polygon points="65.8,57.25 67.05,58.5 65.8,59.75 64.55,58.5" fill="#c8873a"/><polygon points="68.8,57.25 70.05,58.5 68.8,59.75 67.55,58.5" fill="#c8873a"/><polygon points="71.8,57.25 73.05,58.5 71.8,59.75 70.55,58.5" fill="#c8873a"/><rect x="57.3" y="58.3" width="14" height="0.4" fill="#c8873a"/><polygon points="56.8,60.25 58.05,61.5 56.8,62.75 55.55,61.5" fill="#c8873a"/><polygon points="59.8,60.25 61.05,61.5 59.8,62.75 58.55,61.5" fill="#c8873a"/><polygon points="62.8,60.25 64.05,61.5 62.8,62.75 61.55,61.5" fill="#c8873a"/><polygon points="65.8,60.25 67.05,61.5 65.8,62.75 64.55,61.5" fill="#c8873a"/><polygon points="68.8,60.25 70.05,61.5 68.8,62.75 67.55,61.5" fill="#c8873a"/><polygon points="71.8,60.25 73.05,61.5 71.8,62.75 70.55,61.5" fill="#c8873a"/><rect x="57.3" y="61.3" width="14" height="0.4" fill="#c8873a"/><polygon points="56.8,63.25 58.05,64.5 56.8,65.75 55.55,64.5" fill="#c8873a"/><polygon points="59.8,63.25 61.05,64.5 59.8,65.75 58.55,64.5" fill="#c8873a"/><polygon points="62.8,63.25 64.05,64.5 62.8,65.75 61.55,64.5" fill="#c8873a"/><polygon points="65.8,63.25 67.05,64.5 65.8,65.75 64.55,64.5" fill="#c8873a"/><polygon points="68.8,63.25 70.05,64.5 68.8,65.75 67.55,64.5" fill="#c8873a"/><polygon points="71.8,63.25 73.05,64.5 71.8,65.75 70.55,64.5" fill="#c8873a"/><rect x="57.3" y="64.3" width="14" height="0.4" fill="#c8873a"/><polygon points="58.3,52.75 59.55,54.0 58.3,55.25 57.05,54.0" fill="#3a7bc8"/><polygon points="58.3,55.75 59.55,57.0 58.3,58.25 57.05,57.0" fill="#3a7bc8"/><polygon points="58.3,58.75 59.55,60.0 58.3,61.25 57.05,60.0" fill="#3a7bc8"/><polygon points="58.3,61.75 59.55,63.0 58.3,64.25 57.05,63.0" fill="#3a7bc8"/><polygon points="58.3,64.75 59.55,66.0 58.3,67.25 57.05,66.0" fill="#3a7bc8"/><polygon points="61.3,52.75 62.55,54.0 61.3,55.25 60.05,54.0" fill="#3a7bc8"/><polygon points="61.3,55.75 62.55,57.0 61.3,58.25 60.05,57.0" fill="#3a7bc8"/><polygon points="61.3,58.75 62.55,60.0 61.3,61.25 60.05,60.0" fill="#3a7bc8"/><polygon points="61.3,61.75 62.55,63.0 61.3,64.25 60.05,63.0" fill="#3a7bc8"/><polygon points="61.3,64.75 62.55,66.0 61.3,67.25 60.05,66.0" fill="#3a7bc8"/><polygon points="64.3,52.75 65.55,54.0 64.3,55.25 63.05,54.0" fill="#3a7bc8"/><polygon points="64.3,55.75 65.55,57.0 64.3,58.25 63.05,57.0" fill="#3a7bc8"/><polygon points="64.3,58.75 65.55,60.0 64.3,61.25 63.05,60.0" fill="#3a7bc8"/><polygon points="64.3,61.75 65.55,63.0 64.3,64.25 63.05,63.0" fill="#3a7bc8"/><polygon points="64.3,64.75 65.55,66.0 64.3,67.25 63.05,66.0" fill="#3a7bc8"/><polygon points="67.3,52.75 68.55,54.0 67.3,55.25 66.05,54.0" fill="#3a7bc8"/><polygon points="67.3,55.75 68.55,57.0 67.3,58.25 66.05,57.0" fill="#3a7bc8"/><polygon points="67.3,58.75 68.55,60.0 67.3,61.25 66.05,60.0" fill="#3a7bc8"/><polygon points="67.3,61.75 68.55,63.0 67.3,64.25 66.05,63.0" fill="#3a7bc8"/><polygon points="67.3,64.75 68.55,66.0 67.3,67.25 66.05,66.0" fill="#3a7bc8"/><polygon points="70.3,52.75 71.55,54.0 70.3,55.25 69.05,54.0" fill="#3a7bc8"/><polygon points="70.3,55.75 71.55,57.0 70.3,58.25 69.05,57.0" fill="#3a7bc8"/><polygon points="70.3,58.75 71.55,60.0 70.3,61.25 69.05,60.0" fill="#3a7bc8"/><polygon points="70.3,61.75 71.55,63.0 70.3,64.25 69.05,63.0" fill="#3a7bc8"/><polygon points="70.3,64.75 71.55,66.0 70.3,67.25 69.05,66.0" fill="#3a7bc8"/></g>
+<circle cx="64.3" cy="60.0" r="6.5" fill="none" stroke="white" stroke-width="0.25"/>
+<text x="54.8" y="55.0" font-size="2.6" fill="white" font-weight="bold">T3</text>
+<circle cx="35.725" cy="78.0" r="8" fill="#26562f"/><clipPath id="kbT4"><circle cx="35.725" cy="78.0" r="6"/></clipPath><g clip-path="url(#kbT4)"><polygon points="27.725,72.25 29.475,74.0 27.725,75.75 25.975,74.0" fill="#c8873a"/><polygon points="31.725,72.25 33.475,74.0 31.725,75.75 29.975,74.0" fill="#c8873a"/><polygon points="35.725,72.25 37.475,74.0 35.725,75.75 33.975,74.0" fill="#c8873a"/><polygon points="39.725,72.25 41.475,74.0 39.725,75.75 37.975,74.0" fill="#c8873a"/><polygon points="43.725,72.25 45.475,74.0 43.725,75.75 41.975,74.0" fill="#c8873a"/><rect x="28.725" y="73.8" width="14" height="0.4" fill="#c8873a"/><polygon points="27.725,76.25 29.475,78.0 27.725,79.75 25.975,78.0" fill="#c8873a"/><polygon points="31.725,76.25 33.475,78.0 31.725,79.75 29.975,78.0" fill="#c8873a"/><polygon points="35.725,76.25 37.475,78.0 35.725,79.75 33.975,78.0" fill="#c8873a"/><polygon points="39.725,76.25 41.475,78.0 39.725,79.75 37.975,78.0" fill="#c8873a"/><polygon points="43.725,76.25 45.475,78.0 43.725,79.75 41.975,78.0" fill="#c8873a"/><rect x="28.725" y="77.8" width="14" height="0.4" fill="#c8873a"/><polygon points="27.725,80.25 29.475,82.0 27.725,83.75 25.975,82.0" fill="#c8873a"/><polygon points="31.725,80.25 33.475,82.0 31.725,83.75 29.975,82.0" fill="#c8873a"/><polygon points="35.725,80.25 37.475,82.0 35.725,83.75 33.975,82.0" fill="#c8873a"/><polygon points="39.725,80.25 41.475,82.0 39.725,83.75 37.975,82.0" fill="#c8873a"/><polygon points="43.725,80.25 45.475,82.0 43.725,83.75 41.975,82.0" fill="#c8873a"/><rect x="28.725" y="81.8" width="14" height="0.4" fill="#c8873a"/><polygon points="29.725,70.25 31.475,72.0 29.725,73.75 27.975,72.0" fill="#3a7bc8"/><polygon points="29.725,74.25 31.475,76.0 29.725,77.75 27.975,76.0" fill="#3a7bc8"/><polygon points="29.725,78.25 31.475,80.0 29.725,81.75 27.975,80.0" fill="#3a7bc8"/><polygon points="29.725,82.25 31.475,84.0 29.725,85.75 27.975,84.0" fill="#3a7bc8"/><polygon points="33.725,70.25 35.475,72.0 33.725,73.75 31.975,72.0" fill="#3a7bc8"/><polygon points="33.725,74.25 35.475,76.0 33.725,77.75 31.975,76.0" fill="#3a7bc8"/><polygon points="33.725,78.25 35.475,80.0 33.725,81.75 31.975,80.0" fill="#3a7bc8"/><polygon points="33.725,82.25 35.475,84.0 33.725,85.75 31.975,84.0" fill="#3a7bc8"/><polygon points="37.725,70.25 39.475,72.0 37.725,73.75 35.975,72.0" fill="#3a7bc8"/><polygon points="37.725,74.25 39.475,76.0 37.725,77.75 35.975,76.0" fill="#3a7bc8"/><polygon points="37.725,78.25 39.475,80.0 37.725,81.75 35.975,80.0" fill="#3a7bc8"/><polygon points="37.725,82.25 39.475,84.0 37.725,85.75 35.975,84.0" fill="#3a7bc8"/><polygon points="41.725,70.25 43.475,72.0 41.725,73.75 39.975,72.0" fill="#3a7bc8"/><polygon points="41.725,74.25 43.475,76.0 41.725,77.75 39.975,76.0" fill="#3a7bc8"/><polygon points="41.725,78.25 43.475,80.0 41.725,81.75 39.975,80.0" fill="#3a7bc8"/><polygon points="41.725,82.25 43.475,84.0 41.725,85.75 39.975,84.0" fill="#3a7bc8"/></g>
+<circle cx="35.725" cy="78.0" r="6.5" fill="none" stroke="white" stroke-width="0.25"/>
+<text x="26.225" y="73.0" font-size="2.6" fill="white" font-weight="bold">T4</text>
+<circle cx="54.775" cy="78.0" r="8" fill="#26562f"/><path fill="#c8873a" d="M54.975,78.2 L60.914810879647305,78.40742276655274 A5.943431457505076,5.943431457505076 0 0,1 55.18242276655274,84.13981087964731 Z"/><path fill="#3a7bc8" d="M54.574999999999996,78.2 L54.36757723344726,84.13981087964731 A5.943431457505076,5.943431457505076 0 0,1 48.63518912035269,78.40742276655274 Z"/><path fill="#5aa05a" d="M54.574999999999996,77.8 L48.63518912035269,77.59257723344726 A5.943431457505076,5.943431457505076 0 0,1 54.36757723344726,71.86018912035269 Z"/><path fill="#a05aa0" d="M54.975,77.8 L55.18242276655274,71.86018912035269 A5.943431457505076,5.943431457505076 0 0,1 60.914810879647305,77.59257723344726 Z"/>
+<circle cx="54.775" cy="78.0" r="6.5" fill="none" stroke="white" stroke-width="0.25"/>
+<text x="45.275" y="73.0" font-size="2.6" fill="white" font-weight="bold">T5</text>
+<circle cx="73.825" cy="78.0" r="8" fill="#26562f"/><circle cx="73.825" cy="78.0" r="6.3" fill="#e8d27a"/><clipPath id="ceT6"><circle cx="73.825" cy="78.0" r="6"/></clipPath><g clip-path="url(#ceT6)"><rect x="67.825" y="72.0" width="0.3" height="10.9" fill="#8a8a8a"/><rect x="68.625" y="73.1" width="0.3" height="10.9" fill="#c8873a"/><rect x="69.425" y="72.0" width="0.3" height="10.9" fill="#8a8a8a"/><rect x="70.22500000000001" y="73.1" width="0.3" height="10.9" fill="#c8873a"/><rect x="71.025" y="72.0" width="0.3" height="10.9" fill="#8a8a8a"/><rect x="71.825" y="73.1" width="0.3" height="10.9" fill="#c8873a"/><rect x="72.625" y="72.0" width="0.3" height="10.9" fill="#8a8a8a"/><rect x="73.425" y="73.1" width="0.3" height="10.9" fill="#c8873a"/><rect x="74.22500000000001" y="72.0" width="0.3" height="10.9" fill="#8a8a8a"/><rect x="75.025" y="73.1" width="0.3" height="10.9" fill="#c8873a"/><rect x="75.825" y="72.0" width="0.3" height="10.9" fill="#8a8a8a"/><rect x="76.625" y="73.1" width="0.3" height="10.9" fill="#c8873a"/><rect x="77.42500000000001" y="72.0" width="0.3" height="10.9" fill="#8a8a8a"/><rect x="78.22500000000001" y="73.1" width="0.3" height="10.9" fill="#c8873a"/><rect x="79.025" y="72.0" width="0.3" height="10.9" fill="#8a8a8a"/><rect x="79.825" y="73.1" width="0.3" height="10.9" fill="#c8873a"/><rect x="80.625" y="72.0" width="0.3" height="10.9" fill="#8a8a8a"/><rect x="67.825" y="72.0" width="12" height="0.6" fill="#8a8a8a"/><rect x="67.825" y="83.4" width="12" height="0.6" fill="#c8873a"/></g>
+<circle cx="73.825" cy="78.0" r="6.5" fill="none" stroke="white" stroke-width="0.25"/>
+<text x="64.325" y="73.0" font-size="2.6" fill="white" font-weight="bold">T6</text>
+<circle cx="4" cy="86" r="1.6" fill="white" stroke="#123" stroke-width="0.2"/>
+<circle cx="96.0" cy="86" r="1.6" fill="white" stroke="#123" stroke-width="0.2"/>
+<circle cx="96.0" cy="4" r="1.6" fill="white" stroke="#123" stroke-width="0.2"/>
+<text x="50.0" y="96.0" font-size="3" text-anchor="middle">até 100 × 100 · 2 camadas · 1,6 · HASL · verde (o preço mínimo da JLC)</text>
+</svg>
