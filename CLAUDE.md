@@ -473,6 +473,23 @@ hand tests the knob following.
 '`), so Python edit scripts with escapes go
 through the Write tool into the scratchpad.
 
+## eTutti StudentViaggio (14 Nov 2026) — cheap first prototype, resistive keys
+
+`etutti/hardware/student_viaggio/` = the routed **Viaggio J1** board with the 28 Hall keys swapped
+for bare interdigitated electrodes (`FSR_Comb_D12`, pad 1 GND, pad 2 = the J1's `OUT_Kxx`) under a
+pressure-sensitive sheet; R601/R602 (10 k to +3V3) on the mux commons; Teensy pin 4 free. Its
+`README.md` (Portuguese) is the report: checks, options for the keys and for the MicroMod, open
+questions. No fab files and no firmware for these keys yet.
+- Run, in order: `python .../pcb/schematic.py` (ERC + netlist compared with the J1's),
+  KiCad python `.../pcb/build_board.py` (reads the J1 board, never writes it; reuses
+  `viaggio_j1/rota_restante.py` as the router; DRC 0/0, parity 0), `python .../pcb/pinos.py`.
+- The footprint library keeps the nickname `viaggio_micromod` and the schematic keeps the J1's
+  uuid namespace, so the J1 footprints stay linked. Don't rename either.
+- **pcbnew gotcha:** after `board.Remove(footprint)`, keep the Python object alive (the script's
+  `rm()` / `GRAVE`). If it is garbage-collected, later pcbnew calls return bare `SwigPyObject`s.
+- `etutti/hardware/student/` and `studentBK/` (the v20 draft, untracked) were audited and are not
+  manufacturable (no 3.3 V source, mirrored back-side ICs, made-up footprints). Don't build on them.
+
 ## Project status (25 Oct 2026) — eTutti Viaggio MicroMod is the active project
 
 **eTutti Viaggio MicroMod** (`etutti/hardware/viaggio_micromod/`, SPEC v2.2) is now the only

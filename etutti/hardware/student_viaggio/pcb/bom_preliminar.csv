@@ -1,0 +1,87 @@
+codigo,referencias,qtd,valor_peca,encapsulamento,lcsc,classe_jlc,preco_unit_usd_est,montagem,status,nota
+P1,MOD1,1,SparkFun MicroMod Teensy Processor (DEV-16402),M.2 2222 Key E,-,-,24.950,"em casa (encaixar no J101, apertar o parafuso)",final,"i.MX RT1062 600 MHz, 16 MB flash, 1 MB RAM, bootloader MKL02; fqbn teensy:avr:teensyMM"
+T4,FSR1,1,"folha sensivel a pressao (Velostat / Linqstat 0,1 mm), 28 discos de 13 mm",-,-,-,5.000,"em casa (um disco sobre cada pente, preso pelo anel adesivo)",conferir,material das teclas resistivas; opcoes no README.md
+T4,ADH1,1,"fita dupla face fina (0,1-0,2 mm), 28 aneis 13,5 / 12,5 mm",-,-,-,2.000,em casa,conferir,espacador: sem toque a folha nao encosta no pente (tecla aberta)
+P1,SCR1,1,"parafuso M2.5 x 3, cabeca chata (Phillips)",-,-,-,0.050,em casa,conferir,prende o modulo no espacador H101 (vem no KIT-16549 da SparkFun)
+P1,R105,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,"MCLK 11,3 MHz: em serie, junto do J101 (SPEC 4, 5o)"
+P1,C102,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+P1,C101,1,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,"3,3 V junto dos pads 2/74 do J101"
+P1,J101,1,91302-42-067RCE,M.2_E_H4.2_UMAX_91302-42-067,C48985906,estendida,1.260,JLC,conferir,"UMAX M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (estoque LCSC 622 em 25 out 2026; o LOTES C841659 estava com 0); footprint pelo desenho UMAX C-91302-42 rev C; no verso; modulo SparkFun MicroMod Teensy DEV-16402 encaixado em casa"
+P1,H101,1,9774025151R,Standoff_SMD_M2.5_H2.5,-,-,0.600,JLC (Global Sourcing),conferir,"espacador SMD M2.5 x 2,5 mm (Wurth WA-SMSI, o da SparkFun; SPEC v2.3); a (+4,0; -20,0) do J101 nas coordenadas do footprint; sem equivalente LCSC de 2,5 mm com estoque em 25 out 2026 (YIYUAN SMTSOM2.520BTR C5301776: 2,0 mm, estoque 0); parafuso M2.5 x 3 cabeca chata em casa"
+P1,TP101,1,RESET#/ONOFF,TestPoint_Pad_D1.5mm,-,-,0.000,sem peca (pad),final,pad 6 do MicroMod = ONOFF do RT1062 no modulo Teensy (nao e o POR_B); ver ELETRONICA.md
+E1,R201 R202,2,5.1k,R_0402_1005Metric,C25905,basica,0.001,JLC,final,
+E1,J201,1,TYPE-C-31-M-12,USB_C_Receptacle_HRO_TYPE-C-31-M-12,C165948,estendida,0.150,JLC,final,"lado de cima, borda esquerda, boca para fora"
+E2,D201,1,SMF5.0A,D_SOD-123F,C151296,estendida,0.050,JLC,final,"TVS do VBUS (Pocket D60); lado de cima, junto do USB-C (SPEC v2.3)"
+E2,U201,1,USBLC6-2SC6,SOT-23-6,C7519,basica,0.050,JLC,conferir,"lado de cima, junto do USB-C (SPEC v2.3)"
+E3,R204,1,1.5k,R_0402_1005Metric,C25867,basica,0.001,JLC,conferir,"so vale com EN2=1 (1,07 A); obrigatorio"
+E3,R203,1,1.8k,R_0402_1005Metric,C25811,basica,0.001,JLC,conferir,"ICHG = 890/1800 = 0,49 A"
+E3,R206 R210 R211 R213 R215 R218,6,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
+E3,C204 C205,2,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E3,R205 R214,2,10k,R_0402_1005Metric,C25744,basica,0.001,JLC,final,
+E3,C201 C202 C203,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+E3,C210,1,10uF,C_0603_1608Metric,C19702,basica,0.005,JLC,final,"VSYS junto dos pinos OUT (10/11) do U202, no lado de cima (M3)"
+E3,R208 R209 R212,3,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,medida da bateria: V(pino 16) = VBAT/2
+E3,R207 R217,2,1k,R_0402_1005Metric,C11702,basica,0.001,JLC,final,
+E3,C213,1,1uF,C_0402_1005Metric,C52923,basica,0.002,JLC,final,"100 ms: depois do desligamento o PWR_EN_S nao sobe antes de o 3,3 V cair (sem religar)"
+E3,U203,1,74LVC1G08,SOT-23-5,C7666,estendida,0.030,JLC,final,USB_HOLD = USB presente E PWR_EN alto (alimentada pelo 3V3)
+E3,Q202,1,AO3400A,SOT-23,C20917,basica,0.010,JLC,final,"ligado, a luz de carga apaga (Pocket Q31)"
+E3,Q201 Q203,2,AO3401A,SOT-23,C15127,basica,0.010,JLC,final,luz de carga (Pocket Q30)
+E3,D202 D203 D204 D205,4,BAT54C,SOT-23,C134405,estendida,0.020,JLC,final,leitura do ~CHG pelo pino 26 (so com USB)
+E3,U202,1,BQ24074RGTR,VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm,C54313,estendida,1.100,JLC,final,"USB500 (EN2=0, EN1=1), 500 mA, NTC no TS; TMR e ITERM abertos = padrao; OUT 4,4 V com USB"
+E4,R216,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,
+E4,C209,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E4,C206 C207 C208,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+E4,L201,1,2.2uH,L_Changjiang_FNR4020S,C167825,estendida,0.080,JLC,final,FNR4020S2R2MT (Pocket L10)
+E4,U204,1,TPS63001DRCR,Texas_DRC0010J,C28060,estendida,1.400,JLC,final,"3,3 V fixo; PS/SYNC baixo = economia; EN = EN_REQ (sem a porta U206 da v2.1)"
+E6,J202,1,S3B-PH-SM4-TB,JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal,C265101,estendida,0.300,JLC,final,"bateria 1 = +, 2 = NTC, 3 = - (ordem do Pocket; conferir o cabo)"
+F1,C302 C304 C305,3,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+F1,C307,1,150nF,C_0402_1005Metric,-,estendida,0.003,JLC,conferir,"Audio Board: 0,15 uF"
+F1,R301 R302,2,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,
+F1,C301 C303 C306,3,2.2uF,C_0402_1005Metric,C12530,basica,0.003,JLC,conferir,
+F1,FB301,1,600R@100MHz,L_0603_1608Metric,-,basica,0.005,JLC,conferir,Audio Board: Ferrite 600 no VDDA
+F1,U301,1,SGTL5000XNLA3,QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm,C511764,estendida,1.800,JLC,conferir,como a Audio Board Rev D2 (endereco I2C fixo 0x0A); sem entrada de linha/microfone
+F1,U302,1,XC6206P182MR,SOT-23-3,C347373,estendida,0.030,JLC,conferir,"1,8 V do VDDD (a Audio Board usa AP7313)"
+F2,R303,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
+F2,C308,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+F2,R304,1,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,
+F2,J301,1,PJ-327A 5JJ,Jack_3.5mm_PJ-327A_SMD,C668605,estendida,0.100,JLC,conferir,"SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)"
+I1,SW401,1,EC11E18244A5,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C255515,estendida,1.200,JLC,final,volume; clique de 2 s liga/desliga; 18 pulsos / 36 detentes (o 15/15 nao tem estoque): ENC_STEPS_PER_DETENT = 2
+I2,SW402,1,EC11E18244A5,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C255515,estendida,1.200,JLC,final,seletor; clique = funcoes de som; 18 pulsos / 36 detentes (o 15/15 nao tem estoque): ENC_STEPS_PER_DETENT = 2
+I3,R401,1,270,R_0402_1005Metric,C25190,basica,0.001,JLC,conferir,
+I3,R402,1,330,R_0402_1005Metric,C25104,basica,0.001,JLC,conferir,
+I3,D402,1,BAT54C,SOT-23,C134405,estendida,0.020,JLC,final,OU do vermelho: luz de carga e firmware (Pocket D30)
+I3,D401,1,TJ-S1615SW6TGLCRG-A5,LED_1615_RG_4pad,C273605,estendida,0.020,JLC,final,"1615 vermelho/verde; pads do datasheet: 1 = anodo vermelho, 2 = catodo vermelho, 3 = anodo verde, 4 = catodo verde"
+I4,SW403,1,Program,SW_Push_1P1T_XKB_TS-1187A,C318884,basica,0.020,JLC,conferir,"no verso, por um furo no fundo; 5,1 x 5,1 (a SPEC pedia 4 x 4)"
+A1,C502,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+A1,C501,1,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+A1,R501,1,680k,R_0402_1005Metric,-,estendida,0.002,JLC,conferir,"com os 100k internos: 0,42 V no SD_MODE = (L+R)/2; pino baixo = desligado"
+A1,U501,1,MAX98357AETE+T,TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm,C910544,estendida,1.400,JLC,final,GAIN_SLOT aberto = 9 dB; mono (L+R)/2 pelo divisor do SD_MODE
+A2,J501,1,alto-falante (fios),SolderWire-0.127sqmm_1x02_P3.7mm_D0.48mm_OD1mm,-,-,0.000,sem peca (pads; fios do A2 soldados em casa),conferir,
+T1,C601,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+T1,R601,1,10k,R_0402_1005Metric,C25744,basica,0.001,JLC,final,"referencia do divisor: tecla solta = 3,3 V; quanto mais forte o toque, menor a tensao"
+T1,U601,1,74HC4067PW,TSSOP-24_4.4x7.8mm_P0.65mm,C547038,estendida,0.250,JLC,final,"esquerdo (metade baixa do teclado), COM no pino 15; canais = placa Viaggio J1"
+T2,C602,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+T2,R602,1,10k,R_0402_1005Metric,C25744,basica,0.001,JLC,final,"referencia do divisor: tecla solta = 3,3 V; quanto mais forte o toque, menor a tensao"
+T2,U602,1,74HC4067PW,TSSOP-24_4.4x7.8mm_P0.65mm,C547038,estendida,0.250,JLC,final,"direito (metade alta), COM no pino 14; canais = placa Viaggio J1"
+T4,K09,1,tecla A#3,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 9 (fileira 2, A#3); pente no lado de cima, ENIG"
+T4,K13,1,tecla A#4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 13 (fileira 2, A#4); pente no lado de cima, ENIG"
+T4,K01 K23,2,tecla A3,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 1 (fileira 1, A3); pente no lado de cima, ENIG"
+T4,K05 K27,2,tecla A4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 5 (fileira 1, A4); pente no lado de cima, ENIG"
+T4,K17,1,tecla B3,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 17 (fileira 3, B3); pente no lado de cima, ENIG"
+T4,K21,1,tecla B4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 21 (fileira 3, B4); pente no lado de cima, ENIG"
+T4,K10,1,tecla C#4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 10 (fileira 2, C#4); pente no lado de cima, ENIG"
+T4,K14,1,tecla C#5,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 14 (fileira 2, C#5); pente no lado de cima, ENIG"
+T4,K02 K24,2,tecla C4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 2 (fileira 1, C4); pente no lado de cima, ENIG"
+T4,K06 K28,2,tecla C5,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 6 (fileira 1, C5); pente no lado de cima, ENIG"
+T4,K03 K25,2,tecla D#4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 3 (fileira 1, D#4); pente no lado de cima, ENIG"
+T4,K07,1,tecla D#5,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 7 (fileira 1, D#5); pente no lado de cima, ENIG"
+T4,K18,1,tecla D4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 18 (fileira 3, D4); pente no lado de cima, ENIG"
+T4,K22,1,tecla D5,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 22 (fileira 3, D5); pente no lado de cima, ENIG"
+T4,K11,1,tecla E4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 11 (fileira 2, E4); pente no lado de cima, ENIG"
+T4,K15,1,tecla E5,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 15 (fileira 2, E5); pente no lado de cima, ENIG"
+T4,K04 K26,2,tecla F#4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 4 (fileira 1, F#4); pente no lado de cima, ENIG"
+T4,K19,1,tecla F4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 19 (fileira 3, F4); pente no lado de cima, ENIG"
+T4,K16,1,tecla G#3,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 16 (fileira 3, G#3); pente no lado de cima, ENIG"
+T4,K20,1,tecla G#4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 20 (fileira 3, G#4); pente no lado de cima, ENIG"
+T4,K08,1,tecla G3,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 8 (fileira 2, G3); pente no lado de cima, ENIG"
+T4,K12,1,tecla G4,FSR_Comb_D12,-,-,0.000,sem peca (cobre da placa; folha sensivel colada em casa),conferir,"tecla 12 (fileira 2, G4); pente no lado de cima, ENIG"
