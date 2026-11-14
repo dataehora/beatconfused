@@ -17,9 +17,9 @@ Ramo: `student-viaggio-v02`. Ao terminar: PR, merge no `main` (regra do J: sem p
 
 - [x] 1. Levantamento do que a J1 ocupa.
 - [x] 2. `pcb/layout.py` + `layout.json` + `img/layout.svg`.
-- [ ] 3. Pente simétrico em `pcb/footprints.py`; `schematic.py` continua valendo (mesmas ligações).
-- [ ] 4. `pcb/build_board.py` v0.2: contorno novo, furos, teclas nas posições novas, apagar todas as rotas `OUT_Kxx` da J1 e roteá-las de novo com o roteador da J1; DRC 0 e paridade 0.
-- [ ] 5. Flexão (adaptar `viaggio_j1/mechanics.py`), nota sobre áudio e calor.
+- [x] 3. Pente simétrico em `pcb/footprints.py`; `schematic.py` continua valendo (mesmas ligações).
+- [ ] 4. (script escrito; primeira rodada leva mais de 10 min, rodar em segundo plano) `pcb/build_board.py` v0.2: contorno novo, furos, teclas nas posições novas, apagar todas as rotas `OUT_Kxx` da J1 e roteá-las de novo com o roteador da J1; DRC 0 e paridade 0.
+- [ ] 5. Flexão: `pcb/mechanics.py` já escrito (importa o da J1), rodar depois da placa; nota sobre áudio e calor.
 - [ ] 6. `README.md`, `PINOS.md`, imagens; PR e merge.
 
 ## Como rodar (da raiz do repositório)
