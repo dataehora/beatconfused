@@ -33,8 +33,10 @@ public:
 
   // Starts the four ranks for a key. `note` is the 8' pitch; the 16' rank
   // plays an octave below, the 4' an octave above, and the second 8' reed
-  // `wetCents` sharp.
-  void noteOn(float note, float wetCents, float level) {
+  // `wetCents` sharp. `level` is the loudness (0..1) and `brightnessHz` the
+  // corner of the low-pass that follows the mix: together they stand for
+  // the bellows pressure, which makes a reed both louder and brighter.
+  void noteOn(float note, float wetCents, float level, float brightnessHz) {
     __disable_irq();
     for (int r = 0; r < REED_RANKS; r++) {
       rank[r].sample = pick(r, rankNote(r, note, wetCents));
@@ -42,6 +44,7 @@ public:
     }
     setIncrements(note, wetCents);
     this->level = level;
+    lowpass = 1.0f - expf(-2.0f * PI * brightnessHz / AUDIO_SAMPLE_RATE_EXACT);
     blocksLeft = 0;
     active = REED_SAMPLES_PER_RANK > 0;
     __enable_irq();
@@ -100,10 +103,14 @@ public:
       k.pos = pos;
     }
 
+    float y = filtered;
+    const float a = lowpass;
     for (int i = 0; i < AUDIO_BLOCK_SAMPLES; i++) {
-      float v = sum[i];
+      y += a * (sum[i] - y);
+      float v = y;
       block->data[i] = v > 32767.0f ? 32767 : (v < -32767.0f ? -32767 : (int16_t)v);
     }
+    filtered = y;
     transmit(block);
     release(block);
     if (blocksLeft && --blocksLeft == 0) active = false;
@@ -118,6 +125,8 @@ private:
   };
   Rank rank[REED_RANKS];
   float level = 1.0f;
+  float lowpass = 1.0f;    // one-pole coefficient, 1 = no filtering
+  float filtered = 0.0f;
   volatile bool active = false;
   volatile uint32_t blocksLeft = 0;
 

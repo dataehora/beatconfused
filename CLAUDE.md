@@ -495,6 +495,12 @@ uses the old reed tables (`HAVE_REED_SAMPLES`).
 - Page: one "Accordion" instrument (the jazz preset is gone) with seven register buttons in J's
   order and names: L Bassoon, ML Bandoneon, MM Violin, MH Oboe, H Piccolo, LH Organ, M Clarinet.
   The reed dots only display the register; the reed tuning slider (CC 27) is still there.
+- Velocity on the accordion = bellows pressure (`accordionLevel`, `accordionBrightness`): 24 dB of
+  loudness plus a one-pole low-pass in `ReedSampler` (700 Hz..16 kHz, at least 3x the note).
+  Measured 27 dB from velocity 4 to 127 on G3; the brightness change is gentle and J has not yet
+  judged it. Before, velocity gave only ~13 dB and under 2 dB between 100 and 127.
+- Flashing: after `arduino-cli upload` the Teensy often stays in the bootloader (`PID_0478`) for
+  10-20 s; poll `Get-PnpDevice` before retrying the upload.
 - Still open: rank balance (`SAMPLED_REED_GAIN`) and loop
   length are first guesses. The browser sound (`websynth.js`) still uses the synthesised reeds.
 
