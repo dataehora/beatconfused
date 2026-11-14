@@ -41,7 +41,7 @@
    full-scale noise.
 
    MIDI implementation (any channel; keep in sync with CC in etutti/etuttino/script.js):
-     Note On / Note Off      play / release (velocity -> loudness)
+     Note On / Note Off      play / release (velocity -> loudness; accordion: also brightness)
      CC 7   Volume           headphone volume
      CC 9   Key velocity     value / 32: 0 fixed (100), 1 soft, 2 normal, 3 hard
      CC 14  Calibrate keys   64-127: forget the learnt key travel, learn it again
@@ -314,7 +314,20 @@ float reedGain[NUM_REEDS] = {0.42f, 0.42f, 0.42f, 0.30f};
 // peak at up to 0.98), so they are low and the voice banks make it up.
 const float SAMPLED_REED_GAIN[NUM_REEDS] = {0.30f, 0.30f, 0.30f, 0.22f};
 const float BANK_GAIN = 0.16f;
-const float SAMPLED_BANK_GAIN = 0.60f;   // measured: 8 notes, all four ranks, peak 0.36
+const float SAMPLED_BANK_GAIN = 0.80f;   // measured: 8 notes, all four ranks, velocity 127, peak 0.48
+
+// How hard a key is played stands for the bellows pressure: the accordion
+// gets louder over 24 dB and, with sampled reeds, brighter (a low-pass from
+// 700 Hz at the softest to 16 kHz at the hardest, never under 3x the note).
+// Measured on the Teensy, G3 in MM: 27 dB between velocity 4 and 127, of
+// which 4 dB is the filter.
+const float ACCORDION_DYNAMIC_DB = 24.0f;
+float accordionLevel(byte velocity) {
+  return powf(10.0f, -ACCORDION_DYNAMIC_DB / 20.0f * (1.0f - velocity / 127.0f));
+}
+float accordionBrightness(byte velocity, int note) {
+  return max(700.0f * powf(2.0f, 4.5f * velocity / 127.0f), 3.0f * noteToFreq(note));
+}
 
 bool sampledReeds() {
   return HAVE_REED_SAMPLES && instrument == INST_ACCORDION;
@@ -471,10 +484,11 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
   voices[v].lastNote = note;
   voices[v].age = ++voiceCounter;
   if (usesOscillators()) {
-    float amp = 0.2f + 0.8f * (velocity / 127.0f);
+    float amp = instrument == INST_ACCORDION ? accordionLevel(velocity)
+                                             : 0.2f + 0.8f * (velocity / 127.0f);
     AudioNoInterrupts();
     if (sampledReeds()) {
-      reedSmp[v].noteOn(note, wetCents, amp);
+      reedSmp[v].noteOn(note, wetCents, amp, accordionBrightness(velocity, note));
     } else {
       tuneVoice(v, note);
       for (int r = 0; r < NUM_REEDS; r++) reed[r][v].amplitude(amp);
