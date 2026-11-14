@@ -48,6 +48,8 @@ python etutti/hardware/student_viaggio/pcb/schematic.py
 - Etapas 1–3 prontas e salvas. Etapa 4 em andamento: `build_board.py` v0.2 escrito e salvo.
 - Rodada 1 (teclas em y 28…82): 26 de 28 teclas roteadas; a aba de GND da K08 cortou a trilha VSYS. Corrigido: o pente gira 180° quando a via ou a aba encontram outro cobre, e o script para se uma rede de corrente perder cobre.
 - Rodada 2 (teclas 1,5 mm mais baixas, H2 em (72,5; 94)): faltaram `OUT_K04`, `OUT_K05`, `OUT_K21`, `OUT_K24` e o GND do `C602.2` (pinos dos mux cercados pelas rotas anteriores).
-- Rodada 3 (lançada, resultado não lido): faixas de escape reservadas em cada entrada dos mux e até 6 tentativas, com as redes que falharam primeiro. Leva de 15 a 60 min.
-- **Próximo passo:** rodar de novo o `build_board.py` (em segundo plano) e ler a linha `DRC:`. O `pcb/kicad/student_viaggio.kicad_pcb` no Git ainda é o da v0.1; só gravar o da v0.2 quando o DRC der 0 violações, 0 abertas, paridade 0.
+- Rodada 3 (faixas de escape em cada entrada dos mux, até 6 tentativas): 26 de 28; `OUT_K04` e `OUT_K05` sem caminho mesmo sendo as primeiras.
+- Causa achada: tocos soltos das redes podadas (só eram tirados depois de rotear) ficavam na frente das entradas dos mux, e a busca do roteador parava no limite de 4 milhões de passos. Corrigido no `build_board.py`: `drop_dangling()` roda antes e depois de rotear, limite de busca 10 milhões.
+- Rodada 4: lançada com essa correção. Ler a linha `DRC:` no fim.
+- **Próximo passo:** se o DRC der 0 violações, 0 abertas, paridade 0, gravar o `pcb/kicad/student_viaggio.kicad_pcb` (no Git ainda é o da v0.1). Senão, ver a rede que falhou com os scripts de diagnóstico (inundação sobre as máscaras do roteador).
 - Depois: `pcb/mechanics.py` (flexão), `pinos.py`, imagens, `README.md` da v0.2, PR e merge.

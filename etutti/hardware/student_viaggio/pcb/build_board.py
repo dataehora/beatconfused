@@ -511,6 +511,36 @@ def main():
     tb.SetRevision("v0.2")
     tb.SetDate("2026-11-14")
 
+    def drop_dangling(when):
+        """Stubs KiCad calls dangling (shorter than the via or track they end in): take them out.
+        Before routing too: left in, they sat in the way of the mux inputs' escape lanes."""
+        for _pass in range(10):
+            d = save_and_drc(b, original)
+            loose = [x for x in d.get("violations", []) if x["type"] in ("track_dangling", "via_dangling")]
+            if not loose:
+                break
+            n = 0
+            for x in loose:
+                it = x["items"][0]
+                m = re.search(r"\[([^\]]+)\]", it["description"])
+                pos = (it["pos"]["x"], it["pos"]["y"])
+                for t in list(b.GetTracks()):
+                    if t.GetNetname() != m.group(1) or t.m_Uuid.AsString() in keep_vias:
+                        continue
+                    if is_via(t) != (x["type"] == "via_dangling"):
+                        continue
+                    dd = math.hypot(pos[0] - TOMM(t.GetPosition().x), pos[1] - TOMM(t.GetPosition().y)) if is_via(t) \
+                        else dist_seg(pos, xy(t.GetStart()), xy(t.GetEnd()))
+                    if dd < 0.02:
+                        rm(b, t)
+                        n += 1
+                        break
+            report["removido"]["pontas soltas (%s, passada %d)" % (when, _pass + 1)] = n
+            if not n:
+                break
+            pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+
+    drop_dangling("antes de rotear")
     # ---- 5. route what is open
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     for n, k in keys.items():      # no new via under an electrode
@@ -533,6 +563,10 @@ def main():
             x, y = xy(pad.GetPosition())
             rr.PROTECT.append({"rede": pad.GetNetname(), "pino": "%s.%s" % (ref, pad.GetNumber()),
                                "caixa": [x - 0.9, y - 0.9, x + 0.9, y + 0.9], "camadas": list(rr.RL)})
+
+    # the long runs to the far keys need more search than the J1's leftovers did
+    _astar = rr.astar
+    rr.astar = lambda *a, **kw: _astar(*a, **dict(kw, max_expand=10_000_000))
 
     def run(k):
         pads = [q for q in b.GetPads() if q.GetNetname() == k["net"] and q.GetParentFootprint().GetReference()[0] == "U"]
@@ -584,32 +618,7 @@ def main():
     fails = [dict(f, **{k: [float(v) for v in f[k]] for k in ("de", "ate", "em") if k in f}) for f in fails]
     report["falhas"] = fails
 
-    # ---- stubs KiCad still calls dangling (shorter than the via or track they end in): take them out
-    for _pass in range(10):
-        d = save_and_drc(b, original)
-        loose = [x for x in d.get("violations", []) if x["type"] in ("track_dangling", "via_dangling")]
-        if not loose:
-            break
-        n = 0
-        for x in loose:
-            it = x["items"][0]
-            m = re.search(r"\[([^\]]+)\]", it["description"])
-            pos = (it["pos"]["x"], it["pos"]["y"])
-            for t in list(b.GetTracks()):
-                if t.GetNetname() != m.group(1) or t.m_Uuid.AsString() in keep_vias:
-                    continue
-                if is_via(t) != (x["type"] == "via_dangling"):
-                    continue
-                dd = math.hypot(pos[0] - TOMM(t.GetPosition().x), pos[1] - TOMM(t.GetPosition().y)) if is_via(t) \
-                    else dist_seg(pos, xy(t.GetStart()), xy(t.GetEnd()))
-                if dd < 0.02:
-                    rm(b, t)
-                    n += 1
-                    break
-        report["removido"]["pontas soltas (passada %d)" % (_pass + 1)] = n
-        if not n:
-            break
-        pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+    drop_dangling("depois de rotear")
     d = save_and_drc(b, original)
     summ = {k: dict(collections.Counter("%s (%s)" % (x["type"], x["severity"]) for x in d.get(k, [])))
             for k in ("violations", "unconnected_items", "schematic_parity")}
