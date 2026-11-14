@@ -42,3 +42,12 @@ python etutti/hardware/student_viaggio/pcb/schematic.py
 - Scripts com barras invertidas não passam por heredoc do Bash: escrever com a ferramenta Write.
 - `pcbnew.SaveBoard` reescreve o `.kicad_pro` e o bloco `(setup …)`: o `build_board.py` repõe os dois a partir da J1.
 - O roteador (`viaggio_j1/rota_restante.py`) não põe via dentro de pad SMD da própria rede: a via de sinal de cada tecla é posta pelo `build_board.py` antes dos pentes.
+
+## Estado ao parar (14 nov 2026, limite de uso da sessão)
+
+- Etapas 1–3 prontas e salvas. Etapa 4 em andamento: `build_board.py` v0.2 escrito e salvo.
+- Rodada 1 (teclas em y 28…82): 26 de 28 teclas roteadas; a aba de GND da K08 cortou a trilha VSYS. Corrigido: o pente gira 180° quando a via ou a aba encontram outro cobre, e o script para se uma rede de corrente perder cobre.
+- Rodada 2 (teclas 1,5 mm mais baixas, H2 em (72,5; 94)): faltaram `OUT_K04`, `OUT_K05`, `OUT_K21`, `OUT_K24` e o GND do `C602.2` (pinos dos mux cercados pelas rotas anteriores).
+- Rodada 3 (lançada, resultado não lido): faixas de escape reservadas em cada entrada dos mux e até 6 tentativas, com as redes que falharam primeiro. Leva de 15 a 60 min.
+- **Próximo passo:** rodar de novo o `build_board.py` (em segundo plano) e ler a linha `DRC:`. O `pcb/kicad/student_viaggio.kicad_pcb` no Git ainda é o da v0.1; só gravar o da v0.2 quando o DRC der 0 violações, 0 abertas, paridade 0.
+- Depois: `pcb/mechanics.py` (flexão), `pinos.py`, imagens, `README.md` da v0.2, PR e merge.
