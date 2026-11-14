@@ -3,16 +3,21 @@ audio of an accordion sample library, one reed rank (or register) per pass.
 
 Play the file through the library in a DAW with one reed soloed, export the
 audio, and save it in capturas/ (not tracked by git). The notes are the
-eTuttino keys G3..E6 taken every 3 semitones, each held 3 s with 1.5 s of
-silence after it, so the recording can be cut into notes afterwards.
+eTuttino range taken every 3 semitones, each held 3 s with 1.5 s of silence
+after it, so the recording can be cut into notes afterwards.
+
+The Concert Accordion library sounds its 8' reed one octave above the MIDI
+key (key 55 gives 392 Hz) and is silent above key 81, so the keys sent are
+the eTuttino's G3..E6 one octave down, up to the library's top.
 
 Run:  python etutti/firmware/tools/accordion_samples/make_capture_midi.py
 """
 import os
 import struct
 
-FIRST_NOTE = 55          # G3, the lowest eTuttino key
-LAST_NOTE = 88           # E6, the highest
+FIRST_NOTE = 43          # sounds G3 on the 8' reed: the lowest eTuttino key
+LAST_NOTE = 79           # sounds G6, just above the eTuttino's E6
+SOUNDING_OFFSET = 12     # semitones from the MIDI key to the 8' reed's pitch
 STEP = 3                 # semitones between captured notes
 HOLD_S = 3.0             # note length
 GAP_S = 1.5              # silence after each note
