@@ -504,6 +504,24 @@ uses the old reed tables (`HAVE_REED_SAMPLES`).
 - Still open: rank balance (`SAMPLED_REED_GAIN`) and loop
   length are first guesses. The browser sound (`websynth.js`) still uses the synthesised reeds.
 
+## eTutti Student V01 (14 Nov 2026) — the version to be ordered, start here
+
+`etutti/hardware/student_v01/` = the **Viaggio J1** board taken to the order (J's name for it:
+"Student_V01"; not the resistive-key `student_viaggio/`). Its `README.md` (Portuguese) holds the
+nine-step review J is doing with Code, one step approved at a time: 1 keyboard, 2 concept, 3 board
+shape, 4 schematic/parts (all closed 14 Nov, nothing changed), 5 routing/checks (done, awaiting
+J), 6 firmware for this board (does not exist yet: 28 keys, 2 muxes, MicroMod pins, battery, soft
+power, amplifier, sampled accordion), 7 full 3D model + case with the 6 pillars (J asked to use
+the models in `etutti/hardware/student/eTutti_3D.3dshapes/`, untracked), 8 sourcing, 9 shopping
+list and order. Update the README's table as steps close. Nothing is ordered until J says so.
+- `student_v01/build.py` (KiCad python, ~1 min) copies the J1's tracked KiCad files, renames the
+  two silkscreen texts, checks the board differs from the J1's in exactly those 2 lines, runs DRC
+  (0 unconnected, parity 0, only the 3 accepted EN_B widths) and writes `fab/` through the J1's
+  `m3.py` functions. Board changes go into the J1 (or the script), never by hand in
+  `student_v01/kicad/`.
+- The J1's step M3b (LCSC codes, C307 = C162182, SW403 height) had sat unmerged on its branch
+  since 28 Oct; merged as PR #138.
+
 ## eTutti StudentViaggio (14 Nov 2026) — cheap first prototype, resistive keys
 
 `etutti/hardware/student_viaggio/` = the **Viaggio J1** electronics with the 28 Hall keys swapped
