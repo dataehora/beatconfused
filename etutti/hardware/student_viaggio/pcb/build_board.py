@@ -517,31 +517,71 @@ def main():
         rr.PROTECT.append({"rede": "-", "pino": "K%02d" % n,
                            "caixa": [k["c"][0] - 6.6, k["c"][1] - 6.6, k["c"][0] + 6.6, k["c"][1] + 6.6],
                            "camadas": [pcbnew.F_Cu]})
-    ctx = rr.Ctx(b)
-    chk = rr.Checker(ctx)
-    made, log, fails = [], [], []
+    # an escape lane on B.Cu for every mux input, and room for a via beside the muxes' capacitors:
+    # without them the first routes box the last pins in
+    for mux in ("U601", "U602"):
+        fp = b.FindFootprintByReference(mux)
+        cy = TOMM(fp.GetPosition().y)
+        for pad in fp.Pads():
+            if pad.GetNetname() in key_nets:
+                x, y = xy(pad.GetPosition())
+                y2 = y - 2.6 if y < cy else y + 2.6
+                rr.PROTECT.append({"rede": pad.GetNetname(), "pino": "%s.%s" % (mux, pad.GetNumber()),
+                                   "caixa": [x - 0.2, min(y, y2), x + 0.2, max(y, y2)], "camadas": [pcbnew.B_Cu]})
+    for ref in ("C601", "C602", "R601", "R602"):
+        for pad in b.FindFootprintByReference(ref).Pads():
+            x, y = xy(pad.GetPosition())
+            rr.PROTECT.append({"rede": pad.GetNetname(), "pino": "%s.%s" % (ref, pad.GetNumber()),
+                               "caixa": [x - 0.9, y - 0.9, x + 0.9, y + 0.9], "camadas": list(rr.RL)})
+
     def run(k):
-        pads = [p for p in b.GetPads() if p.GetNetname() == k["net"] and p.GetParentFootprint().GetReference()[0] == "U"]
+        pads = [q for q in b.GetPads() if q.GetNetname() == k["net"] and q.GetParentFootprint().GetReference()[0] == "U"]
         q = xy(pads[0].GetPosition())
         return math.hypot(q[0] - k["via"][0], q[1] - k["via"][1])
-    sig = sorted((touched - set(PLANES) - key_nets) | {"MUX_L_COM", "MUX_R_COM"}) + \
-        [k["net"] for k in sorted(keys.values(), key=run, reverse=True)]       # the longest runs first
-    for net in sig:
-        if len(rr.clusters(b, net)) > 1:
-            before = len(made)
-            rr.join_net(ctx, chk, net, None, made, log, fails)
-            report["roteado"].append({"rede": net, "objetos": len(made) - before})
-    for _round in range(3):
-        before = len(made)
+    first = sorted((touched - set(PLANES) - key_nets) | {"MUX_L_COM", "MUX_R_COM"})
+    order = [k["net"] for k in sorted(keys.values(), key=run, reverse=True)]       # the longest runs first
+    for attempt in range(1, 7):
         pcbnew.ZONE_FILLER(b).Fill(b.Zones())
-        ctx.refresh()
+        ctx = rr.Ctx(b)
         chk = rr.Checker(ctx)
-        rr.join_net(ctx, chk, "+3V3", None, made, log, fails)
-        rr.join_net(ctx, chk, "GND", None, made, log, fails, gnd_mode=True)
-        report["roteado"].append({"rede": "GND / +3V3 (rodada %d)" % (_round + 1), "objetos": len(made) - before})
-        if len(made) == before:
+        made, log, fails = [], [], []
+        routed = []
+        for net in first + order:
+            if len(rr.clusters(b, net)) > 1:
+                before = len(made)
+                rr.join_net(ctx, chk, net, None, made, log, fails)
+                routed.append({"rede": net, "objetos": len(made) - before})
+        for _round in range(3):
+            before = len(made)
+            pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+            ctx.refresh()
+            chk = rr.Checker(ctx)
+            rr.join_net(ctx, chk, "+3V3", None, made, log, fails)
+            rr.join_net(ctx, chk, "GND", None, made, log, fails, gnd_mode=True)
+            routed.append({"rede": "GND / +3V3 (rodada %d)" % (_round + 1), "objetos": len(made) - before})
+            if len(made) == before:
+                break
+        report.setdefault("tentativas", []).append(
+            {"tentativa": attempt, "falhas": sorted({f["net"] + " " + str(f["pinos"]) for f in fails})})
+        print("tentativa %d: %d objetos, falhas %s" % (attempt, len(made), sorted({f["net"] for f in fails})), flush=True)
+        if not fails or attempt == 6:
             break
+        # again, with the nets that failed first; a plane pad that stayed loose gets its surroundings kept free
+        ids = set(made)
+        for t in list(b.GetTracks()):
+            if t.m_Uuid.AsString() in ids:
+                rm(b, t)
+        bad = [f["net"] for f in fails if f["net"] in key_nets or f["net"] in first]
+        first = [n for n in first if n in bad] + [n for n in first if n not in bad]
+        order = [n for n in order if n in bad] + [n for n in order if n not in bad]
+        for f in fails:
+            if f["net"] in PLANES and "em" in f:
+                x, y = float(f["em"][0]), float(f["em"][1])
+                rr.PROTECT.append({"rede": f["net"], "pino": str(f["pinos"]),
+                                   "caixa": [x - 1.5, y - 1.5, x + 1.5, y + 1.5], "camadas": list(rr.RL)})
+    report["roteado"] = routed
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+    fails = [dict(f, **{k: [float(v) for v in f[k]] for k in ("de", "ate", "em") if k in f}) for f in fails]
     report["falhas"] = fails
 
     # ---- stubs KiCad still calls dangling (shorter than the via or track they end in): take them out
