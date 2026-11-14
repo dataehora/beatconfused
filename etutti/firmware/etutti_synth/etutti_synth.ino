@@ -88,6 +88,7 @@
 #include <EEPROM.h>
 #include "piano_samples.h"
 #include "nylonstrgtr_samples.h"
+#include "reed_sampler.h"
 
 // usbMIDI only exists when the USB Type includes MIDI. Without this check
 // the compiler only says "'usbMIDI' was not declared in this scope".
@@ -205,6 +206,11 @@ uint32_t crossingTime(const Key &k, float prev, float now, float level, uint32_t
 enum { REED_16, REED_M1, REED_M2, REED_4, NUM_REEDS };
 AudioSynthWaveform       reed[NUM_REEDS][NUM_VOICES];
 AudioMixer4              reedMix[NUM_VOICES];
+// Sampled reeds, when reed_samples.cpp is present (see reed_sampler.h): the
+// accordion then plays these and the oscillators stay silent.
+ReedSampler              reedSmp[NUM_VOICES];
+AudioMixer4              voiceMix[NUM_VOICES];   // oscillators, sampled reeds
+const bool HAVE_REED_SAMPLES = REED_SAMPLES_PER_RANK > 0;
 AudioEffectEnvelope      bellows[NUM_VOICES];
 AudioMixer4              accA, accB;          // voices 0-3 / 4-7
 // Samples: one wavetable player per voice.
@@ -223,7 +229,7 @@ AudioControlSGTL5000     codec;
   AudioConnection prM1_##v(reed[REED_M1][v], 0, reedMix[v], 1); \
   AudioConnection prM2_##v(reed[REED_M2][v], 0, reedMix[v], 2); \
   AudioConnection pr4_##v(reed[REED_4][v], 0, reedMix[v], 3); \
-  AudioConnection pb_##v(reedMix[v], bellows[v]);
+  AudioConnection pm_##v(reedMix[v], 0, voiceMix[v], 0);   AudioConnection pq_##v(reedSmp[v], 0, voiceMix[v], 1);   AudioConnection pb_##v(voiceMix[v], bellows[v]);
 REED_PATCH(0) REED_PATCH(1) REED_PATCH(2) REED_PATCH(3)
 REED_PATCH(4) REED_PATCH(5) REED_PATCH(6) REED_PATCH(7)
 
@@ -303,6 +309,16 @@ int instrument = INST_ACCORDION;
 uint8_t registerMask = 0b0110;   // M1 + M2
 float wetCents = 0;
 float reedGain[NUM_REEDS] = {0.42f, 0.42f, 0.42f, 0.30f};
+// The recordings are all stored at the same loudness; these set the balance
+// between ranks. The four together must stay under full scale (the samples
+// peak at up to 0.98), so they are low and the voice banks make it up.
+const float SAMPLED_REED_GAIN[NUM_REEDS] = {0.30f, 0.30f, 0.30f, 0.22f};
+const float BANK_GAIN = 0.16f;
+const float SAMPLED_BANK_GAIN = 0.60f;   // measured: 8 notes, all four ranks, peak 0.36
+
+bool sampledReeds() {
+  return HAVE_REED_SAMPLES && instrument == INST_ACCORDION;
+}
 
 // Synth: the first three oscillators of each voice, re-purposed. Defaults
 // = the page's "Synth" preset.
@@ -348,6 +364,10 @@ void tuneVoice(int v, int note) {
     }
     return;
   }
+  if (sampledReeds()) {
+    reedSmp[v].retune(note, wetCents);
+    return;
+  }
   reed[REED_16][v].arbitraryWaveform(note - 12 >= HIGH_TABLE_FROM ? tableCassottoHigh : tableCassotto, 16000.0f);
   reed[REED_M1][v].arbitraryWaveform(note >= HIGH_TABLE_FROM ? tableOpenHigh : tableOpen, 16000.0f);
   reed[REED_M2][v].arbitraryWaveform(note >= HIGH_TABLE_FROM ? tableCassottoHigh : tableCassotto, 16000.0f);
@@ -367,7 +387,12 @@ void applyOscGains() {
       if (instrument == INST_SYNTH) g = r < SYNTH_OSCS ? 0.45f * synthOsc[r].level : 0.0f;
       else g = (registerMask & (1 << r)) ? reedGain[r] : 0.0f;
       reedMix[v].gain(r, g);
+      reedSmp[v].gain(r, (registerMask & (1 << r)) ? SAMPLED_REED_GAIN[r] : 0.0f);
     }
+  }
+  for (int ch = 0; ch < 4; ch++) {
+    accA.gain(ch, sampledReeds() ? SAMPLED_BANK_GAIN : BANK_GAIN);
+    accB.gain(ch, sampledReeds() ? SAMPLED_BANK_GAIN : BANK_GAIN);
   }
 }
 
@@ -427,8 +452,10 @@ int findVoiceForNote(int note) {
 void handleNoteOff(byte channel, byte note, byte velocity) {
   for (int i = 0; i < NUM_VOICES; i++) {
     if (voices[i].note == note) {
-      if (usesOscillators()) bellows[i].noteOff();
-      else sampler[i].stop();
+      if (usesOscillators()) {
+        bellows[i].noteOff();
+        reedSmp[i].noteOff(quadraticMs(releaseCC, 3000));
+      } else sampler[i].stop();
       voices[i].note = -1;
     }
   }
@@ -446,8 +473,12 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
   if (usesOscillators()) {
     float amp = 0.2f + 0.8f * (velocity / 127.0f);
     AudioNoInterrupts();
-    tuneVoice(v, note);
-    for (int r = 0; r < NUM_REEDS; r++) reed[r][v].amplitude(amp);
+    if (sampledReeds()) {
+      reedSmp[v].noteOn(note, wetCents, amp);
+    } else {
+      tuneVoice(v, note);
+      for (int r = 0; r < NUM_REEDS; r++) reed[r][v].amplitude(amp);
+    }
     bellows[v].noteOn();
     AudioInterrupts();
   } else {
@@ -459,6 +490,7 @@ void silenceAll() {
   AudioNoInterrupts();
   for (int i = 0; i < NUM_VOICES; i++) {
     for (int r = 0; r < NUM_REEDS; r++) reed[r][i].amplitude(0);
+    reedSmp[i].stop();
     bellows[i].noteOff();
     sampler[i].stop();
     voices[i].note = -1;
@@ -470,6 +502,7 @@ void silenceAll() {
 void releaseAll() {
   for (int i = 0; i < NUM_VOICES; i++) {
     bellows[i].noteOff();
+    reedSmp[i].noteOff(quadraticMs(releaseCC, 3000));
     sampler[i].stop();
     voices[i].note = -1;
   }
@@ -903,7 +936,7 @@ void setup() {
   for (int i = 0; i < 2; i++) pinMode(LED_PINS[i], OUTPUT);
   setLed(true, true);                            // orange: reading the keys
   uint32_t started = millis();
-  AudioMemory(60);   // measured peak: 32 blocks (8 voices x 4 reeds + reverb)
+  AudioMemory(60);   // measured peak: 32 blocks (8 voices x 4 reeds + reverb); 8 with sampled reeds
   setupKeys();
 
   codecOk = codec.enable();
@@ -935,11 +968,10 @@ void setup() {
   }
   configureOscillators();
 
-  // Accordion voice peaks at 1.56 (all four reeds): 4 voices x 1.56 x 0.16
-  // per bank, banks at 0.5 — a full chord stays under full scale.
+  // Synthesised accordion voice peaks at 1.56 (all four reeds): 4 voices x
+  // 1.56 x 0.16 per bank, banks at 0.5 — a full chord stays under full
+  // scale. The bank gains themselves are set in applyOscGains().
   for (int ch = 0; ch < 4; ch++) {
-    accA.gain(ch, 0.16f);
-    accB.gain(ch, 0.16f);
     // The wavetable samples come out ~2.5x quieter than a reed voice
     // (measured on the Teensy), so they get more gain.
     smpA.gain(ch, 0.8f);

@@ -107,15 +107,9 @@ def analyse(name):
         tail = env[b - int(0.05 * rate):b + int(1.0 * rate)]
         rel = np.argmax(tail < 0.1 * steady) / rate
         guess = 440.0 * 2 ** ((key + SOUNDING_OFFSET - 69) / 12.0) if key else 440.0
-        best = None
-        for octave in (0.5, 1.0, 2.0):      # the rank may sound an octave off
-            f0, harm = fundamental(mid, rate, guess * octave)
-            lo, hi = np.searchsorted(np.fft.rfftfreq(len(mid), 1.0 / rate),
-                                     [f0 * 0.97, f0 * 1.03])
-            power = np.abs(np.fft.rfft(mid * np.hanning(len(mid))))[lo:hi].max()
-            if best is None or power > best[0] * 3:
-                best = (power, f0, harm, octave)
-        _, f0, harm, octave = best
+        # L sounds an octave below the 8' reeds, H an octave above
+        octave = {"L": 0.5, "H": 2.0}.get(name[0], 1.0)
+        f0, harm = fundamental(mid, rate, guess * octave)
         cents = 1200 * np.log2(f0 / (guess * octave))
         out.append(dict(key=key, start=a, end=b, level=level, f0=f0, cents=cents,
                         octave=octave, attack=t90 - t10, release=rel, harm=harm))
