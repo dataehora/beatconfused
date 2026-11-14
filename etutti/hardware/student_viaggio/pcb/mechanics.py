@@ -47,6 +47,35 @@ def inside(p, margin):
     return True
 
 
+def sag(gr, supports, loads):
+    """M.Grillage.sag, plus keys that sit right on a support (0 mm). The back of this board is
+    free under the keys, so a pillar can land on a key's own grid node; the J1's never could."""
+    fixed = {gr.nearest(x, y) for x, y in supports}
+    live = [i for i, p in enumerate(loads) if gr.nearest(*p) not in fixed]
+    out = [0.0] * len(loads)
+    for i, v in zip(live, gr.sag(supports, [loads[i] for i in live])):
+        out[i] = v
+    return out
+
+
+def caption(path, n_holes):
+    """M.picture writes the J1's caption: put this board's over it."""
+    from PIL import Image, ImageDraw, ImageFont
+    img = Image.open(path)
+    d = ImageDraw.Draw(img)
+    try:
+        f = ImageFont.truetype("arial.ttf", 13)
+    except OSError:
+        f = ImageFont.load_default()
+    d.rectangle([0, 0, img.width, 38], fill=(255, 255, 255))
+    d.text((6, 4), "StudentViaggio v0.2 - flexao a 3 N por tecla (grelha 4 mm, placa nua de 1,2 mm), vista de cima."
+           " Azul: furos M2. Vermelho: pilares propostos.",
+           fill=(0, 0, 0), font=f)
+    d.text((6, 20), "Numero em cada tecla: flexao em centesimos de mm, so com os %d furos / com os pilares." % n_holes,
+           fill=(0, 0, 0), font=f)
+    img.save(path)
+
+
 def main():
     import pcbnew
     b = pcbnew.LoadBoard(BOARD)
@@ -67,7 +96,7 @@ def main():
     gr = M.Grillage()
     loads = [(x, y) for _r, x, y in keys]
     sup = [(x, y) for _r, x, y in holes]
-    s0 = gr.sag(sup, loads)
+    s0 = sag(gr, sup, loads)
     spots = [p for p in M.free_spots(boxes, holes) if inside(p, 3.0)]
     pillars, s = [], list(s0)
     while max(s) > M.TARGET_MM and len(pillars) < 60:
@@ -78,7 +107,7 @@ def main():
         if pick is None:
             break
         pillars.append(pick)
-        s = gr.sag(sup + pillars, loads)
+        s = sag(gr, sup + pillars, loads)
     w0 = max(range(len(keys)), key=lambda i: s0[i])
     w1 = max(range(len(keys)), key=lambda i: s[i])
     res = {
@@ -95,7 +124,9 @@ def main():
         "lugares_livres_no_verso": len(spots),
     }
     json.dump(res, open(os.path.join(HERE, "flexao.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
-    M.picture(keys, holes, pillars, s0, s, spots, os.path.join(HERE, "..", "img", "flexao.png"))
+    png = os.path.join(HERE, "..", "img", "flexao.png")
+    M.picture(keys, holes, pillars, s0, s, spots, png)
+    caption(png, len(holes))
     print("so os %d furos: %.3f mm (pior %s); %d pilares propostos -> %.4f mm (pior %s); %d lugares livres"
           % (len(holes), max(s0), keys[w0][0], len(pillars), max(s), keys[w1][0], len(spots)))
 
