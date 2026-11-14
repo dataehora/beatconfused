@@ -1,0 +1,8 @@
+~*.lck
+*-backups/
+.history/
+fp-info-cache
+*.dsn
+*.ses
+*.rpt
+copias/
