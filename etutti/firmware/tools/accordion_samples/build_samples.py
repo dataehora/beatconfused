@@ -34,6 +34,7 @@ SPLICE_S = 0.020      # cross-fade from the start into the steady stretch
 STEADY_FROM_S = 1.0   # where the steady stretch may begin
 LOOP_S = (0.25, 0.40) # allowed loop length
 LOOP_FADE_S = 0.025   # cross-fade that closes the loop
+START_MAX = 1.0      # loudest the start may be, relative to the loop level
 TARGET_RMS = 0.18     # loop level of every sample, full scale = 1
 GUARD = 3             # samples repeated after the loop end for interpolation
 
@@ -86,13 +87,22 @@ def build_one(x, rate, f0):
     data = np.concatenate([x[:a] * gain, join, body])
     loop_start = a + splice
 
+    # The start must not be louder than the held note: where the level before
+    # the loop rises above the loop's own, it is turned down to it. (Matching
+    # the join's level can push an earlier, already loud moment well above it.)
+    win = max(1, int(0.008 * rate))
+    env = np.sqrt(np.convolve(data[:loop_start + win] ** 2, np.ones(win) / win, mode="same"))[:loop_start]
+    trim = np.minimum(1.0, START_MAX * rms(body) / (env + 1e-12))
+    trim = np.convolve(np.pad(trim, win, mode="edge"), np.ones(win) / win, mode="same")[win:-win]
+    data[:loop_start] *= trim
+
     scale = TARGET_RMS / rms(body)
     data = data * scale
     peak = float(np.abs(data).max())
     if peak > 0.98:
         data *= 0.98 / peak
     data = np.concatenate([data, data[loop_start:loop_start + GUARD]])
-    return data, loop_start, dict(loop_err=loop_err, length=length, gain=gain, peak=min(peak, 0.98))
+    return data, loop_start, dict(loop_err=loop_err, length=length, gain=gain, trim=float(trim.min()), peak=min(peak, 0.98))
 
 
 def main():
@@ -125,7 +135,7 @@ def main():
             entries.append(f"  {{ {name}, {n_loop_end}, {loop_start}, {root:.4f}f, {rate}.0f }},")
             total += ints.nbytes
             print(f"{rank:2} key {key:3} f0 {f0:8.2f} len {len(ints):6} loop {rep['length']:5} "
-                  f"err {rep['loop_err']:.3f} attack gain {rep['gain']:.2f} peak {rep['peak']:.2f}")
+                  f"err {rep['loop_err']:.3f} attack gain {rep['gain']:.2f} trim {rep['trim']:.2f} peak {rep['peak']:.2f}")
             # preview: the start, then the loop repeated up to 4 s
             reps = int(4.0 * rate / rep["length"]) + 1
             play = np.concatenate([data[:loop_start]] + [data[loop_start:n_loop_end]] * reps)

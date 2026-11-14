@@ -94,18 +94,18 @@
   /* ------------------------------------------------------------
      ACCORDION REGISTER — one bit per reed set, as in the firmware:
      16' low reed in cassotto, 8' M1 open, 8' M2 in cassotto, 4' piccolo.
-     Named combinations follow the usual accordion register names.
+     The page offers the seven registers below; the reed dots only show
+     which sets the chosen register uses.
      ------------------------------------------------------------ */
   const REED = { low: 1, m1: 2, m2: 4, high: 8 };
   const NAMED_REGISTERS = [
-    { mask: 15, key: "master" },
-    { mask: 6, key: "violin" },
-    { mask: 2, key: "clarinet" },
-    { mask: 3, key: "bandoneon" },
-    { mask: 10, key: "oboe" },
-    { mask: 9, key: "organ" },
-    { mask: 8, key: "piccolo" },
-    { mask: 1, key: "bassoon" },
+    { mask: 1, code: "L", key: "bassoon" },
+    { mask: 3, code: "ML", key: "bandoneon" },
+    { mask: 6, code: "MM", key: "violin" },
+    { mask: 10, code: "MH", key: "oboe" },
+    { mask: 8, code: "H", key: "piccolo" },
+    { mask: 9, code: "LH", key: "organ" },
+    { mask: 2, code: "M", key: "clarinet" },
   ];
   // Name for any mask: M1 and M2 both count as "M" (8').
   function registerNameKey(mask) {
@@ -122,7 +122,7 @@
      instrument: 0 accordion (reed synthesis), 1 piano, 2 bass, 3 guitar
      (recorded samples). "accordion" is the default and what Reset
      restores: dry tuning, register MM (both 8' reeds — they differ only in
-     timbre, open vs cassotto). Jazz is the same reeds tuned slightly wet.
+     timbre, open vs cassotto). The reed tuning slider makes it wet.
      Custom presets will slot into this same shape later.
      ------------------------------------------------------------ */
   const DEFAULT_PRESET = "accordion";
@@ -140,7 +140,6 @@
   const BASE = { ...ACCORDION_DEFAULTS, ...SYNTH_DEFAULTS };
   const PRESETS = {
     accordion: { ...BASE, instrument: 0, ccVolume: 90, ccTone: 110, ccAmbience: 25 },
-    accordionJazz: { ...BASE, instrument: 0, ccReedTuning: 6, ccVolume: 90, ccTone: 100, ccAmbience: 32 },
     piano: { ...BASE, instrument: 1, ccVolume: 100, ccTone: 127, ccAmbience: 30 },
     bass: { ...BASE, instrument: 2, ccVolume: 105, ccTone: 100, ccAmbience: 15 },
     guitar: { ...BASE, instrument: 3, ccVolume: 100, ccTone: 122, ccAmbience: 25 },
@@ -896,10 +895,10 @@
     els.registerDots.forEach((dot) => {
       const on = (registerMask & Number(dot.dataset.reed)) !== 0;
       dot.classList.toggle("is-on", on);
-      dot.setAttribute("aria-pressed", String(on));
     });
     const { code, name } = registerNameKey(registerMask);
-    els.registerCode.textContent = code;
+    const named = NAMED_REGISTERS.find((r) => r.mask === registerMask);
+    els.registerCode.textContent = named ? named.code : code;
     els.registerName.textContent = name ? tr(`register.${name}`, name) : "";
     els.registerPresets.querySelectorAll("[data-mask]").forEach((btn) => {
       btn.classList.toggle("is-active", Number(btn.dataset.mask) === registerMask);
@@ -914,17 +913,18 @@
     refreshPresetState();
   }
 
-  els.registerDots.forEach((dot) => {
-    dot.addEventListener("click", () => setRegister(registerMask ^ Number(dot.dataset.reed)));
-  });
-
-  NAMED_REGISTERS.forEach(({ mask, key }) => {
+  NAMED_REGISTERS.forEach(({ mask, code, key }) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "small-btn register-preset";
     btn.dataset.mask = String(mask);
-    btn.dataset.i18n = `register.${key}`;
-    btn.textContent = tr(`register.${key}`, key);
+    const codeEl = document.createElement("span");
+    codeEl.className = "register-preset-code";
+    codeEl.textContent = code;
+    const nameEl = document.createElement("span");
+    nameEl.dataset.i18n = `register.${key}`;
+    nameEl.textContent = tr(`register.${key}`, key);
+    btn.append(codeEl, nameEl);
     btn.addEventListener("click", () => setRegister(mask));
     els.registerPresets.appendChild(btn);
   });
@@ -1023,8 +1023,8 @@
     } else if (number === CC.instrument) {
       const inst = Math.min(Math.floor(value / 16), SYNTH_INSTRUMENT);
       if (inst === instrument) {
-        // A click without turning: the firmware's default sound (classic
-        // accordion, register MM, dry). Volume, tone and ambience stay.
+        // A click without turning: the firmware's default sound (accordion,
+        // register MM, dry). Volume, tone and ambience stay.
         if (inst !== 0) return;
         registerMask = ACCORDION_DEFAULTS.register;
         const tuning = document.getElementById("ccReedTuning");
@@ -1039,8 +1039,7 @@
         instrument = inst;
         if (webSynth) webSynth.cc(CC.instrument, value);
       }
-      const reedTuning = Number(document.getElementById("ccReedTuning").value);
-      const id = Object.keys(PRESETS).find((key) => PRESETS[key].instrument === instrument && (instrument !== 0 || (key === "accordionJazz") === reedTuning > 0));
+      const id = Object.keys(PRESETS).find((key) => PRESETS[key].instrument === instrument);
       activePreset = id || activePreset;
       save(STORAGE.preset, activePreset);
       els.presetInputs.forEach((radio) => {

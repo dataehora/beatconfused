@@ -566,23 +566,12 @@
   border-radius: 50%;
   border: 2px dashed rgba(47, 34, 24, 0.45);
   background: transparent;
-  cursor: pointer;
-  transition: background 100ms ease, border-color 100ms ease, transform 100ms ease;
-}
-
-.register-dot:hover {
-  transform: scale(1.08);
-  border-color: rgba(47, 34, 24, 0.75);
+  transition: background 100ms ease, border-color 100ms ease;
 }
 
 .register-dot.is-on {
   border: 2px solid #1d1611;
   background: radial-gradient(circle at 35% 30%, #5a4a3d, #1d1611 70%);
-}
-
-.register-dot:focus-visible {
-  outline: 2px solid rgba(163, 86, 34, 0.9);
-  outline-offset: 3px;
 }
 
 .register-dot-high { left: 50%; top: 19%; }
@@ -622,6 +611,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
+}
+
+.register-preset-code {
+  margin-right: 0.45em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .register-preset.is-active {
