@@ -489,7 +489,13 @@ uses the old reed tables (`HAVE_REED_SAMPLES`).
 - Measured on the Teensy 4.0 (8 notes): 12 % CPU in MM, 20 % with all four ranks, 8 audio blocks.
   Flash: 1.44 MB used, 0.59 MB free. Ranks stored at 24 kHz (H at 32 kHz).
 - The library's MM is almost dry (beat under 1 Hz); the tremolo is still CC 27 (`wetCents`).
-- Not done: J has not yet judged the sound by ear; rank balance (`SAMPLED_REED_GAIN`) and loop
+- J judged the sound good (14 Nov). The start of each sample is limited to its held level
+  (`START_MAX` in `build_samples.py`): matching the join's level had made the lowest 8' note start
+  50 % too loud.
+- Page: one "Accordion" instrument (the jazz preset is gone) with seven register buttons in J's
+  order and names: L Bassoon, ML Bandoneon, MM Violin, MH Oboe, H Piccolo, LH Organ, M Clarinet.
+  The reed dots only display the register; the reed tuning slider (CC 27) is still there.
+- Still open: rank balance (`SAMPLED_REED_GAIN`) and loop
   length are first guesses. The browser sound (`websynth.js`) still uses the synthesised reeds.
 
 ## eTutti StudentViaggio (14 Nov 2026) — cheap first prototype, resistive keys
