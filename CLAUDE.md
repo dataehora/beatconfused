@@ -473,6 +473,25 @@ hand tests the knob following.
 '`), so Python edit scripts with escapes go
 through the Write tool into the scratchpad.
 
+## Sampled accordion reeds (14 Nov 2026)
+
+The accordion can play recorded reeds instead of the synthesised tables. `reed_sampler.h`
+(`ReedSampler`, one per voice, four ranks, Catmull-Rom, attack + loop) is in the sketch; the data
+(`reed_samples.cpp/.h`, 1.3 MB) is **gitignored**: it is made from J's licensed Concert Accordion
+library and must never be committed or published. Without those two files the sketch builds and
+uses the old reed tables (`HAVE_REED_SAMPLES`).
+- Tools in `etutti/firmware/tools/accordion_samples/` (CadQuery venv python, numpy + scipy):
+  `make_capture_midi.py` → `capture_notes.mid` (keys 43..79 every 3 semitones; the library sounds
+  its 8' reed an octave above the MIDI key and is silent above key 81); J exports one WAV per rank
+  (L, M, M2, H) from Ableton into `capturas/` (gitignored; Ableton names them
+  `<rank> 1-Engine Player.wav`, rename to `<rank>.wav`); `analyse.py` measures the notes;
+  `build_samples.py` writes the sample data and `capturas/preview/*.wav`.
+- Measured on the Teensy 4.0 (8 notes): 12 % CPU in MM, 20 % with all four ranks, 8 audio blocks.
+  Flash: 1.44 MB used, 0.59 MB free. Ranks stored at 24 kHz (H at 32 kHz).
+- The library's MM is almost dry (beat under 1 Hz); the tremolo is still CC 27 (`wetCents`).
+- Not done: J has not yet judged the sound by ear; rank balance (`SAMPLED_REED_GAIN`) and loop
+  length are first guesses. The browser sound (`websynth.js`) still uses the synthesised reeds.
+
 ## eTutti StudentViaggio (14 Nov 2026) — cheap first prototype, resistive keys
 
 `etutti/hardware/student_viaggio/` = the **Viaggio J1** electronics with the 28 Hall keys swapped
