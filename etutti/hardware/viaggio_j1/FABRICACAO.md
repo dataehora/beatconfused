@@ -11,6 +11,7 @@ Medidas em mm, no referencial do KiCad (x para a direita, y para baixo, isto é,
 | 1 | ajustes pedidos na v2.4 | **feito** (commit f2d50a8) |
 | 2 | conferências: DRC final, placa × firmware 28/28, flexão, alturas | **feito** (commit 7d7f39f) |
 | 3 | fabricação: Gerbers, furação, BOM/CPL, plate, POWER.md, imagens | **feito** (commit do lote 3) |
+| M3b | SPEC v2.5: códigos LCSC, serigrafia, altura do SW403, `fab/` refeito com ENIG | **feito** (branch `viaggio-j1-m3b`, seção M3b no fim) |
 
 Se a sessão cair, a próxima parte do último lote enviado (`git log` da branch) e desta tabela.
 
@@ -234,7 +235,7 @@ A fonte do plate é `kicad/viaggio_j1_plate.kicad_pcb`.
 - 246,5 × 95 mm, cantos R 5.
 - Vias: **1313, todas 0,5 / furo 0,3**. Não há via no pad: a única, a do C304, saiu no lote 1.
 - Trilha mínima: **0,12** (só as 3 da EN_B do U711); o resto ≥ 0,15. Folga mínima 0,1.
-- Acabamento: **ENIG** recomendado (X2SON de 0,5 de passo, QFN de 0,4 do codec, conector M.2 de 0,5). HASL sai mais barato, mas deixa os pads finos menos planos **(decidir)**.
+- Acabamento: **ENIG** (decidido na SPEC v2.5; X2SON de 0,5 de passo, QFN de 0,4 do codec, conector M.2 de 0,5).
 - Máscara: vias tampadas (tented), o padrão da JLC.
 
 ### BOM e CPL
@@ -320,3 +321,128 @@ O resto das peças é o do M1/M2 (`viaggio_micromod/ELETRONICA.md`).
 6. **Acabamento:** ENIG (recomendado pelos pads de 0,4–0,5) ou HASL?
 7. **C307 sem código LCSC:** escolho um 150 nF 0402 com estoque e atualizo o esquema e a placa, junto com o FB301 e o R501, num passo curto antes de encomendar?
 8. **Serigrafia:** a placa ainda diz "SPEC v2.3 passo M2" no texto de cima e de baixo. Troco para "J1 · M3" antes de encomendar? É só texto, mas é uma mudança na placa.
+
+## M3b · últimos códigos e serigrafia (SPEC v2.5)
+
+Atende a **SPEC v2.5**, "Tarefas para o Code (v2.5)", passo M3b, sobre a placa do `main` no commit 4b25bb1 (depois do PR #128). Branch `viaggio-j1-m3b`. Nada foi encomendado nem posto em carrinho.
+
+### Como rodar
+
+```
+python etutti/hardware/viaggio_micromod/pcb/schematic.py          (esquema, ERC, BOM preliminar)
+copiar viaggio_micromod/pcb/kicad/viaggio_micromod_A.kicad_sch e _F.kicad_sch para viaggio_j1/kicad/ (CRLF)
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/m3.py m3b
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/viaggio_j1/m3.py lote3 --sem-plate
+```
+
+O `m3b` sai com erro se a placa não for a do commit 4b25bb1, se um campo já tiver outro valor ou se o DRC piorar.
+
+### O que mudou
+
+**Na placa** (`kicad/viaggio_micromod.kicad_pcb`), 6 linhas em 6 blocos e nada mais:
+
+| Objeto | Campo | Antes | Depois |
+|---|---|---|---|
+| C307 (150 nF, VAG do codec) | LCSC | vazio | **C162182** |
+| FB301 (ferrite do VDDA) | LCSC | vazio | **C1002** |
+| R501 (680 kΩ, SD_MODE) | LCSC | vazio | **C4131** |
+| SW403 (Program) | Altura_mm | 20 | **1.5** (conferir) |
+| texto de cima (F.Silkscreen, em (150; 92)) | texto | "eTutti Viaggio MicroMod - placa principal - SPEC v2.3 passo M2" | **"eTutti Viaggio MicroMod · J1 · SPEC v2.5"** |
+| texto de baixo (B.Silkscreen, em (150; 92), espelhado) | texto | "eTutti Viaggio MicroMod - verso: modulo, chips, sensores TMAG5253" | **"eTutti Viaggio MicroMod · J1 · SPEC v2.5"** |
+
+- **O texto de baixo não dizia "SPEC v2.3 passo M2".** Ele trazia "verso: modulo, chips, sensores TMAG5253". Segui a SPEC ao pé da letra: os dois lados passam a ter o mesmo nome da placa. Se quiserem de volta a descrição do verso, é uma linha (pergunta 2).
+- O texto novo é mais curto: ocupa x 130,6–169,4 e y 91,0–93,0, centrado no mesmo ponto. A borda da placa fica a ~4,5 mm abaixo. O DRC não acusa nada de serigrafia (sem silk_over_copper, silk_edge_clearance ou silk_overlap). O "·" sai na fonte do KiCad (conferido no render `fab/viaggio_j1_top.png`).
+
+**Método de gravação, o mesmo do M3.** O pcbnew muda só os campos e os textos e salva uma cópia. Do arquivo salvo entram no original só os 6 blocos mudados, e o script confere:
+- cada bloco trocado difere do original em **exatamente uma linha**, a do valor novo;
+- os outros **4025 blocos** ficaram idênticos ao original, texto a texto;
+- **2976 objetos** (todas as trilhas, vias e zonas, e a posição, a camada e os pads de cada footprint) foram comparados por uuid com a placa do commit 4b25bb1: **idênticos**. Nenhuma trilha ou via nova, apagada ou mudada; nenhuma peça movida ou girada; as zonas nem foram repreenchidas (texto e campos não mexem no cobre).
+
+O `git diff` da placa mostra só essas 6 linhas.
+
+**No esquema** (`viaggio_micromod/pcb/schematic.py`):
+- C307: LCSC **C162182** (tabela `PASSIVES`, "150nF 0402", status final).
+- FB301: LCSC **C1002**, status final.
+- R501: LCSC **C4131** (tabela `PASSIVES`, "680k 0402", status final).
+- **As folhas que mudaram são a F (C307, FB301) e a A (R501), não a E.** A SPEC falava da folha E, mas nenhuma dessas peças está nela. A folha E regenerada ficou igual à do J1 (só a quebra de linha difere, CRLF no Git). Copiei para `viaggio_j1/kicad/` só a F e a A. Diferença de cada uma: só as linhas `(property "LCSC" ...)` (2 na F, 1 na A). As outras folhas (raiz, P, E, I, T) foram comparadas com as do J1: iguais.
+- `bom_preliminar.csv` regenerado: só as 3 linhas dessas peças mudam (código, status final; o preço do C307 passou de 0,003 para 0,013).
+- **ERC do esquema do J1: 0 erros, 0 avisos.** O `schematic.py` também: ERC 0/0 e netlist igual à declarada.
+- **Paridade:** antes de gravar a placa, a paridade dava 3 (os 3 campos LCSC novos do esquema, que a placa ainda não tinha). Depois: **0**.
+
+**No `viaggio_micromod/pcb/build_board.py`:** na tabela `HEIGHT_MM` (vale o primeiro prefixo que casa), "SW403" passou para antes de "SW40". Antes o SW403 casava "SW40" e ficava com 20 mm. O script não foi rodado (ele recria a placa do zero).
+
+**No `m3.py`:**
+- subcomando novo `m3b` (o que está acima);
+- `lote3 --sem-plate`: refaz Gerbers, BOM/CPL e renders da placa e deixa o plate como está;
+- o BOM agora **para com erro** se alguma peça montada pela JLC estiver sem código LCSC e fora do Global Sourcing. Saiu o remendo do M3 que punha os códigos do FB301 e do R501 só no BOM (`LCSC_FIX` ficou vazio): agora eles vêm da placa;
+- os parâmetros do pedido ficam em `ORDER` e vão para o `m3.json` (`m3b_fab.pedido`): 4 camadas, 1,2 mm, JLC04121H-7628, **acabamento ENIG**, vias tampadas, vias 0,5/0,3, trilha mínima 0,12, folga mínima 0,1. O script confere a espessura e o número de camadas da placa contra eles.
+
+### C307: a peça escolhida
+
+| | |
+|---|---|
+| Peça | **Murata GRM155R71C154KA12D**, 150 nF ±10 %, **16 V, X7R**, 0402 |
+| Código LCSC / JLCPCB | **C162182** |
+| Classe na JLCPCB | **estendida** (não há 150 nF 0402 entre as básicas) |
+| Estoque na LCSC | **31 850** unidades, lido em **28 out 2026** (API de produto da LCSC) |
+| Preço LCSC | 0,0135 US$ (50+) a 0,0074 US$ (50 000+) |
+| Página | [LCSC C162182](https://www.lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Murata-Electronics_C162182.html) · [JLCPCB C162182](https://jlcpcb.com/partdetail/C162182) |
+| Datasheet | [LCSC, C162182.pdf](https://www.lcsc.com/datasheet/C162182.pdf) |
+
+- **Básica não há:** procurei 150 nF 0402 X7R nas listas de básicas da JLC e nas alternativas da LCSC. As básicas de 0402 nessa faixa são 100 nF (C1525) e 220 nF (C16772). Trocar o valor mudaria o VAG, que segue a Audio Board (0,15 µF), e a SPEC pede 150 nF.
+- A Samsung CL05B154KO5NNNC, sugerida no M3, está **obsoleta** (Digi-Key) e não aparece na LCSC.
+- **Alternativas na LCSC (mesma peça, 0402 X7R), estoque lido em 28 out 2026**, para o caso de o estoque do C162182 acabar até o M4:
+  - CCTC TCC0402X7R154K160AT, 16 V: **C7393865**, 179 400 unidades (estendida);
+  - YAGEO CC0402KRX7R7BB154, 16 V: **C505466**, 26 400 unidades;
+  - Murata GCM155R71C154KE02D, 16 V (automotiva): C161164, 5 050 unidades;
+  - TDK CGA2B3X7R1E154KT000F, 25 V: C46617467, 8 340 unidades.
+- Escolhi a Murata (e não a CCTC, com mais estoque) por ser o fabricante de referência e por ter estoque de sobra para 5 placas. A estendida custa a taxa de carregador de mais um tipo de peça.
+
+Os outros dois códigos, conferidos em 28 out 2026:
+- FB301: **C1002**, Sunlord GZ1608D601TF, 600 Ω @ 100 MHz, 200 mA, 0603 ([JLCPCB C1002](https://jlcpcb.com/partdetail/Sunlord-GZ1608D601TF/C1002), [datasheet](https://datasheet.lcsc.com/lcsc/2310301640_Sunlord-GZ1608D601TF_C1002.pdf)).
+- R501: **C4131**, UNI-ROYAL 0402WGF6803TCE, 680 kΩ 1 %, 0402; **estendida** na JLC (o M3 não dizia); 78 400 unidades na LCSC ([LCSC C4131](https://www.lcsc.com/product-detail/C4131.html)).
+
+### `fab/` refeito
+
+`m3.py lote3 --sem-plate`:
+
+| Arquivo | O que mudou |
+|---|---|
+| `viaggio_j1_gerbers.zip` | **só as duas serigrafias** (`F_Silkscreen.gto`, `B_Silkscreen.gbo`). Cobre (4 camadas), máscara, pasta, contorno e furação conferidos arquivo a arquivo com os do M3: iguais, salvo a data de criação |
+| `viaggio_j1_bom.csv` | só a linha do C307: agora `150nF, C307, C_0402_1005Metric, C162182`. **Nenhuma peça sem código**, salvo as duas de Global Sourcing (28 × TMAG5253 e H101). 42 linhas, 140 peças |
+| `viaggio_j1_cpl.csv` | **igual** ao do M3 (nada se moveu) |
+| `viaggio_j1_fora_da_montagem.csv` | igual |
+| `viaggio_j1_top.png`, `viaggio_j1_bottom.png` | refeitos, olhados: o texto novo aparece nos dois lados |
+| plate (`viaggio_j1_plate_gerbers.zip`, `viaggio_j1_plate_top.png`, `kicad/viaggio_j1_plate.kicad_pcb`) | **não refeitos**: nada no plate mudou |
+
+O `POWER.md` não muda: nenhuma peça ou rede de energia mudou.
+
+### DRC final
+
+`kicad-cli pcb drc --schematic-parity --severity-all` (`build/drc_m3_m3b.json`, fora do Git):
+
+| Tipo | Base (4b25bb1, com o esquema novo) | M3b |
+|---|---|---|
+| clearance, shorting_items, hole_clearance, hole_to_hole, copper_edge_clearance, furos, anéis, máscara, pátios | 0 | **0** |
+| serigrafia (silk_over_copper, silk_edge_clearance, silk_overlap) | 0 | **0** |
+| ligações não feitas | 0 | **0** |
+| paridade com o esquema | 3 (os 3 campos LCSC) | **0** |
+| track_width | 3 | **3**, as mesmas da EN_B no U711 (mesmos uuids do DRC final do M3; aceitas na v2.5) |
+
+ERC do esquema do J1 (`build/erc_m3b.json`): **0**.
+
+### Itens (conferir) para o M4
+
+1. **Rotações e posições do CPL** na prévia da JLC, peça a peça, sobretudo J101, H101, J301, D401, J202, SW403, J201 e os 28 TMAG5253 (pino 1).
+2. **Estoque** na hora do pedido: C162182 (C307; alternativas acima), TMAG5253 e H101 (Global Sourcing), e as estendidas em geral.
+3. **Custo** do Global Sourcing (frete e manuseio) e do ENIG na cotação.
+4. **Alturas:** módulo montado ~6–6,5 abaixo da placa; J202 6,0; espaçador 2,5; Gateron 11,6; jack 5,1; SW403 1,5.
+5. **Flexão:** o modelo ignora o plate; os 6 pilares do case (P1–P6) são requisito do design.
+6. **Plate:** forma e furos M2 com o design (o plate ainda tem o contorno do Pocket).
+7. **Consumo** (`POWER.md`): nada medido nesta placa.
+
+## Perguntas para a gestão (M3b)
+
+1. **C307:** escolhi a Murata GRM155R71C154KA12D (C162182, 16 V X7R, estendida, 31 850 em estoque na LCSC em 28 out 2026). Não há 150 nF 0402 básica. Serve, ou preferem a CCTC C7393865 (179 400 em estoque) por segurança de estoque?
+2. **Texto do verso:** ele não dizia "SPEC v2.3 passo M2", e sim "verso: modulo, chips, sensores TMAG5253". Pus o mesmo nome da placa nos dois lados, como a SPEC pede. Fica assim, ou o verso volta a ter a descrição depois do nome?
+3. **Folha do esquema:** as três peças estão nas folhas F e A, não na E. Copiei para o J1 só essas duas. Confirmam que a SPEC queria dizer essas?

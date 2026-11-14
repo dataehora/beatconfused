@@ -17,6 +17,13 @@ lote1  the adjustments of SPEC v2.4 (lot 1), on the board of BASE_COMMIT (main a
       via of its own (the In2 line VOL_B, HP_L on F.Cu and I2S_BCLK on B.Cu close every other side).
    5. zones refilled, DRC: no new violation, 0 unconnected, parity 0.
 
+lote2  checks (final DRC, board x firmware, heights).
+lote3  fabrication files in fab/ (`lote3 --sem-plate` keeps the plate's files as they are).
+m3b    step M3b of SPEC v2.5 on the board of commit 4b25bb1: LCSC fields of C307 / FB301 / R501,
+       Altura_mm of SW403 (20 -> 1.5) and the two board-name silkscreen texts. Only those 6 blocks are
+       rewritten (each in exactly one line); tracks, vias, zones and footprint positions are checked
+       identical by uuid. Then run `lote3 --sem-plate`.
+
 Same writing method as energia.py (PR #120/#123/#126): the board is saved by pcbnew to a
 temporary file and only the new tracks / vias / footprint, the removed tracks / vias, the changed
 footprints and the refilled zones are spliced into the original text; every other block is
@@ -579,9 +586,13 @@ FAB = os.path.join(HERE, "fab")
 PLATE_PCB = os.path.join(HERE, "kicad", "viaggio_j1_plate.kicad_pcb")
 POCKET_PLATE_DXF = os.path.join(REPO, "etutti", "hardware", "pocket", "case", "out", "plate.dxf")
 GERBER_LAYERS = "F.Cu,In1.Cu,In2.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,F.Mask,B.Mask,Edge.Cuts"
-# LCSC codes the schematic still lacks (read on lcsc.com / jlcpcb.com, 28 Oct 2026)
-LCSC_FIX = {"FB301": ("C1002", "Sunlord GZ1608D601TF, 600 ohm @ 100 MHz, 200 mA"),
-            "R501": ("C4131", "UNI-ROYAL 0402WGF6803TCE, 680 kohm 1 %")}
+# LCSC codes the schematic lacked at M3. Since M3b (SPEC v2.5) the schematic and the board carry them
+# (FB301 C1002, R501 C4131, C307 C162182), so nothing is patched here any more.
+LCSC_FIX = {}
+# order parameters of the board, recorded with the fab files (nothing is ordered)
+ORDER = {"camadas": 4, "espessura_mm": 1.2, "empilhamento": "JLC04121H-7628", "acabamento": "ENIG",
+         "acabamento_decidido": "SPEC v2.5 (decisao do J)", "mascara": "verde, vias tampadas (tented)",
+         "vias_mm": "0,5 / furo 0,3", "trilha_minima_mm": 0.12, "folga_minima_mm": 0.1}
 # parts JLC does not place (fitted at home or no part at all)
 NOT_ASSEMBLED = ("Gateron", "MountingHole", "TestPoint", "SolderWire")
 # rotation offsets of JLC's part models against KiCad's library (the table of the kicad-jlcpcb-tools
@@ -637,8 +648,8 @@ def bom_cpl(b):
             lcsc, note = LCSC_FIX[ref]
         gs = "Global Sourcing" in mont
         comment = fp.GetValue() + (" [GLOBAL SOURCING JLCPCB, sem codigo LCSC]" if gs else "")
-        if ref == "C307":
-            comment += " [sem codigo LCSC: escolher (ex. Samsung CL05B154KO5NNNC, 16 V X7R)]"
+        if not lcsc and not gs:
+            raise SystemExit("BOM: %s (%s) sem codigo LCSC e fora do Global Sourcing" % (ref, fp.GetValue()))
         key = (comment, name, lcsc)
         groups.setdefault(key, []).append(ref)
         rot, corr = jlc_rotation(fp)
@@ -788,27 +799,154 @@ def renders(board, base, sides=("top", "bottom")):
     return out
 
 
-def lote3():
+def lote3(plate=True):
+    """plate=False (M3b: `lote3 --sem-plate`) keeps the plate's files in fab/ as they are."""
     os.makedirs(FAB, exist_ok=True)
     m = load_manifest()
     b = pcbnew.LoadBoard(BOARD)
     ds = b.GetDesignSettings()
     rec = {"espessura_mm": round(TOMM(ds.GetBoardThickness()), 2), "camadas_cobre": b.GetCopperLayerCount()}
+    if rec["espessura_mm"] != ORDER["espessura_mm"] or rec["camadas_cobre"] != ORDER["camadas"]:
+        raise SystemExit("placa: %s, pedido: %s" % (rec, ORDER))
+    rec["pedido"] = dict(ORDER)
     z, files = gerbers(BOARD, "viaggio_j1", GERBER_LAYERS)
     rec["gerbers"] = {"zip": os.path.basename(z), "arquivos": files}
     rec.update(bom_cpl(b))
-    rec["plate"] = build_plate(b)
-    zp, pf = gerbers(PLATE_PCB, "viaggio_j1_plate", "F.Cu,B.Cu,F.Silkscreen,F.Mask,B.Mask,Edge.Cuts")
-    rec["plate"]["zip"] = os.path.basename(zp)
-    rec["imagens"] = renders(BOARD, "viaggio_j1") + renders(PLATE_PCB, "viaggio_j1_plate", ("top",))
+    if plate:
+        rec["plate"] = build_plate(b)
+        zp, pf = gerbers(PLATE_PCB, "viaggio_j1_plate", "F.Cu,B.Cu,F.Silkscreen,F.Mask,B.Mask,Edge.Cuts")
+        rec["plate"]["zip"] = os.path.basename(zp)
+        rec["imagens"] = renders(BOARD, "viaggio_j1") + renders(PLATE_PCB, "viaggio_j1_plate", ("top",))
+    else:
+        rec["plate"] = dict(m.get("lote3", {}).get("plate", {}), refeito=False)
+        rec["imagens"] = renders(BOARD, "viaggio_j1") + ["viaggio_j1_plate_top.png (do M3, nao refeita)"]
     vias = [t for t in b.GetTracks() if t.GetClass() == "PCB_VIA"]
     rec["vias"] = {"total": len(vias), "diametros": sorted({round(TOMM(v.GetWidth(pcbnew.F_Cu)), 3) for v in vias}),
                    "furos": sorted({round(TOMM(v.GetDrillValue()), 3) for v in vias})}
     widths = sorted({round(TOMM(t.GetWidth()), 3) for t in b.GetTracks() if t.GetClass() == "PCB_TRACK"})
     rec["trilha_minima_mm"] = widths[0]
-    m["lote3"] = rec
+    m["lote3" if plate else "m3b_fab"] = rec
     write_manifest(m)
     print(json.dumps(rec, indent=1, ensure_ascii=False)[:3000])
+
+
+# ====================================================================== M3b (SPEC v2.5): codes, silkscreen, height
+# Only footprint fields and two silkscreen texts change: no track, via, zone, position or rotation.
+M3B_LCSC = {"C307": "C162182", "FB301": "C1002", "R501": "C4131"}
+M3B_HEIGHT = {"SW403": ("20", "1.5")}
+M3B_TEXT = {"987abc19-c76d-45dc-b04a-e14d4ec2f892": ("eTutti Viaggio MicroMod - placa principal - SPEC v2.3 passo M2",
+                                                      "F.Silkscreen"),
+            "947ad9bc-a10a-4ca2-805c-82892b2b0dd6": ("eTutti Viaggio MicroMod - verso: modulo, chips, sensores TMAG5253",
+                                                      "B.Silkscreen")}
+M3B_NEW_TEXT = "eTutti Viaggio MicroMod · J1 · SPEC v2.5"
+M3B_BASE = "4b25bb1"
+
+
+def m3b():
+    kind, buid = rr.kind, rr.block_uuid
+    original = open(BOARD, encoding="utf-8", newline="").read()
+    base = subprocess.run(["git", "show", "%s:%s" % (M3B_BASE, BOARD_REL)], cwd=REPO, check=True,
+                          capture_output=True).stdout.decode("utf-8")
+    if base.replace("\r\n", "\n") != original.replace("\r\n", "\n"):
+        raise SystemExit("m3b: a placa nao e a do commit %s" % M3B_BASE)
+    _d0, v0, u0, p0 = drc("m3b_base")
+    print("base:", v0, "nao roteadas", u0, "paridade", p0)
+    b = pcbnew.LoadBoard(BOARD)
+    changed, log = {}, []
+    for ref, code in M3B_LCSC.items():
+        fp = b.FindFootprintByReference(ref)
+        old = fp.GetFieldText("LCSC")
+        if old:
+            raise SystemExit("%s: LCSC ja e %s" % (ref, old))
+        fp.GetField("LCSC").SetText(code)
+        changed[fp.m_Uuid.AsString()] = ref
+        log.append({"ref": ref, "campo": "LCSC", "de": old, "para": code})
+    for ref, (old, new) in M3B_HEIGHT.items():
+        fp = b.FindFootprintByReference(ref)
+        if fp.GetFieldText("Altura_mm") != old:
+            raise SystemExit("%s: Altura_mm %s, esperado %s" % (ref, fp.GetFieldText("Altura_mm"), old))
+        fp.GetField("Altura_mm").SetText(new)
+        changed[fp.m_Uuid.AsString()] = ref
+        log.append({"ref": ref, "campo": "Altura_mm", "de": old, "para": new})
+    texts = {}
+    for d in b.GetDrawings():
+        u = d.m_Uuid.AsString()
+        if u in M3B_TEXT:
+            old, layer = M3B_TEXT[u]
+            if d.GetClass() != "PCB_TEXT" or d.GetText() != old or b.GetLayerName(d.GetLayer()) != layer:
+                raise SystemExit("texto %s: %r em %s" % (u, d.GetText(), b.GetLayerName(d.GetLayer())))
+            d.SetText(M3B_NEW_TEXT)
+            texts[u] = layer
+            log.append({"texto": layer, "uuid": u, "de": old, "para": M3B_NEW_TEXT})
+    if len(texts) != 2:
+        raise SystemExit("m3b: %d textos achados" % len(texts))
+    tmp = os.path.join(BUILD, "m3b_tmp.kicad_pcb")
+    pcbnew.SaveBoard(tmp, b)
+    for f in os.listdir(BUILD):
+        if f.startswith("m3b_tmp") and not f.endswith(".kicad_pcb"):
+            os.remove(os.path.join(BUILD, f))
+    new = open(tmp, encoding="utf-8", newline="").read()
+    os.remove(tmp)
+    if "\r\n" in original and "\r\n" not in new:
+        new = new.replace("\n", "\r\n")
+    _h, b_new, _t = rr.top_blocks(new)
+    h_old, b_old, t_old = rr.top_blocks(original)
+    want = set(changed) | set(texts)
+    repl = {buid(x): x for x in b_new if kind(x) in ("footprint", "gr_text") and buid(x) in want}
+    if set(repl) != want:
+        raise SystemExit("m3b: blocos achados na copia %d/%d" % (len(repl), len(want)))
+    out, diffs = [], {}
+    for blk in b_old:
+        u = buid(blk) if kind(blk) in ("footprint", "gr_text") else None
+        if u in want:
+            # the replacement may differ from the original only in the lines carrying the new values
+            lo, ln = blk.splitlines(), repl[u].splitlines()
+            if len(lo) != len(ln):
+                raise SystemExit("m3b: %s mudou de tamanho (%d -> %d linhas)" % (u, len(lo), len(ln)))
+            dl = [(a.strip(), c.strip()) for a, c in zip(lo, ln) if a != c]
+            diffs[changed.get(u, texts.get(u))] = dl
+            out.append(repl[u])
+        else:
+            out.append(blk)
+    for who, dl in diffs.items():
+        if len(dl) != 1:
+            raise SystemExit("m3b: %s mudou em %d linhas: %s" % (who, len(dl), dl))
+    text = h_old + "".join(out) + t_old
+    _h2, b_chk, _t2 = rr.top_blocks(text)
+    same = [x for x in b_chk if not ((kind(x) in ("footprint", "gr_text")) and buid(x) in want)]
+    same_old = [x for x in b_old if not ((kind(x) in ("footprint", "gr_text")) and buid(x) in want)]
+    if same != same_old or len(b_chk) != len(b_old):
+        raise SystemExit("m3b: blocos nao mudados diferem")
+    # tracks, vias, zones and footprint positions compared by uuid with the base board
+    def geo(blocks):
+        g = {}
+        for x in blocks:
+            k = kind(x)
+            if k in ("segment", "via", "arc", "zone"):
+                g[buid(x)] = x
+            elif k == "footprint":
+                at = _re.search(r"\n\t\t\(at [^)]*\)", x)
+                lay = _re.search(r'\n\t\t\(layer "[^"]*"\)', x)
+                pads = _re.findall(r'\(pad "[^"]*" [^\n]*\n\t+\(at [^)]*\)', x)
+                g[buid(x)] = (at.group(0) if at else None, lay.group(0) if lay else None, tuple(pads))
+        return g
+    g_old, g_new = geo(b_old), geo(b_chk)
+    if g_old != g_new:
+        bad = [u for u in g_old if g_old[u] != g_new.get(u)]
+        raise SystemExit("m3b: cobre ou posicao mudou: %s" % bad[:5])
+    open(BOARD, "w", encoding="utf-8", newline="").write(text)
+    d, v, u, p = drc("m3b")
+    print("M3b:", v, "nao roteadas", u, "paridade", p)
+    hard = {k: n for k, n in v.items() if k != "track_width"}
+    m = load_manifest()
+    m["m3b"] = {"base_commit": M3B_BASE, "drc_base": {"violacoes": v0, "nao_roteadas": u0, "paridade": p0},
+                "drc": {"violacoes": v, "nao_roteadas": u, "paridade": p}, "mudancas": log,
+                "linhas_mudadas": {k: [list(x) for x in dl] for k, dl in diffs.items()},
+                "gravacao": {"blocos_trocados": len(want), "blocos_identicos": len(same_old),
+                             "trilhas_vias_zonas_posicoes_iguais": len(g_old)}}
+    write_manifest(m)
+    if hard or u or p or v.get("track_width", 0) != 3:
+        raise SystemExit("m3b: DRC falhou (%s, %d nao roteadas, paridade %d)" % (v, u, p))
 
 
 FOTOS_L1 = {"energia": (55.0, 3.0, 78.0, 14.0, 50.0), "c304": (17.5, 32.0, 24.0, 39.0, 100.0)}
@@ -830,6 +968,8 @@ if __name__ == "__main__":
     elif arg == "lote2":
         lote2()
     elif arg == "lote3":
-        lote3()
+        lote3(plate="--sem-plate" not in sys.argv)
+    elif arg == "m3b":
+        m3b()
     else:
         raise SystemExit(__doc__)

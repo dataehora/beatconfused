@@ -97,8 +97,10 @@ POWER_PADS = ["J201", "U202", "U204", "J202", "U501", "J101"]    # E1, E3, E4, E
 PLACE_P1 = (27.5, 18.0)
 
 # heights above the board, mm (datasheets / KiCad 3D models; (conferir) in ELETRONICA.md)
-HEIGHT_MM = [("J101", 4.2), ("H101", 2.5), ("SW40", 20.0), ("J201", 3.3), ("J301", 5.1), ("J202", 6.0),
-             ("J501", 0.0), ("TP", 0.0), ("SW403", 1.5), ("SW", 11.6), ("H", 0.0), ("L201", 2.0), ("D401", 0.6),
+# first match wins: "SW403" (the Program button, TS-1187A) must come before "SW40" (the encoders); until
+# the M3b fix it came after and SW403 got 20 mm
+HEIGHT_MM = [("J101", 4.2), ("H101", 2.5), ("SW403", 1.5), ("SW40", 20.0), ("J201", 3.3), ("J301", 5.1),
+             ("J202", 6.0), ("J501", 0.0), ("TP", 0.0), ("SW", 11.6), ("H", 0.0), ("L201", 2.0), ("D401", 0.6),
              ("C_0805", 1.45), ("C_0603", 0.95), ("C_0402", 0.55), ("R_0402", 0.4), ("L_0603", 0.95),
              ("SOT-23", 1.45), ("SOD-123F", 1.1), ("QFN", 1.0), ("TQFN", 0.8), ("VQFN", 1.0), ("DRC0010J", 1.0),
              ("TSSOP", 1.2), ("X2SON", 0.4)]

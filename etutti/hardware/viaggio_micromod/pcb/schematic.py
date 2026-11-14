@@ -280,7 +280,8 @@ PASSIVES = {
     ("C", "100nF", "0402"): ("C1525", "basica", 0.001, "final"),
     ("C", "10nF", "0402"): ("C15195", "basica", 0.001, "final"),
     ("C", "220nF", "0402"): ("C16772", "basica", 0.002, "conferir"),
-    ("C", "150nF", "0402"): ("", "estendida", 0.003, "conferir"),
+    # M3b (SPEC v2.5): no basic 150 nF 0402 exists; Murata GRM155R71C154KA12D, 16 V X7R (LCSC 31850 in stock, 28 Oct 2026)
+    ("C", "150nF", "0402"): ("C162182", "estendida", 0.0135, "final"),
     ("C", "1uF", "0402"): ("C52923", "basica", 0.002, "final"),
     ("C", "2.2uF", "0402"): ("C12530", "basica", 0.003, "conferir"),
     ("C", "4.7uF", "0603"): ("C19666", "basica", 0.004, "final"),
@@ -301,7 +302,7 @@ PASSIVES = {
     ("R", "5.1k", "0402"): ("C25905", "basica", 0.001, "final"),
     ("R", "10k", "0402"): ("C25744", "basica", 0.001, "final"),
     ("R", "100k", "0402"): ("C25741", "basica", 0.001, "final"),
-    ("R", "680k", "0402"): ("", "estendida", 0.002, "conferir"),
+    ("R", "680k", "0402"): ("C4131", "estendida", 0.002, "final"),   # UNI-ROYAL 0402WGF6803TCE (M3b)
     ("R", "1M", "0402"): ("C26083", "basica", 0.001, "final"),
     ("R", "2.2M", "0402"): ("", "estendida", 0.002, "conferir"),
 }
@@ -517,7 +518,8 @@ part("U301", sym("SGTL5000XNLA3", "Audio"), "SGTL5000XNLA3",
      note="como a Audio Board Rev D2 (endereco I2C fixo 0x0A); sem entrada de linha/microfone",
      datasheet="https://www.pjrc.com/teensy/SGTL5000.pdf")
 part("FB301", sym("FerriteBead_Small", "Device"), "600R@100MHz", {"1": "+3V3", "2": "SGTL_VDDA"}, "F1",
-     fp=FP["0603L"], lcsc="", cls="basica", price=0.005, note="Audio Board: Ferrite 600 no VDDA", rot=90)
+     fp=FP["0603L"], lcsc="C1002", cls="basica", price=0.005, status="final",   # Sunlord GZ1608D601TF (M3b)
+     note="Audio Board: Ferrite 600 no VDDA", rot=90)
 C("C301", "2.2uF", "SGTL_VDDA", "GND", "F1")
 C("C302", "100nF", "SGTL_VDDA", "GND", "F1")
 C("C303", "2.2uF", "+3V3", "GND", "F1", note="VDDIO")

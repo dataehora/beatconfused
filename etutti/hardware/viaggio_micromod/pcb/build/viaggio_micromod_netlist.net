@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\viaggio_micromod\\pcb\\kicad\\viaggio_micromod.kicad_sch")
-		(date "2026-10-28T02:26:49")
+		(date "2026-10-28T09:06:30")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -4742,8 +4742,7 @@
 				(field
 					(name "Codigo") "F1")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C162182")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -4765,7 +4764,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C162182")
 			)
 			(property
 				(name "Montagem")
@@ -4887,8 +4886,7 @@
 				(field
 					(name "Codigo") "F1")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C1002")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -4910,7 +4908,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C1002")
 			)
 			(property
 				(name "Montagem")
@@ -6278,8 +6276,7 @@
 				(field
 					(name "Codigo") "A1")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C4131")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -6301,7 +6298,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C4131")
 			)
 			(property
 				(name "Montagem")

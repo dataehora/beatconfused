@@ -15093,7 +15093,7 @@
 				)
 			)
 		)
-		(property "Altura_mm" "20"
+		(property "Altura_mm" "1.5"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -16642,7 +16642,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C162182"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -18924,7 +18924,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C1002"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -35710,7 +35710,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C4131"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -58443,7 +58443,7 @@
 			)
 		)
 	)
-	(gr_text "eTutti Viaggio MicroMod - placa principal - SPEC v2.3 passo M2"
+	(gr_text "eTutti Viaggio MicroMod · J1 · SPEC v2.5"
 		(at 150 92 0)
 		(layer "F.SilkS")
 		(uuid "987abc19-c76d-45dc-b04a-e14d4ec2f892")
@@ -58922,7 +58922,7 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "eTutti Viaggio MicroMod - verso: modulo, chips, sensores TMAG5253"
+	(gr_text "eTutti Viaggio MicroMod · J1 · SPEC v2.5"
 		(at 150 92 0)
 		(layer "B.SilkS")
 		(uuid "947ad9bc-a10a-4ca2-805c-82892b2b0dd6")
