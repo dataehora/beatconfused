@@ -1,84 +1,84 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 100" width="1080" height="500">
 <rect width="216" height="100" fill="#fff"/>
-<polygon points="2.50,2.50 195.00,2.50 212.50,58.00 212.50,70.00 203.00,97.50 2.50,97.50" fill="#e8efe8" stroke="#234" stroke-width="0.4"/>
+<polygon points="2.50,2.50 195.00,2.50 212.50,59.50 212.50,71.50 203.00,97.50 2.50,97.50" fill="#e8efe8" stroke="#234" stroke-width="0.4"/>
 <rect x="2.5" y="2.5" width="75.5" height="95" fill="#c9d6e8" opacity="0.5"/>
 <text x="6" y="94" font-size="3.2" fill="#234">bloco da Viaggio J1 (x &lt;= 78)</text>
-<circle cx="78.03" cy="82.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="78.03" y="83.00" font-size="3" text-anchor="middle">K01</text>
-<circle cx="97.08" cy="82.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="97.08" y="83.00" font-size="3" text-anchor="middle">K02</text>
-<circle cx="116.12" cy="82.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="116.12" y="83.00" font-size="3" text-anchor="middle">K03</text>
-<circle cx="135.18" cy="82.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="135.18" y="83.00" font-size="3" text-anchor="middle">K04</text>
-<circle cx="154.22" cy="82.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="154.22" y="83.00" font-size="3" text-anchor="middle">K05</text>
-<circle cx="173.28" cy="82.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="173.28" y="83.00" font-size="3" text-anchor="middle">K06</text>
-<circle cx="192.32" cy="82.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="192.32" y="83.00" font-size="3" text-anchor="middle">K07</text>
-<circle cx="68.50" cy="64.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="68.50" y="65.00" font-size="3" text-anchor="middle">K08</text>
-<circle cx="87.55" cy="64.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="87.55" y="65.00" font-size="3" text-anchor="middle">K09</text>
-<circle cx="106.60" cy="64.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="106.60" y="65.00" font-size="3" text-anchor="middle">K10</text>
-<circle cx="125.65" cy="64.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="125.65" y="65.00" font-size="3" text-anchor="middle">K11</text>
-<circle cx="144.70" cy="64.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="144.70" y="65.00" font-size="3" text-anchor="middle">K12</text>
-<circle cx="163.75" cy="64.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="163.75" y="65.00" font-size="3" text-anchor="middle">K13</text>
-<circle cx="182.80" cy="64.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="182.80" y="65.00" font-size="3" text-anchor="middle">K14</text>
-<circle cx="201.85" cy="64.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="201.85" y="65.00" font-size="3" text-anchor="middle">K15</text>
-<circle cx="78.03" cy="46.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="78.03" y="47.00" font-size="3" text-anchor="middle">K16</text>
-<circle cx="97.08" cy="46.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="97.08" y="47.00" font-size="3" text-anchor="middle">K17</text>
-<circle cx="116.12" cy="46.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="116.12" y="47.00" font-size="3" text-anchor="middle">K18</text>
-<circle cx="135.18" cy="46.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="135.18" y="47.00" font-size="3" text-anchor="middle">K19</text>
-<circle cx="154.22" cy="46.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="154.22" y="47.00" font-size="3" text-anchor="middle">K20</text>
-<circle cx="173.28" cy="46.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="173.28" y="47.00" font-size="3" text-anchor="middle">K21</text>
-<circle cx="192.32" cy="46.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="192.32" y="47.00" font-size="3" text-anchor="middle">K22</text>
-<circle cx="87.55" cy="28.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="87.55" y="29.00" font-size="3" text-anchor="middle">K23</text>
-<circle cx="106.60" cy="28.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="106.60" y="29.00" font-size="3" text-anchor="middle">K24</text>
-<circle cx="125.65" cy="28.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="125.65" y="29.00" font-size="3" text-anchor="middle">K25</text>
-<circle cx="144.70" cy="28.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="144.70" y="29.00" font-size="3" text-anchor="middle">K26</text>
-<circle cx="163.75" cy="28.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="163.75" y="29.00" font-size="3" text-anchor="middle">K27</text>
-<circle cx="182.80" cy="28.00" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
-<text x="182.80" y="29.00" font-size="3" text-anchor="middle">K28</text>
+<circle cx="78.03" cy="83.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="78.03" y="84.50" font-size="3" text-anchor="middle">K01</text>
+<circle cx="97.08" cy="83.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="97.08" y="84.50" font-size="3" text-anchor="middle">K02</text>
+<circle cx="116.12" cy="83.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="116.12" y="84.50" font-size="3" text-anchor="middle">K03</text>
+<circle cx="135.18" cy="83.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="135.18" y="84.50" font-size="3" text-anchor="middle">K04</text>
+<circle cx="154.22" cy="83.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="154.22" y="84.50" font-size="3" text-anchor="middle">K05</text>
+<circle cx="173.28" cy="83.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="173.28" y="84.50" font-size="3" text-anchor="middle">K06</text>
+<circle cx="192.32" cy="83.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="192.32" y="84.50" font-size="3" text-anchor="middle">K07</text>
+<circle cx="68.50" cy="65.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="68.50" y="66.50" font-size="3" text-anchor="middle">K08</text>
+<circle cx="87.55" cy="65.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="87.55" y="66.50" font-size="3" text-anchor="middle">K09</text>
+<circle cx="106.60" cy="65.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="106.60" y="66.50" font-size="3" text-anchor="middle">K10</text>
+<circle cx="125.65" cy="65.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="125.65" y="66.50" font-size="3" text-anchor="middle">K11</text>
+<circle cx="144.70" cy="65.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="144.70" y="66.50" font-size="3" text-anchor="middle">K12</text>
+<circle cx="163.75" cy="65.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="163.75" y="66.50" font-size="3" text-anchor="middle">K13</text>
+<circle cx="182.80" cy="65.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="182.80" y="66.50" font-size="3" text-anchor="middle">K14</text>
+<circle cx="201.85" cy="65.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="201.85" y="66.50" font-size="3" text-anchor="middle">K15</text>
+<circle cx="78.03" cy="47.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="78.03" y="48.50" font-size="3" text-anchor="middle">K16</text>
+<circle cx="97.08" cy="47.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="97.08" y="48.50" font-size="3" text-anchor="middle">K17</text>
+<circle cx="116.12" cy="47.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="116.12" y="48.50" font-size="3" text-anchor="middle">K18</text>
+<circle cx="135.18" cy="47.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="135.18" y="48.50" font-size="3" text-anchor="middle">K19</text>
+<circle cx="154.22" cy="47.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="154.22" y="48.50" font-size="3" text-anchor="middle">K20</text>
+<circle cx="173.28" cy="47.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="173.28" y="48.50" font-size="3" text-anchor="middle">K21</text>
+<circle cx="192.32" cy="47.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="192.32" y="48.50" font-size="3" text-anchor="middle">K22</text>
+<circle cx="87.55" cy="29.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="87.55" y="30.50" font-size="3" text-anchor="middle">K23</text>
+<circle cx="106.60" cy="29.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="106.60" y="30.50" font-size="3" text-anchor="middle">K24</text>
+<circle cx="125.65" cy="29.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="125.65" y="30.50" font-size="3" text-anchor="middle">K25</text>
+<circle cx="144.70" cy="29.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="144.70" y="30.50" font-size="3" text-anchor="middle">K26</text>
+<circle cx="163.75" cy="29.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="163.75" y="30.50" font-size="3" text-anchor="middle">K27</text>
+<circle cx="182.80" cy="29.50" r="7.3" fill="#f2d24a" stroke="#654" stroke-width="0.3"/>
+<text x="182.80" y="30.50" font-size="3" text-anchor="middle">K28</text>
 <circle cx="88.00" cy="6.50" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
 <text x="89.60" y="7.40" font-size="2.4" fill="#c00">H1</text>
-<circle cx="74.00" cy="93.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
-<text x="75.60" y="93.90" font-size="2.4" fill="#c00">H2</text>
+<circle cx="72.50" cy="94.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
+<text x="74.10" y="94.90" font-size="2.4" fill="#c00">H2</text>
 <circle cx="6.00" cy="60.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
 <text x="7.60" y="60.90" font-size="2.4" fill="#c00">H3</text>
 <circle cx="55.00" cy="63.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
 <text x="56.60" y="63.90" font-size="2.4" fill="#c00">H4</text>
-<circle cx="106.60" cy="40.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
-<text x="108.20" y="40.90" font-size="2.4" fill="#c00">H5</text>
-<circle cx="163.75" cy="40.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
-<text x="165.35" y="40.90" font-size="2.4" fill="#c00">H6</text>
-<circle cx="116.12" cy="70.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
-<text x="117.72" y="70.90" font-size="2.4" fill="#c00">H7</text>
-<circle cx="173.28" cy="70.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
-<text x="174.88" y="70.90" font-size="2.4" fill="#c00">H8</text>
-<circle cx="206.50" cy="50.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
-<text x="208.10" y="50.90" font-size="2.4" fill="#c00">H9</text>
-<circle cx="197.00" cy="92.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
-<text x="198.60" y="92.90" font-size="2.4" fill="#c00">H10</text>
-<circle cx="125.65" cy="93.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
-<text x="127.25" y="93.90" font-size="2.4" fill="#c00">H11</text>
+<circle cx="106.60" cy="41.50" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
+<text x="108.20" y="42.40" font-size="2.4" fill="#c00">H5</text>
+<circle cx="163.75" cy="41.50" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
+<text x="165.35" y="42.40" font-size="2.4" fill="#c00">H6</text>
+<circle cx="116.12" cy="71.50" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
+<text x="117.72" y="72.40" font-size="2.4" fill="#c00">H7</text>
+<circle cx="173.28" cy="71.50" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
+<text x="174.88" y="72.40" font-size="2.4" fill="#c00">H8</text>
+<circle cx="206.50" cy="51.50" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
+<text x="208.10" y="52.40" font-size="2.4" fill="#c00">H9</text>
+<circle cx="197.00" cy="94.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
+<text x="198.60" y="94.90" font-size="2.4" fill="#c00">H10</text>
+<circle cx="125.65" cy="94.00" r="1.1" fill="#fff" stroke="#c00" stroke-width="0.4"/>
+<text x="127.25" y="94.90" font-size="2.4" fill="#c00">H11</text>
 </svg>

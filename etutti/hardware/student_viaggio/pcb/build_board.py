@@ -419,30 +419,36 @@ def main():
     chk = rr.Checker(rr.Ctx(b))
     keep_vias = set()
     tx0, tx1, ty = FPS.COMB_TAB
+    def tab_hits(c, sgn):
+        """Copper of another net where the GND tab would go (it pokes out of the key circle)."""
+        ta, te = (c[0] + sgn * tx0, c[1] + sgn * ty), (c[0] + sgn * tx1, c[1] + sgn * ty)
+        hits = []
+        for t in b.GetTracks():
+            if t.GetNetname() == "GND":
+                continue
+            if is_via(t):
+                if dist_seg(xy(t.GetPosition()), ta, te) < 0.25 + 0.25 + 0.15:
+                    hits.append(t)
+            elif t.GetLayer() == pcbnew.F_Cu and min(
+                    dist_seg(xy(t.GetStart()), ta, te), dist_seg(xy(t.GetEnd()), ta, te),
+                    dist_seg(ta, xy(t.GetStart()), xy(t.GetEnd())), dist_seg(te, xy(t.GetStart()), xy(t.GetEnd()))
+            ) < 0.25 + TOMM(t.GetWidth()) / 2 + 0.15:
+                hits.append(t)
+        return hits
+
     for n, k in keys.items():
         for rot, sgn in ((0, 1), (180, -1)):
             q = (k["c"][0] + sgn * FPS.COMB_VIA[0], k["c"][1] + sgn * FPS.COMB_VIA[1])
-            if chk.via_ok(V(*q), k["net"]):
+            if chk.via_ok(V(*q), k["net"]) and not tab_hits(k["c"], sgn):
                 break
         else:
-            raise SystemExit("key %d: the signal via fits on neither side" % n)
+            raise SystemExit("key %d: the electrode fits neither way (signal via or GND tab on other copper)" % n)
         v = new_via(b, q, k["net"])
         keep_vias.add(v.m_Uuid.AsString())
         k["via"], k["rot"] = q, rot
-        ta = (k["c"][0] + sgn * tx0, k["c"][1] + sgn * ty)       # the GND tab pokes out of the key circle
-        te = (k["c"][0] + sgn * tx1, k["c"][1] + sgn * ty)
-        for t in list(b.GetTracks()):
-            if is_via(t):
-                hit = dist_seg(xy(t.GetPosition()), ta, te) < 0.25 + 0.25 + 0.15 and t.GetNetname() != "GND"
-            else:
-                hit = t.GetLayer() == pcbnew.F_Cu and t.GetNetname() != "GND" and min(
-                    dist_seg(xy(t.GetStart()), ta, te), dist_seg(xy(t.GetEnd()), ta, te),
-                    dist_seg(ta, xy(t.GetStart()), xy(t.GetEnd())), dist_seg(te, xy(t.GetStart()), xy(t.GetEnd()))
-                ) < 0.25 + TOMM(t.GetWidth()) / 2 + 0.15
-            if hit:
-                rm(b, t)
-                touched.add(t.GetNetname())
-                cnt["cobre no caminho da aba de GND"] += 1
+    power = sorted(t for t in touched if rr.klass(t) == "Corrente")
+    if power:
+        raise SystemExit("a power net lost copper (%s): move the keys or holes instead" % power)
     pr = prune(b, sorted((touched | set(PLANES)) - key_nets), centres, keep_vias, old_pts)
     report["removido"].update(cnt)
     report["removido"]["tocos podados"] = dict(pr)
@@ -496,10 +502,10 @@ def main():
             rm(b, d)
         elif t.startswith("eTutti Viaggio MicroMod - placa principal"):
             d.SetText(TITLE)
-            d.SetPosition(V(160.0, 94.5))
+            d.SetPosition(V(161.0, 95.2))
         elif t.startswith("eTutti Viaggio MicroMod - verso"):
             d.SetText("eTutti StudentViaggio v0.2 - verso: modulo, chips")
-            d.SetPosition(V(160.0, 94.5))
+            d.SetPosition(V(161.0, 95.2))
     tb = b.GetTitleBlock()
     tb.SetTitle("eTutti StudentViaggio · placa principal")
     tb.SetRevision("v0.2")
@@ -519,7 +525,7 @@ def main():
         q = xy(pads[0].GetPosition())
         return math.hypot(q[0] - k["via"][0], q[1] - k["via"][1])
     sig = sorted((touched - set(PLANES) - key_nets) | {"MUX_L_COM", "MUX_R_COM"}) + \
-        [k["net"] for k in sorted(keys.values(), key=run)]
+        [k["net"] for k in sorted(keys.values(), key=run, reverse=True)]       # the longest runs first
     for net in sig:
         if len(rr.clusters(b, net)) > 1:
             before = len(made)
@@ -539,7 +545,7 @@ def main():
     report["falhas"] = fails
 
     # ---- stubs KiCad still calls dangling (shorter than the via or track they end in): take them out
-    for _pass in range(5):
+    for _pass in range(10):
         d = save_and_drc(b, original)
         loose = [x for x in d.get("violations", []) if x["type"] in ("track_dangling", "via_dangling")]
         if not loose:

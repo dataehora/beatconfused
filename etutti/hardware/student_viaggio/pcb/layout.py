@@ -9,9 +9,9 @@ Where it comes from:
     with the two multiplexers are the Viaggio J1's, at the J1's coordinates, routing included;
   * the keyboard is the studentBK draft's: 19.05 x 18.0 mm pitch, rows of 6 / 7 / 8 / 7 keys,
     the 8-key row the widest, and a board that ends in a point on the right;
-  * the keys start as far left as the J1 block allows: the first key circle clears the F.Cu
-    lines that run down x = 60..61 (I2S to the speaker amplifier) and the top row clears the
-    F.Cu mux lines that run along y <= 20.5.
+  * the keys start as far left as the J1 block allows: the first key circle clears the VSYS
+    track that runs down x = 60..61 to the speaker amplifier, and the top row clears the mux
+    lines and their vias, which reach y = 21.6.
 
 Coordinates are the J1 board's (KiCad frame, mm, y down): the board's top-left corner is
 (2.5, 2.5), as on the J1.
@@ -24,7 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 PITCH_X, PITCH_Y = 19.05, 18.0
 KEY_X0 = 68.5                   # centre of the first key of the 8-key row
-ROW_Y = {4: 28.0, 3: 46.0, 2: 64.0, 1: 82.0}       # row 4 at the back (top), row 1 nearest the player
+ROW_Y = {4: 29.5, 3: 47.5, 2: 65.5, 1: 83.5}       # row 4 at the back (top), row 1 nearest the player
 ROW_OFF = {4: 1.0, 3: 0.5, 2: 0.0, 1: 0.5}          # in pitches, from KEY_X0
 ROW_KEYS = {1: range(1, 8), 2: range(8, 16), 3: range(16, 23), 4: range(23, 29)}   # K01..K28 (Pocket order)
 KEY_R = 7.3                     # electrode courtyard radius
@@ -32,16 +32,16 @@ KEY_R = 7.3                     # electrode courtyard radius
 LEFT, TOP, BOTTOM = 2.5, 2.5, 97.5
 CORNER_R = 5.0
 RIGHT = 212.5                   # the tip
-TIP_Y = (58.0, 70.0)            # flat part of the tip, centred on the 8-key row
+TIP_Y = (59.5, 71.5)            # flat part of the tip, centred on the 8-key row
 TOP_END, BOTTOM_END = 195.0, 203.0      # where the top / bottom edges turn towards the tip
 
 # M2 holes (2.2 mm, as on the J1). H1-H4 stay where the J1 has them; H5-H8 move into the new
 # key grid (each sits 11.2-12 mm from its three nearest key centres); H9-H11 are new.
 HOLES = {
-    "H1": (88.0, 6.5), "H2": (74.0, 93.0), "H3": (6.0, 60.0), "H4": (55.0, 63.0),
-    "H5": (KEY_X0 + 2.0 * PITCH_X, 40.0), "H6": (KEY_X0 + 5.0 * PITCH_X, 40.0),
-    "H7": (KEY_X0 + 2.5 * PITCH_X, 70.0), "H8": (KEY_X0 + 5.5 * PITCH_X, 70.0),
-    "H9": (206.5, 50.0), "H10": (197.0, 92.0), "H11": (KEY_X0 + 3.0 * PITCH_X, 93.0),
+    "H1": (88.0, 6.5), "H2": (72.5, 94.0), "H3": (6.0, 60.0), "H4": (55.0, 63.0),
+    "H5": (KEY_X0 + 2.0 * PITCH_X, 41.5), "H6": (KEY_X0 + 5.0 * PITCH_X, 41.5),
+    "H7": (KEY_X0 + 2.5 * PITCH_X, 71.5), "H8": (KEY_X0 + 5.5 * PITCH_X, 71.5),
+    "H9": (206.5, 51.5), "H10": (197.0, 94.0), "H11": (KEY_X0 + 3.0 * PITCH_X, 94.0),
 }
 
 
