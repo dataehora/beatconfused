@@ -1,24 +1,25 @@
-"""eTutti StudentViaggio -- make the board from the routed Viaggio J1 board.
+"""eTutti StudentViaggio v0.2 -- make the compact board from the routed Viaggio J1 board.
 
-    python etutti/hardware/student_viaggio/pcb/schematic.py          (first: schematic + footprints)
+    python etutti/hardware/student_viaggio/pcb/layout.py             (outline, key centres, holes)
+    python etutti/hardware/student_viaggio/pcb/schematic.py          (schematic + footprints)
     "C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/student_viaggio/pcb/build_board.py
 
-The J1 board (viaggio_j1/kicad/viaggio_micromod.kicad_pcb) is read, never written. Everything
-outside the keys stays as J routed it and as step M3 left it: placement, tracks, vias, zones,
-rules. What this script changes:
+The J1 board (viaggio_j1/kicad/viaggio_micromod.kicad_pcb) is read, never written. Its left block
+(MicroMod, power, codec, encoders, connectors: x <= 78 mm) and the two multiplexers stay where
+they are, with their routing. What this script changes:
 
   1. removes the 28 Gateron switches, the 28 TMAG5253 and their capacitors, the three sensor
-     power gates (U603-U605, C603) and the tracks of EN_A, EN_B, NS3 and SENS_EN;
-  2. clears the top copper where the 28 key electrodes go: F.Cu tracks and foreign vias inside
-     6.8 mm of a key centre, then every stub left hanging (GND / +3V3 stubs only in the key areas);
-  3. puts a FSR_Comb_D12 electrode (K01-K28) on each key centre; its signal hub sits on the via
-     the J1 routing already brings up there (two keys had none: a via is added on the old sensor
-     pad), so the 28 OUT_Kxx routes are kept;
-  4. adds R601 / R602 (10 k, +3V3 to each mux common) on the back, next to the muxes;
-  5. routes what steps 2-4 left open with the J1 router (viaggio_j1/rota_restante.py: 3-layer
-     grid A*, every new segment and via checked with pcbnew's exact shapes), refills the zones;
-  6. runs KiCad's DRC with schematic parity. Exits non-zero on anything but the 3 track_width
-     errors the J1 board already has.
+     power gates and every track of EN_A, EN_B, NS3, SENS_EN and of the 28 OUT_Kxx nets;
+  2. draws the outline of layout.json (210 x 95 mm, pointed on the right), removes what is
+     left outside it, moves the M2 holes H5-H8 and adds H9-H11 (with their keep-out squares);
+  3. clears the top copper where the 28 electrodes go (F.Cu tracks and vias inside the key
+     circles), then every stub left hanging;
+  4. puts a signal via and a FSR_Comb_D12 electrode (K01-K28) on each key centre of
+     layout.json; the electrode is turned 180 deg when the via does not fit on its right;
+  5. adds R601 / R602 (10 k, +3V3 to each mux common) on the back, next to the muxes;
+  6. routes the 28 key nets and what steps 2-5 left open with the J1 router
+     (viaggio_j1/rota_restante.py), refills the zones;
+  7. runs KiCad's DRC with schematic parity. Exits non-zero on any violation.
 
 Writes pcb/kicad/student_viaggio.kicad_pcb (+ .kicad_pro and .kicad_dru copied from the J1) and
 build/student_viaggio_drc.json, build/student_viaggio_board.json (what was done, key by key).
@@ -51,7 +52,8 @@ J1_BOARD = os.path.join(J1, "kicad", "viaggio_micromod.kicad_pcb")
 KICAD_CLI = "C:/Program Files/KiCad/10.0/bin/kicad-cli.exe"
 PRETTY = os.path.join(KDIR, FPS.LIB + ".pretty")
 NS = uuid.UUID("3b8e6f0c-2d4a-4f61-8c7e-5a9d1e2f4b22")      # schematic.py's namespace
-TITLE = "eTutti StudentViaggio v0.1 - teclas resistivas (placa derivada da Viaggio J1)"
+TITLE = "eTutti StudentViaggio v0.2 - teclas resistivas"
+LAYOUT = json.load(open(os.path.join(HERE, "layout.json"), encoding="utf-8"))
 
 MM, TOMM = pcbnew.FromMM, pcbnew.ToMM
 CLEAR_R = 6.8           # F.Cu tracks nearer than this to a key centre are taken out
@@ -94,9 +96,26 @@ def is_via(t):
     return t.GetClass() == "PCB_VIA"
 
 
-def in_hub(rel):
-    x0, y0, x1, y1 = FPS.COMB_HUB
-    return x0 + 0.3 <= rel[0] <= x1 - 0.3 and y0 + 0.3 <= rel[1] <= y1 - 0.3
+def inside_board(p, margin):
+    """Inside the outline polygon of layout.json, at least `margin` from its edges."""
+    poly = LAYOUT["poligono"]
+    n, c = len(poly), False
+    for i in range(n):
+        (x1, y1), (x2, y2) = poly[i], poly[(i + 1) % n]
+        if (y1 > p[1]) != (y2 > p[1]) and p[0] < (x2 - x1) * (p[1] - y1) / (y2 - y1) + x1:
+            c = not c
+    return c and all(dist_seg(p, poly[i], poly[(i + 1) % n]) >= margin for i in range(n))
+
+
+def new_via(b, p, net):
+    v = pcbnew.PCB_VIA(b)
+    v.SetPosition(V(*p))
+    v.SetWidth(pcbnew.F_Cu, MM(rr.VIA_D))
+    v.SetDrill(MM(rr.VIA_DRILL))
+    v.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
+    v.SetNet(b.FindNet(net))
+    b.Add(v)
+    return v
 
 
 # ---------------------------------------------------------------------------- schematic
@@ -288,22 +307,21 @@ def main():
     sch_fields, sch_nets = schematic()
     report = {"teclas": {}, "removido": {}, "roteado": [], "falhas": []}
 
-    # ---- 1. the J1 keys
+    # ---- 1. the J1 keys go
     keys = {}
     for n in range(1, 29):
-        sw = b.FindFootprintByReference("SW%d" % n)
         u = b.FindFootprintByReference("U7%02d" % n)
-        c = xy(sw.GetPosition())
         out = u.FindPadByNumber("4")
-        if out.GetNetname() != "OUT_K%02d" % n or xy(u.GetPosition()) != c:
+        if out.GetNetname() != "OUT_K%02d" % n:
             raise SystemExit("key %d on the J1 board is not as expected" % n)
-        keys[n] = {"c": c, "net": out.GetNetname(), "pad4": xy(out.GetPosition()), "value": None}
+        k = LAYOUT["teclas"]["K%02d" % n]
+        keys[n] = {"c": (k["x"], k["y"]), "net": out.GetNetname()}
     sheet_path = "/" + b.FindFootprintByReference("U601").GetPath().AsString().strip("/").split("/")[0]
     if b.FindFootprintByReference("U601").GetPath().AsString() != "%s/%s" % (sheet_path, uid("sym", "U601", 1)):
         raise SystemExit("the J1 board's symbol uuids are not schematic.py's")
     gates = [b.FindFootprintByReference(r) for r in ("U603", "U604", "U605", "C603")]
-    gate_pts = [xy(g.GetPosition()) for g in gates]
     drop = gates + [b.FindFootprintByReference(p % n) for n in range(1, 29) for p in ("SW%d", "U7%02d", "C7%02d")]
+    old_pts = [xy(fp.GetPosition()) for fp in drop]
     touched = {p.GetNetname() for fp in drop for p in fp.Pads() if p.GetNetname() and p.GetNetname() not in DEAD}
     for fp in drop:
         rm(b, fp)
@@ -317,71 +335,118 @@ def main():
             b.Add(net)
             p.SetNet(net)
     centres = [k["c"] for k in keys.values()]
-
-    # ---- 2. clear the copper under the electrodes
+    key_nets = {k["net"] for k in keys.values()}
     cnt = collections.Counter()
-    keep_vias = set()
+    for t in list(b.GetTracks()):
+        if t.GetNetname() in DEAD or t.GetNetname() in key_nets:
+            rm(b, t)
+            cnt["trilhas e vias das teclas e dos sensores da J1"] += 1
+
+    # ---- 2. outline, holes, silkscreen guides
+    for d in list(b.GetDrawings()):
+        if d.GetClass() == "PCB_SHAPE" and d.GetLayer() in (pcbnew.Edge_Cuts, pcbnew.F_SilkS, pcbnew.B_SilkS):
+            rm(b, d)        # the J1 outline and its dashed case / sector guides
+    for seg in LAYOUT["contorno"]:
+        sh = pcbnew.PCB_SHAPE(b)
+        if seg[0] == "line":
+            sh.SetShape(pcbnew.SHAPE_T_SEGMENT)
+            sh.SetStart(V(seg[1], seg[2]))
+            sh.SetEnd(V(seg[3], seg[4]))
+        else:
+            sh.SetShape(pcbnew.SHAPE_T_ARC)
+            sh.SetArcGeometry(V(seg[1], seg[2]), V(seg[3], seg[4]), V(seg[5], seg[6]))
+        sh.SetLayer(pcbnew.Edge_Cuts)
+        sh.SetWidth(MM(0.1))
+        b.Add(sh)
+    for t in list(b.GetTracks()):
+        pts = [xy(t.GetPosition())] if is_via(t) else [xy(t.GetStart()), xy(t.GetEnd())]
+        if not all(inside_board(q, 0.6) for q in pts):
+            rm(b, t)
+            touched.add(t.GetNetname())
+            cnt["trilhas e vias fora do contorno novo"] += 1
+    rule = {z.GetZoneName(): z for z in b.Zones() if z.GetIsRuleArea()}
+    h1 = b.FindFootprintByReference("H1")
+    h1c = xy(h1.GetPosition())
+    hole_boxes = []
+    for ref, (hx, hy) in LAYOUT["furos"].items():
+        fp = b.FindFootprintByReference(ref)
+        if fp is None:
+            fp = pcbnew.Cast_to_FOOTPRINT(h1.Duplicate(False))
+            fp.SetReference(ref)
+            b.Add(fp)
+            fp.SetPosition(V(*h1c))
+            z = pcbnew.Cast_to_ZONE(rule["M2 H1"].Duplicate(False))
+            z.SetZoneName("M2 " + ref)
+            b.Add(z)
+            rule["M2 " + ref] = z
+            report.setdefault("furos_novos", []).append(ref)
+        old = xy(fp.GetPosition())
+        if abs(old[0] - hx) > 0.001 or abs(old[1] - hy) > 0.001:
+            fp.SetPosition(V(hx, hy))
+            rule["M2 " + ref].Move(V(hx - old[0], hy - old[1]))
+            hole_boxes.append((hx - 3.5, hy - 3.5, hx + 3.5, hy + 3.5))
+            report.setdefault("furos_movidos", []).append(ref)
+    for t in list(b.GetTracks()):       # nothing under a hole's keep-out square
+        pts = [xy(t.GetPosition())] if is_via(t) else [xy(t.GetStart()), xy(t.GetEnd())]
+        r = TOMM(t.GetWidth(pcbnew.F_Cu) if is_via(t) else t.GetWidth()) / 2 + 0.05
+        for x0, y0, x1, y1 in hole_boxes:
+            box = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+            hit = any(x0 - r < q[0] < x1 + r and y0 - r < q[1] < y1 + r for q in pts) or (
+                not is_via(t) and any(dist_seg(c, pts[0], pts[1]) < r for c in box))
+            if hit:
+                rm(b, t)
+                touched.add(t.GetNetname())
+                cnt["trilhas e vias sob os furos novos"] += 1
+                break
+
+    # ---- 3. clear the copper under the electrodes
     for t in list(b.GetTracks()):
         net = t.GetNetname()
-        if net in DEAD:
-            rm(b, t)
-            cnt["trilhas e vias de EN_A/EN_B/NS3/SENS_EN"] += 1
-            continue
         if is_via(t):
-            p = xy(t.GetPosition())
-            for n, k in keys.items():
-                d = math.hypot(p[0] - k["c"][0], p[1] - k["c"][1])
-                if d >= VIA_R:
-                    continue
-                if net == k["net"] and in_hub((p[0] - k["c"][0], p[1] - k["c"][1])):
-                    keep_vias.add(t.m_Uuid.AsString())
-                    k["via"] = p
-                else:
-                    rm(b, t)
-                    touched.add(net)
-                    cnt["vias de %s nas teclas" % (net if net in PLANES else "sinal")] += 1
-                break
+            q = xy(t.GetPosition())
+            if any(math.hypot(q[0] - c[0], q[1] - c[1]) < VIA_R for c in centres):
+                rm(b, t)
+                touched.add(net)
+                cnt["vias de %s nas teclas" % (net if net in PLANES else "sinal")] += 1
         elif t.GetLayer() == pcbnew.F_Cu:
             a, e = xy(t.GetStart()), xy(t.GetEnd())
             if any(dist_seg(c, a, e) < CLEAR_R + TOMM(t.GetWidth()) / 2 for c in centres):
                 rm(b, t)
                 touched.add(net)
                 cnt["trilhas F.Cu nas teclas"] += 1
-    # keys whose route never came up to the top: a via on the old sensor pad, where the B.Cu track ends
+
+    # ---- 4. signal vias and electrodes (turned 180 deg when the via does not fit on the right)
     chk = rr.Checker(rr.Ctx(b))
+    keep_vias = set()
+    tx0, tx1, ty = FPS.COMB_TAB
     for n, k in keys.items():
-        if "via" in k:
-            continue
-        cands = [k["pad4"]] + [(k["c"][0] + dx / 10.0, k["c"][1] + dy / 10.0)
-                               for dx in range(-10, 7) for dy in range(-15, -4)]
-        for p in cands:
-            if in_hub((p[0] - k["c"][0], p[1] - k["c"][1])) and chk.via_ok(V(*p), k["net"]):
-                v = pcbnew.PCB_VIA(b)
-                v.SetPosition(V(*p))
-                v.SetWidth(pcbnew.F_Cu, MM(rr.VIA_D))
-                v.SetDrill(MM(rr.VIA_DRILL))
-                v.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
-                v.SetNet(b.FindNet(k["net"]))
-                b.Add(v)
-                keep_vias.add(v.m_Uuid.AsString())
-                k["via"] = p
-                k["via_nova"] = True
-                if p != k["pad4"]:      # a short B.Cu link from the old pad to the via; the router checks it below
-                    s = pcbnew.PCB_TRACK(b)
-                    s.SetStart(V(*k["pad4"]))
-                    s.SetEnd(V(*p))
-                    s.SetWidth(MM(0.2))
-                    s.SetLayer(pcbnew.B_Cu)
-                    s.SetNet(b.FindNet(k["net"]))
-                    b.Add(s)
+        for rot, sgn in ((0, 1), (180, -1)):
+            q = (k["c"][0] + sgn * FPS.COMB_VIA[0], k["c"][1] + sgn * FPS.COMB_VIA[1])
+            if chk.via_ok(V(*q), k["net"]):
                 break
         else:
-            raise SystemExit("key %d: no place for the signal via in the hub" % n)
-    pr = prune(b, sorted(touched | {k["net"] for k in keys.values()} | set(PLANES)), centres, keep_vias, gate_pts)
+            raise SystemExit("key %d: the signal via fits on neither side" % n)
+        v = new_via(b, q, k["net"])
+        keep_vias.add(v.m_Uuid.AsString())
+        k["via"], k["rot"] = q, rot
+        ta = (k["c"][0] + sgn * tx0, k["c"][1] + sgn * ty)       # the GND tab pokes out of the key circle
+        te = (k["c"][0] + sgn * tx1, k["c"][1] + sgn * ty)
+        for t in list(b.GetTracks()):
+            if is_via(t):
+                hit = dist_seg(xy(t.GetPosition()), ta, te) < 0.25 + 0.25 + 0.15 and t.GetNetname() != "GND"
+            else:
+                hit = t.GetLayer() == pcbnew.F_Cu and t.GetNetname() != "GND" and min(
+                    dist_seg(xy(t.GetStart()), ta, te), dist_seg(xy(t.GetEnd()), ta, te),
+                    dist_seg(ta, xy(t.GetStart()), xy(t.GetEnd())), dist_seg(te, xy(t.GetStart()), xy(t.GetEnd()))
+                ) < 0.25 + TOMM(t.GetWidth()) / 2 + 0.15
+            if hit:
+                rm(b, t)
+                touched.add(t.GetNetname())
+                cnt["cobre no caminho da aba de GND"] += 1
+    pr = prune(b, sorted((touched | set(PLANES)) - key_nets), centres, keep_vias, old_pts)
     report["removido"].update(cnt)
     report["removido"]["tocos podados"] = dict(pr)
 
-    # ---- 3. the electrodes
     notes = {}
     import csv
     for row in csv.DictReader(open(os.path.join(HERE, "..", "..", "pocket", "pcb", "build", "pocket_keys.csv"))):
@@ -392,16 +457,15 @@ def main():
         fp.SetFPID(pcbnew.LIB_ID(FPS.LIB, FPS.COMB_NAME))
         b.Add(fp)
         fp.SetPosition(V(*k["c"]))
+        fp.SetOrientationDegrees(k["rot"])
         note, row = notes[n]
         fp.SetValue("tecla %s" % note)
         link(fp, "K%02d" % n, sheet_path, sch_fields)
         fp.Reference().SetVisible(False)
         for p in fp.Pads():
             p.SetNet(gnd if p.GetNumber() == "1" else b.FindNet(k["net"]))
-        rel = (k["via"][0] - k["c"][0], k["via"][1] - k["c"][1])
         report["teclas"]["K%02d" % n] = {"nota": note, "centro": [round(v, 3) for v in k["c"]], "rede": k["net"],
-                                         "via_no_miolo": [round(v, 3) for v in rel],
-                                         "via": "nova" if k.get("via_nova") else "da J1"}
+                                         "giro": k["rot"]}
 
     # ---- 4. the two reference resistors
     card = [z for z in b.Zones() if z.GetZoneName() == "cartao_MicroMod"]
@@ -428,15 +492,17 @@ def main():
         if d.GetClass() != "PCB_TEXT":
             continue
         t = d.GetText()
-        if t in ("T4", "T3"):
+        if t in ("T4", "T3", "area do logo"):
             rm(b, d)
         elif t.startswith("eTutti Viaggio MicroMod - placa principal"):
             d.SetText(TITLE)
+            d.SetPosition(V(160.0, 94.5))
         elif t.startswith("eTutti Viaggio MicroMod - verso"):
-            d.SetText("eTutti StudentViaggio v0.1 - verso: modulo, chips")
+            d.SetText("eTutti StudentViaggio v0.2 - verso: modulo, chips")
+            d.SetPosition(V(160.0, 94.5))
     tb = b.GetTitleBlock()
     tb.SetTitle("eTutti StudentViaggio · placa principal")
-    tb.SetRevision("v0.1")
+    tb.SetRevision("v0.2")
     tb.SetDate("2026-11-14")
 
     # ---- 5. route what is open
@@ -448,7 +514,12 @@ def main():
     ctx = rr.Ctx(b)
     chk = rr.Checker(ctx)
     made, log, fails = [], [], []
-    sig = sorted((touched - set(PLANES)) | {k["net"] for k in keys.values()} | {"MUX_L_COM", "MUX_R_COM"})
+    def run(k):
+        pads = [p for p in b.GetPads() if p.GetNetname() == k["net"] and p.GetParentFootprint().GetReference()[0] == "U"]
+        q = xy(pads[0].GetPosition())
+        return math.hypot(q[0] - k["via"][0], q[1] - k["via"][1])
+    sig = sorted((touched - set(PLANES) - key_nets) | {"MUX_L_COM", "MUX_R_COM"}) + \
+        [k["net"] for k in sorted(keys.values(), key=run)]
     for net in sig:
         if len(rr.clusters(b, net)) > 1:
             before = len(made)
@@ -500,14 +571,12 @@ def main():
     json.dump(report, open(os.path.join(BUILD, NAME + "_board.json"), "w", encoding="utf-8"), indent=1,
               ensure_ascii=False)
     print("removido:", report["removido"])
-    print("vias novas no miolo:", [k for k, v in report["teclas"].items() if v["via"] == "nova"])
+    print("pentes girados 180:", [k for k, v in report["teclas"].items() if v["giro"]])
     print("R601:", report["R601"], " R602:", report["R602"])
     print("roteado:", report["roteado"])
     print("falhas:", fails)
     print("DRC:", summ)
-    errors = sum(1 for x in d.get("violations", []) if x["severity"] == "error" and x["type"] != "track_width")
-    tw = sum(1 for x in d.get("violations", []) if x["type"] == "track_width")
-    bad = errors or tw > 3 or d.get("unconnected_items") or d.get("schematic_parity") or fails
+    bad = d.get("violations") or d.get("unconnected_items") or d.get("schematic_parity") or fails
     sys.exit(1 if bad else 0)
 
 

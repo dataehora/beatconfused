@@ -192,20 +192,19 @@ def led():
 
 # ---------------------------------------------------------------- resistive key (FSR comb)
 # Interdigitated electrode under a pressure-sensitive sheet (shunt-mode FSR). Pad 1 = common
-# (GND, left arc + 7 fingers), pad 2 = signal (right arc + fingers + the hub). All bare ENIG.
-# The hub is where the key's signal via comes up from the back: on the Viaggio J1 board the
-# vias of the 28 OUT_Kxx nets sit within x -1.0..0.6, y -1.45..-0.5 of each key centre, so the
-# J1 routing is kept as it is.
+# (GND: left arc + 6 fingers), pad 2 = signal (right arc + 7 fingers). All bare ENIG.
+# v0.2: symmetric about the horizontal axis, a signal finger through the centre (where the
+# button presses) and the signal via on a boss of the right arc, away from the centre.
 COMB_NAME = "FSR_Comb_D12"
 COMB_R = 6.0            # radius of the two arcs (centre line)
 COMB_W = 0.3            # finger and arc width
 COMB_PITCH = 0.8        # finger pitch (gap 0.5)
-COMB_HUB = (-1.4, -1.825, 5.9, -0.125)      # signal bar x0, y0, x1, y1
-COMB_SIG_Y = [-4.175, -2.575, 0.625, 2.225, 3.825]
-COMB_GND_Y = [-4.975, -3.375, -1.775, -0.175, 1.425, 3.025, 4.625]
+COMB_SIG_Y = [-4.8, -3.2, -1.6, 0.0, 1.6, 3.2, 4.8]
+COMB_GND_Y = [-4.0, -2.4, -0.8, 0.8, 2.4, 4.0]
 COMB_KEEPOUT_R = 6.5    # no copper pour, no tracks on F.Cu inside
-COMB_TAB = (-7.3, -5.9, -0.175)             # GND tab x0, x1, y: reaches the F.Cu GND pour
-COMB_VIA = (-0.25, -0.775)                  # where the old sensor's OUT pad was (B.Cu)
+COMB_TAB = (-7.3, -5.9, 0.0)                # GND tab x0, x1, y: reaches the F.Cu GND pour
+COMB_VIA = (6.0, 0.0)                       # signal via, in the boss on the right arc
+COMB_BOSS_D = 1.0
 
 
 def _chord(y):
@@ -219,21 +218,20 @@ def _tip_gap(y):
 
 
 def comb_shapes():
-    """[(pad, 'rect'|'oval', cx, cy, w, h, angle_deg, exposed)] in footprint coordinates (y down)."""
+    """[(pad, 'rect'|'oval'|'circle', cx, cy, w, h, angle_deg, exposed)] in footprint coordinates (y down)."""
     out = []
-    hx0, hy0, hx1, hy1 = COMB_HUB
     for y in COMB_GND_Y:
         x0 = -_chord(y)
         x1 = _chord(y) - _tip_gap(y)
-        if hy0 - 0.5 - COMB_W / 2 < y < hy1 + 0.5 + COMB_W / 2:
-            x1 = hx0 - 0.5
+        if abs(y) < 1.0:        # the two fingers next to the boss stop a little earlier
+            x1 = min(x1, COMB_VIA[0] - COMB_BOSS_D / 2 - 0.5 - 0.3)
         out.append(("1", "rect", (x0 + x1) / 2, y, x1 - x0, COMB_W, 0, True))
     for y in COMB_SIG_Y:
         x0 = -_chord(y) + _tip_gap(y)
         x1 = _chord(y)
         out.append(("2", "rect", (x0 + x1) / 2, y, x1 - x0, COMB_W, 0, True))
-    out.append(("2", "rect", (hx0 + hx1) / 2, (hy0 + hy1) / 2, hx1 - hx0, hy1 - hy0, 0, True))
-    for pad, ys, sign in (("1", COMB_GND_Y, -1), ("2", COMB_SIG_Y + [hy0, hy1], 1)):
+    out.append(("2", "circle", COMB_VIA[0], COMB_VIA[1], COMB_BOSS_D, COMB_BOSS_D, 0, True))
+    for pad, ys, sign in (("1", COMB_GND_Y, -1), ("2", COMB_SIG_Y, 1)):
         a0 = math.degrees(math.asin(min(ys) / COMB_R))
         a1 = math.degrees(math.asin(max(ys) / COMB_R))
         n = int(math.ceil((a1 - a0) / 6.0))
