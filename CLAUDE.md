@@ -550,6 +550,19 @@ list and order. Update the README's table as steps close. Nothing is ordered unt
   boards possible (JLCPCB minimum = 5 PCBs with 2 assembled; ~US$ 220-265), Gateron KS-20
   **Orange**, **3-wire** battery (503450 with NTC), MicroMod module bought later. Only step 6
   (firmware) and the postponed case remain. Nothing ordered.
+- **Step 6, firmware (15 Nov, awaiting J):** the same sketch `etutti/firmware/etutti_synth/` now
+  builds two instruments, chosen by the board: Teensy 4.0 = eTuttino, **Teensy MicroMod =
+  Student V01** (`ETUTTI_STUDENT`; `--fqbn teensy:avr:teensyMM:usb=midi,speed=396`). Student
+  part: 28 keys / 2 muxes, TMAG5253 groups switched by S3 (60 us wake), per-key sensor direction
+  from the rest reading (readings mirrored about mid-scale), soft power on the volume click
+  (2 s; KEEP pin 10, pin 28 low to switch off), volume encoder (digital gain `outAmp`, since
+  the MAX98357A shares the I2S), selector = the seven registers (CC 26 back, kept in EEPROM),
+  speaker on without headphones, battery and idle switch-off, LED states. **Never run on a
+  board.** `student_v01/firmware_check.py` (KiCad python) checks the sketch's pins against
+  PINOS.md and J101's nets (27/27) and KEY_INPUT (28/28). Report: `student_v01/FIRMWARE.md`.
+  Not done: a Student model on the page, watchdog. Shopping list gained 65 g and 80 g long
+  springs (J wants a bayan-like key weight; KS-20 Orange is 38 gf).
+  All nine review steps are now done or awaiting J; only the case is postponed.
 - The J1's step M3b (LCSC codes, C307 = C162182, SW403 height) had sat unmerged on its branch
   since 28 Oct; merged as PR #138.
 

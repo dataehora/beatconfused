@@ -98,6 +98,51 @@
 
 const int NUM_VOICES = 8;
 
+// One sketch, two instruments, chosen by the board it is compiled for:
+//   Teensy 4.0       -> eTuttino (44 keys, Audio Board, controls board)
+//   Teensy MicroMod  -> eTutti Student V01 (28 keys, everything on one board,
+//                       battery, speaker; see "Student V01" further down)
+#if defined(ARDUINO_TEENSY_MICROMOD)
+#define ETUTTI_STUDENT 1
+#else
+#define ETUTTI_STUDENT 0
+#endif
+
+#if ETUTTI_STUDENT
+// ---- eTutti Student V01 (etutti/hardware/student_v01/, pins from
+// etutti/hardware/viaggio_micromod/pcb/PINOS.md) ----
+// 28 keys on a 4 x 8 grid, two multiplexers. KEY_INPUT is the table the
+// board check (viaggio_j1/m3.py) read from the routed board, 28/28.
+// Multiplexer 0 = right half (COM on pin 14), 1 = left half (pin 15).
+// Channels 0-7 are rows 1 and 3, channels 8-15 rows 2 and 4: address line S3
+// also switches on that half of the sensors (EN_A / EN_B), so only 14 of
+// the 28 draw current at a time.
+const int LAYOUT_ROWS = 4;
+const int LAYOUT_COLS = 8;
+const int MUX_COUNT = 2;
+const uint8_t MUX_SEL_PINS[4] = {0, 1, 2, 3};          // S0..S3, shared
+const uint8_t MUX_COM_PINS[MUX_COUNT] = {14, 15};      // A0, A1
+const uint8_t SENS_EN_PIN = 4;                         // high = sensors powered
+const uint32_t SENSOR_WAKE_US = 60;                    // TMAG5253BA3 is ready 45 us after its EN rises
+const uint8_t LED_PINS[2] = {13, 5};                   // red (also the module's blue LED), green
+const uint32_t LED_STARTUP_MS = 600;
+// Two encoders with a push switch (to GND, pull-ups here): volume and selector.
+const uint8_t VOL_A_PIN = 22, VOL_B_PIN = 24, VOL_SW_PIN = 25;   // the volume click is also the power switch
+const uint8_t ENC_A_PIN = 11, ENC_B_PIN = 9, ENC_SW_PIN = 6;     // selector
+const int ENC_STEPS_PER_DETENT = 2;     // EC11E18244A5: 18 pulses, 36 detents per turn
+const uint8_t KEEP_PIN = 10;            // high holds the 3.3 V supply on
+const uint8_t PWR_EN_PIN = 28;          // left as an input (the board pulls it up); driven low = off, also on USB
+const uint8_t AMP_SD_PIN = 12;          // high = speaker amplifier on
+const uint8_t VBAT_PIN = 16;            // battery / 2
+const uint8_t HP_DET_PIN = 17;          // headphones in: ~0 V; out: ~1.4 V
+const uint8_t CHG_STAT_PIN = 26;        // low = charging (only meaningful with USB power)
+const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
+  { -1,  21,  20,  17,  19,   2,   1,   0},
+  { 25,  26,  31,  29,  13,  11,  14,  15},
+  { -1,  18,  23,  22,   4,   6,   5,   3},
+  { -1,  28,  27,  24,   9,   8,  10,  -1},
+};
+#else
 // ---- eTuttino keys (see etutti/hardware/README.md) ----
 // The notes sit on a grid of 4 rows x 12 columns (row r = accordion row
 // r+1; row 1 is the one nearest the player). KEY_INPUT says where each
@@ -129,9 +174,10 @@ const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
   { -1,  24,  25,  27,  29,  18,  17,  39,  35,  36,  44,  32},
   { -1,  23,  28,  22,  26,  31,  37,  40,  47,  34,  33,  -1},
 };
+#endif
 
 // Chromatic button accordion layouts. Along a row each key is a minor
-// third (+3) above the previous one. Rows 1 and 3 have 11 keys starting at
+// third (+3) above the previous one. On the eTuttino rows 1 and 3 have 11 keys starting at
 // column 1 (A3 .. D#6, G#3 .. D6); row 2 has 12 starting at column 0, half
 // a key further left (G3 .. E6); row 4 sits on row 2's columns, half a key
 // left of row 3, and runs A3 .. C6 (10 keys, column 1 on).
@@ -156,9 +202,24 @@ int noteAt(int r, int c) {
 // zero), scaled between that key's reading at rest and at the bottom. The
 // rest reading is measured at start-up and then follows slow drift; the
 // bottom is learnt from the deepest press seen and kept in EEPROM.
+//
+// The Student V01's sensor is a TMAG5253BA3: 1.65 V with no field and 15 mV
+// per mT, up or down according to the magnet's pole (it reads both). Each
+// key's direction is taken from its reading at rest, where the magnet
+// already gives about 10 mT (0.15 V), and readings that fall are mirrored
+// about 1.65 V, so everything below sees a voltage that rises with the
+// press, as on the eTuttino.
 const int MAX_KEYS = 44;
 const float ADC_PER_VOLT = 4095.0f / 3.3f;
+#if ETUTTI_STUDENT
+const float SENSOR_ZERO = 1.65f * ADC_PER_VOLT;  // TMAG5253 output at 0 mT
+const float SIGN_MIN = 0.04f * ADC_PER_VOLT;     // rest must be this far from 1.65 V to tell the direction
+const int DEFAULT_SIGN = 1;                      // direction assumed when it cannot be told (unverified: no board yet)
+const uint32_t EEPROM_MAGIC = 0xE7770105;        // bump when the key count/order changes
+#else
 const float SENSOR_ZERO = 0.6f * ADC_PER_VOLT;   // DRV5056 output at 0 mT
+const uint32_t EEPROM_MAGIC = 0xE7770004;   // bump when the key count/order changes
+#endif
 const int MIN_SPAN = 120;          // ADC counts: the least a key is assumed to swing
 const float PRESENT_MIN = 0.4f * ADC_PER_VOLT;   // below this, no sensor answered
 const float VEL_START = 0.12f;     // travel where the velocity timer starts
@@ -167,11 +228,11 @@ const float NOTE_OFF_AT = 0.30f;   // note off (hysteresis against chatter)
 const float FAST_MS = 1.0f;        // VEL_START -> NOTE_ON_AT (~1.4 mm) time for velocity 127
 const float SLOW_MS = 80.0f;       // ... and for velocity 1
 const uint8_t FIXED_VELOCITY = 100;
-const uint32_t EEPROM_MAGIC = 0xE7770004;   // bump when the key count/order changes
 
 struct Key {
   int8_t row, col;          // note grid
   uint8_t mux, channel;
+  int8_t sign;              // +1: the reading rises with the press, -1: it falls (Student V01)
   float rest;               // ADC reading with the key up
   float bottom;             // deepest reading seen
   float restInv, spanInv;   // cube-root model, see keyTravel()
@@ -194,6 +255,7 @@ uint32_t calibrationChangedAt = 0;
 uint8_t noteHolders[128];
 bool codecOk = true;
 int missingKeys = 0;
+uint32_t lastActivityAt = 0;   // last key, knob or MIDI message (Student V01: rest and switch-off timers)
 // Written out so the Arduino builder doesn't put its own prototypes for
 // these above the Key struct.
 void resetCalibration();
@@ -221,6 +283,7 @@ AudioMixer4              engines;             // accA, accB, smpA, smpB
 AudioFilterBiquad        toneFilter;
 AudioEffectFreeverb      room;
 AudioMixer4              master;              // dry, reverb
+AudioAmplifier           outAmp;              // Student V01: the volume (see setVolume); eTuttino: gain 1
 AudioOutputI2S           i2sOut;
 AudioControlSGTL5000     codec;
 
@@ -257,8 +320,9 @@ AudioConnection pt(engines, 0, toneFilter, 0);
 AudioConnection pd(toneFilter, 0, master, 0);       // dry (low-pass output)
 AudioConnection pv(toneFilter, 0, room, 0);
 AudioConnection pw(room, 0, master, 1);       // reverb
-AudioConnection pl(master, 0, i2sOut, 0);
-AudioConnection pr(master, 0, i2sOut, 1);
+AudioConnection po(master, 0, outAmp, 0);
+AudioConnection pl(outAmp, 0, i2sOut, 0);
+AudioConnection pr(outAmp, 0, i2sOut, 1);
 
 // ---- Reed waveforms (built at start-up, see buildReedTable) ----
 int16_t tableOpen[256];       // open reed: bright, many harmonics
@@ -554,10 +618,28 @@ void setAmbience(byte value) {
   master.gain(1, 0.6f * wet);
 }
 
+// Volume, 0..127. eTuttino: the codec's headphone amplifier. Student V01: a
+// gain before the I2S output, because the speaker amplifier takes the same
+// I2S signal as the codec and has no volume of its own.
+int volumeNow = 90;
+void setVolume(int v) {
+  volumeNow = constrain(v, 0, 127);
+#if ETUTTI_STUDENT
+  float x = volumeNow / 127.0f;
+  outAmp.gain(x * x);
+#else
+  codec.volume(0.8f * volumeNow / 127.0f);
+#endif
+}
+
+#if ETUTTI_STUDENT
+void registerChanged();   // keeps the selector in step with a register set over MIDI
+#endif
+
 void handleControlChange(byte channel, byte control, byte value) {
   switch (control) {
     case 7:
-      codec.volume(0.8f * value / 127.0f);
+      setVolume(value);
       break;
     case 9:
       velocityCurve = min(value / 32, 3);
@@ -581,6 +663,9 @@ void handleControlChange(byte channel, byte control, byte value) {
     case 26:
       registerMask = value & 0x0F;
       applyOscGains();
+#if ETUTTI_STUDENT
+      registerChanged();
+#endif
       break;
     case 28: case 29: case 30:
       synthOsc[control - 28].level = value / 127.0f;
@@ -706,19 +791,34 @@ void resetCalibration() {
 // Reads every sensor once into readings[] (key order), one multiplexer
 // channel at a time: all three multiplexers share the address lines.
 void readSensors(uint16_t *readings) {
+#if ETUTTI_STUDENT
+  static int group = -1;                        // which half of the sensors is powered (S3)
+#endif
   for (int ch = 0; ch < 16; ch++) {
     bool any = false;
     for (int i = 0; i < keyCount; i++) any |= keyState[i].channel == ch;
     if (!any) continue;
     selectChannel(ch);
+#if ETUTTI_STUDENT
+    if ((ch >> 3) != group) {                   // S3 changed: the other half is waking up
+      group = ch >> 3;
+      delayMicroseconds(SENSOR_WAKE_US);
+    } else
+#endif
     delayMicroseconds(3);                       // let the multiplexer settle
     for (int i = 0; i < keyCount; i++) {
-      if (keyState[i].channel == ch) readings[i] = analogRead(MUX_COM_PINS[keyState[i].mux]);
+      if (keyState[i].channel != ch) continue;
+      uint16_t raw = analogRead(MUX_COM_PINS[keyState[i].mux]);
+      readings[i] = keyState[i].sign < 0 ? 4095 - raw : raw;   // falling readings mirrored about mid-scale
     }
   }
 }
 
 void setupKeys() {
+#if ETUTTI_STUDENT
+  pinMode(SENS_EN_PIN, OUTPUT);
+  digitalWriteFast(SENS_EN_PIN, HIGH);
+#endif
   for (int b = 0; b < 4; b++) pinMode(MUX_SEL_PINS[b], OUTPUT);
   // A sensor drives its line to 0.6 V or more. With the pull-downs, a
   // missing board, multiplexer or sensor reads 0 V instead of floating
@@ -738,6 +838,7 @@ void setupKeys() {
       k.channel = KEY_INPUT[r][c] % 16;
       k.note = -1;
       k.sentPosition = 255;
+      k.sign = 1;
     }
   }
   // Rest readings: the average of a few dozen scans with the keys up.
@@ -753,6 +854,13 @@ void setupKeys() {
     keyState[i].rest = sum[i] / SCANS;
     keyState[i].present = keyState[i].rest >= PRESENT_MIN;
     if (!keyState[i].present) missingKeys++;
+#if ETUTTI_STUDENT
+    // Which way this key's sensor goes: the magnet at rest already pushes
+    // the reading off 1.65 V, up or down.
+    float off = keyState[i].rest - SENSOR_ZERO;
+    keyState[i].sign = off > SIGN_MIN ? 1 : (off < -SIGN_MIN ? -1 : DEFAULT_SIGN);
+    if (keyState[i].sign < 0) keyState[i].rest = 4095.0f - keyState[i].rest;
+#endif
   }
   loadCalibration();
 }
@@ -824,9 +932,24 @@ void scanKeys() {
     }
   }
   if (calibrationDirty && millis() - calibrationChangedAt > 5000) saveCalibration();
-  if (changed) usbMIDI.send_now();
+  if (changed) {
+    usbMIDI.send_now();
+    lastActivityAt = millis();
+  }
 }
 
+// The page's "Reset to default": classic accordion, register MM, dry.
+void defaultSound() {
+  setInstrument(INST_ACCORDION);
+  registerMask = 0b0110;
+  wetCents = 0;
+  applyOscGains();
+  retuneAll();
+}
+
+bool instrumentPending = false;         // a knob choice made, not yet kept with a click
+
+#if !ETUTTI_STUDENT
 // ---- Controls board: volume pot and instrument encoder ----
 bool potPresent = false;
 float potFiltered = 0;
@@ -834,7 +957,6 @@ int potVolume = -1;                     // last volume the pot set (0..127)
 uint32_t potReadAt = 0;
 volatile int16_t encSteps = 0;          // quarter steps, counted in the interrupt
 volatile uint8_t encPrev = 0;
-bool instrumentPending = false;         // turned, not yet confirmed with a click
 bool swDown = false;
 uint32_t swChangedAt = 0;
 const int EEPROM_INSTRUMENT = 200;      // after the key calibration (4 + 2 * 44 bytes)
@@ -856,15 +978,6 @@ void saveInstrument(int inst) {
 int savedInstrument() {
   if (EEPROM.read(EEPROM_INSTRUMENT) != INSTRUMENT_MAGIC) return INST_ACCORDION;
   return min((int)EEPROM.read(EEPROM_INSTRUMENT + 1), INST_SYNTH);
-}
-
-// The page's "Reset to default": classic accordion, register MM, dry.
-void defaultSound() {
-  setInstrument(INST_ACCORDION);
-  registerMask = 0b0110;
-  wetCents = 0;
-  applyOscGains();
-  retuneAll();
 }
 
 void setupControls() {
@@ -946,15 +1059,269 @@ void updateLed() {
   else setLed((millis() / 250) % 2 == 0, false);
 }
 
+#else
+// ============================================================
+// Student V01: power, battery, speaker and the two knobs.
+// Written against the pin map and the power notes of
+// etutti/hardware/viaggio_micromod/pcb/PINOS.md. NOT yet run on a board:
+// every threshold and time here is a first value.
+//
+//   volume knob    turn: volume (sends CC 7 back)
+//                  click held 2 s: on / off
+//   selector knob  turn: the seven accordion registers, in this order:
+//                  L Bassoon, ML Bandoneon, MM Violin, MH Oboe, H Piccolo,
+//                  LH Organ, M Clarinet (sends CC 26 back); the LED blinks
+//                  green until the choice is kept
+//                  click after turning: keep it, and start with it next time
+//                  click otherwise: back to MM, dry
+//   LED            orange  starting up; charging while switched on
+//                  green   on (blinking: a register waits for its click;
+//                          a short flash every 2 s: resting, speaker off)
+//                  red     slow blink: battery low; fast blink: the codec or
+//                          a key's sensor did not answer
+//   speaker        on when no headphones are plugged in
+//   battery        off by itself when nearly empty, and after 15 minutes
+//                  without a key, a knob or a MIDI message (5 minutes: the
+//                  speaker amplifier rests). Never while USB power is there.
+// The other instruments (piano, bass, guitar, synth) still answer to CC 25
+// from the page.
+// ============================================================
+const uint8_t REGISTERS[7] = {1, 3, 6, 10, 8, 9, 2};   // CC 26 masks, in the selector's order
+const int DEFAULT_REGISTER = 2;                         // MM
+const int VOLUME_PER_DETENT = 3;
+const uint32_t POWER_HOLD_MS = 2000;
+const uint32_t IDLE_REST_MS = 5UL * 60 * 1000;
+const uint32_t IDLE_OFF_MS = 15UL * 60 * 1000;
+const float BATTERY_LOW_V = 3.5f;
+const float BATTERY_EMPTY_V = 3.3f;
+const int EEPROM_REGISTER = 200;        // after the key calibration (4 + 2 * 28 bytes)
+const uint8_t REGISTER_MAGIC = 0xA6;
+
+int registerIndex = DEFAULT_REGISTER;
+volatile int16_t encSteps = 0, volSteps = 0;   // quarter steps, counted in the interrupts
+volatile uint8_t encPrev = 0, volPrev = 0;
+bool selDown = false, volDown = false;
+uint32_t selChangedAt = 0, volChangedAt = 0;
+bool volIgnoreHold = false;             // the hold that switched it on must not switch it off again
+float batteryVolts = 4.0f;
+uint32_t batteryReadAt = 0, batteryEmptySince = 0;
+bool headphones = false, resting = false;
+uint32_t jackReadAt = 0;
+
+// Gray-code state table: +1 / -1 per valid transition, 0 for bounces.
+const int8_t GRAY_STEP[16] = {0, -1, 1, 0, 1, 0, 0, -1, -1, 0, 0, 1, 0, 1, -1, 0};
+
+void encoderIsr() {
+  uint8_t s = (digitalReadFast(ENC_A_PIN) << 1) | digitalReadFast(ENC_B_PIN);
+  encSteps += GRAY_STEP[(encPrev << 2) | s];
+  encPrev = s;
+}
+
+void volumeIsr() {
+  uint8_t s = (digitalReadFast(VOL_A_PIN) << 1) | digitalReadFast(VOL_B_PIN);
+  volSteps += GRAY_STEP[(volPrev << 2) | s];
+  volPrev = s;
+}
+
+void setLed(bool red, bool green) {
+  digitalWriteFast(LED_PINS[0], red);
+  digitalWriteFast(LED_PINS[1], green);
+}
+
+// True while the USB socket has power (the module's USB1 sees VBUS).
+bool usbPower() {
+  return (USB1_OTGSC & (1 << 11)) != 0;   // BSV: B-session (VBUS) valid
+}
+
+// Everything off. The 3.3 V supply falls as soon as the volume click is let
+// go (at once if it is not held); pin 28 low makes that true on USB power
+// too, where only the charger stays alive.
+void powerOff() {
+  silenceAll();
+  digitalWriteFast(AMP_SD_PIN, LOW);
+  digitalWriteFast(SENS_EN_PIN, LOW);
+  if (calibrationDirty) saveCalibration();
+  setLed(true, false);
+  delay(250);
+  setLed(false, false);                 // LED out: the click can be let go
+  digitalWriteFast(KEEP_PIN, LOW);
+  pinMode(PWR_EN_PIN, OUTPUT);
+  digitalWriteFast(PWR_EN_PIN, LOW);
+  while (true) {
+  }
+}
+
+// First thing in setup(). Switched on with the click, the board only stays
+// on if the click is still down 2 s after power-up; let go sooner, it goes
+// off again. With no click at all the processor was restarted while USB
+// held the supply (a firmware upload): stay on.
+void powerBegin() {
+  pinMode(KEEP_PIN, OUTPUT);
+  digitalWriteFast(KEEP_PIN, LOW);
+  pinMode(AMP_SD_PIN, OUTPUT);
+  digitalWriteFast(AMP_SD_PIN, LOW);
+  pinMode(SENS_EN_PIN, OUTPUT);
+  digitalWriteFast(SENS_EN_PIN, LOW);
+  pinMode(VOL_SW_PIN, INPUT_PULLUP);
+  pinMode(CHG_STAT_PIN, INPUT_PULLUP);
+  // The click also reaches the processor's ONOFF pin: held 10 s it cuts the
+  // processor's own supply, whatever this firmware is doing.
+  SNVS_LPCR = (SNVS_LPCR & ~(3 << 16)) | (1 << 16);
+  delay(5);
+  if (digitalReadFast(VOL_SW_PIN) == HIGH) {
+    digitalWriteFast(KEEP_PIN, HIGH);
+    return;
+  }
+  while (millis() < POWER_HOLD_MS) {
+    if (digitalReadFast(VOL_SW_PIN) == HIGH) powerOff();
+    setLed((millis() / 150) % 2 == 0, (millis() / 150) % 2 == 0);
+  }
+  digitalWriteFast(KEEP_PIN, HIGH);
+  volIgnoreHold = true;
+}
+
+void applyRegister(int index, bool tell) {
+  registerIndex = ((index % 7) + 7) % 7;
+  if (instrument != INST_ACCORDION) setInstrument(INST_ACCORDION);
+  registerMask = REGISTERS[registerIndex];
+  applyOscGains();
+  if (tell) usbMIDI.sendControlChange(26, registerMask, 1);
+}
+
+// A register set over MIDI (CC 26): the selector carries on from it.
+void registerChanged() {
+  for (int i = 0; i < 7; i++) {
+    if (REGISTERS[i] == registerMask) registerIndex = i;
+  }
+}
+
+int savedRegister() {
+  if (EEPROM.read(EEPROM_REGISTER) != REGISTER_MAGIC) return DEFAULT_REGISTER;
+  return min((int)EEPROM.read(EEPROM_REGISTER + 1), 6);
+}
+
+void saveRegister(int index) {
+  EEPROM.write(EEPROM_REGISTER, REGISTER_MAGIC);
+  EEPROM.write(EEPROM_REGISTER + 1, (uint8_t)index);
+}
+
+void setupControls() {
+  pinMode(VOL_A_PIN, INPUT_PULLUP);
+  pinMode(VOL_B_PIN, INPUT_PULLUP);
+  pinMode(ENC_A_PIN, INPUT_PULLUP);
+  pinMode(ENC_B_PIN, INPUT_PULLUP);
+  pinMode(ENC_SW_PIN, INPUT_PULLUP);
+  pinMode(HP_DET_PIN, INPUT_DISABLE);
+  pinMode(VBAT_PIN, INPUT_DISABLE);
+  volPrev = (digitalReadFast(VOL_A_PIN) << 1) | digitalReadFast(VOL_B_PIN);
+  encPrev = (digitalReadFast(ENC_A_PIN) << 1) | digitalReadFast(ENC_B_PIN);
+  attachInterrupt(digitalPinToInterrupt(VOL_A_PIN), volumeIsr, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(VOL_B_PIN), volumeIsr, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENC_A_PIN), encoderIsr, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENC_B_PIN), encoderIsr, CHANGE);
+  batteryVolts = analogRead(VBAT_PIN) * 2.0f / ADC_PER_VOLT;
+  volDown = digitalReadFast(VOL_SW_PIN) == LOW;
+}
+
+void updateControls() {
+  uint32_t now = millis();
+  // volume knob
+  noInterrupts();
+  int turned = volSteps / ENC_STEPS_PER_DETENT;
+  volSteps -= turned * ENC_STEPS_PER_DETENT;
+  interrupts();
+  if (turned) {
+    setVolume(volumeNow + turned * VOLUME_PER_DETENT);
+    usbMIDI.sendControlChange(7, volumeNow, 1);
+    lastActivityAt = now;
+  }
+  // volume click: held 2 s = off
+  bool down = digitalReadFast(VOL_SW_PIN) == LOW;
+  if (down != volDown && now - volChangedAt > 20) {
+    volDown = down;
+    volChangedAt = now;
+    if (!down) volIgnoreHold = false;
+    lastActivityAt = now;
+  }
+  if (volDown && !volIgnoreHold && now - volChangedAt >= POWER_HOLD_MS) powerOff();
+  // selector knob: whole detents only
+  noInterrupts();
+  int detents = encSteps / ENC_STEPS_PER_DETENT;
+  encSteps -= detents * ENC_STEPS_PER_DETENT;
+  interrupts();
+  if (detents) {
+    applyRegister(registerIndex + detents, true);
+    instrumentPending = true;
+    lastActivityAt = now;
+  }
+  down = digitalReadFast(ENC_SW_PIN) == LOW;
+  if (down != selDown && now - selChangedAt > 20) {
+    selDown = down;
+    selChangedAt = now;
+    lastActivityAt = now;
+    if (down) {
+      if (instrumentPending) {
+        saveRegister(registerIndex);        // the one to start with next time
+        instrumentPending = false;
+      } else {
+        defaultSound();
+        registerIndex = DEFAULT_REGISTER;
+        saveRegister(DEFAULT_REGISTER);
+        usbMIDI.sendControlChange(26, registerMask, 1);
+      }
+    }
+  }
+}
+
+// Battery, headphone socket and the rest / switch-off timers.
+void updatePower() {
+  uint32_t now = millis();
+  bool usb = usbPower();
+  if (now - batteryReadAt >= 500) {
+    batteryReadAt = now;
+    batteryVolts += (analogRead(VBAT_PIN) * 2.0f / ADC_PER_VOLT - batteryVolts) * 0.1f;
+    if (usb || batteryVolts >= BATTERY_EMPTY_V) batteryEmptySince = 0;
+    else if (batteryEmptySince == 0) batteryEmptySince = now | 1;
+    else if (now - batteryEmptySince > 10000) powerOff();
+  }
+  if (now - jackReadAt >= 50) {
+    jackReadAt = now;
+    float volts = analogRead(HP_DET_PIN) / ADC_PER_VOLT;
+    if (volts < 0.5f) headphones = true;
+    else if (volts > 0.9f) headphones = false;
+  }
+  if (usb) lastActivityAt = now;
+  resting = now - lastActivityAt > IDLE_REST_MS;
+  if (now - lastActivityAt > IDLE_OFF_MS) powerOff();
+  digitalWriteFast(AMP_SD_PIN, !headphones && !resting);
+}
+
+void updateLed() {
+  uint32_t now = millis();
+  if (!codecOk || missingKeys > 0) setLed((now / 250) % 2 == 0, false);
+  else if (!usbPower() && batteryVolts < BATTERY_LOW_V) setLed((now / 1000) % 2 == 0, false);
+  else if (instrumentPending) setLed(false, (now / 300) % 2 == 0);
+  else if (resting) setLed(false, now % 2000 < 60);
+  else if (usbPower() && digitalReadFast(CHG_STAT_PIN) == LOW) setLed(true, true);
+  else setLed(false, true);
+}
+#endif
+
 void setup() {
   for (int i = 0; i < 2; i++) pinMode(LED_PINS[i], OUTPUT);
+#if ETUTTI_STUDENT
+  powerBegin();                                  // stays on only if the click was held 2 s
+#endif
   setLed(true, true);                            // orange: reading the keys
   uint32_t started = millis();
   AudioMemory(60);   // measured peak: 32 blocks (8 voices x 4 reeds + reverb); 8 with sampled reeds
   setupKeys();
 
   codecOk = codec.enable();
-  codec.volume(0.8f * 90 / 127.0f);
+#if ETUTTI_STUDENT
+  codec.volume(0.7f);                            // fixed: the volume knob works before the I2S output
+#endif
+  setVolume(90);
 
   // Harmonic counts keep everything below ~16 kHz. Up to C5 (523 Hz):
   // 20 x 523 for the 8' reeds, 10 x 1047 for the piccolo. Above, up to E6
@@ -1001,8 +1368,13 @@ void setup() {
   room.damping(0.6f);
   setAmbience(25);
 
+#if ETUTTI_STUDENT
+  setupControls();
+  applyRegister(savedRegister(), false);   // the last register kept with the selector
+#else
   setupControls();                   // the pot, if fitted, sets the volume
   setInstrument(savedInstrument());  // the last instrument confirmed with the encoder
+#endif
 
   usbMIDI.setHandleNoteOn(handleNoteOn);
   usbMIDI.setHandleNoteOff(handleNoteOff);
@@ -1015,8 +1387,12 @@ void setup() {
 void loop() {
   // Drain every pending USB MIDI message; each one calls a handler above.
   while (usbMIDI.read()) {
+    lastActivityAt = millis();
   }
   scanKeys();
   updateControls();
+#if ETUTTI_STUDENT
+  updatePower();
+#endif
   updateLed();
 }

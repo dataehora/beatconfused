@@ -1,0 +1,224 @@
+{
+ "pinos_conferidos": 27,
+ "teclas": 28,
+ "KEY_INPUT_igual_ao_PINOS": true,
+ "problemas": [],
+ "pinos": [
+  {
+   "firmware": "MUX_SEL_PINS",
+   "pino": 0,
+   "rede": "MUX_S0",
+   "pad_J101": "19",
+   "rede_na_placa": "MUX_S0",
+   "ok": true
+  },
+  {
+   "firmware": "MUX_SEL_PINS",
+   "pino": 1,
+   "rede": "MUX_S1",
+   "pad_J101": "17",
+   "rede_na_placa": "MUX_S1",
+   "ok": true
+  },
+  {
+   "firmware": "MUX_SEL_PINS",
+   "pino": 2,
+   "rede": "MUX_S2",
+   "pad_J101": "47",
+   "rede_na_placa": "MUX_S2",
+   "ok": true
+  },
+  {
+   "firmware": "MUX_SEL_PINS",
+   "pino": 3,
+   "rede": "MUX_S3",
+   "pad_J101": "32",
+   "rede_na_placa": "MUX_S3",
+   "ok": true
+  },
+  {
+   "firmware": "MUX_COM_PINS",
+   "pino": 14,
+   "rede": "MUX_R_COM",
+   "pad_J101": "34",
+   "rede_na_placa": "MUX_R_COM",
+   "ok": true
+  },
+  {
+   "firmware": "MUX_COM_PINS",
+   "pino": 15,
+   "rede": "MUX_L_COM",
+   "pad_J101": "38",
+   "rede_na_placa": "MUX_L_COM",
+   "ok": true
+  },
+  {
+   "firmware": "SENS_EN_PIN",
+   "pino": 4,
+   "rede": "SENS_EN",
+   "pad_J101": "10",
+   "rede_na_placa": "SENS_EN",
+   "ok": true
+  },
+  {
+   "firmware": "LED_PINS",
+   "pino": 13,
+   "rede": "LED_R",
+   "pad_J101": "57",
+   "rede_na_placa": "LED_R",
+   "ok": true
+  },
+  {
+   "firmware": "LED_PINS",
+   "pino": 5,
+   "rede": "LED_G",
+   "pad_J101": "18",
+   "rede_na_placa": "LED_G",
+   "ok": true
+  },
+  {
+   "firmware": "VOL_A_PIN",
+   "pino": 22,
+   "rede": "VOL_A",
+   "pad_J101": "49",
+   "rede_na_placa": "VOL_A",
+   "ok": true
+  },
+  {
+   "firmware": "VOL_B_PIN",
+   "pino": 24,
+   "rede": "VOL_B",
+   "pad_J101": "53",
+   "rede_na_placa": "VOL_B",
+   "ok": true
+  },
+  {
+   "firmware": "VOL_SW_PIN",
+   "pino": 25,
+   "rede": "VOL_SW",
+   "pad_J101": "51",
+   "rede_na_placa": "VOL_SW",
+   "ok": true
+  },
+  {
+   "firmware": "ENC_A_PIN",
+   "pino": 11,
+   "rede": "SEL_A",
+   "pad_J101": "59",
+   "rede_na_placa": "SEL_A",
+   "ok": true
+  },
+  {
+   "firmware": "ENC_B_PIN",
+   "pino": 9,
+   "rede": "SEL_B",
+   "pad_J101": "69",
+   "rede_na_placa": "SEL_B",
+   "ok": true
+  },
+  {
+   "firmware": "ENC_SW_PIN",
+   "pino": 6,
+   "rede": "SEL_SW",
+   "pad_J101": "71",
+   "rede_na_placa": "SEL_SW",
+   "ok": true
+  },
+  {
+   "firmware": "KEEP_PIN",
+   "pino": 10,
+   "rede": "KEEP",
+   "pad_J101": "55",
+   "rede_na_placa": "KEEP",
+   "ok": true
+  },
+  {
+   "firmware": "PWR_EN_PIN",
+   "pino": 28,
+   "rede": "PWR_EN",
+   "pad_J101": "4",
+   "rede_na_placa": "PWR_EN",
+   "ok": true
+  },
+  {
+   "firmware": "AMP_SD_PIN",
+   "pino": 12,
+   "rede": "AMP_SD",
+   "pad_J101": "61",
+   "rede_na_placa": "AMP_SD",
+   "ok": true
+  },
+  {
+   "firmware": "VBAT_PIN",
+   "pino": 16,
+   "rede": "VBAT_S",
+   "pad_J101": "20",
+   "rede_na_placa": "VBAT_S",
+   "ok": true
+  },
+  {
+   "firmware": "HP_DET_PIN",
+   "pino": 17,
+   "rede": "HP_DET",
+   "pad_J101": "22",
+   "rede_na_placa": "HP_DET",
+   "ok": true
+  },
+  {
+   "firmware": "CHG_STAT_PIN",
+   "pino": 26,
+   "rede": "CHG_STAT",
+   "pad_J101": "67",
+   "rede_na_placa": "CHG_STAT",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 7,
+   "rede": "I2S_TX",
+   "pad_J101": "56",
+   "rede_na_placa": "I2S_TX",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 20,
+   "rede": "I2S_LRCLK",
+   "pad_J101": "52",
+   "rede_na_placa": "I2S_LRCLK",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 21,
+   "rede": "I2S_BCLK",
+   "pad_J101": "50",
+   "rede_na_placa": "I2S_BCLK",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 23,
+   "rede": "AUD_MCLK_P",
+   "pad_J101": "58",
+   "rede_na_placa": "AUD_MCLK_P",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 18,
+   "rede": "I2C_SDA",
+   "pad_J101": "12",
+   "rede_na_placa": "I2C_SDA",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 19,
+   "rede": "I2C_SCL",
+   "pad_J101": "14",
+   "rede_na_placa": "I2C_SCL",
+   "ok": true
+  }
+ ]
+}
