@@ -102,7 +102,7 @@ Compras adiadas por decisão do J ou por dependerem do case:
 Os anúncios de 503450 com plugue de 3 pinos não dizem o que é o terceiro fio, e a ordem dos fios no plugue varia de vendedor para vendedor. Antes de encaixar na placa:
 
 1. Medir com multímetro entre o fio preto e o terceiro fio: deve dar **cerca de 10 kΩ** à temperatura ambiente. Se der outra coisa, o terceiro fio não é o NTC que a placa espera.
-2. Conferir a ordem dos fios contra o conector J202 da placa (positivo, negativo, NTC, no `viaggio_micromod/pcb/PINOS.md`). Se estiver trocada, os terminais do plugue saem com um alfinete e se recolocam na ordem certa. **Positivo e negativo invertidos danificam a placa.**
+2. Conferir a ordem dos fios contra o conector J202 da placa: **pino 1 = positivo, pino 2 (o do meio) = NTC, pino 3 = negativo** (do esquema, `viaggio_micromod/pcb/schematic.py`; o pino 1 está marcado na serigrafia do verso). Se estiver trocada, os terminais do plugue saem com um alfinete e se recolocam na ordem certa. **Positivo e negativo invertidos danificam a placa.**
 
 ## O que falta antes de tocar
 
