@@ -535,6 +535,17 @@ list and order. Update the README's table as steps close. Nothing is ordered unt
   J said (15 Nov) not to work on the case yet. The case does not
   exist yet: battery spot (503450 under the front-left, under trimmed encoder legs), outer shape
   and process are J's open decisions.
+- **Step 8 (15 Nov, awaiting J):** `student_v01/fornecimento/conferir_bom.py` looks every BOM
+  code up on LCSC (`wmsc.lcsc.com/ftps/wm/product/detail?productCode=`) and in JLCPCB's parts
+  library (POST `.../shoppingCart/smtGood/selectSmtComponentList`, keyword = code or part number:
+  stock, base/expand), 2 s apart, plain curl. It found five wrong or dead codes, all fixed in
+  `viaggio_micromod/pcb/schematic.py` (re-run: ERC 0/0), the J1 board and the BOMs: codec
+  C2651833, **R203 C25871** (was a 200 k 0603: charge current would have been ~4 mA), **R401
+  C25099** (was 27 ohm 0603), muxes C179326 (the tube part had 0 stock), TMAG5253 C22401868 and
+  standoff C7496631 (both now in JLC's library: no Global Sourcing). ~US$ 34 of parts per board
+  (codec is 9.35), ~70 per assembled board. Report + 4 questions for J in
+  `fornecimento/FORNECIMENTO.md`. Encoder shaft tip is most likely 24.5 mm above the board (Arrow
+  + EasyEDA model), not the footprint's 20: matters for the case and knobs only.
 - The J1's step M3b (LCSC codes, C307 = C162182, SW403 height) had sat unmerged on its branch
   since 28 Oct; merged as PR #138.
 

@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\viaggio_micromod\\pcb\\kicad\\viaggio_micromod.kicad_sch")
-		(date "2026-10-28T09:06:30")
+		(date "2026-11-15T13:11:29")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -496,10 +496,9 @@
 				(field
 					(name "Codigo") "P1")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C7496631")
 				(field
-					(name "Montagem") "JLC (Global Sourcing)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "viaggio_micromod:Standoff_SMD_M2.5_H2.5")
 				(field
@@ -518,11 +517,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C7496631")
 			)
 			(property
 				(name "Montagem")
-				(value "JLC (Global Sourcing)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -2777,7 +2776,7 @@
 				(field
 					(name "Codigo") "E3")
 				(field
-					(name "LCSC") "C25811")
+					(name "LCSC") "C25871")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -2799,7 +2798,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C25811")
+				(value "C25871")
 			)
 			(property
 				(name "Montagem")
@@ -5320,7 +5319,7 @@
 				(field
 					(name "Codigo") "F1")
 				(field
-					(name "LCSC") "C511764")
+					(name "LCSC") "C2651833")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -5341,7 +5340,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C511764")
+				(value "C2651833")
 			)
 			(property
 				(name "Montagem")
@@ -5675,7 +5674,7 @@
 				(field
 					(name "Codigo") "I3")
 				(field
-					(name "LCSC") "C25190")
+					(name "LCSC") "C25099")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -5698,7 +5697,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C25190")
+				(value "C25099")
 			)
 			(property
 				(name "Montagem")
@@ -8698,7 +8697,7 @@
 				(field
 					(name "Codigo") "T1")
 				(field
-					(name "LCSC") "C547038")
+					(name "LCSC") "C179326")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -8719,7 +8718,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C547038")
+				(value "C179326")
 			)
 			(property
 				(name "Montagem")
@@ -8836,7 +8835,7 @@
 				(field
 					(name "Codigo") "T2")
 				(field
-					(name "LCSC") "C547038")
+					(name "LCSC") "C179326")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -8857,7 +8856,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C547038")
+				(value "C179326")
 			)
 			(property
 				(name "Montagem")
@@ -9217,10 +9216,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9239,11 +9237,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9291,10 +9289,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9313,11 +9310,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9365,10 +9362,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9387,11 +9383,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9439,10 +9435,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9461,11 +9456,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9513,10 +9508,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9535,11 +9529,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9587,10 +9581,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9609,11 +9602,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9661,10 +9654,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9683,11 +9675,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9735,10 +9727,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9757,11 +9748,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9809,10 +9800,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9831,11 +9821,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9883,10 +9873,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9905,11 +9894,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -9957,10 +9946,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -9979,11 +9967,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10031,10 +10019,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10053,11 +10040,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10105,10 +10092,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10127,11 +10113,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10179,10 +10165,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10201,11 +10186,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10253,10 +10238,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10275,11 +10259,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10327,10 +10311,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10349,11 +10332,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10401,10 +10384,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10423,11 +10405,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10475,10 +10457,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10497,11 +10478,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10549,10 +10530,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10571,11 +10551,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10623,10 +10603,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10645,11 +10624,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10697,10 +10676,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10719,11 +10697,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10771,10 +10749,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10793,11 +10770,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10845,10 +10822,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10867,11 +10843,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10919,10 +10895,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -10941,11 +10916,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -10993,10 +10968,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -11015,11 +10989,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -11067,10 +11041,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -11089,11 +11062,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -11141,10 +11114,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -11163,11 +11135,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -11215,10 +11187,9 @@
 				(field
 					(name "Codigo") "T4")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C22401868")
 				(field
-					(name "Montagem") "Global Sourcing (JLCPCB)")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
 				(field
@@ -11237,11 +11208,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C22401868")
 			)
 			(property
 				(name "Montagem")
-				(value "Global Sourcing (JLCPCB)")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")

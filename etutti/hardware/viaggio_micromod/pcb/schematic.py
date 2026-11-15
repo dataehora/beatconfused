@@ -292,12 +292,12 @@ PASSIVES = {
     ("C", "12pF", "0402"): ("C1547", "basica", 0.001, "conferir"),
     ("C", "20pF", "0402"): ("C1554", "basica", 0.001, "conferir"),
     ("R", "100", "0402"): ("C25076", "basica", 0.001, "final"),
-    ("R", "270", "0402"): ("C25190", "basica", 0.001, "conferir"),
+    ("R", "270", "0402"): ("C25099", "estendida", 0.001, "final"),
     ("R", "330", "0402"): ("C25104", "basica", 0.001, "conferir"),
     ("R", "470", "0402"): ("C25117", "basica", 0.001, "conferir"),
     ("R", "1k", "0402"): ("C11702", "basica", 0.001, "final"),
     ("R", "1.5k", "0402"): ("C25867", "basica", 0.001, "conferir"),
-    ("R", "1.8k", "0402"): ("C25811", "basica", 0.001, "conferir"),
+    ("R", "1.8k", "0402"): ("C25871", "estendida", 0.001, "final"),
     ("R", "2.2k", "0402"): ("C25879", "basica", 0.001, "conferir"),
     ("R", "5.1k", "0402"): ("C25905", "basica", 0.001, "final"),
     ("R", "10k", "0402"): ("C25744", "basica", 0.001, "final"),
@@ -411,7 +411,7 @@ part("J101", "MicroMod_M.2_E", "91302-42-067RCE", p1_nets(), "P1", fp="%s:%s" % 
           "DEV-16402 encaixado em casa",
      datasheet="https://datasheet.lcsc.com/datasheet/pdf/fa57621554b717c54a395d0658cff748.pdf?productCode=C48985906")
 part("H101", sym("MountingHole_Pad", "Mechanical"), "9774025151R", {"1": "GND"}, "P1",
-     fp="%s:Standoff_SMD_M2.5_H2.5" % LIB, lcsc="", cls="-", price=0.60, mount="JLC (Global Sourcing)",
+     fp="%s:Standoff_SMD_M2.5_H2.5" % LIB, lcsc="C7496631", cls="estendida", price=0.60,
      status="conferir",
      note="espacador SMD M2.5 x 2,5 mm (Wurth WA-SMSI, o da SparkFun; SPEC v2.3); a (+4,0; -20,0) do J101 "
           "nas coordenadas do footprint; sem equivalente LCSC de 2,5 mm com estoque em 25 out 2026 (YIYUAN "
@@ -596,7 +596,7 @@ for pocket_ref, (ref, code, com) in MUX_REF.items():
     for ch, pn in chan_pin.items():
         nets[pn] = "OUT_K%02d" % int(used[ch]["switch"][2:]) if ch in used else "NC"
     part(ref, sym("74HC4067PW", "74xx", "CD74HC4067SM"), "74HC4067PW", nets, code,
-         fp="Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm", lcsc="C547038", cls="estendida", price=0.25, status="final",
+         fp="Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm", lcsc="C179326", cls="estendida", price=0.26, status="final",
          note=("esquerdo (metade baixa do teclado), COM no pino 15" if code == "T1" else
                "direito (metade alta), COM no pino 14") + "; canais = Pocket v0.3",
          datasheet="https://assets.nexperia.com/documents/data-sheet/74HC_HCT4067.pdf")
@@ -610,8 +610,8 @@ for k in sorted(KEYS, key=lambda k: int(k["switch"][2:])):
     n = int(k["switch"][2:])
     part("U7%02d" % n, "TMAG5253BA3", "TMAG5253BA3IQDMRR",
          {"1": "+3V3", "2": "GND", "3": k["en_group"], "4": "OUT_K%02d" % n, "5": "GND"}, "T4",
-         fp="Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm", lcsc="", cls="-", price=0.45,
-         mount="Global Sourcing (JLCPCB)", status="conferir",
+         fp="Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm", lcsc="C22401868", cls="estendida", price=0.37,
+         status="final",
          note="tecla %s (fileira %s, %s); verso, mesma orientacao do Pocket" % (k["switch"], k["row"], k["note"]),
          datasheet="https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
     C("C7%02d" % n, "100nF", "+3V3", "GND", "T4")

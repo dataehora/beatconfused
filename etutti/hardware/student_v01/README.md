@@ -13,8 +13,8 @@ Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio
 | 3 | Forma e planta | fechada (14 nov) | placa retangular 246,5 × 95 mm, 4 camadas, 1,2 mm. A flexão é resolvida por 6 pilares Ø4 no fundo do case (P1–P6 do `viaggio_j1/FABRICACAO.md`), não por mais furos. A forma do plate fica para a etapa 7 |
 | 4 | Esquema e peças | fechada (14 nov) | peças mantidas; sensores TMAG5253 por Global Sourcing da JLCPCB (o DRV5055 só volta se a cotação falhar); C307 = C162182 |
 | 5 | Roteamento e conferências | fechada (14 nov) | placa igual à J1 depois do M3b, só o nome na serigrafia mudou (abaixo) |
-| 7 | Modelo 3D completo | **em curso** | conjunto sem o case pronto em `model3d/` (abaixo); falta o case, que espera as decisões do J |
-| 8 | Fornecimento | a fazer | cotação real na JLCPCB, Global Sourcing, alternativas; rever a compra de um módulo MicroMod antes das placas |
+| 7 | Modelo 3D completo | conjunto pronto; **case adiado pelo J** | `model3d/` (abaixo), com os modelos reais das peças |
+| 8 | Fornecimento | pronta para o J ver (15 nov) | `fornecimento/FORNECIMENTO.md`: 5 códigos LCSC corrigidos (codec, R203, R401, multiplexadores, sensores), Global Sourcing dispensado, ~US$ 70 por placa montada, peças fora da placa, 4 perguntas |
 | 9 | Lista de compras e pedido | a fazer | lista final com quantidades e links; rotações do CPL conferidas na prévia da JLC |
 | 6 | Firmware para esta placa | por último (decisão do J) | 28 teclas, 2 multiplexadores, pinos do MicroMod, bateria, liga/desliga, amplificador, acordeão amostrado |
 
@@ -26,6 +26,7 @@ Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio
 | `kicad/` | o projeto KiCad. Continua se chamando `viaggio_micromod`, porque o esquema guarda esse nome em cada peça. Abra `kicad/viaggio_micromod.kicad_pro` |
 | `fab/` | Gerbers e furação (`student_v01_gerbers.zip`), BOM e CPL da JLCPCB, peças postas em casa, Gerbers do plate, imagens |
 | `build.json` | o registro da última execução |
+| `fornecimento/` | `conferir_bom.py` consulta cada código na LCSC e na JLCPCB; `FORNECIMENTO.md` é o relatório da etapa 8 |
 | `model3d/` | o instrumento em 3D: `build.py` monta o conjunto e escreve `img/` e `heights.json` |
 
 ```
