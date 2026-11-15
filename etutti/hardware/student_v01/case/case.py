@@ -8,11 +8,15 @@ Frame of the 3D model (model3d/build.py): x right, y = -y of KiCad, z up, millim
   fundo   tray under the board: floor, walls up to the board's top, a boss under each of the 8 M2
           holes, the 6 pillars that hold the keyboard up, a cradle for the battery, a hole to
           reach the Program button.
-  tampa   lid: walls from the board's top up, flat top, one opening round the 28 keys with a rim
-          that sits on the plate, holes for the two knobs and the LED, a grille and a seat for
-          the speaker, openings for USB-C and headphones in the left wall, four posts that take
-          the screws.
+  tampa   lid: walls from the board's top up and a flat top that also covers the keyboard, like
+          an accordion's: a thin deck just above the switches with one round hole per key, so
+          only each key's stem comes out and the button sits above the deck. Under the deck a
+          rim round the keyboard sits on the plate. Holes for the two knobs and the LED, a
+          grille and a seat for the speaker, openings for USB-C and headphones in the left wall,
+          four posts that take the screws.
   espacador  ring between board and plate at the four holes inside the keyboard (print 4).
+  capa    the button: a stem that passes through the deck onto the switch's cross, and a domed
+          head above the deck (print 28). It goes on from above, after the lid.
 
 Screws: 8 x M2 from underneath. H1-H4 go through fundo and board into the lid's posts (self-tapping,
 M2 x 16). H5-H8, between the keys, go through fundo, board, spacer and plate into an M2 nut on
@@ -53,10 +57,19 @@ GAP = 0.4                # board to wall
 WALL = 2.0
 FLOOR = 2.0
 DEPTH = 8.1              # inside floor, below the board's top (0.5 under the battery)
-LID_TOP = 9.8            # top of the lid above the board: 1.1 under a pressed key cap
+HOUSING_TOP = PLATE_TOP + 6.1     # top of a switch's housing above the board (11.2)
+KEY_TRAVEL = 4.1
+DECK_T = 1.6             # the perforated deck over the keys
+LID_TOP = HOUSING_TOP + 0.4 + DECK_T      # 13.2: the deck clears the switch housings by 0.4
 LID_T = 2.0
-KEY_OPEN_R = 10.8        # the opening is the union of a circle of this radius round every key
-RIM_W = 2.5              # rim round the opening, down to the plate
+KEY_OPEN_R = 10.8        # the room under the deck is the union of a circle of this radius round every key
+RIM_W = 2.5              # rim round that room, down to the plate
+KEY_HOLE = 7.0           # hole in the deck for a key's stem (the button's stem is 5.6)
+CAP_STEM_D = 5.6
+CAP_HEAD_D = 16.5
+CAP_HEAD_UNDER = LID_TOP + KEY_TRAVEL + 0.7    # 18.0: a pressed button stops 0.7 above the deck
+CAP_HEAD_H = 3.9
+CAP_CROSS = (4.15, 1.30, 3.8)                  # MX cross socket: arm length, arm width, depth
 BOSS_D, BOSS_HOLE, HEAD_D, HEAD_DEPTH = 6.0, 2.4, 4.4, 2.2
 PILLAR_D = 4.0
 POST_D, POST_PILOT = 4.6, 1.6        # H1 is 2.7 mm from the plate's edge
@@ -134,8 +147,10 @@ def tampa():
     # speaker seat: a ring the speaker's rim sits in, under the grille
     sx, sy = SPEAKER
     body = body.union(cyl(sx, sy, under - 2.0, under + 0.01, SPEAKER_D + 3.2).cut(cyl(sx, sy, under - 3, under + 1, SPEAKER_D + 0.6)))
-    # cuts
-    body = body.cut(union([cyl(x, y, PLATE_TOP - 1, LID_TOP + 1, 2 * KEY_OPEN_R) for x, y in ks]))
+    # cuts: the room for the switches under the deck, then one hole per key through the deck
+    body = body.cut(union([cyl(x, y, PLATE_TOP - 1, LID_TOP - DECK_T, 2 * KEY_OPEN_R) for x, y in ks]))
+    body = body.cut(cq.Workplane("XY").workplane(offset=LID_TOP - DECK_T - 1).pushPoints([(x, -y) for x, y in ks])
+                    .circle(KEY_HOLE / 2).extrude(DECK_T + 2))
     for x, y in KNOBS:
         body = body.cut(cyl(x, y, under - 1, LID_TOP + 1, KNOB_HOLE))
     body = body.cut(cyl(LED[0], LED[1], under - 1, LID_TOP + 1, LED_HOLE))
@@ -154,6 +169,21 @@ def tampa():
     return body, len(holes)
 
 
+def capa():
+    """One button, key up, in the model's frame at x = y = 0 (its stem's foot at the switch housing's top)."""
+    z0 = HOUSING_TOP
+    stem = cq.Workplane("XY").workplane(offset=z0).circle(CAP_STEM_D / 2).extrude(CAP_HEAD_UNDER - z0 + 0.5)
+    # head: a flat-bottomed dome, a slice of a sphere
+    r = (CAP_HEAD_D ** 2 / 4 + CAP_HEAD_H ** 2) / (2 * CAP_HEAD_H)
+    ball = cq.Workplane("XY").sphere(r).translate((0, 0, CAP_HEAD_UNDER + CAP_HEAD_H - r))
+    head = ball.intersect(cq.Workplane("XY").workplane(offset=CAP_HEAD_UNDER).circle(CAP_HEAD_D).extrude(CAP_HEAD_H + 1))
+    body = stem.union(head)
+    L, w, d = CAP_CROSS
+    cross = (cq.Workplane("XY").workplane(offset=z0 - 0.01).rect(L, w).extrude(d)
+             .union(cq.Workplane("XY").workplane(offset=z0 - 0.01).rect(w, L).extrude(d)))
+    return body.cut(cross)
+
+
 def espacador():
     return cyl(0, 0, 0, PLATE_TOP - PLATE_T - 0.05, SPACER_D).cut(cyl(0, 0, -1, 10, SPACER_HOLE))
 
@@ -164,7 +194,7 @@ def main():
     t, grille = tampa()
     e = espacador()
     info = {}
-    for name, w in (("fundo", f), ("tampa", t), ("espacador", e)):
+    for name, w in (("fundo", f), ("tampa", t), ("espacador", e), ("capa", capa())):
         solids = w.solids().vals()
         bb = w.val().BoundingBox()
         vol = sum(s.Volume() for s in solids)
@@ -176,6 +206,9 @@ def main():
     info["grade_furos"] = grille
     info["medidas"] = {"fora_mm": info["fundo"]["caixa_mm"][:2] + [round(DEPTH + FLOOR + LID_TOP, 1)],
                        "fundo_interno_abaixo_da_placa": DEPTH, "tampa_acima_da_placa": LID_TOP,
+                       "deck_por_baixo": LID_TOP - DECK_T, "topo_do_alojamento_da_tecla": HOUSING_TOP,
+                       "capa_cabeca_por_baixo": CAP_HEAD_UNDER, "capa_topo": CAP_HEAD_UNDER + CAP_HEAD_H,
+                       "curso_da_tecla": KEY_TRAVEL,
                        "parede": WALL, "folga_da_placa": GAP}
     json.dump(info, open(os.path.join(OUT, "case.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print(json.dumps(info, indent=1, ensure_ascii=False))

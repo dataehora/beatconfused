@@ -14,15 +14,15 @@
  },
  "tampa": {
   "solidos": 1,
-  "volume_cm3": 46.2,
+  "volume_cm3": 67.0,
   "caixa_mm": [
    251.3,
    99.8,
-   9.8
+   13.2
   ],
   "z": [
    0.0,
-   9.8
+   13.2
   ]
  },
  "espacador": {
@@ -38,15 +38,33 @@
    3.45
   ]
  },
+ "capa": {
+  "solidos": 1,
+  "volume_cm3": 0.6,
+  "caixa_mm": [
+   16.5,
+   16.5,
+   10.7
+  ],
+  "z": [
+   11.2,
+   21.9
+  ]
+ },
  "grade_furos": 85,
  "medidas": {
   "fora_mm": [
    251.3,
    99.8,
-   19.9
+   23.3
   ],
   "fundo_interno_abaixo_da_placa": 8.1,
-  "tampa_acima_da_placa": 9.8,
+  "tampa_acima_da_placa": 13.2,
+  "deck_por_baixo": 11.6,
+  "topo_do_alojamento_da_tecla": 11.2,
+  "capa_cabeca_por_baixo": 17.999999999999996,
+  "capa_topo": 21.899999999999995,
+  "curso_da_tecla": 4.1,
   "parede": 2.0,
   "folga_da_placa": 0.4
  }

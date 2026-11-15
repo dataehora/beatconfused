@@ -25,7 +25,6 @@ import build as model      # noqa: E402
 import case as C           # noqa: E402
 
 MARGIN = 0.15
-KEY_TRAVEL = 4.1
 
 
 def main():
@@ -57,8 +56,9 @@ def main():
         "sob o modulo": round(z["modulo"][0] + C.DEPTH, 2),
         "entre o alto-falante e a placa": round(under - C.SPEAKER_H, 2),
         "tampa acima do USB-C (3,25) e do jack (4,75)": [round(under - 3.25, 2), round(under - 4.75, 2)],
-        "entre a tampa e a capa de uma tecla apertada": round(z["capas"][0] + 3.7 - KEY_TRAVEL - C.LID_TOP, 2),
-        "tampa abaixo do topo do alojamento das teclas": round(C.PLATE_TOP + 6.1 - C.LID_TOP, 2),
+        "entre o deck e a cabeca de um botao apertado ate o fim": round(C.CAP_HEAD_UNDER - C.KEY_TRAVEL - C.LID_TOP, 2),
+        "entre o deck e o alojamento das teclas": round(C.LID_TOP - C.DECK_T - C.HOUSING_TOP, 2),
+        "em volta da haste do botao, no furo do deck (raio)": round((C.KEY_HOLE - C.CAP_STEM_D) / 2, 2),
     }
     json.dump({"margem_mm": MARGIN, "grupos": out, "folgas_mm": clear}, open(os.path.join(HERE, "out", "fit_check.json"), "w", encoding="utf-8"),
               indent=1, ensure_ascii=False)

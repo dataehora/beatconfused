@@ -96,7 +96,7 @@ Compras adiadas por decisão do J ou por dependerem do case:
 |---|---|
 | Módulo **SparkFun MicroMod Teensy** (DEV-16402), £18,69 sem IVA na DigiKey UK | depois; sem ele a placa não liga |
 | 2 knobs para eixo de 6 mm chanfrado | depois de confirmar a altura do eixo (24,5 mm, a conferir) |
-| 28 capas das teclas, impressas | com o case |
+| 28 botões (`case/out/capa`), impressos | com o case; imprimir 3 ou 4 primeiro para testar o encaixe |
 | Case, com os 6 pilares de apoio | etapa adiada |
 
 ### As molas: para chegar ao peso de um acordeão
