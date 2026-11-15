@@ -525,7 +525,14 @@ list and order. Update the README's table as steps close. Nothing is ordered unt
   GLB, SparkFun's module STEP and J's VRML models, and writes `img/` + `heights.json`. Gotchas:
   `pv.read()` on KiCad's GLB hangs (own reader in `model3d/glb.py`); this PC's KiCad 3D library
   lacks the EC11E, HRO USB-C, JST PH, QFN, X2SON and TS-1187A models (boxes from `Altura_mm`
-  instead). Module depth below the board measured 4.7 mm (was estimated 6-6.5). The case does not
+  instead). `model3d/fetch_models.py` downloads the parts' own STEP models from EasyEDA by LCSC code
+  into `model3d/modelos/` (gitignored); call the API with plain `curl` (Python's client and
+  browser-like headers get 403) and not in bursts (a second batch minutes later was refused).
+  Fetching them exposed a wrong BOM code: codec U301 was C511764 (QFN-32 variant), now C2651833
+  (SGTL5000XNLA3, QFN-20) in `schematic.py`, the J1 board and the BOMs; **step 8 must check every
+  LCSC code's package against its footprint**. Encoder shaft: 24.5 mm in EasyEDA's model vs 20 in
+  the footprint (unresolved). Module depth below the board measured 4.7 mm (was estimated 6-6.5).
+  J said (15 Nov) not to work on the case yet. The case does not
   exist yet: battery spot (503450 under the front-left, under trimmed encoder legs), outer shape
   and process are J's open decisions.
 - The J1's step M3b (LCSC codes, C307 = C162182, SW403 height) had sat unmerged on its branch

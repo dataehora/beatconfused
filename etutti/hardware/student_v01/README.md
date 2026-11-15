@@ -61,10 +61,13 @@ Referencial do modelo: x para a direita, y para trás (o y do KiCad com o sinal 
 
 **De onde vem cada peça**
 - Placa, serigrafia e as peças que a biblioteca do KiCad tem: exportadas pelo `kicad-cli`.
-- **A biblioteca 3D do KiCad desta máquina não tem** o encoder EC11E, o USB-C HRO, o JST PH, os QFN/VQFN/TQFN, o X2SON nem o botão TS-1187A. Essas peças entram como caixas do tamanho do pátio do footprint, com a altura do campo `Altura_mm`.
+- **Encoders, USB-C, jack, conector M.2, conector da bateria, botão Program e LED:** o modelo STEP de cada peça, baixado da EasyEDA pelo código LCSC com `model3d/fetch_models.py`, para `model3d/modelos/` (fora do Git). A biblioteca oficial do KiCad não tem modelo para essas peças. As pastas `student/` e `studentBK/` também não: as duas trazem os mesmos sete arquivos.
+- Chips QFN/VSON e sensores X2SON: caixas do tamanho do pátio, com a altura do campo `Altura_mm`.
 - Módulo MicroMod Teensy: o STEP da SparkFun da pasta do J (`student/eTutti_3D.3dshapes/`, fora do Git).
-- Knobs, jack, USB-C e pilar: os modelos VRML da mesma pasta. São formas simples geradas por script, boas para ver o conjunto, não para medir.
+- Knobs e pilar: os modelos VRML da mesma pasta (formas simples geradas por script).
 - Teclas (Gateron KS-20 + a capa do Pocket), plate, bateria e alto-falante: feitos no script a partir das medidas.
+
+**Erro achado ao baixar os modelos, corrigido:** o código LCSC do codec U301 era **C511764**, que é o SGTL5000XN**A**A3 (QFN-32 de 5 × 5). A placa usa o SGTL5000XN**L**A3 (QFN-20 de 3 × 3), que é o **C2651833**. Corrigido no `viaggio_micromod/pcb/schematic.py`, na folha F, na placa da J1 e nos BOMs; a paridade continua 0. A `SPEC.md` do Viaggio MicroMod ainda cita o código antigo (é da gestão). **Na etapa 8, conferir o encapsulamento de todos os códigos LCSC do BOM contra o footprint.**
 
 **Alturas medidas no modelo** (`model3d/heights.json`)
 
@@ -74,14 +77,13 @@ Referencial do modelo: x para a direita, y para trás (o y do KiCad com o sinal 
 | alojamento da tecla | 11,2 |
 | haste da tecla solta | 14,8 |
 | capa da tecla solta | 18,9 |
-| eixo do encoder | 20,0 |
-| knob | 21,2 |
+| eixo do encoder: **24,5 no modelo da EasyEDA, 20 no footprint e na Farnell** (conferir no desenho da Alps) | 20–24,5 |
 
 | Para baixo, a partir da face de baixo da placa | mm |
 |---|---:|
-| conector do módulo (M.2) | 4,2 |
+| conector do módulo (M.2), corpo | 4,2 |
 | **módulo MicroMod montado** (espaçador 2,5 + cartão + peças) | **4,7** |
-| conector da bateria J202 (campo da placa: 6,0; um distribuidor dá 5,5) | 5,5–6,0 |
+| conector da bateria J202, pelo modelo (o campo da placa dizia 6,0) | 5,5 |
 | pernas dos encoders, sem cortar | 2,3 |
 
 O módulo era a maior estimativa em aberto (6–6,5 mm). Pelo modelo da SparkFun são 4,7 mm, então quem manda na profundidade do fundo é o conector da bateria.

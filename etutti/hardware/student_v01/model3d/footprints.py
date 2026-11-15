@@ -25,6 +25,8 @@ for fp in b.GetFootprints():
     out.append({"ref": fp.GetReference(), "value": fp.GetValue(), "lib": str(fp.GetFPID().GetLibItemName()),
                 "x": MM(p.x), "y": MM(p.y), "rot": fp.GetOrientationDegrees(), "bottom": flipped,
                 "box": [MM(box.GetLeft()), MM(box.GetTop()), MM(box.GetRight()), MM(box.GetBottom())],
+                "pads": [[MM(q.GetPosition().x), MM(q.GetPosition().y), q.GetNumber()] for q in fp.Pads()]
+                if fp.GetReference() in ("J201", "J301", "J202", "J101", "SW403", "D401", "SW401", "SW402") else [],
                 "height": float(h.replace(",", ".")) if h else None, "has_model": bool(models) and all(have)})
 ds = b.GetDesignSettings()
 json.dump({"thickness": MM(ds.GetBoardThickness()), "footprints": out},
