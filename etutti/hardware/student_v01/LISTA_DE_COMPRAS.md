@@ -37,12 +37,12 @@ Roteiro na página, na ordem:
 1. Enviar os Gerbers e preencher os parâmetros acima. Conferir que a página mostra 4 camadas e o contorno certo.
 2. Ligar "PCB Assembly", escolher Standard, os dois lados, quantidade 2.
 3. Enviar o BOM e o CPL. **Todas as 42 linhas têm de aparecer como encontradas e com estoque.** Se alguma faltar, parar e me dizer qual: há alternativas levantadas para as mais curtas (`fornecimento/FORNECIMENTO.md`, item 3).
-4. **Prévia da montagem: conferir peça a peça.** É o passo que nenhuma conferência minha substitui, porque só a página mostra os modelos da JLCPCB sobre a placa. Olhar com cuidado:
-   - os 28 sensores sob as teclas (U701 a U728): o ponto do pino 1 de cada um sobre a marca do pino 1 da placa;
-   - o conector do módulo (J101) e o espaçador (H101);
-   - o USB-C (J201), o jack (J301) e o conector da bateria (J202): a boca para fora, sobre os pads;
-   - o LED (D401) e o botão Program (SW403);
-   - os chips U202, U204, U301 e U501: o pino 1.
+4. **Prévia da montagem: conferir peça a peça.** O arquivo de posições foi refeito em 15 nov a partir dos pads de cada peça (`fornecimento/FORNECIMENTO.md`, item 9); o anterior estava errado em 37 peças. A prévia continua sendo a conferência final, porque só a página mostra os modelos da JLCPCB sobre a placa. Olhar com cuidado:
+   - o conector do módulo (J101): a abertura do encaixe virada para o espaçador (H101), não para a borda da placa;
+   - os encoders (SW401, SW402), o USB-C (J201), o jack (J301) e o conector da bateria (J202): sobre os pads, com a boca do USB e do jack para fora da placa;
+   - os 28 sensores sob as teclas (U701 a U728): o ponto do pino 1 de cada um sobre a marca do pino 1 da placa. O desenho deles é igual girado 180°, então só o ponto do pino 1 mostra um erro;
+   - os chips U201, U202, U204, U301 e U501: o pino 1;
+   - o LED (D401) e o botão Program (SW403).
    Se uma peça aparecer girada ou deslocada, a página deixa corrigir ali mesmo. Uma captura de tela dessa prévia me basta para conferir junto.
 5. Os dois encoders (SW401, SW402) são de furo passante: a página pergunta se a JLCPCB os solda à mão. Sim.
 6. Ler o preço final. Deve ficar perto da estimativa abaixo; se vier muito acima, parar.
