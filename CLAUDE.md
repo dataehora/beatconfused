@@ -506,6 +506,13 @@ uses the old reed tables (`HAVE_REED_SAMPLES`).
 
 ## eTutti Student V01 (14 Nov 2026) — the version to be ordered, start here
 
+**Closed on 15 Nov 2026: checked and ready to buy; nothing ordered, printed or built.** J will
+present it, then may start a new design concept with Claude Chat from
+`etutti/hardware/student_v01/RESUMO-PARA-O-CHAT.md` (state, the fixed dimensions a new case must
+respect, the open design questions, what the prototype will answer). Same Chat -> Code protocol
+as before: Chat writes a versioned SPEC, Code models, checks and reports. Don't change the
+ordered files (`student_v01/fab/`, `kicad/`) without an explicit task.
+
 `etutti/hardware/student_v01/` = the **Viaggio J1** board taken to the order (J's name for it:
 "Student_V01"; not the resistive-key `student_viaggio/`). Its `README.md` (Portuguese) holds the
 nine-step review J is doing with Code, one step approved at a time: 1 keyboard, 2 concept, 3 board

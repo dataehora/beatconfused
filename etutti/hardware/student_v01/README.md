@@ -1,5 +1,7 @@
 # eTutti Student V01 · a versão que será encomendada
 
+**Encerrado em 15 nov 2026: projeto conferido e pronto para compra.** O que vem depois é do J (apresentar, encomendar) e da gestão (um possível novo conceito de design): ver `RESUMO-PARA-O-CHAT.md`.
+
 Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio_j1/`, roteada pelo J e conferida nos passos M3 e M3b) levada até o pedido, com o nome novo. A J1 fica como está, para referência.
 
 **Nada foi encomendado.** O J revisou o projeto em nove etapas. Em 15 nov 2026 a prévia da montagem na JLCPCB foi conferida pelo J e o projeto ficou **pronto para compra**, aguardando a apresentação dele para aprovação.
@@ -11,12 +13,12 @@ Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio
 | 1 | Teclado | fechada (14 nov) | 28 teclas C-griff, G3–E5, grade de 18,5 mm, fileiras a 16,02; Gateron KS-20 magnética com um TMAG5253 sob cada tecla |
 | 2 | Conceito | fechada (14 nov) | fone + alto-falante Ø36, USB-C, LiPo 1S ~1000 mAh, dois encoders com clique (volume liga/desliga, seletor), LED bicolor. Entrada de expressão (fole) fica para uma V02 |
 | 3 | Forma e planta | fechada (14 nov) | placa retangular 246,5 × 95 mm, 4 camadas, 1,2 mm. A flexão é resolvida por 6 pilares Ø4 no fundo do case (P1–P6 do `viaggio_j1/FABRICACAO.md`), não por mais furos. A forma do plate fica para a etapa 7 |
-| 4 | Esquema e peças | fechada (14 nov) | peças mantidas; sensores TMAG5253 por Global Sourcing da JLCPCB (o DRV5055 só volta se a cotação falhar); C307 = C162182 |
+| 4 | Esquema e peças | fechada (14 nov) | peças mantidas. Na etapa 8 a conferência dos códigos corrigiu 5 deles, e os sensores TMAG5253 passaram a ser peça de biblioteca da JLCPCB (sem Global Sourcing) |
 | 5 | Roteamento e conferências | fechada (14 nov) | placa igual à J1 depois do M3b, só o nome na serigrafia mudou (abaixo) |
 | 7 | Modelo 3D completo | conjunto e **case do protótipo** fechados (15 nov) | `model3d/` e `case/CASE.md`: case retangular de duas peças, 251 × 100 × 23 mm, tampo perfurado sobre o teclado e botões de haste, conferido contra o conjunto; **aprovado pelo J** |
 | 8 | Fornecimento | fechada (15 nov) | `fornecimento/FORNECIMENTO.md`: 5 códigos LCSC corrigidos, Global Sourcing dispensado. Decisões do J: o mínimo de placas, teclas Orange, bateria de 3 fios, módulo MicroMod comprado depois |
 | 9 | Lista de compras e pedido | fechada (15 nov) | `LISTA_DE_COMPRAS.md`: 5 placas com 2 montadas, plate, teclas Orange, molas de 65 e 80 g, bateria de 3 fios |
-| 6 | Firmware para esta placa | pronta para o J ver (15 nov) | `FIRMWARE.md`: o mesmo sketch, compilado para o Teensy MicroMod; pinos 27/27 e teclas 28/28 contra a placa (`firmware_check.py`). Nunca rodou numa placa |
+| 6 | Firmware para esta placa | fechada (15 nov) | `FIRMWARE.md`: o mesmo sketch, compilado para o Teensy MicroMod; pinos 27/27 e teclas 28/28 contra a placa (`firmware_check.py`). Nunca rodou numa placa |
 
 ## O que há nesta pasta
 
@@ -26,6 +28,7 @@ Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio
 | `kicad/` | o projeto KiCad. Continua se chamando `viaggio_micromod`, porque o esquema guarda esse nome em cada peça. Abra `kicad/viaggio_micromod.kicad_pro` |
 | `fab/` | Gerbers e furação (`student_v01_gerbers.zip`), BOM e CPL da JLCPCB, peças postas em casa, Gerbers do plate, imagens |
 | `build.json` | o registro da última execução |
+| `RESUMO-PARA-O-CHAT.md` | o resumo do projeto para a gestão, para abrir a análise de um novo conceito de design |
 | `FIRMWARE.md`, `firmware_check.py` | o relatório do firmware e a conferência dos pinos dele contra a placa |
 | `LISTA_DE_COMPRAS.md` | o que comprar e o roteiro do pedido na JLCPCB |
 | `case/` | o case do protótipo: `case.py` (CadQuery), `fit_check.py`, `CASE.md`, arquivos para imprimir em `out/` |
