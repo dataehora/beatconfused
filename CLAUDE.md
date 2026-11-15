@@ -519,6 +519,15 @@ list and order. Update the README's table as steps close. Nothing is ordered unt
   (0 unconnected, parity 0, only the 3 accepted EN_B widths) and writes `fab/` through the J1's
   `m3.py` functions. Board changes go into the J1 (or the script), never by hand in
   `student_v01/kicad/`.
+- **Order of the remaining steps (J, 15 Nov): 7, 8, 9, then 6 (firmware) last.** Step 5 approved.
+- Step 7 so far: `student_v01/model3d/build.py` (CadQuery venv python, ~1 min) assembles the
+  instrument without the case (frame: z = 0 at the board's top, y = -y KiCad) from the board's
+  GLB, SparkFun's module STEP and J's VRML models, and writes `img/` + `heights.json`. Gotchas:
+  `pv.read()` on KiCad's GLB hangs (own reader in `model3d/glb.py`); this PC's KiCad 3D library
+  lacks the EC11E, HRO USB-C, JST PH, QFN, X2SON and TS-1187A models (boxes from `Altura_mm`
+  instead). Module depth below the board measured 4.7 mm (was estimated 6-6.5). The case does not
+  exist yet: battery spot (503450 under the front-left, under trimmed encoder legs), outer shape
+  and process are J's open decisions.
 - The J1's step M3b (LCSC codes, C307 = C162182, SW403 height) had sat unmerged on its branch
   since 28 Oct; merged as PR #138.
 
