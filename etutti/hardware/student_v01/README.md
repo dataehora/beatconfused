@@ -14,8 +14,8 @@ Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio
 | 4 | Esquema e peças | fechada (14 nov) | peças mantidas; sensores TMAG5253 por Global Sourcing da JLCPCB (o DRV5055 só volta se a cotação falhar); C307 = C162182 |
 | 5 | Roteamento e conferências | fechada (14 nov) | placa igual à J1 depois do M3b, só o nome na serigrafia mudou (abaixo) |
 | 7 | Modelo 3D completo | conjunto pronto; **case adiado pelo J** | `model3d/` (abaixo), com os modelos reais das peças |
-| 8 | Fornecimento | pronta para o J ver (15 nov) | `fornecimento/FORNECIMENTO.md`: 5 códigos LCSC corrigidos (codec, R203, R401, multiplexadores, sensores), Global Sourcing dispensado, ~US$ 70 por placa montada, peças fora da placa, 4 perguntas |
-| 9 | Lista de compras e pedido | a fazer | lista final com quantidades e links; rotações do CPL conferidas na prévia da JLC |
+| 8 | Fornecimento | fechada (15 nov) | `fornecimento/FORNECIMENTO.md`: 5 códigos LCSC corrigidos, Global Sourcing dispensado. Decisões do J: o mínimo de placas, teclas Orange, bateria de 3 fios, módulo MicroMod comprado depois |
+| 9 | Lista de compras e pedido | pronta para o J ver (15 nov) | `LISTA_DE_COMPRAS.md`: 5 placas com 2 montadas (o mínimo da JLCPCB), plate, compras fora da JLCPCB, roteiro do pedido com a conferência da prévia |
 | 6 | Firmware para esta placa | por último (decisão do J) | 28 teclas, 2 multiplexadores, pinos do MicroMod, bateria, liga/desliga, amplificador, acordeão amostrado |
 
 ## O que há nesta pasta
