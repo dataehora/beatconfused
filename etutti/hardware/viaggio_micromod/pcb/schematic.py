@@ -513,7 +513,7 @@ part("U301", sym("SGTL5000XNLA3", "Audio"), "SGTL5000XNLA3",
      {"1": "HP_R", "2": "HP_VGND", "3": "SGTL_VDDA", "4": "HP_L", "5": "SGTL_VAG", "6": "NC", "7": "NC",
       "8": "NC", "9": "NC", "10": "NC", "11": "NC", "12": "+3V3", "13": "AUD_MCLK", "14": "I2S_LRCLK",
       "15": "I2S_BCLK", "16": "NC", "17": "I2S_TX", "18": "I2C_SDA", "19": "I2C_SCL", "20": "SGTL_VDDD",
-      "21": "GND"}, "F1", fp="Package_DFN_QFN:QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm", lcsc="C511764",
+      "21": "GND"}, "F1", fp="Package_DFN_QFN:QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm", lcsc="C2651833",
      cls="estendida", price=1.80, status="conferir",
      note="como a Audio Board Rev D2 (endereco I2C fixo 0x0A); sem entrada de linha/microfone",
      datasheet="https://www.pjrc.com/teensy/SGTL5000.pdf")

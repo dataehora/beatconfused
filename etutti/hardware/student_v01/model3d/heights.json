@@ -12,27 +12,23 @@
   "z_max": 18.9
  },
  "knobs": {
-  "z_min": 8.2,
-  "z_max": 21.2
+  "z_min": 12.7,
+  "z_max": 25.7
  },
  "modulo": {
   "z_min": -5.88,
-  "z_max": -1.2
+  "z_max": -0.4
  },
  "pecas_baixo": {
-  "z_min": -7.2,
-  "z_max": -1.2
+  "z_min": -6.7,
+  "z_max": -1.15
  },
  "pecas_cima": {
-  "z_min": 0.0,
-  "z_max": 20.0
+  "z_min": -3.5,
+  "z_max": 24.5
  },
  "pilares": {
   "z_min": -8.1,
-  "z_max": -1.2
- },
- "pinos_encoder": {
-  "z_min": -3.5,
   "z_max": -1.2
  },
  "placa": {
@@ -51,9 +47,9 @@
  "_abaixo_da_placa_mm": {
   "bateria": 6.4,
   "modulo": 4.68,
-  "pecas_baixo": 6.0,
+  "pecas_baixo": 5.5,
+  "pecas_cima": 2.3,
   "pilares": 6.9,
-  "pinos_encoder": 2.3,
   "placa": 2.09
  }
 }

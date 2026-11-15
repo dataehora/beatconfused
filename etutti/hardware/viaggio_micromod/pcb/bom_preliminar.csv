@@ -37,7 +37,7 @@ F1,C307,1,150nF,C_0402_1005Metric,C162182,estendida,0.013,JLC,final,"Audio Board
 F1,R301 R302,2,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,
 F1,C301 C303 C306,3,2.2uF,C_0402_1005Metric,C12530,basica,0.003,JLC,conferir,
 F1,FB301,1,600R@100MHz,L_0603_1608Metric,C1002,basica,0.005,JLC,final,Audio Board: Ferrite 600 no VDDA
-F1,U301,1,SGTL5000XNLA3,QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm,C511764,estendida,1.800,JLC,conferir,como a Audio Board Rev D2 (endereco I2C fixo 0x0A); sem entrada de linha/microfone
+F1,U301,1,SGTL5000XNLA3,QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm,C2651833,estendida,1.800,JLC,conferir,como a Audio Board Rev D2 (endereco I2C fixo 0x0A); sem entrada de linha/microfone
 F1,U302,1,XC6206P182MR,SOT-23-3,C347373,estendida,0.030,JLC,conferir,"1,8 V do VDDD (a Audio Board usa AP7313)"
 F2,R303,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
 F2,C308,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,

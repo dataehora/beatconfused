@@ -8,7 +8,9 @@
    - board, silkscreen, pads and the parts KiCad's library has a model for: from the GLB;
    - parts without a KiCad model: a box of the courtyard size and the footprint's `Altura_mm`;
    - MicroMod Teensy module: SparkFun's STEP (student/eTutti_3D.3dshapes, J's folder);
-   - knobs, headphone jack, USB-C, support pillar: J's VRML models from the same folder;
+   - encoders, USB-C, jack, M.2 connector, battery connector, Program button, LED: the parts' own
+     STEP models, downloaded from EasyEDA by LCSC code (fetch_models.py -> modelos/, not in Git);
+   - knobs and support pillar: J's VRML models from the same folder;
    - keys (Gateron KS-20 + the Pocket's cap), plate, battery, speaker: built here from their sizes.
 3. Writes img/*.png (views), heights.json (how far each group reaches above and below the board)
    and build/student_v01.gltf (the model, to open in a 3D viewer).
@@ -57,6 +59,10 @@ BATTERY_TOP = -(T_PCB + 1.0 + 0.4)       # under the encoder legs trimmed to 1 m
 SPEAKER_D, SPEAKER_H, SPEAKER_FACE_Z = 36.0, 4.6, 9.0
 PILLARS = [(197.5, 32.5), (207.5, 67.5), (112.5, 67.5), (167.5, 67.5), (127.5, 32.5), (132.5, 67.5)]
 KNOB = {"SW401": "Volume_Knob.wrl", "SW402": "Encoder_Knob.wrl"}
+MODELS = os.path.join(HERE, "modelos")       # EasyEDA's STEP models (fetch_models.py), not in Git
+USB_MOUTH_X = 0.9            # KiCad x of the USB-C's mouth: 1.6 mm past the board's edge
+JACK_MOUTH = (0, 1)          # which way the jack's mouth points in its own model
+M2_SLOT = (0, 1)             # which way the card slot points in the M.2 connector's model
 KNOB_FROM_Z = 8.0            # of J's knob models only the knob is used; the encoder body is a box
 
 COL = {"pcb_part": (0.12, 0.12, 0.13), "metal": (0.75, 0.76, 0.78), "housing": (0.20, 0.21, 0.23),
@@ -131,6 +137,16 @@ def placed(p, xk, yk, z=0.0, rot=np.eye(3)):
     return q + np.array([xk, -yk, z])
 
 
+def step_mesh(key):
+    """A model of modelos/ (file name starts with `key`) as one mesh in its own frame (cached as STL)."""
+    step = next(os.path.join(MODELS, n) for n in sorted(os.listdir(MODELS)) if n.startswith(key) and n.endswith(".step"))
+    stl = os.path.join(BUILD, key + ".stl")
+    if not os.path.exists(stl) or os.path.getmtime(stl) < os.path.getmtime(step):
+        import cadquery as cq
+        cq.exporters.export(cq.importers.importStep(step), stl, tolerance=0.03, angularTolerance=0.3)
+    return pv.read(stl)
+
+
 def module_mesh():
     """SparkFun's STEP as one mesh, in its own frame (card 0..22 x 0..22, z 0..0.7; cached)."""
     stl = os.path.join(BUILD, "micromod_teensy.stl")
@@ -159,7 +175,7 @@ def assemble():
 
     cap = pv.read(KEYCAP)
     cap.points[:, 2] += CAP_Z[1] - cap.bounds[5]
-    special = set(KNOB) | {"J101", "H101", "J201", "J301"}
+    special = set(KNOB) | {"J101", "H101", "J201", "J301", "J202", "SW403", "D401"}
     for f in fps:
         ref, b, h = f["ref"], f["box"], f["height"] or 0.0
         if f["lib"].startswith("Gateron"):
@@ -179,31 +195,57 @@ def assemble():
             z = (-T_PCB, -T_PCB - h) if f["bottom"] else (0, h)
             add("pecas_baixo" if f["bottom"] else "pecas_cima", kbox(bb, *z), COL["pcb_part"])
 
-    # encoders: body box, legs under the board, J's knob on top
-    for ref, wrl in KNOB.items():
+    # the real models of the parts KiCad's library lacks (modelos/, by fetch_models.py)
+    def centre(f):
+        return (f["box"][0] + f["box"][2]) / 2, (f["box"][1] + f["box"][3]) / 2
+
+    def real(group, key, ref, facing, to, rgb, seat=0.0, at=None, edge=None):
+        """Places a downloaded model: its direction `facing` (model x, y) turned to `to` (model frame,
+        after the flip of a bottom part), its box centred on the courtyard, or with its far end in
+        the `to` direction at KiCad x = `edge`. `seat` is the model's z of the board surface."""
         f = by[ref]
-        cx, cy = (f["box"][0] + f["box"][2]) / 2, (f["box"][1] + f["box"][3]) / 2
-        add("pecas_cima", box(cx - 6, -cy - 6, 0, cx + 6, -cy + 6, 6.5), COL["metal"])
-        add("pecas_cima", cyl(cx, cy, 6.5, 20.0, 6.0), COL["metal"])
-        for dx, dy in ((-2.5, 7.25), (0, 7.25), (2.5, 7.25), (-2.5, -7.25), (2.5, -7.25)):
-            add("pinos_encoder", cyl(cx + dx, cy + dy, -T_PCB - ENC_PIN_BELOW, -T_PCB, 0.9, 12), COL["pin"])
+        m = step_mesh(key)
+        p = m.points - np.array([0, 0, seat])
+        v = np.array(facing, dtype=float)
+        if f["bottom"]:
+            p = p * np.array([1, -1, -1])
+            v = v * np.array([1, -1])
+        t = np.arctan2(to[1], to[0]) - np.arctan2(v[1], v[0])
+        c, sn = np.cos(t), np.sin(t)
+        p = np.column_stack([p[:, 0] * c - p[:, 1] * sn, p[:, 0] * sn + p[:, 1] * c, p[:, 2]])
+        cx, cy = at or centre(f)
+        lo, hi = p.min(0), p.max(0)
+        shift = np.array([cx - (lo[0] + hi[0]) / 2, -cy - (lo[1] + hi[1]) / 2, -T_PCB if f["bottom"] else 0.0])
+        if edge is not None:
+            shift[0] = edge - (lo[0] if to[0] < 0 else hi[0])
+        add(group, pv.PolyData(p + shift, m.faces), rgb)
+
+    def pads_back(ref):
+        """Unit direction (model frame) from the mounting pads to the signal pads of a connector."""
+        ps = by[ref]["pads"]
+        sig = np.mean([(x, -y) for x, y, n in ps if n.isdigit()], axis=0)
+        mp = np.mean([(x, -y) for x, y, n in ps if not n.isdigit()], axis=0)
+        d = sig - mp
+        return (float(np.sign(d[0])), 0.0) if abs(d[0]) > abs(d[1]) else (0.0, float(np.sign(d[1])))
+
+    for ref, wrl in KNOB.items():                 # encoder + J's knob, raised to the model's shaft top
+        real("pecas_cima", "encoder_EC11E", ref, (1, 0), (1, 0), COL["metal"])
+        cx, cy = centre(by[ref])
+        top = step_mesh("encoder_EC11E").bounds[5]
         for p, fc, rgb in vrml(os.path.join(SHAPES, wrl)):
             if p[:, 2].min() >= KNOB_FROM_Z:
-                add("knobs", poly(placed(p, cx, cy), fc), rgb)
-
-    # USB-C and jack: J's models, mouth to the left edge (their -x)
-    for ref, wrl in (("J201", "USB_C_Receptacle.wrl"), ("J301", "AudioJack_35mm.wrl")):
-        f = by[ref]
-        cy = (f["box"][1] + f["box"][3]) / 2
-        shapes = vrml(os.path.join(SHAPES, wrl))
-        xmin = min(p[:, 0].min() for p, _, _ in shapes)
-        for p, fc, rgb in shapes:
-            add("pecas_cima", poly(placed(p, 2.5 - xmin - (1.6 if ref == "J201" else 2.0), cy), fc), rgb)
+                add("knobs", poly(placed(p, cx, cy, top - 20.0), fc), rgb)
+    real("pecas_cima", "usbc_TYPE-C-31-M-12", "J201", (0, 1), (-1, 0), COL["metal"], edge=USB_MOUTH_X)
+    real("pecas_cima", "jack_PJ-327A", "J301", JACK_MOUTH, (-1, 0), COL["housing"])
+    real("pecas_cima", "led_1615", "D401", (1, 0), (1, 0), (0.95, 0.95, 0.92))
+    real("pecas_baixo", "botao_TS-1187A", "SW403", (1, 0), (1, 0), COL["metal"])
+    back = pads_back("J202")
+    real("pecas_baixo", "jst_S3B-PH-SM4-TB", "J202", (0, -1), back, (0.92, 0.90, 0.84))
+    real("modulo", "m2_91302-42-067", "J101", M2_SLOT, (1, 0), COL["socket"], seat=-1.7)   # 4.2 mm body + 0.8 mm pegs
 
     # MicroMod: connector, standoff + screw, and SparkFun's module (card centre line 4 mm from the standoff)
     j, h = by["J101"], by["H101"]
     zb = -T_PCB
-    add("modulo", kbox([j["box"][0] + 0.5, j["box"][1] + 0.4, j["box"][0] + 0.5 + 8.7, j["box"][3] - 0.4], zb, zb - 4.2), COL["socket"])
     add("modulo", cyl(h["x"], h["y"], zb - STANDOFF_H, zb, 4.2), COL["pillar"])
     add("modulo", cyl(h["x"], h["y"], zb - STANDOFF_H - 0.8 - 1.3, zb - STANDOFF_H - 0.8, 4.5), COL["metal"])
     m = module_mesh()
@@ -249,6 +291,8 @@ SHOTS = {      # name: (camera position, focal point, view up, hidden groups)
     "cima_sem_capas": ((60, -330, 300), (125, -52, 0), (0, 0, 1), ("capas",)),
     "baixo": ((60, 230, -330), (125, -50, 0), (0, 0, -1), ()),
     "baixo_esquerda": ((-40, 110, -150), (40, -50, -3), (0, 0, -1), ()),
+    "cima_esquerda": ((-60, -150, 110), (30, -35, 3), (0, 0, 1), ()),
+    "modulo": ((60, 40, -75), (40, -18, -3), (0, 0, -1), ("bateria",)),
     "frente": ((125, -520, 6), (125, -50, 6), (0, 0, 1), ()),
     "esquerda": ((-300, -50, 6), (40, -50, 6), (0, 0, 1), ()),
 }
