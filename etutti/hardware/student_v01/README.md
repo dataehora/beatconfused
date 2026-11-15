@@ -15,8 +15,8 @@ Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio
 | 5 | Roteamento e conferências | fechada (14 nov) | placa igual à J1 depois do M3b, só o nome na serigrafia mudou (abaixo) |
 | 7 | Modelo 3D completo | conjunto pronto; **case adiado pelo J** | `model3d/` (abaixo), com os modelos reais das peças |
 | 8 | Fornecimento | fechada (15 nov) | `fornecimento/FORNECIMENTO.md`: 5 códigos LCSC corrigidos, Global Sourcing dispensado. Decisões do J: o mínimo de placas, teclas Orange, bateria de 3 fios, módulo MicroMod comprado depois |
-| 9 | Lista de compras e pedido | pronta para o J ver (15 nov) | `LISTA_DE_COMPRAS.md`: 5 placas com 2 montadas (o mínimo da JLCPCB), plate, compras fora da JLCPCB, roteiro do pedido com a conferência da prévia |
-| 6 | Firmware para esta placa | por último (decisão do J) | 28 teclas, 2 multiplexadores, pinos do MicroMod, bateria, liga/desliga, amplificador, acordeão amostrado |
+| 9 | Lista de compras e pedido | fechada (15 nov) | `LISTA_DE_COMPRAS.md`: 5 placas com 2 montadas, plate, teclas Orange, molas de 65 e 80 g, bateria de 3 fios |
+| 6 | Firmware para esta placa | pronta para o J ver (15 nov) | `FIRMWARE.md`: o mesmo sketch, compilado para o Teensy MicroMod; pinos 27/27 e teclas 28/28 contra a placa (`firmware_check.py`). Nunca rodou numa placa |
 
 ## O que há nesta pasta
 
@@ -26,6 +26,8 @@ Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio
 | `kicad/` | o projeto KiCad. Continua se chamando `viaggio_micromod`, porque o esquema guarda esse nome em cada peça. Abra `kicad/viaggio_micromod.kicad_pro` |
 | `fab/` | Gerbers e furação (`student_v01_gerbers.zip`), BOM e CPL da JLCPCB, peças postas em casa, Gerbers do plate, imagens |
 | `build.json` | o registro da última execução |
+| `FIRMWARE.md`, `firmware_check.py` | o relatório do firmware e a conferência dos pinos dele contra a placa |
+| `LISTA_DE_COMPRAS.md` | o que comprar e o roteiro do pedido na JLCPCB |
 | `fornecimento/` | `conferir_bom.py` consulta cada código na LCSC e na JLCPCB; `FORNECIMENTO.md` é o relatório da etapa 8 |
 | `model3d/` | o instrumento em 3D: `build.py` monta o conjunto e escreve `img/` e `heights.json` |
 

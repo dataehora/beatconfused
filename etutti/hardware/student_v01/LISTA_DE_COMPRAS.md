@@ -82,6 +82,8 @@ Pode ir no mesmo carrinho do pedido 1, para pagar um frete só.
 | Peça | Quantidade | Onde | Preço visto |
 |---|---:|---|---|
 | Teclas **Gateron KS-20 Magnetic Orange** (38 gf) | 1 pacote de 35 (usa 28) | loja da Gateron; Chosfox | US$ 24,50 a 26,60 |
+| Molas longas (20 a 22 mm) para teclas de teclado mecânico, **~65 g** | 1 pacote (em geral 100) | lojas de teclado mecânico | poucas libras |
+| Molas longas (20 a 22 mm), **~80 g** | 1 pacote | idem | poucas libras |
 | Bateria LiPo **503450**, 3,7 V, ~1000 mAh, **3 fios**, plugue JST PH de 2,0 mm | 1 | eBay, Amazon | ~£5 a £8 |
 | Alto-falante fino Ø36 mm, 8 Ω, até ~4,6 mm de altura | 1 | Mouser, DigiKey (ex.: PUI AS03608MR) | não cotado |
 | Parafuso M2.5 × 3 mm, cabeça chata | 1 | ferragem | centavos |
@@ -96,6 +98,15 @@ Compras adiadas por decisão do J ou por dependerem do case:
 | 2 knobs para eixo de 6 mm chanfrado | depois de confirmar a altura do eixo (24,5 mm, a conferir) |
 | 28 capas das teclas, impressas | com o case |
 | Case, com os 6 pilares de apoio | etapa adiada |
+
+### As molas: para chegar ao peso de um acordeão
+
+A KS-20 Orange pesa 38 gf; uma tecla de acordeão acústico fica por volta de 80 a 95 g (medida de um acordeão de teclado num fórum; não achei medida publicada de bayan). Nenhuma tecla magnética pronta passa muito de 60 gf, então o peso vem de trocar a mola.
+
+- A KS-20 usa mola de 20 mm, mais longa que a comum (14 a 15 mm): comprar molas vendidas como "longas".
+- **Não testado:** se a mola de teclado mecânico encaixa na KS-20 sem folga. Trocar primeiro em uma tecla.
+- Com a placa funcionando, trocar a mola de quatro ou cinco teclas vizinhas, uma parte com 65 g e outra com 80 g, tocar, e só então trocar as 28.
+- A troca não muda o ímã: placa, sensores e firmware ficam iguais.
 
 ### A bateria de 3 fios: conferir antes de ligar
 
