@@ -116,12 +116,13 @@
   "sob a bateria (fundo interno)": 0.5,
   "sob o conector da bateria e as pecas de baixo": 1.4,
   "sob o modulo": 2.22,
-  "entre o alto-falante e a placa": 3.2,
+  "entre o alto-falante e a placa": 6.6,
   "tampa acima do USB-C (3,25) e do jack (4,75)": [
-   4.55,
-   3.05
+   7.95,
+   6.45
   ],
-  "entre a tampa e a capa de uma tecla apertada": 1.0,
-  "tampa abaixo do topo do alojamento das teclas": 1.4
+  "entre o deck e a cabeca de um botao apertado ate o fim": 0.7,
+  "entre o deck e o alojamento das teclas": 0.4,
+  "em volta da haste do botao, no furo do deck (raio)": 0.7
  }
 }

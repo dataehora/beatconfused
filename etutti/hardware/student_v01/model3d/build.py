@@ -56,13 +56,14 @@ ENC_PIN_BELOW = 2.3          # EC11 legs under the board, untrimmed
 BATTERY = (34.0, 50.0, 5.0)  # LiPo 503450, ~1000 mAh: x, y, thickness
 BATTERY_AT = (29.0, 70.0)    # KiCad x, y of its centre: under the board, front-left
 BATTERY_TOP = -(T_PCB + 1.0 + 0.4)       # under the encoder legs trimmed to 1 mm, 0.4 of foam
-SPEAKER_D, SPEAKER_H, SPEAKER_FACE_Z = 36.0, 4.6, 7.8      # face against the underside of the lid
+SPEAKER_D, SPEAKER_H, SPEAKER_FACE_Z = 36.0, 4.6, 11.2     # face against the underside of the lid (case.py)
 PILLARS = [(197.5, 32.5), (207.5, 67.5), (112.5, 67.5), (167.5, 67.5), (127.5, 32.5), (132.5, 67.5)]
 KNOB = {"SW401": "Volume_Knob.wrl", "SW402": "Encoder_Knob.wrl"}
 MODELS = os.path.join(HERE, "modelos")       # EasyEDA's STEP models (fetch_models.py), not in Git
 USB_MOUTH_X = 0.9            # KiCad x of the USB-C's mouth: 1.6 mm past the board's edge
 JACK_MOUTH = (0, 1)          # which way the jack's mouth points in its own model
 M2_SLOT = (0, 1)             # which way the card slot points in the M.2 connector's model
+KNOB_FOOT_Z = 13.7           # the knob's foot: 0.5 above the lid (case.py: lid top 13.2)
 KNOB_FROM_Z = 8.0            # of J's knob models only the knob is used; the encoder body is a box
 
 COL = {"pcb_part": (0.12, 0.12, 0.13), "metal": (0.75, 0.76, 0.78), "housing": (0.20, 0.21, 0.23),
@@ -174,8 +175,10 @@ def assemble():
         p[:, 2] += Z_PLATE_TOP - PLATE_T
         add("plate", poly(p, f), COL["plate"])
 
-    cap = pv.read(KEYCAP)
-    cap.points[:, 2] += CAP_Z[1] - cap.bounds[5]
+    own = os.path.join(ROOT, "case", "out", "capa.stl")       # the Student's own button (case/case.py)
+    cap = pv.read(own if os.path.exists(own) else KEYCAP)
+    if not os.path.exists(own):
+        cap.points[:, 2] += CAP_Z[1] - cap.bounds[5]
     special = set(KNOB) | {"J101", "H101", "J201", "J301", "J202", "SW403", "D401"}
     for f in fps:
         ref, b, h = f["ref"], f["box"], f["height"] or 0.0
@@ -235,7 +238,7 @@ def assemble():
         top = step_mesh("encoder_EC11E").bounds[5]
         for p, fc, rgb in vrml(os.path.join(SHAPES, wrl)):
             if p[:, 2].min() >= KNOB_FROM_Z:
-                add("knobs", poly(placed(p, cx, cy, top - 20.0), fc), rgb)
+                add("knobs", poly(placed(p, cx, cy, max(top - 20.0, KNOB_FOOT_Z - KNOB_FROM_Z)), fc), rgb)
     real("pecas_cima", "usbc_TYPE-C-31-M-12", "J201", (0, 1), (-1, 0), COL["metal"], edge=USB_MOUTH_X)
     real("pecas_cima", "jack_PJ-327A", "J301", JACK_MOUTH, (-1, 0), COL["housing"])
     real("pecas_cima", "led_1615", "D401", (1, 0), (1, 0), (0.95, 0.95, 0.92))

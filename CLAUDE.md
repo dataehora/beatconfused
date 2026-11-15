@@ -586,6 +586,11 @@ list and order. Update the README's table as steps close. Nothing is ordered unt
   plate, speaker grille, USB/jack slots. `case/fit_check.py` tests every part's mesh points
   against the two shells (`compute_implicit_distance`, 0.15 mm margin); `model3d/build.py` adds
   the case to the scene (`case_*` shots). Report: `case/CASE.md`. Not printed.
+  **J's change, then approved (15 Nov):** the lid covers the keyboard like an accordion's: a
+  1.6 mm deck 0.4 above the switch housings with one 7 mm hole per key (lid top now 13.2, case
+  23.3 mm tall), and a new button `out/capa` (5.6 mm stem through the deck onto the MX cross,
+  16.5 mm domed head, 0.7 mm above the deck when pressed), which replaces the Pocket's skirted
+  cap for this model and goes on from above after the lid.
 - The J1's step M3b (LCSC codes, C307 = C162182, SW403 height) had sat unmerged on its branch
   since 28 Oct; merged as PR #138.
 
