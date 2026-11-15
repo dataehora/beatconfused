@@ -546,6 +546,10 @@ list and order. Update the README's table as steps close. Nothing is ordered unt
   (codec is 9.35), ~70 per assembled board. Report + 4 questions for J in
   `fornecimento/FORNECIMENTO.md`. Encoder shaft tip is most likely 24.5 mm above the board (Arrow
   + EasyEDA model), not the footprint's 20: matters for the case and knobs only.
+- **Step 9 (15 Nov, awaiting J):** `student_v01/LISTA_DE_COMPRAS.md`. J's decisions: fewest
+  boards possible (JLCPCB minimum = 5 PCBs with 2 assembled; ~US$ 220-265), Gateron KS-20
+  **Orange**, **3-wire** battery (503450 with NTC), MicroMod module bought later. Only step 6
+  (firmware) and the postponed case remain. Nothing ordered.
 - The J1's step M3b (LCSC codes, C307 = C162182, SW403 height) had sat unmerged on its branch
   since 28 Oct; merged as PR #138.
 
