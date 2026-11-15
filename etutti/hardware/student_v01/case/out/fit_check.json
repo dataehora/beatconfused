@@ -1,0 +1,127 @@
+{
+ "margem_mm": 0.15,
+ "grupos": {
+  "alto_falante": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "bateria": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "capas": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "espacadores": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "knobs": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "modulo": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "pecas_baixo": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "pecas_cima": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "placa": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "plate": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  },
+  "teclas": {
+   "case_fundo": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   },
+   "case_tampa": {
+    "pontos_dentro": 0,
+    "mais_fundo_mm": 0.0
+   }
+  }
+ },
+ "folgas_mm": {
+  "sob a bateria (fundo interno)": 0.5,
+  "sob o conector da bateria e as pecas de baixo": 1.4,
+  "sob o modulo": 2.22,
+  "entre o alto-falante e a placa": 3.2,
+  "tampa acima do USB-C (3,25) e do jack (4,75)": [
+   4.55,
+   3.05
+  ],
+  "entre a tampa e a capa de uma tecla apertada": 1.0,
+  "tampa abaixo do topo do alojamento das teclas": 1.4
+ }
+}

@@ -1,0 +1,53 @@
+{
+ "fundo": {
+  "solidos": 1,
+  "volume_cm3": 62.9,
+  "caixa_mm": [
+   251.3,
+   99.8,
+   10.1
+  ],
+  "z": [
+   -10.1,
+   0.0
+  ]
+ },
+ "tampa": {
+  "solidos": 1,
+  "volume_cm3": 46.2,
+  "caixa_mm": [
+   251.3,
+   99.8,
+   9.8
+  ],
+  "z": [
+   0.0,
+   9.8
+  ]
+ },
+ "espacador": {
+  "solidos": 1,
+  "volume_cm3": 0.0,
+  "caixa_mm": [
+   4.6,
+   4.6,
+   3.4
+  ],
+  "z": [
+   0.0,
+   3.45
+  ]
+ },
+ "grade_furos": 85,
+ "medidas": {
+  "fora_mm": [
+   251.3,
+   99.8,
+   19.9
+  ],
+  "fundo_interno_abaixo_da_placa": 8.1,
+  "tampa_acima_da_placa": 9.8,
+  "parede": 2.0,
+  "folga_da_placa": 0.4
+ }
+}

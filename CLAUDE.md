@@ -575,6 +575,17 @@ list and order. Update the README's table as steps close. Nothing is ordered unt
   `student_v01/build.py` runs it after the fab export; the table-based file is kept as
   `fornecimento/cpl_antigo.csv` to compare. **The J1's own `fab/viaggio_j1_cpl.csv` is still the
   wrong one.** EasyEDA's API allows about a dozen requests, then 403 for some minutes.
+- **State on 15 Nov, evening:** J checked the new CPL in JLCPCB's preview (connectors, encoders,
+  pin 1 of the chips and sensors) and calls the project **ready to buy**; he will present it
+  for approval before ordering. He chose to keep the board rectangular (cutting it to profile A
+  on the right was offered: only 53 GND stitching vias lie outside the profile there).
+- **Prototype case:** `student_v01/case/case.py` (CadQuery; model frame, z = 0 at the board's
+  top) writes `out/fundo`, `tampa`, `espacador` (STEP + STL): rectangular, 251.3 x 99.8 x 19.9 mm,
+  8 M2 x 16 from below (H1-H4 into lid posts, H5-H8 through spacer and plate into nuts), the 6
+  keyboard pillars, battery cradle, one key opening (union of r 10.8 circles) with a rim on the
+  plate, speaker grille, USB/jack slots. `case/fit_check.py` tests every part's mesh points
+  against the two shells (`compute_implicit_distance`, 0.15 mm margin); `model3d/build.py` adds
+  the case to the scene (`case_*` shots). Report: `case/CASE.md`. Not printed.
 - The J1's step M3b (LCSC codes, C307 = C162182, SW403 height) had sat unmerged on its branch
   since 28 Oct; merged as PR #138.
 

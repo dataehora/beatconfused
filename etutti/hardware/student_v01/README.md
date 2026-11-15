@@ -2,7 +2,7 @@
 
 Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio_j1/`, roteada pelo J e conferida nos passos M3 e M3b) levada até o pedido, com o nome novo. A J1 fica como está, para referência.
 
-**Nada foi encomendado.** O J revisa o projeto em nove etapas e aprova cada uma antes da seguinte.
+**Nada foi encomendado.** O J revisou o projeto em nove etapas. Em 15 nov 2026 a prévia da montagem na JLCPCB foi conferida pelo J e o projeto ficou **pronto para compra**, aguardando a apresentação dele para aprovação.
 
 ## Revisão, etapa por etapa
 
@@ -13,7 +13,7 @@ Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio
 | 3 | Forma e planta | fechada (14 nov) | placa retangular 246,5 × 95 mm, 4 camadas, 1,2 mm. A flexão é resolvida por 6 pilares Ø4 no fundo do case (P1–P6 do `viaggio_j1/FABRICACAO.md`), não por mais furos. A forma do plate fica para a etapa 7 |
 | 4 | Esquema e peças | fechada (14 nov) | peças mantidas; sensores TMAG5253 por Global Sourcing da JLCPCB (o DRV5055 só volta se a cotação falhar); C307 = C162182 |
 | 5 | Roteamento e conferências | fechada (14 nov) | placa igual à J1 depois do M3b, só o nome na serigrafia mudou (abaixo) |
-| 7 | Modelo 3D completo | conjunto pronto; **case adiado pelo J** | `model3d/` (abaixo), com os modelos reais das peças |
+| 7 | Modelo 3D completo | conjunto e **case do protótipo** prontos para o J ver (15 nov) | `model3d/` e `case/CASE.md`: case retangular de duas peças, 251 × 100 × 20 mm, conferido contra o conjunto |
 | 8 | Fornecimento | fechada (15 nov) | `fornecimento/FORNECIMENTO.md`: 5 códigos LCSC corrigidos, Global Sourcing dispensado. Decisões do J: o mínimo de placas, teclas Orange, bateria de 3 fios, módulo MicroMod comprado depois |
 | 9 | Lista de compras e pedido | fechada (15 nov) | `LISTA_DE_COMPRAS.md`: 5 placas com 2 montadas, plate, teclas Orange, molas de 65 e 80 g, bateria de 3 fios |
 | 6 | Firmware para esta placa | pronta para o J ver (15 nov) | `FIRMWARE.md`: o mesmo sketch, compilado para o Teensy MicroMod; pinos 27/27 e teclas 28/28 contra a placa (`firmware_check.py`). Nunca rodou numa placa |
@@ -28,6 +28,7 @@ Começada em 14 nov 2026. É a placa do **Viaggio J1** (`etutti/hardware/viaggio
 | `build.json` | o registro da última execução |
 | `FIRMWARE.md`, `firmware_check.py` | o relatório do firmware e a conferência dos pinos dele contra a placa |
 | `LISTA_DE_COMPRAS.md` | o que comprar e o roteiro do pedido na JLCPCB |
+| `case/` | o case do protótipo: `case.py` (CadQuery), `fit_check.py`, `CASE.md`, arquivos para imprimir em `out/` |
 | `fornecimento/` | `conferir_bom.py` consulta cada código na LCSC e na JLCPCB; `FORNECIMENTO.md` é o relatório da etapa 8 |
 | `model3d/` | o instrumento em 3D: `build.py` monta o conjunto e escreve `img/` e `heights.json` |
 

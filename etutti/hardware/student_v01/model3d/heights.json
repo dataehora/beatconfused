@@ -1,7 +1,7 @@
 {
  "alto_falante": {
-  "z_min": 4.4,
-  "z_max": 9.0
+  "z_min": 3.2,
+  "z_max": 7.8
  },
  "bateria": {
   "z_min": -7.6,
@@ -10,6 +10,18 @@
  "capas": {
   "z_min": 11.2,
   "z_max": 18.9
+ },
+ "case_fundo": {
+  "z_min": -10.1,
+  "z_max": 0.0
+ },
+ "case_tampa": {
+  "z_min": 0.0,
+  "z_max": 9.8
+ },
+ "espacadores": {
+  "z_min": 0.0,
+  "z_max": 6.7
  },
  "knobs": {
   "z_min": 12.7,
@@ -46,6 +58,7 @@
  "_fundo_interno_do_case": -8.1,
  "_abaixo_da_placa_mm": {
   "bateria": 6.4,
+  "case_fundo": 8.9,
   "modulo": 4.68,
   "pecas_baixo": 5.5,
   "pecas_cima": 2.3,

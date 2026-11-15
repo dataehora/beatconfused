@@ -56,7 +56,7 @@ ENC_PIN_BELOW = 2.3          # EC11 legs under the board, untrimmed
 BATTERY = (34.0, 50.0, 5.0)  # LiPo 503450, ~1000 mAh: x, y, thickness
 BATTERY_AT = (29.0, 70.0)    # KiCad x, y of its centre: under the board, front-left
 BATTERY_TOP = -(T_PCB + 1.0 + 0.4)       # under the encoder legs trimmed to 1 mm, 0.4 of foam
-SPEAKER_D, SPEAKER_H, SPEAKER_FACE_Z = 36.0, 4.6, 9.0
+SPEAKER_D, SPEAKER_H, SPEAKER_FACE_Z = 36.0, 4.6, 7.8      # face against the underside of the lid
 PILLARS = [(197.5, 32.5), (207.5, 67.5), (112.5, 67.5), (167.5, 67.5), (127.5, 32.5), (132.5, 67.5)]
 KNOB = {"SW401": "Volume_Knob.wrl", "SW402": "Encoder_Knob.wrl"}
 MODELS = os.path.join(HERE, "modelos")       # EasyEDA's STEP models (fetch_models.py), not in Git
@@ -68,7 +68,8 @@ KNOB_FROM_Z = 8.0            # of J's knob models only the knob is used; the enc
 COL = {"pcb_part": (0.12, 0.12, 0.13), "metal": (0.75, 0.76, 0.78), "housing": (0.20, 0.21, 0.23),
        "stem": (0.85, 0.25, 0.20), "cap": (0.93, 0.91, 0.86), "plate": (0.10, 0.10, 0.11),
        "battery": (0.55, 0.60, 0.70), "speaker": (0.25, 0.25, 0.27), "module": (0.75, 0.10, 0.12),
-       "socket": (0.10, 0.10, 0.11), "pillar": (0.85, 0.70, 0.30), "pin": (0.80, 0.80, 0.82)}
+       "socket": (0.10, 0.10, 0.11), "pillar": (0.85, 0.70, 0.30), "pin": (0.80, 0.80, 0.82),
+       "case": (0.86, 0.84, 0.80)}
 
 
 def run(cmd):
@@ -272,6 +273,16 @@ def assemble():
             p = p.copy()
             p[:, 2] = floor + p[:, 2] / p[:, 2].max() * (-T_PCB - floor)
             add("pilares", poly(placed(p, x, y), fc), rgb)
+    # the case (case/case.py), when it has been built
+    case = os.path.join(ROOT, "case", "out")
+    if os.path.exists(os.path.join(case, "tampa.stl")):
+        add("case_fundo", pv.read(os.path.join(case, "fundo.stl")), COL["case"])
+        add("case_tampa", pv.read(os.path.join(case, "tampa.stl")), COL["case"])
+        sp = pv.read(os.path.join(case, "espacador.stl"))
+        for f in fps:
+            if f["lib"].startswith("MountingHole") and f["ref"] in ("H5", "H6", "H7", "H8"):
+                add("espacadores", sp.translate((f["x"], -f["y"], 0), inplace=False), COL["pillar"])
+                add("espacadores", cyl(f["x"], f["y"], Z_PLATE_TOP, Z_PLATE_TOP + 1.6, 4.4, 6), COL["metal"])   # M2 nut
     return parts, floor
 
 
@@ -286,15 +297,25 @@ def heights(parts, floor):
     return out
 
 
+CASE = ("case_fundo", "case_tampa", "espacadores")
 SHOTS = {      # name: (camera position, focal point, view up, hidden groups)
-    "cima": ((60, -330, 300), (125, -52, 0), (0, 0, 1), ()),
-    "cima_sem_capas": ((60, -330, 300), (125, -52, 0), (0, 0, 1), ("capas",)),
-    "baixo": ((60, 230, -330), (125, -50, 0), (0, 0, -1), ()),
-    "baixo_esquerda": ((-40, 110, -150), (40, -50, -3), (0, 0, -1), ()),
-    "cima_esquerda": ((-60, -150, 110), (30, -35, 3), (0, 0, 1), ()),
-    "modulo": ((60, 40, -75), (40, -18, -3), (0, 0, -1), ("bateria",)),
-    "frente": ((125, -520, 6), (125, -50, 6), (0, 0, 1), ()),
-    "esquerda": ((-300, -50, 6), (40, -50, 6), (0, 0, 1), ()),
+    "cima": ((60, -330, 300), (125, -52, 0), (0, 0, 1), CASE),
+    "cima_sem_capas": ((60, -330, 300), (125, -52, 0), (0, 0, 1), CASE + ("capas",)),
+    "baixo": ((60, 230, -330), (125, -50, 0), (0, 0, -1), CASE),
+    "baixo_esquerda": ((-40, 110, -150), (40, -50, -3), (0, 0, -1), CASE),
+    "cima_esquerda": ((-60, -150, 110), (30, -35, 3), (0, 0, 1), CASE),
+    "modulo": ((60, 40, -75), (40, -18, -3), (0, 0, -1), CASE + ("bateria",)),
+    "frente": ((125, -520, 6), (125, -50, 6), (0, 0, 1), CASE),
+    "esquerda": ((-300, -50, 6), (40, -50, 6), (0, 0, 1), CASE),
+    # with the case (the loose pillars of the bare model are the case's own here)
+    "case_cima": ((60, -330, 300), (125, -52, 0), (0, 0, 1), ("pilares",)),
+    "case_esquerda": ((-90, -170, 120), (30, -40, 3), (0, 0, 1), ("pilares",)),
+    "case_baixo": ((60, 230, -330), (125, -50, 0), (0, 0, -1), ("pilares",)),
+    "case_aberto_baixo": ((60, 230, -330), (125, -50, 0), (0, 0, -1), ("pilares", "case_fundo")),
+    "case_fundo": ((60, -330, 300), (125, -52, 0), (0, 0, 1),
+                   ("pilares", "case_tampa", "capas", "teclas", "plate", "knobs", "alto_falante", "espacadores",
+                    "placa", "pecas_cima", "pecas_baixo", "modulo")),
+    "case_frente": ((125, -520, 6), (125, -50, 6), (0, 0, 1), ("pilares",)),
 }
 
 
@@ -306,9 +327,9 @@ def render(parts):
             if g not in hide:
                 pl.add_mesh(m, color=rgb, smooth_shading=False, specular=0.15)
         pl.camera_position = [pos, focal, up]
-        if name in ("frente", "esquerda"):
+        if name in ("frente", "esquerda", "case_frente"):
             pl.enable_parallel_projection()
-            pl.camera.parallel_scale = 84 if name == "frente" else 40
+            pl.camera.parallel_scale = 40 if name == "esquerda" else 84
         else:
             pl.camera.view_angle = 22
         pl.screenshot(os.path.join(IMG, "student_v01_%s.png" % name))
