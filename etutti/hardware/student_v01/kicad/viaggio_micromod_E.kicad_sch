@@ -4302,7 +4302,7 @@
 		(property "Datasheet" "" (at 375.92 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Description" "ICHG = 890/1800 = 0,49 A" (at 375.92 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Codigo" "E3" (at 379.73 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
-		(property "LCSC" "C25811" (at 375.92 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "LCSC" "C25871" (at 375.92 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Montagem" "JLC" (at 375.92 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(pin "1" (uuid "7b6c383f-be4f-51cd-bdb2-f8b2054675d5"))
 		(pin "2" (uuid "b8d0ab83-c27f-5ffa-810d-1c18c2e26f13"))

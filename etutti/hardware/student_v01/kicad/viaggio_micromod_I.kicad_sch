@@ -1519,7 +1519,7 @@
 		(property "Datasheet" "" (at 165.1 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Description" "" (at 165.1 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Codigo" "I3" (at 168.91 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
-		(property "LCSC" "C25190" (at 165.1 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "LCSC" "C25099" (at 165.1 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Montagem" "JLC" (at 165.1 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(pin "1" (uuid "b3601952-9fd7-56ef-a4b3-ca02f14cd0ca"))
 		(pin "2" (uuid "e46f1bea-4e5f-5c8a-a54d-eb26b76bd17a"))

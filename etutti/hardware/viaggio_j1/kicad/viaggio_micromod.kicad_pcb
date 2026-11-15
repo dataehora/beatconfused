@@ -8997,7 +8997,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -9009,7 +9009,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -9615,7 +9615,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -9627,7 +9627,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -10016,7 +10016,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -10028,7 +10028,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -11669,7 +11669,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -11681,7 +11681,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -13806,7 +13806,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -13818,7 +13818,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -15623,7 +15623,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -15635,7 +15635,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -16024,7 +16024,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -16036,7 +16036,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -19575,7 +19575,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C547038"
+		(property "LCSC" "C179326"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -20090,7 +20090,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -20102,7 +20102,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -24195,7 +24195,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -24207,7 +24207,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -24800,7 +24800,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C7496631"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -24812,7 +24812,7 @@
 				)
 			)
 		)
-		(property "Montagem" "JLC (Global Sourcing)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -24978,7 +24978,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -24990,7 +24990,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -29001,7 +29001,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -29013,7 +29013,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -31332,7 +31332,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -31344,7 +31344,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -32167,7 +32167,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25811"
+		(property "LCSC" "C25871"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -32384,7 +32384,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -32396,7 +32396,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -32785,7 +32785,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -32797,7 +32797,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -33186,7 +33186,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -33198,7 +33198,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -34474,7 +34474,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -34486,7 +34486,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -34875,7 +34875,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -34887,7 +34887,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -36144,7 +36144,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -36156,7 +36156,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -37416,7 +37416,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -37428,7 +37428,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -39740,7 +39740,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -39752,7 +39752,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -42356,7 +42356,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -42368,7 +42368,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -42974,7 +42974,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -42986,7 +42986,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -43375,7 +43375,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -43387,7 +43387,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -44210,7 +44210,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -44222,7 +44222,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -44611,7 +44611,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C547038"
+		(property "LCSC" "C179326"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -45126,7 +45126,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25190"
+		(property "LCSC" "C25099"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -45343,7 +45343,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -45355,7 +45355,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -45744,7 +45744,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -45756,7 +45756,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -46990,7 +46990,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -47002,7 +47002,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -47844,7 +47844,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C22401868"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
@@ -47856,7 +47856,7 @@
 				)
 			)
 		)
-		(property "Montagem" "Global Sourcing (JLCPCB)"
+		(property "Montagem" "JLC"
 			(at 0 0 0)
 			(layer "B.Fab")
 			(hide yes)
