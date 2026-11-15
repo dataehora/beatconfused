@@ -563,6 +563,18 @@ list and order. Update the README's table as steps close. Nothing is ordered unt
   Not done: a Student model on the page, watchdog. Shopping list gained 65 g and 80 g long
   springs (J wants a bayan-like key weight; KS-20 Orange is 38 gf).
   All nine review steps are now done or awaiting J; only the case is postponed.
+- **CPL was wrong (found by J in JLCPCB's preview, 15 Nov).** The J1's `m3.bom_cpl` takes
+  positions from KiCad's footprint origins and rotations from a per-package table; JLCPCB places
+  by the EasyEDA footprint of the LCSC code. `student_v01/fornecimento/cpl_jlc.py` (KiCad python)
+  now writes `fab/student_v01_cpl.csv` from the pads: fits each part's EasyEDA pads (in
+  `fornecimento/easyeda_pads.json`, tracked) onto the board's pads, by shared pad numbers or by
+  place; bottom side = EasyEDA footprint mirrored left-right, rotation counted the other way
+  (reproduces the old result for SOT-23/TSSOP on the back). 37 of 140 parts changed: **all 28
+  TMAG5253 were 180 deg off** (invisible in a preview: symmetric pads), J101 180 deg, encoders
+  90 deg + 7.7 mm, jack 6.6 mm, USB-C 1.5 mm, J202 180 deg, U201/U202/U204 90 deg.
+  `student_v01/build.py` runs it after the fab export; the table-based file is kept as
+  `fornecimento/cpl_antigo.csv` to compare. **The J1's own `fab/viaggio_j1_cpl.csv` is still the
+  wrong one.** EasyEDA's API allows about a dozen requests, then 403 for some minutes.
 - The J1's step M3b (LCSC codes, C307 = C162182, SW403 height) had sat unmerged on its branch
   since 28 Oct; merged as PR #138.
 

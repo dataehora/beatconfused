@@ -92,6 +92,7 @@
   "SW9",
   "TP101"
  ],
+ "cpl": 140,
  "plate": "student_v01_plate_gerbers.zip",
  "imagens": [
   "student_v01_top.png",

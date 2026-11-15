@@ -1,0 +1,694 @@
+{
+ "pecas": 140,
+ "sem_footprint": [],
+ "ambiguas": [
+  [
+   "H101",
+   "Standoff_SMD_M2.5_H2.5",
+   [
+    90,
+    180,
+    270
+   ]
+  ],
+  [
+   "SW403",
+   "SW_Push_1P1T_XKB_TS-1187A",
+   [
+    180
+   ]
+  ]
+ ],
+ "footprints": {
+  "C_0805_2012Metric": {
+   "lcsc": "C15850",
+   "refs": [
+    "C101",
+    "C201",
+    "C202",
+    "C203",
+    "C206",
+    "C207",
+    "C208",
+    "C501"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.05,
+   "antes_depois": [
+    [
+     0,
+     0,
+     180.0
+    ],
+    [
+     180,
+     180,
+     0.0
+    ],
+    [
+     270,
+     270,
+     -90.0
+    ],
+    [
+     90,
+     90,
+     90.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "C_0402_1005Metric": {
+   "lcsc": "C1525",
+   "refs": [
+    "C102",
+    "C204",
+    "C205",
+    "C209",
+    "C213",
+    "C301",
+    "C302",
+    "C303",
+    "C304",
+    "C305",
+    "C306",
+    "C307",
+    "C308",
+    "C502",
+    "C601",
+    "C602",
+    "C603",
+    "C701",
+    "C702",
+    "C703",
+    "C704",
+    "C705",
+    "C706",
+    "C707",
+    "C708",
+    "C709",
+    "C710",
+    "C711",
+    "C712",
+    "C713",
+    "C714",
+    "C715",
+    "C716",
+    "C717",
+    "C718",
+    "C719",
+    "C720",
+    "C721",
+    "C722",
+    "C723",
+    "C724",
+    "C725",
+    "C726",
+    "C727",
+    "C728"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.06,
+   "antes_depois": [
+    [
+     0,
+     0,
+     180.0
+    ],
+    [
+     180,
+     180,
+     0.0
+    ],
+    [
+     270,
+     270,
+     -90.0
+    ],
+    [
+     90,
+     90,
+     90.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "C_0603_1608Metric": {
+   "lcsc": "C19702",
+   "refs": [
+    "C210"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.075,
+   "antes_depois": [
+    [
+     270,
+     270,
+     -90.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "cima",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "D_SOD-123F": {
+   "lcsc": "C151296",
+   "refs": [
+    "D201"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.25,
+   "antes_depois": [
+    [
+     0,
+     0,
+     0.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "cima",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "SOT-23": {
+   "lcsc": "C134405",
+   "refs": [
+    "D202",
+    "D203",
+    "D204",
+    "D205",
+    "D402",
+    "Q201",
+    "Q202",
+    "Q203"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.397,
+   "antes_depois": [
+    [
+     0,
+     0,
+     0.0
+    ],
+    [
+     270,
+     270,
+     90.0
+    ]
+   ],
+   "deslocamento_mm": 0.1,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "LED_1615_RG_4pad": {
+   "lcsc": "C273605",
+   "refs": [
+    "D401"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.079,
+   "antes_depois": [
+    [
+     0,
+     0,
+     0.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "cima",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "L_0603_1608Metric": {
+   "lcsc": "C1002",
+   "refs": [
+    "FB301"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.088,
+   "antes_depois": [
+    [
+     180,
+     180,
+     0.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "Standoff_SMD_M2.5_H2.5": {
+   "lcsc": "C7496631",
+   "refs": [
+    "H101"
+   ],
+   "como": "posicoes",
+   "erro_max_mm": 0.0,
+   "antes_depois": [
+    [
+     0,
+     0,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "M.2_E_H4.2_UMAX_91302-42-067": {
+   "lcsc": "C48985906",
+   "refs": [
+    "J101"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.0,
+   "antes_depois": [
+    [
+     90,
+     270,
+     90.0
+    ]
+   ],
+   "deslocamento_mm": 1.5,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    180
+   ]
+  },
+  "USB_C_Receptacle_HRO_TYPE-C-31-M-12": {
+   "lcsc": "C165948",
+   "refs": [
+    "J201"
+   ],
+   "como": "posicoes",
+   "erro_max_mm": 0.118,
+   "antes_depois": [
+    [
+     270,
+     270,
+     -90.0
+    ]
+   ],
+   "deslocamento_mm": 1.54,
+   "lado": "cima",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal": {
+   "lcsc": "C265101",
+   "refs": [
+    "J202"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.0,
+   "antes_depois": [
+    [
+     0,
+     180,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.08,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    180
+   ]
+  },
+  "Jack_3.5mm_PJ-327A_SMD": {
+   "lcsc": "C668605",
+   "refs": [
+    "J301"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.48,
+   "antes_depois": [
+    [
+     90,
+     90,
+     90.0
+    ]
+   ],
+   "deslocamento_mm": 6.55,
+   "lado": "cima",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "L_Changjiang_FNR4020S": {
+   "lcsc": "C167825",
+   "refs": [
+    "L201"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.0,
+   "antes_depois": [
+    [
+     90,
+     90,
+     90.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "R_0402_1005Metric": {
+   "lcsc": "C25076",
+   "refs": [
+    "R105",
+    "R201",
+    "R202",
+    "R203",
+    "R204",
+    "R205",
+    "R206",
+    "R207",
+    "R208",
+    "R209",
+    "R210",
+    "R211",
+    "R212",
+    "R213",
+    "R214",
+    "R215",
+    "R216",
+    "R217",
+    "R218",
+    "R301",
+    "R302",
+    "R303",
+    "R304",
+    "R401",
+    "R402",
+    "R501"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.077,
+   "antes_depois": [
+    [
+     0,
+     0,
+     0.0
+    ],
+    [
+     180,
+     180,
+     0.0
+    ],
+    [
+     270,
+     270,
+     -90.0
+    ],
+    [
+     90,
+     90,
+     90.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm": {
+   "lcsc": "C255515",
+   "refs": [
+    "SW401",
+    "SW402"
+   ],
+   "como": "posicoes",
+   "erro_max_mm": 0.1,
+   "antes_depois": [
+    [
+     90,
+     0,
+     90.0
+    ]
+   ],
+   "deslocamento_mm": 7.67,
+   "lado": "cima",
+   "rotacao_mudou_em": [
+    90
+   ]
+  },
+  "SW_Push_1P1T_XKB_TS-1187A": {
+   "lcsc": "C318884",
+   "refs": [
+    "SW403"
+   ],
+   "como": "posicoes",
+   "erro_max_mm": 0.025,
+   "antes_depois": [
+    [
+     0,
+     0,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "SOT-23-6": {
+   "lcsc": "C7519",
+   "refs": [
+    "U201"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.012,
+   "antes_depois": [
+    [
+     0,
+     90,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "cima",
+   "rotacao_mudou_em": [
+    270
+   ]
+  },
+  "VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm": {
+   "lcsc": "C54313",
+   "refs": [
+    "U202"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.063,
+   "antes_depois": [
+    [
+     270,
+     0,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    270
+   ]
+  },
+  "SOT-23-5": {
+   "lcsc": "C7666",
+   "refs": [
+    "U203",
+    "U603",
+    "U604",
+    "U605"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.195,
+   "antes_depois": [
+    [
+     0,
+     0,
+     0.0
+    ],
+    [
+     180,
+     180,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.03,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "Texas_DRC0010J": {
+   "lcsc": "C28060",
+   "refs": [
+    "U204"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.1,
+   "antes_depois": [
+    [
+     270,
+     0,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    270
+   ]
+  },
+  "QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm": {
+   "lcsc": "C2651833",
+   "refs": [
+    "U301"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.043,
+   "antes_depois": [
+    [
+     270,
+     270,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "SOT-23-3": {
+   "lcsc": "C347373",
+   "refs": [
+    "U302"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.048,
+   "antes_depois": [
+    [
+     0,
+     0,
+     0.0
+    ]
+   ],
+   "deslocamento_mm": 0.01,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm": {
+   "lcsc": "C910544",
+   "refs": [
+    "U501"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.063,
+   "antes_depois": [
+    [
+     270,
+     270,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "TSSOP-24_4.4x7.8mm_P0.65mm": {
+   "lcsc": "C179326",
+   "refs": [
+    "U601",
+    "U602"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.16,
+   "antes_depois": [
+    [
+     180,
+     180,
+     -90.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm": {
+   "lcsc": "C22401868",
+   "refs": [
+    "U701",
+    "U702",
+    "U703",
+    "U704",
+    "U705",
+    "U706",
+    "U707",
+    "U708",
+    "U709",
+    "U710",
+    "U711",
+    "U712",
+    "U713",
+    "U714",
+    "U715",
+    "U716",
+    "U717",
+    "U718",
+    "U719",
+    "U720",
+    "U721",
+    "U722",
+    "U723",
+    "U724",
+    "U725",
+    "U726",
+    "U727",
+    "U728"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.075,
+   "antes_depois": [
+    [
+     270,
+     90,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    180
+   ]
+  }
+ }
+}

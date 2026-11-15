@@ -85,6 +85,12 @@ def fab():
     fora = os.path.join(FAB, NAME + "_fora_da_montagem.csv")
     text = open(fora, encoding="utf-8").read().replace("viaggio_j1_plate", NAME + "_plate")
     open(fora, "w", encoding="utf-8", newline="").write(text)
+    # The J1's CPL takes rotations from a table and positions from KiCad's footprint origins, which
+    # is wrong for several parts (15 Nov 2026: connectors, encoders, the 28 sensors). It is kept
+    # only to compare; the CPL that is ordered is worked out from the pads by cpl_jlc.py.
+    shutil.copyfile(os.path.join(FAB, NAME + "_cpl.csv"), os.path.join(HERE, "fornecimento", "cpl_antigo.csv"))
+    subprocess.run([sys.executable, os.path.join(HERE, "fornecimento", "cpl_jlc.py")], check=True, capture_output=True)
+    rec["cpl"] = json.load(open(os.path.join(HERE, "fornecimento", "cpl_jlc.json"), encoding="utf-8"))["pecas"]
     zp, _ = m3.gerbers(PLATE, NAME + "_plate", "F.Cu,B.Cu,F.Silkscreen,F.Mask,B.Mask,Edge.Cuts")
     rec["plate"] = os.path.basename(zp)
     rec["imagens"] = m3.renders(BOARD, NAME) + m3.renders(PLATE, NAME + "_plate", ("top",))

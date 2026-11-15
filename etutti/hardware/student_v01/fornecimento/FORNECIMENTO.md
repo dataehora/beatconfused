@@ -103,6 +103,36 @@ Para um primeiro protótipo a saída 2 é aceitável se a carga for sempre vigia
 2. O preço do espaçador C7496631.
 3. As rotações e posições de cada peça na prévia da montagem, sobretudo o conector M.2, o espaçador, o jack, o LED, o conector da bateria, o botão Program, o USB-C e os 28 sensores (o pino 1 decide a leitura).
 
+## 9. Posições e rotações da montagem (CPL), refeitas em 15 nov
+
+Ao configurar o pedido, o J viu na prévia da JLCPCB os knobs, o jack e o USB fora do lugar e o conector do módulo virado. **O arquivo de posições anterior estava errado e a montagem sairia errada.** Ele usava a origem de cada footprint do KiCad e uma tabela genérica de rotações; a JLCPCB posiciona cada peça pelo footprint que ela própria tem para o código LCSC, que pode ter outra origem e outra orientação.
+
+`fornecimento/cpl_jlc.py` refaz o arquivo peça por peça: baixa o footprint da JLCPCB (EasyEDA) de cada código, encontra o giro e o deslocamento que põem os pads dele sobre os pads da placa (pelo número do pad quando os dois footprints numeram igual, senão pela posição), e escreve a posição da origem dele e esse giro.
+
+```
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/student_v01/fornecimento/cpl_jlc.py
+```
+
+**37 das 140 peças mudaram:**
+
+| Peça | O que estava errado |
+|---|---|
+| **28 sensores TMAG5253** | **girados 180°**. O desenho dos pads é igual nos dois sentidos, então a prévia não mostraria nada estranho, mas o pino 1 ficaria trocado e nenhuma tecla funcionaria |
+| Conector do módulo (J101) | girado 180° e 1,5 mm fora |
+| Encoders (SW401, SW402) | girados 90° e 7,7 mm fora |
+| Jack (J301) | 6,6 mm fora |
+| USB-C (J201) | 1,5 mm fora |
+| Conector da bateria (J202) | girado 180° |
+| Carregador (U202), conversor (U204), proteção do USB (U201) | girados 90° |
+
+As outras 103 saíram iguais às de antes. Isso inclui peças do verso com desenho assimétrico (SOT-23, SOT-23-5, TSSOP-24), o que confirma que a convenção de espelhamento do verso usada no cálculo é a mesma da tabela antiga onde ela estava certa.
+
+O erro máximo entre os pads dos dois footprints depois do ajuste é de 0,5 mm (jack), por diferenças de desenho dos próprios footprints; nas outras peças fica abaixo de 0,4 mm.
+
+**O que continua valendo:** o cálculo supõe que a JLCPCB posiciona pelo footprint da EasyEDA. Os erros que o J viu são exatamente os que o cálculo encontrou, o que apoia a suposição, mas a prévia da JLCPCB continua sendo a conferência final. Duas peças não têm orientação a conferir: o espaçador (um pad só) e o botão Program (igual girado 180°).
+
+**O conector do módulo:** o footprint que a JLCPCB tem para o C48985906 tem a falha dos pinos em outro lugar (desenho de outra chave), mas a peça é a certa: a LCSC a descreve como "M.2-E Key, 67P, 4,2 mm". Na prévia, o desenho dos pads do conector pode não coincidir pino a pino com a placa nessa região; o corpo e as duas fileiras devem coincidir.
+
 ## Perguntas para o J
 
 1. **Um módulo MicroMod agora?** A DigiKey UK tem em estoque. Com ele na mão eu testo o firmware antes de as placas chegarem, e se confirma o encaixe.
