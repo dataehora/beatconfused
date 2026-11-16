@@ -13,7 +13,7 @@ Nada foi encomendado, impresso ou montado. O firmware da V2 não foi escrito; as
 | 3. Pinos e pilares do caso D; 10º parafuso em x 160,02 | Conferido: já eram as posições do modelo. Pior tecla: 0,049 mm com 3 N. |
 | 4. Janela 24 × 13 com acrílico e filete | Feito. |
 | 5. Caixa acústica em L | Feito: **10,4 cm³**, estanque, na mesma peça do anel. Estudo refeito (seção 5). |
-| 6. Rebaixos de 0,4 mm para tinta | Feitos, mas o logo está numa **fonte substituta** (pergunta 1). |
+| 6. Rebaixos de 0,4 mm para tinta | Feitos, com o logo em Michroma. Os traços são finos para um rebaixo (perguntas 3 e 4). |
 | 7. Placa, DRC, BOM, STEP/STL, renders | Feitos. DRC: só as 3 larguras já aceitas na V1, 0 ligações faltando, igual ao esquema. |
 | Fit check | 202 pares de peças testados com sólidos exatos: **nenhuma interferência**. |
 
@@ -91,12 +91,12 @@ O batente de um plugue é a frente do próprio conector. Com o conector 0,3 mm a
 - Com um plugue que não passa no furo o contato fica incerto: no P2 a ponta não chega à mola do fundo; no USB-C a trava não fecha. Cabos de fone moldados costumam ter Ø 6 ou menos na ponta; plugues de metal de cabos de áudio têm de 7 a 10 mm e não entram.
 - São estimativas pelas medidas dos conectores e da norma. Só o protótipo confirma.
 
-Alternativas, se o design quiser aceitar plugues grossos (pergunta 2): um rebaixo cônico por fora em volta de cada furo, ou a parede mais fina só na região dos conectores.
+Alternativas, se o design quiser aceitar plugues grossos (pergunta 1): um rebaixo cônico por fora em volta de cada furo, ou a parede mais fina só na região dos conectores.
 
 ## 4. Como o modelo foi resolvido, e onde se afasta da SPEC ou do canvas
 
-1. **Logo.** A fonte Michroma não está instalada neste computador, e baixar um arquivo pede autorização do J. O modelo usa Arial Bold no lugar, com os tamanhos e espaçamentos da prancha "Área de interface": "eTUTTI" com corpo de 4,4 mm e "STUDENT · V2" com 1,7 mm, de pé, lidos da frente para o fundo, centrados entre y 8 e 92, de x 9,5 a 12,7. Com a fonte na pasta `case/fontes/`, basta rodar o `case.py` de novo.
-2. **Letras pequenas.** "STUDENT · V2" tem letras de 1,26 mm de altura e traços de cerca de 0,2 mm. Um rebaixo desse tamanho não sai em impressão de filamento e fica no limite em resina e MJF.
+1. **Logo.** Em Michroma (arquivo e licença em `case/fontes/`, baixados do Google Fonts com autorização do J), com os tamanhos e espaçamentos da prancha "Área de interface": "eTUTTI" com corpo de 4,4 mm e "STUDENT · V2" com 1,7 mm, de pé, lidos da frente para o fundo. Ocupa y 26,6–73,4 (centrado entre 8 e 92) e x 9,4–12,8.
+2. **Traços finos.** A Michroma tem traço fino. "eTUTTI" tem letras de 3,4 mm com traço de cerca de 0,35 mm; "STUDENT · V2" tem letras de 1,3 mm com traço de cerca de 0,15 mm. O primeiro fica no limite de um rebaixo impresso em resina ou MJF; o segundo não sai em processo nenhum de impressão.
 3. **OUT e IN.** Letras de 2,0 mm de altura (Arial Bold), começando 1,3 mm à direita de cada furo, de z 1,8 a 3,8, abaixo dos sulcos (o mais baixo fica em z 7,6).
 4. **Janela e filete.** Seguem a SPEC (janela em y 15,5–28,5, filete em y 30,0). O texto da prancha "Área de interface" diz "tela 15,5–30,5, filete em 32", mas o desenho da mesma prancha bate com a SPEC.
 5. **Furos da grade sem chanfro.** A SPEC v1 pedia chanfro de 0,3 mm na entrada de cada furo. Em FR-4 o furo é só furado.
@@ -128,10 +128,10 @@ Script `estudos/acustica.py`, resultados em `estudos/acustica.json` e `estudos/a
 
 ## 7. Perguntas para o design
 
-1. **Fonte Michroma.** Posso baixá-la do Google Fonts (licença livre, arquivo `Michroma-Regular.ttf`) para refazer o rebaixo do logo? Até lá o modelo está com Arial Bold.
-2. **Plugues grossos.** O recuo funciona com plugues de corpo até 12,35 × 6,5 mm (USB-C) e Ø 6,4 mm (P2). Fica assim, ou faço um rebaixo por fora em volta dos furos para aceitar plugues de áudio de metal (Ø 7 a 10)?
-3. **Largura do furo do USB-C.** 12,5 mm deixa 0,08 mm por lado para um plugue no máximo da norma. Abro para 12,8?
-4. **"STUDENT · V2".** Letras de 1,26 mm com traço de 0,2 mm não saem em rebaixo impresso. Aumento o texto (por exemplo, corpo de 2,6 mm, letras de ~1,9), ou ele passa a ser só pintado ou adesivo?
+1. **Plugues grossos.** O recuo funciona com plugues de corpo até 12,35 × 6,5 mm (USB-C) e Ø 6,4 mm (P2). Fica assim, ou faço um rebaixo por fora em volta dos furos para aceitar plugues de áudio de metal (Ø 7 a 10)?
+2. **Largura do furo do USB-C.** 12,5 mm deixa 0,08 mm por lado para um plugue no máximo da norma. Abro para 12,8?
+3. **"STUDENT · V2".** Letras de 1,3 mm com traço de 0,15 mm não saem em rebaixo. Aumento o texto, ou ele passa a ser só pintado (tampografia ou adesivo), sem rebaixo?
+4. **"eTUTTI".** O traço de 0,35 mm fica no limite do rebaixo impresso. Mantém, engrosso o traço (contorno alargado em 0,1 mm), ou também vai pintado?
 5. **Chanfro dos furos da grade.** Em FR-4 não há chanfro de 0,3 mm. Aceita o furo reto?
 6. **Aba do poço.** 0,2 mm acima da grade (SPEC v1) ou 0,15 (prancha do canvas)?
 7. **Cor da tinta dos rebaixos.** A prancha mostra "eTUTTI" escuro e "STUDENT · V2" em marrom-avermelhado; OUT, IN e o filete escuros. Confirma?
