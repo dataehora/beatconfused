@@ -529,8 +529,8 @@ Code. Reports (Portuguese): `FIT_CHECK.md` (gaps, the two studies, 12 "Perguntas
   (`pcb/grade_fab.py`, z 11.35-12.95), window 24 x 13, L-shaped acoustic box 10.4 cm3 with ribs, 0.4 mm
   paint recesses. Lettering gotchas in `case.py`: cut the glyphs one by one, before the lid's cavity, from
   polygon outlines (`polygonised`); Bahnschrift's overlapping outlines never finish cutting; one cut with
-  all glyphs ate 26 GB. **Michroma is not on this PC:** the logo uses Arial Bold until J allows the
-  download into `case/fontes/`. `out/tinta.stl` is the paint, for the renders only.
+  all glyphs ate 26 GB. Michroma (OFL) is in `case/fontes/`, downloaded with J's OK; its strokes are thin
+  for a recess (0.35 mm in eTUTTI, 0.15 mm in STUDENT · V2: questions in FIT_CHECK). `out/tinta.stl` is the paint, for the renders only.
 - Studies: board needs the 4 pins in H5-H8 plus 3 pillars for <= 0.05 mm at 3 N (the SPEC's 3 pin spots
   sit on back-side parts); a printed grid sags onto the switches (FR-4 suggested); the 3.9 cm3 box puts
   the speaker's resonance near 1 kHz (12 cm3 would give 7-9 dB more bass).
