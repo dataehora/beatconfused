@@ -1,4 +1,38 @@
-# eTutti Student V2 — SPEC v2
+# eTutti Student V2 — SPEC v3
+
+Data: 16 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
+Responde às 7 perguntas do FIT_CHECK do ciclo 2 (PRs #151 e #152). Canvas: https://claude.ai/artifact/2xeBWDz7PnhAhXUK7pcHGy
+
+Tudo o que não é mencionado aqui continua como na SPEC v2 (logo abaixo) e no modelo dos PRs #151/#152.
+
+## Mudanças desde a v2
+
+1. **Plugues grossos: fica como está.** Não fazer rebaixo externo em volta dos furos. Acrescentar só um **chanfro de 0,5 mm × 45° na boca externa** dos três furos, para guiar o plugue. Registrar o limite no relatório e, depois, no manual: corpo do plugue de até 12,35 × 6,5 mm no USB-C e Ø 6,4 mm no P2.
+2. **Furo do USB-C: 12,8 mm** de largura (antes 12,5); a altura continua 7,0 e os cantos R 3,5.
+3. **"STUDENT · V2": só pintado** (tampografia), **sem rebaixo**. Mesma posição, fonte, tamanho e cor de antes. No modelo, vira só a camada de tinta (`tinta.stl`), sem corte na tampa.
+4. **"eTUTTI": engrossar o traço**, alargando o contorno em 0,1 mm de cada lado. Continua em rebaixo de 0,4 mm com tinta.
+5. **Furos da grade (FR-4): retos**, Ø 6,2, sem chanfro.
+6. **Aba do poço: 0,15 mm acima da grade** (valor da v2 confirmado).
+7. **Cores da tinta (confirmadas):**
+
+   | Elemento | Cor |
+   |---|---|
+   | "eTUTTI" | escuro #2B2925 |
+   | "STUDENT · V2" | marrom-avermelhado #8A3A22 |
+   | "OUT", "IN" e o filete sob a tela | escuro #2B2925 |
+
+8. **Espaço entre as linhas do logo (novo):** no isométrico do ciclo 2, "STUDENT · V2" encosta no fim de "eTUTTI". Manter **1,4 mm livres** entre as duas linhas, como no canvas. Se não couber na altura de 84 mm, diminuir o "STUDENT · V2" sem tocar no "eTUTTI".
+
+## Entregáveis deste ciclo
+
+1. Modelo 3D e STEP/STL atualizados com os itens 1 a 6 e 8; renders da parede esquerda e do isométrico (com um close da área do logo).
+2. `fit_check.py` de novo, incluindo o caminho de inserção da placa com o furo do USB-C de 12,8.
+3. A placa não muda neste ciclo. Se algum item exigir mudança nela, registrar no relatório antes de mexer.
+4. FIT_CHECK.md atualizado, terminando com "Perguntas para o design".
+
+---
+
+# Anexo — SPEC v2 (referência)
 
 Data: 16 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
 Responde ao FIT_CHECK do PR #150 (SPEC v1 atendida). Conceito visual atualizado no canvas: https://claude.ai/artifact/2xeBWDz7PnhAhXUK7pcHGy (prancha "Especificação do conceito · v2").
