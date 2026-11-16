@@ -1,4 +1,4 @@
-"""eTutti Student V2: the speaker's closed box and its bass (SPEC v1, section 5).
+"""eTutti Student V2: the speaker's closed box and its bass (SPEC v2, item 9).
 
     C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/student_v02/estudos/acustica.py
 
@@ -63,8 +63,8 @@ def main():
     modelled = json.load(open(CASE_JSON, encoding="utf-8"))["pecas"]["caixa_acustica"]["camara_cm3"] \
         if os.path.exists(CASE_JSON) else 3.9
     vas = vas_cm3(NOMINAL["fs"], NOMINAL["sd_cm2"], NOMINAL["mms_g"])
-    boxes = [("caixa da SPEC, como modelada", modelled), ("a mesma, com manta acustica (+15 %)", modelled * 1.15),
-             ("caixa de 8 cm3", 8.0), ("caixa de 12 cm3", 12.0), ("caixa de 20 cm3", 20.0),
+    boxes = [("caixa em L da SPEC v2, como modelada", modelled), ("a mesma, com manta acustica (+15 %)", modelled * 1.15),
+             ("caixa redonda da SPEC v1 (3,9 cm3)", 3.9), ("caixa de 12 cm3", 12.0), ("caixa de 20 cm3", 20.0),
              ("sem caixa: o case inteiro (~150 cm3, vazando)", 150.0)]
     f = np.logspace(math.log10(100), math.log10(5000), 300)
     out = {"alto_falante": dict(NOMINAL, vas_cm3=round(vas, 1), nota="valores nominais de um micro alto-falante de 28 x 5 mm; "
@@ -91,15 +91,19 @@ def main():
     ax.legend(fontsize=7, loc="lower right")
     fig.tight_layout()
     fig.savefig(os.path.join(HERE, "acustica.png"), dpi=130)
-    a, b = out["caixas"][0], out["caixas"][3]
-    out["ganho_de_12_cm3_sobre_a_SPEC_db"] = {k: round(b["nivel_db"][k] - a["nivel_db"][k], 1) for k in a["nivel_db"]}
+    a, b = out["caixas"][2], out["caixas"][0]
+    out["ganho_da_caixa_em_L_sobre_a_v1_db"] = {k: round(b["nivel_db"][k] - a["nivel_db"][k], 1) for k in a["nivel_db"]}
+    # the firmware's high-pass on the speaker (SPEC v2: ~300 Hz, taken here as 2nd order): what is left of each note
+    hp = lambda fq: float(10 * np.log10((fq / 300.0) ** 4 / (1 + (fq / 300.0) ** 4)))
+    out["corte_de_graves_300_hz_db"] = {k: round(hp(float(k)), 1) for k in a["nivel_db"]}
     json.dump(out, open(os.path.join(HERE, "acustica.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print("Vas nominal %.1f cm3" % vas)
     for r in out["caixas"]:
         print("%-46s Vb %5.1f  fc %4d (%d-%d)  Qtc %.2f  pico %+.1f dB  F3 %4d  %s" % (
             r["caixa"], r["vb_cm3"], r["fc_hz"], r["fc_faixa_hz"][0], r["fc_faixa_hz"][1], r["qtc"], r["pico_db"], r["f3_hz"],
             r["nivel_db"]))
-    print("12 cm3 vs SPEC:", out["ganho_de_12_cm3_sobre_a_SPEC_db"])
+    print("L vs v1:", out["ganho_da_caixa_em_L_sobre_a_v1_db"])
+    print("corte 300 Hz:", out["corte_de_graves_300_hz_db"])
 
 
 if __name__ == "__main__":

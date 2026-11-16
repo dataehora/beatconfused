@@ -28,6 +28,25 @@
   "trilhas esticadas (I2C_SCL)": 1,
   "trilhas esticadas (VBUS)": 1
  },
+ "OUT recuado": {
+  "trilhas movidas": 18,
+  "vias movidas": 3,
+  "trilhas tiradas (HP_TIPSW)": 1
+ },
+ "USB-C recuado": {
+  "trilhas movidas": 26,
+  "trilhas esticadas (USB_DP)": 1,
+  "trilhas esticadas (USB_DN)": 1,
+  "vias movidas": 6,
+  "trilhas tiradas (CC1)": 1,
+  "trilhas tiradas (CC2)": 1,
+  "trilhas esticadas (VBUS)": 1
+ },
+ "recuo dos conectores": {
+  "frente em x": 2.3,
+  "USB-C andou": 1.25,
+  "jacks andaram": 2.15
+ },
  "SW401": {
   "centro": [
    28.0,
@@ -109,8 +128,8 @@
   ]
  },
  "J501": {
-  "x": 55.5,
-  "y": 79.0
+  "x": 48.12,
+  "y": 94.45
  },
  "furos": {
   "tampa": {
@@ -303,13 +322,10 @@
  ],
  "tirado pelo DRC (antes de rotear)": {
   "items_not_allowed (GND)": 7,
-  "shorting_items (sinal/alimentacao)": 9,
-  "hole_clearance (sinal/alimentacao)": 4,
-  "clearance (sinal/alimentacao)": 5,
-  "shorting_items (GND)": 4,
-  "hole_clearance (GND)": 4,
-  "solder_mask_bridge (sinal/alimentacao)": 1,
-  "solder_mask_bridge (GND)": 2
+  "clearance (sinal/alimentacao)": 21,
+  "hole_clearance (sinal/alimentacao)": 20,
+  "shorting_items (sinal/alimentacao)": 8,
+  "solder_mask_bridge (sinal/alimentacao)": 1
  },
  "leque do codec": {
   "tirado": 16,
@@ -339,24 +355,36 @@
    "objetos": 6
   },
   {
+   "rede": "CC1",
+   "objetos": 2
+  },
+  {
+   "rede": "CC2",
+   "objetos": 3
+  },
+  {
    "rede": "CHGA",
    "objetos": 4
   },
   {
    "rede": "HP_DET",
-   "objetos": 5
+   "objetos": 4
   },
   {
    "rede": "HP_L",
-   "objetos": 5
+   "objetos": 4
   },
   {
    "rede": "HP_R",
    "objetos": 2
   },
   {
+   "rede": "HP_TIPSW",
+   "objetos": 2
+  },
+  {
    "rede": "HP_VGND",
-   "objetos": 7
+   "objetos": 6
   },
   {
    "rede": "I2C_SCL",
@@ -376,7 +404,7 @@
   },
   {
    "rede": "I2S_TX",
-   "objetos": 10
+   "objetos": 6
   },
   {
    "rede": "MIC_BIAS",
@@ -388,7 +416,7 @@
   },
   {
    "rede": "MIC_J",
-   "objetos": 13
+   "objetos": 12
   },
   {
    "rede": "MUX_R_COM",
@@ -416,15 +444,15 @@
   },
   {
    "rede": "SPK_N",
-   "objetos": 2
+   "objetos": 1
   },
   {
    "rede": "SPK_P",
-   "objetos": 2
+   "objetos": 3
   },
   {
    "rede": "VOL_A",
-   "objetos": 25
+   "objetos": 22
   },
   {
    "rede": "VOL_B",
@@ -445,8 +473,8 @@
  ],
  "falhas": [],
  "tirado pelo DRC (depois de rotear)": {
-  "track_dangling": 37,
-  "via_dangling": 6,
+  "track_dangling": 44,
+  "via_dangling": 7,
   "ponta que e ligacao, mantida": 4,
   "via de GND perto de outro furo": 2
  },

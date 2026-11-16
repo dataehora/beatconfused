@@ -28,6 +28,7 @@ FP = json.load(open(os.path.join(HERE, "..", "pcb", "footprints.json"), encoding
 INFO = json.load(open(os.path.join(K.OUT, "case.json"), encoding="utf-8"))
 DEFAULT_H = {"J401": 2.95, "J201": 3.26, "J301": 5.0, "J302": 5.0, "J202": 5.5, "SW403": 2.0, "J501": 1.5}
 LIMIT = 0.5      # mm3
+FRONT = {}        # x of each socket's front face
 
 
 def step(name):
@@ -69,16 +70,18 @@ def components():
             continue
         h = f["height"] or DEFAULT_H.get(ref) or (1.0 if f["bottom"] else 1.0)
         x0, y0, x1, y1 = f["box"]
-        if ref in ("J301", "J302"):          # body on the board, collar through the wall
-            yc = (y0 + y1) / 2
-            s = K.box(max(x0, G.BOARD[0]), y0 + 0.25, x1 - 0.25, y1 - 0.25, 0, h).union(
-                cq.Workplane("YZ").workplane(offset=x0).center(-yc, G.JACK_Z).circle(3.0).extrude(G.BOARD[0] - x0 + 0.5))
+        if ref in ("J301", "J302"):          # PJ-327A: body 12.2 x 6 x 5.1 from the footprint's origin, collar 2 mm in front
+            yc = f["y"]
+            s = K.box(f["x"], yc - 3.0, f["x"] + 12.2, yc + 3.0, 0, h).union(
+                cq.Workplane("YZ").workplane(offset=f["x"] - 2.0).center(-yc, G.JACK_Z).circle(2.5).extrude(2.01))
             out[ref] = s
+            FRONT[ref] = f["x"] - 2.0
             continue
-        if ref == "J201":
-            yc = (y0 + y1) / 2
-            out[ref] = (cq.Workplane("YZ").workplane(offset=x0).center(-yc, 0.1 + 1.58).rect(8.94, 3.16)
-                        .extrude(x1 - 0.5 - x0).edges("|X").fillet(1.2))
+        if ref == "J201":                    # HRO TYPE-C-31-M-12: shell 8.94 x 3.16, 7.3 long, centred on the origin
+            yc = f["y"]
+            out[ref] = (cq.Workplane("YZ").workplane(offset=f["x"] - 3.65).center(-yc, 0.1 + 1.58).rect(8.94, 3.16)
+                        .extrude(7.3).edges("|X").fillet(1.2))
+            FRONT[ref] = f["x"] - 3.65
             continue
         s = K.box(x0 + 0.25, y0 + 0.25, x1 - 0.25, y1 - 0.25, -K.T_PCB - h, -K.T_PCB) if f["bottom"] else \
             K.box(x0 + 0.25, y0 + 0.25, x1 - 0.25, y1 - 0.25, 0, h)
@@ -203,6 +206,28 @@ def main():
     for ref in ("J201", "J301", "J302"):
         g["%s_ate_a_tampa" % ref] = round(dist(S[ref], S["tampa"]), 3)
         g["%s_ate_a_base" % ref] = round(dist(S[ref], S["base"]), 3)
+        g["%s_frente_atras_da_parede" % ref] = round(FRONT[ref] - K.WALL, 3)
+    # SPEC v2: the board, with all that stands on it, goes into the lid from below (lid upside down).
+    # Moved down step by step, nothing of it may cross the lid.
+    going_in = K.union([S[n] for n in ("placa", "J201", "J301", "J302", "pecas de cima (SMD)", "encoders",
+                                       "teclas (alojamentos)", "espacadores")])
+    res["placa_entra_por_baixo_mm3"] = {str(dz): round(vol(S["tampa"], going_in.translate((0, 0, -dz))), 2)
+                                        for dz in (0.5, 1, 2, 3, 4, 6, 8, 12, 16, 22, 30)}
+    if any(v > LIMIT or v < 0 for v in res["placa_entra_por_baixo_mm3"].values()):
+        res["interferencias"].append({"a": "tampa", "b": "placa ao entrar por baixo", "volume_mm3": res["placa_entra_por_baixo_mm3"]})
+    # how far a plug goes in. The socket's own front face is the plug's stop: a plug whose body passes
+    # the hole seats fully; a thicker one stops on the wall's outside, short by the wall + the recess.
+    uw, uh, _ur = G.USB_OPENING
+    res["plugues"] = {
+        "USB-C": {"furo_mm": [uw, uh], "corpo_maximo_pela_norma_mm": [12.35, 6.5], "folga_por_lado_mm": [round((uw - 12.35) / 2, 3), round((uh - 6.5) / 2, 3)],
+                  "ponta_do_plugue_mm": 6.65, "falta_entrar_se_o_corpo_nao_passa_mm": round(FRONT["J201"], 2),
+                  "encaixe_se_o_corpo_nao_passa_mm": round(6.65 - FRONT["J201"], 2)},
+        "P2 3,5 mm": {"furo_mm": G.JACK_OPENING_D, "ponta_do_plugue_mm": 14.0, "falta_entrar_se_o_corpo_nao_passa_mm": round(FRONT["J301"], 2),
+                      "encaixe_se_o_corpo_nao_passa_mm": round(14.0 - FRONT["J301"], 2)}}
+    g["caixa_acustica_ate_J302"] = round(dist(S["caixa_acustica"], S["J302"]), 3)
+    g["caixa_acustica_ate_a_tampa"] = round(dist(S["caixa_acustica"], S["tampa"]), 3)
+    g["caixa_acustica_ate_espacadores"] = round(dist(S["caixa_acustica"], S["espacadores"]), 3)
+    g["parafuso_da_grade_M2x16_passa_da_porca_mm"] = round(16.0 - (K.GRID_T + K.GRID_Z0 + K.T_PCB + 1.6), 2)
     res["folgas_mm"] = g
     json.dump(res, open(os.path.join(K.OUT, "fit_check.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print(json.dumps(g, indent=1, ensure_ascii=False))

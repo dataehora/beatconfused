@@ -1,4 +1,4 @@
-"""eTutti Student V2 -- make the board from the routed Student V1 board (SPEC v1).
+"""eTutti Student V2 -- make the board from the routed Student V1 board (SPEC v1, then v2).
 
     python etutti/hardware/student_v02/geometria.py
     python etutti/hardware/student_v02/pcb/schematic.py
@@ -21,6 +21,8 @@ left of the keyboard or on the board's edge:
      H10 are new (lid screws on the right); HG1-HG10 are the spacers of the keyboard grid;
      H5-H8, between the keys, stay as the holes the base's locating pins enter;
   9. outline: corners R 6.5 (the case's inner corner is R 7).
+ 10. SPEC v2: J201, J301 and J302 alone step back so that their fronts are 0.3 mm behind the
+     wall's inner face (x = 2.3); J501 goes in front of the rectangular acoustic box.
 
 Then: every track or via that KiCad's DRC finds on other copper, on a hole or in a keep-out is
 taken out, the stubs are pruned, and what is open is routed again with the router of the J1
@@ -76,7 +78,11 @@ OUT_GROUP = ("J301", "R303", "R304", "C308")
 LID_HOLES = {"H1": (88.0, 6.5), "H2": (74.0, 93.0), "H3": (6.5, 48.5), "H4": (8.0, 91.5),
              "H9": (238.0, 9.0), "H10": (238.0, 91.0)}
 PIN_HOLES = ("H5", "H6", "H7", "H8")     # the base's locating pins
-J501_AT = (55.5, 79.0)
+# SPEC v2: the sockets end 0.3 mm behind the wall's inner face. Front of the USB-C shell = 3.65 mm
+# from its footprint's origin, front of the jack's collar = 2.0 mm (both from the footprints' F.Fab).
+USB_DX = round(G.CONN_FRONT_X - (4.7 - 3.65), 3)
+JACK_DX = round(G.CONN_FRONT_X - (2.15 - 2.0), 3)
+J501_NEAR = (50.0, 93.2)        # in front of the acoustic box (SPEC v2: the box is a rectangle now)
 J401_NEAR = (39.0, 33.5)
 SPEAKER_FREE_R = 17.5       # nothing taller than the board's copper inside this radius of the speaker
 
@@ -175,7 +181,7 @@ def net_of(b, name):
 
 
 # ---------------------------------------------------------------------------- moving
-def move_group(b, refs, inside, dx, dy, report, what):
+def move_group(b, refs, inside, dx, dy, report, what, nets=None):
     """Move footprints and the copper of a region. A track with one end inside is stretched if it
     stays on the same line (it runs along the move), else it is taken out and routed again."""
     for r in refs:
@@ -184,6 +190,8 @@ def move_group(b, refs, inside, dx, dy, report, what):
         fp.SetPosition(V(p[0] + dx, p[1] + dy))
     cnt = collections.Counter()
     for t in list(b.GetTracks()):
+        if nets is not None and t.GetNetname() not in nets:
+            continue
         if is_via(t):
             p = xy(t.GetPosition())
             if inside(p):
@@ -410,6 +418,12 @@ def main():
     # ---- 2. USB-C group, 3. OUT group
     move_group(b, OUT_GROUP, lambda p: p[0] < 15.6 and 19.6 < p[1] < 33.6, 0, OUT_SHIFT, report, "OUT (J301 e detector)")
     move_group(b, USB_GROUP, lambda p: p[0] < 22.0 and 10.25 < p[1] < 19.5, 0, USB_SHIFT, report, "USB-C (J201 e protecao)")
+    # SPEC v2: the two sockets alone step back from the wall (their parts stay)
+    move_group(b, ("J301",), lambda p: p[0] < 15.6 and 30.6 < p[1] < 41.4, JACK_DX, 0, report, "OUT recuado",
+               nets=("HP_L", "HP_R", "HP_VGND", "HP_TIPSW"))
+    move_group(b, ("J201",), lambda p: p[0] < 10.75 and 10.25 + USB_SHIFT < p[1] < 19.5 + USB_SHIFT, USB_DX, 0, report,
+               "USB-C recuado")
+    report["recuo dos conectores"] = {"frente em x": G.CONN_FRONT_X, "USB-C andou": USB_DX, "jacks andaram": JACK_DX}
     for net in ("HP_L", "HP_R", "HP_VGND", "HP_TIPSW", "HP_DET", "VBUS", "CC1", "CC2", "GND"):
         touched.add(net)
 
@@ -481,8 +495,15 @@ def main():
             if any(math.hypot(q[0] - G.SPEAKER[0], q[1] - G.SPEAKER[1]) < SPEAKER_FREE_R + 1.5 for q in pts) or \
                     any(abs(q[0] - old[0]) < 6 and abs(q[1] - old[1]) < 2 for q in pts):
                 rm(b, t)
-    j501.SetPosition(V(*J501_AT))
-    report["J501"] = {"x": J501_AT[0], "y": J501_AT[1]}
+    j501.SetPosition(V(-90, -90))
+    bx0, by0, bx1, by1 = G.BOX_RECT
+    boxes = obstacles(b, pcbnew.F_Cu, skip_nets=("GND", "+3V3")) + obstacles(b, pcbnew.B_Cu, skip_nets=("GND", "+3V3"))
+    cw, chh = courtyard_size(j501, pcbnew.F_CrtYd)
+    jx, jy, _rot = free_spot(boxes, J501_NEAR, {0: (cw, chh)}, 14.0, margin=0.4,
+                             ok=lambda cx, cy: by1 + 2.5 < cy < 94.5 and 40.0 < cx < 62.0)
+    off = xy(j501.GetCourtyard(pcbnew.F_CrtYd).BBox().GetCenter())
+    j501.SetPosition(V(jx - (off[0] + 90), jy - (off[1] + 90)))
+    report["J501"] = {"x": round(xy(j501.GetPosition())[0], 2), "y": round(xy(j501.GetPosition())[1], 2)}
 
     # ---- 8. holes
     rule = {z.GetZoneName(): z for z in b.Zones() if z.GetIsRuleArea()}
@@ -583,7 +604,7 @@ def main():
         raise SystemExit("board vs schematic: missing %s, extra %s" % (missing, extra))
     tb = b.GetTitleBlock()
     tb.SetTitle("eTutti Student V2 · placa principal")
-    tb.SetRevision("SPEC v1")
+    tb.SetRevision("SPEC v2")
     tb.SetDate("2026-11-16")
 
     # ---- what the DRC objects to goes, then the stubs
@@ -760,7 +781,7 @@ def main():
                                   for x in d.get("schematic_parity", [])][:40]
     report["faltando_detalhe"] = [[(i["description"], i["pos"]) for i in x["items"]] for x in d.get("unconnected_items", [])][:40]
     json.dump(report, open(os.path.join(HERE, "board.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
-    for k in ("LED", "OUT (J301 e detector)", "USB-C (J201 e protecao)", "SW401", "SW402", "C307", "C309", "R305", "J401",
+    for k in ("LED", "OUT (J301 e detector)", "USB-C (J201 e protecao)", "OUT recuado", "USB-C recuado", "J501", "SW401", "SW402", "C307", "C309", "R305", "J401",
               "tirado pelo DRC (antes de rotear)", "tirado pelo DRC (depois de rotear)", "roteado", "falhas", "drc"):
         print(k, ":", json.dumps(report.get(k), ensure_ascii=False))
     for x in report["drc_detalhe"][:20] + report["paridade_detalhe"][:20] + report["faltando_detalhe"][:20]:

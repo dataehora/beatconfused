@@ -1,145 +1,137 @@
 # eTutti Student V2 · FIT_CHECK
 
-16 nov 2026 · Code · responde à `SPEC.md` v1 (conceito de layout, acabamento Retrô).
+16 nov 2026 · Code · responde à `SPEC.md` **v2** (ciclo 2; o relatório do ciclo 1 está no PR #150).
 
-Nada foi encomendado, impresso ou montado. O firmware da V2 (tela, microfone) não foi escrito neste ciclo.
+Nada foi encomendado, impresso ou montado. O firmware da V2 não foi escrito; as notas para ele estão em `ELETRONICA.md`, seção 8.
 
 ## 1. Resultado
 
-| Entrega | Estado |
+| Item da SPEC v2 | Estado |
 |---|---|
-| Placa nova (`kicad/`) | Feita a partir da placa da V1. DRC: 0 erros além das 3 larguras já aceitas na V1, 0 ligações faltando, igual ao esquema. O teclado (teclas, sensores, multiplexadores e trilhas) não mudou. |
-| Lista de materiais e notas de compra | `fab/`, `COMPRAS.md` |
-| Case em peças (`case/out/`, STEP e STL) | 20 peças: base, tampa, grade, espaçador, 12 botões, knob, caixa acústica, janela. |
-| Renders (`case/renders/`) | planta, corte pelas fileiras, corte pelo alto-falante, isométrico, explodido, parede esquerda |
+| 1. Parede esquerda com furos fechados | Feito. Conectores 0,30 mm atrás da face interna da parede; a placa entra por baixo na tampa sem tocar em nada. Ver a seção 3 sobre a profundidade dos plugues. |
+| 2. Grade em FR-4, z 11,35–12,95 | Feito. Arquivo de fabricação próprio: `fab/student_v02_grade_gerbers.zip`. |
+| 3. Pinos e pilares do caso D; 10º parafuso em x 160,02 | Conferido: já eram as posições do modelo. Pior tecla: 0,049 mm com 3 N. |
+| 4. Janela 24 × 13 com acrílico e filete | Feito. |
+| 5. Caixa acústica em L | Feito: **10,4 cm³**, estanque, na mesma peça do anel. Estudo refeito (seção 5). |
+| 6. Rebaixos de 0,4 mm para tinta | Feitos, mas o logo está numa **fonte substituta** (pergunta 1). |
+| 7. Placa, DRC, BOM, STEP/STL, renders | Feitos. DRC: só as 3 larguras já aceitas na V1, 0 ligações faltando, igual ao esquema. |
 | Fit check | 202 pares de peças testados com sólidos exatos: **nenhuma interferência**. |
-| Estudos | flexão (seção 4) e caixa acústica (seção 5) |
-
-O relatório da eletrônica está em `ELETRONICA.md`.
 
 ## 2. Folgas medidas no modelo
 
 ### Teclado
 
-| Fileira | Topo acima do tampo | Cabeça até a grade, solto | Cabeça até a grade, no fim do curso | SPEC |
+| Fileira | Topo acima do tampo | Cabeça até a grade, solto | Cabeça até a grade, no fim do curso | SPEC v2 |
 |---|---:|---:|---:|---|
-| 1 (frente) | 3,7 | 5,2 | **1,1** | 3,7 / 5,2 / 1,1 |
-| 2 | 5,7 | 7,2 | 3,1 | 5,7 / 7,2 / 3,1 |
-| 3 | 7,7 | 9,2 | 5,1 | 7,7 / 9,2 / 5,1 |
-| 4 (fundo) | 10,7 | 12,2 | 8,1 | 10,7 / 12,2 / 8,1 |
+| 1 (frente) | 3,7 | 5,45 | **1,35** | 3,7 / 5,45 / 1,35 |
+| 2 | 5,7 | 7,45 | 3,35 | 5,7 / 7,45 / 3,35 |
+| 3 | 7,7 | 9,45 | 5,35 | 7,7 / 9,45 / 5,35 |
+| 4 (fundo) | 10,7 | 12,45 | 8,35 | 10,7 / 12,45 / 8,35 |
 
-| Medida | mm | SPEC |
+| Medida | mm | SPEC v2 |
 |---|---:|---|
+| Grade (z) | 11,35–12,95 | 11,35–12,95 |
+| Grade até o alojamento das teclas | 0,15 | 0,15 |
+| Profundidade do poço (tampo até a grade) | 5,25 | 5,25 |
+| Espaçador da grade | 11,35 | 11,35 |
 | Haste (Ø 5,6) no furo da grade (Ø 6,2), por lado | 0,30 | 0,3 |
 | Botão da 1ª fileira apertado até a parede do poço | 5,00 | 5 |
-| Aba do poço até a grade | 0,20 | 0,2 |
-| Grade até o alojamento das teclas | 0,40 | 0,4 |
+| Aba do poço até a grade | 0,20 | 0,2 na SPEC v1; a prancha do canvas diz 0,15 (pergunta 6) |
 | Grade até a parede da tampa (menor distância) | 2,47 | — |
 | Espaçador da grade até a tecla mais próxima | 6,55 | — |
+| Parafuso M2 × 16 da grade: sobra além da porca | 0,25 | — |
 
-Comprimento das hastes, do alojamento da tecla até a cabeça: 7,2 / 9,2 / 11,2 / 14,2 mm (fileiras 1 a 4).
+As peças dos botões não mudaram: a haste vai do alojamento da tecla até a cabeça (7,2 / 9,2 / 11,2 / 14,2 mm). Com a grade 0,25 mm mais baixa, o trecho de haste à vista acima da grade é que cresceu 0,25 mm; a altura acima do tampo é a mesma.
+
+### Parede esquerda e conectores
+
+| Medida | mm |
+|---|---:|
+| Frente do USB-C, do OUT e do IN atrás da face interna da parede | 0,30 |
+| Abertura do USB-C | 12,5 × 7,0, cantos R 3,5 |
+| Furos dos jacks | Ø 6,5 |
+| Material da tampa abaixo do furo do USB-C, até a divisa | 2,2 |
+| USB-C até a tampa (menor distância, à borda do furo) | 1,68 |
+| Jacks até a tampa | 0,81 |
+| Placa (com tudo o que tem em cima) entrando por baixo na tampa | sem contato em nenhuma das 11 posições testadas, de 0,5 a 30 mm |
+| Placa até a parede da tampa | 0,50 |
+
+Não há mais rasgo na tampa nem dente na base. A divisa tampa/base continua em z = −4,0.
 
 ### Interface, placa e fundo
 
 | Medida | mm |
 |---|---:|
-| Placa até a parede da tampa | 0,50 |
-| Topo do knob acima do tampo | 7,0 |
-| Ponta do eixo do encoder acima do tampo | 1,8 |
-| Knob até a tampa (em volta da luva; por baixo da saia são 0,8) | 0,50 |
-| Tampa até o corpo dos encoders | 1,6 |
-| Caixa acústica até a placa | 1,4 |
-| Caixa acústica até a peça mais próxima em cima da placa | 2,3 |
-| Caixa acústica até os encoders | 4,3 |
+| Janela da tela | 24 × 13 (x 25–49, y 15,5–28,5) |
+| Acrílico da janela | 25,7 × 14,7 × 1,0 |
+| Filete abaixo da janela | 24 × 0,5, em y 30,0–30,5, rebaixo de 0,4 |
 | Módulo da tela até os encoders | 3,5 |
-| USB-C até a tampa / até a base | 0,22 / 0,45 |
-| Jacks OUT e IN até a tampa / até a base | 0,40 / 0,50 |
-| Módulo MicroMod até o piso da base | 2,2 |
-| Peças do verso até a base (menor distância, num copo de parafuso da grade) | 0,24 |
+| Topo do knob acima do tampo | 7,0 |
+| Tampa até o corpo dos encoders | 1,6 |
+| Caixa acústica até a placa | 0,8 |
+| Caixa acústica até o jack IN | 1,0 |
+| Caixa acústica até os encoders | 4,3 |
+| Caixa acústica até a grade | 1,7 |
+| Caixa acústica até a peça mais próxima em cima da placa | 4,6 |
+| Peças do verso até a base (num copo de parafuso da grade) | 0,24 |
 | Bateria até as peças do verso | 0,70 |
-| Bateria até as pernas dos encoders | 5,1 |
+| Módulo MicroMod até o piso da base | 2,2 |
 
-### Zona livre sob o alto-falante
+## 3. Profundidade de encaixe dos plugues
 
-A caixa acústica ocupa um círculo de Ø 31,4 mm em (37; 73,1), com o fundo 1,4 mm acima da placa. Dentro de um raio de 17,5 mm não há peça nenhuma em cima da placa; por baixo passam só trilhas. Os pads dos fios do alto-falante (J501) saíram de (46,5; 84) para (55,5; 79), fora da caixa. No verso, sob essa zona, fica a bateria.
+O batente de um plugue é a frente do próprio conector. Com o conector 0,3 mm atrás de uma parede de 2,0 mm, o corpo do plugue tem de entrar 2,3 mm no furo.
 
-## 3. Como o modelo foi resolvido, e onde ele se afasta do canvas
+| Conector | Furo | Plugue que entra até o fim | Plugue mais grosso que o furo |
+|---|---|---|---|
+| USB-C | 12,5 × 7,0 | Corpo até 12,35 × 6,5 (o máximo da norma USB-C): folga de 0,08 mm por lado na largura e 0,25 na altura. | Para na parede: dos 6,65 mm da ponta entram 4,35. |
+| OUT e IN (P2) | Ø 6,5 | Corpo até Ø 6,4 nos primeiros 2,3 mm. | Para na parede: dos 14 mm da ponta entram 11,7. |
 
-1. **Aberturas dos conectores.** O USB-C e os dois jacks ficam soldados na placa e atravessam a parede esquerda, então a tampa não desce sobre eles se os furos forem fechados. No modelo, cada abertura da tampa continua para baixo até a divisa com a base, e a base tem um dente que fecha esse rasgo. Fica uma linha de emenda vertical abaixo de cada conector (visível em `renders/parede.png`).
-2. **Abertura do USB-C:** 9,6 × 3,9 mm, e não 9,2 × 3,6. Com a medida do canvas o canto do conector ficava a 0,03 mm da tampa.
-3. **Borda do poço.** Parede a 12,5 mm dos centros das teclas (5 mm do botão) e raio de 2,5 em cima: a borda no tampo fica a 15,0 mm dos centros. O canvas desenha 15,5. O raio de baixo da aba saiu com 0,95 (a aba tem 2,0 de espessura).
-4. **Parafusos da grade.** Nove estão nas posições do canvas. O décimo saiu de (150,77; 7,47) para (160,02; 7,47): na posição original há uma porta lógica dos sensores no verso da placa.
-5. **Fixação da grade.** Parafuso M2 × 16 por cima, através da grade, de um espaçador de 11,6 mm e da placa, preso por uma porca sob a placa. A base tem um copo sob cada porca, e a placa apoia na borda do copo. Assim a base sai com 6 parafusos sem desmontar o teclado.
-6. **Fixação da tampa.** 6 parafusos M2 × 14 por baixo, na borda: (88; 6,5), (74; 93), (6,5; 48,5), (8; 91,5), (238; 9), (238; 91). Atravessam base e placa e entram em postes da tampa.
-7. **Knob.** O encoder escolhido tem eixo de 20 mm, que termina 1,8 mm acima do tampo. O knob tem uma luva escondida que desce 5,4 mm por um furo de Ø 9,2 na tampa e abraça o eixo. A saia fica 0,8 mm acima do tampo para o clique (curso de 0,5 mm); o topo fica a 7,0 mm.
-8. **Tela.** O módulo fica preso por baixo da tampa em 4 postes, com o vidro 0,1 mm abaixo de uma janela de acrílico de 1 mm embutida no tampo. Liga-se à placa por um cabo de 4 vias.
-9. **Bateria.** No piso da base, em x 13–63, y 56–90 (o canvas mostra y 58–92), sob o alto-falante.
-10. **Faixas.** Não fazem parte da geometria; nos renders são uma película pintada.
+- **O recuo funciona com plugues dentro dessas medidas**, e não foi preciso mexer na divisa.
+- A folga do USB-C na largura é pequena (0,08 mm por lado). Uma peça impressa pode fechar isso; vale abrir o furo para 12,8 mm.
+- Com um plugue que não passa no furo o contato fica incerto: no P2 a ponta não chega à mola do fundo; no USB-C a trava não fecha. Cabos de fone moldados costumam ter Ø 6 ou menos na ponta; plugues de metal de cabos de áudio têm de 7 a 10 mm e não entram.
+- São estimativas pelas medidas dos conectores e da norma. Só o protótipo confirma.
 
-## 4. Estudo: flexão da placa e da grade
+Alternativas, se o design quiser aceitar plugues grossos (pergunta 2): um rebaixo cônico por fora em volta de cada furo, ou a parede mais fina só na região dos conectores.
 
-Script `estudos/flexao.py`, resultados em `estudos/flexao.json` e `estudos/flexao.png`. Modelo de grelha de vigas (malha de 4 mm, FR-4 de 1,2 mm, E = 18 GPa), o mesmo usado no eTuttino e na V1. Uma tecla apertada de cada vez com 3 N. Alvo dos outros modelos: 0,05 mm por tecla.
+## 4. Como o modelo foi resolvido, e onde se afasta da SPEC ou do canvas
 
-Na V2 não há plate: as teclas apoiam direto na placa, então a placa nua é a estrutura real.
+1. **Logo.** A fonte Michroma não está instalada neste computador, e baixar um arquivo pede autorização do J. O modelo usa Arial Bold no lugar, com os tamanhos e espaçamentos da prancha "Área de interface": "eTUTTI" com corpo de 4,4 mm e "STUDENT · V2" com 1,7 mm, de pé, lidos da frente para o fundo, centrados entre y 8 e 92, de x 9,5 a 12,7. Com a fonte na pasta `case/fontes/`, basta rodar o `case.py` de novo.
+2. **Letras pequenas.** "STUDENT · V2" tem letras de 1,26 mm de altura e traços de cerca de 0,2 mm. Um rebaixo desse tamanho não sai em impressão de filamento e fica no limite em resina e MJF.
+3. **OUT e IN.** Letras de 2,0 mm de altura (Arial Bold), começando 1,3 mm à direita de cada furo, de z 1,8 a 3,8, abaixo dos sulcos (o mais baixo fica em z 7,6).
+4. **Janela e filete.** Seguem a SPEC (janela em y 15,5–28,5, filete em y 30,0). O texto da prancha "Área de interface" diz "tela 15,5–30,5, filete em 32", mas o desenho da mesma prancha bate com a SPEC.
+5. **Furos da grade sem chanfro.** A SPEC v1 pedia chanfro de 0,3 mm na entrada de cada furo. Em FR-4 o furo é só furado.
+6. **Cobre sob a máscara da grade.** As duas faces da grade têm cobre contínuo sob a máscara (recuado 0,5 mm da borda e dos furos), para o preto ficar uniforme. Sem cobre, a máscara sobre o laminado fica translúcida e mais clara.
+7. **Caixa acústica.** Em planta é um retângulo de x 17,5–66 e y 57,5–88,7, entre os dois parafusos. É baixa sob o alto-falante (interior de z 1,8 a 8,7; a borda do alto-falante apoia no teto) e alta ao lado dele, de x 54,5 a 66 (interior até z 14,4): um L visto de frente. Tem 4 nervuras internas com janelas, que sustentam o teto na impressão e evitam que ele vibre. O furo dos fios fica na parede da frente, em x 49,5.
+8. **Pads dos fios do alto-falante (J501).** Foram para (48,1; 94,5), na frente da caixa, porque a caixa nova cobria a posição anterior.
+9. **Renders.** As faixas e a tinta dos rebaixos são películas pintadas, fora da geometria da tampa. O corte pelo alto-falante passa em x = 40, a 3 mm do eixo, porque no eixo há uma nervura.
 
-| Apoio da placa | Pior tecla | Média | Teclas acima de 0,05 mm |
-|---|---:|---:|---:|
-| A. Só a borda (10 parafusos da grade + 6 da tampa) | 0,206 mm | 0,130 | 28 de 28 |
-| B. Borda + os 3 pinos da SPEC (fileira 2) | 0,067 mm | 0,038 | 6 |
-| C. Borda + 4 pinos nos furos H5–H8 | 0,060 mm | 0,037 | 12 |
-| **D. C + 3 pilares** | **0,049 mm** | 0,022 | **0** |
+## 5. Estudo: caixa acústica em L
 
-- **Só os pinos da SPEC não bastam** (6 teclas acima do alvo), e as três posições propostas caem sobre peças do verso da placa (sensor e capacitor das teclas vizinhas): um pino de Ø 5 ali invade entre 0,6 e 1,8 mm.
-- **Proposta (caso D), já modelada na base:**
-  - 4 pinos de Ø 5 com ponta de Ø 2 que entra nos furos que a V1 já tinha entre as teclas: (98,45; 52,67), (153,95; 31,31), (153,95; 63,35), (209,45; 52,67). Eles posicionam e apoiam a placa. Ficam escondidos sob a grade e nenhum parafuso passa por eles.
-  - 3 pilares de apoio de Ø 4, sem furo: (127,5; 32,5), (182,5; 62,5), (182,5; 32,5).
-- Com um toque forte de 10 N a pior tecla cede 0,16 mm. A pressão de um pino na placa fica em 0,6 MPa: não marca.
-- Limite do modelo: um pino só segura a placa por baixo, e o modelo a prende nos dois sentidos. Os números são um pouco otimistas longe da tecla apertada.
+Script `estudos/acustica.py`, resultados em `estudos/acustica.json` e `estudos/acustica.png`. O alto-falante continua sendo um nominal de 28 × 5 mm (ressonância 450 Hz, Qts 1,2, Vas 15 cm³); os números têm de ser refeitos com os dados da peça comprada.
 
-### Grade
+| Caixa | Volume | Ressonância na caixa (faixa) | Nível em 262 Hz (Dó 4) | Nível em 523 Hz (Dó 5) |
+|---|---:|---:|---:|---:|
+| Redonda da SPEC v1 | 3,9 cm³ | 990 Hz (665–1500) | −22,5 dB | −8,6 dB |
+| **Em L, como modelada** | **10,4 cm³** | **700 Hz (505–1015)** | **−16,1 dB** | **−0,6 dB** |
+| A mesma, com manta acústica | ~12 cm³ | 675 Hz | −15,3 dB | +0,2 dB |
 
-A grade só é empurrada por um dedo que erre o botão; os botões param na tecla, não na grade. Com 5 N entre dois botões, presa só pelos 10 parafusos da borda:
+- Ganho da caixa em L sobre a redonda: **+6,4 dB em 262 Hz e +8,0 dB em 523 Hz**. O pico na ressonância cai de 8,4 para 5,5 dB.
+- O corte de graves do firmware em ~300 Hz (tomado aqui como de 2ª ordem) tira mais 4,3 dB em 262 Hz e 0,4 dB em 523 Hz.
+- A oitava de baixo do teclado (Sol 3 a Fá♯ 4) continua fraca no alto-falante: é o limite de um cone de 28 mm. No fone e na saída OUT nada disso se aplica.
+- A peça é fechada, com teto. Em resina ou MJF sai como está (o pó ou a resina saem pela boca de Ø 26). Em filamento, o teto é impresso em ponte sobre as nervuras, com vãos de até 8,5 mm.
+- A borda do alto-falante precisa vedar no teto da caixa: a junta de espuma da frente o aperta contra o assento, mas um fio de cola ou de silicone ali garante a estanqueidade.
 
-| Material da grade (1,6 mm) | Cede | |
-|---|---:|---|
-| Impressa (PETG) | 1,95 mm | encosta nas teclas depois de 0,4 mm |
-| FR-4 | 0,22 mm | não encosta |
-| Alumínio | 0,06 mm | não encosta |
+## 6. Estudo: flexão (sem mudança)
 
-Uma grade impressa não quebra, porque as teclas a seguram 0,4 mm abaixo, mas afunda de forma perceptível e pode ficar empenada. **Sugestão: grade de FR-4 de 1,6 mm**, pedida junto com a placa (máscara preta ou outra cor), como o plate da V1. Não é preciso reforço nem parafuso no meio.
+- Placa, caso D (4 pinos Ø 5 + 3 pilares Ø 4, nas posições da SPEC v2): pior tecla **0,049 mm** com 3 N; 0,16 mm com 10 N.
+- Grade em FR-4: com um dedo apertando 5 N entre dois botões ela cede até 0,22 mm, mais que a folga de 0,15 mm, e então encosta nos alojamentos das teclas, que a seguram. Não é defeito: só acontece com o dedo fora do botão.
 
-## 5. Estudo: caixa acústica
+## 7. Perguntas para o design
 
-Script `estudos/acustica.py`, resultados em `estudos/acustica.json` e `estudos/acustica.png`.
-
-A caixa modelada tem **3,9 cm³** atrás do cone (interior de z 2,6 a 9,9, Ø 26), como a SPEC propôs. Fabricantes de alto-falantes de 28 × 5 mm raramente publicam todos os parâmetros, então o estudo usa um alto-falante nominal (ressonância de 450 Hz, Qts 1,2, Vas 15 cm³) e uma faixa em volta dele. Os números têm de ser refeitos com os dados da peça comprada.
-
-| Caixa | Ressonância na caixa (faixa) | Nível em 262 Hz (Dó 4) | Nível em 523 Hz (Dó 5) |
-|---|---:|---:|---:|
-| 3,9 cm³ (SPEC, modelada) | 990 Hz (665–1500) | −23 dB | −9 dB |
-| a mesma, com manta acústica | 940 Hz | −22 dB | −7 dB |
-| 8 cm³ | 760 Hz | −18 dB | −3 dB |
-| 12 cm³ | 675 Hz | −15 dB | 0 dB |
-| 20 cm³ | 595 Hz | −13 dB | +2 dB |
-| Sem caixa (o case inteiro, vazando) | 470 Hz | −9 dB | +3 dB |
-
-- Com 3,9 cm³ a caixa é pequena para este alto-falante: a ressonância sobe de 450 Hz para perto de 1 kHz, com um pico de 8 dB ali. As fundamentais do teclado (196 a 659 Hz) saem fracas, e o som fica "de rádio".
-- Triplicar o volume (12 cm³) dá de 7 a 9 dB a mais entre 200 e 520 Hz.
-- Há lugar para crescer sem mexer na forma externa: ao lado e atrás do alto-falante, entre a placa e a tampa (z 1,4 a 16), a caixa pode avançar para x 54–66 e para os cantos em volta do círculo. Dá para chegar a cerca de 10 a 12 cm³ numa peça em forma de L.
-- Qualquer que seja o volume, a caixa tem de ser estanque (o furo dos fios é fechado com uma gota de silicone) e o firmware deve cortar os graves abaixo de ~300 Hz no alto-falante, para o cone não bater.
-- Sob a caixa, na placa: nada em cima; no verso, trilhas e a bateria.
-
-## 6. Perguntas para o design
-
-1. **Emendas na parede esquerda.** A solução dos rasgos com dentes da base (item 3.1) deixa uma linha vertical sob o USB-C, o OUT e o IN. Aceita? A alternativa é dividir tampa e base na altura dos conectores (z ≈ 2), o que muda a faixa cinza da base.
-2. **Material da grade.** FR-4 de 1,6 mm (rígida, feita com a placa, cor da máscara) ou impressa (cor livre, mas afunda 0,4 mm sob o dedo)?
-3. **Teclas sem plate.** A tecla magnética não tem pinos soldados: só dois pinos de plástico a posicionam na placa, e quem a segura é a grade, 0,4 mm acima. Com essa folga a tecla pode subir 0,4 mm ao puxar um botão e fazer barulho. Posso baixar a grade para 0,1–0,2 mm de folga (o poço passaria de 5,0 para 5,2 mm) ou prever uma espuma fina sob a grade?
-4. **Pinos sob o teclado.** As três posições da SPEC caem sobre peças. Proponho os 4 furos que já existem mais 3 pilares (seção 4). De acordo?
-5. **Décimo parafuso da grade** em x = 160 em vez de 150,8 (item 3.4): algum problema? Fica escondido sob a tampa.
-6. **Borda do poço:** 15,0 mm dos centros (SPEC: 12,5 + raio 2,5) ou 15,5 (canvas)? Para 15,5 o raio de cima teria de ser 3,0.
-7. **Janela da tela.** A janela de 30 × 15 é maior que a área acesa (21,7 × 10,9) e mais larga que o vidro do módulo (26,7): com acrílico transparente aparece a placa do módulo nas laterais. Uso acrílico fumê escuro (só os pixels aparecem), uma máscara preta por trás, ou a janela diminui?
-8. **Faixa amarela da direita.** Começando em x = 237,5, a amarela fica em x 248,5–250,5, já sobre o chanfro lateral (que começa em x = 246). É intencional?
-9. **Caixa acústica.** Mantém os ~4 cm³ redondos da SPEC ou posso crescê-la para 10–12 cm³ em L, por dentro (ganho de 7 a 9 dB nos graves)? Não muda nada por fora.
-10. **Carga com o instrumento desligado.** Sem LED não há sinal de carga quando está desligado. Com o USB ligado o firmware pode manter só a tela acesa mostrando a carga. Serve?
-11. **Troca da bateria.** Tirando os 6 parafusos de baixo a base sai inteira e a bateria fica à vista. Basta, ou quer uma tampa de acesso na base?
-12. **Legendas "OUT" e "IN" e o logo** ainda não estão gravados no modelo (falta decidir entre gravar em baixo-relevo, 0,3 mm, ou pintar).
+1. **Fonte Michroma.** Posso baixá-la do Google Fonts (licença livre, arquivo `Michroma-Regular.ttf`) para refazer o rebaixo do logo? Até lá o modelo está com Arial Bold.
+2. **Plugues grossos.** O recuo funciona com plugues de corpo até 12,35 × 6,5 mm (USB-C) e Ø 6,4 mm (P2). Fica assim, ou faço um rebaixo por fora em volta dos furos para aceitar plugues de áudio de metal (Ø 7 a 10)?
+3. **Largura do furo do USB-C.** 12,5 mm deixa 0,08 mm por lado para um plugue no máximo da norma. Abro para 12,8?
+4. **"STUDENT · V2".** Letras de 1,26 mm com traço de 0,2 mm não saem em rebaixo impresso. Aumento o texto (por exemplo, corpo de 2,6 mm, letras de ~1,9), ou ele passa a ser só pintado ou adesivo?
+5. **Chanfro dos furos da grade.** Em FR-4 não há chanfro de 0,3 mm. Aceita o furo reto?
+6. **Aba do poço.** 0,2 mm acima da grade (SPEC v1) ou 0,15 (prancha do canvas)?
+7. **Cor da tinta dos rebaixos.** A prancha mostra "eTUTTI" escuro e "STUDENT · V2" em marrom-avermelhado; OUT, IN e o filete escuros. Confirma?

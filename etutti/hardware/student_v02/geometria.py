@@ -1,4 +1,4 @@
-"""eTutti Student V2: the geometry shared by the board and the case (SPEC v1).
+"""eTutti Student V2: the geometry shared by the board and the case (SPEC v2).
 
     python etutti/hardware/student_v02/geometria.py        (writes layout.json)
 
@@ -36,7 +36,7 @@ WELL_WALL, WELL_EDGE, GRID_SCREW, GRID_EDGE = 12.5, 15.5, 18.5, 21.5
 N_GRID_SCREWS = 10
 
 # interface (SPEC section 4-6)
-OLED_WINDOW = (22.0, 14.5, 52.0, 29.5)
+OLED_WINDOW = (25.0, 15.5, 49.0, 28.5)      # SPEC v2: 24 x 13, centred on x = 37
 KNOBS = [(28.0, 44.5), (46.0, 44.5)]
 SPEAKER = (37.0, 73.1)
 SPEAKER_D = 28.0
@@ -44,6 +44,14 @@ SPEAKER_SCREWS = [(37.0, 73.1 - 18.6), (37.0, 73.1 + 18.6)]
 GRILLE = {"x0": 21.0, "x1": 53.0, "y0": 61.5, "pitch": 3.6, "slot": 1.6, "n": 7}
 USB_Y, OUT_Y, IN_Y = 16.0, 36.0, 60.0
 USB_Z, JACK_Z = 1.7, 2.8
+# SPEC v2: closed holes in the left wall. The sockets end 0.3 mm behind the wall's inner face, so the
+# board goes into the lid from below; the holes take the plug's body.
+CONN_FRONT_X = WALL + 0.3
+USB_OPENING = (12.5, 7.0, 3.5)        # width (y), height (z), corner radius
+JACK_OPENING_D = 6.5
+# the acoustic box (SPEC v2: L-shaped, 10-12 cm3): its outside in plan, and the part that is tall
+BOX_RECT = (17.5, 57.5, 66.0, 88.7)
+BOX_LEG_X0 = 54.5
 
 
 def hull(points):

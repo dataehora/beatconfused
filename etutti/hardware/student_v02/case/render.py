@@ -6,7 +6,7 @@ Reads out/*.stl and out/case.json (case.py), pcb/footprints.json. Writes renders
   planta.png        from above, no perspective (the canvas' "planta")
   corte.png         cut along the rows at x = 107.7 (a key of row 2 and one of row 4 are cut through
                     their middle; rows 1 and 3 are half a pitch behind and show whole), seen from the left
-  corte_falante.png cut through the speaker at x = 37
+  corte_falante.png cut through the speaker at x = 40
   isometrico.png    the closed instrument
   explodido.png     the pieces apart
   parede.png        the left wall with the connectors
@@ -67,12 +67,14 @@ def scene():
     S = []
     S.append((stl("tampa"), CREAM, 1.0, "tampa"))
     S += stripes()
+    ink = stl("tinta")                      # the paint in the recesses, lifted a hair so that it shows
+    S.append((ink.translate((-0.03, 0, 0.03), inplace=False), "#2B2925", 1.0, "tampa"))
     S.append((stl("base"), GREY, 1.0, "base"))
-    S.append((stl("grade"), DARK, 1.0, "grade"))
+    S.append((stl("grade"), "#1C1B1A", 1.0, "grade"))        # FR-4, matte black mask
     sp = stl("espacador")
     for x, y in INFO["posicoes"]["parafusos_da_grade"]:
         S.append((moved(sp, x, y), "#B8AE9A", 1.0, "espacadores"))
-        S.append((pv.Cylinder(center=(x, -y, 13.2 + 0.8), direction=(0, 0, 1), radius=1.9, height=1.6), "#8C8C8C", 1.0, "parafusos"))
+        S.append((pv.Cylinder(center=(x, -y, INFO["niveis"]["grade"][1] + 0.8), direction=(0, 0, 1), radius=1.9, height=1.6), "#8C8C8C", 1.0, "parafusos"))
     cache = {}
     for k in INFO["teclas"]:
         name = "botao_%s_f%d" % (k["tipo"], k["fileira"])
@@ -84,7 +86,7 @@ def scene():
         S.append((moved(kn, x, y), BLACK, 1.0, "knobs"))
         S.append((box(x - 6.6, y - 6, x + 6.6, y + 6, 0, 6.5), "#8C8C8C", 1.0, "pecas"))
         S.append((pv.Cylinder(center=(x, -y, 13.25), direction=(0, 0, 1), radius=3.0, height=13.5), "#B3B2AE", 1.0, "pecas"))
-    S.append((stl("caixa_acustica"), "#3A3733", 1.0, "caixa"))
+    S.append((stl("caixa_acustica"), "#7A746A", 1.0, "caixa"))
     lv = INFO["pecas"]["caixa_acustica"]
     S.append((pv.Cylinder(center=(G.SPEAKER[0], -G.SPEAKER[1], lv["frente_do_falante_z"] - 2.5), direction=(0, 0, 1),
                           radius=14.0, height=5.0), "#22201E", 1.0, "falante"))
@@ -101,6 +103,17 @@ def scene():
     S.append((box(x0, y0, x1, y1, -1.2, 0), "#3F6B4A", 1.0, "placa"))
     for f in FP:
         if f["lib"].startswith(("MountingHole", "Gateron", "TestPoint")) or f["ref"] in ("SW401", "SW402"):
+            continue
+        if f["ref"] in ("J301", "J302"):        # jack: body and its collar
+            S.append((box(f["x"], f["y"] - 3, f["x"] + 12.2, f["y"] + 3, 0, 5.1), "#2B2925", 1.0, "pecas"))
+            S.append((pv.Cylinder(center=(f["x"] - 1.0, -f["y"], G.JACK_Z), direction=(1, 0, 0), radius=2.5, height=2.0),
+                      "#B3B2AE", 1.0, "pecas"))
+            S.append((pv.Cylinder(center=(f["x"] - 1.9, -f["y"], G.JACK_Z), direction=(1, 0, 0), radius=1.8, height=0.3),
+                      "#0E0D0C", 1.0, "pecas"))
+            continue
+        if f["ref"] == "J201":                  # USB-C shell
+            S.append((box(f["x"] - 3.65, f["y"] - 4.47, f["x"] + 3.65, f["y"] + 4.47, 0.1, 3.26), "#B3B2AE", 1.0, "pecas"))
+            S.append((box(f["x"] - 3.75, f["y"] - 3.4, f["x"] - 3.6, f["y"] + 3.4, 1.1, 2.3), "#0E0D0C", 1.0, "pecas"))
             continue
         h = f["height"] or {"J401": 2.95, "J201": 3.26, "J301": 5.0, "J302": 5.0, "J202": 5.5, "J101": 4.7}.get(f["ref"], 0.8)
         bx0, by0, bx1, by1 = f["box"]
@@ -170,8 +183,8 @@ def main():
     # cut along the rows: keep x > 107.7, look from the left (-x) towards +x; the player is on the right
     shot(S, "corte.png", [(-400, cy, 9), (107.7, cy, 9), (0, 0, 1)], size=(2400, 1000), scale=24,
          clip=((-1, 0, 0), (107.7, 0, 0)))
-    shot(S, "corte_falante.png", [(-400, cy, 5), (37, cy, 5), (0, 0, 1)], size=(2400, 900), scale=22,
-         clip=((-1, 0, 0), (37.0, 0, 0)))
+    shot(S, "corte_falante.png", [(-400, cy, 5), (40, cy, 5), (0, 0, 1)], size=(2400, 900), scale=22,
+         clip=((-1, 0, 0), (40.0, 0, 0)))       # 3 mm beside the speaker's axis: a rib of the box is on the axis
     shot(S, "isometrico.png", [(cx - 190, cy - 300, 250), (cx, cy + 5, 5), (0, 0, 1)], size=(2400, 1400), parallel=False, zoom=1.35)
     shot(S, "parede.png", [(-400, cy, 4), (0, cy, 4), (0, 0, 1)], size=(2400, 800), scale=22)
     off = {"tampa": (0, 0, 70), "janela": (0, 0, 70), "knobs": (0, 0, 95), "botoes": (0, 0, 50), "grade": (0, 0, 28),

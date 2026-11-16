@@ -1,4 +1,54 @@
-# eTutti Student V2 — SPEC v1 (conceito de layout aprovado)
+# eTutti Student V2 — SPEC v2
+
+Data: 16 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
+Responde ao FIT_CHECK do PR #150 (SPEC v1 atendida). Conceito visual atualizado no canvas: https://claude.ai/artifact/2xeBWDz7PnhAhXUK7pcHGy (prancha "Especificação do conceito · v2").
+
+Base: o que o PR #150 entregou em `etutti/hardware/student_v02/` (placa, case em peças, estudos). Tudo o que não é mencionado aqui continua como na v1 e no modelo do PR.
+
+## Mudanças desde a v1 (respostas às 12 perguntas do FIT_CHECK)
+
+1. **Emendas na parede esquerda: não aceitas.** Furos fechados, sem rasgos nem dentes na base. Os conectores ficam recuados cerca de 0,3 mm atrás da face interna da parede, e a placa entra por baixo na tampa (montagem com a tampa de cabeça para baixo). Os furos são dimensionados para o corpo do plugue: USB-C 12,5 × 7,0 com cantos R 3,5; jacks Ø 6,5. A divisa tampa/base e a faixa cinza ficam como estão (z = −4,0). Confirmar a profundidade de encaixe dos plugues; se o recuo não funcionar, voltar com alternativas antes de mudar a divisa.
+2. **Grade do teclado: FR-4 de 1,6 mm com máscara preta fosca**, pedida junto com a placa (arquivo de fabricação próprio, como o plate da V1).
+3. **Folga grade ↔ teclas: 0,15 mm**, sem espuma. A grade desce para z 11,35–12,95 e o poço passa de 5,0 para **5,25 mm**. A altura dos botões em relação ao tampo não muda (as hastes crescem 0,25 mm).
+4. **Pinos sob o teclado: aprovado o caso D** — 4 pinos Ø 5 com ponta Ø 2 nos furos da V1, em (98,45; 52,67), (153,95; 31,31), (153,95; 63,35) e (209,45; 52,67), mais 3 pilares Ø 4 sem furo em (127,5; 32,5), (182,5; 62,5) e (182,5; 32,5).
+5. **Décimo parafuso da grade em x = 160,02: ok.**
+6. **Borda do poço a 15,0 mm dos centros** (12,5 + raio de 2,5), como na v1. O canvas foi corrigido.
+7. **Janela da tela: 24 × 13 mm**, centrada em x = 37 (x 25–49, y 15,5–28,5), com **acrílico fumê escuro** de 1 mm. Filete de 0,5 mm a 1,5 mm abaixo da janela, com a mesma largura.
+8. **Faixa amarela da direita sobre o chanfro lateral: mantida** de propósito (envolve a quina, no espírito da referência).
+9. **Caixa acústica: crescer para 10–12 cm³ em L**, por dentro, sem mudar nada por fora. Continua estanque (fios vedados com silicone), na mesma peça do anel. O firmware corta os graves abaixo de ~300 Hz no alto-falante.
+10. **Carga com o instrumento desligado:** com o USB ligado, a tela acende só com a carga, em brilho baixo. Registrar para o firmware.
+11. **Troca da bateria:** basta tirar os 6 parafusos da base. Sem tampa de acesso.
+12. **Logo, OUT e IN: baixo-relevo de 0,4 mm com preenchimento de tinta.** Logo "eTUTTI" + "STUDENT · V2" em Michroma, de pé ao longo da borda esquerda (y 8–92, a partir de x 8,6). "OUT" e "IN" com 2 mm de altura, à direita de cada furo, abaixo dos sulcos. Modelar os rebaixos.
+
+Decisões do PR #150 aceitas como estão: aberturas medidas, fixação da grade (M2 × 16 por cima + espaçador + porca, copo na base), 6 parafusos M2 × 14 da tampa nas posições listadas no FIT_CHECK, luva do knob, tela em 4 postes com cabo de 4 vias, OLED por I²C, encoders de eixo de 20 mm girados, bateria no piso da base.
+
+## Valores que mudam em relação à v1
+
+| Item | v1 | v2 |
+|---|---|---|
+| Grade do teclado (z) | 11,6–13,2 | **11,35–12,95** |
+| Folga grade ↔ teclas | 0,4 | **0,15** |
+| Profundidade do poço | 5,0 | **5,25** |
+| Base do botão até a grade, em repouso (fileiras 1–4) | 5,2 / 7,2 / 9,2 / 12,2 | **5,45 / 7,45 / 9,45 / 12,45** |
+| Folga com a tecla no fim do curso (fileiras 1–4) | 1,1 / 3,1 / 5,1 / 8,1 | **1,35 / 3,35 / 5,35 / 8,35** |
+| Espaçador da grade | 11,6 | **11,35** |
+| Janela da tela | 30 × 15 | **24 × 13, acrílico fumê** |
+| Caixa acústica | ~4 cm³ redonda | **10–12 cm³ em L** |
+| Aberturas dos conectores | rasgo até a base | **furos fechados: USB-C 12,5 × 7; jacks Ø 6,5** |
+| Grade: material | não definido | **FR-4 1,6, máscara preta fosca** |
+
+## Entregáveis deste ciclo
+
+1. Atualizar a placa: o recuo dos conectores (posição em x), o arquivo de fabricação da grade em FR-4 e o que mais a mudança exigir; DRC e BOM atualizados.
+2. Atualizar o modelo 3D e os STEP/STL: furos fechados, grade em z 11,35, poço de 5,25, hastes +0,25, janela 24 × 13 com o acrílico, caixa acústica em L, rebaixos do logo e das legendas.
+3. Refazer o estudo acústico com a caixa em L (volume final, ganho em 262 e 523 Hz).
+4. Renders: planta, corte pelas fileiras, corte pelo alto-falante, parede esquerda (mostrando os furos fechados) e isométrico.
+5. FIT_CHECK.md atualizado, terminando com "Perguntas para o design".
+
+---
+
+# Anexo — SPEC v1 (referência, com os valores substituídos pela tabela acima)
+
 
 Data: 16 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code (eletrônica + modelo 3D)
 Conceito visual: canvas "eTutti Student V2 · conceito de layout" — https://claude.ai/artifact/2xeBWDz7PnhAhXUK7pcHGy

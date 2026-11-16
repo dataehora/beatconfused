@@ -1,8 +1,17 @@
 # eTutti Student V2 · eletrônica
 
-16 nov 2026 · Code · responde à `SPEC.md` v1, entrega 1.
+16 nov 2026 · Code · responde à `SPEC.md` v1, entrega 1, e à **v2** (seção 0).
 
 A placa da V2 é a da Student V1 (`../student_v01/`) com a interface refeita. Ela é escrita por script a partir da placa da V1, que não é alterada. Nada foi encomendado.
+
+## 0. O que mudou no ciclo 2 (SPEC v2)
+
+- **Conectores recuados.** O USB-C andou 1,25 mm e os dois jacks 2,15 mm para dentro da placa: a frente de cada um fica em x = 2,3, 0,3 mm atrás da face interna da parede. Só os conectores andaram; as peças de proteção ficaram onde estavam. O par USB foi encurtado num trecho reto, sem ser cortado.
+- **Pads dos fios do alto-falante (J501):** em (48,1; 94,5), na frente da caixa acústica nova.
+- **Grade do teclado em FR-4:** placa própria, sem circuito, feita por `pcb/grade_fab.py` (`kicad/student_v02_grade.kicad_pcb`, `fab/student_v02_grade_gerbers.zip`). 2 camadas, 1,6 mm, 172,6 × 91,2 mm, 28 furos de 6,2 mm e 10 de 2,3 mm, cobre contínuo sob a máscara nas duas faces. Pedir com máscara **preta fosca**. DRC sem erros.
+- **Resultado da placa principal:** roteou na primeira tentativa (29 redes religadas, mais terra e 3,3 V; 190 trilhas e vias novas). DRC: as 3 larguras aceitas, 0 ligações faltando, paridade 0, os mesmos 4 avisos de ponta solta.
+- BOM sem mudança de peças (39 linhas); CPL refeito com as posições novas (137 peças).
+- As coordenadas do USB-C, do OUT, do IN e do J501 nas tabelas abaixo são as do ciclo 1; valem as desta seção.
 
 ## 1. O que mudou em relação à V1
 
@@ -67,6 +76,7 @@ python etutti/hardware/student_v02/geometria.py
 python etutti/hardware/student_v02/pcb/schematic.py
 "C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/student_v02/pcb/build_board.py     (~8 min)
 "C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/student_v02/fab.py
+"C:/Program Files/KiCad/10.0/bin/python.exe" etutti/hardware/student_v02/pcb/grade_fab.py
 ```
 
 - `pcb/schematic.py` escreve o esquema (cópia do gerador da V1 com as mudanças acima), roda o ERC (0 erros, 0 avisos) e confere que tudo o que não foi mudado está igual à V1, pino por pino.
@@ -91,6 +101,9 @@ Em `fab/`: Gerbers e furação (`student_v02_gerbers.zip`), BOM, CPL (137 peças
 
 ## 8. O que falta e o que só a placa real vai dizer
 
+- **Notas da SPEC v2 para o firmware (a escrever):**
+  - com o USB ligado e o instrumento desligado, a tela acende só com a carga, em brilho baixo (comando de contraste do SSD1306), e apaga ao tirar o cabo;
+  - corte de graves abaixo de ~300 Hz no caminho do alto-falante (filtro passa-altas antes do amplificador; o fone e a saída OUT ficam sem corte).
 - **Firmware:** tela, microfone, pinos 5 e 13 sem LED. O firmware atual da Student não foi adaptado: ainda aciona o LED nos pinos 5 e 13 e não usa a tela nem o microfone.
 - A tela e o microfone nunca foram ligados a este circuito.
 - Com o LED removido, não há indicação de carga com o instrumento desligado (pergunta no `FIT_CHECK.md`).

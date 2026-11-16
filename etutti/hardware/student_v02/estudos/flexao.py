@@ -16,7 +16,7 @@ A pin holds the board from below only; the model pins it both ways, so a point f
 pressed key that would lift is held down: the numbers are slightly optimistic there.
 
 Grid, 1.6 mm, on its 10 screws, a finger pressing 5 N between the buttons, for three materials.
-The grid is 0.4 mm above the switch housings: when it bends more than that it rests on them.
+The grid is 0.15 mm above the switch housings (SPEC v2): when it bends more than that it rests on them.
 
 Writes estudos/flexao.json, estudos/apoios.json (the pillars the case models) and
 estudos/flexao.png.
@@ -39,6 +39,7 @@ M.BOARD = os.path.join(V2, "kicad", "student_v02.kicad_pcb")
 TARGET = 0.05
 PIN_D = 5.0
 SPEC_PINS = [(116.95, 58.01), (153.95, 58.01), (190.95, 58.01)]
+GRID_GAP = 0.15            # SPEC v2: the grid 0.15 mm above the switch housings
 KEEP_OUT_X = 66.0          # left of this: battery, speaker box, module (no pillar)
 
 
@@ -119,11 +120,11 @@ def main():
     # the grid
     mids = [((a[1] + b_[1]) / 2, (a[2] + b_[2]) / 2) for a in keys for b_ in keys
             if a[0] < b_[0] and abs(math.hypot(a[1] - b_[1], a[2] - b_[2]) - 18.5) < 0.2]
-    res["grade"] = {"carga_N": 5.0, "folga_ate_as_teclas_mm": 0.4, "materiais": {}}
+    res["grade"] = {"carga_N": 5.0, "folga_ate_as_teclas_mm": GRID_GAP, "materiais": {}}
     for name, E in (("impressa (PETG, E = 2,0 GPa)", 2000.0), ("FR-4 (E = 18 GPa)", 18000.0), ("aluminio (E = 69 GPa)", 69000.0)):
         s = [v * 5.0 / M.PRESS_N for v in grid_sag(E, mids)]
         res["grade"]["materiais"][name] = {"max_mm": round(max(s), 3), "media_mm": round(sum(s) / len(s), 3),
-                                           "encosta_nas_teclas": max(s) > 0.4}
+                                           "encosta_nas_teclas": max(s) > GRID_GAP}
     json.dump(res, open(os.path.join(HERE, "flexao.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     json.dump({"pilares": [list(p) for p in pillars], "pinos": [list(p) for p in pins]},
               open(os.path.join(HERE, "apoios.json"), "w", encoding="utf-8"), indent=1)

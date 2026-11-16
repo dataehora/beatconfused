@@ -511,7 +511,7 @@ Code. Reports (Portuguese): `FIT_CHECK.md` (gaps, the two studies, 12 "Perguntas
 `ELETRONICA.md`, `COMPRAS.md`. Nothing ordered or printed; **no V2 firmware yet** (OLED, mic, pins).
 - `geometria.py` (stdlib) is shared by board and case: keys, the hull's offsets (well 12.5, grid screws
   18.5, grid edge 21.5), interface positions. Run order: `geometria.py`, `pcb/schematic.py`, KiCad python
-  `pcb/build_board.py` (~8 min), KiCad python `pcb/export_fp.py`, `estudos/flexao.py`, `fab.py`; CadQuery
+  `pcb/build_board.py` (~8 min), KiCad python `pcb/export_fp.py`, `estudos/flexao.py`, `fab.py`, KiCad python `pcb/grade_fab.py`; CadQuery
   venv `case/case.py`, `case/fit_check.py`, `case/render.py`, `estudos/acustica.py`.
 - Board = the V1 board changed by script (never by hand): LED out, USB-C/OUT moved, IN jack J302 +
   R305/C309, OLED socket J401 (JST SH, Qwiic order, I2C shared with the codec), encoders EC11E18244AU
@@ -524,6 +524,13 @@ Code. Reports (Portuguese): `FIT_CHECK.md` (gaps, the two studies, 12 "Perguntas
   `V2_EXPAND` to shorten a diagnostic run; progress is in `pcb/build/progress.log`.
 - Case: lid drops over the sockets (openings open downwards, tongues on the base), grid screws end in
   nuts under the board so the base comes off with 6 screws, hat knob with a hidden sleeve.
+- **SPEC v2 done (16 Nov, cycle 2):** sockets 0.3 mm behind the wall's inner face (closed holes, board goes
+  into the lid from below; `fit_check.py` tests the insertion path), grid = FR-4 board of its own
+  (`pcb/grade_fab.py`, z 11.35-12.95), window 24 x 13, L-shaped acoustic box 10.4 cm3 with ribs, 0.4 mm
+  paint recesses. Lettering gotchas in `case.py`: cut the glyphs one by one, before the lid's cavity, from
+  polygon outlines (`polygonised`); Bahnschrift's overlapping outlines never finish cutting; one cut with
+  all glyphs ate 26 GB. **Michroma is not on this PC:** the logo uses Arial Bold until J allows the
+  download into `case/fontes/`. `out/tinta.stl` is the paint, for the renders only.
 - Studies: board needs the 4 pins in H5-H8 plus 3 pillars for <= 0.05 mm at 3 N (the SPEC's 3 pin spots
   sit on back-side parts); a printed grid sags onto the switches (FR-4 suggested); the 3.9 cm3 box puts
   the speaker's resonance near 1 kHz (12 cm3 would give 7-9 dB more bass).
