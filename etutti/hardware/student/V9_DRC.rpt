@@ -1,0 +1,1924 @@
+** Drc report for eTutti_Student.kicad_pcb **
+** Created on 2026-11-13T18:36:48 **
+** Report includes: Errors, Warnings **
+
+** Found 471 DRC violations **
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(51.9250 mm, 26.8000 mm): Track [KEY_SIG_7] on F.Cu, length 4.2000 mm
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_27)
+    Local override; error
+    @(148.3750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(147.1750 mm, 63.0000 mm): Track [KEY_SIG_27] on F.Cu, length 4.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(146.7750 mm, 64.6000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(147.1750 mm, 64.6000 mm): Track [KEY_SIG_27] on F.Cu, length 4.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(147.1750 mm, 61.4000 mm): Track [KEY_SIG_27] on F.Cu, length 4.2000 mm
+    @(146.7750 mm, 61.4000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[shorting_items]: Items shorting two nets (nets GND and MUX_S0)
+    Local override; error
+    @(38.1500 mm, 19.4850 mm): Via [GND] on F.Cu - B.Cu
+    @(38.0500 mm, 16.9450 mm): Track [MUX_S0] on F.Cu, length 3.2550 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(22.9000 mm, 27.2500 mm): Via [GND] on F.Cu - B.Cu
+    @(22.4000 mm, 16.2000 mm): Track [I2S_BCLK] on F.Cu, length 21.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(2.7500 mm, 33.5000 mm): Track [USB_D_N] on B.Cu, length 1.5500 mm
+    @(1.8000 mm, 31.5000 mm): Track [USB_D_P] on B.Cu, length 5.1000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(27.4000 mm, 28.7500 mm): Track [ENC_A] on F.Cu, length 6.1000 mm
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(15.5000 mm, 66.5000 mm): Track [ENC_B] on F.Cu, length 24.0000 mm
+    @(6.5000 mm, 43.0000 mm): Track [ENC_A] on F.Cu, length 20.9000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(26.8000 mm, 42.5000 mm): Track [ENC_B] on F.Cu, length 15.2500 mm
+    @(11.5000 mm, 42.0000 mm): Track [VOL_ADC] on F.Cu, length 16.5000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(6.5000 mm, 43.0000 mm): Track [ENC_A] on F.Cu, length 20.9000 mm
+    @(11.5000 mm, 50.0000 mm): Track [VOL_ADC] on F.Cu, length 8.0000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(21.9000 mm, 17.0000 mm): Via [I2S_LRCLK] on F.Cu - B.Cu
+    @(22.4000 mm, 16.2000 mm): Track [I2S_BCLK] on F.Cu, length 21.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(26.8000 mm, 27.2500 mm): Track [ENC_B] on F.Cu, length 6.2000 mm
+    @(30.6000 mm, 20.7500 mm): Track [MUX_S1] on F.Cu, length 15.5000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(28.0000 mm, 39.2500 mm): Track [VOL_ADC] on F.Cu, length 6.0000 mm
+    @(30.6000 mm, 36.2500 mm): Track [MUX_S1] on F.Cu, length 34.1000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(28.6000 mm, 30.2500 mm): Track [MUX2_OUT] on F.Cu, length 4.9000 mm
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(34.0000 mm, 39.2500 mm): Via [VOL_ADC] on F.Cu - B.Cu
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(34.0000 mm, 31.7500 mm): Via [MUX1_OUT] on F.Cu - B.Cu
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(29.5500 mm, 69.8000 mm): Track [MUX_S0] on F.Cu, length 3.8550 mm
+    @(29.5500 mm, 70.3500 mm): Track [MUX_S1] on F.Cu, length 3.1350 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(30.0000 mm, 69.8000 mm): Track [MUX_S0] on F.Cu, length 0.4500 mm
+    @(29.5500 mm, 70.3500 mm): Track [MUX_S1] on F.Cu, length 3.1350 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(85.7000 mm, 21.0800 mm): Track [KEY_SIG_2] on B.Cu, length 50.1500 mm
+    @(36.1000 mm, 21.5600 mm): Via [KEY_SIG_3] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(36.1000 mm, 21.5600 mm): Via [KEY_SIG_3] on F.Cu - B.Cu
+    @(35.5500 mm, 21.0800 mm): Via [KEY_SIG_2] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(24.2000 mm, 70.1000 mm): Track [KEY_SIG_22] on F.Cu, length 11.7750 mm
+    @(4.2000 mm, 70.0000 mm): Track [+5V_USB] on F.Cu, length 21.3000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(36.1000 mm, 21.5600 mm): Via [KEY_SIG_3] on F.Cu - B.Cu
+    @(35.5500 mm, 21.0800 mm): Via [KEY_SIG_2] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0650 mm)
+    Local override; error
+    @(25.3000 mm, 55.7850 mm): Track [KEY_SIG_24] on B.Cu, length 5.4500 mm
+    @(123.8000 mm, 55.5200 mm): Track [KEY_SIG_18] on B.Cu, length 97.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(36.1000 mm, 21.5600 mm): Via [KEY_SIG_3] on F.Cu - B.Cu
+    @(35.5500 mm, 21.0800 mm): Via [KEY_SIG_2] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(41.6500 mm, 72.9800 mm): Via [KEY_SIG_28] on F.Cu - B.Cu
+    @(41.1000 mm, 72.5000 mm): Via [KEY_SIG_27] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(114.2750 mm, 71.5400 mm): Track [KEY_SIG_25] on B.Cu, length 74.2750 mm
+    @(40.5500 mm, 72.0200 mm): Via [KEY_SIG_26] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(41.6500 mm, 72.9800 mm): Track [KEY_SIG_28] on F.Cu, length 13.3850 mm
+    @(41.1000 mm, 72.5000 mm): Via [KEY_SIG_27] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(41.6500 mm, 72.9800 mm): Via [KEY_SIG_28] on F.Cu - B.Cu
+    @(41.1000 mm, 72.5000 mm): Via [KEY_SIG_27] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(41.6500 mm, 72.9800 mm): Via [KEY_SIG_28] on F.Cu - B.Cu
+    @(41.1000 mm, 72.5000 mm): Via [KEY_SIG_27] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_26 and KEY_SIG_21)
+    Local override; error
+    @(40.5500 mm, 57.0550 mm): Track [KEY_SIG_26] on B.Cu, length 2.3000 mm
+    @(180.9500 mm, 56.9600 mm): Track [KEY_SIG_21] on B.Cu, length 152.5500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(41.1000 mm, 72.5000 mm): Track [KEY_SIG_27] on F.Cu, length 14.1750 mm
+    @(41.6500 mm, 59.5950 mm): Via [KEY_SIG_28] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(152.3750 mm, 72.5000 mm): Track [KEY_SIG_27] on B.Cu, length 111.2750 mm
+    @(41.6500 mm, 72.9800 mm): Via [KEY_SIG_28] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(36.1000 mm, 21.5600 mm): Via [KEY_SIG_3] on F.Cu - B.Cu
+    @(35.5500 mm, 21.0800 mm): Via [KEY_SIG_2] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(40.5500 mm, 72.0200 mm): Track [KEY_SIG_26] on F.Cu, length 14.9650 mm
+    @(41.1000 mm, 58.3250 mm): Via [KEY_SIG_27] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(133.3250 mm, 72.0200 mm): Track [KEY_SIG_26] on B.Cu, length 92.7750 mm
+    @(41.1000 mm, 72.5000 mm): Via [KEY_SIG_27] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0650 mm)
+    Local override; error
+    @(40.0000 mm, 55.7850 mm): Track [KEY_SIG_25] on B.Cu, length 1.7500 mm
+    @(123.8000 mm, 55.5200 mm): Track [KEY_SIG_18] on B.Cu, length 97.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(41.6500 mm, 72.9800 mm): Via [KEY_SIG_28] on F.Cu - B.Cu
+    @(41.1000 mm, 72.5000 mm): Via [KEY_SIG_27] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(40.0000 mm, 71.5400 mm): Track [KEY_SIG_25] on F.Cu, length 15.7550 mm
+    @(39.4500 mm, 68.4850 mm): Via [MUX_S3] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(40.5500 mm, 72.0200 mm): Via [KEY_SIG_26] on F.Cu - B.Cu
+    @(41.1000 mm, 72.5000 mm): Track [KEY_SIG_27] on F.Cu, length 14.1750 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_25 and KEY_SIG_18)
+    Local override; error
+    @(40.0000 mm, 55.7850 mm): Via [KEY_SIG_25] on F.Cu - B.Cu
+    @(123.8000 mm, 55.5200 mm): Track [KEY_SIG_18] on B.Cu, length 97.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(40.0000 mm, 71.5400 mm): Via [KEY_SIG_25] on F.Cu - B.Cu
+    @(40.5500 mm, 72.0200 mm): Track [KEY_SIG_26] on F.Cu, length 14.9650 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_24 and +5V_USB)
+    Local override; error
+    @(25.3000 mm, 71.0600 mm): Track [KEY_SIG_24] on F.Cu, length 15.2750 mm
+    @(25.5000 mm, 59.4500 mm): Via [+5V_USB] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_23 and KEY_SIG_21)
+    Local override; error
+    @(24.7500 mm, 57.0550 mm): Track [KEY_SIG_23] on B.Cu, length 6.0000 mm
+    @(180.9500 mm, 56.9600 mm): Track [KEY_SIG_21] on B.Cu, length 152.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(24.7500 mm, 70.5800 mm): Track [KEY_SIG_23] on F.Cu, length 13.5250 mm
+    @(4.2000 mm, 70.0000 mm): Track [+5V_USB] on F.Cu, length 21.3000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(40.5500 mm, 72.0200 mm): Via [KEY_SIG_26] on F.Cu - B.Cu
+    @(40.0000 mm, 71.5400 mm): Via [KEY_SIG_25] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(95.2250 mm, 71.0600 mm): Track [KEY_SIG_24] on B.Cu, length 69.9250 mm
+    @(40.0000 mm, 71.5400 mm): Via [KEY_SIG_25] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1050 mm)
+    Local override; error
+    @(24.7500 mm, 70.5800 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+    @(4.2000 mm, 70.0000 mm): Track [+5V_USB] on F.Cu, length 21.3000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_23 and GND)
+    Local override; error
+    @(24.7500 mm, 57.0550 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+    @(24.6000 mm, 57.5500 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_22 and +5V_USB)
+    Local override; error
+    @(24.2000 mm, 70.1000 mm): Via [KEY_SIG_22] on F.Cu - B.Cu
+    @(4.2000 mm, 70.0000 mm): Track [+5V_USB] on F.Cu, length 21.3000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(40.5500 mm, 72.0200 mm): Via [KEY_SIG_26] on F.Cu - B.Cu
+    @(40.0000 mm, 71.5400 mm): Via [KEY_SIG_25] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(76.1750 mm, 70.5800 mm): Track [KEY_SIG_23] on B.Cu, length 51.4250 mm
+    @(25.3000 mm, 71.0600 mm): Via [KEY_SIG_24] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(24.7500 mm, 70.5800 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+    @(24.2000 mm, 70.1000 mm): Via [KEY_SIG_22] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_23 and GND)
+    Local override; error
+    @(24.7500 mm, 57.0550 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+    @(24.6000 mm, 57.5500 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_23 and GND)
+    Local override; error
+    @(24.7500 mm, 57.0550 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+    @(24.6000 mm, 57.5500 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(24.7500 mm, 70.5800 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+    @(24.2000 mm, 70.1000 mm): Via [KEY_SIG_22] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(57.1250 mm, 70.1000 mm): Track [KEY_SIG_22] on B.Cu, length 32.9250 mm
+    @(24.7500 mm, 70.5800 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(40.5500 mm, 72.0200 mm): Via [KEY_SIG_26] on F.Cu - B.Cu
+    @(40.0000 mm, 71.5400 mm): Via [KEY_SIG_25] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_21 and KEY_SIG_23)
+    Local override; error
+    @(180.9500 mm, 56.9600 mm): Track [KEY_SIG_21] on B.Cu, length 152.5500 mm
+    @(30.7500 mm, 57.0550 mm): Pad 3 [KEY_SIG_23] of U5 on B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_23 and GND)
+    Local override; error
+    @(24.7500 mm, 57.0550 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+    @(24.6000 mm, 57.5500 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(24.7500 mm, 70.5800 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+    @(24.2000 mm, 70.1000 mm): Via [KEY_SIG_22] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(27.8500 mm, 60.8650 mm): Via [KEY_SIG_20] on F.Cu - B.Cu
+    @(27.3000 mm, 56.0000 mm): Track [KEY_SIG_19] on F.Cu, length 6.1350 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(27.8500 mm, 56.4800 mm): Track [KEY_SIG_20] on F.Cu, length 4.3850 mm
+    @(28.4000 mm, 59.5950 mm): Via [KEY_SIG_21] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(27.8500 mm, 56.4800 mm): Via [KEY_SIG_20] on F.Cu - B.Cu
+    @(27.3000 mm, 56.0000 mm): Track [KEY_SIG_19] on F.Cu, length 6.1350 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(27.8500 mm, 56.4800 mm): Via [KEY_SIG_20] on F.Cu - B.Cu
+    @(27.3000 mm, 56.0000 mm): Via [KEY_SIG_19] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(142.8500 mm, 56.0000 mm): Track [KEY_SIG_19] on B.Cu, length 115.5500 mm
+    @(27.8500 mm, 56.4800 mm): Via [KEY_SIG_20] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(26.7500 mm, 55.5200 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+    @(26.2000 mm, 55.0400 mm): Track [KEY_SIG_17] on F.Cu, length 9.6350 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(27.8500 mm, 56.4800 mm): Via [KEY_SIG_20] on F.Cu - B.Cu
+    @(28.4000 mm, 56.9600 mm): Via [KEY_SIG_21] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(123.8000 mm, 55.5200 mm): Track [KEY_SIG_18] on B.Cu, length 97.0500 mm
+    @(27.3000 mm, 56.0000 mm): Via [KEY_SIG_19] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(26.7500 mm, 55.5200 mm): Track [KEY_SIG_18] on F.Cu, length 7.8850 mm
+    @(27.3000 mm, 62.1350 mm): Via [KEY_SIG_19] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(26.7500 mm, 55.5200 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+    @(104.7500 mm, 55.0400 mm): Track [KEY_SIG_17] on B.Cu, length 78.5500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(26.2000 mm, 55.0400 mm): Track [KEY_SIG_17] on F.Cu, length 9.6350 mm
+    @(26.7500 mm, 63.4050 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(26.2000 mm, 55.0400 mm): Via [KEY_SIG_17] on F.Cu - B.Cu
+    @(26.7500 mm, 55.5200 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1250 mm)
+    Local override; error
+    @(104.7500 mm, 55.0400 mm): Track [KEY_SIG_17] on B.Cu, length 78.5500 mm
+    @(29.0000 mm, 54.5150 mm): Via [MUX2_OUT] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(26.7500 mm, 55.5200 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+    @(27.3000 mm, 56.0000 mm): Via [KEY_SIG_19] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_7 and KEY_SIG_16)
+    Local override; error
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(26.2000 mm, 55.0400 mm): Via [KEY_SIG_17] on F.Cu - B.Cu
+    @(26.7500 mm, 55.5200 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(27.8500 mm, 56.4800 mm): Via [KEY_SIG_20] on F.Cu - B.Cu
+    @(28.4000 mm, 56.9600 mm): Via [KEY_SIG_21] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(52.3000 mm, 54.5600 mm): Via [KEY_SIG_16] on F.Cu - B.Cu
+    @(51.7500 mm, 54.0800 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(52.3000 mm, 15.6750 mm): Via [KEY_SIG_16] on F.Cu - B.Cu
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(52.3000 mm, 54.5600 mm): Via [KEY_SIG_16] on F.Cu - B.Cu
+    @(104.7500 mm, 55.0400 mm): Track [KEY_SIG_17] on B.Cu, length 78.5500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(161.9000 mm, 56.4800 mm): Track [KEY_SIG_20] on B.Cu, length 134.0500 mm
+    @(28.4000 mm, 56.9600 mm): Via [KEY_SIG_21] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(51.7500 mm, 14.4050 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_15 and KEY_SIG_7)
+    Local override; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.9250 mm, 26.8000 mm): Track [KEY_SIG_7] on F.Cu, length 4.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(52.3000 mm, 54.5600 mm): Via [KEY_SIG_16] on F.Cu - B.Cu
+    @(51.7500 mm, 54.0800 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(51.7500 mm, 54.0800 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(26.2000 mm, 55.0400 mm): Via [KEY_SIG_17] on F.Cu - B.Cu
+    @(26.7500 mm, 55.5200 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(51.2000 mm, 53.6000 mm): Via [KEY_SIG_14] on F.Cu - B.Cu
+    @(51.7500 mm, 54.0800 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_14 and KEY_SIG_7)
+    Local override; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(26.7500 mm, 55.5200 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+    @(27.3000 mm, 56.0000 mm): Via [KEY_SIG_19] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(51.2000 mm, 53.6000 mm): Via [KEY_SIG_14] on F.Cu - B.Cu
+    @(51.7500 mm, 54.0800 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_7 and KEY_SIG_13)
+    Local override; error
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(52.3000 mm, 54.5600 mm): Via [KEY_SIG_16] on F.Cu - B.Cu
+    @(51.7500 mm, 54.0800 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(26.2000 mm, 55.0400 mm): Via [KEY_SIG_17] on F.Cu - B.Cu
+    @(26.7500 mm, 55.5200 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(51.2000 mm, 53.6000 mm): Via [KEY_SIG_14] on F.Cu - B.Cu
+    @(51.7500 mm, 54.0800 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(50.4000 mm, 39.9800 mm): Via [KEY_SIG_13] on F.Cu - B.Cu
+    @(152.3750 mm, 39.5000 mm): Track [KEY_SIG_12] on B.Cu, length 102.5250 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_12 and KEY_SIG_7)
+    Local override; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(49.8500 mm, 39.5000 mm): Via [KEY_SIG_12] on F.Cu - B.Cu
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(51.2000 mm, 53.6000 mm): Via [KEY_SIG_14] on F.Cu - B.Cu
+    @(51.7500 mm, 54.0800 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_11 and KEY_SIG_7)
+    Local override; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(49.8500 mm, 39.5000 mm): Via [KEY_SIG_12] on F.Cu - B.Cu
+    @(133.3250 mm, 39.0200 mm): Track [KEY_SIG_11] on B.Cu, length 84.0250 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_7 and KEY_SIG_10)
+    Local override; error
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(49.3000 mm, 9.3250 mm): Via [KEY_SIG_11] on F.Cu - B.Cu
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(48.7500 mm, 8.0550 mm): Via [KEY_SIG_10] on F.Cu - B.Cu
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(49.3000 mm, 39.0200 mm): Via [KEY_SIG_11] on F.Cu - B.Cu
+    @(48.7500 mm, 38.5400 mm): Via [KEY_SIG_10] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(49.8500 mm, 39.5000 mm): Via [KEY_SIG_12] on F.Cu - B.Cu
+    @(50.4000 mm, 39.9800 mm): Via [KEY_SIG_13] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_7 and KEY_SIG_9)
+    Local override; error
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(49.3000 mm, 39.0200 mm): Via [KEY_SIG_11] on F.Cu - B.Cu
+    @(114.2750 mm, 38.5400 mm): Track [KEY_SIG_10] on B.Cu, length 65.5250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(48.2000 mm, 38.0600 mm): Via [KEY_SIG_9] on F.Cu - B.Cu
+    @(48.7500 mm, 38.5400 mm): Via [KEY_SIG_10] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(49.3000 mm, 39.0200 mm): Via [KEY_SIG_11] on F.Cu - B.Cu
+    @(49.8500 mm, 39.5000 mm): Via [KEY_SIG_12] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(95.2250 mm, 38.0600 mm): Track [KEY_SIG_9] on B.Cu, length 47.0250 mm
+    @(48.7500 mm, 38.5400 mm): Via [KEY_SIG_10] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_8 and MUX1_OUT)
+    Local override; error
+    @(34.1500 mm, 37.5800 mm): Track [KEY_SIG_8] on F.Cu, length 30.7950 mm
+    @(29.2000 mm, 31.7500 mm): Track [MUX1_OUT] on F.Cu, length 4.8000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(48.2000 mm, 38.0600 mm): Via [KEY_SIG_9] on F.Cu - B.Cu
+    @(48.7500 mm, 38.5400 mm): Via [KEY_SIG_10] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_8 and MUX_S0)
+    Local override; error
+    @(76.1750 mm, 37.5800 mm): Track [KEY_SIG_8] on B.Cu, length 42.0250 mm
+    @(35.0000 mm, 37.7500 mm): Track [MUX_S0] on B.Cu, length 1.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(48.2000 mm, 38.0600 mm): Via [KEY_SIG_9] on F.Cu - B.Cu
+    @(48.7500 mm, 38.5400 mm): Via [KEY_SIG_10] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(33.6000 mm, 37.1000 mm): Track [KEY_SIG_7] on F.Cu, length 29.0450 mm
+    @(29.2000 mm, 31.7500 mm): Track [MUX1_OUT] on F.Cu, length 4.8000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(33.6000 mm, 8.0550 mm): Via [KEY_SIG_7] on F.Cu - B.Cu
+    @(34.1500 mm, 37.5800 mm): Track [KEY_SIG_8] on F.Cu, length 30.7950 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(49.8500 mm, 39.5000 mm): Via [KEY_SIG_12] on F.Cu - B.Cu
+    @(50.4000 mm, 39.9800 mm): Via [KEY_SIG_13] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(49.3000 mm, 39.0200 mm): Via [KEY_SIG_11] on F.Cu - B.Cu
+    @(49.8500 mm, 39.5000 mm): Via [KEY_SIG_12] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(37.7500 mm, 23.0000 mm): Track [KEY_SIG_6] on F.Cu, length 13.6750 mm
+    @(38.0500 mm, 20.2000 mm): Track [MUX_S0] on F.Cu, length 8.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(33.6000 mm, 37.1000 mm): Via [KEY_SIG_7] on F.Cu - B.Cu
+    @(34.1500 mm, 37.5800 mm): Via [KEY_SIG_8] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(57.1250 mm, 37.1000 mm): Track [KEY_SIG_7] on B.Cu, length 23.5250 mm
+    @(34.1500 mm, 37.5800 mm): Via [KEY_SIG_8] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(48.2000 mm, 38.0600 mm): Via [KEY_SIG_9] on F.Cu - B.Cu
+    @(48.7500 mm, 38.5400 mm): Via [KEY_SIG_10] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(37.2000 mm, 22.5200 mm): Via [KEY_SIG_5] on F.Cu - B.Cu
+    @(37.7500 mm, 23.0000 mm): Via [KEY_SIG_6] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(33.6000 mm, 37.1000 mm): Via [KEY_SIG_7] on F.Cu - B.Cu
+    @(34.1500 mm, 37.5800 mm): Via [KEY_SIG_8] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(36.6500 mm, 22.0400 mm): Track [KEY_SIG_4] on F.Cu, length 10.1750 mm
+    @(38.0500 mm, 20.2000 mm): Track [MUX_S0] on F.Cu, length 8.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(33.6000 mm, 37.1000 mm): Via [KEY_SIG_7] on F.Cu - B.Cu
+    @(34.1500 mm, 37.5800 mm): Via [KEY_SIG_8] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(142.8500 mm, 22.5200 mm): Track [KEY_SIG_5] on B.Cu, length 105.6500 mm
+    @(37.7500 mm, 23.0000 mm): Via [KEY_SIG_6] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(36.6500 mm, 11.8650 mm): Via [KEY_SIG_4] on F.Cu - B.Cu
+    @(37.2000 mm, 22.5200 mm): Track [KEY_SIG_5] on F.Cu, length 11.9250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(36.6500 mm, 22.0400 mm): Via [KEY_SIG_4] on F.Cu - B.Cu
+    @(36.1000 mm, 21.5600 mm): Via [KEY_SIG_3] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(37.2000 mm, 22.5200 mm): Via [KEY_SIG_5] on F.Cu - B.Cu
+    @(123.8000 mm, 22.0400 mm): Track [KEY_SIG_4] on B.Cu, length 87.1500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(36.6500 mm, 22.0400 mm): Via [KEY_SIG_4] on F.Cu - B.Cu
+    @(104.7500 mm, 21.5600 mm): Track [KEY_SIG_3] on B.Cu, length 68.6500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(36.1000 mm, 21.5600 mm): Track [KEY_SIG_3] on F.Cu, length 8.4250 mm
+    @(35.5500 mm, 21.0800 mm): Via [KEY_SIG_2] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(37.2000 mm, 22.5200 mm): Via [KEY_SIG_5] on F.Cu - B.Cu
+    @(36.6500 mm, 22.0400 mm): Via [KEY_SIG_4] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(35.5500 mm, 21.0800 mm): Track [KEY_SIG_2] on F.Cu, length 6.6750 mm
+    @(38.0500 mm, 20.2000 mm): Track [MUX_S0] on F.Cu, length 8.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0500 mm)
+    Local override; error
+    @(35.0000 mm, 37.7500 mm): Pad 13 [MUX_S0] of U_MM on B.Cu
+    @(34.1500 mm, 37.5800 mm): Via [KEY_SIG_8] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(33.6000 mm, 37.1000 mm): Via [KEY_SIG_7] on F.Cu - B.Cu
+    @(34.1500 mm, 37.5800 mm): Via [KEY_SIG_8] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(36.6500 mm, 22.0400 mm): Via [KEY_SIG_4] on F.Cu - B.Cu
+    @(36.1000 mm, 21.5600 mm): Via [KEY_SIG_3] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_1 and MUX_S0)
+    Local override; error
+    @(35.0000 mm, 20.6000 mm): Via [KEY_SIG_1] on F.Cu - B.Cu
+    @(38.0500 mm, 20.2000 mm): Track [MUX_S0] on F.Cu, length 8.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(37.2000 mm, 22.5200 mm): Via [KEY_SIG_5] on F.Cu - B.Cu
+    @(36.6500 mm, 22.0400 mm): Via [KEY_SIG_4] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0800 mm)
+    Local override; error
+    @(66.6500 mm, 20.6000 mm): Track [KEY_SIG_1] on B.Cu, length 31.6500 mm
+    @(35.5500 mm, 21.0800 mm): Via [KEY_SIG_2] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.8000 mm, 33.2500 mm): Track [MUX_S3] on F.Cu, length 38.2000 mm
+    @(28.0000 mm, 39.2500 mm): Track [VOL_ADC] on F.Cu, length 6.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(39.4500 mm, 71.4500 mm): Track [MUX_S3] on F.Cu, length 2.9650 mm
+    @(31.2000 mm, 70.9000 mm): Track [MUX_S2] on F.Cu, length 8.2500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(35.0000 mm, 20.6000 mm): Via [KEY_SIG_1] on F.Cu - B.Cu
+    @(35.5500 mm, 21.0800 mm): Via [KEY_SIG_2] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(37.8500 mm, 33.2500 mm): Track [MUX_S3] on F.Cu, length 6.0500 mm
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.8000 mm, 33.2500 mm): Track [MUX_S3] on F.Cu, length 6.0500 mm
+    @(33.6000 mm, 37.1000 mm): Track [KEY_SIG_7] on F.Cu, length 29.0450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.8000 mm, 21.8500 mm): Track [MUX_S3] on F.Cu, length 11.4000 mm
+    @(29.2000 mm, 31.7500 mm): Track [MUX1_OUT] on F.Cu, length 4.8000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1573 mm)
+    Local override; error
+    @(31.8000 mm, 71.4500 mm): Track [MUX_S3] on F.Cu, length 7.6500 mm
+    @(40.0000 mm, 71.5400 mm): Via [KEY_SIG_25] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(35.0000 mm, 20.6000 mm): Via [KEY_SIG_1] on F.Cu - B.Cu
+    @(35.5500 mm, 21.0800 mm): Via [KEY_SIG_2] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(47.9500 mm, 21.8500 mm): Track [MUX_S3] on F.Cu, length 16.1500 mm
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(47.9500 mm, 19.4850 mm): Track [MUX_S3] on F.Cu, length 2.3650 mm
+    @(47.9500 mm, 18.2150 mm): Track [MUX_S2] on F.Cu, length 3.0850 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.2000 mm, 34.7500 mm): Track [MUX_S2] on F.Cu, length 36.1500 mm
+    @(28.0000 mm, 39.2500 mm): Track [VOL_ADC] on F.Cu, length 6.0000 mm
+[shorting_items]: Items shorting two nets (nets MUX_S2 and MUX_S3)
+    Local override; error
+    @(39.4500 mm, 70.9000 mm): Track [MUX_S2] on F.Cu, length 3.6850 mm
+    @(39.4500 mm, 68.4850 mm): Via [MUX_S3] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets MUX_S3 and MUX_S2)
+    Local override; error
+    @(47.9500 mm, 19.4850 mm): Via [MUX_S3] on F.Cu - B.Cu
+    @(47.9500 mm, 18.2150 mm): Track [MUX_S2] on F.Cu, length 3.0850 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(37.3000 mm, 34.7500 mm): Track [MUX_S2] on F.Cu, length 6.1000 mm
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(36.6500 mm, 22.0400 mm): Via [KEY_SIG_4] on F.Cu - B.Cu
+    @(36.1000 mm, 21.5600 mm): Via [KEY_SIG_3] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.2000 mm, 21.3000 mm): Track [MUX_S2] on F.Cu, length 13.4500 mm
+    @(29.2000 mm, 31.7500 mm): Track [MUX1_OUT] on F.Cu, length 4.8000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.2000 mm, 70.9000 mm): Track [MUX_S2] on F.Cu, length 8.2500 mm
+    @(31.8000 mm, 33.2500 mm): Track [MUX_S3] on F.Cu, length 38.2000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(47.9500 mm, 21.3000 mm): Track [MUX_S2] on F.Cu, length 16.7500 mm
+    @(47.9500 mm, 19.4850 mm): Track [MUX_S3] on F.Cu, length 2.3650 mm
+[shorting_items]: Items shorting two nets (nets MUX_S2 and KEY_SIG_9)
+    Local override; error
+    @(47.9500 mm, 18.2150 mm): Via [MUX_S2] on F.Cu - B.Cu
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(30.6000 mm, 20.7500 mm): Track [MUX_S1] on F.Cu, length 15.5000 mm
+    @(29.2000 mm, 31.7500 mm): Track [MUX1_OUT] on F.Cu, length 4.8000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1300 mm)
+    Local override; error
+    @(35.0000 mm, 20.6000 mm): Via [KEY_SIG_1] on F.Cu - B.Cu
+    @(35.5500 mm, 21.0800 mm): Via [KEY_SIG_2] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(38.0500 mm, 20.7500 mm): Track [MUX_S1] on F.Cu, length 7.4500 mm
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[shorting_items]: Items shorting two nets (nets MUX_S1 and GND)
+    Local override; error
+    @(29.5500 mm, 70.3500 mm): Track [MUX_S1] on F.Cu, length 3.1350 mm
+    @(29.6500 mm, 68.4850 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets MUX_S1 and MUX_S0)
+    Local override; error
+    @(29.5500 mm, 67.2150 mm): Via [MUX_S1] on F.Cu - B.Cu
+    @(29.5500 mm, 69.8000 mm): Track [MUX_S0] on F.Cu, length 3.8550 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(30.0000 mm, 37.7500 mm): Track [MUX_S0] on F.Cu, length 32.0500 mm
+    @(28.0000 mm, 39.2500 mm): Track [VOL_ADC] on F.Cu, length 6.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(30.0000 mm, 37.7500 mm): Track [MUX_S0] on F.Cu, length 6.2000 mm
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[shorting_items]: Items shorting two nets (nets MUX_S0 and KEY_SIG_8)
+    Local override; error
+    @(36.2000 mm, 37.7500 mm): Track [MUX_S0] on F.Cu, length 6.2000 mm
+    @(34.1500 mm, 37.5800 mm): Via [KEY_SIG_8] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(38.0500 mm, 20.2000 mm): Track [MUX_S0] on F.Cu, length 8.0500 mm
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(30.0000 mm, 20.2000 mm): Track [MUX_S0] on F.Cu, length 17.5500 mm
+    @(26.8000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 6.7000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(29.2000 mm, 31.7500 mm): Track [MUX1_OUT] on F.Cu, length 4.8000 mm
+    @(30.0000 mm, 20.2000 mm): Track [MUX_S0] on F.Cu, length 17.5500 mm
+[shorting_items]: Items shorting two nets (nets MUX_S0 and MUX_S1)
+    Local override; error
+    @(38.0500 mm, 16.9450 mm): Track [MUX_S0] on F.Cu, length 3.2550 mm
+    @(38.0500 mm, 18.2150 mm): Via [MUX_S1] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1148 mm)
+    Local override; error
+    @(27.5000 mm, 3.8000 mm): PTH pad 1 [GND] of MP1
+    @(34.5000 mm, 5.5150 mm): Track [MUX1_OUT] on F.Cu, length 5.3000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(11.5000 mm, 42.0000 mm): Track [VOL_ADC] on F.Cu, length 16.5000 mm
+    @(27.4000 mm, 43.0000 mm): Track [ENC_A] on F.Cu, length 14.2500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(33.5000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 20.5500 mm
+    @(28.0000 mm, 39.2500 mm): Track [VOL_ADC] on F.Cu, length 6.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(23.9000 mm, 20.2000 mm): Track [I2C_SCL] on F.Cu, length 2.9000 mm
+    @(24.4000 mm, 13.0000 mm): Track [I2C_SDA] on F.Cu, length 9.8000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(23.9000 mm, 13.8000 mm): Via [I2C_SCL] on F.Cu - B.Cu
+    @(24.4000 mm, 13.0000 mm): Track [I2C_SDA] on F.Cu, length 9.8000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(23.4000 mm, 14.6000 mm): Track [I2S_RX] on F.Cu, length 20.1500 mm
+    @(22.9000 mm, 15.4000 mm): Via [I2S_TX] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(23.4000 mm, 14.6000 mm): Via [I2S_RX] on F.Cu - B.Cu
+    @(23.9000 mm, 13.8000 mm): Track [I2C_SCL] on F.Cu, length 6.4000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1148 mm)
+    Local override; error
+    @(27.5000 mm, 3.8000 mm): PTH pad 1 [GND] of MP1
+    @(29.2000 mm, 5.5150 mm): Track [MUX1_OUT] on F.Cu, length 26.2350 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(22.9000 mm, 15.4000 mm): Track [I2S_TX] on F.Cu, length 17.8500 mm
+    @(22.4000 mm, 16.2000 mm): Via [I2S_BCLK] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(38.0500 mm, 18.2150 mm): Track [MUX_S1] on F.Cu, length 2.5350 mm
+    @(38.0500 mm, 20.2000 mm): Track [MUX_S0] on F.Cu, length 8.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(22.4000 mm, 16.2000 mm): Track [I2S_BCLK] on F.Cu, length 21.5500 mm
+    @(22.9000 mm, 33.2500 mm): Via [I2S_TX] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(21.9000 mm, 36.2500 mm): Via [I2S_LRCLK] on F.Cu - B.Cu
+    @(21.4000 mm, 17.8000 mm): Track [I2S_MCLK] on F.Cu, length 21.4500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(21.9000 mm, 17.0000 mm): Track [I2S_LRCLK] on F.Cu, length 19.2500 mm
+    @(21.4000 mm, 17.8000 mm): Via [I2S_MCLK] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(12.2000 mm, 21.0000 mm): Track [MIC_BIAS] on B.Cu, length 4.4000 mm
+    @(2.8000 mm, 22.2000 mm): Track [MIC_IN] on B.Cu, length 11.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(12.2000 mm, 12.2000 mm): Track [HP_R] on B.Cu, length 3.6000 mm
+    @(13.2000 mm, 9.0000 mm): Track [HP_VGND] on B.Cu, length 4.0000 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_22)
+    Local override; error
+    @(24.4500 mm, 63.5000 mm): Via [GND] on F.Cu - B.Cu
+    @(24.2000 mm, 70.1000 mm): Track [KEY_SIG_22] on F.Cu, length 11.7750 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_23)
+    Local override; error
+    @(24.6000 mm, 57.5500 mm): Via [GND] on F.Cu - B.Cu
+    @(24.7500 mm, 70.5800 mm): Track [KEY_SIG_23] on F.Cu, length 13.5250 mm
+[shorting_items]: Items shorting two nets (nets +3V3 and MUX_S0)
+    Local override; error
+    @(31.4500 mm, 20.2000 mm): Via [+3V3] on F.Cu - B.Cu
+    @(38.0500 mm, 20.2000 mm): Track [MUX_S0] on F.Cu, length 8.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(22.9000 mm, 28.7500 mm): Via [+3V3] on F.Cu - B.Cu
+    @(22.4000 mm, 16.2000 mm): Track [I2S_BCLK] on F.Cu, length 21.5500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1196 mm)
+    Local override; error
+    @(26.4500 mm, 6.2000 mm): Via [+3V3] on F.Cu - B.Cu
+    @(27.5000 mm, 3.8000 mm): PTH pad 1 [GND] of MP1
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1196 mm)
+    Local override; error
+    @(26.4500 mm, 6.2000 mm): Via [+3V3] on F.Cu - B.Cu
+    @(27.5000 mm, 3.8000 mm): PTH pad 1 [GND] of MP1
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1196 mm)
+    Local override; error
+    @(26.4500 mm, 6.2000 mm): Via [+3V3] on F.Cu - B.Cu
+    @(27.5000 mm, 3.8000 mm): PTH pad 1 [GND] of MP1
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1196 mm)
+    Local override; error
+    @(26.4500 mm, 6.2000 mm): Via [+3V3] on F.Cu - B.Cu
+    @(27.5000 mm, 3.8000 mm): PTH pad 1 [GND] of MP1
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(70.9750 mm, 64.6000 mm): Track [KEY_SIG_23] on F.Cu, length 4.2000 mm
+    @(70.5750 mm, 64.6000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(70.5750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(70.9750 mm, 63.0000 mm): Track [KEY_SIG_23] on F.Cu, length 4.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(70.9750 mm, 61.4000 mm): Track [KEY_SIG_23] on F.Cu, length 4.2000 mm
+    @(70.5750 mm, 61.4000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(108.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 31.6000 mm): Track [KEY_SIG_10] on F.Cu, length 4.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(109.0750 mm, 28.4000 mm): Track [KEY_SIG_10] on F.Cu, length 4.2000 mm
+    @(108.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(109.0750 mm, 30.0000 mm): Track [KEY_SIG_10] on F.Cu, length 4.2000 mm
+    @(108.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(46.9250 mm, 32.4000 mm): Track [+3V3] on F.Cu, length 4.2000 mm
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(51.9250 mm, 33.2000 mm): Track [KEY_SIG_7] on F.Cu, length 4.2000 mm
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(46.9250 mm, 26.0000 mm): Track [+3V3] on F.Cu, length 4.2000 mm
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(46.9250 mm, 30.8000 mm): Track [+3V3] on F.Cu, length 4.2000 mm
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(46.9250 mm, 27.6000 mm): Track [+3V3] on F.Cu, length 4.2000 mm
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_7 and KEY_SIG_15)
+    Local override; error
+    @(51.9250 mm, 31.6000 mm): Track [KEY_SIG_7] on F.Cu, length 4.2000 mm
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_7 and KEY_SIG_15)
+    Local override; error
+    @(51.9250 mm, 28.4000 mm): Track [KEY_SIG_7] on F.Cu, length 4.2000 mm
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_7 and KEY_SIG_15)
+    Local override; error
+    @(51.9250 mm, 30.0000 mm): Track [KEY_SIG_7] on F.Cu, length 4.2000 mm
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(156.7000 mm, 11.9000 mm): Track [KEY_SIG_6] on F.Cu, length 4.2000 mm
+    @(156.3000 mm, 11.9000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(156.3000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(156.7000 mm, 13.5000 mm): Track [KEY_SIG_6] on F.Cu, length 4.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(156.3000 mm, 15.1000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(156.7000 mm, 15.1000 mm): Track [KEY_SIG_6] on F.Cu, length 4.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(80.1000 mm, 15.1000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(80.5000 mm, 15.1000 mm): Track [KEY_SIG_2] on F.Cu, length 4.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(80.5000 mm, 13.5000 mm): Track [KEY_SIG_2] on F.Cu, length 4.2000 mm
+    @(80.1000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(80.1000 mm, 11.9000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(80.5000 mm, 11.9000 mm): Track [KEY_SIG_2] on F.Cu, length 4.2000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_27 and +3V3)
+    Local override; error
+    @(147.1750 mm, 61.4000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+    @(146.7750 mm, 61.4000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_23 and +3V3)
+    Local override; error
+    @(70.9750 mm, 61.4000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+    @(70.5750 mm, 61.4000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_23 and +3V3)
+    Local override; error
+    @(70.9750 mm, 63.0000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+    @(68.9750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_27)
+    Local override; error
+    @(146.7750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(147.1750 mm, 63.0000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_27)
+    Local override; error
+    @(145.1750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(147.1750 mm, 63.0000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_27)
+    Local override; error
+    @(148.3750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(147.1750 mm, 63.0000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_23)
+    Local override; error
+    @(70.5750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(70.9750 mm, 63.0000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_27)
+    Local override; error
+    @(146.7750 mm, 64.6000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(147.1750 mm, 64.6000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_23)
+    Local override; error
+    @(72.1750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(70.9750 mm, 63.0000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_23)
+    Local override; error
+    @(70.5750 mm, 64.6000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(70.9750 mm, 64.6000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_10 and +3V3)
+    Local override; error
+    @(109.0750 mm, 28.4000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+    @(110.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_10 and +3V3)
+    Local override; error
+    @(109.0750 mm, 30.0000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+    @(106.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_10 and +3V3)
+    Local override; error
+    @(109.0750 mm, 30.0000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+    @(108.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_10 and +3V3)
+    Local override; error
+    @(109.0750 mm, 30.0000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+    @(110.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_6 and +3V3)
+    Local override; error
+    @(156.7000 mm, 11.9000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+    @(156.3000 mm, 11.9000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_6 and +3V3)
+    Local override; error
+    @(156.7000 mm, 13.5000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+    @(154.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_10)
+    Local override; error
+    @(106.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 28.4000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_10)
+    Local override; error
+    @(108.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 28.4000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_10)
+    Local override; error
+    @(106.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 31.6000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_10)
+    Local override; error
+    @(108.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 31.6000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_6)
+    Local override; error
+    @(156.3000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(156.7000 mm, 13.5000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_2 and +3V3)
+    Local override; error
+    @(80.5000 mm, 11.9000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+    @(80.1000 mm, 11.9000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_10)
+    Local override; error
+    @(110.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 31.6000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_6)
+    Local override; error
+    @(157.9000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(156.7000 mm, 13.5000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_6)
+    Local override; error
+    @(156.3000 mm, 15.1000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(156.7000 mm, 15.1000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_2 and +3V3)
+    Local override; error
+    @(80.5000 mm, 13.5000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+    @(80.1000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_2)
+    Local override; error
+    @(78.5000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(80.5000 mm, 13.5000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_2)
+    Local override; error
+    @(81.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(80.5000 mm, 13.5000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_2)
+    Local override; error
+    @(80.1000 mm, 15.1000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(80.5000 mm, 15.1000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2000 mm)
+    Rule: board setup constraints hole; error
+    @(35.0000 mm, 37.7500 mm): Pad 13 [MUX_S0] of U_MM on B.Cu
+    @(34.1500 mm, 37.5800 mm): Via [KEY_SIG_8] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(76.1750 mm, 37.5800 mm): Track [KEY_SIG_8] on B.Cu, length 42.0250 mm
+    @(35.0000 mm, 37.7500 mm): Pad 13 [MUX_S0] of U_MM on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(109.0750 mm, 28.4000 mm): Track [KEY_SIG_10] on F.Cu, length 4.2000 mm
+    @(110.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(106.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 28.4000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(70.9750 mm, 63.0000 mm): Track [KEY_SIG_23] on F.Cu, length 4.2000 mm
+    @(72.1750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(80.5000 mm, 11.9000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+    @(80.1000 mm, 11.9000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(108.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 28.4000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(109.0750 mm, 30.0000 mm): Track [KEY_SIG_10] on F.Cu, length 4.2000 mm
+    @(110.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(80.5000 mm, 13.5000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+    @(80.1000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.1250 mm, 30.8000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(80.5000 mm, 13.5000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+    @(78.5000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(110.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 28.4000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.1250 mm, 32.4000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(80.5000 mm, 13.5000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+    @(81.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(106.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 30.0000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(109.0750 mm, 31.6000 mm): Track [KEY_SIG_10] on F.Cu, length 4.2000 mm
+    @(110.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.1250 mm, 34.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(80.5000 mm, 15.1000 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+    @(80.1000 mm, 15.1000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.1250 mm, 26.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.1250 mm, 27.6000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.1250 mm, 29.2000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(156.7000 mm, 13.5000 mm): Track [KEY_SIG_6] on F.Cu, length 4.2000 mm
+    @(157.9000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.9250 mm, 28.4000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.9250 mm, 30.0000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.9250 mm, 31.6000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(70.9750 mm, 61.4000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+    @(70.5750 mm, 61.4000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(147.1750 mm, 63.0000 mm): Track [KEY_SIG_27] on F.Cu, length 4.2000 mm
+    @(148.3750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.2000 mm, 38.0600 mm): Track [KEY_SIG_9] on F.Cu, length 31.2750 mm
+    @(51.9250 mm, 33.2000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(108.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 30.0000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(80.5000 mm, 13.5000 mm): Track [KEY_SIG_2] on F.Cu, length 4.2000 mm
+    @(81.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(70.9750 mm, 63.0000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+    @(70.5750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(70.9750 mm, 63.0000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+    @(68.9750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(70.9750 mm, 63.0000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+    @(72.1750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(110.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 30.0000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(70.9750 mm, 64.6000 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+    @(70.5750 mm, 64.6000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.1250 mm, 30.8000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(106.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 31.6000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.1250 mm, 32.4000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(108.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 31.6000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.1250 mm, 34.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.1250 mm, 26.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(110.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(109.0750 mm, 31.6000 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.1250 mm, 27.6000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(156.7000 mm, 11.9000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+    @(156.3000 mm, 11.9000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.1250 mm, 29.2000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(156.7000 mm, 13.5000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+    @(156.3000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(156.7000 mm, 13.5000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+    @(154.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.9250 mm, 28.4000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(156.7000 mm, 13.5000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+    @(157.9000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.9250 mm, 30.0000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(156.7000 mm, 15.1000 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+    @(156.3000 mm, 15.1000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.9250 mm, 31.6000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(48.7500 mm, 38.5400 mm): Track [KEY_SIG_10] on F.Cu, length 30.4850 mm
+    @(51.9250 mm, 33.2000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.1250 mm, 30.8000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.1250 mm, 32.4000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.1250 mm, 34.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(147.1750 mm, 61.4000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+    @(146.7750 mm, 61.4000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.1250 mm, 26.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(147.1750 mm, 63.0000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+    @(146.7750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.1250 mm, 27.6000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(147.1750 mm, 63.0000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+    @(145.1750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.1250 mm, 29.2000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(147.1750 mm, 63.0000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+    @(148.3750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.9250 mm, 28.4000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(147.1750 mm, 64.6000 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+    @(146.7750 mm, 64.6000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.9250 mm, 30.0000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.9250 mm, 31.6000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.3000 mm, 39.0200 mm): Track [KEY_SIG_11] on F.Cu, length 29.6950 mm
+    @(51.9250 mm, 33.2000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.1250 mm, 30.8000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.1250 mm, 32.4000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.1250 mm, 34.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.1250 mm, 26.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.1250 mm, 27.6000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.1250 mm, 29.2000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.9250 mm, 28.4000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.9250 mm, 30.0000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.9250 mm, 31.6000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8500 mm, 39.5000 mm): Track [KEY_SIG_12] on F.Cu, length 28.9050 mm
+    @(51.9250 mm, 33.2000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.1250 mm, 30.8000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.1250 mm, 32.4000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.1250 mm, 34.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.1250 mm, 26.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.1250 mm, 27.6000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.1250 mm, 29.2000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.9250 mm, 28.4000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.9250 mm, 30.0000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.9250 mm, 31.6000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.4000 mm, 39.9800 mm): Track [KEY_SIG_13] on F.Cu, length 28.1150 mm
+    @(51.9250 mm, 33.2000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.1250 mm, 30.8000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.1250 mm, 32.4000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.1250 mm, 34.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.1250 mm, 26.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.1250 mm, 27.6000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.1250 mm, 29.2000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.9250 mm, 28.4000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.9250 mm, 30.0000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.9250 mm, 31.6000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.2000 mm, 53.6000 mm): Track [KEY_SIG_14] on F.Cu, length 40.4650 mm
+    @(51.9250 mm, 33.2000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.1250 mm, 30.8000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.1250 mm, 32.4000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.1250 mm, 34.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.1250 mm, 26.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.1250 mm, 27.6000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.1250 mm, 29.2000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.9250 mm, 28.4000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.9250 mm, 30.0000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.9250 mm, 31.6000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.7500 mm, 54.0800 mm): Track [KEY_SIG_15] on F.Cu, length 39.6750 mm
+    @(51.9250 mm, 33.2000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.1250 mm, 30.8000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.1250 mm, 32.4000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.1250 mm, 34.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.1250 mm, 26.0000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.1250 mm, 27.6000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.1250 mm, 29.2000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.9250 mm, 26.8000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.9250 mm, 28.4000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.9250 mm, 30.0000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.9250 mm, 31.6000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 54.5600 mm): Track [KEY_SIG_16] on F.Cu, length 38.8850 mm
+    @(51.9250 mm, 33.2000 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(123.8000 mm, 55.5200 mm): Track [KEY_SIG_18] on B.Cu, length 97.0500 mm
+    @(30.7500 mm, 55.7850 mm): Pad 2 [KEY_SIG_24] of U5 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(123.8000 mm, 55.5200 mm): Track [KEY_SIG_18] on B.Cu, length 97.0500 mm
+    @(38.2500 mm, 55.7850 mm): Pad 23 [KEY_SIG_25] of U5 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(142.8500 mm, 56.0000 mm): Track [KEY_SIG_19] on B.Cu, length 115.5500 mm
+    @(30.7500 mm, 55.7850 mm): Pad 2 [KEY_SIG_24] of U5 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(142.8500 mm, 56.0000 mm): Track [KEY_SIG_19] on B.Cu, length 115.5500 mm
+    @(38.2500 mm, 55.7850 mm): Pad 23 [KEY_SIG_25] of U5 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(180.9500 mm, 56.9600 mm): Track [KEY_SIG_21] on B.Cu, length 152.5500 mm
+    @(30.7500 mm, 57.0550 mm): Pad 3 [KEY_SIG_23] of U5 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(180.9500 mm, 56.9600 mm): Track [KEY_SIG_21] on B.Cu, length 152.5500 mm
+    @(38.2500 mm, 57.0550 mm): Pad 22 [KEY_SIG_26] of U5 on B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.2172 mm)
+    Rule: board setup constraints; warning
+    @(24.7500 mm, 57.0550 mm): Via [KEY_SIG_23] on F.Cu - B.Cu
+    @(24.6000 mm, 57.5500 mm): Via [GND] on F.Cu - B.Cu
+[lib_footprint_mismatch]: Footprint 'MountingHole_M2.5_Pad' does not match copy in library 'eTutti'
+    Local override; warning
+    @(27.5000 mm, 3.8000 mm): Footprint MP1
+[lib_footprint_mismatch]: Footprint 'MountingHole_M2.5_Pad' does not match copy in library 'eTutti'
+    Local override; warning
+    @(27.5000 mm, 76.2000 mm): Footprint MP2
+[lib_footprint_mismatch]: Footprint 'MountingHole_M2.5_Pad' does not match copy in library 'eTutti'
+    Local override; warning
+    @(70.5750 mm, 3.5000 mm): Footprint MP3
+[lib_footprint_mismatch]: Footprint 'MountingHole_M2.5_Pad' does not match copy in library 'eTutti'
+    Local override; warning
+    @(108.6750 mm, 3.5000 mm): Footprint MP4
+[lib_footprint_mismatch]: Footprint 'MountingHole_M2.5_Pad' does not match copy in library 'eTutti'
+    Local override; warning
+    @(146.7750 mm, 3.5000 mm): Footprint MP5
+[lib_footprint_mismatch]: Footprint 'MountingHole_M2.5_Pad' does not match copy in library 'eTutti'
+    Local override; warning
+    @(61.0500 mm, 76.5000 mm): Footprint MP6
+[lib_footprint_mismatch]: Footprint 'MountingHole_M2.5_Pad' does not match copy in library 'eTutti'
+    Local override; warning
+    @(99.1500 mm, 76.5000 mm): Footprint MP7
+[lib_footprint_mismatch]: Footprint 'MountingHole_M2.5_Pad' does not match copy in library 'eTutti'
+    Local override; warning
+    @(137.2500 mm, 76.5000 mm): Footprint MP8
+[lib_footprint_mismatch]: Footprint 'Back_Support_Pillar_M2.5' does not match copy in library 'eTutti'
+    Local override; warning
+    @(61.0500 mm, 30.0000 mm): Footprint SP1
+[lib_footprint_mismatch]: Footprint 'Back_Support_Pillar_M2.5' does not match copy in library 'eTutti'
+    Local override; warning
+    @(99.1500 mm, 30.0000 mm): Footprint SP2
+[lib_footprint_mismatch]: Footprint 'Back_Support_Pillar_M2.5' does not match copy in library 'eTutti'
+    Local override; warning
+    @(137.2500 mm, 30.0000 mm): Footprint SP3
+[lib_footprint_mismatch]: Footprint 'Back_Support_Pillar_M2.5' does not match copy in library 'eTutti'
+    Local override; warning
+    @(70.5750 mm, 46.5000 mm): Footprint SP4
+[lib_footprint_mismatch]: Footprint 'Back_Support_Pillar_M2.5' does not match copy in library 'eTutti'
+    Local override; warning
+    @(108.6750 mm, 46.5000 mm): Footprint SP5
+[lib_footprint_mismatch]: Footprint 'Back_Support_Pillar_M2.5' does not match copy in library 'eTutti'
+    Local override; warning
+    @(146.7750 mm, 46.5000 mm): Footprint SP6
+[lib_footprint_mismatch]: Footprint 'J_HP_Back' does not match copy in library 'eTutti'
+    Local override; warning
+    @(6.8000 mm, 10.5000 mm): Footprint J_HP
+[lib_footprint_mismatch]: Footprint 'J_MIC_Back' does not match copy in library 'eTutti'
+    Local override; warning
+    @(6.8000 mm, 19.5000 mm): Footprint J_MIC
+[lib_footprint_mismatch]: Footprint 'J_USBC_Back' does not match copy in library 'eTutti'
+    Local override; warning
+    @(6.0000 mm, 30.5000 mm): Footprint J_USBC
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_CC1' does not match copy in library 'eTutti'
+    Local override; warning
+    @(13.0000 mm, 33.5000 mm): Footprint R_CC1
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_CC2' does not match copy in library 'eTutti'
+    Local override; warning
+    @(13.0000 mm, 31.5000 mm): Footprint R_CC2
+[lib_footprint_mismatch]: Footprint 'U_CODEC_Back' does not match copy in library 'eTutti'
+    Local override; warning
+    @(18.0000 mm, 15.0000 mm): Footprint U_CODEC
+[lib_footprint_mismatch]: Footprint 'SOT23_5_U_1V8' does not match copy in library 'eTutti'
+    Local override; warning
+    @(18.0000 mm, 6.2000 mm): Footprint U_1V8
+[lib_footprint_mismatch]: Footprint 'SMD_0805_FB_AUD' does not match copy in library 'eTutti'
+    Local override; warning
+    @(24.5000 mm, 6.2000 mm): Footprint FB_AUD
+[lib_footprint_mismatch]: Footprint 'SMD_0805_C_1V8' does not match copy in library 'eTutti'
+    Local override; warning
+    @(13.0000 mm, 6.2000 mm): Footprint C_1V8
+[lib_footprint_mismatch]: Footprint 'SMD_0805_C_ANA' does not match copy in library 'eTutti'
+    Local override; warning
+    @(18.0000 mm, 23.8000 mm): Footprint C_ANA
+[lib_footprint_mismatch]: Footprint 'RV1_Top' does not match copy in library 'eTutti'
+    Local override; warning
+    @(11.5000 mm, 45.5000 mm): Footprint RV1
+[lib_footprint_mismatch]: Footprint 'SW_ENC1_Top' does not match copy in library 'eTutti'
+    Local override; warning
+    @(11.5000 mm, 62.0000 mm): Footprint SW_ENC1
+[lib_footprint_mismatch]: Footprint 'SMD_0805_D1' does not match copy in library 'eTutti'
+    Local override; warning
+    @(20.5000 mm, 44.0000 mm): Footprint D1
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R1' does not match copy in library 'eTutti'
+    Local override; warning
+    @(20.5000 mm, 48.0000 mm): Footprint R1
+[lib_footprint_mismatch]: Footprint 'U4_Back' does not match copy in library 'eTutti'
+    Local override; warning
+    @(43.0000 mm, 12.5000 mm): Footprint U4
+[lib_footprint_mismatch]: Footprint 'SMD_0805_C_MUX1' does not match copy in library 'eTutti'
+    Local override; warning
+    @(35.5000 mm, 3.8000 mm): Footprint C_MUX1
+[lib_footprint_mismatch]: Footprint 'U_MM_Back' does not match copy in library 'eTutti'
+    Local override; warning
+    @(29.5000 mm, 34.0000 mm): Footprint U_MM
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_SDA' does not match copy in library 'eTutti'
+    Local override; warning
+    @(29.5000 mm, 22.8000 mm): Footprint R_SDA
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_SCL' does not match copy in library 'eTutti'
+    Local override; warning
+    @(29.5000 mm, 20.2000 mm): Footprint R_SCL
+[lib_footprint_mismatch]: Footprint 'U5_Back' does not match copy in library 'eTutti'
+    Local override; warning
+    @(34.5000 mm, 61.5000 mm): Footprint U5
+[lib_footprint_mismatch]: Footprint 'SMD_0805_C_MUX2' does not match copy in library 'eTutti'
+    Local override; warning
+    @(34.5000 mm, 51.0000 mm): Footprint C_MUX2
+[lib_footprint_mismatch]: Footprint 'SOT23_5_U6' does not match copy in library 'eTutti'
+    Local override; warning
+    @(22.5000 mm, 58.5000 mm): Footprint U6
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PROG' does not match copy in library 'eTutti'
+    Local override; warning
+    @(22.5000 mm, 63.5000 mm): Footprint R_PROG
+[lib_footprint_mismatch]: Footprint 'SMD_0805_J_BAT' does not match copy in library 'eTutti'
+    Local override; warning
+    @(22.5000 mm, 67.0000 mm): Footprint J_BAT
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(61.0500 mm, 13.5000 mm): Footprint IRP1
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD1' does not match copy in library 'eTutti'
+    Local override; warning
+    @(65.7000 mm, 19.7000 mm): Footprint R_PD1
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(80.1000 mm, 13.5000 mm): Footprint IRP2
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD2' does not match copy in library 'eTutti'
+    Local override; warning
+    @(84.7500 mm, 19.7000 mm): Footprint R_PD2
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(99.1500 mm, 13.5000 mm): Footprint IRP3
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD3' does not match copy in library 'eTutti'
+    Local override; warning
+    @(103.8000 mm, 19.7000 mm): Footprint R_PD3
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(118.2000 mm, 13.5000 mm): Footprint IRP4
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD4' does not match copy in library 'eTutti'
+    Local override; warning
+    @(122.8500 mm, 19.7000 mm): Footprint R_PD4
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(137.2500 mm, 13.5000 mm): Footprint IRP5
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD5' does not match copy in library 'eTutti'
+    Local override; warning
+    @(141.9000 mm, 19.7000 mm): Footprint R_PD5
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(156.3000 mm, 13.5000 mm): Footprint IRP6
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD6' does not match copy in library 'eTutti'
+    Local override; warning
+    @(160.9500 mm, 19.7000 mm): Footprint R_PD6
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(51.5250 mm, 30.0000 mm): Footprint IRP7
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD7' does not match copy in library 'eTutti'
+    Local override; warning
+    @(56.1750 mm, 36.2000 mm): Footprint R_PD7
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(70.5750 mm, 30.0000 mm): Footprint IRP8
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD8' does not match copy in library 'eTutti'
+    Local override; warning
+    @(75.2250 mm, 36.2000 mm): Footprint R_PD8
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(89.6250 mm, 30.0000 mm): Footprint IRP9
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD9' does not match copy in library 'eTutti'
+    Local override; warning
+    @(94.2750 mm, 36.2000 mm): Footprint R_PD9
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(108.6750 mm, 30.0000 mm): Footprint IRP10
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD10' does not match copy in library 'eTutti'
+    Local override; warning
+    @(113.3250 mm, 36.2000 mm): Footprint R_PD10
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(127.7250 mm, 30.0000 mm): Footprint IRP11
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD11' does not match copy in library 'eTutti'
+    Local override; warning
+    @(132.3750 mm, 36.2000 mm): Footprint R_PD11
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(146.7750 mm, 30.0000 mm): Footprint IRP12
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD12' does not match copy in library 'eTutti'
+    Local override; warning
+    @(151.4250 mm, 36.2000 mm): Footprint R_PD12
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(165.8250 mm, 30.0000 mm): Footprint IRP13
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD13' does not match copy in library 'eTutti'
+    Local override; warning
+    @(170.4750 mm, 36.2000 mm): Footprint R_PD13
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(42.0000 mm, 46.5000 mm): Footprint IRP14
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD14' does not match copy in library 'eTutti'
+    Local override; warning
+    @(46.6500 mm, 52.7000 mm): Footprint R_PD14
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(61.0500 mm, 46.5000 mm): Footprint IRP15
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD15' does not match copy in library 'eTutti'
+    Local override; warning
+    @(65.7000 mm, 52.7000 mm): Footprint R_PD15
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(80.1000 mm, 46.5000 mm): Footprint IRP16
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD16' does not match copy in library 'eTutti'
+    Local override; warning
+    @(84.7500 mm, 52.7000 mm): Footprint R_PD16
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(99.1500 mm, 46.5000 mm): Footprint IRP17
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD17' does not match copy in library 'eTutti'
+    Local override; warning
+    @(103.8000 mm, 52.7000 mm): Footprint R_PD17
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(118.2000 mm, 46.5000 mm): Footprint IRP18
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD18' does not match copy in library 'eTutti'
+    Local override; warning
+    @(122.8500 mm, 52.7000 mm): Footprint R_PD18
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(137.2500 mm, 46.5000 mm): Footprint IRP19
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD19' does not match copy in library 'eTutti'
+    Local override; warning
+    @(141.9000 mm, 52.7000 mm): Footprint R_PD19
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(156.3000 mm, 46.5000 mm): Footprint IRP20
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD20' does not match copy in library 'eTutti'
+    Local override; warning
+    @(160.9500 mm, 52.7000 mm): Footprint R_PD20
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(175.3500 mm, 46.5000 mm): Footprint IRP21
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD21' does not match copy in library 'eTutti'
+    Local override; warning
+    @(180.0000 mm, 52.7000 mm): Footprint R_PD21
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(51.5250 mm, 63.0000 mm): Footprint IRP22
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD22' does not match copy in library 'eTutti'
+    Local override; warning
+    @(56.1750 mm, 69.2000 mm): Footprint R_PD22
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(70.5750 mm, 63.0000 mm): Footprint IRP23
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD23' does not match copy in library 'eTutti'
+    Local override; warning
+    @(75.2250 mm, 69.2000 mm): Footprint R_PD23
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(89.6250 mm, 63.0000 mm): Footprint IRP24
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD24' does not match copy in library 'eTutti'
+    Local override; warning
+    @(94.2750 mm, 69.2000 mm): Footprint R_PD24
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(108.6750 mm, 63.0000 mm): Footprint IRP25
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD25' does not match copy in library 'eTutti'
+    Local override; warning
+    @(113.3250 mm, 69.2000 mm): Footprint R_PD25
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(127.7250 mm, 63.0000 mm): Footprint IRP26
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD26' does not match copy in library 'eTutti'
+    Local override; warning
+    @(132.3750 mm, 69.2000 mm): Footprint R_PD26
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(146.7750 mm, 63.0000 mm): Footprint IRP27
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD27' does not match copy in library 'eTutti'
+    Local override; warning
+    @(151.4250 mm, 69.2000 mm): Footprint R_PD27
+[lib_footprint_mismatch]: Footprint 'IRP_14mm_Tactile' does not match copy in library 'eTutti'
+    Local override; warning
+    @(165.8250 mm, 63.0000 mm): Footprint IRP28
+[lib_footprint_mismatch]: Footprint 'SMD_0805_R_PD28' does not match copy in library 'eTutti'
+    Local override; warning
+    @(170.4750 mm, 69.2000 mm): Footprint R_PD28
+
+** Found 29 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(70.1750 mm, 60.6000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(70.5750 mm, 61.4000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(70.1750 mm, 62.2000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(68.9750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(70.1750 mm, 63.8000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(70.5750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(70.1750 mm, 63.8000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(70.5750 mm, 64.6000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(70.5750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(72.1750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(79.7000 mm, 14.3000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(78.5000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(80.1000 mm, 11.9000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(79.7000 mm, 12.7000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(80.1000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(79.7000 mm, 12.7000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(80.1000 mm, 15.1000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(79.7000 mm, 15.9000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(81.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+    @(80.1000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(106.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(106.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(106.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(108.2750 mm, 29.2000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(106.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(106.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(108.2750 mm, 29.2000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(108.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(108.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(108.2750 mm, 29.2000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(108.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(110.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(108.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(108.2750 mm, 32.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(110.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(110.6750 mm, 28.4000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(110.6750 mm, 31.6000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(110.6750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(146.3750 mm, 62.2000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(145.1750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(146.3750 mm, 63.8000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(146.7750 mm, 64.6000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(146.7750 mm, 61.4000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(146.3750 mm, 62.2000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(146.7750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(146.3750 mm, 63.8000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(146.7750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+    @(148.3750 mm, 63.0000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(154.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(155.9000 mm, 12.7000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(155.9000 mm, 12.7000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(156.3000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(155.9000 mm, 14.3000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(156.3000 mm, 15.1000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(156.3000 mm, 11.9000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(155.9000 mm, 11.1000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(157.9000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(156.3000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

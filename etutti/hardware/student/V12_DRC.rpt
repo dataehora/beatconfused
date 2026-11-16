@@ -1,0 +1,178 @@
+** Drc report for eTutti_Student.kicad_pcb **
+** Created on 2026-11-13T20:22:09 **
+** Report includes: Errors, Warnings **
+
+** Found 40 DRC violations **
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_14)
+    Local override; error
+    @(66.6000 mm, 55.8000 mm): Via [GND] on F.Cu - B.Cu
+    @(69.6000 mm, 55.6000 mm): Track [KEY_SIG_14] on B.Cu, length 15.7000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(31.0000 mm, 18.4450 mm): Track [MUX_S0] on F.Cu, length 21.3050 mm
+    @(30.4500 mm, 20.5000 mm): Via [+3V3] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_7 and MUX_S2)
+    Local override; error
+    @(34.8000 mm, 39.0000 mm): Via [KEY_SIG_7] on F.Cu - B.Cu
+    @(35.2000 mm, 36.7500 mm): Track [MUX_S2] on F.Cu, length 8.2500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(55.3000 mm, 56.4400 mm): Via [KEY_SIG_16] on F.Cu - B.Cu
+    @(126.7500 mm, 56.8600 mm): Track [KEY_SIG_17] on B.Cu, length 87.7500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1250 mm)
+    Local override; error
+    @(39.2500 mm, 59.0150 mm): Pad 1 [MUX2_OUT] of U5 on B.Cu
+    @(202.9500 mm, 58.5400 mm): Track [KEY_SIG_21] on B.Cu, length 166.7500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(183.9000 mm, 58.1200 mm): Via [KEY_SIG_20] on F.Cu - B.Cu
+    @(202.9500 mm, 58.5400 mm): Track [KEY_SIG_21] on B.Cu, length 166.7500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(36.9000 mm, 58.1200 mm): Via [KEY_SIG_20] on F.Cu - B.Cu
+    @(202.9500 mm, 58.5400 mm): Track [KEY_SIG_21] on B.Cu, length 166.7500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(164.8500 mm, 57.7000 mm): Track [KEY_SIG_19] on B.Cu, length 127.2500 mm
+    @(38.3000 mm, 57.2800 mm): Via [KEY_SIG_18] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(183.9000 mm, 58.1200 mm): Track [KEY_SIG_20] on B.Cu, length 147.0000 mm
+    @(164.8500 mm, 57.7000 mm): Via [KEY_SIG_19] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(37.6000 mm, 57.7000 mm): Via [KEY_SIG_19] on F.Cu - B.Cu
+    @(183.9000 mm, 58.1200 mm): Track [KEY_SIG_20] on B.Cu, length 147.0000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(39.0000 mm, 56.8600 mm): Via [KEY_SIG_17] on F.Cu - B.Cu
+    @(145.8000 mm, 57.2800 mm): Track [KEY_SIG_18] on B.Cu, length 107.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(126.7500 mm, 56.8600 mm): Via [KEY_SIG_17] on F.Cu - B.Cu
+    @(145.8000 mm, 57.2800 mm): Track [KEY_SIG_18] on B.Cu, length 107.5000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_16 and GND)
+    Local override; error
+    @(107.7000 mm, 56.4400 mm): Track [KEY_SIG_16] on B.Cu, length 52.4000 mm
+    @(67.7000 mm, 55.8000 mm): Pad 1 [GND] of R_PD14 on B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(107.7000 mm, 56.4400 mm): Via [KEY_SIG_16] on F.Cu - B.Cu
+    @(126.7500 mm, 56.8600 mm): Track [KEY_SIG_17] on B.Cu, length 87.7500 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_15 and GND)
+    Local override; error
+    @(88.6500 mm, 56.0200 mm): Track [KEY_SIG_15] on B.Cu, length 34.0500 mm
+    @(67.7000 mm, 55.8000 mm): Pad 1 [GND] of R_PD14 on B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_14 and GND)
+    Local override; error
+    @(69.6000 mm, 55.6000 mm): Track [KEY_SIG_14] on B.Cu, length 15.7000 mm
+    @(67.7000 mm, 55.8000 mm): Pad 1 [GND] of R_PD14 on B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(54.6000 mm, 56.0200 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+    @(69.6000 mm, 55.6000 mm): Track [KEY_SIG_14] on B.Cu, length 15.7000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_14 and KEY_SIG_15)
+    Local override; error
+    @(69.6000 mm, 55.8000 mm): Via [KEY_SIG_14] on F.Cu - B.Cu
+    @(88.6500 mm, 56.0200 mm): Track [KEY_SIG_15] on B.Cu, length 34.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(88.6500 mm, 56.0200 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+    @(107.7000 mm, 56.4400 mm): Track [KEY_SIG_16] on B.Cu, length 52.4000 mm
+[shorting_items]: Items shorting two nets (nets MUX_S2 and KEY_SIG_7)
+    Local override; error
+    @(35.2000 mm, 36.7500 mm): Via [MUX_S2] on F.Cu - B.Cu
+    @(34.8000 mm, 39.0000 mm): Track [KEY_SIG_7] on F.Cu, length 29.4450 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0750 mm)
+    Local override; error
+    @(39.2500 mm, 59.0150 mm): Track [MUX2_OUT] on B.Cu, length 6.8500 mm
+    @(36.2000 mm, 58.5400 mm): Via [KEY_SIG_21] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets I2C_SCL and KEY_SIG_8)
+    Local override; error
+    @(33.8000 mm, 25.2000 mm): Via [I2C_SCL] on F.Cu - B.Cu
+    @(34.1000 mm, 39.7000 mm): Track [KEY_SIG_8] on F.Cu, length 31.4150 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(33.8000 mm, 25.2000 mm): Track [I2C_SCL] on F.Cu, length 17.5500 mm
+    @(34.1000 mm, 39.7000 mm): Track [KEY_SIG_8] on F.Cu, length 31.4150 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0750 mm)
+    Local override; error
+    @(48.0500 mm, 59.0150 mm): Via [+3V3] on F.Cu - B.Cu
+    @(202.9500 mm, 58.5400 mm): Track [KEY_SIG_21] on B.Cu, length 166.7500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(30.4500 mm, 23.5000 mm): Via [+3V3] on F.Cu - B.Cu
+    @(31.0000 mm, 18.4450 mm): Track [MUX_S0] on F.Cu, length 21.3050 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_2)
+    Local override; error
+    @(37.9500 mm, 20.9850 mm): Via [GND] on F.Cu - B.Cu
+    @(38.3000 mm, 22.9000 mm): Track [KEY_SIG_2] on F.Cu, length 6.9950 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_14)
+    Local override; error
+    @(67.7000 mm, 55.8000 mm): Track [GND] on B.Cu, length 1.1000 mm
+    @(69.6000 mm, 55.6000 mm): Track [KEY_SIG_14] on B.Cu, length 15.7000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0100 mm)
+    Local override; error
+    @(86.7500 mm, 55.8000 mm): Track [GND] on B.Cu, length 1.1000 mm
+    @(88.6500 mm, 56.0200 mm): Track [KEY_SIG_15] on B.Cu, length 34.0500 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_15)
+    Local override; error
+    @(85.6500 mm, 55.8000 mm): Via [GND] on F.Cu - B.Cu
+    @(88.6500 mm, 56.0200 mm): Track [KEY_SIG_15] on B.Cu, length 34.0500 mm
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(69.6000 mm, 55.6000 mm): Track [KEY_SIG_14] on B.Cu, length 15.7000 mm
+    @(67.7000 mm, 55.8000 mm): Pad 1 [GND] of R_PD14 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(88.6500 mm, 56.0200 mm): Track [KEY_SIG_15] on B.Cu, length 34.0500 mm
+    @(67.7000 mm, 55.8000 mm): Pad 1 [GND] of R_PD14 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(88.6500 mm, 56.0200 mm): Track [KEY_SIG_15] on B.Cu, length 34.0500 mm
+    @(69.6000 mm, 55.8000 mm): Pad 2 [KEY_SIG_14] of R_PD14 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(88.6500 mm, 56.0200 mm): Track [KEY_SIG_15] on B.Cu, length 34.0500 mm
+    @(86.7500 mm, 55.8000 mm): Pad 1 [GND] of R_PD15 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(107.7000 mm, 56.4400 mm): Track [KEY_SIG_16] on B.Cu, length 52.4000 mm
+    @(67.7000 mm, 55.8000 mm): Pad 1 [GND] of R_PD14 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(107.7000 mm, 56.4400 mm): Track [KEY_SIG_16] on B.Cu, length 52.4000 mm
+    @(69.6000 mm, 55.8000 mm): Pad 2 [KEY_SIG_14] of R_PD14 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(107.7000 mm, 56.4400 mm): Track [KEY_SIG_16] on B.Cu, length 52.4000 mm
+    @(105.8000 mm, 55.8000 mm): Pad 1 [GND] of R_PD16 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(107.7000 mm, 56.4400 mm): Track [KEY_SIG_16] on B.Cu, length 52.4000 mm
+    @(86.7500 mm, 55.8000 mm): Pad 1 [GND] of R_PD15 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(107.7000 mm, 56.4400 mm): Track [KEY_SIG_16] on B.Cu, length 52.4000 mm
+    @(88.6500 mm, 55.8000 mm): Pad 2 [KEY_SIG_15] of R_PD15 on B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints; warning
+    @(69.6000 mm, 55.8000 mm): Via [KEY_SIG_14] on F.Cu - B.Cu
+    @(69.6000 mm, 55.6000 mm): Via [KEY_SIG_14] on F.Cu - B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints; warning
+    @(88.6500 mm, 56.0200 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+    @(88.6500 mm, 55.8000 mm): Via [KEY_SIG_15] on F.Cu - B.Cu
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

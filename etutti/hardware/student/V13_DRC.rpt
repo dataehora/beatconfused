@@ -1,0 +1,134 @@
+** Drc report for eTutti_Student.kicad_pcb **
+** Created on 2026-11-13T21:00:30 **
+** Report includes: Errors, Warnings **
+
+** Found 29 DRC violations **
+[shorting_items]: Items shorting two nets (nets KEY_SIG_5 and KEY_SIG_7)
+    Local override; error
+    @(34.7000 mm, 12.0950 mm): Via [KEY_SIG_5] on F.Cu - B.Cu
+    @(35.0500 mm, 39.0000 mm): Track [KEY_SIG_7] on F.Cu, length 29.4450 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_28 and GND)
+    Local override; error
+    @(193.4250 mm, 83.8800 mm): Track [KEY_SIG_28] on B.Cu, length 140.5250 mm
+    @(159.2500 mm, 84.5000 mm): PTH pad 1 [GND] of MP8
+[shorting_items]: Items shorting two nets (nets KEY_SIG_27 and GND)
+    Local override; error
+    @(174.3750 mm, 83.2000 mm): Track [KEY_SIG_27] on B.Cu, length 122.1750 mm
+    @(159.2500 mm, 84.5000 mm): PTH pad 1 [GND] of MP8
+[shorting_items]: Items shorting two nets (nets KEY_SIG_26 and GND)
+    Local override; error
+    @(155.3250 mm, 82.5200 mm): Track [KEY_SIG_26] on B.Cu, length 103.8250 mm
+    @(121.1500 mm, 84.5000 mm): PTH pad 1 [GND] of MP7
+[shorting_items]: Items shorting two nets (nets KEY_SIG_24 and KEY_SIG_21)
+    Local override; error
+    @(35.6000 mm, 81.1600 mm): Track [KEY_SIG_24] on F.Cu, length 18.3750 mm
+    @(35.8000 mm, 66.5950 mm): Via [KEY_SIG_21] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_21 and KEY_SIG_24)
+    Local override; error
+    @(35.8000 mm, 60.6500 mm): Track [KEY_SIG_21] on F.Cu, length 5.9450 mm
+    @(35.6000 mm, 62.7850 mm): Via [KEY_SIG_24] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_6 and KEY_SIG_8)
+    Local override; error
+    @(34.0000 mm, 10.8250 mm): Via [KEY_SIG_6] on F.Cu - B.Cu
+    @(34.2500 mm, 39.6800 mm): Track [KEY_SIG_8] on F.Cu, length 31.3950 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_6 and KEY_SIG_8)
+    Local override; error
+    @(34.0000 mm, 25.2000 mm): Via [KEY_SIG_6] on F.Cu - B.Cu
+    @(34.2500 mm, 39.6800 mm): Track [KEY_SIG_8] on F.Cu, length 31.3950 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0500 mm)
+    Local override; error
+    @(34.0000 mm, 25.2000 mm): Track [KEY_SIG_6] on F.Cu, length 14.3750 mm
+    @(34.2500 mm, 39.6800 mm): Track [KEY_SIG_8] on F.Cu, length 31.3950 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_5 and KEY_SIG_7)
+    Local override; error
+    @(34.7000 mm, 24.5200 mm): Via [KEY_SIG_5] on F.Cu - B.Cu
+    @(35.0500 mm, 39.0000 mm): Track [KEY_SIG_7] on F.Cu, length 29.4450 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(34.7000 mm, 24.5200 mm): Track [KEY_SIG_5] on F.Cu, length 12.4250 mm
+    @(35.0500 mm, 39.0000 mm): Track [KEY_SIG_7] on F.Cu, length 29.4450 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_4 and KEY_SIG_7)
+    Local override; error
+    @(35.4000 mm, 13.3650 mm): Via [KEY_SIG_4] on F.Cu - B.Cu
+    @(35.0500 mm, 39.0000 mm): Track [KEY_SIG_7] on F.Cu, length 29.4450 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_4 and KEY_SIG_7)
+    Local override; error
+    @(35.4000 mm, 23.8400 mm): Via [KEY_SIG_4] on F.Cu - B.Cu
+    @(35.0500 mm, 39.0000 mm): Track [KEY_SIG_7] on F.Cu, length 29.4450 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(35.4000 mm, 23.8400 mm): Track [KEY_SIG_4] on F.Cu, length 10.4750 mm
+    @(35.0500 mm, 39.0000 mm): Track [KEY_SIG_7] on F.Cu, length 29.4450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(32.6000 mm, 61.5150 mm): Track [MUX2_OUT] on F.Cu, length 29.2650 mm
+    @(32.6000 mm, 7.0150 mm): Track [MUX1_OUT] on F.Cu, length 26.7350 mm
+[shorting_items]: Items shorting two nets (nets MUX2_OUT and MUX1_OUT)
+    Local override; error
+    @(32.6000 mm, 32.2500 mm): Via [MUX2_OUT] on F.Cu - B.Cu
+    @(32.6000 mm, 7.0150 mm): Track [MUX1_OUT] on F.Cu, length 26.7350 mm
+[shorting_items]: Items shorting two nets (nets MUX1_OUT and MUX2_OUT)
+    Local override; error
+    @(32.6000 mm, 33.7500 mm): Via [MUX1_OUT] on F.Cu - B.Cu
+    @(32.6000 mm, 61.5150 mm): Track [MUX2_OUT] on F.Cu, length 29.2650 mm
+[shorting_items]: Items shorting two nets (nets I2C_SCL and KEY_SIG_6)
+    Local override; error
+    @(33.4000 mm, 25.2000 mm): Via [I2C_SCL] on F.Cu - B.Cu
+    @(34.0000 mm, 25.2000 mm): Via [KEY_SIG_6] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets I2C_SCL and KEY_SIG_6)
+    Local override; error
+    @(33.4000 mm, 25.2000 mm): Via [I2C_SCL] on F.Cu - B.Cu
+    @(34.0000 mm, 25.2000 mm): Via [KEY_SIG_6] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets I2C_SCL and KEY_SIG_6)
+    Local override; error
+    @(33.4000 mm, 25.2000 mm): Via [I2C_SCL] on F.Cu - B.Cu
+    @(34.0000 mm, 25.2000 mm): Via [KEY_SIG_6] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets I2C_SCL and KEY_SIG_6)
+    Local override; error
+    @(33.4000 mm, 25.2000 mm): Via [I2C_SCL] on F.Cu - B.Cu
+    @(34.0000 mm, 25.2000 mm): Via [KEY_SIG_6] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(174.3750 mm, 83.2000 mm): Track [KEY_SIG_27] on B.Cu, length 122.1750 mm
+    @(159.2500 mm, 84.5000 mm): PTH pad 1 [GND] of MP8
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(174.3750 mm, 83.2000 mm): Track [KEY_SIG_27] on B.Cu, length 122.1750 mm
+    @(83.0500 mm, 84.5000 mm): PTH pad 1 [GND] of MP6
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(174.3750 mm, 83.2000 mm): Track [KEY_SIG_27] on B.Cu, length 122.1750 mm
+    @(121.1500 mm, 84.5000 mm): PTH pad 1 [GND] of MP7
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(193.4250 mm, 83.8800 mm): Track [KEY_SIG_28] on B.Cu, length 140.5250 mm
+    @(159.2500 mm, 84.5000 mm): PTH pad 1 [GND] of MP8
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(193.4250 mm, 83.8800 mm): Track [KEY_SIG_28] on B.Cu, length 140.5250 mm
+    @(83.0500 mm, 84.5000 mm): PTH pad 1 [GND] of MP6
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(193.4250 mm, 83.8800 mm): Track [KEY_SIG_28] on B.Cu, length 140.5250 mm
+    @(121.1500 mm, 84.5000 mm): PTH pad 1 [GND] of MP7
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(155.3250 mm, 82.5200 mm): Track [KEY_SIG_26] on B.Cu, length 103.8250 mm
+    @(83.0500 mm, 84.5000 mm): PTH pad 1 [GND] of MP6
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(155.3250 mm, 82.5200 mm): Track [KEY_SIG_26] on B.Cu, length 103.8250 mm
+    @(121.1500 mm, 84.5000 mm): PTH pad 1 [GND] of MP7
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

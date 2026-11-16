@@ -1,0 +1,30 @@
+** Drc report for eTutti_Student.kicad_pcb **
+** Created on 2026-11-13T22:02:55 **
+** Report includes: Errors, Warnings **
+
+** Found 3 DRC violations **
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1900 mm)
+    Local override; error
+    @(69.6000 mm, 55.4000 mm): Track [KEY_SIG_14] on B.Cu, length 15.9000 mm
+    @(67.7000 mm, 55.0000 mm): Track [GND] on B.Cu, length 1.1000 mm
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(69.6000 mm, 55.4000 mm): Track [KEY_SIG_14] on B.Cu, length 15.9000 mm
+    @(67.7000 mm, 55.0000 mm): Pad 1 [GND] of R_PD14 on B.Cu
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2500 mm; actual 0.1000 mm)
+    Rule: board setup constraints; warning
+    @(69.6000 mm, 55.0000 mm): Via [KEY_SIG_14] on F.Cu - B.Cu
+    @(69.6000 mm, 55.4000 mm): Via [KEY_SIG_14] on F.Cu - B.Cu
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

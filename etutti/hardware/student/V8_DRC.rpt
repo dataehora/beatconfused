@@ -1,0 +1,3118 @@
+** Drc report for eTutti_Student.kicad_pcb **
+** Created on 2026-11-13T18:27:00 **
+** Report includes: Errors, Warnings **
+
+** Found 832 DRC violations **
+[shorting_items]: Items shorting two nets (nets KEY_SIG_1 and GND)
+    Local override; error
+    @(59.4500 mm, 15.7500 mm): Pad 2 [KEY_SIG_1] of IRP1 on F.Cu
+    @(60.9000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_2 and GND)
+    Local override; error
+    @(78.5000 mm, 15.7500 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+    @(79.9500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_16)
+    Local override; error
+    @(79.9500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(78.5000 mm, 48.7500 mm): Track [KEY_SIG_16] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_11 and GND)
+    Local override; error
+    @(126.1250 mm, 32.2500 mm): Pad 2 [KEY_SIG_11] of IRP11 on F.Cu
+    @(127.5750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_19)
+    Local override; error
+    @(137.1000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(135.6500 mm, 48.7500 mm): Pad 2 [KEY_SIG_19] of IRP19 on F.Cu
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_22)
+    Local override; error
+    @(51.3750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(49.9250 mm, 65.2500 mm): Track [KEY_SIG_22] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_24)
+    Local override; error
+    @(89.4750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(88.0250 mm, 65.2500 mm): Track [KEY_SIG_24] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1600 mm)
+    Local override; error
+    @(106.2750 mm, 33.0000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(108.5250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1600 mm)
+    Local override; error
+    @(68.1750 mm, 66.0000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+    @(70.4250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_28 and GND)
+    Local override; error
+    @(164.2250 mm, 65.2500 mm): Pad 2 [KEY_SIG_28] of IRP28 on F.Cu
+    @(165.6750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_25 and GND)
+    Local override; error
+    @(107.0750 mm, 65.2500 mm): Pad 2 [KEY_SIG_25] of IRP25 on F.Cu
+    @(108.5250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_26 and GND)
+    Local override; error
+    @(126.1250 mm, 65.2500 mm): Pad 2 [KEY_SIG_26] of IRP26 on F.Cu
+    @(127.5750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_5)
+    Local override; error
+    @(137.1000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(135.6500 mm, 15.7500 mm): Pad 2 [KEY_SIG_5] of IRP5 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(92.1500 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(97.1500 mm, 13.5000 mm): Circle [<no net>] of IRP3 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(92.1500 mm, 18.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(97.1500 mm, 13.5000 mm): Circle [<no net>] of IRP3 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(130.2500 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(135.2500 mm, 13.5000 mm): Circle [<no net>] of IRP5 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(68.5750 mm, 30.0000 mm): Circle [<no net>] of IRP8 on F.Cu
+    @(63.5750 mm, 34.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_8 and GND)
+    Local override; error
+    @(68.9750 mm, 32.2500 mm): Track [KEY_SIG_8] on F.Cu, length 4.6000 mm
+    @(70.4250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(87.6250 mm, 30.0000 mm): Circle [<no net>] of IRP9 on F.Cu
+    @(82.6250 mm, 33.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_10 and GND)
+    Local override; error
+    @(107.0750 mm, 32.2500 mm): Track [KEY_SIG_10] on F.Cu, length 4.6000 mm
+    @(108.5250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(101.6750 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(106.6750 mm, 30.0000 mm): Circle [<no net>] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(106.6750 mm, 30.0000 mm): Circle [<no net>] of IRP10 on F.Cu
+    @(101.6750 mm, 34.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(125.7250 mm, 30.0000 mm): Circle [<no net>] of IRP11 on F.Cu
+    @(120.7250 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(144.7750 mm, 30.0000 mm): Circle [<no net>] of IRP12 on F.Cu
+    @(139.7750 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(139.7750 mm, 33.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(144.7750 mm, 30.0000 mm): Circle [<no net>] of IRP12 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(158.8250 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(163.8250 mm, 30.0000 mm): Circle [<no net>] of IRP13 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(158.8250 mm, 33.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(163.8250 mm, 30.0000 mm): Circle [<no net>] of IRP13 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(163.8250 mm, 30.0000 mm): Circle [<no net>] of IRP13 on F.Cu
+    @(158.8250 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(35.0000 mm, 51.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(40.0000 mm, 46.5000 mm): Circle [<no net>] of IRP14 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(59.0500 mm, 46.5000 mm): Circle [<no net>] of IRP15 on F.Cu
+    @(54.0500 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(59.0500 mm, 46.5000 mm): Circle [<no net>] of IRP15 on F.Cu
+    @(54.0500 mm, 51.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(59.0500 mm, 46.5000 mm): Circle [<no net>] of IRP15 on F.Cu
+    @(54.0500 mm, 49.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(78.1000 mm, 46.5000 mm): Circle [<no net>] of IRP16 on F.Cu
+    @(73.1000 mm, 51.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(78.1000 mm, 46.5000 mm): Circle [<no net>] of IRP16 on F.Cu
+    @(73.1000 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_17 and GND)
+    Local override; error
+    @(97.5500 mm, 48.7500 mm): Track [KEY_SIG_17] on F.Cu, length 4.6000 mm
+    @(99.0000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(73.1000 mm, 49.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(78.1000 mm, 46.5000 mm): Circle [<no net>] of IRP16 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(116.2000 mm, 46.5000 mm): Circle [<no net>] of IRP18 on F.Cu
+    @(111.2000 mm, 51.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(135.2500 mm, 46.5000 mm): Circle [<no net>] of IRP19 on F.Cu
+    @(130.2500 mm, 49.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(130.2500 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(135.2500 mm, 46.5000 mm): Circle [<no net>] of IRP19 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(154.3000 mm, 46.5000 mm): Circle [<no net>] of IRP20 on F.Cu
+    @(149.3000 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(154.3000 mm, 46.5000 mm): Circle [<no net>] of IRP20 on F.Cu
+    @(149.3000 mm, 49.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(173.3500 mm, 46.5000 mm): Circle [<no net>] of IRP21 on F.Cu
+    @(168.3500 mm, 49.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(68.5750 mm, 63.0000 mm): Circle [<no net>] of IRP23 on F.Cu
+    @(63.5750 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(44.5250 mm, 67.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(49.5250 mm, 63.0000 mm): Circle [<no net>] of IRP22 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_23 and GND)
+    Local override; error
+    @(68.9750 mm, 65.2500 mm): Track [KEY_SIG_23] on F.Cu, length 4.6000 mm
+    @(70.4250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(44.5250 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(49.5250 mm, 63.0000 mm): Circle [<no net>] of IRP22 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(44.5250 mm, 66.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(49.5250 mm, 63.0000 mm): Circle [<no net>] of IRP22 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(68.5750 mm, 63.0000 mm): Circle [<no net>] of IRP23 on F.Cu
+    @(63.5750 mm, 67.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(63.5750 mm, 66.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(68.5750 mm, 63.0000 mm): Circle [<no net>] of IRP23 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(106.6750 mm, 63.0000 mm): Circle [<no net>] of IRP25 on F.Cu
+    @(101.6750 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(68.5750 mm, 63.0000 mm): Circle [<no net>] of IRP23 on F.Cu
+    @(63.5750 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(144.7750 mm, 63.0000 mm): Circle [<no net>] of IRP27 on F.Cu
+    @(139.7750 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(120.7250 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(125.7250 mm, 63.0000 mm): Circle [<no net>] of IRP26 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(144.7750 mm, 63.0000 mm): Circle [<no net>] of IRP27 on F.Cu
+    @(139.7750 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(120.7250 mm, 66.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(125.7250 mm, 63.0000 mm): Circle [<no net>] of IRP26 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(158.8250 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(163.8250 mm, 63.0000 mm): Circle [<no net>] of IRP28 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(163.8250 mm, 63.0000 mm): Circle [<no net>] of IRP28 on F.Cu
+    @(158.8250 mm, 67.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(158.8250 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(163.8250 mm, 63.0000 mm): Circle [<no net>] of IRP28 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(21.5000 mm, 49.9500 mm): Pad 1 [USER_LED] of R1 on B.Cu
+    @(21.5000 mm, 49.0500 mm): Via [+3V3] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(10.8000 mm, 21.0000 mm): Track [MIC_BIAS] on B.Cu, length 1.7000 mm
+    @(2.8000 mm, 21.0000 mm): Track [MIC_IN] on B.Cu, length 11.2000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1200 mm)
+    Local override; error
+    @(23.5000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 0.9000 mm
+    @(22.3000 mm, 37.7500 mm): Track [I2S_BCLK] on B.Cu, length 21.7750 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1750 mm)
+    Local override; error
+    @(14.2000 mm, 13.8000 mm): Track [HP_L] on B.Cu, length 0.2250 mm
+    @(13.2000 mm, 13.3750 mm): Track [HP_VGND] on B.Cu, length 3.6000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(18.0000 mm, 30.2500 mm): Track [USB_D_P] on B.Cu, length 5.5000 mm
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(11.5000 mm, 50.0000 mm): Track [VOL_ADC] on F.Cu, length 12.0000 mm
+    @(6.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 30.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(36.5000 mm, 38.0000 mm): Track [VOL_ADC] on F.Cu, length 1.2500 mm
+    @(6.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 30.0000 mm
+[shorting_items]: Items shorting two nets (nets USER_LED and GND)
+    Local override; error
+    @(21.5000 mm, 43.5500 mm): Track [USER_LED] on B.Cu, length 6.4000 mm
+    @(21.5000 mm, 44.4500 mm): Via [GND] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(37.5000 mm, 28.0000 mm): Track [MUX2_OUT] on B.Cu, length 3.0104 mm
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[shorting_items]: Items shorting two nets (nets MUX_S0 and ENC_A)
+    Local override; error
+    @(36.7000 mm, 37.7500 mm): Via [MUX_S0] on F.Cu - B.Cu
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.2000 mm, 37.7500 mm): Track [MUX_S0] on F.Cu, length 30.0500 mm
+    @(11.5000 mm, 38.0000 mm): Track [VOL_ADC] on F.Cu, length 25.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(37.5000 mm, 29.5000 mm): Track [MUX1_OUT] on B.Cu, length 3.0104 mm
+    @(37.5000 mm, 44.0000 mm): Track [MUX2_OUT] on B.Cu, length 16.0000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0600 mm)
+    Local override; error
+    @(38.0500 mm, 17.9450 mm): Via [MUX_S0] on F.Cu - B.Cu
+    @(37.6000 mm, 19.6000 mm): Track [KEY_SIG_2] on B.Cu, length 4.1950 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0400 mm)
+    Local override; error
+    @(31.2000 mm, 21.8000 mm): Track [MUX_S0] on F.Cu, length 15.9500 mm
+    @(11.5000 mm, 38.0000 mm): Track [VOL_ADC] on F.Cu, length 25.0000 mm
+[shorting_items]: Items shorting two nets (nets MUX_S0 and KEY_SIG_1)
+    Local override; error
+    @(39.2500 mm, 17.9450 mm): Track [MUX_S0] on B.Cu, length 1.2000 mm
+    @(38.0000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 2.5250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0400 mm)
+    Local override; error
+    @(31.2000 mm, 37.7500 mm): Track [MUX_S0] on F.Cu, length 5.5000 mm
+    @(11.5000 mm, 38.0000 mm): Track [VOL_ADC] on F.Cu, length 25.0000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(36.7000 mm, 37.7500 mm): Track [MUX_S0] on F.Cu, length 5.5000 mm
+    @(37.0000 mm, 40.7500 mm): Track [I2C_SCL] on F.Cu, length 20.7500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(38.0500 mm, 19.2150 mm): Track [MUX_S1] on F.Cu, length 3.0350 mm
+    @(38.0500 mm, 17.9450 mm): Track [MUX_S0] on F.Cu, length 3.8550 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(29.5500 mm, 68.2500 mm): Track [MUX_S1] on F.Cu, length 3.0350 mm
+    @(29.5500 mm, 67.8000 mm): Track [MUX_S0] on F.Cu, length 3.8550 mm
+[shorting_items]: Items shorting two nets (nets MUX_S1 and MUX_S0)
+    Local override; error
+    @(29.5500 mm, 65.2150 mm): Via [MUX_S1] on F.Cu - B.Cu
+    @(29.5500 mm, 67.8000 mm): Track [MUX_S0] on F.Cu, length 3.8550 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(36.7000 mm, 34.7500 mm): Track [MUX_S2] on F.Cu, length 4.5000 mm
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(32.7000 mm, 33.2500 mm): Track [MUX_S3] on F.Cu, length 4.0000 mm
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[shorting_items]: Items shorting two nets (nets MUX_S3 and ENC_A)
+    Local override; error
+    @(36.7000 mm, 33.2500 mm): Via [MUX_S3] on F.Cu - B.Cu
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[shorting_items]: Items shorting two nets (nets MUX_S1 and KEY_SIG_1)
+    Local override; error
+    @(39.2500 mm, 19.2150 mm): Track [MUX_S1] on B.Cu, length 1.2000 mm
+    @(63.8000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 25.8000 mm
+[shorting_items]: Items shorting two nets (nets MUX_S3 and KEY_SIG_7)
+    Local override; error
+    @(36.7000 mm, 33.2500 mm): Via [MUX_S3] on F.Cu - B.Cu
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_2 and MUX1_OUT)
+    Local override; error
+    @(82.8500 mm, 19.6000 mm): Track [KEY_SIG_2] on B.Cu, length 45.2500 mm
+    @(37.5000 mm, 6.5150 mm): Track [MUX1_OUT] on B.Cu, length 22.9850 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_2 and MUX1_OUT)
+    Local override; error
+    @(37.6000 mm, 15.4050 mm): Track [KEY_SIG_2] on B.Cu, length 1.6500 mm
+    @(37.5000 mm, 6.5150 mm): Track [MUX1_OUT] on B.Cu, length 22.9850 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(159.0500 mm, 21.2000 mm): Track [KEY_SIG_6] on B.Cu, length 123.0500 mm
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(92.3750 mm, 36.6000 mm): Track [KEY_SIG_9] on B.Cu, length 43.0750 mm
+    @(50.5000 mm, 37.8000 mm): Track [KEY_SIG_12] on B.Cu, length 26.2050 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(36.8000 mm, 20.4000 mm): Track [KEY_SIG_4] on B.Cu, length 7.5350 mm
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(36.4000 mm, 11.5950 mm): Track [KEY_SIG_5] on B.Cu, length 2.8500 mm
+    @(36.6000 mm, 36.2000 mm): Track [KEY_SIG_8] on B.Cu, length 28.4150 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(50.9000 mm, 38.2000 mm): Track [KEY_SIG_13] on B.Cu, length 25.3350 mm
+    @(130.4750 mm, 37.4000 mm): Track [KEY_SIG_11] on B.Cu, length 80.3750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(28.6000 mm, 58.8650 mm): Track [KEY_SIG_20] on B.Cu, length 2.1500 mm
+    @(29.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 6.4350 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(28.2000 mm, 57.5950 mm): Track [KEY_SIG_21] on B.Cu, length 2.5500 mm
+    @(29.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 6.4350 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_25 and KEY_SIG_19)
+    Local override; error
+    @(39.8000 mm, 69.7400 mm): Track [KEY_SIG_25] on B.Cu, length 15.9550 mm
+    @(140.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 111.0000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0850 mm)
+    Local override; error
+    @(38.2500 mm, 52.5150 mm): Pad 24 [+3V3] of U5 on B.Cu
+    @(101.9000 mm, 52.9400 mm): Track [KEY_SIG_17] on B.Cu, length 72.1000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(40.2000 mm, 70.1200 mm): Track [KEY_SIG_26] on B.Cu, length 15.0650 mm
+    @(54.2750 mm, 68.6000 mm): Track [KEY_SIG_22] on B.Cu, length 26.7750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(26.7000 mm, 53.7850 mm): Track [KEY_SIG_24] on B.Cu, length 4.0500 mm
+    @(29.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 6.4350 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(111.4250 mm, 69.7400 mm): Track [KEY_SIG_25] on B.Cu, length 71.6250 mm
+    @(41.0000 mm, 70.8800 mm): Track [KEY_SIG_28] on B.Cu, length 13.2850 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(27.1000 mm, 55.0550 mm): Track [KEY_SIG_23] on B.Cu, length 3.6500 mm
+    @(29.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 6.4350 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(41.0000 mm, 70.8800 mm): Track [KEY_SIG_28] on B.Cu, length 13.2850 mm
+    @(149.5250 mm, 70.5000 mm): Track [KEY_SIG_27] on B.Cu, length 108.9250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1150 mm)
+    Local override; error
+    @(39.8000 mm, 53.7850 mm): Track [KEY_SIG_25] on B.Cu, length 1.5500 mm
+    @(159.0500 mm, 54.0800 mm): Track [KEY_SIG_20] on B.Cu, length 130.4500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(41.0000 mm, 57.5950 mm): Track [KEY_SIG_28] on B.Cu, length 2.7500 mm
+    @(39.8000 mm, 69.7400 mm): Track [KEY_SIG_25] on B.Cu, length 15.9550 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(40.6000 mm, 70.5000 mm): Track [KEY_SIG_27] on B.Cu, length 14.1750 mm
+    @(54.2750 mm, 68.6000 mm): Track [KEY_SIG_22] on B.Cu, length 26.7750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(92.3750 mm, 69.3600 mm): Track [KEY_SIG_24] on B.Cu, length 65.6750 mm
+    @(41.0000 mm, 70.8800 mm): Track [KEY_SIG_28] on B.Cu, length 13.2850 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(130.4750 mm, 70.1200 mm): Track [KEY_SIG_26] on B.Cu, length 90.2750 mm
+    @(40.6000 mm, 70.5000 mm): Track [KEY_SIG_27] on B.Cu, length 14.1750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(27.5000 mm, 56.3250 mm): Track [KEY_SIG_22] on B.Cu, length 3.2500 mm
+    @(29.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 6.4350 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(40.2000 mm, 55.0550 mm): Track [KEY_SIG_26] on B.Cu, length 1.9500 mm
+    @(39.8000 mm, 69.7400 mm): Track [KEY_SIG_25] on B.Cu, length 15.9550 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(28.2000 mm, 54.4600 mm): Track [KEY_SIG_21] on B.Cu, length 3.1350 mm
+    @(27.5000 mm, 56.3250 mm): Track [KEY_SIG_22] on B.Cu, length 3.2500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(73.3250 mm, 68.9800 mm): Track [KEY_SIG_23] on B.Cu, length 46.2250 mm
+    @(40.6000 mm, 70.5000 mm): Track [KEY_SIG_27] on B.Cu, length 14.1750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(29.0000 mm, 60.1350 mm): Track [KEY_SIG_19] on B.Cu, length 1.7500 mm
+    @(29.8000 mm, 52.9400 mm): Track [KEY_SIG_17] on B.Cu, length 9.7350 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(29.4000 mm, 53.3200 mm): Track [KEY_SIG_18] on B.Cu, length 8.0850 mm
+    @(140.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 111.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(178.1000 mm, 54.4600 mm): Track [KEY_SIG_21] on B.Cu, length 149.9000 mm
+    @(29.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 6.4350 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_19 and KEY_SIG_25)
+    Local override; error
+    @(140.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 111.0000 mm
+    @(39.8000 mm, 53.7850 mm): Track [KEY_SIG_25] on B.Cu, length 1.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(29.8000 mm, 52.9400 mm): Track [KEY_SIG_17] on B.Cu, length 9.7350 mm
+    @(120.9500 mm, 53.3200 mm): Track [KEY_SIG_18] on B.Cu, length 91.5500 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_25 and KEY_SIG_20)
+    Local override; error
+    @(38.2500 mm, 53.7850 mm): Pad 23 [KEY_SIG_25] of U5 on B.Cu
+    @(159.0500 mm, 54.0800 mm): Track [KEY_SIG_20] on B.Cu, length 130.4500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(52.3000 mm, 52.5600 mm): Track [KEY_SIG_16] on B.Cu, length 35.8850 mm
+    @(168.5750 mm, 38.2000 mm): Track [KEY_SIG_13] on B.Cu, length 117.6750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(51.9000 mm, 15.4050 mm): Track [KEY_SIG_15] on B.Cu, length 5.1500 mm
+    @(49.7000 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 27.9450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(51.5000 mm, 14.1350 mm): Track [KEY_SIG_14] on B.Cu, length 4.7500 mm
+    @(49.3000 mm, 36.6000 mm): Track [KEY_SIG_9] on B.Cu, length 28.8150 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1250 mm)
+    Local override; error
+    @(38.2500 mm, 53.7850 mm): Pad 23 [KEY_SIG_25] of U5 on B.Cu
+    @(120.9500 mm, 53.3200 mm): Track [KEY_SIG_18] on B.Cu, length 91.5500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(51.5000 mm, 51.8000 mm): Track [KEY_SIG_14] on B.Cu, length 37.6650 mm
+    @(130.4750 mm, 37.4000 mm): Track [KEY_SIG_11] on B.Cu, length 80.3750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(50.9000 mm, 12.8650 mm): Track [KEY_SIG_13] on B.Cu, length 4.1500 mm
+    @(50.5000 mm, 37.8000 mm): Track [KEY_SIG_12] on B.Cu, length 26.2050 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(50.5000 mm, 11.5950 mm): Track [KEY_SIG_12] on B.Cu, length 3.7500 mm
+    @(49.7000 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 27.9450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(52.3000 mm, 16.6750 mm): Track [KEY_SIG_16] on B.Cu, length 5.5500 mm
+    @(49.7000 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 27.9450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(149.5250 mm, 37.8000 mm): Track [KEY_SIG_12] on B.Cu, length 99.0250 mm
+    @(52.3000 mm, 52.5600 mm): Track [KEY_SIG_16] on B.Cu, length 35.8850 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(50.1000 mm, 10.3250 mm): Track [KEY_SIG_11] on B.Cu, length 3.3500 mm
+    @(49.7000 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 27.9450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(51.9000 mm, 52.1800 mm): Track [KEY_SIG_15] on B.Cu, length 36.7750 mm
+    @(168.5750 mm, 38.2000 mm): Track [KEY_SIG_13] on B.Cu, length 117.6750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(130.4750 mm, 37.4000 mm): Track [KEY_SIG_11] on B.Cu, length 80.3750 mm
+    @(50.5000 mm, 37.8000 mm): Track [KEY_SIG_12] on B.Cu, length 26.2050 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(111.4250 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 61.7250 mm
+    @(50.1000 mm, 37.4000 mm): Track [KEY_SIG_11] on B.Cu, length 27.0750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+    @(36.4000 mm, 11.5950 mm): Track [KEY_SIG_5] on B.Cu, length 2.8500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(49.7000 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 27.9450 mm
+    @(50.9000 mm, 12.8650 mm): Track [KEY_SIG_13] on B.Cu, length 4.1500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(50.1000 mm, 37.4000 mm): Track [KEY_SIG_11] on B.Cu, length 27.0750 mm
+    @(50.9000 mm, 12.8650 mm): Track [KEY_SIG_13] on B.Cu, length 4.1500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(140.0000 mm, 20.8000 mm): Track [KEY_SIG_5] on B.Cu, length 103.6000 mm
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(49.3000 mm, 36.6000 mm): Track [KEY_SIG_9] on B.Cu, length 28.8150 mm
+    @(49.7000 mm, 9.0550 mm): Track [KEY_SIG_10] on B.Cu, length 2.9500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(36.0000 mm, 10.3250 mm): Track [KEY_SIG_6] on B.Cu, length 3.2500 mm
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(73.3250 mm, 36.2000 mm): Track [KEY_SIG_8] on B.Cu, length 36.7250 mm
+    @(49.7000 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 27.9450 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_4 and GND)
+    Local override; error
+    @(120.9500 mm, 20.4000 mm): Track [KEY_SIG_4] on B.Cu, length 84.1500 mm
+    @(39.2500 mm, 20.4850 mm): Track [GND] on B.Cu, length 1.1000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(54.2750 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 17.2750 mm
+    @(49.7000 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 27.9450 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(36.4000 mm, 20.8000 mm): Track [KEY_SIG_5] on B.Cu, length 9.2050 mm
+    @(36.6000 mm, 36.2000 mm): Track [KEY_SIG_8] on B.Cu, length 28.4150 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(101.9000 mm, 20.0000 mm): Track [KEY_SIG_3] on B.Cu, length 64.7000 mm
+    @(50.5000 mm, 37.8000 mm): Track [KEY_SIG_12] on B.Cu, length 26.2050 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(39.4500 mm, 69.1500 mm): Track [MUX_S3] on F.Cu, length 2.6650 mm
+    @(39.4500 mm, 68.7000 mm): Track [MUX_S2] on F.Cu, length 3.4850 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(36.6000 mm, 36.2000 mm): Track [KEY_SIG_8] on B.Cu, length 28.4150 mm
+    @(36.8000 mm, 12.8650 mm): Track [KEY_SIG_4] on B.Cu, length 2.4500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(37.2000 mm, 20.0000 mm): Track [KEY_SIG_3] on B.Cu, length 5.8650 mm
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(35.5000 mm, 33.2500 mm): Track [MUX_S3] on B.Cu, length 1.2000 mm
+    @(36.6000 mm, 36.2000 mm): Track [KEY_SIG_8] on B.Cu, length 28.4150 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(36.7000 mm, 33.2500 mm): Track [MUX_S3] on F.Cu, length 4.0000 mm
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(32.2000 mm, 68.7000 mm): Track [MUX_S2] on F.Cu, length 7.2500 mm
+    @(32.7000 mm, 33.2500 mm): Track [MUX_S3] on F.Cu, length 35.9000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_1 and MUX_S0)
+    Local override; error
+    @(38.0000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 2.5250 mm
+    @(38.0500 mm, 17.9450 mm): Via [MUX_S0] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1287 mm)
+    Local override; error
+    @(47.9500 mm, 23.1500 mm): Track [MUX_S3] on F.Cu, length 15.2500 mm
+    @(49.5250 mm, 30.0000 mm): Circle [<no net>] of IRP7 on F.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(32.2000 mm, 34.7500 mm): Track [MUX_S2] on F.Cu, length 4.5000 mm
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[shorting_items]: Items shorting two nets (nets MUX_S3 and MUX_S2)
+    Local override; error
+    @(39.4500 mm, 66.4850 mm): Via [MUX_S3] on F.Cu - B.Cu
+    @(39.4500 mm, 68.7000 mm): Track [MUX_S2] on F.Cu, length 3.4850 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(63.8000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 25.8000 mm
+    @(50.5000 mm, 37.8000 mm): Track [KEY_SIG_12] on B.Cu, length 26.2050 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0200 mm)
+    Local override; error
+    @(37.2000 mm, 14.1350 mm): Track [KEY_SIG_3] on B.Cu, length 2.0500 mm
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1287 mm)
+    Local override; error
+    @(47.9500 mm, 20.4850 mm): Track [MUX_S3] on F.Cu, length 2.6650 mm
+    @(49.5250 mm, 30.0000 mm): Circle [<no net>] of IRP7 on F.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(47.9500 mm, 22.7000 mm): Track [MUX_S2] on F.Cu, length 15.7500 mm
+    @(37.0000 mm, 40.7500 mm): Track [I2C_SCL] on F.Cu, length 20.7500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1100 mm)
+    Local override; error
+    @(35.5000 mm, 34.7500 mm): Track [MUX_S2] on B.Cu, length 1.2000 mm
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(47.9500 mm, 19.2150 mm): Track [MUX_S2] on F.Cu, length 3.4850 mm
+    @(47.9500 mm, 20.4850 mm): Track [MUX_S3] on F.Cu, length 2.6650 mm
+[shorting_items]: Items shorting two nets (nets MUX_S2 and KEY_SIG_25)
+    Local override; error
+    @(39.4500 mm, 65.2150 mm): Via [MUX_S2] on F.Cu - B.Cu
+    @(39.8000 mm, 69.7400 mm): Track [KEY_SIG_25] on B.Cu, length 15.9550 mm
+[shorting_items]: Items shorting two nets (nets MUX_S2 and ENC_A)
+    Local override; error
+    @(36.7000 mm, 34.7500 mm): Via [MUX_S2] on F.Cu - B.Cu
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[shorting_items]: Items shorting two nets (nets MUX_S3 and KEY_SIG_25)
+    Local override; error
+    @(39.4500 mm, 66.4850 mm): Via [MUX_S3] on F.Cu - B.Cu
+    @(39.8000 mm, 69.7400 mm): Track [KEY_SIG_25] on B.Cu, length 15.9550 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.7000 mm, 36.2500 mm): Track [MUX_S1] on F.Cu, length 32.0000 mm
+    @(36.7000 mm, 37.7500 mm): Track [MUX_S0] on F.Cu, length 5.5000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(38.0500 mm, 22.2500 mm): Track [MUX_S1] on F.Cu, length 6.3500 mm
+    @(37.0000 mm, 40.7500 mm): Track [I2C_SCL] on F.Cu, length 20.7500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(36.7000 mm, 36.2500 mm): Track [MUX_S1] on F.Cu, length 5.0000 mm
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[shorting_items]: Items shorting two nets (nets MUX_S2 and KEY_SIG_7)
+    Local override; error
+    @(36.7000 mm, 34.7500 mm): Via [MUX_S2] on F.Cu - B.Cu
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[shorting_items]: Items shorting two nets (nets MUX_S2 and KEY_SIG_1)
+    Local override; error
+    @(47.9500 mm, 19.2150 mm): Via [MUX_S2] on F.Cu - B.Cu
+    @(63.8000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 25.8000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(32.2000 mm, 34.7500 mm): Track [MUX_S2] on F.Cu, length 33.9500 mm
+    @(11.5000 mm, 38.0000 mm): Track [VOL_ADC] on F.Cu, length 25.0000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(47.9500 mm, 20.4850 mm): Via [MUX_S3] on F.Cu - B.Cu
+    @(101.9000 mm, 20.0000 mm): Track [KEY_SIG_3] on B.Cu, length 64.7000 mm
+[shorting_items]: Items shorting two nets (nets MUX_S2 and KEY_SIG_1)
+    Local override; error
+    @(46.7500 mm, 19.2150 mm): Track [MUX_S2] on B.Cu, length 1.2000 mm
+    @(63.8000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 25.8000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(37.5000 mm, 6.5150 mm): Track [MUX1_OUT] on B.Cu, length 22.9850 mm
+    @(37.0000 mm, 9.0550 mm): Track [KEY_SIG_7] on B.Cu, length 2.2500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.2000 mm, 67.8000 mm): Track [MUX_S0] on F.Cu, length 1.6500 mm
+    @(29.5500 mm, 68.2500 mm): Track [MUX_S1] on F.Cu, length 3.0350 mm
+[shorting_items]: Items shorting two nets (nets MUX_S1 and ENC_A)
+    Local override; error
+    @(36.7000 mm, 36.2500 mm): Via [MUX_S1] on F.Cu - B.Cu
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[shorting_items]: Items shorting two nets (nets MUX_S1 and MUX_S0)
+    Local override; error
+    @(38.0500 mm, 19.2150 mm): Via [MUX_S1] on F.Cu - B.Cu
+    @(38.0500 mm, 17.9450 mm): Track [MUX_S0] on F.Cu, length 3.8550 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(31.7000 mm, 36.2500 mm): Track [MUX_S1] on F.Cu, length 5.0000 mm
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(16.5000 mm, 38.5000 mm): Track [ENC_B] on F.Cu, length 19.5000 mm
+    @(31.7000 mm, 36.2500 mm): Track [MUX_S1] on F.Cu, length 32.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(36.0000 mm, 38.5000 mm): Track [ENC_B] on F.Cu, length 11.2500 mm
+    @(11.5000 mm, 38.0000 mm): Track [VOL_ADC] on F.Cu, length 25.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+    @(36.7000 mm, 37.7500 mm): Track [MUX_S0] on F.Cu, length 5.5000 mm
+[shorting_items]: Items shorting two nets (nets ENC_A and KEY_SIG_8)
+    Local override; error
+    @(36.5000 mm, 28.7500 mm): Track [ENC_A] on B.Cu, length 1.0000 mm
+    @(36.6000 mm, 36.2000 mm): Track [KEY_SIG_8] on B.Cu, length 28.4150 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(38.0500 mm, 19.2150 mm): Via [MUX_S1] on F.Cu - B.Cu
+    @(37.5000 mm, 6.5150 mm): Track [MUX1_OUT] on B.Cu, length 22.9850 mm
+[shorting_items]: Items shorting two nets (nets ENC_A and VOL_ADC)
+    Local override; error
+    @(6.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 30.0000 mm
+    @(36.5000 mm, 39.2500 mm): Via [VOL_ADC] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1508 mm)
+    Local override; error
+    @(36.7000 mm, 36.2500 mm): Via [MUX_S1] on F.Cu - B.Cu
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(11.5000 mm, 38.0000 mm): Track [VOL_ADC] on F.Cu, length 25.0000 mm
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[shorting_items]: Items shorting two nets (nets VOL_ADC and ENC_A)
+    Local override; error
+    @(36.5000 mm, 39.2500 mm): Via [VOL_ADC] on F.Cu - B.Cu
+    @(36.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 10.2500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0300 mm)
+    Local override; error
+    @(36.5000 mm, 39.2500 mm): Track [VOL_ADC] on F.Cu, length 1.0000 mm
+    @(6.5000 mm, 39.0000 mm): Track [ENC_A] on F.Cu, length 30.0000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0982 mm)
+    Local override; error
+    @(21.5000 mm, 49.9500 mm): Track [USER_LED] on B.Cu, length 2.3022 mm
+    @(21.5000 mm, 49.0500 mm): Via [+3V3] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(18.5000 mm, 31.7500 mm): Track [USB_D_N] on B.Cu, length 5.0000 mm
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(1.5000 mm, 35.8000 mm): Track [USB_D_P] on B.Cu, length 16.5000 mm
+    @(1.9000 mm, 33.5000 mm): Track [USB_D_N] on B.Cu, length 2.8000 mm
+[shorting_items]: Items shorting two nets (nets I2C_SCL and +3V3)
+    Local override; error
+    @(37.0000 mm, 20.0000 mm): Track [I2C_SCL] on F.Cu, length 8.4500 mm
+    @(31.4500 mm, 20.0000 mm): Via [+3V3] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1200 mm)
+    Local override; error
+    @(23.6000 mm, 20.0000 mm): Track [I2C_SCL] on B.Cu, length 5.9750 mm
+    @(23.3000 mm, 22.5000 mm): Track [I2C_SDA] on B.Cu, length 9.1250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1200 mm)
+    Local override; error
+    @(28.5500 mm, 20.0000 mm): Track [I2C_SCL] on B.Cu, length 4.9500 mm
+    @(23.3000 mm, 22.5000 mm): Track [I2C_SDA] on B.Cu, length 9.1250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(37.0000 mm, 40.7500 mm): Track [I2C_SCL] on F.Cu, length 20.7500 mm
+    @(36.5000 mm, 28.7500 mm): Via [ENC_A] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(23.3000 mm, 22.5000 mm): Track [I2C_SDA] on B.Cu, length 9.1250 mm
+    @(23.6000 mm, 14.0250 mm): Track [I2C_SCL] on B.Cu, length 2.4000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and I2C_SCL)
+    Local override; error
+    @(40.0000 mm, 46.5000 mm): Circle [<no net>] of IRP14 on F.Cu
+    @(37.0000 mm, 40.7500 mm): Via [I2C_SCL] on F.Cu - B.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(25.0000 mm, 40.7500 mm): Track [I2C_SDA] on F.Cu, length 18.2500 mm
+    @(11.5000 mm, 38.0000 mm): Track [VOL_ADC] on F.Cu, length 25.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(22.9000 mm, 17.2750 mm): Track [I2S_MCLK] on B.Cu, length 1.7000 mm
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(22.3000 mm, 37.7500 mm): Track [I2S_BCLK] on B.Cu, length 21.7750 mm
+    @(22.9000 mm, 17.2750 mm): Track [I2S_MCLK] on B.Cu, length 1.7000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+    @(22.0000 mm, 15.3250 mm): Track [I2S_TX] on B.Cu, length 0.8000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(23.5000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 1.8000 mm
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(37.0000 mm, 40.7500 mm): Via [I2C_SCL] on F.Cu - B.Cu
+    @(37.5000 mm, 44.0000 mm): Track [MUX2_OUT] on B.Cu, length 16.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(22.0000 mm, 33.2500 mm): Track [I2S_TX] on B.Cu, length 17.9250 mm
+    @(22.6000 mm, 16.6250 mm): Track [I2S_LRCLK] on B.Cu, length 1.4000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1200 mm)
+    Local override; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(22.6000 mm, 16.6250 mm): Track [I2S_LRCLK] on B.Cu, length 1.4000 mm
+    @(22.3000 mm, 37.7500 mm): Track [I2S_BCLK] on B.Cu, length 21.7750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(12.5000 mm, 25.0000 mm): Track [MIC_BIAS] on B.Cu, length 9.7000 mm
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(2.8000 mm, 21.0000 mm): Track [MIC_IN] on B.Cu, length 11.2000 mm
+    @(12.5000 mm, 21.0000 mm): Track [MIC_BIAS] on B.Cu, length 4.0000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1200 mm)
+    Local override; error
+    @(23.5000 mm, 33.2500 mm): Track [I2S_TX] on B.Cu, length 1.5000 mm
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1850 mm)
+    Local override; error
+    @(22.2000 mm, 17.9250 mm): Track [MIC_BIAS] on B.Cu, length 1.0000 mm
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1850 mm)
+    Local override; error
+    @(22.2000 mm, 25.0000 mm): Track [MIC_BIAS] on B.Cu, length 7.0750 mm
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1750 mm)
+    Local override; error
+    @(13.2000 mm, 9.0000 mm): Track [HP_VGND] on B.Cu, length 4.3750 mm
+    @(2.8000 mm, 13.8000 mm): Track [HP_L] on B.Cu, length 11.4000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0500 mm)
+    Local override; error
+    @(25.4500 mm, 63.5000 mm): Via [GND] on F.Cu - B.Cu
+    @(26.0000 mm, 69.5000 mm): Track [+5V_USB] on F.Cu, length 10.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0500 mm)
+    Local override; error
+    @(25.4500 mm, 67.0000 mm): Via [GND] on F.Cu - B.Cu
+    @(26.0000 mm, 69.5000 mm): Track [+5V_USB] on F.Cu, length 10.0500 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1250 mm)
+    Local override; error
+    @(14.4500 mm, 5.0000 mm): Track [+1V8_CODEC] on B.Cu, length 5.6500 mm
+    @(16.9000 mm, 5.5500 mm): Via [+3V3_ANA] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets +3V3 and MUX_S3)
+    Local override; error
+    @(32.5500 mm, 49.0000 mm): Via [+3V3] on F.Cu - B.Cu
+    @(32.7000 mm, 33.2500 mm): Track [MUX_S3] on F.Cu, length 35.9000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1750 mm)
+    Local override; error
+    @(13.2000 mm, 13.3750 mm): Track [HP_VGND] on B.Cu, length 3.6000 mm
+    @(2.8000 mm, 13.8000 mm): Track [HP_L] on B.Cu, length 11.4000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_14 and GND)
+    Local override; error
+    @(40.4000 mm, 48.7500 mm): Pad 2 [KEY_SIG_14] of IRP14 on F.Cu
+    @(36.4500 mm, 49.0000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets GND and MUX_S0)
+    Local override; error
+    @(29.6500 mm, 66.4850 mm): Via [GND] on F.Cu - B.Cu
+    @(29.5500 mm, 67.8000 mm): Track [MUX_S0] on F.Cu, length 3.8550 mm
+[shorting_items]: Items shorting two nets (nets +3V3 and MUX_S1)
+    Local override; error
+    @(31.4500 mm, 22.5000 mm): Via [+3V3] on F.Cu - B.Cu
+    @(31.7000 mm, 22.2500 mm): Track [MUX_S1] on F.Cu, length 14.0000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(23.5000 mm, 28.7500 mm): Track [+3V3] on B.Cu, length 1.1000 mm
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(23.5000 mm, 27.2500 mm): Track [GND] on B.Cu, length 1.1000 mm
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[shorting_items]: Items shorting two nets (nets +3V3 and I2S_LRCLK)
+    Local override; error
+    @(22.4000 mm, 28.7500 mm): Via [+3V3] on F.Cu - B.Cu
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[shorting_items]: Items shorting two nets (nets GND and I2S_LRCLK)
+    Local override; error
+    @(22.4000 mm, 27.2500 mm): Via [GND] on F.Cu - B.Cu
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0350 mm)
+    Local override; error
+    @(39.3500 mm, 52.5150 mm): Via [+3V3] on F.Cu - B.Cu
+    @(101.9000 mm, 52.9400 mm): Track [KEY_SIG_17] on B.Cu, length 72.1000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(21.5000 mm, 45.4500 mm): Track [GND] on B.Cu, length 1.0000 mm
+    @(21.5000 mm, 43.5500 mm): Track [USER_LED] on B.Cu, length 6.4000 mm
+[shorting_items]: Items shorting two nets (nets GND and MUX_S1)
+    Local override; error
+    @(38.1500 mm, 20.4850 mm): Via [GND] on F.Cu - B.Cu
+    @(38.0500 mm, 19.2150 mm): Track [MUX_S1] on F.Cu, length 3.0350 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1500 mm)
+    Local override; error
+    @(21.5000 mm, 43.5500 mm): Pad 2 [USER_LED] of D1 on B.Cu
+    @(21.5000 mm, 44.4500 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1000 mm)
+    Local override; error
+    @(39.2500 mm, 20.4850 mm): Track [GND] on B.Cu, length 1.1000 mm
+    @(140.0000 mm, 20.8000 mm): Track [KEY_SIG_5] on B.Cu, length 103.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0950 mm)
+    Local override; error
+    @(38.1500 mm, 20.4850 mm): Via [GND] on F.Cu - B.Cu
+    @(101.9000 mm, 20.0000 mm): Track [KEY_SIG_3] on B.Cu, length 64.7000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_28 and GND)
+    Local override; error
+    @(164.2250 mm, 65.2500 mm): Track [KEY_SIG_28] on F.Cu, length 4.6000 mm
+    @(165.6750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(158.8250 mm, 66.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(163.8250 mm, 63.0000 mm): Circle [<no net>] of IRP28 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(139.7750 mm, 67.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(144.7750 mm, 63.0000 mm): Circle [<no net>] of IRP27 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(139.7750 mm, 66.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(144.7750 mm, 63.0000 mm): Circle [<no net>] of IRP27 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(120.7250 mm, 67.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(125.7250 mm, 63.0000 mm): Circle [<no net>] of IRP26 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(120.7250 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(125.7250 mm, 63.0000 mm): Circle [<no net>] of IRP26 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(106.6750 mm, 63.0000 mm): Circle [<no net>] of IRP25 on F.Cu
+    @(101.6750 mm, 66.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_25 and GND)
+    Local override; error
+    @(107.0750 mm, 65.2500 mm): Track [KEY_SIG_25] on F.Cu, length 4.6000 mm
+    @(108.5250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(106.6750 mm, 63.0000 mm): Circle [<no net>] of IRP25 on F.Cu
+    @(101.6750 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(101.6750 mm, 67.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(106.6750 mm, 63.0000 mm): Circle [<no net>] of IRP25 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(82.6250 mm, 66.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(87.6250 mm, 63.0000 mm): Circle [<no net>] of IRP24 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(87.6250 mm, 63.0000 mm): Circle [<no net>] of IRP24 on F.Cu
+    @(82.6250 mm, 67.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(82.6250 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(87.6250 mm, 63.0000 mm): Circle [<no net>] of IRP24 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(87.6250 mm, 63.0000 mm): Circle [<no net>] of IRP24 on F.Cu
+    @(82.6250 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(44.5250 mm, 58.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(49.5250 mm, 63.0000 mm): Circle [<no net>] of IRP22 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(168.3500 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(173.3500 mm, 46.5000 mm): Circle [<no net>] of IRP21 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(168.3500 mm, 51.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(173.3500 mm, 46.5000 mm): Circle [<no net>] of IRP21 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(154.3000 mm, 46.5000 mm): Circle [<no net>] of IRP20 on F.Cu
+    @(149.3000 mm, 51.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(168.3500 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(173.3500 mm, 46.5000 mm): Circle [<no net>] of IRP21 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(149.3000 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(154.3000 mm, 46.5000 mm): Circle [<no net>] of IRP20 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(135.2500 mm, 46.5000 mm): Circle [<no net>] of IRP19 on F.Cu
+    @(130.2500 mm, 51.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(135.2500 mm, 46.5000 mm): Circle [<no net>] of IRP19 on F.Cu
+    @(130.2500 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(111.2000 mm, 49.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(116.2000 mm, 46.5000 mm): Circle [<no net>] of IRP18 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(111.2000 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(116.2000 mm, 46.5000 mm): Circle [<no net>] of IRP18 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(116.2000 mm, 46.5000 mm): Circle [<no net>] of IRP18 on F.Cu
+    @(111.2000 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(92.1500 mm, 49.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(97.1500 mm, 46.5000 mm): Circle [<no net>] of IRP17 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(97.1500 mm, 46.5000 mm): Circle [<no net>] of IRP17 on F.Cu
+    @(92.1500 mm, 51.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(92.1500 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(97.1500 mm, 46.5000 mm): Circle [<no net>] of IRP17 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(92.1500 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(97.1500 mm, 46.5000 mm): Circle [<no net>] of IRP17 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(78.1000 mm, 46.5000 mm): Circle [<no net>] of IRP16 on F.Cu
+    @(73.1000 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(59.0500 mm, 46.5000 mm): Circle [<no net>] of IRP15 on F.Cu
+    @(54.0500 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(40.0000 mm, 46.5000 mm): Circle [<no net>] of IRP14 on F.Cu
+    @(35.0000 mm, 49.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(35.0000 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(40.0000 mm, 46.5000 mm): Circle [<no net>] of IRP14 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_13 and GND)
+    Local override; error
+    @(164.2250 mm, 32.2500 mm): Track [KEY_SIG_13] on F.Cu, length 4.6000 mm
+    @(165.6750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(158.8250 mm, 34.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(163.8250 mm, 30.0000 mm): Circle [<no net>] of IRP13 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(35.0000 mm, 42.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(40.0000 mm, 46.5000 mm): Circle [<no net>] of IRP14 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(144.7750 mm, 30.0000 mm): Circle [<no net>] of IRP12 on F.Cu
+    @(139.7750 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(139.7750 mm, 34.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(144.7750 mm, 30.0000 mm): Circle [<no net>] of IRP12 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_12 and GND)
+    Local override; error
+    @(145.1750 mm, 32.2500 mm): Track [KEY_SIG_12] on F.Cu, length 4.6000 mm
+    @(146.6250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(125.7250 mm, 30.0000 mm): Circle [<no net>] of IRP11 on F.Cu
+    @(120.7250 mm, 33.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(125.7250 mm, 30.0000 mm): Circle [<no net>] of IRP11 on F.Cu
+    @(120.7250 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(125.7250 mm, 30.0000 mm): Circle [<no net>] of IRP11 on F.Cu
+    @(120.7250 mm, 34.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(101.6750 mm, 33.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(106.6750 mm, 30.0000 mm): Circle [<no net>] of IRP10 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(101.6750 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(106.6750 mm, 30.0000 mm): Circle [<no net>] of IRP10 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_9 and GND)
+    Local override; error
+    @(88.0250 mm, 32.2500 mm): Track [KEY_SIG_9] on F.Cu, length 4.6000 mm
+    @(89.4750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(87.6250 mm, 30.0000 mm): Circle [<no net>] of IRP9 on F.Cu
+    @(82.6250 mm, 34.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(87.6250 mm, 30.0000 mm): Circle [<no net>] of IRP9 on F.Cu
+    @(82.6250 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(68.5750 mm, 30.0000 mm): Circle [<no net>] of IRP8 on F.Cu
+    @(63.5750 mm, 33.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(87.6250 mm, 30.0000 mm): Circle [<no net>] of IRP9 on F.Cu
+    @(82.6250 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(68.5750 mm, 30.0000 mm): Circle [<no net>] of IRP8 on F.Cu
+    @(63.5750 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(68.5750 mm, 30.0000 mm): Circle [<no net>] of IRP8 on F.Cu
+    @(63.5750 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(44.5250 mm, 33.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(49.5250 mm, 30.0000 mm): Circle [<no net>] of IRP7 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(44.5250 mm, 34.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(49.5250 mm, 30.0000 mm): Circle [<no net>] of IRP7 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(49.5250 mm, 30.0000 mm): Circle [<no net>] of IRP7 on F.Cu
+    @(44.5250 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(44.5250 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(49.5250 mm, 30.0000 mm): Circle [<no net>] of IRP7 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(149.3000 mm, 16.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(154.3000 mm, 13.5000 mm): Circle [<no net>] of IRP6 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(154.3000 mm, 13.5000 mm): Circle [<no net>] of IRP6 on F.Cu
+    @(149.3000 mm, 18.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(154.3000 mm, 13.5000 mm): Circle [<no net>] of IRP6 on F.Cu
+    @(149.3000 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(135.2500 mm, 13.5000 mm): Circle [<no net>] of IRP5 on F.Cu
+    @(130.2500 mm, 16.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(130.2500 mm, 18.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(135.2500 mm, 13.5000 mm): Circle [<no net>] of IRP5 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(149.3000 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(154.3000 mm, 13.5000 mm): Circle [<no net>] of IRP6 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_5 and GND)
+    Local override; error
+    @(135.6500 mm, 15.7500 mm): Track [KEY_SIG_5] on F.Cu, length 4.6000 mm
+    @(137.1000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(130.2500 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(135.2500 mm, 13.5000 mm): Circle [<no net>] of IRP5 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(116.2000 mm, 13.5000 mm): Circle [<no net>] of IRP4 on F.Cu
+    @(111.2000 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_4 and GND)
+    Local override; error
+    @(116.6000 mm, 15.7500 mm): Track [KEY_SIG_4] on F.Cu, length 4.6000 mm
+    @(118.0500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(116.2000 mm, 13.5000 mm): Circle [<no net>] of IRP4 on F.Cu
+    @(111.2000 mm, 16.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(111.2000 mm, 18.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(116.2000 mm, 13.5000 mm): Circle [<no net>] of IRP4 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(116.2000 mm, 13.5000 mm): Circle [<no net>] of IRP4 on F.Cu
+    @(111.2000 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(92.1500 mm, 16.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(97.1500 mm, 13.5000 mm): Circle [<no net>] of IRP3 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(92.1500 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(97.1500 mm, 13.5000 mm): Circle [<no net>] of IRP3 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(78.1000 mm, 13.5000 mm): Circle [<no net>] of IRP2 on F.Cu
+    @(73.1000 mm, 16.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(78.1000 mm, 13.5000 mm): Circle [<no net>] of IRP2 on F.Cu
+    @(73.1000 mm, 18.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_2 and GND)
+    Local override; error
+    @(78.5000 mm, 15.7500 mm): Track [KEY_SIG_2] on F.Cu, length 4.6000 mm
+    @(79.9500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(78.1000 mm, 13.5000 mm): Circle [<no net>] of IRP2 on F.Cu
+    @(73.1000 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(78.1000 mm, 13.5000 mm): Circle [<no net>] of IRP2 on F.Cu
+    @(73.1000 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(54.0500 mm, 16.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(59.0500 mm, 13.5000 mm): Circle [<no net>] of IRP1 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(54.0500 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+    @(59.0500 mm, 13.5000 mm): Circle [<no net>] of IRP1 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_1 and GND)
+    Local override; error
+    @(59.4500 mm, 15.7500 mm): Track [KEY_SIG_1] on F.Cu, length 4.6000 mm
+    @(60.9000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(54.0500 mm, 18.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(59.0500 mm, 13.5000 mm): Circle [<no net>] of IRP1 on F.Cu
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_27)
+    Local override; error
+    @(146.6250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(145.1750 mm, 65.2500 mm): Track [KEY_SIG_27] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(54.0500 mm, 9.0000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+    @(59.0500 mm, 13.5000 mm): Circle [<no net>] of IRP1 on F.Cu
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_21)
+    Local override; error
+    @(175.2000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(173.7500 mm, 48.7500 mm): Track [KEY_SIG_21] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_20)
+    Local override; error
+    @(156.1500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(154.7000 mm, 48.7500 mm): Track [KEY_SIG_20] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_18)
+    Local override; error
+    @(118.0500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(116.6000 mm, 48.7500 mm): Track [KEY_SIG_18] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_17)
+    Local override; error
+    @(99.0000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(97.5500 mm, 48.7500 mm): Pad 2 [KEY_SIG_17] of IRP17 on F.Cu
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_14)
+    Local override; error
+    @(41.8500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(40.4000 mm, 48.7500 mm): Track [KEY_SIG_14] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_15)
+    Local override; error
+    @(60.9000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(59.4500 mm, 48.7500 mm): Track [KEY_SIG_15] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_13 and GND)
+    Local override; error
+    @(164.2250 mm, 32.2500 mm): Pad 2 [KEY_SIG_13] of IRP13 on F.Cu
+    @(165.6750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1600 mm)
+    Local override; error
+    @(146.6250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(144.3750 mm, 33.0000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(52.3750 mm, 32.4000 mm): Track [GND] on B.Cu, length 1.0000 mm
+    @(52.3000 mm, 52.5600 mm): Track [KEY_SIG_16] on B.Cu, length 35.8850 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1600 mm)
+    Local override; error
+    @(87.2250 mm, 33.0000 mm): Pad 1 [+3V3] of IRP9 on F.Cu
+    @(89.4750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_7)
+    Local override; error
+    @(51.3750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(49.9250 mm, 32.2500 mm): Track [KEY_SIG_7] on F.Cu, length 4.6000 mm
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_6)
+    Local override; error
+    @(156.1500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(154.7000 mm, 15.7500 mm): Track [KEY_SIG_6] on F.Cu, length 4.6000 mm
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1600 mm)
+    Local override; error
+    @(70.4250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(68.1750 mm, 33.0000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[shorting_items]: Items shorting two nets (nets GND and KEY_SIG_3)
+    Local override; error
+    @(99.0000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(97.5500 mm, 15.7500 mm): Pad 2 [KEY_SIG_3] of IRP3 on F.Cu
+[shorting_items]: Items shorting two nets (nets KEY_SIG_4 and GND)
+    Local override; error
+    @(116.6000 mm, 15.7500 mm): Pad 2 [KEY_SIG_4] of IRP4 on F.Cu
+    @(118.0500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.1350 mm)
+    Local override; error
+    @(51.3750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(51.9000 mm, 52.1800 mm): Track [KEY_SIG_15] on B.Cu, length 36.7750 mm
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(88.0250 mm, 65.2500 mm): Pad 2 [KEY_SIG_24] of IRP24 on F.Cu
+    @(89.4750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(126.1250 mm, 65.2500 mm): Pad 2 [KEY_SIG_26] of IRP26 on F.Cu
+    @(127.5750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(164.2250 mm, 65.2500 mm): Pad 2 [KEY_SIG_28] of IRP28 on F.Cu
+    @(165.6750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(107.0750 mm, 65.2500 mm): Pad 2 [KEY_SIG_25] of IRP25 on F.Cu
+    @(108.5250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(126.1250 mm, 32.2500 mm): Pad 2 [KEY_SIG_11] of IRP11 on F.Cu
+    @(127.5750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(116.6000 mm, 48.7500 mm): Pad 2 [KEY_SIG_18] of IRP18 on F.Cu
+    @(118.0500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(154.7000 mm, 48.7500 mm): Pad 2 [KEY_SIG_20] of IRP20 on F.Cu
+    @(156.1500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(145.1750 mm, 65.2500 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+    @(146.6250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(49.9250 mm, 65.2500 mm): Pad 2 [KEY_SIG_22] of IRP22 on F.Cu
+    @(51.3750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(173.7500 mm, 48.7500 mm): Pad 2 [KEY_SIG_21] of IRP21 on F.Cu
+    @(175.2000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(135.6500 mm, 48.7500 mm): Pad 2 [KEY_SIG_19] of IRP19 on F.Cu
+    @(137.1000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(68.9750 mm, 65.2500 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+    @(70.4250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(97.5500 mm, 48.7500 mm): Pad 2 [KEY_SIG_17] of IRP17 on F.Cu
+    @(99.0000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(78.5000 mm, 48.7500 mm): Pad 2 [KEY_SIG_16] of IRP16 on F.Cu
+    @(79.9500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(164.2250 mm, 32.2500 mm): Pad 2 [KEY_SIG_13] of IRP13 on F.Cu
+    @(165.6750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(59.4500 mm, 48.7500 mm): Pad 2 [KEY_SIG_15] of IRP15 on F.Cu
+    @(60.9000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(40.4000 mm, 48.7500 mm): Pad 2 [KEY_SIG_14] of IRP14 on F.Cu
+    @(36.4500 mm, 49.0000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(145.1750 mm, 32.2500 mm): Pad 2 [KEY_SIG_12] of IRP12 on F.Cu
+    @(146.6250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(40.4000 mm, 48.7500 mm): Pad 2 [KEY_SIG_14] of IRP14 on F.Cu
+    @(41.8500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(68.9750 mm, 32.2500 mm): Pad 2 [KEY_SIG_8] of IRP8 on F.Cu
+    @(70.4250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.2100 mm)
+    Rule: board setup constraints hole; error
+    @(39.6000 mm, 49.5000 mm): Pad 1 [+3V3] of IRP14 on F.Cu
+    @(36.4500 mm, 49.0000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(88.0250 mm, 32.2500 mm): Pad 2 [KEY_SIG_9] of IRP9 on F.Cu
+    @(89.4750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(107.0750 mm, 32.2500 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+    @(108.5250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(49.9250 mm, 32.2500 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+    @(51.3750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(154.7000 mm, 15.7500 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+    @(156.1500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(135.6500 mm, 15.7500 mm): Pad 2 [KEY_SIG_5] of IRP5 on F.Cu
+    @(137.1000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(116.6000 mm, 15.7500 mm): Pad 2 [KEY_SIG_4] of IRP4 on F.Cu
+    @(118.0500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(97.5500 mm, 15.7500 mm): Pad 2 [KEY_SIG_3] of IRP3 on F.Cu
+    @(99.0000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(59.4500 mm, 15.7500 mm): Pad 2 [KEY_SIG_1] of IRP1 on F.Cu
+    @(60.9000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(78.5000 mm, 15.7500 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+    @(79.9500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(58.6500 mm, 9.0000 mm): Pad 1 [+3V3] of IRP1 on F.Cu
+    @(59.0500 mm, 13.5000 mm): Circle [<no net>] of IRP1 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(96.7500 mm, 9.0000 mm): Pad 1 [+3V3] of IRP3 on F.Cu
+    @(97.1500 mm, 13.5000 mm): Circle [<no net>] of IRP3 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(78.1000 mm, 13.5000 mm): Circle [<no net>] of IRP2 on F.Cu
+    @(77.7000 mm, 9.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(134.8500 mm, 9.0000 mm): Pad 1 [+3V3] of IRP5 on F.Cu
+    @(135.2500 mm, 13.5000 mm): Circle [<no net>] of IRP5 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(68.5750 mm, 30.0000 mm): Circle [<no net>] of IRP8 on F.Cu
+    @(68.1750 mm, 25.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(49.1250 mm, 25.5000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+    @(49.5250 mm, 30.0000 mm): Circle [<no net>] of IRP7 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(144.7750 mm, 30.0000 mm): Circle [<no net>] of IRP12 on F.Cu
+    @(144.3750 mm, 25.5000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(154.3000 mm, 13.5000 mm): Circle [<no net>] of IRP6 on F.Cu
+    @(153.9000 mm, 18.0000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(106.2750 mm, 34.5000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(106.6750 mm, 30.0000 mm): Circle [<no net>] of IRP10 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(116.2000 mm, 13.5000 mm): Circle [<no net>] of IRP4 on F.Cu
+    @(115.8000 mm, 18.0000 mm): Pad 1 [+3V3] of IRP4 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(135.2500 mm, 46.5000 mm): Circle [<no net>] of IRP19 on F.Cu
+    @(134.8500 mm, 42.0000 mm): Pad 1 [+3V3] of IRP19 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(87.2250 mm, 25.5000 mm): Pad 1 [+3V3] of IRP9 on F.Cu
+    @(87.6250 mm, 30.0000 mm): Circle [<no net>] of IRP9 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(116.2000 mm, 13.5000 mm): Circle [<no net>] of IRP4 on F.Cu
+    @(115.8000 mm, 9.0000 mm): Pad 1 [+3V3] of IRP4 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(106.2750 mm, 25.5000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+    @(106.6750 mm, 30.0000 mm): Circle [<no net>] of IRP10 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(153.9000 mm, 9.0000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+    @(154.3000 mm, 13.5000 mm): Circle [<no net>] of IRP6 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(96.7500 mm, 18.0000 mm): Pad 1 [+3V3] of IRP3 on F.Cu
+    @(97.1500 mm, 13.5000 mm): Circle [<no net>] of IRP3 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(59.0500 mm, 13.5000 mm): Circle [<no net>] of IRP1 on F.Cu
+    @(58.6500 mm, 18.0000 mm): Pad 1 [+3V3] of IRP1 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(144.7750 mm, 30.0000 mm): Circle [<no net>] of IRP12 on F.Cu
+    @(144.3750 mm, 34.5000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(49.5250 mm, 30.0000 mm): Circle [<no net>] of IRP7 on F.Cu
+    @(49.1250 mm, 34.5000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(134.8500 mm, 18.0000 mm): Pad 1 [+3V3] of IRP5 on F.Cu
+    @(135.2500 mm, 13.5000 mm): Circle [<no net>] of IRP5 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(78.1000 mm, 13.5000 mm): Circle [<no net>] of IRP2 on F.Cu
+    @(77.7000 mm, 18.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(68.5750 mm, 30.0000 mm): Circle [<no net>] of IRP8 on F.Cu
+    @(68.1750 mm, 34.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(144.7750 mm, 63.0000 mm): Circle [<no net>] of IRP27 on F.Cu
+    @(144.3750 mm, 58.5000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(135.2500 mm, 46.5000 mm): Circle [<no net>] of IRP19 on F.Cu
+    @(134.8500 mm, 51.0000 mm): Pad 1 [+3V3] of IRP19 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(87.6250 mm, 30.0000 mm): Circle [<no net>] of IRP9 on F.Cu
+    @(87.2250 mm, 34.5000 mm): Pad 1 [+3V3] of IRP9 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(163.8250 mm, 63.0000 mm): Circle [<no net>] of IRP28 on F.Cu
+    @(163.4250 mm, 58.5000 mm): Pad 1 [+3V3] of IRP28 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(49.1250 mm, 58.5000 mm): Pad 1 [+3V3] of IRP22 on F.Cu
+    @(49.5250 mm, 63.0000 mm): Circle [<no net>] of IRP22 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(154.3000 mm, 46.5000 mm): Circle [<no net>] of IRP20 on F.Cu
+    @(153.9000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(106.6750 mm, 63.0000 mm): Circle [<no net>] of IRP25 on F.Cu
+    @(106.2750 mm, 58.5000 mm): Pad 1 [+3V3] of IRP25 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(116.2000 mm, 46.5000 mm): Circle [<no net>] of IRP18 on F.Cu
+    @(115.8000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP18 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(172.9500 mm, 42.0000 mm): Pad 1 [+3V3] of IRP21 on F.Cu
+    @(173.3500 mm, 46.5000 mm): Circle [<no net>] of IRP21 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(125.3250 mm, 67.5000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+    @(125.7250 mm, 63.0000 mm): Circle [<no net>] of IRP26 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(87.2250 mm, 67.5000 mm): Pad 1 [+3V3] of IRP24 on F.Cu
+    @(87.6250 mm, 63.0000 mm): Circle [<no net>] of IRP24 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(68.5750 mm, 63.0000 mm): Circle [<no net>] of IRP23 on F.Cu
+    @(68.1750 mm, 67.5000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(144.7750 mm, 63.0000 mm): Circle [<no net>] of IRP27 on F.Cu
+    @(144.3750 mm, 67.5000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(96.7500 mm, 42.0000 mm): Pad 1 [+3V3] of IRP17 on F.Cu
+    @(97.1500 mm, 46.5000 mm): Circle [<no net>] of IRP17 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(125.3250 mm, 58.5000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+    @(125.7250 mm, 63.0000 mm): Circle [<no net>] of IRP26 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(87.6250 mm, 63.0000 mm): Circle [<no net>] of IRP24 on F.Cu
+    @(87.2250 mm, 58.5000 mm): Pad 1 [+3V3] of IRP24 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(68.5750 mm, 63.0000 mm): Circle [<no net>] of IRP23 on F.Cu
+    @(68.1750 mm, 58.5000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(153.9000 mm, 51.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+    @(154.3000 mm, 46.5000 mm): Circle [<no net>] of IRP20 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(106.2750 mm, 67.5000 mm): Pad 1 [+3V3] of IRP25 on F.Cu
+    @(106.6750 mm, 63.0000 mm): Circle [<no net>] of IRP25 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(163.4250 mm, 67.5000 mm): Pad 1 [+3V3] of IRP28 on F.Cu
+    @(163.8250 mm, 63.0000 mm): Circle [<no net>] of IRP28 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(115.8000 mm, 51.0000 mm): Pad 1 [+3V3] of IRP18 on F.Cu
+    @(116.2000 mm, 46.5000 mm): Circle [<no net>] of IRP18 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(78.1000 mm, 46.5000 mm): Circle [<no net>] of IRP16 on F.Cu
+    @(77.7000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP16 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(49.5250 mm, 63.0000 mm): Circle [<no net>] of IRP22 on F.Cu
+    @(49.1250 mm, 67.5000 mm): Pad 1 [+3V3] of IRP22 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(125.7250 mm, 30.0000 mm): Circle [<no net>] of IRP11 on F.Cu
+    @(125.3250 mm, 25.5000 mm): Pad 1 [+3V3] of IRP11 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(59.0500 mm, 46.5000 mm): Circle [<no net>] of IRP15 on F.Cu
+    @(58.6500 mm, 42.0000 mm): Pad 1 [+3V3] of IRP15 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0000 mm)
+    Local override; error
+    @(163.4250 mm, 25.5000 mm): Pad 1 [+3V3] of IRP13 on F.Cu
+    @(163.8250 mm, 30.0000 mm): Circle [<no net>] of IRP13 on F.Cu
+[shorting_items]: Items shorting two nets (nets <no net> and +3V3)
+    Local override; error
+    @(40.0000 mm, 46.5000 mm): Circle [<no net>] of IRP14 on F.Cu
+    @(39.6000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP14 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(173.3500 mm, 46.5000 mm): Circle [<no net>] of IRP21 on F.Cu
+    @(172.9500 mm, 51.0000 mm): Pad 1 [+3V3] of IRP21 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(78.1000 mm, 46.5000 mm): Circle [<no net>] of IRP16 on F.Cu
+    @(77.7000 mm, 51.0000 mm): Pad 1 [+3V3] of IRP16 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(96.7500 mm, 51.0000 mm): Pad 1 [+3V3] of IRP17 on F.Cu
+    @(97.1500 mm, 46.5000 mm): Circle [<no net>] of IRP17 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(125.3250 mm, 34.5000 mm): Pad 1 [+3V3] of IRP11 on F.Cu
+    @(125.7250 mm, 30.0000 mm): Circle [<no net>] of IRP11 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(59.0500 mm, 46.5000 mm): Circle [<no net>] of IRP15 on F.Cu
+    @(58.6500 mm, 51.0000 mm): Pad 1 [+3V3] of IRP15 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(39.6000 mm, 51.0000 mm): Pad 1 [+3V3] of IRP14 on F.Cu
+    @(40.0000 mm, 46.5000 mm): Circle [<no net>] of IRP14 on F.Cu
+[clearance]: Clearance violation ( clearance 0.2000 mm; actual 0.0590 mm)
+    Local override; error
+    @(163.8250 mm, 30.0000 mm): Circle [<no net>] of IRP13 on F.Cu
+    @(163.4250 mm, 34.5000 mm): Pad 1 [+3V3] of IRP13 on F.Cu
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(23.5000 mm, 33.2500 mm): Track [I2S_TX] on B.Cu, length 1.5000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(22.0000 mm, 33.2500 mm): Track [I2S_TX] on B.Cu, length 17.9250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(22.0000 mm, 15.3250 mm): Track [I2S_TX] on B.Cu, length 0.8000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(23.5000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 1.8000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(21.7000 mm, 14.6750 mm): Track [I2S_RX] on B.Cu, length 0.5000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(23.5000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 0.9000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(22.6000 mm, 36.2500 mm): Track [I2S_LRCLK] on B.Cu, length 19.6250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(22.6000 mm, 16.6250 mm): Track [I2S_LRCLK] on B.Cu, length 1.4000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(23.5000 mm, 37.7500 mm): Track [I2S_BCLK] on B.Cu, length 1.2000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(22.3000 mm, 37.7500 mm): Track [I2S_BCLK] on B.Cu, length 21.7750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(22.3000 mm, 15.9750 mm): Track [I2S_BCLK] on B.Cu, length 1.1000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(23.5000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 0.6000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(22.9000 mm, 17.2750 mm): Track [I2S_MCLK] on B.Cu, length 1.7000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(28.5500 mm, 22.5000 mm): Track [I2C_SDA] on B.Cu, length 5.2500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(23.3000 mm, 22.5000 mm): Track [I2C_SDA] on B.Cu, length 9.1250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(23.3000 mm, 13.3750 mm): Track [I2C_SDA] on B.Cu, length 2.1000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(28.5500 mm, 20.0000 mm): Track [I2C_SCL] on B.Cu, length 4.9500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(23.6000 mm, 20.0000 mm): Track [I2C_SCL] on B.Cu, length 5.9750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(23.6000 mm, 14.0250 mm): Track [I2C_SCL] on B.Cu, length 2.4000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(63.8000 mm, 15.9000 mm): Track [KEY_SIG_1] on B.Cu, length 3.3000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(63.8000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 25.8000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(38.0000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 2.5250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(38.0000 mm, 16.6750 mm): Track [KEY_SIG_1] on B.Cu, length 1.2500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(82.8500 mm, 15.9000 mm): Track [KEY_SIG_2] on B.Cu, length 3.7000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(82.8500 mm, 19.6000 mm): Track [KEY_SIG_2] on B.Cu, length 45.2500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(37.6000 mm, 19.6000 mm): Track [KEY_SIG_2] on B.Cu, length 4.1950 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(37.6000 mm, 15.4050 mm): Track [KEY_SIG_2] on B.Cu, length 1.6500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(101.9000 mm, 15.9000 mm): Track [KEY_SIG_3] on B.Cu, length 4.1000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(101.9000 mm, 20.0000 mm): Track [KEY_SIG_3] on B.Cu, length 64.7000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(37.2000 mm, 20.0000 mm): Track [KEY_SIG_3] on B.Cu, length 5.8650 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(37.2000 mm, 14.1350 mm): Track [KEY_SIG_3] on B.Cu, length 2.0500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(120.9500 mm, 15.9000 mm): Track [KEY_SIG_4] on B.Cu, length 4.5000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(120.9500 mm, 20.4000 mm): Track [KEY_SIG_4] on B.Cu, length 84.1500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(36.8000 mm, 20.4000 mm): Track [KEY_SIG_4] on B.Cu, length 7.5350 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(36.8000 mm, 12.8650 mm): Track [KEY_SIG_4] on B.Cu, length 2.4500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(140.0000 mm, 15.9000 mm): Track [KEY_SIG_5] on B.Cu, length 4.9000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(140.0000 mm, 20.8000 mm): Track [KEY_SIG_5] on B.Cu, length 103.6000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(36.4000 mm, 20.8000 mm): Track [KEY_SIG_5] on B.Cu, length 9.2050 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(36.4000 mm, 11.5950 mm): Track [KEY_SIG_5] on B.Cu, length 2.8500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(159.0500 mm, 15.9000 mm): Track [KEY_SIG_6] on B.Cu, length 5.3000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(159.0500 mm, 21.2000 mm): Track [KEY_SIG_6] on B.Cu, length 123.0500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(36.0000 mm, 21.2000 mm): Track [KEY_SIG_6] on B.Cu, length 10.8750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(36.0000 mm, 10.3250 mm): Track [KEY_SIG_6] on B.Cu, length 3.2500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(54.2750 mm, 32.4000 mm): Track [KEY_SIG_7] on B.Cu, length 3.4000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(54.2750 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 17.2750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(37.0000 mm, 35.8000 mm): Track [KEY_SIG_7] on B.Cu, length 26.7450 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(37.0000 mm, 9.0550 mm): Track [KEY_SIG_7] on B.Cu, length 2.2500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(73.3250 mm, 32.4000 mm): Track [KEY_SIG_8] on B.Cu, length 3.8000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(73.3250 mm, 36.2000 mm): Track [KEY_SIG_8] on B.Cu, length 36.7250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(36.6000 mm, 36.2000 mm): Track [KEY_SIG_8] on B.Cu, length 28.4150 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(36.6000 mm, 7.7850 mm): Track [KEY_SIG_8] on B.Cu, length 2.6500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(92.3750 mm, 32.4000 mm): Track [KEY_SIG_9] on B.Cu, length 4.2000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(92.3750 mm, 36.6000 mm): Track [KEY_SIG_9] on B.Cu, length 43.0750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(49.3000 mm, 36.6000 mm): Track [KEY_SIG_9] on B.Cu, length 28.8150 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(49.3000 mm, 7.7850 mm): Track [KEY_SIG_9] on B.Cu, length 2.5500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(111.4250 mm, 32.4000 mm): Track [KEY_SIG_10] on B.Cu, length 4.6000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(111.4250 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 61.7250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(49.7000 mm, 37.0000 mm): Track [KEY_SIG_10] on B.Cu, length 27.9450 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(49.7000 mm, 9.0550 mm): Track [KEY_SIG_10] on B.Cu, length 2.9500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(130.4750 mm, 32.4000 mm): Track [KEY_SIG_11] on B.Cu, length 5.0000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(130.4750 mm, 37.4000 mm): Track [KEY_SIG_11] on B.Cu, length 80.3750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(50.1000 mm, 37.4000 mm): Track [KEY_SIG_11] on B.Cu, length 27.0750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(50.1000 mm, 10.3250 mm): Track [KEY_SIG_11] on B.Cu, length 3.3500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(149.5250 mm, 32.4000 mm): Track [KEY_SIG_12] on B.Cu, length 5.4000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(149.5250 mm, 37.8000 mm): Track [KEY_SIG_12] on B.Cu, length 99.0250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(50.5000 mm, 37.8000 mm): Track [KEY_SIG_12] on B.Cu, length 26.2050 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(50.5000 mm, 11.5950 mm): Track [KEY_SIG_12] on B.Cu, length 3.7500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(168.5750 mm, 32.4000 mm): Track [KEY_SIG_13] on B.Cu, length 5.8000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(168.5750 mm, 38.2000 mm): Track [KEY_SIG_13] on B.Cu, length 117.6750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(50.9000 mm, 38.2000 mm): Track [KEY_SIG_13] on B.Cu, length 25.3350 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(50.9000 mm, 12.8650 mm): Track [KEY_SIG_13] on B.Cu, length 4.1500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(44.7500 mm, 48.9000 mm): Track [KEY_SIG_14] on B.Cu, length 2.9000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(44.7500 mm, 51.8000 mm): Track [KEY_SIG_14] on B.Cu, length 6.7500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(51.5000 mm, 51.8000 mm): Track [KEY_SIG_14] on B.Cu, length 37.6650 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(51.5000 mm, 14.1350 mm): Track [KEY_SIG_14] on B.Cu, length 4.7500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(63.8000 mm, 48.9000 mm): Track [KEY_SIG_15] on B.Cu, length 3.2800 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(63.8000 mm, 52.1800 mm): Track [KEY_SIG_15] on B.Cu, length 11.9000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(51.9000 mm, 52.1800 mm): Track [KEY_SIG_15] on B.Cu, length 36.7750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(51.9000 mm, 15.4050 mm): Track [KEY_SIG_15] on B.Cu, length 5.1500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(82.8500 mm, 48.9000 mm): Track [KEY_SIG_16] on B.Cu, length 3.6600 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(82.8500 mm, 52.5600 mm): Track [KEY_SIG_16] on B.Cu, length 30.5500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(52.3000 mm, 52.5600 mm): Track [KEY_SIG_16] on B.Cu, length 35.8850 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(52.3000 mm, 16.6750 mm): Track [KEY_SIG_16] on B.Cu, length 5.5500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(101.9000 mm, 48.9000 mm): Track [KEY_SIG_17] on B.Cu, length 4.0400 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(101.9000 mm, 52.9400 mm): Track [KEY_SIG_17] on B.Cu, length 72.1000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(29.8000 mm, 52.9400 mm): Track [KEY_SIG_17] on B.Cu, length 9.7350 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(29.8000 mm, 62.6750 mm): Track [KEY_SIG_17] on B.Cu, length 0.9500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(120.9500 mm, 48.9000 mm): Track [KEY_SIG_18] on B.Cu, length 4.4200 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(120.9500 mm, 53.3200 mm): Track [KEY_SIG_18] on B.Cu, length 91.5500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(29.4000 mm, 53.3200 mm): Track [KEY_SIG_18] on B.Cu, length 8.0850 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(29.4000 mm, 61.4050 mm): Track [KEY_SIG_18] on B.Cu, length 1.3500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(140.0000 mm, 48.9000 mm): Track [KEY_SIG_19] on B.Cu, length 4.8000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(140.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 111.0000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(29.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 6.4350 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(29.0000 mm, 60.1350 mm): Track [KEY_SIG_19] on B.Cu, length 1.7500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(159.0500 mm, 48.9000 mm): Track [KEY_SIG_20] on B.Cu, length 5.1800 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(159.0500 mm, 54.0800 mm): Track [KEY_SIG_20] on B.Cu, length 130.4500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(28.6000 mm, 54.0800 mm): Track [KEY_SIG_20] on B.Cu, length 4.7850 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(28.6000 mm, 58.8650 mm): Track [KEY_SIG_20] on B.Cu, length 2.1500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(178.1000 mm, 48.9000 mm): Track [KEY_SIG_21] on B.Cu, length 5.5600 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(178.1000 mm, 54.4600 mm): Track [KEY_SIG_21] on B.Cu, length 149.9000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(28.2000 mm, 54.4600 mm): Track [KEY_SIG_21] on B.Cu, length 3.1350 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(28.2000 mm, 57.5950 mm): Track [KEY_SIG_21] on B.Cu, length 2.5500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(54.2750 mm, 65.4000 mm): Track [KEY_SIG_22] on B.Cu, length 3.2000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(54.2750 mm, 68.6000 mm): Track [KEY_SIG_22] on B.Cu, length 26.7750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(27.5000 mm, 68.6000 mm): Track [KEY_SIG_22] on B.Cu, length 12.2750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(27.5000 mm, 56.3250 mm): Track [KEY_SIG_22] on B.Cu, length 3.2500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(73.3250 mm, 65.4000 mm): Track [KEY_SIG_23] on B.Cu, length 3.5800 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(73.3250 mm, 68.9800 mm): Track [KEY_SIG_23] on B.Cu, length 46.2250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(27.1000 mm, 68.9800 mm): Track [KEY_SIG_23] on B.Cu, length 13.9250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(27.1000 mm, 55.0550 mm): Track [KEY_SIG_23] on B.Cu, length 3.6500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(92.3750 mm, 65.4000 mm): Track [KEY_SIG_24] on B.Cu, length 3.9600 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(92.3750 mm, 69.3600 mm): Track [KEY_SIG_24] on B.Cu, length 65.6750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(26.7000 mm, 69.3600 mm): Track [KEY_SIG_24] on B.Cu, length 15.5750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(26.7000 mm, 53.7850 mm): Track [KEY_SIG_24] on B.Cu, length 4.0500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(111.4250 mm, 65.4000 mm): Track [KEY_SIG_25] on B.Cu, length 4.3400 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(111.4250 mm, 69.7400 mm): Track [KEY_SIG_25] on B.Cu, length 71.6250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(39.8000 mm, 69.7400 mm): Track [KEY_SIG_25] on B.Cu, length 15.9550 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(39.8000 mm, 53.7850 mm): Track [KEY_SIG_25] on B.Cu, length 1.5500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(130.4750 mm, 65.4000 mm): Track [KEY_SIG_26] on B.Cu, length 4.7200 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(130.4750 mm, 70.1200 mm): Track [KEY_SIG_26] on B.Cu, length 90.2750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(40.2000 mm, 70.1200 mm): Track [KEY_SIG_26] on B.Cu, length 15.0650 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(40.2000 mm, 55.0550 mm): Track [KEY_SIG_26] on B.Cu, length 1.9500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(149.5250 mm, 65.4000 mm): Track [KEY_SIG_27] on B.Cu, length 5.1000 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(149.5250 mm, 70.5000 mm): Track [KEY_SIG_27] on B.Cu, length 108.9250 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(40.6000 mm, 70.5000 mm): Track [KEY_SIG_27] on B.Cu, length 14.1750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(40.6000 mm, 56.3250 mm): Track [KEY_SIG_27] on B.Cu, length 2.3500 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(168.5750 mm, 65.4000 mm): Track [KEY_SIG_28] on B.Cu, length 5.4800 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(168.5750 mm, 70.8800 mm): Track [KEY_SIG_28] on B.Cu, length 127.5750 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(41.0000 mm, 70.8800 mm): Track [KEY_SIG_28] on B.Cu, length 13.2850 mm
+[track_width]: Track width (board setup constraints min width 0.2000 mm; actual 0.1800 mm)
+    Rule: netclass 'Default'; error
+    @(41.0000 mm, 57.5950 mm): Track [KEY_SIG_28] on B.Cu, length 2.7500 mm
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+    @(21.2000 mm, 15.3250 mm): Pad 15 [I2S_TX] of U_CODEC on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(60.9000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(59.4500 mm, 15.7500 mm): Pad 2 [KEY_SIG_1] of IRP1 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+    @(21.2000 mm, 15.9750 mm): Pad 14 [I2S_BCLK] of U_CODEC on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(116.2000 mm, 13.5000 mm): Circle [<no net>] of IRP4 on F.Cu
+    @(115.8000 mm, 9.0000 mm): Pad 1 [+3V3] of IRP4 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+    @(21.2000 mm, 16.6250 mm): Pad 13 [I2S_LRCLK] of U_CODEC on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.9000 mm, 52.1800 mm): Track [KEY_SIG_15] on B.Cu, length 36.7750 mm
+    @(52.3750 mm, 32.4000 mm): Pad 1 [GND] of R_PD7 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+    @(21.2000 mm, 17.2750 mm): Pad 12 [I2S_MCLK] of U_CODEC on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(79.9500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(78.5000 mm, 15.7500 mm): Pad 2 [KEY_SIG_2] of IRP2 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(52.3000 mm, 52.5600 mm): Track [KEY_SIG_16] on B.Cu, length 35.8850 mm
+    @(52.3750 mm, 32.4000 mm): Pad 1 [GND] of R_PD7 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(21.7000 mm, 34.7500 mm): Track [I2S_RX] on B.Cu, length 20.0750 mm
+    @(21.2000 mm, 17.9250 mm): Pad 11 [MIC_BIAS] of U_CODEC on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle [<no net>] of IRP12 on F.Cu
+    @(144.3750 mm, 25.5000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(140.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 111.0000 mm
+    @(38.2500 mm, 53.7850 mm): Pad 23 [KEY_SIG_25] of U5 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(140.0000 mm, 53.7000 mm): Track [KEY_SIG_19] on B.Cu, length 111.0000 mm
+    @(30.7500 mm, 53.7850 mm): Pad 2 [KEY_SIG_24] of U5 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(159.0500 mm, 54.0800 mm): Track [KEY_SIG_20] on B.Cu, length 130.4500 mm
+    @(38.2500 mm, 53.7850 mm): Pad 23 [KEY_SIG_25] of U5 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(159.0500 mm, 54.0800 mm): Track [KEY_SIG_20] on B.Cu, length 130.4500 mm
+    @(30.7500 mm, 53.7850 mm): Pad 2 [KEY_SIG_24] of U5 on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(99.0000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(97.5500 mm, 15.7500 mm): Pad 2 [KEY_SIG_3] of IRP3 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+    @(23.5000 mm, 30.2500 mm): Pad 3 [USB_D_P] of U_MM on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+    @(23.5000 mm, 31.7500 mm): Pad 4 [USB_D_N] of U_MM on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+    @(23.5000 mm, 37.7500 mm): Pad 8 [I2S_BCLK] of U_MM on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+    @(23.5000 mm, 27.2500 mm): Pad 1 [GND] of U_MM on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+    @(23.5000 mm, 28.7500 mm): Pad 2 [+3V3] of U_MM on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+    @(23.5000 mm, 33.2500 mm): Pad 5 [I2S_TX] of U_MM on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(118.0500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(116.6000 mm, 15.7500 mm): Pad 2 [KEY_SIG_4] of IRP4 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+    @(23.5000 mm, 34.7500 mm): Pad 6 [I2S_RX] of U_MM on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(173.3500 mm, 46.5000 mm): Circle [<no net>] of IRP21 on F.Cu
+    @(172.9500 mm, 42.0000 mm): Pad 1 [+3V3] of IRP21 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(22.9000 mm, 39.2500 mm): Track [I2S_MCLK] on B.Cu, length 21.9750 mm
+    @(23.5000 mm, 36.2500 mm): Pad 7 [I2S_LRCLK] of U_MM on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(137.1000 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(135.6500 mm, 15.7500 mm): Pad 2 [KEY_SIG_5] of IRP5 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(156.1500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(154.7000 mm, 15.7500 mm): Pad 2 [KEY_SIG_6] of IRP6 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.3750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(49.9250 mm, 32.2500 mm): Pad 2 [KEY_SIG_7] of IRP7 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(21.5000 mm, 43.5500 mm): Track [USER_LED] on B.Cu, length 6.4000 mm
+    @(21.5000 mm, 45.4500 mm): Pad 1 [GND] of D1 on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(70.4250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(68.9750 mm, 32.2500 mm): Pad 2 [KEY_SIG_8] of IRP8 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(21.5000 mm, 43.5500 mm): Track [USER_LED] on B.Cu, length 6.4000 mm
+    @(21.5000 mm, 48.0500 mm): Pad 2 [+3V3] of R1 on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89.4750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(88.0250 mm, 32.2500 mm): Pad 2 [KEY_SIG_9] of IRP9 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(108.5250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(107.0750 mm, 32.2500 mm): Pad 2 [KEY_SIG_10] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(127.5750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(126.1250 mm, 32.2500 mm): Pad 2 [KEY_SIG_11] of IRP11 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(146.6250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(145.1750 mm, 32.2500 mm): Pad 2 [KEY_SIG_12] of IRP12 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(163.8250 mm, 30.0000 mm): Circle [<no net>] of IRP13 on F.Cu
+    @(163.4250 mm, 25.5000 mm): Pad 1 [+3V3] of IRP13 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(165.6750 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(164.2250 mm, 32.2500 mm): Pad 2 [KEY_SIG_13] of IRP13 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(63.8000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 25.8000 mm
+    @(39.2500 mm, 19.2150 mm): Pad 11 [MUX_S1] of U4 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(63.8000 mm, 19.2000 mm): Track [KEY_SIG_1] on B.Cu, length 25.8000 mm
+    @(46.7500 mm, 19.2150 mm): Pad 14 [MUX_S2] of U4 on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(135.2500 mm, 13.5000 mm): Circle [<no net>] of IRP5 on F.Cu
+    @(134.8500 mm, 9.0000 mm): Pad 1 [+3V3] of IRP5 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(41.8500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(40.4000 mm, 48.7500 mm): Pad 2 [KEY_SIG_14] of IRP14 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(59.0500 mm, 13.5000 mm): Circle [<no net>] of IRP1 on F.Cu
+    @(58.6500 mm, 9.0000 mm): Pad 1 [+3V3] of IRP1 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(120.9500 mm, 20.4000 mm): Track [KEY_SIG_4] on B.Cu, length 84.1500 mm
+    @(39.2500 mm, 20.4850 mm): Pad 12 [GND] of U4 on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(60.9000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(59.4500 mm, 48.7500 mm): Pad 2 [KEY_SIG_15] of IRP15 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(120.9500 mm, 20.4000 mm): Track [KEY_SIG_4] on B.Cu, length 84.1500 mm
+    @(46.7500 mm, 20.4850 mm): Pad 13 [MUX_S3] of U4 on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.5250 mm, 63.0000 mm): Circle [<no net>] of IRP22 on F.Cu
+    @(49.1250 mm, 58.5000 mm): Pad 1 [+3V3] of IRP22 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(140.0000 mm, 20.8000 mm): Track [KEY_SIG_5] on B.Cu, length 103.6000 mm
+    @(39.2500 mm, 20.4850 mm): Pad 12 [GND] of U4 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(140.0000 mm, 20.8000 mm): Track [KEY_SIG_5] on B.Cu, length 103.6000 mm
+    @(46.7500 mm, 20.4850 mm): Pad 13 [MUX_S3] of U4 on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(79.9500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(78.5000 mm, 48.7500 mm): Pad 2 [KEY_SIG_16] of IRP16 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(99.0000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(97.5500 mm, 48.7500 mm): Pad 2 [KEY_SIG_17] of IRP17 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(36.4500 mm, 49.0000 mm): Via [GND] on F.Cu - B.Cu
+    @(40.4000 mm, 48.7500 mm): Pad 2 [KEY_SIG_14] of IRP14 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(118.0500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(116.6000 mm, 48.7500 mm): Pad 2 [KEY_SIG_18] of IRP18 on F.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(2.8000 mm, 21.0000 mm): Track [MIC_IN] on B.Cu, length 11.2000 mm
+    @(10.8000 mm, 21.0000 mm): Pad 3 [MIC_BIAS] of J_MIC on B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(137.1000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(135.6500 mm, 48.7500 mm): Pad 2 [KEY_SIG_19] of IRP19 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(156.1500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(154.7000 mm, 48.7500 mm): Pad 2 [KEY_SIG_20] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(175.2000 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+    @(173.7500 mm, 48.7500 mm): Pad 2 [KEY_SIG_21] of IRP21 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(51.3750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(49.9250 mm, 65.2500 mm): Pad 2 [KEY_SIG_22] of IRP22 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(40.0000 mm, 46.5000 mm): Circle [<no net>] of IRP14 on F.Cu
+    @(39.6000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP14 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(70.4250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(68.9750 mm, 65.2500 mm): Pad 2 [KEY_SIG_23] of IRP23 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89.4750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(88.0250 mm, 65.2500 mm): Pad 2 [KEY_SIG_24] of IRP24 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(108.5250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(107.0750 mm, 65.2500 mm): Pad 2 [KEY_SIG_25] of IRP25 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(127.5750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(126.1250 mm, 65.2500 mm): Pad 2 [KEY_SIG_26] of IRP26 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 13.5000 mm): Circle [<no net>] of IRP6 on F.Cu
+    @(153.9000 mm, 9.0000 mm): Pad 1 [+3V3] of IRP6 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 63.0000 mm): Circle [<no net>] of IRP23 on F.Cu
+    @(68.1750 mm, 58.5000 mm): Pad 1 [+3V3] of IRP23 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle [<no net>] of IRP2 on F.Cu
+    @(77.7000 mm, 9.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(146.6250 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(145.1750 mm, 65.2500 mm): Pad 2 [KEY_SIG_27] of IRP27 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(165.6750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(164.2250 mm, 65.2500 mm): Pad 2 [KEY_SIG_28] of IRP28 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(59.0500 mm, 46.5000 mm): Circle [<no net>] of IRP15 on F.Cu
+    @(58.6500 mm, 42.0000 mm): Pad 1 [+3V3] of IRP15 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(97.1500 mm, 13.5000 mm): Circle [<no net>] of IRP3 on F.Cu
+    @(96.7500 mm, 9.0000 mm): Pad 1 [+3V3] of IRP3 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 46.5000 mm): Circle [<no net>] of IRP16 on F.Cu
+    @(77.7000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP16 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.5250 mm, 30.0000 mm): Circle [<no net>] of IRP7 on F.Cu
+    @(49.1250 mm, 25.5000 mm): Pad 1 [+3V3] of IRP7 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(87.6250 mm, 63.0000 mm): Circle [<no net>] of IRP24 on F.Cu
+    @(87.2250 mm, 58.5000 mm): Pad 1 [+3V3] of IRP24 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(97.1500 mm, 46.5000 mm): Circle [<no net>] of IRP17 on F.Cu
+    @(96.7500 mm, 42.0000 mm): Pad 1 [+3V3] of IRP17 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle [<no net>] of IRP8 on F.Cu
+    @(68.1750 mm, 25.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(106.6750 mm, 63.0000 mm): Circle [<no net>] of IRP25 on F.Cu
+    @(106.2750 mm, 58.5000 mm): Pad 1 [+3V3] of IRP25 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(116.2000 mm, 46.5000 mm): Circle [<no net>] of IRP18 on F.Cu
+    @(115.8000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP18 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(135.2500 mm, 46.5000 mm): Circle [<no net>] of IRP19 on F.Cu
+    @(134.8500 mm, 42.0000 mm): Pad 1 [+3V3] of IRP19 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(87.6250 mm, 30.0000 mm): Circle [<no net>] of IRP9 on F.Cu
+    @(87.2250 mm, 25.5000 mm): Pad 1 [+3V3] of IRP9 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle [<no net>] of IRP26 on F.Cu
+    @(125.3250 mm, 58.5000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle [<no net>] of IRP20 on F.Cu
+    @(153.9000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 63.0000 mm): Circle [<no net>] of IRP27 on F.Cu
+    @(144.3750 mm, 58.5000 mm): Pad 1 [+3V3] of IRP27 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(106.6750 mm, 30.0000 mm): Circle [<no net>] of IRP10 on F.Cu
+    @(106.2750 mm, 25.5000 mm): Pad 1 [+3V3] of IRP10 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(163.8250 mm, 63.0000 mm): Circle [<no net>] of IRP28 on F.Cu
+    @(163.4250 mm, 58.5000 mm): Pad 1 [+3V3] of IRP28 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 30.0000 mm): Circle [<no net>] of IRP11 on F.Cu
+    @(125.3250 mm, 25.5000 mm): Pad 1 [+3V3] of IRP11 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(144.3750 mm, 33.0000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(144.3750 mm, 34.5000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(139.1750 mm, 30.0000 mm): PTH pad 1 [+3V3] of IRP12
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(144.3750 mm, 25.5000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(144.3750 mm, 27.0000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(144.3750 mm, 28.5000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(144.3750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(144.3750 mm, 31.5000 mm): Pad 1 [+3V3] of IRP12 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(146.6250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(144.7750 mm, 30.0000 mm): Circle of IRP12 on F.Mask
+    @(139.7750 mm, 25.5000 mm): Track [+3V3] on F.Cu, length 4.6000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(149.3000 mm, 48.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(156.1500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 43.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 45.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 46.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 48.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 49.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 51.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(148.7000 mm, 46.5000 mm): PTH pad 1 [+3V3] of IRP20
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(149.3000 mm, 48.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(156.1500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 43.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 45.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 46.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 48.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 49.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 51.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(148.7000 mm, 46.5000 mm): PTH pad 1 [+3V3] of IRP20
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(73.1000 mm, 15.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(79.9500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 9.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 10.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 12.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 15.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 16.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 18.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(78.1000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(76.5000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(79.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(78.1000 mm, 12.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(78.1000 mm, 15.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(72.5000 mm, 13.5000 mm): PTH pad 1 [+3V3] of IRP2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(149.3000 mm, 48.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(156.1500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 43.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 45.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 46.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 48.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 49.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 51.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(148.7000 mm, 46.5000 mm): PTH pad 1 [+3V3] of IRP20
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(63.5750 mm, 31.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(70.4250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 25.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 27.0000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 28.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 31.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 33.0000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 34.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(62.9750 mm, 30.0000 mm): PTH pad 1 [+3V3] of IRP8
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(120.7250 mm, 64.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(127.5750 mm, 65.4000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(125.3250 mm, 58.5000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(125.3250 mm, 60.0000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(125.3250 mm, 61.5000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(125.3250 mm, 63.0000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(125.3250 mm, 64.5000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(125.3250 mm, 66.0000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(125.3250 mm, 67.5000 mm): Pad 1 [+3V3] of IRP26 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(125.7250 mm, 63.0000 mm): Circle of IRP26 on F.Mask
+    @(120.1250 mm, 63.0000 mm): PTH pad 1 [+3V3] of IRP26
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(73.1000 mm, 15.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(79.9500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 9.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 10.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 12.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 15.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 16.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 18.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(78.1000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(76.5000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(79.7000 mm, 13.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(78.1000 mm, 12.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(78.1000 mm, 15.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(72.5000 mm, 13.5000 mm): PTH pad 1 [+3V3] of IRP2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(149.3000 mm, 48.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(156.1500 mm, 48.9000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 42.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 43.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 45.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 46.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 48.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 49.5000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(153.9000 mm, 51.0000 mm): Pad 1 [+3V3] of IRP20 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.3000 mm, 46.5000 mm): Circle of IRP20 on F.Mask
+    @(148.7000 mm, 46.5000 mm): PTH pad 1 [+3V3] of IRP20
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(63.5750 mm, 31.5000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(70.4250 mm, 32.4000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 25.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 27.0000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 28.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 30.0000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 31.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 33.0000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(68.1750 mm, 34.5000 mm): Pad 1 [+3V3] of IRP8 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(68.5750 mm, 30.0000 mm): Circle of IRP8 on F.Mask
+    @(62.9750 mm, 30.0000 mm): PTH pad 1 [+3V3] of IRP8
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(73.1000 mm, 15.0000 mm): Track [+3V3] on F.Cu, length 1.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(79.9500 mm, 15.9000 mm): Via [GND] on F.Cu - B.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 9.0000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(78.1000 mm, 13.5000 mm): Circle of IRP2 on F.Mask
+    @(77.7000 mm, 10.5000 mm): Pad 1 [+3V3] of IRP2 on F.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(36.5000 mm, 39.2500 mm): Track [VOL_ADC] on F.Cu, length 1.0000 mm
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(27.5000 mm, 3.8000 mm): Footprint MP1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(27.5000 mm, 73.8000 mm): Footprint MP2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(68.5750 mm, 3.5000 mm): Footprint MP3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(106.6750 mm, 3.5000 mm): Footprint MP4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(144.7750 mm, 3.5000 mm): Footprint MP5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(59.0500 mm, 74.2000 mm): Footprint MP6
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(97.1500 mm, 74.2000 mm): Footprint MP7
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(135.2500 mm, 74.2000 mm): Footprint MP8
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(59.0500 mm, 30.0000 mm): Footprint SP1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(97.1500 mm, 30.0000 mm): Footprint SP2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(135.2500 mm, 30.0000 mm): Footprint SP3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(68.5750 mm, 46.5000 mm): Footprint SP4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(106.6750 mm, 46.5000 mm): Footprint SP5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(144.7750 mm, 46.5000 mm): Footprint SP6
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(6.8000 mm, 10.5000 mm): Footprint J_HP
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(6.8000 mm, 19.5000 mm): Footprint J_MIC
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(6.0000 mm, 30.5000 mm): Footprint J_USBC
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(13.0000 mm, 33.5000 mm): Footprint R_CC1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(13.0000 mm, 31.5000 mm): Footprint R_CC2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(19.0000 mm, 15.0000 mm): Footprint U_CODEC
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(19.0000 mm, 6.5000 mm): Footprint U_1V8
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(25.0000 mm, 6.5000 mm): Footprint FB_AUD
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(13.5000 mm, 6.5000 mm): Footprint C_1V8
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(19.0000 mm, 23.0000 mm): Footprint C_ANA
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(11.5000 mm, 45.5000 mm): Footprint RV1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(11.5000 mm, 62.0000 mm): Footprint SW_ENC1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(21.5000 mm, 44.5000 mm): Footprint D1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(21.5000 mm, 49.0000 mm): Footprint R1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(43.0000 mm, 13.5000 mm): Footprint U4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(35.5000 mm, 4.5000 mm): Footprint C_MUX1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(29.5000 mm, 34.0000 mm): Footprint U_MM
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(29.5000 mm, 22.5000 mm): Footprint R_SDA
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(29.5000 mm, 20.0000 mm): Footprint R_SCL
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(34.5000 mm, 59.5000 mm): Footprint U5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(34.5000 mm, 49.0000 mm): Footprint C_MUX2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(23.5000 mm, 58.5000 mm): Footprint U6
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(23.5000 mm, 63.5000 mm): Footprint R_PROG
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(23.5000 mm, 67.0000 mm): Footprint J_BAT
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(59.0500 mm, 13.5000 mm): Footprint IRP1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(62.8500 mm, 15.9000 mm): Footprint R_PD1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(78.1000 mm, 13.5000 mm): Footprint IRP2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(81.9000 mm, 15.9000 mm): Footprint R_PD2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(97.1500 mm, 13.5000 mm): Footprint IRP3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(100.9500 mm, 15.9000 mm): Footprint R_PD3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(116.2000 mm, 13.5000 mm): Footprint IRP4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(120.0000 mm, 15.9000 mm): Footprint R_PD4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(135.2500 mm, 13.5000 mm): Footprint IRP5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(139.0500 mm, 15.9000 mm): Footprint R_PD5
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(154.3000 mm, 13.5000 mm): Footprint IRP6
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(158.1000 mm, 15.9000 mm): Footprint R_PD6
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(49.5250 mm, 30.0000 mm): Footprint IRP7
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(53.3250 mm, 32.4000 mm): Footprint R_PD7
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(68.5750 mm, 30.0000 mm): Footprint IRP8
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(72.3750 mm, 32.4000 mm): Footprint R_PD8
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(87.6250 mm, 30.0000 mm): Footprint IRP9
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(91.4250 mm, 32.4000 mm): Footprint R_PD9
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(106.6750 mm, 30.0000 mm): Footprint IRP10
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(110.4750 mm, 32.4000 mm): Footprint R_PD10
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(125.7250 mm, 30.0000 mm): Footprint IRP11
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(129.5250 mm, 32.4000 mm): Footprint R_PD11
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(144.7750 mm, 30.0000 mm): Footprint IRP12
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(148.5750 mm, 32.4000 mm): Footprint R_PD12
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(163.8250 mm, 30.0000 mm): Footprint IRP13
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(167.6250 mm, 32.4000 mm): Footprint R_PD13
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(40.0000 mm, 46.5000 mm): Footprint IRP14
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(43.8000 mm, 48.9000 mm): Footprint R_PD14
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(59.0500 mm, 46.5000 mm): Footprint IRP15
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(62.8500 mm, 48.9000 mm): Footprint R_PD15
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(78.1000 mm, 46.5000 mm): Footprint IRP16
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(81.9000 mm, 48.9000 mm): Footprint R_PD16
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(97.1500 mm, 46.5000 mm): Footprint IRP17
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(100.9500 mm, 48.9000 mm): Footprint R_PD17
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(116.2000 mm, 46.5000 mm): Footprint IRP18
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(120.0000 mm, 48.9000 mm): Footprint R_PD18
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(135.2500 mm, 46.5000 mm): Footprint IRP19
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(139.0500 mm, 48.9000 mm): Footprint R_PD19
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(154.3000 mm, 46.5000 mm): Footprint IRP20
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(158.1000 mm, 48.9000 mm): Footprint R_PD20
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(173.3500 mm, 46.5000 mm): Footprint IRP21
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(177.1500 mm, 48.9000 mm): Footprint R_PD21
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(49.5250 mm, 63.0000 mm): Footprint IRP22
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(53.3250 mm, 65.4000 mm): Footprint R_PD22
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(68.5750 mm, 63.0000 mm): Footprint IRP23
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(72.3750 mm, 65.4000 mm): Footprint R_PD23
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(87.6250 mm, 63.0000 mm): Footprint IRP24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(91.4250 mm, 65.4000 mm): Footprint R_PD24
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(106.6750 mm, 63.0000 mm): Footprint IRP25
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(110.4750 mm, 65.4000 mm): Footprint R_PD25
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(125.7250 mm, 63.0000 mm): Footprint IRP26
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(129.5250 mm, 65.4000 mm): Footprint R_PD26
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(144.7750 mm, 63.0000 mm): Footprint IRP27
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(148.5750 mm, 65.4000 mm): Footprint R_PD27
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(163.8250 mm, 63.0000 mm): Footprint IRP28
+[lib_footprint_issues]: The current configuration does not include the footprint library 'eTutti'
+    Local override; warning
+    @(167.6250 mm, 65.4000 mm): Footprint R_PD28
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

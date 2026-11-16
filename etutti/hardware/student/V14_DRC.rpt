@@ -1,0 +1,46 @@
+** Drc report for eTutti_Student.kicad_pcb **
+** Created on 2026-11-13T21:11:27 **
+** Report includes: Errors, Warnings **
+
+** Found 7 DRC violations **
+[shorting_items]: Items shorting two nets (nets MUX2_OUT and KEY_SIG_21)
+    Local override; error
+    @(39.7500 mm, 60.5150 mm): Pad 1 [MUX2_OUT] of U5 on B.Cu
+    @(202.9500 mm, 60.4000 mm): Track [KEY_SIG_21] on B.Cu, length 166.4100 mm
+[shorting_items]: Items shorting two nets (nets KEY_SIG_21 and MUX2_OUT)
+    Local override; error
+    @(36.5400 mm, 60.4000 mm): Via [KEY_SIG_21] on F.Cu - B.Cu
+    @(39.7500 mm, 60.5150 mm): Track [MUX2_OUT] on B.Cu, length 6.0500 mm
+[shorting_items]: Items shorting two nets (nets MUX2_OUT and KEY_SIG_21)
+    Local override; error
+    @(39.7500 mm, 60.5150 mm): Track [MUX2_OUT] on B.Cu, length 6.0500 mm
+    @(202.9500 mm, 60.4000 mm): Track [KEY_SIG_21] on B.Cu, length 166.4100 mm
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_21)
+    Local override; error
+    @(47.2500 mm, 60.5150 mm): Track [+3V3] on B.Cu, length 1.5000 mm
+    @(202.9500 mm, 60.4000 mm): Track [KEY_SIG_21] on B.Cu, length 166.4100 mm
+[shorting_items]: Items shorting two nets (nets +3V3 and KEY_SIG_21)
+    Local override; error
+    @(45.7500 mm, 60.5150 mm): Via [+3V3] on F.Cu - B.Cu
+    @(202.9500 mm, 60.4000 mm): Track [KEY_SIG_21] on B.Cu, length 166.4100 mm
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(202.9500 mm, 60.4000 mm): Track [KEY_SIG_21] on B.Cu, length 166.4100 mm
+    @(39.7500 mm, 60.5150 mm): Pad 1 [MUX2_OUT] of U5 on B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(202.9500 mm, 60.4000 mm): Track [KEY_SIG_21] on B.Cu, length 166.4100 mm
+    @(47.2500 mm, 60.5150 mm): Pad 24 [+3V3] of U5 on B.Cu
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **
