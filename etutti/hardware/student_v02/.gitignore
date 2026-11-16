@@ -1,0 +1,6 @@
+# written by the scripts, large or temporary
+pcb/build/
+fornecimento/easyeda/
+case/out/botao_pontos_*.stl
+**/__pycache__/
+kicad/*.kicad_prl

@@ -504,7 +504,31 @@ uses the old reed tables (`HAVE_REED_SAMPLES`).
 - Still open: rank balance (`SAMPLED_REED_GAIN`) and loop
   length are first guesses. The browser sound (`websynth.js`) still uses the synthesised reeds.
 
-## eTutti Student V01 (14 Nov 2026) — the version to be ordered, start here
+## eTutti Student V2 (16 Nov 2026) — new design cycle, start here
+
+`etutti/hardware/student_v02/`: Chat's `SPEC.md` v1 (Retro finish; canvas link at its top) answered by
+Code. Reports (Portuguese): `FIT_CHECK.md` (gaps, the two studies, 12 "Perguntas para o design"),
+`ELETRONICA.md`, `COMPRAS.md`. Nothing ordered or printed; **no V2 firmware yet** (OLED, mic, pins).
+- `geometria.py` (stdlib) is shared by board and case: keys, the hull's offsets (well 12.5, grid screws
+  18.5, grid edge 21.5), interface positions. Run order: `geometria.py`, `pcb/schematic.py`, KiCad python
+  `pcb/build_board.py` (~8 min), KiCad python `pcb/export_fp.py`, `estudos/flexao.py`, `fab.py`; CadQuery
+  venv `case/case.py`, `case/fit_check.py`, `case/render.py`, `estudos/acustica.py`.
+- Board = the V1 board changed by script (never by hand): LED out, USB-C/OUT moved, IN jack J302 +
+  R305/C309, OLED socket J401 (JST SH, Qwiic order, I2C shared with the codec), encoders EC11E18244AU
+  (20 mm shaft, C202365) at the SPEC's knob centres, codec I2S_DOUT -> Teensy pin 8, holes HG1-HG10
+  (grid) / H1-H4, H9, H10 (lid) / H5-H8 (base pins). DRC as the V1's, parity 0.
+- `build_board.py` lessons: move a group with its copper and only stretch tracks that run along the
+  move; let KiCad's DRC say which tracks to rip; **do not prune dangling ends before routing** (the two
+  halves of a cut route are what the router mends), and after routing drop a dangling item only if no
+  pad group splits; the codec's pin 16 needed a hand-drawn fan-out of pins 16-19. Set `V2_ATTEMPTS` /
+  `V2_EXPAND` to shorten a diagnostic run; progress is in `pcb/build/progress.log`.
+- Case: lid drops over the sockets (openings open downwards, tongues on the base), grid screws end in
+  nuts under the board so the base comes off with 6 screws, hat knob with a hidden sleeve.
+- Studies: board needs the 4 pins in H5-H8 plus 3 pillars for <= 0.05 mm at 3 N (the SPEC's 3 pin spots
+  sit on back-side parts); a printed grid sags onto the switches (FR-4 suggested); the 3.9 cm3 box puts
+  the speaker's resonance near 1 kHz (12 cm3 would give 7-9 dB more bass).
+
+## eTutti Student V01 (14 Nov 2026) — the version to be ordered
 
 **Closed on 15 Nov 2026: checked and ready to buy; nothing ordered, printed or built.** J will
 present it, then may start a new design concept with Claude Chat from
