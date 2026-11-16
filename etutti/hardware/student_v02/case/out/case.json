@@ -2,7 +2,7 @@
  "pecas": {
   "tampa": {
    "solidos": 1,
-   "volume_cm3": 54.62,
+   "volume_cm3": 55.21,
    "caixa_mm": [
     252.0,
     100.0,
@@ -12,32 +12,46 @@
     -4.0,
     18.2
    ],
-   "raio_de_baixo_da_aba": 0.95
+   "raio_de_baixo_da_aba": 0.95,
+   "fonte_do_logo": "arialbd.ttf",
+   "fonte_e_a_da_SPEC": false,
+   "logo_y": [
+    31.8,
+    68.2
+   ],
+   "logo_x": [
+    9.5,
+    12.7
+   ],
+   "altura_das_letras_mm": [
+    3.2,
+    1.26
+   ]
   },
   "base": {
    "solidos": 1,
-   "volume_cm3": 64.17,
+   "volume_cm3": 64.0,
    "caixa_mm": [
     252.0,
     100.0,
-    11.6
+    10.9
    ],
    "z": [
     -10.1,
-    1.5
+    0.8
    ]
   },
   "grade": {
    "solidos": 1,
-   "volume_cm3": 20.47,
+   "volume_cm3": 20.5,
    "caixa_mm": [
     172.5,
     91.1,
     1.6
    ],
    "z": [
-    11.6,
-    13.2
+    11.35,
+    12.95
    ]
   },
   "espacador": {
@@ -46,11 +60,11 @@
    "caixa_mm": [
     5.0,
     5.0,
-    11.6
+    11.3
    ],
    "z": [
     0.0,
-    11.6
+    11.35
    ]
   },
   "botao_branco_f1": {
@@ -288,23 +302,44 @@
   },
   "caixa_acustica": {
    "solidos": 1,
-   "volume_cm3": 3.45,
+   "volume_cm3": 6.09,
    "caixa_mm": [
-    31.4,
+    48.5,
     43.2,
-    13.0
+    14.8
    ],
    "z": [
-    1.4,
+    0.8,
+    15.6
+   ],
+   "camara_cm3": 10.43,
+   "interior_z": [
+    1.8,
+    8.7
+   ],
+   "interior_alto_z": [
+    1.8,
     14.4
    ],
-   "camara_cm3": 3.88,
-   "interior_z": [
-    2.5999999999999996,
-    9.899999999999999
+   "retangulo": [
+    17.5,
+    57.5,
+    66.0,
+    88.7
    ],
-   "fora_d": 31.4,
-   "fundo_por_fora_z": 1.4,
+   "parte_alta_desde_x": 54.5,
+   "topo_da_parte_alta_z": 15.6,
+   "nervuras_x": [
+    28.0,
+    37.0,
+    46.0,
+    55.25
+   ],
+   "furo_dos_fios": [
+    49.5,
+    88.7
+   ],
+   "fundo_por_fora_z": 0.8,
    "frente_do_falante_z": 14.899999999999999,
    "orelha_z": [
     10.499999999999998,
@@ -313,10 +348,10 @@
   },
   "janela": {
    "solidos": 1,
-   "volume_cm3": 0.53,
+   "volume_cm3": 0.38,
    "caixa_mm": [
-    31.7,
-    16.7,
+    25.7,
+    14.7,
     1.0
    ],
    "z": [
@@ -529,10 +564,10 @@
   "tampo": 18.2,
   "teto_da_tampa": 16.2,
   "grade": [
-   11.6,
-   13.2
+   11.35,
+   12.95
   ],
-  "aba_do_poco_ate": 13.399999999999999,
+  "aba_do_poco_ate": 13.149999999999999,
   "alojamento_da_tecla": 11.2,
   "curso": 4.1,
   "topo_dos_botoes": {

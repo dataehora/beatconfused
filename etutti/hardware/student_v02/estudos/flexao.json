@@ -203,7 +203,7 @@
  },
  "grade": {
   "carga_N": 5.0,
-  "folga_ate_as_teclas_mm": 0.4,
+  "folga_ate_as_teclas_mm": 0.15,
   "materiais": {
    "impressa (PETG, E = 2,0 GPa)": {
     "max_mm": 1.95,
@@ -213,7 +213,7 @@
    "FR-4 (E = 18 GPa)": {
     "max_mm": 0.217,
     "media_mm": 0.147,
-    "encosta_nas_teclas": false
+    "encosta_nas_teclas": true
    },
    "aluminio (E = 69 GPa)": {
     "max_mm": 0.057,

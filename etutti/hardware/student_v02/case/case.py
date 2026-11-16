@@ -1,4 +1,4 @@
-"""eTutti Student V2: the case in separate, printable pieces (SPEC v1, finish Retro).
+"""eTutti Student V2: the case in separate, printable pieces (SPEC v2, finish Retro).
 
     C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/student_v02/case/case.py
 
@@ -9,18 +9,22 @@ z = 0 at the board's top. Every function below takes the SPEC's x, y.
              under each of the 6 lid screws, a cup under each of the 10 grid screws (the screw ends
              in a nut under the board, so the base comes off with 6 screws), 4 locating pins
              (into the board's holes H5-H8, between the keys), the support pillars under the
-             keyboard, the battery's cradle, a tongue under each connector.
+             keyboard, the battery's cradle.
   tampa      cream lid, z -4.0 to 18.2: vertical walls, 30 deg chamfer 6 x 3.5 with R 1.5 on both
              edges, three grooves, the well of the keyboard (its wall is a flange that stops
              0.2 mm above the grid), window of the screen, holes of the two knobs, the speaker's
              slots, 6 posts for the screws, 2 bosses for the acoustic box, 4 clips' posts of the
-             screen, openings of USB-C, OUT and IN.
-  grade      keyboard grid, a flat 1.6 mm plate, z 11.6 to 13.2, one 6.2 mm hole per button,
-             held by 10 M2 screws on its edge, under the lid.
+             screen; closed holes for USB-C, OUT and IN in the left wall (the sockets end 0.3 mm
+             behind the wall, so the board goes into the lid from below); 0.4 mm recesses to be
+             filled with paint: the logo, the line under the screen, "OUT" and "IN".
+  grade      keyboard grid, a flat 1.6 mm plate, z 11.35 to 12.95, one 6.2 mm hole per button,
+             held by 10 M2 screws on its edge, under the lid. Made of FR-4 with the board
+             (pcb/grade_fab.py writes its Gerbers); the STEP/STL here is the same shape.
   espacador  tube between board and grid (print 10).
   botao_<tipo>_f<fileira>   12 buttons: branco, preto, pontos x rows 1-4 (stem length).
   knob       hat knob for the EC11E with 20 mm shaft (print 2).
-  caixa_acustica   the speaker's ring and closed back box, one piece.
+  caixa_acustica   the speaker's ring and closed back box (L-shaped: low under the speaker, tall
+             beside it), one piece.
   janela     the screen's window pane (cut from 1 mm smoked acrylic, or printed clear).
 
 Writes out/*.step, out/*.stl and out/case.json (the numbers the fit check and the renders read).
@@ -31,6 +35,8 @@ import os
 import sys
 
 import cadquery as cq
+
+T0 = __import__("time").time()
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, ".."))
@@ -47,8 +53,8 @@ T_PCB = G.T_PCB
 HOUSING_TOP = 11.2            # top of a switch's housing
 STEM_TOP = 14.8               # top of a switch's cross, key up
 TRAVEL = 4.1
-GRID_Z0, GRID_T = 11.6, 1.6   # the grid: 0.4 above the housings
-GRID_Z1 = GRID_Z0 + GRID_T    # 13.2 = the well's floor
+GRID_Z0, GRID_T = 11.35, 1.6  # the grid: 0.15 above the housings (SPEC v2)
+GRID_Z1 = GRID_Z0 + GRID_T    # 12.95 = the well's floor
 FLANGE_GAP = 0.2
 CHAMFER = (6.0, 3.5)          # horizontal, vertical
 EDGE_R = 1.5
@@ -60,7 +66,7 @@ LIP_T, LIP_H, LIP_GAP = 1.2, 1.3, 0.15     # the lip stops 1.5 mm under the boar
 # ---- keyboard
 BUTTON_D, DOME_H, SKIRT_H, STEM_D = 15.0, 2.3, 1.2, 5.6
 ROW_TOP = {1: 21.9, 2: 23.9, 3: 25.9, 4: 28.9}
-GRID_HOLE, GRID_HOLE_CHAMFER = 6.2, 0.3
+GRID_HOLE, GRID_HOLE_CHAMFER = 6.2, 0.0      # FR-4: a drilled hole has no chamfer
 CROSS = (4.15, 1.30, 3.8)     # MX cross socket: arm length, arm width, depth
 DIMPLE_D, DIMPLE_PITCH, DIMPLE_DEPTH = 0.66, 1.4, 0.22
 WELL_R_TOP, WELL_R_BOTTOM = 2.5, 1.0
@@ -79,16 +85,27 @@ KNOB = {"skirt_d": 12.0, "body_d": 9.0, "gap": 0.8, "top": ZT + 7.0, "sleeve_d":
 SPK = G.SPEAKER
 SPK_D, SPK_H = G.SPEAKER_D, 5.0
 MESH_T, FOAM_T = 0.3, 1.0
-BOX_WALL, BOX_FLOOR = 1.5, 1.2
-BOX_Z0 = 1.4                   # outside bottom of the acoustic box (its inside starts at 2.6)
+BOX_WALL, BOX_FLOOR, BOX_ROOF, BOX_RIB = 1.5, 1.0, 1.2, 0.8
+BOX_Z0 = 0.8                   # outside bottom of the acoustic box (its inside starts at 1.8)
+WIRE_X = 49.5
+BOX_RIBS_X = (28.0, 37.0, 46.0)   # ribs under the roof: it prints as bridges under 9 mm, and does not drum
 BOX_LEDGE = 1.2                # the speaker's rim sits on it
 EAR_T, EAR_D = 2.0, 6.0
 POST_D, POST_PILOT = 4.6, 1.6
 BOSS_D, BOSS_HOLE, HEAD_D, HEAD_DEPTH = 6.0, 2.4, 4.4, 2.2
 PILLAR_D, PIN_D, PIN_TIP_D, PIN_TIP_H = 4.0, 5.0, 2.0, 1.2 + 0.8
 NUT_BOSS_D, NUT_POCKET_D, NUT_POCKET_H = 7.4, 5.2, 3.2      # M2 nut (4.6 across corners, 1.6 thick) and the screw's end
-USB = {"y": G.USB_Y, "z": G.USB_Z, "w": 9.6, "h": 3.9}      # the canvas draws 9.2 x 3.6: the shell is 8.94 x 3.16
-JACK_D = 6.8
+USB = {"y": G.USB_Y, "z": G.USB_Z, "w": G.USB_OPENING[0], "h": G.USB_OPENING[1], "r": G.USB_OPENING[2]}
+JACK_D = G.JACK_OPENING_D
+ENGRAVE = 0.4                   # recesses for paint
+LINE_UNDER_WINDOW = (1.5, 0.5)  # gap below the window, width
+LOGO = {"x0": 8.6, "box": 5.0, "y0": 8.0, "y1": 92.0, "gap": 1.4,
+        "big": ("eTUTTI", 4.4, 0.5), "small": ("STUDENT · V2", 1.7, 0.6)}      # text, em size, letter spacing
+LABEL_H, LABEL_GAP, LABEL_Z = 2.0, 1.3, 1.8     # "OUT" / "IN": cap height, distance from the hole, baseline
+FONT_DIR = os.path.join(HERE, "fontes")
+LOGO_FONTS = [os.path.join(FONT_DIR, "Michroma-Regular.ttf"), "C:/Windows/Fonts/Michroma-Regular.ttf",
+              "C:/Windows/Fonts/arialbd.ttf"]     # not Bahnschrift: its overlapping outlines do not cut cleanly
+LABEL_FONTS = ["C:/Windows/Fonts/arialbd.ttf", "C:/Windows/Fonts/segoeuib.ttf"]
 BATTERY = (13.0, 56.0, 63.0, 90.0, 5.2)       # x0, y0, x1, y1, thickness (503450 with margin)
 PROGRAM = (52.0, 36.0)
 
@@ -159,7 +176,107 @@ def outer(z0, z1, inset=0.0):
     return box(inset, inset, G.CASE[0] - inset, G.CASE[1] - inset, z0, z1, r)
 
 
+# ------------------------------------------------------------------ recessed lettering
+def font(paths):
+    return next(p for p in paths if os.path.exists(p))
+
+
+def polygonised(shape, depth=1.0, step=0.06):
+    """A text solid made again from straight-sided outlines (points every `step` mm on the curves):
+    OpenCascade does not finish cutting some glyphs' own spline edges out of the lid."""
+    out = None
+    for f in shape.faces("<Z").vals():
+        def poly(wire):
+            segs = []
+            for e in wire.Edges():
+                n = 1 if e.geomType() == "LINE" else max(2, int(e.Length() / step))
+                segs.append([e.positionAt(i / n) for i in range(n + 1)])
+            chain = segs.pop(0)
+            while segs:          # the edges of a wire, each possibly running either way: chain by nearest end
+                k, rev = min(((i, r) for i in range(len(segs)) for r in (False, True)),
+                             key=lambda kr: (segs[kr[0]][-1 if kr[1] else 0] - chain[-1]).Length)
+                nxt = segs.pop(k)
+                chain += (list(reversed(nxt)) if rev else nxt)[1:]
+            clean = [cq.Vector(chain[0].x, chain[0].y, 0)]
+            for q in chain[1:]:
+                q = cq.Vector(q.x, q.y, 0)
+                if (q - clean[-1]).Length > 1e-4:
+                    clean.append(q)
+            if (clean[0] - clean[-1]).Length < 1e-4:
+                clean.pop()
+            return cq.Wire.makePolygon(clean + [clean[0]])
+        face = cq.Face.makeFromWires(poly(f.outerWire()), [poly(w) for w in f.innerWires()])
+        sol = cq.Workplane("XY").add(cq.Solid.extrudeLinear(face, cq.Vector(0, 0, depth)))
+        out = sol if out is None else out.union(sol)
+    return out
+
+
+def letters(txt, size, spacing, path):
+    """txt as solids on the XY plane: advance +x from x = 0, baseline y = 0, z 0 to 1.
+    Letter by letter, so the letter spacing of the canvas can be given. Returns (shapes, length, height)."""
+    out, x, top = [], 0.0, 0.0
+    for ch in txt:
+        if ch == " ":
+            x += 0.35 * size + spacing
+            continue
+        if ch == "·":
+            d = 0.16 * size
+            g = cq.Workplane("XY").center(x + d / 2, 0.36 * size).rect(d, d).extrude(1.0)
+            w = d
+        else:
+            g = cq.Workplane("XY").text(ch, size, 1.0, fontPath=path, halign="left", valign="bottom")
+            bb = g.val().BoundingBox()
+            g = polygonised(g).translate((x - bb.xmin, -bb.ymin, 0))
+            w = bb.xlen
+            top = max(top, bb.ylen)
+        out.append(g)
+        x += w + spacing + 0.08 * size
+    return out, x - spacing - 0.08 * size, top
+
+
+def logo_cutter():
+    """eTUTTI + STUDENT . V2 standing along the left edge, read from the front towards the back
+    (as the canvas: the page turned a quarter turn), centred between y 8 and 92."""
+    path = font(LOGO_FONTS)
+    big, lb, hb = letters(LOGO["big"][0], LOGO["big"][1], LOGO["big"][2], path)
+    small, ls, hs = letters(LOGO["small"][0], LOGO["small"][1], LOGO["small"][2], path)
+    total = lb + LOGO["gap"] + ls
+    ymid = (LOGO["y0"] + LOGO["y1"]) / 2
+    xc = LOGO["x0"] + LOGO["box"] / 2
+    out = []
+    start = ymid + total / 2                      # SPEC y of the first letter's foot
+    for shapes, h, s0 in ((big, hb, 0.0), (small, hs, lb + LOGO["gap"])):
+        for g in shapes:
+            g = g.rotate((0, 0, 0), (0, 0, 1), 90)       # advance +y (model), tops towards -x
+            out.append(g.translate((xc + h / 2, -(start - s0), ZT - ENGRAVE)))
+    stroke = "Michroma" in os.path.basename(path)
+    return out, {"fonte_do_logo": os.path.basename(path), "fonte_e_a_da_SPEC": stroke,
+                 "logo_y": [round(start - total, 1), round(start, 1)], "logo_x": [round(xc - hb / 2, 2), round(xc + hb / 2, 2)],
+                 "altura_das_letras_mm": [round(hb, 2), round(hs, 2)]}
+
+
+def label_cutter(txt, y_start):
+    """A label in the left wall's outside, read from outside: it starts at SPEC y = y_start and runs to the front."""
+    path = font(LABEL_FONTS)
+    probe = cq.Workplane("XY").text("O", 10.0, 1.0, fontPath=path, halign="left", valign="bottom").val().BoundingBox()
+    size = 10.0 * LABEL_H / probe.ylen
+    plane = cq.Plane(origin=(ENGRAVE, -y_start, LABEL_Z), xDir=(0, -1, 0), normal=(-1, 0, 0))
+    flat, _len, _h = letters(txt, size, 0.3 - 0.08 * size, path)
+    out = []
+    for g in flat:           # local (advance, up, depth) -> world (-y, +z, -x), from x = ENGRAVE outwards
+        sol = g.val().scale(1.0)
+        m = cq.Matrix([[0, 0, -(ENGRAVE + 0.2), ENGRAVE], [-1, 0, 0, -y_start], [0, 1, 0, LABEL_Z], [0, 0, 0, 1]])
+        out.append(cq.Workplane("XY").add(sol.transformGeometry(m)))
+    return out
+
+
 # ------------------------------------------------------------------ lid
+def step(what):
+    if os.environ.get("CASE_STEPS"):
+        import time
+        print("   %6.1f s  %s" % (time.time() - T0, what), flush=True)
+
+
 def chamfer_inner():
     """The lid's inside under the chamfer: the outside plane moved 2 mm inwards."""
     ang = math.atan2(CHAMFER[1], CHAMFER[0])
@@ -173,17 +290,25 @@ def chamfer_inner():
 def tampa():
     body = outer(ZS, ZT)
     body = body.faces(">Z").edges().chamfer(CHAMFER[1], CHAMFER[0])
+    step("R 1.5 on the chamfer's two edges")
     # R 1.5 on the chamfer's two edges
     body = body.edges(cq.selectors.BoxSelector((-1, -G.CASE[1] - 1, ZT - CHAMFER[1] - 0.2),
                                                (G.CASE[0] + 1, 1, ZT + 0.1))).fillet(EDGE_R)
+    # the recesses for paint go in now, while the lid is still a plain block (cut later, one glyph
+    # did not end in OpenCascade)
+    tampa.info = {}
+    if not os.environ.get("CASE_NO_PAINT"):
+        body = paint_recesses(body)
     ch, cv = chamfer_inner()
     cav = outer(ZS - 1, ZT - LID_T, WALL).faces(">Z").edges().chamfer(cv, ch)
     body = body.cut(cav)
+    step('grooves all round')
     # grooves all round
     for zc in GROOVES:
         ring = outer(zc - GROOVE_W / 2, zc + GROOVE_W / 2).cut(outer(zc - 1, zc + 1, GROOVE_D))
         body = body.cut(ring)
     ceiling = ZT - LID_T
+    step('the well: a flange down to just above ')
     # the well: a flange down to just above the grid, then the opening
     flange_z0 = GRID_Z1 + FLANGE_GAP
     body = body.union(hull_prism(G.WELL_WALL + LID_T, flange_z0, ceiling + 0.01))
@@ -198,9 +323,11 @@ def tampa():
         bottom_r = WELL_R_BOTTOM * 0.95
     except Exception:
         bottom_r = 0.0
+    step('posts for the lid screws')
     # posts for the lid screws
     for x, y in LID_HOLES:
         body = body.union(cyl(x, y, 0.0, ceiling + 0.01, POST_D).intersect(outer(ZS, ZT)))
+    step('speaker: slots, and two bosses for the')
     # speaker: slots, and two bosses for the acoustic box
     g = G.GRILLE
     for i in range(g["n"]):
@@ -209,6 +336,7 @@ def tampa():
     ear_top = box_levels()["ear_top"]
     for x, y in G.SPEAKER_SCREWS:
         body = body.union(cyl(x, y, ear_top, ceiling + 0.01, 5.0).cut(cyl(x, y, ear_top - 1, ceiling - 0.6, POST_PILOT)))
+    step('screen: window with a ledge for the pa')
     # screen: window with a ledge for the pane, four posts with a step that hold the module's board
     wx0, wy0, wx1, wy1 = WINDOW
     body = body.cut(box(wx0, wy0, wx1, wy1, ceiling - 1, ZT + 1, 0.8))
@@ -217,20 +345,39 @@ def tampa():
     for (x, y) in oled_posts():
         body = body.union(cyl(x, y, oled_levels()["pcb_top"], ceiling + 0.01, 3.2)
                           .cut(cyl(x, y, oled_levels()["pcb_top"] - 1, ceiling - 0.8, 1.5)))
+    step('knobs')
     # knobs
     for x, y in G.KNOBS:
         body = body.cut(cyl(x, y, ceiling - 1, ZT + 1, KNOB_HOLE))
+    step('screw pilots')
     # screw pilots
     for x, y in LID_HOLES:
         body = body.cut(cyl(x, y, -0.01, ceiling - 1.0, POST_PILOT))
-    # connectors: openings in the left wall, open downwards (the lid drops over the sockets)
-    body = body.cut(box(-1, USB["y"] - USB["w"] / 2, WALL + 0.6, USB["y"] + USB["w"] / 2, ZS - 1, USB["z"] + USB["h"] / 2 - 0.9, 0))
+    step('connectors: closed holes in the left w')
+    # connectors: closed holes in the left wall, sized for the plug's body
     body = body.cut(cq.Workplane("YZ").workplane(offset=-1).center(-USB["y"], USB["z"])
-                    .rect(USB["w"], USB["h"]).extrude(WALL + 1.6).edges("|X").fillet(USB["h"] / 2 - 0.05))
+                    .rect(USB["w"], USB["h"]).extrude(WALL + 1.6).edges("|X").fillet(min(USB["r"], USB["h"] / 2 - 0.01)))
     for yc in (G.OUT_Y, G.IN_Y):
-        body = body.cut(box(-1, yc - JACK_D / 2, WALL + 0.6, yc + JACK_D / 2, ZS - 1, G.JACK_Z, 0))
         body = body.cut(cq.Workplane("YZ").workplane(offset=-1).center(-yc, G.JACK_Z).circle(JACK_D / 2).extrude(WALL + 1.6))
     return body, bottom_r
+
+
+def paint_recesses(body):
+    """0.4 mm recesses to be filled with paint: the line under the screen, the logo, OUT and IN.
+    Each letter is cut on its own: one cut with all of them at once does not end in OpenCascade."""
+    wx0, wy0, wx1, wy1 = WINDOW
+    ly = wy1 + LINE_UNDER_WINDOW[0]
+    step("line under the window")
+    body = body.cut(box(wx0, ly, wx1, ly + LINE_UNDER_WINDOW[1], ZT - ENGRAVE, ZT + 1))
+    logo, tampa.info = logo_cutter()
+    for k, g in enumerate(logo):
+        step("logo %d" % k)
+        body = body.cut(g)
+    for txt, yc in (("OUT", G.OUT_Y), ("IN", G.IN_Y)):
+        for k, g in enumerate(label_cutter(txt, yc + JACK_D / 2 + LABEL_GAP)):
+            step("%s %d" % (txt, k))
+            body = body.cut(g)
+    return body
 
 
 def oled_levels():
@@ -276,13 +423,6 @@ def base():
     for r in ((bx0 - rib - 0.3, by0 - rib - 0.3, bx1 + rib + 0.3, by0 - 0.3),
               (bx0 - rib - 0.3, by0 - 0.3, bx0 - 0.3, by1 - 6), (bx1 + 0.3, by0 - 0.3, bx1 + rib + 0.3, by1 - 6)):
         body = body.union(box(r[0], r[1], r[2], r[3], zf - 0.01, zf + h))
-    # tongues that close the lid's openings under the connectors
-    t = box(0, USB["y"] - USB["w"] / 2 + 0.15, WALL, USB["y"] + USB["w"] / 2 - 0.15, ZS - 0.01, USB["z"] - USB["h"] / 2 - 0.1)
-    body = body.union(t)
-    for yc in (G.OUT_Y, G.IN_Y):
-        t = box(0, yc - JACK_D / 2 + 0.15, WALL, yc + JACK_D / 2 - 0.15, ZS - 0.01, G.JACK_Z)
-        t = t.cut(cq.Workplane("YZ").workplane(offset=-1).center(-yc, G.JACK_Z).circle(JACK_D / 2 + 0.1).extrude(WALL + 2))
-        body = body.union(t)
     # holes
     for x, y in LID_HOLES:
         body = body.cut(cyl(x, y, Z0 - 1, 1, BOSS_HOLE)).cut(cyl(x, y, Z0 - 0.01, Z0 + HEAD_DEPTH, HEAD_D))
@@ -297,7 +437,7 @@ def grade():
     body = hull_prism(G.GRID_EDGE, GRID_Z0, GRID_Z1)
     pts = [(x, -y) for _, x, y in G.KEYS]
     body = body.cut(cq.Workplane("XY").workplane(offset=GRID_Z0 - 1).pushPoints(pts).circle(GRID_HOLE / 2).extrude(GRID_T + 2))
-    for px, py in pts:
+    for px, py in (pts if GRID_HOLE_CHAMFER > 0 else []):
         cone = cq.Solid.makeCone(GRID_HOLE / 2, GRID_HOLE / 2 + GRID_HOLE_CHAMFER + 0.01, GRID_HOLE_CHAMFER + 0.01,
                                  pnt=cq.Vector(px, py, GRID_Z1 - GRID_HOLE_CHAMFER))
         body = body.cut(cq.Workplane("XY").add(cone))
@@ -392,26 +532,50 @@ def box_levels():
 
 
 def caixa_acustica():
+    """The speaker's seat and its closed box, one piece. In plan a rectangle between the two screws
+    (G.BOX_RECT); low under the speaker (the speaker's rim sits on its roof), tall beside it
+    (x > G.BOX_LEG_X0): an L seen from the front. Ribs under the roof and under the tall part's wall."""
     lv = box_levels()
     x, y = SPK
-    ri = SPK_D / 2 + 0.2                       # the speaker enters the upper part
+    ceiling = ZT - LID_T
+    x0, y0, x1, y1 = G.BOX_RECT
+    xl = G.BOX_LEG_X0
+    w = BOX_WALL
+    zi = BOX_Z0 + BOX_FLOOR
+    roof_top = lv["back"]
+    roof_in = roof_top - BOX_ROOF
+    leg_top = ceiling - 0.6
+    leg_in = leg_top - BOX_ROOF
+    ri = SPK_D / 2 + 0.2
     ro = ri + BOX_WALL
-    body = cyl(x, y, BOX_Z0, lv["rim_top"], 2 * ro)
-    # chamber below the ledge, speaker seat above it
-    body = body.cut(cyl(x, y, lv["inside_z0"], lv["back"], 2 * (ri - BOX_LEDGE)))
-    body = body.cut(cyl(x, y, lv["back"], lv["rim_top"] + 1, 2 * ri))
+    body = box(x0, y0, x1, y1, BOX_Z0, roof_top, 2.0).union(box(xl, y0, x1, y1, BOX_Z0, leg_top, 2.0))
+    body = body.union(cyl(x, y, roof_top - 0.01, lv["rim_top"], 2 * ro))
+    low = box(x0 + w, y0 + w, x1 - w, y1 - w, zi, roof_in, 0.8)
+    tall = box(xl + w, y0 + w, x1 - w, y1 - w, zi, leg_in, 0.8)
+    mouth = cyl(x, y, roof_in - 0.01, roof_top + 0.01, 2 * (ri - BOX_LEDGE))
+    cavity = low.union(tall).union(mouth)
+    # ribs: full height beside the speaker's mouth, 1.5 mm lower under it; two windows each join the cells
+    ribs = None
+    for rx, t in [(v, BOX_RIB) for v in BOX_RIBS_X] + [(xl + w / 2, w)]:
+        r = box(rx - t / 2, y0 + w - 0.01, rx + t / 2, y1 - w + 0.01, zi - 0.01, roof_in + 0.01)
+        r = r.cut(cyl(x, y, roof_in - 1.5, roof_in + 1, 2 * (ri - BOX_LEDGE) + 1.0))
+        for wy in (y0 + (y1 - y0) * 0.3, y0 + (y1 - y0) * 0.7):
+            r = r.cut(box(rx - t, wy - 4.0, rx + t, wy + 4.0, zi - 1, zi + 4.0))
+        ribs = r if ribs is None else ribs.union(r)
+    cavity = cavity.cut(ribs)
+    body = body.cut(cavity)
+    body = body.cut(cyl(x, y, roof_top, lv["rim_top"] + 1, 2 * ri))          # the speaker's seat
     for sx, sy in G.SPEAKER_SCREWS:
         ear = (cq.Workplane("XY").workplane(offset=lv["ear_top"] - EAR_T).center(sx, -(sy + y) / 2)
                .rect(EAR_D, abs(sy - y)).extrude(EAR_T)).union(cyl(sx, sy, lv["ear_top"] - EAR_T, lv["ear_top"], EAR_D))
         ear = ear.cut(cyl(x, y, BOX_Z0 - 1, lv["rim_top"] + 1, 2 * ri))
         body = body.union(ear).cut(cyl(sx, sy, lv["ear_top"] - EAR_T - 1, lv["ear_top"] + 1, 2.3))
-    # the wires' hole, towards J501 (to be closed with a drop of silicone after the wires pass)
-    ang = math.atan2(-(79.0 - y), 55.5 - x)
-    hole = (cq.Workplane("XY").workplane(offset=lv["inside_z0"] + 2.0).center(x, -y)
-            .transformed(rotate=(0, 90, 0)).circle(0.8).extrude(ro + 2).rotate((x, -y, 0), (x, -y, 1), math.degrees(ang)))
-    body = body.cut(hole)
-    chamber = math.pi * (ri - BOX_LEDGE) ** 2 * (lv["back"] - lv["inside_z0"]) / 1000
-    return body, {"camara_cm3": round(chamber, 2), "interior_z": [lv["inside_z0"], lv["back"]], "fora_d": round(2 * ro, 1),
+    # the wires' hole in the front wall, towards J501 (closed with a drop of silicone after the wires pass)
+    body = body.cut(cq.Workplane("XZ").workplane(offset=y1 - w - 1).center(WIRE_X, zi + 2.5).circle(0.8).extrude(-(w + 2)))
+    chamber = sum(s_.Volume() for s_ in cavity.solids().vals()) / 1000
+    return body, {"camara_cm3": round(chamber, 2), "interior_z": [zi, roof_in], "interior_alto_z": [zi, leg_in],
+                  "retangulo": list(G.BOX_RECT), "parte_alta_desde_x": xl, "topo_da_parte_alta_z": leg_top,
+                  "nervuras_x": list(BOX_RIBS_X) + [xl + w / 2], "furo_dos_fios": [WIRE_X, y1],
                   "fundo_por_fora_z": BOX_Z0, "frente_do_falante_z": lv["front"], "orelha_z": [lv["ear_top"] - EAR_T, lv["ear_top"]]}
 
 
@@ -439,7 +603,7 @@ def main():
         print(name, info["pecas"][name], flush=True)
 
     t, bottom_r = tampa()
-    export("tampa", t, {"raio_de_baixo_da_aba": bottom_r})
+    export("tampa", t, dict({"raio_de_baixo_da_aba": bottom_r}, **tampa.info))
     export("base", base())
     export("grade", grade())
     export("espacador", espacador())
@@ -456,6 +620,14 @@ def main():
     c, d = caixa_acustica()
     export("caixa_acustica", c, d)
     export("janela", janela())
+    # the paint that fills the recesses, for the renders only (not a piece)
+    wx0, wy0, wx1, wy1 = WINDOW
+    ly = wy1 + LINE_UNDER_WINDOW[0]
+    ink = [box(wx0, ly, wx1, ly + LINE_UNDER_WINDOW[1], ZT - ENGRAVE, ZT - 0.05)] + logo_cutter()[0]
+    for txt, yc in (("OUT", G.OUT_Y), ("IN", G.IN_Y)):
+        ink += label_cutter(txt, yc + JACK_D / 2 + LABEL_GAP)
+    comp = cq.Compound.makeCompound([s_ for g in ink for s_ in g.solids().vals()])
+    cq.exporters.export(cq.Workplane("XY").add(comp), os.path.join(OUT, "tinta.stl"), tolerance=0.01, angularTolerance=0.2)
     info["teclas"] = [{"fileira": r, "x": x, "y": y, "nota": NOTES[r][[k[1] for k in G.KEYS if k[0] == r].index(x)],
                        "tipo": kind_of(NOTES[r][[k[1] for k in G.KEYS if k[0] == r].index(x)])} for r, x, y in G.KEYS]
     info["niveis"] = {"base": Z0, "divisa": ZS, "tampo": ZT, "teto_da_tampa": ZT - LID_T, "grade": [GRID_Z0, GRID_Z1],
