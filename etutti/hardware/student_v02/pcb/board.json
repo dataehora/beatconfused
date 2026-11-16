@@ -1,0 +1,507 @@
+{
+ "folhas": {
+  "E": "E · Energia",
+  "F": "F · Fone",
+  "I": "I · Interface",
+  "A": "A · Alto-falante",
+  "T": "T · Teclas",
+  "P": "P · Processador"
+ },
+ "LED": {
+  "pecas": 4,
+  "trilhas e vias": 52
+ },
+ "OUT (J301 e detector)": {
+  "trilhas movidas": 25,
+  "vias movidas": 11,
+  "trilhas tiradas (HP_DET)": 1,
+  "trilhas tiradas (HP_VGND)": 1,
+  "trilhas tiradas (HP_R)": 1,
+  "trilhas tiradas (HP_L)": 1
+ },
+ "USB-C (J201 e protecao)": {
+  "trilhas movidas": 63,
+  "trilhas esticadas (USB_DP)": 1,
+  "trilhas esticadas (USB_DN)": 1,
+  "vias movidas": 14,
+  "trilhas tiradas (I2C_SCL)": 1,
+  "trilhas esticadas (I2C_SCL)": 1,
+  "trilhas esticadas (VBUS)": 1
+ },
+ "SW401": {
+  "centro": [
+   28.0,
+   44.5
+  ],
+  "pinos": {
+   "A": [
+    20.5,
+    42.0
+   ],
+   "B": [
+    20.5,
+    47.0
+   ],
+   "C": [
+    20.5,
+    44.5
+   ],
+   "S1": [
+    35.0,
+    47.0
+   ],
+   "S2": [
+    35.0,
+    42.0
+   ]
+  }
+ },
+ "SW402": {
+  "centro": [
+   46.0,
+   44.5
+  ],
+  "pinos": {
+   "A": [
+    38.5,
+    42.0
+   ],
+   "B": [
+    38.5,
+    47.0
+   ],
+   "C": [
+    38.5,
+    44.5
+   ],
+   "S1": [
+    53.0,
+    47.0
+   ],
+   "S2": [
+    53.0,
+    42.0
+   ]
+  }
+ },
+ "C307": {
+  "x": 30.05,
+  "y": 37.05,
+  "rot": 0
+ },
+ "C309": {
+  "x": 18.45,
+  "y": 39.45,
+  "rot": 90
+ },
+ "R305": {
+  "x": 18.45,
+  "y": 37.2,
+  "rot": 90
+ },
+ "J401": {
+  "x": 39.0,
+  "y": 33.0,
+  "rot": 0,
+  "patio": [
+   7.89,
+   6.65
+  ]
+ },
+ "J501": {
+  "x": 55.5,
+  "y": 79.0
+ },
+ "furos": {
+  "tampa": {
+   "H1": [
+    88.0,
+    6.5
+   ],
+   "H2": [
+    74.0,
+    93.0
+   ],
+   "H3": [
+    6.5,
+    48.5
+   ],
+   "H4": [
+    8.0,
+    91.5
+   ],
+   "H9": [
+    238.0,
+    9.0
+   ],
+   "H10": [
+    238.0,
+    91.0
+   ]
+  },
+  "grade": {
+   "HG1": [
+    107.7,
+    7.47
+   ],
+   "HG2": [
+    79.83,
+    37.24
+   ],
+   "HG3": [
+    78.38,
+    76.27
+   ],
+   "HG4": [
+    114.05,
+    92.53
+   ],
+   "HG5": [
+    157.13,
+    92.53
+   ],
+   "HG6": [
+    200.2,
+    92.53
+   ],
+   "HG7": [
+    232.7,
+    70.77
+   ],
+   "HG8": [
+    224.9,
+    31.74
+   ],
+   "HG9": [
+    193.85,
+    7.47
+   ],
+   "HG10": [
+    160.02,
+    7.47
+   ]
+  },
+  "pinos da base": {
+   "H5": [
+    98.45,
+    52.67
+   ],
+   "H6": [
+    153.95,
+    31.31
+   ],
+   "H7": [
+    153.95,
+    63.35
+   ],
+   "H8": [
+    209.45,
+    52.67
+   ]
+  }
+ },
+ "valores trocados": {
+  "J401": [
+   "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "SM04B-SRSS-TB"
+  ],
+  "SW401": [
+   "EC11E18244A5",
+   "EC11E18244AU"
+  ],
+  "SW402": [
+   "EC11E18244A5",
+   "EC11E18244AU"
+  ]
+ },
+ "redes trocadas": {
+  "J401.1": [
+   "",
+   "GND"
+  ],
+  "J401.2": [
+   "",
+   "+3V3"
+  ],
+  "J401.3": [
+   "",
+   "I2C_SDA"
+  ],
+  "J401.4": [
+   "",
+   "I2C_SCL"
+  ],
+  "J401.MP": [
+   "",
+   "GND"
+  ],
+  "R305.1": [
+   "+3V3",
+   "MIC_BIAS"
+  ],
+  "R305.2": [
+   "I2C_SDA",
+   "MIC_J"
+  ],
+  "C309.1": [
+   "PWR_EN_S",
+   "MIC_J"
+  ],
+  "C309.2": [
+   "GND",
+   "MIC_IN"
+  ],
+  "J302.1": [
+   "HP_VGND",
+   "GND"
+  ],
+  "J302.2": [
+   "HP_VGND",
+   "GND"
+  ],
+  "J302.3": [
+   "HP_R",
+   "unconnected-(J302-R-Pad3)"
+  ],
+  "J302.4": [
+   "HP_L",
+   "MIC_J"
+  ],
+  "J302.5": [
+   "HP_TIPSW",
+   "unconnected-(J302-TN-Pad5)"
+  ],
+  "J101.18": [
+   "LED_G",
+   "unconnected-(J101B-D1_(5)-Pad18)"
+  ],
+  "J101.54": [
+   "unconnected-(J101B-AUD_IN_(8)-Pad54)",
+   "I2S_RX"
+  ],
+  "J101.57": [
+   "LED_R",
+   "unconnected-(J101B-SPI_SCK_(13)-Pad57)"
+  ],
+  "U301.10": [
+   "unconnected-(U301-MIC-Pad10)",
+   "MIC_IN"
+  ],
+  "U301.11": [
+   "unconnected-(U301-MIC_BIAS-Pad11)",
+   "MIC_BIAS"
+  ],
+  "U301.16": [
+   "unconnected-(U301-I2S_DOUT-Pad16)",
+   "I2S_RX"
+  ]
+ },
+ "nao montar": [
+  "R207",
+  "Q202",
+  "Q201"
+ ],
+ "tirado pelo DRC (antes de rotear)": {
+  "items_not_allowed (GND)": 7,
+  "shorting_items (sinal/alimentacao)": 9,
+  "hole_clearance (sinal/alimentacao)": 4,
+  "clearance (sinal/alimentacao)": 5,
+  "shorting_items (GND)": 4,
+  "hole_clearance (GND)": 4,
+  "solder_mask_bridge (sinal/alimentacao)": 1,
+  "solder_mask_bridge (GND)": 2
+ },
+ "leque do codec": {
+  "tirado": 16,
+  "novo": 16,
+  "via do I2S_RX": [
+   22.792,
+   33.443
+  ],
+  "via do I2S_TX": [
+   22.82,
+   32.84
+  ]
+ },
+ "tentativas": [
+  {
+   "tentativa": 1,
+   "falhas": []
+  }
+ ],
+ "roteado": [
+  {
+   "rede": "VBUS",
+   "objetos": 3
+  },
+  {
+   "rede": "AMP_SD",
+   "objetos": 6
+  },
+  {
+   "rede": "CHGA",
+   "objetos": 4
+  },
+  {
+   "rede": "HP_DET",
+   "objetos": 5
+  },
+  {
+   "rede": "HP_L",
+   "objetos": 5
+  },
+  {
+   "rede": "HP_R",
+   "objetos": 2
+  },
+  {
+   "rede": "HP_VGND",
+   "objetos": 7
+  },
+  {
+   "rede": "I2C_SCL",
+   "objetos": 12
+  },
+  {
+   "rede": "I2C_SDA",
+   "objetos": 9
+  },
+  {
+   "rede": "I2S_LRCLK",
+   "objetos": 8
+  },
+  {
+   "rede": "I2S_RX",
+   "objetos": 7
+  },
+  {
+   "rede": "I2S_TX",
+   "objetos": 10
+  },
+  {
+   "rede": "MIC_BIAS",
+   "objetos": 8
+  },
+  {
+   "rede": "MIC_IN",
+   "objetos": 10
+  },
+  {
+   "rede": "MIC_J",
+   "objetos": 13
+  },
+  {
+   "rede": "MUX_R_COM",
+   "objetos": 4
+  },
+  {
+   "rede": "MUX_S2",
+   "objetos": 5
+  },
+  {
+   "rede": "SEL_A",
+   "objetos": 11
+  },
+  {
+   "rede": "SEL_B",
+   "objetos": 9
+  },
+  {
+   "rede": "SEL_SW",
+   "objetos": 8
+  },
+  {
+   "rede": "SGTL_VAG",
+   "objetos": 2
+  },
+  {
+   "rede": "SPK_N",
+   "objetos": 2
+  },
+  {
+   "rede": "SPK_P",
+   "objetos": 2
+  },
+  {
+   "rede": "VOL_A",
+   "objetos": 25
+  },
+  {
+   "rede": "VOL_B",
+   "objetos": 11
+  },
+  {
+   "rede": "VOL_SW_N",
+   "objetos": 3
+  },
+  {
+   "rede": "GND / +3V3 (rodada 1)",
+   "objetos": 3
+  },
+  {
+   "rede": "GND / +3V3 (rodada 2)",
+   "objetos": 0
+  }
+ ],
+ "falhas": [],
+ "tirado pelo DRC (depois de rotear)": {
+  "track_dangling": 37,
+  "via_dangling": 6,
+  "ponta que e ligacao, mantida": 4,
+  "via de GND perto de outro furo": 2
+ },
+ "drc": {
+  "erros": {
+   "track_width": 3
+  },
+  "avisos": {
+   "track_dangling": 1,
+   "via_dangling": 3
+  },
+  "ligacoes_faltando": 0,
+  "paridade": 0
+ },
+ "drc_detalhe": [
+  [
+   "track_width",
+   "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+   [
+    [
+     "Track [EN_B] on B.Cu, length 0.0351 mm",
+     {
+      "x": 144.6753,
+      "y": 59.1102
+     }
+    ]
+   ]
+  ],
+  [
+   "track_width",
+   "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+   [
+    [
+     "Track [EN_B] on B.Cu, length 0.5385 mm",
+     {
+      "x": 144.1368,
+      "y": 59.1102
+     }
+    ]
+   ]
+  ],
+  [
+   "track_width",
+   "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+   [
+    [
+     "Track [EN_B] on B.Cu, length 0.1502 mm",
+     {
+      "x": 144.7001,
+      "y": 59.135
+     }
+    ]
+   ]
+  ]
+ ],
+ "paridade_detalhe": [],
+ "faltando_detalhe": []
+}
