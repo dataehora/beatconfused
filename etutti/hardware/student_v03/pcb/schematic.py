@@ -373,7 +373,7 @@ TEENSY_NETS = {
     "7": "I2S_TX", "8": "I2S_RX", "9": "SEL_B", "10": "KEEP", "11": "SEL_A", "12": "AMP_SD",
     "14/A0": "MUX_R_COM", "15/A1": "MUX_L_COM", "16/A2": "VBAT_S", "17/A3": "HP_DET", "18/A4": "I2C_SDA",
     "19/A5": "I2C_SCL", "20/A6": "I2S_LRCLK", "21/A7": "I2S_BCLK", "22/A8": "VOL_A", "23/A9": "AUD_MCLK_P",
-    "24/A10": "VOL_B", "25/A11": "VOL_SW", "26/A12": "CHG_STAT", "28": "PWR_EN",
+    "24/A10": "VOL_B", "25/A11": "VOL_SW", "26/A12": "CHG_STAT", "28": "NC",
 }
 
 
@@ -462,27 +462,20 @@ bat54c("D202", "CHG_STAT", "NC", "CHG_N", "E3", note="leitura do ~CHG pelo pino 
 R("R208", "1M", "VBAT", "VBAT_S", "E3", note="medida da bateria: V(pino 16) = VBAT/2")
 R("R209", "1M", "VBAT_S", "GND", "E3")
 C("C204", "100nF", "VBAT_S", "GND", "E3")
-# power latch (SPEC v2.2): click of I1 (volume) -> PWR_KEY, firmware KEEP, USB hold while PWR_EN is high.
-# EN of E4 = EN_REQ = click OR KEEP OR (USB AND PWR_EN). PWR_EN = MicroMod 3.3V_EN (pad 4, Teensy pin 28):
-# pulled up here (MicroMod rule), so it is high while the module resets or runs its bootloader; the
-# firmware pulls it low to switch off with USB. R218 + C213 keep PWR_EN_S low while the 3,3 V collapses.
+# power latch: click of I1 (volume) -> PWR_KEY, firmware KEEP, and (V3) a USB plug through D206.
+# EN of E4 = EN_REQ = click OR KEEP OR USB present (VBUS_S via D206). The V1/V2 "USB AND PWR_EN" hold (U203, D204, R217,
+# R218, C213; pin 28 = MicroMod 3.3V_EN) is gone since 19 Nov 2026 (J chose: USB wakes the device; with a cable the firmware
+# sleeps, it does not cut the 3.3 V): D206 made it redundant and it could not switch off with USB anymore.
 pmos("Q203", "VOL_SW_N", "VSYS", "PWR_KEY", "E3", note="o clique do volume liga o EN")
 R("R210", "100k", "VSYS", "VOL_SW_N", "E3")
 R("R211", "100k", "PWR_KEY", "GND", "E3")
 bat54c("D203", "PWR_KEY", "KEEP", "EN_REQ", "E3", note="OU do clique e do KEEP")
 R("R212", "1M", "EN_REQ", "GND", "E3", note="EN do TPS63001 baixo sem pedido")
 R("R213", "100k", "KEEP", "GND", "E3", note="KEEP baixo enquanto o modulo parte")
-gate("U203", "08", "VBUS_S", "PWR_EN_S", "USB_HOLD", "+3V3", "E3",
-     note="USB_HOLD = USB presente E PWR_EN alto (alimentada pelo 3V3)")
 R("R214", "10k", "VBUS", "VBUS_S", "E3")
 R("R215", "100k", "VBUS_S", "GND", "E3")
 C("C205", "100nF", "+3V3", "GND", "E3")
-bat54c("D204", "USB_HOLD", "NC", "EN_REQ", "E3")
 bat54c("D206", "VBUS_S", "NC", "EN_REQ", "E3", note="V3: o USB ligado liga o 3,3 V (a tela mostra a carga em brilho baixo)")
-R("R217", "1k", "PWR_EN", "PWR_EN_S", "E3", note="pino 28 baixo descarrega o C213 em ~1 ms")
-R("R218", "100k", "+3V3", "PWR_EN_S", "E3", note="pull-up do 3.3V_EN (regra MicroMod): alto em reset/bootloader")
-C("C213", "1uF", "PWR_EN_S", "GND", "E3",
-  note="100 ms: depois do desligamento o PWR_EN_S nao sobe antes de o 3,3 V cair (sem religar)")
 bat54c("D205", "VOL_SW", "ONOFF", "VOL_SW_N", "E3",
        note="o clique do volume chega ao pino 25 e ao ONOFF do modulo (pad 6) sem levar o VSYS a eles")
 part("U204", sym("TPS63001", "Regulator_Switching"), "TPS63001DRCR",
@@ -729,10 +722,10 @@ SHEET_UUID = {s: uid("sheet", s) for s, _ in SHEETS}
 NOTES = {
     "P": ["P · Processador: modulo SparkFun MicroMod Teensy (DEV-16402) no conector M.2 Key E J101 + espacador H101.",
           "3,3 V nos pads 2/74; USB_VIN (9) no VBUS; D+/D- (3/5) do USB-C pelo U201; BOOT (11) no Program; RESET# (6) = ONOFF.",
-          "Sinais nos pinos do Teensy MicroMod (PINOS.md): os mesmos numeros do Viaggio v2.1, mais o 28 (3.3V_EN = PWR_EN)."],
+          "Sinais nos pinos do Teensy MicroMod (PINOS.md): os mesmos numeros do Viaggio v2.1, e o pad 4 (3.3V_EN = pino 28) sem ligacao (V3)."],
     "E": ["E · Energia: USB-C -> BQ24074 (USB500, 500 mA, NTC) -> VSYS -> TPS63001 (3,3 V).",
-          "EN do TPS63001 = EN_REQ = clique do volume OU KEEP (pino 10) OU (USB E PWR_EN, 3.3V_EN do modulo, pino 28).",
-          "PWR_EN tem pull-up (R218): alto em reset/bootloader; a firmware o baixa para desligar com USB. Luz de carga so desligado (Q202)."],
+          "EN do TPS63001 = EN_REQ = clique do volume OU KEEP (pino 10) OU USB presente (D206).",
+          "Sem a cadeia PWR_EN (V3, 19 nov): com cabo a firmware dorme, nao corta o 3,3 V. A tela mostra a carga."],
     "F": ["F · Fone: SGTL5000 como a Audio Board Rev D2. HP_VGND e terra virtual: NUNCA no GND.",
           "Contato da ponta do jack OUT -> HP_DET (plugue = 0 V). IN (J302): microfone com bias, MIC do codec; I2S_RX no pino 8."],
     "I": ["I · Interface: dois EC11E de eixo curto com clique (volume, registro), conector da tela OLED (J401, I2C), botao Program. Sem LED.",

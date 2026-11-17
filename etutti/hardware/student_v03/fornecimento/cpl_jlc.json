@@ -1,5 +1,5 @@
 {
- "pecas": 135,
+ "pecas": 130,
  "sem_footprint": [],
  "ambiguas": [
   [
@@ -60,7 +60,6 @@
     "C204",
     "C205",
     "C209",
-    "C213",
     "C301",
     "C302",
     "C303",
@@ -178,7 +177,6 @@
    "refs": [
     "D202",
     "D203",
-    "D204",
     "D205",
     "D206",
     "Q203"
@@ -363,8 +361,6 @@
     "R214",
     "R215",
     "R216",
-    "R217",
-    "R218",
     "R301",
     "R302",
     "R303",
@@ -460,34 +456,6 @@
    "lado": "baixo",
    "rotacao_mudou_em": [
     270
-   ]
-  },
-  "SOT-23-5": {
-   "lcsc": "C7666",
-   "refs": [
-    "U203",
-    "U603",
-    "U604",
-    "U605"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.195,
-   "antes_depois": [
-    [
-     0,
-     0,
-     0.0
-    ],
-    [
-     180,
-     180,
-     180.0
-    ]
-   ],
-   "deslocamento_mm": 0.03,
-   "lado": "baixo",
-   "rotacao_mudou_em": [
-    0
    ]
   },
   "Texas_DRC0010J": {
@@ -586,6 +554,28 @@
     ]
    ],
    "deslocamento_mm": 0.0,
+   "lado": "baixo",
+   "rotacao_mudou_em": [
+    0
+   ]
+  },
+  "SOT-23-5": {
+   "lcsc": "C7827",
+   "refs": [
+    "U603",
+    "U604",
+    "U605"
+   ],
+   "como": "numeros",
+   "erro_max_mm": 0.195,
+   "antes_depois": [
+    [
+     180,
+     180,
+     180.0
+    ]
+   ],
+   "deslocamento_mm": 0.03,
    "lado": "baixo",
    "rotacao_mudou_em": [
     0

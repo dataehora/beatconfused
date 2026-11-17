@@ -12,8 +12,7 @@ Arquivos para a JLCPCB em `fab/`: `student_v03_gerbers.zip`, `student_v03_bom.cs
 Mudanças que o roteamento exigiu ou trouxe (além das aprovadas):
 
 - **O USB acorda o aparelho** (decisão sua): D206 (BAV70, VBUS_S → EN_REQ). Ligar o USB liga o 3,3 V; a firmware mostra a carga com a tela
-  em brilho baixo e, depois, o percentual da bateria (fica para a firmware). O PWR_EN deixa de poder desligar com USB: "desligado com USB"
-  vira um estado de espera na firmware.
+  em brilho baixo e, depois, o percentual da bateria (fica para a firmware). Sem a cadeia PWR_EN (19 nov), com cabo a firmware dorme.
 - **Sem o acionador do LED de carga** da V1 (Q201, Q202, R207): estavam fora da montagem e sem LED.
 - **USB-C no fundo, trilhas do USB em qualquer camada.** A V2 mantinha o par em F.Cu sobre o plano In1 (0,24/0,15 mm, 90 Ω). Com o
   USB-C, o ESD e o módulo todos no fundo, a regra foi relaxada para 0,15 mm no mínimo, qualquer camada de sinal; **a impedância de
@@ -96,9 +95,9 @@ A JLCPCB marcou o PJ-327A 5JJ (SHOU HAN, C668605) como "difícil de processar" (
 
 Veja `USB.md`. O par D+/D− ficou **inteiro em B.Cu, sem vias, com 17,209 mm em cada linha (diferença 0,000 mm)**, sobre uma ilha de GND na In2 (antes a In2 era o pour de +3V3, com trilhas de sinal por baixo). Mudou só uma peça de lugar, o R202. `pcb/refaz_usb.py` + `pcb/costura_usb.py` (nesta ordem, depois de `build_board_v3.py` e `troca_jack.py`); `pcb/vista.py` desenha uma região da placa em PNG.
 
-## Gestão de energia: o D206 e o "desligar com USB" (19 nov 2026)
+## Gestão de energia (19 nov 2026, opção A do J)
 
-Decisão do J: **manter** a cadeia PWR_EN (U203, D204, R217, R218, C213) e as proteções USBLC6 e SMF5.0A. Atenção: o **D206** (VBUS_S → EN) liga o 3,3 V sempre que há USB, então **com ele montado a firmware não consegue cortar a alimentação com o cabo plugado** (só dormir). Se a firmware vier a querer desligar de verdade com USB, basta **retirar o D206** (um SOT-23 no fundo da placa, perto do D204): sem ele a cadeia PWR_EN atua como na V1/V2, mas **o USB deixa de acordar o aparelho desligado** (só o clique do volume liga). Um corte "de verdade" que também acorde pelo USB exigiria um trinco de energia (parte nova, a decidir).
+O **D206** (VBUS_S → EN) liga o 3,3 V quando há USB; a cadeia PWR_EN da V1/V2 (U203, D204, R217, R218, C213) **saiu** (placa: `pcb/tira_cadeia_pwren.py`; 130 peças montadas). Com cabo a firmware dorme, não corta o 3,3 V; o pad 4 do módulo (3.3V_EN, pino 28) ficou sem ligação. Sequência conferida com a página da PJRC e com o esquema da SparkFun em `AUDITORIA.md`. Se um dia a firmware precisar cortar o 3,3 V com USB, é preciso um trinco de energia (peça nova). Mantidas, por decisão do J: USBLC6 e SMF5.0A.
 
 ## Impacto no case
 

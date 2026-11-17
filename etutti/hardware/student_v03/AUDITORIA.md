@@ -47,8 +47,8 @@ Nenhuma pinagem de chip estava trocada.
 1. **Ligar com bateria (clique do volume).** O clique fecha VOL_SW_N no GND → Q203 (P-FET, fonte no VSYS) conduz → PWR_KEY ≈ VSYS → D203 → EN_REQ. O EN do TPS63001 liga com 1,2 V (VIL 0,4 V): com a bateria em 3,0 V e a queda de ~0,5 V do BAV70 sobram ~2,4 V. O 3,3 V sobe, o módulo parte e a firmware sobe o KEEP (pino 10) em até 2 s: pelo D203 o KEEP (3,3 V − 0,5 V ≈ 2,8 V) segura o EN depois que o clique é solto. R213 mantém o KEEP baixo enquanto o módulo parte e R212 (1 MΩ) mantém o EN baixo sem pedido. ✔
 2. **Desligar.** A firmware baixa o KEEP; com o clique solto o EN cai e o 3,3 V some. ✔
 3. **USB presente (BQ24074).** VIN com UVLO de 3,3 V; EN2 = 0 e EN1 = 1 (via R205 a partir do VBUS) = USB500; o BQ24074 alimenta o VSYS e carrega a bateria (0,405 A). ✔
-4. **Ligar com USB.** Com o 3,3 V já presente e o PWR_EN alto, U203 (VBUS_S E PWR_EN_S) segura o EN (USB_HOLD → D204). R218 e C213 dão 0,1 a 0,2 s para o PWR_EN_S subir. ✔
-5. **Desligar com USB.** A firmware baixa o pino 28 (PWR_EN) e o KEEP: o USB_HOLD cai e o 3,3 V desliga. ✔
+4. **Ligar com USB.** O D206 leva o VBUS_S (divisor R214/R215, ~4,5 V) ao EN_REQ: ligar o cabo liga o 3,3 V, o módulo parte e a tela mostra a carga. ✔ (A cadeia "USB E PWR_EN" da V1/V2, com U203, D204, R217, R218 e C213, saiu em 19 nov: com o D206 ela não desligava mais nada.)
+5. **Com cabo, a firmware dorme; não corta o 3,3 V.** Decisão do J (19 nov, opção A). Para cortar o 3,3 V com USB seria preciso um trinco de energia (peça nova). ✔
 6. **Segurança do botão preso.** O clique também chega ao ONOFF do módulo pelo D205 (10 s desligam o SNVS). ✔ (o nível baixo vira ~0,5 V com o BAV70: margem de ~0,4 V)
 7. **Detecção de fone (HP_DET).** ~1,4 V sem fone e ~0 V com fone: o pino é lido como ADC (firmware já usa `analogRead`), não como digital. ✔
 
@@ -59,3 +59,17 @@ Nenhuma pinagem de chip estava trocada.
 - Os datasheets que faltavam (PJ-327A, TS-1187A, XC6206) foram dados por você em 18 nov e estão lidos acima. O PDF da XKB não traz o desenho dos pinos do botão.
 - A sequência de ligação foi lida, não simulada, e nada disso rodou em placa real.
 - A sequência de alimentação do SGTL5000 (VDDD externo depois de VDDA e VDDIO) segue o datasheet ("VDDD de 1,1 a 2,0 V, 11 mA mínimo"); o LDO de 1,8 V sobe com o 3,3 V.
+
+## Conferência com a página da PJRC (ic_mkl02_t4, 19 nov 2026)
+
+A página descreve a sequência do Teensy 4.x **chip a chip** (RT1062 + MKL02 + TLV75733P): VIN/VUSB → regulador USB → SNVS → PLL → PMIC_ON_REQ → 3,3 V → (3,3 V estável por alguns ms) o MKL02 sobe o DCDC_PSWITCH → DCDC do RT1062. Na V3 o módulo MicroMod Teensy traz isso dentro; a placa só entrega 3,3 V nos pads 2/74, o VBUS no USB_VIN (pad 9) e as linhas de dados. Li de novo o esquema da SparkFun (`MicroMod-Teensy.sch`):
+
+| Regra da PJRC | No módulo / na placa | |
+|---|---|---|
+| O SNVS tem de ligar antes de qualquer regulador, salvo o USB | VDD_SNVS_IN é alimentado pelo 3,3 V dos pads (diodos D2/D4) ou pelo RTC_3V: com o 3,3 V da carrier o SNVS parte primeiro | ✔ |
+| O PMIC_ON_REQ liga o 3,3 V principal | no módulo vai ao gate do Q2 (rede "PMIC"), que passa o 3,3 V dos pads ao 3.3V_CONTROLLED (RT1062 e MKL02); não sai no conector | ✔, interno |
+| O regulador USB é independente; o VBUS pode chegar a qualquer hora | USB_VIN no VBUS (pad 9): pode chegar antes, junto ou depois do 3,3 V | ✔ |
+| O MKL02 só sobe o DCDC_PSWITCH com o 3,3 V estável por alguns ms; sem rede RC | pino interno do módulo, a placa não acrescenta nada; o 3,3 V vem do TPS63001 (soft start, monótono) | ✔ |
+| O pad 4 (3.3V_EN) | é só o pino 28 (GPIO_EMC_32) do Teensy; ficou **sem ligação** na V3 | ✔ |
+
+Não consegui ler as imagens da página (o esquema). **O que só a primeira placa responde:** o 3,3 V sobe monótono e rápido, e um liga-desliga rápido (clique duplo) não deixa o módulo meio ligado. Observação: o contato do plugue USB pode quicar no VBUS por alguns ms e piscar o EN; um capacitor no VBUS_S (por exemplo 1 µF) filtraria isso numa próxima versão.
