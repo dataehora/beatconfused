@@ -377,7 +377,7 @@
 				)
 			)
 		)
-		(property "Description" "3.5 mm stereo jack, tip switch (5 NC against 4)"
+		(property "Description" "3.5 mm stereo jack, tip switch (3 NC against 4)"
 			(at 0 0 0)
 			(hide yes)
 			(effects
@@ -408,7 +408,7 @@
 						)
 					)
 				)
-				(number "1"
+				(number "2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -426,7 +426,7 @@
 						)
 					)
 				)
-				(number "2"
+				(number "5"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -462,7 +462,7 @@
 						)
 					)
 				)
-				(number "5"
+				(number "3"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -480,7 +480,7 @@
 						)
 					)
 				)
-				(number "3"
+				(number "6"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1528,30 +1528,30 @@
 	(global_label "I2C_SCL" (shape passive) (at 72.39 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "869d1ad3-07d1-5160-b621-174950300ae8") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 72.39 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
 	(symbol (lib_id "viaggio_micromod:PJ-327A") (at 109.22 142.24 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "f78b6416-aee1-52ee-b1c0-6391e5d0db68")
 		(property "Reference" "J301" (at 101.6 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
-		(property "Value" "PJ-327A 5JJ" (at 101.6 148.59 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "PJ-327A" (at 101.6 148.59 0) (effects (font (size 1.27 1.27)) (justify left)))
 		(property "Footprint" "viaggio_micromod:Jack_3.5mm_PJ-327A_SMD" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Description" "SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "SMD, angulo reto, XUNPU (V3; o SHOU HAN 5JJ foi trocado porque a JLCPCB o marca como dificil de montar); 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (fechado sem plugue)" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Codigo" "F2" (at 116.84 135.89 0) (effects (font (size 1.27 1.27)) (justify right)))
-		(property "LCSC" "C668605" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "LCSC" "C49284723" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Montagem" "JLC" (at 109.22 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(pin "1" (uuid "9cae2b94-1927-5590-a63f-e37003ce5a29"))
 		(pin "2" (uuid "1d72a8d0-7a4f-5a11-b847-96f922d2e2ba"))
-		(pin "4" (uuid "be43f029-b076-512a-a8d5-ca09353a4819"))
 		(pin "5" (uuid "929dff57-0160-53b5-92e1-27b0fbefb5fd"))
+		(pin "4" (uuid "be43f029-b076-512a-a8d5-ca09353a4819"))
 		(pin "3" (uuid "850bc80b-2595-58ae-9faf-ab183b87ec7e"))
+		(pin "6" (uuid "1fd08f5a-a2b6-5a60-8eb0-f978abc04fb8"))
 		(instances (project "student_v03" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "J301") (unit 1))))
 	)
-	(wire (pts (xy 101.6 139.7) (xy 99.06 139.7)) (stroke (width 0) (type default)) (uuid "976f1c57-3d9f-5a12-93fe-fee9710bce38"))
-	(global_label "HP_VGND" (shape passive) (at 99.06 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "3d9546c8-cd85-549a-bf52-bdc6fd511492") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 99.06 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
-	(wire (pts (xy 101.6 142.24) (xy 99.06 142.24)) (stroke (width 0) (type default)) (uuid "e0b3c8eb-b74c-5a78-84d3-d3f2f1df4621"))
-	(global_label "HP_VGND" (shape passive) (at 99.06 142.24 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "0c983171-3c23-5b94-8865-43f11a7b6398") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 99.06 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 101.6 139.7) (xy 99.06 139.7)) (stroke (width 0) (type default)) (uuid "e0b3c8eb-b74c-5a78-84d3-d3f2f1df4621"))
+	(global_label "HP_VGND" (shape passive) (at 99.06 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "0c983171-3c23-5b94-8865-43f11a7b6398") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 99.06 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 101.6 142.24) (xy 99.06 142.24)) (stroke (width 0) (type default)) (uuid "567ff7b4-b42e-5f3d-abf3-e597dbb382ad"))
+	(global_label "HP_VGND" (shape passive) (at 99.06 142.24 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "1c4bb03b-8b6b-5aac-a079-4c91a37a8cc0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 99.06 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
 	(wire (pts (xy 116.84 139.7) (xy 119.38 139.7)) (stroke (width 0) (type default)) (uuid "830ecb90-caf5-5bfe-a86b-2d9a120e3b5b"))
 	(global_label "HP_L" (shape passive) (at 119.38 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "229d61e3-f8ed-59fa-a357-8e96df1b7c94") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 119.38 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
-	(wire (pts (xy 116.84 142.24) (xy 119.38 142.24)) (stroke (width 0) (type default)) (uuid "567ff7b4-b42e-5f3d-abf3-e597dbb382ad"))
-	(global_label "HP_TIPSW" (shape passive) (at 119.38 142.24 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "1c4bb03b-8b6b-5aac-a079-4c91a37a8cc0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 119.38 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
-	(wire (pts (xy 116.84 144.78) (xy 119.38 144.78)) (stroke (width 0) (type default)) (uuid "c09c9057-a621-51a1-b464-c11fcaaabf3d"))
-	(global_label "HP_R" (shape passive) (at 119.38 144.78 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "f95f063c-b519-54b4-9c4f-1637e20d5914") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 119.38 144.78 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 116.84 142.24) (xy 119.38 142.24)) (stroke (width 0) (type default)) (uuid "c09c9057-a621-51a1-b464-c11fcaaabf3d"))
+	(global_label "HP_TIPSW" (shape passive) (at 119.38 142.24 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "f95f063c-b519-54b4-9c4f-1637e20d5914") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 119.38 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 116.84 144.78) (xy 119.38 144.78)) (stroke (width 0) (type default)) (uuid "bc14ec93-0edd-56e7-ac8f-f07dcbdd5587"))
+	(global_label "HP_R" (shape passive) (at 119.38 144.78 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "5ec1effb-853a-5872-9288-9b62ca6da7d4") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 119.38 144.78 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
 	(symbol (lib_id "viaggio_micromod:R") (at 154.94 139.7 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "bff14e18-0869-5090-9d01-124e299f8d86")
 		(property "Reference" "R303" (at 151.13 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
 		(property "Value" "100k" (at 151.13 143.51 0) (effects (font (size 1.27 1.27)) (justify left)))
@@ -1605,28 +1605,28 @@
 	(global_label "GND" (shape passive) (at 232.41 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "e6971d12-104e-57bf-a420-fff0c98c8932") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 232.41 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
 	(symbol (lib_id "viaggio_micromod:PJ-327A") (at 261.62 142.24 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "63f85645-bc3e-560c-bedf-3c905aa31506")
 		(property "Reference" "J302" (at 254 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
-		(property "Value" "PJ-327A 5JJ" (at 254 148.59 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "PJ-327A" (at 254 148.59 0) (effects (font (size 1.27 1.27)) (justify left)))
 		(property "Footprint" "viaggio_micromod:Jack_3.5mm_PJ-327A_SMD" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Description" "IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Codigo" "F3" (at 269.24 135.89 0) (effects (font (size 1.27 1.27)) (justify right)))
-		(property "LCSC" "C668605" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "LCSC" "C49284723" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Montagem" "JLC" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(pin "1" (uuid "1816f170-9701-55d1-bee3-1c2774b1d8b8"))
 		(pin "2" (uuid "84bb8ce4-57a1-52e6-80fb-0e1026836a95"))
-		(pin "4" (uuid "8e242cfa-8336-5387-8670-ae7421f818ac"))
 		(pin "5" (uuid "0b281a5d-dde7-50e0-b111-c26932430b50"))
+		(pin "4" (uuid "8e242cfa-8336-5387-8670-ae7421f818ac"))
 		(pin "3" (uuid "84feabdc-4abb-5132-a1a4-e320c28fe1f5"))
+		(pin "6" (uuid "8b7531d0-de4f-51ba-9d0b-c764f7b9ddde"))
 		(instances (project "student_v03" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1" (reference "J302") (unit 1))))
 	)
-	(wire (pts (xy 254 139.7) (xy 251.46 139.7)) (stroke (width 0) (type default)) (uuid "3f40fd06-4c48-5b76-8624-3d88f9dc53cb"))
-	(global_label "GND" (shape passive) (at 251.46 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "be134355-be30-56fb-ab03-353a0ed17ae8") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 251.46 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
-	(wire (pts (xy 254 142.24) (xy 251.46 142.24)) (stroke (width 0) (type default)) (uuid "05fa122a-ed64-5a2c-98ab-d4a3fa52365e"))
-	(global_label "GND" (shape passive) (at 251.46 142.24 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "a06c4382-5cf3-58ee-a920-2d6bb3bc68b7") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 251.46 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 254 139.7) (xy 251.46 139.7)) (stroke (width 0) (type default)) (uuid "05fa122a-ed64-5a2c-98ab-d4a3fa52365e"))
+	(global_label "GND" (shape passive) (at 251.46 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "a06c4382-5cf3-58ee-a920-2d6bb3bc68b7") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 251.46 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 254 142.24) (xy 251.46 142.24)) (stroke (width 0) (type default)) (uuid "4e841f68-7d6d-589c-8cf9-3ac85dd42796"))
+	(global_label "GND" (shape passive) (at 251.46 142.24 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "7985986d-d9d3-575e-a902-67edfa9d155f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 251.46 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
 	(wire (pts (xy 269.24 139.7) (xy 271.78 139.7)) (stroke (width 0) (type default)) (uuid "d379741b-de1a-5c04-9097-ddbc43c92801"))
 	(global_label "MIC_J" (shape passive) (at 271.78 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "7770464a-40f2-5c1b-afd5-c516a3b2f0bc") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 271.78 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
-	(no_connect (at 269.24 142.24) (uuid "a292f0e8-505f-5e43-a101-5266e05b559f"))
-	(no_connect (at 269.24 144.78) (uuid "44cfe986-7cd2-5f38-8297-68d2b5980865"))
+	(no_connect (at 269.24 142.24) (uuid "44cfe986-7cd2-5f38-8297-68d2b5980865"))
+	(no_connect (at 269.24 144.78) (uuid "655fc06c-d9fe-5562-b75d-a9293cd6f8a2"))
 	(symbol (lib_id "viaggio_micromod:R") (at 304.8 139.7 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "0f73df57-d0a6-56c4-8d4f-27cdc8034d65")
 		(property "Reference" "R305" (at 300.99 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
 		(property "Value" "2.2k" (at 300.99 143.51 0) (effects (font (size 1.27 1.27)) (justify left)))

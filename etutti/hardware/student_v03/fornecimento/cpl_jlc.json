@@ -1,5 +1,5 @@
 {
- "pecas": 137,
+ "pecas": 135,
  "sem_footprint": [],
  "ambiguas": [
   [
@@ -284,24 +284,24 @@
    ]
   },
   "Jack_3.5mm_PJ-327A_SMD": {
-   "lcsc": "C668605",
+   "lcsc": "C49284723",
    "refs": [
     "J301",
     "J302"
    ],
    "como": "numeros",
-   "erro_max_mm": 0.48,
+   "erro_max_mm": 0.234,
    "antes_depois": [
     [
      270,
-     270,
+     180,
      -90.0
     ]
    ],
-   "deslocamento_mm": 6.55,
+   "deslocamento_mm": 6.57,
    "lado": "baixo",
    "rotacao_mudou_em": [
-    0
+    90
    ]
   },
   "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal": {
@@ -396,25 +396,6 @@
    "rotacao_mudou_em": [
     0
    ]
-  },
-  "RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm": {
-   "lcsc": "C202365",
-   "refs": [
-    "SW401",
-    "SW402"
-   ],
-   "como": "posicoes",
-   "erro_max_mm": 0.1,
-   "antes_depois": [
-    [
-     null,
-     270,
-     0.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "cima",
-   "rotacao_mudou_em": []
   },
   "SW_Push_1P1T_XKB_TS-1187A": {
    "lcsc": "C318884",

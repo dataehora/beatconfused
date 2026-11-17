@@ -4933,7 +4933,7 @@
 				)
 			)
 		)
-		(property "Description" "3.5 mm stereo jack, tip switch (5 NC against 4)"
+		(property "Description" "3.5 mm stereo jack, tip switch (3 NC against 4)"
 			(at 0 0 0)
 			(hide yes)
 			(effects
@@ -4964,7 +4964,7 @@
 						)
 					)
 				)
-				(number "1"
+				(number "2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -4982,7 +4982,7 @@
 						)
 					)
 				)
-				(number "2"
+				(number "5"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -5018,7 +5018,7 @@
 						)
 					)
 				)
-				(number "5"
+				(number "3"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -5036,7 +5036,7 @@
 						)
 					)
 				)
-				(number "3"
+				(number "6"
 					(effects
 						(font
 							(size 1.27 1.27)

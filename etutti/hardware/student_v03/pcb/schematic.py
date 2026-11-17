@@ -198,9 +198,9 @@ def micromod_symbol():
 
 
 def jack_symbol():
-    return box_symbol("PJ-327A", "J", [([("1", "S", "passive"), ("2", "S", "passive")],
-                                        [("4", "T", "passive"), ("5", "TN", "passive"), ("3", "R", "passive")])],
-                      "3.5 mm stereo jack, tip switch (5 NC against 4)")
+    return box_symbol("PJ-327A", "J", [([("2", "S", "passive"), ("5", "S", "passive")],
+                                        [("4", "T", "passive"), ("3", "TN", "passive"), ("6", "R", "passive")])],
+                      "3.5 mm stereo jack, tip switch (3 NC against 4)")
 
 
 def led_pins(s):
@@ -530,19 +530,19 @@ R("R301", "2.2k", "+3V3", "I2C_SDA", "F1")
 R("R302", "2.2k", "+3V3", "I2C_SCL", "F1")
 # The PJ-313D-6A of step 3.1 (C95463) turned out to have no tip switch (datasheet: 3 contacts, 6 pads).
 sym("PJ-327A", "custom", jack_symbol)
-part("J301", "PJ-327A", "PJ-327A 5JJ",
-     {"1": "HP_VGND", "2": "HP_VGND", "3": "HP_R", "4": "HP_L", "5": "HP_TIPSW"}, "F2",
-     fp="%s:Jack_3.5mm_PJ-327A_SMD" % LIB, lcsc="C668605", cls="estendida", price=0.10, status="conferir",
-     note="SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)",
-     datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf")
+part("J301", "PJ-327A", "PJ-327A",
+     {"2": "HP_VGND", "5": "HP_VGND", "6": "HP_R", "4": "HP_L", "3": "HP_TIPSW"}, "F2",
+     fp="%s:Jack_3.5mm_PJ-327A_SMD" % LIB, lcsc="C49284723", cls="estendida", price=0.10, status="conferir",
+     note="SMD, angulo reto, XUNPU (V3; o SHOU HAN 5JJ foi trocado porque a JLCPCB o marca como dificil de montar); 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (fechado sem plugue)",
+     datasheet="https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf")
 R("R303", "100k", "HP_TIPSW", "HP_DET", "F2")
 R("R304", "1M", "HP_DET", "GND", "F2")
 C("C308", "100nF", "HP_DET", "GND", "F2")
-part("J302", "PJ-327A", "PJ-327A 5JJ",
-     {"1": "GND", "2": "GND", "3": "NC", "4": "MIC_J", "5": "NC"}, "F3",
-     fp="%s:Jack_3.5mm_PJ-327A_SMD" % LIB, lcsc="C668605", cls="estendida", price=0.10, status="final",
-     note="IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos",
-     datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf")
+part("J302", "PJ-327A", "PJ-327A",
+     {"2": "GND", "5": "GND", "6": "NC", "4": "MIC_J", "3": "NC"}, "F3",
+     fp="%s:Jack_3.5mm_PJ-327A_SMD" % LIB, lcsc="C49284723", cls="estendida", price=0.10, status="final",
+     note="IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)",
+     datasheet="https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf")
 R("R305", "2.2k", "MIC_BIAS", "MIC_J", "F3", note="bias do microfone de eletreto (como a Audio Board: 2,2k do MICBIAS)")
 C("C309", "1uF", "MIC_J", "MIC_IN", "F3", note="acoplamento do microfone ao pino MIC")
 

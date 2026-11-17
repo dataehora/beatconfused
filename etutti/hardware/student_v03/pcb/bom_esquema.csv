@@ -41,10 +41,10 @@ F1,U302,1,XC6206P182MR,SOT-23-3,C347373,estendida,0.030,JLC,conferir,"1,8 V do V
 F2,R303,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
 F2,C308,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
 F2,R304,1,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,
-F2,J301,1,PJ-327A 5JJ,Jack_3.5mm_PJ-327A_SMD,C668605,estendida,0.100,JLC,conferir,"SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)"
+F2,J301,1,PJ-327A,Jack_3.5mm_PJ-327A_SMD,C49284723,estendida,0.100,JLC,conferir,"SMD, angulo reto, XUNPU (V3; o SHOU HAN 5JJ foi trocado porque a JLCPCB o marca como dificil de montar); 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (fechado sem plugue)"
 F3,C309,1,1uF,C_0402_1005Metric,C52923,basica,0.002,JLC,final,acoplamento do microfone ao pino MIC
 F3,R305,1,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,"bias do microfone de eletreto (como a Audio Board: 2,2k do MICBIAS)"
-F3,J302,1,PJ-327A 5JJ,Jack_3.5mm_PJ-327A_SMD,C668605,estendida,0.100,JLC,final,"IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos"
+F3,J302,1,PJ-327A,Jack_3.5mm_PJ-327A_SMD,C49284723,estendida,0.100,JLC,final,"IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)"
 I1,SW401,1,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,estendida,1.920,"sem peca (encoder soldado em casa, topo)",final,volume; clique de 2 s liga/desliga; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2
 I2,SW402,1,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,estendida,1.920,"sem peca (encoder soldado em casa, topo)",final,seletor; clique = funcoes de som; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2
 I3,J401,1,SM04B-SRSS-TB,JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal,C160404,estendida,0.220,JLC,final,"tela OLED 0,96 pol. 128 x 64 (SSD1306, I2C 0x3C) por cabo JST SH de 4 vias, ordem Qwiic: 1 GND, 2 3V3, 3 SDA, 4 SCL"

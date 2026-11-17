@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\student_v03\\kicad\\student_v03.kicad_sch")
-		(date "2026-11-17T20:14:13")
+		(date "2026-11-17T22:22:37")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -4806,28 +4806,28 @@
 		)
 		(comp
 			(ref "J301")
-			(value "PJ-327A 5JJ")
+			(value "PJ-327A")
 			(footprint "viaggio_micromod:Jack_3.5mm_PJ-327A_SMD")
-			(datasheet "https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf")
-			(description "SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)")
+			(datasheet "https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf")
+			(description "SMD, angulo reto, XUNPU (V3; o SHOU HAN 5JJ foi trocado porque a JLCPCB o marca como dificil de montar); 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (fechado sem plugue)")
 			(fields
 				(field
 					(name "Codigo") "F2")
 				(field
-					(name "LCSC") "C668605")
+					(name "LCSC") "C49284723")
 				(field
 					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "viaggio_micromod:Jack_3.5mm_PJ-327A_SMD")
 				(field
-					(name "Datasheet") "https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf")
+					(name "Datasheet") "https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf")
 				(field
-					(name "Description") "SMD, angulo reto, SHOU HAN; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta, 5 contato da ponta (fechado sem plugue)")
+					(name "Description") "SMD, angulo reto, XUNPU (V3; o SHOU HAN 5JJ foi trocado porque a JLCPCB o marca como dificil de montar); 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (fechado sem plugue)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
 				(part "PJ-327A")
-				(description "3.5 mm stereo jack, tip switch (5 NC against 4)")
+				(description "3.5 mm stereo jack, tip switch (3 NC against 4)")
 			)
 			(property
 				(name "Codigo")
@@ -4835,7 +4835,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C668605")
+				(value "C49284723")
 			)
 			(property
 				(name "Montagem")
@@ -4859,19 +4859,19 @@
 					(name "A")
 					(pins
 						(pin
-							(num "1")
-						)
-						(pin
 							(num "2")
-						)
-						(pin
-							(num "4")
 						)
 						(pin
 							(num "5")
 						)
 						(pin
+							(num "4")
+						)
+						(pin
 							(num "3")
+						)
+						(pin
+							(num "6")
 						)
 					)
 				)
@@ -4879,28 +4879,28 @@
 		)
 		(comp
 			(ref "J302")
-			(value "PJ-327A 5JJ")
+			(value "PJ-327A")
 			(footprint "viaggio_micromod:Jack_3.5mm_PJ-327A_SMD")
-			(datasheet "https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf")
-			(description "IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos")
+			(datasheet "https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf")
+			(description "IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)")
 			(fields
 				(field
 					(name "Codigo") "F3")
 				(field
-					(name "LCSC") "C668605")
+					(name "LCSC") "C49284723")
 				(field
 					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "viaggio_micromod:Jack_3.5mm_PJ-327A_SMD")
 				(field
-					(name "Datasheet") "https://www.lcsc.com/datasheet/lcsc_datasheet_2006181822_SHOU-HAN-PJ-327A-5JJ_C668605.pdf")
+					(name "Datasheet") "https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf")
 				(field
-					(name "Description") "IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos")
+					(name "Description") "IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
 				(part "PJ-327A")
-				(description "3.5 mm stereo jack, tip switch (5 NC against 4)")
+				(description "3.5 mm stereo jack, tip switch (3 NC against 4)")
 			)
 			(property
 				(name "Codigo")
@@ -4908,7 +4908,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C668605")
+				(value "C49284723")
 			)
 			(property
 				(name "Montagem")
@@ -4932,19 +4932,19 @@
 					(name "A")
 					(pins
 						(pin
-							(num "1")
-						)
-						(pin
 							(num "2")
-						)
-						(pin
-							(num "4")
 						)
 						(pin
 							(num "5")
 						)
 						(pin
+							(num "4")
+						)
+						(pin
 							(num "3")
+						)
+						(pin
+							(num "6")
 						)
 					)
 				)
@@ -12182,7 +12182,7 @@
 		(libpart
 			(lib "viaggio_micromod")
 			(part "PJ-327A")
-			(description "3.5 mm stereo jack, tip switch (5 NC against 4)")
+			(description "3.5 mm stereo jack, tip switch (3 NC against 4)")
 			(fields
 				(field
 					(name "Reference") "J")
@@ -12195,14 +12195,9 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "3.5 mm stereo jack, tip switch (5 NC against 4)")
+					(name "Description") "3.5 mm stereo jack, tip switch (3 NC against 4)")
 			)
 			(pins
-				(pin
-					(num "1")
-					(name "S")
-					(type "passive")
-				)
 				(pin
 					(num "2")
 					(name "S")
@@ -12210,7 +12205,7 @@
 				)
 				(pin
 					(num "3")
-					(name "R")
+					(name "TN")
 					(type "passive")
 				)
 				(pin
@@ -12220,7 +12215,12 @@
 				)
 				(pin
 					(num "5")
-					(name "TN")
+					(name "S")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "R")
 					(type "passive")
 				)
 			)
@@ -14177,14 +14177,14 @@
 			)
 			(node
 				(ref "J302")
-				(pin "1")
-				(pinfunction "S_1")
+				(pin "2")
+				(pinfunction "S_2")
 				(pintype "passive")
 			)
 			(node
 				(ref "J302")
-				(pin "2")
-				(pinfunction "S_2")
+				(pin "5")
+				(pinfunction "S_5")
 				(pintype "passive")
 			)
 			(node
@@ -14815,8 +14815,8 @@
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "3")
-				(pinfunction "R_3")
+				(pin "6")
+				(pinfunction "R_6")
 				(pintype "passive")
 			)
 			(node
@@ -14832,8 +14832,8 @@
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "5")
-				(pinfunction "TN_5")
+				(pin "3")
+				(pinfunction "TN_3")
 				(pintype "passive")
 			)
 			(node
@@ -14848,14 +14848,14 @@
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "1")
-				(pinfunction "S_1")
+				(pin "2")
+				(pinfunction "S_2")
 				(pintype "passive")
 			)
 			(node
 				(ref "J301")
-				(pin "2")
-				(pinfunction "S_2")
+				(pin "5")
+				(pinfunction "S_5")
 				(pintype "passive")
 			)
 			(node
@@ -16725,23 +16725,23 @@
 		)
 		(net
 			(code "129")
-			(name "unconnected-(J302-R-Pad3)")
+			(name "unconnected-(J302-R-Pad6)")
 			(class "Default")
 			(node
 				(ref "J302")
-				(pin "3")
-				(pinfunction "R_3")
+				(pin "6")
+				(pinfunction "R_6")
 				(pintype "passive+no_connect")
 			)
 		)
 		(net
 			(code "130")
-			(name "unconnected-(J302-TN-Pad5)")
+			(name "unconnected-(J302-TN-Pad3)")
 			(class "Default")
 			(node
 				(ref "J302")
-				(pin "5")
-				(pinfunction "TN_5")
+				(pin "3")
+				(pinfunction "TN_3")
 				(pintype "passive+no_connect")
 			)
 		)

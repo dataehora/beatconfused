@@ -87,3 +87,7 @@ mas tira a proteção do USB. Não fiz isso; é decisão sua.
 3. A fenda do cabo da tela (7 × 2,5 mm) fica entre o módulo e o J401.
 4. Proteção do USB (ESD e TVS): manter ou tirar.
 5. Os três datasheets que não obtive (PJ-327A, TS-1187A, XC6206 da UMW): veja `AUDITORIA.md`.
+
+## Troca dos jacks (18 nov 2026)
+
+A JLCPCB marcou o PJ-327A 5JJ (SHOU HAN, C668605) como "difícil de processar" (revisão manual, possível taxa extra, e a linha vinha com quantidade 0 na planilha). O **XUNPU PJ-327A (C49284723)** não recebe o aviso e tem a mesma função (3 contatos + chave da ponta). `pcb/troca_jack.py` renumera os pads por função (1→2, 2→5, 3→6, 4→4, 5→3), renomeia as duas redes "unconnected" que levam número de pad, alarga os furos de posição para 1,2 mm e escreve o novo código; as trilhas não mudaram. DRC com paridade: só as 3 larguras de EN_B aceitas, 0 ligações faltando, paridade 0. O CPL dos jacks passou de 270° para **180°** (único giro que encaixa os pads, erro máximo 0,23 mm); o resto do CPL é igual. Continuam 17 tipos Extended.
