@@ -533,6 +533,13 @@ Code. Reports (Portuguese): `FIT_CHECK.md` (gaps, the two studies, 12 "Perguntas
   for a recess. **SPEC v3 (17 Nov):** eTUTTI outlines grown 0.1 mm (offset2D by winding direction), STUDENT · V2 is
   paint only (`out/tinta_marrom.stl`, no cut), 0.5 x 45 deg chamfer on the three holes, USB-C hole 12.8, flange 0.15.
   `out/tinta.stl` + `tinta_marrom.stl` are the paint, for the renders only.
+- **Presentation page (17 Nov):** `/etutti/studentV2/` (unlisted, noindex, Portuguese only; case-sensitive
+  path) = `etutti/studentV2/{index.html,styles.css,img/}`, written by `student_v02/pagina.py` (texts, parts by
+  area/supplier, price table: edit there). Its pictures (exploded view with numbered pins from `img/ancoras.json`,
+  7 assembly steps, plan, wall, cuts) come from `case/passos.py` (CadQuery venv, ~1 min, after `case.py` +
+  `render.py`). Prices are ranges: "preço visto" = shop pages of 15 Nov (V01 sourcing), "estimativa" = not
+  quoted (JLCPCB fees, OLED, speaker, print job...); GBP at 1.30 USD is an assumption. Regenerate the page
+  after any price or part change.
 - Studies: board needs the 4 pins in H5-H8 plus 3 pillars for <= 0.05 mm at 3 N (the SPEC's 3 pin spots
   sit on back-side parts); a printed grid sags onto the switches (FR-4 suggested); the 3.9 cm3 box puts
   the speaker's resonance near 1 kHz (12 cm3 would give 7-9 dB more bass).
