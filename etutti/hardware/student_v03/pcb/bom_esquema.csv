@@ -13,18 +13,15 @@ E1,J201,1,TYPE-C-31-M-12,USB_C_Receptacle_HRO_TYPE-C-31-M-12,C165948,estendida,0
 E2,D201,1,SMF5.0A,D_SOD-123F,C151296,estendida,0.050,JLC,final,"TVS do VBUS (Pocket D60); lado de cima, junto do USB-C (SPEC v2.3)"
 E2,U201,1,USBLC6-2SC6,SOT-23-6,C7519,basica,0.050,JLC,conferir,"lado de cima, junto do USB-C (SPEC v2.3)"
 E3,R204,1,1.5k,R_0402_1005Metric,C25867,basica,0.001,JLC,conferir,"so vale com EN2=1 (1,07 A); obrigatorio"
-E3,R206 R210 R211 R213 R215 R218,6,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
+E3,R206 R210 R211 R213 R215,5,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
 E3,C204 C205,2,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
 E3,R205 R214,2,10k,R_0402_1005Metric,C25744,basica,0.001,JLC,final,
 E3,C201 C202 C203,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
 E3,C210,1,10uF,C_0603_1608Metric,C19702,basica,0.005,JLC,final,"VSYS junto dos pinos OUT (10/11) do U202, no lado de cima (M3)"
 E3,R208 R209 R212,3,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,medida da bateria: V(pino 16) = VBAT/2
-E3,R217,1,1k,R_0402_1005Metric,C11702,basica,0.001,JLC,final,pino 28 baixo descarrega o C213 em ~1 ms
-E3,C213,1,1uF,C_0402_1005Metric,C52923,basica,0.002,JLC,final,"100 ms: depois do desligamento o PWR_EN_S nao sobe antes de o 3,3 V cair (sem religar)"
 E3,R203,1,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,"ICHG = 890/2200 = 0,405 A (K_ISET do datasheet)"
-E3,U203,1,74LVC1G08,SOT-23-5,C7666,estendida,0.030,JLC,final,USB_HOLD = USB presente E PWR_EN alto (alimentada pelo 3V3)
 E3,Q203,1,AO3401A,SOT-23,C15127,basica,0.010,JLC,final,o clique do volume liga o EN
-E3,D202 D203 D204 D205 D206,5,BAV70,SOT-23,C68978,basica,0.020,JLC,final,leitura do ~CHG pelo pino 26 (so com USB)
+E3,D202 D203 D205 D206,4,BAV70,SOT-23,C68978,basica,0.020,JLC,final,leitura do ~CHG pelo pino 26 (so com USB)
 E3,U202,1,BQ24074RGTR,VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm,C54313,estendida,1.100,JLC,final,"USB500 (EN2=0, EN1=1), 500 mA, NTC no TS; TMR e ITERM abertos = padrao; OUT 4,4 V com USB"
 E4,R216,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,
 E4,C209,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,

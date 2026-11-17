@@ -1,0 +1,33 @@
+{
+ "tiradas": [
+  "U203",
+  "D204",
+  "R217",
+  "R218",
+  "C213"
+ ],
+ "tirado pelo DRC (depois de tirar a cadeia)": {
+  "ponta que e ligacao, mantida": 5,
+  "track_dangling": 12,
+  "via_dangling": 1
+ },
+ "abertas": [
+  "VBUS_S"
+ ],
+ "falhas": [],
+ "tirado pelo DRC (depois de rotear)": {
+  "ponta que e ligacao, mantida": 5
+ },
+ "drc": {
+  "erros": {
+   "track_width": 3
+  },
+  "avisos": {
+   "via_dangling": 2,
+   "track_dangling": 3
+  },
+  "ligacoes_faltando": 0,
+  "paridade": 0
+ },
+ "paridade_detalhe": []
+}

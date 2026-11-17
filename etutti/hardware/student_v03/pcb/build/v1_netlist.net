@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\student_v01\\kicad\\viaggio_micromod.kicad_sch")
-		(date "2026-11-17T22:22:31")
+		(date "2026-11-17T23:48:50")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
