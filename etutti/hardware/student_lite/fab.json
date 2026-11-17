@@ -1,0 +1,33 @@
+{
+ "pecas_jlc": 125,
+ "linhas_bom_jlc": 32,
+ "pecas_em_casa": 11,
+ "linhas_bom_v2": 39,
+ "em_casa": [
+  "C210",
+  "C308",
+  "D201",
+  "J201",
+  "J301",
+  "J302",
+  "R303",
+  "R304",
+  "SW401",
+  "SW402",
+  "U201"
+ ],
+ "codigos_em_casa": [
+  "C151296",
+  "C1525",
+  "C165948",
+  "C19702",
+  "C202365",
+  "C25741",
+  "C26083",
+  "C668605",
+  "C7519"
+ ],
+ "fora": {
+  "J401": "conector da tela: o Lite não tem tela"
+ }
+}

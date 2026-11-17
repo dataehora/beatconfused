@@ -1,0 +1,12 @@
+referencia,valor,pacote,codigo LCSC,o que e
+C210,10uF,C_0603_1608Metric,C19702,10 µF 0603
+C308,100nF,C_0402_1005Metric,C1525,100 nF 0402
+D201,SMF5.0A,D_SOD-123F,C151296,diodo TVS de 5 V (SOD-123F)
+J201,TYPE-C-31-M-12,USB_C_Receptacle_HRO_TYPE-C-31-M-12,C165948,"USB-C (16 pinos, 4 de fixação)"
+J301,PJ-327A 5JJ,Jack_3.5mm_PJ-327A_SMD,C668605,"jack OUT 3,5 mm (PJ-327A)"
+J302,PJ-327A 5JJ,Jack_3.5mm_PJ-327A_SMD,C668605,"jack IN 3,5 mm (PJ-327A)"
+R303,100k,R_0402_1005Metric,C25741,100 kΩ 0402
+R304,1M,R_0402_1005Metric,C26083,1 MΩ 0402
+SW401,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,"encoder do volume (EC11E18244AU), furo passante"
+SW402,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,"encoder do registro (EC11E18244AU), furo passante"
+U201,USBLC6-2SC6,SOT-23-6,C7519,proteção ESD do USB (SOT-23-6)
