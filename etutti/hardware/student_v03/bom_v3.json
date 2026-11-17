@@ -1,7 +1,7 @@
 {
  "resumo": {
   "linhas_jlc": 34,
-  "pecas_jlc": 134,
+  "pecas_jlc": 135,
   "tipos_extended": 17,
   "extended": [
    "C151296",
@@ -33,7 +33,7 @@
    "footprint": "C_0402_1005Metric",
    "lcsc": "C1525",
    "classe": "Basic",
-   "estoque_jlc": 35757244,
+   "estoque_jlc": 35749529,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -43,7 +43,7 @@
    "footprint": "C_0402_1005Metric",
    "lcsc": "C52923",
    "classe": "Basic",
-   "estoque_jlc": 9281932,
+   "estoque_jlc": 9280753,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -53,7 +53,7 @@
    "footprint": "C_0402_1005Metric",
    "lcsc": "C12530",
    "classe": "Basic",
-   "estoque_jlc": 3156749,
+   "estoque_jlc": 3156695,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -63,7 +63,7 @@
    "footprint": "C_0603_1608Metric",
    "lcsc": "C19702",
    "classe": "Basic",
-   "estoque_jlc": 11072190,
+   "estoque_jlc": 11070331,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -73,7 +73,7 @@
    "footprint": "C_0805_2012Metric",
    "lcsc": "C15850",
    "classe": "Basic",
-   "estoque_jlc": 9020212,
+   "estoque_jlc": 9018909,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -83,7 +83,7 @@
    "footprint": "D_SOD-123F",
    "lcsc": "C151296",
    "classe": "Extended",
-   "estoque_jlc": 7494,
+   "estoque_jlc": 7489,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -93,7 +93,7 @@
    "footprint": "JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal",
    "lcsc": "C265101",
    "classe": "Extended",
-   "estoque_jlc": 21979,
+   "estoque_jlc": 21974,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -103,7 +103,7 @@
    "footprint": "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
    "lcsc": "C160404",
    "classe": "Extended",
-   "estoque_jlc": 14422,
+   "estoque_jlc": 14325,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -123,7 +123,7 @@
    "footprint": "L_0603_1608Metric",
    "lcsc": "C1002",
    "classe": "Basic",
-   "estoque_jlc": 1406928,
+   "estoque_jlc": 1406804,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -163,7 +163,7 @@
    "footprint": "R_0402_1005Metric",
    "lcsc": "C25076",
    "classe": "Basic",
-   "estoque_jlc": 10452344,
+   "estoque_jlc": 10449701,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -173,7 +173,7 @@
    "footprint": "R_0402_1005Metric",
    "lcsc": "C25905",
    "classe": "Basic",
-   "estoque_jlc": 4476982,
+   "estoque_jlc": 4476383,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -183,7 +183,7 @@
    "footprint": "R_0402_1005Metric",
    "lcsc": "C25879",
    "classe": "Basic",
-   "estoque_jlc": 2950229,
+   "estoque_jlc": 2949971,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -193,7 +193,7 @@
    "footprint": "R_0402_1005Metric",
    "lcsc": "C25867",
    "classe": "Basic",
-   "estoque_jlc": 1197578,
+   "estoque_jlc": 1197448,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -203,7 +203,7 @@
    "footprint": "R_0402_1005Metric",
    "lcsc": "C25744",
    "classe": "Basic",
-   "estoque_jlc": 26233666,
+   "estoque_jlc": 26230962,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -213,7 +213,7 @@
    "footprint": "R_0402_1005Metric",
    "lcsc": "C25741",
    "classe": "Basic",
-   "estoque_jlc": 9761301,
+   "estoque_jlc": 9759891,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -223,7 +223,7 @@
    "footprint": "R_0402_1005Metric",
    "lcsc": "C11702",
    "classe": "Basic",
-   "estoque_jlc": 30685852,
+   "estoque_jlc": 30684685,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -233,7 +233,7 @@
    "footprint": "R_0402_1005Metric",
    "lcsc": "C26083",
    "classe": "Basic",
-   "estoque_jlc": 2906149,
+   "estoque_jlc": 2905886,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -248,12 +248,12 @@
   },
   {
    "valor": "BAV70",
-   "designadores": "D202,D203,D204,D205",
-   "qtd": 4,
+   "designadores": "D202,D203,D204,D205,D206",
+   "qtd": 5,
    "footprint": "SOT-23",
    "lcsc": "C68978",
    "classe": "Basic",
-   "estoque_jlc": 550763,
+   "estoque_jlc": 550743,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -263,7 +263,7 @@
    "footprint": "SOT-23",
    "lcsc": "C15127",
    "classe": "Basic",
-   "estoque_jlc": 1430952,
+   "estoque_jlc": 1430544,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -283,7 +283,7 @@
    "footprint": "SOT-23-5",
    "lcsc": "C7666",
    "classe": "Extended",
-   "estoque_jlc": 60482,
+   "estoque_jlc": 60462,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -303,7 +303,7 @@
    "footprint": "SOT-23-6",
    "lcsc": "C7519",
    "classe": "Extended",
-   "estoque_jlc": 37825,
+   "estoque_jlc": 37485,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -313,7 +313,7 @@
    "footprint": "SW_Push_1P1T_XKB_TS-1187A",
    "lcsc": "C318884",
    "classe": "Basic",
-   "estoque_jlc": 780804,
+   "estoque_jlc": 780564,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -323,7 +323,7 @@
    "footprint": "TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm",
    "lcsc": "C910544",
    "classe": "Extended",
-   "estoque_jlc": 25522,
+   "estoque_jlc": 25503,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -343,7 +343,7 @@
    "footprint": "Texas_DRC0010J",
    "lcsc": "C28060",
    "classe": "Extended",
-   "estoque_jlc": 13439,
+   "estoque_jlc": 13437,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -363,7 +363,7 @@
    "footprint": "USB_C_Receptacle_HRO_TYPE-C-31-M-12",
    "lcsc": "C165948",
    "classe": "Extended",
-   "estoque_jlc": 511953,
+   "estoque_jlc": 511829,
    "montagem": "JLCPCB (fundo)"
   },
   {
@@ -373,7 +373,7 @@
    "footprint": "VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm",
    "lcsc": "C54313",
    "classe": "Extended",
-   "estoque_jlc": 3437,
+   "estoque_jlc": 3430,
    "montagem": "JLCPCB (fundo)"
   }
  ],

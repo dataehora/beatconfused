@@ -121,22 +121,8 @@ def flip(fp):
         fp.Flip(pos, False)
 
 
-def main():
-    os.makedirs(os.path.join(HERE, "kicad"), exist_ok=True)
-    os.makedirs(os.path.join(HERE, "pcb"), exist_ok=True)
-    b = pcbnew.LoadBoard(SRC)
-    rec = {"moves": {}, "removed": {}}
-
-    # 1. routing out
-    n = 0
-    for t in list(b.GetTracks()):
-        b.Remove(t)
-        GRAVE.append(t)
-        n += 1
-    for z in b.Zones():
-        z.UnFill()
-    rec["removed"]["trilhas_e_vias"] = n
-
+def clean_silk(b, rec):
+    """Remove the dotted outlines, the V1 alternatives and the sector labels; rename the title."""
     # 2. dotted outlines, V1 alternatives, sector labels
     keep_box = (27.0, 13.0, 53.0, 40.0)         # the MicroMod keep-out drawing on B.Silkscreen
     nshape = ntext = 0
@@ -169,6 +155,9 @@ def main():
     rec["removed"]["tracejados_e_formas"] = nshape
     rec["removed"]["rotulos"] = ntext
 
+
+def set_values(b, rec):
+    """The V3 values (the full builder gets them from the schematic instead)."""
     # 6. values (before placement: nothing moves)
     for ref, (val, code) in VALUES.items():
         fp = b.FindFootprintByReference(ref)
@@ -177,6 +166,9 @@ def main():
             fp.SetField("Codigo", code)
         rec.setdefault("valores", {})[ref] = [val, code]
 
+
+def hole_h101(b, rec):
+    """H101 (SMT standoff) -> plain hole."""
     # 5. H101 -> plain hole
     old = b.FindFootprintByReference("H101")
     pos, = [old.GetPosition()]
@@ -190,6 +182,12 @@ def main():
     b.Add(hole)
     rec["H101"] = {"x": TOMM(pos.x), "y": TOMM(pos.y), "furo_mm": 2.7}
 
+
+def flip_parts(b, rec):
+    """Everything that was on top, except the encoders, goes to the bottom."""
+    bx = board_box(b)
+    skip = set(TO_BOTTOM)
+    placed = []
     # 3. to the bottom
     bx = board_box(b)
     skip = set(TO_BOTTOM)
@@ -236,6 +234,10 @@ def main():
                              "deslocamento_mm": round(math.hypot(*best), 2), "rot": fp.GetOrientationDegrees()}
         print("%-5s (%.2f, %.2f) topo -> (%.2f, %.2f) fundo  d=%.2f mm" % (ref, x0, y0, x0 + best[0], y0 + best[1], math.hypot(*best)))
 
+
+def place_j401(b, rec):
+    """J401 on the bottom plus the cable slot."""
+    bx = board_box(b)
     # 4. J401 (screen connector) + the slot for its cable. The connector is flipped, then tried at the 4
     # rotations; for each, the nearest free spot (<= 14 mm from where it was) with a free 7 x 2.5 mm slot
     # one cable-length in front of its mouth, on the OLED side (towards smaller y), is taken.
@@ -315,6 +317,25 @@ def main():
         rec["J401"] = {"erro": "sem lugar para conector e fenda"}
         print("J401: SEM LUGAR")
 
+
+def main():
+    os.makedirs(os.path.join(HERE, "kicad"), exist_ok=True)
+    os.makedirs(os.path.join(HERE, "pcb"), exist_ok=True)
+    b = pcbnew.LoadBoard(SRC)
+    rec = {"moves": {}, "removed": {}}
+    n = 0
+    for t in list(b.GetTracks()):
+        b.Remove(t)
+        GRAVE.append(t)
+        n += 1
+    for z in b.Zones():
+        z.UnFill()
+    rec["removed"]["trilhas_e_vias"] = n
+    clean_silk(b, rec)
+    set_values(b, rec)
+    hole_h101(b, rec)
+    flip_parts(b, rec)
+    place_j401(b, rec)
     pcbnew.SaveBoard(OUT, b)
     json.dump(rec, open(os.path.join(HERE, "pcb", "colocacao.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print(json.dumps(rec["removed"]))

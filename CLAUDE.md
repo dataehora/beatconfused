@@ -1097,3 +1097,10 @@ part's EasyEDA symbol pins with the board's nets; real errors found were VALUES 
 0.1 uF), not pin-outs. PJ-327A, TS-1187A and the UMW XC6206 datasheets could not be downloaded (LCSC serves HTML). **No
 routing yet: waiting for J's approval**, then routing (reuse the V2 router `rota_restante`), CPL/BOM for JLCPCB, the case's
 left wall (connectors now under the board) and the V3 page.
+- **V3 routed (18 Nov):** `student_v03/pcb/build_board_v3.py` (derived from the routed V2 board: tracks kept except the USB group's old
+  copper, moved parts flipped by `build_sem_rota.py`'s functions, `student_v03/pcb/schematic.py` = V2's with the V3 changes, router =
+  `viaggio_j1/rota_restante.py` through `student_v02/pcb/build_board.py`'s functions with `NAME/KDIR/BUILD/BOARD` overridden). DRC with
+  parity: only the 3 accepted EN_B widths, 0 unconnected, parity 0. Lessons: no `rr.PROTECT` boxes round the USB-C's 0.5 mm pads (they block each
+  other's exits); the router reads only the outer outline, so a slot needs a rule-area keep-out; USB tracks may be on any layer in V3 (the V2 90-ohm
+  F.Cu rules are replaced in the .kicad_dru); a dangling USB end must not abort the rip (local `rip_by_drc`). `fab.py` writes the bottom-only CPL
+  (135 parts, 0 top). D206 (VBUS_S -> EN_REQ) makes a USB plug switch the 3.3 V on (screen shows charge/battery %, firmware later).

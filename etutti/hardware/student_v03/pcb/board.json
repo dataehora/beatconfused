@@ -1,0 +1,373 @@
+{
+ "cobre antigo da regiao do USB-C": 76,
+ "LED de carga": {
+  "pecas": 3,
+  "trilhas e vias": 16
+ },
+ "trilhas dos pads que mudam de lado": 10,
+ "D206": {
+  "x": 73.14,
+  "y": 21.69,
+  "rot": 90
+ },
+ "colocacao": {
+  "moves": {
+   "J201": {
+    "de": [
+     5.95,
+     16.0,
+     "topo"
+    ],
+    "para": [
+     5.95,
+     16.0,
+     "fundo"
+    ],
+    "deslocamento_mm": 0.0,
+    "rot": 90.0
+   },
+   "U201": {
+    "de": [
+     18.9,
+     15.25,
+     "topo"
+    ],
+    "para": [
+     17.15,
+     13.5,
+     "fundo"
+    ],
+    "deslocamento_mm": 2.47,
+    "rot": 180.0
+   },
+   "D201": {
+    "de": [
+     16.98,
+     18.5,
+     "topo"
+    ],
+    "para": [
+     18.23,
+     19.75,
+     "fundo"
+    ],
+    "deslocamento_mm": 1.77,
+    "rot": -0.0
+   },
+   "J301": {
+    "de": [
+     4.3,
+     36.0,
+     "topo"
+    ],
+    "para": [
+     4.3,
+     36.0,
+     "fundo"
+    ],
+    "deslocamento_mm": 0.0,
+    "rot": -90.0
+   },
+   "J302": {
+    "de": [
+     4.3,
+     60.0,
+     "topo"
+    ],
+    "para": [
+     4.3,
+     60.0,
+     "fundo"
+    ],
+    "deslocamento_mm": 0.0,
+    "rot": -90.0
+   },
+   "C308": {
+    "de": [
+     7.92,
+     42.51,
+     "topo"
+    ],
+    "para": [
+     7.67,
+     42.76,
+     "fundo"
+    ],
+    "deslocamento_mm": 0.35,
+    "rot": -90.0
+   },
+   "R303": {
+    "de": [
+     11.0,
+     41.99,
+     "topo"
+    ],
+    "para": [
+     10.5,
+     42.49,
+     "fundo"
+    ],
+    "deslocamento_mm": 0.71,
+    "rot": -0.0
+   },
+   "R304": {
+    "de": [
+     9.29,
+     42.91,
+     "topo"
+    ],
+    "para": [
+     11.29,
+     44.66,
+     "fundo"
+    ],
+    "deslocamento_mm": 2.66,
+    "rot": -90.0
+   },
+   "C210": {
+    "de": [
+     60.76,
+     8.6,
+     "topo"
+    ],
+    "para": [
+     65.01,
+     13.35,
+     "fundo"
+    ],
+    "deslocamento_mm": 6.37,
+    "rot": 90.0
+   }
+  },
+  "removed": {
+   "tracejados_e_formas": 956,
+   "rotulos": 48
+  },
+  "H101": {
+   "x": 47.5,
+   "y": 14.0,
+   "furo_mm": 2.7
+  },
+  "J401": {
+   "de": [
+    39.0,
+    33.0,
+    "topo"
+   ],
+   "para": [
+    35.5,
+    36.5,
+    "fundo"
+   ],
+   "rotacao_extra": 0,
+   "boca": [
+    0.0,
+    -1.0
+   ]
+  },
+  "fenda_do_cabo": {
+   "caixa_mm": [
+    32.0,
+    29.92,
+    39.0,
+    32.42
+   ],
+   "tamanho_mm": [
+    7.0,
+    2.5
+   ]
+  }
+ },
+ "tirado pelo DRC (antes de rotear)": {
+  "items_not_allowed (GND)": 4,
+  "items_not_allowed (+3V3)": 2,
+  "items_not_allowed (sinal/alimentacao)": 10,
+  "shorting_items (sinal/alimentacao)": 7,
+  "clearance (sinal/alimentacao)": 12,
+  "hole_clearance (sinal/alimentacao)": 14,
+  "copper_edge_clearance (GND)": 1,
+  "copper_edge_clearance (+3V3)": 2,
+  "copper_edge_clearance (sinal/alimentacao)": 4,
+  "solder_mask_bridge (sinal/alimentacao)": 11
+ },
+ "tentativas": [
+  {
+   "tentativa": 1,
+   "falhas": [
+    "USB_DP J101.3 - J201.A6",
+    "USB_DP J101.3 - J201.B6",
+    "USB_DP J201.A6 - J201.B6"
+   ]
+  },
+  {
+   "tentativa": 2,
+   "falhas": []
+  }
+ ],
+ "roteado": [
+  {
+   "rede": "USB_DP",
+   "objetos": 12
+  },
+  {
+   "rede": "VBUS",
+   "objetos": 24
+  },
+  {
+   "rede": "VSYS",
+   "objetos": 3
+  },
+  {
+   "rede": "BAT_NTC",
+   "objetos": 5
+  },
+  {
+   "rede": "CC1",
+   "objetos": 3
+  },
+  {
+   "rede": "CC2",
+   "objetos": 7
+  },
+  {
+   "rede": "CHG_STAT",
+   "objetos": 2
+  },
+  {
+   "rede": "EN_REQ",
+   "objetos": 2
+  },
+  {
+   "rede": "HP_DET",
+   "objetos": 5
+  },
+  {
+   "rede": "HP_L",
+   "objetos": 2
+  },
+  {
+   "rede": "HP_R",
+   "objetos": 2
+  },
+  {
+   "rede": "HP_TIPSW",
+   "objetos": 5
+  },
+  {
+   "rede": "HP_VGND",
+   "objetos": 7
+  },
+  {
+   "rede": "I2C_SCL",
+   "objetos": 4
+  },
+  {
+   "rede": "I2C_SDA",
+   "objetos": 6
+  },
+  {
+   "rede": "I2S_TX",
+   "objetos": 2
+  },
+  {
+   "rede": "MIC_J",
+   "objetos": 3
+  },
+  {
+   "rede": "PROG",
+   "objetos": 8
+  },
+  {
+   "rede": "SEL_B",
+   "objetos": 5
+  },
+  {
+   "rede": "SEL_SW",
+   "objetos": 6
+  },
+  {
+   "rede": "SENS_EN",
+   "objetos": 6
+  },
+  {
+   "rede": "USB_DN",
+   "objetos": 14
+  },
+  {
+   "rede": "VBAT_S",
+   "objetos": 9
+  },
+  {
+   "rede": "VBUS_S",
+   "objetos": 4
+  },
+  {
+   "rede": "GND / +3V3 (rodada 1)",
+   "objetos": 8
+  },
+  {
+   "rede": "GND / +3V3 (rodada 2)",
+   "objetos": 0
+  }
+ ],
+ "falhas": [],
+ "tirado pelo DRC (depois de rotear)": {
+  "track_dangling": 25,
+  "ponta que e ligacao, mantida": 5,
+  "via_dangling": 4
+ },
+ "drc": {
+  "erros": {
+   "track_width": 3
+  },
+  "avisos": {
+   "track_dangling": 3,
+   "via_dangling": 2
+  },
+  "ligacoes_faltando": 0,
+  "paridade": 0
+ },
+ "drc_detalhe": [
+  [
+   "track_width",
+   "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+   [
+    [
+     "Track [EN_B] on B.Cu, length 0.0351 mm",
+     {
+      "x": 144.6753,
+      "y": 59.1102
+     }
+    ]
+   ]
+  ],
+  [
+   "track_width",
+   "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+   [
+    [
+     "Track [EN_B] on B.Cu, length 0.5385 mm",
+     {
+      "x": 144.1368,
+      "y": 59.1102
+     }
+    ]
+   ]
+  ],
+  [
+   "track_width",
+   "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+   [
+    [
+     "Track [EN_B] on B.Cu, length 0.1502 mm",
+     {
+      "x": 144.7001,
+      "y": 59.135
+     }
+    ]
+   ]
+  ]
+ ],
+ "paridade_detalhe": [],
+ "faltando_detalhe": []
+}

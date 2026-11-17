@@ -46,6 +46,7 @@ def main():
                 continue
             val, code = SUBS.get(ref, (r["Comment"], r["LCSC Part #"]))
             per.append((ref, val, r["Footprint"], code))
+    per.append(("D206", "BAV70", "SOT-23", "C68978"))      # new in the V3: a USB plug switches the 3.3 V on
     groups = {}
     for ref, val, fp, code in per:
         groups.setdefault((code, val, fp), []).append(ref)
