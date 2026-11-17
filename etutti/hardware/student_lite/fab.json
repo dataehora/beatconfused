@@ -1,12 +1,13 @@
 {
- "pecas_jlc": 125,
- "linhas_bom_jlc": 32,
- "pecas_em_casa": 11,
+ "pecas_jlc": 124,
+ "linhas_bom_jlc": 28,
+ "pecas_em_casa": 12,
  "linhas_bom_v2": 39,
  "em_casa": [
   "C210",
   "C308",
   "D201",
+  "H101",
   "J201",
   "J301",
   "J302",
@@ -25,9 +26,43 @@
   "C25741",
   "C26083",
   "C668605",
+  "C7496631",
   "C7519"
  ],
  "fora": {
   "J401": "conector da tela: o Lite não tem tela"
- }
+ },
+ "trocas_basic": {
+  "R203": [
+   "2.2k",
+   "C25879",
+   "BQ24074: corrente de carga 0,49 A -> 0,405 A"
+  ],
+  "R501": [
+   "1M",
+   "C26083",
+   "MAX98357A SD_MODE 0,42 V -> 0,30 V (janela mono 0,16-0,77 V)"
+  ],
+  "C307": [
+   "100nF",
+   "C1525",
+   "SGTL5000: o datasheet pede 0,1 uF no VAG"
+  ]
+ },
+ "tipos_extendidos_jlc": [
+  "C134405",
+  "C167825",
+  "C179326",
+  "C22401868",
+  "C265101",
+  "C2651833",
+  "C28060",
+  "C347373",
+  "C48985906",
+  "C54313",
+  "C7666",
+  "C7827",
+  "C910544"
+ ],
+ "n_extendidos_jlc": 13
 }

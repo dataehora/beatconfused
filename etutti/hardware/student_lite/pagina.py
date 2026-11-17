@@ -27,10 +27,12 @@ esc, rng = V2.esc, V2.rng
 # (order, supplier, [(area, item, qty, note, low, high, currency, tag)])
 BUY = [
     ("JLCPCB · placa, montagem só no fundo", "JLCPCB (peças da LCSC)", [
-        ("Eletrônica", "Placa principal, 4 camadas, 246,5 × 95 × 1,2 mm, ENIG: 5 unidades", "5", "Gerbers em fab/student_lite_gerbers.zip (os mesmos da V2)", 34, 34, "USD", "estimativa"),
-        ("Eletrônica", "Preparação da montagem de um só lado e estêncil", "1", "BOM e CPL só do fundo, em fab/", 30, 40, "USD", "estimativa"),
-        ("Eletrônica", "Taxa por tipo de peça estendida (cerca de 16 tipos, contra 22 na V2)", "16", "saíram o encoder, o USB-C, o jack, o TVS, o ESD e o JST SH", 29, 51, "USD", "estimativa"),
-        ("Eletrônica", "Peças das 2 placas montadas (125 peças cada, 32 linhas de BOM)", "2", "28 sensores, codec, carregador, amplificador, 2 multiplexadores, conector do módulo e da bateria", 55, 62, "USD", "estimativa"),
+        ("Eletrônica", "Placa principal, 4 camadas, 246,5 × 95 × 1,2 mm: taxa de engenharia", "1", "cotação de 18 nov 2026", 25.00, 25.00, "USD", "cotado"),
+        ("Eletrônica", "Placa principal: a placa (5 unidades)", "5", "Gerbers em fab/student_lite_gerbers.zip (os mesmos da V2)", 14.50, 14.50, "USD", "cotado"),
+        ("Eletrônica", "Montagem econômica: preparação (US$ 8,24) e estêncil (US$ 1,55)", "1", "BOM e CPL só do fundo, em fab/", 9.79, 9.79, "USD", "cotado"),
+        ("Eletrônica", "Taxa por tipo de peça estendida: 13 tipos × US$ 3,09 (eram 16 antes das trocas por Basic)", "13", "o preço cotado foi US$ 49,44 para 16 tipos; as trocas de R203, R501 e C307 tiram 3", 40.17, 40.17, "USD", "cotado"),
+        ("Eletrônica", "Peças da montagem (cotadas para 31 linhas de BOM, 2 placas)", "2", "28 sensores, codec, carregador, amplificador, 2 multiplexadores, conector do módulo e da bateria", 65.00, 65.00, "USD", "cotado"),
+        ("Eletrônica", "Montagem SMT (US$ 2,15) e refusão em nitrogênio (US$ 0,86)", "1", "", 3.01, 3.01, "USD", "cotado"),
     ]),
     ("JLCPCB · grade do teclado", "JLCPCB", [
         ("Teclado", "Grade FR-4 de 1,6 mm, 2 camadas, máscara preta fosca: 5 unidades (1 usada)", "5", "fab/student_v02_grade_gerbers.zip", 10, 20, "USD", "estimativa"),
@@ -39,6 +41,7 @@ BUY = [
         ("Eletrônica", "Encoder com clique EC11E18244AU (C202365)", "2", "eixo de 20 mm: volume e registro", 4, 8, "USD", "estimativa"),
         ("Eletrônica", "USB-C TYPE-C-31-M-12 (C165948) e 2 jacks PJ-327A (C668605)", "1 + 2", "USB-C com 4 pinos de fixação; jacks OUT e IN", 1.5, 3.5, "USD", "estimativa"),
         ("Eletrônica", "USBLC6-2SC6 (C7519), SMF5.0A (C151296), 10 µF 0603 (C19702), 100 nF 0402 (C1525), 100 kΩ 0402 (C25741), 1 MΩ 0402 (C26083)", "6 tipos", "peças pequenas: peça a mais, para o caso de se perder uma", 1, 3, "USD", "estimativa"),
+        ("Eletrônica", "Espaçador SMD M2.5 do módulo, Würth 9774025151R (C7496631)", "1", "a econômica não o aceita: solda em casa, antes do módulo; ou, no V3, furo com parafuso", 0.64, 2.43, "USD", "estimativa"),
         ("Eletrônica", "Frete da LCSC até Londres (pedido pequeno)", "1", "ou junte ao pedido de outro fornecedor", 8, 20, "USD", "estimativa"),
     ]),
     ("Gateron", "Loja da Gateron (ou Chosfox, Ukeebs)", [
@@ -70,18 +73,19 @@ CUT = [
 ]
 
 AREAS = [
-    ("Montada pela JLCPCB (só o fundo)", "125 peças por placa, 32 linhas de BOM; é a lista de <code>fab/student_lite_bom.csv</code>.", [
+    ("Montada pela JLCPCB (só o fundo)", "124 peças por placa, 28 linhas de BOM; é a lista de <code>fab/student_lite_bom.csv</code>.", [
         ("Placa principal, 4 camadas", "1", "JLCPCB", "a mesma da V2: nenhum arquivo de fabricação muda"),
         ("Sensor Hall TMAG5253 (C22401868)", "28", "JLCPCB (LCSC)", "um sob cada tecla"),
         ("Codec SGTL5000 (C2651833), amplificador MAX98357A (C910544), carregador BQ24074 (C54313), conversor TPS63001 (C28060)", "4", "JLCPCB (LCSC)", "som, carga e 3,3 V"),
         ("Multiplexadores 74HC4067 (C179326)", "2", "JLCPCB (LCSC)", "leem as 28 teclas por 2 canais"),
-        ("Conector M.2 do módulo (J101), espaçador do módulo (H101), JST PH da bateria (J202), botão Program (SW403)", "4", "JLCPCB (LCSC)", "tudo no fundo"),
+        ("Conector M.2 do módulo (J101), JST PH da bateria (J202), botão Program (SW403)", "3", "JLCPCB (LCSC)", "tudo no fundo"),
         ("Resistores, capacitores, ferrites, indutor e demais passivos", "cerca de 80", "JLCPCB (LCSC)", "0402, 0603 e 0805"),
     ]),
-    ("Soldadas em casa (topo)", "11 peças: o que a JLCPCB não solda quando só monta o fundo. Lista em <code>fab/student_lite_montar_em_casa.csv</code>.", [
+    ("Soldadas em casa (topo)", "12 peças: o que a JLCPCB não solda quando só monta o fundo. Lista em <code>fab/student_lite_montar_em_casa.csv</code>.", [
         ("Encoders EC11E18244AU (SW401, SW402)", "2", "LCSC", "furo passante, 5 pinos e 2 de fixação cada; levam os knobs"),
         ("USB-C TYPE-C-31-M-12 (J201)", "1", "LCSC", "SMD de 16 pinos e 4 pinos de fixação: a peça mais difícil"),
         ("Jacks PJ-327A (J301 OUT, J302 IN)", "2", "LCSC", "SMD com 2 pinos de fixação"),
+        ("Espaçador SMD M2.5 do módulo, Würth 9774025151R (H101)", "1", "LCSC", "peça de aço com 1,4 mm de pino: solda com fluxo e ferro bem quente (ou placa de aquecimento); vai antes do módulo"),
         ("USBLC6-2SC6 (U201), SMF5.0A (D201)", "2", "LCSC", "SOT-23-6 e SOD-123F"),
         ("10 µF 0603 (C210), 100 nF 0402 (C308), 100 kΩ 0402 (R303), 1 MΩ 0402 (R304)", "4", "LCSC", "as menores peças da placa"),
     ]),
@@ -124,9 +128,10 @@ STEPS = [
         "Encaixe os knobs nos eixos de 20 mm.",
     ], "2 encoders e 2 knobs"),
     ("lite_passo_4", "Módulo", [
-        "Pelo verso, encaixe o módulo MicroMod Teensy no conector M.2 a 30° e prenda-o ao espaçador com o parafuso M2,5 × 3.",
+        "Pelo verso, solde primeiro o espaçador H101 (a JLCPCB não o monta): fluxo, ferro bem quente ou placa de aquecimento, e confira se ele ficou reto e preso.",
+        "Encaixe o módulo MicroMod Teensy no conector M.2 a 30° e prenda-o ao espaçador com o parafuso M2,5 × 3.",
         "Com a placa ainda sem teclas e sem bateria, ligue o USB-C a um computador: nada deve esquentar. Sem firmware da V2, o teste de sinais fica para depois.",
-    ], "Módulo MicroMod Teensy"),
+    ], "Espaçador H101 e módulo MicroMod Teensy"),
     ("lite_passo_5", "Teclas", [
         "Pressione as 28 teclas Gateron nos seus lugares: dois pinos de plástico por tecla a posicionam, e não há solda (o sensor Hall está no verso).",
         "Para trocar as molas, faça-o agora, com uma tecla de teste primeiro.",
@@ -196,19 +201,27 @@ def build():
     </nav>''')
 
     A('    <section id="mudancas">\n      <p class="kicker">1 · O que muda</p>\n      <h2>Três cortes sobre o Student V2</h2>')
-    A('      <p class="sub">Nada na placa nem na grade foi redesenhado: os arquivos de fabricação são os da V2. O que muda é o que se encomenda e o que se monta em casa.</p>')
+    A('      <p class="sub">Nada na placa nem na grade foi redesenhado: os arquivos de fabricação são os da V2. O que muda é o que se encomenda, o que se monta em casa e três valores de componente (abaixo).</p>')
     A('      <div class="grid">')
-    A('<div class="card"><h3>1 · JLCPCB monta só o fundo</h3><p>Das 137 peças da V2, 125 estão no fundo e a JLCPCB as solda. As 12 do topo ficam sem montar; delas, 11 são soldadas em casa (USB-C, 2 jacks, ESD, TVS, 4 passivos e os 2 encoders com os knobs) e a 12ª, o conector da tela, não existe no Lite. A montagem de um lado só cobra menos de preparação e de peças estendidas.</p></div>')
+    A('<div class="card"><h3>1 · JLCPCB monta só o fundo</h3><p>Das 137 peças da V2, 124 vão ao fundo e a JLCPCB as solda. Doze são soldadas em casa: USB-C, 2 jacks, ESD, TVS, 4 passivos, os 2 encoders com os knobs e o espaçador do módulo (H101, que a montagem econômica não aceita). O conector da tela, J401, não existe no Lite. A montagem de um lado só cobra menos de preparação e de peças estendidas.</p></div>')
     A('<div class="card"><h3>2 · Sem tela</h3><p>Saem a tela OLED, o cabo JST SH e a janela de acrílico. O conector J401 fica sem peça. O firmware da V2 ainda não existe, e o do Lite não usaria a tela.</p></div>')
     A('<div class="card"><h3>3 · Sem case</h3><p>Saem a tampa, a base, os 28 botões, os knobs e os espaçadores impressos, a caixa acústica, a tinta e os parafusos do case. A placa fica aberta, com 4 pés de borracha, e a grade FR-4 continua fixando as teclas.</p></div>')
     A('      </div>')
+    A('      <h3>Peças Extended trocadas por Basic</h3>')
+    A('      <p>A JLCPCB cobra US$ 3,09 por tipo de peça Extended (cotação de 18 nov 2026: 16 tipos, US$ 49,44). Trocar o valor por um Basic que já está na placa elimina o tipo, sem mexer no footprint nem no CPL. Três trocas foram aplicadas no BOM do Lite:</p>')
+    A('      <div class="tablewrap"><table><thead><tr><th>Ref.</th><th>Era</th><th>Agora</th><th>Efeito</th></tr></thead><tbody>')
+    A('<tr><td>R203</td><td>1,8 kΩ (C25871)</td><td>2,2 kΩ (C25879)</td><td>BQ24074: corrente de carga de 0,49 A para 0,405 A (0,4 C na bateria de 1000 mAh)</td></tr>')
+    A('<tr><td>R501</td><td>680 kΩ (C4131)</td><td>1 MΩ (C26083)</td><td>MAX98357A: tensão do SD_MODE de 0,42 V para 0,30 V; a janela do modo mono é de 0,16 a 0,77 V</td></tr>')
+    A('<tr><td>C307</td><td>150 nF (C162182)</td><td>100 nF (C1525)</td><td>SGTL5000: os esquemas típicos do datasheet (32QFN e 20QFN) pedem 0,1 µF no pino VAG</td></tr>')
+    A('</tbody></table></div>')
+    A('      <p class="note">Ficam Extended os circuitos integrados, os conectores e o indutor (não há equivalente Basic na biblioteca da JLCPCB), o LDO de 1,8 V e as portas lógicas 74LVC1G04 e 74LVC1G08. Possível, mas não aplicada: trocar os 4 diodos BAT54C (Extended) pelo BAV70 (Basic, mesmo encapsulamento e mesma pinagem), que economizaria mais US$ 3,09 mas aumenta a queda do diodo de cerca de 0,2 V para cerca de 0,5 V nas linhas do botão de ligar e do carregador; pede revisão do circuito.</p>')
     A('      <h3>O que continua igual</h3>')
     A('      <p>28 teclas Gateron KS-20 Magnetic com velocity, a placa de 4 camadas com sensores Hall, o módulo MicroMod Teensy, o codec com saída de fone e entrada de microfone, o alto-falante de 28 mm (agora sem caixa), a bateria LiPo e o USB-C.</p>')
     A('''      <div class="status">
         <h3>Estado</h3>
         <ul>
           <li><b>Pronto:</b> a lista de peças do fundo e do topo, os arquivos de montagem só do fundo (<code>fab/student_lite_cpl.csv</code> e <code>_bom.csv</code>), as imagens, o orçamento.</li>
-          <li><b>Não verificado:</b> a prévia da JLCPCB com o CPL só do fundo, o encaixe das peças do topo à mão, e se o firmware pode rodar sem a tela. Os preços da JLCPCB são estimativas, derivadas da V2.</li>
+          <li><b>Não verificado:</b> a prévia da JLCPCB com o CPL só do fundo, o encaixe das peças do topo à mão, e se o firmware pode rodar sem a tela. Os preços da JLCPCB são os da cotação de 18 nov, com 3 tipos a menos.</li>
           <li><b>Nada foi encomendado nem montado.</b></li>
         </ul>
       </div>
@@ -236,7 +249,7 @@ def build():
     A('      </ol>\n    </section>')
 
     A('    <section id="montagem">\n      <p class="kicker">4 · Montagem em casa</p>\n      <h2>Sete passos, com solda fina</h2>')
-    A('      <p class="sub">Em cada figura, o que é novo no passo está em cor e o que já estava montado, esmaecido. A V2 pedia só dois fios de solda; o Lite pede as 11 peças do topo, e é aí que está a dificuldade.</p>')
+    A('      <p class="sub">Em cada figura, o que é novo no passo está em cor e o que já estava montado, esmaecido. A V2 pedia só dois fios de solda; o Lite pede as 12 peças do topo, e é aí que está a dificuldade.</p>')
     A('      <h3>Ferramentas</h3>')
     A('      <ul><li>Ferro de solda de ponta fina e solda de 0,5 mm; fluxo em gel ou caneta; malha dessoldadora; pinça fina; lupa ou microscópio.</li><li>Opcional, mas ajuda no USB-C: estação de ar quente.</li><li>Multímetro; chave Phillips pequena; alicate de bico fino.</li></ul>')
     for i, (fig, title, texts, new) in enumerate(STEPS, 1):
@@ -266,12 +279,12 @@ def build():
         A('      <div class="tablewrap"><table><thead><tr><th colspan="5">%s · %s</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>' % (esc(name), esc(who)))
         for _a, item, qty, obs, il, ih, _c, tag in items:
             A('<tr><td>%s</td><td class="qty">%s</td><td>%s</td><td><span class="tag%s">%s</span></td><td class="num">%s</td></tr>'
-              % (esc(item), esc(qty), esc(obs), "" if tag == "visto" else " est", "preço visto" if tag == "visto" else "estimativa", esc(rng(il, ih))))
+              % (esc(item), esc(qty), esc(obs), "" if tag in ("visto", "cotado") else " est", {"visto": "preço visto", "cotado": "cotado"}.get(tag, "estimativa"), esc(rng(il, ih))))
         A('<tr class="sub"><td colspan="4">Subtotal</td><td class="num">%s</td></tr></tbody></table></div>' % esc(rng(l, hgh)))
     A('      <h3>Como ler estes números</h3>')
     A('''      <ul>
-        <li><b>Preço visto</b> é o de uma página de loja de 15 de novembro de 2026; <b>estimativa</b> é uma ordem de grandeza sem cotação.</li>
-        <li>Os preços da JLCPCB derivam da estimativa da V2: a preparação cai porque a montagem é de um lado só, as taxas por peça estendida caem porque saíram 6 tipos (encoder, USB-C, jack, TVS, ESD, JST SH), e as peças caem com elas. <b>Só a cotação real, com os arquivos enviados, confirma.</b> Se a placa se enquadrar na montagem econômica de um lado só da JLCPCB, o valor pode ser ainda menor: não foi verificado.</li>
+        <li><b>Cotado</b> é um valor da cotação da JLCPCB de 18 de novembro de 2026; <b>preço visto</b> é o de uma página de loja de 15 de novembro; <b>estimativa</b> é uma ordem de grandeza sem cotação.</li>
+        <li>A cotação da JLCPCB (placa US$ 39,50: engenharia 25,00 e placa 14,50; montagem econômica US$ 127,24) foi feita com o BOM do fundo; eu a recalculei só nas taxas de peça estendida (13 tipos × US$ 3,09). Supus 2 placas montadas, pelo valor das peças (US$ 65,00 contra US$ 149,26 para 5). <b>Confirme a quantidade na página de cotação.</b></li>
         <li>A LCSC é um pedido à parte, com frete próprio; é o que mais pesa no lado “montar em casa” (US$ %s).</li>
         <li>Sem caixa acústica, o alto-falante soa pouco: serve para conferir que há som, não para avaliar o timbre.</li>
       </ul>''' % esc(rng(sum(i[4] for i in rows[2][4]), sum(i[5] for i in rows[2][4])).replace("US$ ", "")))
