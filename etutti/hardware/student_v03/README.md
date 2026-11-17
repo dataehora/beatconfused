@@ -91,3 +91,7 @@ mas tira a proteção do USB. Não fiz isso; é decisão sua.
 ## Troca dos jacks (18 nov 2026)
 
 A JLCPCB marcou o PJ-327A 5JJ (SHOU HAN, C668605) como "difícil de processar" (revisão manual, possível taxa extra, e a linha vinha com quantidade 0 na planilha). O **XUNPU PJ-327A (C49284723)** não recebe o aviso e tem a mesma função (3 contatos + chave da ponta). `pcb/troca_jack.py` renumera os pads por função (1→2, 2→5, 3→6, 4→4, 5→3), renomeia as duas redes "unconnected" que levam número de pad, alarga os furos de posição para 1,2 mm e escreve o novo código; as trilhas não mudaram. DRC com paridade: só as 3 larguras de EN_B aceitas, 0 ligações faltando, paridade 0. O CPL dos jacks passou de 270° para **180°** (único giro que encaixa os pads, erro máximo 0,23 mm); o resto do CPL é igual. Continuam 17 tipos Extended.
+
+## Par USB refeito (19 nov 2026)
+
+Veja `USB.md`. O par D+/D− ficou **inteiro em B.Cu, sem vias, com 17,209 mm em cada linha (diferença 0,000 mm)**, sobre uma ilha de GND na In2 (antes a In2 era o pour de +3V3, com trilhas de sinal por baixo). Mudou só uma peça de lugar, o R202. `pcb/refaz_usb.py` + `pcb/costura_usb.py` (nesta ordem, depois de `build_board_v3.py` e `troca_jack.py`); `pcb/vista.py` desenha uma região da placa em PNG.

@@ -1,0 +1,182 @@
+{
+ "comprimento_antes_do_ajuste": {
+  "D+": 15.826,
+  "D-": 17.209
+ },
+ "comprimento": {
+  "D+": 17.209,
+  "D-": 17.209,
+  "diferenca": -0.0
+ },
+ "R202": {
+  "1": [
+   12.91,
+   12.75
+  ],
+  "2": [
+   11.89,
+   12.75
+  ]
+ },
+ "tirado_perto_do_par": {
+  "via GND": 1,
+  "trilha VBUS": 1
+ },
+ "pontas": {
+  "dp": [
+   [
+    10.64,
+    15.15
+   ],
+   [
+    11.700000000000001,
+    15.15
+   ],
+   [
+    14.3,
+    12.55
+   ],
+   [
+    19.273,
+    12.55
+   ],
+   [
+    19.673,
+    12.15
+   ],
+   [
+    19.673,
+    11.3
+   ],
+   [
+    18.981372123426393,
+    11.3
+   ],
+   [
+    18.981372123426393,
+    10.5
+   ],
+   [
+    19.673,
+    10.5
+   ],
+   [
+    19.673,
+    9.65
+   ],
+   [
+    20.072999999999997,
+    9.25
+   ],
+   [
+    21.9,
+    9.25
+   ]
+  ],
+  "dn": [
+   [
+    10.99,
+    16.0
+   ],
+   [
+    11.513,
+    15.477
+   ],
+   [
+    11.835447834896001,
+    15.477
+   ],
+   [
+    12.862447834896003,
+    14.45
+   ],
+   [
+    19.573,
+    14.45
+   ],
+   [
+    20.0,
+    14.02
+   ],
+   [
+    20.0,
+    9.785447834896
+   ],
+   [
+    20.208447834896,
+    9.577
+   ],
+   [
+    21.3,
+    9.577
+   ],
+   [
+    21.47,
+    9.75
+   ],
+   [
+    21.9,
+    9.75
+   ]
+  ]
+ },
+ "tirado pelo DRC (depois do par)": {},
+ "tirado pelo DRC (depois de rotear)": {
+  "ponta que e ligacao, mantida": 5
+ },
+ "drc": {
+  "erros": {
+   "track_width": 3
+  },
+  "avisos": {
+   "via_dangling": 2,
+   "track_dangling": 3,
+   "isolated_copper": 1
+  },
+  "ligacoes_faltando": 0,
+  "paridade": 0
+ },
+ "drc_detalhe": [
+  [
+   "track_width",
+   "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+   [
+    [
+     "Track [EN_B] on B.Cu, length 0.0351 mm",
+     {
+      "x": 144.6753,
+      "y": 59.1102
+     }
+    ]
+   ]
+  ],
+  [
+   "track_width",
+   "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+   [
+    [
+     "Track [EN_B] on B.Cu, length 0.5385 mm",
+     {
+      "x": 144.1368,
+      "y": 59.1102
+     }
+    ]
+   ]
+  ],
+  [
+   "track_width",
+   "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+   [
+    [
+     "Track [EN_B] on B.Cu, length 0.1502 mm",
+     {
+      "x": 144.7001,
+      "y": 59.135
+     }
+    ]
+   ]
+  ]
+ ],
+ "faltando_detalhe": [],
+ "falhas": []
+}
