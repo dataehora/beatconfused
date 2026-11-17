@@ -2,7 +2,7 @@
  "pecas": {
   "tampa": {
    "solidos": 1,
-   "volume_cm3": 55.21,
+   "volume_cm3": 55.24,
    "caixa_mm": [
     252.0,
     100.0,
@@ -16,17 +16,21 @@
    "fonte_do_logo": "Michroma-Regular.ttf",
    "fonte_e_a_da_SPEC": true,
    "logo_y": [
-    26.6,
-    73.4
+    26.53,
+    73.47
    ],
-   "logo_x": [
-    9.42,
-    12.78
-   ],
+   "altura_do_logo_mm": 46.95,
+   "folga_entre_as_linhas_mm": 1.4,
+   "traco_engrossado_mm": 0.1,
    "altura_das_letras_mm": [
-    3.37,
+    3.57,
     1.33
-   ]
+   ],
+   "eTUTTI_x": [
+    9.32,
+    12.88
+   ],
+   "STUDENT_V2_so_tinta": true
   },
   "base": {
    "solidos": 1,
@@ -567,7 +571,7 @@
    11.35,
    12.95
   ],
-  "aba_do_poco_ate": 13.149999999999999,
+  "aba_do_poco_ate": 13.1,
   "alojamento_da_tecla": 11.2,
   "curso": 4.1,
   "topo_dos_botoes": {

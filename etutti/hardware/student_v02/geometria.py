@@ -47,7 +47,8 @@ USB_Z, JACK_Z = 1.7, 2.8
 # SPEC v2: closed holes in the left wall. The sockets end 0.3 mm behind the wall's inner face, so the
 # board goes into the lid from below; the holes take the plug's body.
 CONN_FRONT_X = WALL + 0.3
-USB_OPENING = (12.5, 7.0, 3.5)        # width (y), height (z), corner radius
+USB_OPENING = (12.8, 7.0, 3.5)        # width (y), height (z), corner radius (SPEC v3: 12.8 wide)
+HOLE_CHAMFER = 0.5                    # SPEC v3: 0.5 x 45 deg on the outer mouth of the three holes
 JACK_OPENING_D = 6.5
 # the acoustic box (SPEC v2: L-shaped, 10-12 cm3): its outside in plan, and the part that is tall
 BOX_RECT = (17.5, 57.5, 66.0, 88.7)

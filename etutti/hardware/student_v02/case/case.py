@@ -55,7 +55,7 @@ STEM_TOP = 14.8               # top of a switch's cross, key up
 TRAVEL = 4.1
 GRID_Z0, GRID_T = 11.35, 1.6  # the grid: 0.15 above the housings (SPEC v2)
 GRID_Z1 = GRID_Z0 + GRID_T    # 12.95 = the well's floor
-FLANGE_GAP = 0.2
+FLANGE_GAP = 0.15                # SPEC v3
 CHAMFER = (6.0, 3.5)          # horizontal, vertical
 EDGE_R = 1.5
 GROOVES = (8.0, 10.2, 12.4)   # centres
@@ -98,6 +98,8 @@ NUT_BOSS_D, NUT_POCKET_D, NUT_POCKET_H = 7.4, 5.2, 3.2      # M2 nut (4.6 across
 USB = {"y": G.USB_Y, "z": G.USB_Z, "w": G.USB_OPENING[0], "h": G.USB_OPENING[1], "r": G.USB_OPENING[2]}
 JACK_D = G.JACK_OPENING_D
 ENGRAVE = 0.4                   # recesses for paint
+STROKE_GROW = 0.1               # SPEC v3: "eTUTTI" outlines grown by 0.1 mm on each side
+PAINT_T = 0.05                  # the pad-printed "STUDENT · V2": a skin of paint, no recess
 LINE_UNDER_WINDOW = (1.5, 0.5)  # gap below the window, width
 LOGO = {"x0": 8.6, "box": 5.0, "y0": 8.0, "y1": 92.0, "gap": 1.4,
         "big": ("eTUTTI", 4.4, 0.5), "small": ("STUDENT · V2", 1.7, 0.6)}      # text, em size, letter spacing
@@ -181,7 +183,7 @@ def font(paths):
     return next(p for p in paths if os.path.exists(p))
 
 
-def polygonised(shape, depth=1.0, step=0.06):
+def polygonised(shape, depth=1.0, step=0.06, grow=0.0):
     """A text solid made again from straight-sided outlines (points every `step` mm on the curves):
     OpenCascade does not finish cutting some glyphs' own spline edges out of the lid."""
     out = None
@@ -205,13 +207,25 @@ def polygonised(shape, depth=1.0, step=0.06):
             if (clean[0] - clean[-1]).Length < 1e-4:
                 clean.pop()
             return cq.Wire.makePolygon(clean + [clean[0]])
-        face = cq.Face.makeFromWires(poly(f.outerWire()), [poly(w) for w in f.innerWires()])
+        if grow:
+            def grown(w, d):        # offset a polygon outwards (d > 0) or inwards, whichever way it winds
+                area = cq.Face.makeFromWires(w).Area()
+                for sign in (1, -1):
+                    r = w.offset2D(sign * d, "arc")[0]
+                    if (cq.Face.makeFromWires(r).Area() > area) == (d > 0):
+                        return r
+                raise ValueError("offset did not change the outline")
+            outer = grown(poly(f.outerWire()), grow)
+            holes = [grown(poly(w), -grow) for w in f.innerWires()]
+        else:
+            outer, holes = poly(f.outerWire()), [poly(w) for w in f.innerWires()]
+        face = cq.Face.makeFromWires(outer, holes)
         sol = cq.Workplane("XY").add(cq.Solid.extrudeLinear(face, cq.Vector(0, 0, depth)))
         out = sol if out is None else out.union(sol)
     return out
 
 
-def letters(txt, size, spacing, path):
+def letters(txt, size, spacing, path, depth=1.0, grow=0.0):
     """txt as solids on the XY plane: advance +x from x = 0, baseline y = 0, z 0 to 1.
     Letter by letter, so the letter spacing of the canvas can be given. Returns (shapes, length, height)."""
     out, x, top = [], 0.0, 0.0
@@ -226,7 +240,7 @@ def letters(txt, size, spacing, path):
         else:
             g = cq.Workplane("XY").text(ch, size, 1.0, fontPath=path, halign="left", valign="bottom")
             bb = g.val().BoundingBox()
-            g = polygonised(g).translate((x - bb.xmin, -bb.ymin, 0))
+            g = polygonised(g, depth=depth, grow=grow).translate((x - bb.xmin, -bb.ymin, 0))
             w = bb.xlen
             top = max(top, bb.ylen)
         out.append(g)
@@ -234,25 +248,41 @@ def letters(txt, size, spacing, path):
     return out, x - spacing - 0.08 * size, top
 
 
-def logo_cutter():
-    """eTUTTI + STUDENT . V2 standing along the left edge, read from the front towards the back
-    (as the canvas: the page turned a quarter turn), centred between y 8 and 92."""
+def logo_layout():
+    """Both lines of the logo: "eTUTTI" (cutters for the recess, outlines grown by STROKE_GROW) and
+    "STUDENT . V2" (a thin skin of paint, no recess), standing along the left edge, read from the front
+    towards the back, centred between y 8 and 92, with LOGO["gap"] mm clear between the two lines."""
     path = font(LOGO_FONTS)
-    big, lb, hb = letters(LOGO["big"][0], LOGO["big"][1], LOGO["big"][2], path)
-    small, ls, hs = letters(LOGO["small"][0], LOGO["small"][1], LOGO["small"][2], path)
-    total = lb + LOGO["gap"] + ls
+    big, lb, hb = letters(LOGO["big"][0], LOGO["big"][1], LOGO["big"][2], path, grow=STROKE_GROW)
+    small, ls, hs = letters(LOGO["small"][0], LOGO["small"][1], LOGO["small"][2], path, depth=PAINT_T)
+    g2 = STROKE_GROW
+    lb_full = lb + 2 * g2                          # the grown "eTUTTI"
+    s_small = lb_full + LOGO["gap"]                # where "STUDENT" starts, along the logo
+    total = s_small + ls
     ymid = (LOGO["y0"] + LOGO["y1"]) / 2
     xc = LOGO["x0"] + LOGO["box"] / 2
-    out = []
-    start = ymid + total / 2                      # SPEC y of the first letter's foot
-    for shapes, h, s0 in ((big, hb, 0.0), (small, hs, lb + LOGO["gap"])):
-        for g in shapes:
-            g = g.rotate((0, 0, 0), (0, 0, 1), 90)       # advance +y (model), tops towards -x
-            out.append(g.translate((xc + h / 2, -(start - s0), ZT - ENGRAVE)))
-    stroke = "Michroma" in os.path.basename(path)
-    return out, {"fonte_do_logo": os.path.basename(path), "fonte_e_a_da_SPEC": stroke,
-                 "logo_y": [round(start - total, 1), round(start, 1)], "logo_x": [round(xc - hb / 2, 2), round(xc + hb / 2, 2)],
-                 "altura_das_letras_mm": [round(hb, 2), round(hs, 2)]}
+    start = ymid + total / 2                       # SPEC y of the first letter's foot
+    cut, paint = [], []
+    for g in big:
+        g = g.rotate((0, 0, 0), (0, 0, 1), 90)     # advance +y (model), tops towards -x
+        cut.append(g.translate((xc + hb / 2, -(start - g2), ZT - ENGRAVE)))
+    for g in small:
+        g = g.rotate((0, 0, 0), (0, 0, 1), 90)
+        paint.append(g.translate((xc + hs / 2, -(start - s_small), ZT)))
+    y_of = lambda ws: (min(w.val().BoundingBox().ymin for w in ws), max(w.val().BoundingBox().ymax for w in ws))
+    (b0, b1), (s0, s1) = y_of(cut), y_of(paint)
+    gap = min(abs(s0 - b1), abs(b0 - s1))
+    info = {"fonte_do_logo": os.path.basename(path), "fonte_e_a_da_SPEC": "Michroma" in os.path.basename(path),
+            "logo_y": [round(start - total, 2), round(start, 2)], "altura_do_logo_mm": round(total, 2),
+            "folga_entre_as_linhas_mm": round(gap, 2), "traco_engrossado_mm": STROKE_GROW,
+            "altura_das_letras_mm": [round(hb + 2 * g2, 2), round(hs, 2)],
+            "eTUTTI_x": [round(xc - hb / 2 - g2, 2), round(xc + hb / 2 + g2, 2)], "STUDENT_V2_so_tinta": True}
+    return cut, paint, info
+
+
+def logo_cutter():
+    cut, _paint, info = logo_layout()
+    return cut, info
 
 
 def label_cutter(txt, y_start):
@@ -359,6 +389,14 @@ def tampa():
                     .rect(USB["w"], USB["h"]).extrude(WALL + 1.6).edges("|X").fillet(min(USB["r"], USB["h"] / 2 - 0.01)))
     for yc in (G.OUT_Y, G.IN_Y):
         body = body.cut(cq.Workplane("YZ").workplane(offset=-1).center(-yc, G.JACK_Z).circle(JACK_D / 2).extrude(WALL + 1.6))
+    # SPEC v3: 0.5 x 45 deg on the outer mouth of the three holes, to guide the plug
+    c, e = G.HOLE_CHAMFER, 0.02
+    body = body.cut(cq.Workplane("YZ").workplane(offset=-e).center(-USB["y"], USB["z"])
+                    .slot2D(USB["w"] + 2 * (c + e), USB["h"] + 2 * (c + e))
+                    .workplane(offset=c + e).slot2D(USB["w"], USB["h"]).loft(combine=True))
+    for yc in (G.OUT_Y, G.IN_Y):
+        cone = cq.Solid.makeCone(JACK_D / 2 + c + e, JACK_D / 2, c + e, pnt=cq.Vector(-e, -yc, G.JACK_Z), dir=cq.Vector(1, 0, 0))
+        body = body.cut(cq.Workplane("XY").add(cone))
     return body, bottom_r
 
 
@@ -623,11 +661,13 @@ def main():
     # the paint that fills the recesses, for the renders only (not a piece)
     wx0, wy0, wx1, wy1 = WINDOW
     ly = wy1 + LINE_UNDER_WINDOW[0]
-    ink = [box(wx0, ly, wx1, ly + LINE_UNDER_WINDOW[1], ZT - ENGRAVE, ZT - 0.05)] + logo_cutter()[0]
+    cut, paint, _info = logo_layout()
+    ink = [box(wx0, ly, wx1, ly + LINE_UNDER_WINDOW[1], ZT - ENGRAVE, ZT - 0.05)] + cut
     for txt, yc in (("OUT", G.OUT_Y), ("IN", G.IN_Y)):
         ink += label_cutter(txt, yc + JACK_D / 2 + LABEL_GAP)
-    comp = cq.Compound.makeCompound([s_ for g in ink for s_ in g.solids().vals()])
-    cq.exporters.export(cq.Workplane("XY").add(comp), os.path.join(OUT, "tinta.stl"), tolerance=0.01, angularTolerance=0.2)
+    for name, parts in (("tinta", ink), ("tinta_marrom", paint)):       # dark #2B2925 / brown #8A3A22
+        comp = cq.Compound.makeCompound([s_ for g in parts for s_ in g.solids().vals()])
+        cq.exporters.export(cq.Workplane("XY").add(comp), os.path.join(OUT, name + ".stl"), tolerance=0.01, angularTolerance=0.2)
     info["teclas"] = [{"fileira": r, "x": x, "y": y, "nota": NOTES[r][[k[1] for k in G.KEYS if k[0] == r].index(x)],
                        "tipo": kind_of(NOTES[r][[k[1] for k in G.KEYS if k[0] == r].index(x)])} for r, x, y in G.KEYS]
     info["niveis"] = {"base": Z0, "divisa": ZS, "tampo": ZT, "teto_da_tampa": ZT - LID_T, "grade": [GRID_Z0, GRID_Z1],
