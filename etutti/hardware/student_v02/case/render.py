@@ -69,6 +69,7 @@ def scene():
     S += stripes()
     ink = stl("tinta")                      # the paint in the recesses, lifted a hair so that it shows
     S.append((ink.translate((-0.03, 0, 0.03), inplace=False), "#2B2925", 1.0, "tampa"))
+    S.append((stl("tinta_marrom").translate((-0.03, 0, 0.02), inplace=False), "#8A3A22", 1.0, "tampa"))   # pad-printed, SPEC v3
     S.append((stl("base"), GREY, 1.0, "base"))
     S.append((stl("grade"), "#1C1B1A", 1.0, "grade"))        # FR-4, matte black mask
     sp = stl("espacador")
@@ -187,6 +188,9 @@ def main():
          clip=((-1, 0, 0), (40.0, 0, 0)))       # 3 mm beside the speaker's axis: a rib of the box is on the axis
     shot(S, "isometrico.png", [(cx - 190, cy - 300, 250), (cx, cy + 5, 5), (0, 0, 1)], size=(2400, 1400), parallel=False, zoom=1.35)
     shot(S, "parede.png", [(-400, cy, 4), (0, cy, 4), (0, 0, 1)], size=(2400, 800), scale=22)
+    shot(S, "parede_zoom.png", [(-400, -38, 3), (0, -38, 3), (0, 0, 1)], size=(2400, 800), scale=8.5)
+    shot(S, "logo.png", [(34, -50, 500), (34, -50, 0), (0, 1, 0)], size=(1500, 1500), scale=52)
+    shot(S, "logo_iso.png", [(60, -50 + 90, 90), (22, -50, 14), (0, 0, 1)], size=(2000, 1300), parallel=False, zoom=1.0)
     off = {"tampa": (0, 0, 70), "janela": (0, 0, 70), "knobs": (0, 0, 95), "botoes": (0, 0, 50), "grade": (0, 0, 28),
            "parafusos": (0, 0, 40), "caixa": (0, 0, 44), "falante": (0, 0, 56), "tela": (0, 0, 60), "base": (0, 0, -45),
            "bateria": (0, 0, -22)}

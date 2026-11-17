@@ -18,7 +18,7 @@
  "plugues": {
   "USB-C": {
    "furo_mm": [
-    12.5,
+    12.8,
     7.0
    ],
    "corpo_maximo_pela_norma_mm": [
@@ -26,7 +26,7 @@
     6.5
    ],
    "folga_por_lado_mm": [
-    0.075,
+    0.225,
     0.25
    ],
    "ponta_do_plugue_mm": 6.65,
@@ -74,7 +74,7 @@
    "botao_apertado_ate_a_tampa": 7.043
   },
   "botao_ate_a_parede_do_poco_min": 5.578,
-  "aba_do_poco_ate_a_grade": 0.2,
+  "aba_do_poco_ate_a_grade": 0.15,
   "grade_ate_as_teclas": 0.15,
   "grade_ate_a_parede_da_tampa": 2.47,
   "placa_ate_a_parede": 0.5,
@@ -96,10 +96,10 @@
   "encoders (pernas)_ate_a_base": 4.441,
   "espacadores_ate_as_teclas": 6.553,
   "espacadores_ate_pecas_de_cima": 28.092,
-  "postes_da_tampa_ate_a_grade": 0.2,
+  "postes_da_tampa_ate_a_grade": 0.15,
   "tampa_ate_pecas_de_cima": 2.405,
   "tampa_ate_encoders": 1.6,
-  "J201_ate_a_tampa": 1.675,
+  "J201_ate_a_tampa": 1.785,
   "J201_ate_a_base": 2.8,
   "J201_frente_atras_da_parede": 0.3,
   "J301_ate_a_tampa": 0.808,
