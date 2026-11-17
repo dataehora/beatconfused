@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title>BeatConfused | eTutti Student Lite</title>
+  <meta name="description" content="eTutti Student Lite: rascunho de baixo custo do Student V2, sem tela e sem case, com a placa montada só no fundo; peças, montagem em casa e orçamento." />
+  <!-- Written by etutti/hardware/student_lite/pagina.py: edit the texts and the prices there.
+       Part of the unlisted eTutti work in progress: kept out of the sitemap and of search results. -->
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#F3F1EC" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Michroma&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
+  <link rel="stylesheet" href="styles.css?v=20261117" />
+</head>
+<body>
+  <div class="stripes" aria-hidden="true"></div>
+  <main class="page">
+    <a class="site-title" href="/">beatconfused.com</a>
+    <header class="hero">
+      <p class="eyebrow">BeatConfused Studio · rascunho de custo</p>
+      <h1>eTutti<small>STUDENT · LITE</small></h1>
+      <p class="lead">A mesma placa do Student V2, com três cortes para medir quanto custa a versão mais barata: a JLCPCB monta só o fundo, sem tela e sem case. O resto da montagem é em casa.</p>
+      <a href="img/lite_final.jpg"><img src="img/lite_final.jpg" width="1800" height="1080" alt="A placa do Student Lite montada, com teclas, grade preta e dois knobs, sem case." loading="lazy" /></a>
+    </header>
+    <nav class="toc" aria-label="Seções">
+      <a href="#mudancas">O que muda</a><a href="#pecas">Peças</a><a href="#explodida">Vista explodida</a>
+      <a href="#montagem">Montagem em casa</a><a href="#orcamento">Orçamento</a>
+    </nav>
+    <section id="mudancas">
+      <p class="kicker">1 · O que muda</p>
+      <h2>Três cortes sobre o Student V2</h2>
+      <p class="sub">Nada na placa nem na grade foi redesenhado: os arquivos de fabricação são os da V2. O que muda é o que se encomenda e o que se monta em casa.</p>
+      <div class="grid">
+<div class="card"><h3>1 · JLCPCB monta só o fundo</h3><p>Das 137 peças da V2, 125 estão no fundo e a JLCPCB as solda. As 12 do topo ficam sem montar; delas, 11 são soldadas em casa (USB-C, 2 jacks, ESD, TVS, 4 passivos e os 2 encoders com os knobs) e a 12ª, o conector da tela, não existe no Lite. A montagem de um lado só cobra menos de preparação e de peças estendidas.</p></div>
+<div class="card"><h3>2 · Sem tela</h3><p>Saem a tela OLED, o cabo JST SH e a janela de acrílico. O conector J401 fica sem peça. O firmware da V2 ainda não existe, e o do Lite não usaria a tela.</p></div>
+<div class="card"><h3>3 · Sem case</h3><p>Saem a tampa, a base, os 28 botões, os knobs e os espaçadores impressos, a caixa acústica, a tinta e os parafusos do case. A placa fica aberta, com 4 pés de borracha, e a grade FR-4 continua fixando as teclas.</p></div>
+      </div>
+      <h3>O que continua igual</h3>
+      <p>28 teclas Gateron KS-20 Magnetic com velocity, a placa de 4 camadas com sensores Hall, o módulo MicroMod Teensy, o codec com saída de fone e entrada de microfone, o alto-falante de 28 mm (agora sem caixa), a bateria LiPo e o USB-C.</p>
+      <div class="status">
+        <h3>Estado</h3>
+        <ul>
+          <li><b>Pronto:</b> a lista de peças do fundo e do topo, os arquivos de montagem só do fundo (<code>fab/student_lite_cpl.csv</code> e <code>_bom.csv</code>), as imagens, o orçamento.</li>
+          <li><b>Não verificado:</b> a prévia da JLCPCB com o CPL só do fundo, o encaixe das peças do topo à mão, e se o firmware pode rodar sem a tela. Os preços da JLCPCB são estimativas, derivadas da V2.</li>
+          <li><b>Nada foi encomendado nem montado.</b></li>
+        </ul>
+      </div>
+    </section>
+    <section id="pecas">
+      <p class="kicker">2 · Peças</p>
+      <h2>O que leva, e quem solda cada parte</h2>
+      <p class="sub">Quatro grupos: o que a JLCPCB monta, o que se solda em casa, o que se compra à parte e o que saiu.</p>
+      <h3>Montada pela JLCPCB (só o fundo)</h3><p class="note">125 peças por placa, 32 linhas de BOM; é a lista de <code>fab/student_lite_bom.csv</code>.</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Placa principal, 4 camadas</td><td class="qty">1</td><td>JLCPCB</td><td>a mesma da V2: nenhum arquivo de fabricação muda</td></tr>
+<tr><td>Sensor Hall TMAG5253 (C22401868)</td><td class="qty">28</td><td>JLCPCB (LCSC)</td><td>um sob cada tecla</td></tr>
+<tr><td>Codec SGTL5000 (C2651833), amplificador MAX98357A (C910544), carregador BQ24074 (C54313), conversor TPS63001 (C28060)</td><td class="qty">4</td><td>JLCPCB (LCSC)</td><td>som, carga e 3,3 V</td></tr>
+<tr><td>Multiplexadores 74HC4067 (C179326)</td><td class="qty">2</td><td>JLCPCB (LCSC)</td><td>leem as 28 teclas por 2 canais</td></tr>
+<tr><td>Conector M.2 do módulo (J101), espaçador do módulo (H101), JST PH da bateria (J202), botão Program (SW403)</td><td class="qty">4</td><td>JLCPCB (LCSC)</td><td>tudo no fundo</td></tr>
+<tr><td>Resistores, capacitores, ferrites, indutor e demais passivos</td><td class="qty">cerca de 80</td><td>JLCPCB (LCSC)</td><td>0402, 0603 e 0805</td></tr>
+</tbody></table></div>
+      <h3>Soldadas em casa (topo)</h3><p class="note">11 peças: o que a JLCPCB não solda quando só monta o fundo. Lista em <code>fab/student_lite_montar_em_casa.csv</code>.</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Encoders EC11E18244AU (SW401, SW402)</td><td class="qty">2</td><td>LCSC</td><td>furo passante, 5 pinos e 2 de fixação cada; levam os knobs</td></tr>
+<tr><td>USB-C TYPE-C-31-M-12 (J201)</td><td class="qty">1</td><td>LCSC</td><td>SMD de 16 pinos e 4 pinos de fixação: a peça mais difícil</td></tr>
+<tr><td>Jacks PJ-327A (J301 OUT, J302 IN)</td><td class="qty">2</td><td>LCSC</td><td>SMD com 2 pinos de fixação</td></tr>
+<tr><td>USBLC6-2SC6 (U201), SMF5.0A (D201)</td><td class="qty">2</td><td>LCSC</td><td>SOT-23-6 e SOD-123F</td></tr>
+<tr><td>10 µF 0603 (C210), 100 nF 0402 (C308), 100 kΩ 0402 (R303), 1 MΩ 0402 (R304)</td><td class="qty">4</td><td>LCSC</td><td>as menores peças da placa</td></tr>
+</tbody></table></div>
+      <h3>Comprado à parte, encaixado ou soldado em casa</h3><p class="note">O que não vai na placa.</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Módulo MicroMod Teensy (DEV-16402)</td><td class="qty">1</td><td>SparkFun / DigiKey</td><td>no conector M.2 do verso, com 1 parafuso M2,5 × 3</td></tr>
+<tr><td>Teclas Gateron KS-20 Magnetic Orange</td><td class="qty">28</td><td>Gateron</td><td>apenas encaixadas na placa: sem solda</td></tr>
+<tr><td>Grade FR-4 de 1,6 mm, máscara preta fosca</td><td class="qty">1</td><td>JLCPCB</td><td>28 furos de Ø 6,2 mm; fica a 0,15 mm acima das teclas</td></tr>
+<tr><td>Espaçadores de nylon M2 de 11 mm, parafusos M2 × 16 e porcas</td><td class="qty">10 + 10 + 10</td><td>ferragem</td><td>fixam a grade pela borda</td></tr>
+<tr><td>Alto-falante Ø 28 × 5 mm, 8 Ω</td><td class="qty">1</td><td>loja de eletrônica</td><td>fios soldados nos 2 pads do J501</td></tr>
+<tr><td>Bateria LiPo 503450 de 3 fios</td><td class="qty">1</td><td>eBay / Amazon</td><td>no J202</td></tr>
+<tr><td>Knobs</td><td class="qty">2</td><td>loja de eletrônica</td><td>no eixo dos encoders</td></tr>
+<tr><td>Cabo USB-C</td><td class="qty">1</td><td>—</td><td>carga, MIDI e configuração</td></tr>
+</tbody></table></div>
+      <h3>Não faz parte do Lite</h3><p class="note">Tudo isto está na V2 e foi cortado.</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Case (tampa e base), botões, espaçadores impressos, knobs impressos e caixa acústica</td><td class="qty">—</td><td>impressão 3D</td><td>o Lite é uma placa aberta, para avaliar o custo</td></tr>
+<tr><td>Tela OLED, cabo JST SH, conector J401, janela de acrílico</td><td class="qty">—</td><td>—</td><td>o firmware da V2 também precisaria ignorar a tela</td></tr>
+<tr><td>Tinta, vinil, tela acústica, espuma, silicone e parafusos do case</td><td class="qty">—</td><td>—</td><td></td></tr>
+</tbody></table></div>
+    </section>
+    <section id="explodida">
+      <p class="kicker">3 · Vista explodida</p>
+      <h2>Da placa aos knobs</h2>
+      <p class="sub">As peças em ordem de baixo para cima. O módulo fica sob a placa.</p>
+      <div class="exploded"><a href="img/lite_explodido.jpg"><img src="img/lite_explodido.jpg" width="1800" height="1350" alt="Vista explodida da placa do Lite com as 9 peças numeradas." loading="lazy" style="width:100%;height:auto;display:block;border-radius:6px" /></a>
+<span class="pin" style="left:72.03%;top:55.64%" aria-hidden="true">1</span>
+<span class="pin" style="left:15.76%;top:56.69%" aria-hidden="true">2</span>
+<span class="pin" style="left:23.88%;top:44.33%" aria-hidden="true">3</span>
+<span class="pin" style="left:25.78%;top:70.68%" aria-hidden="true">4</span>
+<span class="pin" style="left:73.11%;top:39.09%" aria-hidden="true">5</span>
+<span class="pin" style="left:63.95%;top:28.01%" aria-hidden="true">6</span>
+<span class="pin" style="left:55.56%;top:24.44%" aria-hidden="true">7</span>
+<span class="pin" style="left:84.34%;top:19.07%" aria-hidden="true">8</span>
+<span class="pin" style="left:20.51%;top:18.73%" aria-hidden="true">9</span>
+</div>
+      <ol class="legend">
+<li><div>Placa principal<br /><span>montada pela JLCPCB no fundo</span></div></li>
+<li><div>Peças pequenas, USB-C e jacks<br /><span>soldados em casa, no topo</span></div></li>
+<li><div>Encoders × 2<br /><span>soldados em casa</span></div></li>
+<li><div>Módulo MicroMod Teensy<br /><span>sob a placa, no conector M.2</span></div></li>
+<li><div>Teclas Gateron × 28<br /><span>apoiadas na placa</span></div></li>
+<li><div>Espaçadores de nylon × 10<br /><span>11 mm, na borda</span></div></li>
+<li><div>Grade FR-4 de 1,6 mm<br /><span>máscara preta fosca</span></div></li>
+<li><div>Parafusos M2 × 16 e porcas × 10<br /><span>porca sob a placa</span></div></li>
+<li><div>Knobs × 2<br /><span>sobre os eixos dos encoders</span></div></li>
+      </ol>
+    </section>
+    <section id="montagem">
+      <p class="kicker">4 · Montagem em casa</p>
+      <h2>Sete passos, com solda fina</h2>
+      <p class="sub">Em cada figura, o que é novo no passo está em cor e o que já estava montado, esmaecido. A V2 pedia só dois fios de solda; o Lite pede as 11 peças do topo, e é aí que está a dificuldade.</p>
+      <h3>Ferramentas</h3>
+      <ul><li>Ferro de solda de ponta fina e solda de 0,5 mm; fluxo em gel ou caneta; malha dessoldadora; pinça fina; lupa ou microscópio.</li><li>Opcional, mas ajuda no USB-C: estação de ar quente.</li><li>Multímetro; chave Phillips pequena; alicate de bico fino.</li></ul>
+      <article class="step"><figure><a href="img/lite_jlc_fundo.jpg"><img src="img/lite_jlc_fundo.jpg" width="1400" height="840" alt="Passo 1: Receber e conferir a placa" loading="lazy" /></a></figure><div><h3><span class="num">1</span>Receber e conferir a placa</h3><p>A JLCPCB entrega a placa com o fundo pronto: sensores, codec, amplificador, carregador, conversor, multiplexadores e o conector do módulo. O topo está nu, só com os pads.</p><p>Confira a olho: os conectores sobre os pads, o pino 1 dos chips e dos 28 sensores. Meça com o multímetro que não há curto entre o GND e o 3,3 V antes de soldar qualquer coisa.</p><p class="new">Novo neste passo: Nada: é o que chega pelo correio (o verso da placa).</p></div></article>
+      <article class="step"><figure><a href="img/lite_passo_2.jpg"><img src="img/lite_passo_2.jpg" width="1400" height="840" alt="Passo 2: Soldar as peças pequenas e os conectores do topo" loading="lazy" /></a></figure><div><h3><span class="num">2</span>Soldar as peças pequenas e os conectores do topo</h3><p>Com fluxo, pinça e ferro de ponta fina (ou ar quente): primeiro os quatro passivos (C210, C308, R303, R304), depois U201 (SOT-23-6) e D201 (a faixa do catodo para o lado certo).</p><p>Em seguida, os jacks J301 e J302 e, por último, o USB-C J201: ponha primeiro os pinos de fixação, depois alinhe os 16 pinos e solde com fluxo em abundância. Passe a lupa para ver pontes entre pinos.</p><p class="new">Novo neste passo: USB-C, 2 jacks, ESD, TVS e 4 passivos.</p></div></article>
+      <article class="step"><figure><a href="img/lite_passo_3.jpg"><img src="img/lite_passo_3.jpg" width="1400" height="840" alt="Passo 3: Encoders e knobs" loading="lazy" /></a></figure><div><h3><span class="num">3</span>Encoders e knobs</h3><p>Encaixe os dois encoders EC11E nos furos (volume à esquerda, registro à direita), segure-os contra a placa e solde os 5 pinos e os 2 de fixação de cada um, de baixo.</p><p>Encaixe os knobs nos eixos de 20 mm.</p><p class="new">Novo neste passo: 2 encoders e 2 knobs.</p></div></article>
+      <article class="step"><figure><a href="img/lite_passo_4.jpg"><img src="img/lite_passo_4.jpg" width="1400" height="840" alt="Passo 4: Módulo" loading="lazy" /></a></figure><div><h3><span class="num">4</span>Módulo</h3><p>Pelo verso, encaixe o módulo MicroMod Teensy no conector M.2 a 30° e prenda-o ao espaçador com o parafuso M2,5 × 3.</p><p>Com a placa ainda sem teclas e sem bateria, ligue o USB-C a um computador: nada deve esquentar. Sem firmware da V2, o teste de sinais fica para depois.</p><p class="new">Novo neste passo: Módulo MicroMod Teensy.</p></div></article>
+      <article class="step"><figure><a href="img/lite_passo_5.jpg"><img src="img/lite_passo_5.jpg" width="1400" height="840" alt="Passo 5: Teclas" loading="lazy" /></a></figure><div><h3><span class="num">5</span>Teclas</h3><p>Pressione as 28 teclas Gateron nos seus lugares: dois pinos de plástico por tecla a posicionam, e não há solda (o sensor Hall está no verso).</p><p>Para trocar as molas, faça-o agora, com uma tecla de teste primeiro.</p><p class="new">Novo neste passo: 28 teclas Gateron KS-20.</p></div></article>
+      <article class="step"><figure><a href="img/lite_passo_6.jpg"><img src="img/lite_passo_6.jpg" width="1400" height="840" alt="Passo 6: Grade" loading="lazy" /></a></figure><div><h3><span class="num">6</span>Grade</h3><p>Ponha os 10 espaçadores de nylon sobre os furos da borda, a grade FR-4 por cima e os parafusos M2 × 16; as porcas ficam por baixo da placa. Se a grade encostar nas teclas, calce os espaçadores com arruelas finas até sobrar cerca de 0,15 mm.</p><p>Cole os 4 pés de borracha sob a placa.</p><p class="new">Novo neste passo: 10 espaçadores, grade FR-4, 10 parafusos, porcas e pés.</p></div></article>
+      <article class="step"><figure><a href="img/lite_final.jpg"><img src="img/lite_final.jpg" width="1800" height="1080" alt="Passo 7: Alto-falante e bateria" loading="lazy" /></a></figure><div><h3><span class="num">7</span>Alto-falante e bateria</h3><p>Solde os dois fios do alto-falante nos pads do J501 (no topo, perto da borda inferior).</p><p>Antes de ligar a bateria: meça o terceiro fio (cerca de 10 kΩ até o negativo) e confira a ordem dos fios contra o J202 (1 positivo, 2 NTC, 3 negativo). Positivo e negativo invertidos danificam a placa.</p><p class="new">Novo neste passo: Alto-falante e bateria.</p></div></article>
+      <h3>Primeira ligação</h3>
+      <p>O firmware da Student V2 ainda não existe: teclas, som e microfone só poderão ser testados depois dele. Até lá, o que se confere é a eletrônica: sem curto na entrada, módulo reconhecido pelo computador e tensões no lugar.</p>
+    </section>
+    <section id="orcamento">
+      <p class="kicker">5 · Orçamento</p>
+      <h2>Quanto custa o Lite</h2>
+      <p class="sub">Um instrumento, pedindo o mínimo à JLCPCB (5 placas, 2 montadas). Faixas em dólares; libras a £ 1 = US$ 1,30 (suposição). Fora: frete, IVA e impostos.</p>
+      <div class="tablewrap"><table><thead><tr><th>Pedido</th><th>Fornecedor</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>JLCPCB · placa, montagem só no fundo</td><td>JLCPCB (peças da LCSC)</td><td class="num">US$ 148 a 187</td></tr>
+<tr><td>JLCPCB · grade do teclado</td><td>JLCPCB</td><td class="num">US$ 10 a 20</td></tr>
+<tr><td>LCSC · peças do topo, soldadas em casa</td><td>LCSC</td><td class="num">US$ 14,50 a 34,50</td></tr>
+<tr><td>Gateron</td><td>Loja da Gateron (ou Chosfox, Ukeebs)</td><td class="num">US$ 24,50 a 26,60</td></tr>
+<tr><td>SparkFun · módulo</td><td>DigiKey UK ou SparkFun</td><td class="num">US$ 24,30 a 29,16</td></tr>
+<tr><td>eBay / Amazon · energia</td><td>eBay, Amazon</td><td class="num">US$ 6,50 a 10,40</td></tr>
+<tr><td>Eletrônica de bancada e ferragem</td><td>Pimoroni, Adafruit, Mouser, Amazon, eBay ou AliExpress</td><td class="num">US$ 10,10 a 31</td></tr>
+<tr class="total"><td colspan="2">Total do Student Lite</td><td class="num">US$ 238 a 339</td></tr>
+</tbody></table></div>
+      <p class="note">Opcionais, fora do total: Capas de tecla MX genéricas, 28 (o Lite não leva os botões impressos), US$ 6 a 15; Molas longas de 65 g e de 80 g, 1 pacote de cada, US$ 7,80 a 15,60.</p>
+      <h3>Lite contra V2</h3>
+      <div class="tablewrap"><table><thead><tr><th>Versão</th><th>O que inclui</th><th class="num">Total</th></tr></thead><tbody>
+<tr><td>Student V2</td><td>placa montada dos dois lados, tela, case impresso, botões, acabamento</td><td class="num">US$ 373 a 556</td></tr>
+<tr><td>Student Lite</td><td>placa montada só no fundo, sem tela, sem case, topo soldado em casa</td><td class="num">US$ 238 a 339</td></tr>
+<tr class="sub"><td colspan="2">Diferença (faixas inteiras, de baixo e de cima)</td><td class="num">− US$ 135 a − 218</td></tr>
+</tbody></table></div>
+      <p class="note">O que o Lite corta: Tampa, base, 28 botões, 10 espaçadores, 2 knobs e caixa acústica (impressão 3D); Tela OLED, cabo JST SH, janela de acrílico; Tela acústica, espuma e silicone; Parafusos do case (M2 × 14, × 5, × 4), tinta e vinil; Soldagem dos encoders pela JLCPCB, montagem do topo, JST SH (J401).</p>
+      <h3>Detalhe por pedido</h3>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">JLCPCB · placa, montagem só no fundo · JLCPCB (peças da LCSC)</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Placa principal, 4 camadas, 246,5 × 95 × 1,2 mm, ENIG: 5 unidades</td><td class="qty">5</td><td>Gerbers em fab/student_lite_gerbers.zip (os mesmos da V2)</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 34</td></tr>
+<tr><td>Preparação da montagem de um só lado e estêncil</td><td class="qty">1</td><td>BOM e CPL só do fundo, em fab/</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 30 a 40</td></tr>
+<tr><td>Taxa por tipo de peça estendida (cerca de 16 tipos, contra 22 na V2)</td><td class="qty">16</td><td>saíram o encoder, o USB-C, o jack, o TVS, o ESD e o JST SH</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 29 a 51</td></tr>
+<tr><td>Peças das 2 placas montadas (125 peças cada, 32 linhas de BOM)</td><td class="qty">2</td><td>28 sensores, codec, carregador, amplificador, 2 multiplexadores, conector do módulo e da bateria</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 55 a 62</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 148 a 187</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">JLCPCB · grade do teclado · JLCPCB</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Grade FR-4 de 1,6 mm, 2 camadas, máscara preta fosca: 5 unidades (1 usada)</td><td class="qty">5</td><td>fab/student_v02_grade_gerbers.zip</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 10 a 20</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 10 a 20</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">LCSC · peças do topo, soldadas em casa · LCSC</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Encoder com clique EC11E18244AU (C202365)</td><td class="qty">2</td><td>eixo de 20 mm: volume e registro</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 4 a 8</td></tr>
+<tr><td>USB-C TYPE-C-31-M-12 (C165948) e 2 jacks PJ-327A (C668605)</td><td class="qty">1 + 2</td><td>USB-C com 4 pinos de fixação; jacks OUT e IN</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 1,50 a 3,50</td></tr>
+<tr><td>USBLC6-2SC6 (C7519), SMF5.0A (C151296), 10 µF 0603 (C19702), 100 nF 0402 (C1525), 100 kΩ 0402 (C25741), 1 MΩ 0402 (C26083)</td><td class="qty">6 tipos</td><td>peças pequenas: peça a mais, para o caso de se perder uma</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 1 a 3</td></tr>
+<tr><td>Frete da LCSC até Londres (pedido pequeno)</td><td class="qty">1</td><td>ou junte ao pedido de outro fornecedor</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 8 a 20</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 14,50 a 34,50</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">Gateron · Loja da Gateron (ou Chosfox, Ukeebs)</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Teclas Gateron KS-20 Magnetic Orange (38 gf), pacote de 35</td><td class="qty">28 (de 35)</td><td>sensor Hall sob cada tecla</td><td><span class="tag">preço visto</span></td><td class="num">US$ 24,50 a 26,60</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 24,50 a 26,60</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">SparkFun · módulo · DigiKey UK ou SparkFun</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Módulo MicroMod Teensy (DEV-16402)</td><td class="qty">1</td><td>£ 18,69 sem IVA na DigiKey UK; US$ 24,95 na SparkFun. Inclui o parafuso M2,5 × 3.</td><td><span class="tag">preço visto</span></td><td class="num">US$ 24,30 a 29,16</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 24,30 a 29,16</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">eBay / Amazon · energia · eBay, Amazon</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Bateria LiPo 503450, 3,7 V, ~1000 mAh, 3 fios (NTC), plugue JST PH 2,0</td><td class="qty">1</td><td>medir o NTC (~10 kΩ) e a ordem dos fios antes de ligar</td><td><span class="tag">preço visto</span></td><td class="num">US$ 6,50 a 10,40</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 6,50 a 10,40</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">Eletrônica de bancada e ferragem · Pimoroni, Adafruit, Mouser, Amazon, eBay ou AliExpress</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Knobs para o eixo do encoder (conferir o diâmetro e o formato do eixo)</td><td class="qty">2</td><td>no lugar dos knobs impressos da V2</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 2 a 6</td></tr>
+<tr><td>Alto-falante Ø 28 × 5 mm, 8 Ω, 2 W</td><td class="qty">1</td><td>sem caixa acústica: soa fraco, serve para testar</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 2,60 a 6,50</td></tr>
+<tr><td>Cabo USB-C</td><td class="qty">1</td><td>carga, MIDI e configuração</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 0 a 6,50</td></tr>
+<tr><td>10 parafusos M2 × 16 com porca; 10 espaçadores de nylon M2, 11 mm, mais arruelas finas para acertar a altura; 4 pés de borracha</td><td class="qty">1 kit</td><td>os espaçadores impressos da V2 viram peças de mercado; os pés mantêm a placa fora da mesa</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 5,50 a 12</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 10,10 a 31</td></tr></tbody></table></div>
+      <h3>Como ler estes números</h3>
+      <ul>
+        <li><b>Preço visto</b> é o de uma página de loja de 15 de novembro de 2026; <b>estimativa</b> é uma ordem de grandeza sem cotação.</li>
+        <li>Os preços da JLCPCB derivam da estimativa da V2: a preparação cai porque a montagem é de um lado só, as taxas por peça estendida caem porque saíram 6 tipos (encoder, USB-C, jack, TVS, ESD, JST SH), e as peças caem com elas. <b>Só a cotação real, com os arquivos enviados, confirma.</b> Se a placa se enquadrar na montagem econômica de um lado só da JLCPCB, o valor pode ser ainda menor: não foi verificado.</li>
+        <li>A LCSC é um pedido à parte, com frete próprio; é o que mais pesa no lado “montar em casa” (US$ 14,50 a 34,50).</li>
+        <li>Sem caixa acústica, o alto-falante soa pouco: serve para conferir que há som, não para avaliar o timbre.</li>
+      </ul>
+    </section>
+    <footer>
+      <p>Rascunho de avaliação de custo, fora do mapa do site e dos buscadores. Arquivos em <code>etutti/hardware/student_lite/</code> do repositório <a href="https://github.com/dataehora/beatconfused">dataehora/beatconfused</a>; a versão completa está em <a href="/etutti/studentV2/">/etutti/studentV2/</a>.</p>
+      <p><a href="/">beatconfused.com</a></p>
+    </footer>
+  </main>
+</body>
+</html>

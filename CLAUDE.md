@@ -1067,3 +1067,13 @@ firmware `ETUTTI_MODEL_POCKET`, page model picker.
 - Prefer small, reviewable PRs over one giant one; this session shipped 7
   separate PRs (#47–#53) rather than one mega-PR, and that was well
   received implicitly (no pushback).
+
+## eTutti Student Lite (17 Nov 2026) — cost draft of the V2
+
+`etutti/hardware/student_lite/` + page `/etutti/studentLite/` (unlisted, noindex, Portuguese). Same board and
+grid files as the V2; three cuts: JLCPCB assembles the **bottom side only**, no screen, no case. `lite.py`
+filters the V2's CPL/BOM to the bottom (125 parts, 32 BOM lines) and lists the 11 top parts soldered at home
+(encoders + knobs, USB-C, 2 jacks, U201, D201, 4 passives; J401 is dropped with the screen). `passos_lite.py`
+(CadQuery venv) renders the pictures from the V2 scene; `pagina.py` writes the page, reusing `student_v02/pagina.py`
+(CSS, price conventions). Total US$ 238-339 vs the V2's 373-556: JLCPCB lines are *derived* estimates (not quoted;
+economic one-side assembly not checked). Never re-run after a price change without regenerating the page.
