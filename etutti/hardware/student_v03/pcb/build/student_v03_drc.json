@@ -1,0 +1,194 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-17T20:13:18",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint attributes don't match symbol",
+            "key": "footprint_symbol_mismatch"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "key": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "key": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "key": "silk_edge_clearance"
+        },
+        {
+            "description": "Text height out of range",
+            "key": "text_height"
+        },
+        {
+            "description": "Text thickness out of range",
+            "key": "text_thickness"
+        },
+        {
+            "description": "Non-Mirrored text on back layer",
+            "key": "nonmirrored_text_on_back_layer"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint not found in libraries",
+            "key": "lib_footprint_issues"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.7",
+    "schematic_parity": [],
+    "source": "student_v03.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+            "items": [
+                {
+                    "description": "Track [EN_B] on B.Cu, length 0.0351 mm",
+                    "pos": {
+                        "x": 144.6753,
+                        "y": 59.1102
+                    },
+                    "uuid": "0e876db6-a86d-4dec-b40b-352ba1b73e7d"
+                }
+            ],
+            "severity": "error",
+            "type": "track_width"
+        },
+        {
+            "description": "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+            "items": [
+                {
+                    "description": "Track [EN_B] on B.Cu, length 0.5385 mm",
+                    "pos": {
+                        "x": 144.1368,
+                        "y": 59.1102
+                    },
+                    "uuid": "3a82e2e2-0e61-454d-b3ef-c291fde0d1bc"
+                }
+            ],
+            "severity": "error",
+            "type": "track_width"
+        },
+        {
+            "description": "Track width (rule 'Sinais: minimo 0,15 (afinacao na entrada de pinos finos)' min width 0.1500 mm; actual 0.1200 mm)",
+            "items": [
+                {
+                    "description": "Track [EN_B] on B.Cu, length 0.1502 mm",
+                    "pos": {
+                        "x": 144.7001,
+                        "y": 59.135
+                    },
+                    "uuid": "3d26d0cc-5e11-4dba-b5c8-55670486dc1e"
+                }
+            ],
+            "severity": "error",
+            "type": "track_width"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "Track [HP_VGND] on F.Cu, length 6.6468 mm",
+                    "pos": {
+                        "x": 6.95,
+                        "y": 31.1051
+                    },
+                    "uuid": "1ce1fae1-63c1-4f2b-a1dd-0c05c8f0becd"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Via [I2C_SDA] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 18.6323,
+                        "y": 23.1125
+                    },
+                    "uuid": "4ffd98d1-b3e1-484c-b6a1-e25977124537"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Via [SEL_A] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 33.5,
+                        "y": 44.05
+                    },
+                    "uuid": "886a2125-d9d6-4868-bc38-fd22065f29ee"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "Track [SEL_B] on F.Cu, length 1.6263 mm",
+                    "pos": {
+                        "x": 36.5948,
+                        "y": 40.3686
+                    },
+                    "uuid": "0730bf24-0c25-4080-a63c-fecf5cf45b48"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "Track [PROG] on In2.Cu, length 11.9604 mm",
+                    "pos": {
+                        "x": 36.2207,
+                        "y": 26.9054
+                    },
+                    "uuid": "a5794ef1-2529-4296-9f95-aedab961ceb2"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        }
+    ]
+}

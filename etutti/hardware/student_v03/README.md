@@ -1,4 +1,27 @@
-# eTutti Student V3 — conceito da placa (sem roteamento, para aprovação)
+# eTutti Student V3 — placa roteada para a montagem só pelo fundo
+
+## Estado (18 nov 2026)
+
+**Posicionamento aprovado; placa roteada e verificada.** `pcb/build_board_v3.py` (KiCad python) parte da placa V2, aplica o
+posicionamento aprovado e roteia de novo o que mudou com o roteador da V2. Resultado do DRC do KiCad **com paridade do
+esquema**: 0 erros além das 3 larguras de EN_B já aceitas na V1/V2, **0 ligações faltando, paridade 0** (`pcb/board.json`,
+`pcb/build/student_v03_drc.json`); restam 5 avisos de ponta solta (3 trilhas, 2 vias), que são conexões fora do centro de pads.
+Arquivos para a JLCPCB em `fab/`: `student_v03_gerbers.zip`, `student_v03_bom.csv` (34 linhas, 135 peças), `student_v03_cpl.csv`
+(135 peças, **todas no fundo, nenhuma no topo**), `student_v03_fora_da_montagem.csv` (o que é de casa), imagens do topo e do fundo.
+
+Mudanças que o roteamento exigiu ou trouxe (além das aprovadas):
+
+- **O USB acorda o aparelho** (decisão sua): D206 (BAV70, VBUS_S → EN_REQ). Ligar o USB liga o 3,3 V; a firmware mostra a carga com a tela
+  em brilho baixo e, depois, o percentual da bateria (fica para a firmware). O PWR_EN deixa de poder desligar com USB: "desligado com USB"
+  vira um estado de espera na firmware.
+- **Sem o acionador do LED de carga** da V1 (Q201, Q202, R207): estavam fora da montagem e sem LED.
+- **USB-C no fundo, trilhas do USB em qualquer camada.** A V2 mantinha o par em F.Cu sobre o plano In1 (0,24/0,15 mm, 90 Ω). Com o
+  USB-C, o ESD e o módulo todos no fundo, a regra foi relaxada para 0,15 mm no mínimo, qualquer camada de sinal; **a impedância de
+  90 Ω não está garantida**. O trecho é curto (~25 mm). A In2 é uma camada de sinal com plano de cobre: confira o par na primeira
+  placa (conexão por USB e velocidade).
+- O espaçamento mínimo entre peças movidas ficou em 0,6 mm (antes 0,3) para sobrar canal de roteamento; as posições mudaram até 1,3 mm
+  em relação às imagens que você aprovou (U201 e D201 um pouco mais à direita, C210 para (65; 13,4)).
+- Os encoders agora estão marcados no esquema e na lista de fabricação como "sem peça: solda em casa" (`sem peca`).
 
 A V3 é a V2 com a placa refeita para a **JLCPCB montar tudo pelo fundo** na montagem econômica. O tamanho da placa, o
 teclado e o case ficam como na V2. Esta pasta tem a placa **posicionada e sem trilhas**; o roteamento só começa depois da
