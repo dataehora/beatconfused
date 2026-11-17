@@ -95,3 +95,11 @@ A JLCPCB marcou o PJ-327A 5JJ (SHOU HAN, C668605) como "difícil de processar" (
 ## Par USB refeito (19 nov 2026)
 
 Veja `USB.md`. O par D+/D− ficou **inteiro em B.Cu, sem vias, com 17,209 mm em cada linha (diferença 0,000 mm)**, sobre uma ilha de GND na In2 (antes a In2 era o pour de +3V3, com trilhas de sinal por baixo). Mudou só uma peça de lugar, o R202. `pcb/refaz_usb.py` + `pcb/costura_usb.py` (nesta ordem, depois de `build_board_v3.py` e `troca_jack.py`); `pcb/vista.py` desenha uma região da placa em PNG.
+
+## Gestão de energia: o D206 e o "desligar com USB" (19 nov 2026)
+
+Decisão do J: **manter** a cadeia PWR_EN (U203, D204, R217, R218, C213) e as proteções USBLC6 e SMF5.0A. Atenção: o **D206** (VBUS_S → EN) liga o 3,3 V sempre que há USB, então **com ele montado a firmware não consegue cortar a alimentação com o cabo plugado** (só dormir). Se a firmware vier a querer desligar de verdade com USB, basta **retirar o D206** (um SOT-23 no fundo da placa, perto do D204): sem ele a cadeia PWR_EN atua como na V1/V2, mas **o USB deixa de acordar o aparelho desligado** (só o clique do volume liga). Um corte "de verdade" que também acorde pelo USB exigiria um trinco de energia (parte nova, a decidir).
+
+## Impacto no case
+
+Veja `CASE_IMPACTO.md` (conectores no fundo, divisão base/tampa, fenda da tela, perguntas para o Chat).
