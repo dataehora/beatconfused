@@ -1084,3 +1084,16 @@ economic one-side assembly not checked). Never re-run after a price change witho
   by Economic PCBA: removed from the CPL and soldered at home (12 home parts). Not applied: BAT54C->BAV70 (Basic, but
   Vf 0.2 -> 0.5 V on the power-latch lines). No Basic exists for the ICs, connectors, inductor, 1.8 V LDO, 74LVC1G04/08.
   For the V3 board, H101 can become a plain hole + screw + 2.5 mm nylon spacer (no fee, no soldering).
+
+## eTutti Student V3 (18 Nov 2026) — concept board for JLCPCB bottom-only assembly
+
+`etutti/hardware/student_v03/` (README.md, AUDITORIA.md, Portuguese). The V2 board re-placed by script
+(`build_sem_rota.py`, KiCad python): tracks removed, dotted case outline / V1 alternatives / sector labels removed,
+everything except the 2 encoders (and the speaker's wire pads) flipped to the bottom (connectors keep x at the left
+edge), J401's cable passes through a 7 x 2.5 mm slot, H101 became a plain 2.7 mm hole (M2.5 screw + 2.5 mm nylon spacer),
+and Basic swaps (R203 2.2k, R501 1M, C307 100nF, BAT54C->BAV70). JLCPCB quote of 18 Nov: PCB 39.50, economic PCBA setup
+8.24 + stencil 1.55, US$ 3.09 per Extended type; V3 has 17 Extended types (`bom_v3.py`). `auditoria_pinos.py` compares every
+part's EasyEDA symbol pins with the board's nets; real errors found were VALUES (C307 VAG 150 nF vs the datasheet's
+0.1 uF), not pin-outs. PJ-327A, TS-1187A and the UMW XC6206 datasheets could not be downloaded (LCSC serves HTML). **No
+routing yet: waiting for J's approval**, then routing (reuse the V2 router `rota_restante`), CPL/BOM for JLCPCB, the case's
+left wall (connectors now under the board) and the V3 page.
