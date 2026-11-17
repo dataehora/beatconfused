@@ -2,6 +2,7 @@ referencia,valor,pacote,codigo LCSC,o que e
 C210,10uF,C_0603_1608Metric,C19702,10 µF 0603
 C308,100nF,C_0402_1005Metric,C1525,100 nF 0402
 D201,SMF5.0A,D_SOD-123F,C151296,diodo TVS de 5 V (SOD-123F)
+H101,9774025151R,Standoff_SMD_M2.5_H2.5,C7496631,espaçador SMD M2.5 do módulo MicroMod (antes do módulo)
 J201,TYPE-C-31-M-12,USB_C_Receptacle_HRO_TYPE-C-31-M-12,C165948,"USB-C (16 pinos, 4 de fixação)"
 J301,PJ-327A 5JJ,Jack_3.5mm_PJ-327A_SMD,C668605,"jack OUT 3,5 mm (PJ-327A)"
 J302,PJ-327A 5JJ,Jack_3.5mm_PJ-327A_SMD,C668605,"jack IN 3,5 mm (PJ-327A)"

@@ -1077,3 +1077,10 @@ filters the V2's CPL/BOM to the bottom (125 parts, 32 BOM lines) and lists the 1
 (CadQuery venv) renders the pictures from the V2 scene; `pagina.py` writes the page, reusing `student_v02/pagina.py`
 (CSS, price conventions). Total US$ 238-339 vs the V2's 373-556: JLCPCB lines are *derived* estimates (not quoted;
 economic one-side assembly not checked). Never re-run after a price change without regenerating the page.
+- **Basic swaps and the real JLCPCB quote (18 Nov):** JLCPCB charges US$ 3.09 per Extended part *type* (16 types = US$ 49.44;
+  Economic PCBA setup 8.24, stencil 1.55; PCB 39.50 = engineering 25 + board 14.50). `lite.py` swaps R203 1.8k->2.2k
+  (ICHG 0.405 A), R501 680k->1M (SD_MODE 0.30 V) and C307 150nF->100nF (SGTL5000 datasheet Figs 19/20: VAG = 0.1 uF)
+  in the Lite BOM only (same 0402 footprints, CPL unchanged) -> 13 Extended types. H101 (Wurth SMT standoff) is refused
+  by Economic PCBA: removed from the CPL and soldered at home (12 home parts). Not applied: BAT54C->BAV70 (Basic, but
+  Vf 0.2 -> 0.5 V on the power-latch lines). No Basic exists for the ICs, connectors, inductor, 1.8 V LDO, 74LVC1G04/08.
+  For the V3 board, H101 can become a plain hole + screw + 2.5 mm nylon spacer (no fee, no soldering).
