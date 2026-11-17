@@ -20,7 +20,8 @@ V2F = os.path.normpath(os.path.join(HERE, "..", "student_v02", "fab"))
 API = "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList"
 FEE = 3.09
 SUBS = {"R203": ("2.2k", "C25879"), "R501": ("1M", "C26083"), "C307": ("100nF", "C1525"),
-        "D202": ("BAV70", "C68978"), "D203": ("BAV70", "C68978"), "D204": ("BAV70", "C68978"), "D205": ("BAV70", "C68978")}
+        "D202": ("BAV70", "C68978"), "D203": ("BAV70", "C68978"), "D204": ("BAV70", "C68978"), "D205": ("BAV70", "C68978"),
+        "J301": ("PJ-327A", "C49284723"), "J302": ("PJ-327A", "C49284723")}
 DROP = {"H101": "agora um furo liso de 2,7 mm (parafuso M2,5, espaçador de nylon de 2,5 mm e porca)"}
 HOME = {"SW401": "encoder do volume", "SW402": "encoder do registro"}
 

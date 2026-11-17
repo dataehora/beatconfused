@@ -33,9 +33,9 @@ library always matches the schematic. Writes pcb/kicad/viaggio_micromod.pretty/:
       thread, 2.5 mm high, flange 5.1, barrel 3.5 x 1.4); Wurth land: pad 6.0
       round, hole 3.7. Made a plated 6.0/3.7 pad (SparkFun uses 6.0/3.9 plated)
       so DRC has no NPTH inside a copper pad; net GND.
-  Jack_3.5mm_PJ-327A_SMD          F2, SHOU HAN PJ-327A 5JJ (LCSC C668605),
-      5 SMD pads 3 x 2 mm + 2 locating holes 1.0 mm (drawing "PJ-327A 5JJ",
-      PCB view). Pads: 1, 2 sleeve; 3 ring; 4 tip; 5 tip switch (normally
+  Jack_3.5mm_PJ-327A_SMD          F2, XUNPU PJ-327A (LCSC C49284723),
+      5 SMD pads 3 x 2 mm + 2 locating holes 1.2 mm (XUNPU datasheet "PJ-327A",
+      PCB view). Pads: 2, 5 sleeve; 6 ring; 4 tip; 3 tip switch (normally
       closed against 4, opens when a plug is in). Mouth towards -y.
   LED_1615_RG_4pad                I3, TOGIALED TJ-S1615SW6TGLCRG-A5 (C273605),
       recommended pad layout 2.6 x 1.6: pads 0.85 x 0.55. Pads: 1 red
@@ -153,13 +153,16 @@ def standoff():
     return name
 
 
-JACK_PADS = {"1": (3.4, 1.7), "2": (-3.4, 2.7), "3": (3.4, 5.4), "4": (-3.4, 9.7), "5": (3.4, 11.4)}
+# V3: the jack is the XUNPU PJ-327A (LCSC C49284723), whose pads are numbered 2-6 (datasheet): 2 and 5 sleeve, 6 ring,
+# 4 tip, 3 tip switch (NC to 4). The pad places are the SHOU HAN 5JJ's (V1/V2), renumbered by function; the real
+# leads (3.0 x 1.6 mm) land inside these 3 x 2 mm pads (within 0.4 mm along the edge of the jack).
+JACK_PADS = {"2": (3.4, 1.7), "5": (-3.4, 2.7), "6": (3.4, 5.4), "4": (-3.4, 9.7), "3": (3.4, 11.4)}
 
 
 def jack():
     name = "Jack_3.5mm_PJ-327A_SMD"
-    L = head(name, "3.5 mm stereo jack with tip switch, SMD, right angle, SHOU HAN PJ-327A 5JJ (LCSC C668605); "
-                   "1/2 sleeve, 3 ring, 4 tip, 5 tip switch (NC to 4); mouth towards -y",
+    L = head(name, "3.5 mm stereo jack with tip switch, SMD, right angle, XUNPU PJ-327A (LCSC C49284723); "
+                   "2/5 sleeve, 6 ring, 4 tip, 3 tip switch (NC to 4); mouth towards -y",
              "audio jack 3.5 PJ-327A", ref_y=-3.4, val_y=13.6)
     L += [rect(-3.0, 0.0, 3.0, 12.2, "F.Fab", 0.1), rect(-2.5, -2.0, 2.5, 0.0, "F.Fab", 0.1),
           rect(-5.15, -2.3, 5.15, 12.65, "F.CrtYd", 0.05),
@@ -168,7 +171,7 @@ def jack():
     for num, (x, y) in JACK_PADS.items():
         L.append('\t(pad "%s" smd rect (at %s %s) (size 3 2) (layers "F.Cu" "F.Paste" "F.Mask"))' % (num, f(x), f(y)))
     for y in (3.0, 9.0):
-        L.append('\t(pad "" np_thru_hole circle (at 0 %s) (size 1 1) (drill 1) (layers "*.Cu" "*.Mask"))' % f(y))
+        L.append('\t(pad "" np_thru_hole circle (at 0 %s) (size 1.2 1.2) (drill 1.2) (layers "*.Cu" "*.Mask"))' % f(y))
     write(name, L)
     return name
 
