@@ -1,4 +1,55 @@
-# eTutti Student V3 — FIT_CHECK do case (SPEC v7, ciclo 6)
+# eTutti Student V3 — FIT_CHECK do case (SPEC v8, ciclo 7)
+
+Responde à **SPEC v8**, que fecha o desenho do case para o protótipo. **Nenhuma mudança de forma**: o modelo, o fit check (245 pares, 0 interferências) e os renders
+são os do ciclo 6 (PR #172). Neste ciclo só se conferiu o verso da placa sob o pilar extra e se montou a lista do que falta medir.
+
+## 0. Resumo
+
+| Tarefa | Resultado |
+|---|---|
+| 1. Verso da placa sob o pilar extra | **Limpo.** Nada além do cobre de GND coberto de máscara; o pilar de (112,5; 67,5) fica onde está. |
+| 2. Lista "Medir na primeira amostra" | Em §2: 8 itens, cada um com como medir e o parâmetro que muda. |
+| 3. Limpeza opcional do `case.py` | **Não feita**: não há `Z_SPLIT` nem aba da V2 no código da V3 (busca em `geometria.py` e `case.py`); nada a tirar sem risco. |
+
+## 1. Verso da placa sob o pilar extra (SPEC v8 item 1)
+
+Conferido no arquivo da placa de encomenda (`kicad/student_v03.kicad_pcb`, KiCad python, face de baixo = a que o pilar toca), num círculo de **Ø 5,0 mm**
+(Ø 4 do pilar + 0,5 de margem em volta) centrado em (112,5; 67,5):
+
+| O que | Dentro do círculo |
+|---|---|
+| Vias (abertas ou não) | **nenhuma** (as mais próximas: 4 vias GND Ø 0,5 em (110/115; 65/70), a 3,54 mm do centro, 1,3 mm fora da borda do pilar) |
+| Pads / ilhas expostas | nenhum |
+| Peças do verso (caixas) | nenhuma |
+| Trilhas em B.Cu | nenhuma |
+| Cobre | só o plano de GND de B.Cu, sob a máscara (sem abertura) |
+
+Resultado: nenhuma via aberta, ilha ou peça sob o pilar. Placa e pilar ficam como estão.
+(As 4 vias vizinhas têm o modo de máscara "das regras da placa", sem abertura própria; estão fora do círculo de qualquer forma.)
+
+## 2. Medir na primeira amostra
+
+Lista única do que depende de peça real. Nenhuma forma muda até lá (SPEC v8 item 4).
+
+| # | O que medir | Como | Parâmetro que muda |
+|---|---|---|---|
+| 1 | **Altura do USB-C** (centro) no fundo | Cupom da parede (`out/cupom_parede_tampa` + `cupom_parede_bandeja`, 25 mm da esquerda) sobre a placa montada; plugue real, ver se entra sem folga lateral e centrado | `USB_Z` (−2,9) em `geometria.py` |
+| 2 | **Altura do eixo dos jacks** | Mesmo cupom, plugue P2 real (limite Ø 6,4) | `JACK_Z` (−4,0) em `geometria.py` |
+| 3 | **Posição em x da frente das tomadas** (recuo de 0,3 até a parede) | Paquímetro: face da tomada até a borda da placa; soldagem JLCPCB ±0,1–0,2 | `CONN_FRONT_X` (= WALL + 0,3) em `geometria.py` |
+| 4 | **Pilha do H101** (módulo, porca e parafuso M2,5 + espaçador 2,5) | Paquímetro de profundidade: do fundo da placa à ponta do parafuso/porca; ver se cabe o rebaixo | `H101_RECESS` (8 × 1,0) em `case.py` |
+| 5 | **Boca do J401** (cabo da tela) | Olhar o conector soldado: para que lado abre e por onde o cabo entra | posição/rotação do cabo no modelo (percurso do cabo, só informativo; sem parâmetro de forma hoje) |
+| 6 | **Eixo dos encoders**: comprimento (ponta a ~24,5 acima da placa) e comprimento do chato | Paquímetro de profundidade da ponta do eixo à placa; do chato à ponta | `KNOB["shaft_top"]` (24,5), `shaft_flat` (4,5), `bore_over` (0,5) em `case.py` |
+| 7 | **Compressão real do pé sob 3 N** | Case montado sobre a mesa, peso de ~300 g sobre a tecla SW23, paquímetro de profundidade (ou relógio comparador) | `FOOT_H` (1,5); se passar de 0,02 mm, trocar por PU de 90A (E 15 MPa) |
+| 8 | **OLED, bateria e plugues reais** | OLED: posição das ilhas e da área ativa e espessura; bateria 503450 com a placa e o NTC; plugues reais contra 12,35 × 6,5 e Ø 6,4 | `OLED_PCB`, `OLED_WINDOW`, `BATTERY` (case.py/geometria.py); aberturas `USB_OPENING`, `JACK_OPENING_D` |
+
+## 3. Perguntas para o design
+
+1. Algum item da lista deve ficar de fora (ou entrar) antes de o J encomendar o protótipo?
+2. A limpeza do §0 (tarefa 3) fica como está: não há parâmetros só da V2 no código da V3 para tirar.
+
+---
+
+# Anexo — FIT_CHECK do ciclo 6 (SPEC v7, PR #172)
 
 Responde à **SPEC v7**. Modelo regerado (`case.py`), fit check de 245 pares: **0 interferências**; a placa e a bandeja entram por baixo livres em todo o curso
 (0 mm³ em todos os cursos testados). Nada foi impresso nem pedido. O ciclo 5 (SPEC v6) e o 4 estão no fim deste arquivo.
