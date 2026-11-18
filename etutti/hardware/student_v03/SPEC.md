@@ -1,4 +1,67 @@
-# eTutti Student — SPEC v5 do case (placa V3)
+# eTutti Student — SPEC v6 do case (placa V3)
+
+Data: 18 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
+Revisão curta da v5, a pedido do J: **nenhum corte de eixo e nenhum escareado em casa, nem como plano B.** Muda só os itens 2 e 6 da v5. Todo o resto da v5 vale como está (anexo abaixo).
+
+## Mudanças desde a v5
+
+### 1. Encoders: sem corte de eixo (substitui o item 2 da v5)
+
+O EC11E18244AU tem a ponta do eixo a 24,5 mm da placa. No modelo do EasyEDA: corpo até 4,5, bucha até 11,5, eixo até 24,5. Os "20 mm" do catálogo da Alps são medidos a partir do corpo: 4,5 + 20 = 24,5. Logo, **um EC11E de eixo de 15 mm deixa a ponta em ~19,5**, que é exatamente o que o knob de 7 mm precisa (topo em 21,5, encaixe de ~5 mm).
+
+**Primeira opção: trocar o encoder por um de eixo de 15 mm.**
+- Exigências, conferidas no datasheet antes de escolher:
+  - mesmo footprint do EC11E (5 pinos + 2 abas, mesmo passo);
+  - vertical, com chave de pressão;
+  - eixo Ø 6 com o chato em D até a ponta, com ≥ 4 mm de chato;
+  - ponta a **19,0 … 20,5** mm acima da placa;
+  - detentes e pulsos na razão de 2 detentes por pulso (como 18/36 ou 15/30), para manter `ENC_STEPS_PER_DETENT = 2` no firmware.
+- Primeiro a família EC11E da Alps; se não houver em estoque, um compatível com EC11 de outro fabricante, nas mesmas condições.
+- Os encoders são soldados em casa, então a peça pode vir de qualquer distribuidor (LCSC, Mouser, Digi-Key, Farnell), não precisa estar na biblioteca da JLCPCB.
+- **Atenção:** "eixo de 20 mm" no catálogo da Alps não basta. Pela conta acima, peças de 20 mm (como o EC11E18244AU e o EC11E15244G1) dão a ponta em ~24,5. A medida que vale é **a ponta acima da placa**.
+
+**Segunda opção, se nenhum encoder servir: knob de 10 mm** (+3 mm sobre o aprovado), com o eixo de 24,5 inteiro.
+- Mesmo desenho "chapéu retrô" (saia, corpo, traço creme), só o corpo mais alto.
+- Furo do knob com 9,5 mm de profundidade: a ponta do eixo fica 0,5 mm abaixo do topo.
+
+**O que muda para o Code:** modelar as duas versões do knob (7 e 10 mm) e trocar o modelo do encoder pelo escolhido. Se a peça escolhida for outra, a eletrônica confere o footprint e o firmware (`ENC_STEPS_PER_DETENT`). A frase "cortar o eixo", da v5 e de qualquer manual, sai.
+
+### 2. Grade: escareado só de fábrica (substitui o item 6 da v5)
+
+O escareado da grade é feito pelo fabricante da placa da grade, **nunca em casa**:
+- **JLCPCB (primeira opção):** oferece furo escareado cônico como serviço opcional do pedido. As regras da JLCPCB e as nossas medidas estão abaixo.
+- **PCBWay (segunda opção, sem passar por casa):** se a JLCPCB recusar na revisão do pedido, a grade vai para a PCBWay, que lista furo escareado NPTH entre as capacidades (tolerância de ±0,2 mm para furos < 10 mm). Como a grade é uma placa separada, sem montagem, trocar de fábrica só para ela não muda nada na placa principal.
+
+Regras da JLCPCB para o furo escareado, já atendidas pelo nosso desenho:
+- só cone, em PTH ou NPTH;
+- pelo menos 0,2 mm de placa abaixo do cone;
+- a boca a pelo menos 0,2 mm de cobre, trilhas e ilhas;
+- no pedido: diâmetro da boca e do furo, ângulo, tipo, lado e uma figura de onde ficam os furos.
+
+Fonte: https://jlcpcb.com/help/article/countersink-hole-process (PCBWay: https://www.pcbway.com/capabilities.html)
+
+**Especificação (a mesma da v5):** 10 furos NPTH Ø 2,3, boca Ø 3,8, 90°, pela face de cima, 0,75 de profundidade (sobram 0,85 dos 1,6). Cobre recuado até **Ø 4,4** em volta dos 10 furos, nas duas faces.
+
+**Quanto ao risco:**
+- A JLCPCB revisa o arquivo antes da produção e, se não puder fazer, avisa e devolve o valor. Não há risco de receber a grade sem escareado sem saber.
+- Pedir a grade **junto com a placa principal**: se precisar ir para a PCBWay, ainda há tempo antes de montar.
+
+**O que muda para o Code:**
+- O `GRADE_ESCAREADA.md` perde a alternativa "escarear em casa" e ganha o texto pronto para os dois pedidos (JLCPCB e PCBWay), com a figura.
+- A alternativa do "parafuso de cabeça baixa sobre furo liso" continua fora (não cabe sob a tampa).
+
+## Tarefas para o Code
+
+1. **[Design]** Procurar o encoder de eixo de 15 mm nas condições do item 1. No FIT_CHECK: código, fabricante, distribuidor, estoque, ponta acima da placa, comprimento do chato e se o footprint é o mesmo. Se não houver, dizer por quê e seguir com o knob de 10 mm.
+2. **[Design]** Knob nas duas versões (7 mm para o eixo de 15; 10 mm para o eixo de 24,5), com renders das duas lado a lado no isométrico.
+3. **[Eletrônica]** Só se o encoder escolhido não for o EC11E: conferir o footprint, os pinos (A, B, C, chave) e `ENC_STEPS_PER_DETENT`, e atualizar a lista de compras.
+4. **[Design]** `GRADE_ESCAREADA.md`: textos dos pedidos na JLCPCB e na PCBWay, a figura (planta + corte) e o cobre recuado até Ø 4,4 no arquivo da grade. Nada de escarear em casa.
+5. Tudo o mais da v5 (tarefas 1 e 3 a 9 dela) continua valendo. FIT_CHECK.md terminando com "Perguntas para o design".
+
+---
+
+# Anexo — SPEC v5 (referência; os itens 2 e 6 foram substituídos acima)
+
 
 Data: 18 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
 Responde ao FIT_CHECK do ciclo 4 (`student_v03/case/FIT_CHECK.md`, PR #166) e ao `PROMPT-CHAT-SPEC-V5.md` (PR #167).
