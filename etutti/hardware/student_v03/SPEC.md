@@ -1,4 +1,148 @@
-# eTutti Student — SPEC v4 do case (placa V3)
+# eTutti Student — SPEC v5 do case (placa V3)
+
+Data: 18 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
+Responde ao FIT_CHECK do ciclo 4 (`student_v03/case/FIT_CHECK.md`, PR #166) e ao `PROMPT-CHAT-SPEC-V5.md` (PR #167).
+Canvas do conceito: https://claude.ai/artifact/2xeBWDz7PnhAhXUK7pcHGy
+
+Tudo o que não é mencionado aqui continua como na **SPEC v4** (anexo abaixo) e no modelo do PR #166.
+
+## Resumo das decisões
+
+| Achado | Decisão |
+|---|---|
+| A. Tampa de 0,51 mm sobre a grade na frente e no fundo | **Chanfro de 4,0 × 3,5 nos quatro lados** (antes 6,0 × 3,5). Não só na frente e no fundo: o chanfro continua igual em volta toda, e isto também resolve o achado E. |
+| B. Eixo do encoder com 24,5 mm | **Protótipo: cortar o eixo em 20,0 mm**, se a parte chata do eixo continuar com ≥ 4 mm depois do corte. Se não continuar, o knob cresce 3 mm. **Série:** procurar um encoder de eixo mais curto com o mesmo footprint. |
+| C. Bandeja cedendo no ar | **Prateleira interna na tampa + pés de borracha sob os pinos e os pilares.** A carga das teclas vai direto para a mesa. |
+| D. Caixa acústica de 9,75 cm³ | **Aceita.** 0,3–0,4 dB não se ouve num alto-falante de 28 mm. A manta acústica fica como teste opcional no protótipo. |
+| E. Postes da tela a 0,06 mm do chanfro do teto | **Resolvido pelo item A:** com o chanfro de 4,0, o teto fica plano a partir de ~4,8 mm da parede. Módulo, janela e postes ficam onde estão. |
+| Grade escareada | **Pedir à JLCPCB**, que oferece furo escareado cônico como serviço opcional. Se recusar, escarear em casa. |
+| Boca do J401 | **A confirmar na amostra** (item 7). |
+
+---
+
+## Mudanças desde a v4
+
+### 1. Chanfro da borda superior: 4,0 × 3,5 nos quatro lados (achado A)
+
+- O chanfro passa de 6,0 × 3,5 (30°) para **4,0 × 3,5 (~41°)**, igual nos quatro lados. As duas arestas continuam com **R 1,5**.
+- Altura do chanfro igual: z 11,0 → 14,5. Os sulcos (4,3 / 6,5 / 8,7) e tudo abaixo deles não mudam.
+- O chanfro interno da tampa acompanha o externo, com a parede de 2,0 medida na normal.
+- **Resultado esperado:**
+  - a tampa sobre a borda da grade, na frente e no fundo, volta a ter ~1,4 mm, e as cabeças escareadas ficam escondidas, como pede a SPEC v1;
+  - o teto interno fica plano a partir de ~4,8 mm da parede, e não 6,5 (ver item 5).
+- **Por que nos quatro lados, e não só na frente e no fundo:**
+  - o chanfro igual em volta toda é parte do conceito aprovado;
+  - dois chanfros diferentes se encontrariam nos cantos de R 9 com uma transição torta, difícil de modelar e de ver.
+- **Não muda:**
+  - **logo:** começa em x 8,6 e fica no plano, ainda mais longe do chanfro;
+  - **faixas Retrô:** continuam sobre o tampo, o chanfro e a parede da frente;
+  - **legendas OUT/IN:** ficam na parede, abaixo dos sulcos.
+- **Medida mínima:** a tampa sobre a grade precisa de **≥ 1,2 mm** em qualquer ponto, inclusive na transição do R 1,5. Se der menos, voltar com o número antes de mudar o chanfro.
+
+### 2. Encoders: eixo de 24,5 mm (achado B)
+
+O EC11E18244AU tem o eixo de 24,5 mm acima da placa, 3,0 mm acima do topo do knob (z 21,5).
+
+- **Protótipo:** o J corta o eixo em **20,0 mm acima da face de cima da placa**, sem trocar a peça. O knob de 7 mm encaixa 4,7 mm.
+  - **Condição:** a parte chata (o "D") do eixo tem de continuar com **≥ 4 mm** depois do corte, para o knob não girar em falso. O Code mede no modelo do EasyEDA ou no desenho da Alps quanto do eixo é chato a partir da ponta (pergunta C1).
+  - Se o chato tiver menos que 8,5 mm (4,5 de corte + 4 de encaixe), **não cortar**: o knob passa a ter **10 mm** de altura (+3), com o mesmo desenho "chapéu retrô" esticado no corpo e a mesma saia. O Code modela as duas versões de knob e diz qual vale.
+- **Como o J mede e corta** (vai para o manual de montagem):
+  1. Encoder soldado. Medir com o paquímetro da face de cima da placa até a ponta do eixo: deve dar 24,5.
+  2. Marcar 20,0 a partir da placa, ou seja, 4,5 a partir da ponta.
+  3. Cortar com uma serra de arco pequena, segurando o eixo com um alicate entre o corte e a bucha, para o esforço não ir para o encoder. Limar a rebarba.
+  4. Conferir 20,0 ± 0,2.
+  - O corte se faz **antes** de soldar o encoder, se der. Com a peça solta, o eixo vai preso numa morsa com mordente de madeira.
+- **Série (registro para depois, não é tarefa agora):** procurar um EC11E vertical de eixo curto (ponta a ~20 mm da placa), com o mesmo footprint, a mesma bucha, clique e 18/36. Tarefa de eletrônica quando a V3 for para série.
+
+### 3. Bandeja: prateleira na tampa e pés sob os apoios (achado C)
+
+A placa só fica dentro da meta (≤ 0,05 mm a 3 N) com apoios rígidos. O que faltava era dar à bandeja esse apoio rígido. Ficam as duas medidas juntas:
+
+- **Prateleira interna na tampa:** um ressalto de **1,5 mm de largura × 1,0 mm de altura** na base da parede, por dentro (z −10,1 … −9,1), a volta toda.
+  - A bandeja ganha um **rebaixo na borda** que se assenta nele. A face de baixo da bandeja continua **rente** à borda da tampa, entre os ressaltos.
+  - A prateleira fica bem abaixo dos furos dos conectores (boca mais baixa: −7,75), então não precisa de interrupção.
+  - De baixo, aparece um aro creme de 3,5 mm (parede + prateleira) em volta da bandeja cinza.
+- **Pés de borracha:** pés autoadesivos de silicone, **Ø 8 × 1,5 mm**, num rebaixo de Ø 8,4 × 0,5 na face de baixo da bandeja. Ficam 1,0 mm para fora.
+  - **Sob os 4 pinos e os 3 pilares:** H5 (98,45; 52,67), H6 (153,95; 31,31), H7 (153,95; 63,35), H8 (209,45; 52,67) e (127,5; 32,5), (182,5; 62,5), (182,5; 32,5).
+  - **2 à esquerda:** em ~(22; 10) e ~(22; 90). Afastar o que for preciso dos alojamentos de cabeça de parafuso e do rebaixo do H101.
+  - Os pés levam a força de cada tecla direto à mesa. A tampa fica 1,0 mm acima da mesa e não balança.
+- **Meta, com o case sobre uma mesa rígida:** a pior tecla com **≤ 0,05 mm a 3 N**, somando placa e bandeja. Os pés entram como apoios rígidos no estudo.
+  - Registrar também o caso sem mesa, com o case no colo, só para informação.
+- As nervuras ficam como estão (grade de 12 mm, topo em −4,0). Se o estudo mostrar que com os pés elas podem ser mais baixas ou mais esparsas, o Code propõe (menos material, mais volume livre).
+
+### 4. Caixa acústica: 9,75 cm³ aceitos (achado D)
+
+- Fica como modelada no ciclo 4, com o bloco alto à esquerda do anel.
+- **Manta acústica opcional:** enchimento solto de poliéster, cerca de metade do volume. Fica como teste de ouvido no protótipo, e o manual cita como opcional.
+- Nada de mover a bateria ou a tela por isso.
+
+### 5. Postes da tela (achado E)
+
+- Com o chanfro de 4,0 (item 1), os postes de trás (y 8,2, raio 1,6) ficam a ~1,8 mm do início do teto plano.
+- **Não mover** o módulo, a janela nem os postes. Conferir a nova folga (pergunta C4).
+
+### 6. Grade: escareado na JLCPCB
+
+A JLCPCB faz furo escareado cônico, em PTH ou NPTH, como serviço opcional do pedido de placa. Regras:
+- tem de sobrar pelo menos 0,2 mm de placa abaixo do cone;
+- a boca do cone tem de ficar a pelo menos 0,2 mm de cobre, trilhas e ilhas;
+- no pedido se informam o diâmetro da boca, o do furo, o ângulo, o tipo (NPTH), o lado e uma figura de onde ficam.
+
+Fonte: https://jlcpcb.com/help/article/countersink-hole-process
+
+- **Nossos 10 furos:** NPTH Ø 2,3, boca Ø 3,8, **90°**, pela face de cima, 0,75 de profundidade. Sobram 0,85 mm dos 1,6, mais que o mínimo de 0,2.
+- **Mudança no arquivo da grade:** o cobre sob a máscara hoje recua 0,5 mm do furo (até Ø 3,3) e entraria no cone. Recuar o cobre em volta dos 10 furos até **Ø 4,4** (boca de Ø 3,8 + 0,2 + margem), nas duas faces.
+- **Pedido:** escrever na observação do pedido a especificação acima e anexar a figura (planta com os 10 furos marcados + corte de um cone). O Code gera a figura.
+- **Se a JLCPCB recusar ou cobrar caro demais:** o J escareia em casa com uma broca escareadora de 90° (Ø ≥ 4), na furadeira de bancada com batente. Profundidade de 0,75: a cabeça do parafuso fica rente. Testar antes num pedaço de FR-4 que sobrar.
+- O cone fica sob a tampa, e o FR-4 aparente ali não se vê.
+
+### 7. Pendências que dependem de peça real
+
+- **J401, boca do conector:** fica **a confirmar na amostra**. Se a boca não abrir para a fenda (para y menor), o cabo faz uma curva em U de raio ≥ 2 mm sob a placa: com 50 mm de cabo e ~21 de percurso, sobra comprimento.
+  - **Como o J confere:** na placa montada, olhar o J401 por baixo. Anotar se a abertura, onde entra o plugue, aponta para a fenda (para o fundo do case) ou para o músico.
+- **Encoders:** comprimento do eixo e do chato (item 2), com o paquímetro.
+- **Alturas do USB-C e dos jacks, frente das tomadas e pilha do H101:** como na v4, pelo cupom da parede.
+  - O jack XUNPU do modelo do EasyEDA dá o eixo em −4,1 e o fundo em −6,6 (a SPEC usava −4,0 e −6,3). **Manter `JACK_Z = −4,0`** até a amostra: o furo Ø 6,5 aceita 0,1 de diferença.
+  - A folga da bandeja até o fundo do jack, com o −6,6, ainda é ≥ 1,0. O Code confirma (pergunta C5).
+
+### 8. Logo
+
+Continua "eTUTTI" + "STUDENT · V2" (decisão do J de 18 nov: o texto final muda só na última versão). Não é mais uma pergunta em aberto.
+
+---
+
+## Tarefas para o Code
+
+1. **[Design]** Chanfro superior de 4,0 × 3,5 nos quatro lados, com R 1,5 nas duas arestas e o chanfro interno acompanhando (item 1). A tampa sobre a grade com ≥ 1,2 mm em todos os pontos, sem corte na tampa para a grade passar.
+2. **[Design]** Knob: confirmar o comprimento do chato do eixo. Modelar o knob de 7 mm (eixo cortado em 20) e o de 10 mm (eixo inteiro). Dizer qual vale (item 2).
+3. **[Design]** Prateleira de 1,5 × 1,0 na tampa e rebaixo na borda da bandeja; bandeja rente à borda da tampa (item 3).
+4. **[Design]** 9 pés: rebaixos de Ø 8,4 × 0,5 na bandeja, nas posições do item 3. Os pés entram no modelo como peça (`pe.stl`, Ø 8 × 1,5).
+5. **[Design]** Estudo de flexão com a bandeja sobre os pés (mesa rígida) e, para informação, no colo. Meta ≤ 0,05 mm a 3 N, placa + bandeja. Propor nervuras mais leves, se der.
+6. **[Design]** Arquivo da grade: cobre recuado até Ø 4,4 em volta dos 10 furos, nas duas faces. Figura do escareado para o pedido (planta + corte) em `case/GRADE_ESCAREADA.md`, com o texto pronto para a observação do pedido na JLCPCB (item 6).
+7. **[Design]** `fit_check.py` e `fit_extra.py` de novo, com a medida da tampa sobre a grade em toda a volta.
+8. **[Design]** Renders: isométrico e comparação v4 × v5 (mesmo ângulo), corte pela frente (y ≈ 95) mostrando a tampa sobre a grade, vista de baixo (bandeja, aro e pés).
+9. FIT_CHECK.md atualizado, terminando com "Perguntas para o design".
+
+## Perguntas para o Code (medidas a conferir no modelo)
+
+- **C1.** Comprimento da parte chata do eixo do EC11E18244AU, a partir da ponta (modelo do EasyEDA, desenho da Alps). Quanto sobra de chato com o corte em 20,0?
+- **C2.** Espessura mínima da tampa sobre a grade em toda a volta, com o chanfro de 4,0, e onde ela fica.
+- **C3.** Flexão: pior tecla sobre os pés (mesa) e no colo; quanto a bandeja soma em cada caso.
+- **C4.** Folga dos postes de trás da tela até o início do teto plano, com o chanfro de 4,0.
+- **C5.** Folga da bandeja (borda e piso) ao fundo dos jacks com o −6,6 do modelo do XUNPU.
+- **C6.** O cobre recuado da grade até Ø 4,4 encosta em alguma coisa do desenho da grade, como contorno, furos das teclas ou texto?
+
+## Depende de amostra física
+
+- Comprimento real do eixo e do chato dos encoders (item 2).
+- Boca do J401 (item 7).
+- `USB_Z`, `JACK_Z`, frente das tomadas e pilha do H101: pelo cupom da parede, como na v4.
+- Pés: a dureza do silicone e a altura real depois de colados (~1,5).
+
+---
+
+# Anexo — SPEC v4 (referência)
+
 
 Data: 18 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
 Responde a `student_v03/CASE_IMPACTO.md`, às 3 perguntas do FIT_CHECK do ciclo 3 da V2 e às respostas do J de 18 nov (itens 12 e 13).
