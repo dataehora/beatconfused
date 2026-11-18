@@ -102,3 +102,7 @@ O **D206** (VBUS_S → EN) liga o 3,3 V quando há USB; a cadeia PWR_EN da V1/V2
 ## Impacto no case
 
 Veja `CASE_IMPACTO.md` (conectores no fundo, divisão base/tampa, fenda da tela, perguntas para o Chat).
+
+## Case (SPEC v4, 19 nov 2026)
+
+`SPEC.md` (do Chat) → `case/` (modelo, `FIT_CHECK.md`, renders, STEP/STL em `case/out/`) e `estudos/` (flexão, acústica). Tampa de z −10,1 a 14,5 (24,6 mm), sem emenda na parede; fundo = bandeja de 2 mm com borda e nervuras; furos de USB-C e jacks inteiros na tampa. 245 pares testados, 0 interferências. **Cinco achados esperam decisão** (tampa de 0,5 mm sobre a grade na frente e no fundo, eixo do encoder de 24,5 mm, flexão da bandeja, caixa acústica 9,75 cm³, postes da tela): veja `case/FIT_CHECK.md`, seção 3. Cupom da parede para imprimir: `case/out/cupom_parede_*.stl`.

@@ -1,0 +1,14 @@
+A_so_a_borda 0.2057 SW19 media 0.1295 acima do alvo: 28
+B_tres_pinos_da_SPEC 0.0669 SW24 media 0.0382 acima do alvo: 6
+C_quatro_pinos_H5_H8 0.0597 SW24 media 0.0371 acima do alvo: 12
+D_pinos_e_pilares 0.0492 SW2 media 0.022 acima do alvo: 0
+SPEC pins: [-1.02, -1.76, -0.62]
+pilares: [(127.5, 32.5), (182.5, 62.5), (182.5, 32.5)]
+grade: {'impressa (PETG, E = 2,0 GPa)': {'max_mm': 1.95, 'media_mm': 1.321, 'encosta_nas_teclas': True}, 'FR-4 (E = 18 GPa)': {'max_mm': 0.217, 'media_mm': 0.147, 'encosta_nas_teclas': True}, 'aluminio (E = 69 GPa)': {'max_mm': 0.057, 'media_mm': 0.038, 'encosta_nas_teclas': False}}
+bandeja no ar, PA12 MJF (E = 1,7 GPa), placa lisa de 2 mm 2.058 mm
+bandeja no ar, PA12 MJF (E = 1,7 GPa), com nervuras (equivalente a 3,0 mm) 0.61 mm
+bandeja no ar, PA12 MJF (E = 1,7 GPa), equivalente a 4,0 mm 0.257 mm
+bandeja no ar, resina (E = 2,5 GPa), placa lisa de 2 mm 1.4 mm
+bandeja no ar, resina (E = 2,5 GPa), com nervuras (equivalente a 3,0 mm) 0.415 mm
+bandeja no ar, resina (E = 2,5 GPa), equivalente a 4,0 mm 0.175 mm
+EXIT 0

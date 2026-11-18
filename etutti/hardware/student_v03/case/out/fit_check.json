@@ -1,0 +1,122 @@
+{
+ "interferencias": [],
+ "pares_testados": 245,
+ "falante_na_caixa_mm3": 0,
+ "placa_entra_por_baixo_mm3": {
+  "0.5": 0,
+  "1": 0,
+  "2": 0,
+  "3": 0,
+  "4": 0,
+  "6": 0,
+  "8": 0,
+  "12": 0,
+  "16": 0,
+  "22": 0,
+  "30": 0
+ },
+ "bandeja_entra_por_baixo_mm3": {
+  "2": 0,
+  "5": 0,
+  "10": 0,
+  "20": 0
+ },
+ "plugues": {
+  "USB-C": {
+   "furo_mm": [
+    12.8,
+    7.0
+   ],
+   "corpo_maximo_pela_norma_mm": [
+    12.35,
+    6.5
+   ],
+   "folga_por_lado_mm": [
+    0.225,
+    0.25
+   ],
+   "ponta_do_plugue_mm": 6.65,
+   "falta_entrar_se_o_corpo_nao_passa_mm": 2.3,
+   "encaixe_se_o_corpo_nao_passa_mm": 4.35
+  },
+  "P2 3,5 mm": {
+   "furo_mm": 6.5,
+   "ponta_do_plugue_mm": 14.0,
+   "falta_entrar_se_o_corpo_nao_passa_mm": 2.3,
+   "encaixe_se_o_corpo_nao_passa_mm": 11.7
+  }
+ },
+ "folgas_mm": {
+  "fileira 1": {
+   "topo_acima_do_tampo": 7.4,
+   "cabeca_ate_a_grade_solto": 5.45,
+   "cabeca_ate_a_grade_apertado": 1.35,
+   "haste_no_furo_da_grade": 0.3,
+   "botao_ate_a_tampa": 7.022,
+   "botao_apertado_ate_a_tampa": 5.135
+  },
+  "fileira 2": {
+   "topo_acima_do_tampo": 9.4,
+   "cabeca_ate_a_grade_solto": 7.45,
+   "cabeca_ate_a_grade_apertado": 3.35,
+   "haste_no_furo_da_grade": 0.3,
+   "botao_ate_a_tampa": 8.426,
+   "botao_apertado_ate_a_tampa": 5.824
+  },
+  "fileira 3": {
+   "topo_acima_do_tampo": 11.4,
+   "cabeca_ate_a_grade_solto": 9.45,
+   "cabeca_ate_a_grade_apertado": 5.35,
+   "haste_no_furo_da_grade": 0.3,
+   "botao_ate_a_tampa": 9.7,
+   "botao_apertado_ate_a_tampa": 6.957
+  },
+  "fileira 4": {
+   "topo_acima_do_tampo": 14.4,
+   "cabeca_ate_a_grade_solto": 12.45,
+   "cabeca_ate_a_grade_apertado": 8.35,
+   "haste_no_furo_da_grade": 0.3,
+   "botao_ate_a_tampa": 9.7,
+   "botao_apertado_ate_a_tampa": 9.108
+  },
+  "botao_ate_a_parede_do_poco_min": 7.022,
+  "aba_do_poco_ate_a_grade": 0.1,
+  "grade_ate_as_teclas": 0.15,
+  "grade_ate_a_parede_da_tampa": 2.47,
+  "placa_ate_a_parede": 0.5,
+  "placa_ate_a_tampa": 0.0,
+  "knob_ate_a_tampa": 0.8,
+  "knob_acima_do_tampo": 7.0,
+  "eixo_do_encoder_acima_do_tampo": 5.5,
+  "caixa_acustica_ate_a_placa": 0.3,
+  "caixa_acustica_ate_pecas_de_cima": 4.605,
+  "caixa_acustica_ate_encoders": 3.006,
+  "caixa_acustica_ate_a_grade": 1.744,
+  "modulo_da_tela_ate_pecas_de_cima": 59.816,
+  "modulo_da_tela_ate_encoders": 6.444,
+  "bateria_ate_pecas_do_verso": 0.7,
+  "bateria_ate_encoders (pernas)": 5.1,
+  "bateria_ate_o_modulo": 26.655,
+  "modulo_ate_o_piso": 2.2,
+  "pecas_do_verso_ate_a_base": 0.237,
+  "encoders (pernas)_ate_a_base": 4.441,
+  "espacadores_ate_as_teclas": 6.553,
+  "espacadores_ate_pecas_de_cima": 28.092,
+  "postes_da_tampa_ate_a_grade": 0.1,
+  "tampa_ate_pecas_de_cima": 2.405,
+  "tampa_ate_encoders": 1.487,
+  "J201_ate_a_tampa": 1.785,
+  "J201_ate_a_base": 3.14,
+  "J201_frente_atras_da_parede": 0.3,
+  "J301_ate_a_tampa": 0.808,
+  "J301_ate_a_base": 1.1,
+  "J301_frente_atras_da_parede": 0.3,
+  "J302_ate_a_tampa": 0.808,
+  "J302_ate_a_base": 1.1,
+  "J302_frente_atras_da_parede": 0.3,
+  "caixa_acustica_ate_J302": 1.5,
+  "caixa_acustica_ate_a_tampa": 0.0,
+  "caixa_acustica_ate_espacadores": 9.88,
+  "parafuso_da_grade_M2x16_passa_da_porca_mm": 0.25
+ }
+}
