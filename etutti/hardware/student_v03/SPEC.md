@@ -1,4 +1,53 @@
-# eTutti Student — SPEC v6 do case (placa V3)
+# eTutti Student — SPEC v7 do case (placa V3)
+
+Data: 18 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
+Responde às 5 perguntas do FIT_CHECK do ciclo 5 (PR #170). Tudo o que não é mencionado aqui continua como na v6, na v5 e na v4 (anexos abaixo) e no modelo do PR #170.
+
+## Mudanças desde a v6
+
+### 1. Prateleira: abandonada (pergunta 1)
+
+- Fica a **opção (c)** do Code: sem prateleira e sem pontas locais. `SHELF_ON = False` passa a ser a decisão, não um teste. O código da prateleira pode sair do `case.py`.
+- A bandeja continua rente à borda da tampa, com 0,15 de folga da parede, sobre os 9 pés. No colo, o case apoia no contorno (bandeja + borda da tampa). É só informativo, como já estava.
+
+### 2. Pés: poliuretano duro e um apoio a mais perto da pior tecla (pergunta 2)
+
+- **Pé:** poliuretano (ou silicone) de **≥ 80 Shore A**, Ø 8 × 1,5, autoadesivo, no mesmo rebaixo de Ø 8,4 × 0,5. A dureza fica registrada na lista de compras. O silicone macio comum (40–60A) não serve.
+- **Margem para a meta:** a placa sozinha já está em 0,0492 mm, no limite. O Code procura **um apoio a mais** (pino ou pilar, com pé embaixo) perto da pior tecla (SW2, em (116,95; 74,03)):
+  - num vão entre teclas sem peça do fundo, a ≥ 1 mm de qualquer peça;
+  - pode ser um pilar Ø 4 sem furo, como os da v2, se não houver lugar para um pino com ponta.
+- **Meta:** pior tecla **≤ 0,05 mm a 3 N** com os pés de 80A, na mesa.
+  - Se mesmo com o apoio extra não fechar, **aceito até 0,055 mm**. 5 µm a mais não se sentem no dedo. Registrar o número.
+  - Se precisar passar disso, voltar antes de mudar mais nada.
+
+### 3. Encoder: fica o EC11E18244AU com o knob de 10 mm (pergunta 3)
+
+- O protótipo usa o EC11E18244AU inteiro, **sem corte**, com o knob alto do item 4.
+- **Não** procurar agora um encoder de outro fabricante. Isso fica registrado como tarefa de eletrônica para quando a Student for para série, e não faz parte deste ciclo.
+
+### 4. Knob alto: pele de 0,8 mm sobre o furo (pergunta 4)
+
+- **Nada de furo passante**: a ponta do eixo não aparece.
+- O furo em D termina em **z 25,0**, 0,5 mm acima da ponta nominal (24,5), o que dá folga para a tolerância do eixo.
+- A pele sobre o furo fica com **0,8 mm**, então o topo do knob vai para **z 25,8** (11,3 sobre o tampo). Saia, corpo, folga da saia ao tampo e traço creme ficam como estão: só o corpo cresce 0,8.
+- O knob de 7 mm sai do modelo, e o `knob` passa a ser este. Renders: o isométrico com os knobs novos.
+
+### 5. Grade escareada (pergunta 5)
+
+- Nada muda no modelo. A confirmação é com o próprio pedido: o J sobe a grade na JLCPCB com o texto de `GRADE_ESCAREADA.md` e só paga depois que a revisão aceitar o escareado. Se a JLCPCB recusar, vai para a PCBWay (SPEC v6, item 2).
+
+## Tarefas para o Code
+
+1. **[Design]** Tirar a prateleira do `case.py` (item 1).
+2. **[Design]** Pés de 80A no estudo de flexão. Procurar e modelar o apoio extra perto do SW2 (pino ou pilar na bandeja, pé embaixo) e dizer a pior tecla (item 2).
+3. **[Design]** Knob alto: furo em D até z 25,0, pele de 0,8, topo em z 25,8. Remover o knob de 7 mm (item 4).
+4. **[Design]** Lista de compras: pé de PU/silicone ≥ 80A, Ø 8 × 1,5, 10 unidades (9 + o apoio extra, se houver).
+5. **[Design]** `fit_check.py`, `fit_extra.py`, renders (isométrico, bandeja de baixo) e FIT_CHECK.md terminando com "Perguntas para o design".
+
+---
+
+# Anexo — SPEC v6 (referência)
+
 
 Data: 18 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
 Revisão curta da v5, a pedido do J: **nenhum corte de eixo e nenhum escareado em casa, nem como plano B.** Muda só os itens 2 e 6 da v5. Todo o resto da v5 vale como está (anexo abaixo).
