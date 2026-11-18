@@ -1,4 +1,115 @@
-# eTutti Student V3 — FIT_CHECK do case (SPEC v4, ciclo 4)
+# eTutti Student V3 — FIT_CHECK do case (SPEC v6, ciclo 5)
+
+Responde à **SPEC v6** (que mantém a v5, com os itens 2 e 6 substituídos). Modelo regerado (`case.py`), fit check de 245 pares: **0 interferências**
+(placa e bandeja entram por baixo livres em todo o curso). Nada foi impresso nem pedido. O ciclo 4 (SPEC v4) está no fim deste arquivo.
+
+## 0. Resumo
+
+| Tarefa | Resultado |
+|---|---|
+| 1. Chanfro 4,0 × 3,5 nos quatro lados | **Feito.** Tampa sobre a grade com **1,4 mm** em toda a volta; cabeças escareadas escondidas. |
+| 2. Encoder de eixo de 15 mm | **Não existe na família EC11E** (§2). **Segue o knob de 10 mm** (segunda opção da SPEC). |
+| 3. Knob nas duas versões | Feito: `knob_7mm` e `knob_10mm` (STEP/STL); o de 10 mm é o `knob`. Render: `renders/knobs_7_e_10.png`. |
+| 4. Prateleira + rebaixo da bandeja | **Não coube: a placa não passa pela prateleira (achado F).** Chave `SHELF_ON` no `case.py`, desligada. |
+| 5. 9 pés | Feito: 9 rebaixos Ø 8,4 × 0,5 na bandeja e a peça `pe.stl` (Ø 8 × 1,5). Render: `renders/bandeja_de_baixo.png`. |
+| 6. Flexão sobre os pés | Placa sozinha 0,0492 mm; **com a compressão do pé de silicone passa de 0,05** (achado G). |
+| 7. Grade: cobre a Ø 4,4 + figura | Feito (`pcb/grade_fab.py`, `GRADE_ESCAREADA.md`, `renders/grade_escareada.png`). |
+| 8. fit_check / fit_extra / renders | Feitos. |
+
+## 1. Chanfro 4,0 × 3,5 (pergunta C2 e C4)
+
+- `CHAMFER = (4.0, 3.5)`, R 1,5 nas duas arestas, chanfro interno acompanhando (parede de 2,0 na normal). Sulcos, legendas e logo como estavam.
+- **C2 — tampa sobre a grade:** 1,4 mm (z 13,1 → 14,5) em toda a área da grade, inclusive na frente e no fundo, onde a borda da grade chega a 4,47 mm da
+  parede externa; ali o teto inclinado do chanfro fica a 1,81 mm acima da grade (a medida é por conta do plano do chanfro; o corte do teto sobre a grade vale 1,4).
+  Ponto mais fino: a boca do poço (parede reta de 0,2 mm sob o R 1,2 do poço, como na v4). A meta de ≥ 1,2 mm está cumprida.
+- **C4 — postes de trás da tela:** ficam a **1,85 mm** do início do teto plano (a SPEC esperava ~1,8). Achado E resolvido sem mover nada.
+
+## 2. Encoder, tarefa 1
+
+Fonte: página da série EC11E da Alps (https://tech.alpsalpine.com/e/products/category/encorders/sub/01/series/ec11e/). **Todos os 9 modelos verticais
+EC11E têm "actuator length 20 mm"**, eixo plano Ø 6; nenhum de 15 mm:
+
+| Modelo | Detentes / pulsos | Chave |
+|---|---|---|
+| EC11E09204A4 / EC11E09244BS / EC11E09244AQ | 18 / 9 | sem / com 0,5 mm / com 1,5 mm |
+| EC11E15204A3 / EC11E15244G1 / EC11E15244B2 | 30 / 15 | sem / com 0,5 mm / com 1,5 mm |
+| EC11E1820402 / EC11E18244AU / EC11E18244A5 | 36 / 18 | sem / com 0,5 mm / com 1,5 mm |
+
+- O "15" no código é **15 pulsos**, não o comprimento do eixo (o EC11E15244G1 tem eixo de 20 e dá a ponta a ~24,5, como a SPEC já avisa).
+- Não conferi outras famílias nem outros fabricantes: as cotas da Alps estão em desenhos GIF que não consegui ler. A ponta acima da placa só se confirma
+  com o desenho cotado de cada peça. Não encontrei nenhuma que cumprisse as cinco exigências com certeza.
+- **Decisão neste ciclo:** segue o **knob de 10 mm**, como a SPEC manda quando não há encoder. Nenhuma troca de footprint nem de firmware
+  (`ENC_STEPS_PER_DETENT = 2` continua valendo com o EC11E18244AU); a tarefa 3 (eletrônica) não se aplica.
+
+## 3. Knobs, tarefa 2
+
+| | knob de 7 mm | **knob de 10 mm (o que vale)** |
+|---|---|---|
+| Topo | z 21,5 (7,0 sobre o tampo) | z 25,0 (10,5 sobre o tampo) |
+| Eixo | ponta a 19,5 (eixo de 15) | **ponta a 24,5** (EC11E18244AU inteiro) |
+| Encaixe no eixo | 4,2 mm | **9,2 mm** (furo até z 24,8; a ponta fica com folga de 0,3 sob o fundo do furo) |
+| Pele sobre o furo | 1,7 mm | 0,2 mm (o traço creme tem 0,3 mm de profundidade no de 10; 0,4 no de 7) |
+
+- Mesmo desenho (saia Ø 12, corpo Ø 9, furo em D de Ø 6,2 com chato a 4,5 do eixo), só o corpo mais alto. No modelo do EasyEDA o eixo Ø 6 vai de 12,5
+  a 24,5, então o encaixe de 9,2 mm fica todo no trecho de eixo. O comprimento do chato não foi medido (desenho da Alps em GIF).
+- Nota: a SPEC pedia a ponta 0,5 mm abaixo do topo com o furo de 9,5 mm; com a ponta a 24,5 e o topo a 25,0 (10,5 sobre o tampo) a pele é de 0,5 mm acima da ponta,
+  mas o furo de 0,3 mm de folga deixa só 0,2 mm de pele. Ver a pergunta 4.
+- Folga da bucha do encoder ao teto: 1,0 mm (C10).
+
+## 4. Prateleira da v5, achado F
+
+A prateleira de 1,5 × 1,0 mm na base da parede **bloqueia a placa**: a placa entra na tampa por baixo e chega a **0,5 mm** da parede (a placa tem
+borda a 2,5 mm; a parede, 2,0), então uma prateleira de 1,5 mm, em qualquer altura abaixo da placa, sobrepõe 1,0 mm a placa. No fit check (placa subindo
+de 0,5 a 30 mm): **613 mm³ de interferência a 8 mm de curso** (de 1,8 a 20 mm³ nos cursos de 2 a 6 mm). Na cota original da v5 (z −10,1…−9,1) vale o mesmo.
+
+- **Resolvido no modelo:** `SHELF_ON = False` no `case.py`; a bandeja volta ao contorno de antes (folga de 0,15 mm da parede, face de baixo rente à borda da tampa). O código
+  da prateleira e do rebaixo da bandeja continua no arquivo.
+- **O que a prateleira queria resolver (flexão no colo) fica coberto de outro modo:** com a bandeja rente, o contorno inteiro (parede da tampa + borda da bandeja)
+  assenta na mesa ou no colo; é o caso "apoiada em todo o contorno" do estudo (§5).
+- Opções, se o Chat quiser mesmo um ressalto: (a) pontas locais de 1,5 × 4 mm só onde a placa tem recorte; (b) mudar a montagem (a bandeja entra antes da placa, o que
+  a SPEC v4 não permite pelos parafusos); (c) deixar como está. Recomendo (c): os pés e o contorno rente já resolvem.
+
+## 5. Flexão com os pés, tarefas 4 e 5 (pergunta C3)
+
+Estudo em `estudos/flexao.py` (grelha de vigas, 3 N numa tecla de cada vez). Os 9 pés ficam sob os 4 pinos, os 3 pilares e dois à esquerda,
+(22; 10) e (22; 90), longe dos rebaixos dos parafusos e do H101 (fit check sem interferência).
+
+| Caso | Pior tecla | Observação |
+|---|---|---|
+| Placa nos apoios da borda + 4 pinos + 3 pilares (mesa rígida, pés indeformáveis) | **0,0492 mm** (SW2) | passa da meta de 0,05 por 0,0008 |
+| + compressão do pé de silicone 60A (E = 4 MPa), 1/3 da carga num pé | 0,057 mm | acima da meta |
+| + pé 50A (E = 2,5 MPa), idem | 0,061 mm | acima |
+| + pé 40A (E = 1,5 MPa), idem | 0,069 mm | acima |
+| Pior caso (os 3 N inteiros num pé): 60A / 50A / 40A | 0,072 / 0,085 / 0,109 mm | |
+| Colo, sem mesa: bandeja apoiada no contorno, PA12 MJF, nervuras ≈ 3 mm | 0,142 mm | só informativo |
+| Colo: bandeja de ≈ 4 mm equivalente | 0,060 mm | com nervuras mais altas |
+
+- **Achado G:** a placa sozinha já está no limite (0,0492). Com o pé de silicone o piso de 2 mm não flexiona (pino e pé alinhados), mas o pé se comprime:
+  dz = F·h/(E·A), A = 50,3 mm², h = 1,5 mm. A pior tecla vai a 0,057–0,069 mm.
+- **Como fechar:** pé **mais duro** (70A–80A ou PU duro, E ≥ 8 MPa: compressão provável ≈ 0,004 mm, pior caso ≈ 0,011 mm) ou **mais fino**
+  (1,0 mm). Registrar a dureza na SPEC. O modelo de pé de silicone é estimativa (E do silicone varia muito); o número real vem da peça.
+- **Nervuras mais leves:** não propus. Com os pés a bandeja não flexiona entre pino e pé; as nervuras servem ao piso e ao caso do colo (0,142 mm com 3 mm equivalentes).
+- Grade (FR-4, 0,217 mm a 5 N, encosta nas teclas; alumínio 0,057 mm, não) e os outros números do estudo não mudaram.
+
+## 6. Grade escareada só de fábrica, tarefa 6 (pergunta C6)
+
+`GRADE_ESCAREADA.md` reescrito: sem "escarear em casa"; textos prontos para a JLCPCB e para a PCBWay; figura `renders/grade_escareada.png` (planta com os 10 furos
+numerados + corte do cone). **Cobre recuado até Ø 4,4** nas duas faces (`pcb/grade_fab.py`, novo; os arquivos da V2 não foram tocados): distância mínima do
+centro do furo ao cobre de 2,20 mm medida no arquivo preenchido; DRC com 0 erros (o aviso `isolated_copper` é inofensivo). **C6:** os círculos de Ø 4,4 não tocam
+nos furos das teclas; perto da borda o cobre já recuava 0,5 mm do contorno, sem problema.
+
+## 7. Perguntas para o design
+
+1. **Prateleira:** concorda em **abandonar** a prateleira (achado F) e deixar a bandeja rente, apoiada no contorno? Ou quer as pontas locais (opção a)?
+2. **Pé:** de que dureza? A 60A ou menos a pior tecla passa de 0,05 mm (achado G). Recomendo silicone 70A–80A ou PU duro, Ø 8 × 1,5, ou pé de 1,0 mm.
+3. **Encoder:** sem eixo de 15 mm na família Alps EC11E, segue o knob de 10 mm. Quer que a eletrônica procure um EC11 de eixo curto de outro fabricante, para uma série futura, com a ponta cotada a partir da placa?
+4. **Knob de 10 mm:** a pele de 0,2 mm sobre a ponta do eixo é fina. Prefere o furo passante, com a ponta do eixo à mostra, ou subir o knob 0,5 mm?
+5. **Grade:** o pacote para a JLCPCB/PCBWay está pronto. Falta confirmar com a JLCPCB, no pedido, se o escareado cônico NPTH entra no pedido de placa da grade.
+
+---
+
+# Anexo — FIT_CHECK do ciclo 4 (SPEC v4, PR #166)
+
 
 Autor: Claude Code · Resposta à `student_v03/SPEC.md` (v4). Modelo em `student_v03/case/` (cópia do da V2, que ficou intacta):
 `case.py`, `fit_check.py`, `fit_extra.py`, `render.py`, `render_comparacao.py`; estudos em `student_v03/estudos/`;

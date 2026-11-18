@@ -1,0 +1,37 @@
+{
+ "espessura_mm": 1.6,
+ "mascara": "preta fosca, nas duas faces",
+ "camadas": 2,
+ "caixa_mm": [
+  172.6,
+  91.16
+ ],
+ "furos_dos_botoes": {
+  "qtd": 28,
+  "d_mm": 6.2
+ },
+ "furos_dos_parafusos": {
+  "qtd": 10,
+  "d_mm": 2.3
+ },
+ "furos_no_arquivo_de_furacao": 38,
+ "cobre_por_face_mm2": 12332.0,
+ "cobre_recuado_mm": 0.5,
+ "cobre_recuado_nos_escareados_d_mm": 4.4,
+ "drc_erros": [],
+ "drc_avisos": [
+  "isolated_copper"
+ ],
+ "arquivos": [
+  "student_v03_grade-B_Cu.gbl",
+  "student_v03_grade-B_Mask.gbs",
+  "student_v03_grade-B_Silkscreen.gbo",
+  "student_v03_grade-Edge_Cuts.gm1",
+  "student_v03_grade-F_Cu.gtl",
+  "student_v03_grade-F_Mask.gts",
+  "student_v03_grade-NPTH.drl",
+  "student_v03_grade-PTH.drl",
+  "student_v03_grade-job.gbrjob"
+ ],
+ "zip": "student_v03_grade_gerbers.zip"
+}

@@ -59,7 +59,7 @@ GRID_Z0, GRID_T = 11.35, 1.6  # the grid: 0.15 above the housings (SPEC v2)
 GRID_Z1 = GRID_Z0 + GRID_T    # 12.95 = the well's floor
 FLANGE_GAP = 0.15                # the lid over the grid's edge stops 0.15 above the grid (SPEC v3, v4)
 GRID_ROOF = GRID_Z1 + FLANGE_GAP    # 13.1: under the 1.4 mm lid over the grid (SPEC v4 item 12)
-CHAMFER = (6.0, 3.5)          # horizontal, vertical
+CHAMFER = (4.0, 3.5)          # horizontal, vertical (SPEC v5 item 1: 4.0, was 6.0, on all four sides)
 EDGE_R = 1.5
 GROOVES = (4.3, 6.5, 8.7)     # centres (SPEC v4: they came down 3.7 mm with the top)
 GROOVE_W, GROOVE_D = 0.8, 0.6
@@ -69,6 +69,13 @@ RIM_TOP, RIM_LOW = -6.6, -7.6          # the rim's top; lowered at the three soc
 RIM_ZONES = ((9.0, 23.0), (30.0, 42.0), (54.0, 66.0))   # y of USB-C, OUT, IN
 H101 = (47.5, 14.0)                    # the module's screw: a recess in the tray's floor under it
 H101_RECESS = (8.0, 1.0)               # diameter, depth
+SHELF_W, SHELF_Z = 1.5, (-9.1, -8.1)   # SPEC v5 item 3: the lid's inner shelf; the tray's flange (0.95 thick) goes in under it from below
+FLANGE_T = 0.95
+# The v5 shelf cannot exist: the board enters the lid from below and reaches 0.5 mm from the wall, so a 1.5 mm shelf anywhere
+# under it blocks the board (fit check: 613 mm3 of interference). Switch kept for the next SPEC.
+SHELF_ON = False
+FOOT_D, FOOT_H, FOOT_RECESS_D, FOOT_RECESS_H = 8.0, 1.5, 8.4, 0.5      # silicone feet under the pins, pillars and two on the left
+FEET_LEFT = [(22.0, 10.0), (22.0, 90.0)]
 CSK_D, CSK_ANGLE = 3.8, 90.0           # ISO 7046 M2 head
 
 # ---- keyboard
@@ -88,8 +95,13 @@ WINDOW_PANE_T, WINDOW_LEDGE = 1.0, 1.0
 OLED_PCB = (27.3, 27.8, 1.6)      # the common 0.96 in module: board x, y, thickness
 OLED_GLASS_T = 1.5
 KNOB_HOLE = 9.2
-KNOB = {"skirt_d": 12.0, "body_d": 9.0, "gap": 0.8, "top": ZT + 7.0, "sleeve_d": 0.0, "sleeve_z0": ZT + 0.8,
-        "shaft_d": 6.0, "shaft_flat": 4.5, "shaft_top": 20.0, "bore_clear": 0.1}
+# SPEC v6 item 1: no shaft cutting. "7": a 15 mm-shaft encoder (tip 19.5 above the board; none exists in the EC11E series);
+# "10": the EC11E18244AU's whole shaft (tip 24.5), the knob 3 mm taller. The 10 mm one is the one that is built.
+KNOB_VARIANTS = {"7": {"top": ZT + 7.0, "shaft_top": 19.5, "mark_depth": 0.4},
+                 "10": {"top": ZT + 10.5, "shaft_top": 24.5, "mark_depth": 0.3}}
+KNOB_CHOSEN = "10"
+KNOB = dict({"skirt_d": 12.0, "body_d": 9.0, "gap": 0.8, "sleeve_d": 0.0, "sleeve_z0": ZT + 0.8,
+             "shaft_d": 6.0, "shaft_flat": 4.5, "bore_clear": 0.1}, **KNOB_VARIANTS[KNOB_CHOSEN])
 SPK = G.SPEAKER
 SPK_D, SPK_H = G.SPEAKER_D, 5.0
 MESH_T, FOAM_T = 0.3, 1.0
@@ -345,6 +357,12 @@ def tampa():
     ch, cv = chamfer_inner()
     cav = outer(Z0 - 1, ZT - LID_T, WALL).faces(">Z").edges().chamfer(cv, ch)
     body = body.cut(cav)
+    # SPEC v5 item 3: a shelf 1.5 wide on the wall's inside, near the bottom; the tray's flange sits under it. Left out round the screw bosses.
+    shelf = outer(SHELF_Z[0], SHELF_Z[1]).cut(outer(SHELF_Z[0] - 1, SHELF_Z[1] + 1, WALL + SHELF_W))
+    for x, y in list(LID_HOLES) + list(GRID_SCREWS):
+        shelf = shelf.cut(cyl(x, y, SHELF_Z[0] - 1, SHELF_Z[1] + 1, NUT_BOSS_D + 0.6))
+    if SHELF_ON:
+        body = body.union(shelf)
     step('grooves all round')
     # grooves all round
     for zc in GROOVES:
@@ -464,8 +482,10 @@ def tray_ribs():
 def base():
     zf = Z0 + FLOOR
     inset = WALL + TRAY_GAP
-    body = outer(Z0, zf, inset)
+    inset2 = WALL + (SHELF_W if SHELF_ON else 0.0) + TRAY_GAP            # above the flange the tray is narrower: it clears the lid's shelf
+    body = outer(Z0, zf, inset2).union(outer(Z0, Z0 + FLANGE_T, inset))
     # rim along the lid's inner wall: 1.2 thick, top at RIM_TOP, lowered at the three sockets
+    inset = inset2
     rim = outer(zf - 0.01, RIM_TOP, inset).cut(outer(zf - 1, RIM_TOP + 1, inset + RIM_T))
     for y0, y1 in RIM_ZONES:
         rim = rim.cut(box(0, y0, inset + RIM_T + 1, y1, RIM_LOW, RIM_TOP + 1))
@@ -496,7 +516,18 @@ def base():
     body = body.cut(cyl(PROGRAM[0], PROGRAM[1], Z0 - 1, zf + 1, 3.0))
     # the module's nut and the screw's end (SPEC v4 item 8): a recess in the floor, 1.0 left under it
     body = body.cut(cyl(H101[0], H101[1], zf - H101_RECESS[1], zf + 1, H101_RECESS[0]))
+    for x, y in feet():
+        body = body.cut(cyl(x, y, Z0 - 1, Z0 + FOOT_RECESS_H, FOOT_RECESS_D))
     return body
+
+
+def feet():
+    return list(PINS) + list(PILLARS) + FEET_LEFT
+
+
+def foot():
+    """One silicone foot (bought): D 8 x 1.5, glued in a recess 0.5 deep, 1.0 proud."""
+    return cyl(0, 0, 0, FOOT_H, FOOT_D)
 
 
 # ------------------------------------------------------------------ grid, spacer
@@ -571,8 +602,8 @@ def botao(kind, row):
 
 
 # ------------------------------------------------------------------ knob
-def knob():
-    k = KNOB
+def knob(variant=None):
+    k = dict(KNOB, **KNOB_VARIANTS[variant]) if variant else KNOB
     z_under = ZT + k["gap"]
     prof = [(0, z_under), (k["skirt_d"] / 2, z_under), (k["skirt_d"] / 2, z_under + 1.0),
             (k["body_d"] / 2, z_under + 1.8), (k["body_d"] / 2 - 0.3, k["top"] - 0.6), (k["body_d"] / 2 - 0.9, k["top"]),
@@ -588,7 +619,7 @@ def knob():
     bore = bore.cut(keep)
     body = body.cut(bore)
     # the cream mark: a groove 0.8 wide on top, from the edge towards the middle (to be filled with paint)
-    mark = cq.Workplane("XY").workplane(offset=k["top"] - 0.4).center(0, k["body_d"] / 4 + 0.3).rect(0.8, k["body_d"] / 2).extrude(1)
+    mark = cq.Workplane("XY").workplane(offset=k["top"] - k["mark_depth"]).center(0, k["body_d"] / 4 + 0.3).rect(0.8, k["body_d"] / 2).extrude(1)
     body = body.cut(mark)
     return body, {"por_baixo": z_under, "topo": k["top"], "sem_luva": True, "encaixe_no_eixo_mm": round(k["shaft_top"] - z_under, 2), "furo_ate": k["shaft_top"] + 0.3}
 
@@ -703,8 +734,12 @@ def main():
         for row in (1, 2, 3, 4):
             w, d = botao(kind, row)
             export("botao_%s_f%d" % (kind, row), w, dict(d, imprimir=counts.get((kind, row), 0)))
+    for v in KNOB_VARIANTS:
+        k, d = knob(v)
+        export("knob_%smm" % v, k, dict(d, escolhido=(v == KNOB_CHOSEN)))
     k, d = knob()
     export("knob", k, d)
+    export("pe", foot(), {"imprimir": 0, "comprar": len(feet())})
     c, d = caixa_acustica()
     export("caixa_acustica", c, d)
     export("janela", janela())
@@ -720,7 +755,7 @@ def main():
         cq.exporters.export(cq.Workplane("XY").add(comp), os.path.join(OUT, name + ".stl"), tolerance=0.01, angularTolerance=0.2)
     info["teclas"] = [{"fileira": r, "x": x, "y": y, "nota": NOTES[r][[k[1] for k in G.KEYS if k[0] == r].index(x)],
                        "tipo": kind_of(NOTES[r][[k[1] for k in G.KEYS if k[0] == r].index(x)])} for r, x, y in G.KEYS]
-    info["niveis"] = {"base": Z0, "tampo": ZT, "fundo_da_bandeja": [Z0, Z0 + FLOOR], "borda_da_bandeja_ate": [RIM_TOP, RIM_LOW],
+    info["niveis"] = {"prateleira_da_tampa": list(SHELF_Z), "pes": feet(), "base": Z0, "tampo": ZT, "fundo_da_bandeja": [Z0, Z0 + FLOOR], "borda_da_bandeja_ate": [RIM_TOP, RIM_LOW],
                       "tampa_sobre_a_grade": [GRID_ROOF, ZT], "teto_da_tampa": ZT - LID_T, "grade": [GRID_Z0, GRID_Z1],
                       "teto_sobre_a_grade": GRID_ROOF, "alojamento_da_tecla": HOUSING_TOP, "curso": TRAVEL,
                       "topo_dos_botoes": ROW_TOP, "piso_interno": Z0 + FLOOR, "oled": oled_levels(),
