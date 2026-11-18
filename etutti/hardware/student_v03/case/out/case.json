@@ -34,7 +34,7 @@
   },
   "base": {
    "solidos": 1,
-   "volume_cm3": 64.29,
+   "volume_cm3": 64.34,
    "caixa_mm": [
     247.7,
     95.7,
@@ -313,61 +313,24 @@
    "covinhas": 69,
    "imprimir": 2
   },
-  "knob_7mm": {
-   "solidos": 1,
-   "volume_cm3": 0.33,
-   "caixa_mm": [
-    12.0,
-    12.0,
-    6.2
-   ],
-   "z": [
-    15.3,
-    21.5
-   ],
-   "por_baixo": 15.3,
-   "topo": 21.5,
-   "sem_luva": true,
-   "encaixe_no_eixo_mm": 4.2,
-   "furo_ate": 19.8,
-   "escolhido": false
-  },
-  "knob_10mm": {
-   "solidos": 1,
-   "volume_cm3": 0.41,
-   "caixa_mm": [
-    12.0,
-    12.0,
-    9.7
-   ],
-   "z": [
-    15.3,
-    25.0
-   ],
-   "por_baixo": 15.3,
-   "topo": 25.0,
-   "sem_luva": true,
-   "encaixe_no_eixo_mm": 9.2,
-   "furo_ate": 24.8,
-   "escolhido": true
-  },
   "knob": {
    "solidos": 1,
-   "volume_cm3": 0.41,
+   "volume_cm3": 0.45,
    "caixa_mm": [
     12.0,
     12.0,
-    9.7
+    10.5
    ],
    "z": [
     15.3,
-    25.0
+    25.8
    ],
    "por_baixo": 15.3,
-   "topo": 25.0,
+   "topo": 25.8,
    "sem_luva": true,
    "encaixe_no_eixo_mm": 9.2,
-   "furo_ate": 24.8
+   "furo_ate": 25.0,
+   "pele_mm": 0.8
   },
   "pe": {
    "solidos": 1,
@@ -382,7 +345,7 @@
     1.5
    ],
    "imprimir": 0,
-   "comprar": 9
+   "comprar": 10
   },
   "caixa_acustica": {
    "solidos": 1,
@@ -643,10 +606,6 @@
   }
  ],
  "niveis": {
-  "prateleira_da_tampa": [
-   -9.1,
-   -8.1
-  ],
   "pes": [
    [
     98.45,
@@ -675,6 +634,10 @@
    [
     182.5,
     32.5
+   ],
+   [
+    112.5,
+    67.5
    ],
    [
     22.0,
@@ -836,6 +799,10 @@
    [
     182.5,
     32.5
+   ],
+   [
+    112.5,
+    67.5
    ]
   ],
   "bateria": [

@@ -1,4 +1,51 @@
-# eTutti Student V3 — FIT_CHECK do case (SPEC v6, ciclo 5)
+# eTutti Student V3 — FIT_CHECK do case (SPEC v7, ciclo 6)
+
+Responde à **SPEC v7**. Modelo regerado (`case.py`), fit check de 245 pares: **0 interferências**; a placa e a bandeja entram por baixo livres em todo o curso
+(0 mm³ em todos os cursos testados). Nada foi impresso nem pedido. O ciclo 5 (SPEC v6) e o 4 estão no fim deste arquivo.
+
+## 0. Resumo
+
+| Tarefa | Resultado |
+|---|---|
+| 1. Tirar a prateleira | Feito: constantes, código e rebaixo saíram do `case.py`. |
+| 2. Pés de 80A + apoio extra perto do SW2 | **Fecha: pior tecla 0,036 mm** (placa) / **0,040 mm provável, 0,047 pior caso** com pé de 80A. Apoio extra = pilar Ø 4 em (112,5; 67,5). |
+| 3. Knob alto | Feito: furo em D até z 25,0, pele de 0,8, topo z 25,8 (11,3 sobre o tampo). Knob de 7 mm removido. |
+| 4. Lista de compras | Abaixo (§4): 10 pés de PU/silicone ≥ 80A. |
+| 5. fit_check / fit_extra / renders | Feitos. |
+
+## 1. Prateleira
+`SHELF_W/SHELF_Z/SHELF_ON` e a união da prateleira saíram do `case.py`; a bandeja é a de antes (folga 0,15 da parede, rente à borda da tampa).
+
+## 2. Flexão com 80A e o apoio extra (`estudos/flexao.py`)
+- Antes (4 pinos + 3 pilares): pior tecla SW2, 0,0492 mm.
+- **Apoio extra:** pilar Ø 4 sem furo (como os da v2) em **(112,5; 67,5)**, a 7,3 mm do SW2 (116,95; 74,03). O local vem da lista de vãos livres do verso
+  (≥ `PILLAR_CLEAR` de qualquer peça, ≥ 4 mm dos outros apoios), escolhido entre os 40 mais próximos pelo que mais reduz o pior caso. A bandeja ganha o pilar e um 10º rebaixo de pé.
+- Resultado (placa nos apoios da borda + 4 pinos + 4 pilares, mesa rígida): pior tecla agora **SW23, 0,0361 mm** (SW2 caiu a 0,0135); nenhuma tecla acima de 0,05.
+- Com o pé (E estimado), compressão provável (1/3 da carga num pé) e pior caso (os 3 N num pé):
+
+| Pé | Pior tecla, provável | Pior caso |
+|---|---|---|
+| silicone 60A (4 MPa) | 0,044 mm | 0,058 mm |
+| **PU/silicone 80A (8 MPa)** | **0,040 mm** | **0,047 mm** |
+| PU duro 90A (15 MPa) | 0,038 mm | 0,042 mm |
+
+Meta de ≤ 0,05 mm cumprida com 80A, mesmo no pior caso. O E dos pés é estimativa; o número real vem da peça (medir na primeira amostra).
+
+## 3. Knob alto
+Furo em D até **z 25,0** (0,5 sobre a ponta nominal 24,5), pele **0,8 mm**, topo **z 25,8** (11,3 sobre o tampo). Saia, corpo, folga e traço creme como estavam.
+Encaixe no eixo 9,2 mm; folga do knob à tampa 0,8 mm. Sobra de eixo: a ponta fica 1,3 mm abaixo do topo. Peça: `out/knob.stl` (imprimir 2); `knob_7mm`/`knob_10mm` removidos.
+
+## 4. Lista de compras (pés)
+**10 unidades** de pé autoadesivo de PU ou silicone **≥ 80 Shore A**, Ø 8 × 1,5 mm: 4 sob os pinos, 4 sob os pilares (3 + o extra), 2 à esquerda. Não serve silicone macio comum (40–60A).
+
+## 5. Perguntas para o design
+1. O pilar extra em (112,5; 67,5) fica no verso da placa sem peça num raio de `PILLAR_CLEAR`; confirma que a placa não precisa de nenhuma marcação (ele só encosta no verso)?
+2. Posso registrar a medida da dureza/compressão do pé como item da primeira amostra (compressão real a 3 N)?
+3. Algo mais a tirar do `case.py` além da prateleira (código do `SHELF` não existe mais)?
+
+---
+
+# Anexo — FIT_CHECK do ciclo 5 (SPEC v6, PR #170)
 
 Responde à **SPEC v6** (que mantém a v5, com os itens 2 e 6 substituídos). Modelo regerado (`case.py`), fit check de 245 pares: **0 interferências**
 (placa e bandeja entram por baixo livres em todo o curso). Nada foi impresso nem pedido. O ciclo 4 (SPEC v4) está no fim deste arquivo.
