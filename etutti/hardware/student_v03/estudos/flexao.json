@@ -334,6 +334,34 @@
    }
   }
  },
+ "pes": {
+  "diametro_mm": 8.0,
+  "altura_mm": 1.5,
+  "area_mm2": 50.3,
+  "placa_sozinha_mm": 0.0492,
+  "na_mesa": {
+   "silicone 40A (E = 1,5 MPa)": {
+    "compressao_se_os_3_N_num_pe_mm": 0.06,
+    "compressao_provavel_1_3_mm": 0.02,
+    "placa_mais_pe_provavel_mm": 0.069,
+    "placa_mais_pe_pior_caso_mm": 0.109
+   },
+   "silicone 50A (E = 2,5 MPa)": {
+    "compressao_se_os_3_N_num_pe_mm": 0.036,
+    "compressao_provavel_1_3_mm": 0.012,
+    "placa_mais_pe_provavel_mm": 0.061,
+    "placa_mais_pe_pior_caso_mm": 0.085
+   },
+   "silicone 60A (E = 4 MPa)": {
+    "compressao_se_os_3_N_num_pe_mm": 0.022,
+    "compressao_provavel_1_3_mm": 0.007,
+    "placa_mais_pe_provavel_mm": 0.057,
+    "placa_mais_pe_pior_caso_mm": 0.072
+   }
+  },
+  "bandeja_na_mesa": "o piso de 2 mm descarrega direto no pe (pino e pe alinhados): sem flexao propria",
+  "no_colo": "sem mesa: a bandeja e a placa vao so nos 6 parafusos e na prateleira de 1,5 mm da tampa (ver 'bandeja', apoiada em todo o contorno)"
+ },
  "grade": {
   "carga_N": 5.0,
   "folga_ate_as_teclas_mm": 0.15,

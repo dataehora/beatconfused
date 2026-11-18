@@ -135,6 +135,21 @@ def main():
                 "max_mm": round(max(sr), 3), "no_pino_mais_perto_do_centro_mm": round(min(sr), 3)}
     M.E_FR4 = keep[0]
 
+    # SPEC v5 item 3 (task 5): the tray on silicone feet under every pin and pillar (rigid table) and, for information, in the lap.
+    # On the table each foot sits right under its pin, so the tray itself does not bend (the 2 mm floor is loaded straight into
+    # the foot); what is added to the board's sag is the foot's own compression: dz = F h / (E A), Shore 40-60A silicone
+    # E = 1.5-4 MPa, D 8 x 1.5 mm. Upper bound: the whole 3 N on one foot; likely: one third (the key's load spreads over the
+    # nearest 3 supports, as the board's own sag figures show).
+    A_foot = math.pi * 8.0 ** 2 / 4
+    foot = {}
+    for lbl, E in (("silicone 40A (E = 1,5 MPa)", 1.5), ("silicone 50A (E = 2,5 MPa)", 2.5), ("silicone 60A (E = 4 MPa)", 4.0)):
+        full = M.PRESS_N * 1.5 / (E * A_foot)
+        foot[lbl] = {"compressao_se_os_3_N_num_pe_mm": round(full, 3), "compressao_provavel_1_3_mm": round(full / 3, 3),
+                     "placa_mais_pe_provavel_mm": round(max(sD) + full / 3, 3), "placa_mais_pe_pior_caso_mm": round(max(sD) + full, 3)}
+    res["pes"] = {"diametro_mm": 8.0, "altura_mm": 1.5, "area_mm2": round(A_foot, 1), "placa_sozinha_mm": round(max(sD), 4),
+                  "na_mesa": foot, "bandeja_na_mesa": "o piso de 2 mm descarrega direto no pe (pino e pe alinhados): sem flexao propria",
+                  "no_colo": "sem mesa: a bandeja e a placa vao so nos 6 parafusos e na prateleira de 1,5 mm da tampa (ver 'bandeja', apoiada em todo o contorno)"}
+
     # the pressure a pin puts on the board (bearing) and its own shortening
     area = math.pi * (PIN_D ** 2 - 2.2 ** 2) / 4
     res["placa"]["pino_pressao_MPa_a_10_N"] = round(10 / area, 2)
@@ -196,6 +211,7 @@ def main():
             print(k, v["max_mm"], v["pior_tecla"], "media", v["media_mm"], "acima do alvo:", v["teclas_acima_do_alvo"])
     print("SPEC pins:", res["placa"]["B_tres_pinos_da_SPEC"]["folga_no_verso_mm"])
     print("pilares:", pillars)
+    print("pes:", res["pes"]["na_mesa"])
     print("grade:", res["grade"]["materiais"])
     for k, v in res["bandeja"]["materiais"].items():
         print("bandeja,", k, v["max_mm"], "mm")

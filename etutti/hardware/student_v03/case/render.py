@@ -73,6 +73,10 @@ def scene():
     S.append((ink.translate((-0.03, 0, 0.03), inplace=False), "#2B2925", 1.0, "tampa"))
     S.append((stl("tinta_marrom").translate((-0.03, 0, 0.02), inplace=False), "#8A3A22", 1.0, "tampa"))   # pad-printed, SPEC v3
     S.append((stl("base"), GREY, 1.0, "base"))
+    # SPEC v6: the nine silicone feet (D 8 x 1.5, 0.5 in the recess, 1.0 proud)
+    fm = stl("pe")
+    for fx, fy in INFO["niveis"]["pes"]:
+        S.append((moved(fm, fx, fy, INFO["niveis"]["base"] - 1.0), (0.18, 0.18, 0.18), 1.0, "base"))
     S.append((stl("grade"), "#1C1B1A", 1.0, "grade"))        # FR-4, matte black mask
     sp = stl("espacador")
     for x, y in INFO["posicoes"]["parafusos_da_grade"]:
