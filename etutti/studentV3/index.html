@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title>BeatConfused | eTutti Student V3</title>
+  <meta name="description" content="eTutti Student V3: o conceito, a eletrônica, as peças e onde comprar, a vista explodida, o orçamento e a ligação ao manual de montagem." />
+  <!-- Written by etutti/hardware/student_v03/pagina.py: edit the texts and the prices there.
+       Part of the unlisted eTutti work in progress: kept out of the sitemap and of search results. -->
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#F3F1EC" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Michroma&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
+  <link rel="stylesheet" href="styles.css?v=20261118" />
+</head>
+<body>
+  <div class="stripes" aria-hidden="true"></div>
+  <main class="page">
+    <a class="site-title" href="/">beatconfused.com</a>
+
+    <header class="hero">
+      <p class="eyebrow">BeatConfused Studio · protótipo</p>
+      <h1>eTutti<small>STUDENT · V3</small></h1>
+      <p class="lead">Um acordeão de teclado para estudar: 28 teclas magnéticas com velocity, tela, dois knobs, alto-falante, entrada de microfone, bateria e USB-C, numa caixa Retrô de 252 × 100 × 24,6 mm. A placa vem pronta da JLCPCB, montada toda pelo fundo.</p>
+      <figure class=""><a href="img/isometrico.jpg"><img src="img/isometrico.jpg" width="1800" height="1050" alt="O eTutti Student V3 em perspectiva: tampa creme com faixas vermelha, laranja e amarela, teclado de botões brancos e pretos, tela e dois knobs à esquerda." loading="lazy" /></a></figure>
+    </header>
+    <nav class="toc" aria-label="Seções">
+      <a href="#conceito">Conceito</a><a href="#eletronica">Eletrônica</a><a href="#pecas">Peças e fornecedores</a>
+      <a href="#explodida">Vista explodida</a><a href="#montagem">Montagem</a><a href="#orcamento">Orçamento</a><a href="#estado">Estado</a>
+    </nav>
+    <section id="conceito">
+      <p class="kicker">1 · Conceito</p>
+      <h2>Um acordeão de estudo, do tamanho de uma prancheta</h2>
+      <p class="sub">Para quem nunca viu o projeto: o eTutti é uma família de instrumentos eletrônicos com o teclado de um acordeão de botões (C-griff), a sensibilidade de um instrumento de verdade e nenhum fole. O Student é o modelo compacto, para estudar em qualquer lugar. A V3 é a mesma ideia da V2, com a placa refeita para que a fábrica monte tudo pelo fundo, e o case ajustado a isso.</p>
+      <ul class="facts">
+        <li><b>28 teclas</b><span>C-griff, de G3 a E5, em 4 fileiras a 18,5 mm</span></li>
+        <li><b>Velocity</b><span>sensor Hall sob cada tecla Gateron, curso de 4,1 mm</span></li>
+        <li><b>252 × 100 × 24,6 mm</b><span>tampa creme sem emenda, bandeja cinza, 3 sulcos e chanfro de 4,0 × 3,5 mm</span></li>
+        <li><b>Tela OLED 0,96″</b><span>registro, volume e carga, atrás de acrílico fumê</span></li>
+        <li><b>2 knobs com clique</b><span>volume e registro; o clique liga</span></li>
+        <li><b>Som próprio</b><span>alto-falante de 28 mm numa caixa fechada de 9,75 cm³</span></li>
+        <li><b>Entradas e saídas</b><span>USB-C (carga e MIDI), OUT 3,5 mm e IN 3,5 mm (microfone)</span></li>
+        <li><b>Bateria LiPo</b><span>1 célula, cerca de 1000 mAh, trocada tirando 6 parafusos</span></li>
+      </ul>
+      <div class="grid">
+<div class="card"><h3>O que é o C-griff</h3><p>Um acordeão de botões tem os botões em fileiras que sobem de semitom em semitom. Na disposição C-griff, cada fileira vizinha avança um semitom e o padrão se repete a cada terça menor: uma frase se toca em qualquer tom com o mesmo desenho dos dedos. Aqui são 28 botões, de G3 a E5, em 4 fileiras de 7, 8, 7 e 6; as fileiras se deslocam em meia tecla, num arranjo hexagonal a 18,5 mm.</p></div>
+<div class="card"><h3>O teclado</h3><p>As fileiras sobem 2, 2 e 3 mm uma sobre a outra (topos a 7,4, 9,4, 11,4 e 14,4 mm acima do tampo), de modo que o dedo sente cada fileira. Os botões têm Ø 15 mm e cúpula convexa, em três tipos: branco, preto e branco com pontos (o C e o F, para achar a posição no escuro). Cada botão tem uma haste com encaixe em cruz sobre uma tecla Gateron magnética, cujo sensor Hall mede a velocidade da descida.</p></div>
+<div class="card"><h3>A grade</h3><p>Uma placa de FR-4 de 1,6 mm, preta fosca, cobre as teclas a 0,15 mm e as segura sem plate nem parafusos à vista: ela é fixada só pela borda, com 10 parafusos de cabeça escareada rentes à face, sob a tampa. A tampa cobre a grade com 1,4 mm de material.</p></div>
+<div class="card"><h3>A placa, pelo fundo</h3><p>Na V3 a JLCPCB monta todas as peças só pelo lado de baixo da placa: o USB-C, os dois jacks e os conectores ficam abaixo dela, e a tampa os recebe com furos inteiros na parede. O topo da placa só tem os dois encoders (soldados em casa) e as ilhas dos fios do alto-falante. Isso baixa o custo da montagem e tira da bancada 11 peças.</p></div>
+<div class="card"><h3>O acabamento Retrô</h3><p>Faixas vermelha, laranja e amarela que dão a volta pelo tampo, pelo chanfro e pela parede, e o logo em Michroma em rebaixo de 0,4 mm com tinta.</p>
+<ul class="swatches"><li><i style="background:#E8DEC6"></i>tampa #E8DEC6</li><li><i style="background:#9C9B96"></i>bandeja #9C9B96</li><li><i style="background:#C8402A"></i>#C8402A</li><li><i style="background:#E07A2C"></i>#E07A2C</li><li><i style="background:#E3B23C"></i>#E3B23C</li><li><i style="background:#2B2925"></i>tinta #2B2925</li><li><i style="background:#8A3A22"></i>tinta #8A3A22</li></ul></div>
+<div class="card"><h3>Rigidez e apoio</h3><p>A placa não leva parafusos na área do teclado. Em vez disso, 4 pinos e 4 pilares impressos na bandeja a sustentam por baixo, sobre 10 pés de 80 Shore A: a pior tecla cede 0,036 mm sob 3 N (0,047 mm no pior caso, com o pé comprimido), abaixo da meta de 0,05 mm.</p></div>
+      </div>
+      <figure class=""><a href="img/planta.jpg"><img src="img/planta.jpg" width="1800" height="762" alt="O instrumento visto de cima: a coluna da esquerda com tela, dois knobs e a grade do alto-falante, e o teclado de 28 botões." loading="lazy" /></a><figcaption>Planta. Da esquerda para a direita: logo, tela, knobs, grade do alto-falante, e o teclado.</figcaption></figure>
+      <div class="grid">
+      <figure class=""><a href="img/parede.jpg"><img src="img/parede.jpg" width="1500" height="500" alt="A parede esquerda com o furo do USB-C e os dois furos dos jacks." loading="lazy" /></a><figcaption>Parede esquerda: USB-C, OUT e IN em furos fechados, sem emendas.</figcaption></figure>
+      <figure class=""><a href="img/logo.jpg"><img src="img/logo.jpg" width="1100" height="1100" alt="Detalhe do logo eTUTTI e da tela." loading="lazy" /></a><figcaption>O logo, em rebaixo, e a janela da tela.</figcaption></figure>
+      <figure class=""><a href="img/corte.jpg"><img src="img/corte.jpg" width="1500" height="625" alt="Corte pelas fileiras do teclado." loading="lazy" /></a><figcaption>Corte pelas fileiras: a tampa, a grade, as teclas, a placa e a bandeja.</figcaption></figure>
+      <figure class=""><a href="img/corte_falante.jpg"><img src="img/corte_falante.jpg" width="1500" height="562" alt="Corte pelo alto-falante e pela caixa acústica." loading="lazy" /></a><figcaption>Corte pelo alto-falante: fendas, alto-falante, caixa acústica e bateria.</figcaption></figure>
+      </div>
+    </section>
+    <section id="eletronica">
+      <p class="kicker">2 · Eletrônica</p>
+      <h2>Como o instrumento pensa e soa</h2>
+      <p class="sub">Uma placa só, de 4 camadas, com 28 sensores sob as teclas, um módulo de processador encaixado, o som, a bateria e a tela. Esta seção explica o desenho em blocos, depois o caminho de cada sinal; os esquemas completos, folha a folha, estão no final.</p>
+      <div class="diagram"><svg viewBox="0 0 1000 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de blocos da eletrônica da Student V3"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2B2925" /></marker></defs><rect x="10" y="14" width="220" height="460" rx="10" fill="#F2EDDF" stroke="#D8D2C4" /><text x="20" y="30" font-size="10.5" font-weight="700" letter-spacing="2" fill="#8A3A22">ENERGIA</text><rect x="25" y="40" width="190" height="50" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="120" y="63" font-size="13" font-weight="700" text-anchor="middle">USB-C</text><text x="120" y="78" font-size="10.5" text-anchor="middle" fill="#5C574F">TYPE-C-31-M-12 · 5 V, MIDI</text><rect x="25" y="106" width="190" height="50" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="120" y="129" font-size="13" font-weight="700" text-anchor="middle">Proteção ESD e TVS</text><text x="120" y="144" font-size="10.5" text-anchor="middle" fill="#5C574F">USBLC6-2SC6 · SMF5.0A</text><rect x="25" y="172" width="190" height="50" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="120" y="195" font-size="13" font-weight="700" text-anchor="middle">Carregador BQ24074</text><text x="120" y="210" font-size="10.5" text-anchor="middle" fill="#5C574F">carga da LiPo · lê o NTC</text><rect x="25" y="238" width="190" height="50" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="120" y="261" font-size="13" font-weight="700" text-anchor="middle">Bateria LiPo 503450</text><text x="120" y="276" font-size="10.5" text-anchor="middle" fill="#5C574F">3,7 V · ~1000 mAh · J202</text><rect x="25" y="304" width="190" height="50" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="120" y="327" font-size="13" font-weight="700" text-anchor="middle">TPS63001 + L 2,2 µH</text><text x="120" y="342" font-size="10.5" text-anchor="middle" fill="#5C574F">buck-boost · 3,3 V fixo</text><rect x="25" y="400" width="190" height="54" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="120" y="419" font-size="13" font-weight="700" text-anchor="middle">D206 (BAV70)</text><text x="120" y="434" font-size="10.5" text-anchor="middle" fill="#5C574F">o USB acorda o instrumento</text><text x="120" y="447" font-size="10.5" text-anchor="middle" fill="#5C574F">(VBUS → EN)</text><path d="M120 90 L120 106" stroke="#2B2925" stroke-width="1.6" fill="none" marker-end="url(#ar)" /><path d="M120 156 L120 172" stroke="#2B2925" stroke-width="1.6" fill="none" marker-end="url(#ar)" /><path d="M120 222 L120 238" stroke="#2B2925" stroke-width="1.6" fill="none" marker-end="url(#ar)" /><path d="M120 288 L120 304" stroke="#2B2925" stroke-width="1.6" fill="none" marker-end="url(#ar)" /><rect x="330" y="40" width="190" height="414" rx="7" fill="#F7F2E4" stroke="#C8402A" stroke-width="1.5" /><text x="425" y="200" font-size="13" font-weight="700" text-anchor="middle">Módulo MicroMod Teensy</text><text x="425" y="215" font-size="10.5" text-anchor="middle" fill="#5C574F">i.MX RT1062 · 600 MHz</text><text x="425" y="228" font-size="10.5" text-anchor="middle" fill="#5C574F">16 MB de flash</text><text x="425" y="241" font-size="10.5" text-anchor="middle" fill="#5C574F">conector M.2 (J101)</text><text x="425" y="254" font-size="10.5" text-anchor="middle" fill="#5C574F">+ parafuso H101</text><text x="425" y="267" font-size="10.5" text-anchor="middle" fill="#5C574F"></text><text x="425" y="280" font-size="10.5" text-anchor="middle" fill="#5C574F">áudio I²S · I²C</text><text x="425" y="293" font-size="10.5" text-anchor="middle" fill="#5C574F">entradas analógicas</text><text x="425" y="306" font-size="10.5" text-anchor="middle" fill="#5C574F">GPIO · USB</text><path d="M215 329 L330 329" stroke="#C8402A" stroke-width="1.6" fill="none" marker-end="url(#ar)" /><text x="272" y="321" font-size="10.5" text-anchor="middle" fill="#C8402A">3,3 V</text><path d="M215 427 L330 427" stroke="#8A3A22" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#ar)" /><text x="272" y="419" font-size="10.5" text-anchor="middle" fill="#8A3A22">EN</text><rect x="610" y="14" width="380" height="232" rx="10" fill="#F2EDDF" stroke="#D8D2C4" /><text x="620" y="30" font-size="10.5" font-weight="700" letter-spacing="2" fill="#8A3A22">SOM</text><rect x="625" y="36" width="350" height="44" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="800" y="56" font-size="13" font-weight="700" text-anchor="middle">Codec SGTL5000</text><text x="800" y="71" font-size="10.5" text-anchor="middle" fill="#5C574F">I²S · I²C (0x0A) · fone · microfone com bias</text><path d="M520 58 L625 58" stroke="#2B2925" stroke-width="1.6" fill="none" marker-start="url(#ar)" marker-end="url(#ar)" /><text x="572" y="50" font-size="10.5" text-anchor="middle" fill="#2B2925">I²S · I²C</text><rect x="625" y="94" width="350" height="44" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="800" y="114" font-size="13" font-weight="700" text-anchor="middle">Amplificador MAX98357A</text><text x="800" y="129" font-size="10.5" text-anchor="middle" fill="#5C574F">classe D · mesmo I²S do codec</text><path d="M520 116 L625 116" stroke="#2B2925" stroke-width="1.6" fill="none" marker-end="url(#ar)" /><text x="572" y="108" font-size="10.5" text-anchor="middle" fill="#2B2925">I²S</text><rect x="625" y="152" width="350" height="36" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="800" y="168" font-size="13" font-weight="700" text-anchor="middle">Alto-falante Ø 28 mm · 8 Ω</text><text x="800" y="183" font-size="10.5" text-anchor="middle" fill="#5C574F">caixa fechada de 9,75 cm³</text><path d="M800 138 L800 152" stroke="#2B2925" stroke-width="1.6" fill="none" marker-end="url(#ar)" /><rect x="625" y="198" width="170" height="36" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="710" y="214" font-size="13" font-weight="700" text-anchor="middle">OUT · fone 3,5 mm</text><text x="710" y="229" font-size="10.5" text-anchor="middle" fill="#5C574F">XUNPU PJ-327A</text><rect x="805" y="198" width="170" height="36" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="890" y="214" font-size="13" font-weight="700" text-anchor="middle">IN · microfone 3,5 mm</text><text x="890" y="229" font-size="10.5" text-anchor="middle" fill="#5C574F">XUNPU PJ-327A</text><rect x="610" y="258" width="380" height="94" rx="10" fill="#F2EDDF" stroke="#D8D2C4" /><text x="620" y="274" font-size="10.5" font-weight="700" letter-spacing="2" fill="#8A3A22">TECLAS</text><rect x="625" y="280" width="350" height="60" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="800" y="308" font-size="13" font-weight="700" text-anchor="middle">28 sensores Hall TMAG5253 + 2 × 74HC4067</text><text x="800" y="323" font-size="10.5" text-anchor="middle" fill="#5C574F">um sensor sob cada tecla · 16 canais por multiplexador</text><path d="M520 310 L625 310" stroke="#2B2925" stroke-width="1.6" fill="none" marker-start="url(#ar)" marker-end="url(#ar)" /><text x="572" y="302" font-size="10.5" text-anchor="middle" fill="#2B2925">analógico · S0–S3</text><rect x="610" y="366" width="380" height="150" rx="10" fill="#F2EDDF" stroke="#D8D2C4" /><text x="620" y="382" font-size="10.5" font-weight="700" letter-spacing="2" fill="#8A3A22">INTERFACE</text><rect x="625" y="388" width="350" height="36" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="800" y="404" font-size="13" font-weight="700" text-anchor="middle">2 encoders EC11E com clique</text><text x="800" y="419" font-size="10.5" text-anchor="middle" fill="#5C574F">volume · registro · o clique liga</text><path d="M520 406 L625 406" stroke="#2B2925" stroke-width="1.6" fill="none" marker-end="url(#ar)" /><text x="572" y="398" font-size="10.5" text-anchor="middle" fill="#2B2925">GPIO</text><rect x="625" y="432" width="350" height="36" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="800" y="448" font-size="13" font-weight="700" text-anchor="middle">Tela OLED SSD1306 · J401 JST SH</text><text x="800" y="463" font-size="10.5" text-anchor="middle" fill="#5C574F">I²C (0x3C) · o mesmo barramento do codec</text><path d="M520 450 L625 450" stroke="#2B2925" stroke-width="1.6" fill="none" marker-start="url(#ar)" marker-end="url(#ar)" /><text x="572" y="442" font-size="10.5" text-anchor="middle" fill="#2B2925">I²C</text><rect x="625" y="474" width="350" height="32" rx="7" fill="#FBFAF6" stroke="#8A3A22" stroke-width="1.5" /><text x="800" y="488" font-size="13" font-weight="700" text-anchor="middle">Botão Program · TS-1187A</text><text x="800" y="503" font-size="10.5" text-anchor="middle" fill="#5C574F">gravar o firmware</text><path d="M520 490 L625 490" stroke="#2B2925" stroke-width="1.6" fill="none" marker-end="url(#ar)" /><text x="572" y="482" font-size="10.5" text-anchor="middle" fill="#2B2925">GPIO</text><text x="10" y="500" font-size="10.5" fill="#5C574F">Seta cheia: sinal ou energia. Tracejada: acordar.</text><text x="10" y="516" font-size="10.5" fill="#5C574F">Na própria placa: tudo, exceto os encoders, a tela, o alto-falante, a bateria e o módulo.</text></svg></div>
+      <h3>Como funciona, em quatro frases</h3>
+      <ol>
+        <li><b>Lê as teclas.</b> Sob cada tecla há um sensor Hall TMAG5253. O ímã da haste se aproxima ao apertar, e o sensor devolve uma tensão que muda com a distância. Dois multiplexadores de 16 canais levam as 28 tensões a dois pinos analógicos do módulo; o módulo escolhe o canal pelos seletores S0–S3 e lê a descida da tecla milhares de vezes por segundo. A velocity vem do tempo que o sinal leva para percorrer uma parte do curso.</li>
+        <li><b>Pensa.</b> O módulo MicroMod Teensy (i.MX RT1062 a 600 MHz, 16 MB) roda o firmware do acordeão: um sintetizador de lingüetas amostradas, com sete registros, em que a velocity vira a pressão do fole. Ele também lê os dois encoders (volume e registro), a tela e o botão Program.</li>
+        <li><b>Soa.</b> O módulo manda o áudio digital (I²S) ao codec SGTL5000, que alimenta a saída de fone (OUT) e recebe o microfone (IN, com bias para eletreto); o mesmo I²S vai ao amplificador MAX98357A, que toca o alto-falante de 28 mm quando não há fone plugado.</li>
+        <li><b>Alimenta-se.</b> O USB-C carrega a bateria LiPo pelo BQ24074 (que lê o NTC da bateria) e o TPS63001 faz 3,3 V estáveis para tudo, seja a bateria cheia, seja quase vazia. Ligar um cabo USB acorda o instrumento (D206); sem cabo, o clique do volume liga e desliga.</li>
+      </ol>
+      <h3>Os sinais, por área</h3>
+      <div class="grid">
+        <div class="card"><h3>Energia</h3><p>USB-C com proteção (USBLC6 e TVS SMF5.0A) → carregador BQ24074 → bateria (J202, 3 fios com NTC) → TPS63001 e indutor de 2,2 µH → 3,3 V. O módulo recebe o 3,3 V já regulado e traz o seu próprio sequenciamento de partida (o de fábrica da PJRC e da SparkFun).</p></div>
+        <div class="card"><h3>Teclas</h3><p>28 sensores em 2 grupos, um multiplexador por grupo. Os 28 sensores são mais da metade do consumo da placa, por isso o firmware do Student V01 os liga em dois grupos, só enquanto lê (60 µs de despertar).</p></div>
+        <div class="card"><h3>Som</h3><p>SGTL5000 no barramento I²C do módulo e na linha I²S (pinos 7/20/21/23); MAX98357A na mesma I²S; fone e microfone nos dois jacks de 3,5 mm (a manga é a terra; com um fone plugado, o alto-falante é desligado).</p></div>
+        <div class="card"><h3>Interface</h3><p>Dois encoders com clique, o botão Program e a tela OLED por I²C: o mesmo barramento do codec, sem pino novo. A tela só mostra estado (registro, volume, carga), e o firmware a manda em pedaços pequenos, para não atrasar a leitura das teclas.</p></div>
+      </div>
+      <h3>A placa: o que mudou da V2 para a V3</h3>
+      <div class="tablewrap"><table><thead><tr><th></th><th>V2</th><th>V3</th></tr></thead><tbody>
+<tr><td>Lado de cima</td><td>encoders, USB-C, 2 jacks, ESD, TVS, passivos, J401, H101</td><td>só os 2 encoders (solda em casa) e os pads dos fios do alto-falante</td></tr>
+<tr><td>Montagem na JLCPCB</td><td>dois lados</td><td>só o fundo (montagem econômica)</td></tr>
+<tr><td>Conector da tela (J401)</td><td>topo</td><td>fundo, com fenda de 7 × 2,5 mm para o cabo subir à tela</td></tr>
+<tr><td>Fixação do módulo (H101)</td><td>espaçador SMD</td><td>furo liso de 2,7 mm, parafuso e porca de náilon M2,5 e espaçador de 2,5 mm</td></tr>
+<tr><td>Jacks</td><td>SHOU HAN PJ-327A</td><td>XUNPU PJ-327A (a JLCPCB sinalizava o outro como difícil de processar)</td></tr>
+<tr><td>Energia com USB</td><td>cadeia PWR_EN (5 peças)</td><td>D206: o USB liga o 3,3 V; sem cadeia</td></tr>
+<tr><td>Par USB D+/D−</td><td>em F.Cu, 90 Ω alvo</td><td>inteiro em B.Cu, sem vias, 17,209 mm cada linha, sobre uma ilha de terra</td></tr>
+<tr><td>Tipos estendidos na JLCPCB</td><td>~22</td><td>18</td></tr>
+</tbody></table></div>
+      <div class="grid">
+<figure><a href="img/placa_topo.jpg"><img src="img/placa_topo.jpg" width="1500" height="619" alt="A placa vista de cima" loading="lazy" /></a><figcaption>Placa, topo: só os 2 encoders e os pads do alto-falante.</figcaption></figure>
+<figure><a href="img/placa_fundo.jpg"><img src="img/placa_fundo.jpg" width="1500" height="619" alt="A placa vista de baixo" loading="lazy" /></a><figcaption>Placa, fundo (espelhado): as 130 peças soldadas pela JLCPCB.</figcaption></figure>
+      </div>
+      <h3>Os esquemas, folha a folha</h3>
+      <p class="note">Exportados do KiCad (SVG, abrem no navegador; use o zoom): uma folha por área, com os códigos das peças (LCSC) no campo <i>Codigo</i> de cada uma.</p>
+      <ul class="sheets">
+<li><a href="esquema/raiz.svg">Raiz</a><small>as seis folhas ligadas</small></li>
+<li><a href="esquema/P-processador.svg">P · Processador</a><small>módulo MicroMod, conectores, botão Program</small></li>
+<li><a href="esquema/E-energia.svg">E · Energia</a><small>USB-C, carregador, bateria, conversor</small></li>
+<li><a href="esquema/F-fone.svg">F · Fone</a><small>codec, jacks OUT e IN, microfone</small></li>
+<li><a href="esquema/I-interface.svg">I · Interface</a><small>encoders, tela</small></li>
+<li><a href="esquema/A-alto-falante.svg">A · Alto-falante</a><small>amplificador, alto-falante</small></li>
+<li><a href="esquema/T-teclas.svg">T · Teclas</a><small>28 sensores e 2 multiplexadores</small></li>
+      </ul>
+      <div class="tipbox"><b>Verificação de regras da placa:</b> o DRC do KiCad, com paridade do esquema, dá 0 ligações faltando e paridade 0; as únicas violações são 3 larguras de trilha de 0,12 mm (a rede EN_B, na entrada de um pino fino, aceita) e 5 avisos de ponta solta (pontas de trilha fora do centro de uma via e um toco curto; o DRC confirma 0 ligações faltando). A impedância do par USB (90 Ω) não está garantida: o trecho tem ~25 mm.</div>
+    </section>
+    <section id="pecas">
+      <p class="kicker">3 · Peças e fornecedores</p>
+      <h2>O que leva, por área e por fornecedor</h2>
+      <p class="sub">Seis áreas. A coluna “Fornecedor” diz onde cada peça se compra; o orçamento, na seção 6, está agrupado por pedido.</p>
+      <h3>Eletrônica</h3><p class="note">A placa vem pronta da JLCPCB, com todas as peças soldadas pelo fundo. Em casa: dois encoders, o módulo do processador e os fios do alto-falante.</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Placa principal, montada</td><td class="qty">1</td><td>JLCPCB</td><td>4 camadas, 1,2 mm; 130 peças soldadas por máquina, todas no fundo; 28 sensores Hall sob as teclas</td></tr>
+<tr><td>Módulo MicroMod Teensy (DEV-16402)</td><td class="qty">1</td><td>SparkFun / DigiKey</td><td>i.MX RT1062, 16 MB; encaixa no conector M.2 do fundo, preso no H101</td></tr>
+<tr><td>Sensor Hall TMAG5253 (C22401868)</td><td class="qty">28</td><td>JLCPCB (LCSC)</td><td>um sob cada tecla; lê os dois polos</td></tr>
+<tr><td>Codec de áudio SGTL5000 (C2651833)</td><td class="qty">1</td><td>JLCPCB (LCSC)</td><td>fone, entrada de microfone com bias, saída para o amplificador</td></tr>
+<tr><td>Amplificador MAX98357A (C910544), carregador BQ24074 (C54313), conversor TPS63001 (C28060)</td><td class="qty">3</td><td>JLCPCB (LCSC)</td><td>som do alto-falante, carga da bateria, 3,3 V</td></tr>
+<tr><td>Multiplexadores 74HC4067 (C179326)</td><td class="qty">2</td><td>JLCPCB (LCSC)</td><td>leem as 28 teclas por 2 canais</td></tr>
+<tr><td>Encoders com clique EC11E18244AU (C202365)</td><td class="qty">2</td><td>LCSC / Digi-Key (solda em casa)</td><td>eixo de 20 mm (ponta a ~24,5 mm da placa): volume e registro; a JLCPCB não os solda nesta versão</td></tr>
+<tr><td>Conectores: USB-C, 2 jacks 3,5 mm (OUT e IN), JST SH da tela, JST PH da bateria</td><td class="qty">5</td><td>JLCPCB (LCSC)</td><td>USB-C TYPE-C-31-M-12, jacks XUNPU PJ-327A, SM04B-SRSS-TB, S3B-PH-SM4-TB</td></tr>
+</tbody></table></div>
+      <h3>Teclado</h3><p class="note">28 teclas G3 a E5 em fileiras de 7, 8, 7 e 6, a 18,5 mm; fileiras 2 mm, 2 mm e 3 mm mais altas.</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Teclas Gateron KS-20 Magnetic Orange</td><td class="qty">28</td><td>Gateron</td><td>curso de 4,1 mm; apoiadas na placa, seguras pela grade</td></tr>
+<tr><td>Grade FR-4 de 1,6 mm, máscara preta fosca, furos escareados</td><td class="qty">1</td><td>JLCPCB</td><td>28 furos de Ø 6,2 mm e 10 furos escareados a 90° (boca de Ø 3,8 mm); fica a 0,15 mm acima das teclas</td></tr>
+<tr><td>Espaçadores Ø 5 × 11,35 mm</td><td class="qty">10</td><td>impressão</td><td>entre a placa e a grade, na borda</td></tr>
+<tr><td>Parafusos M2 × 16 de cabeça escareada e porcas M2</td><td class="qty">10 + 10</td><td>ferragem</td><td>a cabeça fica rente à grade; a porca fica sob a placa, dentro de um copo da bandeja</td></tr>
+<tr><td>Botões Ø 15 mm: branco, preto, branco com pontos (C e F)</td><td class="qty">28</td><td>impressão</td><td>4 alturas de haste; topos a 7,4 / 9,4 / 11,4 / 14,4 mm acima do tampo</td></tr>
+<tr><td>Molas longas de 65 g ou 80 g (opcional)</td><td class="qty">28</td><td>loja de teclados</td><td>mudam o peso da tecla; não alteram placa nem firmware</td></tr>
+</tbody></table></div>
+      <h3>Interface</h3><p class="note">Tela, dois knobs, grade do alto-falante e legendas, à esquerda do teclado.</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Módulo OLED 0,96″ 128 × 64 (I²C)</td><td class="qty">1</td><td>loja de eletrônica</td><td>girado 180°, preso por baixo da tampa em 4 postes (M2 × 4)</td></tr>
+<tr><td>Cabo JST SH de 4 vias, 50 mm</td><td class="qty">1</td><td>loja de eletrônica</td><td>o plugue vai no J401, no fundo da placa; os fios sobem pela fenda e são soldados na tela</td></tr>
+<tr><td>Janela de acrílico fumê de 1 mm</td><td class="qty">1</td><td>corte a laser</td><td>24 × 13 mm de vidro à vista</td></tr>
+<tr><td>Knobs chapéu de 10 mm</td><td class="qty">2</td><td>impressão</td><td>Ø 12 mm, 11,3 mm sobre o tampo, furo em D de 9,2 mm sobre o eixo inteiro</td></tr>
+</tbody></table></div>
+      <h3>Som</h3><p class="note">Alto-falante de 28 mm sob 7 fendas, com caixa acústica fechada em L de 9,75 cm³.</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Alto-falante Ø 28 × 5 mm, 8 Ω, 2 W</td><td class="qty">1</td><td>loja de eletrônica</td><td>fios soldados ao J501 (pads no topo da placa)</td></tr>
+<tr><td>Caixa acústica em L, com o anel de fixação</td><td class="qty">1</td><td>impressão</td><td>estanque; 2 parafusos M2 × 5 nas buchas da tampa</td></tr>
+<tr><td>Tela acústica 0,3 mm e junta de espuma de 1 mm</td><td class="qty">1 + 1</td><td>loja de eletrônica</td><td>entre as fendas e o alto-falante</td></tr>
+</tbody></table></div>
+      <h3>Energia</h3><p class="note">Bateria no piso da bandeja; para trocá-la, tira-se a bandeja (6 parafusos).</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Bateria LiPo 503450, ~1000 mAh, 3 fios</td><td class="qty">1</td><td>eBay / Amazon</td><td>o terceiro fio é o NTC de 10 kΩ</td></tr>
+<tr><td>Cabo USB-C</td><td class="qty">1</td><td>—</td><td>carga, MIDI e configuração pela página</td></tr>
+</tbody></table></div>
+      <h3>Case, apoios e acabamento</h3><p class="note">252 × 100 × 24,6 mm, tampa creme sem emenda e bandeja cinza (acabamento Retrô).</p>
+      <div class="tablewrap"><table><thead><tr><th>Peça</th><th>Qtd</th><th>Fornecedor</th><th>Observação</th></tr></thead><tbody>
+<tr><td>Tampa, com o logo e as legendas em rebaixo de 0,4 mm</td><td class="qty">1</td><td>impressão</td><td>chanfro de 4,0 × 3,5 mm, três sulcos, 6 postes de parafuso; furos inteiros para USB-C, OUT e IN</td></tr>
+<tr><td>Bandeja do fundo</td><td class="qty">1</td><td>impressão</td><td>2 mm de piso, borda, nervuras, berço da bateria, 4 pinos e 4 pilares de apoio sob a placa</td></tr>
+<tr><td>Parafusos M2 × 14 da bandeja</td><td class="qty">6</td><td>ferragem</td><td>pelo fundo: atravessam a bandeja e a placa e entram nos postes da tampa</td></tr>
+<tr><td>Pés de poliuretano ou silicone de 80A, Ø 8 × 1,5</td><td class="qty">10</td><td>loja de eletrônica</td><td>colados nos rebaixos da bandeja: 4 sob os pinos, 4 sob os pilares, 2 à esquerda</td></tr>
+<tr><td>Fixação do módulo: parafuso M2,5 × 8, espaçador 2,5, porca M2,5 (náilon)</td><td class="qty">1 + 1 + 1</td><td>ferragem</td><td>pilha de cima para baixo: parafuso, placa, espaçador, módulo, porca</td></tr>
+<tr><td>Tinta e faixas</td><td class="qty">1 kit</td><td>tintas / vinil</td><td>faixas #C8402A, #E07A2C, #E3B23C; tinta #2B2925 e #8A3A22</td></tr>
+</tbody></table></div>
+      <h3>Os mesmos itens, por fornecedor</h3>
+      <div class="tablewrap"><table><thead><tr><th>Fornecedor</th><th>Fornece</th></tr></thead><tbody>
+<tr><td>JLCPCB / LCSC</td><td>placa principal montada (130 peças), grade FR-4 escareada</td></tr>
+<tr><td>Gateron</td><td>28 teclas KS-20 Magnetic Orange (pacote de 35)</td></tr>
+<tr><td>SparkFun ou DigiKey</td><td>módulo MicroMod Teensy</td></tr>
+<tr><td>LCSC ou Digi-Key</td><td>2 encoders EC11E18244AU (C202365), para soldar em casa</td></tr>
+<tr><td>eBay ou Amazon</td><td>bateria LiPo 503450 de 3 fios</td></tr>
+<tr><td>Loja de eletrônica</td><td>tela OLED, cabo JST SH, alto-falante, tela acústica, espuma, silicone, cabo USB-C, pés de 80A</td></tr>
+<tr><td>Ferragem e tintas</td><td>parafusos e porcas M2 e M2,5 (inox A4, latão ou náilon), tinta, vinil</td></tr>
+<tr><td>Impressão 3D (JLC3DP, PCBWay, Craftcloud)</td><td>tampa, bandeja, 28 botões, 10 espaçadores, 2 knobs, caixa acústica</td></tr>
+<tr><td>Corte a laser</td><td>janela de acrílico fumê</td></tr>
+</tbody></table></div>
+      <p class="note">Os arquivos para a JLCPCB estão em <code>etutti/hardware/student_v03/fab/</code>: Gerbers da placa e da grade, BOM (33 linhas, 130 peças) e CPL (130 peças, todas no fundo). Cada peça tem o código LCSC; 18 tipos são estendidos (cobrança por tipo) e os demais são básicos.</p>
+    </section>
+    <section id="explodida">
+      <p class="kicker">4 · Vista explodida</p>
+      <h2>Da bandeja aos botões</h2>
+      <p class="sub">As peças em ordem de baixo para cima, como se montam. Na placa, as peças do fundo são as que a JLCPCB solda.</p>
+      <div class="exploded"><a href="img/explodido.jpg"><img src="img/explodido.jpg" width="1800" height="1500" alt="Vista explodida do instrumento, com as 17 peças numeradas." loading="lazy" style="width:100%;height:auto;display:block;border-radius:6px" /></a>
+<span class="pin" style="left:75.91%;top:76.60%" aria-hidden="true">1</span>
+<span class="pin" style="left:39.82%;top:83.93%" aria-hidden="true">2</span>
+<span class="pin" style="left:73.55%;top:60.89%" aria-hidden="true">3</span>
+<span class="pin" style="left:35.15%;top:68.95%" aria-hidden="true">4</span>
+<span class="pin" style="left:36.81%;top:61.64%" aria-hidden="true">5</span>
+<span class="pin" style="left:70.84%;top:59.27%" aria-hidden="true">6</span>
+<span class="pin" style="left:39.73%;top:62.19%" aria-hidden="true">7</span>
+<span class="pin" style="left:63.95%;top:52.02%" aria-hidden="true">8</span>
+<span class="pin" style="left:68.67%;top:48.40%" aria-hidden="true">9</span>
+<span class="pin" style="left:78.58%;top:47.64%" aria-hidden="true">10</span>
+<span class="pin" style="left:70.97%;top:44.17%" aria-hidden="true">11</span>
+<span class="pin" style="left:51.96%;top:26.75%" aria-hidden="true">12</span>
+<span class="pin" style="left:17.69%;top:44.81%" aria-hidden="true">13</span>
+<span class="pin" style="left:18.34%;top:51.66%" aria-hidden="true">14</span>
+<span class="pin" style="left:23.87%;top:59.63%" aria-hidden="true">15</span>
+<span class="pin" style="left:74.19%;top:14.63%" aria-hidden="true">16</span>
+<span class="pin" style="left:38.36%;top:19.47%" aria-hidden="true">17</span>
+</div>
+      <ol class="legend">
+<li><div>Bandeja do fundo e 6 parafusos M2 × 14<br /><span>cinza, impressa; 10 pés de 80A colados por baixo</span></div></li>
+<li><div>Bateria LiPo 503450<br /><span>no berço da bandeja</span></div></li>
+<li><div>Placa principal<br /><span>montada pela JLCPCB, peças no fundo</span></div></li>
+<li><div>Módulo MicroMod Teensy<br /><span>sob a placa, no conector M.2</span></div></li>
+<li><div>Parafuso, espaçador e porca M2,5 de náilon<br /><span>prendem o módulo no H101</span></div></li>
+<li><div>Porcas M2 × 10<br /><span>sob a placa, uma em cada copo da bandeja</span></div></li>
+<li><div>Encoders × 2<br /><span>soldados em casa, no topo da placa</span></div></li>
+<li><div>Teclas Gateron × 28<br /><span>apoiadas na placa, sem solda</span></div></li>
+<li><div>Parafusos M2 × 16 escareados × 10<br /><span>rentes à face da grade</span></div></li>
+<li><div>Espaçadores × 10<br /><span>Ø 5 × 11,35 mm, na borda</span></div></li>
+<li><div>Grade FR-4 de 1,6 mm<br /><span>preta fosca, 28 furos e 10 escareados</span></div></li>
+<li><div>Tampa<br /><span>creme, impressa</span></div></li>
+<li><div>Janela de acrílico fumê<br /><span>24 × 13 mm de vidro à vista</span></div></li>
+<li><div>Tela OLED 0,96″<br /><span>presa por baixo da tampa, girada 180°</span></div></li>
+<li><div>Alto-falante e caixa acústica<br /><span>em L, 9,75 cm³</span></div></li>
+<li><div>Botões × 28<br /><span>entram por cima, pela grade</span></div></li>
+<li><div>Knobs × 2<br /><span>10 mm, sobre os eixos dos encoders</span></div></li>
+      </ol>
+    </section>
+    <section id="montagem">
+      <p class="kicker">5 · Montagem</p>
+      <h2>Dez passos, uma solda e dois fios</h2>
+      <p class="sub">O manual completo, com um desenho explodido por passo, ferramentas, tempos, cuidados e verificações, está em <a href="montagem.html"><b>montagem.html</b></a>. Aqui, o resumo.</p>
+      <div class="tablewrap"><table><thead><tr><th>#</th><th>Passo</th><th>Tempo</th><th>O que se monta</th></tr></thead><tbody>
+<tr><td class="num">1</td><td><a href="montagem.html#passo1">A placa e os encoders</a></td><td class="qty">20 min</td><td>placa principal, 2 encoders EC11E18244AU</td></tr>
+<tr><td class="num">2</td><td><a href="montagem.html#passo2">O módulo MicroMod</a></td><td class="qty">10 min</td><td>módulo MicroMod Teensy, parafuso M2,5 × 8 de náilon, espaçador de náilon de 2,5 mm, porca M2,5 de náilon</td></tr>
+<tr><td class="num">3</td><td><a href="montagem.html#passo3">As 28 teclas Gateron</a></td><td class="qty">10 min</td><td>28 teclas Gateron KS-20 Magnetic Orange</td></tr>
+<tr><td class="num">4</td><td><a href="montagem.html#passo4">A grade de FR-4</a></td><td class="qty">25 min</td><td>10 espaçadores Ø 5 × 11,35, grade FR-4 escareada, 10 parafusos M2 × 16 escareados, 10 porcas M2 (todos não magnéticos)</td></tr>
+<tr><td class="num">5</td><td><a href="montagem.html#passo5">Os botões</a></td><td class="qty">10 min</td><td>28 botões impressos: 12 brancos, 11 pretos, 5 brancos com pontos</td></tr>
+<tr><td class="num">6</td><td><a href="montagem.html#passo6">O cabo da tela</a></td><td class="qty">15 min</td><td>cabo JST SH de 4 vias de 50 mm (uma ponta solta), módulo OLED 0,96″</td></tr>
+<tr><td class="num">7</td><td><a href="montagem.html#passo7">A tampa por dentro</a></td><td class="qty">30 min</td><td>tampa, janela de acrílico fumê, módulo OLED, caixa acústica, alto-falante, tela acústica, junta de espuma, 4 parafusos M2 × 4, 2 parafusos M2 × 5</td></tr>
+<tr><td class="num">8</td><td><a href="montagem.html#passo8">A placa na tampa</a></td><td class="qty">10 min</td><td>tampa com tudo o que leva dentro; a placa com teclas, grade e botões</td></tr>
+<tr><td class="num">9</td><td><a href="montagem.html#passo9">Bateria, bandeja e parafusos</a></td><td class="qty">20 min</td><td>bandeja do fundo, 10 pés de 80A, bateria LiPo 503450, 6 parafusos M2 × 14</td></tr>
+<tr><td class="num">10</td><td><a href="montagem.html#passo10">Os knobs</a></td><td class="qty">5 min</td><td>2 knobs de 10 mm</td></tr>
+</tbody></table></div>
+      <p>A solda: os 2 encoders (passo 1) e os 4 fios da tela e os 2 do alto-falante (passos 6 e 7). A ordem importa: a placa é montada com tudo, e só então desce na tampa, de cabeça para baixo, e a bandeja fecha por baixo.</p>
+      <div class="grid"><figure class=""><a href="img/bandeja_de_baixo.jpg"><img src="img/bandeja_de_baixo.jpg" width="1500" height="635" alt="A bandeja do fundo vista de baixo, com os rebaixos dos 10 pés." loading="lazy" /></a><figcaption>A bandeja, de baixo: os 10 rebaixos dos pés, as nervuras e o berço da bateria.</figcaption></figure><figure class=""><a href="img/bandeja_de_cima.jpg"><img src="img/bandeja_de_cima.jpg" width="1500" height="635" alt="A bandeja do fundo vista de cima, com pinos, pilares, copos das porcas e nervuras." loading="lazy" /></a><figcaption>A bandeja, de cima: 4 pinos, 4 pilares, os copos das porcas da grade e o berço da bateria.</figcaption></figure></div>
+    </section>
+    <section id="orcamento">
+      <p class="kicker">6 · Orçamento</p>
+      <h2>Quanto custa um instrumento</h2>
+      <p class="sub">Um instrumento completo, pedindo o mínimo à JLCPCB (5 placas, 2 montadas). Os valores são faixas, em dólares; libras convertidas a £ 1 = US$ 1,30 (uma suposição, não uma cotação). Fora: frete, IVA e impostos de importação.</p>
+      <div class="tablewrap"><table><thead><tr><th>Pedido</th><th>Fornecedor</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>JLCPCB · placa montada</td><td>JLCPCB (peças da LCSC)</td><td class="num">US$ 172 a 183</td></tr>
+<tr><td>JLCPCB · grade do teclado</td><td>JLCPCB (ou PCBWay)</td><td class="num">US$ 15 a 30</td></tr>
+<tr><td>Gateron</td><td>Loja da Gateron (ou Chosfox, Ukeebs)</td><td class="num">US$ 24,50 a 26,60</td></tr>
+<tr><td>SparkFun · módulo</td><td>DigiKey UK ou SparkFun</td><td class="num">US$ 24,30 a 29,16</td></tr>
+<tr><td>eBay / Amazon · energia</td><td>eBay, Amazon</td><td class="num">US$ 6,50 a 10,40</td></tr>
+<tr><td>Eletrônica de bancada</td><td>Pimoroni, Adafruit, SparkFun, Mouser, Amazon, eBay ou AliExpress</td><td class="num">US$ 14,30 a 36,40</td></tr>
+<tr><td>Ferragem e acabamento</td><td>ferragem, loja de modelismo ou de tintas</td><td class="num">US$ 23,40 a 48,10</td></tr>
+<tr><td>Impressão 3D</td><td>JLC3DP, PCBWay ou Craftcloud (resina ou nylon MJF)</td><td class="num">US$ 58,50 a 143</td></tr>
+<tr class="total"><td colspan="2">Total do primeiro instrumento</td><td class="num">US$ 339 a 507</td></tr>
+</tbody></table></div>
+      <p class="note">Opcional, fora do total: molas de 65 g e de 80 g para o peso da tecla, US$ 7,80 a 15,60.</p>
+      <h3>Detalhe por pedido</h3>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">JLCPCB · placa montada · JLCPCB (peças da LCSC)</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Placa principal, 4 camadas, 246,5 × 95 × 1,2 mm: 5 unidades (engenharia 25,00 + placa 14,50)</td><td class="qty">5</td><td>fab/student_v03_gerbers.zip</td><td><span class="tag">preço visto</span></td><td class="num">US$ 39,50</td></tr>
+<tr><td>Montagem econômica só pelo fundo: preparação e estêncil</td><td class="qty">1</td><td>BOM e CPL em fab/</td><td><span class="tag">preço visto</span></td><td class="num">US$ 9,79</td></tr>
+<tr><td>18 tipos de peça estendida × US$ 3,09</td><td class="qty">18</td><td>a JLCPCB cobra por tipo; as demais são básicas</td><td><span class="tag">preço visto</span></td><td class="num">US$ 55,62</td></tr>
+<tr><td>Peças de 2 placas montadas (130 peças cada, 33 linhas de BOM)</td><td class="qty">2</td><td>sensores, codec, carregador, amplificador, conectores</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 64 a 75</td></tr>
+<tr><td>SMT e nitrogênio</td><td class="qty">1</td><td></td><td><span class="tag est">estimativa</span></td><td class="num">US$ 3,20</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 172 a 183</td></tr>
+</tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">JLCPCB · grade do teclado · JLCPCB (ou PCBWay)</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Grade FR-4 de 1,6 mm, máscara preta fosca, 10 furos escareados a 90°: 5 unidades (1 usada)</td><td class="qty">5</td><td>fab/student_v03_grade_gerbers.zip + figura</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 15 a 30</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 15 a 30</td></tr>
+</tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">Gateron · Loja da Gateron (ou Chosfox, Ukeebs)</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Teclas Gateron KS-20 Magnetic Orange (38 gf), pacote de 35</td><td class="qty">28 (de 35)</td><td>sensor Hall sob cada tecla</td><td><span class="tag">preço visto</span></td><td class="num">US$ 24,50 a 26,60</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 24,50 a 26,60</td></tr>
+</tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">SparkFun · módulo · DigiKey UK ou SparkFun</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Módulo MicroMod Teensy (DEV-16402)</td><td class="qty">1</td><td>£ 18,69 sem IVA na DigiKey UK; US$ 24,95 na SparkFun</td><td><span class="tag">preço visto</span></td><td class="num">US$ 24,30 a 29,16</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 24,30 a 29,16</td></tr>
+</tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">eBay / Amazon · energia · eBay, Amazon</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Bateria LiPo 503450, 3,7 V, ~1000 mAh, 3 fios (NTC), plugue JST PH 2,0</td><td class="qty">1</td><td>medir o NTC (~10 kΩ) e a ordem dos fios antes de ligar</td><td><span class="tag">preço visto</span></td><td class="num">US$ 6,50 a 10,40</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 6,50 a 10,40</td></tr>
+</tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">Eletrônica de bancada · Pimoroni, Adafruit, SparkFun, Mouser, Amazon, eBay ou AliExpress</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Módulo OLED 0,96″ 128 × 64, SSD1306, I²C, 4 pinos, 3,3 V</td><td class="qty">1</td><td>placa de ~27,3 × 27,8 mm, 4 furos de 2 mm; conferir a ordem dos pinos</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 3,90 a 7,80</td></tr>
+<tr><td>Cabo JST SH 1,0 mm de 4 vias, 50 mm (Qwiic / STEMMA QT), uma ponta solta</td><td class="qty">1</td><td>plugue no J401; os fios sobem pela fenda e são soldados na tela</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 2,60 a 5,20</td></tr>
+<tr><td>Alto-falante Ø 28 × 5 mm, 8 Ω, 2 W</td><td class="qty">1</td><td>pedir a frequência de ressonância; quanto mais baixa, melhor</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 2,60 a 6,50</td></tr>
+<tr><td>Tela acústica 0,3 mm (36 × 28 mm), junta de espuma de 1 mm Ø 28/24, silicone</td><td class="qty">1 kit</td><td>veda a frente e o furo dos fios da caixa</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 5,20 a 10,40</td></tr>
+<tr><td>Cabo USB-C</td><td class="qty">1</td><td>carga, MIDI e configuração</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 0 a 6,50</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 14,30 a 36,40</td></tr>
+</tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">Ferragem e acabamento · ferragem, loja de modelismo ou de tintas</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Parafusos M2 não magnéticos (latão ou inox A4): 10 × 16 mm de cabeça escareada (ISO 7046) com 10 porcas, 6 × 14 mm de cabeça panela, 2 × 5 mm, 4 × 4 mm</td><td class="qty">22 + 10 porcas</td><td>ferro e aço-carbono perto dos ímãs das teclas distorcem a leitura</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 7,80 a 13</td></tr>
+<tr><td>Módulo MicroMod: parafuso M2,5 × 8 de náilon, espaçador de náilon de 2,5 mm e porca M2,5 de náilon</td><td class="qty">1 + 1 + 1</td><td>o parafuso M2,5 × 3 que vem com o módulo não serve nesta pilha</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 2,60 a 5,20</td></tr>
+<tr><td>Pés autoadesivos de poliuretano ou silicone de 80 Shore A ou mais, Ø 8 × 1,5 mm</td><td class="qty">10</td><td>o silicone macio (40–60A) não serve: a tecla pior ultrapassa 0,05 mm de flexão</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 2,60 a 6,50</td></tr>
+<tr><td>Tinta para os rebaixos e para as faixas (vermelho, laranja, amarelo, preto, marrom-avermelhado) ou vinil adesivo</td><td class="qty">1 kit</td><td>cores: ver a seção do conceito</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 6,50 a 13</td></tr>
+<tr><td>Acrílico fumê escuro de 1 mm, 25,7 × 14,7 mm, cantos R 1</td><td class="qty">1</td><td>corte a laser sob encomenda, ou lixado de uma chapa</td><td><span class="tag est">estimativa</span></td><td class="num">US$ 3,90 a 10,40</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="num">US$ 23,40 a 48,10</td></tr>
+</tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th colspan="5">Impressão 3D · JLC3DP, PCBWay ou Craftcloud (resina ou nylon MJF)</th></tr><tr><th>Item</th><th>Qtd</th><th>Observação</th><th>Fonte do preço</th><th class="num">Valor</th></tr></thead><tbody>
+<tr><td>Tampa (creme, sem emenda na parede, 24,6 mm de altura) e bandeja do fundo (cinza)</td><td class="qty">1 + 1</td><td>~118 cm³ de material</td><td><span class="tag est">estimativa</span></td><td class="num">—</td></tr>
+<tr><td>Botões: 12 branco, 11 preto, 5 branco com pontos (4 alturas de haste)</td><td class="qty">28</td><td>resina ou MJF: o encaixe em cruz não sai em filamento</td><td><span class="tag est">estimativa</span></td><td class="num">—</td></tr>
+<tr><td>Espaçadores da grade Ø 5 × 11,35 mm</td><td class="qty">10</td><td></td><td><span class="tag est">estimativa</span></td><td class="num">—</td></tr>
+<tr><td>Knobs chapéu de 10 mm (furo em D de 9,2 mm de fundo), sem luva</td><td class="qty">2</td><td>preto, traço pintado</td><td><span class="tag est">estimativa</span></td><td class="num">—</td></tr>
+<tr><td>Caixa acústica em L (9,75 cm³), na mesma peça do anel</td><td class="qty">1</td><td>paredes cheias: tem de ser estanque</td><td><span class="tag est">estimativa</span></td><td class="num">—</td></tr>
+<tr class="sub"><td colspan="4">Pedido de impressão inteiro (tampa, bandeja, 28 botões, espaçadores, 2 knobs e a caixa acústica: cerca de 150 cm³ de material). Estimativa pelo volume; cotar em duas lojas com os STEP de <code>case/out/</code>.</td><td class="num">US$ 58,50 a 143</td></tr>
+</tbody></table></div>
+      <h3>Como ler estes números</h3>
+      <ul>
+        <li><b>Preço visto</b> é o de uma página de loja de 15 de novembro de 2026 ou da cotação da JLCPCB de 18 de novembro; <b>estimativa</b> é uma ordem de grandeza ainda sem cotação.</li>
+        <li><b>A JLCPCB cobra a maior parte do pedido em taxas fixas</b> (engenharia, estêncil e uma taxa por tipo de peça estendida): montar as 5 placas custaria só um pouco mais que montar 2. A cotação real só sai com os arquivos enviados.</li>
+        <li>A grade escareada pede aprovação da JLCPCB no pedido (o texto pronto está em <code>case/GRADE_ESCAREADA.md</code>); se ela recusar, a grade vai para a PCBWay, que lista furo escareado entre as capacidades.</li>
+        <li>Sobram do primeiro pedido 1 placa montada (reserva), 3 placas nuas, 4 grades, 7 teclas e o que sobrar dos pacotes de ferragem: o segundo instrumento custa muito menos.</li>
+        <li>O alto-falante ainda não foi escolhido: o estudo acústico usa um alto-falante nominal, e a caixa foi desenhada para um de Ø 28 × 5 mm.</li>
+      </ul>
+    </section>
+    <section id="estado">
+      <p class="kicker">7 · Estado</p>
+      <h2>O que está pronto e o que falta</h2>
+      <div class="status">
+        <h3>Estado do projeto (18 de novembro de 2026)</h3>
+        <ul>
+          <li><b>Pronto:</b> esquema, placa roteada (DRC com paridade do esquema: 0 ligações faltando), BOM, CPL de montagem só pelo fundo e Gerbers, grade FR-4 escareada, case em 20 peças sem nenhuma interferência em 245 pares (placa e bandeja entram por baixo livres em todo o curso), estudos de flexão e de acústica, renders e o manual de montagem.</li>
+          <li><b>Pendente:</b> o <b>firmware</b> da V3 (o do Student V01 compila para o módulo e tem o acordeão e os knobs, mas não tem tela nem microfone, nem o acordar por USB); conferir a prévia de montagem da JLCPCB; escolher o alto-falante e refazer o estudo com os números dele; cotar a impressão; confirmar a grade escareada na JLCPCB.</li>
+          <li><b>Medir na primeira amostra:</b> a lista de 8 itens (altura do USB-C e dos jacks, pilha do módulo, boca do J401, eixo dos encoders, compressão dos pés, OLED, bateria, plugues), no fim do <a href="montagem.html#medir">manual de montagem</a>.</li>
+          <li><b>Nada foi encomendado, impresso ou montado.</b> Os preços acima são de pesquisa: confira todos na hora do pedido.</li>
+        </ul>
+      </div>
+    </section>
+    <footer>
+      <p>Projeto em desenvolvimento, fora do mapa do site e dos buscadores. Arquivos de projeto em <code>etutti/hardware/student_v03/</code> do repositório <a href="https://github.com/dataehora/beatconfused">dataehora/beatconfused</a>.</p>
+      <p><a href="/">beatconfused.com</a> · <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a></p>
+    </footer>
+  </main>
+</body>
+</html>

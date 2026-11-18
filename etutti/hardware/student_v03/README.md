@@ -37,6 +37,10 @@ python etutti/hardware/student_v03/bom_v3.py                                    
 Arquivos: `kicad/student_v03_sem_rota.kicad_pcb`, `renders/` (placa inteira e a metade esquerda, topo e fundo),
 `bom_v3.csv`, `AUDITORIA.md`, `pcb/colocacao.json`, `pcb/drc_sem_rota.json`.
 
+## Página e manual (18 nov 2026)
+
+`/etutti/studentV3/` (apresentação) e `/etutti/studentV3/montagem.html` (manual de montagem em 10 passos, com vista explodida por passo): `pagina.py` escreve o HTML, `case/passos.py` gera as figuras. Os 5 avisos de ponta solta do DRC foram analisados: remover o toco desfaz rotas inteiras (as pontas ficam fora do centro da via, e a checagem do KiCad é topológica), então a placa ficou como foi encomendada.
+
 ## O que mudou em relação à V2
 
 | | V2 | V3 |
