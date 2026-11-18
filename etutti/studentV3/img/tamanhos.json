@@ -94,5 +94,73 @@
  "placa_fundo": [
   1500,
   619
+ ],
+ "foto_esquerda": [
+  1500,
+  938
+ ],
+ "foto_explodido": [
+  1800,
+  1500
+ ],
+ "foto_fundo": [
+  1500,
+  938
+ ],
+ "foto_isometrico": [
+  1800,
+  1050
+ ],
+ "foto_parede": [
+  1500,
+  938
+ ],
+ "foto_passo_1": [
+  1500,
+  938
+ ],
+ "foto_passo_10": [
+  1500,
+  938
+ ],
+ "foto_passo_1a": [
+  1500,
+  938
+ ],
+ "foto_passo_2": [
+  1500,
+  975
+ ],
+ "foto_passo_3": [
+  1500,
+  938
+ ],
+ "foto_passo_4": [
+  1500,
+  938
+ ],
+ "foto_passo_5": [
+  1500,
+  938
+ ],
+ "foto_passo_6": [
+  1500,
+  975
+ ],
+ "foto_passo_7": [
+  1500,
+  938
+ ],
+ "foto_passo_8": [
+  1500,
+  938
+ ],
+ "foto_passo_9": [
+  1500,
+  938
+ ],
+ "foto_teclado": [
+  1500,
+  938
  ]
 }
