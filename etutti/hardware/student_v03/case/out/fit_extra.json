@@ -1,0 +1,260 @@
+{
+ "C2_bandeja_ate_pecas_do_verso": [
+  {
+   "ref": "U605",
+   "valor": "74LVC1G08",
+   "altura_mm": 1.45,
+   "x": 154.6,
+   "y": 10.5,
+   "folga_mm": 0.237
+  },
+  {
+   "ref": "L201",
+   "valor": "2.2uH",
+   "altura_mm": 2.0,
+   "x": 73.8,
+   "y": 9.0,
+   "folga_mm": 0.8
+  },
+  {
+   "ref": "J202",
+   "valor": "S3B-PH-SM4-TB",
+   "altura_mm": 6.0,
+   "x": 64.5,
+   "y": 26.5,
+   "folga_mm": 0.9
+  },
+  {
+   "ref": "J301",
+   "valor": "PJ-327A",
+   "altura_mm": 5.1,
+   "x": 9.5,
+   "y": 36.0,
+   "folga_mm": 1.097
+  },
+  {
+   "ref": "J302",
+   "valor": "PJ-327A",
+   "altura_mm": 5.1,
+   "x": 9.5,
+   "y": 60.0,
+   "folga_mm": 1.097
+  },
+  {
+   "ref": "C207",
+   "valor": "10uF",
+   "altura_mm": 1.45,
+   "x": 73.2,
+   "y": 5.7,
+   "folga_mm": 1.35
+  },
+  {
+   "ref": "D206",
+   "valor": "BAV70",
+   "altura_mm": 1.45,
+   "x": 73.1,
+   "y": 21.7,
+   "folga_mm": 1.35
+  },
+  {
+   "ref": "U603",
+   "valor": "74LVC1G04",
+   "altura_mm": 1.45,
+   "x": 145.4,
+   "y": 10.5,
+   "folga_mm": 1.35
+  },
+  {
+   "ref": "C208",
+   "valor": "10uF",
+   "altura_mm": 1.45,
+   "x": 69.7,
+   "y": 6.0,
+   "folga_mm": 1.365
+  },
+  {
+   "ref": "C206",
+   "valor": "10uF",
+   "altura_mm": 1.45,
+   "x": 69.6,
+   "y": 12.2,
+   "folga_mm": 1.384
+  }
+ ],
+ "C2_H101": {
+  "porca_ate_a_bandeja_mm": 1.877,
+  "parafuso_ate_a_bandeja_mm": 1.1,
+  "ponta_do_parafuso_z": -8.0,
+  "piso_no_recesso_z": [
+   -9.1
+  ]
+ },
+ "C2_modulo_ate_o_piso_mm": 2.2,
+ "C2_jacks_e_USB_ate_a_borda_da_bandeja_mm": {
+  "J201": 3.14,
+  "J301": 1.1,
+  "J302": 1.1
+ },
+ "C2_copos_da_grade": {
+  "topo_do_copo_z": -1.2,
+  "folga_do_parafuso_e_porca_ate_o_piso_mm": -4.9
+ },
+ "C3_parede_abaixo_dos_furos": {
+  "USB-C": {
+   "boca_inferior_z": -6.9,
+   "face_reta_ate_o_chanfro_mm": 1.7
+  },
+  "OUT/IN": {
+   "boca_inferior_z": -7.75,
+   "face_reta_ate_o_chanfro_mm": 0.85
+  },
+  "chanfro_inferior_comeca_em_z": -8.6,
+  "parede_na_borda_de_baixo_mm": 0.5
+ },
+ "C4_bateria_ate": {
+  "J302": 3.0,
+  "J301": 17.439,
+  "U501": 0.7,
+  "C502": 1.15,
+  "R501": 1.3,
+  "C501": 0.803,
+  "J202": 24.605,
+  "J101": 26.905
+ },
+ "C4_bateria": {
+  "x": [
+   19.5,
+   69.5
+  ],
+  "y": [
+   56.0,
+   90.0
+  ],
+  "z": [
+   -8.1,
+   -2.8999999999999995
+  ]
+ },
+ "C5_modulo_da_tela": {
+  "ate_a_tampa_mm": 0.0,
+  "ate_os_encoders_mm": 6.444,
+  "ate_a_cabeca_do_parafuso_H101_mm": 7.8,
+  "centro": [
+   37.0,
+   20.1
+  ],
+  "postes": [
+   [
+    25.35,
+    8.200000000000001
+   ],
+   [
+    48.65,
+    8.200000000000001
+   ],
+   [
+    25.35,
+    32.0
+   ],
+   [
+    48.65,
+    32.0
+   ]
+  ],
+  "fundo_do_modulo_z": 9.3,
+  "teto_plano_comeca_em_y": 6.540698282699944,
+  "borda_de_tras_y": 6.200000000000001
+ },
+ "C5_postes_na_parte_plana_do_teto": {
+  "y_do_poste_mais_proximo_da_parede": 8.200000000000001,
+  "raio": 1.6,
+  "folga_ate_o_inicio_da_parte_plana_mm": 0.06
+ },
+ "C6_J401": {
+  "posicao": [
+   35.5,
+   36.5
+  ],
+  "rotacao_graus": 0.0,
+  "caixa": [
+   31.555,
+   33.175,
+   39.445,
+   39.825
+  ],
+  "fenda": [
+   32.0,
+   29.92,
+   39.0,
+   32.42
+  ],
+  "pinos_do_modulo_y": 32.5,
+  "subida_z_mm": 12.0,
+  "percurso_minimo_mm": 20.7
+ },
+ "C10_modelo_EC11E_V1": {
+  "z": [
+   -3.5,
+   24.5
+  ],
+  "x": [
+   -6.29,
+   6.29
+  ],
+  "y": [
+   -7.6,
+   7.1
+  ]
+ },
+ "C10_modelo_EC11E18244AU_C202365": {
+  "z": [
+   -3.5,
+   24.5
+  ],
+  "corpo_ate_z": 4.5,
+  "colar_d8_z": [
+   4.5,
+   5.0
+  ],
+  "bucha_d7_z": [
+   5.0,
+   11.5
+  ],
+  "eixo_d6_z": [
+   12.5,
+   24.5
+  ],
+  "pernas_abaixo_da_placa_mm": 3.5,
+  "eixo_acima_do_tampo_mm": 10.0,
+  "sobra_do_eixo_acima_do_knob_mm": 3.0,
+  "folga_da_bucha_ate_o_teto_mm": 1.0
+ },
+ "C10_encoders": {
+  "corpo_ate_z": 4.5,
+  "bucha_ate_z": 11.5,
+  "eixo_ate_z": 20.0,
+  "teto_interno_z": 12.5,
+  "bucha_dentro_do_furo_da_tampa": "sim (7 mm no furo de 9,2)",
+  "tampa_ate_encoders_mm": 1.487,
+  "knob_encaixe_mm": 4.7
+ },
+ "C12_tampa_sobre_a_grade": {
+  "espessura_mm": 1.4,
+  "aresta_R_mm": 1.2,
+  "parede_reta_na_boca_do_poco_mm": 0.2,
+  "folga_da_tampa_ate_a_cabeca_escareada_mm": 0.15,
+  "distancia_da_borda_da_grade_a_parede_externa_mm": 4.47,
+  "espessura_minima_no_chanfro_frente_e_fundo_mm": 0.51
+ },
+ "C13_botao_ate_a_aresta_do_poco_mm": {
+  "lateral_do_botao_da_1a_fileira": 5.0
+ },
+ "C9_volumes_cm3": {
+  "tampa_v2": 55.24,
+  "base_v2": 64.0,
+  "tampa_v3": 52.9,
+  "bandeja_v3": 64.54,
+  "caixa_acustica_v2": 10.43,
+  "caixa_acustica_v3": 9.75
+ }
+}
