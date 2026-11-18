@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCCMBL7GMJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-KCCMBL7GMJ");
+  </script>
+  <title>BeatConfused | eTutti Student V3: manual de montagem</title>
+  <meta name="description" content="Manual de montagem do eTutti Student V3: ferramentas, peças, dez passos com vista explodida, primeira ligação e medidas a conferir." />
+  <!-- Written by etutti/hardware/student_v03/pagina.py: edit the texts and the prices there.
+       Part of the unlisted eTutti work in progress: kept out of the sitemap and of search results. -->
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#F3F1EC" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Michroma&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/site-title.css?v=20261008" />
+  <link rel="stylesheet" href="styles.css?v=20261118" />
+</head>
+<body>
+  <div class="stripes" aria-hidden="true"></div>
+  <main class="page">
+    <a class="site-title" href="/">beatconfused.com</a>
+
+    <header class="hero">
+      <p class="eyebrow">BeatConfused Studio · manual de montagem</p>
+      <h1>eTutti<small>STUDENT · V3</small></h1>
+      <p class="lead">Do zero ao instrumento fechado, em dez passos, com uma vista explodida em cada um. Para quem nunca viu o projeto: leia primeiro <a href="index.html">a apresentação</a>.</p>
+    </header>
+    <nav class="toc" aria-label="Seções">
+      <a href="#antes">Antes de começar</a><a href="#passos">Os dez passos</a><a href="#ligar">Primeira ligação</a><a href="#medir">Medir na amostra</a><a href="#trocar">Trocar o módulo</a>
+    </nav>
+    <section id="antes">
+      <p class="kicker">0 · Antes de começar</p>
+      <h2>O que chega, o que se faz em casa</h2>
+      <div class="grid">
+        <div class="card"><h3>Chega pronto</h3><ul>
+          <li><b>Placa principal</b>, com todas as peças soldadas pelo fundo (JLCPCB), menos os 2 encoders.</li>
+          <li><b>Grade FR-4</b>, preta, com 10 furos escareados (JLCPCB).</li></ul></div>
+        <div class="card"><h3>Chega à parte</h3><ul>
+          <li>Módulo MicroMod Teensy; teclas Gateron KS-20 Magnetic; bateria LiPo; tela OLED; cabo JST SH; alto-falante e vedação.</li>
+          <li>Os 2 encoders EC11E18244AU.</li>
+          <li>Parafusos, porcas e pés; acrílico; tinta.</li></ul></div>
+        <div class="card"><h3>Impresso</h3><ul>
+          <li>Tampa e bandeja; 28 botões; 10 espaçadores; 2 knobs; caixa acústica. Resina ou nylon MJF: o encaixe em cruz dos botões não sai em filamento.</li>
+          <li>Pinte o logo e as legendas, e as faixas, antes de montar.</li></ul></div>
+      </div>
+      <h3>Ferramentas</h3>
+      <ul><li>Chave Phillips pequena (PH0) e uma chave de boca ou alicate de bico fino para as porcas M2.</li><li>Ferro de solda com ponta fina (330 °C), solda de 0,6 mm com fluxo, malha dessoldadora, lupa.</li><li>Pinça, alicate de corte, cola quente, silicone, cola cianoacrilato fraca.</li><li>Multímetro, paquímetro (de profundidade, se possível).</li><li>Um pano macio para apoiar a placa e a tampa.</li></ul>
+      <div class="warn"><b>Antes de montar, três regras:</b><ul><li><b>Nada de ferro perto das teclas.</b> Os ímãs atraem aço comum e distorcem a leitura. Parafusos e porcas em latão, inox A4 ou náilon.</li><li><b>Bateria:</b> confira a ordem dos fios (1 = +, 2 = NTC, 3 = −) e meça o NTC (~10 kΩ) antes de ligar. Invertida, ela danifica a placa.</li><li><b>Sem força:</b> a grade é de FR-4, o módulo e os conectores são pequenos, e os plásticos impressos rosqueiam sem esforço.</li></ul></div>
+      <p>Tempo total, com a cura do silicone: uma tarde. A tabela abaixo é a ordem dos passos; cada um tem a sua figura.</p>
+      <div class="tablewrap"><table><thead><tr><th>#</th><th>Passo</th><th>Tempo</th><th>Ferramentas</th></tr></thead><tbody>
+<tr><td class="num">1</td><td><a href="#passo1">A placa e os encoders</a></td><td class="qty">20 min</td><td>ferro de solda (ponta fina, 330 °C), solda 0,6 mm com fluxo, alicate de corte, lupa</td></tr>
+<tr><td class="num">2</td><td><a href="#passo2">O módulo MicroMod</a></td><td class="qty">10 min</td><td>chave de fenda pequena ou os dedos, pinça</td></tr>
+<tr><td class="num">3</td><td><a href="#passo3">As 28 teclas Gateron</a></td><td class="qty">10 min</td><td>nenhuma</td></tr>
+<tr><td class="num">4</td><td><a href="#passo4">A grade de FR-4</a></td><td class="qty">25 min</td><td>chave Phillips pequena, pinça, chave de boca ou alicate de bico para as porcas</td></tr>
+<tr><td class="num">5</td><td><a href="#passo5">Os botões</a></td><td class="qty">10 min</td><td>nenhuma</td></tr>
+<tr><td class="num">6</td><td><a href="#passo6">O cabo da tela</a></td><td class="qty">15 min</td><td>ferro de solda, solda fina, cola quente, pinça, alicate de corte</td></tr>
+<tr><td class="num">7</td><td><a href="#passo7">A tampa por dentro</a></td><td class="qty">30 min</td><td>chave Phillips pequena, ferro de solda, cola, silicone</td></tr>
+<tr><td class="num">8</td><td><a href="#passo8">A placa na tampa</a></td><td class="qty">10 min</td><td>nenhuma</td></tr>
+<tr><td class="num">9</td><td><a href="#passo9">Bateria, bandeja e parafusos</a></td><td class="qty">20 min</td><td>chave Phillips pequena, multímetro</td></tr>
+<tr><td class="num">10</td><td><a href="#passo10">Os knobs</a></td><td class="qty">5 min</td><td>nenhuma</td></tr>
+</tbody></table></div>
+      <p class="note">Em cada figura, o que é novo no passo está em cor e o que já estava montado está esmaecido; as peças novas aparecem separadas, na direção em que entram. Nos passos 8 e 9 a imagem está de cabeça para baixo, como o instrumento fica na bancada: a tampa deitada sobre a face, a abertura para cima.</p>
+    </section>
+    <section id="passos">
+      <p class="kicker">1 · Os dez passos</p>
+      <h2>Montagem passo a passo</h2>
+      <article class="step stepwide" id="passo1"><figure><a href="img/passo_1.jpg"><img src="img/passo_1.jpg" width="1400" height="840" alt="Passo 1: A placa e os encoders" loading="lazy" /></a></figure><div><h3><span class="num">1</span>A placa e os encoders</h3>
+<dl class="meta"><dt>Tempo</dt><dd>20 min</dd><dt>Ferramentas</dt><dd>ferro de solda (ponta fina, 330 °C), solda 0,6 mm com fluxo, alicate de corte, lupa</dd><dt>Peças</dt><dd>placa principal, 2 encoders EC11E18244AU</dd></dl>
+<p>Receba a placa da JLCPCB e confira a olho nu, com a lupa: os dois jacks e o USB-C devem estar na borda esquerda, ao fundo; o conector M.2 (J101), o JST SH da tela (J401) e o JST PH da bateria (J202) estão no fundo. Todas as peças estão do lado de baixo; do lado de cima só há as ilhas dos encoders, os pads dos fios do alto-falante (J501) e os furos.</p><p>Os 5 pinos de cada encoder (3 do giro, 2 do clique) e as duas abas de fixação passam pela placa de cima para baixo. Encaixe-os até o corpo encostar na placa e solde por baixo: as pernas ficam 3,5 mm abaixo da placa. Alinhe pelo corpo, não pelo eixo: o eixo termina a ~24,5 mm da placa e o chato do eixo deve ficar do lado de dentro do furo em D do knob (passo 10).</p><p>Não precisa cortar as pernas: a bandeja tem 4,4 mm de folga sob os encoders.</p>
+<div class="warn"><b>Cuidado</b><ul><li>Solde só as pernas dos encoders; nada mais do topo precisa de solda neste passo.</li><li>Gire o eixo à mão depois de soldar: deve girar em detentes e clicar ao apertar.</li></ul></div>
+<p class="check"><b>Verifique:</b> Encoders retos, corpo rente à placa, eixo girando em detentes e com clique.</p>
+<figure><a href="img/passo_1a.jpg"><img src="img/passo_1a.jpg" width="1400" height="840" alt="A placa vista de baixo, com as peças soldadas pela fábrica" loading="lazy" /></a><figcaption>Passo 1, antes: o fundo da placa como chega da JLCPCB, com as 130 peças soldadas. Só os 2 encoders (acima) são soldados em casa.</figcaption></figure>
+</div></article>
+      <article class="step stepwide" id="passo2"><figure><a href="img/passo_2.jpg"><img src="img/passo_2.jpg" width="1400" height="910" alt="Passo 2: O módulo MicroMod" loading="lazy" /></a></figure><div><h3><span class="num">2</span>O módulo MicroMod</h3>
+<dl class="meta"><dt>Tempo</dt><dd>10 min</dd><dt>Ferramentas</dt><dd>chave de fenda pequena ou os dedos, pinça</dd><dt>Peças</dt><dd>módulo MicroMod Teensy, parafuso M2,5 × 8 de náilon, espaçador de náilon de 2,5 mm, porca M2,5 de náilon</dd></dl>
+<p>Vire a placa de cabeça para baixo, sobre um pano. O conector M.2 (J101) fica no fundo da placa, à esquerda, e o furo H101, de 2,7 mm, a 20 mm dele, à direita.</p><p>Encoste a borda de contatos do módulo no conector, a uns 30°, e empurre até assentar; depois baixe o módulo sobre o espaçador de náilon de 2,5 mm, posto entre a placa e o módulo, sobre o furo H101.</p><p>Pelo topo da placa, passe o parafuso M2,5 × 8 de náilon pelo furo, pelo espaçador e pelo furo do módulo, e aperte a porca de náilon por baixo. A pilha, de cima para baixo: parafuso, placa (1,2), espaçador (2,5), módulo (1,0), porca (2,0). A porca vai a ~6,7 mm abaixo da face de cima da placa, e a ponta do parafuso a ~8 mm: o rebaixo de 1,0 mm do piso da bandeja deixa 1,1 mm de folga.</p>
+<div class="warn"><b>Cuidado</b><ul><li>Aperte pouco: o náilon rosqueia fácil e a placa do módulo é fina.</li><li>Não use o parafuso M2,5 × 3 que vem com o módulo: é curto demais para esta pilha.</li><li>Trocar o módulo depois é uma operação rara: obriga a tirar a bandeja, a bateria e a levantar a placa (ver o final do manual).</li></ul></div>
+<p class="check"><b>Verifique:</b> Módulo reto e firme, sem folga; parafuso e porca sem passar da face de baixo do módulo mais do que ~1,3 mm.</p>
+
+</div></article>
+      <article class="step stepwide" id="passo3"><figure><a href="img/passo_3.jpg"><img src="img/passo_3.jpg" width="1400" height="840" alt="Passo 3: As 28 teclas Gateron" loading="lazy" /></a></figure><div><h3><span class="num">3</span>As 28 teclas Gateron</h3>
+<dl class="meta"><dt>Tempo</dt><dd>10 min</dd><dt>Ferramentas</dt><dd>nenhuma</dd><dt>Peças</dt><dd>28 teclas Gateron KS-20 Magnetic Orange</dd></dl>
+<p>Vire a placa de volta, com o topo para cima. Cada tecla tem dois pinos de plástico que a posicionam em dois furos da placa: pressione-a no lugar até assentar. Não há solda: o sensor Hall TMAG5253 está do outro lado da placa, bem sob a tecla, e lê o ímã que desce com a haste.</p><p>As teclas entram em 4 fileiras, de frente para trás, de 7, 8, 7 e 6 teclas (a fileira da frente, a mais próxima de quem toca, é a 1; a de trás, a 4). Os furos já marcam as posições, a 18,5 mm; as fileiras se deslocam entre si em meia tecla, num arranjo hexagonal.</p><p>Se for trocar as molas por molas mais pesadas (65 g ou 80 g), faça-o agora, e teste uma tecla primeiro: a mola mais pesada muda o peso, não as leituras.</p>
+<div class="warn"><b>Cuidado</b><ul><li>Os ímãs das teclas atraem ferro: mantenha chaves de aço e parafusos longe das teclas durante a montagem, ou use ferramentas não magnéticas.</li></ul></div>
+<p class="check"><b>Verifique:</b> As 28 teclas no mesmo nível, assentadas; cada uma desce e sobe sem prender.</p>
+
+</div></article>
+      <article class="step stepwide" id="passo4"><figure><a href="img/passo_4.jpg"><img src="img/passo_4.jpg" width="1400" height="840" alt="Passo 4: A grade de FR-4" loading="lazy" /></a></figure><div><h3><span class="num">4</span>A grade de FR-4</h3>
+<dl class="meta"><dt>Tempo</dt><dd>25 min</dd><dt>Ferramentas</dt><dd>chave Phillips pequena, pinça, chave de boca ou alicate de bico para as porcas</dd><dt>Peças</dt><dd>10 espaçadores Ø 5 × 11,35, grade FR-4 escareada, 10 parafusos M2 × 16 escareados, 10 porcas M2 (todos não magnéticos)</dd></dl>
+<p>A grade é uma placa de FR-4 preta de 1,6 mm que cobre as teclas a 0,15 mm sem tocá-las e as impede de sair. Ela se prende pela borda, em 10 pontos (os mesmos 10 furos de 2,3 mm da placa).</p><p>Ponha um espaçador sobre cada um dos 10 furos da placa, ponha a grade por cima, com a face de baixo para a placa e as bocas dos escareados para cima, e passe um parafuso M2 × 16 de cabeça escareada por cada furo, pelo topo, até atravessar o espaçador e a placa.</p><p>Por baixo, enrosque a porca M2 em cada parafuso (apoie a placa na borda, de modo que o fundo fique livre, ou levante-a de lado). A porca vai ficar dentro de um copo da bandeja no passo 9, 3,2 mm de fundo, por isso fica logo abaixo da placa: a ponta do parafuso passa só ~0,25 mm da porca.</p><p>Aperte em cruz, pouco a pouco. A cabeça deve ficar rente à face da grade: se sobrar uma cabeça acima, a tampa não fecha; se afundar demais, o escareado de 0,75 mm foi mal feito.</p>
+<div class="warn"><b>Cuidado</b><ul><li>Use parafusos e porcas não magnéticos (latão ou inox A4): o aço comum perto dos ímãs distorce a leitura das teclas.</li><li>Não force a grade: é FR-4, e uma rachadura na borda do furo não se conserta.</li><li>Confira que a grade ficou a ~0,15 mm das teclas: ao apertar uma tecla, ela não deve raspar na grade.</li></ul></div>
+<p class="check"><b>Verifique:</b> 10 parafusos rentes, a grade plana, as teclas livres nos furos de Ø 6,2 mm.</p>
+
+</div></article>
+      <article class="step stepwide" id="passo5"><figure><a href="img/passo_5.jpg"><img src="img/passo_5.jpg" width="1400" height="840" alt="Passo 5: Os botões" loading="lazy" /></a></figure><div><h3><span class="num">5</span>Os botões</h3>
+<dl class="meta"><dt>Tempo</dt><dd>10 min</dd><dt>Ferramentas</dt><dd>nenhuma</dd><dt>Peças</dt><dd>28 botões impressos: 12 brancos, 11 pretos, 5 brancos com pontos</dd></dl>
+<p>Cada botão tem uma haste com um encaixe em cruz que entra na cruz da tecla. Empurre-o por cima, pelo furo da grade, até assentar. A altura da haste muda por fileira, para que o dedo sinta cada fileira: 7,2 / 9,2 / 11,2 / 14,2 mm, da fileira 1 (a da frente) à 4 (a de trás); os topos ficam a 7,4 / 9,4 / 11,4 / 14,4 mm acima do tampo.</p><p>Os pontos marcam o C e o F, para achar a posição no escuro. Os 5 botões pontilhados são os Cs e os Fs; a planta, na apresentação, mostra onde cada um fica.</p><p>Pressione cada botão: a tecla deve descer e subir livre. Se um botão raspar na parede do furo da grade, ele não está reto.</p>
+<div class="warn"><b>Cuidado</b><ul><li>Os botões são de resina ou nylon MJF: o encaixe em cruz de impressão em filamento quebra.</li></ul></div>
+<p class="check"><b>Verifique:</b> 28 botões retos, cada um descendo 4,1 mm e voltando.</p>
+
+</div></article>
+      <article class="step stepwide" id="passo6"><figure><a href="img/passo_6.jpg"><img src="img/passo_6.jpg" width="1400" height="910" alt="Passo 6: O cabo da tela" loading="lazy" /></a></figure><div><h3><span class="num">6</span>O cabo da tela</h3>
+<dl class="meta"><dt>Tempo</dt><dd>15 min</dd><dt>Ferramentas</dt><dd>ferro de solda, solda fina, cola quente, pinça, alicate de corte</dd><dt>Peças</dt><dd>cabo JST SH de 4 vias de 50 mm (uma ponta solta), módulo OLED 0,96″</dd></dl>
+<p>O conector da tela (J401) está no fundo da placa, e o módulo OLED vai preso à tampa, ao lado. O cabo liga os dois: encaixe o plugue JST SH no J401, pelo fundo, e faça os 4 fios subirem pela fenda de 7 × 2,5 mm que atravessa a placa, de baixo para cima. O plugue não passa pela fenda: só os fios.</p><p>A ordem dos fios é a Qwiic: preto = GND, vermelho = 3,3 V, azul = SDA, amarelo = SCL. Confira a ordem dos pinos do seu módulo OLED (GND, VCC, SCL, SDA na maioria) e solde os 4 fios nas ilhas dele, deixando uns 30 mm de folga dobrada entre a placa e a tela. Uma gota de cola quente sobre as soldas alivia a tensão.</p><p>O módulo OLED vai girado 180° na tampa, com a borda dos pinos virada para a frente, para os fios descerem quase em linha reta até a fenda: ~9 mm do módulo à placa, 1,2 mm da fenda e ~3 mm até o J401.</p>
+<div class="warn"><b>Cuidado</b><ul><li>Confira a ordem dos pinos do módulo contra o plugue antes de soldar: a ordem varia entre fabricantes.</li><li>A boca do J401 (para que lado o plugue entra) só se confirma na primeira placa montada: se o plugue pedir a direção contrária, vire-o.</li></ul></div>
+<p class="check"><b>Verifique:</b> Os 4 fios soldados, firmes, sem ponte de solda; o plugue no J401.</p>
+
+</div></article>
+      <article class="step stepwide" id="passo7"><figure><a href="img/passo_7.jpg"><img src="img/passo_7.jpg" width="1400" height="840" alt="Passo 7: A tampa por dentro" loading="lazy" /></a></figure><div><h3><span class="num">7</span>A tampa por dentro</h3>
+<dl class="meta"><dt>Tempo</dt><dd>30 min</dd><dt>Ferramentas</dt><dd>chave Phillips pequena, ferro de solda, cola, silicone</dd><dt>Peças</dt><dd>tampa, janela de acrílico fumê, módulo OLED, caixa acústica, alto-falante, tela acústica, junta de espuma, 4 parafusos M2 × 4, 2 parafusos M2 × 5</dd></dl>
+<p>Ponha a tampa de cabeça para baixo, sobre um pano: o poço do teclado fica embaixo, a abertura do fundo para cima. Cole o acrílico fumê na janela, por dentro, no rebaixo de 1,0 mm.</p><p>Prenda o módulo OLED nos 4 postes (M2 × 4), com a tela virada para a janela. O vidro deve ficar atrás do acrílico, sem folga nem tensão.</p><p>Cole a tela acústica nas fendas, ponha a junta de espuma e o alto-falante (Ø 28 × 5 mm) sob as 7 fendas, e prenda a caixa acústica em L, com 2 parafusos M2 × 5, nas buchas da tampa. Passe os fios do alto-falante pelo furo da caixa e vede-o com uma gota de silicone: a caixa é fechada e tem de ser estanque (9,75 cm³).</p><p>Solde os fios do alto-falante nos pads do J501, no topo da placa (na frente da caixa), deixando uns 40 mm de folga. A placa fica ainda solta, ao lado da tampa, presa pelos fios do alto-falante e da tela: eles têm folga para o passo seguinte.</p>
+<div class="warn"><b>Cuidado</b><ul><li>O silicone cura em horas: faça este passo antes e deixe curar.</li><li>Não ponha o alto-falante sem a junta de espuma: ela é a vedação entre as fendas e a caixa.</li></ul></div>
+<p class="check"><b>Verifique:</b> Janela firme, tela sem folga, caixa estanque (sopre no furo dos fios: o cone do alto-falante deve mexer).</p>
+
+</div></article>
+      <article class="step stepwide" id="passo8"><figure><a href="img/passo_8.jpg"><img src="img/passo_8.jpg" width="1400" height="840" alt="Passo 8: A placa na tampa" loading="lazy" /></a></figure><div><h3><span class="num">8</span>A placa na tampa</h3>
+<dl class="meta"><dt>Tempo</dt><dd>10 min</dd><dt>Ferramentas</dt><dd>nenhuma</dd><dt>Peças</dt><dd>tampa com tudo o que leva dentro; a placa com teclas, grade e botões</dd></dl>
+<p>Com a tampa ainda de cabeça para baixo, desça a placa, também de cabeça para baixo (o topo para baixo), dentro dela. Os botões passam pelo poço do teclado, os eixos dos encoders pelos furos dos knobs, e os três soquetes (USB-C, OUT, IN) pendem para o lado aberto, sem cruzar a parede: terminam alinhados aos furos fechados da parede esquerda, 0,3 mm atrás dela.</p><p>A placa chega a 0,5 mm da parede por todos os lados: entra reta, sem esforço. Os 6 postes da tampa entram pelos furos H1–H4, H9 e H10 da placa.</p><p>Acomode os fios do alto-falante e da tela sem dobrar na fenda nem prender sob a placa.</p>
+<div class="warn"><b>Cuidado</b><ul><li>Os conectores passam muito perto da parede: não force, ajuste a posição da placa se prender.</li></ul></div>
+<p class="check"><b>Verifique:</b> A placa assentada nos postes, os botões saindo pelo poço, os 3 soquetes alinhados aos furos.</p>
+
+</div></article>
+      <article class="step stepwide" id="passo9"><figure><a href="img/passo_9.jpg"><img src="img/passo_9.jpg" width="1400" height="840" alt="Passo 9: Bateria, bandeja e parafusos" loading="lazy" /></a></figure><div><h3><span class="num">9</span>Bateria, bandeja e parafusos</h3>
+<dl class="meta"><dt>Tempo</dt><dd>20 min</dd><dt>Ferramentas</dt><dd>chave Phillips pequena, multímetro</dd><dt>Peças</dt><dd>bandeja do fundo, 10 pés de 80A, bateria LiPo 503450, 6 parafusos M2 × 14</dd></dl>
+<p>Antes de tudo, cole os 10 pés nos rebaixos de Ø 8,4 mm da face de baixo da bandeja: 4 sob os pinos, 4 sob os pilares, 2 à esquerda. Eles ficam 1,0 mm para fora do rebaixo.</p><p>Meça a bateria: o fio do meio (NTC) deve dar ~10 kΩ até o negativo. Confira a ordem dos fios contra o J202: 1 = positivo, 2 = NTC, 3 = negativo. Positivo e negativo invertidos danificam a placa.</p><p>Ponha a bateria no berço da bandeja (à esquerda, na frente), ligue o plugue no J202 e dobre o fio sem apertar. Encaixe a bandeja na tampa, por baixo: os 4 pinos Ø 5 entram nos furos H5–H8 entre as teclas, os 4 pilares ficam sob a placa e as 10 porcas dos parafusos da grade caem nos copos.</p><p>Por baixo, passe os 6 parafusos M2 × 14 pelos furos da bandeja e da placa até os postes da tampa. Aperte pouco a pouco, em cruz, sem passar da resistência: o plástico impresso rosqueia direto.</p>
+<div class="warn"><b>Cuidado</b><ul><li>Use parafusos não magnéticos também aqui (latão ou inox A4).</li><li>Positivo e negativo da bateria trocados danificam o carregador e o conversor: confira duas vezes.</li><li>Os pés têm de ser de 80 Shore A ou mais: um pé de silicone macio faz a tecla pior flexionar mais que 0,05 mm.</li></ul></div>
+<p class="check"><b>Verifique:</b> A bandeja rente à borda da tampa, sem vão; os 6 parafusos firmes; a bateria sem apertar.</p>
+
+</div></article>
+      <article class="step stepwide" id="passo10"><figure><a href="img/passo_10.jpg"><img src="img/passo_10.jpg" width="1400" height="840" alt="Passo 10: Os knobs" loading="lazy" /></a></figure><div><h3><span class="num">10</span>Os knobs</h3>
+<dl class="meta"><dt>Tempo</dt><dd>5 min</dd><dt>Ferramentas</dt><dd>nenhuma</dd><dt>Peças</dt><dd>2 knobs de 10 mm</dd></dl>
+<p>Vire o instrumento. Em cada encoder, encaixe um knob no eixo, com o furo em D virado para o chato do eixo, até a saia assentar sem raspar no tampo (folga de 0,8 mm). O furo tem 9,2 mm de fundo e termina 0,5 mm acima da ponta do eixo.</p><p>O topo do knob fica a 11,3 mm sobre o tampo (z 25,8). Se o chato do eixo for mais curto do que o previsto, o knob pode girar em falso: nesse caso uma gota de cola no eixo resolve.</p>
+<div class="warn"><b>Cuidado</b><ul><li>Esta é a medida mais incerta do modelo: o comprimento real do eixo só se confirma com a peça na mão (ver as medidas a conferir, no fim).</li></ul></div>
+<p class="check"><b>Verifique:</b> Os dois knobs retos, girando em detentes; o clique funciona.</p>
+
+</div></article>
+    </section>
+    <section id="ligar">
+      <p class="kicker">2 · Primeira ligação</p>
+      <h2>Antes de ligar, e o que esperar</h2>
+      <h3>Antes de ligar a bateria (com a bandeja ainda aberta, passo 9)</h3>
+      <ol>
+        <li>Multímetro em continuidade: <b>GND</b> (a manga de um dos jacks) contra o <b>3,3 V</b> (a saída do conversor TPS63001, U204): não deve haver continuidade, ou seria um curto.</li>
+        <li>Bateria: o fio do meio dá ~10 kΩ até o negativo, e a ordem dos fios no plugue é a do J202 (1 +, 2 NTC, 3 −).</li>
+        <li>Olhe por baixo, com a lupa, se o módulo está reto no conector M.2 e se as pernas dos encoders não tocam nada.</li>
+      </ol>
+      <h3>O que esperar</h3>
+      <ul>
+        <li><b>Cabo USB-C no computador:</b> o 3,3 V deve subir (o D206 acorda o instrumento) e o computador deve ver o módulo (com o firmware de fábrica da PJRC, como “Teensy”; depois de gravado, como “eTutti”).</li>
+        <li><b>Carga:</b> com a bateria ligada e o cabo, o carregador (BQ24074) sobe a tensão da bateria; meça: ela deve chegar a 4,2 V.</li>
+        <li><b>Firmware:</b> o sketch de <code>etutti/firmware/etutti_synth/</code> compila para o Teensy MicroMod (<code>teensy:avr:teensyMM:usb=midi,speed=396</code>) e tem o acordeão amostrado, os sete registros e os knobs. <b>Falta, para a V3:</b> a tela, o microfone, o acordar por USB e o mapeamento definitivo dos pinos (a placa da V3 não tem LED). Até lá, as teclas, o som e a leitura só se testam com o firmware do Student V01.</li>
+        <li><b>Primeiro teste das teclas:</b> grave o firmware (botão Program, ao fundo, atrás do furo em (52; 36)) e, na página <a href="/etutti/etuttino/">/etutti/etuttino/</a>, ligue o MIDI e aperte as teclas. Cada tecla deve dar nota e velocity coerentes.</li>
+        <li><b>Par USB:</b> a impedância de 90 Ω não está garantida; confira na primeira placa a conexão (velocidade e MIDI).</li>
+      </ul>
+    </section>
+    <section id="medir">
+      <p class="kicker">3 · Medir na primeira amostra</p>
+      <h2>O que o modelo estima e só a peça real confirma</h2>
+      <p class="sub">A lista do que o modelo estima e só a peça real confirma. Anote os números e eles viram a próxima versão do desenho. Nenhuma forma muda até lá.</p>
+      <div class="tablewrap"><table><thead><tr><th>O que medir</th><th>Como</th><th>Parâmetro que muda</th></tr></thead><tbody>
+<tr><td>USB-C: altura do centro no fundo</td><td>cupom da parede (`out/cupom_parede_*`), plugue real, ver se entra centrado e sem folga</td><td>USB_Z (−2,9)</td></tr>
+<tr><td>Jacks: altura do eixo</td><td>mesmo cupom, plugue P2 real (limite de Ø 6,4)</td><td>JACK_Z (−4,0)</td></tr>
+<tr><td>Recuo da frente das tomadas até a parede</td><td>paquímetro: face da tomada até a borda da placa (±0,1–0,2 mm de solda)</td><td>CONN_FRONT_X (= parede + 0,3)</td></tr>
+<tr><td>Pilha do módulo (H101)</td><td>paquímetro de profundidade: do fundo da placa até a ponta do parafuso e a porca</td><td>H101_RECESS (Ø 8 × 1,0)</td></tr>
+<tr><td>Boca do J401 (cabo da tela)</td><td>olhar o conector soldado: para que lado abre</td><td>percurso do cabo (informativo)</td></tr>
+<tr><td>Eixo dos encoders: comprimento e chato</td><td>paquímetro de profundidade da ponta do eixo à placa e do chato à ponta</td><td>KNOB[&#x27;shaft_top&#x27;] (24,5), shaft_flat (4,5), bore_over (0,5)</td></tr>
+<tr><td>Compressão do pé de 80A sob 3 N</td><td>case montado na mesa, peso de ~300 g na tecla SW23, paquímetro de profundidade ou relógio comparador</td><td>FOOT_H (1,5); acima de 0,02 mm, trocar por PU de 90A</td></tr>
+<tr><td>OLED, bateria e plugues reais</td><td>OLED: ilhas e área ativa; bateria 503450 com proteção e NTC; plugues contra 12,35 × 6,5 e Ø 6,4</td><td>OLED_PCB, BATTERY, USB_OPENING, JACK_OPENING_D</td></tr>
+</tbody></table></div>
+    </section>
+    <section id="trocar">
+      <p class="kicker">4 · Manutenção</p>
+      <h2>Trocar a bateria ou o módulo</h2>
+      <p><b>Bateria:</b> tire os 6 parafusos M2 × 14 do fundo e a bandeja; desligue o J202 e troque; feche como no passo 9.</p>
+      <p><b>Módulo MicroMod</b> (rara): tire a bandeja, desligue o J401 e a bateria, tire os knobs, levante a placa uns 3 cm (os fios do alto-falante e da tela seguram) e solte os 4 parafusos do módulo OLED; a placa sai inteira e o parafuso do H101 fica acessível pelo topo. É uma limitação aceita; uma porca SMD no topo, soldada em casa, permitiria soltar o módulo só tirando a bandeja.</p>
+      <p class="note">As figuras destes passos vêm do modelo 3D do case (<code>etutti/hardware/student_v03/case/passos.py</code>); a peça real pode diferir nos detalhes que a lista acima marca como a medir.</p>
+    </section>
+    <footer>
+      <p>Projeto em desenvolvimento, fora do mapa do site e dos buscadores. Arquivos de projeto em <code>etutti/hardware/student_v03/</code> do repositório <a href="https://github.com/dataehora/beatconfused">dataehora/beatconfused</a>.</p>
+      <p><a href="/">beatconfused.com</a> · <a href="mailto:beatconfused@beatconfused.com">beatconfused@beatconfused.com</a></p>
+    </footer>
+  </main>
+</body>
+</html>

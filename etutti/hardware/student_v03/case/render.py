@@ -92,7 +92,7 @@ def scene():
     for x, y in G.KNOBS:
         S.append((moved(kn, x, y), BLACK, 1.0, "knobs"))
         S.append((box(x - 6.6, y - 6, x + 6.6, y + 6, 0, 6.5), "#8C8C8C", 1.0, "pecas"))
-        S.append((pv.Cylinder(center=(x, -y, 13.25), direction=(0, 0, 1), radius=3.0, height=13.5), "#B3B2AE", 1.0, "pecas"))
+        S.append((pv.Cylinder(center=(x, -y, 15.5), direction=(0, 0, 1), radius=3.0, height=18.0), "#B3B2AE", 1.0, "pecas"))
     S.append((stl("caixa_acustica"), "#7A746A", 1.0, "caixa"))
     lv = INFO["pecas"]["caixa_acustica"]
     S.append((pv.Cylinder(center=(G.SPEAKER[0], -G.SPEAKER[1], lv["frente_do_falante_z"] - 2.5), direction=(0, 0, 1),
