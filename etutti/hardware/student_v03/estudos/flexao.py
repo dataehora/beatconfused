@@ -103,6 +103,25 @@ def main():
         pillars.append(pick)
         s = gr.sag(edge + pins + pillars, loads)
     res["placa"]["D_pinos_e_pilares"], sD = case(edge + pins + pillars)
+    res["placa"]["D_pinos_e_pilares"]["sem_apoio_extra"] = True
+    # SPEC v7 item 2: one more support (a pillar with a foot under it) next to the worst key, in a gap with no back-side part
+    # (free_spots keeps PILLAR_CLEAR from every part); at least 4 mm from the other pillars and pins.
+    w = max(range(len(keys)), key=lambda i: sD[i])
+    kx, ky = loads[w]
+    taken = pillars + pins
+    cands = sorted((p for p in spots if all(math.hypot(p[0] - q[0], p[1] - q[1]) >= 4.0 for q in taken)),
+                   key=lambda p: math.hypot(p[0] - kx, p[1] - ky))
+    extra = None
+    for c in cands[:40]:
+        s2 = gr.sag(edge + pins + pillars + [c], loads)
+        if extra is None or max(s2) < extra[1]:
+            extra = (c, max(s2))
+    if extra:
+        pillars.append(extra[0])
+        res["placa"]["D_pinos_e_pilares"], sD = case(edge + pins + pillars)
+        res["placa"]["D_pinos_e_pilares"]["apoio_extra"] = list(extra[0])
+        res["placa"]["D_pinos_e_pilares"]["pior_tecla_antes_mm"] = round(max(s), 4) if False else round(max(sC), 4)
+        res["placa"]["D_pinos_e_pilares"]["apoio_extra_perto_de"] = [keys[w][0], kx, ky]
     res["placa"]["D_pinos_e_pilares"]["pilares"] = [list(p) for p in pillars]
     res["placa"]["D_pinos_e_pilares"]["com_10_N_max_mm"] = round(max(sD) * 10 / 3, 3)
     res["placa"]["apoios_na_borda"] = len(edge)
@@ -142,7 +161,7 @@ def main():
     # nearest 3 supports, as the board's own sag figures show).
     A_foot = math.pi * 8.0 ** 2 / 4
     foot = {}
-    for lbl, E in (("silicone 40A (E = 1,5 MPa)", 1.5), ("silicone 50A (E = 2,5 MPa)", 2.5), ("silicone 60A (E = 4 MPa)", 4.0)):
+    for lbl, E in (("silicone 60A (E = 4 MPa)", 4.0), ("PU/silicone 80A (E = 8 MPa)", 8.0), ("PU duro 90A (E = 15 MPa)", 15.0)):
         full = M.PRESS_N * 1.5 / (E * A_foot)
         foot[lbl] = {"compressao_se_os_3_N_num_pe_mm": round(full, 3), "compressao_provavel_1_3_mm": round(full / 3, 3),
                      "placa_mais_pe_provavel_mm": round(max(sD) + full / 3, 3), "placa_mais_pe_pior_caso_mm": round(max(sD) + full, 3)}

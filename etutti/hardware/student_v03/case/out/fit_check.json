@@ -86,7 +86,7 @@
   "placa_ate_a_parede": 0.5,
   "placa_ate_a_tampa": 0.0,
   "knob_ate_a_tampa": 0.8,
-  "knob_acima_do_tampo": 10.5,
+  "knob_acima_do_tampo": 11.3,
   "eixo_do_encoder_acima_do_tampo": 10.0,
   "caixa_acustica_ate_a_placa": 0.3,
   "caixa_acustica_ate_pecas_de_cima": 4.605,
