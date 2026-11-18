@@ -314,6 +314,11 @@ code { font-size: 0.88em; background: #EFE9D8; padding: 0 0.25em; border-radius:
 """
 
 
+def pick(name):
+    """The Blender photo-real picture of a shot when it exists (foto_<name>), else the clay one."""
+    return "foto_" + name if ("foto_" + name) in SIZES else name
+
+
 def imgtag(name, alt):
     w, h = SIZES[name]
     return '<a href="img/%s.jpg"><img src="img/%s.jpg" width="%d" height="%d" alt="%s" loading="lazy" /></a>' % (name, name, w, h, esc(alt))
@@ -443,7 +448,7 @@ def build_index():
       <p class="eyebrow">BeatConfused Studio · protótipo</p>
       <h1>eTutti<small>STUDENT · V3</small></h1>
       <p class="lead">Um acordeão de teclado para estudar: 28 teclas magnéticas com velocity, tela, dois knobs, alto-falante, entrada de microfone, bateria e USB-C, numa caixa Retrô de 252 × 100 × 24,6 mm. A placa vem pronta da JLCPCB, montada toda pelo fundo.</p>''')
-    A("      " + img("isometrico", "O eTutti Student V3 em perspectiva: tampa creme com faixas vermelha, laranja e amarela, teclado de botões brancos e pretos, tela e dois knobs à esquerda."))
+    A("      " + img(pick("isometrico"), "O eTutti Student V3 em perspectiva: tampa creme com faixas vermelha, laranja e amarela, teclado de botões brancos e pretos, tela e dois knobs à esquerda."))
     A('    </header>')
     A('''    <nav class="toc" aria-label="Seções">
       <a href="#conceito">Conceito</a><a href="#eletronica">Eletrônica</a><a href="#pecas">Peças e fornecedores</a>
@@ -472,6 +477,13 @@ def build_index():
     A('<ul class="swatches"><li><i style="background:#E8DEC6"></i>tampa #E8DEC6</li><li><i style="background:#9C9B96"></i>bandeja #9C9B96</li><li><i style="background:#C8402A"></i>#C8402A</li><li><i style="background:#E07A2C"></i>#E07A2C</li><li><i style="background:#E3B23C"></i>#E3B23C</li><li><i style="background:#2B2925"></i>tinta #2B2925</li><li><i style="background:#8A3A22"></i>tinta #8A3A22</li></ul></div>')
     A('<div class="card"><h3>Rigidez e apoio</h3><p>A placa não leva parafusos na área do teclado. Em vez disso, 4 pinos e 4 pilares impressos na bandeja a sustentam por baixo, sobre 10 pés de 80 Shore A: a pior tecla cede 0,036 mm sob 3 N (0,047 mm no pior caso, com o pé comprimido), abaixo da meta de 0,05 mm.</p></div>')
     A('      </div>')
+    if "foto_esquerda" in SIZES:
+        A('      <div class="grid">')
+        A("      " + img("foto_esquerda", "A extremidade esquerda do instrumento: tela, dois knobs, grade do alto-falante e legenda do logo.", "A extremidade esquerda: tela, dois knobs, grade do alto-falante e o logo em rebaixo."))
+        A("      " + img("foto_teclado", "O teclado de 28 botões, visto de frente e de cima.", "O teclado: botões de 4 alturas, brancos, pretos e os pontilhados do C e do F."))
+        A("      " + img("foto_parede", "A parede esquerda com USB-C, OUT e IN.", "A parede esquerda: USB-C, OUT e IN em furos inteiros."))
+        A("      " + img("foto_fundo", "O fundo do instrumento, com a bandeja, os 10 pés e os parafusos.", "O fundo: a bandeja rente à tampa, os 10 pés de 80A e os 6 parafusos."))
+        A('      </div>')
     A("      " + img("planta", "O instrumento visto de cima: a coluna da esquerda com tela, dois knobs e a grade do alto-falante, e o teclado de 28 botões.",
                       "Planta. Da esquerda para a direita: logo, tela, knobs, grade do alto-falante, e o teclado."))
     A('      <div class="grid">')
@@ -549,8 +561,9 @@ def build_index():
     # ---------------- exploded
     A('    <section id="explodida">\n      <p class="kicker">4 · Vista explodida</p>\n      <h2>Da bandeja aos botões</h2>')
     A('      <p class="sub">As peças em ordem de baixo para cima, como se montam. Na placa, as peças do fundo são as que a JLCPCB solda.</p>')
-    w, hh = SIZES["explodido"]
-    A('      <div class="exploded"><a href="img/explodido.jpg"><img src="img/explodido.jpg" width="%d" height="%d" alt="Vista explodida do instrumento, com as 17 peças numeradas." loading="lazy" style="width:100%%;height:auto;display:block;border-radius:6px" /></a>' % (w, hh))
+    ex = pick("explodido")
+    w, hh = SIZES[ex]
+    A('      <div class="exploded"><a href="img/%s.jpg"><img src="img/%s.jpg" width="%d" height="%d" alt="Vista explodida do instrumento, com as 17 peças numeradas." loading="lazy" style="width:100%%;height:auto;display:block;border-radius:6px" /></a>' % (ex, ex, w, hh))
     for k, (x, y) in PINS.items():
         A('<span class="pin" style="left:%.2f%%;top:%.2f%%" aria-hidden="true">%s</span>' % (x, y, k))
     A('</div>')
@@ -658,8 +671,9 @@ def build_manual():
     for i, (fig, title, tempo, tools, parts, texts, warns, check) in enumerate(STEPS, 1):
         extra = ""
         if fig == "passo_1":
-            extra = '<figure>%s<figcaption>Passo 1, antes: o fundo da placa como chega da JLCPCB, com as 130 peças soldadas. Só os 2 encoders (acima) são soldados em casa.</figcaption></figure>' % imgtag("passo_1a", "A placa vista de baixo, com as peças soldadas pela fábrica")
-        A('      <article class="step stepwide" id="passo%d"><figure>%s</figure><div><h3><span class="num">%d</span>%s</h3>' % (i, imgtag(fig, "Passo %d: %s" % (i, title)), i, esc(title)))
+            extra = '<figure>%s<figcaption>Passo 1, antes: o fundo da placa como chega da JLCPCB, com as 130 peças soldadas. Só os 2 encoders (acima) são soldados em casa.</figcaption></figure>' % imgtag(pick("passo_1a"), "A placa vista de baixo, com as peças soldadas pela fábrica")
+        tech = ' <figcaption><a href="img/%s.jpg">versão técnica, com as peças já montadas esmaecidas</a></figcaption>' % fig if pick(fig) != fig else ""
+        A('      <article class="step stepwide" id="passo%d"><figure>%s%s</figure><div><h3><span class="num">%d</span>%s</h3>' % (i, imgtag(pick(fig), "Passo %d: %s" % (i, title)), tech, i, esc(title)))
         A('<dl class="meta"><dt>Tempo</dt><dd>%s</dd><dt>Ferramentas</dt><dd>%s</dd><dt>Peças</dt><dd>%s</dd></dl>' % (esc(tempo), esc(tools), esc(parts)))
         A("".join("<p>%s</p>" % esc(t) for t in texts))
         if warns:
