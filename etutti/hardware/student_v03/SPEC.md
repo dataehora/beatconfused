@@ -1,4 +1,55 @@
-# eTutti Student — SPEC v7 do case (placa V3)
+# eTutti Student — SPEC v8 do case (placa V3)
+
+Data: 18 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
+Responde às 3 perguntas do FIT_CHECK do ciclo 6 (PR #172) e **fecha o desenho do case para o protótipo**. Tudo o mais continua como na v7 e anteriores (anexos abaixo) e no modelo do PR #172.
+
+## Mudanças desde a v7
+
+### 1. Pilar extra em (112,5; 67,5) (pergunta 1)
+
+- **Nenhuma marcação nem mudança na placa.** A placa V3 está pronta para encomendar e continua como está. O pilar só encosta no verso, como os outros três.
+- **Conferência única:** no círculo de contato (Ø 4 + 0,5 de margem), o verso da placa tem de ter só máscara. Nada de ilha exposta, via sem máscara (via aberta) ou peça.
+  - Via coberta de máscara (tented) e trilha sob a máscara podem ficar.
+  - Se houver uma via aberta, mover o pilar para o próximo vão da lista que dê pior tecla ≤ 0,05 mm com o pé de 80A. Não mexer na placa.
+
+### 2. Pés (pergunta 2)
+
+- Sim: registrar como item da primeira amostra a **compressão real do pé sob 3 N**.
+  - Como medir: o case montado sobre a mesa, um peso de ~300 g sobre a tecla SW23 e o paquímetro de profundidade, ou um relógio comparador se houver.
+  - Se a compressão passar de 0,02 mm, trocar o pé por PU de 90A, que a SPEC já aceita.
+
+### 3. Limpeza do `case.py` (pergunta 3)
+
+- Nada mais a tirar. Ficam o cupom da parede e a peça do pé.
+- Se ainda houver no código parâmetros só da V2 que a V3 não usa (como a aba e o `Z_SPLIT`), podem sair desde que o modelo e o fit check não mudem.
+
+### 4. Estado: desenho do case fechado para o protótipo
+
+Com o ciclo 6, os achados de todos os ciclos estão resolvidos:
+- tampa de 1,4 mm sobre a grade;
+- pior tecla 0,040 mm (pior caso 0,047) com os pés de 80A;
+- knob alto sem corte de eixo;
+- grade escareada só de fábrica;
+- 0 interferências.
+
+O que falta depende de peça real e fica com a primeira amostra:
+- `USB_Z`, `JACK_Z`, a frente das tomadas e a pilha do H101, pelo cupom da parede;
+- a boca do J401;
+- o comprimento do eixo dos encoders;
+- a compressão dos pés.
+
+**Nenhuma mudança de forma até lá.** A próxima versão da SPEC só vem com as medidas da amostra ou com um pedido do J.
+
+## Tarefas para o Code
+
+1. **[Design]** Conferir o verso da placa sob o pilar extra (item 1) e registrar no FIT_CHECK.
+2. **[Design]** No FIT_CHECK, uma lista única **"Medir na primeira amostra"**, com tudo o que depende de peça real (item 4), cada item com como medir e qual parâmetro do `case.py` muda.
+3. **[Design]** Limpeza opcional do `case.py` (item 3), sem mudar modelo nem fit check.
+
+---
+
+# Anexo — SPEC v7 (referência)
+
 
 Data: 18 nov 2026 · Autor: Claude Chat (design) · Destino: Claude Code
 Responde às 5 perguntas do FIT_CHECK do ciclo 5 (PR #170). Tudo o que não é mencionado aqui continua como na v6, na v5 e na v4 (anexos abaixo) e no modelo do PR #170.
