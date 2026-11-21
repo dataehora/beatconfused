@@ -1120,7 +1120,7 @@ left wall (connectors now under the board) and the V3 page.
 Base = the V3's scripts and sources copied (no `fab/`, renders or generated output; V3/V2/V1 untouched); `README.md` has the run order.
 Only the keyboard layout is fixed. **F2 chosen (R2V4):** main board only for the interface (Teensy, power, audio, connectors, screen,
 encoders), **sensor rulers** (universal 4-key board, 74 x 14 x 1.2 mm, 2 layers, panel of 5 (88 x 84 mm), 4 TMAG5253 + 74HC595 + 2 JST SH 6-pin) on the case's
-steps, one cap for all rows; 28 keys = 8 rulers, each +16-key module = +4; **T3** = the lid presses key bodies against the board.
+steps, one cap for all rows; 28 keys = 8 rulers (since R5V4: 32 keys, all rulers full; modules 48/64/80), each +16-key module = +4; **T3** = the lid presses key bodies against the board.
 No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2/3 (`pcb/PINOS.md`, the electronics-to-firmware contract).
 - **Agents** (`.claude/agents/`): `design`, `eletronica`, `programacao-som` now list the V4 folders (see each file); new agent
   **`roteamento`** owns only routing (`pcb/rota/`, `ROTEAMENTO.md`): it starts **only after J approves the placement gate P**
@@ -1153,3 +1153,16 @@ No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2
   under the next (higher) row's ruler through a notch in that row's front rail; M2 positions per row (1: 18.5/55.5, 2: 37/55.5, 3 and 4: 18.5/37)
   so no boss meets a notch; custom SH cables 15 mm (row links) and 25 mm (board to first ruler). Details and open questions in `student_v04/FIT_CHECK.md`.
   `case/out/` stays git-ignored; `estudos/r4v4.json` keeps the numbers.
+- **R5V4 (21 nov, design part): 32 keys, full rulers.** Rows (first key x): 1 A3-F#5 (98.45), 2 G3-E5 (89.2), 3 G#3-F5 (98.45), 4 F#3-D#5 (89.2, ruler
+  from 79.95, aligned with row 2); modules add 16 keys: **32 / 48 / 64 / 80** (8 / 12 / 16 / 20 rulers). Every key figure now shows the **note name on each
+  key** (project rule from J: naturals white, sharps black, C and F diagonal checkerboard; `planta_v4.key_cap`, names from `layout_r4.note_name`).
+  `layout_r4.ROWS` overrides `geometria.py`'s 28-key rows for the case (that file is not the design agent's; `pcb/grade_fab.py` still reads 28 keys).
+  Case length **252 -> 240 mm** (ruler body end 237.0 + 1.0 + 2.0 wall; modules 314 / 388 / 462); the 32-key lid now fits a 250 mm FDM bed.
+  Outer finish proposed: **2.0 x 2.0 mm 45 deg chamfer on the top outer edge** (the right end follows the stepped deck in one ruled loft, corners are
+  cones) and 1.0 x 1.0 on the bottom edge; plan corners R6 outside / R4 inside are now in the model (`case_r4.round_and_chamfer_lid`, R4V4 only drew them);
+  the USB-C cut was lengthened to 4.5 mm because the R6 corner left a 0.2 mm sliver. M2 of row 4 = row 2's (37 / 55.5). Fit check 32/48/64/80: 0 mm3 in every
+  pair (tolerance cases +0.5 mm: 8-21 mm3 on the step-3 ramp as before). Print (MJF PA12): 158.9 / 211.6 / 264.1 / 316.8 cm3, ~US$ 44 / 59 / 73 / 88.
+  Ruler link: **D chosen by electronics and design** (4 SH-6 cables of 25 mm board -> J1 of the first ruler + 5-wire soldered link between rulers of a row,
+  pads 1.4 x 0.7 at u 2.1 / 71.9; J2 stays on the ruler without a cable): `layout_r4.LINK = "D"`, `link_box`; 0 mm3 vs tray, pegs, sensors, screws, rulers at
+  every junction (32-80 keys); the OUT plug windows are gone (`J2_FITTED = False` would also drop the J2 header notch). Option C (FPC 3.9 mm deep) hits the pegs. Report: `student_v04/FIT_CHECK.md`
+  R5V4 section; numbers in `estudos/r5v4.json`, `case/out/ligacao_v5.json`. Heredocs in Bash lose backslashes: edit strings with `\n` through the Edit tool.

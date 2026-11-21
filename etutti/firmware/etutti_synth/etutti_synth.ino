@@ -110,7 +110,7 @@ const int NUM_VOICES = 8;
 
 // Student V4 (SPEC R1V4 + R2V4, etutti/hardware/student_v04/): the same Teensy
 // MicroMod build, but with the row-scan keyboard (4 analogue OUT lines + a shift
-// register chain that switches one column on at a time), up to 76 keys, an OLED
+// register chain that switches one column on at a time), up to 80 keys, an OLED
 // and a microphone. Switch it on here (or with -DETUTTI_STUDENT_V4=1); it stays
 // off by default so the MicroMod build is still the Student V01 one.
 #ifndef ETUTTI_STUDENT_V4
@@ -149,6 +149,9 @@ const uint8_t HP_DET_PIN = 17;          // headphones in: ~0 V; out: ~1.4 V
 #define V4_SCAN_TIMER 1
 // 1 = automatic feedback suppressor (FFT of the voice + notches, see voice_fx.h), off until the menu turns it on.
 #define V4_FEEDBACK_SUPPRESSOR 1
+// R5V4: "study speaker" equalizer on the speaker path only (no headphones plugged): 24 dB/oct high-pass at
+// ~300 Hz and a dip near 1 kHz (4 biquad stages). Bypassed (disconnected) with headphones / AUX in.
+#define V4_SPEAKER_EQ 1
 // Throwaway measuring build, NOT for use: plays 8 notes by itself, steps through the voice
 // effects every 6 s and prints the audio CPU, the audio blocks and the time of a key pass on the
 // serial port (115200). Build with usb=serialmidi (arduino-cli ... teensyMM:usb=serialmidi,speed=396).
@@ -194,12 +197,13 @@ const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
 // 4 sensors (one per row) at once. Each row's
 // sensors share one analogue OUT line (a switched-off TMAG5253 leaves OUT high
 // impedance), 4 lines in all.
-//   28 keys = 2 strips per row (8 columns), 44 = 3 (12), 60 = 4 (16), 76 = 5 (20).
-#define V4_KEYS 28                       // 28, 44, 60 or 76: the number of keys fitted
-#if V4_KEYS != 28 && V4_KEYS != 44 && V4_KEYS != 60 && V4_KEYS != 76
-#error "V4_KEYS must be 28, 44, 60 or 76"
+//   R5V4: every strip is full (all 4 positions carry a key), so 32 keys = 2 strips per row
+//   (8 columns), 48 = 3 (12), 64 = 4 (16), 80 = 5 (20).
+#define V4_KEYS 32                       // 32, 48, 64 or 80: the number of keys fitted
+#if V4_KEYS != 32 && V4_KEYS != 48 && V4_KEYS != 64 && V4_KEYS != 80
+#error "V4_KEYS must be 32, 48, 64 or 80"
 #endif
-const int V4_STRIPS_PER_ROW = (V4_KEYS - 28) / 16 + 2;
+const int V4_STRIPS_PER_ROW = (V4_KEYS - 32) / 16 + 2;
 const int LAYOUT_ROWS = 4;
 const int LAYOUT_COLS = 4 * V4_STRIPS_PER_ROW;
 const uint8_t ROW_OUT_PINS[LAYOUT_ROWS] = {14, 15, 26, 27};   // OUT_R1..R4 (A0, A1, A12, A13); no internal pull: 100 kohm to GND on the board
@@ -285,10 +289,19 @@ const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
 // left of row 3, and runs A3 .. C6 (10 keys, column 1 on).
 // B-griff is the mirror image of C-griff: rows 1 and 3 swap places, so a
 // diagonal step goes the other way. Keep in sync with etutti/etuttino/script.js.
+#if ETUTTI_V4
+// R5V4: row 4 sits on row 2's columns, one semitone below row 2 in each (F#3 under G3); it is row 1's
+// pitch class one column to the left. B-griff swaps rows 1 and 3 and row 4 follows row 1 (F3).
+const int8_t FIRST_NOTE[2][LAYOUT_ROWS] = {
+  {57, 55, 56, 54},   // C-griff: A3, G3, G#3, F#3
+  {56, 55, 57, 53},   // B-griff: G#3, G3, A3, F3
+};
+#else
 const int8_t FIRST_NOTE[2][LAYOUT_ROWS] = {
   {57, 55, 56, 57},   // C-griff: A3, G3, G#3, A3
   {56, 55, 57, 56},   // B-griff: G#3, G3, A3, G#3
 };
+#endif
 #if ETUTTI_V4
 const uint8_t FIRST_COL[LAYOUT_ROWS] = {0, 0, 0, 0};   // R3V4 (PINOS.md): each strip starts at the row's first key; the empty spots are at the END of the row
 #else
@@ -299,19 +312,17 @@ int layoutSystem = 0;   // 0 = C-griff, 1 = B-griff
 #if ETUTTI_V4
 // Module note map (R1V4 4.4): the keyboard grows to the right in modules of 16
 // keys (4 columns = one octave). By default the 1st extra module adds treble
-// and the 2nd bass, and so on: 28 = G3-E5, 44 = G3-E6, 60 = G2-E6, 76 = G2-E7.
+// and the 2nd bass, and so on (R5V4, full strips, rows 2's range): 32 = G3-E5, 48 = G3-E6, 64 = G2-E6, 80 = G2-E7
+// (the lowest key of the 4th row is a semitone lower: F#3 / F#2).
 // Adding bass shifts every key down an octave, so the notes at the left grow lower.
 // The user's own map is a TODO (it would be a CC and a place in EEPROM).
-const int V4_EXTRA_MODULES = (V4_KEYS - 28) / 16;
+const int V4_EXTRA_MODULES = (V4_KEYS - 32) / 16;
 const int V4_BASS_MODULES = V4_EXTRA_MODULES / 2;
 int noteShift = -12 * V4_BASS_MODULES;   // semitones
 
-// Where the keys are (PINOS.md R3V4): every row starts at column 0; row 2 fills the width, rows 1 and 3
-// stop one short, row 4 two short (28: 7 + 8 + 7 + 6; each module adds 4 to every row).
-bool v4HasKey(int r, int c) {
-  int lack = (r == 1) ? 0 : (r == 3 ? 2 : 1);
-  return c < LAYOUT_COLS - lack;
-}
+// Where the keys are (R5V4): the strips are always full, so every column of every row has a key
+// (32 = 8 + 8 + 8 + 8; each module adds 4 to every row).
+inline bool v4HasKey(int r, int c) { return r >= 0 && c >= 0; }
 #endif
 
 int noteAt(int r, int c) {
@@ -338,7 +349,7 @@ int noteAt(int r, int c) {
 // about 1.65 V, so everything below sees a voltage that rises with the
 // press, as on the eTuttino.
 #if ETUTTI_V4
-const int MAX_KEYS = 76;
+const int MAX_KEYS = 80;
 #else
 const int MAX_KEYS = 44;
 #endif
@@ -348,7 +359,7 @@ const float SENSOR_ZERO = 1.65f * ADC_PER_VOLT;  // TMAG5253 output at 0 mT
 const float SIGN_MIN = 0.04f * ADC_PER_VOLT;     // rest must be this far from 1.65 V to tell the direction
 const int DEFAULT_SIGN = 1;                      // direction assumed when it cannot be told (unverified: no board yet)
 #if ETUTTI_V4
-const uint32_t EEPROM_MAGIC = 0xE7770106;        // V4: key order = row by row from row 1, V4_KEYS keys
+const uint32_t EEPROM_MAGIC = 0xE7770107;        // V4 (R5V4: full strips, 32..80 keys): key order = row by row from row 1
 #else
 const uint32_t EEPROM_MAGIC = 0xE7770105;        // bump when the key count/order changes
 #endif
@@ -523,6 +534,16 @@ AudioConnection pw(room, 0, master, 1);       // reverb
 AudioConnection po(master, 0, outAmp, 0);
 AudioConnection pl(outAmp, 0, i2sOut, 0);
 AudioConnection pr(outAmp, 0, i2sOut, 1);
+#if ETUTTI_V4 && V4_SPEAKER_EQ
+// R5V4: the speaker's equalizer sits between the volume and the I2S. The MAX98357A and the codec share the
+// I2S stream, so "speaker only" = "no headphones plugged" (the amplifier is on only then): with a plug in, the
+// equalizer is disconnected (pl/pr direct) and costs nothing; without, pl/pr are cut and the signal goes through it.
+AudioFilterBiquad spkEq;
+AudioConnection pq0(outAmp, 0, spkEq, 0);
+AudioConnection pq1(spkEq, 0, i2sOut, 0);
+AudioConnection pq2(spkEq, 0, i2sOut, 1);
+bool spkEqRouted = false;    // false: pl/pr (direct) carry the sound; pq0..pq2 are created connected and cut on the first apply
+#endif
 
 // ---- Reed waveforms (built at start-up, see buildReedTable) ----
 int16_t tableOpen[256];       // open reed: bright, many harmonics
@@ -859,6 +880,8 @@ void registerChanged();   // keeps the selector in step with a register set over
 //   CC 95 harmonizer follows the keys (>= 64; otherwise the fixed interval of CC 19)
 //   CC 96 voice also on the SPEAKER (>= 64; off at every start; the screen warns about feedback)
 //   CC 97 followed notes folded to the voice's own octave (>= 64, the default) or exact
+// R5V4 (speaker equalizer, only with no headphones plugged):
+//   CC 105 on / off (>= 64, default on)  CC 106 high-pass corner 150..450 Hz (63 = 300)  CC 107 dip at 1 kHz 0..-12 dB (63 = -6)
 // The menu on the OLED (two knobs) drives the same state and sends the CCs back, so a page can follow.
 // The numbers are in the sketch only for now: the page (script.js) has no V4 model yet, and the
 // CC map has to change in both together.
@@ -870,6 +893,8 @@ struct VoiceFx {
   uint8_t reverb = 40, gate = 20, micGain = 60;
   uint8_t gateAtk = 30, gateHold = 45, gateRel = 45, gateRatio = 2, hpf = 11;
   bool antiFb = false, harmFollow = false, harmFold = true, speaker = false;
+  bool eq = true;                       // R5V4 speaker equalizer: on by default (it does nothing with headphones)
+  uint8_t eqCut = 63, eqDip = 63;       // CC 106: 150..450 Hz (63 = ~300); CC 107: 0..-12 dB at 1 kHz (63 = -6)
 } vfxState;
 
 inline float vfxCurve(uint8_t v) { float x = v / 127.0f; return x * sqrtf(x); }   // x^1.5: finer near zero
@@ -883,6 +908,40 @@ inline float hpfHz(uint8_t v) { return 60.0f + v * (340.0f / 127.0f); }
 // (the speaker is the output), unless the user switched the speaker on.
 inline bool speakerMutesVoice() { return !headphones && !vfxState.speaker; }
 
+inline float eqCutHz(uint8_t v) { return 150.0f + v * (300.0f / 127.0f); }
+inline float eqDipDb(uint8_t v) { return v * (12.0f / 127.0f); }
+
+#if V4_SPEAKER_EQ
+// Study-speaker equalizer: the 28 mm driver in a 10 cm3 box has nothing useful below ~300 Hz and a peak near 1 kHz
+// (estudos/acustica.py); the full sound is for the headphones / AUX. Stages: 2 x high-pass (4th order Butterworth,
+// Q 0.5412 and 1.3066), 1 x peaking cut at 1 kHz (Q 1.2, RBJ cookbook), 1 x pass-through.
+void spkEqPeaking(int stage, float f0, float q, float dbGain) {
+  double A = pow(10.0, dbGain / 40.0), w0 = 2.0 * 3.14159265358979 * f0 / AUDIO_SAMPLE_RATE_EXACT;
+  double alpha = sin(w0) / (2.0 * q), c = cos(w0), a0 = 1.0 + alpha / A;
+  double co[5] = {(1.0 + alpha * A) / a0, -2.0 * c / a0, (1.0 - alpha * A) / a0, -2.0 * c / a0, (1.0 - alpha / A) / a0};
+  spkEq.setCoefficients(stage, co);
+}
+void speakerEqApply() {
+  VoiceFx &f = vfxState;
+  bool want = f.eq && !headphones;                    // equalizer only on the speaker's path
+  static bool first = true;
+  if (first) { first = false; pq0.disconnect(); pq1.disconnect(); pq2.disconnect(); }   // created connected: start direct
+  if (want) {
+    float fc = eqCutHz(f.eqCut);
+    spkEq.setHighpass(0, fc, 0.5412f);
+    spkEq.setHighpass(1, fc, 1.3066f);
+    spkEqPeaking(2, 1000.0f, 1.2f, -eqDipDb(f.eqDip));
+    static const double thru[5] = {1, 0, 0, 0, 0};
+    spkEq.setCoefficients(3, thru);
+  }
+  if (want != spkEqRouted) {
+    if (want) { pl.disconnect(); pr.disconnect(); pq0.connect(); pq1.connect(); pq2.connect(); }
+    else { pq0.disconnect(); pq1.disconnect(); pq2.disconnect(); pl.connect(); pr.connect(); }
+    spkEqRouted = want;
+  }
+}
+#endif
+
 static bool shifterOn[VOICE_HARM_N] = {false, false, false};
 #if V4_FEEDBACK_SUPPRESSOR
 vfx::FeedbackWatch fbWatch;
@@ -891,6 +950,9 @@ bool fbConnected = true;                // pfft starts connected
 
 void voiceFxApply() {
   VoiceFx &f = vfxState;
+#if V4_SPEAKER_EQ
+  speakerEqApply();
+#endif
   bool duck = speakerMutesVoice();
   float live = duck ? 0.0f : 1.0f;
   bool any = f.voice || f.vocoder || f.harm || f.echo;
@@ -977,6 +1039,9 @@ bool voiceFxControl(byte control, byte value) {
       f.speaker = value >= 64;
       break;
     case 97: f.harmFold = value >= 64; break;
+    case 105: f.eq = value >= 64; break;                       // R5V4 speaker equalizer on / off
+    case 106: f.eqCut = value; break;                          // 150..450 Hz
+    case 107: f.eqDip = value; break;                          // 0..-12 dB at 1 kHz
     case 83:
       keysCC = value;
       keysLevel = value / 127.0f;
@@ -1005,19 +1070,20 @@ void voiceFxClearNotches() {
 // ---- settings kept in EEPROM (menu "SAVE"). The speaker option is never kept: the voice is on
 // the headphones / AUX at every start. ----
 const int EEPROM_VOICE = 210;           // after the register (200..201)
-const uint8_t VOICE_MAGIC = 0xA7;
+const uint8_t VOICE_MAGIC = 0xA7, EQ_MAGIC = 0xE5;
 void voiceFxSave() {
   VoiceFx &f = vfxState;
-  uint8_t b[22] = {VOICE_MAGIC, f.voice, f.vocoder, f.harm, f.interval, f.echo, f.echoTime, f.echoFb, f.reverb, f.gate,
+  uint8_t b[26] = {VOICE_MAGIC, f.voice, f.vocoder, f.harm, f.interval, f.echo, f.echoTime, f.echoFb, f.reverb, f.gate,
                    f.micGain, f.gateAtk, f.gateHold, f.gateRel, f.gateRatio, f.hpf, (uint8_t)f.antiFb,
-                   (uint8_t)f.harmFollow, (uint8_t)f.harmFold, keysCC, 0, 0};
-  for (int i = 0; i < 22; i++) EEPROM.write(EEPROM_VOICE + i, b[i]);
+                   (uint8_t)f.harmFollow, (uint8_t)f.harmFold, keysCC, 0, 0,
+                   EQ_MAGIC, (uint8_t)f.eq, f.eqCut, f.eqDip};          // R5V4: the equalizer, after its own marker
+  for (int i = 0; i < 26; i++) EEPROM.write(EEPROM_VOICE + i, b[i]);
 }
 
 void voiceFxLoad() {
   if (EEPROM.read(EEPROM_VOICE) != VOICE_MAGIC) return;
-  uint8_t b[22];
-  for (int i = 0; i < 22; i++) b[i] = EEPROM.read(EEPROM_VOICE + i);
+  uint8_t b[26];
+  for (int i = 0; i < 26; i++) b[i] = EEPROM.read(EEPROM_VOICE + i);
   VoiceFx &f = vfxState;
   f.voice = min(b[1], (uint8_t)127); f.vocoder = min(b[2], (uint8_t)127); f.harm = min(b[3], (uint8_t)127);
   f.interval = min(b[4], (uint8_t)127); f.echo = min(b[5], (uint8_t)127); f.echoTime = min(b[6], (uint8_t)127);
@@ -1027,6 +1093,7 @@ void voiceFxLoad() {
   f.antiFb = b[16] != 0; f.harmFollow = b[17] != 0; f.harmFold = b[18] != 0;
   keysCC = min(b[19], (uint8_t)127);
   keysLevel = keysCC / 127.0f;
+  if (b[22] == EQ_MAGIC) { f.eq = b[23] != 0; f.eqCut = min(b[24], (uint8_t)127); f.eqDip = min(b[25], (uint8_t)127); }
 }
 
 void voiceFxDefaults() {
@@ -1328,7 +1395,7 @@ void srClear() {                        // every sensor off (SR_STAGES zeros + t
 
 // Switches column c on. The next column in order is 1 pulse away (5 across a strip boundary).
 // Anywhere else: push the whole pattern (the first bit sent ends in the LAST stage), plus one
-// pulse to latch it: SR_STAGES + 1 pulses, ~10 us with 76 keys.
+// pulse to latch it: SR_STAGES + 1 pulses, ~10 us with 80 keys.
 void srSelect(int c) {
   if (srPos >= 0 && c == srPos + 1) {
     int pulses = (c % 4 == 0) ? 5 : 1;
@@ -1563,7 +1630,7 @@ bool processKey(int i, float raw, uint32_t now) {
   } else if (!k.down && k.travel < 0.05f) {
     k.rest += (raw - k.rest) * 0.002f;
 #if ETUTTI_V4
-    if (fabsf(k.rest - k.restAtModel) > 0.5f) updateModel(k);   // 76 keys: do not take cube roots every pass
+    if (fabsf(k.rest - k.restAtModel) > 0.5f) updateModel(k);   // 80 keys: do not take cube roots every pass
 #else
     updateModel(k);
 #endif
@@ -2438,7 +2505,7 @@ enum { MK_SUB, MK_LEVEL, MK_ENUM, MK_ACTION };
 enum {
   M_VOICE_DRY, M_VOCODER, M_HARM, M_HARM_MODE, M_HARM_INT, M_HARM_FOLD, M_ECHO, M_ECHO_TIME, M_ECHO_FB, M_VOICE_REV,
   M_MIC_GAIN, M_GATE_THR, M_GATE_RATIO, M_GATE_ATK, M_GATE_HOLD, M_GATE_REL, M_HPF, M_CLOSE_MIC, M_ANTI_FB, M_CLEAR_NOTCH,
-  M_VOLUME, M_VOICE_OUT, M_KEYS_LEVEL,
+  M_VOLUME, M_VOICE_OUT, M_KEYS_LEVEL, M_SPK_EQ, M_EQ_CUT, M_EQ_DIP,
   M_REGISTER, M_INSTRUMENT, M_AMBIENCE, M_VEL_CURVE,
   M_SAVE, M_RESET_VOICE, M_CAL_KEYS, M_KEY_TEST
 };
@@ -2462,7 +2529,8 @@ const MenuItem ITEMS_INPUT[] = {
   {"ANTIMICROF.", "ANTI-FEEDBK", MK_ENUM, M_ANTI_FB}, {"LIMPAR NOTCH", "CLEAR NOTCH", MK_ACTION, M_CLEAR_NOTCH}};
 const MenuItem ITEMS_OUTPUT[] = {
   {"VOLUME", "VOLUME", MK_LEVEL, M_VOLUME}, {"SAIDA VOZ", "VOICE OUT", MK_ENUM, M_VOICE_OUT},
-  {"TECLAS", "KEYS", MK_LEVEL, M_KEYS_LEVEL}};
+  {"TECLAS", "KEYS", MK_LEVEL, M_KEYS_LEVEL}, {"EQ ALTOF.", "SPK EQ", MK_ENUM, M_SPK_EQ},
+  {"CORTE", "CUTOFF", MK_LEVEL, M_EQ_CUT}, {"PICO 1K", "1K DIP", MK_LEVEL, M_EQ_DIP}};
 const MenuItem ITEMS_SOUND[] = {
   {"REGISTRO", "REGISTER", MK_ENUM, M_REGISTER}, {"INSTRUMENTO", "INSTRUMENT", MK_ENUM, M_INSTRUMENT},
   {"REVERB", "REVERB", MK_LEVEL, M_AMBIENCE}, {"CURVA VEL.", "VEL CURVE", MK_ENUM, M_VEL_CURVE}};
@@ -2507,6 +2575,8 @@ bool menuLevelRef(uint8_t id, uint8_t *&p, uint8_t &cc) {
     case M_GATE_REL: p = &f.gateRel; cc = 90; return true;
     case M_HPF: p = &f.hpf; cc = 92; return true;
     case M_KEYS_LEVEL: p = &keysCC; cc = 83; return true;
+    case M_EQ_CUT: p = &f.eqCut; cc = 106; return true;
+    case M_EQ_DIP: p = &f.eqDip; cc = 107; return true;
     case M_AMBIENCE: p = &ambienceNow; cc = 91; return true;
     case M_VOLUME: tmp = (uint8_t)volumeNow; p = &tmp; cc = 7; return true;
   }
@@ -2527,6 +2597,9 @@ void menuValueText(uint8_t id, char *b, size_t n) {
     case M_GATE_HOLD: snprintf(b, n, "%d MS", (int)gateHoldMs(f.gateHold)); return;
     case M_GATE_REL: snprintf(b, n, "%d MS", (int)gateRelMs(f.gateRel)); return;
     case M_HPF: snprintf(b, n, "%d HZ", (int)hpfHz(f.hpf)); return;
+    case M_EQ_CUT: snprintf(b, n, "%d HZ", (int)lroundf(eqCutHz(f.eqCut))); return;
+    case M_EQ_DIP: snprintf(b, n, "-%d DB", (int)lroundf(eqDipDb(f.eqDip))); return;
+    case M_SPK_EQ: snprintf(b, n, "%s", f.eq ? TXT("LIGADO", "ON") : TXT("DESLIG", "OFF")); return;
     case M_HARM_MODE: snprintf(b, n, "%s", f.harmFollow ? TXT("TECLA", "KEY") : TXT("FIXO", "FIXED")); return;
     case M_HARM_FOLD: snprintf(b, n, "%s", f.harmFold ? TXT("PERTO", "NEAR") : TXT("EXATA", "EXACT")); return;
     case M_GATE_RATIO: snprintf(b, n, "%s", (MENU_LANG_PT ? RATIO_NAMES_PT : RATIO_NAMES_EN)[f.gateRatio]); return;
@@ -2598,6 +2671,7 @@ void menuAdjust(int d) {
     case M_GATE_RATIO: menuSetCC(93, (uint8_t)(constrain((int)f.gateRatio + d, 0, 3) * 32)); break;
     case M_ANTI_FB: menuSetCC(94, f.antiFb ? 0 : 127); break;
     case M_VOICE_OUT: menuSetCC(96, f.speaker ? 0 : 127); break;
+    case M_SPK_EQ: menuSetCC(105, f.eq ? 0 : 127); break;
     case M_REGISTER: applyRegister(registerIndex + d, true); instrumentPending = false; break;
     case M_INSTRUMENT: {
       int next = ((instrument + d) % 5 + 5) % 5;

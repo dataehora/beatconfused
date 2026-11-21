@@ -1,0 +1,217 @@
+{
+ "tamanhos": {
+  "32": {
+   "reguas_por_fileira": 2,
+   "reguas": 8,
+   "elos_placa_regua": 4,
+   "elos_regua_regua": 4,
+   "elos_total": 8,
+   "pulsos_acesso_aleatorio": 17,
+   "colunas": 8,
+   "sensores_ocupados": 32
+  },
+  "48": {
+   "reguas_por_fileira": 3,
+   "reguas": 12,
+   "elos_placa_regua": 4,
+   "elos_regua_regua": 8,
+   "elos_total": 12,
+   "pulsos_acesso_aleatorio": 25,
+   "colunas": 12,
+   "sensores_ocupados": 48
+  },
+  "64": {
+   "reguas_por_fileira": 4,
+   "reguas": 16,
+   "elos_placa_regua": 4,
+   "elos_regua_regua": 12,
+   "elos_total": 16,
+   "pulsos_acesso_aleatorio": 33,
+   "colunas": 16,
+   "sensores_ocupados": 64
+  },
+  "80": {
+   "reguas_por_fileira": 5,
+   "reguas": 20,
+   "elos_placa_regua": 4,
+   "elos_regua_regua": 16,
+   "elos_total": 20,
+   "pulsos_acesso_aleatorio": 41,
+   "colunas": 20,
+   "sensores_ocupados": 80
+  }
+ },
+ "precos": {
+  "cabo_100mm": 3.32,
+  "sh6_clone": 0.069,
+  "ext_tipo": 3.09,
+  "fio_30awg_kit": 4.0,
+  "ffc_cabo": 0.06,
+  "fpc_conector": 0.12,
+  "custom_25mm_moq50": 3.0,
+  "crimp_ferramenta": 30.0,
+  "contatos_caixas_por_cabo": 0.6
+ },
+ "opcoes": {
+  "32": {
+   "A_estoque_100mm": {
+    "cabos": 8,
+    "USD": 26.56,
+    "cabe": "nao (sobra de 75 a 88 mm)",
+    "ext_a_mais_regua": 0,
+    "min_montagem": 16
+   },
+   "A_sob_medida": {
+    "cabos": 8,
+    "USD": 150.0,
+    "obs": "lote minimo de 50 (referencia Newegg/Alibaba: 50 un. = US$ 152,5 para 300 mm; 15/25 mm nao cotado)",
+    "ext_a_mais_regua": 0,
+    "min_montagem": 12.0
+   },
+   "B_tudo_soldado": {
+    "elos": 8,
+    "juntas": 80,
+    "USD": 4.0,
+    "ext_a_menos_regua": -1,
+    "min_montagem": 40.0,
+    "obs": "J1/J2 saem das reguas e J601..J604 saem da principal"
+   },
+   "C_FFC_conector": {
+    "elos": 8,
+    "conectores": 16,
+    "USD": 2.4,
+    "ext_a_mais_regua": 1,
+    "min_montagem": 24.0
+   },
+   "D_misto": {
+    "cabos_placa": 4,
+    "elos_soldados": 4,
+    "juntas": 40,
+    "USD_cabos_sob_medida_lote50": 150.0,
+    "USD_cabos_crimpados_em_casa": 32.4,
+    "USD_fios": 4.0,
+    "min_montagem": 26.0
+   }
+  },
+  "48": {
+   "A_estoque_100mm": {
+    "cabos": 12,
+    "USD": 39.84,
+    "cabe": "nao (sobra de 75 a 88 mm)",
+    "ext_a_mais_regua": 0,
+    "min_montagem": 24
+   },
+   "A_sob_medida": {
+    "cabos": 12,
+    "USD": 150.0,
+    "obs": "lote minimo de 50 (referencia Newegg/Alibaba: 50 un. = US$ 152,5 para 300 mm; 15/25 mm nao cotado)",
+    "ext_a_mais_regua": 0,
+    "min_montagem": 18.0
+   },
+   "B_tudo_soldado": {
+    "elos": 12,
+    "juntas": 120,
+    "USD": 4.0,
+    "ext_a_menos_regua": -1,
+    "min_montagem": 60.0,
+    "obs": "J1/J2 saem das reguas e J601..J604 saem da principal"
+   },
+   "C_FFC_conector": {
+    "elos": 12,
+    "conectores": 24,
+    "USD": 3.6,
+    "ext_a_mais_regua": 1,
+    "min_montagem": 36.0
+   },
+   "D_misto": {
+    "cabos_placa": 4,
+    "elos_soldados": 8,
+    "juntas": 80,
+    "USD_cabos_sob_medida_lote50": 150.0,
+    "USD_cabos_crimpados_em_casa": 32.4,
+    "USD_fios": 4.0,
+    "min_montagem": 46.0
+   }
+  },
+  "64": {
+   "A_estoque_100mm": {
+    "cabos": 16,
+    "USD": 53.12,
+    "cabe": "nao (sobra de 75 a 88 mm)",
+    "ext_a_mais_regua": 0,
+    "min_montagem": 32
+   },
+   "A_sob_medida": {
+    "cabos": 16,
+    "USD": 150.0,
+    "obs": "lote minimo de 50 (referencia Newegg/Alibaba: 50 un. = US$ 152,5 para 300 mm; 15/25 mm nao cotado)",
+    "ext_a_mais_regua": 0,
+    "min_montagem": 24.0
+   },
+   "B_tudo_soldado": {
+    "elos": 16,
+    "juntas": 160,
+    "USD": 4.0,
+    "ext_a_menos_regua": -1,
+    "min_montagem": 80.0,
+    "obs": "J1/J2 saem das reguas e J601..J604 saem da principal"
+   },
+   "C_FFC_conector": {
+    "elos": 16,
+    "conectores": 32,
+    "USD": 4.8,
+    "ext_a_mais_regua": 1,
+    "min_montagem": 48.0
+   },
+   "D_misto": {
+    "cabos_placa": 4,
+    "elos_soldados": 12,
+    "juntas": 120,
+    "USD_cabos_sob_medida_lote50": 150.0,
+    "USD_cabos_crimpados_em_casa": 32.4,
+    "USD_fios": 4.0,
+    "min_montagem": 66.0
+   }
+  },
+  "80": {
+   "A_estoque_100mm": {
+    "cabos": 20,
+    "USD": 66.4,
+    "cabe": "nao (sobra de 75 a 88 mm)",
+    "ext_a_mais_regua": 0,
+    "min_montagem": 40
+   },
+   "A_sob_medida": {
+    "cabos": 20,
+    "USD": 150.0,
+    "obs": "lote minimo de 50 (referencia Newegg/Alibaba: 50 un. = US$ 152,5 para 300 mm; 15/25 mm nao cotado)",
+    "ext_a_mais_regua": 0,
+    "min_montagem": 30.0
+   },
+   "B_tudo_soldado": {
+    "elos": 20,
+    "juntas": 200,
+    "USD": 4.0,
+    "ext_a_menos_regua": -1,
+    "min_montagem": 100.0,
+    "obs": "J1/J2 saem das reguas e J601..J604 saem da principal"
+   },
+   "C_FFC_conector": {
+    "elos": 20,
+    "conectores": 40,
+    "USD": 6.0,
+    "ext_a_mais_regua": 1,
+    "min_montagem": 60.0
+   },
+   "D_misto": {
+    "cabos_placa": 4,
+    "elos_soldados": 16,
+    "juntas": 160,
+    "USD_cabos_sob_medida_lote50": 150.0,
+    "USD_cabos_crimpados_em_casa": 32.4,
+    "USD_fios": 4.0,
+    "min_montagem": 86.0
+   }
+  }
+ }
+}

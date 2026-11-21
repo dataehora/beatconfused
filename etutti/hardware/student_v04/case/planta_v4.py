@@ -10,6 +10,7 @@ import os
 import sys
 
 import matplotlib
+import matplotlib.transforms
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt                                          # noqa: E402
 from matplotlib.patches import Circle, FancyBboxPatch, Polygon, Rectangle  # noqa: E402
@@ -35,6 +36,27 @@ LABELS = {"J201": "USB-C", "J301": "OUT", "J302": "IN", "J202": "bat. JST", "J40
 
 def rrect(ax, x0, y0, x1, y1, r, **kw):
     ax.add_patch(FancyBboxPatch((x0 + r, y0 + r), x1 - x0 - 2 * r, y1 - y0 - 2 * r, boxstyle="round,pad=%g,rounding_size=%g" % (r, r), **kw))
+
+
+def key_cap(ax, x, y, name, fs=7.0, z=5):
+    """A key cap seen from above, C-griff colours (project rule): naturals white, sharps black, C and F with a diagonal checkerboard.
+    The note's name is written on every cap (R5V4 rule)."""
+    sharp = "#" in name
+    cf = name[0] in "CF" and not sharp
+    cap = Circle((x, y), 7.5, fc="#1b1b1b" if sharp else "white", ec="#2C2C2A", lw=0.8, zorder=z)
+    ax.add_patch(cap)
+    if cf:
+        step = 3.0
+        for i in range(-3, 3):
+            for j in range(-3, 3):
+                if (i + j) % 2 == 0:
+                    sq = Rectangle((x + i * step, y + j * step), step, step, fc="#2C2C2A", ec="none", zorder=z + 0.1,
+                                   transform=matplotlib.transforms.Affine2D().rotate_deg_around(x, y, 45) + ax.transData)
+                    ax.add_patch(sq)
+                    sq.set_clip_path(cap)
+    ax.text(x, y, name, ha="center", va="center", fontsize=fs, color="white" if sharp else "black",
+            fontweight="bold" if cf else "normal", zorder=20,
+            bbox=dict(boxstyle="round,pad=0.12", fc="#1b1b1b" if sharp else "white", ec="none", alpha=0.85))
 
 
 def draw(ax, xlim, mod=0, detail=True, sockets=True):
@@ -117,13 +139,17 @@ def draw(ax, xlim, mod=0, detail=True, sockets=True):
         for dx in L.M2_BY_ROW[ru["row"]]:
             ax.add_patch(Circle((xa + dx, y + 5.2), 1.9, fc="#D1D5DB", ec="black", lw=0.6, zorder=6))
             ax.plot([xa + dx - 1.0, xa + dx + 1.0], [y + 5.2, y + 5.2], color="black", lw=0.5, zorder=7)
+    first = {r: x0 for r, _y, x0, _n in L.ROWS}
     for r, x, y in L.key_list(mod):
         ax.add_patch(Rectangle((x - 7, y - 7), 14, 14, fc="none", ec="#6B7280", lw=0.5, ls=":", zorder=4))
-        ax.add_patch(Circle((x, y), 7.5, fc="white", ec="#2C2C2A", lw=0.8, zorder=5))
+        idx = int(round((x - first[r]) / L.PITCH))
+        key_cap(ax, x, y, L.note_name(r, idx), fs=7.0 if detail else 7.0)
     for ru in rs:
         ax.text(ru["x0"] - 1.0, ru["y"], "", fontsize=6)
     for r, y, x0, n in L.ROWS:
-        ax.text(x0 - L.PITCH / 2 - 10.8 if r == 2 else x0 - L.PITCH / 2 - 1.2, y + 7.8, "fileira %d" % r, fontsize=6, ha="right" if r != 2 else "left", zorder=12)
+        xe = max(q["x0"] for q in rs if q["row"] == r) + L.RULER_L
+        n = n + 4 * mod
+        ax.text(xe + 1.6, y, "fileira %d\n%s-%s" % (r, L.note_name(r, 0), L.note_name(r, n - 1)), fontsize=6.3, va="center", ha="left", zorder=12)
     for px, py in posts:
         ax.add_patch(Circle((px, py), 2.5, fc="#FED7AA", ec=C["post"], lw=0.8, zorder=8))
     for px, py in L.wall_posts(mod):
@@ -134,7 +160,12 @@ def draw(ax, xlim, mod=0, detail=True, sockets=True):
     for ru in rs:
         for name, xa, xb, ya, yb, za, zb in L.conn_boxes(ru):
             hdr = name.endswith("header")
-            ax.add_patch(Rectangle((xa, ya), xb - xa, yb - ya, fc="#FDE047" if hdr else "#FB7185", ec="black", lw=0.5, alpha=0.9, zorder=9 if hdr else 8))
+            ax.add_patch(Rectangle((xa, ya), xb - xa, yb - ya, fc="#FDE047" if hdr else "#FB7185", ec="black", lw=0.5, alpha=0.5, zorder=9 if hdr else 8))
+    if L.LINK == "D":
+        for r, xj, y in L.solder_links(mod):
+            a, b, ya, yb, za, zb = L.link_box(xj, y, 0.0)
+            ax.add_patch(Rectangle((a, ya), b - a, yb - ya, fc="#F59E0B", ec="#7C2D12", lw=0.5, alpha=0.9, zorder=9))
+            ax.plot([xj - 2.1, xj + 2.1], [(ya + yb) / 2] * 2, color="#7C2D12", lw=1.0, zorder=10)
     for c in L.cables(mod):
         ax.plot([p[0] for p in c["pts"]], [p[1] for p in c["pts"]], color=C["cable"], lw=1.3, zorder=10)
     for t in ax.texts:
@@ -154,28 +185,33 @@ def legend(ax):
          Patch(fc="#BFDBFE", ec=C["oled"], label="janela / módulo da tela (sobre a placa)"), Patch(fc="#FDE68A", ec=C["ui"], label="encoders e knobs"),
          Patch(fc="#FED7AA", ec=C["post"], label="postes da tampa (H1..H4, internos, de parede)"), Patch(fc=C["ruler"], ec=C["ruler_ec"], label="réguas de 4 teclas"),
          Patch(fc="#D1D5DB", ec="black", label="parafusos M2 (2 por régua)"), Patch(fc="#FDE047", ec="black", label="cabeçalho SH da régua"),
-         Patch(fc="#FB7185", ec="black", label="plugue"), Line2D([0], [0], color=C["cable"], lw=1.3, label="cabo SH (elo)"),
-         Patch(fc="none", ec=C["notch"], hatch="xxxx", label="entalhe no trilho da bandeja")]
-    ax.legend(handles=h, loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=5, fontsize=6.4, frameon=False)
+         Patch(fc="#FB7185", ec="black", label="plugue"), Line2D([0], [0], color=C["cable"], lw=1.3, label="cabo SH placa -> 1a regua"), Patch(fc="#F59E0B", ec="#7C2D12", label="elo soldado de 5 fios (pads a 1 mm da ponta)"),
+         Patch(fc="none", ec=C["notch"], hatch="xxxx", label="entalhe no trilho da bandeja"),
+         Line2D([0], [0], color=C["case"], lw=0.8, label="parede 2 mm = onde termina o chanfro externo de 2 x 45 graus")]
+    ax.legend(handles=h, loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=5, fontsize=6.4, frameon=False)
 
 
-def main():
-    fig, ax = plt.subplots(figsize=(17.5, 7.6))
-    draw(ax, (-26, 258))
-    ax.set_title("eTutti Student V4 (R4V4) - planta geral oficial, 28 teclas, vista de cima (modelo real; alturas no corte lateral)", fontsize=10)
-    for txt, xy in (("252", (126, -2.2)),):
-        ax.annotate("", xy=(0, -1.0), xytext=(252, -1.0), arrowprops=dict(arrowstyle="<->", lw=0.7))
-        ax.text(126, -1.6, "252 mm", ha="center", fontsize=7)
-    ax.annotate("", xy=(255.0, 0), xytext=(255.0, 100), arrowprops=dict(arrowstyle="<->", lw=0.7))
-    ax.text(256, 50, "100 mm", rotation=90, va="center", fontsize=7)
+def main(mod=0):
+    Lx = L.length(mod)
+    fig, ax = plt.subplots(figsize=(17.5, 8.2))
+    draw(ax, (-26, Lx + 12), mod)
+    ax.set_title("eTutti Student V4 (R5V4) - planta geral oficial, %d teclas, vista de cima: nome da nota em cada tecla; naturais brancas, sustenidos pretos, "
+                 "C e F em xadrez diagonal" % (32 + 16 * mod), fontsize=9.5)
+    ax.annotate("", xy=(0, -1.0), xytext=(Lx, -1.0), arrowprops=dict(arrowstyle="<->", lw=0.7))
+    ax.text(Lx / 2, -1.6, "%g mm (era 252)" % Lx, ha="center", fontsize=7)
+    ax.annotate("", xy=(Lx + 3.0, 0), xytext=(Lx + 3.0, 100), arrowprops=dict(arrowstyle="<->", lw=0.7))
+    ax.text(Lx + 4.2, 50, "100 mm", rotation=90, va="center", fontsize=7)
+    xr = max(q["x0"] for q in L.rulers(mod)) + L.RULER_L
+    ax.annotate("", xy=(xr - 0.2, 100.8), xytext=(Lx, 100.8), arrowprops=dict(arrowstyle="<->", lw=0.6, color="#B91C1C"))
+    ax.text(xr - 1, 102.6, "folga %.1f" % (Lx - L.WALL - xr + 0.2), fontsize=5.8, color="#B91C1C", ha="right")
     legend(ax)
     fig.tight_layout()
-    fig.savefig(os.path.join(REN, "planta_geral_v4.png"), dpi=150)
+    fig.savefig(os.path.join(REN, "planta_geral_v4.png"), dpi=150, bbox_inches="tight")
     plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(13.5, 9.5))
-    draw(ax, (-22, 112))
-    ax.set_title("Interface e começo do teclado (R4V4), zoom da planta geral", fontsize=10)
+    draw(ax, (-22, 135))
+    ax.set_title("Interface e começo do teclado (R5V4), zoom da planta geral, com os nomes das notas", fontsize=10)
     legend(ax)
     fig.tight_layout()
     fig.savefig(os.path.join(REN, "planta_interface_v4.png"), dpi=140)

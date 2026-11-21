@@ -1,8 +1,135 @@
-# eTutti Student V4 · firmware e som (R1V4 + R2V4 + R3V4 + R4V4)
+# eTutti Student V4 · firmware e som (R1V4 + R2V4 + R3V4 + R4V4 + R5V4)
 
 21 nov 2026. **R4V4 (atendida nesta revisão):** voz só no fone/AUX por padrão, expansor e supressor de microfonia, harmonizador que segue a tecla, menu pelos dois knobs na OLED e varredura em `IntervalTimer`: ver a seção **"R4V4"** logo abaixo. O resto do texto (R1V4, R2V4 e R3V4) continua valendo, com as correções marcadas "(R4V4)". **R3V4:** varredura com ADC duplo e leitura quente em rodízio (item 5) e voz com efeitos junto com o teclado (item 6): ver a seção **"R3V4"** adiante. Atende as tarefas **P1** (capacidade do Teensy MicroMod para 76 teclas, Full Speed USB) e **P2** (começo do firmware V4, §9 itens 1–3) da **R1V4**, com a varredura da **R2V4** (F2: réguas de 4 teclas, 4 linhas OUT, cadeia de registradores de deslocamento).
 
 **O firmware compila para a V4 (28, 44, 60 e 76 teclas), para o Student V01 e para o eTuttino (R4V4: de novo, com a varredura em interrupção). Nada foi gravado e nada rodou numa placa: a V4 não existe.** Tudo o que é tempo medido abaixo é **conta** (marcada "estimado"), a partir das medições do eTuttino (CLAUDE.md) e dos números do datasheet que o repositório já traz. Os pinos e o contrato de varredura seguem o `student_v04/pcb/PINOS.md` (rascunho da eletrônica, 74HC595 C5947, SCAN_DATA = 2, SCAN_CLK = 3); o que o PINOS.md ainda marca "(conferir)" continua a conferir.
+
+**R5V4 (atendida nesta revisão):** teclado de 32 / 48 / 64 / 80 teclas com réguas sempre cheias, mapa de notas e equalização do alto-falante de estudo: ver a seção **"R5V4"** logo abaixo. **Onde o texto mais antigo fala em 28 / 44 / 60 / 76 teclas (ou em posições sem tecla), vale a R5V4: 32 / 48 / 64 / 80, todas as posições com tecla; as colunas, as passadas e a CPU da varredura são as mesmas.**
+
+## R5V4 · réguas sempre cheias (32 / 48 / 64 / 80 teclas) e equalização do alto-falante de estudo
+
+Tarefa 4 da SPEC R5V4. **Compila** (V4 com 32, 48, 64 e 80 teclas, Student V01 e eTuttino; tabela em "Conferências da R5V4"). **Nada gravado e nada rodou em placa.** Tempos e CPU são **estimados** (conta), como nas revisões anteriores. A tela, o menu e o resto da voz seguem como na R4V4 (o menu está **como no §4 desta revisão anterior, sem mudança**; só ganhou 3 linhas da EQ, abaixo).
+
+### 1 · Teclado de 32 teclas, mapa de notas
+
+Mudanças no sketch (`ETUTTI_STUDENT_V4 1`):
+- `V4_KEYS` = **32, 48, 64 ou 80** (outro valor dá `#error`); `V4_STRIPS_PER_ROW = (V4_KEYS - 32) / 16 + 2`. `MAX_KEYS` = 80.
+- **Toda posição de toda régua tem tecla** (`v4HasKey()` é sempre verdadeiro): 8 / 12 / 16 / 20 teclas em cada uma das 4 fileiras. Acabaram as "posições sem tecla" no fim da fileira (a R3V4 tinha 7/8/7/6).
+- `FIRST_COL = {0, 0, 0, 0}` (igual; a régua começa na primeira tecla da fileira). **`FIRST_NOTE` da V4: C-griff `{57, 55, 56, 54}` (A3, G3, G#3, F#3), B-griff `{56, 55, 57, 53}`.** A fileira 4 deixa de começar em A3 e passa a começar em **F#3**, uma coluna à esquerda da nota que a fileira 1 teria ali: está nas colunas da fileira 2 e um semitom abaixo dela em cada coluna (F#3 sob G3). No B-griff (CC 24: fileiras 1 e 3 trocadas) a fileira 4 acompanha a fileira 1, como no eTuttino: F3. O eTuttino e o Student V01 mantêm `{57, 55, 56, 57}`.
+- Chave da EEPROM de calibração: `0xE7770107` (a ordem das teclas mudou de contagem e de posição). 4 + 2 × 80 = 164 bytes, ainda antes do endereço 200 (registro) e do 210 (voz).
+- Colunas, cadeia de registradores e varredura **não mudam de forma**: cada régua tem 4 colunas, então 32 = 8 colunas (2 réguas por fileira), 48 = 12, 64 = 16, 80 = 20, e a cadeia tem 8 × N estágios por fileira (16 / 24 / 32 / 40) com **as 4 posições (QA..QD) de todas as réguas agora ligadas a uma tecla**. O acesso aleatório continua 8 N + 1 pulsos: **17 / 25 / 33 / 41** (~10 µs a 5 MHz com 80 teclas). Entre réguas o "1" ainda passa por 4 estágios mortos (QE..QH), 5 pulsos da coluna 3 para a 4.
+
+**Ordem padrão das oitavas por módulo** (R1V4 §4.4, mantida pela R5V4 item 1): o 1º módulo extra vai para o agudo, o 2º para o grave, o 3º agudo de novo. O que decidi para 48 / 64 / 80, coerente com isso e conferido por script contra a regra (nota = `FIRST_NOTE[fileira] + 3 × coluna + transposição`):
+
+| Teclas | Colunas | Transposição (`noteShift`) | Fileira 1 | Fileira 2 | Fileira 3 | Fileira 4 |
+|---:|---:|---:|---|---|---|---|
+| 32 | 8 | 0 | A3–F#5 | G3–E5 | G#3–F5 | F#3–D#5 |
+| 48 | 12 | 0 (módulo 1 = agudo) | A3–F#6 | G3–E6 | G#3–F6 | F#3–D#6 |
+| 64 | 16 | −12 (módulo 2 = grave: o teclado inteiro desce uma oitava) | A2–F#6 | G2–E6 | G#2–F6 | F#2–D#6 |
+| 80 | 20 | −12 (módulo 3 = agudo) | A2–F#7 | G2–E7 | G#2–F7 | F#2–D#7 |
+
+(Faixa da fileira 2 = a que a SPEC cita: 32 = G3–E5, 48 = G3–E6, 64 = G2–E6, 80 = G2–E7. A tecla mais grave de todas é a F#3 da fileira 4, ou F#2 com 64 e 80.) **Na prática**, como na R1V4, a versão de 64 toca o teclado transposto uma oitava abaixo.
+
+**Figuras** (nome da nota em cada tecla; **C em laranja, F em azul**; fileira 1 na frente, embaixo):
+- `student_v04/img/mapa_notas_32.png`: as 32 teclas, C-griff.
+- `student_v04/img/mapa_notas_32_48_64_80.png`: as quatro versões, com a transposição de cada uma.
+
+(Geradas por script a partir da mesma tabela do sketch: `FIRST_NOTE` {57, 55, 56, 54}, 3 semitons por coluna; as figuras não têm planta de furos, só o mapa de notas. Os módulos entram sempre à direita, e a coluna 0 é a régua mais perto da placa principal.)
+
+![mapa de notas das 32 teclas](img/mapa_notas_32.png)
+
+### 2 · Tempos de passada, velocity e CPU (32 e 80 teclas; estimados)
+
+O número de **colunas** é o que manda no tempo, e ele **não mudou** (32 = 8 colunas como as 28 de antes, 80 = 20 como as 76). A passada nominal do `IntervalTimer` (~72 µs por coluna: 60 µs de acordar + ~12 µs de leitura e processamento) fica igual; o que sobe é só o processamento de 4 teclas por coluna em todas as colunas (antes havia colunas com 3, 2 ou 1 teclas), ~+0,3 µs por coluna, abaixo da resolução da conta.
+
+| Teclas | Colunas | Passada nominal, sem tecla quente | Frequência | Rodada quente (troca de coluna / mesma) |
+|---:|---:|---:|---:|---|
+| **32** | 8 | **~0,58 ms** | 1,7 kHz | 81 / 56 µs |
+| 48 | 12 | ~0,86 ms | 1,2 kHz | |
+| 64 | 16 | ~1,15 ms | 0,87 kHz | |
+| **80** | 20 | **~1,44 ms** | 0,69 kHz | 87 / 56 µs |
+
+(tON 60 µs. Com tON 45 µs: ~0,45 / 0,67 / 0,89 / 1,11 ms.) Intervalo máximo entre duas leituras de uma tecla, com orçamento quente cheio: ~2,2 ms em qualquer carga de áudio, nas quatro versões (a varredura em interrupção não é alongada pelo áudio).
+
+**Erro de velocity** (± unidades, convenção da R3V4: ¼ do período por cruzamento, dois cruzamentos independentes; 1 ms = 127, 80 ms = 1, ~28,8 unidades por "e" de tempo, 1 batida de 1 ms = 14,6 / t):
+
+| Leitura | batida de 1 ms | 2 ms | 5 ms | 10 ms |
+|---|---:|---:|---:|---:|
+| passada de 32 teclas (0,58 ms) | 5,9 | 2,9 | 1,2 | 0,6 |
+| passada de 80 teclas (1,44 ms) | 14,6 | 7,3 | 2,9 | 1,5 |
+| leitura quente, 1 coluna | 0,6 | 0,3 | 0,1 | 0,1 |
+| leitura quente, acorde de 2 colunas | 1,7 | 0,9 | 0,3 | 0,2 |
+| leitura quente, 3 colunas | 2,6 | 1,3 | 0,5 | 0,3 |
+| leitura quente, 4 colunas | 3,5 | 1,7 | 0,7 | 0,3 |
+
+Igual ao que já valia para 28 e 76 (as passadas são as mesmas). Uma batida de 1 ms não é de dedo: o mais rápido que se toca fica em 3–5 ms, onde a leitura quente dá ±0,1 a ±0,7 em qualquer versão.
+
+**CPU (396 MHz, estimada):** a varredura em interrupção custa ~19 % com qualquer número de teclas (o que conta é a taxa de colunas, 1 a cada 72 µs, e não o número de colunas). Síntese, voz e efeitos como na R4V4. **Equalização do alto-falante: ~+0,4 a 0,5 % só quando o alto-falante é a saída** (4 estágios biquad × ~10 ciclos por amostra × 44 117 amostras/s ≈ 1,8 M ciclos/s ≈ 0,45 % a 396 MHz; com fone ou AUX ela é desconectada e custa 0). **Pior caso, tudo ligado, ~59,5 %** (R4V4: ~59 %): 396 MHz continua bastando (estimado); o mesmo critério da R4V4 vale para passar a 600 MHz (`AudioProcessorUsageMax()` acima de ~80 %). A CPU das 80 teclas é igual à das 32: a passada é a mesma frequência de colunas e o laço processa as teclas por coluna.
+
+### 3 · Equalização do alto-falante de estudo (SPEC R5V4 item 2)
+
+**Conceito (aprovado pelo J):** o alto-falante da V4 é de estudo; o som completo é para fone e AUX. A equalização existe só no caminho do alto-falante.
+
+**Onde fica no sinal.** O MAX98357A (alto-falante) e o SGTL5000 (fone/AUX) recebem **o mesmo fluxo I²S** (`outAmp` → `i2sOut`). Por isso "só no alto-falante" é feito pelo estado do jack: **sem plugue no OUT (HP_DET), o alto-falante é a saída e o fluxo passa pelo equalizador; com plugue, o equalizador é desconectado** (`pl`/`pr` ligam o volume direto ao I²S, como antes) e o fone/AUX recebe o som completo. A troca acompanha o jack em tempo real (`voiceFxApply()` já roda a cada mudança do jack) e é feita desconectando e reconectando `AudioConnection`s (o mesmo mecanismo do supressor de microfonia). A V01 e o eTuttino não têm essa parte (`V4_SPEAKER_EQ` só existe na V4).
+
+**Filtros** (`AudioFilterBiquad spkEq`, 4 estágios, receitas do *Audio EQ Cookbook*; o biquad é o filtro que vale no projeto, não o SVF):
+
+| Estágio | Filtro | Padrão | Ajuste |
+|---:|---|---|---|
+| 0 e 1 | passa-altas de 4ª ordem (Butterworth: dois biquads, Q 0,5412 e 1,3066) = **24 dB/oitava** | 300 Hz | **150 a 450 Hz** (CC 106 / menu CORTE) |
+| 2 | peaking de corte em **1 kHz**, Q 1,2 | −6 dB | **0 a −12 dB** (CC 107 / menu PICO 1K) |
+| 3 | passagem (b0 = 1) | | |
+
+Resposta calculada (numpy, mesmos coeficientes e taxa de 44 117 Hz), em dB:
+
+| Hz | 100 | 150 | 196 (G3) | 300 | 500 | 800 | 1000 | 1250 | 2000 | 4000 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| padrão (300 Hz, −6 dB) | −38,2 | −24,2 | −15,1 | −3,5 | −1,5 | −4,6 | **−6,0** | −4,6 | −1,4 | −0,3 |
+| mínimo (150 Hz, 0 dB) | −14,3 | −3,0 | −0,5 | 0,0 | 0,0 | 0,0 | 0,0 | 0,0 | 0,0 | 0,0 |
+| máximo (450 Hz, −12 dB) | −52,4 | −38,4 | −29,3 | −15,3 | −4,7 | −9,0 | **−12,0** | −8,9 | −3,1 | −0,7 |
+
+No padrão a nota mais grave (G3, 196 Hz) sai ~15 dB mais baixa no alto-falante: a fundamental quase some, mas os harmônicos (392, 588 Hz...) passam, e o ouvido "reconstrói" a nota. O padrão é um **ponto de partida de conta**; o ajuste certo é de ouvido na placa (pergunta 1).
+
+**Controles.** CC **105** (liga/desliga, >= 64 liga; **padrão ligado**, não faz nada com fone), CC **106** (corte, 0..127 = 150..450 Hz, padrão 63 = ~300 Hz), CC **107** (corte do pico de 1 kHz, 0..127 = 0..−12 dB, padrão 63 = −6 dB). Livres no mapa (98–101 são NRPN/RPN do MIDI e foram evitados; 102–104 já são da synth). O menu devolve o CC quando o usuário muda um valor, como os outros. Os coeficientes são recalculados só quando um valor muda.
+
+**Menu (SAIDA, agora com 6 linhas: a janela rola):**
+
+```
+MENU > SAIDA                    1/6
+ VOLUME     [===] 71%
+ SAIDA VOZ        FONE/AUX
+ TECLAS     [====]100%
+ EQ ALTOF.        LIGADO        <- novo: liga/desliga (CC 105)
+ CORTE      [=== ] 300 HZ       <- novo: 150..450 Hz   (CC 106)
+ PICO 1K    [=== ]  -6 DB       <- novo: 0..-12 dB     (CC 107)
+```
+
+**Persistência:** SALVAR guarda os três valores (EEPROM 210, bytes 22 a 25, atrás de um marcador `0xE5`: dados antigos sem o marcador continuam valendo com a EQ no padrão). ZERAR VOZ volta ao padrão (ligada, 300 Hz, −6 dB).
+
+**Memória:** a EQ soma ~3 KB de código; o `AudioFilterBiquad` guarda só 4 estágios de estado (centenas de bytes).
+
+### CCs novos desta revisão (só no sketch)
+
+105 EQ do alto-falante (liga/desliga), 106 corte da EQ, 107 pico de 1 kHz. O `script.js` continua sem modelo V4: o mapa muda nos dois lados junto quando a página V4 entrar (simulação web do menu e dos knobs, fase futura).
+
+### Conferências da R5V4
+
+Compilado numa cópia do sketch em que só trocam `ETUTTI_STUDENT_V4` (0 para 1) e `V4_KEYS` (o sketch do repositório continua em `ETUTTI_STUDENT_V4 0`, `V4_KEYS 32`), com `arduino-cli compile --fqbn teensy:avr:teensyMM:usb=midi,speed=396` (V4 e V01) e `teensy:avr:teensy40:usb=midi` (eTuttino). **Nada gravado em placa.**
+
+| Conferência | Resultado |
+|---|---|
+| V4 com 32 teclas | compila: flash 143 088 bytes de código, RAM1 106 400 bytes de variáveis, RAM2 175 648 |
+| V4 com 48 teclas | compila: igual, RAM1 106 432 |
+| V4 com 64 teclas | compila: igual, RAM1 106 464 |
+| V4 com 80 teclas | compila: igual, RAM1 106 496 (cada 16 teclas somam 32 bytes de RAM1) |
+| Student V01 (`ETUTTI_STUDENT_V4 0`) | compila, código 90 040 bytes (igual ao de antes) |
+| eTuttino (Teensy 4.0) | compila, código 88 824 bytes (igual ao de antes) |
+
+| Mapa de notas das quatro versões × R1V4 §4.4 e R5V4 item 1 | igual (script) |
+| `pcb/PINOS.md` relido no fim desta revisão | sem mudança desde a R3V4 (último commit do arquivo = R3V4, sem edição pendente; ainda diz 28/44/60/76 e 'posições sem tecla', a eletrônica atualiza para a R5V4); os pinos do sketch continuam os do contrato (OUT_R1..R4 14/15/26/27, SCAN_DATA/CLK 2/3, knobs, I2S, I2C, KEEP, AMP_SD, HP_DET, VBAT, CHG_STAT 0); nenhum pino novo; J601-J604 ainda não citados |
+| Resposta da EQ | calculada em numpy (tabela acima); **não ouvida**, nada rodou em placa |
+
+---
 
 ## R4V4 · voz sem microfonia, harmonizador que segue a tecla, menu pelos knobs e varredura em interrupção
 
@@ -453,3 +580,7 @@ Compilado com `arduino-cli compile --fqbn teensy:avr:teensyMM:usb=midi,speed=396
 10. **Notas até E7:** o acordeão amostrado cobre bem até a tecla 79; gravar mais amostras agudas ou limitar o mapa? (continua da R3V4)
 11. **Desligar com USB:** o desligamento suave basta, ou a V4 devolve o PWR_EN para cortar o 3,3 V com o cabo? (continua da R3V4)
 12. **Para a eletrônica (nada a mudar no `PINOS.md`):** esta revisão **não usa pino novo**: o menu e o expansor usam os pinos dos knobs, do microfone (8) e da tela (18/19) que já estavam no contrato. O supressor e o harmonizador só pedem o ruído de fundo do microfone razoável (um pré-amplificador com ruído alto faz o expansor abrir). O `IntervalTimer` ocupa um canal do PIT.
+13. **(R5V4) EQ do alto-falante, ajuste de ouvido:** o padrão (corte de 300 Hz em 24 dB/oitava, −6 dB em 1 kHz) é de conta e deixa a G3 (196 Hz) ~15 dB mais baixa. Quer outro ponto de partida (por exemplo 250 Hz e −4 dB), ou prefere ajustar na primeira placa com o alto-falante escolhido? A EQ vale só sem plugue no jack OUT: está certo que, com fone/AUX, o alto-falante não toca (o amplificador já desliga) e o fone recebe o som completo, sem EQ?
+14. **(R5V4) Mapa de notas de 48 / 64 / 80:** mantive a ordem padrão (1º módulo agudo, 2º grave, 3º agudo) com a fileira 4 começando em F#3. Com 64 e 80 teclas o teclado inteiro desce uma oitava (a F#2 é a mais grave). Confirma, ou o 2º módulo deve só acrescentar graves sem transpor o resto?
+15. **(R5V4) Para a eletrônica:** o `PINOS.md` ainda descreve posições sem tecla e 28/44/60/76 (a R5V4 trouxe réguas cheias, 32/48/64/80 e FIRST_NOTE da fileira 4 = 54); o firmware já segue a R5V4. Nenhum pino novo.
+16. **(R5V4) RAM1:** a V4 compilada passou de 99,8 KB (R4V4) para 106,4 KB de variáveis, e o código de 140 para 143 KB. A EQ explica os ~3 KB de código; os ~6,5 KB de RAM1 não foram isolados (não rodei uma compilação sem a EQ). Há folga de 254 KB, mas fica anotado.

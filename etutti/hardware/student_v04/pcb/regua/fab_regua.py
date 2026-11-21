@@ -329,7 +329,7 @@ def build_regua_panel():
     rows = []
     for fp in b.GetFootprints():
         ref = fp.GetReference()
-        if fp.GetLayer() != pcbnew.B_Cu or ref.startswith(("PEG", "H", "FID", "TL", "MB")):
+        if fp.GetLayer() != pcbnew.B_Cu or ref.startswith(("PEG", "H", "FID", "TL", "MB", "LK")):
             continue
         rows.append([ref, round(TOMM(fp.GetX()), 3), round(-TOMM(fp.GetY()), 3) if False else round(TOMM(fp.GetY()), 3), "Bottom",
                      round(fp.GetOrientationDegrees(), 1)])

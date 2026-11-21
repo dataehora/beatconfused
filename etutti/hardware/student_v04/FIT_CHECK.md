@@ -1,5 +1,90 @@
 # eTutti Student V4 — FIT_CHECK (design)
 
+## R5V4 — atendida (21 nov 2026, tarefas 1 e 2 sua parte)
+
+Respondo à **R5V4** (SPEC do Chat). Nada foi encomendado, impresso ou montado. As seções R4V4 e anteriores abaixo valem, menos onde esta diz o contrário.
+Números regeneráveis (venv CadQuery; `case/out/` fica fora do git): `case/layout_r4.py` (posições, nomes das notas) → `case/case_r4.py 0 1 2 3` (modelo + interferências; 41 / 93 / 155 / 160 s) → `estudos/r5v4.json` (resumo copiado) → `case/planta_v4.py`, `case/corte_v4.py`, `case/corte_teclado_v5.py`, `case/conector_v4.py`, `case/ligacao_v5.py`.
+Imagens novas (`case/renders/`), todas com o **nome da nota em cada tecla** onde há teclas (naturais brancas, sustenidos pretos, C e F em xadrez diagonal): **`planta_geral_v4.png`** (instrumento inteiro, 32 teclas), `planta_interface_v4.png`, **`corte_chanfro_v5.png`** (quatro cortes: frente, trás, ponta direita, parede esquerda), `corte_interface_v4.png`, `ruler_conector_v4.png`, **`ligacao_elo_v5.png`** (opções A–D, planta e corte), **`ligacao_placa_v5.png`** (os 4 cabos placa → régua).
+
+### 1. Teclado de 32 teclas (item 1)
+
+| Fileira | Notas (conferidas contra `spec_img/teclado_32.png`) | 1ª régua começa em x |
+|---|---|---|
+| 1 (frente, y 74,03) | A3 C4 D#4 F#4 A4 C5 D#5 **F#5** | 89,20 |
+| 2 (y 58,01) | G3 A#3 C#4 E4 G4 A#4 C#5 E5 | 79,95 |
+| 3 (y 41,99) | G#3 B3 D4 F4 G#4 B4 D5 **F5** | 89,20 |
+| 4 (trás, y 25,97) | **F#3** A3 C4 D#4 F#4 A4 C5 **D#5** | **79,95** (era 98,45) |
+
+- Em `layout_r4.py`: `ROWS` (32 posições, 8 réguas cheias), `FIRST_MIDI`, `note_name()`; o modelo (`case_r4.py`) passa a usar essas linhas no lugar das da `geometria.py` (que não é minha e continua com as 28 teclas da R4V4; a eletrônica e o roteamento têm o `posicao_v4.json` e os seus próprios scripts).
+- **M2 da fileira 4** = os da fileira 2 (37 e 55,5): com a régua deslocada para 79,95, o M2 de 18,5 cairia no entalhe do plugue da fileira 3 (era a mesma razão da fileira 2 na R4V4). `conflicts()` = vazio nos 4 tamanhos.
+- **Postes internos** continuam nos centroides dos triângulos de 3 teclas: 5 / 8 / 11 / 14. Conferência nova (`post_checks`): distância da lâmina de 1,4 x 4,0 até a carcaça mais próxima **0,85 mm** (a lâmina fica no corredor entre teclas); distância até a junção de réguas **mínima 18,5 mm** (nenhum poste em junção); o pino redondo D5,4 fica abaixo da régua e não toca tecla. Nenhum poste mudou de lugar em relação ao critério da R4V4; os dois de parede da ponta direita passaram de x = L-8 para **L-10** (o canto interno agora é arredondado R4: L-8 ficava 2,2 mm do centro do arco).
+
+### 2. Comprimento do case: 252 -> **240 mm**
+
+- **Régua mais à direita termina em x = 237,0** (corpo; 237,2 nominal). A SPEC dizia ≈ 237,6: aquilo supunha réguas a 74,4 mm de passo; o passo real é 4 x 18,5 = 74,0 mm, com os 0,4 mm de vão tirados dos 0,2 mm de recuo de cada régua. As fileiras 2 e 4 acabam em 227,75.
+- **Regra de margem adotada:** face interna da parede da ponta = corpo da régua + **1,0 mm** (folga da bandeja de 0,15 mm + o que a régua e a bandeja precisam para não se tocarem por dilatação e montagem); parede 2,0 mm. Logo 237,0 + 1,0 + 2,0 = **240,0 mm**. Resta, da borda do botão (raio 8,25 no último, em x 227,95 + 8,25 = 236,2) até o fim do chanfro: 1,8 mm de deck plano; até a borda externa: 3,8 mm. É pouco para apoiar um dedo; se o J quiser mais "beira" à direita, cada milímetro de comprimento custa ~0,7 cm³ de PA12 (US$ 0,18). **Módulos:** 240 + 74 x n = **314 / 388 / 462 mm** (para 48 / 64 / 80 teclas).
+- Largura 100 mm, altura 24,7 (frente) e 31,7 (trás), como antes. **Com 240 mm a tampa de 32 teclas passa a caber numa mesa FDM de 250 x 250** (a de 252 não cabia); 48 teclas (314) só em MJF/SLS/SLA/FDM grande; 64 e 80 (388, 462) como já era na R4V4 (SLA/FDM grande; MJF só com partição).
+
+### 3. Chanfro e cantos (item 2)
+
+- **Proposta: chanfro de 2,0 x 2,0 mm a 45 graus na aresta externa de cima**, em todo o contorno (frente, trás, ponta direita e parede esquerda; a ponta direita acompanha o deck escalonado, num só loft; nos 4 cantos R6 o chanfro é um cone, sem emenda), e **1,0 x 1,0 mm na aresta de baixo** (onde a mão levanta o instrumento). Mostrados em corte em `corte_chanfro_v5.png` (A, B, C, D).
+- Por que 2,0: a parede tem 2,0 mm e o telhado 2,5 (teclado) ou 2,0 (interface); com 2,0 x 2,0 sobra de material, medido na perpendicular ao chanfro até o canto da cavidade, **1,77 mm no teclado e 1,41 mm na interface** (acima do mínimo de parede de ~1 mm do MJF, a confirmar com a gráfica). Um chanfro de 3 mm deixaria 0,71 mm de telhado no ponto de menos material na interface; 1 mm é pouco para "suavizar a pegada". O chanfro termina exatamente sobre a linha da parede de 2 mm na planta (linha fina da `planta_geral_v4.png`).
+- **Cantos em planta (R6 aprovado):** no modelo da R4V4 o R6 só estava desenhado na planta; agora a tampa tem R6 por fora e **R4 por dentro** e a bandeja R3,85. Consequência verificada: `tampa x placa` e as demais interferências da interface seguem **0** (folgas analíticas do canto: placa 0,22 mm; face do USB-C 0,27 e 0,30 mm). **Achado:** com o canto R6 o furo do USB-C (12,8 em y 10, de y 3,6 a 16,4) invade a parte curva da parede; o corte tinha 2,6 mm de profundidade e deixaria uma lasca de parede de 0,2 mm; passei o corte para 4,5 mm de profundidade.
+
+### 4. Fit check em 32 / 48 / 64 / 80 teclas (volume da interseção, mm³)
+
+| Teclas | Comprimento | Réguas | Postes int. + parede | Tampa x teclas (nominal) | Carcaça +0,5 mm | Carcaça +0,8 mm | Demais pares |
+|---|---|---|---|---|---|---|---|
+| 32 | 240 | 8 | 5 + 6 | **0** | 8,3 | 50,4 | **0** |
+| 48 | 314 | 12 | 8 + 8 | **0** | 12,5 | 75,6 | **0** |
+| 64 | 388 | 16 | 11 + 10 | **0** | 16,6 | 100,7 | **0** |
+| 80 | 462 | 20 | 14 + 12 | **0** | 20,8 | 125,9 | **0** |
+
+"Demais pares" = tampa, bandeja, réguas, grades, parafusos, teclas, cabeçalhos, plugues, pinos, sensores entre si, e a interface (placa, módulo, bateria, alto-falante, caixa, OLED, encoders, knobs) contra tampa e bandeja: tudo 0. A folga crítica continua sendo a rampa do degrau 3 (a carcaça +0,5 mm toca ~0,45 mm; é o que a coluna +0,5 mede). Cabos de 25 mm (placa) e 15 mm (elo) com folga de trilho >= 0,05 mm como na R4V4; entalhes: nenhum conflito com M2 ou poste.
+
+### 5. Volumes e custo de impressão (MJF PA12, US$ 0,275/g, 1,01 g/cm³; só preço por grama, sem cotação)
+
+| Teclas | Comprimento | Tampa + base | Massa | Impressão (US$) | R4V4 (28/44/60/76) |
+|---|---|---|---|---|---|
+| 32 | 240 | 86,7 + 73,2 = **159,9 cm³** | 161 g | **~44,4** | 46,7 (168,2 cm³) |
+| 48 | 314 | 112,3 + 101,0 = 213,3 | 215 g | ~59,2 | ~61,4 |
+| 64 | 388 | 137,8 + 128,8 = 266,6 | 269 g | ~74,0 | ~76,2 |
+| 80 | 462 | 163,4 + 156,6 = 320,0 | 323 g | ~88,9 | ~90,9 |
+
+O custo cresce ~**US$ 14,8 por módulo** (valores com a ligação D: entalhes de plugue do OUT tirados, a base ganhou ~1 cm³). As 4 teclas a mais não somam plástico (a tampa ganha 4 furos); o que cai é o comprimento (-12 mm). **Custo das 4 teclas e botões a mais (eletrônica):** 4 TMAG5253 + 4 botões; o número de réguas não muda (8, já eram 4 posições cada).
+
+### 6. Ligação das réguas: opções A-D e recomendada D, com os valores reais da eletrônica
+
+A eletrônica fechou (`ELETRONICA.md` seção R5V4; `POSICIONAMENTO.md` parte 3, seções 10-12; `pcb/regua/ligacao.json`): **D (misto)** = 4 cabos SH-6 de **25 mm** da placa ao J1 da 1ª régua + **elo soldado de 5 fios** entre réguas da mesma fileira (5 pads 1,4 x 0,7 mm em u = 2,1 e 71,9, v -0,4..3,6, fio 28-30 AWG de ~7 mm, ~1 mm abaixo da régua); o J2 da régua fica sem cabo. **Concordo com ela: coincide com a recomendação geométrica do design.** Parâmetros em `case/layout_r4.py` (`LINK = "D"`, `J2_FITTED`, `LK_*`, `link_box`) e `case/ligacao_v5.py` (`PARTS`); o modelo `case_r4.py` já usa D (cabos só placa -> régua, elos como envelope sob a junção).
+
+**Verificação no modelo (32 / 48 / 64 / 80 teclas, todas as junções: 4 / 8 / 12 / 16):** elos x bandeja, pinos, sensores, parafusos, cabeçalhos e réguas = **0 mm³** em todos; o resto do fit check segue 0 (seção 4). Folgas: pad mais próximo ao pino da última/primeira tecla **0,5 mm**; ao trilho (|y| 4,2) **0,25 mm** (pad até y 3,95); o espaço sob a junção (v -0,9..4,0, u 70,9..76,8) está **livre de peças, de bossas e de postes**: nenhum poste cai a menos de 18,5 mm de uma junção (por construção, ver seção 1), então o poste do entalhe de ponta (u ±1) **nunca** coincide com um elo. O fio e a solda (1 mm, envelope 1,4) ficam a 5,5 a 12,5 mm acima do piso da bolsa. Opções (envelopes; `ligacao_elo_v5.png`: planta e corte de A, B, C, D na junção das réguas 1|2 da fileira 2): **A** (cabo SH nas pontas, com 100 mm de estoque) 0 mm³ contra a bandeja com os entalhes de plugue, mas a sobra de ~86 mm é o problema que a eletrônica apontou (a bolsa tem 8,4 mm de largura e 5,4 mm livres abaixo dos pinos); **B** e **D** 0; **C** (FPC 6 x 0,5, profundidade 3,9 supostos) **bate no pino da última tecla (8,4 mm³ em 32 teclas) e no cabeçalho J2 (50 mm³)**: só com conector raso (<= 3,0 mm) e J2 fora da régua.
+
+**Os 4 cabos placa -> 1ª régua** (`ligacao_placa_v5.png`): desnível **0 / 2 / 4 / 7 mm**; distância reta 3D **17,8 / 13,1 / 18,3 / 14,7 mm**; o cabo de 25 mm sobra **7,2 / 11,9 / 6,7 / 10,3 mm** (laço livre sobre o piso entre a borda da placa e as réguas, x 78 a 95). A curva da planta tem raio livre da ordem de 5-8 mm (laço nas fileiras 1 e 3, de onde o plugue chega por trás); **não medi o raio mínimo do feixe de 5 fios**: para um cabo de 25 mm o comprimento sobra, mas se o J crimpar o cabo sob medida convém cortá-lo em ~20 mm, o que ainda deixa 2 a 7 mm de folga.
+
+**Respostas à eletrônica (suas 5 perguntas):**
+1. **Espaço sob a junção:** livre, ver acima (0 mm³ em todas as junções de 32 a 80 teclas; o poste do entalhe de ponta não cai em junção).
+2. **Fileira 4 em x 79,95:** o cabo da placa (J604) segue o **mesmo contrato da fileira 2** (J1 em u 5,9, boca para trás); o plugue da fileira 4 (y 13,5-18,5, atrás da régua) **não passa sob nada**: não há fileira atrás, só o piso e o telhado (z 19,1), e a lateral é a parede (y 2). Os plugues das fileiras 1, 2 e 3 entram na bolsa da fileira de trás pelo entalhe do trilho da frente dela. M2 da fileira 4 = os da fileira 2 (37 e 55,5).
+3. **Cabos de 25 mm:** o comprimento de 25 mm **serve** nas 4 fileiras (folga 6,7 a 11,9 mm); o raio do feixe não foi medido (ver acima).
+4. **Retirar J601-J604 se o J escolher B:** o design **aceita**. A parede da interface (x 77,5) não depende dos conectores; sumiriam os 4 plugues da primeira régua e seus 4 entalhes, e os pads na borda direita da placa (x ~75) ficam sob o telhado da interface, sem conflito de altura. Só muda a placa principal.
+5. **Janela do J2:** **a janela de plugue (entalhe de 8 mm no trilho da frente da fileira de trás) sai** (já tirada do modelo: os trilhos da frente das fileiras 2, 3 e 4 ficam com 87-89 %, 88-99 % e 87-89 % do comprimento, antes 79-87 %). O **entalhe do cabeçalho no trilho de trás da própria régua fica enquanto o J2 estiver soldado**: o corpo do cabeçalho tem 4,25 mm de altura e ocupa a faixa do trilho (y -7,5 a -1,35). Se a eletrônica **tirar o J2 do BOM** na D (a régua só aceitaria a opção A com um furo a mais), o entalhe também sai (`J2_FITTED = False`) e o trilho de trás fica inteiro (hoje 70 %).
+
+Recomendação do design: **D**, como a eletrônica. Custo da impressão com D (menos entalhes): ver seção 5. Montagem: a solda dos elos é feita com a régua apoiada no trilho, pelo lado de baixo: o J precisa de acesso por baixo da junção antes de fechar a bandeja (aberta, a bolsa tem 6,9 a 13,9 mm de altura).
+
+### 7. Notas, achados e pendências
+
+1. A `geometria.py` da raiz da V4 ainda tem as 28 teclas (não é minha): o modelo, a planta e os cortes usam `layout_r4.py`. Pedido à eletrônica/gestão: atualizar `G.ROWS` se outros scripts (grade, `fab`) dependerem dela. A `grade_fab` usa `G.KEYS` (28 teclas) e **precisa ser regenerada para 32**; não é minha.
+2. `fit_check.py`/`fit_extra.py` (herdados da V3) não foram tocados; o fit check da V4 é o do `case_r4.py`.
+3. Chanfro e cantos só no modelo da tampa; os renders fotográficos da V4 (se houver) precisam ser refeitos depois.
+
+### Perguntas para o design
+
+1. **Margem da ponta direita:** 1,8 mm de deck plano depois da borda do último botão (3,8 até a borda externa) basta ao J? Se não, quanto (cada mm de comprimento custa ~US$ 0,18)?
+2. **Chanfro 2,0 x 2,0 em cima e 1,0 x 1,0 embaixo:** aprovado, ou prefere raio em vez de chanfro (um raio de 2 mm deixa 2,0 mm de material no mesmo ponto, contra 1,41 mm do chanfro; é mais caro de modelar e de verificar)?
+3. **J2 na régua:** a eletrônica tira o J2 do BOM na D (o entalhe de cabeçalho no trilho de trás some e o trilho volta a 100 %) ou mantém (BOM igual, aceita a opção A)?
+4. A `geometria.py` e a `grade_fab` passam para 32 teclas: quem faz (eletrônica?) e quando?
+
+---
+
 ## R4V4 — atendida (21 nov 2026, tarefas 2, 3, 1 sua parte e 6)
 
 Respondo à **R4V4** (SPEC do Chat). Nada foi encomendado, impresso ou montado. As seções R3V4 e anteriores abaixo continuam valendo, menos onde esta diz o contrário.

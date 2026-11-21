@@ -1,0 +1,90 @@
+{
+ "32": {
+  "comprimento_mm": 240.0,
+  "reguas": 8,
+  "volume_cm3": {
+   "tampa": 86.7,
+   "base": 73.2
+  },
+  "total_cm3": 159.9,
+  "massa_g": 161,
+  "impressao_usd": 44.4,
+  "nominal": 0,
+  "carcacas_+0,5": 8.3,
+  "elos": {
+   "elos x base": 0,
+   "elos x pinos": 0,
+   "elos x sensores": 0,
+   "elos x parafusos": 0,
+   "elos x cabecalhos": 0,
+   "elos x reguas": 0
+  },
+  "ligacao": "D"
+ },
+ "48": {
+  "comprimento_mm": 314.0,
+  "reguas": 12,
+  "volume_cm3": {
+   "tampa": 112.3,
+   "base": 101.0
+  },
+  "total_cm3": 213.3,
+  "massa_g": 215,
+  "impressao_usd": 59.2,
+  "nominal": 0,
+  "carcacas_+0,5": 12.45,
+  "elos": {
+   "elos x base": 0,
+   "elos x pinos": 0,
+   "elos x sensores": 0,
+   "elos x parafusos": 0,
+   "elos x cabecalhos": 0,
+   "elos x reguas": 0
+  },
+  "ligacao": "D"
+ },
+ "64": {
+  "comprimento_mm": 388.0,
+  "reguas": 16,
+  "volume_cm3": {
+   "tampa": 137.8,
+   "base": 128.8
+  },
+  "total_cm3": 266.6,
+  "massa_g": 269,
+  "impressao_usd": 74.0,
+  "nominal": 0,
+  "carcacas_+0,5": 16.61,
+  "elos": {
+   "elos x base": 0,
+   "elos x pinos": 0,
+   "elos x sensores": 0,
+   "elos x parafusos": 0,
+   "elos x cabecalhos": 0,
+   "elos x reguas": 0
+  },
+  "ligacao": "D"
+ },
+ "80": {
+  "comprimento_mm": 462.0,
+  "reguas": 20,
+  "volume_cm3": {
+   "tampa": 163.4,
+   "base": 156.6
+  },
+  "total_cm3": 320.0,
+  "massa_g": 323,
+  "impressao_usd": 88.9,
+  "nominal": 0,
+  "carcacas_+0,5": 20.76,
+  "elos": {
+   "elos x base": 0,
+   "elos x pinos": 0,
+   "elos x sensores": 0,
+   "elos x parafusos": 0,
+   "elos x cabecalhos": 0,
+   "elos x reguas": 0
+  },
+  "ligacao": "D"
+ }
+}

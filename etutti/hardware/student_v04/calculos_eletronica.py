@@ -175,8 +175,43 @@ def cost():
     return res
 
 
+def escala():
+    """R5V4: cost of the whole instrument for 32 / 48 / 64 / 80 keys (F2, minimum JLCPCB order, no freight). Differences from the
+    R4V4 table: 32 keys instead of 28 (the 8 rulers already carried 4 sensors each: the electronics do not change, only +4 Gateron keys
+    and +4 buttons), the cables line (3-8) replaced by the recommended link D, and larger sizes order whole panels of 5 rulers."""
+    base = cost()
+    rp = base["regua_pecas_cada_12"]
+    f2_lo, f2_hi = base["F2_total"]
+    old_cables = base["F2"]["cabos SH 6 vias 8 un. (est.)"]
+    f2_lo -= old_cables[0]
+    f2_hi -= old_cables[1]
+    key_lo, key_hi = 24.5 / 28, 26.6 / 28                 # US$ per KS-20 Orange (V3 page range)
+    out = {}
+    for keys in (32, 48, 64, 80):
+        n_r = keys // 4
+        panels = max(2, math.ceil(n_r / 5))               # assembled panels of 5 (JLCPCB minimum: 2)
+        ordered = 5 * panels
+        d_keys = keys - 28
+        lo = f2_lo + d_keys * key_lo + (ordered - 10) * rp
+        hi = f2_hi + d_keys * key_hi + (ordered - 10) * rp
+        elos = keys // 4 - 4 + 4                           # 4 board links + 4 per extra module
+        in_row = 4 * (keys // 16 - 1)
+        link_solder = 4.0                                  # 30 AWG wire + flux (est.)
+        link_cables_crimp = 4 * 0.6 + 30.0                 # 4 cables made at home: contacts/housings + a crimp tool (est.)
+        out[keys] = {"reguas": n_r, "reguas_encomendadas": ordered, "paineis_montados": panels, "elos_na_fileira": in_row,
+                     "elos_placa_regua": 4, "juntas_de_solda_D": 10 * in_row,
+                     "min_montagem_D": round(4 * 1.5 + 5.0 * in_row), "min_montagem_B": round(5.0 * (in_row + 4)),
+                     "sem_ligacao_USD": [round(lo, 2), round(hi, 2)],
+                     "D_cabos_em_casa_USD": [round(lo + link_solder + link_cables_crimp, 2), round(hi + link_solder + link_cables_crimp, 2)],
+                     "D_cabos_lote50_USD": [round(lo + link_solder + 150.0, 2), round(hi + link_solder + 150.0, 2)],
+                     "B_tudo_soldado_USD": [round(lo + link_solder, 2), round(hi + link_solder, 2)],
+                     "nota": "caixa/botoes: so o preco de 28 teclas do design (51,2) entra; 32 teclas usam o mesmo case (as 8 reguas ja estavam la); 48/64/80: a pedir ao design"}
+    return out
+
+
 def main():
     OUT["scan"] = scan()
+    OUT["escala_R5V4"] = escala()
     OUT["custo"] = cost()
     json.dump(OUT, open(os.path.join(HERE, "calculos_eletronica.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print(json.dumps(OUT, indent=1, ensure_ascii=False))

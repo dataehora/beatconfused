@@ -116,6 +116,116 @@
   },
   "corrente_media_60us_de_70": 10.4
  },
+ "escala_R5V4": {
+  "32": {
+   "reguas": 8,
+   "reguas_encomendadas": 10,
+   "paineis_montados": 2,
+   "elos_na_fileira": 4,
+   "elos_placa_regua": 4,
+   "juntas_de_solda_D": 40,
+   "min_montagem_D": 26,
+   "min_montagem_B": 40,
+   "sem_ligacao_USD": [
+    296.63,
+    370.33
+   ],
+   "D_cabos_em_casa_USD": [
+    333.03,
+    406.73
+   ],
+   "D_cabos_lote50_USD": [
+    450.63,
+    524.33
+   ],
+   "B_tudo_soldado_USD": [
+    300.63,
+    374.33
+   ],
+   "nota": "caixa/botoes: so o preco de 28 teclas do design (51,2) entra; 32 teclas usam o mesmo case (as 8 reguas ja estavam la); 48/64/80: a pedir ao design"
+  },
+  "48": {
+   "reguas": 12,
+   "reguas_encomendadas": 15,
+   "paineis_montados": 3,
+   "elos_na_fileira": 8,
+   "elos_placa_regua": 4,
+   "juntas_de_solda_D": 80,
+   "min_montagem_D": 46,
+   "min_montagem_B": 60,
+   "sem_ligacao_USD": [
+    322.27,
+    397.17
+   ],
+   "D_cabos_em_casa_USD": [
+    358.67,
+    433.57
+   ],
+   "D_cabos_lote50_USD": [
+    476.27,
+    551.17
+   ],
+   "B_tudo_soldado_USD": [
+    326.27,
+    401.17
+   ],
+   "nota": "caixa/botoes: so o preco de 28 teclas do design (51,2) entra; 32 teclas usam o mesmo case (as 8 reguas ja estavam la); 48/64/80: a pedir ao design"
+  },
+  "64": {
+   "reguas": 16,
+   "reguas_encomendadas": 20,
+   "paineis_montados": 4,
+   "elos_na_fileira": 12,
+   "elos_placa_regua": 4,
+   "juntas_de_solda_D": 120,
+   "min_montagem_D": 66,
+   "min_montagem_B": 80,
+   "sem_ligacao_USD": [
+    347.91,
+    424.01
+   ],
+   "D_cabos_em_casa_USD": [
+    384.31,
+    460.41
+   ],
+   "D_cabos_lote50_USD": [
+    501.91,
+    578.01
+   ],
+   "B_tudo_soldado_USD": [
+    351.91,
+    428.01
+   ],
+   "nota": "caixa/botoes: so o preco de 28 teclas do design (51,2) entra; 32 teclas usam o mesmo case (as 8 reguas ja estavam la); 48/64/80: a pedir ao design"
+  },
+  "80": {
+   "reguas": 20,
+   "reguas_encomendadas": 20,
+   "paineis_montados": 4,
+   "elos_na_fileira": 16,
+   "elos_placa_regua": 4,
+   "juntas_de_solda_D": 160,
+   "min_montagem_D": 86,
+   "min_montagem_B": 100,
+   "sem_ligacao_USD": [
+    361.91,
+    439.21
+   ],
+   "D_cabos_em_casa_USD": [
+    398.31,
+    475.61
+   ],
+   "D_cabos_lote50_USD": [
+    515.91,
+    593.21
+   ],
+   "B_tudo_soldado_USD": [
+    365.91,
+    443.21
+   ],
+   "nota": "caixa/botoes: so o preco de 28 teclas do design (51,2) entra; 32 teclas usam o mesmo case (as 8 reguas ja estavam la); 48/64/80: a pedir ao design"
+  }
+ },
  "custo": {
   "F1_pecas_2placas": 65.18,
   "F1_tipos_ext": 17,
