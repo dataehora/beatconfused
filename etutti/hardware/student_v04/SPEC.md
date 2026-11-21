@@ -1,4 +1,121 @@
-# eTutti Student V4 — SPEC R5V4
+# eTutti Student V4 — SPEC R6V4
+
+Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #187 (relatórios da R5V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R6V4".
+
+**Regras que continuam:**
+- resumos visuais de **planta e corte** para cada decisão;
+- **nome da nota em cada tecla** em toda figura do teclado.
+
+## Mudanças desde a R5V4
+
+### 1. Ligação das réguas: estudo de conectores fixos (mudança principal; a D fica suspensa)
+
+O J prefere não soldar a cadeia de réguas. A arquitetura que ele quer:
+- um **conector na placa principal** liga a um **conector fêmea na 1ª régua** de cada fileira;
+- cada régua tem uma **entrada fêmea à esquerda** e uma **saída macho à direita**;
+- as réguas de uma fileira se ligam em série, de encaixe, sem solda nem cabo.
+
+Referência dada pelo J: Sullins **PPPC051LGBN-RC** (fêmea de 5 vias, passo 2,54, em ângulo, PTH). Esse tamanho é só a ideia: a peça deve ser SMD no fundo, montada pela JLCPCB, e caber na bolsa.
+
+**Pré-análise do Chat** (`spec_img/juncao_r6.png`, script `juncao_r6.py`; medidas dos conectores **estimadas**):
+- Na junção, a faixa livre no eixo da régua tem só **6,6 mm** entre o pino da última tecla de A e o da primeira de B.
+- **E1, a ideia literal** (macho em ângulo no fim de A entrando numa fêmea em ângulo no início de B, pinos ao longo de x):
+  - a fileira de contatos fica ao longo de y, atravessando o eixo;
+  - uma fêmea de 1,27 com pads (~5,6 mm de fundo) bate no pino da 1ª tecla de B;
+  - só serve se existir uma fêmea com **≤ 3,3 mm de fundo, pads incluídos**, ou montada na borda;
+  - a montagem pede deslizar cada régua ~3 mm em x antes de parafusar: a fileira é montada da direita para a esquerda.
+- **E2, alternativa:**
+  - fêmea igual nas duas pontas de cada régua, de boca para baixo, com a fileira de contatos **ao longo de x** na faixa da frente (y +1,0 a +4,1), longe dos pinos e sensores;
+  - uma **ponte** (PCB pequena com dois machos 1×5) liga as duas réguas por baixo;
+  - a régua desce na vertical sobre a ponte ao ser posta nos trilhos;
+  - altura estimada de ~5,2 mm na bolsa de 6,9 mm da fileira 1;
+  - as pontes podem ir no mesmo painel das réguas.
+  
+  Não é o "macho à direita" do J, mas atende ao objetivo dele: sem solda, réguas todas iguais.
+
+**Tarefa (Design + Eletrônica):** estudar com desenhos reais de fabricante e fechar uma recomendação.
+1. **Junção régua–régua:**
+   - **E1:** procurar fêmeas em ângulo de perfil curto, inclusive montadas na borda, nos passos de 1,27, 1,0 e 2,0 mm.
+   - **E2:** a ponte, com ponte macho ou ponte fêmea com machos nas réguas.
+   - Qualquer outra família que caiba: placa-a-placa coplanar, card-edge, contatos de mola.
+   - Para cada opção: peças LCSC/JLCPCB (classe Basic/Extended, estoque, preço), altura na bolsa da fileira 1 (6,9 mm) com folga, conflito com pinos, sensores, 595, bossas M2 e trilhos, modo de montar e desmontar, e retenção (o encaixe não pode soltar com a vibração do tocar).
+2. **Placa principal → 1ª régua:**
+   - Dado do modelo: o topo da placa (z 0) é o plano da fileira 1. As fileiras 2 e 4 começam 2,45 mm depois da borda da placa, mas 2 e 7 mm mais altas; as fileiras 1 e 3 começam 11,7 mm depois.
+   - Um encaixe rígido direto parece impossível. Confirmar, e propor o cabo com conector nas duas pontas que chega à fêmea de entrada da régua.
+   - Caminhos possíveis: cabo pronto do mesmo sistema, cabo de fita/IDC fácil de crimpar em casa, o SH de 100 mm cortado ao meio (solda só na placa), ou adaptador.
+3. **Custo:** tabela 32/48/64/80 contra a D: peças, tipos Extended a mais ou a menos, pontes e montagem.
+   - Se o SH sair das réguas, sai também um tipo Extended (US$ 3,09).
+   - Orientação do J: aceitável se o custo **não for muito mais alto**. Referência do Chat para 32 teclas: até ~US$ 15 acima da D. O J decide.
+4. **Entregas:**
+   - planta e corte de cada opção na junção (com as notas das teclas);
+   - fit check 32/48/64/80;
+   - recomendação.
+   
+   A D continua como plano de reserva.
+
+### 2. J2 da régua
+
+A economia de tirar o J2 é pequena: ~US$ 0,07 da peça mais as juntas, ≈ **US$ 0,08 por régua**, US$ 0,8 nas 10 réguas montadas. O tipo Extended continua, porque o J1 usa a mesma peça. A decisão sobre o J2 **segue o item 1**: se a cadeia passar para conectores fixos, os dois SH podem sair da régua.
+
+### 3. Case: borda direita +4 mm e chanfro
+
+- Aprovado **+4 mm** de deck plano depois do último botão. O case de 32 teclas fica com **244 mm**, e os de 48/64/80 com 318/392/466 mm. Conferir se a tampa ainda cabe na mesa FDM de 250 mm.
+- Aprovado o chanfro externo **2 × 2 mm em cima e 1 × 1 mm embaixo**.
+
+### 4. Arquivos de 32 teclas
+
+- `geometria.py` e `pcb/grade_fab.py` passam para 32 teclas (eletrônica).
+- A grade-régua sai do contorno de 32 teclas.
+
+### 5. Voz e microfone
+
+- **Padrão: microfone de headset**, a ~2–3 cm da boca. O limiar do expansor e os ganhos de fábrica são calibrados para isso.
+- Os **efeitos de voz** (expansor, harmonizador e supressor de microfonia) **só se ativam com um microfone ligado na entrada IN** (J302):
+  - sem microfone, os itens de voz somem do menu (ou aparecem desativados);
+  - a eletrônica confirma como detectar o plugue (o contato de chave da ponta do PJ-327A, pino 3, chega a um pino do Teensy?) e diz se falta algo na placa;
+  - um plugue de linha (sem microfone) não deve ligar os efeitos de voz; se o hardware não conseguir distinguir, dizer.
+- Com microfone: supressor de microfonia desligado por padrão; alto-falante nunca salvo ligado (como a R5V4 propôs).
+
+### 6. Harmonizador "seguir a tecla"
+
+- Três modos:
+  - **exato:** como está;
+  - **ajuda:** puxa a voz só em parte para a nota tocada, com intensidade ajustável no menu;
+  - **intervalo:** mantém a distância entre as notas, com a voz natural.
+- **Até 4 vozes** (3 ou 4, escolha no menu). Conferir memória, CPU e latência com 4 vozes junto com o acordeão de 4 registros.
+
+### 7. Tela
+
+- Idiomas: **português e inglês**, com minúsculas e acentos (fonte com acentos, ~+2 KB). A escolha fica no menu.
+- Os textos ficam numa tabela fácil de estender para outros idiomas depois.
+
+### 8. Respostas da R5V4 aprovadas sem mudança
+
+- Clique curto do seletor age ao soltar.
+- Alto-falante nunca salvo ligado.
+- Passada de 80 teclas.
+- CCs e mapa de notas do usuário na fase da página.
+- Página da V4 com simulação clicável da interface: continua para depois do hardware.
+
+### 9. Portão P
+
+Continua **fechado**. A placa principal depende da ligação escolhida no item 1 (J601–J604 ou pads), e a régua também. O J libera o roteamento numa próxima revisão, depois de escolher a ligação.
+
+## Tarefas para o Code (R6V4)
+
+| Área | Tarefa |
+|---|---|
+| Design | item 1 (geometria das opções na junção, planta e corte, fit check 32–80); item 3 (244 mm, chanfro); figura do teclado com notas em toda planta |
+| Eletrônica | item 1 (peças, classe, preço, custo 32–80, cabo placa → régua); item 2; item 4; item 5 (detecção do microfone em J302) |
+| Programação e som | item 5 (efeitos só com microfone, padrão headset); item 6 (3 modos, até 4 vozes, medir CPU e memória); item 7 (PT/EN com acentos) |
+| Roteamento | aguarda o portão P |
+
+**Perguntas que o Chat espera nos relatórios:** a recomendação de ligação (E1, E2 ou outra) com custo e figura; como detectar o microfone; CPU e memória com 4 vozes.
+
+---
+
+# Anexo — SPEC R5V4 (referência)
 
 Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #185 (relatórios da R4V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R5V4".
