@@ -33,10 +33,10 @@ import matplotlib.pyplot as plt   # noqa: E402
 import numpy as np                # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CASE_JSON = os.path.join(HERE, "..", "case", "out", "case.json")
+CASE_JSON = os.path.join(HERE, "..", "case", "out", "r4_28.json")
 RHO, C = 1.18, 343.0
-NOMINAL = {"fs": 450.0, "qts": 1.2, "sd_cm2": math.pi * 2.3 ** 2 / 4, "mms_g": 0.20}
-RANGE = {"fs": (380.0, 550.0), "qts": (0.9, 1.6), "vas": (8.0, 25.0)}
+NOMINAL = {"fs": 623.0, "qts": 1.63, "sd_cm2": 4.52, "mms_g": 0.087, "vas_cm3": 21.5}     # Dayton CE28MB-8 datasheet (R4V4)
+RANGE = {"fs": (560.0, 690.0), "qts": (1.4, 1.9), "vas": (18.0, 26.0)}    # +-10 % round the datasheet values
 LOWEST_NOTE = 196.0        # G3
 
 
@@ -60,10 +60,10 @@ def f3(fc, qtc):
 
 
 def main():
-    modelled = json.load(open(CASE_JSON, encoding="utf-8"))["pecas"]["caixa_acustica"]["camara_cm3"] \
+    modelled = json.load(open(CASE_JSON, encoding="utf-8"))["caixa_acustica"]["camara_cm3"] \
         if os.path.exists(CASE_JSON) else 3.9
-    vas = vas_cm3(NOMINAL["fs"], NOMINAL["sd_cm2"], NOMINAL["mms_g"])
-    boxes = [("caixa em L da V3 (SPEC v4), como modelada", modelled), ("a mesma, com manta acustica (+15 %)", modelled * 1.15),
+    vas = NOMINAL["vas_cm3"]
+    boxes = [("caixa em L da R4V4, como modelada", modelled), ("a mesma, com manta acustica (+15 %)", modelled * 1.15),
              ("caixa redonda da SPEC v1 (3,9 cm3)", 3.9), ("caixa em L da V2 (10,4 cm3)", 10.4), ("caixa de 12 cm3", 12.0), ("caixa de 20 cm3", 20.0),
              ("sem caixa: o case inteiro (~150 cm3, vazando)", 150.0)]
     f = np.logspace(math.log10(100), math.log10(5000), 300)
@@ -86,7 +86,7 @@ def main():
     ax.set_ylim(-40, 12)
     ax.set_xlabel("frequencia (Hz)")
     ax.set_ylabel("nivel em relacao aos medios (dB)")
-    ax.set_title("Student V3: alto-falante de 28 mm em caixa fechada (modelo de 2a ordem, alto-falante nominal)")
+    ax.set_title("Student V4 (R4V4): Dayton CE28MB-8 em caixa fechada (modelo de 2a ordem, alto-falante nominal)")
     ax.grid(True, which="both", alpha=0.3)
     ax.legend(fontsize=7, loc="lower right")
     fig.tight_layout()

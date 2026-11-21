@@ -1,0 +1,1932 @@
+(export
+	(version "E")
+	(design
+		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\student_v04\\kicad\\regua\\student_v04_regua.kicad_sch")
+		(date "2026-11-21T16:33:59")
+		(tool "Eeschema 10.0.7")
+		(sheet
+			(number "1")
+			(name "/")
+			(tstamps "/")
+			(title_block
+				(title "eTutti Student V4 · esquema")
+				(company "beatconfused.com")
+				(rev "Student V4 R4V4 regua")
+				(date "2026-11-21")
+				(source "student_v04_regua.kicad_sch")
+				(comment
+					(number "1")
+					(value "etutti/hardware/student_v04/pcb/schematic.py escreve este arquivo; nao editar a mao")
+				)
+				(comment
+					(number "2")
+					(value "")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+		(sheet
+			(number "2")
+			(name "/R · Regua/")
+			(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			(title_block
+				(title "eTutti Student V4 · R · Regua")
+				(company "beatconfused.com")
+				(rev "Student V4 R4V4 regua")
+				(date "2026-11-21")
+				(source "student_v04_regua_R.kicad_sch")
+				(comment
+					(number "1")
+					(value "etutti/hardware/student_v04/pcb/schematic.py escreve este arquivo; nao editar a mao")
+				)
+				(comment
+					(number "2")
+					(value "")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+	)
+	(components
+		(comp
+			(ref "C1")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 1, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S1")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 1, junto do pino 1")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S1")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "162bb16a-9899-50bb-9c9b-19bffcee8874")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C2")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 2, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S2")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 2, junto do pino 1")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S2")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "adf18e19-73de-5dbd-9530-67d7c101ffaf")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C3")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 3, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S3")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 3, junto do pino 1")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S3")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "7b76feb7-c286-502c-af26-d9f474f9d9ee")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C4")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 4, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S4")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 4, junto do pino 1")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S4")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "2cd90286-a3e2-5af3-9e8b-6c8735f78709")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C5")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do 595")
+			(fields
+				(field
+					(name "Codigo") "S5")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do 595")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S5")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "307c9b05-8f0e-528e-9ffb-97ebb5084f42")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C6")
+			(value "10uF")
+			(footprint "Capacitor_SMD:C_0805_2012Metric")
+			(description "reservatorio da regua (junto do conector de entrada)")
+			(fields
+				(field
+					(name "Codigo") "S5")
+				(field
+					(name "LCSC") "C15850")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0805_2012Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "reservatorio da regua (junto do conector de entrada)")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S5")
+			)
+			(property
+				(name "LCSC")
+				(value "C15850")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "6ba804ca-e3e1-5a52-af5b-f371d9492ce3")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J1")
+			(value "XY-SM06B-SRSS-TB")
+			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
+			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
+			(description "entrada (cabo vindo da placa principal ou da regua anterior); no fundo, no bolso do degrau; mesmo conector SH-6 clone XYECONN da placa principal")
+			(fields
+				(field
+					(name "Codigo") "S6")
+				(field
+					(name "LCSC") "C56123098")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
+				(field
+					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
+				(field
+					(name "Description") "entrada (cabo vindo da placa principal ou da regua anterior); no fundo, no bolso do degrau; mesmo conector SH-6 clone XYECONN da placa principal")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "Conn_01x06_MountingPin")
+				(description "Generic connectable mounting pin connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(property
+				(name "Codigo")
+				(value "S6")
+			)
+			(property
+				(name "LCSC")
+				(value "C56123098")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "connector")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Connector*:*_1x??-1MP*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "d24bd473-f0ce-54d3-83b6-527ff0ad4a29")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "MP")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J2")
+			(value "XY-SM06B-SRSS-TB")
+			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
+			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
+			(description "saida (cabo para a regua seguinte); pino 5 = QH' do 595 por 100 ohm; no fundo, no bolso do degrau; mesmo conector SH-6 clone XYECONN da placa principal")
+			(fields
+				(field
+					(name "Codigo") "S7")
+				(field
+					(name "LCSC") "C56123098")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
+				(field
+					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
+				(field
+					(name "Description") "saida (cabo para a regua seguinte); pino 5 = QH' do 595 por 100 ohm; no fundo, no bolso do degrau; mesmo conector SH-6 clone XYECONN da placa principal")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "Conn_01x06_MountingPin")
+				(description "Generic connectable mounting pin connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(property
+				(name "Codigo")
+				(value "S7")
+			)
+			(property
+				(name "LCSC")
+				(value "C56123098")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "connector")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Connector*:*_1x??-1MP*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "1ec4fd0e-ffb6-5d2e-9a55-5c03eaa56147")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "MP")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R1")
+			(value "100")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(description "serie no QH' (cascata para a proxima regua)")
+			(fields
+				(field
+					(name "Codigo") "S7")
+				(field
+					(name "LCSC") "C25076")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "serie no QH' (cascata para a proxima regua)")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "S7")
+			)
+			(property
+				(name "LCSC")
+				(value "C25076")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "a376d467-5b06-5985-8cd0-f9fe149a201f")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U1")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 1 da regua: no verso, no centro da celula (u = 9.25 mm); OUT em comum com os 3 outros; EN = QA..QD do 595 (saida em Hi-Z com EN baixo)")
+			(fields
+				(field
+					(name "Codigo") "S1")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 1 da regua: no verso, no centro da celula (u = 9.25 mm); OUT em comum com os 3 outros; EN = QA..QD do 595 (saida em Hi-Z com EN baixo)")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4")
+			)
+			(property
+				(name "Codigo")
+				(value "S1")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "3250eb21-3780-5a24-8c23-0888a20d42d1")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U2")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 2 da regua: no verso, no centro da celula (u = 27.75 mm); OUT em comum com os 3 outros; EN = QA..QD do 595 (saida em Hi-Z com EN baixo)")
+			(fields
+				(field
+					(name "Codigo") "S2")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 2 da regua: no verso, no centro da celula (u = 27.75 mm); OUT em comum com os 3 outros; EN = QA..QD do 595 (saida em Hi-Z com EN baixo)")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4")
+			)
+			(property
+				(name "Codigo")
+				(value "S2")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "45fc40e0-515e-5aa6-9fd3-c49ed860e135")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U3")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 3 da regua: no verso, no centro da celula (u = 46.25 mm); OUT em comum com os 3 outros; EN = QA..QD do 595 (saida em Hi-Z com EN baixo)")
+			(fields
+				(field
+					(name "Codigo") "S3")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 3 da regua: no verso, no centro da celula (u = 46.25 mm); OUT em comum com os 3 outros; EN = QA..QD do 595 (saida em Hi-Z com EN baixo)")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4")
+			)
+			(property
+				(name "Codigo")
+				(value "S3")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "dcf25157-2c47-5a27-91c2-79b91bda1890")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U4")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 4 da regua: no verso, no centro da celula (u = 64.75 mm); OUT em comum com os 3 outros; EN = QA..QD do 595 (saida em Hi-Z com EN baixo)")
+			(fields
+				(field
+					(name "Codigo") "S4")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 4 da regua: no verso, no centro da celula (u = 64.75 mm); OUT em comum com os 3 outros; EN = QA..QD do 595 (saida em Hi-Z com EN baixo)")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4")
+			)
+			(property
+				(name "Codigo")
+				(value "S4")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "cdad59a0-8860-519e-bf84-3154000d1d89")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U5")
+			(value "74HC595BQ,115")
+			(footprint "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm")
+			(datasheet "https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
+			(description "registrador de deslocamento 8 bits em DHVQFN-16 (2,5 x 3,5 mm): o SOIC-16 (C5947, Basic) tem 6,9 mm de pads e nao cabe numa regua de 14 mm com pinos a 10,16 mm; QA..QD ligam o EN dos sensores 1..4, QE..QH sem uso; QH' = cascata; pad 17 no GND")
+			(fields
+				(field
+					(name "Codigo") "S5")
+				(field
+					(name "LCSC") "C730243")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm")
+				(field
+					(name "Datasheet") "https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
+				(field
+					(name "Description") "registrador de deslocamento 8 bits em DHVQFN-16 (2,5 x 3,5 mm): o SOIC-16 (C5947, Basic) tem 6,9 mm de pads e nao cabe numa regua de 14 mm com pinos a 10,16 mm; QA..QD ligam o EN dos sensores 1..4, QE..QH sem uso; QH' = cascata; pad 17 no GND")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "74HC595BQ")
+				(description "8-bit shift register with output latch, DHVQFN-16 (SOT763-1), 17 = exposed pad = GND")
+			)
+			(property
+				(name "Codigo")
+				(value "S5")
+			)
+			(property
+				(name "LCSC")
+				(value "C730243")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
+			)
+			(tstamps "18023029-4464-5610-8b7f-9b3cbc270cfb")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "14")
+						)
+						(pin
+							(num "11")
+						)
+						(pin
+							(num "12")
+						)
+						(pin
+							(num "13")
+						)
+						(pin
+							(num "10")
+						)
+						(pin
+							(num "16")
+						)
+						(pin
+							(num "8")
+						)
+						(pin
+							(num "17")
+						)
+						(pin
+							(num "15")
+						)
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "7")
+						)
+						(pin
+							(num "9")
+						)
+					)
+				)
+			)
+		)
+	)
+	(groups)
+	(variants)
+	(libparts
+		(libpart
+			(lib "viaggio_micromod")
+			(part "74HC595BQ")
+			(description "8-bit shift register with output latch, DHVQFN-16 (SOT763-1), 17 = exposed pad = GND")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "74HC595BQ")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "8-bit shift register with output latch, DHVQFN-16 (SOT763-1), 17 = exposed pad = GND")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "QB")
+					(type "output")
+				)
+				(pin
+					(num "2")
+					(name "QC")
+					(type "output")
+				)
+				(pin
+					(num "3")
+					(name "QD")
+					(type "output")
+				)
+				(pin
+					(num "4")
+					(name "QE")
+					(type "output")
+				)
+				(pin
+					(num "5")
+					(name "QF")
+					(type "output")
+				)
+				(pin
+					(num "6")
+					(name "QG")
+					(type "output")
+				)
+				(pin
+					(num "7")
+					(name "QH")
+					(type "output")
+				)
+				(pin
+					(num "8")
+					(name "GND")
+					(type "power_in")
+				)
+				(pin
+					(num "9")
+					(name "QH'")
+					(type "output")
+				)
+				(pin
+					(num "10")
+					(name "~{SRCLR}")
+					(type "input")
+				)
+				(pin
+					(num "11")
+					(name "SRCLK")
+					(type "input")
+				)
+				(pin
+					(num "12")
+					(name "RCLK")
+					(type "input")
+				)
+				(pin
+					(num "13")
+					(name "~{OE}")
+					(type "input")
+				)
+				(pin
+					(num "14")
+					(name "SER")
+					(type "input")
+				)
+				(pin
+					(num "15")
+					(name "QA")
+					(type "output")
+				)
+				(pin
+					(num "16")
+					(name "VCC")
+					(type "power_in")
+				)
+				(pin
+					(num "17")
+					(name "EP")
+					(type "power_in")
+				)
+			)
+		)
+		(libpart
+			(lib "viaggio_micromod")
+			(part "C")
+			(description "Unpolarized capacitor")
+			(footprints
+				(fp "C_*")
+			)
+			(fields
+				(field
+					(name "Reference") "C")
+				(field
+					(name "Value") "C")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Unpolarized capacitor")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "viaggio_micromod")
+			(part "Conn_01x06_MountingPin")
+			(description "Generic connectable mounting pin connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			(footprints
+				(fp "Connector*:*_1x??-1MP*")
+			)
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "Conn_01x06_MountingPin")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Generic connectable mounting pin connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "Pin_1")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "Pin_2")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "Pin_3")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "Pin_4")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "Pin_5")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "Pin_6")
+					(type "passive")
+				)
+				(pin
+					(num "MP")
+					(name "MountPin")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "viaggio_micromod")
+			(part "R")
+			(description "Resistor")
+			(footprints
+				(fp "R_*")
+			)
+			(fields
+				(field
+					(name "Reference") "R")
+				(field
+					(name "Value") "R")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Resistor")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "viaggio_micromod")
+			(part "TMAG5253BA3")
+			(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "TMAG5253BA3")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "TI TMAG5253 linear Hall sensor with enable, X2SON-4")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "VCC")
+					(type "power_in")
+				)
+				(pin
+					(num "2")
+					(name "GND")
+					(type "power_in")
+				)
+				(pin
+					(num "3")
+					(name "EN")
+					(type "input")
+				)
+				(pin
+					(num "4")
+					(name "OUT")
+					(type "tri_state")
+				)
+				(pin
+					(num "5")
+					(name "EP")
+					(type "passive")
+				)
+			)
+		)
+	)
+	(libraries
+		(library
+			(logical "viaggio_micromod")
+			(uri "${KIPRJMOD}/viaggio_micromod.kicad_sym")
+		)
+	)
+	(nets
+		(net
+			(code "1")
+			(name "+3V3")
+			(class "Default")
+			(node
+				(ref "C1")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C2")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C3")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C4")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C5")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C6")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J2")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U2")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U3")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U4")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U5")
+				(pin "10")
+				(pinfunction "~{SRCLR}_10")
+				(pintype "input")
+			)
+			(node
+				(ref "U5")
+				(pin "16")
+				(pinfunction "VCC_16")
+				(pintype "power_in")
+			)
+		)
+		(net
+			(code "2")
+			(name "CLK")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "4")
+				(pinfunction "Pin_4_4")
+				(pintype "passive")
+			)
+			(node
+				(ref "J2")
+				(pin "4")
+				(pinfunction "Pin_4_4")
+				(pintype "passive")
+			)
+			(node
+				(ref "U5")
+				(pin "11")
+				(pinfunction "SRCLK_11")
+				(pintype "input")
+			)
+			(node
+				(ref "U5")
+				(pin "12")
+				(pinfunction "RCLK_12")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "3")
+			(name "EN1")
+			(class "Default")
+			(node
+				(ref "U1")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U5")
+				(pin "15")
+				(pinfunction "QA_15")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "4")
+			(name "EN2")
+			(class "Default")
+			(node
+				(ref "U2")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U5")
+				(pin "1")
+				(pinfunction "QB_1")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "5")
+			(name "EN3")
+			(class "Default")
+			(node
+				(ref "U3")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U5")
+				(pin "2")
+				(pinfunction "QC_2")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "6")
+			(name "EN4")
+			(class "Default")
+			(node
+				(ref "U4")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U5")
+				(pin "3")
+				(pinfunction "QD_3")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "7")
+			(name "GND")
+			(class "Default")
+			(node
+				(ref "C1")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C2")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C3")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C4")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C5")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C6")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "2")
+				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "MP")
+				(pinfunction "MountPin_MP")
+				(pintype "passive")
+			)
+			(node
+				(ref "J2")
+				(pin "2")
+				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J2")
+				(pin "MP")
+				(pinfunction "MountPin_MP")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U1")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U2")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U3")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U4")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U4")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U5")
+				(pin "13")
+				(pinfunction "~{OE}_13")
+				(pintype "input")
+			)
+			(node
+				(ref "U5")
+				(pin "17")
+				(pinfunction "EP_17")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U5")
+				(pin "8")
+				(pinfunction "GND_8")
+				(pintype "power_in")
+			)
+		)
+		(net
+			(code "8")
+			(name "OUT")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "3")
+				(pinfunction "Pin_3_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "J2")
+				(pin "3")
+				(pinfunction "Pin_3_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U2")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U3")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U4")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+		)
+		(net
+			(code "9")
+			(name "OUT_B")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "6")
+				(pinfunction "Pin_6_6")
+				(pintype "passive")
+			)
+			(node
+				(ref "J2")
+				(pin "6")
+				(pinfunction "Pin_6_6")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "10")
+			(name "QHP")
+			(class "Default")
+			(node
+				(ref "R1")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U5")
+				(pin "9")
+				(pinfunction "QH'_9")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "11")
+			(name "QHP_J")
+			(class "Default")
+			(node
+				(ref "J2")
+				(pin "5")
+				(pinfunction "Pin_5_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "R1")
+				(pin "2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "12")
+			(name "SER")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "5")
+				(pinfunction "Pin_5_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U5")
+				(pin "14")
+				(pinfunction "SER_14")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "13")
+			(name "unconnected-(U5-QE-Pad4)")
+			(class "Default")
+			(node
+				(ref "U5")
+				(pin "4")
+				(pinfunction "QE_4")
+				(pintype "output+no_connect")
+			)
+		)
+		(net
+			(code "14")
+			(name "unconnected-(U5-QF-Pad5)")
+			(class "Default")
+			(node
+				(ref "U5")
+				(pin "5")
+				(pinfunction "QF_5")
+				(pintype "output+no_connect")
+			)
+		)
+		(net
+			(code "15")
+			(name "unconnected-(U5-QG-Pad6)")
+			(class "Default")
+			(node
+				(ref "U5")
+				(pin "6")
+				(pinfunction "QG_6")
+				(pintype "output+no_connect")
+			)
+		)
+		(net
+			(code "16")
+			(name "unconnected-(U5-QH-Pad7)")
+			(class "Default")
+			(node
+				(ref "U5")
+				(pin "7")
+				(pinfunction "QH_7")
+				(pintype "output+no_connect")
+			)
+		)
+	)
+)

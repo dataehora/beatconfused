@@ -143,9 +143,12 @@ const uint8_t HP_DET_PIN = 17;          // headphones in: ~0 V; out: ~1.4 V
 // Voice effects (R3V4 item 6): vocoder with the keyboard as carrier, pitch shifter,
 // echo, voice into the reverb, voice + keyboard mix. Everything starts switched off.
 #define V4_VOICE_FX 1
-// 1 = the voice is muted while the speaker is the output (microphone next to the speaker
-// would howl); 0 = it is heard on the speaker too. Untested on a real board.
-#define V4_VOICE_MUTE_SPEAKER 0
+// R4V4 item 4: the voice is heard only on the headphone / AUX jack by default; the speaker is an
+// option of the menu (CC 96) and the screen then warns about feedback (no compile switch any more).
+// 1 = the key scan runs in a timer interrupt above the audio's priority (see scanTick); 0 = in loop().
+#define V4_SCAN_TIMER 1
+// 1 = automatic feedback suppressor (FFT of the voice + notches, see voice_fx.h), off until the menu turns it on.
+#define V4_FEEDBACK_SUPPRESSOR 1
 // Throwaway measuring build, NOT for use: plays 8 notes by itself, steps through the voice
 // effects every 6 s and prints the audio CPU, the audio blocks and the time of a key pass on the
 // serial port (115200). Build with usb=serialmidi (arduino-cli ... teensyMM:usb=serialmidi,speed=396).
@@ -218,7 +221,13 @@ const uint32_t HOT_HOLD_US = 2000;            // "rising" is remembered this lon
 const uint32_t HOT_MIN_GAP_US = 40;           // least time between two reads of the same column in a burst
 const uint32_t MAX_KEY_GAP_US = 2200;         // the target for any key
 const uint32_t HOT_BUDGET_MIN_US = 300;       // a few rounds even when the pass alone is already long
+#if V4_SCAN_TIMER
+const uint32_t SCAN_TICK_US = 12;             // scanTick() runs this often (it returns at once until the sensors are awake)
+const int SCAN_PRIORITY = 96;                 // NVIC: lower = more urgent. USB 112, DMA 128 (I2S), audio update 208
+const uint32_t PASS_NOMINAL_US = (uint32_t)(LAYOUT_COLS * 72);   // one pass with no hot reads: 60 us wake + ~12 us work
+#else
 const uint32_t PASS_NOMINAL_US = (uint32_t)(LAYOUT_COLS * 67 + 40);   // one pass with no hot reads, no audio (ADC dual: 60 + 6 + 1)
+#endif
 // V4 switches (TODO = depends on a decision of the electronics agent):
 #define V4_FORCE_FULL_SPEED 1            // USB at 12 Mbit/s (R1V4 5.4 item 3); untested on a board
 #define V4_HAVE_OLED 1                   // 128 x 64 SSD1306 on I2C 0x3C (J401, I2C shared with the codec)
@@ -228,6 +237,9 @@ const uint32_t PASS_NOMINAL_US = (uint32_t)(LAYOUT_COLS * 67 + 40);   // one pas
 #endif
 const uint8_t OLED_ADDR = 0x3C;
 const int OLED_ROTATION = 2;             // as Adafruit_SSD1306::setRotation(2): upside down
+#if V4_HAVE_OLED && V4_VOICE_FX
+#define V4_MENU 1                        // R4V4 item 4: the menu on the OLED, driven by the two knobs
+#endif
 #else
 // ---- eTuttino keys (see etutti/hardware/README.md) ----
 // The notes sit on a grid of 4 rows x 12 columns (row r = accordion row
@@ -260,6 +272,10 @@ const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
   { -1,  24,  25,  27,  29,  18,  17,  39,  35,  36,  44,  32},
   { -1,  23,  28,  22,  26,  31,  37,  40,  47,  34,  33,  -1},
 };
+#endif
+
+#ifndef V4_MENU
+#define V4_MENU 0
 #endif
 
 // Chromatic button accordion layouts. Along a row each key is a minor
@@ -368,6 +384,7 @@ struct Key {
   uint32_t hotUntil;        // V4: the key counts as rising until this time (micros), see HOT_HOLD_US
 };
 Key keyState[MAX_KEYS];
+volatile bool scanPaused = false;   // V4 scan interrupt: set while loop() uses ADC1 or rewrites the keys' calibration
 int keyCount = 0;
 int velocityCurve = 2;      // 0 fixed, 1 soft, 2 normal, 3 hard
 bool keyTest = false;
@@ -416,29 +433,39 @@ AudioInputI2S            i2sIn;
 AudioAnalyzePeak         micPeak;
 AudioConnection          pmic(i2sIn, 0, micPeak, 0);
 #if V4_VOICE_FX
-// Voice effects (R3V4 item 6, voice_fx.h): mic -> VoiceInput (high-pass, gain, gate), then
+// Voice effects (R3V4 item 6, R4V4 item 4, voice_fx.h): mic -> VoiceInput (high-pass, gain, expander, notches), then
 //   vin -> vocoder voice input; the keyboard (toneFilter) is its carrier,
-//   vin -> pitch shifter (AudioEffectGranular),
+//   vin -> three pitch shifters (AudioEffectGranular), fixed interval or following the keys' notes,
+//   vin -> pitch tracker (YIN), vin -> FFT (feedback suppressor),
 //   vin + shifted -> echo,
 //   vin, shifted, echo -> voiceBus -> master (and into the reverb together with the keys).
-const int VOICE_HARM_SAMPLES = 12800;           // grain memory of the pitch shifter (library example size)
+const int VOICE_HARM_SAMPLES = 12800;           // grain memory of one pitch shifter (library example size)
+const int VOICE_HARM_N = 3;                     // pitch shifters: one per note the harmonizer follows (R4V4)
 const int VOICE_ECHO_SAMPLES = 32768;           // 743 ms
-DMAMEM int16_t harmMem[VOICE_HARM_SAMPLES];
+DMAMEM int16_t harmMem[VOICE_HARM_N][VOICE_HARM_SAMPLES];
 DMAMEM int16_t echoMem[VOICE_ECHO_SAMPLES];
 vfx::VoiceInput          vin;
-AudioEffectGranular      harm;
+AudioEffectGranular      harm[VOICE_HARM_N];
+AudioMixer4              harmMix;               // the shifters together (interval mode: only the first one)
+vfx::PitchTracker        pitchTrk;              // YIN on the voice, for the harmonizer that follows the keys
 vfx::VoiceEcho           echo;
 vfx::VocoderFx           voc;
 AudioMixer4              echoSrc;               // vin, shifted voice
 AudioMixer4              voiceBus;              // vin, shifted voice, echo
 AudioMixer4              roomIn;                // keys, voiceBus, vocoder: what the reverb hears
 AudioConnection          pvi(i2sIn, 0, vin, 0);
-AudioConnection          pvh(vin, 0, harm, 0);
+AudioConnection          pvh0(vin, 0, harm[0], 0);
+AudioConnection          pvh1(vin, 0, harm[1], 0);
+AudioConnection          pvh2(vin, 0, harm[2], 0);
+AudioConnection          phm0(harm[0], 0, harmMix, 0);
+AudioConnection          phm1(harm[1], 0, harmMix, 1);
+AudioConnection          phm2(harm[2], 0, harmMix, 2);
+AudioConnection          ppt(vin, 0, pitchTrk, 0);
 AudioConnection          pes0(vin, 0, echoSrc, 0);
-AudioConnection          pes1(harm, 0, echoSrc, 1);
+AudioConnection          pes1(harmMix, 0, echoSrc, 1);
 AudioConnection          pec(echoSrc, 0, echo, 0);
 AudioConnection          pvb0(vin, 0, voiceBus, 0);
-AudioConnection          pvb1(harm, 0, voiceBus, 1);
+AudioConnection          pvb1(harmMix, 0, voiceBus, 1);
 AudioConnection          pvb2(echo, 0, voiceBus, 2);
 AudioConnection          pvo0(vin, 0, voc, 0);
 AudioConnection          pvo1(toneFilter, 0, voc, 1);
@@ -446,6 +473,12 @@ AudioConnection          prm0(toneFilter, 0, roomIn, 0);
 AudioConnection          prm1(voiceBus, 0, roomIn, 1);
 AudioConnection          prm2(voc, 0, roomIn, 2);
 AudioConnection          pmv(voiceBus, 0, master, 2);
+#if V4_FEEDBACK_SUPPRESSOR
+// Automatic feedback suppressor (R4V4): a 1024-point FFT of the conditioned voice, watched in loop()
+// (vfx::FeedbackWatch); it is only connected while the menu option is on.
+AudioAnalyzeFFT1024      fftIn;
+AudioConnection          pfft(vin, 0, fftIn, 0);
+#endif
 AudioConnection          pmo(voc, 0, master, 3);
 #endif
 #endif
@@ -812,55 +845,109 @@ void registerChanged();   // keeps the selector in step with a register set over
 #endif
 
 #if ETUTTI_V4 && V4_VOICE_FX
-// ---- Voice effects: controls (R3V4 item 6) ----
+// ---- Voice effects: controls (R3V4 item 6, R4V4 item 4) ----
 // Everything starts off (all the levels 0): the microphone is not even read until one is raised.
 //   CC 16 voice (dry)        0..127   CC 76 echo level   CC 80 voice into the reverb
 //   CC 17 vocoder level      0..127   CC 77 echo time    60..740 ms
 //   CC 18 pitch shifter level         CC 78 echo feedback 0..0.85
 //   CC 19 pitch shift         -12..+12 semitones (64 = none)   CC 81 gate threshold
 //   CC 82 microphone gain (codec)     CC 83 keyboard level (0 = voice only)
+// R4V4:
+//   CC 84 gate attack 0.5..30 ms      CC 92 high-pass 60..400 Hz (default 90)
+//   CC 89 gate hold 0..500 ms         CC 93 expander ratio, value / 32 = 0 soft .. 3 hard gate
+//   CC 90 gate release 20..1000 ms    CC 94 automatic feedback notches (>= 64 on)
+//   CC 95 harmonizer follows the keys (>= 64; otherwise the fixed interval of CC 19)
+//   CC 96 voice also on the SPEAKER (>= 64; off at every start; the screen warns about feedback)
+//   CC 97 followed notes folded to the voice's own octave (>= 64, the default) or exact
+// The menu on the OLED (two knobs) drives the same state and sends the CCs back, so a page can follow.
 // The numbers are in the sketch only for now: the page (script.js) has no V4 model yet, and the
 // CC map has to change in both together.
 extern bool headphones;                 // defined with the other jack state, further down
+uint8_t keysCC = 127;                   // CC 83, as sent (the menu shows it)
+uint32_t speakerWarnAt = 0;             // millis() when the voice was sent to the speaker (the screen warns), 0 = nothing pending
 struct VoiceFx {
   uint8_t voice = 0, vocoder = 0, harm = 0, interval = 64, echo = 0, echoTime = 40, echoFb = 40;
-  uint8_t reverb = 40, gate = 30, micGain = 60;
-  bool harmOn = false;
+  uint8_t reverb = 40, gate = 20, micGain = 60;
+  uint8_t gateAtk = 30, gateHold = 45, gateRel = 45, gateRatio = 2, hpf = 11;
+  bool antiFb = false, harmFollow = false, harmFold = true, speaker = false;
 } vfxState;
 
 inline float vfxCurve(uint8_t v) { float x = v / 127.0f; return x * sqrtf(x); }   // x^1.5: finer near zero
+inline float gateThr(uint8_t v) { return 40.0f + v * v * 0.5f; }                  // 40 .. ~8100 (int16 units)
+inline float gateAtkMs(uint8_t v) { return 0.5f + v * v * (29.5f / 16129.0f); }
+inline float gateHoldMs(uint8_t v) { return v * v * (500.0f / 16129.0f); }
+inline float gateRelMs(uint8_t v) { return 20.0f + v * v * (980.0f / 16129.0f); }
+inline float hpfHz(uint8_t v) { return 60.0f + v * (340.0f / 127.0f); }
+
+// Voice goes to the headphone / AUX jack by default: with no jack plugged the voice is muted
+// (the speaker is the output), unless the user switched the speaker on.
+inline bool speakerMutesVoice() { return !headphones && !vfxState.speaker; }
+
+static bool shifterOn[VOICE_HARM_N] = {false, false, false};
+#if V4_FEEDBACK_SUPPRESSOR
+vfx::FeedbackWatch fbWatch;
+bool fbConnected = true;                // pfft starts connected
+#endif
 
 void voiceFxApply() {
   VoiceFx &f = vfxState;
-  bool speakerMute = V4_VOICE_MUTE_SPEAKER && !headphones;
-  float duck = speakerMute ? 0.0f : 1.0f;
+  bool duck = speakerMutesVoice();
+  float live = duck ? 0.0f : 1.0f;
   bool any = f.voice || f.vocoder || f.harm || f.echo;
-  vin.setActive(any);
+  bool vinOn = any && !duck;
+  vin.setActive(vinOn);
   vin.setGain(1.0f);
-  vin.setGate(40.0f + f.gate * f.gate * 0.25f);                    // 40 .. ~4000 (int16 units)
-  voc.setActive(f.vocoder > 0 && !speakerMute);
+  vin.setHighpass(hpfHz(f.hpf));
+  vin.setExpander(gateThr(f.gate), f.gateRatio, gateAtkMs(f.gateAtk), gateHoldMs(f.gateHold), gateRelMs(f.gateRel));
+  voc.setActive(f.vocoder > 0 && !duck);
   voc.setLevel(vfxCurve(f.vocoder) * 1.5f);
-  if (f.harm > 0 && !f.harmOn) {
-    harm.begin(harmMem, VOICE_HARM_SAMPLES);
-    harm.beginPitchShift(25.0f);
-    f.harmOn = true;
-  } else if (f.harm == 0 && f.harmOn) {
-    harm.stop();
-    f.harmOn = false;
+  bool harmOn = f.harm > 0 && vinOn;
+  for (int k = 0; k < VOICE_HARM_N; k++) {
+    bool want = harmOn && (k == 0 || f.harmFollow);
+    if (want && !shifterOn[k]) {
+      harm[k].begin(harmMem[k], VOICE_HARM_SAMPLES);
+      harm[k].beginPitchShift(25.0f);
+      shifterOn[k] = true;
+    } else if (!want && shifterOn[k]) {
+      harm[k].stop();
+      shifterOn[k] = false;
+    }
   }
-  harm.setSpeed(powf(2.0f, ((int)f.interval - 64) / 64.0f));        // -12 .. +12 semitones
+  if (!f.harmFollow) {
+    harm[0].setSpeed(powf(2.0f, ((int)f.interval - 64) / 64.0f));    // -12 .. +12 semitones
+    harmMix.gain(0, 1.0f);
+    harmMix.gain(1, 0.0f);
+    harmMix.gain(2, 0.0f);
+  } else {                                                           // harmFollowUpdate() sets these
+    for (int k = 0; k < VOICE_HARM_N; k++) harmMix.gain(k, 0.0f);
+  }
+  harmMix.gain(3, 0.0f);
+  pitchTrk.setActive(harmOn && f.harmFollow);
   echo.setDelayMs(60.0f + f.echoTime * (680.0f / 127.0f));
   echo.setFeedback(f.echoFb * (0.85f / 127.0f));
   echoSrc.gain(0, 1.0f);
   echoSrc.gain(1, f.harm > 0 ? 1.0f : 0.0f);                       // the shifter passes the voice through when it is off
-  voiceBus.gain(0, vfxCurve(f.voice) * 1.5f * duck);
-  voiceBus.gain(1, vfxCurve(f.harm) * 1.5f * duck);
-  voiceBus.gain(2, vfxCurve(f.echo) * 1.5f * duck);
+  voiceBus.gain(0, vfxCurve(f.voice) * 1.5f * live);
+  voiceBus.gain(1, vfxCurve(f.harm) * 1.5f * live);
+  voiceBus.gain(2, vfxCurve(f.echo) * 1.5f * live);
   roomIn.gain(0, 1.0f);
   roomIn.gain(1, vfxCurve(f.reverb));
   roomIn.gain(2, vfxCurve(f.reverb));
   master.gain(2, 1.0f);
   master.gain(3, 1.0f);
+#if V4_FEEDBACK_SUPPRESSOR
+  bool wantFb = f.antiFb && vinOn;
+  if (wantFb && !fbConnected) { pfft.connect(); fbConnected = true; }
+  else if (!wantFb && fbConnected) { pfft.disconnect(); fbConnected = false; }
+  static bool wasFb = false;
+  if (f.antiFb != wasFb) {                                           // switched off: the notches go
+    wasFb = f.antiFb;
+    if (!f.antiFb) {
+      fbWatch.clear();
+      for (int i = 0; i < vfx::VoiceInput::NOTCHES; i++) vin.clearNotch(i);
+    }
+  }
+#endif
 }
 
 void voiceFxMicGain() { codec.micGain(20 + (vfxState.micGain * 32) / 127); }   // 20 .. 52 dB (I2C: only when it changes)
@@ -878,7 +965,20 @@ bool voiceFxControl(byte control, byte value) {
     case 80: f.reverb = value; break;
     case 81: f.gate = value; break;
     case 82: f.micGain = value; voiceFxMicGain(); break;
+    case 84: f.gateAtk = value; break;
+    case 89: f.gateHold = value; break;
+    case 90: f.gateRel = value; break;
+    case 92: f.hpf = value; break;
+    case 93: f.gateRatio = min(value / 32, 3); break;
+    case 94: f.antiFb = value >= 64; break;
+    case 95: f.harmFollow = value >= 64; break;
+    case 96:
+      if (value >= 64 && !f.speaker) speakerWarnAt = millis() | 1;
+      f.speaker = value >= 64;
+      break;
+    case 97: f.harmFold = value >= 64; break;
     case 83:
+      keysCC = value;
       keysLevel = value / 127.0f;
       setAmbience(ambienceNow);
       return true;
@@ -888,11 +988,145 @@ bool voiceFxControl(byte control, byte value) {
   return true;
 }
 
+// "Close microphone" preset: only a voice a few centimetres from the capsule passes.
+void voiceFxCloseMic() {
+  VoiceFx &f = vfxState;
+  f.gate = 90; f.gateRatio = 3; f.gateAtk = 20; f.gateHold = 50; f.gateRel = 40; f.hpf = 40;
+  voiceFxApply();
+}
+
+void voiceFxClearNotches() {
+#if V4_FEEDBACK_SUPPRESSOR
+  fbWatch.clear();
+  for (int i = 0; i < vfx::VoiceInput::NOTCHES; i++) vin.clearNotch(i);
+#endif
+}
+
+// ---- settings kept in EEPROM (menu "SAVE"). The speaker option is never kept: the voice is on
+// the headphones / AUX at every start. ----
+const int EEPROM_VOICE = 210;           // after the register (200..201)
+const uint8_t VOICE_MAGIC = 0xA7;
+void voiceFxSave() {
+  VoiceFx &f = vfxState;
+  uint8_t b[22] = {VOICE_MAGIC, f.voice, f.vocoder, f.harm, f.interval, f.echo, f.echoTime, f.echoFb, f.reverb, f.gate,
+                   f.micGain, f.gateAtk, f.gateHold, f.gateRel, f.gateRatio, f.hpf, (uint8_t)f.antiFb,
+                   (uint8_t)f.harmFollow, (uint8_t)f.harmFold, keysCC, 0, 0};
+  for (int i = 0; i < 22; i++) EEPROM.write(EEPROM_VOICE + i, b[i]);
+}
+
+void voiceFxLoad() {
+  if (EEPROM.read(EEPROM_VOICE) != VOICE_MAGIC) return;
+  uint8_t b[22];
+  for (int i = 0; i < 22; i++) b[i] = EEPROM.read(EEPROM_VOICE + i);
+  VoiceFx &f = vfxState;
+  f.voice = min(b[1], (uint8_t)127); f.vocoder = min(b[2], (uint8_t)127); f.harm = min(b[3], (uint8_t)127);
+  f.interval = min(b[4], (uint8_t)127); f.echo = min(b[5], (uint8_t)127); f.echoTime = min(b[6], (uint8_t)127);
+  f.echoFb = min(b[7], (uint8_t)127); f.reverb = min(b[8], (uint8_t)127); f.gate = min(b[9], (uint8_t)127);
+  f.micGain = min(b[10], (uint8_t)127); f.gateAtk = min(b[11], (uint8_t)127); f.gateHold = min(b[12], (uint8_t)127);
+  f.gateRel = min(b[13], (uint8_t)127); f.gateRatio = min(b[14], (uint8_t)3); f.hpf = min(b[15], (uint8_t)127);
+  f.antiFb = b[16] != 0; f.harmFollow = b[17] != 0; f.harmFold = b[18] != 0;
+  keysCC = min(b[19], (uint8_t)127);
+  keysLevel = keysCC / 127.0f;
+}
+
+void voiceFxDefaults() {
+  vfxState = VoiceFx();
+  keysCC = 127;
+  keysLevel = 1.0f;
+  setAmbience(ambienceNow);
+  voiceFxApply();
+  voiceFxMicGain();
+}
+
+// ---- harmonizer that follows the keys (R4V4) ----
+// The voice's pitch comes from the YIN tracker (pitchTrk); every 12 ms each note held on the
+// keyboard (newest first, up to VOICE_HARM_N of them) gets a pitch shifter whose speed is
+// note frequency / voice frequency. With "octave near" (the default) the ratio is folded into
+// 0.71 .. 1.41, i.e. the note is taken in the octave closest to the voice: small shifts, far
+// fewer artefacts. The ratio follows the singer smoothly (about 25 ms), so a little of the vibrato
+// stays. Nothing held, or the voice unpitched for 300 ms: the harmony is silent.
+static int harmNote[VOICE_HARM_N] = {-1, -1, -1};
+static float harmRatio[VOICE_HARM_N] = {1, 1, 1};
+float voiceHzShown = 0;                 // last pitch the tracker found (for the screen)
+
+void harmFollowUpdate() {
+  VoiceFx &f = vfxState;
+  static uint32_t lastAt = 0, seenAt = 0;
+  static float lastF0 = 0;
+  uint32_t now = millis();
+  if (now - lastAt < 12) return;
+  lastAt = now;
+  if (!f.harmFollow || f.harm == 0 || speakerMutesVoice()) return;
+  float f0 = pitchTrk.pitch();
+  if (f0 > 0) { seenAt = now; lastF0 = f0; voiceHzShown = f0; }
+  bool voiced = seenAt != 0 && now - seenAt < 300 && lastF0 > 0;
+  int notes[VOICE_HARM_N];
+  int n = 0;
+  for (int k = 0; k < VOICE_HARM_N; k++) {                           // newest notes first, no repeats
+    int best = -1;
+    for (int v = 0; v < NUM_VOICES; v++) {
+      if (voices[v].note < 0) continue;
+      bool dup = false;
+      for (int j = 0; j < n; j++) dup |= notes[j] == voices[v].note;
+      if (!dup && (best < 0 || voices[v].age > voices[best].age)) best = v;
+    }
+    if (best < 0) break;
+    notes[n++] = voices[best].note;
+  }
+  float share = n > 0 ? 1.0f / sqrtf((float)n) : 0.0f;
+  for (int k = 0; k < VOICE_HARM_N; k++) {
+    if (k < n && voiced) {
+      float target = 440.0f * powf(2.0f, (notes[k] - 69) / 12.0f) / lastF0;
+      if (f.harmFold) {
+        while (target > 1.4142f) target *= 0.5f;
+        while (target < 0.7071f) target *= 2.0f;
+      } else {
+        target = constrain(target, 0.25f, 4.0f);
+      }
+      if (harmNote[k] != notes[k]) harmRatio[k] = target;
+      else harmRatio[k] += (target - harmRatio[k]) * 0.4f;
+      harmNote[k] = notes[k];
+      AudioNoInterrupts();
+      harm[k].setSpeed(harmRatio[k]);
+      AudioInterrupts();
+      harmMix.gain(k, share);
+    } else {
+      harmMix.gain(k, 0.0f);
+      harmNote[k] = -1;
+    }
+  }
+}
+
+#if V4_FEEDBACK_SUPPRESSOR
+void feedbackUpdate() {
+  if (!vfxState.antiFb || !fbConnected || !fftIn.available()) return;
+  float mag[512];
+  for (int i = 0; i < 512; i++) mag[i] = fftIn.read(i);
+  int idx = fbWatch.feed(mag);
+  if (idx >= 0) vin.setNotch(idx, fbWatch.freq[idx], fbWatch.depth[idx]);
+}
+#endif
+
+// Called from loop().
+void voiceFxUpdate() {
+  harmFollowUpdate();
+#if V4_FEEDBACK_SUPPRESSOR
+  feedbackUpdate();
+#endif
+}
+
 void voiceFxBegin() {
   echo.begin(echoMem, VOICE_ECHO_SAMPLES);
-  harm.begin(harmMem, VOICE_HARM_SAMPLES);
-  harm.stop();
+  for (int k = 0; k < VOICE_HARM_N; k++) {
+    harm[k].begin(harmMem[k], VOICE_HARM_SAMPLES);
+    harm[k].stop();
+  }
+#if V4_FEEDBACK_SUPPRESSOR
+  pfft.disconnect();                    // switched on in the menu
+  fbConnected = false;
+#endif
   voc.setSpeed(4.0f, 25.0f);
+  voiceFxLoad();
   voiceFxApply();
   voiceFxMicGain();
 }
@@ -910,7 +1144,15 @@ void handleControlChange(byte channel, byte control, byte value) {
       velocityCurve = min(value / 32, 3);
       break;
     case 14:
-      if (value >= 64) resetCalibration();
+      if (value >= 64) {
+#if ETUTTI_V4 && V4_SCAN_TIMER
+        scanPaused = true;                          // the scan interrupt reads the models resetCalibration() rewrites
+#endif
+        resetCalibration();
+#if ETUTTI_V4 && V4_SCAN_TIMER
+        scanPaused = false;
+#endif
+      }
       break;
     case 15:
       keyTest = value >= 64;
@@ -1118,9 +1360,11 @@ void setupAdc() {
 // For the high-impedance pins (battery divider 2 x 100 kohm, headphone detect): the slowest
 // sampling time, as Teensyduino's own analogRead() uses.
 int analogReadSlow(uint8_t pin) {
+  scanPaused = true;                    // the scan interrupt uses ADC1 too: it waits (a few tens of us)
   adcLib->adc0->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_LOW_SPEED);
   int v = adcLib->adc0->analogRead(pin);
   adcLib->adc0->setSamplingSpeed(ADC_SAMPLING_SPEED::MED_SPEED);
+  scanPaused = false;
   return v;
 }
 #endif
@@ -1280,6 +1524,30 @@ uint32_t crossingTime(const Key &k, float prev, float now, float level, uint32_t
   return k.prevMicros + (uint32_t)(constrain(f, 0.0f, 1.0f) * (float)(nowMicros - k.prevMicros));
 }
 
+#if ETUTTI_V4 && V4_SCAN_TIMER
+// Key events from the scan interrupt to loop() (single producer, single consumer, no locks).
+// type 0 = note on (a = note, b = velocity), 1 = note off (a = note), 2 = key-test position (a = key, b = position)
+const uint16_t EVQ = 128;
+volatile uint8_t evType[EVQ], evA[EVQ], evB[EVQ];
+volatile uint16_t evHead = 0, evTail = 0;
+void evPush(uint8_t type, uint8_t a, uint8_t b) {
+  uint16_t h = evHead;
+  if ((uint16_t)(h - evTail) >= EVQ) return;            // full: loop() is stuck (never seen), drop
+  evType[h & (EVQ - 1)] = type;
+  evA[h & (EVQ - 1)] = a;
+  evB[h & (EVQ - 1)] = b;
+  __asm volatile("dmb" ::: "memory");
+  evHead = h + 1;
+}
+inline void keyNoteOn(uint8_t note, uint8_t velocity) { evPush(0, note, velocity); }
+inline void keyNoteOff(uint8_t note) { evPush(1, note, 0); }
+inline void keyPressure(uint8_t key, uint8_t pos) { evPush(2, key, pos); }
+#else
+inline void keyNoteOn(uint8_t note, uint8_t velocity) { localNoteOn(note, velocity); }
+inline void keyNoteOff(uint8_t note) { localNoteOff(note); }
+inline void keyPressure(uint8_t key, uint8_t pos) { usbMIDI.sendPolyPressure(key, pos, 16); }
+#endif
+
 // One key, one reading (taken at `now`, in micros): calibration, note on/off with
 // velocity, and the key test stream. Returns true if something was sent.
 bool processKey(int i, float raw, uint32_t now) {
@@ -1321,13 +1589,13 @@ bool processKey(int i, float raw, uint32_t now) {
       uint32_t at = crossingTime(k, k.travel, t, NOTE_ON_AT, now);
       k.down = true;
       k.note = noteAt(k.row, k.col);
-      if (k.note >= 0) localNoteOn(k.note, velocityFor((at - k.startMicros) / 1000.0f));
+      if (k.note >= 0) keyNoteOn(k.note, velocityFor((at - k.startMicros) / 1000.0f));
       changed = true;
     }
   } else if (t < NOTE_OFF_AT) {
     k.down = false;
     k.startMicros = 0;
-    if (k.note >= 0) localNoteOff(k.note);    // the note it started, even after a layout switch
+    if (k.note >= 0) keyNoteOff(k.note);    // the note it started, even after a layout switch
     k.note = -1;
     changed = true;
   }
@@ -1336,7 +1604,7 @@ bool processKey(int i, float raw, uint32_t now) {
   if (keyTest) {
     uint8_t pos = (uint8_t)roundf(t * 127.0f);
     if (pos != k.sentPosition && (abs((int)pos - (int)k.sentPosition) >= 2 || pos == 0 || pos == 127)) {
-      usbMIDI.sendPolyPressure(i, pos, 16);
+      keyPressure(i, pos);
       k.sentPosition = pos;
       changed = true;
     }
@@ -1390,6 +1658,7 @@ inline void wakeColumn(int c) {
   if (left > 0) delayMicroseconds(left);
 }
 
+#if !V4_SCAN_TIMER
 // Hot reads, in turns: while some column has a key being timed, the one read longest ago is
 // read next (round robin), for at most `budget` us. A column that is still on from the last
 // turn needs no new wake-up, only HOT_MIN_GAP_US between readings.
@@ -1448,6 +1717,124 @@ void scanKeys() {
   for (int i = 0; i < keyCount; i++) keysBusy |= keyState[i].down || keyState[i].travel > 0.02f;
   finishScan(changed);
 }
+#else   // V4_SCAN_TIMER
+// ---- Student V4 scan in a timer interrupt (R4V4) ----
+// The scan used to be loop() itself, so everything else in loop() (MIDI, knobs, screen, voice
+// control) and every audio interrupt delayed it. Now an IntervalTimer calls scanTick() every
+// SCAN_TICK_US at a priority ABOVE the audio's (and USB's, and the DMA's): the audio can
+// not stretch a pass, and loop() is free of the busy waiting (it only drains the event queue).
+// scanTick() never waits: it reads the column whose sensors have been awake for SENSOR_WAKE_US,
+// switches the next one on, processes the readings, and returns. Key events (note on / off
+// with velocity, key-test positions) go into a queue, because the voices and usbMIDI belong to
+// loop(). The hot reads (see HOT_FROM) work as before, round robin among the columns with a rising key.
+IntervalTimer scanTimer;
+volatile uint32_t lastPassUs = 0;       // the last full pass, for the bench
+uint32_t scanPassStart = 0, scanLastRead = 0, scanHotLeft = 0;
+int scanSeqNext = 0;                    // the next column of the ordinary pass
+bool scanCurSeq = true;                 // the column now switched on is an ordinary read (not a hot repeat)
+
+inline uint32_t scanHotBudget() {
+  int32_t room = (int32_t)MAX_KEY_GAP_US - (int32_t)PASS_NOMINAL_US;
+  return room > (int32_t)HOT_BUDGET_MIN_US ? (uint32_t)room : HOT_BUDGET_MIN_US;
+}
+
+int scanOldestHot(uint32_t now) {
+  int best = -1;
+  uint32_t bestAge = 0;
+  for (uint32_t m = hotCols; m; m &= m - 1) {
+    int c = __builtin_ctz(m);
+    uint32_t age = now - colReadAt[c];
+    if (best < 0 || age > bestAge) {
+      best = c;
+      bestAge = age;
+    }
+  }
+  return best;
+}
+
+void scanTick() {
+  if (scanPaused) return;
+  if (srPos < 0) {                                      // nothing switched on yet
+    scanSeqNext = 0;
+    scanCurSeq = true;
+    srSelect(0);
+    return;
+  }
+  uint32_t now = micros();
+  int c = srPos;
+  if (now - srOnAt < SENSOR_WAKE_US) return;            // still waking up
+  if (now - colReadAt[c] < HOT_MIN_GAP_US) return;      // a hot repeat of the same column: not too soon
+  uint16_t raw[LAYOUT_ROWS];
+  uint32_t at[LAYOUT_ROWS];
+  readColumn(c, raw, at);
+  uint32_t t = micros();
+  colReadAt[c] = t;
+  if (scanCurSeq) {
+    scanSeqNext = c + 1;
+    if (scanSeqNext >= LAYOUT_COLS) {                   // a pass is complete
+      scanSeqNext = 0;
+      lastPassUs = t - scanPassStart;
+      scanPassStart = t;
+      scanHotLeft = scanHotBudget();
+      bool busy = false;
+      for (int i = 0; i < keyCount; i++) busy |= keyState[i].down || keyState[i].travel > 0.02f;
+      keysBusy = busy;
+    }
+  } else {
+    uint32_t used = t - scanLastRead;
+    scanHotLeft = used >= scanHotLeft ? 0 : scanHotLeft - used;
+  }
+  scanLastRead = t;
+  if (!hotCols) srSelect(scanSeqNext);                  // the next column wakes up while this one is processed
+  processColumn(c, raw, at);
+  int want;
+  bool seq;
+  if (hotCols && scanHotLeft >= HOT_MIN_GAP_US) {
+    want = scanOldestHot(micros());
+    seq = false;
+  } else {
+    want = scanSeqNext;
+    seq = true;
+  }
+  if (want != srPos) srSelect(want);
+  scanCurSeq = seq;
+}
+
+void scanBegin() {
+  scanPassStart = scanLastRead = micros();
+  scanHotLeft = scanHotBudget();
+  scanSeqNext = 0;
+  scanCurSeq = true;
+  srSelect(0);
+  scanTimer.begin(scanTick, SCAN_TICK_US);
+  scanTimer.priority(SCAN_PRIORITY);
+}
+
+void scanEnd() {
+  scanTimer.end();
+}
+
+// loop(): hands the queued key events to the voices and to USB, saves the calibration once it
+// has settled, flushes the MIDI messages.
+void drainKeyEvents() {
+  bool any = false;
+  while (evTail != evHead) {
+    uint16_t i = evTail & (EVQ - 1);
+    uint8_t type = evType[i], a = evA[i], b = evB[i];
+    __asm volatile("dmb" ::: "memory");
+    evTail = evTail + 1;
+    if (type == 0) localNoteOn(a, b);
+    else if (type == 1) localNoteOff(a);
+    else usbMIDI.sendPolyPressure(a, b, 16);
+    any = true;
+  }
+  if (calibrationDirty && millis() - calibrationChangedAt > 5000) saveCalibration();
+  if (any) {
+    usbMIDI.send_now();
+    lastActivityAt = millis();
+  }
+}
+#endif
 #else
 // One pass over all the sensors (~3.3 kHz with 44): calibration, note on/off with
 // velocity, and the key test stream.
@@ -1666,6 +2053,9 @@ void powerOff() {
   silenceAll();
   digitalWriteFast(AMP_SD_PIN, LOW);
 #if ETUTTI_V4
+#if V4_SCAN_TIMER
+  scanEnd();
+#endif
   srClear();
   oledOff();
 #else
@@ -1764,6 +2154,30 @@ void setupControls() {
   volDown = digitalReadFast(VOL_SW_PIN) == LOW;
 }
 
+#if V4_MENU
+// R4V4 item 4: the menu on the OLED, driven by the two knobs (menu code: with the OLED, below).
+//   selector, long click (0.7 s)   opens / closes the menu
+//   selector turn                  moves the cursor
+//   selector click                 enters a submenu, flips an on/off or a choice, runs an action
+//   volume turn                    changes the value of the line the cursor is on
+//   volume click                   back (closes the menu from the first level)
+//   volume click held 2 s          still switches the instrument off, menu or not
+// Outside the menu nothing changes, except that the selector's short click (keep the register /
+// back to the default sound) now acts when the button is let go, to tell it from the long click.
+bool menuOpen = false;
+uint32_t menuLastInput = 0;
+uint32_t oledWarnUntil = 0;             // the speaker warning is on the screen until then
+const uint32_t MENU_LONG_MS = 700;
+const uint32_t MENU_IDLE_MS = 30000;    // the menu closes by itself
+bool selLongFired = false;
+uint32_t selPressAt = 0, volPressAt = 0;
+void menuToggle();
+void menuTurn(int d);
+void menuAdjust(int d);
+void menuClick();
+void menuBack();
+#endif
+
 void updateControls() {
   uint32_t now = millis();
   // volume knob
@@ -1772,15 +2186,31 @@ void updateControls() {
   volSteps -= turned * ENC_STEPS_PER_DETENT;
   interrupts();
   if (turned) {
-    setVolume(volumeNow + turned * VOLUME_PER_DETENT);
-    usbMIDI.sendControlChange(7, volumeNow, 1);
+#if V4_MENU
+    oledWarnUntil = 0;
+    menuLastInput = now;
+    if (menuOpen) menuAdjust(turned);
+    else
+#endif
+    {
+      setVolume(volumeNow + turned * VOLUME_PER_DETENT);
+      usbMIDI.sendControlChange(7, volumeNow, 1);
+    }
     lastActivityAt = now;
   }
-  // volume click: held 2 s = off
+  // volume click: held 2 s = off; in the menu a short click is "back"
   bool down = digitalReadFast(VOL_SW_PIN) == LOW;
   if (down != volDown && now - volChangedAt > 20) {
     volDown = down;
     volChangedAt = now;
+#if V4_MENU
+    if (down) volPressAt = now;
+    if (!down && !volIgnoreHold) {
+      oledWarnUntil = 0;
+      menuLastInput = now;
+      if (menuOpen) menuBack();
+    }
+#endif
     if (!down) volIgnoreHold = false;
     lastActivityAt = now;
   }
@@ -1791,8 +2221,16 @@ void updateControls() {
   encSteps -= detents * ENC_STEPS_PER_DETENT;
   interrupts();
   if (detents) {
-    applyRegister(registerIndex + detents, true);
-    instrumentPending = true;
+#if V4_MENU
+    oledWarnUntil = 0;
+    menuLastInput = now;
+    if (menuOpen) menuTurn(detents);
+    else
+#endif
+    {
+      applyRegister(registerIndex + detents, true);
+      instrumentPending = true;
+    }
     lastActivityAt = now;
   }
   down = digitalReadFast(ENC_SW_PIN) == LOW;
@@ -1800,6 +2238,25 @@ void updateControls() {
     selDown = down;
     selChangedAt = now;
     lastActivityAt = now;
+#if V4_MENU
+    if (down) {
+      selPressAt = now;
+      selLongFired = false;
+    } else if (!selLongFired) {                         // short click, on release
+      oledWarnUntil = 0;
+      menuLastInput = now;
+      if (menuOpen) menuClick();
+      else if (instrumentPending) {
+        saveRegister(registerIndex);                    // the one to start with next time
+        instrumentPending = false;
+      } else {
+        defaultSound();
+        registerIndex = DEFAULT_REGISTER;
+        saveRegister(DEFAULT_REGISTER);
+        usbMIDI.sendControlChange(26, registerMask, 1);
+      }
+    }
+#else
     if (down) {
       if (instrumentPending) {
         saveRegister(registerIndex);        // the one to start with next time
@@ -1811,7 +2268,17 @@ void updateControls() {
         usbMIDI.sendControlChange(26, registerMask, 1);
       }
     }
+#endif
   }
+#if V4_MENU
+  if (selDown && !selLongFired && now - selPressAt >= MENU_LONG_MS) {   // long click: the menu
+    selLongFired = true;
+    oledWarnUntil = 0;
+    menuLastInput = now;
+    menuToggle();
+  }
+  if (menuOpen && now - menuLastInput > MENU_IDLE_MS) menuToggle();
+#endif
 }
 
 // Battery, headphone socket and the rest / switch-off timers.
@@ -1831,9 +2298,9 @@ void updatePower() {
     if (volts < 0.5f) headphones = true;
     else if (volts > 0.9f) headphones = false;
   }
-#if ETUTTI_V4 && V4_VOICE_FX && V4_VOICE_MUTE_SPEAKER
+#if ETUTTI_V4 && V4_VOICE_FX
   static bool lastHeadphones = headphones;
-  if (lastHeadphones != headphones) {
+  if (lastHeadphones != headphones) {       // the voice follows the jack: headphones / AUX in, speaker out (R4V4)
     lastHeadphones = headphones;
     voiceFxApply();
   }
@@ -1941,11 +2408,339 @@ void oledOff() {
   if (oledPresent) oledCmd(0xAE);
 }
 
-// Redraws when what is shown has changed (at most 4 times a second), then sends it in pieces.
+// Text with a colour: on = false draws black on a white bar (the highlighted menu line).
+void oledTextOn(int x, int y, const char *str, int scale, bool on) {
+  for (; *str; str++) {
+    int ch = *str;
+    if (ch >= 'a' && ch <= 'z') ch -= 32;
+    if (ch < 32 || ch > 90) ch = '?';
+    for (int col = 0; col < 5; col++) {
+      uint8_t bits = FONT5X7[ch - 32][col];
+      for (int row = 0; row < 7; row++) {
+        if (bits & (1 << row)) oledRect(x + col * scale, y + row * scale, scale, scale, on);
+      }
+    }
+    x += 6 * scale;
+  }
+}
+
+void oledTextRight(int xRight, int y, const char *str, bool on) {
+  oledTextOn(xRight - 6 * (int)strlen(str), y, str, 1, on);
+}
+
+// The text of the menu and the warning is in Portuguese (MENU_LANG_PT 1) or English (0); the font has no accents.
+#define MENU_LANG_PT 1
+#define TXT(pt, en) (MENU_LANG_PT ? (pt) : (en))
+#if V4_MENU
+// ---- Student V4 menu (R4V4 item 4): drawn on the OLED, driven by the two knobs ----
+enum { PG_MAIN, PG_VOICE, PG_INPUT, PG_OUTPUT, PG_SOUND, PG_SYSTEM, PG_COUNT };
+enum { MK_SUB, MK_LEVEL, MK_ENUM, MK_ACTION };
+enum {
+  M_VOICE_DRY, M_VOCODER, M_HARM, M_HARM_MODE, M_HARM_INT, M_HARM_FOLD, M_ECHO, M_ECHO_TIME, M_ECHO_FB, M_VOICE_REV,
+  M_MIC_GAIN, M_GATE_THR, M_GATE_RATIO, M_GATE_ATK, M_GATE_HOLD, M_GATE_REL, M_HPF, M_CLOSE_MIC, M_ANTI_FB, M_CLEAR_NOTCH,
+  M_VOLUME, M_VOICE_OUT, M_KEYS_LEVEL,
+  M_REGISTER, M_INSTRUMENT, M_AMBIENCE, M_VEL_CURVE,
+  M_SAVE, M_RESET_VOICE, M_CAL_KEYS, M_KEY_TEST
+};
+struct MenuItem { const char *pt; const char *en; uint8_t kind; uint8_t id; };   // SUB: id = the page
+struct MenuPage { const char *pt; const char *en; const MenuItem *items; uint8_t count; };
+
+const MenuItem ITEMS_MAIN[] = {
+  {"VOZ", "VOICE", MK_SUB, PG_VOICE}, {"CAPTACAO", "INPUT", MK_SUB, PG_INPUT}, {"SAIDA", "OUTPUT", MK_SUB, PG_OUTPUT},
+  {"SOM", "SOUND", MK_SUB, PG_SOUND}, {"SISTEMA", "SYSTEM", MK_SUB, PG_SYSTEM}};
+const MenuItem ITEMS_VOICE[] = {
+  {"VOZ SECA", "DRY VOICE", MK_LEVEL, M_VOICE_DRY}, {"VOCODER", "VOCODER", MK_LEVEL, M_VOCODER},
+  {"HARMONIZ.", "HARMONIZER", MK_LEVEL, M_HARM}, {"MODO HARM", "HARM MODE", MK_ENUM, M_HARM_MODE},
+  {"INTERVALO", "INTERVAL", MK_LEVEL, M_HARM_INT}, {"OITAVA", "OCTAVE", MK_ENUM, M_HARM_FOLD},
+  {"ECO", "ECHO", MK_LEVEL, M_ECHO}, {"TEMPO ECO", "ECHO TIME", MK_LEVEL, M_ECHO_TIME},
+  {"REALIM ECO", "ECHO FDBK", MK_LEVEL, M_ECHO_FB}, {"REVERB VOZ", "VOICE REV", MK_LEVEL, M_VOICE_REV}};
+const MenuItem ITEMS_INPUT[] = {
+  {"GANHO MIC", "MIC GAIN", MK_LEVEL, M_MIC_GAIN}, {"LIMIAR", "THRESHOLD", MK_LEVEL, M_GATE_THR},
+  {"RAZAO", "RATIO", MK_ENUM, M_GATE_RATIO}, {"ATAQUE", "ATTACK", MK_LEVEL, M_GATE_ATK},
+  {"RETENCAO", "HOLD", MK_LEVEL, M_GATE_HOLD}, {"SOLTURA", "RELEASE", MK_LEVEL, M_GATE_REL},
+  {"PASSA-ALTAS", "HIGH-PASS", MK_LEVEL, M_HPF}, {"MIC PERTO", "CLOSE MIC", MK_ACTION, M_CLOSE_MIC},
+  {"ANTIMICROF.", "ANTI-FEEDBK", MK_ENUM, M_ANTI_FB}, {"LIMPAR NOTCH", "CLEAR NOTCH", MK_ACTION, M_CLEAR_NOTCH}};
+const MenuItem ITEMS_OUTPUT[] = {
+  {"VOLUME", "VOLUME", MK_LEVEL, M_VOLUME}, {"SAIDA VOZ", "VOICE OUT", MK_ENUM, M_VOICE_OUT},
+  {"TECLAS", "KEYS", MK_LEVEL, M_KEYS_LEVEL}};
+const MenuItem ITEMS_SOUND[] = {
+  {"REGISTRO", "REGISTER", MK_ENUM, M_REGISTER}, {"INSTRUMENTO", "INSTRUMENT", MK_ENUM, M_INSTRUMENT},
+  {"REVERB", "REVERB", MK_LEVEL, M_AMBIENCE}, {"CURVA VEL.", "VEL CURVE", MK_ENUM, M_VEL_CURVE}};
+const MenuItem ITEMS_SYSTEM[] = {
+  {"SALVAR", "SAVE", MK_ACTION, M_SAVE}, {"ZERAR VOZ", "RESET VOICE", MK_ACTION, M_RESET_VOICE},
+  {"CALIBRAR", "CALIBRATE", MK_ACTION, M_CAL_KEYS}, {"TESTE TECLAS", "KEY TEST", MK_ENUM, M_KEY_TEST}};
+#define PAGE_OF(name, pt, en, arr) {pt, en, arr, (uint8_t)(sizeof(arr) / sizeof(arr[0]))}
+const MenuPage MENU_PAGES[PG_COUNT] = {
+  PAGE_OF(main, "MENU", "MENU", ITEMS_MAIN), PAGE_OF(voice, "VOZ", "VOICE", ITEMS_VOICE),
+  PAGE_OF(input, "CAPTACAO", "INPUT", ITEMS_INPUT), PAGE_OF(output, "SAIDA", "OUTPUT", ITEMS_OUTPUT),
+  PAGE_OF(sound, "SOM", "SOUND", ITEMS_SOUND), PAGE_OF(system, "SISTEMA", "SYSTEM", ITEMS_SYSTEM)};
+
+uint8_t menuPage = PG_MAIN;
+int menuCursor = 0, menuScroll = 0;
+uint8_t menuDepth = 0;
+struct MenuFrame { uint8_t page; int cursor, scroll; } menuStack[3];
+const char *menuToast = nullptr;
+uint32_t menuToastAt = 0;
+
+const char *const RATIO_NAMES_PT[4] = {"SUAVE", "MEDIA", "FORTE", "PORTA"};
+const char *const RATIO_NAMES_EN[4] = {"SOFT", "MEDIUM", "HARD", "GATE"};
+const char *const CURVE_NAMES_PT[4] = {"FIXA", "SUAVE", "NORMAL", "DURA"};
+const char *const CURVE_NAMES_EN[4] = {"FIXED", "SOFT", "NORMAL", "HARD"};
+
+// The CC and the current value of a level line (volume: copied, it is an int).
+bool menuLevelRef(uint8_t id, uint8_t *&p, uint8_t &cc) {
+  static uint8_t tmp;
+  VoiceFx &f = vfxState;
+  switch (id) {
+    case M_VOICE_DRY: p = &f.voice; cc = 16; return true;
+    case M_VOCODER: p = &f.vocoder; cc = 17; return true;
+    case M_HARM: p = &f.harm; cc = 18; return true;
+    case M_HARM_INT: p = &f.interval; cc = 19; return true;
+    case M_ECHO: p = &f.echo; cc = 76; return true;
+    case M_ECHO_TIME: p = &f.echoTime; cc = 77; return true;
+    case M_ECHO_FB: p = &f.echoFb; cc = 78; return true;
+    case M_VOICE_REV: p = &f.reverb; cc = 80; return true;
+    case M_MIC_GAIN: p = &f.micGain; cc = 82; return true;
+    case M_GATE_THR: p = &f.gate; cc = 81; return true;
+    case M_GATE_ATK: p = &f.gateAtk; cc = 84; return true;
+    case M_GATE_HOLD: p = &f.gateHold; cc = 89; return true;
+    case M_GATE_REL: p = &f.gateRel; cc = 90; return true;
+    case M_HPF: p = &f.hpf; cc = 92; return true;
+    case M_KEYS_LEVEL: p = &keysCC; cc = 83; return true;
+    case M_AMBIENCE: p = &ambienceNow; cc = 91; return true;
+    case M_VOLUME: tmp = (uint8_t)volumeNow; p = &tmp; cc = 7; return true;
+  }
+  return false;
+}
+
+// The text of a line's value (at most 9 characters).
+void menuValueText(uint8_t id, char *b, size_t n) {
+  VoiceFx &f = vfxState;
+  uint8_t *p;
+  uint8_t cc;
+  b[0] = 0;
+  switch (id) {
+    case M_HARM_INT: { int st = lroundf(((int)f.interval - 64) * 12.0f / 64.0f); snprintf(b, n, "%+d ST", st); return; }
+    case M_ECHO_TIME: snprintf(b, n, "%d MS", (int)lroundf(60.0f + f.echoTime * (680.0f / 127.0f))); return;
+    case M_MIC_GAIN: snprintf(b, n, "%d DB", 20 + (f.micGain * 32) / 127); return;
+    case M_GATE_ATK: snprintf(b, n, "%.1f MS", gateAtkMs(f.gateAtk)); return;
+    case M_GATE_HOLD: snprintf(b, n, "%d MS", (int)gateHoldMs(f.gateHold)); return;
+    case M_GATE_REL: snprintf(b, n, "%d MS", (int)gateRelMs(f.gateRel)); return;
+    case M_HPF: snprintf(b, n, "%d HZ", (int)hpfHz(f.hpf)); return;
+    case M_HARM_MODE: snprintf(b, n, "%s", f.harmFollow ? TXT("TECLA", "KEY") : TXT("FIXO", "FIXED")); return;
+    case M_HARM_FOLD: snprintf(b, n, "%s", f.harmFold ? TXT("PERTO", "NEAR") : TXT("EXATA", "EXACT")); return;
+    case M_GATE_RATIO: snprintf(b, n, "%s", (MENU_LANG_PT ? RATIO_NAMES_PT : RATIO_NAMES_EN)[f.gateRatio]); return;
+    case M_ANTI_FB: snprintf(b, n, "%s", f.antiFb ? TXT("LIGADO", "ON") : TXT("DESLIG", "OFF")); return;
+    case M_VOICE_OUT: snprintf(b, n, "%s", f.speaker ? TXT("+ ALTOFAL", "+ SPEAKER") : TXT("FONE/AUX", "PHONES")); return;
+    case M_REGISTER: snprintf(b, n, "%s", REGISTER_NAMES[registerIndex]); return;
+    case M_INSTRUMENT: snprintf(b, n, "%s", INSTRUMENT_NAMES[instrument]); return;
+    case M_VEL_CURVE: snprintf(b, n, "%s", (MENU_LANG_PT ? CURVE_NAMES_PT : CURVE_NAMES_EN)[velocityCurve]); return;
+    case M_KEY_TEST: snprintf(b, n, "%s", keyTest ? TXT("LIGADO", "ON") : TXT("DESLIG", "OFF")); return;
+  }
+  if (menuLevelRef(id, p, cc)) snprintf(b, n, "%d%%", (*p * 100 + 63) / 127);
+}
+
+void menuToggle() {
+  if (menuOpen) {
+    menuOpen = false;
+  } else {
+    menuOpen = true;
+    menuPage = PG_MAIN;
+    menuCursor = menuScroll = 0;
+    menuDepth = 0;
+  }
+  menuToast = nullptr;
+}
+
+void menuTurn(int d) {
+  int count = MENU_PAGES[menuPage].count;
+  menuCursor = ((menuCursor + d) % count + count) % count;
+  if (menuCursor < menuScroll) menuScroll = menuCursor;
+  if (menuCursor > menuScroll + 4) menuScroll = menuCursor - 4;
+}
+
+void menuBack() {
+  if (menuDepth == 0) {
+    menuToggle();
+    return;
+  }
+  MenuFrame &fr = menuStack[--menuDepth];
+  menuPage = fr.page;
+  menuCursor = fr.cursor;
+  menuScroll = fr.scroll;
+}
+
+void menuSetCC(uint8_t cc, uint8_t value) {
+  handleControlChange(1, cc, value);                    // the same path as a CC from the page
+  usbMIDI.sendControlChange(cc, value, 1);              // and the page can follow the menu
+}
+
+// Volume knob: the value of the line under the cursor, one step per detent.
+void menuAdjust(int d) {
+  const MenuItem &it = MENU_PAGES[menuPage].items[menuCursor];
+  VoiceFx &f = vfxState;
+  uint8_t *p;
+  uint8_t cc;
+  if (it.kind == MK_LEVEL && menuLevelRef(it.id, p, cc)) {
+    int v = *p;
+    if (it.id == M_HARM_INT) {                          // whole semitones
+      int st = lroundf((v - 64) * 12.0f / 64.0f) + d;
+      v = 64 + (int)lroundf(constrain(st, -12, 12) * 64.0f / 12.0f);
+    } else {
+      v += d * 4;
+    }
+    menuSetCC(cc, (uint8_t)constrain(v, 0, 127));
+    return;
+  }
+  switch (it.id) {
+    case M_HARM_MODE: menuSetCC(95, f.harmFollow ? 0 : 127); break;
+    case M_HARM_FOLD: menuSetCC(97, f.harmFold ? 0 : 127); break;
+    case M_GATE_RATIO: menuSetCC(93, (uint8_t)(constrain((int)f.gateRatio + d, 0, 3) * 32)); break;
+    case M_ANTI_FB: menuSetCC(94, f.antiFb ? 0 : 127); break;
+    case M_VOICE_OUT: menuSetCC(96, f.speaker ? 0 : 127); break;
+    case M_REGISTER: applyRegister(registerIndex + d, true); instrumentPending = false; break;
+    case M_INSTRUMENT: {
+      int next = ((instrument + d) % 5 + 5) % 5;
+      setInstrument(next);
+      usbMIDI.sendControlChange(25, next * 16 + 8, 1);
+      instrumentPending = false;
+      break;
+    }
+    case M_VEL_CURVE: menuSetCC(9, (uint8_t)((((velocityCurve + d) % 4 + 4) % 4) * 32)); break;
+    case M_KEY_TEST: menuSetCC(15, keyTest ? 0 : 127); break;
+  }
+}
+
+// Selector click.
+void menuClick() {
+  const MenuItem &it = MENU_PAGES[menuPage].items[menuCursor];
+  switch (it.kind) {
+    case MK_SUB:
+      if (menuDepth < 3) {
+        menuStack[menuDepth++] = {menuPage, menuCursor, menuScroll};
+        menuPage = it.id;
+        menuCursor = menuScroll = 0;
+      }
+      break;
+    case MK_ENUM: menuAdjust(1); break;
+    case MK_ACTION:
+      switch (it.id) {
+        case M_CLOSE_MIC: voiceFxCloseMic(); menuToast = TXT("MIC PERTO", "CLOSE MIC"); break;
+        case M_CLEAR_NOTCH: voiceFxClearNotches(); menuToast = TXT("NOTCH LIMPOS", "NOTCH CLEARED"); break;
+        case M_SAVE: voiceFxSave(); saveRegister(registerIndex); menuToast = TXT("SALVO", "SAVED"); break;
+        case M_RESET_VOICE: voiceFxDefaults(); menuToast = TXT("VOZ ZERADA", "VOICE RESET"); break;
+        case M_CAL_KEYS: handleControlChange(1, 14, 127); menuToast = TXT("CALIBRADO", "CALIBRATED"); break;
+      }
+      menuToastAt = millis();
+      break;
+  }
+}
+
+void drawMenu() {
+  const MenuPage &pg = MENU_PAGES[menuPage];
+  oledRect(0, 0, 128, 10, true);                        // title bar
+  char line[24];
+  if (menuToast && millis() - menuToastAt < 1500) {
+    oledTextOn(2, 1, menuToast, 1, false);
+  } else {
+    snprintf(line, sizeof(line), "%s%s", menuPage == PG_MAIN ? "" : "MENU > ", MENU_LANG_PT ? pg.pt : pg.en);
+    oledTextOn(2, 1, line, 1, false);
+  }
+  snprintf(line, sizeof(line), "%d/%d", menuCursor + 1, pg.count);
+  oledTextRight(126, 1, line, false);
+  for (int r = 0; r < 5; r++) {
+    int idx = menuScroll + r;
+    if (idx >= pg.count) break;
+    const MenuItem &it = pg.items[idx];
+    int y = 12 + r * 10;
+    bool sel = idx == menuCursor;
+    if (sel) oledRect(0, y - 1, 128, 10, true);
+    oledTextOn(2, y, MENU_LANG_PT ? it.pt : it.en, 1, !sel);
+    if (it.kind == MK_SUB) {
+      oledTextRight(126, y, ">", !sel);
+    } else if (it.kind == MK_LEVEL) {
+      uint8_t *p;
+      uint8_t cc;
+      if (menuLevelRef(it.id, p, cc)) {
+        int fill = *p * 26 / 127;                       // bar, 28 px wide
+        bool on = !sel;
+        oledRect(70, y + 1, 28, 1, on); oledRect(70, y + 6, 28, 1, on);
+        oledRect(70, y + 1, 1, 6, on); oledRect(97, y + 1, 1, 6, on);
+        oledRect(71, y + 3, fill, 2, on);
+      }
+      menuValueText(it.id, line, sizeof(line));
+      oledTextRight(126, y, line, !sel);
+    } else if (it.kind == MK_ENUM) {
+      menuValueText(it.id, line, sizeof(line));
+      oledTextRight(126, y, line, !sel);
+    }
+  }
+}
+#endif
+
+// The speaker warning: the voice is going to the speaker, next to the microphone.
+#if V4_VOICE_FX
+void drawWarning(uint32_t now) {
+  bool blink = (now / 350) % 2 == 0;
+  if (blink) { oledRect(0, 0, 128, 64, true); oledRect(2, 2, 124, 60, false); }
+  else { oledRect(0, 0, 128, 1, true); oledRect(0, 63, 128, 1, true); }
+  oledTextOn(34, 6, TXT("AVISO", "WARNING"), 2, true);
+  oledTextOn(8, 26, TXT("VOZ NO ALTO-FALANTE", "VOICE ON SPEAKER"), 1, true);
+  oledTextOn(8, 36, TXT("PODE DAR MICROFONIA", "MAY CAUSE FEEDBACK"), 1, true);
+  oledTextOn(8, 46, TXT("MIC PERTO DA BOCA E", "MIC AT THE MOUTH"), 1, true);
+  oledTextOn(8, 54, TXT("VOLUME BAIXO", "VOLUME LOW"), 1, true);
+}
+#endif
+
+// The ordinary screen: battery, register, volume, output, microphone level.
+void drawStatus(uint32_t now) {
+  bool usb = usbPower();
+  bool charging = usb && digitalReadFast(CHG_STAT_PIN) == LOW;
+  int pct = batteryPercent(batteryVolts);
+  int mic = 0;
+#if V4_HAVE_MIC
+  if (micPeak.available()) mic = (int)(micPeak.read() * 8.0f);   // 0..8
+#endif
+  char line[24];
+  snprintf(line, sizeof(line), "%s %d%%", charging ? "CHG" : (usb ? "USB" : "BAT"), pct);
+  oledTextOn(0, 0, line, 2, true);
+  oledTextOn(0, 20, instrument == INST_ACCORDION ? REGISTER_NAMES[registerIndex] : INSTRUMENT_NAMES[instrument], 2, true);
+  // voice status, right of the volume line
+  char vs[16] = "";
+#if V4_VOICE_FX
+  VoiceFx &f = vfxState;
+  if (f.voice || f.vocoder || f.harm || f.echo) {
+    if (speakerMutesVoice()) snprintf(vs, sizeof(vs), "%s", TXT("VOZ MUDA", "VOICE OFF"));
+    else if (!headphones && (now / 400) % 2 == 0) snprintf(vs, sizeof(vs), "%s", TXT("!MICROFONIA", "!FEEDBACK"));
+    else if (!headphones) vs[0] = 0;
+    else if (f.harmFollow && f.harm > 0 && voiceHzShown > 0) {
+      static const char *const names[12] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+      int m = (int)lroundf(69.0f + 12.0f * log2f(voiceHzShown / 440.0f));
+      snprintf(vs, sizeof(vs), "VOZ %s%d", names[((m % 12) + 12) % 12], m / 12 - 1);
+    } else snprintf(vs, sizeof(vs), "%s", vin.isOpen() ? TXT("VOZ *", "VOICE *") : TXT("VOZ", "VOICE"));
+  }
+#endif
+  snprintf(line, sizeof(line), "VOL %d %s%s", volumeNow, headphones ? "HP" : "SPK", (resting && !vs[0]) ? " REST" : "");
+  oledTextOn(0, 42, line, 1, true);
+  if (vs[0]) oledTextRight(127, 42, vs, true);
+  oledRect(0, 54, 82, 1, true);         // battery bar
+  oledRect(0, 63, 82, 1, true);
+  oledRect(0, 54, 1, 10, true);
+  oledRect(81, 54, 1, 10, true);
+  oledRect(2, 56, pct * 78 / 100, 6, true);
+  oledTextOn(90, 55, "MIC", 1, true);
+  oledRect(112, 56, mic * 2, 6, true);
+}
+
+// Redraws (the menu and the warning quickly, the status screen 4 times a second) and, when the
+// picture changed, sends it in pieces: one 16-byte piece per loop pass.
+uint32_t oledHash = 0xFFFFFFFF;
 void updateOled() {
   if (!oledPresent) return;
   if (oledSent < 1024) {
+#if !V4_SCAN_TIMER
     if (keysBusy) return;               // do not stall the key scan
+#endif
     Wire.beginTransmission(OLED_ADDR);
     Wire.write(0x40);
     for (int i = 0; i < 16; i++) Wire.write(oledBuf[oledSent + i]);
@@ -1954,33 +2749,34 @@ void updateOled() {
     return;
   }
   uint32_t now = millis();
-  if (now - oledDrawnAt < 250) return;
-  oledDrawnAt = now;
-  bool usb = usbPower();
-  bool charging = usb && digitalReadFast(CHG_STAT_PIN) == LOW;
-  int pct = batteryPercent(batteryVolts);
-  int mic = 0;
-#if V4_HAVE_MIC
-  if (micPeak.available()) mic = (int)(micPeak.read() * 8.0f);   // 0..8
+#if V4_VOICE_FX
+  if (speakerWarnAt) {
+    oledWarnUntil = now + 4000;
+    speakerWarnAt = 0;
+  }
 #endif
-  uint32_t sig = pct | (volumeNow << 8) | (headphones << 16) | (usb << 17) | (charging << 18)
-               | (registerIndex << 19) | (instrument << 22) | (mic << 25) | (resting << 29);
-  if (sig == oledSig) return;
-  oledSig = sig;
+  bool warn = oledWarnUntil && (int32_t)(oledWarnUntil - now) > 0;
+  if (!warn) oledWarnUntil = 0;
+  bool fast = warn;
+#if V4_MENU
+  fast |= menuOpen;
+#endif
+  if (now - oledDrawnAt < (fast ? 70 : 250)) return;
+  oledDrawnAt = now;
   memset(oledBuf, 0, sizeof(oledBuf));
-  char line[24];
-  snprintf(line, sizeof(line), "%s %d%%", charging ? "CHG" : (usb ? "USB" : "BAT"), pct);
-  oledText(0, 0, line, 2);
-  oledText(0, 20, instrument == INST_ACCORDION ? REGISTER_NAMES[registerIndex] : INSTRUMENT_NAMES[instrument], 2);
-  snprintf(line, sizeof(line), "VOL %d  %s%s", volumeNow, headphones ? "HP" : "SPK", resting ? "  REST" : "");
-  oledText(0, 42, line, 1);
-  oledRect(0, 54, 82, 1, true);         // battery bar
-  oledRect(0, 63, 82, 1, true);
-  oledRect(0, 54, 1, 10, true);
-  oledRect(81, 54, 1, 10, true);
-  oledRect(2, 56, pct * 78 / 100, 6, true);
-  oledText(90, 55, "MIC", 1);
-  oledRect(112, 56, mic * 2, 6, true);
+#if V4_VOICE_FX
+  if (warn) drawWarning(now);
+  else
+#endif
+#if V4_MENU
+  if (menuOpen) drawMenu();
+  else
+#endif
+  drawStatus(now);
+  uint32_t h = 2166136261u;
+  for (int i = 0; i < 1024; i++) h = (h ^ oledBuf[i]) * 16777619u;
+  if (h == oledHash) return;
+  oledHash = h;
   oledSent = 0;
   oledCmd(0x21); oledCmd(0); oledCmd(127);   // column window
   oledCmd(0x22); oledCmd(0); oledCmd(7);     // page window
@@ -2016,17 +2812,19 @@ extern "C" void startup_late_hook(void) {
 #error "V4_BENCH prints on the serial port: build with usb=serialmidi"
 #endif
 // ---- measuring build: see V4_BENCH ----
-struct BenchStep { const char *name; uint8_t reg, voice, vocoder, harm, echo, reverb; };
+struct BenchStep { const char *name; uint8_t reg, voice, vocoder, harm, echo, reverb, follow, antiFb; };
 const BenchStep BENCH_STEPS[] = {
-  {"MM keys only      ", 0b0110, 0, 0, 0, 0, 0},
-  {"+ voice dry       ", 0b0110, 100, 0, 0, 0, 0},
-  {"+ vocoder         ", 0b0110, 0, 100, 0, 0, 0},
-  {"+ pitch shifter   ", 0b0110, 0, 0, 100, 0, 0},
-  {"+ echo            ", 0b0110, 0, 0, 0, 90, 0},
-  {"+ reverb send     ", 0b0110, 100, 0, 0, 0, 100},
-  {"ALL voice fx      ", 0b0110, 100, 100, 100, 90, 100},
-  {"4 ranks keys only ", 0b1111, 0, 0, 0, 0, 0},
-  {"4 ranks ALL fx    ", 0b1111, 100, 100, 100, 90, 100},
+  {"MM keys only      ", 0b0110, 0, 0, 0, 0, 0, 0, 0},
+  {"+ voice dry       ", 0b0110, 100, 0, 0, 0, 0, 0, 0},
+  {"+ vocoder         ", 0b0110, 0, 100, 0, 0, 0, 0, 0},
+  {"+ pitch shifter   ", 0b0110, 0, 0, 100, 0, 0, 0, 0},
+  {"+ harm follows key", 0b0110, 0, 0, 100, 0, 0, 1, 0},
+  {"+ anti-feedback   ", 0b0110, 100, 0, 0, 0, 0, 0, 1},
+  {"+ echo            ", 0b0110, 0, 0, 0, 90, 0, 0, 0},
+  {"+ reverb send     ", 0b0110, 100, 0, 0, 0, 100, 0, 0},
+  {"ALL voice fx      ", 0b0110, 100, 100, 100, 90, 100, 1, 1},
+  {"4 ranks keys only ", 0b1111, 0, 0, 0, 0, 0, 0, 0},
+  {"4 ranks ALL fx    ", 0b1111, 100, 100, 100, 90, 100, 1, 1},
 };
 const int BENCH_COUNT = sizeof(BENCH_STEPS) / sizeof(BENCH_STEPS[0]);
 const uint32_t BENCH_STEP_MS = 6000;
@@ -2047,6 +2845,9 @@ void benchApply(int step) {
   handleControlChange(1, 78, 60);
   handleControlChange(1, 80, b.reverb);
   handleControlChange(1, 81, 0);                      // gate wide open
+  handleControlChange(1, 95, b.follow ? 127 : 0);
+  handleControlChange(1, 94, b.antiFb ? 127 : 0);
+  handleControlChange(1, 96, 127);                    // the bench has no jack: the voice goes to the speaker
 }
 
 void benchReport() {
@@ -2090,7 +2891,7 @@ void setup() {
   setLed(true, true);                            // orange: reading the keys
   uint32_t started = millis();
 #if ETUTTI_V4 && V4_VOICE_FX
-  AudioMemory(90);   // + the voice chain: about 20 more blocks in flight (estimate, see student_v04/FIRMWARE.md)
+  AudioMemory(100);  // + the voice chain, three shifters, tracker and FFT: ~30 more blocks in flight (estimate, see student_v04/FIRMWARE.md)
 #else
   AudioMemory(60);   // measured peak: 32 blocks (8 voices x 4 reeds + reverb); 8 with sampled reeds
 #endif
@@ -2171,6 +2972,9 @@ void setup() {
   while (millis() - started < LED_STARTUP_MS) {
   }
   updateLed();
+#if ETUTTI_V4 && V4_SCAN_TIMER
+  scanBegin();                       // from here on the keys are read by the timer interrupt
+#endif
 #if ETUTTI_V4 && V4_BENCH
   Serial.begin(115200);
   static const uint8_t chord[8] = {48, 52, 55, 60, 64, 67, 72, 76};
@@ -2186,11 +2990,22 @@ void loop() {
 #if ETUTTI_V4 && V4_BENCH
   uint32_t scanStart = micros();
 #endif
+#if ETUTTI_V4 && V4_SCAN_TIMER
+  drainKeyEvents();
+#else
   scanKeys();
+#endif
 #if ETUTTI_V4 && V4_BENCH
+#if V4_SCAN_TIMER
+  benchUpdate(lastPassUs);
+#else
   benchUpdate(micros() - scanStart);
 #endif
+#endif
   updateControls();
+#if ETUTTI_V4 && V4_VOICE_FX
+  voiceFxUpdate();
+#endif
 #if ETUTTI_STUDENT
   updatePower();
 #endif

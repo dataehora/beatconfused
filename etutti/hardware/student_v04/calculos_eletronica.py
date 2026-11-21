@@ -110,7 +110,7 @@ def cost():
     # one ruler: 4 TMAG, 1 x 74HC595D, 2 x SH-6, 5 x 100 nF, 1 x 10 uF 0805, 1 x 100 ohm
     def ruler_parts(n_rulers):
         tm = price("C22401868", 4 * n_rulers) * 4
-        one = tm + price("C5947", n_rulers) + 2 * price("C56123098", 2 * n_rulers) + 5 * price("C1525", 5 * n_rulers) + \
+        one = tm + price("C730243", n_rulers) + 2 * price("C56123098", 2 * n_rulers) + 5 * price("C1525", 5 * n_rulers) + \
             price("C15850", n_rulers) + price("C25076", n_rulers)
         return one
     ruler_one_12 = ruler_parts(10)
@@ -144,7 +144,7 @@ def cost():
         "principal: setup + estencil": rng(SETUP + STENCIL),
         "reguas: setup + estencil": rng(SETUP + STENCIL),
         "tipos Extended principal (%d x 3,09)" % f2_main_ext: rng(f2_main_ext * EXT_FEE),
-        "tipos Extended reguas (2 x 3,09)": rng(2 * EXT_FEE),
+        "tipos Extended reguas (3 x 3,09: TMAG, SH-6, 74HC595BQ)": rng(3 * EXT_FEE),
         "pecas das 2 placas principais": rng(f2_main_parts),
         "pecas das 10 reguas montadas": rng(10 * ruler_one_12),
         "SMT e nitrogenio x2 (est.)": rng(2 * SMT_N2),

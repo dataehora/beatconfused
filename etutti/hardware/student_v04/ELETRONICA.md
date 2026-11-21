@@ -1,10 +1,23 @@
 # eTutti Student V4 · relatório da eletrônica
 
-**SPEC atendida: R1V4, R2V4 e R3V4 (21 nov 2026).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
+**SPEC atendida: R1V4, R2V4, R3V4 e R4V4 (21 nov 2026).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
 Data: 21 nov 2026. Nada foi posicionado, roteado, encomendado nem gerado em `fab/`: é estudo (Fase A). A V3, a V2 e a V1 não foram tocadas.
 Scripts novos (reproduzem os números): `calculos_eletronica.py` (E2, E3), `fornecimento/precos_jlc.py` (preços e classe na
 biblioteca da JLCPCB, 21 nov, curl de 2 em 2 s). Contrato com a programação: `pcb/PINOS.md` (rascunho já entregue).
 Convenção: **(conferir)** = sem medida ou datasheet conferido; **estimativa** = conta minha, sem cotação.
+
+## R4V4 · Fase B da régua e da grade-régua, planta do portão P (tarefas 1, 3 e 4)
+
+Nada foi roteado, encomendado ou impresso. Detalhe, figuras e o contrato proposto ao design em **`POSICIONAMENTO.md`** (partes 1 e 2).
+- **Esquema da régua** (`pcb/regua/schematic_regua.py`, `kicad/regua/`): 4 TMAG5253BA3 (X2SON-4), 1 registrador 595, 2 SH-6, 6 capacitores, 1 x 100 ohm; **ERC 0/0**, netlist igual ao declarado. O OUT do TMAG virou pino `tri_state` no símbolo (a saída é Hi-Z desligada: o ERC reclamava de "output contra output").
+- **Troca do 595 (R4V4):** o SOIC-16 (C5947, Basic, 6,9 mm de pads) **não cabe na régua de 14 mm** com furos de pino a 10,16 mm: vão livre de 6,64 mm entre pinos vizinhos e 5,8 mm em cada metade. **74HC595BQ,115 (C730243), DHVQFN-16 2,5 x 3,5, Extended, US$ 0,176 (0,135 a 50)**, 137 412 em estoque. Custo: +1 tipo Extended nas réguas (**3 x 3,09 = 9,27**, antes 6,18) e +US$ 0,08 por régua. TSSOP-16 (C5948) tem 7,2 mm de pads: não serve. Footprint KiCad `DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm`, pad 17 = GND; **(conferir)** os pads contra o EasyEDA (`cpl_jlc.py`) depois do portão.
+- **Posicionamento da régua** (`posiciona_regua.py`): 14 peças só no fundo, nada no topo; J1/J2 no fundo em **u = 5,9 / 68,1, boca para trás (contrato do design, `FIT_CHECK.md` §3; alinhado: DRC 0/0/0)**, na faixa de trás, longe dos furos de pino; o 595 na frente em u = 27,75. A régua leva **3 furos M2** (18,5, 37, 55,5): cada fileira usa 2 (contrato do design). Furos Ø2,2 para M2, pinos Ø1,70, entalhes de 2,0 x 4,3. **DRC 0 erros, 0 avisos, paridade 0** (51 ligações faltando, sem trilhas).
+- **Grade-régua:** a largura de 14,0 mm do contrato anterior **não existe**: as aberturas já têm 14,00 mm. Fiz **16,0 mm** (1,0 mm de borda, 4,5 mm entre aberturas). Pergunta ao design. FR-4 1,6 mm, 2 camadas **sem cobre**, painel de 5 de **83,6 x 98 mm** (trilhos de 3 mm, sem montagem): **Gerbers prontos** em `fab/student_v04_grade_regua_painel_gerbers.zip`.
+- **Painel de réguas:** 5 tiras, **87,6 x 92 mm** (o design dizia 88 x 84 sem contar os dois vãos e as abas), trilhos de 5 mm, abas de 3 mm com microfuros, fiduciais e furos de ferramenta; `fab_regua.py` replica a régua no painel (inclusive as trilhas, quando existirem). Os Gerbers atuais são **de conferência** (`fab/regua_painel_SEM_ROTA_NAO_ENCOMENDAR/`, com CPL provisório). **Não confirmado** que a montagem econômica da JLCPCB aceite o painel do cliente com abas e microfuros (risco aceito, a testar na cotação).
+- **Custo atualizado** (`calculos_eletronica.py`, preços de 21 nov): régua US$ 2,33 de peças (10 montadas: 23,28). **F2, 28 teclas: US$ 296-375** (a troca do 595 move ~US$ 4 no cenário baixo); com a grade-régua (2-8, **estimativa**, painel de 83,6 x 98 mm dentro de 100 x 100) e a ferragem (2-4): **300-387, contra F1 332-477: -10 % a -19 %**. +16 teclas: 13,72 de eletrônica no mesmo pedido.
+- **J401 (tela):** a boca aponta para −y (confirmado: o plugue de 7,6 x 5,0 ocupa y 21,2..26,2). Os fios saem do plugue a y ≈ 20,7, **depois** da fenda antiga (22,17..24,67, que ficava sob o plugue): movi a fenda para **x 45,45..52,45, y 18,17..20,67** e reservei a área do plugue (DRC 0 erros, paridade 0). O design ajusta a fenda da tampa.
+- **Placa principal:** J602 passou para a borda como os outros (a régua tem o conector por baixo e a área de plugue de 6,5 x 10,4 mm saiu); USB-C em y 10 e módulo/H101 5,5 mm à esquerda, como aprovado; resto igual (DRC 0 erros, paridade 0, BOM com os mesmos 13 tipos Extended). Blocos coloridos em `pcb/img/principal_blocos_{topo,fundo}.png`.
+- Correção de números das seções 5.4 e 5.5 (R2V4): painel 88 x 84 -> **87,6 x 92**; furo de localização Ø2,4 -> **Ø2,2** (R3V4); o 595 e os conectores não ficam nas pontas (acima). O resto vale.
 
 ## R3V4 · painel régua + grade-régua e Fase B da placa principal
 
@@ -387,3 +400,11 @@ Cada elo leva CLK em série pelos 5 CIs da cadeia: com 100 ohm de série e ~150 
 4. Impressão MJF da F2 = US$ 51,2: **adotada na tabela**; falta o número por módulo de +16.
 5. **Posição do USB-C e do M.2 na principal:** o USB-C precisa ficar a <= 7 mm da linha dos pads 3/5 do M.2 (par <= 10 mm); isso é compatível com o lado esquerdo e a parede da F2?
 6. **Alto-falante:** refazer `estudos/acustica.py` com o Dayton CE28MB-8 (Fs 623 Hz, Qts 1,63, Vas 21,5 cm3, Sd 4,52 cm2); ou prefere outro 28 mm com Fs menor?
+
+## Perguntas para o design (R4V4)
+1. **Janela do 595** (1,0 mm de altura, u 26..30, v 4,2..7 sobre o trilho da frente): ~5 x 3 mm; aceita, ou ele vai para o eixo?
+2. **Grade-régua:** "73,6 x 14" com aberturas de 14,00 é impossível (sem material). Fiz **16,0 mm**; serve às presilhas e ao deck? Confirme ou dê outra largura.
+3. Os 3 furos M2 por régua (18,5, 37, 55,5), usando 2 por fileira, como no contrato: confirmado.
+4. Altura do SH lateral (4,3 mm, **conferir** no desenho da JST/XYECONN) e do 595 (1,0 mm).
+5. O furo do USB-C em y 10 e os furos H1..H4 da principal (H1 em 62; 48): confirmados?
+

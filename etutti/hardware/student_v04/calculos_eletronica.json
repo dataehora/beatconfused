@@ -121,9 +121,9 @@
   "F1_tipos_ext": 17,
   "F2_principal_pecas_2placas": 36.04,
   "F2_principal_tipos_ext": 14,
-  "regua_pecas_cada_12": 2.254,
-  "regua_pecas_cada_4": 2.49,
-  "reguas_10_pecas": 22.54,
+  "regua_pecas_cada_12": 2.328,
+  "regua_pecas_cada_4": 2.564,
+  "reguas_10_pecas": 23.28,
   "comum": {
    "teclas Gateron KS-20 x28": [
     24.5,
@@ -221,17 +221,17 @@
     43.26,
     43.26
    ],
-   "tipos Extended reguas (2 x 3,09)": [
-    6.18,
-    6.18
+   "tipos Extended reguas (3 x 3,09: TMAG, SH-6, 74HC595BQ)": [
+    9.27,
+    9.27
    ],
    "pecas das 2 placas principais": [
     36.04,
     36.04
    ],
    "pecas das 10 reguas montadas": [
-    22.544,
-    22.544
+    23.284000000000002,
+    23.284000000000002
    ],
    "SMT e nitrogenio x2 (est.)": [
     6.4,
@@ -255,8 +255,8 @@
    363.2
   ],
   "tot_F2": [
-   213.7,
-   256.7
+   217.53,
+   260.53
   ],
   "tot_comum": [
    78.6,
@@ -267,22 +267,22 @@
    477.2
   ],
   "F2_total": [
-   292.3,
-   370.7
+   296.13,
+   374.53
   ],
   "pct_total": {
-   "baixo": -12.0,
-   "alto": -22.3,
-   "mesmo_cenario_baixo_alto": -18.1
+   "baixo": -10.9,
+   "alto": -21.5,
+   "mesmo_cenario_baixo_alto": -17.2
   },
   "pct_diferenca_so_variavel": {
-   "baixo": -15.8,
-   "alto": -29.3,
-   "mesmo_cenario_baixo_alto": -23.7
+   "baixo": -14.3,
+   "alto": -28.3,
+   "mesmo_cenario_baixo_alto": -22.5
   },
   "modulo_mais16": {
-   "reguas_no_mesmo_pedido_USD": 13.43,
-   "pedido_separado_de_12_USD": 52.11,
+   "reguas_no_mesmo_pedido_USD": 13.72,
+   "pedido_separado_de_12_USD": 52.85,
    "teclas_16_Gateron_USD": 14.6
   }
  }

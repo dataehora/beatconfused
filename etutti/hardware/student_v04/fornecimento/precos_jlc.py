@@ -10,7 +10,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 V3 = os.path.normpath(os.path.join(HERE, "..", "..", "student_v03", "bom_v3.csv"))
 OUT = os.path.join(HERE, "precos_jlc.json")
 API = "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList"
-EXTRA = ["C5947", "C56123098", "C160405", "C38036", "C225115", "C2687116", "C558442"]
+EXTRA = ["C730243", "C5947", "C56123098", "C160405", "C38036", "C225115", "C2687116", "C558442"]
 
 
 def ask(code):
