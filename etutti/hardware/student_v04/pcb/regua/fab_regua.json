@@ -1,0 +1,118 @@
+{
+ "grade": {
+  "unitaria_drc": [
+   [
+    "text_height",
+    "warning"
+   ]
+  ],
+  "painel_drc": [
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ],
+   [
+    "invalid_outline",
+    "error"
+   ]
+  ],
+  "painel_mm": [
+   83.6,
+   98.0
+  ],
+  "zip": "fab\\student_v04_grade_regua_painel_gerbers.zip",
+  "arquivos": [
+   "student_v04_grade_regua_painel-B_Cu.gbl",
+   "student_v04_grade_regua_painel-B_Mask.gbs",
+   "student_v04_grade_regua_painel-B_Silkscreen.gbo",
+   "student_v04_grade_regua_painel-Edge_Cuts.gm1",
+   "student_v04_grade_regua_painel-F_Cu.gtl",
+   "student_v04_grade_regua_painel-F_Mask.gts",
+   "student_v04_grade_regua_painel-NPTH.drl",
+   "student_v04_grade_regua_painel-PTH.drl",
+   "student_v04_grade_regua_painel-job.gbrjob"
+  ],
+  "furos_painel": "4 de ferramenta D2,0 + 60 microfuros D0,5"
+ },
+ "regua": {
+  "painel_mm": [
+   87.6,
+   92.0
+  ],
+  "tracks_copiadas": 0,
+  "zip": "fab\\regua_painel_SEM_ROTA_NAO_ENCOMENDAR\\student_v04_regua_painel_SEM_ROTA_gerbers.zip",
+  "pecas_no_painel": 70
+ }
+}

@@ -1141,3 +1141,15 @@ No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2
 - Findings worth remembering: the 74HC595D (C5947) is JLCPCB **Basic** (the 164/4094/4017 are all Extended); no Basic connector, jack,
   LDO or ESD part exists; TMAG5253 BA tON is 20 typ / **45 us max** (UA 55 / 130); F2 costs about 12-22 % less than F1 (US$ 292-371 vs 332-477, MJF case print US$ 51) at the minimum order
   (estimates marked in `ELETRONICA.md`); JLCPCB WMSC search endpoints are blocked for curl, the assembly parts-library endpoint works.
+- **R4V4 (21 nov, design part):** decisions applied in `student_v04/case/case_r4.py` (built on `case_t3g.py`/`case_f2.py`; positions in
+  `case/layout_r4.py`, which also feeds `planta_v4.py` -> `renders/planta_geral_v4.png`, `planta_interface_v4.png` and `corte_v4.py` ->
+  `renders/corte_interface_v4.png`): grade-regua 1.6 mm FR-4 own drawing, deck 2.5 mm with 5/8/11/14 posts (never on a ruler's junction), gap 1.0,
+  head top ZR + 22.8, non-magnetic M2 into an insert in a real D6 boss of the step (the R3V4 model had only the 2.8 mm rail), ruler hole D2.2,
+  KS-20 Orange. Interface modelled for real: USB-C hole at y 10 (module and H101 5.5 mm left), battery 503450 under the board at
+  (17.4..51.4; 40..90) long side along y, Dayton CE28MB-8 (D28 x 4.5; box chamber 10.4 cm3, `estudos/acustica.py`), OLED window/slit, lid posts on H1..H4
+  (D5.4, M2 insert), the two V3-style wall bosses (7;12)/(7;88) removed (they sat on the USB-C). **Plan corner radius R6, not the V3's R9** (R9 cuts the
+  board and the USB-C). **Ruler connectors (task 3):** the SH header cannot sit on the ruler's axis (the key pegs and sensors are there, windows
+  of only 6.6 mm); contract = both headers in the BACK lane (y -7.5..-1.35 of the axis), mouth to -y, IN centre x 5.9, OUT x 68.1 along the ruler, plug passes
+  under the next (higher) row's ruler through a notch in that row's front rail; M2 positions per row (1: 18.5/55.5, 2: 37/55.5, 3 and 4: 18.5/37)
+  so no boss meets a notch; custom SH cables 15 mm (row links) and 25 mm (board to first ruler). Details and open questions in `student_v04/FIT_CHECK.md`.
+  `case/out/` stays git-ignored; `estudos/r4v4.json` keeps the numbers.

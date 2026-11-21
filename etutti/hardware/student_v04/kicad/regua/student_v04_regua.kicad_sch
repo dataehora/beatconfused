@@ -1,0 +1,160 @@
+(kicad_sch
+	(version 20250610)
+	(generator "student_v04_schematic")
+	(generator_version "10.0")
+	(uuid "08455c1b-380d-5a26-b3c0-1c074bcddde4")
+	(paper "A4")
+	(title_block (title "eTutti Student V4 · esquema") (date "2026-11-21") (rev "Student V4 R4V4 regua") (company "beatconfused.com") (comment 1 "etutti/hardware/student_v04/pcb/schematic.py escreve este arquivo; nao editar a mao"))
+	(lib_symbols
+		(symbol "viaggio_micromod:PWR_FLAG"
+		(power global)
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "#FLG"
+			(at 0 1.905 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 0 3.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "flag power"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "PWR_FLAG_0_0"
+			(pin power_out line
+				(at 0 0 90)
+				(length 0)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(symbol "PWR_FLAG_0_1"
+			(polyline
+				(pts
+					(xy 0 0)
+					(xy 0 1.27)
+					(xy -1.016 1.905)
+					(xy 0 2.54)
+					(xy 1.016 1.905)
+					(xy 0 1.27)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+	)
+	(text "eTutti Student V4 · regua universal de 4 teclas, R4V4. Nada de roteamento aqui: so esquema (Fase B)." (exclude_from_sim no) (at 25 15 0) (effects (font (size 2 2)) (justify left)) (uuid "1643ecad-5507-5e45-af3f-9fa6b12ae6b8"))
+	(text "Placa: pcb/regua/posiciona_regua.py (posicionamento sem trilhas). Painel: pcb/regua/painel_regua.py." (exclude_from_sim no) (at 25 21 0) (effects (font (size 2 2)) (justify left)) (uuid "9cc15aab-16bb-5e3c-b57d-b3aef981a48e"))
+	(text "PWR_FLAG: redes alimentadas por conector (o ERC nao ve a fonte)." (exclude_from_sim no) (at 25 27 0) (effects (font (size 2 2)) (justify left)) (uuid "31f2d9b6-c4d8-5fc0-953f-8976320dc3b5"))
+	(sheet (at 25 45) (size 70 25) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced yes) (stroke (width 0.1524) (type solid)) (fill (color 0 0 0 0.0000)) (uuid "1a3bce20-43be-59e6-bd5e-2e54b6ecdecf")
+		(property "Sheetname" "R · Regua" (at 25 44.3 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+		(property "Sheetfile" "student_v04_regua_R.kicad_sch" (at 25 70.6 0) (effects (font (size 1.27 1.27)) (justify left top)))
+		(instances (project "student_v04_regua" (path "/08455c1b-380d-5a26-b3c0-1c074bcddde4" (page "2"))))
+	)
+	(symbol (lib_id "viaggio_micromod:PWR_FLAG") (at 25.4 149.86 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "a735de86-737d-556d-ac1e-3d56d7648778")
+		(property "Reference" "#FLG01" (at 25.4 144.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Value" "PWR_FLAG" (at 25.4 146.36 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 25.4 149.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 25.4 149.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "561e6c46-8b27-518a-8215-fa6575adbc5b"))
+		(instances (project "student_v04_regua" (path "/08455c1b-380d-5a26-b3c0-1c074bcddde4" (reference "#FLG01") (unit 1))))
+	)
+	(wire (pts (xy 25.4 149.86) (xy 25.4 152.4)) (stroke (width 0) (type default)) (uuid "1377b836-ec14-5f9a-b883-6d90d06f77ac"))
+	(global_label "+3V3" (shape passive) (at 25.4 152.4 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "61323314-d8bc-5d36-b1cf-3679f1c25bdc") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 152.4 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:PWR_FLAG") (at 66.04 149.86 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "9334ea33-63ff-5f79-af76-7bf8dd240d35")
+		(property "Reference" "#FLG02" (at 66.04 144.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Value" "PWR_FLAG" (at 66.04 146.36 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 66.04 149.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 66.04 149.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "292b5495-cade-5941-84a9-b709349fe5e4"))
+		(instances (project "student_v04_regua" (path "/08455c1b-380d-5a26-b3c0-1c074bcddde4" (reference "#FLG02") (unit 1))))
+	)
+	(wire (pts (xy 66.04 149.86) (xy 66.04 152.4)) (stroke (width 0) (type default)) (uuid "7649e69d-f95f-52d8-8b03-fd13ea8a11f8"))
+	(global_label "GND" (shape passive) (at 66.04 152.4 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "1c4d5ac5-de53-57ca-b670-c4e7221aeed5") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 66.04 152.4 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(sheet_instances (path "/" (page "1")))
+	(embedded_fonts no)
+)

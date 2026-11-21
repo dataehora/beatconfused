@@ -1,5 +1,87 @@
 # eTutti Student V4 — FIT_CHECK (design)
 
+## R4V4 — atendida (21 nov 2026, tarefas 2, 3, 1 sua parte e 6)
+
+Respondo à **R4V4** (SPEC do Chat). Nada foi encomendado, impresso ou montado. As seções R3V4 e anteriores abaixo continuam valendo, menos onde esta diz o contrário.
+Números regeneráveis (venv CadQuery; `case/out/` fica fora do git):
+`case/layout_r4.py` (posições, uma só fonte) → `case/case_r4.py 0 1 2 3` (modelo + conferência de interferência, ~1 min por tamanho; escreve `case/out/r4_<n>.{stl,json}` e eu copiei o resumo para `estudos/r4v4.json`) → `case/planta_v4.py`, `case/corte_v4.py`, `case/conector_v4.py` (figuras) → `estudos/acustica.py` (Dayton).
+Imagens (`case/renders/`): **`planta_geral_v4.png`** (instrumento inteiro), `planta_interface_v4.png` (zoom da interface), **`corte_interface_v4.png`** (cortes A-A em x = 37 e B-B em x = 28), `ruler_conector_v4.png` (zona do conector da régua).
+
+### 0. Correções da eletrônica aplicadas (depois da primeira entrega)
+
+1. **J401 com a boca para -y** (plugue em y 21,2..26,2, fios saem a y ≈ 20,7): a **fenda da tela passou para (45,45..52,45; 18,17..20,67)** e o modelo e as três figuras foram regerados com ela (a fenda é só da placa; a **janela 24 x 13 da tampa não mudou**: a fenda fica sob o módulo OLED, que cobre o corte, e a parte x 45,45..49 dela está sob a janela mas atrás do vidro). Os fios saem do plugue a y 20,7 e sobem pela fenda 0,5 mm adiante: curva aberta, sem volta de 180°. A pergunta 3 (abaixo) fica **respondida**; resta só confirmar que o cabo chega da fenda aos pinos do módulo (y 34,0), ~14 mm no plano.
+2. **Grade-régua de 16,0 mm de largura** (a eletrônica: painel de 83,6 x 98): **serve**, e o modelo foi refeito com ela (0 mm³ de interferência em tampa, bandeja, réguas, teclas e parafusos, 28 teclas; o resultado dos outros tamanhos não muda, só a largura da grade).
+   - **Presilhas:** a janela de 1,36 mm é na espessura (1,6 mm está dentro), não na largura; com 1,0 mm de material em volta da abertura de 14,00 as presilhas (que prendem em x, nos lados do furo) têm onde apoiar. Serve melhor que 14,0, que não deixava material.
+   - **Largura x régua:** a grade fica 1,0 mm mais larga que a régua em cada lado (y ±8,0 contra ±7,0). A grade está 3,4 a 5,0 acima da régua, sem tocá-la, e não toca o trilho (que está sob a régua).
+   - **Vizinhas:** entre fileiras a grade de uma fica a 16,02 - 16,0 = **0,02 mm** da outra em planta, mas em alturas diferentes (2 / 2 / 3 mm), então não há contato; e a carcaça das teclas (meia largura 7,55) fica 0,47 mm da borda da grade da fileira vizinha.
+   - **Deck:** a grade (z 3,4..5,0) está a mais de 7 mm sob o deck: sem efeito. **Entalhe dos postes** na grade passou a abrir até a nova borda (y -8,1..-2,7 em vez de -7,1..-2,7).
+   - **Encaixe na régua de 14:** não há encaixe físico entre as duas; a grade assenta sobre as teclas e o corpo de baixo de 5,00 mm é o espaçador. Contrato: **grade-régua 73,6 x 16,0 x 1,6**, abertura 14,00 +0,03/-0,02 em y centrada, entalhes 2,0 x 5,4 (do bordo de trás até y -2,7) em x = 0 / 18,5 / 37 / 55,5 / 74.
+
+### 1. Decisões do item 2 aplicadas no modelo (`case_r4.py`)
+
+| Decisão | No modelo |
+|---|---|
+| Grade-régua 1,6 mm FR-4, desenho próprio | 73,6 x 14 x 1,6, 4 aberturas 14,00; fica a 3,4 acima do topo da régua (ombro 5,00) |
+| Deck 2,5 mm, 5 / 8 / 11 / 14 postes | idem (28 / 44 / 60 / 76). **Os postes não caem mais na junção de duas réguas** (x = 0 / 74 da régua) |
+| Folga 1,0; botão a ZR + 22,8 | idem; teto da interface em z 12,6 e topo em 14,6 (nível do deck da fileira 1) |
+| M2 não magnético, inserto na bossa do degrau, furo da régua Ø2,2 | **a bossa Ø6 não existia no modelo da R3V4** (só havia o trilho de 2,8 mm, e o inserto Ø3,2 vazava 0,6 mm para o bolso). Agora há bossa Ø6 do piso até a face de baixo da régua, com piloto Ø3,2 x 6. Posições por fileira: ver seção 3 |
+| KS-20 Orange | envelope do STEP + desenho (R3V4) |
+| USB-C na parede esquerda em y 10; módulo e H101 5,5 mm à esquerda | furo 12,8 x 7 em y 10 (z -2,9); rebaixo da bandeja em (42; 14) |
+
+**Fit check, 28 / 44 / 60 / 76 teclas** (volume da interseção, mm³): tampa x teclas (carcaça + haste + botão apertado) 0 / 0 / 0 / 0; tampa, bandeja, grades, réguas, parafusos e teclas entre si: **0 em todos os pares e tamanhos**; tampa x carcaças com **+0,5 mm**: 6 / 10 / 15 / 19; com +0,8 mm: 38 / 63 / 88 / 113 (como na R3V4: a folga crítica continua sendo a rampa do degrau 3, ~0,45 mm). Altura externa 24,7 mm na frente e 31,7 atrás. Volume tampa + base: 28 teclas 93,6 + 74,6 = 168,2 cm³ (a R3V4 dava 174,8: sem os dois postes de parede da interface); 44: 221,2; 60: 274,2; 76: 327,1 cm³.
+Interface (28 teclas): **0 mm³** entre tampa, bandeja, placa, módulo, bateria, alto-falante, caixa acústica, OLED, encoders e knobs, e entre as peças do fundo da placa (altura estimada) e a bateria, o módulo e a caixa.
+
+### 2. Interface real: posições, folgas, achados
+
+**O que mudou desde a planta do Chat** (`planta_geral_v4.png` contra `spec_img/planta_geral.png`):
+1. **Bateria** (503450: 34 x 50 x 5): a posição da V3 (x 19,5..69,5; y 56..90) **bate no J602** (corpo do SH de 4,25 mm em x 64,3..70,95, y 53..63) e no jack IN. Nova posição, sob a placa, com o lado maior no eixo y: **x 17,4..51,4, y 40..90, z -8,1..-3,1**. Sob ela só ficam C309, C310 e C502 (0,5 a 1 mm) nos 1,9 mm entre a placa e a bateria. Os fios saem pela ponta de y 40, rumo ao J202 (64,5; 26,5): passam entre o SW403 (x ≥ 48,2) e o J202 (x ≥ 58,85), ~40 mm de fio. Ferros do berço (1,2 x 2,0) só no lado direito, no fundo e no lado esquerdo além do jack (y ≥ 66).
+2. **Alto-falante Dayton CE28MB-8** (Ø28 x 4,5) em (37; 73,1), face a z 11,3 e fundo a 6,8; a caixa (retângulo 5..66 x 57,5..88,7, parte alta desde x 54,5, 0,3 < z < 12,0) é a da V3 e **cabe sem mudar**; câmara **10,41 cm³**. Os fios saem pelo furo de 1,6 mm em x 49,5 rumo aos pads do J501 (48,1..51,8; 94,45).
+3. **Tela:** o módulo OLED 27,3 x 27,8 (centro em (37; 20,1), z 9,4..12,5) e a **janela 24 x 13 em (25..49; 15,5..28,5)** funcionam como na V3; os 4 postes do módulo ficam em (25,35 / 48,65; 8,2 / 32,0). A **fenda do cabo (45,45..52,45; 18,17..20,67, corrigida: ver seção 0)** fica dentro do módulo em x ≤ 50,65 (a parte até 52,45 passa da borda dele) e a ponta dos pinos do módulo (virado 180°) está em y 34,0.
+4. **Knobs:** eixos em (28; 44,5) e (46; 44,5) (o pad C do encoder + 7,5 mm); chapéu a z 25,9, ponta do eixo 24,5, furo Ø9,2 no teto.
+5. **Botão PROG** (SW403, fundo da placa em (52; 36)): furo Ø3,0 na bandeja, para um palito por baixo.
+6. **Furos H1..H4 contra os postes da tampa:** a tampa ganha 4 postes **Ø5,4** (Ø4,6 na V3; Ø6 encostava 0,2 mm na caixa acústica em H4) com inserto M2 Ø3,2, em H1 (62; 48), H2 (74; 93), H3 (6,5; 48,5), H4 (8; 91,5), apoiados no topo da placa; a bandeja ganha bossas Ø6 por baixo (parafuso por baixo, rebaixo Ø4,4 x 2,2). **Saíram os dois postes de parede (7; 12) e (7; 88) da R3V4:** o de y 12 ficava em cima do USB-C. Os quatro postes não tocam encoders, caixa, OLED nem bateria.
+7. **Quina do case: R6, não R9.** Com a quina R9 da V3 (parede interna R7) a **placa (cantos R3) invade a parede em 1,0 mm** e a quina do corpo do USB-C em y 5,5 fica 0,64 mm dentro dela. Com **R6** (interna R4) sobram **0,22 mm** da placa e **0,27 / 0,30 mm** do USB-C. O modelo 3D ainda tem quinas retas (como a R3V4: acabamento fica para depois); a conta é analítica (`layout_r4.inner_corner_clearance`). Alternativas: cantos R6,5 da placa (como na V3) ou USB-C em y 16.
+
+**Acústica com o Dayton** (`estudos/acustica.py`: Fs 623 Hz, Qts 1,63, Vas 21,5 cm³, Sd 4,52 cm²; faixa ±10 %): caixa da R4V4 (10,4 cm³) → **fc 1 091 Hz (925-1 290), Qtc 2,85, pico +9,1 dB, F3 718 Hz**; G3 (196 Hz) sai a **-29,6 dB**, C4 -24 dB, G4 (392) -16,7 dB, C5 (523) -10,7 dB, e há **+8,5 dB em 1 kHz**. Com 12 cm³ (manta) fc só cai para 1 042 Hz; com 20 cm³, 897 Hz; sem caixa (150 cm³), 666 Hz. A caixa quase não decide: o alto-falante é sem graves por construção. Ajudaria o DSP (corte de graves em 300 Hz mais uma queda de ~8 dB perto de 1 kHz) ou um alto-falante de Fs menor.
+
+### 3. Conector de entrada da régua (tarefa 3): achado e contrato novo
+
+**Achado.** O SH lateral **não cabe no eixo da régua**: os pinos da tecla (2 x Ø1,7 a ±5,08 do centro, 1,5 mm abaixo da régua) e o sensor estão no eixo y = 0, e entre dois pinos vizinhos sobram só **6,6 mm** (x = 15,2..21,8, 33,7..40,3, 52,2..58,8 da régua); o cabeçalho (6,15 de fundo) mais o plugue (5,0) pedem 11 mm livres, e o plugue passa na altura dos pinos. As pontas (x 0..3,3 e 70,7..74) são menores ainda; o SH na ponta, como a eletrônica tinha desenhado, também esbarra no primeiro pino da régua seguinte. O problema não é só o J602: é a posição do conector na régua.
+
+**Contrato novo** (`layout_r4.py`, `conector_v4.py`, `ruler_conector_v4.png`): os dois conectores (IN e OUT) ficam na **faixa de trás** da régua (y de -7,5 a -1,35 do eixo da fileira; o bolso do sensor termina em ±1,1), **boca para -y**, com a boca 0,5 mm além da borda de trás. **O plugue passa por baixo da régua da fileira seguinte**, que é mais alta (2/2/3 mm); atrás da fileira 4 não há nada.
+- **IN centrado em x = 5,9 e OUT em x = 68,1**, do começo da régua (74,0 de comprimento). Pegada do cabeçalho 9,4 x 6,15 (do footprint do J601: 9,89 x 6,65 com pátio); plugue estimado 7,6 x 5,0 x 3,9, eixo de acoplamento 3,3 abaixo do topo da régua. **Altura do cabeçalho 4,25 (estimativa; conferir no desenho da JST/XYECONN):** cabe nos 6,9 mm sob a fileira 1 (sobram 1,4).
+- **Zona proibida** para as outras peças do fundo da régua: x 0..11,1 e 62,9..74, y -7,5..-1,35. As demais (595, 6 capacitores, resistor) ficam **no eixo, entre os pinos, ou na faixa da frente (y +1,35..+7), fora dos furos M2**. **O 595 em SO-16 (9,9 de comprimento, ~6 entre pads) não cabe nas janelas de 6,6 mm no sentido do eixo nem na faixa de 5,3 mm: pedir TSSOP-16 (5,0 x 6,4) ou outra posição** (pergunta à eletrônica).
+- **Cabo (elo) SH-SH 6 vias de medida:** **15 mm** de plugue a plugue entre réguas da mesma fileira (alça de ~3,6 mm de fundo sob a régua seguinte) e **25 mm** da placa principal à primeira régua. Um cabo pronto de 50 mm não cabe (alça de ~15 mm). Folgas mínimas do feixe (3,5 mm de largura) aos trilhos, bossas M2 e postes: **0,8 mm** (J601 → régua 1, o pior), 2,1 a 5,8 nos demais.
+- **Entalhes na bandeja:** (a) no trilho de trás da própria régua, 10,4 mm sob cada cabeçalho (começam na ponta da régua, sem toco), restam **70 %** do trilho; (b) no trilho da frente da **fileira seguinte**, 8,0 mm por plugue (mais largo onde passa também o cabo da placa principal, só fileira 1 → 2, porque a régua da fileira 2 começa 9,25 mm antes). Restam 79 a 100 % do trilho da frente. A régua (flexão 0,0013 mm no meio do vão) apoia bem assim.
+- **Parafusos M2 por fileira, para nenhuma bossa bater num entalhe:** fileira 1: x 18,5 e 55,5; fileira 2: **37 e 55,5**; fileiras 3 e 4: **18,5 e 37** (sempre em y +5,2). A distância entre os dois fica em 37 ou 18,5 mm: eles só prendem a régua ao degrau (ela já é guiada pelo sanduíche com a grade). Em relação à R3V4, **só muda a posição dos 2 furos Ø2,2 da régua nas fileiras 2 a 4**.
+- **3D:** 0 mm³ de interferência entre cabeçalhos e plugues e a bandeja, os pinos das teclas, os sensores, as réguas e os parafusos, em 28 / 44 / 60 / 76 teclas.
+
+**Contrato da régua atualizado** (para a eletrônica): 74,0 x 14,0 x 1,2 mm, peças só no fundo, nada no topo; 2 furos NPTH Ø2,2 em y +5,2 nos x acima (por fileira), zona livre Ø4,2 no topo e Ø6,4 no fundo; entalhes 2,0 x 4,3 na borda de trás em x = 0 / 18,5 / 37 / 55,5 / 74 como antes; 2 furos de pino Ø1,70 por tecla; **IN e OUT na faixa de trás, boca para -y**, centros em x = 5,9 e 68,1; sensor e pinos no eixo. A grade-régua muda para 73,6 x 16,0 x 1,6 (seção 0).
+
+### 4. Planta e corte oficiais (tarefa 1, minha parte)
+
+`planta_geral_v4.png` mostra, do modelo real: contorno do case (R6) e parede de 2 mm, placa principal e peças (cores por bloco), módulo, bateria, alto-falante e caixa, módulo OLED, janela e fenda, encoders e knobs, PROG, furos e postes da tampa (H1..H4, 5 internos, 8 de parede), as 8 réguas com teclas, os 16 parafusos M2, cabeçalhos, plugues, cabos e entalhes. `corte_interface_v4.png` corta em x = 37 (tampa, caixa, alto-falante, OLED, placa, módulo, bateria, bandeja) e em x = 28 (encoder e knob), com as alturas:
+
+| Nível (z, 0 = topo da placa) | mm |
+|---|---|
+| fundo da caixa / piso da bandeja | -10,1 / -8,1 |
+| bateria | -8,1..-3,1 |
+| módulo (cartão) | -5,9..-1,2 (4,7 sob a placa) |
+| placa | -1,2..0 |
+| caixa acústica | 0,3..12,0 (câmara 1,3..10,8) |
+| alto-falante | 6,8..11,3 |
+| OLED (placa + vidro) | 9,4..12,5 |
+| teto / topo da interface | 12,6 / 14,6 |
+| bucha do encoder / ponta do eixo / topo do knob | 11,5 / 24,5 / 25,9 |
+
+### 5. Limites desta passada (não verificado)
+1. Alturas do SH, do plugue SHR-06V-S e das peças baixas da placa são **estimativas**; o módulo (4,7 sob a placa) vem do modelo da V01.
+2. Sem cotação nem prova de cabo SH sob medida (15 e 25 mm).
+3. Quinas R6: só conta analítica; o 3D não tem raio na planta.
+4. Nada foi testado com a placa real; o corte é do modelo.
+
+---
+
 ## R3V4 — atendida (21 nov 2026, tarefas 1, 2, 3, 7 e 8)
 
 Respondo à **R3V4** (SPEC do Chat). As seções R1V4/R2V4 abaixo continuam valendo, menos onde esta diz o contrário. Nada foi encomendado, impresso ou montado.
@@ -471,3 +553,16 @@ Consequência para a eletrônica: painel de **5** réguas, não 6: 28 teclas (8 
 7. **Aprova a régua de 74 × 14 mm** (painel de 5, não 6) e a eletrônica ajustar as contas de painel?
 8. **Processo:** o J cota `f2_28_tampa.stl` e `f2_28_base.stl` em MJF e SLA antes do portão, ou seguimos com o MJF a US$ 51?
 9. **Peça de teste impressa (decisão 21):** 2 réguas + 8 teclas reais com espuma e deck mediriam a pilha e a pré-carga por ~US$ 15 de MJF. Vale fazer antes de fechar o hardware?
+
+---
+
+## Perguntas para o design (R4V4)
+
+1. **Conectores da régua na faixa de trás, boca para -y** (seção R4V4 3) em vez de nas pontas: aprova? É a única posição achada em que o plugue SH passa sem bater nos pinos das teclas. O custo: entalhes na bandeja (restam 70 % do trilho de trás) e **cabos SH sob medida** (15 e 25 mm). Alternativas: FFC de 1,0 mm com conector baixo, ou solda direta (opção C da eletrônica).
+2. **Parafusos M2 por fileira** (1: 18,5/55,5; 2: 37/55,5; 3 e 4: 18,5/37): aprova a mudança dos 2 furos Ø2,2 da régua nas fileiras 2 a 4?
+3. **Tela:** respondida (seção 0): fenda em y 18,17..20,67 com o J401 de boca para -y. Resta confirmar o comprimento do cabo da fenda aos pinos do módulo (~14 mm no plano).
+4. **Quina do case R6** (a V3 usava R9): aprova, ou prefere cantos R6,5 da placa (como na V3) com R9? Com R9 e a placa em R3, a placa invade a parede 1,0 mm.
+5. **Bateria** sob a placa em x 17,4..51,4, y 40..90 (a posição da V3 bate no J602): aprova? A eletrônica confirma que não há peça alta no fundo da placa nessa região (só C309, C310, C502).
+6. **Alto-falante Dayton:** o pico de +9 dB em 1 kHz e os -30 dB em G3 pedem EQ no firmware ou um alto-falante de Fs mais baixo (Same Sky CLS0281, Fs 500 Hz). Seguimos com o Dayton e EQ?
+7. **Postes da tampa H1..H4 Ø5,4** com inserto M2 (V3: Ø4,6 sem inserto): aprova? H1 (62; 48) é posição proposta pela eletrônica.
+8. **Para a eletrônica:** o 595 em SO-16 não cabe nas janelas da régua; TSSOP-16 ou outra posição? Confirmar a altura real do SH (4,25) e do plugue.

@@ -1,0 +1,327 @@
+{
+ "28": {
+  "comprimento_mm": 252.0,
+  "altura_frente_mm": 24.7,
+  "altura_atras_mm": 31.7,
+  "reguas": 8,
+  "parafusos_M2": 16,
+  "postes_internos": 5,
+  "volume_cm3": {
+   "tampa": 93.6,
+   "base": 74.6
+  },
+  "interferencias_mm3": {
+   "teclado": {
+    "tampa x teclas (nominal)": 0,
+    "tampa x carcacas (+0,5 mm, sem botao)": 6.23,
+    "tampa x carcacas (+0,8 mm, sem botao)": 37.78,
+    "tampa x grades": 0,
+    "tampa x reguas": 0,
+    "tampa x parafusos": 0,
+    "base x teclas": 0,
+    "base x reguas": 0,
+    "base x grades": 0,
+    "base x parafusos (cabeca)": 0,
+    "grades x teclas": 0,
+    "grades x reguas": 0,
+    "grades x parafusos": 0,
+    "teclas x parafusos": 0
+   },
+   "conectores": {
+    "cabecalhos x base": 0,
+    "plugues x base": 0,
+    "cabecalhos x pinos das teclas": 0,
+    "plugues x pinos": 0,
+    "cabecalhos x sensores": 0,
+    "plugues x sensores": 0,
+    "cabecalhos x reguas (so o topo toca: 0)": 0,
+    "plugues x reguas": 0,
+    "plugues x cabecalhos": 0,
+    "plugues x parafusos": 0
+   },
+   "interface": {
+    "tampa x placa": 0,
+    "base x placa": 0,
+    "tampa x modulo": 0,
+    "base x modulo": 0,
+    "tampa x bateria": 0,
+    "base x bateria": 0,
+    "tampa x alto-falante": 0,
+    "base x alto-falante": 0,
+    "tampa x caixa acustica": 0,
+    "base x caixa acustica": 0,
+    "tampa x OLED": 0,
+    "base x OLED": 0,
+    "tampa x encoder 1": 0,
+    "base x encoder 1": 0,
+    "tampa x encoder 2": 0,
+    "base x encoder 2": 0,
+    "tampa x knob 1": 0,
+    "base x knob 1": 0,
+    "tampa x knob 2": 0,
+    "base x knob 2": 0
+   }
+  },
+  "segundos": 46.9
+ },
+ "44": {
+  "comprimento_mm": 326.0,
+  "altura_frente_mm": 24.7,
+  "altura_atras_mm": 31.7,
+  "reguas": 12,
+  "parafusos_M2": 24,
+  "postes_internos": 8,
+  "volume_cm3": {
+   "tampa": 119.5,
+   "base": 101.7
+  },
+  "interferencias_mm3": {
+   "teclado": {
+    "tampa x teclas (nominal)": 0,
+    "tampa x carcacas (+0,5 mm, sem botao)": 10.38,
+    "tampa x carcacas (+0,8 mm, sem botao)": 62.96,
+    "tampa x grades": 0,
+    "tampa x reguas": 0,
+    "tampa x parafusos": 0,
+    "base x teclas": 0,
+    "base x reguas": 0,
+    "base x grades": 0,
+    "base x parafusos (cabeca)": 0,
+    "grades x teclas": 0,
+    "grades x reguas": 0,
+    "grades x parafusos": 0,
+    "teclas x parafusos": 0
+   },
+   "conectores": {
+    "cabecalhos x base": 0,
+    "plugues x base": 0,
+    "cabecalhos x pinos das teclas": 0,
+    "plugues x pinos": 0,
+    "cabecalhos x sensores": 0,
+    "plugues x sensores": 0,
+    "cabecalhos x reguas (so o topo toca: 0)": 0,
+    "plugues x reguas": 0,
+    "plugues x cabecalhos": 0,
+    "plugues x parafusos": 0
+   },
+   "interface": {
+    "tampa x placa": 0,
+    "base x placa": 0,
+    "tampa x modulo": 0,
+    "base x modulo": 0,
+    "tampa x bateria": 0,
+    "base x bateria": 0,
+    "tampa x alto-falante": 0,
+    "base x alto-falante": 0,
+    "tampa x caixa acustica": 0,
+    "base x caixa acustica": 0,
+    "tampa x OLED": 0,
+    "base x OLED": 0,
+    "tampa x encoder 1": 0,
+    "base x encoder 1": 0,
+    "tampa x encoder 2": 0,
+    "base x encoder 2": 0,
+    "tampa x knob 1": 0,
+    "base x knob 1": 0,
+    "tampa x knob 2": 0,
+    "base x knob 2": 0
+   }
+  },
+  "segundos": 46.0
+ },
+ "60": {
+  "comprimento_mm": 400.0,
+  "altura_frente_mm": 24.7,
+  "altura_atras_mm": 31.7,
+  "reguas": 16,
+  "parafusos_M2": 32,
+  "postes_internos": 11,
+  "volume_cm3": {
+   "tampa": 145.5,
+   "base": 128.7
+  },
+  "interferencias_mm3": {
+   "teclado": {
+    "tampa x teclas (nominal)": 0,
+    "tampa x carcacas (+0,5 mm, sem botao)": 14.53,
+    "tampa x carcacas (+0,8 mm, sem botao)": 88.15,
+    "tampa x grades": 0,
+    "tampa x reguas": 0,
+    "tampa x parafusos": 0,
+    "base x teclas": 0,
+    "base x reguas": 0,
+    "base x grades": 0,
+    "base x parafusos (cabeca)": 0,
+    "grades x teclas": 0,
+    "grades x reguas": 0,
+    "grades x parafusos": 0,
+    "teclas x parafusos": 0
+   },
+   "conectores": {
+    "cabecalhos x base": 0,
+    "plugues x base": 0,
+    "cabecalhos x pinos das teclas": 0,
+    "plugues x pinos": 0,
+    "cabecalhos x sensores": 0,
+    "plugues x sensores": 0,
+    "cabecalhos x reguas (so o topo toca: 0)": 0,
+    "plugues x reguas": 0,
+    "plugues x cabecalhos": 0,
+    "plugues x parafusos": 0
+   },
+   "interface": {
+    "tampa x placa": 0,
+    "base x placa": 0,
+    "tampa x modulo": 0,
+    "base x modulo": 0,
+    "tampa x bateria": 0,
+    "base x bateria": 0,
+    "tampa x alto-falante": 0,
+    "base x alto-falante": 0,
+    "tampa x caixa acustica": 0,
+    "base x caixa acustica": 0,
+    "tampa x OLED": 0,
+    "base x OLED": 0,
+    "tampa x encoder 1": 0,
+    "base x encoder 1": 0,
+    "tampa x encoder 2": 0,
+    "base x encoder 2": 0,
+    "tampa x knob 1": 0,
+    "base x knob 1": 0,
+    "tampa x knob 2": 0,
+    "base x knob 2": 0
+   }
+  },
+  "segundos": 60.0
+ },
+ "76": {
+  "comprimento_mm": 474.0,
+  "altura_frente_mm": 24.7,
+  "altura_atras_mm": 31.7,
+  "reguas": 20,
+  "parafusos_M2": 40,
+  "postes_internos": 14,
+  "volume_cm3": {
+   "tampa": 171.4,
+   "base": 155.7
+  },
+  "interferencias_mm3": {
+   "teclado": {
+    "tampa x teclas (nominal)": 0,
+    "tampa x carcacas (+0,5 mm, sem botao)": 18.68,
+    "tampa x carcacas (+0,8 mm, sem botao)": 113.34,
+    "tampa x grades": 0,
+    "tampa x reguas": 0,
+    "tampa x parafusos": 0,
+    "base x teclas": 0,
+    "base x reguas": 0,
+    "base x grades": 0,
+    "base x parafusos (cabeca)": 0,
+    "grades x teclas": 0,
+    "grades x reguas": 0,
+    "grades x parafusos": 0,
+    "teclas x parafusos": 0
+   },
+   "conectores": {
+    "cabecalhos x base": 0,
+    "plugues x base": 0,
+    "cabecalhos x pinos das teclas": 0,
+    "plugues x pinos": 0,
+    "cabecalhos x sensores": 0,
+    "plugues x sensores": 0,
+    "cabecalhos x reguas (so o topo toca: 0)": 0,
+    "plugues x reguas": 0,
+    "plugues x cabecalhos": 0,
+    "plugues x parafusos": 0
+   },
+   "interface": {
+    "tampa x placa": 0,
+    "base x placa": 0,
+    "tampa x modulo": 0,
+    "base x modulo": 0,
+    "tampa x bateria": 0,
+    "base x bateria": 0,
+    "tampa x alto-falante": 0,
+    "base x alto-falante": 0,
+    "tampa x caixa acustica": 0,
+    "base x caixa acustica": 0,
+    "tampa x OLED": 0,
+    "base x OLED": 0,
+    "tampa x encoder 1": 0,
+    "base x encoder 1": 0,
+    "tampa x encoder 2": 0,
+    "base x encoder 2": 0,
+    "tampa x knob 1": 0,
+    "base x knob 1": 0,
+    "tampa x knob 2": 0,
+    "base x knob 2": 0
+   }
+  },
+  "segundos": 94.4
+ },
+ "caixa_acustica": {
+  "camara_cm3": 10.41,
+  "interior_z": [
+   1.3,
+   5.599999999999999
+  ],
+  "interior_alto_z": [
+   1.3,
+   10.8
+  ],
+  "retangulo": [
+   5.0,
+   57.5,
+   66.0,
+   88.7
+  ],
+  "parte_alta_desde_x": 54.5,
+  "topo_da_parte_alta_z": 12.0,
+  "nervuras_x": [
+   28.0,
+   37.0,
+   46.0,
+   55.25
+  ],
+  "furo_dos_fios": [
+   49.5,
+   88.7
+  ],
+  "fundo_por_fora_z": 0.3,
+  "frente_do_falante_z": 11.299999999999999,
+  "orelha_z": [
+   7.399999999999999,
+   9.399999999999999
+  ]
+ },
+ "lugar": {
+  "bateria": [
+   17.4,
+   40.0,
+   51.4,
+   90.0
+  ],
+  "bateria_z": [
+   -8.1,
+   -3.0999999999999996
+  ],
+  "falante_z": [
+   6.799999999999999,
+   11.299999999999999
+  ],
+  "oled_z": [
+   9.4,
+   12.5
+  ],
+  "oled_centro": [
+   37.0,
+   20.1
+  ],
+  "modulo_z": [
+   -5.9,
+   -1.2
+  ],
+  "encoder_topo_do_eixo": 24.5,
+  "knob_topo": 25.9
+ }
+}

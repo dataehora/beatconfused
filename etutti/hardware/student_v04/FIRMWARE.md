@@ -1,8 +1,176 @@
-# eTutti Student V4 · firmware e som (R1V4 + R2V4 + R3V4)
+# eTutti Student V4 · firmware e som (R1V4 + R2V4 + R3V4 + R4V4)
 
-21 nov 2026. **R3V4 (atendida nesta revisão):** varredura com ADC duplo e leitura quente em rodízio (item 5) e voz com efeitos junto com o teclado (item 6): ver a seção **"R3V4"** logo abaixo. O resto do texto (R1V4 e R2V4) continua valendo, com as correções marcadas "(R3V4)". Atende as tarefas **P1** (capacidade do Teensy MicroMod para 76 teclas, Full Speed USB) e **P2** (começo do firmware V4, §9 itens 1–3) da **R1V4**, com a varredura da **R2V4** (F2: réguas de 4 teclas, 4 linhas OUT, cadeia de registradores de deslocamento).
+21 nov 2026. **R4V4 (atendida nesta revisão):** voz só no fone/AUX por padrão, expansor e supressor de microfonia, harmonizador que segue a tecla, menu pelos dois knobs na OLED e varredura em `IntervalTimer`: ver a seção **"R4V4"** logo abaixo. O resto do texto (R1V4, R2V4 e R3V4) continua valendo, com as correções marcadas "(R4V4)". **R3V4:** varredura com ADC duplo e leitura quente em rodízio (item 5) e voz com efeitos junto com o teclado (item 6): ver a seção **"R3V4"** adiante. Atende as tarefas **P1** (capacidade do Teensy MicroMod para 76 teclas, Full Speed USB) e **P2** (começo do firmware V4, §9 itens 1–3) da **R1V4**, com a varredura da **R2V4** (F2: réguas de 4 teclas, 4 linhas OUT, cadeia de registradores de deslocamento).
 
-**O firmware compila para a V4 (28, 44, 60 e 76 teclas), para o Student V01 e para o eTuttino. Nada foi gravado e nada rodou numa placa: a V4 não existe.** Tudo o que é tempo medido abaixo é **conta** (marcada "estimado"), a partir das medições do eTuttino (CLAUDE.md) e dos números do datasheet que o repositório já traz. Os pinos e o contrato de varredura seguem o `student_v04/pcb/PINOS.md` (rascunho da eletrônica, 74HC595 C5947, SCAN_DATA = 2, SCAN_CLK = 3); o que o PINOS.md ainda marca "(conferir)" continua a conferir.
+**O firmware compila para a V4 (28, 44, 60 e 76 teclas), para o Student V01 e para o eTuttino (R4V4: de novo, com a varredura em interrupção). Nada foi gravado e nada rodou numa placa: a V4 não existe.** Tudo o que é tempo medido abaixo é **conta** (marcada "estimado"), a partir das medições do eTuttino (CLAUDE.md) e dos números do datasheet que o repositório já traz. Os pinos e o contrato de varredura seguem o `student_v04/pcb/PINOS.md` (rascunho da eletrônica, 74HC595 C5947, SCAN_DATA = 2, SCAN_CLK = 3); o que o PINOS.md ainda marca "(conferir)" continua a conferir.
+
+## R4V4 · voz sem microfonia, harmonizador que segue a tecla, menu pelos knobs e varredura em interrupção
+
+Tudo abaixo **compila** (V4 com 28, 44, 60 e 76 teclas, Student V01 e eTuttino; ver "Conferências"). **Nada foi gravado e nada rodou numa placa**: todo tempo e toda CPU são **estimados** (conta a partir das medições do eTuttino e do ciclo do ADC), exceto o que está dito "simulado" (o detector de afinação, num gêmeo em numpy) e "compilado" (memória). Os efeitos novos entram no `V4_BENCH`, que mede a CPU quando houver placa.
+
+### Resumo das cinco tarefas
+
+| # | Tarefa da R4V4 | Feito | Onde |
+|---|---|---|---|
+| 1 | Voz só no fone/AUX por padrão; alto-falante opcional com aviso | sim | `speakerMutesVoice()`, CC 96, tela de aviso |
+| 2 | Filtro de amplitude (expansor com ataque, retenção, soltura, passa-altas) e estudo do supressor de microfonia | sim, e o supressor **implementado** atrás de `V4_FEEDBACK_SUPPRESSOR` | `voice_fx.h`: `VoiceInput`, `FeedbackWatch` |
+| 3 | Harmonizador que segue a tecla (YIN) | sim, até 3 notas ao mesmo tempo, mantém o modo de intervalo fixo | `voice_fx.h`: `PitchTracker`; `harmFollowUpdate()` |
+| 4 | Menu pelos 2 knobs na OLED 128 x 64 | sim (árvore e telas abaixo), no driver OLED existente | `menu*()` e `drawMenu()` |
+| 5 | Varredura em `IntervalTimer` acima do áudio, 396 MHz | sim, `V4_SCAN_TIMER 1` | `scanTick()` |
+
+### 1 · Saída da voz: fone/AUX por padrão
+
+- A voz e **todos** os efeitos de voz (seca, vocoder, harmonizador, eco) só saem com **fone ou AUX no jack OUT** (HP_DET). Sem plugue, o jack não está em uso e o alto-falante é a saída: a voz fica **muda** (e o microfone, o vocoder, o rastreador de afinação e a FFT deixam de rodar, então não custam CPU).
+- **Alto-falante opcional:** menu **SAIDA > SAIDA VOZ** (`FONE/AUX` ou `+ ALTOFAL`) ou **CC 96** (>= 64). Ao ligar, a tela mostra durante 4 s (ou até mexer num knob) o aviso do desenho 3 abaixo; depois, enquanto a voz sai pelo alto-falante, a linha de baixo da tela principal pisca `!MICROFONIA`.
+- **Nunca é guardado:** a opção do alto-falante **não** vai para a EEPROM; a cada partida a voz volta ao fone/AUX.
+- O antigo `V4_VOICE_MUTE_SPEAKER` (compilação) saiu: virou esta opção em tempo de execução. A regra segue o jack em tempo real (plugar o fone liga a voz, tirar silencia).
+
+### 2 · Filtro de amplitude e supressor de microfonia
+
+**Expansor (porta de ruído com joelho macio) na entrada** (`vfx::VoiceInput`): passa-altas -> notches (se houver) -> ganho -> detector de nível (ataque ~1 ms, queda ~25 ms) -> expansor. Acima do **limiar** tudo passa; abaixo dele o ganho cai com `(nível / limiar)^n`. Objetivo: o som do alto-falante chega ao microfone **de longe**, bem mais fraco que uma voz a poucos centímetros da cápsula, fica abaixo do limiar e é expandido para quase nada.
+
+| Ajuste | Menu (CAPTACAO) | CC | Faixa | Padrão |
+|---|---|---:|---|---|
+| Limiar | LIMIAR | 81 | 40 a ~8100 (unidades int16 do sinal já com ganho) | 240 |
+| Razão (potência n) | RAZAO | 93 (valor/32) | SUAVE 1, MEDIA 2, FORTE 3, PORTA 6 | MEDIA (n = 2) |
+| Ataque | ATAQUE | 84 | 0,5 a 30 ms | ~2 ms |
+| Retenção | RETENCAO | 89 | 0 a 500 ms | ~63 ms |
+| Soltura | SOLTURA | 90 | 20 a 1000 ms | ~143 ms |
+| Passa-altas | PASSA-ALTAS | 92 | 60 a 400 Hz | 89 Hz |
+| Ganho do microfone | GANHO MIC | 82 | 20 a 52 dB (codec) | 35 dB |
+
+**Pré-ajuste "MIC PERTO"** (CAPTACAO > MIC PERTO, uma ação): limiar ~4100, razão FORTE (n = 6, quase porta), ataque 1,2 ms, retenção 78 ms, soltura 117 ms, passa-altas 167 Hz. É um **ponto de partida de cálculo**: o limiar certo depende da cápsula, do ganho e da distância, e só dá para ajustar com o microfone da placa (pergunta 1). CPU do expansor: ~+0,2 % (estimado).
+
+**Supressor automático de microfonia (notches que seguem a frequência que realimenta)** — estudo e implementação (`vfx::FeedbackWatch`, `V4_FEEDBACK_SUPPRESSOR 1`, **desligado até o menu ligar**: CAPTACAO > ANTIMICROF.; CC 94):
+
+| Método | Como | CPU (396 MHz, estimado) | Veredito |
+|---|---|---|---|
+| **FFT de 1024 pontos + notches** (implementado) | FFT da voz (bins de 43 Hz, um quadro novo a cada 11,6 ms); um pico estreito que **cresce** (> 1,8x em 10 quadros ~ 0,12 s) ou que fica 30 vezes acima da média por ~0,5 s ganha um notch de -18 dB (Q 30) na frequência interpolada; se reaparece, o notch afunda mais 6 dB (até -36). Até 4 notches, o mais antigo é trocado. | FFT ~1,1 % + 4 biquads ~0,5 % + análise no laço ~0,1 % = **~1,7 %** (com a opção desligada: 0 %, a FFT é desconectada e os notches somem) | bom: acompanha a frequência, não distorce o resto |
+| Filtro notch adaptativo (LMS) | notch cuja frequência é ajustada por gradiente | ~0,3 % | converge mal com voz (também é tonal); não recomendado |
+| Deslocador de frequência (5 Hz) | desloca todo o espectro um pouco para quebrar o laço | ~0,5 % | soa desafinado na voz e nas notas do teclado; não recomendado |
+| Só o expansor | nenhum filtro | ~0,2 % | já corta a maior parte quando o microfone está perto da boca, mas não ajuda se alguém canta alto e o laço tem ganho > 1 |
+
+O detector **pode errar** cantando uma nota pura e longa (um buraco estreito em uma voz quase não se ouve); o item de menu desliga o supressor e LIMPAR NOTCH tira os que existem. **Nada disso foi ouvido nem medido** (pergunta 2). Constantes a ajustar na placa: o piso de magnitude 0,004 e as razões pico/média (8 e 30), em `FeedbackWatch::feed`.
+
+### 3 · Harmonizador que segue a tecla
+
+- **Detector de afinação: YIN** (de Cheveigne e Kawahara, 2002; `vfx::PitchTracker`). A voz passa por um passa-baixas de 1,8 kHz e é decimada por 4 (11 kHz); a cada 192 amostras decimadas (17,4 ms) uma janela de 192 amostras é varrida em 140 atrasos (920 a 79 Hz). Mediana dos três últimos quadros; sem sinal ou sem voz com afinação devolve 0.
+  - **Simulado** (gêmeo em numpy da mesma conta, voz sintética com 24 harmônicos, ruído e vibrato de 1,5 %): de 82 a 880 Hz, **erro máximo 13 cents com vibrato, 5 cents sem**, nenhum erro de oitava. Voz real, microfone e ambiente **não** foram testados.
+- **Segue a tecla** (menu VOZ > MODO HARM = `TECLA`; CC 95): a cada 12 ms, cada nota segurada (as 3 mais recentes, sem repetir) ganha um deslocador (`AudioEffectGranular`, grão de 25 ms) com velocidade = frequência da nota / frequência da voz. Duas ou três notas = acorde cantado (a mistura divide por raiz de n). Sem nota ou sem voz com afinação por 300 ms, a harmonia silencia.
+  - **OITAVA = PERTO** (padrão; CC 97): a razão é dobrada para ficar entre 0,71 e 1,41, ou seja, usa-se a nota na oitava mais próxima da voz: deslocamentos pequenos, bem menos artefato. `EXATA` desloca para a oitava em que a nota foi tocada (razão limitada a 0,25..4).
+  - A razão acompanha o cantor com constante de ~25 ms: sobra um pouco de vibrato (não fica "autotune duro").
+- **Intervalo fixo** continua (MODO HARM = `FIXO`; CC 19 como antes, na menu em semitons inteiros).
+- **CPU (estimada, 396 MHz):** YIN 27 mil multiplicações-somas por 17,4 ms ~ **1,2 %** (pior caso, com voz; só roda se há sinal) + passa-baixas/decimação ~0,1 % + 3 deslocadores ~0,3 % cada = **~2,2 % com 3 notas** (~1,6 % com 1; o modo de intervalo fixo ~0,4 %).
+- **Latência (estimada):** a voz harmonizada sai **~25 a 30 ms atrás da voz seca** (grão do deslocador + bloco de áudio), o que soa como uma pequena dobra. Tocar uma tecla nova se ouve em **~40 ms** (12 ms do laço de controle + grão + bloco). Uma mudança de nota da voz leva **~60 ms** para a harmonia seguir (janela 17 ms + até um passo 17 ms + mediana de 3 quadros + 12 ms + grão).
+- Memória: 3 deslocadores de 12800 amostras = 77 KB em DMAMEM (era 26 KB).
+
+### 4 · Menu pelos dois knobs (OLED 128 x 64)
+
+**Gestos.** Só mexem no que o liga/desliga não usa (o clique do **volume** segurado 2 s continua desligando, com ou sem menu):
+
+| Gesto | Fora do menu | Dentro do menu |
+|---|---|---|
+| Seletor: **clique longo** (0,7 s) | abre o menu | fecha o menu |
+| Seletor: girar | registro (como antes) | move o cursor |
+| Seletor: clique curto | guarda o registro / volta ao som padrão (como antes, agora **ao soltar** o botão) | entra no submenu; liga/desliga ou troca a escolha; executa a ação |
+| Volume: girar | volume (como antes) | **muda o valor da linha** do cursor |
+| Volume: clique curto | nada | **volta** (do primeiro nível, fecha) |
+| Volume: clique de 2 s | desliga | desliga |
+
+O menu fecha sozinho depois de 30 s sem mexer. Um CC vindo da página muda o valor na tela na hora, e o menu **devolve o CC** quando o usuário muda um valor (a página pode seguir). A nota e o som continuam funcionando com o menu aberto.
+
+**Árvore** (rótulos em português, sem acento, 21 colunas; `MENU_LANG_PT 0` troca para inglês):
+
+```
+MENU
+ +- VOZ
+ |   VOZ SECA          nivel   CC 16        VOCODER          nivel   CC 17
+ |   HARMONIZ.         nivel   CC 18        MODO HARM        FIXO / TECLA   CC 95
+ |   INTERVALO         -12..+12 ST  CC 19   OITAVA           PERTO / EXATA  CC 97
+ |   ECO               nivel   CC 76        TEMPO ECO        60..740 MS   CC 77
+ |   REALIM ECO        nivel   CC 78        REVERB VOZ       nivel   CC 80
+ +- CAPTACAO
+ |   GANHO MIC         20..52 DB  CC 82     LIMIAR           nivel   CC 81
+ |   RAZAO             SUAVE/MEDIA/FORTE/PORTA  CC 93
+ |   ATAQUE            MS  CC 84            RETENCAO         MS  CC 89
+ |   SOLTURA           MS  CC 90            PASSA-ALTAS      HZ  CC 92
+ |   MIC PERTO         ação (pré-ajuste)    ANTIMICROF.      LIGADO / DESLIG  CC 94
+ |   LIMPAR NOTCH      ação
+ +- SAIDA
+ |   VOLUME            nivel   CC 7
+ |   SAIDA VOZ         FONE/AUX / + ALTOFAL (aviso)   CC 96
+ |   TECLAS            nivel do teclado na mistura (0 = só a voz)   CC 83
+ +- SOM
+ |   REGISTRO          os 7 registros   CC 26      INSTRUMENTO   os 5   CC 25
+ |   REVERB            nivel   CC 91               CURVA VEL.    FIXA/SUAVE/NORMAL/DURA   CC 9
+ +- SISTEMA
+     SALVAR            guarda a voz e o registro na EEPROM
+     ZERAR VOZ         todos os níveis da voz a 0, ajustes de fábrica
+     CALIBRAR          recalibra o fundo das teclas (CC 14)
+     TESTE TECLAS      LIGADO / DESLIG   CC 15
+```
+
+**Telas** (128 x 64 pontos = 21 colunas x 8 linhas de texto; `[...]` = linha em vídeo invertido, o cursor):
+
+```
+1. TELA PRINCIPAL (como era, mais a linha de voz)        2. MENU, nível 1
++---------------------+                                  +---------------------+
+|BAT 85%              |   (corpo 2x)                     |[MENU            1/5]|
+|VIOLIN               |   (corpo 2x)                     |[VOZ              > ]|  <- cursor
+|VOL 90 HP    VOZ C#4 |   VOZ C#4 = nota da voz          | CAPTACAO         >  |
+|[=========]  MIC [==]|   (modo TECLA, fone)             | SAIDA            >  |
++---------------------+                                  | SOM              >  |
+                                                         | SISTEMA          >  |
+                                                         +---------------------+
+3. AVISO (4 s ou até mexer; a moldura pisca)             4. MENU > VOZ
++---------------------+                                  +---------------------+
+|+-------------------+|                                  |[MENU > VOZ     4/10]|
+||   AVISO           ||   (corpo 2x)                     | VOZ SECA   [==  ] 20%|
+|| VOZ NO ALTO-FALANTE||                                 | VOCODER    [    ]  0%|
+|| PODE DAR MICROFONIA||                                 | HARMONIZ.  [=== ] 55%|
+|| MIC PERTO DA BOCA E||                                 |[MODO HARM        TECLA]|
+|| VOLUME BAIXO       ||                                 | INTERVALO  [=] +4 ST |
+|+-------------------+|                                  +---------------------+
++---------------------+
+5. MENU > CAPTACAO                                       6. MENU > SAIDA (voz no alto-falante ligada)
++---------------------+                                  +---------------------+
+|[MENU > CAPTACAO 2/10]|                                 |[MENU > SAIDA     2/3]|
+| GANHO MIC  [==  ] 40 DB|                               | VOLUME     [===] 71%|
+|[LIMIAR     [=== ] 38%]|   (volume gira = muda)        |[SAIDA VOZ  + ALTOFAL]|  <- aviso (tela 3)
+| RAZAO         MEDIA  |                                 | TECLAS     [====]100%|
+| ATAQUE     [=   ] 2.1 MS|                              |                     |
+| RETENCAO   [=   ] 63 MS|                               +---------------------+
++---------------------+
+```
+
+Notas de desenho: em listas com mais de 5 linhas a janela rola com o cursor e o título mostra `posição/total`; um aviso de uma linha ("SALVO", "MIC PERTO", ...) substitui o título por 1,5 s depois de uma ação. A fonte 5 x 7 só tem **maiúsculas, dígitos e pontuação básica**: sem acento (SAIDA, CAPTACAO). O texto de cada linha tem no máximo 11 caracteres quando há barra de valor.
+
+**Persistência (SALVAR):** EEPROM no endereço 210 (22 bytes, número mágico 0xA7): os níveis da voz, o expansor, o passa-altas, o modo do harmonizador, o antimicrofonia e o nível do teclado; o **alto-falante nunca**. O registro continua em 200. Sem SALVAR, tudo volta ao padrão na próxima partida (voz desligada, como na R3V4).
+
+### 5 · Varredura em `IntervalTimer` (396 MHz)
+
+- **Antes:** a varredura era o próprio `loop()`: tudo o mais (MIDI, knobs, tela, controle da voz) e toda interrupção de áudio a atrasavam, e o laço ficava 100 % ocupado esperando os sensores.
+- **Agora:** `IntervalTimer` chama `scanTick()` a cada 12 us, **prioridade NVIC 96, acima do áudio (208), do USB (112) e do DMA do I2S (128)**. O `scanTick()` **nunca espera**: se os sensores da coluna ligada ainda não passaram `SENSOR_WAKE_US` (60 us), volta na hora; senão lê a coluna (ADC1 e ADC2 em paralelo), liga a próxima (um pulso do 595; durante o processamento dela, para sobrepor a espera), processa as 4 teclas e volta. A leitura quente (R3V4) segue igual em rodízio, com orçamento por passada de `2,2 ms - passada nominal` (mínimo 300 us), agora sem o fator do áudio, porque o áudio não alonga mais a passada.
+- Eventos de tecla (nota ligada/desligada com velocity, posições do teste de teclas) **vão para uma fila** (128 posições, sem trava) e o `loop()` os entrega às vozes e ao `usbMIDI` (`drainKeyEvents()`): as vozes e o USB não são reentrantes. A velocity continua medida na interrupção pelo instante interpolado do cruzamento; só o início do som espera o laço (<= ~1 ms, estimado, mais o bloco de áudio de 2,9 ms).
+- O laço do ADC da biblioteca (`analogReadSlow`, para bateria e HP_DET) e o CC 14 (recalibrar) **pausam** a varredura por alguns microssegundos (`scanPaused`), porque usam o mesmo ADC1 ou reescrevem os modelos das teclas.
+- A tela deixou de esperar as teclas pararem (o I²C bloqueante no laço não atrasa mais a varredura).
+
+| Teclas | Colunas | Passada, sem tecla quente (estimada, ~72 us por coluna) | Antes (R3V4, ADC duplo) |
+|---:|---:|---:|---:|
+| 28 | 8 | **~0,58 ms (1,7 kHz)** | ~0,54 ms |
+| 44 | 12 | ~0,86 ms | ~0,81 ms |
+| 60 | 16 | ~1,15 ms | ~1,08 ms |
+| 76 | 20 | **~1,44 ms (0,69 kHz)** | ~1,35 ms |
+
+A passada nominal subiu ~7 % (a resolução de 12 us do relógio do `scanTick()` e o tempo de processar antes de ligar a próxima coluna), **mas deixa de variar com o áudio**: com 30 % de áudio, a passada de 76 teclas ia de 1,35 para ~2,1 ms; agora fica em ~1,44 ms. O intervalo máximo entre duas leituras de uma tecla com orçamento quente cheio é ~2,2 ms em **qualquer** carga de áudio (estimado). O erro de velocity é o da tabela da R3V4, trocando a passada de 76 teclas de 1,35 por 1,44 ms.
+
+**CPU do próprio laço de varredura (estimada):** cada coluna custa ~6 us de leitura + ~3 a 4 us para processar 4 teclas + ~1 us de seleção + ~2,5 us de interrupções do relógio que voltam sem fazer nada = ~13 a 14 us em ~72 us, **~19 % da CPU**, tirados **do áudio** (que passa a ter ~81 %, contra os ~36 % que precisa no pior caso). Soma de pior caso a 396 MHz, com **tudo ligado** (quatro fileiras de palhetas 30 % + voz, vocoder, eco e reverb 5,5 % + harmonizador que segue 2,2 % + supressor 1,7 % + expansor 0,2 % + varredura 19 %): **~59 %**. **396 MHz basta** (estimado); **600 MHz só se a medição na placa mostrar `AudioProcessorUsageMax()` acima de ~80 % ou blocos de áudio faltando** (`V4_BENCH`, passos novos "harm follows key" e "anti-feedback"). Para aliviar a varredura sem mudar o relógio: `SCAN_TICK_US` de 12 para 20 corta ~1,5 us por coluna dos ticks vazios e alonga a passada em ~4 us por coluna.
+
+**Memória (compilada, V4 de 28 teclas; 76 teclas só soma 96 bytes):** código em flash **140 KB** (R3V4: 128 KB), RAM1 **99,8 KB de variáveis** (R3V4: 73 KB; `AudioMemory` de 90 para 100 blocos, a FFT e o rastreador), **RAM2 175,6 KB** (R3V4: 122 KB; 3 deslocadores em vez de 1: +51 KB). Folga: RAM1 260 KB, RAM2 348 KB. `AudioMemory(100)` é estimativa (+10 blocos de reserva): **medir** `AudioMemoryUsageMax()`.
+
+### CCs novos (só no sketch, como os de voz da R3V4)
+
+84 ataque do expansor, 89 retenção, 90 soltura, 92 passa-altas, 93 razão (valor/32), 94 antimicrofonia, 95 harmonizador segue a tecla, 96 voz também no alto-falante, 97 oitava (perto/exata). O menu **não inventa CC além destes**; o mapa de `script.js` muda junto quando a página V4 existir.
 
 ## Um sketch, três instrumentos
 
@@ -213,7 +381,7 @@ Erro da estimativa dos efeitos: ±50 %. **Cabe a 396 MHz** em CPU de áudio (36 
 
 **Cortes, se não couber:** (1) `VOCODER_BANDS` 8 (−0,9 %); (2) tirar o ruído das consoantes; (3) harmonizador fora; (4) eco de 32768 para 16384 amostras (−32 KB); (5) vocoder só até 44 teclas.
 
-**Segurança:** alto-falante e microfone ficam no mesmo corpo: microfonia é possível. `V4_VOICE_MUTE_SPEAKER 1` cala a voz e o vocoder enquanto o alto-falante é a saída (HP_DET sem fone); está em 0. A porta de ruído ajuda, não resolve.
+**Segurança (R4V4: resolvido):** a voz sai só no fone/AUX por padrão; o alto-falante é opção do menu com aviso; a porta de ruído virou expansor. Ver a seção R4V4. (O `V4_VOICE_MUTE_SPEAKER` da R3V4 saiu.)
 
 **Como medir (o que mais falta):** `V4_BENCH 1` (só compila com `usb=serialmidi`) toca 8 notas sozinho, liga cada efeito por 6 s e imprime pela serial (115200) a CPU de áudio (média e máxima), os blocos usados e o tempo médio/máximo da passada, com o acordeão em MM e em quatro fileiras. Compilar com `--fqbn teensy:avr:teensyMM:usb=serialmidi,speed=396` e regravar o `usb=midi` depois.
 
@@ -231,8 +399,36 @@ Erro da estimativa dos efeitos: ±50 %. **Cabe a 396 MHz** em CPU de áudio (36 
 | Compila, Teensy MicroMod, `speed=396`, V4 com 28 / 44 / 60 / 76 teclas | sim (28: flash 118 KB de código, 70 KB de RAM1; ver abaixo) |
 | Compila, Teensy MicroMod, V01 (`ETUTTI_STUDENT_V4 0`) | sim, código 90 KB como antes |
 | Compila, Teensy 4.0, eTuttino | sim, código 89 KB como antes |
+| Compila, V4 de 28 / 44 / 60 / 76 teclas, R4V4 (varredura em interrupção, menu, voz) | sim: flash 140 KB, RAM1 99,8 KB, RAM2 175,6 KB |
+| Compila, V4 com `V4_SCAN_TIMER 0` (varredura no laço, R3V4) | ver "Conferências da R4V4" abaixo |
 | Mapa de notas das quatro versões × R1V4 §4.4 (por script) | igual |
 | Tempos, velocity, CPU | **estimados**, tabelas acima |
+
+## Conferências da R4V4
+
+Compilado com `arduino-cli compile --fqbn teensy:avr:teensyMM:usb=midi,speed=396` (V4 e V01) e `teensy:avr:teensy40:usb=midi` (eTuttino), sempre numa cópia do sketch com a chave trocada (o sketch do repositório continua em `ETUTTI_STUDENT_V4 0`, `V4_KEYS 28`). **Nada gravado em placa.**
+
+| Conferência | Resultado |
+|---|---|
+| V4, 28 / 44 / 60 / 76 teclas (R4V4 completo) | compila: flash 140 080 bytes, RAM1 99 840 a 99 936, RAM2 175 648 (as quatro versões diferem só em 96 bytes de RAM1) |
+| Student V01 | compila, código 90 040 bytes (igual ao de antes) |
+| eTuttino (Teensy 4.0) | compila, código 88 824 bytes (igual ao de antes) |
+| V4 de 76 teclas com `V4_SCAN_TIMER 0` (o laço da R3V4) | compila: flash 139 696, RAM1 99 520 |
+| V4 de 76 teclas com `V4_BENCH 1` (`usb=serialmidi`, passos novos "harm follows key" e "anti-feedback") | compila: flash 141 744, RAM2 186 944 |
+| V4 de 28 teclas com `V4_FEEDBACK_SUPPRESSOR 0` | compila: flash 136 240, RAM1 78 240 (o supressor custa **~3,8 KB de flash e ~21,6 KB de RAM1**, sobretudo a FFT) |
+| Detector de afinação (YIN) contra um gêmeo em numpy | erro máx. 13 cents (vibrato 1,5 %), 5 cents sem vibrato, de 82 a 880 Hz; sem erro de oitava. **Simulado**, voz sintética |
+| `pcb/PINOS.md` relido no fim (sem mudança desde a R3V4) | os pinos do sketch continuam os do contrato: OUT_R1..R4 14/15/26/27, SCAN_DATA/CLK 2/3, knobs 22/24/25 e 11/9/6, I2S 7/8/20/21/23, I²C 18/19, KEEP 10, AMP_SD 12, HP_DET 17, VBAT 16, CHG_STAT 0; **nenhum pino novo** |
+| Tempos, CPU, latências, retração do expansor | **estimados** (tabelas da seção R4V4) |
+| Menu, telas, aviso | **não vistos numa tela real**: os desenhos são do código (`drawMenu`, `drawWarning`, `drawStatus`); falta um SSD1306 para conferir |
+
+## Como testar a R4V4 (quando houver placa)
+
+1. **Varredura:** `V4_BENCH 1` (compilar com `usb=serialmidi`): imprime a passada real (`key pass`, esperada ~0,58 ms com 28 teclas e ~1,44 ms com 76), a CPU de áudio e os blocos. Se `AudioProcessorUsageMax()` passar de ~80 %, ver pergunta 7. Conferir com um osciloscópio (SCAN_CLK) que a coluna é lida >= 60 us depois de ligada.
+2. **Voz só no fone:** sem plugue no jack OUT, ligar o vocoder (CC 17 ou menu): deve ficar mudo e a tela mostra `VOZ MUDA`. Com o fone plugado, a voz sai. Menu SAIDA > SAIDA VOZ = `+ ALTOFAL`: tela de aviso por 4 s, depois `!MICROFONIA` piscando.
+3. **Expansor:** menu CAPTACAO > LIMIAR enquanto fala perto e longe do microfone, olhando a barra MIC da tela principal; `MIC PERTO` como ponto de partida.
+4. **Supressor:** ligar ANTIMICROF., colocar o microfone perto do alto-falante com a voz no alto-falante (de propósito) e ver o apito ser cortado em ~0,2 a 0,5 s; LIMPAR NOTCH tira os filtros.
+5. **Harmonizador que segue:** MODO HARM = TECLA, HARMONIZ. > 0, cantar uma nota e segurar uma ou duas teclas; a tela mostra `VOZ <nota>` com a nota que o detector ouviu.
+6. **Menu:** clique longo no seletor; girar o seletor, girar o volume, clique do volume = voltar; segurar o clique do volume 2 s com o menu aberto desliga.
 
 ## Como testar (quando houver placa)
 1. Gravar com `ETUTTI_STUDENT_V4 1` e `V4_KEYS` = o número de teclas fitadas. O LED laranja na partida e a leitura do repouso levam ~0,1–0,2 s.
@@ -243,13 +439,17 @@ Erro da estimativa dos efeitos: ±50 %. **Cabe a 396 MHz** em CPU de áudio (36 
 
 ## Perguntas para o design
 
-(R3V4: retiradas as respondidas: contagem de pulsos, ADC duplo, microfone no MIC, leitura quente.)
+(R4V4: retiradas as respondidas pelas decisões do J e feitas nesta revisão: varredura em `IntervalTimer` a 396 MHz, voz só no fone/AUX, harmonizador que segue a tecla, menu pelos knobs. Ficam as que dependem de placa ou de decisão.)
 
-1. **Intervalo entre leituras (~2,2 ms):** serve com áudio pesado e 60/76 teclas, ou autoriza a varredura num `IntervalTimer`, uma segunda linha OUT_B (os pinos 38–41 ainda são "conferir" no PINOS.md) ou 600 MHz (−1 h de bateria)?
-2. **Efeitos de voz a 396 MHz:** vale a recomendação (tudo ligado até 44 teclas; com 60/76, vocoder desligado ou 600 MHz)? Alguém tem de **medir** com `V4_BENCH` quando houver placa.
-3. **Microfonia:** a voz sai também pelo alto-falante (padrão) ou só com fone (`V4_VOICE_MUTE_SPEAKER 1`)?
-4. **Harmonizador:** o granular é robótico. Querem um que siga a tecla tocada? Pede detecção de afinação da voz e CPU extra, a medir.
-5. **CCs e página:** os CCs de voz (16–19, 76–78, 80–83) existem só no sketch; a página V4 muda `script.js` junto. Os knobs não controlam os efeitos: querem um jeito (clique longo do seletor)?
-6. **Mapa de notas do usuário:** CC novo e lugar na EEPROM para quantos módulos vão ao grave, e um mapa por registro?
-7. **Notas até E7:** o acordeão amostrado cobre bem até a tecla 79; gravar mais amostras agudas ou limitar o mapa?
-8. **Desligar com USB:** o desligamento suave basta, ou a V4 devolve o PWR_EN para cortar o 3,3 V com o cabo?
+1. **Microfone real:** o limiar do expansor, o pré-ajuste MIC PERTO e o ganho do microfone são **contas**. Quando houver placa e a cápsula escolhida, alguém precisa regular o limiar de modo que só passe uma voz a poucos centímetros da boca (a tela mostra o nível do microfone, linha MIC). Qual cápsula e a que distância da boca se quer cantar (2 cm? 10 cm?)?
+2. **Supressor de microfonia:** o detector (FFT + notches) é um **primeiro modelo, não ouvido**. Pode errar cantando uma nota pura longa. Vale deixar desligado por padrão (como está) e só o J ligar no menu depois de testar?
+3. **Gesto do menu:** o clique longo do **seletor** abre o menu (0,7 s). Para não confundir com o clique curto (guardar o registro / voltar ao som padrão), o clique curto agora age **ao soltar**, não ao apertar (só na V4). Pode?
+4. **Idioma da tela:** o menu está em **português**, em maiúsculas e **sem acento** (a fonte 5 x 7 não tem). `MENU_LANG_PT 0` troca tudo para inglês. Querem outra fonte (com minúsculas e acentos, ~+2 KB) ou o texto atual serve?
+5. **Persistência:** SALVAR guarda os ajustes da voz e o registro, mas **não** o alto-falante (a voz sempre volta ao fone/AUX). Concordam, ou o menu deve perguntar "guardar?" ao sair?
+6. **Harmonizador que segue:** deixa a voz **exatamente** na nota tocada (com um resto do vibrato), o que soa como afinador automático em voz desafinada. Querem uma opção "ajuda" (só puxar a voz parcialmente para a nota) ou "segue só o intervalo" (a diferença de tom entre as notas, mantendo a voz natural)? E 3 notas basta, ou querem 4 (mais 26 KB de RAM2 e ~0,3 % de CPU)?
+7. **Varredura:** o relógio de 12 us é suficiente; se a medição na placa mostrar a CPU acima de ~80 %, o primeiro corte é o harmonizador de 3 notas para 2, depois 600 MHz. Algum problema de a V4 de 76 teclas ter a passada nominal de ~1,44 ms (era ~1,35 ms, mas estável com o áudio)?
+8. **Página V4:** os CCs de voz (16–19, 76–78, 80–84, 89–97) e os do menu existem só no sketch; a página V4 muda `script.js` junto. Quando a página entra na pauta?
+9. **Mapa de notas do usuário:** CC novo e lugar na EEPROM para quantos módulos vão ao grave, e um mapa por registro? (continua da R3V4)
+10. **Notas até E7:** o acordeão amostrado cobre bem até a tecla 79; gravar mais amostras agudas ou limitar o mapa? (continua da R3V4)
+11. **Desligar com USB:** o desligamento suave basta, ou a V4 devolve o PWR_EN para cortar o 3,3 V com o cabo? (continua da R3V4)
+12. **Para a eletrônica (nada a mudar no `PINOS.md`):** esta revisão **não usa pino novo**: o menu e o expansor usam os pinos dos knobs, do microfone (8) e da tela (18/19) que já estavam no contrato. O supressor e o harmonizador só pedem o ruído de fundo do microfone razoável (um pré-amplificador com ruído alto faz o expansor abrir). O `IntervalTimer` ocupa um canal do PIT.

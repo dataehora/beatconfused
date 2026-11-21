@@ -1,0 +1,15 @@
+(version 1)
+# eTutti Student V4 ruler -- custom rules (R4V4)
+(rule "Vias 0,5 / furo 0,3"
+    (condition "A.Type == 'via'")
+    (constraint via_diameter (min 0.5mm))
+    (constraint hole_size (min 0.3mm)))
+(rule "Trilhas: minimo 0,15; OUT e CLK 0,2"
+    (condition "A.Type == 'track'")
+    (constraint track_width (min 0.15mm) (opt 0.2mm)))
+(rule "OUT (analogico) a 0,3 mm de CLK/SER/QHP (diafonia na leitura dos sensores)"
+    (condition "A.Type == 'track' && A.NetName == 'OUT' && (B.NetName == 'CLK' || B.NetName == 'SER' || B.NetName == 'QHP' || B.NetName == 'QHP_J')")
+    (constraint clearance (min 0.3mm)))
+(rule "Nada no topo (onde fica a tecla): so cobre de trilha e plano, nenhuma peca"
+    (condition "A.Type == 'Footprint' && A.Layer == 'F.Cu' && A.Reference != 'H1' && A.Reference != 'H2' && !A.Reference.startsWith('PEG')")
+    (constraint disallow footprint))

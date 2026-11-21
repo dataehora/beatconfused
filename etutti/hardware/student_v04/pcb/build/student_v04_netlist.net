@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\student_v04\\kicad\\student_v04.kicad_sch")
-		(date "2026-11-21T13:16:33")
+		(date "2026-11-21T16:41:25")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")

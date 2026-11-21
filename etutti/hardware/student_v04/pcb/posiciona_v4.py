@@ -45,6 +45,7 @@ CLUSTER = {"J101", "H101", "TP101", "C101", "C102", "R301", "R302", "R105"}
 USB_Y = 10.0                    # B6 (DP) and A7 (DN) level with pads 3/5 (y 9.25 / 9.75)
 ROW_Y = {1: 74.03, 2: 58.01, 3: 41.99, 4: 25.97}      # the rows' centres (geometria.py)
 RULER_X0 = {1: 89.2, 2: 79.95, 3: 89.2, 4: 98.45}      # first ruler's left end per row (case_f2.rulers)
+RULER_IN_POCKET = True         # R4V4: the ruler's input connector is under the ruler, in the pocket: every row connector sits on the edge (row 2 too)
 PLUG_GAP = 9.0                  # two SH plugs face to face + the cable's bend (estimate, CONFERIR)
 MARGIN = 0.25
 MIN_X_EDGE = 0.6                # parts keep this much from the outline (courtyard)
@@ -336,7 +337,7 @@ def main():
         orient_mouth(j, "sh", (1.0, 0.0))
         j.SetPosition(V(50.0, ROW_Y[k]))
         cb = court(j)
-        mx = (X1 - 0.1) if RULER_X0[k] - X1 >= PLUG_GAP else (RULER_X0[k] - PLUG_GAP)
+        mx = (X1 - 0.1) if (RULER_IN_POCKET or RULER_X0[k] - X1 >= PLUG_GAP) else (RULER_X0[k] - PLUG_GAP)
         mouth_x[k] = mx
         j.SetPosition(V(50.0 + (mx - cb[2]), ROW_Y[k]))
     fixed = {"J201"} | {"J60%d" % k for k in range(1, 5)} | set(HOLES) | {"H101"}
@@ -512,8 +513,12 @@ def main():
         if not free("J401", box, ob):
             continue
         # slot 7 x 2.5 mm just in front of the mouth (towards -y), >= 1.5 mm from the connector
-        for gap in (1.5, 2.0, 2.5, 3.0, 4.0):
-            cx_ = (box[0] + box[2]) / 2
+        # R4V4: the SH plug (7.6 x 5.0) sits in front of the mouth and the wires leave its far end, so the slot goes BEYOND the plug
+        cx_ = (box[0] + box[2]) / 2
+        plug = (cx_ - 3.8, box[1] - 5.0, cx_ + 3.8, box[1])
+        if not free("J401", plug, ob):
+            continue
+        for gap in (5.5, 6.0, 6.5, 7.0):
             sb = (cx_ - 3.5, box[1] - gap - 2.5, cx_ + 3.5, box[1] - gap)
             if free("J401", sb, ob) and not overlap(sb, box, 0.3):
                 slot = sb

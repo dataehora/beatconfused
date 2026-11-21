@@ -202,7 +202,7 @@ def led_pins(s):
 
 def tmag_symbol():
     return box_symbol("TMAG5253BA3", "U", [([("1", "VCC", "power_in"), ("3", "EN", "input")],
-                                            [("4", "OUT", "output"), ("2", "GND", "power_in"),
+                                            [("4", "OUT", "tri_state"), ("2", "GND", "power_in"),
                                              ("5", "EP", "passive")])],
                       "TI TMAG5253 linear Hall sensor with enable, X2SON-4")
 
@@ -237,7 +237,7 @@ def pin_table(name):
     for sub in S.find(SYMBOLS[name], "symbol"):
         m = re.match(r".*_(\d+)_(\d+)$", sub[1])
         unit = int(m.group(1))
-        if m.group(2) != "1" and unit != 0:   # De Morgan alternates
+        if m.group(2) not in ("0", "1") and unit != 0:   # De Morgan alternates
             continue
         for p in S.find(sub, "pin"):
             at = S.first(p, "at")
@@ -774,7 +774,7 @@ def write_sheet(sheet, title, parts, extra=None):
     return nets, paper
 
 
-def write_root(flags):
+def write_root(flags, root_notes=None):
     sheets = []
     for i, (s, title) in enumerate(SHEETS):
         x, y = 25 + (i % 3) * 85, 45 + (i // 3) * 45
@@ -807,7 +807,7 @@ def write_root(flags):
                     '(property "Intersheetrefs" "${INTERSHEET_REFS}" (at %s %s 0) %s))' %
                     (S.quote(net), fmt(x), fmt(y + 2.54), eff("right"), uid("flagl", net), fmt(x), fmt(y + 2.54),
                      eff("right", True)))
-    notes = [
+    notes = root_notes or [
         "eTutti Student V4 · placa principal (so interface), R3V4. E a V3 sem sensores nem multiplexadores.",
         "Folhas P, E, F, I, A: o circuito da V3. Folha R: os 4 conectores de fileira (SH 6 vias), pull-downs e series de CLK/DATA.",
         "Placa: pcb/posiciona_v4.py (posicionamento sem trilhas, portao P). Ligacoes entre folhas por rotulos globais.",
