@@ -108,22 +108,20 @@ const int NUM_VOICES = 8;
 #define ETUTTI_STUDENT 0
 #endif
 
+// Student V4 (SPEC R1V4 + R2V4, etutti/hardware/student_v04/): the same Teensy
+// MicroMod build, but with the row-scan keyboard (4 analogue OUT lines + a shift
+// register chain that switches one column on at a time), up to 76 keys, an OLED
+// and a microphone. Switch it on here (or with -DETUTTI_STUDENT_V4=1); it stays
+// off by default so the MicroMod build is still the Student V01 one.
+#ifndef ETUTTI_STUDENT_V4
+#define ETUTTI_STUDENT_V4 0
+#endif
+#define ETUTTI_V4 (ETUTTI_STUDENT && ETUTTI_STUDENT_V4)
+
 #if ETUTTI_STUDENT
-// ---- eTutti Student V01 (etutti/hardware/student_v01/, pins from
-// etutti/hardware/viaggio_micromod/pcb/PINOS.md) ----
-// 28 keys on a 4 x 8 grid, two multiplexers. KEY_INPUT is the table the
-// board check (viaggio_j1/m3.py) read from the routed board, 28/28.
-// Multiplexer 0 = right half (COM on pin 14), 1 = left half (pin 15).
-// Channels 0-7 are rows 1 and 3, channels 8-15 rows 2 and 4: address line S3
-// also switches on that half of the sensors (EN_A / EN_B), so only 14 of
-// the 28 draw current at a time.
-const int LAYOUT_ROWS = 4;
-const int LAYOUT_COLS = 8;
-const int MUX_COUNT = 2;
-const uint8_t MUX_SEL_PINS[4] = {0, 1, 2, 3};          // S0..S3, shared
-const uint8_t MUX_COM_PINS[MUX_COUNT] = {14, 15};      // A0, A1
-const uint8_t SENS_EN_PIN = 4;                         // high = sensors powered
-const uint32_t SENSOR_WAKE_US = 60;                    // TMAG5253BA3 is ready 45 us after its EN rises
+// ---- eTutti Student V01 / V4: the pins both have in common (V01: etutti/hardware/
+// student_v01/, pins from etutti/hardware/viaggio_micromod/pcb/PINOS.md) ----
+const uint32_t SENSOR_WAKE_US = 60;                    // TMAG5253BA3 is ready 45 us after its EN rises (max); 60 = margin
 const uint8_t LED_PINS[2] = {13, 5};                   // red (also the module's blue LED), green
 const uint32_t LED_STARTUP_MS = 600;
 // Two encoders with a push switch (to GND, pull-ups here): volume and selector.
@@ -135,6 +133,21 @@ const uint8_t PWR_EN_PIN = 28;          // left as an input (the board pulls it 
 const uint8_t AMP_SD_PIN = 12;          // high = speaker amplifier on
 const uint8_t VBAT_PIN = 16;            // battery / 2
 const uint8_t HP_DET_PIN = 17;          // headphones in: ~0 V; out: ~1.4 V
+#endif
+
+#if ETUTTI_STUDENT && !ETUTTI_STUDENT_V4
+// ---- Student V01 keys: 28 keys on a 4 x 8 grid, two multiplexers. KEY_INPUT is the table the
+// board check (viaggio_j1/m3.py) read from the routed board, 28/28.
+// Multiplexer 0 = right half (COM on pin 14), 1 = left half (pin 15).
+// Channels 0-7 are rows 1 and 3, channels 8-15 rows 2 and 4: address line S3
+// also switches on that half of the sensors (EN_A / EN_B), so only 14 of
+// the 28 draw current at a time.
+const int LAYOUT_ROWS = 4;
+const int LAYOUT_COLS = 8;
+const int MUX_COUNT = 2;
+const uint8_t MUX_SEL_PINS[4] = {0, 1, 2, 3};          // S0..S3, shared
+const uint8_t MUX_COM_PINS[MUX_COUNT] = {14, 15};      // A0, A1
+const uint8_t SENS_EN_PIN = 4;                         // high = sensors powered
 const uint8_t CHG_STAT_PIN = 26;        // low = charging (only meaningful with USB power)
 const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
   { -1,  21,  20,  17,  19,   2,   1,   0},
@@ -142,6 +155,39 @@ const int8_t KEY_INPUT[LAYOUT_ROWS][LAYOUT_COLS] = {
   { -1,  18,  23,  22,   4,   6,   5,   3},
   { -1,  28,  27,  24,   9,   8,  10,  -1},
 };
+#elif ETUTTI_V4
+// ---- Student V4 keyboard (R2V4, F2: sensor strips on steps in the lower case) ----
+// Pins and scan contract: student_v04/pcb/PINOS.md (DRAFT of the electronics agent, R2V4 E2/E5).
+//
+// One universal strip = 4 sensors (pitch 18.5 mm) + one 74HC595 that switches one
+// sensor on at a time. Strips are chained along each row: the 4 rows carry the same
+// DATA/CLK, so a single "1" walking along the chain switches ONE COLUMN on, i.e.
+// 4 sensors (one per row) at once. Each row's
+// sensors share one analogue OUT line (a switched-off TMAG5253 leaves OUT high
+// impedance), 4 lines in all.
+//   28 keys = 2 strips per row (8 columns), 44 = 3 (12), 60 = 4 (16), 76 = 5 (20).
+#define V4_KEYS 28                       // 28, 44, 60 or 76: the number of keys fitted
+#if V4_KEYS != 28 && V4_KEYS != 44 && V4_KEYS != 60 && V4_KEYS != 76
+#error "V4_KEYS must be 28, 44, 60 or 76"
+#endif
+const int V4_STRIPS_PER_ROW = (V4_KEYS - 28) / 16 + 2;
+const int LAYOUT_ROWS = 4;
+const int LAYOUT_COLS = 4 * V4_STRIPS_PER_ROW;
+const uint8_t ROW_OUT_PINS[LAYOUT_ROWS] = {14, 15, 26, 27};   // OUT_R1..R4 (A0, A1, A12, A13); no internal pull: 100 kohm to GND on the board
+const uint8_t SR_DATA_PIN = 2, SR_CLK_PIN = 3;                // SCAN_DATA, SCAN_CLK (SRCLK and RCLK of every 595 tied together)
+const uint8_t CHG_STAT_PIN = 0;         // moved off 26 (now OUT_R3); low = charging, only with USB power
+const int SR_STAGES = 8 * V4_STRIPS_PER_ROW;   // each strip's 595 has 8 stages, only QA..QD (the first 4) carry sensors
+const uint32_t SR_HALF_PERIOD_NS = 100;        // 74HC595 at 3.3 V: CLK up to 5 MHz
+// Hot scan: a key that has just started to move is read again on its own (about
+// 70 us per column instead of a whole pass) until it passes the note-on level.
+const uint32_t HOT_BUDGET_US = 3000;
+const float HOT_FROM = 0.03f;
+// V4 switches (TODO = depends on a decision of the electronics agent):
+#define V4_FORCE_FULL_SPEED 1            // USB at 12 Mbit/s (R1V4 5.4 item 3); untested on a board
+#define V4_HAVE_OLED 1                   // 128 x 64 SSD1306 on I2C 0x3C (J401, I2C shared with the codec)
+#define V4_HAVE_MIC 1                    // PINOS: pin 8 = I2S_RX, "microphone IN" of the codec
+const uint8_t OLED_ADDR = 0x3C;
+const int OLED_ROTATION = 2;             // as Adafruit_SSD1306::setRotation(2): upside down
 #else
 // ---- eTuttino keys (see etutti/hardware/README.md) ----
 // The notes sit on a grid of 4 rows x 12 columns (row r = accordion row
@@ -190,9 +236,31 @@ const int8_t FIRST_NOTE[2][LAYOUT_ROWS] = {
 const uint8_t FIRST_COL[LAYOUT_ROWS] = {1, 0, 1, 1};
 int layoutSystem = 0;   // 0 = C-griff, 1 = B-griff
 
+#if ETUTTI_V4
+// Module note map (R1V4 4.4): the keyboard grows to the right in modules of 16
+// keys (4 columns = one octave). By default the 1st extra module adds treble
+// and the 2nd bass, and so on: 28 = G3-E5, 44 = G3-E6, 60 = G2-E6, 76 = G2-E7.
+// Adding bass shifts every key down an octave, so the notes at the left grow lower.
+// The user's own map is a TODO (it would be a CC and a place in EEPROM).
+const int V4_EXTRA_MODULES = (V4_KEYS - 28) / 16;
+const int V4_BASS_MODULES = V4_EXTRA_MODULES / 2;
+int noteShift = -12 * V4_BASS_MODULES;   // semitones
+
+// Where the keys are: rows 1 and 3 start at column 1, row 2 fills the width, row 4 stops
+// one short (28: 7 + 8 + 7 + 6; each module adds 4 to every row).
+bool v4HasKey(int r, int c) {
+  if (c < FIRST_COL[r]) return false;
+  return r == 3 ? c <= LAYOUT_COLS - 2 : true;
+}
+#endif
+
 int noteAt(int r, int c) {
   if (c < FIRST_COL[r]) return -1;
-  return FIRST_NOTE[layoutSystem][r] + 3 * (c - FIRST_COL[r]);
+  int n = FIRST_NOTE[layoutSystem][r] + 3 * (c - FIRST_COL[r]);
+#if ETUTTI_V4
+  n += noteShift;
+#endif
+  return n;
 }
 
 // ---- Key sensing ----
@@ -209,13 +277,21 @@ int noteAt(int r, int c) {
 // already gives about 10 mT (0.15 V), and readings that fall are mirrored
 // about 1.65 V, so everything below sees a voltage that rises with the
 // press, as on the eTuttino.
+#if ETUTTI_V4
+const int MAX_KEYS = 76;
+#else
 const int MAX_KEYS = 44;
+#endif
 const float ADC_PER_VOLT = 4095.0f / 3.3f;
 #if ETUTTI_STUDENT
 const float SENSOR_ZERO = 1.65f * ADC_PER_VOLT;  // TMAG5253 output at 0 mT
 const float SIGN_MIN = 0.04f * ADC_PER_VOLT;     // rest must be this far from 1.65 V to tell the direction
 const int DEFAULT_SIGN = 1;                      // direction assumed when it cannot be told (unverified: no board yet)
+#if ETUTTI_V4
+const uint32_t EEPROM_MAGIC = 0xE7770106;        // V4: key order = row by row from row 1, V4_KEYS keys
+#else
 const uint32_t EEPROM_MAGIC = 0xE7770105;        // bump when the key count/order changes
+#endif
 #else
 const float SENSOR_ZERO = 0.6f * ADC_PER_VOLT;   // DRV5056 output at 0 mT
 const uint32_t EEPROM_MAGIC = 0xE7770004;   // bump when the key count/order changes
@@ -231,7 +307,7 @@ const uint8_t FIXED_VELOCITY = 100;
 
 struct Key {
   int8_t row, col;          // note grid
-  uint8_t mux, channel;
+  uint8_t mux, channel;     // V4: mux = row (OUT line), channel = column
   int8_t sign;              // +1: the reading rises with the press, -1: it falls (Student V01)
   float rest;               // ADC reading with the key up
   float bottom;             // deepest reading seen
@@ -243,6 +319,8 @@ struct Key {
   bool down;
   int8_t note;              // note it started (survives a layout switch)
   uint8_t sentPosition;     // last position sent in key test mode
+  float restAtModel;        // V4: rest when the model was last built (skips needless cube roots)
+  bool rising;              // V4: the last reading was higher than the one before
 };
 Key keyState[MAX_KEYS];
 int keyCount = 0;
@@ -286,6 +364,12 @@ AudioMixer4              master;              // dry, reverb
 AudioAmplifier           outAmp;              // Student V01: the volume (see setVolume); eTuttino: gain 1
 AudioOutputI2S           i2sOut;
 AudioControlSGTL5000     codec;
+#if ETUTTI_V4 && V4_HAVE_MIC
+// Microphone through the codec's MIC input (I2S RX, pin 8); here only a level meter for the OLED.
+AudioInputI2S            i2sIn;
+AudioAnalyzePeak         micPeak;
+AudioConnection          pmic(i2sIn, 0, micPeak, 0);
+#endif
 
 #define REED_PATCH(v) \
   AudioConnection pr16_##v(reed[REED_16][v], 0, reedMix[v], 0); \
@@ -726,9 +810,11 @@ void localNoteOff(uint8_t note) {
   usbMIDI.sendNoteOff(note, 0, 1);
 }
 
+#if !ETUTTI_V4
 void selectChannel(int ch) {
   for (int b = 0; b < 4; b++) digitalWriteFast(MUX_SEL_PINS[b], (ch >> b) & 1);
 }
+#endif
 
 float fieldInv(float reading) {
   return 1.0f / cbrtf(max(reading - SENSOR_ZERO, 4.0f));
@@ -736,6 +822,7 @@ float fieldInv(float reading) {
 
 void updateModel(Key &k) {
   float bottom = max(k.bottom, k.rest + MIN_SPAN);
+  k.restAtModel = k.rest;
   k.restInv = fieldInv(k.rest);
   k.spanInv = 1.0f / max(k.restInv - fieldInv(bottom), 1e-6f);
 }
@@ -788,6 +875,71 @@ void resetCalibration() {
   saveCalibration();
 }
 
+#if ETUTTI_V4
+// ---- Student V4 sensor scan (R2V4) ----
+// A "1" in the chain of 74HC595 switches ON the sensor at that stage (EN high); everything
+// else is off, so the OUT lines stay free. Contract from PINOS.md:
+//  - SRCLK and RCLK share one line, so the OUTPUT lags the shift by one pulse (it shows the
+//    state before the pulse);
+//  - each strip has 8 stages but only QA..QD carry sensors: global column c = strip c/4,
+//    sensor c%4 = stage 8 * (c/4) + c%4 (stage 0 = first strip's QA, nearest DATA); between
+//    strips the "1" passes 4 dead stages (columns 3 -> 4 take 5 pulses, others 1);
+//  - the outputs are not high-impedance at power-up: srClear() shifts zeros through every stage.
+int srPos = -1;                         // column switched on, -1 = none known
+uint8_t colKey[LAYOUT_COLS][LAYOUT_ROWS];   // key index at (column, row), 255 = none
+
+inline void srPulse(bool bit) {
+  digitalWriteFast(SR_DATA_PIN, bit);
+  delayNanoseconds(SR_HALF_PERIOD_NS);
+  digitalWriteFast(SR_CLK_PIN, HIGH);
+  delayNanoseconds(SR_HALF_PERIOD_NS);
+  digitalWriteFast(SR_CLK_PIN, LOW);
+}
+
+void srClear() {                        // every sensor off (SR_STAGES zeros + the pulse that latches them)
+  for (int i = 0; i <= SR_STAGES; i++) srPulse(0);
+  srPos = -1;
+}
+
+// Switches column c on. The next column in order is 1 pulse away (5 across a strip boundary).
+// Anywhere else: push the whole pattern (the first bit sent ends in the LAST stage), plus one
+// pulse to latch it: SR_STAGES + 1 pulses, ~10 us with 76 keys.
+void srSelect(int c) {
+  if (srPos >= 0 && c == srPos + 1) {
+    int pulses = (c % 4 == 0) ? 5 : 1;
+    for (int i = 0; i < pulses; i++) srPulse(0);
+  } else {
+    int target = 8 * (c / 4) + c % 4;
+    for (int k = 0; k < SR_STAGES; k++) srPulse(SR_STAGES - 1 - k == target);
+    srPulse(0);
+  }
+  srPos = c;
+}
+
+// Reads the sensors of the selected column (after the wake-up), one per row, with
+// the time of each reading. Rows with no key there are skipped (5.6 us each).
+void readColumn(int c, uint16_t *raw, uint32_t *at) {
+  for (int r = 0; r < LAYOUT_ROWS; r++) {
+    uint8_t i = colKey[c][r];
+    if (i == 255) continue;
+    uint16_t v = analogRead(ROW_OUT_PINS[r]);
+    at[r] = micros();
+    raw[r] = keyState[i].sign < 0 ? 4095 - v : v;   // falling readings mirrored about mid-scale
+  }
+}
+
+// Whole pass, no tricks, one column at a time (used for the rest readings at start-up).
+void readSensors(uint16_t *readings) {
+  uint16_t raw[LAYOUT_ROWS];
+  uint32_t at[LAYOUT_ROWS];
+  for (int c = 0; c < LAYOUT_COLS; c++) {
+    srSelect(c);
+    delayMicroseconds(SENSOR_WAKE_US);
+    readColumn(c, raw, at);
+    for (int r = 0; r < LAYOUT_ROWS; r++) if (colKey[c][r] != 255) readings[colKey[c][r]] = raw[r];
+  }
+}
+#else
 // Reads every sensor once into readings[] (key order), one multiplexer
 // channel at a time: all three multiplexers share the address lines.
 void readSensors(uint16_t *readings) {
@@ -813,29 +965,49 @@ void readSensors(uint16_t *readings) {
     }
   }
 }
+#endif
 
 void setupKeys() {
-#if ETUTTI_STUDENT
+#if ETUTTI_V4
+  pinMode(SR_DATA_PIN, OUTPUT);
+  pinMode(SR_CLK_PIN, OUTPUT);
+  digitalWriteFast(SR_CLK_PIN, LOW);
+  for (int r = 0; r < LAYOUT_ROWS; r++) pinMode(ROW_OUT_PINS[r], INPUT_DISABLE);   // the board's 100 kohm pull-down makes a missing sensor read 0 V
+  memset(colKey, 255, sizeof(colKey));
+  srClear();
+#elif ETUTTI_STUDENT
   pinMode(SENS_EN_PIN, OUTPUT);
   digitalWriteFast(SENS_EN_PIN, HIGH);
 #endif
+#if !ETUTTI_V4
   for (int b = 0; b < 4; b++) pinMode(MUX_SEL_PINS[b], OUTPUT);
   // A sensor drives its line to 0.6 V or more. With the pull-downs, a
   // missing board, multiplexer or sensor reads 0 V instead of floating
   // (which would play random notes), and that key is left out.
   for (int m = 0; m < MUX_COUNT; m++) pinMode(MUX_COM_PINS[m], INPUT_PULLDOWN);
+#endif
   analogReadResolution(12);
   analogReadAveraging(1);
   keyCount = 0;
   for (int r = 0; r < LAYOUT_ROWS; r++) {
     for (int c = 0; c < LAYOUT_COLS; c++) {
+#if ETUTTI_V4
+      if (!v4HasKey(r, c) || keyCount == MAX_KEYS) continue;
+#else
       if (KEY_INPUT[r][c] < 0 || keyCount == MAX_KEYS) continue;
+#endif
       Key &k = keyState[keyCount++];
       memset(&k, 0, sizeof(k));
       k.row = r;
       k.col = c;
+#if ETUTTI_V4
+      k.mux = r;
+      k.channel = c;
+      colKey[c][r] = keyCount - 1;
+#else
       k.mux = KEY_INPUT[r][c] / 16;
       k.channel = KEY_INPUT[r][c] % 16;
+#endif
       k.note = -1;
       k.sentPosition = 255;
       k.sign = 1;
@@ -872,71 +1044,133 @@ uint32_t crossingTime(const Key &k, float prev, float now, float level, uint32_t
   return k.prevMicros + (uint32_t)(constrain(f, 0.0f, 1.0f) * (float)(nowMicros - k.prevMicros));
 }
 
-// One pass over all 44 sensors (~3.3 kHz): calibration, note on/off with
-// velocity, and the key test stream.
-void scanKeys() {
-  uint16_t readings[MAX_KEYS];
-  readSensors(readings);
-  uint32_t now = micros();
+// One key, one reading (taken at `now`, in micros): calibration, note on/off with
+// velocity, and the key test stream. Returns true if something was sent.
+bool processKey(int i, float raw, uint32_t now) {
   bool changed = false;
-  for (int i = 0; i < keyCount; i++) {
-    Key &k = keyState[i];
-    if (!k.present) continue;
-    float raw = readings[i];
-    // Calibration. A reading below rest means rest was measured with the
-    // key held, or has drifted: take it. While the key is up, follow slow
-    // drift. The deepest press seen sets the bottom (saved after 5 s).
-    if (raw < k.rest - 2 && raw >= PRESENT_MIN) {
-      k.rest = raw;
-      updateModel(k);
-    } else if (!k.down && k.travel < 0.05f) {
-      k.rest += (raw - k.rest) * 0.002f;
-      updateModel(k);
-    }
-    if (raw > k.bottom + 4 && raw > k.rest + MIN_SPAN) {
-      k.bottom = raw;
-      updateModel(k);
-      calibrationDirty = true;
-      calibrationChangedAt = millis();
-    }
-    float t = keyTravel(k, raw);
-    if (!k.down) {
-      if (t < VEL_START) {
-        k.startMicros = 0;
-      } else if (k.startMicros == 0) {
-        k.startMicros = crossingTime(k, k.travel, t, VEL_START, now) | 1;
-      }
-      if (t >= NOTE_ON_AT) {
-        uint32_t at = crossingTime(k, k.travel, t, NOTE_ON_AT, now);
-        k.down = true;
-        k.note = noteAt(k.row, k.col);
-        if (k.note >= 0) localNoteOn(k.note, velocityFor((at - k.startMicros) / 1000.0f));
-        changed = true;
-      }
-    } else if (t < NOTE_OFF_AT) {
-      k.down = false;
+  Key &k = keyState[i];
+  if (!k.present) return false;
+  // Calibration. A reading below rest means rest was measured with the
+  // key held, or has drifted: take it. While the key is up, follow slow
+  // drift. The deepest press seen sets the bottom (saved after 5 s).
+  if (raw < k.rest - 2 && raw >= PRESENT_MIN) {
+    k.rest = raw;
+    updateModel(k);
+  } else if (!k.down && k.travel < 0.05f) {
+    k.rest += (raw - k.rest) * 0.002f;
+#if ETUTTI_V4
+    if (fabsf(k.rest - k.restAtModel) > 0.5f) updateModel(k);   // 76 keys: do not take cube roots every pass
+#else
+    updateModel(k);
+#endif
+  }
+  if (raw > k.bottom + 4 && raw > k.rest + MIN_SPAN) {
+    k.bottom = raw;
+    updateModel(k);
+    calibrationDirty = true;
+    calibrationChangedAt = millis();
+  }
+  float t = keyTravel(k, raw);
+  k.rising = t > k.travel + 0.002f;
+  if (!k.down) {
+    if (t < VEL_START) {
       k.startMicros = 0;
-      if (k.note >= 0) localNoteOff(k.note);    // the note it started, even after a layout switch
-      k.note = -1;
+    } else if (k.startMicros == 0) {
+      k.startMicros = crossingTime(k, k.travel, t, VEL_START, now) | 1;
+    }
+    if (t >= NOTE_ON_AT) {
+      uint32_t at = crossingTime(k, k.travel, t, NOTE_ON_AT, now);
+      k.down = true;
+      k.note = noteAt(k.row, k.col);
+      if (k.note >= 0) localNoteOn(k.note, velocityFor((at - k.startMicros) / 1000.0f));
       changed = true;
     }
-    k.travel = t;
-    k.prevMicros = now;
-    if (keyTest) {
-      uint8_t pos = (uint8_t)roundf(t * 127.0f);
-      if (pos != k.sentPosition && (abs((int)pos - (int)k.sentPosition) >= 2 || pos == 0 || pos == 127)) {
-        usbMIDI.sendPolyPressure(i, pos, 16);
-        k.sentPosition = pos;
-        changed = true;
-      }
+  } else if (t < NOTE_OFF_AT) {
+    k.down = false;
+    k.startMicros = 0;
+    if (k.note >= 0) localNoteOff(k.note);    // the note it started, even after a layout switch
+    k.note = -1;
+    changed = true;
+  }
+  k.travel = t;
+  k.prevMicros = now;
+  if (keyTest) {
+    uint8_t pos = (uint8_t)roundf(t * 127.0f);
+    if (pos != k.sentPosition && (abs((int)pos - (int)k.sentPosition) >= 2 || pos == 0 || pos == 127)) {
+      usbMIDI.sendPolyPressure(i, pos, 16);
+      k.sentPosition = pos;
+      changed = true;
     }
   }
+  return changed;
+}
+
+// After a pass: save the calibration once it has settled, flush the MIDI messages.
+void finishScan(bool changed) {
   if (calibrationDirty && millis() - calibrationChangedAt > 5000) saveCalibration();
   if (changed) {
     usbMIDI.send_now();
     lastActivityAt = millis();
   }
 }
+
+#if ETUTTI_V4
+bool keysBusy = false;   // some key is off its rest position (the OLED waits, I2C would stall the scan)
+
+// One pass over all the keys, a column at a time. While the next column's sensors
+// wake up (SENSOR_WAKE_US) the previous column's readings are processed, so the
+// wake-up costs no extra time for the arithmetic. Then the "hot scan".
+void scanKeys() {
+  uint16_t raw[LAYOUT_ROWS];
+  uint32_t at[LAYOUT_ROWS];
+  bool changed = false;
+  srSelect(0);
+  uint32_t ready = micros() + SENSOR_WAKE_US;
+  for (int c = 0; c < LAYOUT_COLS; c++) {
+    while ((int32_t)(micros() - ready) < 0) {
+    }
+    readColumn(c, raw, at);
+    if (c + 1 < LAYOUT_COLS) {
+      srSelect(c + 1);
+      ready = micros() + SENSOR_WAKE_US;
+    }
+    for (int r = 0; r < LAYOUT_ROWS; r++) {
+      if (colKey[c][r] != 255) changed |= processKey(colKey[c][r], raw[r], at[r]);
+    }
+  }
+  // Hot scan: keys that are travelling up towards the note-on level are read again,
+  // their column alone, so a fast press is timed finely however many keys there are.
+  uint32_t hotStart = micros();
+  while (micros() - hotStart < HOT_BUDGET_US) {
+    int hotColumn = -1;
+    for (int i = 0; i < keyCount && hotColumn < 0; i++) {
+      const Key &k = keyState[i];
+      if (k.present && !k.down && k.rising && k.travel >= HOT_FROM && k.travel < NOTE_ON_AT) hotColumn = k.col;
+    }
+    if (hotColumn < 0) break;
+    srSelect(hotColumn);
+    delayMicroseconds(SENSOR_WAKE_US);
+    readColumn(hotColumn, raw, at);
+    for (int r = 0; r < LAYOUT_ROWS; r++) {
+      if (colKey[hotColumn][r] != 255) changed |= processKey(colKey[hotColumn][r], raw[r], at[r]);
+    }
+  }
+  keysBusy = false;
+  for (int i = 0; i < keyCount; i++) keysBusy |= keyState[i].down || keyState[i].travel > 0.02f;
+  finishScan(changed);
+}
+#else
+// One pass over all the sensors (~3.3 kHz with 44): calibration, note on/off with
+// velocity, and the key test stream.
+void scanKeys() {
+  uint16_t readings[MAX_KEYS];
+  readSensors(readings);
+  uint32_t now = micros();
+  bool changed = false;
+  for (int i = 0; i < keyCount; i++) changed |= processKey(i, readings[i], now);
+  finishScan(changed);
+}
+#endif
 
 // The page's "Reset to default": classic accordion, register MM, dry.
 void defaultSound() {
@@ -1136,17 +1370,33 @@ bool usbPower() {
 // Everything off. The 3.3 V supply falls as soon as the volume click is let
 // go (at once if it is not held); pin 28 low makes that true on USB power
 // too, where only the charger stays alive.
+#if ETUTTI_V4
+void oledOff();
+#endif
 void powerOff() {
   silenceAll();
   digitalWriteFast(AMP_SD_PIN, LOW);
+#if ETUTTI_V4
+  srClear();
+  oledOff();
+#else
   digitalWriteFast(SENS_EN_PIN, LOW);
+#endif
   if (calibrationDirty) saveCalibration();
   setLed(true, false);
   delay(250);
   setLed(false, false);                 // LED out: the click can be let go
   digitalWriteFast(KEEP_PIN, LOW);
+#if ETUTTI_V4
+  // V4: nothing cuts the 3.3 V while USB is plugged in (PWR_EN is not wired in V3/V4),
+  // so "off" is a soft off: everything above is already dark. A click, or unplugging
+  // the cable (the supply then falls by itself), ends it; the click restarts the processor.
+  while (usbPower() && digitalReadFast(VOL_SW_PIN) == HIGH) delay(20);
+  SCB_AIRCR = 0x05FA0004;               // system reset
+#else
   pinMode(PWR_EN_PIN, OUTPUT);
   digitalWriteFast(PWR_EN_PIN, LOW);
+#endif
   while (true) {
   }
 }
@@ -1160,8 +1410,10 @@ void powerBegin() {
   digitalWriteFast(KEEP_PIN, LOW);
   pinMode(AMP_SD_PIN, OUTPUT);
   digitalWriteFast(AMP_SD_PIN, LOW);
+#if !ETUTTI_V4
   pinMode(SENS_EN_PIN, OUTPUT);
   digitalWriteFast(SENS_EN_PIN, LOW);
+#endif
   pinMode(VOL_SW_PIN, INPUT_PULLUP);
   pinMode(CHG_STAT_PIN, INPUT_PULLUP);
   // The click also reaches the processor's ONOFF pin: held 10 s it cuts the
@@ -1290,11 +1542,156 @@ void updatePower() {
     if (volts < 0.5f) headphones = true;
     else if (volts > 0.9f) headphones = false;
   }
-  if (usb) lastActivityAt = now;
+#if !ETUTTI_V4
+  if (usb) lastActivityAt = now;        // V01: never off while the cable is in
+#endif
   resting = now - lastActivityAt > IDLE_REST_MS;
   if (now - lastActivityAt > IDLE_OFF_MS) powerOff();
   digitalWriteFast(AMP_SD_PIN, !headphones && !resting);
 }
+
+#if ETUTTI_V4 && V4_HAVE_OLED
+// ---- Student V4 OLED: 128 x 64 SSD1306 on I2C ----
+// No library is installed with Teensyduino for it, so this is a small driver of its own:
+// a 1 KB frame buffer, a 5 x 7 font (digits and capitals), sent to the panel in 16-byte
+// pieces, one per loop pass, and only while no key is moving: I2C is blocking and a piece
+// takes ~0.4 ms. OLED_ROTATION 2 = what Adafruit_SSD1306::setRotation(2) does (the
+// panel mounted upside down), done by the controller's segment remap + COM scan direction.
+uint8_t oledBuf[1024];
+bool oledPresent = false;
+int oledSent = 1024;                    // bytes of the frame already sent (1024 = idle)
+uint32_t oledSig = 0xFFFFFFFF, oledDrawnAt = 0;
+
+const uint8_t FONT5X7[59][5] = {        // ASCII 32 (space) .. 90 (Z)
+  {0x00,0x00,0x00,0x00,0x00},{0x00,0x00,0x5F,0x00,0x00},{0x00,0x07,0x00,0x07,0x00},{0x14,0x7F,0x14,0x7F,0x14},
+  {0x24,0x2A,0x7F,0x2A,0x12},{0x23,0x13,0x08,0x64,0x62},{0x36,0x49,0x55,0x22,0x50},{0x00,0x05,0x03,0x00,0x00},
+  {0x00,0x1C,0x22,0x41,0x00},{0x00,0x41,0x22,0x1C,0x00},{0x14,0x08,0x3E,0x08,0x14},{0x08,0x08,0x3E,0x08,0x08},
+  {0x00,0x50,0x30,0x00,0x00},{0x08,0x08,0x08,0x08,0x08},{0x00,0x60,0x60,0x00,0x00},{0x20,0x10,0x08,0x04,0x02},
+  {0x3E,0x51,0x49,0x45,0x3E},{0x00,0x42,0x7F,0x40,0x00},{0x42,0x61,0x51,0x49,0x46},{0x21,0x41,0x45,0x4B,0x31},
+  {0x18,0x14,0x12,0x7F,0x10},{0x27,0x45,0x45,0x45,0x39},{0x3C,0x4A,0x49,0x49,0x30},{0x01,0x71,0x09,0x05,0x03},
+  {0x36,0x49,0x49,0x49,0x36},{0x06,0x49,0x49,0x29,0x1E},{0x00,0x36,0x36,0x00,0x00},{0x00,0x56,0x36,0x00,0x00},
+  {0x08,0x14,0x22,0x41,0x00},{0x14,0x14,0x14,0x14,0x14},{0x00,0x41,0x22,0x14,0x08},{0x02,0x01,0x51,0x09,0x06},
+  {0x32,0x49,0x79,0x41,0x3E},{0x7E,0x11,0x11,0x11,0x7E},{0x7F,0x49,0x49,0x49,0x36},{0x3E,0x41,0x41,0x41,0x22},
+  {0x7F,0x41,0x41,0x22,0x1C},{0x7F,0x49,0x49,0x49,0x41},{0x7F,0x09,0x09,0x09,0x01},{0x3E,0x41,0x49,0x49,0x7A},
+  {0x7F,0x08,0x08,0x08,0x7F},{0x00,0x41,0x7F,0x41,0x00},{0x20,0x40,0x41,0x3F,0x01},{0x7F,0x08,0x14,0x22,0x41},
+  {0x7F,0x40,0x40,0x40,0x40},{0x7F,0x02,0x0C,0x02,0x7F},{0x7F,0x04,0x08,0x10,0x7F},{0x3E,0x41,0x41,0x41,0x3E},
+  {0x7F,0x09,0x09,0x09,0x06},{0x3E,0x41,0x51,0x21,0x5E},{0x7F,0x09,0x19,0x29,0x46},{0x46,0x49,0x49,0x49,0x31},
+  {0x01,0x01,0x7F,0x01,0x01},{0x3F,0x40,0x40,0x40,0x3F},{0x1F,0x20,0x40,0x20,0x1F},{0x3F,0x40,0x38,0x40,0x3F},
+  {0x63,0x14,0x08,0x14,0x63},{0x07,0x08,0x70,0x08,0x07},{0x61,0x51,0x49,0x45,0x43}
+};
+
+void oledCmd(uint8_t c) {
+  Wire.beginTransmission(OLED_ADDR);
+  Wire.write(0x00);
+  Wire.write(c);
+  Wire.endTransmission();
+}
+
+void oledPixel(int x, int y, bool on) {
+  if (x < 0 || x > 127 || y < 0 || y > 63) return;
+  if (on) oledBuf[x + (y >> 3) * 128] |= 1 << (y & 7);
+  else oledBuf[x + (y >> 3) * 128] &= ~(1 << (y & 7));
+}
+
+void oledRect(int x, int y, int w, int h, bool on) {
+  for (int j = 0; j < h; j++) for (int i = 0; i < w; i++) oledPixel(x + i, y + j, on);
+}
+
+// Capitals, digits and a little punctuation only (ASCII 32..90); lower case is shown as capitals.
+void oledText(int x, int y, const char *str, int scale) {
+  for (; *str; str++) {
+    int ch = *str;
+    if (ch >= 'a' && ch <= 'z') ch -= 32;
+    if (ch < 32 || ch > 90) ch = '?';
+    for (int col = 0; col < 5; col++) {
+      uint8_t bits = FONT5X7[ch - 32][col];
+      for (int row = 0; row < 7; row++) {
+        if (bits & (1 << row)) oledRect(x + col * scale, y + row * scale, scale, scale, true);
+      }
+    }
+    x += 6 * scale;
+  }
+}
+
+// Battery charge from its voltage at rest (a first, typical LiPo curve; 4.2 V full).
+int batteryPercent(float v) {
+  static const float volts[] = {3.30f, 3.40f, 3.55f, 3.65f, 3.70f, 3.75f, 3.80f, 3.85f, 3.92f, 4.00f, 4.10f, 4.20f};
+  static const int pct[]     = {0,     3,     10,    20,    30,    40,    50,    60,    70,    80,    90,    100};
+  if (v <= volts[0]) return 0;
+  for (int i = 1; i < 12; i++) {
+    if (v <= volts[i]) return pct[i - 1] + (int)((pct[i] - pct[i - 1]) * (v - volts[i - 1]) / (volts[i] - volts[i - 1]));
+  }
+  return 100;
+}
+
+const char *const REGISTER_NAMES[7] = {"BASSOON", "BANDONEON", "VIOLIN", "OBOE", "PICCOLO", "ORGAN", "CLARINET"};
+const char *const INSTRUMENT_NAMES[5] = {"ACCORDION", "PIANO", "BASS", "GUITAR", "SYNTH"};
+
+void oledSetup() {
+  Wire.setClock(400000);
+  Wire.beginTransmission(OLED_ADDR);
+  oledPresent = Wire.endTransmission() == 0;
+  if (!oledPresent) return;
+  static const uint8_t init[] = {0xAE, 0xD5, 0x80, 0xA8, 0x3F, 0xD3, 0x00, 0x40, 0x8D, 0x14, 0x20, 0x00,
+                                 0xDA, 0x12, 0x81, 0xCF, 0xD9, 0xF1, 0xDB, 0x40, 0xA4, 0xA6};
+  for (uint8_t c : init) oledCmd(c);
+  // Rotation 0 as Adafruit_SSD1306 starts it = segment remap + COM scan decrement; rotation 2 = both off.
+  oledCmd(OLED_ROTATION == 2 ? 0xA0 : 0xA1);
+  oledCmd(OLED_ROTATION == 2 ? 0xC0 : 0xC8);
+  oledCmd(0xAF);
+}
+
+void oledOff() {
+  if (oledPresent) oledCmd(0xAE);
+}
+
+// Redraws when what is shown has changed (at most 4 times a second), then sends it in pieces.
+void updateOled() {
+  if (!oledPresent) return;
+  if (oledSent < 1024) {
+    if (keysBusy) return;               // do not stall the key scan
+    Wire.beginTransmission(OLED_ADDR);
+    Wire.write(0x40);
+    for (int i = 0; i < 16; i++) Wire.write(oledBuf[oledSent + i]);
+    Wire.endTransmission();
+    oledSent += 16;
+    return;
+  }
+  uint32_t now = millis();
+  if (now - oledDrawnAt < 250) return;
+  oledDrawnAt = now;
+  bool usb = usbPower();
+  bool charging = usb && digitalReadFast(CHG_STAT_PIN) == LOW;
+  int pct = batteryPercent(batteryVolts);
+  int mic = 0;
+#if V4_HAVE_MIC
+  if (micPeak.available()) mic = (int)(micPeak.read() * 8.0f);   // 0..8
+#endif
+  uint32_t sig = pct | (volumeNow << 8) | (headphones << 16) | (usb << 17) | (charging << 18)
+               | (registerIndex << 19) | (instrument << 22) | (mic << 25) | (resting << 29);
+  if (sig == oledSig) return;
+  oledSig = sig;
+  memset(oledBuf, 0, sizeof(oledBuf));
+  char line[24];
+  snprintf(line, sizeof(line), "%s %d%%", charging ? "CHG" : (usb ? "USB" : "BAT"), pct);
+  oledText(0, 0, line, 2);
+  oledText(0, 20, instrument == INST_ACCORDION ? REGISTER_NAMES[registerIndex] : INSTRUMENT_NAMES[instrument], 2);
+  snprintf(line, sizeof(line), "VOL %d  %s%s", volumeNow, headphones ? "HP" : "SPK", resting ? "  REST" : "");
+  oledText(0, 42, line, 1);
+  oledRect(0, 54, 82, 1, true);         // battery bar
+  oledRect(0, 63, 82, 1, true);
+  oledRect(0, 54, 1, 10, true);
+  oledRect(81, 54, 1, 10, true);
+  oledRect(2, 56, pct * 78 / 100, 6, true);
+  oledText(90, 55, "MIC", 1);
+  oledRect(112, 56, mic * 2, 6, true);
+  oledSent = 0;
+  oledCmd(0x21); oledCmd(0); oledCmd(127);   // column window
+  oledCmd(0x22); oledCmd(0); oledCmd(7);     // page window
+}
+#else
+void oledOff() {}
+#endif
 
 void updateLed() {
   uint32_t now = millis();
@@ -1304,6 +1701,16 @@ void updateLed() {
   else if (resting) setLed(false, now % 2000 < 60);
   else if (usbPower() && digitalReadFast(CHG_STAT_PIN) == LOW) setLed(true, true);
   else setLed(false, true);
+}
+#endif
+
+#if ETUTTI_V4 && V4_FORCE_FULL_SPEED
+// R1V4 5.4, item 3: run the USB port at 12 Mbit/s. The core calls this right after usb_init()
+// (the line "USB1_PORTSC1 |= USB_PORTSC1_PFSC; // force 12 Mbit/sec" sits commented out at the
+// end of usb_init() in Teensyduino's usb.c); the host's bus reset comes ~100 ms later. The core
+// already copes with a full-speed link (usb_high_speed = 0, 64-byte MIDI packets).
+extern "C" void startup_late_hook(void) {
+  USB1_PORTSC1 |= USB_PORTSC1_PFSC;
 }
 #endif
 
@@ -1320,6 +1727,13 @@ void setup() {
   codecOk = codec.enable();
 #if ETUTTI_STUDENT
   codec.volume(0.7f);                            // fixed: the volume knob works before the I2S output
+#endif
+#if ETUTTI_V4 && V4_HAVE_MIC
+  codec.inputSelect(AUDIO_INPUT_MIC);            // TODO(PINOS): the V4 board's microphone input
+  codec.micGain(36);
+#endif
+#if ETUTTI_V4 && V4_HAVE_OLED
+  oledSetup();
 #endif
   setVolume(90);
 
@@ -1393,6 +1807,9 @@ void loop() {
   updateControls();
 #if ETUTTI_STUDENT
   updatePower();
+#endif
+#if ETUTTI_V4 && V4_HAVE_OLED
+  updateOled();
 #endif
   updateLed();
 }

@@ -1,0 +1,289 @@
+{
+ "scan": {
+  "tau_us": 15.0,
+  "residual_pct": {
+   "45": 5.0,
+   "60": 1.842,
+   "75": 0.679,
+   "90": 0.25,
+   "120": 0.034,
+   "135": 0.013
+  },
+  "tables": {
+   "28": {
+    "60": {
+     "step_us": 70.0,
+     "scan_ms": 0.56,
+     "scan_hz": 1786
+    },
+    "90": {
+     "step_us": 100.0,
+     "scan_ms": 0.8,
+     "scan_hz": 1250
+    },
+    "2xOUT_60": 0.28,
+    "hot_us": 70.0
+   },
+   "44": {
+    "60": {
+     "step_us": 70.0,
+     "scan_ms": 0.84,
+     "scan_hz": 1190
+    },
+    "90": {
+     "step_us": 100.0,
+     "scan_ms": 1.2,
+     "scan_hz": 833
+    },
+    "2xOUT_60": 0.42,
+    "hot_us": 70.0
+   },
+   "60": {
+    "60": {
+     "step_us": 70.0,
+     "scan_ms": 1.12,
+     "scan_hz": 893
+    },
+    "90": {
+     "step_us": 100.0,
+     "scan_ms": 1.6,
+     "scan_hz": 625
+    },
+    "2xOUT_60": 0.56,
+    "hot_us": 70.0
+   },
+   "76": {
+    "60": {
+     "step_us": 70.0,
+     "scan_ms": 1.4,
+     "scan_hz": 714
+    },
+    "90": {
+     "step_us": 100.0,
+     "scan_ms": 2.0,
+     "scan_hz": 500
+    },
+    "2xOUT_60": 0.7,
+    "hot_us": 70.0
+   }
+  },
+  "vel_steps_per_octave": 19.9,
+  "vel_err_steps_at_1ms": {
+   "28@0.56ms": {
+    "sem_interpolar": 7.1,
+    "interpolando": 1.9
+   },
+   "76@1.4ms": {
+    "sem_interpolar": 15.3,
+    "interpolando": 4.6
+   },
+   "hot@0.07ms": {
+    "sem_interpolar": 1.0,
+    "interpolando": 0.3
+   },
+   "V3@0.25ms": {
+    "sem_interpolar": 3.4,
+    "interpolando": 0.9
+   }
+  },
+  "cap_OUT": {
+   "2": {
+    "sensores": 8,
+    "pF": 199,
+    "limite_pF": 1000
+   },
+   "3": {
+    "sensores": 12,
+    "pF": 297,
+    "limite_pF": 1000
+   },
+   "4": {
+    "sensores": 16,
+    "pF": 394,
+    "limite_pF": 1000
+   },
+   "5": {
+    "sensores": 20,
+    "pF": 491,
+    "limite_pF": 1000
+   }
+  },
+  "corrente_mA": {
+   "F2_tip": 10.4,
+   "F2_max": 20.0,
+   "V3_14_sensores_tip": 36.4,
+   "V3_max": 70.0
+  },
+  "corrente_media_60us_de_70": 10.4
+ },
+ "custo": {
+  "F1_pecas_2placas": 65.18,
+  "F1_tipos_ext": 17,
+  "F2_principal_pecas_2placas": 36.04,
+  "F2_principal_tipos_ext": 14,
+  "regua_pecas_cada_12": 2.254,
+  "regua_pecas_cada_4": 2.49,
+  "reguas_10_pecas": 22.54,
+  "comum": {
+   "teclas Gateron KS-20 x28": [
+    24.5,
+    26.6
+   ],
+   "modulo MicroMod Teensy": [
+    24.3,
+    29.2
+   ],
+   "bateria 503450": [
+    6.5,
+    10.4
+   ],
+   "OLED + cabo SH 4 vias": [
+    6.5,
+    13.0
+   ],
+   "alto-falante Dayton CE28MB-8 (est.)": [
+    5,
+    8
+   ],
+   "tela acustica, espuma, silicone": [
+    5.2,
+    10.4
+   ],
+   "cabo USB-C": [
+    0,
+    6.5
+   ],
+   "kit M2,5 do modulo": [
+    2.6,
+    5.2
+   ],
+   "2 encoders EC11E (casa)": [
+    4.0,
+    4.7
+   ]
+  },
+  "F1": {
+   "placa principal 4L 246,5x95 (5 un., eng.+placa)": [
+    39.5,
+    39.5
+   ],
+   "montagem: setup + estencil": [
+    9.790000000000001,
+    9.790000000000001
+   ],
+   "tipos Extended (17 x 3,09)": [
+    52.53,
+    52.53
+   ],
+   "pecas das 2 placas montadas": [
+    65.18,
+    65.18
+   ],
+   "SMT e nitrogenio (est.)": [
+    3.2,
+    3.2
+   ],
+   "grade FR-4 escareada (est.)": [
+    15,
+    30
+   ],
+   "parafusos/porcas M2, pes de 80A (est.)": [
+    10,
+    20
+   ],
+   "cabos e conectores entre placas": [
+    0,
+    0
+   ],
+   "impressao do case (est. por volume, V3)": [
+    58.5,
+    143.0
+   ]
+  },
+  "F2": {
+   "placa principal 4L ~85x95 (5 un.) (est.)": [
+    14.5,
+    39.5
+   ],
+   "reguas: 2L, paineis de 5 (5 un.) (est.)": [
+    5,
+    12
+   ],
+   "principal: setup + estencil": [
+    9.790000000000001,
+    9.790000000000001
+   ],
+   "reguas: setup + estencil": [
+    9.790000000000001,
+    9.790000000000001
+   ],
+   "tipos Extended principal (14 x 3,09)": [
+    43.26,
+    43.26
+   ],
+   "tipos Extended reguas (2 x 3,09)": [
+    6.18,
+    6.18
+   ],
+   "pecas das 2 placas principais": [
+    36.04,
+    36.04
+   ],
+   "pecas das 10 reguas montadas": [
+    22.544,
+    22.544
+   ],
+   "SMT e nitrogenio x2 (est.)": [
+    6.4,
+    6.4
+   ],
+   "cabos SH 6 vias 8 un. (est.)": [
+    3,
+    8
+   ],
+   "parafusos/porcas M2, pes (est.)": [
+    6,
+    12
+   ],
+   "impressao do case F2 (MJF, design: FIT_CHECK 12.x)": [
+    51.2,
+    51.2
+   ]
+  },
+  "tot_F1": [
+   253.7,
+   363.2
+  ],
+  "tot_F2": [
+   213.7,
+   256.7
+  ],
+  "tot_comum": [
+   78.6,
+   114.0
+  ],
+  "F1_total": [
+   332.3,
+   477.2
+  ],
+  "F2_total": [
+   292.3,
+   370.7
+  ],
+  "pct_total": {
+   "baixo": -12.0,
+   "alto": -22.3,
+   "mesmo_cenario_baixo_alto": -18.1
+  },
+  "pct_diferenca_so_variavel": {
+   "baixo": -15.8,
+   "alto": -29.3,
+   "mesmo_cenario_baixo_alto": -23.7
+  },
+  "modulo_mais16": {
+   "reguas_no_mesmo_pedido_USD": 13.43,
+   "pedido_separado_de_12_USD": 52.11,
+   "teclas_16_Gateron_USD": 14.6
+  }
+ }
+}
