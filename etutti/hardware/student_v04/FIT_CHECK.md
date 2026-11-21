@@ -1,5 +1,166 @@
 # eTutti Student V4 — FIT_CHECK (design)
 
+## R3V4 — atendida (21 nov 2026, tarefas 1, 2, 3, 7 e 8)
+
+Respondo à **R3V4** (SPEC do Chat). As seções R1V4/R2V4 abaixo continuam valendo, menos onde esta diz o contrário. Nada foi encomendado, impresso ou montado.
+Fontes: `fornecimento/gateron/KS-20TO10B050NW-Y64_Orange.pdf` (desenho de 19 out 2023, p. 5) e `KS-20T_20210922.stp`. Números regeneráveis:
+`estudos/ks20_step.py` → `ks20_step.json`; `estudos/t3g.py` → `t3g.json`; `case/case_t3g.py` → `case/out/t3g_<n>.{stl,json}` (+ STEP de tampa e base em 28 e 76);
+`case/render_t3g.py` → `case/renders/t3g_28_{iso,explodido,corte}.png` (o corte é só ilustrativo: o recorte do STL não fecha a face).
+**Como li o desenho:** a 900 dpi, 90,0 px/mm a partir da cota 5,00; erro de leitura ±0,03 mm. Onde não há cota, marquei **(medido)** ou **(estimado)**.
+
+### 1. KS-20 Orange: o que o desenho e o STEP dizem (tarefa 1)
+
+| Item | Valor | Origem |
+|---|---|---|
+| Ombro de cima (face de baixo da carcaça de cima) | **5,00 ±0,05** do assento | cota do PDF |
+| Orifício da grade / espessura recomendada | **14,00 +0,03/−0,02**, chanfro C0,2; placa **1,50 +0,01/−0,05** | PDF, "Mounting options" (p. 2) |
+| Topo (colar em volta da haste) | **11,10** (±0,4 da tabela geral) | PDF; STEP: topo em z = 11,95 com assento em 0,85 = 11,10, confere |
+| Carcaça de cima | 15,40 × 15,10 (abas até 16,10 ±0,4, em trechos de ~2 mm) | PDF; STEP: 16,10 × 15,06, confere |
+| Corpo de baixo / sobre as pontas das presilhas | 14,00 ±0,03 / **15,00 ±0,3** (14,70 ±0,3 no outro eixo) | PDF |
+| **Topo plano** (medido no STEP) | colar de ~**11,3 × 10,4 mm** na cota 11,10; ombro de ~13,5 × 12,3 a 10,6; a área de apoio real é só ~22 mm² (casca em moldura) | STEP |
+| Pinos | **2 × Ø1,70 ±0,05 (furo)**, 10,16 entre centros, 2,70 ±0,1 abaixo do assento | PDF. **O diâmetro do pino continua sem cota**: no STEP não há pinos |
+| Haste | cruz 4,00 × 1,30, ponta a 13,8 do assento (**medido**; o modelo R2V4 usava 14,7, estimado) | PDF |
+| Curso, força, fluxo | 4,1 ±0,2; 38 ±10 gf; 102 ±15 Gs (0,3 mm) e 905 ±80 Gs (fundo, polo N) | PDF |
+| Ímã no fundo | **0,3 ±0,05 mm acima da placa** com a tecla apertada | PDF, corte |
+
+**O STEP não é do mesmo desenho que o PDF.** É uma KS-20T de 2021: tem um poste central (4,0 abaixo do assento) no lugar dos 2 pinos de Ø1,70, dois postinhos de haste a y = ±5,4 em vez da cruz central, e a parte de baixo é uma rampa lisa (de 10 a 14,44 mm) sem as presilhas discretas. **Vale o PDF** para pinos, furos e haste; o STEP serve só para o envelope da carcaça de cima, que o fit check usa. (Quem usar o STEP para a furação da régua errará: 1 poste central contra 2 furos a ±5,08.)
+
+**Janela das presilhas (lida na vista da frente do PDF):** o flanco de cima do dente (a face que segura a grade por baixo) vai da raiz a **3,69** do assento, na parede do braço, até a ponta a **3,16**, 0,58 mm para fora (15,00 sobre as pontas). No furo de 14,00 (x = 7,00) o flanco está a **3,64**. A grade fica entre o ombro (5,00) e esse flanco:
+- **janela nominal 1,36 mm** (até 1,84 se a borda tocar a ponta);
+- grade de **1,50** (a recomendada): fundo a 3,50, 0,14 abaixo do flanco: o dente entra 0,15 mm sob a borda e o braço fica em mola (pré-carga de cunha, o projeto da Gateron);
+- grade de **1,6** (JLC padrão, ±10 % = 1,44–1,76): fundo a 3,40, penetração 0,26, dentro da janela;
+- grade de **1,2** (JLC ±0,12): fundo a 3,80, 0,11 acima da raiz: **folga vertical 0,16 mm nominal, de −0,01 a +0,33 com as tolerâncias; o dente não toca o furo**.
+
+**Resposta à pergunta do item 2: as presilhas NÃO seguram 1,2 mm sem folga vertical.** A grade fica solta entre o dente e o ombro.
+
+### 2. T3-G (tarefa 2)
+
+#### 2.1 Espessura da grade: alternativas a / b / c
+
+| | (a) painel inteiro 1,6 | **(b) grade em 1,6, desenho próprio** | (c) espuma R2V4 (plano B do J) | (d) grade 1,2 no mesmo painel |
+|---|---|---|---|---|
+| Presilha | dentro da janela | dentro da janela | não usa | **folga 0,16 (−0,01…+0,33)** |
+| Distância ímã–sensor | **+0,4 mm**: fluxo no fundo 905 → **~657 Gs** (dipolo ajustado, 3,55 mm no fundo); sem dado do fabricante para o sensor no verso de 1,6; a calibração muda | **igual à V3** (régua 1,2) | igual | igual |
+| Pedido | 1 painel | painel de régua + painel de grade, **no mesmo pedido** (2 desenhos; **estimativa** US$ 3–8 pelas grades de 2 camadas, mais a taxa de "desenho diferente" da JLC, a confirmar) | 0 | 0 (a grade vai no painel da régua) |
+| Pré-carga / pilha ±1,1 | zero | zero | espuma 2–4 N | zero |
+| Risco | muda o sensor | checar 1,44–1,76 na janela (ok) | MJF + espuma de PE sem silicone | tecla com 0,16–0,33 de folga e ~1° de inclinação |
+
+O dipolo foi ajustado aos dois pontos do PDF: (d₀−0,3)/(d₀−4,1) = (905/102)^(1/3) dá 3,55 mm no fundo e 7,65 no repouso (confere com 0,3 + 1,2 + ~0,4 do sensor + ~1,5 de meio ímã). Excursão do BA3 (15 mV/mT): 1,22 V, 3,01 V no fundo, abaixo de 3,3 V.
+**Recomendação do design: (b).** Não mexe na régua nem na calibração e fecha a presilha. Se o Chat preferir um só painel, o (d) funciona (a tecla assenta na régua por gravidade e atrito dos pinos; a grade só trava o plano), mas perde a rigidez "de fábrica" do sanduíche.
+
+#### 2.2 Como a T3-G funciona (corrigindo uma premissa)
+
+A grade **flutua nas presilhas**; ela não define a altura da tecla. A tecla assenta na régua pelo corpo de baixo (2 pinos de 2,70 em furos de Ø1,70, com 1,5 mm saindo no bolso) e a grade trava o plano e a inclinação das 4 teclas (furo de 14,00 ±0,03 contra corpo de 14,00 ±0,03, em vez da folga de 0,125 por pino). Um **espaçador rígido** entre grade e régua não serve: ±0,16 de espessura da grade viraria ±0,16 de altura de assento (a distância ímã–sensor mudaria). Por isso a fixação ao degrau **não passa pela grade**.
+
+#### 2.3 Fixação ao degrau: escolha e justificativa
+
+Opções: 2 apoios no deck × 2 M2 não magnéticos por régua. **Escolhi 2 M2 por régua.** Um apoio do deck sobre a grade rígida de FR-4 tem a mesma pilha de ±0,6 (RSS) da R2V4: sem elemento mole, ou fica solto ou esmaga. O parafuso não depende dessa pilha.
+- M2 (A4 ou latão, cabeça panela Ø3,8 × 1,6) nos mesmos dois pontos dos antigos pinos, **(18,5; +5,2) e (55,5; +5,2)** da régua, no corredor entre teclas (4,5 mm livres no nível do assento, 3,1 acima da grade). Furo da régua **Ø2,2** (era Ø2,4).
+- Rosca: inserto de latão Ø3,2 termofixado numa **bossa Ø6** do degrau, sob a régua (o degrau 1 tem 6,9 mm). A cabeça fica 1,6 acima da régua e o fundo da grade a 3,4: **folga 1,8**.
+- Sem pinos na bandeja. Montagem: bandeja → réguas → parafusos (16 em 28 teclas) → blocos "grade + 4 teclas" nos pinos → tampa → botões.
+- Custo: 16 parafusos + 16 insertos, **US$ 2–5 (estimativa)**. A tampa passa de 18 para 5 postes + 8 de parede = **13 parafusos** pelo fundo.
+
+#### 2.4 Deck sem pré-carga
+
+- **Folga nominal deck–topo: 1,0 mm** (carcaça 11,10 → fundo do deck a 12,1 sobre a régua). Tentei 0,8: no degrau 3 mm (fileira 3 → 4) restam só 0,3 entre a aba da carcaça da fileira de cima e o fundo do deck baixo; com 1,0 há 0,5. Pilha (carcaça ±0,4, régua ±0,12, impressão ±0,3 em cada peça): ±1,12 pior caso, **±0,60 RSS**; o deck toca a carcaça em ~5 % dos casos, **sem força** (não há pré-carga).
+- **Deck de 2,5 mm (era 3,0).** Critério novo: o deck só precisa **não tocar a tecla com 3 N da mão** e dar boa sensação (a pré-carga de 28 teclas acabou). Grade de vigas, 28 teclas, flecha com 3 N numa tecla (mm, `estudos/t3g.json`):
+
+| deck | 0 postes | 5 postes | 10 postes |
+|---|---|---|---|
+| 2,0 | 1,04 | 0,24 | 0,18 |
+| **2,5** | 0,53 | **0,12** | 0,09 |
+| 3,0 | 0,31 | 0,07 | 0,05 |
+
+  Para 76 teclas, 14 postes dão 0,13 (2,5 mm). Escolhi **2,5 mm com 5 / 8 / 11 / 14 postes internos** (28 / 44 / 60 / 76), contra 3,0 mm e 10 / 16 / 22 / 28. O modelo é pessimista (a casca e as rampas enrijecem). **Se o Chat mantiver ≤ 0,05 mm a 3 N, é deck de 3,0 com 10 postes** (+0,5 mm de altura).
+- **Haste do botão:** topo da cabeça em ZR + **22,8** (R2V4: 22,9; V3 fileira 1: 21,9). O botão apertado deixa a saia 0,6 mm acima do deck (0,2 na R2V4).
+- **Furo Ø8 ainda vale.** Lateral: tampa × base (folga 0,15 e ±0,4 % em 250 mm, correlacionado) + furo Ø2,2 com parafuso Ø2,0 (±0,1) + grade 14,00 ±0,03 = ~0,6 pior caso, contra 1,2 mm por lado do furo Ø8 sobre a haste de Ø5,6.
+- **Altura da caixa: 24,7 mm na frente e 31,7 atrás** (R2V4: 25,2 / 32,2): −0,5 mm.
+
+#### 2.5 Fit check, 28 / 44 / 60 / 76 (`case_t3g.py`, volume da interseção, mm³)
+
+| Par | 28 | 44 | 60 | 76 |
+|---|---|---|---|---|
+| tampa × teclas (carcaça + haste + botão apertado), nominal | 0 | 0 | 0 | 0 |
+| tampa × grades, réguas, parafusos, base | 0 | 0 | 0 | 0 |
+| base × teclas, réguas, grades, cabeças dos parafusos | 0 | 0 | 0 | 0 |
+| grades × teclas, réguas, parafusos | 0 | 0 | 0 | 0 |
+| tampa × carcaças com **+0,5 mm** (sem botão) | 6 | 10 | 15 | 19 |
+| tampa × carcaças com +0,8 mm | 38 | 63 | 88 | 113 |
+
+O ponto crítico é a rampa do degrau 3: **a folga até a tampa é de ~0,45 mm** para uma carcaça alta demais (o envelope é conservador: carcaça cheia de 15,4 × 15,1 até 8,6; a R2V4 usava 8,4). Todas as interseções estão na rampa da fileira 3 → 4.
+
+#### 2.6 Flexão
+
+Régua apoiada nos dois trilhos (bolso de 10 mm), 3 N no meio do vão: 0,0013 mm (FR-4 24 GPa, 14 × 1,2 mm). Deck: ver 2.4. Placa principal: sem mudança desde a R2V4.
+
+#### 2.7 Volumes e custo de impressão (MJF PA12, US$ 0,275/g)
+
+| Teclas | Comprimento | Volume tampa + base | Massa (1,01 g/cm³) | Impressão (US$) | R2V4 |
+|---|---|---|---|---|---|
+| 28 | 252 | 95,5 + 79,3 = **174,8 cm³** | 177 g | **~48,6** | 51,2 |
+| 44 | 326 | 121,5 + 109,3 = 230,8 | 233 g | ~64,1 | ~67,6 |
+| 60 | 400 | 147,4 + 139,4 = 286,8 | 290 g | ~79,7 (não cabe em MJF numa peça) | ~84 |
+| 76 | 474 | 173,3 + 169,4 = 342,7 | 346 g | ~95,2 (não cabe em MJF numa peça) | ~101 |
+
+Só o preço por grama publicado; cotação real não feita.
+
+#### 2.8 Plano B
+
+A espuma (R2V4) **não é necessária**: a T3-G passa nos números. Fica só de reserva se a grade de 1,6 for recusada.
+
+### 3. KS-20 × Gateron Low Profile Magnetic Jade (tarefa 3)
+
+**Limite da pesquisa:** não achei desenho oficial nem STEP da Low Profile Jade (a página de especificações da Gateron deu 403 e a NuPhy 429; não insisti, sem rajadas). Os dados são de lojas; o que é **estimado** está marcado.
+
+| Critério | KS-20 Orange (desenho e STEP em mãos) | Low Profile Magnetic Jade |
+|---|---|---|
+| Grade | 14,00, placa 1,50 (+0,01/−0,05); janela 1,36–1,84 | "14,00 × 1,2" é premissa da SPEC: **não verificada** (sem desenho) |
+| Fluxo no fundo | 905 ±80 Gs | **680 ±70 Gs** (NuPhy) |
+| Curso | 4,1 ±0,2 | **3,5** (ThockKing); NuPhy: acionamento 0,1–3,3; Keeb-finder: 3,0. Fontes discordam |
+| Altura | 11,10 do assento ao topo; caixa 24,7/31,7 | **menor, valor desconhecido** (estimativa: 4–5 mm a menos na caixa) |
+| Haste / pinos | cruz 4,0 × 1,3; 2 pinos Ø1,70 | **desconhecidos** |
+| Força | 38 ±10 gf (Orange); molas de 65 e 80 g na lista de compras | 30 ±10 gf inicial, 50 ±10 final (NuPhy); **molas pesadas: não achei** |
+| Preço | já na lista da V1 | US$ 0,89 por tecla (MaxGaming); US$ 55,95 sem tamanho de pacote (NuPhy) |
+| Curso útil no BA3 (dipolo, 1,2 mm, **estimado**) | excursão 815 Gs = 1,22 V; 765 Gs/mm no fundo; fundo a 3,01 V | 593 Gs = 0,89 V; 575 Gs/mm no fundo (**supondo** o mesmo ímã e a mesma distância) |
+| Sensação de botão de acordeão | curso 4,1, 38 gf | curso curto ajuda, mas 30 gf é mais leve que o "peso de baian" |
+
+Os dois dão curso útil de sobra (0,89 V e 1,22 V de excursão contra 3,3 V, sem saturar); o sensor não decide.
+**Recomendação: ficar com a KS-20.** A Jade LP não tem desenho nem STEP em mãos, o encaixe do botão e a furação são desconhecidos (mudariam régua, grade, botão e caixa), a força é menor que a desejada e não achei molas pesadas. O ganho (caixa ~4–5 mm mais baixa, **estimado**) não paga o risco. Reavaliar se o J conseguir o desenho oficial.
+
+### 4. Recomendação final (tarefa 8)
+
+1. **T3-G com grade-régua de 1,6 mm em desenho próprio (b)**, fixação por **2 parafusos M2 por régua**, deck 2,5 mm sem pré-carga. A espuma fica de reserva.
+2. **KS-20 Orange**, não a Low Profile Jade.
+3. Custo (conforme o `ELETRONICA.md` §3, F2 US$ 292–371, 12–22 % abaixo da F1): a impressão cai de 51,2 para ~48,6 (28 teclas) e entram **US$ 3–8** de grades (estimativa) e **US$ 2–5** de ferragem: efeito líquido de ~+US$ 3–10 (≈ +1–3 %). A F2 continua mais barata que a F1.
+
+### 5. Contrato com a eletrônica: régua + grade-régua
+
+**Régua** (muda só a furação): 74,0 × 14,0 × 1,2 mm (73,6 com 0,2 de folga de cada lado na cadeia), nada no topo.
+- **2 furos NPTH Ø2,2 (era Ø2,4)** em (18,5; +5,2) e (55,5; +5,2) a partir do início da régua, para M2 pan Ø3,8: zona livre de cobre e de peças Ø4,2 no topo; no **fundo, zona livre de peças Ø6,4** em volta de cada furo (a bossa do degrau encosta ali).
+- 2 furos de peg Ø1,70 ±0,05 por tecla (10,16 entre centros, centrados na tecla) e pads do sensor, como na V3.
+- Entalhes de 2,0 × 4,3 na borda de trás (postes), como na R2V4.
+
+**Grade-régua** (nova): **73,6 × 14,0 × 1,6 mm** FR-4, JLCPCB 2 camadas, 1,6 mm padrão, sem componentes, sem teste elétrico.
+- 4 aberturas **quadradas 14,00 +0,03/−0,02 × 14,00**, centros a 9,25 + 18,5·i do início, cantos R ≤ 0,5 (fresa da JLC), chanfro C0,2 só se a JLC aceitar.
+- Os mesmos entalhes 2,0 × 4,3 nos corredores (offsets 18,5, 37 e 55,5 da borda de trás; meios-entalhes em 0 e 74): a tampa só tem 5/8/11/14 postes, mas o desenho universal basta.
+- **Painel:** 5 grades por painel (~88 × 84 como o da régua), destacável por furinhos; 28 teclas usam 8 grades, **10 no pedido mínimo** (2 painéis). A montagem SMT só concerne à régua. A grade pode ir no mesmo pedido como 2º desenho (confirmar a cobrança).
+- Se o Chat escolher a opção (d) (1,2 mm no painel da régua): o desenho da grade é o mesmo, com 1,2 mm de espessura, e entra no painel da régua.
+
+### 6. Perguntas para o design (R3V4)
+
+1. **Grade 1,6 mm em desenho próprio (b)** ou 1,2 mm no painel da régua (d, com 0,16 mm de folga)? Recomendo o (b).
+2. **Deck 2,5 mm com 5 postes (0,12 mm a 3 N, modelo pessimista)** ou 3,0 mm com 10 postes (0,05)? Recomendo 2,5; o Chat fixa o critério de rigidez.
+3. **Folga deck–carcaça de 1,0 mm** (a rampa do degrau 3 pede) e **cabeça do botão a ZR + 22,8**: aprovado?
+4. **M2 por régua** (16 em 28 teclas, nos pontos dos antigos pinos), furo da régua Ø2,4 → Ø2,2: aprovado?
+5. **O STEP da KS-20T não é a Orange**: o J pode pedir à Gateron o STEP da KS-20TO10B050NW-Y64? Falta também o diâmetro do pino (estimado 1,55–1,60).
+6. **Low Profile Jade:** o J consegue desenho, STEP e molas pesadas? Sem isso a recomendação é a KS-20.
+7. **Para a eletrônica:** o `ELETRONICA.md` fala em "BA3 em ±60 mT" (linha 123) e 15 mV/mT (linha 90): com 1,65 V a faixa chega a ±110 mT. A KS-20 vai a 90 mT no fundo; confirmar a faixa do BA3, senão o fim do curso satura.
+8. O corte `t3g_28_corte.png` é pobre (mostra os botões empilhados); um corte limpo fica para a passada de fechamento.
+
+---
+
+## Passada anterior (R1V4/R2V4)
+
 Responde à **R1V4** (tarefas D1 e D4) e à **R2V4** (D2 só para a F2, D3). Primeira passada, 21 nov 2026. Nada foi encomendado, impresso ou montado.
 **A tarefa 12 (tabela de custo e riscos da F2 × F1 e "Perguntas para o design") não foi feita:** ela espera os números da eletrônica (segunda passada).
 No fim há só uma lista de **pendências e dúvidas desta passada**, que não substitui aquela seção.

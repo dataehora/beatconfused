@@ -1,9 +1,23 @@
-# eTutti Student V4 · mapa de pinos (RASCUNHO, F2 + régua de 4 sensores)
+# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4)
 
-**Atende R1V4 e R2V4 (21 nov 2026).** Dono: eletrônica. Contrato com a programação (`programacao-som` lê, não edita).
-**Rascunho:** a placa da V4 ainda não existe (esquema na Fase B, depois do portão). Os números abaixo vêm do
-`student_v03/pcb/schematic.py` (`TEENSY_NETS`, `MM_PADS`) com as mudanças da F2. O que ainda **não** foi conferido
-no esquema da V4 está marcado **(conferir)**. Compila como `teensy:avr:teensyMM:usb=midi,speed=396`.
+**Atende R3V4 (21 nov 2026).** Dono: eletrônica. Contrato com a programação (`programacao-som` lê, não edita).
+Conferido contra o esquema da V4 (`pcb/schematic.py`, ERC 0/0, netlist = `TEENSY_NETS`/`MM_PADS`) e o posicionamento
+(`pcb/posiciona_v4.py`, paridade placa × esquema 0). Compila como `teensy:avr:teensyMM:usb=midi,speed=396`.
+**Um só contrato com o `FIRMWARE.md`:** onde os dois diziam coisas diferentes, vale este arquivo (lista em "Correções da R3V4").
+
+## Correções da R3V4 (o que a programação ajusta)
+
+1. **Pulsos do acesso aleatório = 8 x N + 1 por fileira** (N = réguas por fileira; as 4 fileiras andam em paralelo, DATA/CLK comuns).
+   28 teclas: 17; 44: 25; 60: 33; 76: 41 (~10 us a 5 MHz). A linha "20 colunas = 160 pulsos" da R2V4 estava **errada** (contava 8 estágios por
+   coluna). A conta do `FIRMWARE.md` (41 com 76 teclas) está certa.
+2. **Coluna 0 = a régua mais perto da placa principal**, estágio 0 = QA da primeira régua (a que recebe o DATA do conector J60k); o primeiro bit
+   empurrado vai para a última régua.
+3. **FIRST_COL = {0, 0, 0, 0}** (era {1, 0, 1, 1} na V3): a régua começa **na primeira tecla da fileira** (`case_f2.rulers()`: início = x da
+   primeira tecla - 9,25 mm), então as posições sem tecla ficam no **fim** da fileira, não no começo. 28 teclas: fileira 1 col 7, fileira 3 col 7 e
+   fileira 4 cols 6 e 7 não têm tecla (sensor presente, sem botão). Notas: `FIRST_NOTE = {57, 55, 56, 57}`, 3 semitons por coluna. Teclas por
+   fileira 7, 8, 7, 6 (+4 por módulo).
+4. O **microfone** entra no **MIC do SGTL5000** (pino 10 do codec, via C309 1 uF), nunca no LINE IN: ver "Microfone".
+5. **J401 (tela) é o mesmo SH de 6 vias das fileiras**: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 sem uso); no cabo só 4 fios.
 
 ## O que mudou em relação à V3 (e à `viaggio_micromod/pcb/PINOS.md`)
 
@@ -70,7 +84,7 @@ Na placa principal há **4 conectores, um por fileira**: OUT_Rk próprio, SCAN_C
 - **Varredura em ordem:** com DATA = 1 no primeiro pulso e 0 nos outros, o "1" anda 1 estágio por pulso. Colunas 0..3 aparecem
   nos pulsos 1..4 (mais o atraso de 1), as colunas 4..7 do pulso 9 ao 12, e assim por diante (**passo 8 por régua**).
 - **Acesso aleatório** (varredura rápida da tecla "quente"): empurrar o padrão de 8 N bits (o primeiro bit enviado vai para a
-  última régua) e dar **1 pulso a mais**. 20 colunas = 160 pulsos = ~30 us a 5 MHz. Bit k (0 = primeiro) = estágio 8N-1-k.
+  última régua) e dar **1 pulso a mais**: **8 N + 1 pulsos por fileira** (76 teclas, N = 5: 41 pulsos = ~10 us a 5 MHz). Bit k (0 = primeiro) = estágio 8N-1-k.
 - Velocidade do CLK: **até 5 MHz** (meio período >= 100 ns; HC595 a 3,3 V). Usar `digitalWriteFast`.
 
 **Tempo por coluna** (E2, datasheet do TMAG5253, variante BA3 bipolar): ligar leva **20 us típico, 45 us MÁXIMO** (até 95 % do
@@ -98,11 +112,18 @@ estimado a partir do "95 % em 45 us"); com 90 us o resíduo cai para ~0,25 %. **
 Iguais à V3 / `viaggio_micromod/pcb/PINOS.md` ("Como cada sinal de energia se comporta"): liga pelo clique do volume (2 s) ou
 pelo USB (D206); KEEP no 10; AMP_SD no 12; HP_DET no 17; CHG_STAT agora no **0**.
 
-## Pendências desta tabela
+## Microfone (R3V4, item 6; datasheet do SGTL5000, Freescale rev. 2, texto lido)
 
-- **KEY_INPUT** deixa de existir: a tecla é (fileira, coluna). Mapa de notas na tabela abaixo (igual à V3):
-  `FIRST_NOTE = {57, 55, 56, 57}`, `FIRST_COL = {1, 0, 1, 1}`, 3 semitons por coluna; teclas por fileira 7, 8, 7, 6.
-  28 teclas: colunas 0..7 (as 4 posições sem tecla: fileira 1 col 0, fileira 3 col 0, fileira 4 col 0 e col 7).
-  44: colunas 0..11 (11/12/11/10 teclas); 60: 16; 76: 20 (19/20/19/18). Ordem dos módulos e transposição: do firmware (R1V4, §4.4).
+- Jack IN (J302, XUNPU PJ-327A): manga no GND, **ponta = MIC_J**; R305 2,2 k de MIC_BIAS à ponta; C309 1 uF da ponta ao MIC (pino 10); C310 100 nF no MIC_BIAS (Fig. 20 do datasheet).
+- MIC_BIAS: 1,25 a 3,00 V em passos de 0,25 V (`CHIP_MIC_CTRL.BIAS_VOLT`), **no máximo VDDA - 200 mV** (VDDA = 3,3 V pelo ferrite: até 3,0 V vale). `BIAS_RESISTOR` (2/4/8 k) **não pode ser 0**
+  (0 desliga o bloco). A biblioteca de áudio do Teensy (`micGain`) liga 2 k + 3,0 V: com o R305 em série são 4,2 k, ~0,45 mA num eletreto de 1 V. O datasheet diz que o R1 externo só é preciso se os resistores
+  internos não servem: **o R305 pode virar 0 ohm** se a cápsula pedir mais corrente (a firmware escolhe; a placa aceita as duas).
+- Ganho do pré-amplificador (`GAIN`): 0 / +20 / +30 / +40 dB. **Fonte de linha no IN não está prevista** (o LINEIN do codec fica sem ligação nesta placa): só microfone de eletreto; a alternativa de nível de linha pediria outro jack (fora da R3V4).
+- A impedância de entrada do MIC está na tabela 5 do datasheet (extração do PDF sem o número): **(conferir)**; C309 de 1 uF dá corte de voz seguro para Zin >= 2 kohm.
+
+## Pendências desta tabela (da R2V4, ainda valem)
+
+- **KEY_INPUT** deixa de existir: a tecla é (fileira, coluna). Mapa de notas: `FIRST_NOTE = {57, 55, 56, 57}`, **`FIRST_COL = {0, 0, 0, 0}`** (R3V4), 3 semitons por coluna;
+  teclas por fileira 7, 8, 7, 6. 28 teclas: colunas 0..7, sem tecla: fileira 1 col 7, fileira 3 col 7, fileira 4 cols 6 e 7. 44: colunas 0..11 (11/12/11/10 teclas); 60: 16; 76: 20 (19/20/19/18). Ordem dos módulos e transposição: do firmware (R1V4, §4.4).
 - Os pinos 14, 15, 26, 27 como entradas analógicas de OUT: **sem pull** interno; o pull-down de 100 kohm por linha está na placa principal.
 - Pinos 38-41 como segundo conjunto de OUT: **(conferir)** no esquema da SparkFun antes de depender deles.

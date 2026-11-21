@@ -5,7 +5,7 @@ SPEC: `SPEC.md` (R1V4 + R2V4, do Chat; o Code nunca a edita). Relatórios do Cod
 
 Esta pasta nasceu da `student_v03/` (R1V4, tarefa 1): só **scripts e fontes** (esquema, geometria, pcb, case, estudos,
 fornecimento), sem `fab/`, renders, STEP/STL nem saídas geradas. A V3, a V2 e a V1 **não são alteradas**.
-Os arquivos KiCad ainda se chamam `student_v03*` e os scripts ainda dizem "v3" (renomear na Fase B, quando o esquema da V4 for gerado).
+Fase B (R3V4): `pcb/schematic.py` (esquema V4, ERC), `pcb/posiciona_v4.py` (placa principal sem trilhas), `pcb/vistas_v4.py` (imagens), `bom_v4.py`; arquivos KiCad `kicad/student_v04.*`. Os demais scripts herdados da V3 (`build_sem_rota.py`, `pcb/build_board_v3.py`, `refaz_usb.py`...) não valem para a V4.
 Páginas, Blender e passos de manual da V3 não foram copiados (página e manual ficam para depois, decisão 19).
 
 ## Ordem de execução (herdada da V3; ajustar à medida que a V4 diverge)

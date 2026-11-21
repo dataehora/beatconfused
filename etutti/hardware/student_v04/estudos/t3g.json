@@ -1,0 +1,104 @@
+{
+ "presilhas": {
+  "flanco_raiz_z": 3.69,
+  "flanco_ponta_z": 3.16,
+  "z_no_furo_14_00": 3.635,
+  "janela_nominal_mm": 1.36,
+  "janela_ate_a_ponta_mm": 1.84,
+  "placas": {
+   "1.2": {
+    "fundo_da_placa_z": 3.8,
+    "folga_vertical_nominal_mm": 0.16,
+    "folga_faixa_mm": [
+     -0.01,
+     0.33
+    ],
+    "penetracao_do_flanco_mm": 0.0
+   },
+   "1.5": {
+    "fundo_da_placa_z": 3.5,
+    "folga_vertical_nominal_mm": -0.14,
+    "folga_faixa_mm": [
+     -0.24,
+     -0.04
+    ],
+    "penetracao_do_flanco_mm": 0.15
+   },
+   "1.6": {
+    "fundo_da_placa_z": 3.4,
+    "folga_vertical_nominal_mm": -0.24,
+    "folga_faixa_mm": [
+     -0.45,
+     -0.03
+    ],
+    "penetracao_do_flanco_mm": 0.26
+   }
+  }
+ },
+ "dipolo": {
+  "d_repouso_mm": 7.65,
+  "d_fundo_mm": 3.55,
+  "dBdx_fundo_Gs_por_mm": 765,
+  "regua 1,2 (como Gateron/V3)": {
+   "fluxo_fundo_Gs": 905,
+   "fluxo_repouso_Gs": 90
+  },
+  "regua 1,6 (+0,4)": {
+   "fluxo_fundo_Gs": 657,
+   "fluxo_repouso_Gs": 78
+  },
+  "regua 1,2 +-0,12 (pior)": {
+   "fluxo_fundo_Gs": 819,
+   "fluxo_repouso_Gs": 86
+  },
+  "jade_lp_estimado(mesmo d_fundo, mesma geometria de ima: NAO medido)": {
+   "3.5": {
+    "fluxo_fundo_Gs": 680,
+    "fluxo_repouso_Gs_estimado": 86.8,
+    "swing_Gs": 593,
+    "dBdx_fundo_Gs_por_mm": 575
+   },
+   "3.3": {
+    "fluxo_fundo_Gs": 680,
+    "fluxo_repouso_Gs_estimado": 94.7,
+    "swing_Gs": 585,
+    "dBdx_fundo_Gs_por_mm": 575
+   }
+  },
+  "BA3_excursao_V_KS20": 1.22,
+  "BA3_excursao_V_Jade": 0.89,
+  "BA3_tensao_no_fundo_V_KS20": 3.01
+ },
+ "deck_3N_sem_precarga_mm_por_n_de_postes": {
+  "28 teclas, deck 2.0 mm": {
+   "0": 1.044,
+   "5": 0.237,
+   "10": 0.178
+  },
+  "28 teclas, deck 2.5 mm": {
+   "0": 0.534,
+   "5": 0.121,
+   "10": 0.091
+  },
+  "28 teclas, deck 3.0 mm": {
+   "0": 0.309,
+   "5": 0.07,
+   "10": 0.053
+  },
+  "76 teclas, deck 2.0 mm": {
+   "0": 1.043,
+   "14": 0.257,
+   "28": 0.178
+  },
+  "76 teclas, deck 2.5 mm": {
+   "0": 0.534,
+   "14": 0.132,
+   "28": 0.091
+  },
+  "76 teclas, deck 3.0 mm": {
+   "0": 0.309,
+   "14": 0.076,
+   "28": 0.053
+  }
+ }
+}

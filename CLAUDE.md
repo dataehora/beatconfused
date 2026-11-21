@@ -1119,7 +1119,7 @@ left wall (connectors now under the board) and the V3 page.
 `etutti/hardware/student_v04/`: Chat's `SPEC.md` (nomenclature **RnV4** = revision n of the V4 SPEC; reports cite the revision they meet).
 Base = the V3's scripts and sources copied (no `fab/`, renders or generated output; V3/V2/V1 untouched); `README.md` has the run order.
 Only the keyboard layout is fixed. **F2 chosen (R2V4):** main board only for the interface (Teensy, power, audio, connectors, screen,
-encoders), **sensor rulers** (universal 4-key board, 74 x 12 x 1.2 mm, 2 layers, 4 TMAG5253 + 74HC595 + 2 JST SH 6-pin) on the case's
+encoders), **sensor rulers** (universal 4-key board, 74 x 14 x 1.2 mm, 2 layers, panel of 5 (88 x 84 mm), 4 TMAG5253 + 74HC595 + 2 JST SH 6-pin) on the case's
 steps, one cap for all rows; 28 keys = 8 rulers, each +16-key module = +4; **T3** = the lid presses key bodies against the board.
 No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2/3 (`pcb/PINOS.md`, the electronics-to-firmware contract).
 - **Agents** (`.claude/agents/`): `design`, `eletronica`, `programacao-som` now list the V4 folders (see each file); new agent
@@ -1131,6 +1131,13 @@ No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2
 - Reports (Portuguese, end with "Perguntas para o design"): `ELETRONICA.md` (E1 BOM review, E2 scan, E3 cost check, E4 USB pair, E5
   ruler), `FIT_CHECK.md` (design), `FIRMWARE.md` (programacao-som). Numbers regenerate with `student_v04/calculos_eletronica.py` and
   `fornecimento/precos_jlc.py` (JLCPCB parts library via plain curl, 2 s apart).
+- **R3V4 (21 Nov, design part):** Gateron files in `student_v04/fornecimento/gateron/`: the **KS-20TO10B050NW-Y64 Orange** drawing (PDF, 2023-10-19:
+  shoulder 5.00 +-0.05, grid hole 14.00 +0.03/-0.02 with a 1.50 +0.01/-0.05 plate, top 11.10, pegs 2 x D1.70 at 10.16, 38 gf, 4.10 travel,
+  102/905 Gs) and the **KS-20T STEP** (a 2021 revision: it has a centre post and two stem posts, NOT the PDF's two pegs and central cross; use the
+  PDF for pegs/stem, the STEP only for the cover/flange envelope; `estudos/ks20_step.py`). Latch window read off the drawing: 1.36 mm nominal
+  (up to 1.84), so a **1.2 mm grade leaves 0.16 mm of vertical play, 1.6 mm sits inside the window**. **T3-G** model: `case/case_t3g.py`
+  (patches `case_f2.py`: grade-ruler, no foam, no preload, deck 2.5, gap 1.0, M2 screws instead of pins), numbers in `estudos/t3g.py`;
+  `FIT_CHECK.md` has the R3V4 section on top. The STEP's face-by-face reading is slow to redo: reuse `estudos/ks20_step.json`.
 - Findings worth remembering: the 74HC595D (C5947) is JLCPCB **Basic** (the 164/4094/4017 are all Extended); no Basic connector, jack,
   LDO or ESD part exists; TMAG5253 BA tON is 20 typ / **45 us max** (UA 55 / 130); F2 costs about 12-22 % less than F1 (US$ 292-371 vs 332-477, MJF case print US$ 51) at the minimum order
   (estimates marked in `ELETRONICA.md`); JLCPCB WMSC search endpoints are blocked for curl, the assembly parts-library endpoint works.

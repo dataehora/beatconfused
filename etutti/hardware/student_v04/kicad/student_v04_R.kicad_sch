@@ -1,0 +1,693 @@
+(kicad_sch
+	(version 20250610)
+	(generator "student_v04_schematic")
+	(generator_version "10.0")
+	(uuid "29e8b50d-5b48-570c-b27d-761541d3a4c6")
+	(paper "A4")
+	(title_block (title "eTutti Student V4 · R · Reguas") (date "2026-11-21") (rev "Student V4 R3V4") (company "beatconfused.com") (comment 1 "etutti/hardware/student_v04/pcb/schematic.py escreve este arquivo; nao editar a mao"))
+	(lib_symbols
+		(symbol "viaggio_micromod:Conn_01x06_MountingPin"
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "J"
+			(at 0 7.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x06_MountingPin"
+			(at 1.27 -10.16 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connectable mounting pin connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "Connector*:*_1x??-1MP*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "Conn_01x06_MountingPin_1_1"
+			(rectangle
+				(start -1.27 6.35)
+				(end 1.27 -8.89)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(rectangle
+				(start -1.27 5.207)
+				(end 0 4.953)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 2.667)
+				(end 0 2.413)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 0.127)
+				(end 0 -0.127)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -2.413)
+				(end 0 -2.667)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -4.953)
+				(end 0 -5.207)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -7.493)
+				(end 0 -7.747)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -1.016 -9.652)
+					(xy 1.016 -9.652)
+				)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(text "Mounting"
+				(at 0 -9.271 0)
+				(effects
+					(font
+						(size 0.381 0.381)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 5.08 0)
+				(length 3.81)
+				(name "Pin_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 2.54 0)
+				(length 3.81)
+				(name "Pin_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 3.81)
+				(name "Pin_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -2.54 0)
+				(length 3.81)
+				(name "Pin_4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -5.08 0)
+				(length 3.81)
+				(name "Pin_5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -7.62 0)
+				(length 3.81)
+				(name "Pin_6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -12.7 90)
+				(length 3.048)
+				(name "MountPin"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "MP"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:R"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "R"
+			(at 2.032 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R"
+			(at 0 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at -1.778 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "R res resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "R_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "R_0_1"
+			(rectangle
+				(start -1.016 -2.54)
+				(end 1.016 2.54)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "R_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+	)
+	(text "R · Reguas: 4 conectores SH de 6 vias (um por fileira) levam +3V3, GND, OUT_Rk, CLK e DATA aos 74HC595 + 4 TMAG5253 de cada regua." (exclude_from_sim no) (at 15 18 0) (effects (font (size 2 2)) (justify left)) (uuid "0f9b83c3-2282-5b5d-91d3-3f397689bdd0"))
+	(text "OUT_Rk: pull-down de 100 k na placa principal; CLK e DATA comuns as 4 fileiras, por 100 ohm. Sem sensores nem multiplexadores aqui." (exclude_from_sim no) (at 15 23 0) (effects (font (size 2 2)) (justify left)) (uuid "fc95a787-dc4a-5a3b-90f8-569e5ef47653"))
+	(symbol (lib_id "viaggio_micromod:Conn_01x06_MountingPin") (at 38.1 53.34 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "170afa57-32cc-58d9-94f2-92212e1c8405")
+		(property "Reference" "J601" (at 33.02 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "XY-SM06B-SRSS-TB" (at 33.02 69.85 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal" (at 38.1 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf" (at 38.1 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "fileira 1 (a da frente): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)" (at 38.1 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R1" (at 38.1 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C56123098" (at 38.1 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 38.1 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "2d7d471b-d73e-5ea2-8837-402c94638b2b"))
+		(pin "2" (uuid "751a8762-c2af-5762-a87c-7c8d0e49f0bb"))
+		(pin "3" (uuid "afb1bf51-cf76-56c4-b914-89ccb9fbb2aa"))
+		(pin "4" (uuid "e68f94ae-d0a4-53d2-9c0d-5f3d3b8de00e"))
+		(pin "5" (uuid "f4c72862-303e-516e-bf34-7955978fc72e"))
+		(pin "6" (uuid "6978f018-8ab4-5f6e-aaa1-f8967db4b863"))
+		(pin "MP" (uuid "238ab4d1-f8d0-51f2-baac-11c5d96a2dea"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "J601") (unit 1))))
+	)
+	(wire (pts (xy 33.02 48.26) (xy 30.48 48.26)) (stroke (width 0) (type default)) (uuid "ae071aab-23b5-53a5-b069-a1c8f890f082"))
+	(global_label "+3V3" (shape passive) (at 30.48 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "4fc39841-64b9-51e8-a122-3d691f3dfcd4") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 50.8) (xy 30.48 50.8)) (stroke (width 0) (type default)) (uuid "119b9017-2f91-5742-8725-37fc6521b88c"))
+	(global_label "GND" (shape passive) (at 30.48 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "c49cfd56-5aa2-5f7c-b5d1-74cf563c6ef2") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 53.34) (xy 30.48 53.34)) (stroke (width 0) (type default)) (uuid "504215c2-3833-5669-9e39-232d501503bc"))
+	(global_label "OUT_R1" (shape passive) (at 30.48 53.34 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "08ad6388-b950-55f2-acbb-eb2e5dda2ec7") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 55.88) (xy 30.48 55.88)) (stroke (width 0) (type default)) (uuid "b3cd89ff-3732-5333-b7ec-401451d7f8c7"))
+	(global_label "SCAN_CLK" (shape passive) (at 30.48 55.88 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "f334ba11-61f5-53e2-b330-fde8c2b5dab7") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 55.88 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 33.02 58.42) (xy 30.48 58.42)) (stroke (width 0) (type default)) (uuid "99c33925-12ac-557a-8854-c9f09dd2449d"))
+	(global_label "SCAN_DATA" (shape passive) (at 30.48 58.42 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "7395623c-d5ef-537a-9063-8bb5e809906a") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 30.48 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 33.02 60.96) (uuid "374091ff-c873-5ee1-9dde-af47fcc1f091"))
+	(wire (pts (xy 38.1 66.04) (xy 38.1 68.58)) (stroke (width 0) (type default)) (uuid "1ec197bb-7c42-5655-9261-1affba3e3ba0"))
+	(global_label "GND" (shape passive) (at 38.1 68.58 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "705fcbc9-9fc8-5f59-bc91-c0695f8ad4e0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 38.1 68.58 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:R") (at 58.42 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "2c7e8362-2617-5c3c-98e3-870b7cc3bbbf")
+		(property "Reference" "R601" (at 54.61 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100k" (at 54.61 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 58.42 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 58.42 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "pull-down da linha OUT da fileira (datasheet do TMAG5253)" (at 58.42 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R1" (at 62.23 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25741" (at 58.42 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 58.42 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "a7f42fca-6287-55a0-afd9-5f384b5ad911"))
+		(pin "2" (uuid "47bf705b-25b5-51c8-aa34-fb4a2f344453"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "R601") (unit 1))))
+	)
+	(wire (pts (xy 54.61 48.26) (xy 52.07 48.26)) (stroke (width 0) (type default)) (uuid "fa4227be-68f7-5ba9-a348-eeb48a4cc15a"))
+	(global_label "OUT_R1" (shape passive) (at 52.07 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "e4d6b484-8fa5-57c2-b8a1-47711b698ed4") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 52.07 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 62.23 48.26) (xy 64.77 48.26)) (stroke (width 0) (type default)) (uuid "5b40cc28-8a19-5f3a-b37c-43155043d02d"))
+	(global_label "GND" (shape passive) (at 64.77 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "e97f2241-164c-5ada-953f-94bed8b8bc70") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 64.77 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:Conn_01x06_MountingPin") (at 99.06 53.34 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "0dbf4b13-ccea-5fca-89f5-42a581b437a2")
+		(property "Reference" "J602" (at 93.98 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "XY-SM06B-SRSS-TB" (at 93.98 69.85 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal" (at 99.06 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf" (at 99.06 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "fileira 2 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)" (at 99.06 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R2" (at 99.06 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C56123098" (at 99.06 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 99.06 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "3c171f02-9f5c-5578-8bfc-bd4bb4aab9c8"))
+		(pin "2" (uuid "b7f0ccee-e929-537c-a08d-fd8e8e0707ea"))
+		(pin "3" (uuid "fc038087-2949-519f-a331-3eaafef96806"))
+		(pin "4" (uuid "9b26416d-7b1e-5a00-8a63-74ef1f00c11c"))
+		(pin "5" (uuid "700123ae-01ae-5b36-8a4b-3c09a044b149"))
+		(pin "6" (uuid "b340ca3e-96de-5449-87a9-0b6e9ab41d08"))
+		(pin "MP" (uuid "1cf3405f-857c-5b9f-956e-aee03ca39891"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "J602") (unit 1))))
+	)
+	(wire (pts (xy 93.98 48.26) (xy 91.44 48.26)) (stroke (width 0) (type default)) (uuid "8967bcb6-1b2d-5e2f-9022-b5bd2eabc240"))
+	(global_label "+3V3" (shape passive) (at 91.44 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "cd6afc02-3e84-5e89-9bb2-d3b2b82da1f1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 91.44 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 93.98 50.8) (xy 91.44 50.8)) (stroke (width 0) (type default)) (uuid "fbb4878e-01c4-5405-86fe-65661d07be38"))
+	(global_label "GND" (shape passive) (at 91.44 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "6a67e838-963d-5f04-92a3-ccdb4e8b99c0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 91.44 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 93.98 53.34) (xy 91.44 53.34)) (stroke (width 0) (type default)) (uuid "7880ad0d-cc70-5dac-b408-665549f6f103"))
+	(global_label "OUT_R2" (shape passive) (at 91.44 53.34 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "34fad789-977a-5eeb-beb8-643ad2b2c60f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 91.44 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 93.98 55.88) (xy 91.44 55.88)) (stroke (width 0) (type default)) (uuid "ce3e961f-92aa-517b-aeaf-3364551a1a54"))
+	(global_label "SCAN_CLK" (shape passive) (at 91.44 55.88 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "18580709-0a66-5f50-b083-046e76201006") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 91.44 55.88 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 93.98 58.42) (xy 91.44 58.42)) (stroke (width 0) (type default)) (uuid "0bf2c725-e1fa-5d13-a8e5-efe408355e19"))
+	(global_label "SCAN_DATA" (shape passive) (at 91.44 58.42 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "be20871e-968e-5c0a-93f6-05b63e6158ee") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 91.44 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 93.98 60.96) (uuid "5cb17881-6435-5e08-84b9-2eb86088d71b"))
+	(wire (pts (xy 99.06 66.04) (xy 99.06 68.58)) (stroke (width 0) (type default)) (uuid "deb09843-69d9-5e00-ba9d-cc57f1c0b66b"))
+	(global_label "GND" (shape passive) (at 99.06 68.58 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "9c74301f-d73a-5819-8f62-83a4f3b7145c") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 99.06 68.58 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:R") (at 119.38 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "ebd9d815-cd30-5b9f-af17-3d6a60069778")
+		(property "Reference" "R602" (at 115.57 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100k" (at 115.57 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 119.38 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 119.38 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "pull-down da linha OUT da fileira (datasheet do TMAG5253)" (at 119.38 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R2" (at 123.19 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25741" (at 119.38 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 119.38 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "758a0715-d75e-5c07-bf90-aef39ba13ad8"))
+		(pin "2" (uuid "712eefdb-5208-5c96-a659-d225fabab7e0"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "R602") (unit 1))))
+	)
+	(wire (pts (xy 115.57 48.26) (xy 113.03 48.26)) (stroke (width 0) (type default)) (uuid "29bac630-f328-565a-8d03-6ef262088d94"))
+	(global_label "OUT_R2" (shape passive) (at 113.03 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "89c1c7d1-c89c-544a-85d6-25a8df1fccd6") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 113.03 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 123.19 48.26) (xy 125.73 48.26)) (stroke (width 0) (type default)) (uuid "8ad1c8f1-860f-5a14-80ac-63889adb941c"))
+	(global_label "GND" (shape passive) (at 125.73 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "cfbf733d-44d2-5c9c-be62-0b055c2bba34") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 125.73 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:Conn_01x06_MountingPin") (at 160.02 53.34 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "dd7d8585-5d9b-5cb2-b3f2-dbea29a725f7")
+		(property "Reference" "J603" (at 154.94 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "XY-SM06B-SRSS-TB" (at 154.94 69.85 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal" (at 160.02 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf" (at 160.02 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "fileira 3 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)" (at 160.02 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R3" (at 160.02 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C56123098" (at 160.02 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 160.02 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "78ad91af-cbf0-5083-abec-ee1f6606edeb"))
+		(pin "2" (uuid "2c6f108c-582d-5b3f-89ac-7c0570a58dfd"))
+		(pin "3" (uuid "32fdfb03-f4a9-5c47-84c5-687d6f1e4ae1"))
+		(pin "4" (uuid "b6dc31c4-cd30-5ad3-beab-3d3c9cba179a"))
+		(pin "5" (uuid "56675ae4-61fb-5941-92b1-03e8bccf7ef4"))
+		(pin "6" (uuid "84e7d5a8-8d9d-5267-8e72-9808d41f6697"))
+		(pin "MP" (uuid "e3b73d06-b331-5957-a1d3-5f9d1efc3857"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "J603") (unit 1))))
+	)
+	(wire (pts (xy 154.94 48.26) (xy 152.4 48.26)) (stroke (width 0) (type default)) (uuid "08b6ce0e-8ee6-5d07-babf-7d0a99c7d50a"))
+	(global_label "+3V3" (shape passive) (at 152.4 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "3ad01588-968c-5f88-b93b-abb623a38f1c") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 152.4 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 154.94 50.8) (xy 152.4 50.8)) (stroke (width 0) (type default)) (uuid "c20b6d29-2eac-5966-a9aa-02bd80da4788"))
+	(global_label "GND" (shape passive) (at 152.4 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "ea652ba9-9fbb-527a-acf2-cfc7bab045bb") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 152.4 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 154.94 53.34) (xy 152.4 53.34)) (stroke (width 0) (type default)) (uuid "4a576429-1033-5fcd-b001-56835c2072c5"))
+	(global_label "OUT_R3" (shape passive) (at 152.4 53.34 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "77edb4cb-06dd-5608-9008-006475101653") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 152.4 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 154.94 55.88) (xy 152.4 55.88)) (stroke (width 0) (type default)) (uuid "f20d31ba-e664-5265-adcd-8ea1a1936528"))
+	(global_label "SCAN_CLK" (shape passive) (at 152.4 55.88 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "e58c55c9-ead8-5a8a-808a-e3ba679235d7") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 152.4 55.88 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 154.94 58.42) (xy 152.4 58.42)) (stroke (width 0) (type default)) (uuid "16099443-b170-599b-b69d-da172958f0d4"))
+	(global_label "SCAN_DATA" (shape passive) (at 152.4 58.42 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "a0c220ab-fbf0-5104-8032-67cb82417625") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 152.4 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 154.94 60.96) (uuid "93291c2a-7893-5fae-bf67-e767ee35815b"))
+	(wire (pts (xy 160.02 66.04) (xy 160.02 68.58)) (stroke (width 0) (type default)) (uuid "a9a008d9-a541-58a2-9a88-10394b4a388c"))
+	(global_label "GND" (shape passive) (at 160.02 68.58 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "e7670102-fead-5894-a440-ab500775c904") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 160.02 68.58 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:R") (at 182.88 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "9d4b4dbb-80f3-529f-84bc-db6e07ea275f")
+		(property "Reference" "R603" (at 179.07 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100k" (at 179.07 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 182.88 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 182.88 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "pull-down da linha OUT da fileira (datasheet do TMAG5253)" (at 182.88 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R3" (at 186.69 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25741" (at 182.88 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 182.88 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "e7fc86e7-cfb5-5774-bcf9-01ffbf279b31"))
+		(pin "2" (uuid "be5ff407-3360-550d-b79e-f663fa7095a0"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "R603") (unit 1))))
+	)
+	(wire (pts (xy 179.07 48.26) (xy 176.53 48.26)) (stroke (width 0) (type default)) (uuid "8aa402c4-5249-5213-aa1b-ef7e6fe70f71"))
+	(global_label "OUT_R3" (shape passive) (at 176.53 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "37359ad1-082d-55b4-91db-43539fc62f8b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 176.53 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 186.69 48.26) (xy 189.23 48.26)) (stroke (width 0) (type default)) (uuid "73a6e865-72a3-5462-bb52-7cfa721f9321"))
+	(global_label "GND" (shape passive) (at 189.23 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "39a3f308-56d9-55b5-8cf4-afff7de975c9") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 189.23 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:Conn_01x06_MountingPin") (at 220.98 53.34 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "5d2e62b2-84aa-5ce5-9bee-fe2e0487b5ae")
+		(property "Reference" "J604" (at 215.9 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "XY-SM06B-SRSS-TB" (at 215.9 69.85 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal" (at 220.98 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf" (at 220.98 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "fileira 4 (a de tras): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)" (at 220.98 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R4" (at 220.98 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C56123098" (at 220.98 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 220.98 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "ddbb6abd-5ca1-59e5-8e11-3bd80f4f6b53"))
+		(pin "2" (uuid "afc740c3-a4e8-538f-bb54-885911e5ac32"))
+		(pin "3" (uuid "50335ee6-df17-5718-b8da-5af391d2c482"))
+		(pin "4" (uuid "4d3a99fa-9d57-5026-9f96-528426407be5"))
+		(pin "5" (uuid "11afd698-3989-5a97-97b3-c1f48b7ceab4"))
+		(pin "6" (uuid "b272ad1a-10ed-518a-ab39-68b6d90131d4"))
+		(pin "MP" (uuid "658bb4cc-04e3-5255-aaee-fc6c7f9a44fa"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "J604") (unit 1))))
+	)
+	(wire (pts (xy 215.9 48.26) (xy 213.36 48.26)) (stroke (width 0) (type default)) (uuid "92d3e37e-1272-5e78-8b0b-7adffde15381"))
+	(global_label "+3V3" (shape passive) (at 213.36 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "3f42f7e6-1103-59fd-8cf4-081d9da5ca4f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 213.36 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 215.9 50.8) (xy 213.36 50.8)) (stroke (width 0) (type default)) (uuid "b94fab88-2a5e-5057-a937-495eca4440e7"))
+	(global_label "GND" (shape passive) (at 213.36 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "914df1d1-c76e-5b68-bf6c-85b1da457dfb") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 213.36 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 215.9 53.34) (xy 213.36 53.34)) (stroke (width 0) (type default)) (uuid "7df9770b-5931-5aed-b1ef-699ffee3bc51"))
+	(global_label "OUT_R4" (shape passive) (at 213.36 53.34 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "24cd9e94-9572-5fc3-b136-b2dc9b317269") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 213.36 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 215.9 55.88) (xy 213.36 55.88)) (stroke (width 0) (type default)) (uuid "747d5750-a911-5cd5-bdcf-40343df6d326"))
+	(global_label "SCAN_CLK" (shape passive) (at 213.36 55.88 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "6e158979-cdc6-5df8-a360-09dabfd3aba0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 213.36 55.88 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 215.9 58.42) (xy 213.36 58.42)) (stroke (width 0) (type default)) (uuid "8dce4d3d-6bce-5e48-a347-bef7108c132c"))
+	(global_label "SCAN_DATA" (shape passive) (at 213.36 58.42 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "ead0648b-01c4-5fd1-ae89-2dcc9e1b147d") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 213.36 58.42 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(no_connect (at 215.9 60.96) (uuid "74331e18-302f-589e-b9f0-ce96b82e0429"))
+	(wire (pts (xy 220.98 66.04) (xy 220.98 68.58)) (stroke (width 0) (type default)) (uuid "d1a36ba5-b087-5b50-a55d-b4a81391c8a3"))
+	(global_label "GND" (shape passive) (at 220.98 68.58 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "c391284a-bab3-5661-9776-836ed00b04de") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 220.98 68.58 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:R") (at 243.84 48.26 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "f96bd766-c31b-5196-a755-b6e3b8efd41f")
+		(property "Reference" "R604" (at 240.03 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100k" (at 240.03 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 243.84 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 243.84 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "pull-down da linha OUT da fileira (datasheet do TMAG5253)" (at 243.84 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R4" (at 247.65 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25741" (at 243.84 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 243.84 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "e1fa379f-14ea-58bf-96b7-eb58f8eb2b60"))
+		(pin "2" (uuid "b68d8f55-a7bc-5260-9fd8-72c714d66875"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "R604") (unit 1))))
+	)
+	(wire (pts (xy 240.03 48.26) (xy 237.49 48.26)) (stroke (width 0) (type default)) (uuid "f6bf9f7e-5ce8-5885-8698-8b45dcc65e13"))
+	(global_label "OUT_R4" (shape passive) (at 237.49 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "54274111-008d-5802-87b3-04e8406f015d") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 237.49 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 247.65 48.26) (xy 250.19 48.26)) (stroke (width 0) (type default)) (uuid "4941bca9-b25d-5b28-b714-176735f855cb"))
+	(global_label "GND" (shape passive) (at 250.19 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "8a70c89c-5887-5430-95c9-f942793c5ae8") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 250.19 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:R") (at 35.56 86.36 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "16cdcd46-2b29-5d7e-8d47-44ff9f888b3e")
+		(property "Reference" "R605" (at 31.75 82.55 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100" (at 31.75 90.17 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 35.56 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 35.56 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)" (at 35.56 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R5" (at 39.37 82.55 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25076" (at 35.56 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 35.56 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "b8ef60fc-f14b-567b-a00a-a7bb9aaaaaa7"))
+		(pin "2" (uuid "34790116-71db-5ba5-959e-e6e559a8d5e9"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "R605") (unit 1))))
+	)
+	(wire (pts (xy 31.75 86.36) (xy 29.21 86.36)) (stroke (width 0) (type default)) (uuid "a43f0e33-a66b-5751-a700-c8b52c10f1f5"))
+	(global_label "SCAN_CLK_P" (shape passive) (at 29.21 86.36 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "2a4dd1f8-fbfe-5742-b3c4-09e53375edb5") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 29.21 86.36 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 39.37 86.36) (xy 41.91 86.36)) (stroke (width 0) (type default)) (uuid "ddcea081-5056-58e8-a224-3c4006f1ce27"))
+	(global_label "SCAN_CLK" (shape passive) (at 41.91 86.36 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "f0d73a85-2585-5e41-ae37-3ae2ee6dafaf") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 41.91 86.36 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:R") (at 81.28 86.36 90) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "f478aabc-8132-5216-87c4-da415f5cd3b1")
+		(property "Reference" "R606" (at 77.47 82.55 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "100" (at 77.47 90.17 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 81.28 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 81.28 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "serie no DATA comum, junto do J101" (at 81.28 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "R5" (at 85.09 82.55 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C25076" (at 81.28 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 81.28 86.36 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "4fcc132c-4b85-587a-a909-8a7a7830cce5"))
+		(pin "2" (uuid "6cfba817-f839-5764-b217-e3e25a68f5a5"))
+		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6" (reference "R606") (unit 1))))
+	)
+	(wire (pts (xy 77.47 86.36) (xy 74.93 86.36)) (stroke (width 0) (type default)) (uuid "aebbd9a5-0e05-5f0b-bebb-e950bccf8363"))
+	(global_label "SCAN_DATA_P" (shape passive) (at 74.93 86.36 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "565fb7fc-a3fc-5596-8935-98bf9db3b577") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 74.93 86.36 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 85.09 86.36) (xy 87.63 86.36)) (stroke (width 0) (type default)) (uuid "9ea8d587-b2d5-5f24-8741-490ba87e0c22"))
+	(global_label "SCAN_DATA" (shape passive) (at 87.63 86.36 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "bf10b8bd-1d11-5ae0-a906-fd60dd7d7fc4") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 87.63 86.36 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(embedded_fonts no)
+)

@@ -1,36 +1,19 @@
-"""Write the eTutti Student V3 schematic (the V2 one with the V3 changes below), run ERC, check it against the Student V1.
+"""Write the eTutti Student V4 main-board schematic (interface only, R3V4), run ERC, compare it with the V3.
 
-    python etutti/hardware/student_v03/pcb/schematic.py
+    python etutti/hardware/student_v04/pcb/schematic.py
 
 Plain CPython (stdlib only); it calls KiCad 10's kicad-cli for ERC and the netlists.
 
-A copy of viaggio_micromod/pcb/schematic.py (the Viaggio J1 = Student V1 circuit). The part
-references and the symbol uuids are the same, so the V1 board's footprints keep their links.
-V3 changes over the V2 (18 Nov 2026; see student_v03/README.md): R203 2.2k, R501 1M, C307 100nF (Basic parts),
-the four BAT54C become BAV70, H101 (SMT standoff) is a plain hole (board only), the unused charge-light driver
-Q201/Q202/R207 is gone, and D206 (VBUS_S -> EN_REQ) makes a USB plug switch the 3.3 V on, so that the screen
-can show the battery percentage. What changed in the V2 (SPEC v1 of the Student V2):
+The V3 circuit with the F2 changes (SPEC R2V4/R3V4): no sensors and no multiplexers on the main board (the 4-sensor
+rulers carry the TMAG5253 and a 74HC595 each); sheet R = the four row connectors (JST SH 6-way, one per row) with
+the OUT_R1..R4 pull-downs and the 100 ohm series resistors of the shared SCAN_CLK / SCAN_DATA; the screen connector
+J401 is the same 6-way SH (4 used); microphone: C310 on MIC_BIAS (datasheet Fig. 20); Teensy pins as pcb/PINOS.md.
+The part references and the symbol uuids are the V3's (same uuid namespace).
 
-  I  gone: the two-colour LED D401, its resistors R401 / R402 and the diode D402.
-     The charge-light driver Q201 / R207 / Q202 stays on the board, not fitted (it had only
-     the LED to drive; its footprints keep the V1 routing round them as it is).
-  I  new: J401, a 4-pin JST SH socket in the Qwiic order (GND, 3V3, SDA, SCL) for the
-     0.96 in 128 x 64 OLED, on the I2C bus the codec already uses (Teensy pins 18 / 19).
-  I  the two encoders are EC11E18244AU (20 mm shaft; the V1's EC11E18244A5 has 25 mm and no
-     stock): same 18 pulses / 36 detents, same footprint.
-  F  new: J302, a second PJ-327A for a microphone (IN): tip -> C309 -> MIC of the codec,
-     R305 from MIC_BIAS to the tip; and the codec's I2S_DOUT -> Teensy pin 8 (I2S_RX).
-  P  Teensy pins 5 and 13 (the LED) are free; pin 8 is I2S_RX.
-
-Sheet T (keys, multiplexers) is the V1 board's, pin by pin, read from its netlist.
-
-Writes (under etutti/hardware/student_v02/):
-  kicad/student_v02.kicad_sch (root) + student_v02_<S>.kicad_sch, viaggio_micromod.kicad_sym,
-      sym-lib-table, fp-lib-table, viaggio_micromod.pretty/
-  pcb/build/student_v02_erc.json, student_v02_netlist.net, v1_netlist.net
-  pcb/bom_esquema.csv
-Exits non-zero on an ERC error, a netlist mismatch, or a difference from the V1 netlist
-outside the changes listed above.
+Writes (under etutti/hardware/student_v04/): kicad/student_v04.kicad_sch (root) + student_v04_<S>.kicad_sch,
+viaggio_micromod.kicad_sym, sym-lib-table, fp-lib-table, viaggio_micromod.pretty/;
+pcb/build/student_v04_erc.json, student_v04_netlist.net, v3_netlist.net; pcb/bom_esquema.csv.
+Exits non-zero on an ERC error, a netlist mismatch, or a difference from the V3 netlist outside the listed changes.
 """
 import csv
 import json
@@ -50,12 +33,12 @@ KICAD_SYM = KICAD + "/share/kicad/symbols"
 KICAD_FP = KICAD + "/share/kicad/footprints"
 KICAD_CLI = KICAD + "/bin/kicad-cli.exe"
 KDIR = os.path.normpath(os.path.join(HERE, "..", "kicad"))
-V1_SCH = os.path.normpath(os.path.join(HERE, "..", "..", "student_v01", "kicad", "viaggio_micromod.kicad_sch"))
+V3_SCH = os.path.normpath(os.path.join(HERE, "..", "..", "student_v03", "kicad", "student_v03.kicad_sch"))
 BUILD = os.path.join(HERE, "build")
-PROJECT = "student_v03"
+PROJECT = "student_v04"
 LIB = "viaggio_micromod"
-DATE = "2026-11-18"
-REV = "Student V3"
+DATE = "2026-11-21"
+REV = "Student V4 R3V4"
 
 NS = uuid.UUID("3b8e6f0c-2d4a-4f61-8c7e-5a9d1e2f4b22")
 
@@ -306,7 +289,7 @@ PASSIVES = {
 }
 
 SHEETS = [("P", "Processador"), ("E", "Energia"), ("F", "Fone"), ("I", "Interface"),
-          ("A", "Alto-falante"), ("T", "Teclas")]
+          ("A", "Alto-falante"), ("R", "Reguas")]
 PARTS = {s: [] for s, _ in SHEETS}
 CUR = ["P"]
 
@@ -369,11 +352,11 @@ sym("TMAG5253BA3", "custom", tmag_symbol)
 
 # Teensy MicroMod pin -> net. Same Teensy numbers as the Viaggio v2.1 (PINOS.md), plus 28 = 3.3V_EN.
 TEENSY_NETS = {
-    "0": "MUX_S0", "1": "MUX_S1", "2": "MUX_S2", "3": "MUX_S3", "4": "SENS_EN", "6": "SEL_SW",
+    "0": "CHG_STAT", "2": "SCAN_DATA_P", "3": "SCAN_CLK_P", "6": "SEL_SW",
     "7": "I2S_TX", "8": "I2S_RX", "9": "SEL_B", "10": "KEEP", "11": "SEL_A", "12": "AMP_SD",
-    "14/A0": "MUX_R_COM", "15/A1": "MUX_L_COM", "16/A2": "VBAT_S", "17/A3": "HP_DET", "18/A4": "I2C_SDA",
+    "14/A0": "OUT_R1", "15/A1": "OUT_R2", "16/A2": "VBAT_S", "17/A3": "HP_DET", "18/A4": "I2C_SDA",
     "19/A5": "I2C_SCL", "20/A6": "I2S_LRCLK", "21/A7": "I2S_BCLK", "22/A8": "VOL_A", "23/A9": "AUD_MCLK_P",
-    "24/A10": "VOL_B", "25/A11": "VOL_SW", "26/A12": "CHG_STAT", "28": "NC",
+    "24/A10": "VOL_B", "25/A11": "VOL_SW", "26/A12": "OUT_R3", "27/A13": "OUT_R4", "28": "NC",
 }
 
 
@@ -458,7 +441,7 @@ R("R205", "10k", "VBUS", "CHG_EN1", "E3")
 R("R206", "100k", "VBUS", "CHG_N", "E3")
 # V3: R207 (charge-light driver of the V1) removed
 # V3: Q202 (charge-light driver of the V1) removed
-bat54c("D202", "CHG_STAT", "NC", "CHG_N", "E3", note="leitura do ~CHG pelo pino 26 (so com USB)")
+bat54c("D202", "CHG_STAT", "NC", "CHG_N", "E3", note="leitura do ~CHG pelo pino 0 (so com USB; R3V4: saiu do 26, que virou OUT_R3)")
 R("R208", "1M", "VBAT", "VBAT_S", "E3", note="medida da bateria: V(pino 16) = VBAT/2")
 R("R209", "1M", "VBAT_S", "GND", "E3")
 C("C204", "100nF", "VBAT_S", "GND", "E3")
@@ -537,7 +520,8 @@ part("J302", "PJ-327A", "PJ-327A",
      note="IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)",
      datasheet="https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf")
 R("R305", "2.2k", "MIC_BIAS", "MIC_J", "F3", note="bias do microfone de eletreto (como a Audio Board: 2,2k do MICBIAS)")
-C("C309", "1uF", "MIC_J", "MIC_IN", "F3", note="acoplamento do microfone ao pino MIC")
+C("C309", "1uF", "MIC_J", "MIC_IN", "F3", note="acoplamento do microfone ao pino MIC (o datasheet mostra 0,1 uF; 1 uF baixa o corte da voz)")
+C("C310", "100nF", "MIC_BIAS", "GND", "F3", note="datasheet SGTL5000 Fig. 20 (20 QFN): 0,1 uF no MIC_BIAS (C4)")
 
 # ---------------------------------------------------------------- I: interface
 CUR[0] = "I"
@@ -550,12 +534,12 @@ for ref, code, a, b, sw, what in (("SW401", "I1", "VOL_A", "VOL_B", "VOL_SW_N", 
          fp="Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm", lcsc="C202365", cls="estendida", price=1.92,
          status="final", mount="sem peca (encoder soldado em casa, topo)", note=what + "; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2",
          datasheet="https://datasheet.lcsc.com/datasheet/pdf/00ace576d31da40a390056171db2037f.pdf?productCode=C202365")
-part("J401", sym("Conn_01x04_MountingPin", "Connector_Generic_MountingPin"), "SM04B-SRSS-TB",
-     {"1": "GND", "2": "+3V3", "3": "I2C_SDA", "4": "I2C_SCL", "MP": "GND"}, "I3",
-     fp="Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal", lcsc="C160404", cls="estendida",
-     price=0.22, status="final",
-     note="tela OLED 0,96 pol. 128 x 64 (SSD1306, I2C 0x3C) por cabo JST SH de 4 vias, ordem Qwiic: 1 GND, 2 3V3, 3 SDA, 4 SCL",
-     datasheet="https://datasheet.lcsc.com/datasheet/pdf/40c649e22fa9bda892cfec952005fd51.pdf?productCode=C160404")
+part("J401", sym("Conn_01x06_MountingPin", "Connector_Generic_MountingPin"), "XY-SM06B-SRSS-TB",
+     {"1": "+3V3", "2": "GND", "3": "I2C_SDA", "4": "I2C_SCL", "5": "NC", "6": "NC", "MP": "GND"}, "I3",
+     fp="Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", lcsc="C56123098", cls="estendida",
+     price=0.069, status="conferir",
+     note="tela OLED por cabo SH de 6 vias, o MESMO conector das reguas (um tipo Extended a menos); usa 4 vias na ordem das reguas: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 livres). Pino 1 = +3V3 como nas reguas: um plugue trocado nunca inverte a alimentacao",
+     datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 part("SW403", sym("SW_Push", "Switch"), "Program", {"1": "PROG", "2": "GND"}, "I4",
      fp="Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A", lcsc="C318884", cls="basica", price=0.02,
      status="conferir", note="no verso, por um furo no fundo; 5,1 x 5,1 (a SPEC pedia 4 x 4)", rot=0)
@@ -591,36 +575,22 @@ def netlist_of(root, out):
     return got
 
 
-V1 = netlist_of(V1_SCH, os.path.join(BUILD, "v1_netlist.net"))
+V3 = netlist_of(V3_SCH, os.path.join(BUILD, "v3_netlist.net"))
 
-# ---------------------------------------------------------------- T: keys
-CUR[0] = "T"
-KEYS = list(csv.DictReader(open(os.path.join(HERE, "..", "..", "pocket", "pcb", "build", "pocket_keys.csv"))))
-for ref, code, com, what in (("U601", "T1", "MUX_L_COM", "esquerdo (metade baixa do teclado), COM no pino 15"),
-                             ("U602", "T2", "MUX_R_COM", "direito (metade alta), COM no pino 14")):
-    nets = {str(n): V1[ref].get(str(n), "NC") for n in range(1, 25)}
-    nets = {k: ("NC" if v.startswith("unconnected-") else v) for k, v in nets.items()}
-    if nets["1"] != com or nets["15"] != "GND" or nets["24"] != "+3V3":
-        raise SystemExit("%s on the V1 board is not wired as expected: %s" % (ref, nets))
-    part(ref, sym("74HC4067PW", "74xx", "CD74HC4067SM"), "74HC4067PW", nets, code,
-         fp="Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm", lcsc="C179326", cls="estendida", price=0.26, status="final",
-         note=what + "; canais = placa Student V1",
-         datasheet="https://assets.nexperia.com/documents/data-sheet/74HC_HCT4067.pdf")
-C("C601", "100nF", "+3V3", "GND", "T1")
-C("C602", "100nF", "+3V3", "GND", "T2")
-gate("U603", "04", "MUX_S3", None, "NS3", "+3V3", "T3")
-gate("U604", "08", "NS3", "SENS_EN", "EN_A", "+3V3", "T3", note="EN_A = SENS_EN e S3 baixo (canais 0-7)")
-gate("U605", "08", "MUX_S3", "SENS_EN", "EN_B", "+3V3", "T3", note="EN_B = SENS_EN e S3 alto (canais 8-15)")
-C("C603", "100nF", "+3V3", "GND", "T3")
-for k in sorted(KEYS, key=lambda k: int(k["switch"][2:])):
-    n = int(k["switch"][2:])
-    part("U7%02d" % n, "TMAG5253BA3", "TMAG5253BA3IQDMRR",
-         {"1": "+3V3", "2": "GND", "3": V1["U7%02d" % n]["3"], "4": V1["U7%02d" % n]["4"], "5": "GND"}, "T4",
-         fp="Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm", lcsc="C22401868", cls="estendida", price=0.37,
-         status="final",
-         note="tecla %s (fileira %s, %s); verso, mesma orientacao do Pocket" % (k["switch"], k["row"], k["note"]),
-         datasheet="https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
-    C("C7%02d" % n, "100nF", "+3V3", "GND", "T4")
+# ---------------------------------------------------------------- R: row connectors (rulers hang from them)
+CUR[0] = "R"
+sym("Conn_01x06_MountingPin", "Connector_Generic_MountingPin")
+for k in range(1, 5):
+    part("J60%d" % k, "Conn_01x06_MountingPin", "XY-SM06B-SRSS-TB",
+         {"1": "+3V3", "2": "GND", "3": "OUT_R%d" % k, "4": "SCAN_CLK", "5": "SCAN_DATA", "6": "NC", "MP": "GND"}, "R%d" % k,
+         fp="Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", lcsc="C56123098", cls="estendida",
+         price=0.069, status="conferir",
+         note="fileira %d (%s): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
+              % (k, "a da frente" if k == 1 else "a de tras" if k == 4 else "intermediaria"),
+         datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
+    R("R60%d" % k, "100k", "OUT_R%d" % k, "GND", "R%d" % k, note="pull-down da linha OUT da fileira (datasheet do TMAG5253)")
+R("R605", "100", "SCAN_CLK_P", "SCAN_CLK", "R5", note="serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)")
+R("R606", "100", "SCAN_DATA_P", "SCAN_DATA", "R5", note="serie no DATA comum, junto do J101")
 
 
 # ====================================================================== layout + writer
@@ -731,8 +701,8 @@ NOTES = {
     "I": ["I · Interface: dois EC11E de eixo curto com clique (volume, registro), conector da tela OLED (J401, I2C), botao Program. Sem LED.",
           "O clique do volume (I1) liga/desliga (circuito na folha E); o do seletor (I2) e uma entrada comum (pino 6)."],
     "A": ["A · Alto-falante: MAX98357A no mesmo I2S do codec, mono (L+R)/2; SD_MODE pelo pino 12."],
-    "T": ["T · Teclas: 28 TMAG5253BA3 no verso, 2 multiplexadores, grupos EN_A (canais 0-7) e EN_B (8-15).",
-          "Espera de 45 us depois de trocar o S3. Canais iguais ao Pocket v0.3 (refazer na placa, M3)."],
+    "R": ["R · Reguas: 4 conectores SH de 6 vias (um por fileira) levam +3V3, GND, OUT_Rk, CLK e DATA aos 74HC595 + 4 TMAG5253 de cada regua.",
+          "OUT_Rk: pull-down de 100 k na placa principal; CLK e DATA comuns as 4 fileiras, por 100 ohm. Sem sensores nem multiplexadores aqui."],
 }
 
 
@@ -795,9 +765,9 @@ def write_sheet(sheet, title, parts, extra=None):
                       (S.quote(line), fmt(18 + 5 * i), eff("left", size=2.0), uid("note", sheet, i))
                       for i, line in enumerate(NOTES[sheet] + (extra or [])))
     tb = ('\t(title_block (title %s) (date "%s") (rev %s) (company "beatconfused.com") '
-          '(comment 1 "etutti/hardware/student_v03/pcb/schematic.py escreve este arquivo; nao editar a mao"))' %
-          (S.quote("eTutti Student V2 · %s · %s" % (sheet, title)), DATE, S.quote(REV)))
-    txt = ('(kicad_sch\n\t(version 20250610)\n\t(generator "student_v03_schematic")\n\t(generator_version "10.0")\n'
+          '(comment 1 "etutti/hardware/student_v04/pcb/schematic.py escreve este arquivo; nao editar a mao"))' %
+          (S.quote("eTutti Student V4 · %s · %s" % (sheet, title)), DATE, S.quote(REV)))
+    txt = ('(kicad_sch\n\t(version 20250610)\n\t(generator "student_v04_schematic")\n\t(generator_version "10.0")\n'
            '\t(uuid "%s")\n\t(paper "%s")\n%s\n' % (SHEET_UUID[sheet], paper, tb))
     txt += lib_symbols_block(used) + notes + "\n" + "\n".join(body_txt) + "\n\t(embedded_fonts no)\n)\n"
     open(os.path.join(KDIR, "%s_%s.kicad_sch" % (PROJECT, sheet)), "w", encoding="utf-8", newline="\n").write(txt)
@@ -838,18 +808,18 @@ def write_root(flags):
                     (S.quote(net), fmt(x), fmt(y + 2.54), eff("right"), uid("flagl", net), fmt(x), fmt(y + 2.54),
                      eff("right", True)))
     notes = [
-        "eTutti Student V2 · esquema eletrico (SPEC v1). E a Student V1 com tela OLED, microfone e sem LED.",
-        "Folhas P, E, A, T: o circuito da V1. Folha F: jack IN e microfone. Folha I: conector da tela, sem LED.",
-        "Placa: derivada da V1 roteada por pcb/build_board.py. Ligacoes entre folhas por rotulos globais.",
+        "eTutti Student V4 · placa principal (so interface), R3V4. E a V3 sem sensores nem multiplexadores.",
+        "Folhas P, E, F, I, A: o circuito da V3. Folha R: os 4 conectores de fileira (SH 6 vias), pull-downs e series de CLK/DATA.",
+        "Placa: pcb/posiciona_v4.py (posicionamento sem trilhas, portao P). Ligacoes entre folhas por rotulos globais.",
         "PWR_FLAG abaixo: redes alimentadas por conector, ferrite, indutor ou diodo (o ERC nao ve a fonte).",
     ]
     ntxt = "\n".join('\t(text %s (exclude_from_sim no) (at 25 %s 0) %s (uuid "%s"))' %
                      (S.quote(line), fmt(15 + 6 * i), eff("left", size=2.0), uid("rootnote", i))
                      for i, line in enumerate(notes))
-    tb = ('\t(title_block (title "eTutti Student V2 · esquema") (date "%s") (rev %s) (company "beatconfused.com") '
-          '(comment 1 "etutti/hardware/student_v03/pcb/schematic.py escreve este arquivo; nao editar a mao"))' %
+    tb = ('\t(title_block (title "eTutti Student V4 · esquema") (date "%s") (rev %s) (company "beatconfused.com") '
+          '(comment 1 "etutti/hardware/student_v04/pcb/schematic.py escreve este arquivo; nao editar a mao"))' %
           (DATE, S.quote(REV)))
-    txt = ('(kicad_sch\n\t(version 20250610)\n\t(generator "student_v03_schematic")\n\t(generator_version "10.0")\n'
+    txt = ('(kicad_sch\n\t(version 20250610)\n\t(generator "student_v04_schematic")\n\t(generator_version "10.0")\n'
            '\t(uuid "%s")\n\t(paper "A4")\n%s\n' % (ROOT_UUID, tb))
     txt += lib_symbols_block({"PWR_FLAG"}) + ntxt + "\n" + "\n".join(sheets + body)
     txt += '\n\t(sheet_instances (path "/" (page "1")))\n\t(embedded_fonts no)\n)\n'
@@ -859,7 +829,7 @@ def write_root(flags):
 def write_library():
     syms = "\n\t".join(S.dump(SYMBOLS[n], 1) for n in sorted(SYMBOLS))
     open(os.path.join(KDIR, LIB + ".kicad_sym"), "w", encoding="utf-8", newline="\n").write(
-        '(kicad_symbol_lib\n\t(version 20251024)\n\t(generator "student_v03_schematic")\n\t(generator_version "10.0")\n\t'
+        '(kicad_symbol_lib\n\t(version 20251024)\n\t(generator "student_v04_schematic")\n\t(generator_version "10.0")\n\t'
         + syms + "\n)\n")
     open(os.path.join(KDIR, "sym-lib-table"), "w", newline="\n").write(
         '(sym_lib_table\n\t(version 7)\n\t(lib (name "%s") (type "KiCad") (uri "${KIPRJMOD}/%s.kicad_sym") '
@@ -916,7 +886,7 @@ def write_bom():
                     "preco_unit_usd_est", "montagem", "status", "nota"])
         for row in BOM_EXTRA:
             w.writerow(row)
-        for key in sorted(rows, key=lambda k: ("PEFIAT".index(k[0][0]), int(k[0][1:]) if k[0][1:].isdigit() else 0,
+        for key in sorted(rows, key=lambda k: ("PEFIAR".index(k[0][0]), int(k[0][1:]) if k[0][1:].isdigit() else 0,
                                               k[1])):
             r = rows[key]
             fp = r["fp"].split(":")[-1] if r["fp"] else "(a criar)"
@@ -961,28 +931,29 @@ def run_checks(declared):
     return counts, bad
 
 
-def compare_v1():
-    """Every part kept from the V1 has the same pins on the same nets; only the listed changes differ."""
+def compare_v3():
+    """Every part kept from the V3 has the same pins on the same nets; only the listed R3V4 changes differ."""
     mine = netlist_of(os.path.join(KDIR, PROJECT + ".kicad_sch"), os.path.join(BUILD, PROJECT + "_netlist.net"))
-    gone = {"D401", "D402", "R401", "R402", "H101", "Q201", "Q202", "R207"}
-    new = {"J401", "J302", "R305", "C309", "D206"}
-    allowed = {("U301", "10"), ("U301", "11"), ("U301", "16"), ("J101", "54"), ("J101", "18"), ("J101", "57")}
-    dead = {"LED_R", "LED_G", "LED_R_A", "LED_G_A", "LEDR_A"}
+    gone = {"U601", "U602", "U603", "U604", "U605", "C601", "C602", "C603"} | {"U7%02d" % n for n in range(1, 29)} |         {"C7%02d" % n for n in range(1, 29)}
+    new = {"J601", "J602", "J603", "J604", "R601", "R602", "R603", "R604", "R605", "R606", "C310"}
+    # Teensy pads 19 (CHG_STAT), 10/18/32/47/34/38/8/67 etc. change by design (PINOS.md); J401 5 and 6 are new pins
+    allowed = {("J101", p) for p in ("19", "10", "32", "47", "34", "38", "8", "67", "17", "18", "28", "4", "9")}
+    allowed |= {("D202", "1"), ("J401", "1"), ("J401", "2"), ("J401", "3"), ("J401", "4"), ("J401", "5"), ("J401", "6")}
 
     def nc(n):
-        return n is None or n.startswith("unconnected-") or n in dead
+        return n is None or n.startswith("unconnected-")
 
     diff = []
-    for ref in sorted(set(V1) | set(mine)):
+    for ref in sorted(set(V3) | set(mine)):
         if ref.startswith("#"):
             continue
-        a, b = V1.get(ref), mine.get(ref)
+        a, b = V3.get(ref), mine.get(ref)
         if a is None:
             if ref not in new:
-                diff.append((ref, "so na V2"))
+                diff.append((ref, "so na V4"))
         elif b is None:
             if ref not in gone:
-                diff.append((ref, "so na V1"))
+                diff.append((ref, "so na V3"))
         else:
             for pin in sorted(set(a) | set(b)):
                 na, nb = a.get(pin), b.get(pin)
@@ -1013,8 +984,15 @@ def main():
     write_root(flags)
     write_library()
     bom = write_bom()
+    dump = []
+    for s_, _ in SHEETS:
+        for p in PARTS[s_]:
+            q = {k: p[k] for k in ("ref", "value", "nets", "code", "fp", "lcsc", "cls", "mount", "note", "dnp", "sheet", "price", "datasheet")}
+            q["path"] = "/%s/%s/%s" % (ROOT_UUID, SHEET_UUID[s_], uid("sym", p["ref"], 1))
+            dump.append(q)
+    json.dump(dump, open(os.path.join(BUILD, "partes_v4.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     counts, bad = run_checks(declared)
-    diff = compare_v1()
+    diff = compare_v3()
     nparts = sum(len(v) for v in PARTS.values())
     print("sheets: %s" % ", ".join("%s %s (%d parts)" % (s, pages[s], len(PARTS[s])) for s, _ in SHEETS))
     print("parts %d, nets %d, PWR_FLAG on %s" % (nparts, len(declared), ", ".join(flags)))
@@ -1025,7 +1003,7 @@ def main():
         for it in items[:25]:
             print("   ", it)
     print("netlist vs declared: %s" % ("OK" if not bad else bad[:10]))
-    print("vs Student V1 (fora das mudancas listadas): %s" % ("igual" if not diff else diff[:12]))
+    print("vs Student V3 (fora das mudancas listadas): %s" % ("igual" if not diff else diff[:12]))
     sys.exit(1 if counts.get("error") or bad or diff else 0)
 
 

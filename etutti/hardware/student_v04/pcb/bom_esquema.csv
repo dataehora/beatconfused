@@ -1,0 +1,63 @@
+codigo,referencias,qtd,valor_peca,encapsulamento,lcsc,classe_jlc,preco_unit_usd_est,montagem,status,nota
+I3,DS1,1,"modulo OLED 0,96 pol. 128 x 64 SSD1306, I2C, 4 pinos (GND VCC SCL SDA)",27 x 27 mm,-,-,3.000,em casa (preso na tampa; cabo JST SH de 4 vias ao J401),conferir,ver COMPRAS.md: ordem dos pinos do modulo
+I3,CAB1,1,"cabo JST SH 1,0 mm de 4 vias, 50-100 mm (Qwiic / STEMMA QT)",-,-,-,1.000,em casa,final,
+P1,MOD1,1,SparkFun MicroMod Teensy Processor (DEV-16402),M.2 2222 Key E,-,-,24.950,"em casa (encaixar no J101, apertar o parafuso)",final,"i.MX RT1062 600 MHz, 16 MB flash, 1 MB RAM, bootloader MKL02; fqbn teensy:avr:teensyMM"
+P1,SCR1,1,"parafuso M2.5 x 3, cabeca chata (Phillips)",-,-,-,0.050,em casa,conferir,prende o modulo no espacador H101 (vem no KIT-16549 da SparkFun)
+P1,R105,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,"MCLK 11,3 MHz: em serie, junto do J101 (SPEC 4, 5o)"
+P1,C102,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+P1,C101,1,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,"3,3 V junto dos pads 2/74 do J101"
+P1,J101,1,91302-42-067RCE,M.2_E_H4.2_UMAX_91302-42-067,C48985906,estendida,1.260,JLC,conferir,"UMAX M.2 Key E 67 pinos, 0,5 mm, 4,2 mm (estoque LCSC 622 em 25 out 2026; o LOTES C841659 estava com 0); footprint pelo desenho UMAX C-91302-42 rev C; no verso; modulo SparkFun MicroMod Teensy DEV-16402 encaixado em casa"
+P1,TP101,1,RESET#/ONOFF,TestPoint_Pad_D1.5mm,-,-,0.000,sem peca (pad),final,pad 6 do MicroMod = ONOFF do RT1062 no modulo Teensy (nao e o POR_B); ver ELETRONICA.md
+E1,R201 R202,2,5.1k,R_0402_1005Metric,C25905,basica,0.001,JLC,final,
+E1,J201,1,TYPE-C-31-M-12,USB_C_Receptacle_HRO_TYPE-C-31-M-12,C165948,estendida,0.150,JLC,final,"lado de cima, borda esquerda, boca para fora"
+E2,D201,1,SMF5.0A,D_SOD-123F,C151296,estendida,0.050,JLC,final,"TVS do VBUS (Pocket D60); lado de cima, junto do USB-C (SPEC v2.3)"
+E2,U201,1,USBLC6-2SC6,SOT-23-6,C7519,basica,0.050,JLC,conferir,"lado de cima, junto do USB-C (SPEC v2.3)"
+E3,R204,1,1.5k,R_0402_1005Metric,C25867,basica,0.001,JLC,conferir,"so vale com EN2=1 (1,07 A); obrigatorio"
+E3,R206 R210 R211 R213 R215,5,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
+E3,C204 C205,2,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E3,R205 R214,2,10k,R_0402_1005Metric,C25744,basica,0.001,JLC,final,
+E3,C201 C202 C203,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+E3,C210,1,10uF,C_0603_1608Metric,C19702,basica,0.005,JLC,final,"VSYS junto dos pinos OUT (10/11) do U202, no lado de cima (M3)"
+E3,R208 R209 R212,3,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,medida da bateria: V(pino 16) = VBAT/2
+E3,R203,1,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,"ICHG = 890/2200 = 0,405 A (K_ISET do datasheet)"
+E3,Q203,1,AO3401A,SOT-23,C15127,basica,0.010,JLC,final,o clique do volume liga o EN
+E3,D202 D203 D205 D206,4,BAV70,SOT-23,C68978,basica,0.020,JLC,final,"leitura do ~CHG pelo pino 0 (so com USB; R3V4: saiu do 26, que virou OUT_R3)"
+E3,U202,1,BQ24074RGTR,VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm,C54313,estendida,1.100,JLC,final,"USB500 (EN2=0, EN1=1), 500 mA, NTC no TS; TMR e ITERM abertos = padrao; OUT 4,4 V com USB"
+E4,R216,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,
+E4,C209,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E4,C206 C207 C208,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+E4,L201,1,2.2uH,L_Changjiang_FNR4020S,C167825,estendida,0.080,JLC,final,FNR4020S2R2MT (Pocket L10)
+E4,U204,1,TPS63001DRCR,Texas_DRC0010J,C28060,estendida,1.400,JLC,final,"3,3 V fixo; PS/SYNC baixo = economia; EN = EN_REQ (sem a porta U206 da v2.1)"
+E6,J202,1,S3B-PH-SM4-TB,JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal,C265101,estendida,0.300,JLC,final,"bateria 1 = +, 2 = NTC, 3 = - (ordem do Pocket; conferir o cabo)"
+F1,C302 C304 C305 C307,4,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+F1,R301 R302,2,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,
+F1,C301 C303 C306,3,2.2uF,C_0402_1005Metric,C12530,basica,0.003,JLC,conferir,
+F1,FB301,1,600R@100MHz,L_0603_1608Metric,C1002,basica,0.005,JLC,final,Audio Board: Ferrite 600 no VDDA
+F1,U301,1,SGTL5000XNLA3,QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm,C2651833,estendida,1.800,JLC,conferir,"como a Audio Board Rev D2 (endereco I2C fixo 0x0A); V2: entrada de microfone (MIC, MIC_BIAS) e I2S_DOUT ligados"
+F1,U302,1,XC6206P182MR,SOT-23-3,C347373,estendida,0.030,JLC,conferir,"1,8 V do VDDD (a Audio Board usa AP7313)"
+F2,R303,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
+F2,C308,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+F2,R304,1,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,
+F2,J301,1,PJ-327A,Jack_3.5mm_PJ-327A_SMD,C49284723,estendida,0.100,JLC,conferir,"SMD, angulo reto, XUNPU (V3; o SHOU HAN 5JJ foi trocado porque a JLCPCB o marca como dificil de montar); 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (fechado sem plugue)"
+F3,C310,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,"datasheet SGTL5000 Fig. 20 (20 QFN): 0,1 uF no MIC_BIAS (C4)"
+F3,C309,1,1uF,C_0402_1005Metric,C52923,basica,0.002,JLC,final,"acoplamento do microfone ao pino MIC (o datasheet mostra 0,1 uF; 1 uF baixa o corte da voz)"
+F3,R305,1,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,"bias do microfone de eletreto (como a Audio Board: 2,2k do MICBIAS)"
+F3,J302,1,PJ-327A,Jack_3.5mm_PJ-327A_SMD,C49284723,estendida,0.100,JLC,final,"IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)"
+I1,SW401,1,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,estendida,1.920,"sem peca (encoder soldado em casa, topo)",final,volume; clique de 2 s liga/desliga; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2
+I2,SW402,1,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,estendida,1.920,"sem peca (encoder soldado em casa, topo)",final,seletor; clique = funcoes de som; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2
+I3,J401,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"tela OLED por cabo SH de 6 vias, o MESMO conector das reguas (um tipo Extended a menos); usa 4 vias na ordem das reguas: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 livres). Pino 1 = +3V3 como nas reguas: um plugue trocado nunca inverte a alimentacao"
+I4,SW403,1,Program,SW_Push_1P1T_XKB_TS-1187A,C318884,basica,0.020,JLC,conferir,"no verso, por um furo no fundo; 5,1 x 5,1 (a SPEC pedia 4 x 4)"
+A1,C502,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+A1,C501,1,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+A1,R501,1,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,"com os 100k internos: 0,30 V no SD_MODE (janela mono 0,16-0,77 V); pino baixo = desligado"
+A1,U501,1,MAX98357AETE+T,TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm,C910544,estendida,1.400,JLC,final,GAIN_SLOT aberto = 9 dB; mono (L+R)/2 pelo divisor do SD_MODE
+A2,J501,1,alto-falante (fios),SolderWire-0.127sqmm_1x02_P3.7mm_D0.48mm_OD1mm,-,-,0.000,sem peca (pads; fios do A2 soldados em casa),conferir,
+R1,R601,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (datasheet do TMAG5253)
+R1,J601,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 1 (a da frente): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
+R2,R602,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (datasheet do TMAG5253)
+R2,J602,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 2 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
+R3,R603,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (datasheet do TMAG5253)
+R3,J603,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 3 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
+R4,R604,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (datasheet do TMAG5253)
+R4,J604,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 4 (a de tras): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
+R5,R605 R606,2,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,"serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)"
