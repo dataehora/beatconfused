@@ -1,4 +1,107 @@
-# eTutti Student V4 — SPEC R4V4
+# eTutti Student V4 — SPEC R5V4
+
+Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #185 (relatórios da R4V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R5V4".
+
+**Regra nova para todos os relatórios (pedido do J):** sempre que possível, entregar **resumos visuais de planta e de corte** de cada decisão. Toda figura do teclado, de agora em diante, mostra **o nome da nota em cada tecla** (C e F destacados).
+
+## Mudanças desde a R4V4
+
+### 1. Teclado de 32 teclas: réguas sempre cheias (mudança principal)
+
+Para seguir o conceito modular, **toda posição de toda régua tem tecla**. A V4 passa de 28 para **32 teclas** (8 réguas × 4). Figura do Chat: `spec_img/teclado_32.png` (script `spec_img/teclado32.py`).
+
+| Fileira | Antes (28) | Agora (32) | Início da 1ª régua (x) |
+|---|---|---|---|
+| 1 (frente) | A3–D#5 (7) | **A3–F#5** (8) | 89,2 (igual) |
+| 2 | G3–E5 (8) | **G3–E5** (8, igual) | 79,95 (igual) |
+| 3 | G#3–D5 (7) | **G#3–F5** (8) | 89,2 (igual) |
+| 4 (trás) | A3–C5 (6) | **F#3–D#5** (8) | **79,95**: um botão para a esquerda, alinhada com a fileira 2 |
+
+- Teclas novas: F#5 (fil. 1), F5 (fil. 3), F#3 e D#5 (fil. 4).
+- A fileira 4 continua nas colunas da fileira 2, um semitom abaixo dela em cada coluna (F#3 sob G3).
+- **Módulos:** cada módulo continua acrescentando 1 régua por fileira (+16 teclas). As versões passam a ser **32, 48, 64 e 80** (no lugar de 28/44/60/76). A ordem padrão das oitavas do mapa de notas não muda (1º módulo agudo, 2º grave…).
+- O que refazer:
+  - posições das réguas e furos da fileira 4;
+  - deck e furos dos botões (32);
+  - postes (que não podem cair numa junção de réguas nem numa tecla);
+  - entalhes, cabos e trilhos;
+  - comprimento do case: a ponta direita vai até x ≈ 237,6. O design **reduz o comprimento** se a regra de margem permitir e informa o novo total;
+  - fit check em 32 / 48 / 64 / 80;
+  - custo (+4 teclas e +4 botões);
+  - firmware: `V4_KEYS` 32 / 48 / 64 / 80, mapa de notas, varredura e tempos;
+  - a cadeia de registradores, que agora usa as 4 posições de todas as réguas.
+- A placa principal não muda por isso. O cabo da fileira 4 fica tão curto quanto o da fileira 2.
+
+### 2. Aprovações do J
+
+| Tema | Decisão |
+|---|---|
+| Quinas | **Canto vivo R6 aprovado**, só com um **chanfro na aresta externa** para suavizar a pegada. O design propõe a medida do chanfro e mostra em corte. |
+| Alto-falante | **Conceito de "alto-falante de estudo" aprovado.** O firmware aplica equalização na saída do alto-falante (corte abaixo de ~300 Hz e redução do pico perto de 1 kHz, ajustáveis). O som completo é para fone e AUX. |
+| Menu | **Confirmado** como no `FIRMWARE.md` §4. **Para a página da V4 (fase futura):** incluir uma simulação web da interface (tela OLED + 2 knobs clicáveis com o mouse) que reproduza o menu e as entradas do usuário. |
+| Portão P | A placa principal está aprovada **em princípio**. Os conectores das fileiras (J601–J604) dependem do item 3. O roteamento da placa principal **começa depois** que o J escolher a ligação das réguas (R6V4). |
+
+### 3. Ligação das réguas: comprar de preferência, soldar é possível
+
+**Quantos condutores:** **5 por ligação**: +3V3, GND, OUT da fileira, CLK e DATA (SER na entrada e QH' na saída). O SH-6 tem um 6º pino reservado (OUT_B), sem uso hoje.
+
+**Quantas ligações (32 teclas):**
+- **4 cabos placa → 1ª régua**, um por fileira, ~25 mm, com desnível de 0–7 mm;
+- **4 elos régua → régua dentro da fileira**. As duas réguas da mesma fileira ficam **na mesma altura e em linha**, a 0,4 mm uma da outra.
+
+Cada módulo de +16 acrescenta mais 4 elos.
+
+O Code estuda e compara, **com planta e corte de cada opção**:
+- **(A) Comprar pronto:**
+  - cabos JST SH de 6 vias com plugue nas duas pontas;
+  - achar fornecedor e os comprimentos mínimos realmente vendidos (15 / 25 mm ou o mais curto que exista);
+  - se o mais curto for maior, dizer se a geometria aceita a sobra (alça sob a régua) ou o que muda.
+- **(B) Elo soldado entre réguas da mesma fileira:** como estão em linha e na mesma altura, a junção pode ser uma ponte curta: 5 ou 6 pads em cada ponta da régua (no fundo), ligados por:
+  - fios finos (silicone 28–30 AWG);
+  - um pedaço de barra de pinos de 1,27 mm em ângulo;
+  - ou um "jumper" de cabo plano (FFC/FPC) soldado.
+
+  Sem conector e sem plugue. Avaliar o espaço sob a régua, a resistência mecânica e a troca de uma régua.
+- **(C) FFC/FPC com conector** (passo 0,5 ou 1,0 mm), em qualquer comprimento: conector, altura, disponibilidade Basic/Extended.
+- **(D) Misto:** cabo comprado só da placa às réguas (4) e elo soldado (B) dentro da fileira.
+
+Para cada opção, dizer:
+- custo (peças, tipos Extended, cabos);
+- minutos de montagem e de solda em casa, e o nível de dificuldade para um amador;
+- confiabilidade e facilidade de troca;
+- impacto na placa principal (J601–J604) e na régua;
+- recomendação.
+
+O J prefere comprar, mas aceita soldar.
+
+### 4. Alto-falante: qual tamanho daria graves decentes (só informação)
+
+Resposta do Chat ao J. Não é tarefa.
+
+Para uma nota como G3 (196 Hz) soar com nível razoável, o alto-falante precisa de ressonância (Fs) abaixo de ~150–200 Hz e de uma caixa fechada de volume comparável ao seu Vas.
+- Na prática: um driver de ~50 mm de faixa larga, numa caixa de ~200–300 cm³, com ~20–25 mm de profundidade só para ele.
+- Isso é 20 a 30 vezes a caixa atual (10 cm³) e mais alto que a interface inteira.
+
+Ordem de grandeza, não cálculo. Conclusão: **no formato atual, grave decente só no fone/AUX**, e o alto-falante fica como alto-falante de estudo.
+
+## Tarefas para o Code (R5V4)
+
+1. **[Design]** Teclado de 32 teclas (item 1):
+   - modelo, fit check em 32 / 48 / 64 / 80 e novo comprimento do case;
+   - chanfro externo (item 2);
+   - planta geral e corte atualizados, **com nomes das notas**.
+2. **[Design + Eletrônica]** Estudo da ligação das réguas (item 3), com planta e corte de cada opção e recomendação.
+3. **[Eletrônica]** Contrato da régua e da placa principal conforme a opção recomendada (sem rotear); custo atualizado para 32 teclas.
+4. **[Programação e som]**
+   - `V4_KEYS` 32 / 48 / 64 / 80, mapa de notas e varredura com réguas cheias;
+   - equalização do alto-falante (item 2);
+   - compilação das três placas.
+5. **[Todos]** Relatórios com figuras de planta e corte; `CLAUDE.md` atualizado (32 teclas, módulos de 48/64/80). Terminar com "Perguntas para o design".
+
+---
+
+# Anexo — SPEC R4V4 (referência)
 
 Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #183 (relatórios da R3V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R4V4".
