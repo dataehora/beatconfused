@@ -1,9 +1,10 @@
-# eTutti Student V4 · posicionamento (portão P, partes 1 e 2) · R4V4
+# eTutti Student V4 · posicionamento (portão P, partes 1, 2 e 3) · R5V4 (teclado de 32 teclas; ligação das réguas)
 
 **NÃO APROVADO: quem aprova é o J.** Nada roteado (0 trilhas, 0 vias, na principal e na régua). Nenhum arquivo de `fab/` da principal ou da régua foi gerado para encomenda (só os da grade-régua, que não tem circuito). Data: 21 nov 2026. O agente `roteamento` só entra depois do "aprovado" das duas partes.
 
 Reproduz, na ordem (raiz do repositório):
 - **Parte 1 (principal):** `python pcb/schematic.py` → KiCad python `pcb/posiciona_v4.py` → venv CadQuery `pcb/vistas_v4.py` e `pcb/blocos_v4.py` → `python bom_v4.py`.
+- **Parte 3 (R5V4, ligação):** `python pcb/regua/schematic_regua.py` → KiCad python `pcb/regua/posiciona_regua.py` (agora com os pads LK1/LK2) → venv CadQuery `pcb/regua/ligacao.py` (figuras e números) → KiCad python `pcb/regua/fab_regua.py` → `pcb/regua/vistas_regua.py`; custo: `python calculos_eletronica.py`.
 - **Parte 2 (régua):** `python pcb/regua/schematic_regua.py` → KiCad python `pcb/regua/posiciona_regua.py` → venv CadQuery `pcb/regua/vistas_regua.py` → KiCad python `pcb/regua/fab_regua.py`.
 - Instrumento inteiro e corte lateral (do **design**, `case/planta_v4.py`, `case/corte_v4.py`): `case/renders/planta_geral_v4.png`, `case/renders/corte_interface_v4.png`.
 
@@ -17,6 +18,9 @@ Figuras (abra estas para decidir):
 | Principal: corredores e ratsnest | `pcb/img/topo.png`, `fundo.png`, `ratsnest.png` |
 | Régua, planta (transparência) | `pcb/regua/img/regua_planta.png` |
 | Régua, cortes (através das 4 fileiras e ao longo) | `pcb/regua/img/regua_corte.png` |
+| **R5V4** Ligação das réguas: opção recomendada (D), planta e corte (placa → 1ª régua; régua → régua) | `pcb/regua/img/ligacao_D.png` |
+| R5V4 Opções A (cabo pronto de 15/25 mm), A-estoque (100 mm: não cabe), B (tudo soldado), C (FFC/FPC) | `pcb/regua/img/ligacao_A.png`, `ligacao_Astock.png`, `ligacao_B.png`, `ligacao_C.png` |
+| **R5V4** Teclado de 32 teclas com o nome de cada nota (C azul, F laranja) e as 8 ligações | `pcb/regua/img/ligacao_teclado32.png` |
 | Painel de réguas (sem rota) e painel da grade-régua | `pcb/regua/img/regua_painel_fundo.png`, `grade_regua_painel_topo.png` |
 
 ---
@@ -60,10 +64,49 @@ Ratsnest: 61 redes (GND/+3V3 pelos planos), 1 844 mm de MST em 7 140 mm² = **26
 
 ---
 
+# PARTE 3 · ligação das réguas (R5V4, item 3 da SPEC): estudo e contrato
+
+Para as 32 teclas: **8 ligações** = 4 da placa à 1ª régua (uma por fileira, 25 mm, desnível 0-7 mm) + **4 elos régua → régua** dentro da fileira (em linha, mesma altura, a 0,4 mm).
+Cada módulo de +16 teclas acrescenta **4 elos** (48 teclas: 12 ligações; 64: 16; 80: 20). Cada ligação leva 5 condutores: +3V3, GND, OUT, CLK, DATA (SER na entrada, QH' na saída).
+Figuras: `ligacao_<opção>.png` (4 painéis cada: planta placa → 1ª régua, planta régua → régua, corte pelo eixo x, corte ao longo da fileira).
+
+## 10. Achado que decide: nenhum cabo de estoque tem o comprimento que a geometria pede
+- O mais curto **pronto, com plugue SH nas duas pontas, 6 vias**, é de **100 mm** (Pololu #5543, 10 cm, 28 AWG, US$ 3,32; Pimoroni 100 mm em pacote de 4). Há também a JST ASSHSSH28B51 (51 mm; **não confirmei que seja de 6 vias**, Farnell). A geometria da R4V4 pede **15 mm** entre réguas e **25 mm** da placa.
+- Sobra de **88 mm** (elo) e **75 mm** (placa → régua) de cabo de 6 fios: o laço teria ~20-28 mm de fundo (`ligacao_Astock.png`) e o bolso da fileira 1 tem 6,9 mm; o design já tinha achado que 50 mm não cabe. **Cabo de estoque não serve em nenhuma das 8 ligações.**
+- Cabo de 15/25 mm só **sob medida** (cabo de montador): não achei cotação publicada de 15/25 mm. Referência: Newegg, SH 1,0 mm 6 pinos, 28 AWG, **300 mm, lote de 50 = US$ 152,5** (~US$ 3 por cabo). Sem cotação, **A é inviável hoje**.
+- **FFC/FPC 1,0 mm** (opção C): jumper Molex 150390201 (31 mm, mesma face), o mais curto que achei; na biblioteca da JLCPCB só vi cabos soltos (C90533 7 cm, US$ 0,055, 998 em estoque; C62492 10 cm, 4 em estoque) e **nenhum conector FPC de 6 vias em estoque** (C48735 estava com estoque 0). Um FFC não dobra no plano: entre dois conectores de boca alinhada ele faz um arco de ~5 mm para baixo.
+
+## 11. As opções (32 teclas = 8 ligações; minutos e dificuldade são estimativas minhas)
+| | **A** cabos SH-6 prontos | **B** tudo soldado | **C** FFC/FPC com conector | **D** misto (**recomendada**) |
+|---|---|---|---|---|
+| O que é | plugue nas duas pontas; J1/J2 nas réguas e J601-J604 na placa (como a R4V4) | 5 pads de 1,4 x 0,7 mm a 1,0 mm em cada ponta de régua e na borda da placa; fio 28-30 AWG de 7-10 mm | conector ZIF 1,0 mm 6 vias nas pontas; jumper FFC | cabo SH-6 de 25 mm da placa à 1ª régua (4) + elo soldado de 5 fios dentro da fileira (4) |
+| Achável hoje | só sob medida (sem cotação); o de estoque (100 mm) não cabe | sim (fio, solda) | conector em estoque: não achei | elo sim; os 4 cabos de 25 mm: sob medida, ou **crimpados em casa** |
+| Custo (32 teclas) | cabos US$ 26,6 (estoque, não cabem) ou ~US$ 150 (lote de 50, ref.); 0 Extended a mais | **~US$ 4** (fio + fluxo); sai 1 tipo Extended das réguas (-3,09) se J1/J2 forem retirados | ~US$ 2,4 + **1 tipo Extended a mais** (+3,09 na régua e +3,09 na placa) | **~US$ 36** (4 cabos crimpados + ferramenta de US$ 30, que serve depois) ou ~US$ 154 (lote de 50), mais US$ 4 de fio |
+| Montagem em casa (32 teclas) | ~12 min (8 plugues) | ~40 min, 80 juntas | ~24 min, 16 fechos ZIF | ~26 min: 40 juntas + 4 plugues (cabos crimpados: +1 h, uma vez) |
+| Dificuldade | a mais fácil | a mais difícil (passo 1,0 mm, bolso estreito) | média; o fecho ZIF abre se mexido | média |
+| Confiabilidade e troca de régua | boa; troca fácil | **a melhor eletricamente**; troca exige dessoldar 10 juntas | média | boa; troca = dessoldar o elo (5 fios) |
+| Placa principal (J601-J604) | como está | **muda**: 4 conectores viram 4 grupos de 5 pads na borda | muda (conector FPC) | **não muda** |
+| Régua | como está | J1/J2 saem; pads nas pontas | muda (FPC nas pontas) | **J1 + pads LK1/LK2** (J2 fica só para aceitar a opção A sem mexer: US$ 0,07 por régua) |
+| Cresce com o módulo (+16 teclas) | +4 cabos de 15 mm sob medida | +4 elos (+20 min) | +4 jumpers + 8 fechos | +4 elos soldados (+20 min) |
+
+**Por que D:** o J prefere comprar. D compra o que existe (conector, cabo) e solda só o que nenhum fornecedor vende no tamanho (um elo de 4,2 mm entre pads); **não muda a placa principal** (que o J já viu e aprovou em princípio); a régua serve a A, B e D, e a escolha final pode esperar o protótipo.
+**Se o J não quiser pagar US$ 36-154 pelos 4 cabos de 25 mm, B custa US$ 4**, mas muda a placa (4 conectores viram pads; ~30 min de script). Ponto fraco da D: **os 4 cabos de 25 mm não existem prontos**: ou cotação com um montador (sem preço), ou crimpar em casa (contatos SSH-003T-P0.2 e caixas SHR-06V-S da JST, ferramenta de crimpagem), ou o plano B só na placa.
+
+## 12. Contrato da recomendada (D), para o design ler
+**Elo soldado régua → régua** (`pcb/regua/posicao_regua.json`; quadro u ao longo da fileira, v através, +v = jogador):
+- LK1 (entrada) em **u = 2,1** e LK2 (saída) em **u = 71,9** (régua nominal 0..74), **5 pads de 1,4 (u) x 0,7 (v) mm, passo 1,0, centros v = -0,4, 0,6, 1,6, 2,6, 3,6** (pino 1 = v -0,4, para trás), no **fundo**. Ordem: 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 SER (LK1) / QH' (LK2); o 6º condutor (OUT_B) não segue no elo. Cobre u 1,4..2,8 e 71,2..72,6; v -0,75..3,95.
+- Entre os pads de duas réguas vizinhas: **4,2 mm de centro a centro** (0,4 de vão + 2 x 1,9); fio de 28-30 AWG, **7 mm, pontas de 1,4 mm estanhadas sobre os pads**; o fio fica **~1 mm abaixo** da face de baixo da régua (0,6 de fio + 0,4 de solda): bolso da fileira 1 = 6,9 mm, sobram ~5,9.
+- **Espaço pedido ao design sob a junção** (v -0,9..4,0, u 70,9..76,8 em torno dela): livre de peças e de bossas da bandeja (as trilhas de trás e da frente ficam fora: v < -4,2 e v > 4,2). O **poste/nervura do entalhe de ponta (u ±1, v -7..-2,7)** fica fora do elo: o fio mais próximo (v = -0,4, borda -0,7) passa a 2,0 mm dele. Pinos da tecla: borda a 0,5 mm do pad (pinos em u 4,17 e 69,83; pads até 2,8 e desde 71,2).
+- **Placa → régua (4 cabos de 25 mm):** J601-J604 como estão (boca para +x, x 77,4); J1 da régua em u = 5,9, v = -3,95, boca para trás (contrato da R4V4, sem mudança). Nas fileiras 2 e 4 a ponta da régua fica a 2,55 mm da borda da placa e o plugue de 5 mm entra sob ela: **por isso o cabo da placa vai ao J1 e não aos pads LK1** (o plugue ficaria sob os pads).
+- J2 deixa de ter cabo na recomendada (o OUT da régua vai pelo elo). A janela do plugue de J2 e o entalhe de 8 mm na trilha da frente da fileira seguinte deixam de ser necessários, mas **ficam se o design quiser manter a opção A**.
+- Cadeia de registradores com as 4 posições sempre ocupadas: **nada muda** (8 estágios por régua, 4 mortos, 8 x N + 1 pulsos: 17 / 25 / 33 / 41 em 32 / 48 / 64 / 80 teclas). Capacitância da linha OUT: cai um pouco, sem os cabos de 15 mm (D usa 25 mm só na placa).
+
+---
+
 # PARTE 2 · régua universal e grade-régua
 
 ## 6. A régua (`kicad/regua/student_v04_regua.kicad_pcb`)
-- **73,6 x 14,0 x 1,2 mm**, 2 camadas (74 nominais menos 0,2 de folga em cada ponta), cobre 1 oz. **14 peças, todas no fundo; nada no topo** (a tecla assenta ali). ERC 0/0, paridade placa x esquema 0, **DRC sem trilhas: 0 erros, 0 avisos**; 51 ligações faltando (esperado).
+- **73,6 x 14,0 x 1,2 mm**, 2 camadas (74 nominais menos 0,2 de folga em cada ponta), cobre 1 oz. **14 peças e 2 grupos de pads (LK1, LK2), tudo no fundo; nada no topo** (a tecla assenta ali). R5V4: ERC 0/0, paridade placa x esquema 0, **DRC sem trilhas: 0 erros, 0 avisos**; 60 ligações faltando (esperado).
 - Quadro: u ao longo da fileira (0..74 nominais), v através (+v = frente, jogador), v = 0 na linha de centro.
 - **Furadas:** 8 furos de pino da tecla **Ø1,70** (2 por tecla, ±5,08 do centro da célula, v = 0) e 2 furos **M2 Ø2,2 em (18,5; +5,2), (37; +5,2) e (55,5; +5,2)** (a régua é universal: cada fileira usa dois, 1: 18,5+55,5; 2: 37+55,5; 3 e 4: 18,5+37); patamar sem peças Ø6,4 embaixo em volta de cada M2. Entalhes de 2,0 x 4,3 na borda de trás em u = 0 (meio), 18,5, 37, 55,5 e 74 (meio).
 - **Peças** (u; v; ver `regua_planta.png`):
@@ -91,6 +134,8 @@ Ratsnest: 61 redes (GND/+3V3 pelos planos), 1 844 mm de MST em 7 140 mm² = **26
 - BOM da régua (`bom_regua.csv`): 14 peças, **3 tipos Extended** (TMAG, SH-6, 74HC595BQ) e 3 Basic (100 nF, 10 µF, 100 Ω).
 
 ## 9. Custo (US$; detalhe e tabela no `ELETRONICA.md`)
+**R5V4 (32 teclas):** as 8 réguas já tinham 4 sensores cada, então a eletrônica não muda; entram **+4 teclas Gateron (US$ 3,5-3,8)** e **+4 botões** (design). Sem a ligação: **296,6-370,3** (F2, pedido mínimo, sem frete). Com a recomendada (D): **+US$ 40 (cabos crimpados) a +158 (lote de 50)**; com B, **+US$ 4**. Escalas 48 / 64 / 80 (sem a ligação e sem o case do design): 322-397 / 348-424 / 362-439.
+(abaixo, valores da R4V4, 28 teclas)
 Régua: 2,33 de peças por régua (10 montadas = 23,28); 3 tipos Extended x 3,09 = 9,27 (eram 2 = 6,18). F2 de 28 teclas, pedido mínimo, sem frete: **296-375** (R3V4: 296-375, a troca do 595 custa ~US$ 4 no cenário baixo e fica dentro da faixa); com a grade-régua (2-8) e a ferragem (2-4): **300-387**, contra F1 332-477: **-10 % a -19 %**.
 
 ## Perguntas para o design (deste portão)

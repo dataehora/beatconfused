@@ -19,7 +19,8 @@ IMG = os.path.join(HERE, "img")
 os.makedirs(IMG, exist_ok=True)
 d = json.load(open(os.path.join(HERE, "posicao_regua.json"), encoding="utf-8"))
 OX, OY = d["origem"]
-COL = {"U": "#3b78c4", "J": "#d9548a", "C": "#3fa66b", "R": "#3fa66b"}
+COL = {"U": "#3b78c4", "J": "#d9548a", "C": "#3fa66b", "R": "#3fa66b", "L": "#e08a1e"}
+NOTAS = ["G3", "A#3", "C#4", "E4"]      # exemplo: 1a regua da fileira 2 (R5V4); as outras fileiras trocam os nomes, a posicao e a mesma
 U5C = "#8a6fd1"
 ZR = [0.0, 2.0, 4.0, 7.0]
 T, FLOOR = 1.2, -8.1
@@ -37,7 +38,7 @@ def plan():
     ax.add_patch(Polygon(poly, closed=True, fc="#e9f2e0", ec="#2f5d1c", lw=1.4, zorder=1))
     for k, uc in enumerate(d["teclas_u"]):
         ax.add_patch(Rectangle((uc - 7, -7), 14, 14, fill=False, ec="#999", ls=":", lw=0.8, zorder=1))
-        ax.text(uc, 6.0, "tecla %d" % (k + 1), ha="center", va="center", fontsize=7, color="#777")
+        ax.text(uc, 6.0, "tecla %d  (ex. fil. 2: %s)" % (k + 1, NOTAS[k]), ha="center", va="center", fontsize=7, color="#777")
     for f in d["furos"]:
         ax.add_patch(Circle((f["u"], f["v"]), f["d"] / 2, fc="white", ec="k", lw=0.8, zorder=3))
     for h in d["furos"]:
@@ -78,8 +79,8 @@ def plan():
     ax.set_aspect("equal")
     ax.set_xlabel("u (mm) ao longo da fileira")
     ax.set_ylabel("v (mm)  +v = frente (jogador)")
-    ax.set_title("Regua universal de 4 teclas, R4V4: vista de cima, em transparencia (todas as pecas estao no FUNDO). "
-                 "Azul = TMAG5253, roxo = 74HC595, rosa = SH-6 (J1 entrada, J2 saida), verde = passivos", fontsize=8)
+    ax.set_title("Regua universal de 4 teclas, R5V4: vista de cima, em transparencia (todas as pecas estao no FUNDO). "
+                 "Azul = TMAG5253, roxo = 74HC595, rosa = SH-6 (J1 entrada, J2 saida: opcao A), laranja = pads do elo soldado (LK1 entrada, LK2 saida), verde = passivos", fontsize=6.5)
     ax.grid(True, lw=0.15)
     fig.tight_layout()
     fig.savefig(os.path.join(IMG, "regua_planta.png"), dpi=170)

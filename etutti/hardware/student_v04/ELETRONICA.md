@@ -1,10 +1,27 @@
 # eTutti Student V4 · relatório da eletrônica
 
-**SPEC atendida: R1V4, R2V4, R3V4 e R4V4 (21 nov 2026).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
+**SPEC atendida: R1V4, R2V4, R3V4, R4V4 e R5V4 (21 nov 2026; R5V4: tarefas 2 e 3, abaixo).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
 Data: 21 nov 2026. Nada foi posicionado, roteado, encomendado nem gerado em `fab/`: é estudo (Fase A). A V3, a V2 e a V1 não foram tocadas.
 Scripts novos (reproduzem os números): `calculos_eletronica.py` (E2, E3), `fornecimento/precos_jlc.py` (preços e classe na
 biblioteca da JLCPCB, 21 nov, curl de 2 em 2 s). Contrato com a programação: `pcb/PINOS.md` (rascunho já entregue).
 Convenção: **(conferir)** = sem medida ou datasheet conferido; **estimativa** = conta minha, sem cotação.
+
+## R5V4 · teclado de 32 teclas e ligação das réguas (tarefas 2 e 3)
+
+Nada foi roteado, encomendado nem gerado para encomenda. Detalhe, planta e corte de cada opção, e o contrato para o design: **`POSICIONAMENTO.md`, parte 3 (seções 10 a 12)**. Figuras em `pcb/regua/img/`: `ligacao_D.png` (recomendada), `ligacao_A.png`, `ligacao_Astock.png`, `ligacao_B.png`, `ligacao_C.png` e `ligacao_teclado32.png` (32 teclas, nome de cada nota, C azul e F laranja, as 8 ligações). Números: `pcb/regua/ligacao.json` e `calculos_eletronica.json` (`escala_R5V4`). Reproduz: `python pcb/regua/schematic_regua.py`, KiCad python `pcb/regua/posiciona_regua.py`, venv CadQuery `pcb/regua/ligacao.py`, `python calculos_eletronica.py`.
+
+**Recomendação: D (misto).** 4 cabos SH-6 de **25 mm** da placa à 1ª régua de cada fileira + **elo soldado de 5 fios** (28-30 AWG, 7 mm, entre 5 pads por ponta) entre réguas da mesma fileira.
+- **Achado:** nenhum cabo SH-6 de estoque serve. O mais curto com plugue nas duas pontas é de **100 mm** ([Pololu #5543](https://www.pololu.com/product/5543), US$ 3,32; [Pimoroni](https://shop.pimoroni.com/products/jst-sh-cable-6-pin) 100 mm); sobrariam 88 mm (elo) e 75 mm (placa); o laço (~20-28 mm) não cabe no bolso de 6,9 mm. 15/25 mm só sob medida (sem cotação; referência: 300 mm, lote de 50, US$ 152,5 numa loja). FFC/FPC (C): jumper [Molex 150390201](https://www.molex.com/en-us/products/series-chart/15039) de 31 mm; conector FPC 1,0 mm de 6 vias em estoque na JLCPCB: não achei (C48735, estoque 0); mais 1 tipo Extended.
+- **Custo da ligação (32 teclas, 8 ligações):** A com cabo de estoque US$ 26,6 (não cabe) / ~US$ 150 (lote de 50 sob medida, referência); B ~US$ 4; C ~US$ 2,4 + 6,18 de Extended; D ~US$ 36 (4 cabos crimpados em casa, ferramenta de US$ 30 que fica) ou ~US$ 154 (lote de 50) + US$ 4 de fio.
+- **Montagem em casa (32 teclas), estimativa:** A ~12 min; B ~40 min (80 juntas de solda a 1,0 mm); C ~24 min; D ~26 min (40 juntas + 4 plugues); cada módulo de +16 teclas: +4 elos, +20 min em B/D.
+- **Troca de régua:** A e D fáceis (D: dessoldar 5 fios); B e C pior. **Placa principal: D não muda** J601-J604; B os troca por pads; C por FPC.
+- **Régua (contrato):** J1 (cabo da placa) como na R4V4 (u 5,9, v -3,95, boca para trás); **novos LK1/LK2: 5 pads de 1,4 x 0,7 mm a 1,0 mm em u = 2,1 e 71,9, v -0,4..3,6**, no fundo; J2 fica (sem cabo na D) só para a régua aceitar a opção A sem mexer. ERC 0/0, paridade 0, **DRC sem trilhas: 0 erros, 0 avisos**, 60 ligações faltando; BOM igual (3 tipos Extended); `bom_regua.csv`, painel e CPL provisório atualizados (LK não entra no CPL).
+
+**32 teclas (item 1 da SPEC):** as 8 réguas já tinham 4 sensores cada: a eletrônica **não muda**; passam a ser **8 teclas em todas as fileiras**, fileira 4 de F#3 a D#5 (a régua dela começa em x 79,95). Mapa de notas: `FIRST_NOTE = {57, 55, 56, 54}` (só a fileira 4 mudou, era 57). **Cadeia de registradores: nada a ajustar** (8 estágios por régua, 4 mortos QE..QH, 8 x N + 1 pulsos: 17 / 25 / 33 / 41 em 32 / 48 / 64 / 80 teclas, varredura de 0,56 / 0,84 / 1,12 / 1,40 ms). `pcb/PINOS.md` atualizado (a programação ajusta `V4_KEYS`, `FIRST_NOTE` da fileira 4 e as 8 teclas por fileira; pinos iguais).
+
+**Custo para 32 teclas (US$, F2, pedido mínimo de 10 réguas montadas, sem frete, estimativas como na R2V4):** **296,6-370,3** sem a ligação (+4 teclas Gateron 3,5-3,8, +4 botões do design; a linha "cabos" de 3-8 sai); com a recomendada D: **333-407** (cabos crimpados) ou **451-524** (lote de 50 sob medida); com B: **301-374**. Escalas (sem ligação, sem o case do design): **48 teclas 322-397** (15 réguas montadas), **64: 348-424** (20), **80: 362-439** (20). O preço do case de 48/64/80 teclas é do design.
+
+**Cuidado com o que ficou por conferir:** o conector J1/J2 mede 4,3 mm de altura **(conferir)**; a altura do fio + solda sob a régua (~1 mm) e o vão sob a junção são do design; o tempo de montagem é meu palpite, sem protótipo; o lote de 50 cabos é só uma referência de preço (não cotei 15/25 mm); as medidas do FPC (C) não foram conferidas em desenho de fabricante.
 
 ## R4V4 · Fase B da régua e da grade-régua, planta do portão P (tarefas 1, 3 e 4)
 
@@ -408,3 +425,9 @@ Cada elo leva CLK em série pelos 5 CIs da cadeia: com 100 ohm de série e ~150 
 4. Altura do SH lateral (4,3 mm, **conferir** no desenho da JST/XYECONN) e do 595 (1,0 mm).
 5. O furo do USB-C em y 10 e os furos H1..H4 da principal (H1 em 62; 48): confirmados?
 
+## Perguntas para o design (R5V4)
+1. **Espaço sob a junção entre réguas** (v -0,9..4,0, u 70,9..76,8 em torno dela): fica livre de peças e de bossas da bandeja, com o poste do entalhe de ponta (u ±1, v -7..-2,7) fora do elo? O fio e a solda ficam ~1 mm abaixo da face de baixo da régua.
+2. **A fileira 4 agora começa em x 79,95** (alinhada com a fileira 2). O cabo da placa (J604) à régua 1 da fileira 4 segue o mesmo contrato da fileira 2 (J1 em u 5,9, boca para trás)? Como a fileira 3 fica atrás da 2, e a fileira 4 não tem nada atrás, o plugue da fileira 4 passa sob o quê?
+3. **Cabos de 25 mm (placa → 1ª régua):** o J vai cotar sob medida, crimpar em casa ou soldar (B só na placa)? Se for crimpar, o design confirma o comprimento (25 mm) e o raio da curva do feixe de 5 fios na planta atual.
+4. Se o J escolher B (tudo soldado), o design aceita **retirar J601-J604 da planta** (pads na borda direita da placa, x ~75)? Isso muda só a placa principal (eu reposiciono).
+5. J2 sem cabo na D deixa a janela de plugue e o entalhe de 8 mm na trilha da frente sem uso: o design pode tirá-los, ou mantém para a opção A?

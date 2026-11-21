@@ -54,7 +54,11 @@ H101 = HOLES["H101"]
 
 # ---------------------------------------------------------------- the keyboard (SPEC R4V4 item 2)
 PITCH, ROWP = G.PITCH, G.ROW_PITCH
-ROWS = G.ROWS
+# R5V4: 32 keys, rulers always full. (row, y, first key x, keys): rows 1 and 3 start at ruler x 89.2, rows 2 and 4 at 79.95
+# (row 4 is one button to the left, aligned with row 2; its notes are one semitone below row 2's in each column)
+ROWS = [(1, 74.03, 98.45, 8), (2, 58.01, 89.2, 8), (3, 41.99, 98.45, 8), (4, 25.97, 89.2, 8)]
+FIRST_MIDI = {1: 57, 2: 55, 3: 56, 4: 54}      # A3, G3, G#3, F#3; each column +3 semitones along a row (a minor third), as the SPEC's figure
+CASE_LEN = 240.0                               # R5V4: was 252. Rule: the ruler's body end (237.0) + 1.0 clearance = inner face 238.0, + 2.0 wall
 ZR = [0.0, 2.0, 4.0, 7.0]
 RULER_L, RULER_W, RULER_T = 4 * PITCH, 14.0, 1.2
 RAIL_IN, RAIL_OUT = 4.2, 7.0
@@ -74,11 +78,24 @@ CABLE_D = 3.5                                 # the six wires as a flat bundle s
 NOTCH_PLUG_W = PLUG_W + 0.4                   # the plug's notch in the next row's front rail
 NOTCH_HDR_W = HDR_W + 1.0                     # the header's notch in the ruler's own back rail
 
-M2_BY_ROW = {1: (18.5, 55.5), 2: (37.0, 55.5), 3: (18.5, 37.0), 4: (18.5, 37.0)}   # chosen so no M2 boss meets a plug's notch (see conflicts())
+M2_BY_ROW = {1: (18.5, 55.5), 2: (37.0, 55.5), 3: (18.5, 37.0), 4: (37.0, 55.5)}   # R5V4: row 4 now starts like row 2 (x 79.95), so it takes row 2 positions   # chosen so no M2 boss meets a plug's notch (see conflicts())
 
 
 def length(mod):
-    return 252.0 + 74.0 * mod
+    return CASE_LEN + 74.0 * mod
+
+
+NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+
+
+def note_name(row, idx):
+    """Name of key `idx` (0 = nearest the main board) of row `row`: midi 57/55/56/54 + 3 per column (C-griff, SPEC R5V4 figure)."""
+    m = FIRST_MIDI[row] + 3 * idx
+    return "%s%d" % (NOTE_NAMES[m % 12], m // 12 - 1)
+
+
+def is_cf(name):
+    return name.startswith(("C", "F")) and not name.startswith(("C#", "F#"))
 
 
 def key_list(mod):
@@ -124,14 +141,57 @@ def pick_posts(mod):
     return [c[i] for i in idx]
 
 
+def post_checks(mod):
+    """R5V4: for every interior post, the distance from its round boss (D 5.4) and its 1.4 x 4.0 blade to the nearest key housing
+    (15.4 x 15.1 rectangle, 0.4 mm margin of the 1.0 gap not counted) and to the nearest ruler junction (x = 0 / 74 of a ruler)."""
+    keys = key_list(mod)
+    out = []
+    for px, py in pick_posts(mod):
+        d_boss = min(_rect_dist(px, py, (x - 7.7, x + 7.7, y - 7.55, y + 7.55)) for _r, x, y in keys) - 2.7
+        blade = (px - 0.7, px + 0.7, py - 1.66, py + 2.34)
+        d_blade = min(max(0.0, max(blade[0] - (x + 7.7), (x - 7.7) - blade[1], blade[2] - (y + 7.55), (y - 7.55) - blade[3])) for _r, x, y in keys)
+        junc = min(min((px - ru["x0"]) % RULER_L, RULER_L - (px - ru["x0"]) % RULER_L) for ru in rulers(mod) if abs(ru["y"] - (py + ROWP / 3.0)) < 0.05)
+        out.append({"x": px, "y": py, "boss_ao_corpo_mm": round(d_boss, 2), "lamina_ao_corpo_mm": round(d_blade, 2), "ate_a_juncao_mm": round(junc, 2)})
+    return out
+
+
 def wall_posts(mod):
     """Perimeter bosses of the keyboard area (every <= 80 mm along the long walls, plus the corners). The two interface-side
     bosses of the R3V4 model (7; 12) and (7; 88) are gone: the interface's four posts are the board's H1..H4."""
     L = length(mod)
-    xs = [X_IF + 10.0, L - 8.0]
+    xs = [X_IF + 10.0, L - 10.0]
     n = int(math.ceil((xs[1] - xs[0]) / 80.0))
     xs = [xs[0] + (xs[1] - xs[0]) * k / n for k in range(n + 1)]
     return [(x, 7.0) for x in xs] + [(x, CASE[1] - 7.0) for x in xs]
+
+
+# ---------------------------------------------------------------- R5V4: the recommended link (option D, ELETRONICA.md R5V4)
+LINK = "D"            # "D": 4 SH cables board -> 1st ruler (J1/IN only) + 5-wire soldered link between rulers of a row; "A": SH cable everywhere
+J2_FITTED = True      # D leaves J2 (OUT) on the ruler without a cable (same BOM as option A); False = J2 removed from the BOM
+LK_U = (2.1, 71.9)    # centres of the link pads along the ruler (u), ELETRONICA R5V4: 5 pads 1.4 x 0.7 mm, 1.0 mm from each end
+LK_PAD = (1.4, 0.7)   # along u, along v
+LK_V = (-0.4, 3.6)    # span of the 5 pads across the ruler (v = y - y_row; + towards the player), pitch 1.0
+LK_WIRE_DEPTH = 1.4   # wire + solder below the ruler's underside: ~1 mm (ELETRONICA) + 0.4 margin
+LK_LEN = 7.0
+
+
+def solder_links(mod):
+    """Junctions of every row: (row, x_j, y) with x_j = the second ruler's start."""
+    out = []
+    rs = rulers(mod)
+    for r, y, x0, n in ROWS:
+        row = [q for q in rs if q["row"] == r]
+        for a, b in zip(row[:-1], row[1:]):
+            out.append((r, b["x0"], y))
+    return out
+
+
+def link_box(xj, y, z0):
+    """Envelope of one soldered link: pads + 7 mm wires + solder, under the ruler (absolute z), along the junction x_j."""
+    ut = LK_U[1]                                    # pad centre of the left ruler, u = 71.9 of 74 -> 2.1 before the junction
+    a = xj - (RULER_L - ut) - LK_PAD[0] / 2
+    b = xj + LK_U[0] + LK_PAD[0] / 2
+    return (a, b, y + LK_V[0] - LK_PAD[1] / 2, y + LK_V[1] + LK_PAD[1] / 2, z0 - RULER_T - LK_WIRE_DEPTH, z0 - RULER_T)
 
 
 # ---------------------------------------------------------------- connectors: positions, notches, cables
@@ -141,8 +201,12 @@ def conn_boxes(ru):
     out = []
     zt = -RULER_T                                   # the ruler's underside (z relative to the ruler's top, absolute z = ZR + this)
     for name, c in (("IN", IN_X), ("OUT", OUT_X)):
+        if name == "OUT" and LINK == "D" and not J2_FITTED:
+            continue
         xa, xb = x0 + c - HDR_W / 2, x0 + c + HDR_W / 2
         out.append((name + "_header", xa, xb, y + LANE_Y0, y + LANE_Y0 + HDR_D, zt - HDR_H, zt))
+        if name == "OUT" and LINK == "D":
+            continue                                # option D: J2 has no plug
         pa, pb = x0 + c - PLUG_W / 2, x0 + c + PLUG_W / 2
         out.append((name + "_plug", pa, pb, y + LANE_Y0 - PLUG_D, y + LANE_Y0, zt - 0.3 - PLUG_H, zt - 0.3))
     return out
@@ -192,6 +256,8 @@ def cables(mod):
         out.append({"row": r, "de": "J60%d" % r, "para": "R%d.0 IN" % r,
                     "pts": cable_between((j_back, y), (1, 0), pin, (0, -1), CABLE_MAIN_MM), "alvo_mm": CABLE_MAIN_MM})
         for a, b in zip(row[:-1], row[1:]):
+            if LINK == "D":
+                continue                                # the links are soldered wires, not SH cables
             po, pi = plug_back_points(a)["OUT"], plug_back_points(b)["IN"]
             out.append({"row": r, "de": "R%d.%d OUT" % (r, a["k"]), "para": "R%d.%d IN" % (r, b["k"]),
                         "pts": cable_between(po, (0, -1), pi, (0, -1), CABLE_ROW_MM), "alvo_mm": CABLE_ROW_MM})
@@ -205,11 +271,13 @@ def notches(mod):
     for ru in rulers(mod):
         x0, y, r = ru["x0"], ru["y"], ru["row"]
         for c in (IN_X, OUT_X):
+            if c == OUT_X and LINK == "D" and not J2_FITTED:
+                continue
             hx0, hx1 = x0 + c - NOTCH_HDR_W / 2, x0 + c + NOTCH_HDR_W / 2
             hx0, hx1 = (x0 if hx0 - x0 < 1.5 else hx0), (x0 + RULER_L if x0 + RULER_L - hx1 < 1.5 else hx1)      # no stub of rail left at a ruler's end
             out.append({"x0": hx0, "x1": hx1, "y0": y - RAIL_OUT - 0.5, "y1": y - RAIL_IN + 0.3,
                         "row": r, "tipo": "cabeçalho (trilho de trás da própria fileira)"})
-            if r < 4:
+            if r < 4 and (c == IN_X or LINK == "A"):
                 yn = ROWS[r][1]                                  # the next row's (r+1) centre
                 out.append({"x0": x0 + c - NOTCH_PLUG_W / 2, "x1": x0 + c + NOTCH_PLUG_W / 2, "y0": yn + RAIL_IN - 0.3, "y1": yn + RAIL_OUT + 0.3,
                             "row": r + 1, "tipo": "plugue (trilho da frente da fileira %d)" % (r + 1)})

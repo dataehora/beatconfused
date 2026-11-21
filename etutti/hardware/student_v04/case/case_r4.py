@@ -39,6 +39,11 @@ C3.KNOB["sleeve_z0"] = L.ROOF_TOP + 0.8
 F.pick_posts = L.pick_posts
 F.wall_posts = L.wall_posts
 T.pick_posts = L.pick_posts
+# R5V4: 32 keys (rulers always full) and the shorter case
+F.ROWS = L.ROWS
+F.length = L.length
+CHAMFER_TOP, CHAMFER_BOT = 2.0, 1.0       # R5V4: 45 deg chamfer on the outer top edge (where the hand rests) and a small one on the bottom edge
+R_OUT, R_IN = L.CASE_R, L.CASE_R - L.WALL
 
 USB = {"y": L.USB_Y, "z": G.USB_Z, "w": G.USB_OPENING[0], "h": G.USB_OPENING[1], "r": G.USB_OPENING[2]}
 JACK_D, JACK_Z = G.JACK_OPENING_D, G.JACK_Z
@@ -48,13 +53,102 @@ BOARD_Z = (-L.T_PCB, 0.0)
 GRADE_W = 16.0                # the electronics' grade-regua strip (1 mm of border each side of the 14.00 openings)
 
 
+# ------------------------------------------------------------------ plan corners and chamfers (R5V4)
+def _tri_x(x0, x1, z, c, left):
+    """Wedge along y direction: triangle in (x, z) (extruded later along y). left: edge at x = x0; else edge at x = x1."""
+    if left:
+        return [(x0 - 1, z - c - 1), (x0 + c + 1, z + 1), (x0 - 1, z + 1)]
+    return [(x1 + 1, z - c - 1), (x1 - c - 1, z + 1), (x1 + 1, z + 1)]
+
+
+def chamfer_cutters(mod, c, top_of, flat=False, up=True):
+    """Solids to cut from an outer shell so that its outer edge gets a c x c, 45 degree chamfer, following the outline (plan R_OUT corners).
+    top_of(x, y) = the shell's top level near that edge point. flat=True: one level everywhere (the bottom edge, drawn mirrored)."""
+    Lx = L.length(mod)
+    R = R_OUT
+    cut = []
+    # straight edges
+    xs = [R, Lx - R]
+    ys = [R, L.CASE[1] - R]
+    # left edge (x = 0): interface roof
+    z = top_of(1.0, 50.0)
+    cut.append(cq.Workplane("XZ").polyline(_tri_x(0, 0, z, c, True)).close().extrude(-(ys[1] - ys[0])).translate((0, ys[0], 0)))
+    # front edge (y = 100): flat
+    z = top_of(150.0, 99.0)
+    tri = [(L.CASE[1] + 1, z - c - 1), (L.CASE[1] - c - 1, z + 1), (L.CASE[1] + 1, z + 1)]
+    cut.append(cq.Workplane("YZ").workplane(offset=xs[0]).polyline(tri).close().extrude(xs[1] - xs[0]))
+    # back edge (y = 0): two levels (interface roof, keyboard back deck)
+    for xa, xb in ((xs[0], L.X_IF), (L.X_IF, xs[1])):
+        z = top_of((xa + xb) / 2, 1.0)
+        tri = [(-1, z - c - 1), (c + 1, z + 1), (-1, z + 1)]
+        cut.append(cq.Workplane("YZ").workplane(offset=xa).polyline(tri).close().extrude(xb - xa))
+    # right end (x = L): follows the deck's profile: ONE ruled loft between a sliver above the profile and the full wedge
+    prof = [(y, z) for y, z in F.deck_profile()] if not flat else [(0.0, 0.0), (L.CASE[1], 0.0)]
+    pts = [(ys[0], None)] + [p for p in prof if ys[0] < p[0] < ys[1]] + [(ys[1], None)]
+
+    def zat(y):
+        for (ya, za), (yb, zb) in zip(prof[:-1], prof[1:]):
+            if ya <= y <= yb:
+                return za + (zb - za) * (y - ya) / (yb - ya) if yb > ya else za
+        return prof[-1][1]
+    pts = [(y, zat(y) if z is None else z) for y, z in pts]
+    x1, x2 = Lx - c - 0.2, Lx + 1.0
+
+    def poly(x):
+        s = x - (Lx - c)
+        return [(y, z - s) for y, z in pts] + [(y, z + 3.0) for y, z in reversed(pts)]
+    w = (cq.Workplane("YZ").workplane(offset=x1).polyline(poly(x1)).close()
+         .workplane(offset=x2 - x1).polyline(poly(x2)).close().loft(ruled=True))
+    cut.append(w)
+    # corners: a cone each (revolved triangle) limited to its quadrant
+    for cx, cy, sx, sy in ((R, R, -1, -1), (Lx - R, R, 1, -1), (R, L.CASE[1] - R, -1, 1), (Lx - R, L.CASE[1] - R, 1, 1)):
+        z = top_of(cx, cy) if not flat else 0.0
+        tri = [(R - c - 1, z + 1), (R + 1, z - c - 1), (R + 1, z + 1)]
+        cone = cq.Workplane("XZ").polyline(tri).close().revolve(360, (0, 0, 0), (0, 1, 0)).translate((cx, cy, 0))
+        quad = box(min(cx, cx + sx * (R + 2)), max(cx, cx + sx * (R + 2)), min(cy, cy + sy * (R + 2)), max(cy, cy + sy * (R + 2)), z - c - 3, z + 3)
+        cut.append(cone.intersect(quad))
+    return cut
+
+
+def top_level(x, y):
+    """Outer top of the lid near the point (x, y), used for the top chamfer: interface roof, row 1's deck in front, row 4's at the back."""
+    if x < L.X_IF:
+        return L.ROOF_TOP
+    return F.ZR[3] + F.DECK_TOP if y < 20.0 else F.ZR[0] + F.DECK_TOP
+
+
+def round_and_chamfer_lid(body, mod):
+    """Plan corners R_OUT outside / R_IN inside, then the chamfers (top c = CHAMFER_TOP following the deck, bottom c = CHAMFER_BOT)."""
+    Lx, W = L.length(mod), L.CASE[1]
+    zlo, zhi = L.Z_BOT - 1.0, 40.0
+    outer = box(0, Lx, 0, W, zlo, zhi).edges("|Z").fillet(R_OUT)
+    body = body.intersect(outer)
+    for cx, cy, sx, sy in ((R_OUT, R_OUT, -1, -1), (Lx - R_OUT, R_OUT, 1, -1), (R_OUT, W - R_OUT, -1, 1), (Lx - R_OUT, W - R_OUT, 1, 1)):
+        # the inner corner: square from the wall's inner faces to the arc centre, minus the R_IN circle
+        a0, a1 = sorted((cx + sx * R_OUT, cx))
+        b0, b1 = sorted((cy + sy * R_OUT, cy))
+        sq = box(a0 + (L.WALL if sx < 0 else 0), a1 - (L.WALL if sx > 0 else 0), b0 + (L.WALL if sy < 0 else 0), b1 - (L.WALL if sy > 0 else 0), L.Z_BOT, top_level(cx, cy) - 0.5)
+        body = body.union(sq.cut(cyl(cx, cy, L.Z_BOT - 1, top_level(cx, cy) + 1, 2 * R_IN)))
+    for w in chamfer_cutters(mod, CHAMFER_TOP, top_level):
+        body = body.cut(w)
+    for w in chamfer_cutters(mod, CHAMFER_BOT, lambda x, y: 0.0, flat=True):
+        body = body.cut(w.mirror("XY").translate((0, 0, L.Z_BOT)))
+    return body
+
+
+def round_tray(b, mod):
+    Lx, W, g = L.length(mod), L.CASE[1], 0.15
+    rr = box(L.WALL + g, Lx - L.WALL - g, L.WALL + g, W - L.WALL - g, L.Z_BOT - 1, 40).edges("|Z").fillet(R_IN - g)
+    return b.intersect(rr)
+
+
 # ------------------------------------------------------------------ the lid
 def lid(mod):
-    body = F.lid(mod)
+    body = round_and_chamfer_lid(F.lid(mod), mod)
     ceiling = L.CEILING
     # sockets in the left wall (closed holes; the board goes into the lid from below)
     body = body.cut(cq.Workplane("YZ").workplane(offset=-1).center(USB["y"], USB["z"]).rect(USB["w"], USB["h"])
-                    .extrude(L.WALL + 1.6).edges("|X").fillet(min(USB["r"], USB["h"] / 2 - 0.01)))
+                    .extrude(L.WALL + 3.5).edges("|X").fillet(min(USB["r"], USB["h"] / 2 - 0.01)))
     for yc in (L.OUT_Y, L.IN_Y):
         body = body.cut(cq.Workplane("YZ").workplane(offset=-1).center(yc, JACK_Z).circle(JACK_D / 2).extrude(L.WALL + 1.6))
     # knobs
@@ -139,7 +233,7 @@ def tray(mod):
     # the module's screw: a recess under H101; the PROG button's hole
     b = b.cut(cyl(L.H101[0], L.H101[1], L.Z_FLOOR - 1.0, L.Z_FLOOR + 1, 8.0))
     b = b.cut(cyl(L.PROG[0], L.PROG[1], L.Z_BOT - 1, L.Z_FLOOR + 1, 3.0))
-    return b
+    return round_tray(b, mod)
 
 
 # ------------------------------------------------------------------ the keyboard's thin parts (M2 per row)
@@ -186,7 +280,12 @@ def screws(mod):
 
 def connectors(mod):
     """Headers and plugs of every ruler (envelopes, absolute z) plus the pegs and the sensors' pockets for the clearance check."""
-    parts = {"cabecalhos": None, "plugues": None, "pinos": None, "sensores": None}
+    parts = {"cabecalhos": None, "plugues": None, "pinos": None, "sensores": None, "elos": None}
+    if L.LINK == "D":
+        for r, xj, y in L.solder_links(mod):
+            a, b, ya, yb, za, zb = L.link_box(xj, y, L.ZR[r - 1])
+            s = box(a, b, ya, yb, za, zb)
+            parts["elos"] = s if parts["elos"] is None else parts["elos"].union(s)
     for ru in L.rulers(mod):
         z0 = L.ZR[ru["row"] - 1]
         for name, xa, xb, ya, yb, za, zb in L.conn_boxes(ru):
@@ -278,7 +377,7 @@ def top_parts():
 
 def build(mod):
     t0 = time.time()
-    n = 28 + 16 * mod
+    n = 32 + 16 * mod
     Lx = L.length(mod)
     lid_, tray_, ru, gr, sc = lid(mod), tray(mod), rulers_solid(mod), grades(mod), screws(mod)
     keys0 = T.key_bodies(mod, 0.0)
@@ -314,6 +413,10 @@ def build(mod):
         "cabecalhos x sensores": round(inter(cn["cabecalhos"], cn["sensores"]), 2), "plugues x sensores": round(inter(cn["plugues"], cn["sensores"]), 2),
         "cabecalhos x reguas (so o topo toca: 0)": round(inter(cn["cabecalhos"], ru), 2), "plugues x reguas": round(inter(cn["plugues"], ru), 2),
         "plugues x cabecalhos": round(inter(cn["plugues"], cn["cabecalhos"]), 2), "plugues x parafusos": round(inter(cn["plugues"], sc), 2)}
+    if cn["elos"] is not None:
+        I["conectores"].update({"elos x base": round(inter(cn["elos"], tray_), 2), "elos x pinos": round(inter(cn["elos"], cn["pinos"]), 2),
+                                "elos x sensores": round(inter(cn["elos"], cn["sensores"]), 2), "elos x parafusos": round(inter(cn["elos"], sc), 2),
+                                "elos x cabecalhos": round(inter(cn["elos"], cn["cabecalhos"]), 2), "elos x reguas": round(inter(cn["elos"], ru), 2)})
     # ---- interface
     comp = {"placa": brd, "modulo": mdl, "bateria": bat, "alto-falante": spk, "caixa acustica": bx, "OLED": ole,
             "encoder 1": encs[0], "encoder 2": encs[1], "knob 1": knobs[0], "knob 2": knobs[1]}

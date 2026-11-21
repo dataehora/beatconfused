@@ -1,6 +1,27 @@
-# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4)
+# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4; teclado de 32 teclas, R5V4)
 
-**Atende R3V4 (21 nov 2026).** Dono: eletrônica. Contrato com a programação (`programacao-som` lê, não edita).
+## R5V4: o que mudou para a programação (os pinos NÃO mudam)
+
+O teclado passa a **32 / 48 / 64 / 80 teclas, réguas sempre cheias** (4 sensores ocupados em toda régua, nenhuma posição sem tecla). Nenhum pino,
+nenhuma rede e nenhuma temporização muda; muda só o **mapa de notas**:
+
+| Fileira | Teclas (32) | `FIRST_NOTE` | Notas (3 semitons por coluna, colunas 0..7) |
+|---|---:|---:|---|
+| 1 (frente) | 8 | **57** (A3) | A3 C4 D#4 F#4 A4 C5 D#5 **F#5** |
+| 2 | 8 | **55** (G3) | G3 A#3 C#4 E4 G4 A#4 C#5 E5 |
+| 3 | 8 | **56** (G#3) | G#3 B3 D4 **F4** G#4 B4 D5 **F5** |
+| 4 (trás) | 8 | **54** (F#3; era 57) | **F#3** A3 C4 D#4 F#4 A4 C5 **D#5** |
+
+- `FIRST_NOTE = {57, 55, 56, 54}` (o da fileira 4 era 57), `FIRST_COL = {0, 0, 0, 0}` como antes; **8 teclas em todas as fileiras** (antes 7, 8, 7, 6).
+- Colunas globais: 32 teclas = 8 colunas (2 réguas por fileira); 48 = 12; 64 = 16; 80 = 20, **todas ocupadas nas 4 fileiras**: `V4_KEYS` = 32 / 48 / 64 / 80
+  (4 x 8, 4 x 12, 4 x 16, 4 x 20). Para a fileira 4, a régua começa em x 79,95 (alinhada com a fileira 2, antes 89,2).
+- Pulsos do acesso aleatório = 8 x N + 1 (N = réguas por fileira): **17 / 25 / 33 / 41** (os mesmos de 28/44/60/76: o número de réguas não mudou).
+  A varredura completa em ordem (colunas 8/12/16/20, 70 us/passo) também é a mesma: 0,56 / 0,84 / 1,12 / 1,40 ms.
+- **Cadeia de registradores:** nada a ajustar. Cada régua continua com 8 estágios (QA..QD = sensores 1..4, QE..QH mortos), e agora os 4 sensores de
+  toda régua são notas de verdade: o "1" que anda passa pelos mesmos 4 estágios mortos entre uma régua e a seguinte. A ligação física das réguas (R5V4, item 3)
+  não altera o protocolo: continuam 5 condutores (+3V3, GND, OUT, CLK, DATA/QH').
+
+**Atende R3V4 (21 nov 2026) e R5V4 (teclado de 32).** Dono: eletrônica. Contrato com a programação (`programacao-som` lê, não edita).
 Conferido contra o esquema da V4 (`pcb/schematic.py`, ERC 0/0, netlist = `TEENSY_NETS`/`MM_PADS`) e o posicionamento
 (`pcb/posiciona_v4.py`, paridade placa × esquema 0). Compila como `teensy:avr:teensyMM:usb=midi,speed=396`.
 **Um só contrato com o `FIRMWARE.md`:** onde os dois diziam coisas diferentes, vale este arquivo (lista em "Correções da R3V4").
@@ -12,10 +33,8 @@ Conferido contra o esquema da V4 (`pcb/schematic.py`, ERC 0/0, netlist = `TEENSY
    coluna). A conta do `FIRMWARE.md` (41 com 76 teclas) está certa.
 2. **Coluna 0 = a régua mais perto da placa principal**, estágio 0 = QA da primeira régua (a que recebe o DATA do conector J60k); o primeiro bit
    empurrado vai para a última régua.
-3. **FIRST_COL = {0, 0, 0, 0}** (era {1, 0, 1, 1} na V3): a régua começa **na primeira tecla da fileira** (`case_f2.rulers()`: início = x da
-   primeira tecla - 9,25 mm), então as posições sem tecla ficam no **fim** da fileira, não no começo. 28 teclas: fileira 1 col 7, fileira 3 col 7 e
-   fileira 4 cols 6 e 7 não têm tecla (sensor presente, sem botão). Notas: `FIRST_NOTE = {57, 55, 56, 57}`, 3 semitons por coluna. Teclas por
-   fileira 7, 8, 7, 6 (+4 por módulo).
+3. **FIRST_COL = {0, 0, 0, 0}** (era {1, 0, 1, 1} na V3): a régua começa **na primeira tecla da fileira** (início = x da primeira tecla - 9,25 mm).
+   **R5V4:** 8 teclas em todas as fileiras, sem posição vazia; `FIRST_NOTE = {57, 55, 56, 54}` (o da fileira 4 era 57); 3 semitons por coluna; +4 teclas por módulo.
 4. O **microfone** entra no **MIC do SGTL5000** (pino 10 do codec, via C309 1 uF), nunca no LINE IN: ver "Microfone".
 5. **J401 (tela) é o mesmo SH de 6 vias das fileiras**: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 sem uso); no cabo só 4 fios.
 
@@ -65,11 +84,11 @@ Conferido contra o esquema da V4 (`pcb/schematic.py`, ERC 0/0, netlist = `TEENSY
 | 29-45 | 16, 41, 43, 65, 63, 66, 64, 60, 62, 70, 68, 40, 42, 44, 46, 48, 73 | - | livres. **(conferir)** 38, 39, 40, 41 (pads 70, 68, 40, 42) têm ADC no Teensy 4.1; se valerem no MicroMod, servem de **OUT_B** (2ª linha por fileira) | - |
 
 Resumo de uso: 27 sinais (0, 2, 3, 6-12, 14-28 menos 13) e, nos pads que não são pinos, ONOFF (6), PROGRAM (11), USB, 3,3 V.
-Livres: 1, 4, 5, 13 e 29-45. **Para 76 teclas não faltam pinos.**
+Livres: 1, 4, 5, 13 e 29-45. **Para 80 teclas não faltam pinos.**
 
 ## A varredura (R2V4, E2): o contrato de tempo e de ordem
 
-**Barramento da régua** (conector de 6 vias, igual nas duas pontas): 1 +3V3 · 2 GND · 3 OUT · 4 CLK · 5 DATA · 6 reservado
+**Barramento da régua** (R5V4: conector de 6 vias nas duas pontas OU elo soldado de 5 fios; o sinal é o mesmo): 1 +3V3 · 2 GND · 3 OUT · 4 CLK · 5 DATA · 6 reservado
 (OUT_B). Na ponta de entrada o pino 5 é o SER do 595; na ponta de saída é o QH' (cascata). VCC, GND, OUT e CLK passam direto.
 Na placa principal há **4 conectores, um por fileira**: OUT_Rk próprio, SCAN_CLK e SCAN_DATA **comuns às 4**.
 
@@ -79,12 +98,12 @@ Na placa principal há **4 conectores, um por fileira**: OUT_Rk próprio, SCAN_C
    (todas as colunas desligadas) entre uma régua e a seguinte;
 3. as saídas **não são Hi-Z na partida**: ao ligar, dar 8 x N pulsos de CLK com DATA = 0 antes de ler (zera a cadeia).
 
-**Coluna global c (0..C-1)** = régua c/4, sensor c%4 (QA..QD), igual nas 4 fileiras. 28 teclas: C = 8 (2 réguas por fileira);
-44: 12; 60: 16; 76: 20. Com N réguas por fileira, a cadeia tem 8 N estágios.
+**Coluna global c (0..C-1)** = régua c/4, sensor c%4 (QA..QD), igual nas 4 fileiras. 32 teclas: C = 8 (2 réguas por fileira);
+48: 12; 64: 16; 80: 20. Com N réguas por fileira, a cadeia tem 8 N estágios.
 - **Varredura em ordem:** com DATA = 1 no primeiro pulso e 0 nos outros, o "1" anda 1 estágio por pulso. Colunas 0..3 aparecem
   nos pulsos 1..4 (mais o atraso de 1), as colunas 4..7 do pulso 9 ao 12, e assim por diante (**passo 8 por régua**).
 - **Acesso aleatório** (varredura rápida da tecla "quente"): empurrar o padrão de 8 N bits (o primeiro bit enviado vai para a
-  última régua) e dar **1 pulso a mais**: **8 N + 1 pulsos por fileira** (76 teclas, N = 5: 41 pulsos = ~10 us a 5 MHz). Bit k (0 = primeiro) = estágio 8N-1-k.
+  última régua) e dar **1 pulso a mais**: **8 N + 1 pulsos por fileira** (80 teclas, N = 5: 41 pulsos = ~10 us a 5 MHz). Bit k (0 = primeiro) = estágio 8N-1-k.
 - Velocidade do CLK: **até 5 MHz** (meio período >= 100 ns; HC595 a 3,3 V). Usar `digitalWriteFast`.
 
 **Tempo por coluna** (E2, datasheet do TMAG5253, variante BA3 bipolar): ligar leva **20 us típico, 45 us MÁXIMO** (até 95 % do
@@ -93,15 +112,15 @@ limpos. Depois lê as 4 linhas (A0, A1, A12, A13) com ADC1 e ADC2 em paralelo, ~
 
 | Teclas | Colunas | Varredura completa (70 us/passo) | (100 us/passo) |
 |---:|---:|---:|---:|
-| 28 | 8 | 0,56 ms | 0,80 ms |
-| 44 | 12 | 0,84 ms | 1,20 ms |
-| 60 | 16 | 1,12 ms | 1,60 ms |
-| 76 | 20 | 1,40 ms | 2,00 ms |
+| 32 | 8 | 0,56 ms | 0,80 ms |
+| 48 | 12 | 0,84 ms | 1,20 ms |
+| 64 | 16 | 1,12 ms | 1,60 ms |
+| 80 | 20 | 1,40 ms | 2,00 ms |
 
 (a V3 com multiplexadores varre 28 teclas em ~0,25 ms, **estimativa** (2 esperas de 60 us + 14 canais por metade): a F2 é ~2 vezes mais lenta na varredura em ordem.)
 **Velocity:** com 1 ms = 127, a quantização de 0,56 ms (28) ou 1,4 ms (76) é grossa. A firmware deve (a) **interpolar** o instante
 em que cada limiar é cruzado entre duas varreduras, e (b) fazer **varredura rápida da coluna quente**: ao sair do repouso, ler só
-a coluna da tecla (padrão por acesso aleatório + 60 us + leitura = ~70 us, ~14 kHz). Sem isso, 76 teclas não resolvem 1 ms.
+a coluna da tecla (padrão por acesso aleatório + 60 us + leitura = ~70 us, ~14 kHz). Sem isso, 80 teclas não resolvem 1 ms.
 
 **Calibração:** repouso por tecla medido na partida (1,65 V típico em BA3 com 3,3 V; 1,61-1,69 V pelo datasheet).
 Erro por assentamento: coluna lida 60 us depois do EN tem resíduo de ~1,8 % da diferença para a coluna anterior (tau efetivo ~15 us,
@@ -123,7 +142,7 @@ pelo USB (D206); KEEP no 10; AMP_SD no 12; HP_DET no 17; CHG_STAT agora no **0**
 
 ## Pendências desta tabela (da R2V4, ainda valem)
 
-- **KEY_INPUT** deixa de existir: a tecla é (fileira, coluna). Mapa de notas: `FIRST_NOTE = {57, 55, 56, 57}`, **`FIRST_COL = {0, 0, 0, 0}`** (R3V4), 3 semitons por coluna;
-  teclas por fileira 7, 8, 7, 6. 28 teclas: colunas 0..7, sem tecla: fileira 1 col 7, fileira 3 col 7, fileira 4 cols 6 e 7. 44: colunas 0..11 (11/12/11/10 teclas); 60: 16; 76: 20 (19/20/19/18). Ordem dos módulos e transposição: do firmware (R1V4, §4.4).
+- **KEY_INPUT** deixa de existir: a tecla é (fileira, coluna). Mapa de notas: `FIRST_NOTE = {57, 55, 56, 54}` (R5V4), **`FIRST_COL = {0, 0, 0, 0}`** (R3V4), 3 semitons por coluna;
+  **R5V4:** 8 teclas por fileira, colunas 0..7, nenhuma vazia (antes 7, 8, 7, 6). 48: colunas 0..11 (12 por fileira); 64: 16; 80: 20. Ordem dos módulos e transposição: do firmware (R1V4, §4.4).
 - Os pinos 14, 15, 26, 27 como entradas analógicas de OUT: **sem pull** interno; o pull-down de 100 kohm por linha está na placa principal.
 - Pinos 38-41 como segundo conjunto de OUT: **(conferir)** no esquema da SparkFun antes de depender deles.
