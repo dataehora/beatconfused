@@ -10,7 +10,7 @@ O J relata ao Chat uma linha do tipo "SPEC vN atendida — PR #x; relatórios at
 ---
 
 Olá. Vamos começar a **V4 do eTutti Student**. A V3 está **fechada para o protótipo**: placa, case, página e manual prontos, nada encomendado,
-impresso ou montado. Preciso que você escreva a **SPEC v1 da V4**. Abaixo, o estado da V3, as medidas fixas que um case novo precisa respeitar,
+impresso ou montado. Preciso que você escreva a **SPEC v1 da V4**, que inclui **revisar a eletrônica** e **desenhar um novo conceito de case de duas peças (superior e inferior), sem a grade de teclado**. Abaixo, o estado da V3, as medidas fixas que um case novo precisa respeitar,
 o que é decisão minha e o que a primeira amostra ainda vai responder.
 
 ## O que é o instrumento
@@ -80,14 +80,24 @@ Acabamento Retrô: tampa creme, bandeja cinza, faixas vermelha/laranja/amarela, 
 - Os modelos 3D reais de várias peças (EC11E, USB-C HRO, JST, QFN) não existem na biblioteca desta máquina; as imagens usam caixas.
 - Tempo de espera: a grade escareada e os arquivos de `fab/` ainda **não foram enviados** à JLCPCB.
 
-## O que eu quero decidir com você para a V4
+## Escopo da V4 (decidido pelo J)
 
-(Preencha ou apague conforme o que eu tiver em mente; sugiro que você me pergunte o que faltar.)
+1. **Revisão do design de eletrônica** (placa, esquema, escolha de peças, firmware que a placa exige).
+2. **Novo conceito de case com só duas peças: case superior e case inferior, sem grade de teclado.**
+   Na V3 a grade de FR-4 (e seus 10 espaçadores, 10 parafusos escareados, 10 porcas e os copos da bandeja) é o que segura as teclas a 0,15 mm acima delas;
+   a tampa cobre a grade com 1,4 mm. Sem a grade, o que muda e precisa de decisão:
+   - **Quem segura as teclas Gateron?** Hoje cada tecla se apoia na placa por 2 pinos de plástico e a grade as impede de sair. Opções a estudar: a própria tampa (um deck com furo por tecla, apoiado nas teclas), ou outra retenção.
+   - **Como a tampa se fixa e como a placa é sustentada** sem os 10 pontos de fixação da grade: só os 6 parafusos M2 × 14 e os 4 pinos + 4 pilares da bandeja? O estudo de flexão (meta ≤ 0,05 mm a 3 N na pior tecla) precisa ser refeito, porque a grade não é estrutural mas a tampa sobre ela hoje trava a altura.
+   - **Como o botão fica alinhado** e como as 4 alturas de haste (fileiras 1 a 4) se mantêm sem a grade como guia.
+   - O que **sai da lista de compras e do pedido** (grade FR-4 escareada, 10 espaçadores, 10 parafusos e porcas) e o que isso muda no custo e na montagem.
+   - O que se mantém: placa que entra por baixo, conectores no fundo, bandeja com pés de ≥ 80A, tampa sem emenda na parede (a menos que o novo conceito mude isso).
 
-- **Objetivo da V4:** por exemplo, depois da amostra da V3 (correções de medidas), uma versão com mudança de conceito (teclado, tamanho, tela, bateria, custo), ou só ajustes?
-- **Do que depende:** a V4 espera a primeira amostra da V3 ou parte já do desenho atual?
-- **Restrições de custo e de montagem:** manter montagem só pelo fundo e os 17 tipos Extended, ou aceitar mais?
-- **O que muda no case:** forma, acabamento, material (resina/MJF) ou processo.
+Perguntas que continuam abertas e o Chat deve me fazer, se faltarem:
+
+- A V4 espera a primeira amostra da V3 ou parte já do desenho atual?
+- Manter a montagem só pelo fundo e os 17 tipos Extended, ou aceitar mais? Alguma meta de custo?
+- Material e processo do case (resina, MJF, outro) e o acabamento (Retrô, ou outro)?
+- O teclado, a tela e o som ficam como estão, ou a revisão da eletrônica pode mexer neles?
 
 ## O que peço
 
