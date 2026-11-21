@@ -1,6 +1,6 @@
-# eTutti Student V4 · firmware e som (R1V4 + R2V4)
+# eTutti Student V4 · firmware e som (R1V4 + R2V4 + R3V4)
 
-21 nov 2026. Atende as tarefas **P1** (capacidade do Teensy MicroMod para 76 teclas, Full Speed USB) e **P2** (começo do firmware V4, §9 itens 1–3) da **R1V4**, com a varredura da **R2V4** (F2: réguas de 4 teclas, 4 linhas OUT, cadeia de registradores de deslocamento).
+21 nov 2026. **R3V4 (atendida nesta revisão):** varredura com ADC duplo e leitura quente em rodízio (item 5) e voz com efeitos junto com o teclado (item 6): ver a seção **"R3V4"** logo abaixo. O resto do texto (R1V4 e R2V4) continua valendo, com as correções marcadas "(R3V4)". Atende as tarefas **P1** (capacidade do Teensy MicroMod para 76 teclas, Full Speed USB) e **P2** (começo do firmware V4, §9 itens 1–3) da **R1V4**, com a varredura da **R2V4** (F2: réguas de 4 teclas, 4 linhas OUT, cadeia de registradores de deslocamento).
 
 **O firmware compila para a V4 (28, 44, 60 e 76 teclas), para o Student V01 e para o eTuttino. Nada foi gravado e nada rodou numa placa: a V4 não existe.** Tudo o que é tempo medido abaixo é **conta** (marcada "estimado"), a partir das medições do eTuttino (CLAUDE.md) e dos números do datasheet que o repositório já traz. Os pinos e o contrato de varredura seguem o `student_v04/pcb/PINOS.md` (rascunho da eletrônica, 74HC595 C5947, SCAN_DATA = 2, SCAN_CLK = 3); o que o PINOS.md ainda marca "(conferir)" continua a conferir.
 
@@ -74,7 +74,7 @@ O erro de velocity vem do tempo entre as duas leituras que cercam cada cruzament
 | 1678 µs (76) | ±17 | ±8,5 | ±3,4 | ±1,7 | ±0,9 |
 | **leitura só da coluna (hot scan, 85 µs)** | ±0,9 | ±0,4 | ±0,2 | ±0,1 | ±0 |
 
-Uma batida de 1 ms (1,4 mm em 1 ms, 1,4 m/s) não é de dedo: o mais rápido que se toca fica em 3–5 ms, onde o erro com 76 teclas é de ±3 a ±6 unidades, com 28 teclas ±1 a ±2. **Para ficar bem em todas as versões, o firmware ganhou a "leitura quente"** (hot scan): quando uma tecla já saiu do repouso (≥ 3 % do curso), está subindo e ainda não passou do ponto de nota ligada, o firmware lê **só a coluna dela**, de novo e de novo (~85 µs cada, até 3 ms), em vez de esperar uma passada inteira. Isso dá ~12 amostras numa batida de 1 ms, qualquer que seja o número de teclas, sem precisar de mais linhas OUT. Custo: as outras teclas ficam até 3 ms sem leitura durante uma batida (aceitável, mas é uma troca; ver pergunta 3). **Estimado; precisa de teclas de verdade para afinar `HOT_FROM` e `HOT_BUDGET_US`.**
+Uma batida de 1 ms (1,4 mm em 1 ms, 1,4 m/s) não é de dedo: o mais rápido que se toca fica em 3–5 ms, onde o erro com 76 teclas é de ±3 a ±6 unidades, com 28 teclas ±1 a ±2. **Para ficar bem em todas as versões, o firmware ganhou a "leitura quente"** (hot scan): quando uma tecla já saiu do repouso (≥ 3 % do curso), está subindo e ainda não passou do ponto de nota ligada, o firmware lê **só a coluna dela**, de novo e de novo (~85 µs cada, até 3 ms), em vez de esperar uma passada inteira. Isso dá ~12 amostras numa batida de 1 ms, qualquer que seja o número de teclas, sem precisar de mais linhas OUT. Custo (R2V4): as outras teclas ficavam até 3 ms sem leitura durante uma batida. **(R3V4: substituído pelo rodízio com orçamento, ver abaixo.)** **Estimado; precisa de teclas de verdade para afinar `HOT_FROM` e `HOT_BUDGET_US`.**
 
 ### Capacitância da linha OUT (estimada)
 
@@ -112,12 +112,12 @@ Os pinos estão no bloco `ETUTTI_V4` do início do sketch e seguem o `PINOS.md`:
   3. As saídas **não são Hi-Z na partida**: `srClear()` dá 8N + 1 pulsos com DATA = 0 antes de qualquer leitura (também ao desligar).
   4. CLK a no máximo 5 MHz: meio período de 100 ns (`SR_HALF_PERIOD_NS`). Acesso aleatório = 8N + 1 pulsos: 41 pulsos (~10 µs) com 76 teclas. O PINOS.md fala em "160 pulsos" para 20 colunas; pela regra "8 estágios por régua × N réguas por fileira" são 8 × 5 = 40 (+ 1), então usei 41 (pergunta 2).
 - **Passada:** `srSelect(0)` e, para cada coluna: esperar `SENSOR_WAKE_US` (60 µs), ler as teclas da coluna, avançar o "1" e processar a coluna anterior durante o `tON` da próxima. O PINOS.md prevê 60 µs (normal) ou 90 µs (12 bits limpos, resíduo de assentamento 1,8 % → 0,25 %): `SENSOR_WAKE_US` é uma constante só; a 90 µs a passada de 76 teclas vai a ~2,2 ms (a conferir na placa).
-- **Leitura quente:** ver P1. As leituras das quatro linhas usam `analogRead` em sequência (5,6 µs cada, 22 µs por coluna). O PINOS.md conta ~6 µs com ADC1 e ADC2 em paralelo (biblioteca ADC): economiza ~16 µs por coluna (cerca de 20 % do passo) e **não foi aplicado**.
+- **Leitura quente:** ver P1. As leituras das quatro linhas usavam `analogRead` em sequência (5,6 µs cada, 22 µs por coluna). **(R3V4: agora em pares, ADC1 e ADC2 em paralelo pela biblioteca ADC, ~6 µs por coluna; ver abaixo.)**
 - **Calibração por tecla e velocity:** o mesmo modelo da V01 (raiz cúbica do campo, repouso medido na partida, fundo aprendido e gravado na EEPROM, direção do sensor TMAG5253 lida do repouso, 1 ms = 127 e 80 ms = 1). EEPROM: magic `0xE7770106`, 4 + 2 × 76 = 156 bytes (o registro do seletor fica em 200).
 - **Ordem das teclas** (índice 0–75, usado no teste de teclas CC 15): fileira por fileira a partir da fileira 1, da esquerda para a direita.
 
 ### Mapa de notas por módulo
-`noteShift` desloca todas as teclas em oitavas inteiras: **−12 por módulo de grave**. Padrão (R1V4 §4.4): o 1º módulo extra vai para o agudo, o 2º para o grave, e assim por diante. Conferido por script contra a R1V4:
+`noteShift` desloca todas as teclas em oitavas inteiras: **−12 por módulo de grave**. Padrão (R1V4 §4.4; R3V4: FIRST_COL = 0, ver abaixo): o 1º módulo extra vai para o agudo, o 2º para o grave, e assim por diante. Conferido por script contra a R1V4:
 
 | Teclas | Colunas | Teclas por fileira (1–4) | Faixa |
 |---:|---:|---|---|
@@ -135,6 +135,87 @@ C-griff e B-griff (CC 24) continuam valendo. **Pendente:** o usuário reconfigur
 - **Acordar por USB:** a V3/V4 liga o 3,3 V quando o USB entra (D206). A partida sem clique já fazia o firmware ficar ligado (`powerBegin`).
 - **Desligar com USB (muda na V4):** na V3/V4 nada corta o 3,3 V com o cabo plugado (o PWR_EN não está ligado). Então "desligar" com USB vira **desligamento suave**: sensores, amplificador, tela e LED apagam; um clique do volume (ou tirar o cabo) reinicia. Sem USB, é o desligamento de sempre (KEEP baixo).
 - **KEEP pela atividade do usuário:** o KEEP já era solto depois de 15 minutos sem tecla, knob ou MIDI (5 minutos: o amplificador descansa). Na V4 esse tempo **conta também com o cabo USB plugado** (na V01 o USB zerava o contador); depois dele, desligamento suave.
+
+## R3V4 · varredura em rodízio, ADC duplo e voz com efeitos
+
+Tudo abaixo compila (ver "Conferências"); **nada rodou numa placa**, então todo tempo e toda CPU são **estimados** (conta a partir das medições do eTuttino e do ciclo do ADC), exceto o que está dito "simulado" (o vocoder, num gêmeo em numpy) e "compilado" (memória).
+
+### Alinhamento com o PINOS.md final (R3V4)
+- **Contagem de pulsos:** 8 × N + 1 por fileira, como o sketch já fazia (41 com 76 teclas). Coluna 0 = régua mais perto da placa = estágio 0. Conferido.
+- **FIRST_COL = {0, 0, 0, 0}** na V4 (o sketch tinha {1, 0, 1, 1}, herdado da V3): as posições sem tecla ficam no **fim** da fileira. 28 teclas: fileira 1 col 0..6, fileira 2 col 0..7, fileira 3 col 0..6, fileira 4 col 0..5 (7/8/7/6); cada módulo soma 4 a cada fileira. `FIRST_NOTE = {57, 55, 56, 57}`, 3 semitons por coluna. O eTuttino e o Student V01 mantêm {1, 0, 1, 1}. Isso muda a nota de cada tecla da V4 em relação à R2V4 (a primeira tecla da fileira 1 é A3, na coluna 0).
+- **MIC_BIAS / C310:** `micGain()` da biblioteca de áudio liga o bias do microfone (`CHIP_MIC_CTRL = 0x017x`: resistor 2 kΩ, 3,0 V). 3,0 V é o máximo que o PINOS.md aceita (VDDA − 0,2 V) e o resistor não é 0: compatível. O sketch não mexe em C310.
+
+### Item 5 · ADC duplo
+- **Biblioteca ADC instalada** (Teensyduino 1.62, ADC 9.1). Nos pinos do T4.0 (tabela que o MicroMod usa): **14 e 15 alcançam ADC1 e ADC2; 26 e 27 só o ADC2**. Logo "em paralelo" são **dois pares**: (fileira 1 no ADC1 ‖ fileira 3 no ADC2) e (fileira 2 ‖ fileira 4). Cada ADC faz 2 conversões, não 1.
+- Estimativa por coluna: conversão de 12 bits a ~18,75 MHz com amostragem média ≈ 2,1 µs + ~1 µs de biblioteca → **~6,4 µs contra 22,4 µs** (quatro `analogRead` de 5,6 µs). Amostragem curta serve à saída ativa de 1,27 Ω do TMAG5253; a bateria e o HP_DET (divisor) usam `analogReadSlow` (amostragem lenta). Se o repouso medido na placa mostrar erro, subir `setSamplingSpeed` em `setupAdc()`. Chave: `V4_ADC_DUAL`.
+
+### Item 5 · leitura quente em rodízio
+- Antes: lia só a primeira coluna quente (a 2ª nota de um acorde só era lida depois da 1ª passar da nota ligada) e parava as outras teclas até 3 ms. Agora (`hotBurst`): as colunas com tecla subindo entre 3 % do curso e o ponto de nota ligada (e há menos de 15 ms desde VEL_START) formam um conjunto; a cada rodada lê-se a **coluna lida há mais tempo** (rodízio). Repetir a mesma coluna dispensa novo acordar (só 40 µs entre leituras).
+- A leitura quente começa **na hora** em que a passada vê a tecla subir (entre colunas), não no fim da passada. O orçamento por passada é `2,2 ms − passada nominal/(1 − u)` (u = `AudioProcessorUsage()`), mínimo 300 µs: ~1,6 ms (28 teclas), ~0,8 ms (76) sem áudio. Alvo: nenhuma tecla além de ~2,2 ms sem leitura.
+- Cada coluna lida processa as 4 teclas dela, então um acorde na mesma coluna divide uma leitura.
+
+| Teclas | Colunas | Passada antes (ADC em série) | Passada, ADC duplo | Rodada quente (troca de coluna / mesma) |
+|---:|---:|---:|---:|---|
+| 28 | 8 | 663 µs | **~540 µs (1,85 kHz)** | 81 / 56 µs |
+| 44 | 12 | 995 µs | ~810 µs | |
+| 60 | 16 | 1326 µs | ~1080 µs | |
+| 76 | 20 | 1658 µs | **~1350 µs (0,74 kHz)** | 87 / 56 µs |
+
+(tON 60 µs. Com tON 45 µs: 415 / 623 / 830 / 1040 µs.) Erro de velocity (± unidades; convenção: ¼ do período por cruzamento), batida de 1 / 2 / 5 / 10 ms:
+
+| Leitura | 1 ms | 2 ms | 5 ms | 10 ms |
+|---|---:|---:|---:|---:|
+| passada 28 | 5,4 | 2,7 | 1,1 | 0,5 |
+| passada 76 | 13,6 | 6,8 | 2,7 | 1,4 |
+| quente, 1 coluna | 0,6 | 0,3 | 0,1 | 0,1 |
+| quente, acorde de 2 colunas | 1,7 | 0,9 | 0,3 | 0,2 |
+| quente, 3 colunas | 2,6 | 1,3 | 0,5 | 0,3 |
+| quente, 4 colunas | 3,5 | 1,7 | 0,7 | 0,3 |
+
+**Intervalo máximo entre duas leituras de uma tecla** = (passada + orçamento)/(1 − u): ≈ 2,2 ms com orçamento cheio. Com 60/76 teclas e áudio pesado (u 0,3–0,36) a passada sozinha já vale 1,6–2,1 ms; o orçamento cai ao mínimo e o intervalo fica em ~2,2–2,4 ms. Uma atualização de áudio pode ainda parar o laço por até u × 2,9 ms (~1 ms). Soluções, se 2,2 ms não bastar: varredura num `IntervalTimer` (prioridade acima da do áudio, 208), segunda linha OUT_B por fileira (passada pela metade) ou 600 MHz.
+
+### Item 6 · voz com efeitos (`voice_fx.h`, chave `V4_VOICE_FX`)
+A biblioteca de áudio do Teensy **não tem vocoder** (nem harmonizador de verdade). Usei o que existe e escrevi o resto:
+
+| Efeito | Origem | Resumo |
+|---|---|---|
+| Entrada da voz | própria (`VoiceInput`) | passa-altas 90 Hz, ganho, porta de ruído (microfone parado não vira chiado no vocoder nem microfonia) |
+| **Vocoder** com o teclado de portadora | própria (`VocoderFx`) | 10 bandas (150 Hz a 5,5 kHz, Q 3), envelope 4 ms/25 ms, ruído filtrado para as consoantes; biquads em float |
+| **Harmonizador** | `AudioEffectGranular` (pitch shift, grão de 25 ms) | intervalo −12..+12 semitons; é do tipo "glitch": soa robótico, com artefatos |
+| **Eco** | própria (`VoiceEcho`) | 60..740 ms, realimentação até 0,85 com passa-baixas de 3 kHz, buffer de 64 KB em DMAMEM |
+| **Reverb da voz** | `AudioEffectFreeverb` do teclado, reaproveitado | voz e vocoder entram nele por um mixer: **0 de CPU a mais** |
+| **Mistura voz + teclado** | `AudioMixer4` | nível do teclado por CC (0 = só a voz) |
+
+**CCs (só no sketch; a página V4 ainda não existe e o mapa tem que mudar nos dois juntos):** 16 voz seca, 17 vocoder, 18 harmonizador, 19 intervalo (64 = 0), 76 eco, 77 tempo do eco, 78 realimentação, 80 voz no reverb, 81 limiar da porta, 82 ganho do microfone (20..52 dB no codec), 83 nível do teclado. **Tudo começa desligado** (níveis 0); com tudo em 0 o microfone nem é processado, e o vocoder só calcula com voz e teclas ao mesmo tempo.
+
+**Prova do vocoder:** gêmeo em numpy (mesma topologia e coeficientes) usado para ajustar o ganho (`MAKEUP` 8): voz de 2300 rms sobre acorde de 4200 rms dá ~2900 rms, pico 18 000, sem NaN; a envoltória das bandas acompanha a voz (correlação 0,8 a 0,9 onde há energia). **Não foi ouvido.**
+
+**CPU estimada (Teensy a 396 MHz; conta: ciclos por amostra × 44 117 amostras/s):**
+
+| Bloco | ciclos/amostra (estim.) | CPU a 396 MHz | a 600 MHz |
+|---|---:|---:|---:|
+| Síntese acordeão MM, 8 notas (medido a 600 MHz: 12 %) | | 18 % | 12 % |
+| idem, quatro fileiras de palhetas (medido 20 %) | | 30 % | 20 % |
+| VoiceInput | ~35 | 0,4 % | 0,3 % |
+| **Vocoder 10 bandas + consoantes** | ~400 | **4,4 %** | 2,9 % |
+| Harmonizador (granular) | ~30 | 0,3 % | 0,2 % |
+| Eco | ~10 | 0,1 % | 0,1 % |
+| 3 mixers a mais | ~30 | 0,3 % | 0,2 % |
+| Reverb da voz | 0 (compartilhado) | 0 | 0 |
+| **Tudo ligado** | | **~5,5 %** | ~3,7 % |
+| **Total, MM / quatro fileiras** | | **~24 % / ~36 %** | ~16 % / ~24 % |
+
+Erro da estimativa dos efeitos: ±50 %. **Cabe a 396 MHz** em CPU de áudio (36 % no pior caso). O que aperta é o **laço de teclas**, que só roda no tempo que o áudio deixa: a passada de 76 teclas vai de 1,35 ms para ~2,1 ms com u = 0,36. Recomendação: **396 MHz até 44 teclas com tudo ligado; com 60/76 teclas, vocoder desligado a 396 MHz, ou 600 MHz** (ou a varredura em interrupção).
+
+**Memória (compilada):** RAM1 73 KB, **RAM2 122 KB (+99 KB: eco 64 KB, granular 25 KB, blocos de áudio)**, código em flash 128 KB (V4 sem efeitos: 119 KB). `AudioMemory(90)` na V4 (estimativa: +15 a 20 blocos sobre o pico medido de 32; **medir** com `AudioMemoryUsageMax()`).
+
+**Bateria** (conta da `viaggio_j1/POWER.md`: 1000 mAh, 3,15 Wh úteis, TPS63001 a 90 %, alto-falante 0,2 W): base V4 a 396 MHz ~96 mA no 3,3 V → ~5,7 h. O laço não dorme, então a CPU extra dos efeitos quase não muda a corrente; entram o ADC do codec e o bias do microfone (~+5 mA, estimado) → **~5,5 h**. **600 MHz custa +31 mA** (módulo 69 → ~100 mA): **~4,7 h (~4,6 h com voz)**, cerca de 1 h a menos (−17 %).
+
+**Cortes, se não couber:** (1) `VOCODER_BANDS` 8 (−0,9 %); (2) tirar o ruído das consoantes; (3) harmonizador fora; (4) eco de 32768 para 16384 amostras (−32 KB); (5) vocoder só até 44 teclas.
+
+**Segurança:** alto-falante e microfone ficam no mesmo corpo: microfonia é possível. `V4_VOICE_MUTE_SPEAKER 1` cala a voz e o vocoder enquanto o alto-falante é a saída (HP_DET sem fone); está em 0. A porta de ruído ajuda, não resolve.
+
+**Como medir (o que mais falta):** `V4_BENCH 1` (só compila com `usb=serialmidi`) toca 8 notas sozinho, liga cada efeito por 6 s e imprime pela serial (115200) a CPU de áudio (média e máxima), os blocos usados e o tempo médio/máximo da passada, com o acordeão em MM e em quatro fileiras. Compilar com `--fqbn teensy:avr:teensyMM:usb=serialmidi,speed=396` e regravar o `usb=midi` depois.
 
 ## O que não foi feito
 - **Full Speed**, **OLED**, **microfone** e a varredura **nunca rodaram em hardware**.
@@ -162,11 +243,13 @@ C-griff e B-griff (CC 24) continuam valendo. **Pendente:** o usuário reconfigur
 
 ## Perguntas para o design
 
-1. **tON do sensor:** o PINOS.md/E2 confirma 20 µs típico e 45 µs máximo para o BA3; os "25 / 60 µs típicos" da R1V4 ficam então superados. Com 130 µs (UA5) a passada de 76 teclas passa de 3 ms e a leitura quente deixa de bastar.
-2. **Contagem de pulsos:** o PINOS.md diz "20 colunas = 160 pulsos" no acesso aleatório; eu uso 8 estágios × N réguas por fileira + 1 = 41 para 76 teclas. Confirme a conta, e que a coluna 0 é a régua mais perto do Teensy.
-3. **Leitura quente:** aceita que, durante uma batida (até 3 ms), as outras teclas fiquem sem leitura? A alternativa é mais linhas OUT (limite de 7 pinos analógicos livres) ou um sensor mais rápido.
-4. **Mapa de notas do usuário:** quer um CC novo (e o lugar na EEPROM) para escolher quantos módulos vão para o grave, e um mapa por registro de acordeão? Tem de ser decidido junto com a página.
-5. **Notas até E7:** o 76 teclas passa o que o acordeão amostrado cobre bem (a captura foi até a tecla 79). Quer gravar mais amostras agudas ou limitar o mapa?
-6. **Microfone:** entra mesmo pela entrada MIC do codec? E para que serve (só o medidor de nível, ou também afinador/entrada de efeito)?
-7. **Desligar com USB:** o desligamento suave (tela e sensores apagados, a placa continua ligada) basta, ou a V4 deve levar de volta o PWR_EN (3.3V_EN) para cortar o 3,3 V com o cabo plugado?
-8. **ADC duplo:** quer que eu use ADC1 e ADC2 em paralelo (biblioteca ADC, ~6 µs por coluna em vez de 22)? Ganha cerca de 20 % do passo, ao custo de depender dessa biblioteca.
+(R3V4: retiradas as respondidas: contagem de pulsos, ADC duplo, microfone no MIC, leitura quente.)
+
+1. **Intervalo entre leituras (~2,2 ms):** serve com áudio pesado e 60/76 teclas, ou autoriza a varredura num `IntervalTimer`, uma segunda linha OUT_B (os pinos 38–41 ainda são "conferir" no PINOS.md) ou 600 MHz (−1 h de bateria)?
+2. **Efeitos de voz a 396 MHz:** vale a recomendação (tudo ligado até 44 teclas; com 60/76, vocoder desligado ou 600 MHz)? Alguém tem de **medir** com `V4_BENCH` quando houver placa.
+3. **Microfonia:** a voz sai também pelo alto-falante (padrão) ou só com fone (`V4_VOICE_MUTE_SPEAKER 1`)?
+4. **Harmonizador:** o granular é robótico. Querem um que siga a tecla tocada? Pede detecção de afinação da voz e CPU extra, a medir.
+5. **CCs e página:** os CCs de voz (16–19, 76–78, 80–83) existem só no sketch; a página V4 muda `script.js` junto. Os knobs não controlam os efeitos: querem um jeito (clique longo do seletor)?
+6. **Mapa de notas do usuário:** CC novo e lugar na EEPROM para quantos módulos vão ao grave, e um mapa por registro?
+7. **Notas até E7:** o acordeão amostrado cobre bem até a tecla 79; gravar mais amostras agudas ou limitar o mapa?
+8. **Desligar com USB:** o desligamento suave basta, ou a V4 devolve o PWR_EN para cortar o 3,3 V com o cabo?

@@ -135,6 +135,32 @@ const uint8_t VBAT_PIN = 16;            // battery / 2
 const uint8_t HP_DET_PIN = 17;          // headphones in: ~0 V; out: ~1.4 V
 #endif
 
+// Student V4 options (SPEC R3V4). All of them only exist in the V4 build.
+#if ETUTTI_V4
+// Both ADCs at once (Teensyduino's ADC library): the four row lines are read two at a
+// time, rows 1+3 together, then rows 2+4 (pins 14/15 reach ADC1 and ADC2, 26/27 only ADC2).
+#define V4_ADC_DUAL 1
+// Voice effects (R3V4 item 6): vocoder with the keyboard as carrier, pitch shifter,
+// echo, voice into the reverb, voice + keyboard mix. Everything starts switched off.
+#define V4_VOICE_FX 1
+// 1 = the voice is muted while the speaker is the output (microphone next to the speaker
+// would howl); 0 = it is heard on the speaker too. Untested on a real board.
+#define V4_VOICE_MUTE_SPEAKER 0
+// Throwaway measuring build, NOT for use: plays 8 notes by itself, steps through the voice
+// effects every 6 s and prints the audio CPU, the audio blocks and the time of a key pass on the
+// serial port (115200). Build with usb=serialmidi (arduino-cli ... teensyMM:usb=serialmidi,speed=396).
+#define V4_BENCH 0
+#if V4_ADC_DUAL
+#include <ADC.h>
+#endif
+#if V4_VOICE_FX
+#include "voice_fx.h"
+#endif
+#endif
+#if !(ETUTTI_V4 && V4_ADC_DUAL)
+inline int analogReadSlow(uint8_t pin) { return analogRead(pin); }   // V4 with the ADC library has its own (below)
+#endif
+
 #if ETUTTI_STUDENT && !ETUTTI_STUDENT_V4
 // ---- Student V01 keys: 28 keys on a 4 x 8 grid, two multiplexers. KEY_INPUT is the table the
 // board check (viaggio_j1/m3.py) read from the routed board, 28/28.
@@ -178,14 +204,28 @@ const uint8_t SR_DATA_PIN = 2, SR_CLK_PIN = 3;                // SCAN_DATA, SCAN
 const uint8_t CHG_STAT_PIN = 0;         // moved off 26 (now OUT_R3); low = charging, only with USB power
 const int SR_STAGES = 8 * V4_STRIPS_PER_ROW;   // each strip's 595 has 8 stages, only QA..QD (the first 4) carry sensors
 const uint32_t SR_HALF_PERIOD_NS = 100;        // 74HC595 at 3.3 V: CLK up to 5 MHz
-// Hot scan: a key that has just started to move is read again on its own (about
-// 70 us per column instead of a whole pass) until it passes the note-on level.
-const uint32_t HOT_BUDGET_US = 3000;
-const float HOT_FROM = 0.03f;
+// Hot scan (R3V4 item 5): a key that has started to move up is read again on its own
+// column (~85 us per column change, ~56 us for the same column again, instead of a whole
+// pass) until it passes the note-on level. All the columns with a moving key take turns,
+// the one read longest ago first (round robin), so in a chord the second note gets a
+// velocity too. Every key is still read once per pass, and the hot reads of a pass are
+// limited (hotBudgetUs) so that no key waits much longer than MAX_KEY_GAP_US between two
+// readings: the audio interrupts take (1 - u) of the loop's time, u = AudioProcessorUsage(),
+// so the budget shrinks as the sound gets heavier (never below HOT_BUDGET_MIN_US).
+const float HOT_FROM = 0.03f;                 // travel where a rising key becomes "hot"
+const uint32_t HOT_WINDOW_US = 15000;         // a press slower than this (from VEL_START) is not worth fast reads
+const uint32_t HOT_HOLD_US = 2000;            // "rising" is remembered this long (slow, noisy presses)
+const uint32_t HOT_MIN_GAP_US = 40;           // least time between two reads of the same column in a burst
+const uint32_t MAX_KEY_GAP_US = 2200;         // the target for any key
+const uint32_t HOT_BUDGET_MIN_US = 300;       // a few rounds even when the pass alone is already long
+const uint32_t PASS_NOMINAL_US = (uint32_t)(LAYOUT_COLS * 67 + 40);   // one pass with no hot reads, no audio (ADC dual: 60 + 6 + 1)
 // V4 switches (TODO = depends on a decision of the electronics agent):
 #define V4_FORCE_FULL_SPEED 1            // USB at 12 Mbit/s (R1V4 5.4 item 3); untested on a board
 #define V4_HAVE_OLED 1                   // 128 x 64 SSD1306 on I2C 0x3C (J401, I2C shared with the codec)
 #define V4_HAVE_MIC 1                    // PINOS: pin 8 = I2S_RX, "microphone IN" of the codec
+#if V4_VOICE_FX && !V4_HAVE_MIC
+#error "V4_VOICE_FX needs V4_HAVE_MIC"
+#endif
 const uint8_t OLED_ADDR = 0x3C;
 const int OLED_ROTATION = 2;             // as Adafruit_SSD1306::setRotation(2): upside down
 #else
@@ -233,7 +273,11 @@ const int8_t FIRST_NOTE[2][LAYOUT_ROWS] = {
   {57, 55, 56, 57},   // C-griff: A3, G3, G#3, A3
   {56, 55, 57, 56},   // B-griff: G#3, G3, A3, G#3
 };
+#if ETUTTI_V4
+const uint8_t FIRST_COL[LAYOUT_ROWS] = {0, 0, 0, 0};   // R3V4 (PINOS.md): each strip starts at the row's first key; the empty spots are at the END of the row
+#else
 const uint8_t FIRST_COL[LAYOUT_ROWS] = {1, 0, 1, 1};
+#endif
 int layoutSystem = 0;   // 0 = C-griff, 1 = B-griff
 
 #if ETUTTI_V4
@@ -246,11 +290,11 @@ const int V4_EXTRA_MODULES = (V4_KEYS - 28) / 16;
 const int V4_BASS_MODULES = V4_EXTRA_MODULES / 2;
 int noteShift = -12 * V4_BASS_MODULES;   // semitones
 
-// Where the keys are: rows 1 and 3 start at column 1, row 2 fills the width, row 4 stops
-// one short (28: 7 + 8 + 7 + 6; each module adds 4 to every row).
+// Where the keys are (PINOS.md R3V4): every row starts at column 0; row 2 fills the width, rows 1 and 3
+// stop one short, row 4 two short (28: 7 + 8 + 7 + 6; each module adds 4 to every row).
 bool v4HasKey(int r, int c) {
-  if (c < FIRST_COL[r]) return false;
-  return r == 3 ? c <= LAYOUT_COLS - 2 : true;
+  int lack = (r == 1) ? 0 : (r == 3 ? 2 : 1);
+  return c < LAYOUT_COLS - lack;
 }
 #endif
 
@@ -321,6 +365,7 @@ struct Key {
   uint8_t sentPosition;     // last position sent in key test mode
   float restAtModel;        // V4: rest when the model was last built (skips needless cube roots)
   bool rising;              // V4: the last reading was higher than the one before
+  uint32_t hotUntil;        // V4: the key counts as rising until this time (micros), see HOT_HOLD_US
 };
 Key keyState[MAX_KEYS];
 int keyCount = 0;
@@ -340,6 +385,7 @@ void resetCalibration();
 void updateModel(Key &k);
 float keyTravel(const Key &k, float reading);
 uint32_t crossingTime(const Key &k, float prev, float now, float level, uint32_t nowMicros);
+bool keyIsHot(const Key &k, uint32_t now);
 
 // ---- Audio graph ----
 // Accordion: 4 reeds per voice -> per-voice mixer -> bellows envelope.
@@ -369,6 +415,39 @@ AudioControlSGTL5000     codec;
 AudioInputI2S            i2sIn;
 AudioAnalyzePeak         micPeak;
 AudioConnection          pmic(i2sIn, 0, micPeak, 0);
+#if V4_VOICE_FX
+// Voice effects (R3V4 item 6, voice_fx.h): mic -> VoiceInput (high-pass, gain, gate), then
+//   vin -> vocoder voice input; the keyboard (toneFilter) is its carrier,
+//   vin -> pitch shifter (AudioEffectGranular),
+//   vin + shifted -> echo,
+//   vin, shifted, echo -> voiceBus -> master (and into the reverb together with the keys).
+const int VOICE_HARM_SAMPLES = 12800;           // grain memory of the pitch shifter (library example size)
+const int VOICE_ECHO_SAMPLES = 32768;           // 743 ms
+DMAMEM int16_t harmMem[VOICE_HARM_SAMPLES];
+DMAMEM int16_t echoMem[VOICE_ECHO_SAMPLES];
+vfx::VoiceInput          vin;
+AudioEffectGranular      harm;
+vfx::VoiceEcho           echo;
+vfx::VocoderFx           voc;
+AudioMixer4              echoSrc;               // vin, shifted voice
+AudioMixer4              voiceBus;              // vin, shifted voice, echo
+AudioMixer4              roomIn;                // keys, voiceBus, vocoder: what the reverb hears
+AudioConnection          pvi(i2sIn, 0, vin, 0);
+AudioConnection          pvh(vin, 0, harm, 0);
+AudioConnection          pes0(vin, 0, echoSrc, 0);
+AudioConnection          pes1(harm, 0, echoSrc, 1);
+AudioConnection          pec(echoSrc, 0, echo, 0);
+AudioConnection          pvb0(vin, 0, voiceBus, 0);
+AudioConnection          pvb1(harm, 0, voiceBus, 1);
+AudioConnection          pvb2(echo, 0, voiceBus, 2);
+AudioConnection          pvo0(vin, 0, voc, 0);
+AudioConnection          pvo1(toneFilter, 0, voc, 1);
+AudioConnection          prm0(toneFilter, 0, roomIn, 0);
+AudioConnection          prm1(voiceBus, 0, roomIn, 1);
+AudioConnection          prm2(voc, 0, roomIn, 2);
+AudioConnection          pmv(voiceBus, 0, master, 2);
+AudioConnection          pmo(voc, 0, master, 3);
+#endif
 #endif
 
 #define REED_PATCH(v) \
@@ -402,7 +481,11 @@ AudioConnection pe2(smpA, 0, engines, 2);
 AudioConnection pe3(smpB, 0, engines, 3);
 AudioConnection pt(engines, 0, toneFilter, 0);
 AudioConnection pd(toneFilter, 0, master, 0);       // dry (low-pass output)
+#if ETUTTI_V4 && V4_VOICE_FX
+AudioConnection pv(roomIn, 0, room, 0);
+#else
 AudioConnection pv(toneFilter, 0, room, 0);
+#endif
 AudioConnection pw(room, 0, master, 1);       // reverb
 AudioConnection po(master, 0, outAmp, 0);
 AudioConnection pl(outAmp, 0, i2sOut, 0);
@@ -696,11 +779,19 @@ void setSynthWave(int o, byte value) {
   AudioInterrupts();
 }
 
+#if ETUTTI_V4 && V4_VOICE_FX
+float keysLevel = 1.0f;                 // the keyboard's share of the mix (CC 83)
+#endif
 void setAmbience(byte value) {
   float wet = value / 127.0f;
+#if ETUTTI_V4 && V4_VOICE_FX
+  master.gain(0, (1.0f - 0.35f * wet) * keysLevel);
+#else
   master.gain(0, 1.0f - 0.35f * wet);
+#endif
   master.gain(1, 0.6f * wet);
 }
+byte ambienceNow = 25;
 
 // Volume, 0..127. eTuttino: the codec's headphone amplifier. Student V01: a
 // gain before the I2S output, because the speaker amplifier takes the same
@@ -720,7 +811,97 @@ void setVolume(int v) {
 void registerChanged();   // keeps the selector in step with a register set over MIDI
 #endif
 
+#if ETUTTI_V4 && V4_VOICE_FX
+// ---- Voice effects: controls (R3V4 item 6) ----
+// Everything starts off (all the levels 0): the microphone is not even read until one is raised.
+//   CC 16 voice (dry)        0..127   CC 76 echo level   CC 80 voice into the reverb
+//   CC 17 vocoder level      0..127   CC 77 echo time    60..740 ms
+//   CC 18 pitch shifter level         CC 78 echo feedback 0..0.85
+//   CC 19 pitch shift         -12..+12 semitones (64 = none)   CC 81 gate threshold
+//   CC 82 microphone gain (codec)     CC 83 keyboard level (0 = voice only)
+// The numbers are in the sketch only for now: the page (script.js) has no V4 model yet, and the
+// CC map has to change in both together.
+extern bool headphones;                 // defined with the other jack state, further down
+struct VoiceFx {
+  uint8_t voice = 0, vocoder = 0, harm = 0, interval = 64, echo = 0, echoTime = 40, echoFb = 40;
+  uint8_t reverb = 40, gate = 30, micGain = 60;
+  bool harmOn = false;
+} vfxState;
+
+inline float vfxCurve(uint8_t v) { float x = v / 127.0f; return x * sqrtf(x); }   // x^1.5: finer near zero
+
+void voiceFxApply() {
+  VoiceFx &f = vfxState;
+  bool speakerMute = V4_VOICE_MUTE_SPEAKER && !headphones;
+  float duck = speakerMute ? 0.0f : 1.0f;
+  bool any = f.voice || f.vocoder || f.harm || f.echo;
+  vin.setActive(any);
+  vin.setGain(1.0f);
+  vin.setGate(40.0f + f.gate * f.gate * 0.25f);                    // 40 .. ~4000 (int16 units)
+  voc.setActive(f.vocoder > 0 && !speakerMute);
+  voc.setLevel(vfxCurve(f.vocoder) * 1.5f);
+  if (f.harm > 0 && !f.harmOn) {
+    harm.begin(harmMem, VOICE_HARM_SAMPLES);
+    harm.beginPitchShift(25.0f);
+    f.harmOn = true;
+  } else if (f.harm == 0 && f.harmOn) {
+    harm.stop();
+    f.harmOn = false;
+  }
+  harm.setSpeed(powf(2.0f, ((int)f.interval - 64) / 64.0f));        // -12 .. +12 semitones
+  echo.setDelayMs(60.0f + f.echoTime * (680.0f / 127.0f));
+  echo.setFeedback(f.echoFb * (0.85f / 127.0f));
+  echoSrc.gain(0, 1.0f);
+  echoSrc.gain(1, f.harm > 0 ? 1.0f : 0.0f);                       // the shifter passes the voice through when it is off
+  voiceBus.gain(0, vfxCurve(f.voice) * 1.5f * duck);
+  voiceBus.gain(1, vfxCurve(f.harm) * 1.5f * duck);
+  voiceBus.gain(2, vfxCurve(f.echo) * 1.5f * duck);
+  roomIn.gain(0, 1.0f);
+  roomIn.gain(1, vfxCurve(f.reverb));
+  roomIn.gain(2, vfxCurve(f.reverb));
+  master.gain(2, 1.0f);
+  master.gain(3, 1.0f);
+}
+
+void voiceFxMicGain() { codec.micGain(20 + (vfxState.micGain * 32) / 127); }   // 20 .. 52 dB (I2C: only when it changes)
+
+bool voiceFxControl(byte control, byte value) {
+  VoiceFx &f = vfxState;
+  switch (control) {
+    case 16: f.voice = value; break;
+    case 17: f.vocoder = value; break;
+    case 18: f.harm = value; break;
+    case 19: f.interval = value; break;
+    case 76: f.echo = value; break;
+    case 77: f.echoTime = value; break;
+    case 78: f.echoFb = value; break;
+    case 80: f.reverb = value; break;
+    case 81: f.gate = value; break;
+    case 82: f.micGain = value; voiceFxMicGain(); break;
+    case 83:
+      keysLevel = value / 127.0f;
+      setAmbience(ambienceNow);
+      return true;
+    default: return false;
+  }
+  voiceFxApply();
+  return true;
+}
+
+void voiceFxBegin() {
+  echo.begin(echoMem, VOICE_ECHO_SAMPLES);
+  harm.begin(harmMem, VOICE_HARM_SAMPLES);
+  harm.stop();
+  voc.setSpeed(4.0f, 25.0f);
+  voiceFxApply();
+  voiceFxMicGain();
+}
+#endif
+
 void handleControlChange(byte channel, byte control, byte value) {
+#if ETUTTI_V4 && V4_VOICE_FX
+  if (voiceFxControl(control, value)) return;
+#endif
   switch (control) {
     case 7:
       setVolume(value);
@@ -787,6 +968,7 @@ void handleControlChange(byte channel, byte control, byte value) {
       setTone(value);
       break;
     case 91:
+      ambienceNow = value;
       setAmbience(value);
       break;
     case 120:
@@ -886,6 +1068,7 @@ void resetCalibration() {
 //    strips the "1" passes 4 dead stages (columns 3 -> 4 take 5 pulses, others 1);
 //  - the outputs are not high-impedance at power-up: srClear() shifts zeros through every stage.
 int srPos = -1;                         // column switched on, -1 = none known
+uint32_t srOnAt = 0;                    // micros() when it was switched on (the sensors need SENSOR_WAKE_US)
 uint8_t colKey[LAYOUT_COLS][LAYOUT_ROWS];   // key index at (column, row), 255 = none
 
 inline void srPulse(bool bit) {
@@ -914,11 +1097,60 @@ void srSelect(int c) {
     srPulse(0);
   }
   srPos = c;
+  srOnAt = micros();
 }
 
+#if V4_ADC_DUAL
+ADC *adcLib = new ADC();                // Teensyduino's ADC library: ADC1 = adc0, ADC2 = adc1
+
+void setupAdc() {
+  // 12 bits, no averaging. Fast conversion, medium sampling time: the sensors' OUT is a driven,
+  // low-impedance output (1.27 ohm), unlike the battery divider (see analogReadSlow).
+  for (int a = 0; a < 2; a++) {
+    ADC_Module *m = a == 0 ? adcLib->adc0 : adcLib->adc1;
+    m->setResolution(12);
+    m->setAveraging(1);
+    m->setConversionSpeed(ADC_CONVERSION_SPEED::HIGH_SPEED);
+    m->setSamplingSpeed(ADC_SAMPLING_SPEED::MED_SPEED);
+  }
+}
+
+// For the high-impedance pins (battery divider 2 x 100 kohm, headphone detect): the slowest
+// sampling time, as Teensyduino's own analogRead() uses.
+int analogReadSlow(uint8_t pin) {
+  adcLib->adc0->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_LOW_SPEED);
+  int v = adcLib->adc0->analogRead(pin);
+  adcLib->adc0->setSamplingSpeed(ADC_SAMPLING_SPEED::MED_SPEED);
+  return v;
+}
+#endif
+
 // Reads the sensors of the selected column (after the wake-up), one per row, with
-// the time of each reading. Rows with no key there are skipped (5.6 us each).
+// the time of each reading. Rows with no key there are skipped.
+// Rows 1 and 2 (pins 14, 15) are read on ADC1 and rows 3 and 4 (26, 27: ADC2 only) on ADC2, at
+// the same time: two pairs, about 2 x 3 us instead of 4 x 5.6 us one after the other.
 void readColumn(int c, uint16_t *raw, uint32_t *at) {
+#if V4_ADC_DUAL
+  for (int p = 0; p < 2; p++) {
+    int ia = colKey[c][p], ib = colKey[c][p + 2];
+    if (ia != 255) adcLib->adc0->startSingleRead(ROW_OUT_PINS[p]);
+    if (ib != 255) adcLib->adc1->startSingleRead(ROW_OUT_PINS[p + 2]);
+    if (ia != 255) {
+      while (!adcLib->adc0->isComplete()) {
+      }
+      uint16_t v = adcLib->adc0->readSingle();
+      at[p] = micros();
+      raw[p] = keyState[ia].sign < 0 ? 4095 - v : v;      // falling readings mirrored about mid-scale
+    }
+    if (ib != 255) {
+      while (!adcLib->adc1->isComplete()) {
+      }
+      uint16_t v = adcLib->adc1->readSingle();
+      at[p + 2] = micros();
+      raw[p + 2] = keyState[ib].sign < 0 ? 4095 - v : v;
+    }
+  }
+#else
   for (int r = 0; r < LAYOUT_ROWS; r++) {
     uint8_t i = colKey[c][r];
     if (i == 255) continue;
@@ -926,6 +1158,7 @@ void readColumn(int c, uint16_t *raw, uint32_t *at) {
     at[r] = micros();
     raw[r] = keyState[i].sign < 0 ? 4095 - v : v;   // falling readings mirrored about mid-scale
   }
+#endif
 }
 
 // Whole pass, no tricks, one column at a time (used for the rest readings at start-up).
@@ -988,6 +1221,9 @@ void setupKeys() {
 #endif
   analogReadResolution(12);
   analogReadAveraging(1);
+#if ETUTTI_V4 && V4_ADC_DUAL
+  setupAdc();
+#endif
   keyCount = 0;
   for (int r = 0; r < LAYOUT_ROWS; r++) {
     for (int c = 0; c < LAYOUT_COLS; c++) {
@@ -1072,6 +1308,9 @@ bool processKey(int i, float raw, uint32_t now) {
   }
   float t = keyTravel(k, raw);
   k.rising = t > k.travel + 0.002f;
+#if ETUTTI_V4
+  if (k.rising) k.hotUntil = now + HOT_HOLD_US;
+#endif
   if (!k.down) {
     if (t < VEL_START) {
       k.startMicros = 0;
@@ -1116,43 +1355,93 @@ void finishScan(bool changed) {
 
 #if ETUTTI_V4
 bool keysBusy = false;   // some key is off its rest position (the OLED waits, I2C would stall the scan)
+uint32_t colReadAt[LAYOUT_COLS];   // micros() of each column's last reading
+uint32_t hotCols = 0;              // bit c: column c holds a key that wants fast readings
 
-// One pass over all the keys, a column at a time. While the next column's sensors
-// wake up (SENSOR_WAKE_US) the previous column's readings are processed, so the
-// wake-up costs no extra time for the arithmetic. Then the "hot scan".
+// A key that is on its way up, between HOT_FROM and the note-on level, and still moving or slow
+// enough to matter: its velocity is being timed, so it is read as often as possible.
+bool keyIsHot(const Key &k, uint32_t now) {
+  if (!k.present || k.down || k.travel < HOT_FROM || k.travel >= NOTE_ON_AT) return false;
+  if ((int32_t)(k.hotUntil - now) <= 0) return false;
+  if (k.startMicros && now - k.startMicros > HOT_WINDOW_US) return false;
+  return true;
+}
+
+// Handles the readings of one column (4 keys at most) and updates its "hot" bit.
+bool processColumn(int c, const uint16_t *raw, const uint32_t *at) {
+  bool changed = false;
+  for (int r = 0; r < LAYOUT_ROWS; r++) {
+    if (colKey[c][r] != 255) changed |= processKey(colKey[c][r], raw[r], at[r]);
+  }
+  uint32_t now = micros();
+  bool hot = false;
+  for (int r = 0; r < LAYOUT_ROWS; r++) {
+    if (colKey[c][r] != 255) hot |= keyIsHot(keyState[colKey[c][r]], now);
+  }
+  if (hot) hotCols |= 1UL << c;
+  else hotCols &= ~(1UL << c);
+  return changed;
+}
+
+// Switches column c on if it is not, and waits until its sensors have woken up.
+inline void wakeColumn(int c) {
+  if (srPos != c) srSelect(c);
+  int32_t left = (int32_t)SENSOR_WAKE_US - (int32_t)(micros() - srOnAt);
+  if (left > 0) delayMicroseconds(left);
+}
+
+// Hot reads, in turns: while some column has a key being timed, the one read longest ago is
+// read next (round robin), for at most `budget` us. A column that is still on from the last
+// turn needs no new wake-up, only HOT_MIN_GAP_US between readings.
+bool hotBurst(uint32_t budget) {
+  uint16_t raw[LAYOUT_ROWS];
+  uint32_t at[LAYOUT_ROWS];
+  bool changed = false;
+  uint32_t start = micros();
+  while (hotCols && micros() - start < budget) {
+    uint32_t now = micros();
+    int best = -1;
+    uint32_t bestAge = 0;
+    for (uint32_t m = hotCols; m; m &= m - 1) {
+      int c = __builtin_ctz(m);
+      uint32_t age = now - colReadAt[c];
+      if (best < 0 || age > bestAge) {
+        best = c;
+        bestAge = age;
+      }
+    }
+    wakeColumn(best);
+    while (micros() - colReadAt[best] < HOT_MIN_GAP_US) {
+    }
+    readColumn(best, raw, at);
+    colReadAt[best] = micros();
+    changed |= processColumn(best, raw, at);
+  }
+  return changed;
+}
+
+// One pass over all the keys, a column at a time. While the next column's sensors wake up
+// (SENSOR_WAKE_US) the previous column's readings are processed, so the wake-up costs no extra
+// time for the arithmetic. Whenever a key starts to move up, the hot reads (round robin over
+// the moving keys' columns) run at once, up to the pass's hot budget.
 void scanKeys() {
   uint16_t raw[LAYOUT_ROWS];
   uint32_t at[LAYOUT_ROWS];
   bool changed = false;
-  srSelect(0);
-  uint32_t ready = micros() + SENSOR_WAKE_US;
+  float u = constrain(AudioProcessorUsage() * 0.01f, 0.0f, 0.8f);   // share of the time the audio interrupts take
+  int32_t room = (int32_t)MAX_KEY_GAP_US - (int32_t)(PASS_NOMINAL_US / (1.0f - u));
+  uint32_t hotLeft = room > (int32_t)HOT_BUDGET_MIN_US ? (uint32_t)room : HOT_BUDGET_MIN_US;
   for (int c = 0; c < LAYOUT_COLS; c++) {
-    while ((int32_t)(micros() - ready) < 0) {
-    }
+    wakeColumn(c);
     readColumn(c, raw, at);
-    if (c + 1 < LAYOUT_COLS) {
-      srSelect(c + 1);
-      ready = micros() + SENSOR_WAKE_US;
-    }
-    for (int r = 0; r < LAYOUT_ROWS; r++) {
-      if (colKey[c][r] != 255) changed |= processKey(colKey[c][r], raw[r], at[r]);
-    }
-  }
-  // Hot scan: keys that are travelling up towards the note-on level are read again,
-  // their column alone, so a fast press is timed finely however many keys there are.
-  uint32_t hotStart = micros();
-  while (micros() - hotStart < HOT_BUDGET_US) {
-    int hotColumn = -1;
-    for (int i = 0; i < keyCount && hotColumn < 0; i++) {
-      const Key &k = keyState[i];
-      if (k.present && !k.down && k.rising && k.travel >= HOT_FROM && k.travel < NOTE_ON_AT) hotColumn = k.col;
-    }
-    if (hotColumn < 0) break;
-    srSelect(hotColumn);
-    delayMicroseconds(SENSOR_WAKE_US);
-    readColumn(hotColumn, raw, at);
-    for (int r = 0; r < LAYOUT_ROWS; r++) {
-      if (colKey[hotColumn][r] != 255) changed |= processKey(colKey[hotColumn][r], raw[r], at[r]);
+    colReadAt[c] = micros();
+    if (c + 1 < LAYOUT_COLS) srSelect(c + 1);
+    changed |= processColumn(c, raw, at);
+    if (hotCols && hotLeft) {
+      uint32_t t0 = micros();
+      changed |= hotBurst(hotLeft);
+      uint32_t used = micros() - t0;
+      hotLeft = used >= hotLeft ? 0 : hotLeft - used;
     }
   }
   keysBusy = false;
@@ -1471,7 +1760,7 @@ void setupControls() {
   attachInterrupt(digitalPinToInterrupt(VOL_B_PIN), volumeIsr, CHANGE);
   attachInterrupt(digitalPinToInterrupt(ENC_A_PIN), encoderIsr, CHANGE);
   attachInterrupt(digitalPinToInterrupt(ENC_B_PIN), encoderIsr, CHANGE);
-  batteryVolts = analogRead(VBAT_PIN) * 2.0f / ADC_PER_VOLT;
+  batteryVolts = analogReadSlow(VBAT_PIN) * 2.0f / ADC_PER_VOLT;
   volDown = digitalReadFast(VOL_SW_PIN) == LOW;
 }
 
@@ -1531,17 +1820,24 @@ void updatePower() {
   bool usb = usbPower();
   if (now - batteryReadAt >= 500) {
     batteryReadAt = now;
-    batteryVolts += (analogRead(VBAT_PIN) * 2.0f / ADC_PER_VOLT - batteryVolts) * 0.1f;
+    batteryVolts += (analogReadSlow(VBAT_PIN) * 2.0f / ADC_PER_VOLT - batteryVolts) * 0.1f;
     if (usb || batteryVolts >= BATTERY_EMPTY_V) batteryEmptySince = 0;
     else if (batteryEmptySince == 0) batteryEmptySince = now | 1;
     else if (now - batteryEmptySince > 10000) powerOff();
   }
   if (now - jackReadAt >= 50) {
     jackReadAt = now;
-    float volts = analogRead(HP_DET_PIN) / ADC_PER_VOLT;
+    float volts = analogReadSlow(HP_DET_PIN) / ADC_PER_VOLT;
     if (volts < 0.5f) headphones = true;
     else if (volts > 0.9f) headphones = false;
   }
+#if ETUTTI_V4 && V4_VOICE_FX && V4_VOICE_MUTE_SPEAKER
+  static bool lastHeadphones = headphones;
+  if (lastHeadphones != headphones) {
+    lastHeadphones = headphones;
+    voiceFxApply();
+  }
+#endif
 #if !ETUTTI_V4
   if (usb) lastActivityAt = now;        // V01: never off while the cable is in
 #endif
@@ -1714,6 +2010,78 @@ extern "C" void startup_late_hook(void) {
 }
 #endif
 
+
+#if ETUTTI_V4 && V4_BENCH
+#if !defined(USB_MIDI_SERIAL)
+#error "V4_BENCH prints on the serial port: build with usb=serialmidi"
+#endif
+// ---- measuring build: see V4_BENCH ----
+struct BenchStep { const char *name; uint8_t reg, voice, vocoder, harm, echo, reverb; };
+const BenchStep BENCH_STEPS[] = {
+  {"MM keys only      ", 0b0110, 0, 0, 0, 0, 0},
+  {"+ voice dry       ", 0b0110, 100, 0, 0, 0, 0},
+  {"+ vocoder         ", 0b0110, 0, 100, 0, 0, 0},
+  {"+ pitch shifter   ", 0b0110, 0, 0, 100, 0, 0},
+  {"+ echo            ", 0b0110, 0, 0, 0, 90, 0},
+  {"+ reverb send     ", 0b0110, 100, 0, 0, 0, 100},
+  {"ALL voice fx      ", 0b0110, 100, 100, 100, 90, 100},
+  {"4 ranks keys only ", 0b1111, 0, 0, 0, 0, 0},
+  {"4 ranks ALL fx    ", 0b1111, 100, 100, 100, 90, 100},
+};
+const int BENCH_COUNT = sizeof(BENCH_STEPS) / sizeof(BENCH_STEPS[0]);
+const uint32_t BENCH_STEP_MS = 6000;
+int benchStep = -1;
+uint32_t benchStepAt = 0, benchScanSum = 0, benchScanMax = 0, benchScanN = 0, benchUsageN = 0, benchUsageAt = 0;
+float benchUsageSum = 0;
+
+void benchApply(int step) {
+  const BenchStep &b = BENCH_STEPS[step];
+  registerMask = b.reg;
+  applyOscGains();
+  handleControlChange(1, 16, b.voice);
+  handleControlChange(1, 17, b.vocoder);
+  handleControlChange(1, 18, b.harm);
+  handleControlChange(1, 19, 64 + 21);                // +4 semitones
+  handleControlChange(1, 76, b.echo);
+  handleControlChange(1, 77, 60);
+  handleControlChange(1, 78, 60);
+  handleControlChange(1, 80, b.reverb);
+  handleControlChange(1, 81, 0);                      // gate wide open
+}
+
+void benchReport() {
+  const BenchStep &b = BENCH_STEPS[benchStep];
+  Serial.printf("%s audio CPU avg %5.1f %%  max %5.1f %%  blocks max %2d  key pass avg %5.0f us  max %5lu us  (%lu passes)\n", b.name,
+                benchUsageN ? benchUsageSum / benchUsageN : 0.0f, AudioProcessorUsageMax(), AudioMemoryUsageMax(),
+                benchScanN ? (float)benchScanSum / benchScanN : 0.0f, (unsigned long)benchScanMax, (unsigned long)benchScanN);
+}
+
+void benchUpdate(uint32_t scanUs) {
+  uint32_t now = millis();
+  if (benchStep < 0 || now - benchStepAt >= BENCH_STEP_MS) {
+    if (benchStep >= 0) benchReport();
+    benchStep = (benchStep + 1) % BENCH_COUNT;
+    if (benchStep == 0) Serial.println("---- V4 bench: 8 notes held, steps of 6 s ----");
+    benchStepAt = now;
+    benchScanSum = benchScanMax = benchScanN = benchUsageN = 0;
+    benchUsageSum = 0;
+    benchApply(benchStep);
+    AudioProcessorUsageMaxReset();
+    AudioMemoryUsageMaxReset();
+  }
+  if (now - benchStepAt > 1000) {                     // skip the first second of each step
+    benchScanSum += scanUs;
+    benchScanMax = max(benchScanMax, scanUs);
+    benchScanN++;
+    if (now - benchUsageAt >= 50) {
+      benchUsageAt = now;
+      benchUsageSum += AudioProcessorUsage();
+      benchUsageN++;
+    }
+  }
+}
+#endif
+
 void setup() {
   for (int i = 0; i < 2; i++) pinMode(LED_PINS[i], OUTPUT);
 #if ETUTTI_STUDENT
@@ -1721,7 +2089,11 @@ void setup() {
 #endif
   setLed(true, true);                            // orange: reading the keys
   uint32_t started = millis();
+#if ETUTTI_V4 && V4_VOICE_FX
+  AudioMemory(90);   // + the voice chain: about 20 more blocks in flight (estimate, see student_v04/FIRMWARE.md)
+#else
   AudioMemory(60);   // measured peak: 32 blocks (8 voices x 4 reeds + reverb); 8 with sampled reeds
+#endif
   setupKeys();
 
   codecOk = codec.enable();
@@ -1731,6 +2103,9 @@ void setup() {
 #if ETUTTI_V4 && V4_HAVE_MIC
   codec.inputSelect(AUDIO_INPUT_MIC);            // TODO(PINOS): the V4 board's microphone input
   codec.micGain(36);
+#if V4_VOICE_FX
+  voiceFxBegin();                                // all the voice effects start off
+#endif
 #endif
 #if ETUTTI_V4 && V4_HAVE_OLED
   oledSetup();
@@ -1780,7 +2155,7 @@ void setup() {
   setTone(110);
   room.roomsize(0.55f);
   room.damping(0.6f);
-  setAmbience(25);
+  setAmbience(ambienceNow);
 
 #if ETUTTI_STUDENT
   setupControls();
@@ -1796,6 +2171,11 @@ void setup() {
   while (millis() - started < LED_STARTUP_MS) {
   }
   updateLed();
+#if ETUTTI_V4 && V4_BENCH
+  Serial.begin(115200);
+  static const uint8_t chord[8] = {48, 52, 55, 60, 64, 67, 72, 76};
+  for (int i = 0; i < 8; i++) handleNoteOn(1, chord[i], 100);
+#endif
 }
 
 void loop() {
@@ -1803,7 +2183,13 @@ void loop() {
   while (usbMIDI.read()) {
     lastActivityAt = millis();
   }
+#if ETUTTI_V4 && V4_BENCH
+  uint32_t scanStart = micros();
+#endif
   scanKeys();
+#if ETUTTI_V4 && V4_BENCH
+  benchUpdate(micros() - scanStart);
+#endif
   updateControls();
 #if ETUTTI_STUDENT
   updatePower();

@@ -1,10 +1,50 @@
 # eTutti Student V4 · relatório da eletrônica
 
-**SPEC atendida: R1V4 e R2V4 (21 nov 2026), tarefas de eletrônica: E1, E2, E3 (verificação de custo da R2V4), E4, E5.**
+**SPEC atendida: R1V4, R2V4 e R3V4 (21 nov 2026).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
 Data: 21 nov 2026. Nada foi posicionado, roteado, encomendado nem gerado em `fab/`: é estudo (Fase A). A V3, a V2 e a V1 não foram tocadas.
 Scripts novos (reproduzem os números): `calculos_eletronica.py` (E2, E3), `fornecimento/precos_jlc.py` (preços e classe na
 biblioteca da JLCPCB, 21 nov, curl de 2 em 2 s). Contrato com a programação: `pcb/PINOS.md` (rascunho já entregue).
 Convenção: **(conferir)** = sem medida ou datasheet conferido; **estimativa** = conta minha, sem cotação.
+
+## R3V4 · painel régua + grade-régua e Fase B da placa principal
+
+### R3.1 Painel régua + grade-régua (tarefa 4)
+Sem o contrato do design (o `FIT_CHECK.md` ainda não define a grade-régua), usei o que o Chat pediu: **74 x 14 mm, mesmo contorno da régua**, 4 aberturas de 14,00 mm, FR-4, destacável por furinhos.
+| | Só réguas (R2V4) | Régua + grade-régua no **mesmo painel** (1,2 mm) | Grade-régua em **pedido separado** (1,5/1,6 mm) |
+|---|---|---|---|
+| Painel | 5 réguas, 88 x 84 mm | 10 tiras (5 + 5): 84 x 168 ou lado a lado **160 x 84 mm** | réguas 88 x 84 + 5 grades 88 x 84 |
+| Área / painel | 7 392 mm2 | 13 440 mm2 (1,8x), passa de 100 x 100 | 7 392 + 7 392 mm2 |
+| 28 teclas (8 + 8) | 2 painéis | 2 painéis (sobram 2 + 2) | 2 painéis de régua + 2 de grade |
+| Preço PCB (**estimativa**, 2 camadas, 5 painéis) | US$ 5-12 | **US$ 10-24** | US$ 5-12 + 4-10 (sem taxa de engenharia extra se 2 camadas lisas) |
+| Espessura da grade | = régua, 1,2 mm | **1,2 mm** (o design confere o encaixe das presilhas) | 1,5 ou 1,6 mm, à escolha |
+| Tipos Extended | 2 | 2 (a grade não leva peça) | 2 + 0 |
+**A montagem econômica aceita partes sem componentes no painel?** Não consegui confirmar sem subir os arquivos: a JLCPCB monta só o que está no BOM/CPL, e painel do cliente com mouse bites é opção documentada; **não confirmado que a *econômica* aceite tiras vazias**. Risco aceito, a testar na cotação: se recusar, a grade-régua vai em pedido à parte (coluna 3), sem montagem. Os 2 mm entre tiras e os trilhos de 5 mm valem igual. **Recomendação:** pedido separado se o design achar que 1,2 mm não segura a tecla sem folga (a distância ímã-sensor da régua fica em 1,2 mm); painel único se 1,2 mm servir (menos pedidos, mesma taxa).
+
+### R3.2 Esquema da placa principal (tarefa 5) · `pcb/schematic.py`, ERC 0/0, netlist OK, igual à V3 fora das mudanças listadas
+- Folhas P, E, F, I, A como na V3; folha **R** nova: J601..J604 (JST SH 6 vias, clone XYECONN C56123098: 1 +3V3, 2 GND, 3 OUT_Rk, 4 SCAN_CLK, 5 SCAN_DATA, 6 reservado), pull-downs R601..R604 100 k, séries R605/R606 100 ohm (CLK/DATA comuns às 4 fileiras). **Sem sensores nem multiplexadores**; o 74HC595 fica nas réguas.
+- Pinos como `pcb/PINOS.md` (14/15/26/27 = OUT_R1..4, 2/3 = DATA/CLK, CHG_STAT no 0). ADC1 e ADC2 em paralelo: os pinos 14, 15, 26, 27 são pads AD_B1 do RT1062, que ligam aos dois ADCs.
+- **Tela**: J401 passou a ser o mesmo SH de 6 vias (4 usadas; pino 1 = +3V3 como nas fileiras, então um plugue trocado nunca inverte a alimentação).
+- **Microfone** (datasheet do SGTL5000): MIC_BIAS 1,25-3,0 V, máx. VDDA - 0,2 V; BIAS_RESISTOR 2/4/8 k (0 desliga); ganho 0/20/30/40 dB; acoplamento série; Fig. 20 mostra 0,1 uF no MIC_BIAS: **adicionei C310**. R305 2,2 k fica (total 4,2 k com o resistor interno de 2 k da biblioteca; pode virar 0 ohm). C309 mantido em 1 uF (datasheet usa 0,1 uF). Falta: Zin do MIC **(conferir)**.
+- **Alto-falante**: Dayton CE28MB-8 nos pads de J501; MAX98357A a 9 dB, VSYS 3,0-4,4 V: potência máxima ~0,8 W em 8 ohm, abaixo do 1 W RMS do alto-falante.
+- **BOM** `bom_v4.csv`: 77 peças JLC, **13 tipos Extended** na principal (+ TMAG e SH-6 nas réguas = 15 < 17), peças US$ 17,87 por placa. Arquivos renomeados para V4 (`student_v04.*`, `pcb/schematic.py`, `pcb/posiciona_v4.py`, `bom_v4.py`).
+
+### R3.3 Posicionamento (tarefa 5): resumo, detalhes em `POSICIONAMENTO.md`
+75 x 95,1 mm, 77 peças no fundo, DRC sem trilhas **0 erros de courtyard/furos, paridade 0**, USB-C a **6,75 mm** dos pads 3/5, par **~7,1 mm**, In2 = GND inteira, corredores e regras no `.kicad_dru`. **Isto não é aprovação: o J aprova o portão P.**
+
+### R3.4 O que a programação precisa ajustar (`pcb/PINOS.md` final)
+Pulsos do acesso aleatório = **8 x N + 1** por fileira (a R2V4 dizia 160 para 20 colunas: errado); coluna 0 = régua mais perto da principal; **`FIRST_COL = {0,0,0,0}`** (as posições sem tecla ficam no fim da fileira, como no modelo do design); microfone pelo MIC do codec; J401 é SH-6.
+
+### R3.5 Atualização do design (FIT_CHECK seção 5): grade-régua própria, custo e faixa do TMAG5253
+- **Contrato novo:** grade-régua **73,6 x 14 x 1,6 mm FR-4 em desenho e pedido próprios** (1,2 mm não segura a KS-20); régua 74 x 14 x 1,2 com **furos Ø2,2 para M2** em (18,5; +5,2) e (55,5; +5,2); painel de 5. Isto **substitui** a coluna "mesmo painel" da R3.1 (a opção vira a de pedido separado, já recomendada). A régua não muda de espessura, então a distância ímã-sensor continua a da V3.
+- **Custo da grade (estimativa, sem cotação):** 2 camadas lisas, só FR-4 e furos, **sem montagem**. Painel de 5 grades (88 x 84 mm, mesma geometria do de réguas), pedido mínimo de 5 painéis = 25 grades (28 teclas usam 8; 44 usam 12): **US$ 2-8** (placa de 100 x 100 de 2 camadas a US$ 2 na tabela da JLCPCB; mais caro se 1,6 mm e área maior). **Taxa de engenharia:** a de US$ 25 da cotação da V3 era de placa de 4 camadas; para 2 camadas lisas não a espero, mas **não confirmado**: pior caso +25. Frete junto com os outros pedidos. Parafusos M2 não magnéticos (16 x ~US$ 0,10) + porcas: +US$ 2-4.
+- **F2 total, 28 teclas (R2V4 292-371):** + grade 2-8 + ferragem das réguas 2-4 = **US$ 296-383** (pior caso com taxa de engenharia da grade: 408), contra F1 332-477: **-11 % (baixo) a -20 % (alto)**; no pior caso, -14 %. Continua dentro do critério de 25 %.
+- **Faixa do TMAG5253 BA3 (datasheet, SBASAI5E): linear +-80 mT** (BA1 +-20, BA2 +-40, BA4 +-160), 15 mV/mT (12,75-17,25) a 3,3 V, Vq 1,65 V (1,61-1,69). **O "+-60 mT" da linha 157 estava errado** (o do BA1 é 60 mV/mT). Com 15 mV/mT x 110 mT daria +-1,65 V, mas esse é o limite teórico do swing, não a faixa linear garantida. A KS-20 dá 90,5 +-8 mT no fundo (905 Gs): **passa dos 80 mT lineares em até 18 mT**; ao fundo a saída vai a ~3,0 V (3,1 V no máximo), ainda sem saturar no trilho (a curva de linearidade, Fig. 6-3, não foi lida aqui), mas **na última fração do curso a resposta deixa de ser linear**. A firmware calibra o repouso e o fundo por tecla (EEPROM) e usa os limiares de 45 % / 30 %, então o efeito é de curva, não de tecla morta; o disparo e o velocity (12 %->45 %) ficam longe do fundo. **Risco aceito, a medir na primeira placa.** Fallback: **BA4 (+-160 mT, 7,5 mV/mT)**: 90 mT dá +-0,68 V (metade da resolução), mesmo footprint e mesmo preço de classe (Extended, conferir código LCSC).
+
+### Perguntas para o design (R3V4)
+1. Furo do USB-C na parede da esquerda em **y 10** (era 16) e módulo/H101 5,5 mm à esquerda, ou USB na parede de trás?
+2. Posição dos furos M2 da placa principal (propus H1 em 62;48) e fenda do cabo da tela (45..52; 22..25).
+3. Régua da fileira 2 começa em x 79,95 (só 2,5 mm da borda da placa): conector da régua e plugues a 9 mm um do outro, boca do conector da régua?
+4. Grade-régua: 1,2 mm segura a KS-20 sem folga? Define painel único ou pedido separado (R3.1).
 
 ## 0. Resumo
 
@@ -120,7 +160,7 @@ O resíduo de assentamento usa um polo único calibrado em "95 % em 45 us" (tau 
 | 90 us (12 bits limpos) | 0,25 % | 100 us | 0,80 ms | 1,20 | 1,60 | 2,00 ms |
 | 60 us com **2 linhas OUT por fileira** (pinos 38-41, **conferir**) | 1,8 % | 70 us | 0,28 ms | 0,42 | 0,56 | 0,70 ms |
 
-Resíduo é o erro de leitura (fração da diferença entre a coluna anterior e esta). Com diferença de até ~1 V (BA3 em +-60 mT), 60 us deixa até ~18 mV
+Resíduo é o erro de leitura (fração da diferença entre a coluna anterior e esta). Com diferença de até ~1 V (BA3 em +-80 mT: 15 mV/mT x 80 = 1,2 V; ver R3.5), 60 us deixa até ~18 mV
 (~1,2 mT); **a firmware deve ler a coluna k depois de uma coluna k-1 em repouso, ou usar 90 us**. Calibração de repouso por tecla absorve o resto.
 
 ### 2.4 Resolução de velocity

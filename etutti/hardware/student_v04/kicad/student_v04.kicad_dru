@@ -1,5 +1,5 @@
 (version 1)
-# eTutti Viaggio MicroMod -- custom rules (written by build_board.py, SPEC v2.3 step M2)
+# eTutti Student V4 main board -- custom rules (R3V4; derived from the V3's by pcb/posiciona_v4.py's author)
 # Every number carries its unit; no rule names the "Default" class.
 (rule "Vias 0,5 / furo 0,3 em todas as classes"
     (condition "A.Type == 'via'")
@@ -8,14 +8,14 @@
 (rule "Sinais: minimo 0,15 (afinacao na entrada de pinos finos)"
     (condition "A.Type == 'track' && A.NetClass != 'USB' && A.NetClass != 'Corrente'")
     (constraint track_width (min 0.15mm) (opt 0.2mm)))
-(rule "USB: so em B.Cu (par de ponta a ponta no fundo, sem vias, sobre a ilha de GND da In2)"
+(rule "USB: so em B.Cu (par de ponta a ponta no fundo, sem vias, sobre a In2 = GND inteira)"
     (condition "A.NetClass == 'USB' && A.Type == 'track' && A.Layer != 'B.Cu'")
     (constraint disallow track))
 (rule "USB: 0,2 mm, vao do par >= 0,127"
     (condition "A.NetClass == 'USB' && A.Type == 'track'")
     (constraint track_width (min 0.19mm) (opt 0.2mm))
     (constraint diff_pair_gap (min 0.127mm)))
-(rule "USB: 0,25 mm de qualquer outra rede (a ilha de cobre de GND fica de fora), fora dos patios do J201, U201 e J101"
+(rule "USB: 0,25 mm de qualquer outra rede (os planos ficam de fora), fora dos patios do J201, U201 e J101"
     (condition "A.NetClass == 'USB' && B.NetClass != 'USB' && A.Type == 'track' && B.Type != 'Zone' && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U201') && !A.intersectsCourtyard('J101')")
     (constraint clearance (min 0.25mm)))
 (rule "Corrente: minimo 0,8 fora dos patios de E1, E3, E4, E6, A1 e J101"
@@ -27,3 +27,9 @@
 (rule "Sob o cartao MicroMod: so pecas de ate 1,9 mm (campo Cabe_sob_cartao, de Altura_mm)"
     (condition "A.Type == 'Footprint' && A.Layer == 'B.Cu' && A.intersectsArea('cartao_MicroMod') && A.Reference != 'J101' && A.Reference != 'H101'")
     (constraint assertion "A.getField('Cabe_sob_cartao') == 'sim'"))
+(rule "OUT_Rk (analogico) a 0,3 mm de CLK/DATA/I2S/MCLK (diafonia nas leituras dos sensores)"
+    (condition "A.Type == 'track' && (A.NetName == 'OUT_R1' || A.NetName == 'OUT_R2' || A.NetName == 'OUT_R3' || A.NetName == 'OUT_R4') && (B.NetName == 'SCAN_CLK' || B.NetName == 'SCAN_DATA' || B.NetName == 'SCAN_CLK_P' || B.NetName == 'SCAN_DATA_P' || B.NetName == 'I2S_BCLK' || B.NetName == 'I2S_LRCLK' || B.NetName == 'I2S_TX' || B.NetName == 'I2S_RX' || B.NetName == 'AUD_MCLK' || B.NetName == 'AUD_MCLK_P')")
+    (constraint clearance (min 0.3mm)))
+(rule "Linhas dos conectores de fileira: 0,2 mm de largura no minimo (cabo de ate 5 reguas)"
+    (condition "A.Type == 'track' && (A.NetName == 'SCAN_CLK' || A.NetName == 'SCAN_DATA' || A.NetName == 'OUT_R1' || A.NetName == 'OUT_R2' || A.NetName == 'OUT_R3' || A.NetName == 'OUT_R4')")
+    (constraint track_width (min 0.2mm)))
