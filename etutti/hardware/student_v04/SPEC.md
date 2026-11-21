@@ -1,4 +1,87 @@
-# eTutti Student V4 — SPEC R3V4
+# eTutti Student V4 — SPEC R4V4
+
+Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #183 (relatórios da R3V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R4V4".
+
+## Mudanças desde a R3V4
+
+### 1. STEP da KS-20
+
+O J reenviou `KS-20T-20210922.stp`. É o **mesmo arquivo** que já está em `fornecimento/gateron/` (SHA-1 idêntico). Continua valendo o que o design achou:
+- é a revisão de 2021, com poste central e dois postinhos de haste;
+- **serve só para o envelope da carcaça de cima** (fit check e renders);
+- pinos, furação e haste vêm do **desenho PDF da Orange**.
+
+Nenhuma ação.
+
+### 2. Decisões aprovadas (respostas do Chat ao PR #183, sem objeção do J)
+
+| Tema | Decisão |
+|---|---|
+| Grade-régua | **(b): FR-4 de 1,6 mm em desenho próprio**, sem montagem, painel de 5, no mesmo pedido das réguas. A espuma sai de cena (fica só como registro). |
+| Deck | **2,5 mm com 5 / 8 / 11 / 14 postes** (28 / 44 / 60 / 76 teclas). O critério antigo de 0,05 mm a 3 N era para a placa sob o sensor; o deck agora não toca as teclas. |
+| Folga deck–carcaça e botão | 1,0 mm; topo da cabeça do botão a ZR + 22,8. |
+| Fixação da régua | 2 M2 não magnéticos por régua, com inserto na bossa do degrau; furo da régua Ø2,2. |
+| Tecla | **KS-20 Orange.** A Low Profile Jade sai do estudo (só volta se aparecerem desenho, STEP e molas pesadas). |
+| Sensor | **TMAG5253 BA3 mantido.** O último trecho do curso passa da faixa linear de ±80 mT (risco aceito, a medir na 1ª placa). O BA4 fica de reserva, no mesmo footprint. |
+| Varredura | Rodar num `IntervalTimer` com prioridade acima do áudio. **396 MHz por padrão**; 600 MHz só se a medição na placa pedir. |
+| Placa principal | USB-C na parede esquerda em **y 10**, módulo e H101 5,5 mm à esquerda: **aprovado**. |
+| Conector da fileira 2 | O J602 fica com só 2,5 mm de vão. O conector de **entrada da régua vai por baixo dela, no bolso**, longe da ponta, para o plugue e a curva do cabo caberem sem mexer na placa principal. Design e eletrônica definem juntos e atualizam o contrato da régua. |
+
+### 3. Portão P, parte 1: o J quer ver a planta antes de aprovar
+
+O J **só aprova o posicionamento depois de ver uma planta geral**. O roteamento da placa principal **não começa** antes disso.
+
+O Chat desenhou uma planta preliminar a partir de `pcb/posicao_v4.json` (`spec_img/planta_geral.png`, `spec_img/placa_blocos.png`, script `spec_img/planta_chat.py`). A bateria e o alto-falante estão nas posições da V3, **a confirmar**. O Code faz a versão oficial, com o modelo real:
+- **Instrumento inteiro, vista de cima**, com:
+  - contorno do case, placa principal, réguas e teclas;
+  - bateria, alto-falante e caixa acústica, tela e janela, knobs, botão;
+  - USB-C e jacks na parede, furos e postes da tampa, cabos das fileiras.
+- **Placa principal**, topo e fundo, com os blocos coloridos e rotulados (USB, MicroMod, energia, áudio, interface, fileiras) e as cotas principais.
+- **Um corte lateral pela interface**: placa, módulo, bateria, alto-falante, tela, knobs e tampa, com as alturas.
+- Tudo em `POSICIONAMENTO.md`, com uma lista curta do que mudou desde a planta do Chat.
+
+### 4. Voz e microfone (respostas do J)
+
+1. **Saída da voz:**
+   - Por padrão, a voz e os efeitos de voz saem **só no fone ou no AUX** (jack OUT).
+   - O usuário pode ativar a saída pelo alto-falante; ao ativar, a tela mostra um **aviso de possível microfonia**.
+2. **Filtro de amplitude da captação (anti-microfonia):**
+   - Opção de configuração no firmware: limiar ajustável da porta de ruído/expansor na entrada, com ataque, retenção e soltura, e passa-altas.
+   - Objetivo: só passa a voz de um **microfone bem próximo da boca**.
+   - Estudar também um supressor automático de microfonia (filtros notch que seguem a frequência que realimenta) e dizer o custo de CPU.
+3. **Harmonizador que segue a tecla:**
+   - Nova opção, ativável pelo usuário: o harmonizador desloca a voz **para a(s) nota(s) tocada(s) no teclado**.
+   - Precisa detectar a afinação da voz (YIN ou autocorrelação) e escolher o deslocamento.
+   - Mantém o modo de intervalo fixo.
+   - Estimar CPU e latência.
+4. **Controle pelos knobs e pela tela:**
+   - Ativar e desativar efeitos (e os ajustes de voz, saída e configuração) será feito com **os 2 knobs navegando um menu visual na tela OLED**.
+   - O programação e som propõe:
+     - a árvore do menu;
+     - os gestos, sem conflitar com o liga/desliga (clique de 2 s no volume). Sugestão: clique longo no seletor abre o menu, o seletor navega e confirma, o volume ajusta o valor e o clique do volume volta;
+     - as telas (128 × 64).
+   - Implementar no driver OLED existente. Os CCs continuam valendo para a página.
+
+## Tarefas para o Code (R4V4)
+
+1. **[Eletrônica + Design]** Planta geral do portão P parte 1 (item 3) e `POSICIONAMENTO.md` atualizado. **Roteamento só depois do "aprovado" do J.**
+2. **[Design]** Aplicar as decisões do item 2 no modelo; posição real da bateria, do alto-falante e da caixa acústica com o Dayton CE28MB-8 (`acustica.py`); conferir a janela e a fenda da tela, e os furos H1–H4 contra os postes da tampa.
+3. **[Design + Eletrônica]** Conector de entrada da régua por baixo, no bolso (item 2), e contrato da régua atualizado.
+4. **[Eletrônica]** Fase B da régua e da grade-régua:
+   - esquema e posicionamento da régua (sem trilhas);
+   - Gerbers da grade-régua de 1,6 mm;
+   - painéis;
+   - `POSICIONAMENTO.md` parte 2, também com planta e corte, para o portão P parte 2.
+5. **[Programação e som]**
+   - Item 4 inteiro: saída da voz, filtro de amplitude e supressor de microfonia, harmonizador que segue a tecla, menu pelos knobs e pela tela.
+   - Varredura em `IntervalTimer`.
+   - Tudo em `FIRMWARE.md`, com o menu desenhado em texto ou imagem para aprovação.
+6. **[Design]** Atualizar o `CLAUDE.md` com as decisões da R4V4. Fechar o `FIT_CHECK.md` com "Perguntas para o design".
+
+---
+
+# Anexo — SPEC R3V4 (referência)
 
 Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #181 (FIT_CHECK, ELETRONICA e FIRMWARE da R2V4). Tudo o que não é mencionado aqui continua como na R2V4 e na R1V4 (anexos abaixo). Os relatórios citam "R3V4".
