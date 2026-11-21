@@ -1,4 +1,95 @@
-# eTutti Student V4 — SPEC R2V4
+# eTutti Student V4 — SPEC R3V4
+
+Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #181 (FIT_CHECK, ELETRONICA e FIRMWARE da R2V4). Tudo o que não é mencionado aqui continua como na R2V4 e na R1V4 (anexos abaixo). Os relatórios citam "R3V4".
+
+## Mudanças desde a R2V4
+
+### 1. Desenho e modelo da KS-20 Orange (pendência resolvida)
+
+O J enviou o desenho oficial da **KS-20TO10B050NW-Y64 (Orange)** e o modelo 3D da série KS-20T. Os arquivos estão em `fornecimento/gateron/`. Nada de estimar o que eles cotam.
+
+O que o desenho confirma:
+- O corpo é o mesmo da X72.
+- **5,00 ±0,05** do assento até a face de baixo da carcaça de cima: é o **ombro de cima** da grade.
+- Grade de 14,00 +0,03/−0,02, com as presilhas por baixo.
+- **11,10** até o topo, sem tolerância própria (vale a tabela geral, ±0,4).
+- Pinos em Ø1,70 ±0,05 a 10,16 mm.
+- 38 ±10 gf, 4,1 ±0,2 mm de curso, 102/905 Gs.
+
+Medir no STEP: largura do topo plano, diâmetro do pino e a janela das presilhas, ou seja, a espessura de grade que elas aceitam.
+
+### 2. Fixação das teclas: a KS-20 já tem os dois ombros
+
+A KS-20 é uma tecla de montar em grade. A carcaça de cima apoia **por cima** da grade, na cota 5,00 ±0,05, e as presilhas travam **por baixo**. A pilha de ±1,1 mm da R2V4 aparece só porque a tampa apertava o **topo** da tecla (11,10 ±0,4). O ombro de 5,00 é 8 vezes mais preciso.
+
+**Nova candidata principal (T3-G, "grade da régua"):**
+- Cada régua ganha uma **grade-régua de FR-4** com 4 aberturas de 14,00 mm, no **mesmo painel e no mesmo desenho da régua** (destacável por furinhos). Assim não há pedido novo nem taxa de engenharia, só um painel maior.
+- A tecla encaixa na grade-régua pelas presilhas. O conjunto (grade-régua + 4 teclas) assenta na régua pelos pinos. O corpo de baixo da tecla (5,00) é o espaçador entre grade e régua.
+- A régua e a grade-régua formam um sanduíche rígido e preciso de fábrica. **Sem espuma**, sem pilha de impressão no aperto.
+- A tampa (deck) **não precisa mais de pré-carga**: ela só cobre, com folga, e segura o sanduíche contra o degrau. Por exemplo, por 2 apoios por régua no deck ou 2 parafusos M2 não magnéticos por régua no degrau. O design escolhe e justifica.
+- A espessura padrão da régua é 1,2 mm, e a grade de teclado comum é 1,5 mm. O design confere no STEP se as presilhas da KS-20 seguram uma grade de 1,2 mm **sem folga vertical**. Se não segurarem, comparar: (a) painel inteiro em 1,6 mm, o que muda a distância ímã-sensor e a calibração (o fabricante cota o fluxo com placa de 1,2 mm); (b) grade-régua num desenho separado de 1,5 ou 1,6 mm, com taxa de engenharia; (c) a espuma da R2V4.
+- **Plano B aprovado pelo J: T3 com anéis individuais de espuma** (PU microcelular tipo Poron, sem silicone, 2 → 1 mm). Usar só se a T3-G falhar nos números.
+
+Com a T3-G, o deck de 3 mm, os 10 postes internos e a haste 1 mm mais longa da R2V4 **podem não ser mais necessários**: o design refaz esses números para o deck sem pré-carga.
+
+### 3. Alternativa a estudar: Gateron Low Profile Magnetic Jade
+
+Pedido do J. Comparar com a KS-20 antes de fechar a régua:
+- grade recomendada de 14,00 mm e **1,2 mm**, a mesma espessura da régua (pode permitir grade-régua no mesmo painel sem conflito);
+- fluxo no fundo de ~680 Gs (a KS-20 tem 905), curso total ~3,5 mm (KS-20: 4,1) e altura menor, que **baixaria a caixa** (hoje 25,2 / 32,2 mm);
+- a ver: desenho oficial e STEP, haste (o encaixe do botão muda e o botão é nosso, impresso), pinos e furação, disponibilidade de molas mais pesadas para o peso de baian que o J quer, preço e fornecimento, e se o fluxo dá curso útil suficiente no TMAG5253 BA3 através de 1,2 mm de placa.
+- Critérios: firmeza, sensação parecida com a de um botão de acordeão (curso curto ajuda), altura da caixa, custo, risco.
+
+### 4. Decisões do J sobre as perguntas do PR #181
+
+| Tema | Decisão |
+|---|---|
+| Altura da caixa | **Perfil escalonado aceito** (25,2 na frente, 32,2 mm atrás com a KS-20). |
+| Processo | **MJF PA12** (US$ 51 com 28 teclas). Sem cotação de SLA. |
+| Peça de teste impressa | Decidir **no fim do hardware** (mantida a decisão 21). |
+| Microfone | **Entrada de voz para modulação e efeitos**, tocados junto com o teclado. Verificar se o Teensy roda tudo junto (item 6). |
+| Demais respostas do Chat ao PR #181 | Aprovadas: rampas de 60°, furo de Ø8 (se ainda valer com a T3-G), régua de 74 × 14 em painel de 5, fixação S1 do case, conectores JST SH-6 (clone, com a tela no mesmo conector), alto-falante Dayton CE28MB-8, ADC1 e ADC2 em paralelo, desligamento suave com USB, mapa de notas do usuário e notas até E7 para a fase da página. |
+
+### 5. Varredura: leitura quente sem prejudicar acordes
+
+- Ler ADC1 e ADC2 em paralelo (biblioteca ADC do Teensyduino).
+- A leitura quente **alterna entre todas as colunas com tecla em movimento** (rodízio), de modo que, num acorde, a segunda nota também tenha velocity e nenhuma tecla fique mais de **~2 ms** sem leitura.
+- A contagem de pulsos do firmware está certa: 8 × N + 1 por fileira, com as 4 fileiras em paralelo. A coluna 0 é a régua mais perto da placa principal. A eletrônica corrige o `PINOS.md`.
+
+### 6. Microfone: voz com efeitos junto com o teclado
+
+- **Hardware:** microfone de eletreto no jack IN com alimentação pelo plugue (polarização do SGTL5000, entrada MIC com pré-amplificador). Conferir no esquema e no datasheet a polarização, o ganho e o nível de linha como alternativa.
+- **Firmware:** definir um conjunto inicial de efeitos e medir ou estimar a CPU de cada um, junto com a síntese do acordeão (8 vozes, 4 palhetas) e a varredura:
+  - vocoder com o teclado como portadora;
+  - harmonizador ou deslocador de altura;
+  - eco e reverberação na voz;
+  - mistura voz + teclado.
+- Dizer se cabe a 396 MHz ou se pede 600 MHz, e o que isso custa em bateria. Se não couber tudo, propor o que cortar.
+
+### 7. Fase B: o que começa já
+
+A placa principal (só interface) não depende da escolha da tecla. Começa já:
+- **esquema completo da placa principal** com BOM Basic/Extended, ERC 0/0 e `PINOS.md` final;
+- **posicionamento da placa principal** (sem trilhas), com o USB-C a ≤ 7 mm dos pads 3/5 do M.2 (par ≤ 10 mm), a In2 inteira como GND, os conectores das 4 fileiras e o da tela;
+- o `POSICIONAMENTO.md` da placa principal para o **portão P (parte 1)**.
+
+A **régua** espera a decisão da tecla (itens 2 e 3). Esquema e posicionamento da régua formam o portão P (parte 2), na R4V4.
+
+## Tarefas para o Code (R3V4)
+
+1. **[Design]** Medir no STEP da KS-20 o topo plano, o pino e a janela das presilhas (item 1).
+2. **[Design]** Estudar a **T3-G** (item 2): espessura de grade aceita, sanduíche régua + grade-régua, fixação ao degrau, deck sem pré-carga (refazer espessura, postes, haste e altura da caixa), fit check em 28/44/60/76.
+3. **[Design]** Estudar a **Low Profile Magnetic Jade** (item 3) contra a KS-20, numa tabela com os critérios do item 3 e a recomendação.
+4. **[Eletrônica]** Painel régua + grade-régua: área, preço estimado e se a montagem econômica aceita um painel com partes sem componentes.
+5. **[Eletrônica]** Fase B da placa principal (item 7): esquema, ERC, BOM, `PINOS.md` final (com o microfone do item 6) e posicionamento sem trilhas, com `POSICIONAMENTO.md` para o portão P parte 1.
+6. **[Programação e som]** Item 5 (rodízio na leitura quente, ADC duplo) e item 6 (efeitos de voz e orçamento de CPU), em `FIRMWARE.md`.
+7. **[Design]** Corrigir no `CLAUDE.md` a régua de 74 × 12 para **74 × 14 mm** e registrar os arquivos da Gateron.
+8. **[Design]** Fechar o `FIT_CHECK.md` com a recomendação **T3-G ou espuma** e **KS-20 ou Low Profile**, e terminar com "Perguntas para o design".
+
+---
+
+# Anexo — SPEC R2V4 (referência)
 
 Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Nomenclatura e protocolo como na R1V4 (anexo abaixo). Tudo o que não é mencionado aqui continua como na R1V4. O Code atende R1V4 e R2V4 juntas, num só ciclo, e o relatório cita "R2V4".
