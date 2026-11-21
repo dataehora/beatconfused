@@ -1,0 +1,220 @@
+{
+ "ks20": {
+  "desenho": "KS-20TF10B045NW-X72 (Gateron, 2023-09-13); o KS-20 Orange tem o mesmo corpo (conferir o desenho dele)",
+  "carcaca_de_cima_mm": [
+   15.4,
+   15.1
+  ],
+  "altura_do_assento_ao_topo_mm": 11.1,
+  "altura_tol_sem_indicacao_mm": 0.4,
+  "ombro_inferior_a_5_00": "5,00 +-0,05 do assento ate a face de baixo da carcaca de cima (a face aponta PARA BAIXO: nao serve de apoio para a tampa)",
+  "cobertura_afunilada_mm": 2.7,
+  "cobertura_afunilada_tol": 0.1,
+  "corpo_de_baixo_mm": [
+   14.0,
+   14.0
+  ],
+  "corpo_de_baixo_tol": 0.05,
+  "largura_14_70_tol": 0.3,
+  "furo_dos_pinos_mm": 1.7,
+  "furo_tol": 0.05,
+  "pinos_entre_centros_mm": 10.16,
+  "pino_diametro": "nao cotado no desenho (estimado 1,55-1,60; conferir)",
+  "pads_do_sensor": "0,8 x 0,8, entre os furos (1,27 de passo)",
+  "curso_total_mm": 4.1,
+  "curso_tol": 0.2,
+  "curso_com_prensa_mm": "4,10 +-0,05 (desenho de corte)",
+  "haste_cruz_mm": [
+   4.0,
+   1.3
+  ],
+  "haste_tol": "4,00 +0,05/-0,10 ; 1,30 +-0,04",
+  "forca_inicial_gf": "30 +-10 (o desenho da variante X72; a Orange 38 gf ajusta a mola, nao o corpo)",
+  "fluxo_posicao_inicial_Gs": "102 +-15",
+  "fluxo_fundo_Gs": "905 +-80",
+  "chanfro_do_topo": "2,70 +-0,1 de cobertura afunilada; largura do topo plano NAO cotada (estimada 11,4; conferir)"
+ },
+ "pilha_vertical": {
+  "publicada (carcaca +-0,4; impressao +-0,3 MJF/SLS/FDM)": {
+   "termos": {
+    "carcaca (assento ate o topo)": 0.4,
+    "espessura da regua": 0.12,
+    "degrau da base (impressao)": 0.3,
+    "deck da tampa ate o plano de encaixe (impressao)": 0.3
+   },
+   "pior_caso_mm": 1.12,
+   "rss_mm": 0.595
+  },
+  "SLA (impressao +-0,2, resina cura +-0,15 apos 1-3 dias)": {
+   "termos": {
+    "carcaca (assento ate o topo)": 0.4,
+    "espessura da regua": 0.12,
+    "degrau da base (impressao)": 0.2,
+    "deck da tampa ate o plano de encaixe (impressao)": 0.2
+   },
+   "pior_caso_mm": 0.92,
+   "rss_mm": 0.504
+  },
+  "carcaca real suposta +-0,1, impressao +-0,15 (tipico, NAO publicado)": {
+   "termos": {
+    "carcaca (assento ate o topo)": 0.1,
+    "espessura da regua": 0.12,
+    "degrau da base (impressao)": 0.15,
+    "deck da tampa ate o plano de encaixe (impressao)": 0.15
+   },
+   "pior_caso_mm": 0.52,
+   "rss_mm": 0.263
+  }
+ },
+ "pinos": {
+  "furo_max_mm": 1.8,
+  "pino_min_estimado_mm": 1.55,
+  "folga_radial_mm": 0.125,
+  "giro_no_plano_graus": 1.41,
+  "translacao_x_mm": 0.25,
+  "translacao_y_mm": 0.125,
+  "forca_de_amarracao_N_a_3N_na_borda": 0.21
+ },
+ "espuma": {
+  "espessura_mm": 2.0,
+  "compressao_nominal": 0.5,
+  "janela_de_compressao_para_pior_caso_publicado_mm": 2.24,
+  "forca_por_tecla_estimada_N": "2-4 (PE de 33 kg/m3, 50 % de compressao, 60 mm2: ESTIMADO, sem medida)"
+ },
+ "deck": {
+  "28 teclas, deck 2 mm": {
+   "modulos": 0,
+   "teclas": 28,
+   "comprimento_mm": 252.0,
+   "espessura_deck_mm": 2.0,
+   "pre_carga_por_tecla_N": 1.0,
+   "triangulos_livres": 19,
+   "interiores": {
+    "0": {
+     "preload_max_mm": 5.475,
+     "preload_media_mm": 2.115,
+     "3N_numa_tecla_mm": 1.044
+    },
+    "5": {
+     "preload_max_mm": 0.254,
+     "preload_media_mm": 0.063,
+     "3N_numa_tecla_mm": 0.237
+    },
+    "10": {
+     "preload_max_mm": 0.109,
+     "preload_media_mm": 0.025,
+     "3N_numa_tecla_mm": 0.178
+    },
+    "19": {
+     "preload_max_mm": 0.054,
+     "preload_media_mm": 0.013,
+     "3N_numa_tecla_mm": 0.111
+    }
+   }
+  },
+  "28 teclas, deck 3 mm": {
+   "modulos": 0,
+   "teclas": 28,
+   "comprimento_mm": 252.0,
+   "espessura_deck_mm": 3.0,
+   "pre_carga_por_tecla_N": 1.0,
+   "triangulos_livres": 19,
+   "interiores": {
+    "0": {
+     "preload_max_mm": 1.622,
+     "preload_media_mm": 0.627,
+     "3N_numa_tecla_mm": 0.309
+    },
+    "5": {
+     "preload_max_mm": 0.075,
+     "preload_media_mm": 0.019,
+     "3N_numa_tecla_mm": 0.07
+    },
+    "10": {
+     "preload_max_mm": 0.032,
+     "preload_media_mm": 0.007,
+     "3N_numa_tecla_mm": 0.053
+    },
+    "19": {
+     "preload_max_mm": 0.016,
+     "preload_media_mm": 0.004,
+     "3N_numa_tecla_mm": 0.033
+    }
+   }
+  },
+  "76 teclas, deck 2 mm": {
+   "modulos": 3,
+   "teclas": 76,
+   "comprimento_mm": 474.0,
+   "espessura_deck_mm": 2.0,
+   "pre_carga_por_tecla_N": 1.0,
+   "triangulos_livres": 55,
+   "interiores": {
+    "0": {
+     "preload_max_mm": 5.645,
+     "preload_media_mm": 2.692,
+     "3N_numa_tecla_mm": 1.043
+    },
+    "14": {
+     "preload_max_mm": 0.333,
+     "preload_media_mm": 0.068,
+     "3N_numa_tecla_mm": 0.257
+    },
+    "28": {
+     "preload_max_mm": 0.1,
+     "preload_media_mm": 0.02,
+     "3N_numa_tecla_mm": 0.178
+    },
+    "55": {
+     "preload_max_mm": 0.044,
+     "preload_media_mm": 0.01,
+     "3N_numa_tecla_mm": 0.098
+    }
+   }
+  },
+  "76 teclas, deck 3 mm": {
+   "modulos": 3,
+   "teclas": 76,
+   "comprimento_mm": 474.0,
+   "espessura_deck_mm": 3.0,
+   "pre_carga_por_tecla_N": 1.0,
+   "triangulos_livres": 55,
+   "interiores": {
+    "0": {
+     "preload_max_mm": 1.673,
+     "preload_media_mm": 0.798,
+     "3N_numa_tecla_mm": 0.309
+    },
+    "14": {
+     "preload_max_mm": 0.099,
+     "preload_media_mm": 0.02,
+     "3N_numa_tecla_mm": 0.076
+    },
+    "28": {
+     "preload_max_mm": 0.03,
+     "preload_media_mm": 0.006,
+     "3N_numa_tecla_mm": 0.053
+    },
+    "55": {
+     "preload_max_mm": 0.013,
+     "preload_media_mm": 0.003,
+     "3N_numa_tecla_mm": 0.029
+    }
+   }
+  }
+ },
+ "perfil_escalonado": {
+  "flecha_do_perfil_escalonado_mm": 233.352,
+  "flecha_da_placa_plana_mm": 238.715,
+  "carga_N_por_mm_de_x": 0.22
+ },
+ "parede": {
+  "flecha_entre_parafusos_mm": {
+   "40": 0.0031,
+   "60": 0.0155,
+   "80": 0.0489,
+   "120": 0.2475
+  },
+  "nota": "parede de 2 x 20 mm, PA12 E = 1,8 GPa, carga de pre-carga 0,22 N/mm de x (1 N por tecla)"
+ }
+}

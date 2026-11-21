@@ -41,3 +41,8 @@ O código do eTuttino em `etutti/hardware/case/` está pausado. Pode ler e reuti
 3. Se mudou um contrato (`pocket.json` ou `pcb_envelope.json`), escreva no relatório o que mudou, para a eletrônica.
 
 Ambiente: venv CadQuery em `C:/Users/julia/.venvs/cadquery`.
+
+
+## Student V4 (desde a SPEC R1V4, 21 nov 2026)
+
+Também seu: `etutti/hardware/student_v04/case/`, `estudos/` e `student_v04/FIT_CHECK.md` (português, cita a revisão RnV4 atendida, termina com "Perguntas para o design"). Leia, sem editar: `student_v04/SPEC.md` (do Chat), `ELETRONICA.md` e `pcb/PINOS.md`. A `student_v03/` e anteriores são referência, não mude.

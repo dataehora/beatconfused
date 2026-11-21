@@ -40,3 +40,8 @@ Só você edita estes arquivos:
    - como testar;
    - CPU e memória medidos quando houver;
    - no final, "Perguntas para a gestão".
+
+
+## Student V4 (desde a SPEC R1V4, 21 nov 2026)
+
+Também seu: o firmware da V4 (o mesmo sketch `etutti/firmware/etutti_synth/`, `ETUTTI_STUDENT`, compilando também para o eTuttino) e `etutti/hardware/student_v04/FIRMWARE.md` (cita a revisão RnV4; termina com "Perguntas para o design"). Leia `student_v04/SPEC.md` e `pcb/PINOS.md` (da eletrônica), sem editar.

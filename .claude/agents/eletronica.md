@@ -60,3 +60,8 @@ Você lê, mas não edita: `etutti/hardware/viaggio/SPEC.md` (da gestão) e `etu
 Ferramentas, no PC do J:
 - KiCad 10 em `C:/Program Files/KiCad/10.0/bin/` (o `python.exe` dali tem `pcbnew`);
 - arduino-cli do Arduino IDE com Teensyduino 1.60.
+
+
+## Student V4 (desde a SPEC R1V4, 21 nov 2026)
+
+Também seu: `etutti/hardware/student_v04/` fora de `case/`, `estudos/`, `FIT_CHECK.md` e `FIRMWARE.md`: esquema, `pcb/`, `fab.py`, `fornecimento/`, `ELETRONICA.md` (cita a revisão RnV4; termina com "Perguntas para o design") e `pcb/PINOS.md`. Posiciona, **não roteia**: o roteamento é do agente `roteamento`, só depois do portão P aprovado pelo J. Leia `student_v04/SPEC.md` (do Chat, não edite). V3/V2/V1 são só leitura.

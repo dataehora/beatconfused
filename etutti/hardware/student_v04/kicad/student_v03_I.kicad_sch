@@ -1,0 +1,981 @@
+(kicad_sch
+	(version 20250610)
+	(generator "student_v03_schematic")
+	(generator_version "10.0")
+	(uuid "6bee8ded-6107-5f0f-8cd2-5597276bbfc6")
+	(paper "A4")
+	(title_block (title "eTutti Student V2 · I · Interface") (date "2026-11-18") (rev "Student V3") (company "beatconfused.com") (comment 1 "etutti/hardware/student_v03/pcb/schematic.py escreve este arquivo; nao editar a mao"))
+	(lib_symbols
+		(symbol "viaggio_micromod:Conn_01x04_MountingPin"
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "J"
+			(at 0 5.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x04_MountingPin"
+			(at 1.27 -7.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connectable mounting pin connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "Connector*:*_1x??-1MP*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "Conn_01x04_MountingPin_1_1"
+			(rectangle
+				(start -1.27 3.81)
+				(end 1.27 -6.35)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(rectangle
+				(start -1.27 2.667)
+				(end 0 2.413)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 0.127)
+				(end 0 -0.127)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -2.413)
+				(end 0 -2.667)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -4.953)
+				(end 0 -5.207)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -1.016 -7.112)
+					(xy 1.016 -7.112)
+				)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(text "Mounting"
+				(at 0 -6.731 0)
+				(effects
+					(font
+						(size 0.381 0.381)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 2.54 0)
+				(length 3.81)
+				(name "Pin_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 3.81)
+				(name "Pin_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -2.54 0)
+				(length 3.81)
+				(name "Pin_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -5.08 0)
+				(length 3.81)
+				(name "Pin_4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -10.16 90)
+				(length 3.048)
+				(name "MountPin"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "MP"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:RotaryEncoder_Switch_MP"
+		(pin_names
+			(offset 0.254)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "SW"
+			(at 0 8.89 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "RotaryEncoder_Switch_MP"
+			(at 0 6.35 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at -3.81 4.064 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 -12.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Rotary encoder, dual channel, incremental quadrate outputs, with switch and MP Pin"
+			(at 0 -15.24 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "rotary switch encoder switch push button"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "RotaryEncoder*Switch*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "RotaryEncoder_Switch_MP_0_1"
+			(rectangle
+				(start -5.08 5.08)
+				(end 5.08 -5.08)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(polyline
+				(pts
+					(xy -5.08 2.54)
+					(xy -3.81 2.54)
+					(xy -3.81 2.032)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -5.08 0)
+					(xy -3.81 0)
+					(xy -3.81 -1.016)
+					(xy -3.302 -2.032)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -5.08 -2.54)
+					(xy -3.81 -2.54)
+					(xy -3.81 -2.032)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -4.318 0)
+					(xy -3.81 0)
+					(xy -3.81 1.016)
+					(xy -3.302 2.032)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(circle
+				(center -3.81 0)
+				(radius 0.254)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type outline)
+				)
+			)
+			(polyline
+				(pts
+					(xy -0.635 -1.778)
+					(xy -0.635 1.778)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(circle
+				(center -0.381 0)
+				(radius 1.905)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -0.381 -1.778)
+					(xy -0.381 1.778)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(arc
+				(start -0.381 -2.794)
+				(mid -3.0988 -0.0635)
+				(end -0.381 2.667)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -0.127 1.778)
+					(xy -0.127 -1.778)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0.254 2.921)
+					(xy -0.508 2.667)
+					(xy 0.127 2.286)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0.254 -3.048)
+					(xy -0.508 -2.794)
+					(xy 0.127 -2.413)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 3.81 1.016)
+					(xy 3.81 -1.016)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 3.81 0)
+					(xy 3.429 0)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(circle
+				(center 4.318 1.016)
+				(radius 0.127)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(circle
+				(center 4.318 -1.016)
+				(radius 0.127)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 5.08 2.54)
+					(xy 4.318 2.54)
+					(xy 4.318 1.016)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 5.08 -2.54)
+					(xy 4.318 -2.54)
+					(xy 4.318 -1.016)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "RotaryEncoder_Switch_MP_1_1"
+			(pin passive line
+				(at -7.62 2.54 0)
+				(length 2.54)
+				(name "A"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "A"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -7.62 -2.54 0)
+				(length 2.54)
+				(name "B"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "B"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -7.62 0 0)
+				(length 2.54)
+				(name "C"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "C"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -7.62 90)
+				(length 2.54)
+				(name "MP"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "MP"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 7.62 2.54 180)
+				(length 2.54)
+				(name "S1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "S1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 7.62 -2.54 180)
+				(length 2.54)
+				(name "S2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "S2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+		(symbol "viaggio_micromod:SW_Push"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "SW"
+			(at 1.27 2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SW_Push"
+			(at 0 -1.524 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 5.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 5.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Push button switch, generic, two pins"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "switch normally-open pushbutton push-button"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "SW_Push_0_1"
+			(circle
+				(center -2.032 0)
+				(radius 0.508)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0 1.27)
+					(xy 0 3.048)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(circle
+				(center 2.032 0)
+				(radius 0.508)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 2.54 1.27)
+					(xy -2.54 1.27)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 2.54)
+				(name "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 5.08 0 180)
+				(length 2.54)
+				(name "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+	)
+	(text "I · Interface: dois EC11E de eixo curto com clique (volume, registro), conector da tela OLED (J401, I2C), botao Program. Sem LED." (exclude_from_sim no) (at 15 18 0) (effects (font (size 2 2)) (justify left)) (uuid "a5091eff-edd7-5646-b69d-cefdd6f29f85"))
+	(text "O clique do volume (I1) liga/desliga (circuito na folha E); o do seletor (I2) e uma entrada comum (pino 6)." (exclude_from_sim no) (at 15 23 0) (effects (font (size 2 2)) (justify left)) (uuid "f5049d3a-10fd-59fc-997c-01ce155924ee"))
+	(symbol (lib_id "viaggio_micromod:RotaryEncoder_Switch_MP") (at 35.56 50.8 0) (unit 1) (exclude_from_sim no) (in_bom no) (on_board yes) (dnp no) (uuid "ac3f75f2-5117-5ea8-b743-bd80f2a1d864")
+		(property "Reference" "SW401" (at 27.94 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "EC11E18244AU" (at 27.94 62.23 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm" (at 35.56 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/00ace576d31da40a390056171db2037f.pdf?productCode=C202365" (at 35.56 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "volume; clique de 2 s liga/desliga; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2" (at 35.56 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "I1" (at 43.18 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C202365" (at 35.56 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "sem peca (encoder soldado em casa, topo)" (at 35.56 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "A" (uuid "4efb04bd-d0e5-5a65-a102-b3de16814593"))
+		(pin "B" (uuid "7bde104e-3696-54a9-8ea0-4afb38b3c57c"))
+		(pin "C" (uuid "4d840f6c-e610-56cb-96ea-0694168a18b2"))
+		(pin "MP" (uuid "3b2c1429-6880-5237-9878-49b36dc05473"))
+		(pin "S1" (uuid "db1dda5f-82ee-57c7-b275-c2b61375ce6d"))
+		(pin "S2" (uuid "a4f9b0ad-70aa-5555-a1a4-5255a4f44bd6"))
+		(instances (project "student_v03" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/6bee8ded-6107-5f0f-8cd2-5597276bbfc6" (reference "SW401") (unit 1))))
+	)
+	(wire (pts (xy 27.94 48.26) (xy 25.4 48.26)) (stroke (width 0) (type default)) (uuid "6988e31c-c3dc-5199-aba6-7329d8add5eb"))
+	(global_label "VOL_A" (shape passive) (at 25.4 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "32a79064-ab5b-53dd-9704-3d8195ace255") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 53.34) (xy 25.4 53.34)) (stroke (width 0) (type default)) (uuid "8633556f-e1e3-5d4e-9640-fb8eb611a43f"))
+	(global_label "VOL_B" (shape passive) (at 25.4 53.34 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "5c83dcbc-73e4-5787-a16c-afff9f0cadcb") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 27.94 50.8) (xy 25.4 50.8)) (stroke (width 0) (type default)) (uuid "b28d8359-d18a-544a-953e-bff1af526eb4"))
+	(global_label "GND" (shape passive) (at 25.4 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "66d17d94-5b35-5dca-a699-67f1c3c9c4d3") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 35.56 58.42) (xy 35.56 60.96)) (stroke (width 0) (type default)) (uuid "4c3965ec-fb0e-5c69-b1c7-b17c5797f764"))
+	(global_label "GND" (shape passive) (at 35.56 60.96 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "9b738d19-43da-5313-abd0-f35844850fb0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 35.56 60.96 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 43.18 48.26) (xy 45.72 48.26)) (stroke (width 0) (type default)) (uuid "cf63883d-0542-5c4c-a584-30f806281f09"))
+	(global_label "GND" (shape passive) (at 45.72 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "81b7d635-10a0-595d-82e9-53faa791fb04") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 45.72 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 43.18 53.34) (xy 45.72 53.34)) (stroke (width 0) (type default)) (uuid "4b7463df-d922-562c-aee3-c12769c402d9"))
+	(global_label "VOL_SW_N" (shape passive) (at 45.72 53.34 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "ccedb5a8-ca25-5acd-b93f-4b6b7ed29de2") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 45.72 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:RotaryEncoder_Switch_MP") (at 81.28 50.8 0) (unit 1) (exclude_from_sim no) (in_bom no) (on_board yes) (dnp no) (uuid "ce9f78bd-e90b-5e71-a268-948b2228069a")
+		(property "Reference" "SW402" (at 73.66 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "EC11E18244AU" (at 73.66 62.23 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm" (at 81.28 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/00ace576d31da40a390056171db2037f.pdf?productCode=C202365" (at 81.28 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "seletor; clique = funcoes de som; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2" (at 81.28 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "I2" (at 88.9 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C202365" (at 81.28 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "sem peca (encoder soldado em casa, topo)" (at 81.28 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "A" (uuid "5c95594c-d912-5b49-a846-06c2c3cc0924"))
+		(pin "B" (uuid "b44e9b5c-cd3d-5316-8086-f0b34149c3fb"))
+		(pin "C" (uuid "a4a4214d-fdb5-50af-960d-baaa964b5b79"))
+		(pin "MP" (uuid "1ec1b6e1-6f72-58fd-a35d-c1e673817122"))
+		(pin "S1" (uuid "d71de591-4b2c-52f5-aace-c26672ec9a03"))
+		(pin "S2" (uuid "a506e106-8e2a-503d-a4b2-7a027902133c"))
+		(instances (project "student_v03" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/6bee8ded-6107-5f0f-8cd2-5597276bbfc6" (reference "SW402") (unit 1))))
+	)
+	(wire (pts (xy 73.66 48.26) (xy 71.12 48.26)) (stroke (width 0) (type default)) (uuid "a9028c83-d65a-5c16-8491-8112b9236c86"))
+	(global_label "SEL_A" (shape passive) (at 71.12 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "d59d5476-c208-5648-81b4-7de725eccd50") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 71.12 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 73.66 53.34) (xy 71.12 53.34)) (stroke (width 0) (type default)) (uuid "e6595974-89f1-5cd2-beea-dcb76aeabd5b"))
+	(global_label "SEL_B" (shape passive) (at 71.12 53.34 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "635109e6-caa1-50f2-b0b8-b00349eb49d1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 71.12 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 73.66 50.8) (xy 71.12 50.8)) (stroke (width 0) (type default)) (uuid "f976aebe-0023-52a1-874b-1826643c50bc"))
+	(global_label "GND" (shape passive) (at 71.12 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "b69d20ec-fe8e-57c9-bca6-dc002271084c") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 71.12 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 81.28 58.42) (xy 81.28 60.96)) (stroke (width 0) (type default)) (uuid "fb7d7e4f-cff9-5d01-8fd3-284af9686f47"))
+	(global_label "GND" (shape passive) (at 81.28 60.96 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "5f51599c-bc0b-581c-a834-ce3709dfb9f1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 81.28 60.96 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 88.9 48.26) (xy 91.44 48.26)) (stroke (width 0) (type default)) (uuid "92008f54-3c2c-5917-bb8e-a759c830a510"))
+	(global_label "GND" (shape passive) (at 91.44 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "401c0b48-faef-5aa5-bfdd-034eaf6b11dc") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 91.44 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(wire (pts (xy 88.9 53.34) (xy 91.44 53.34)) (stroke (width 0) (type default)) (uuid "58a099ca-e92e-5697-8182-dbdc59ed4f09"))
+	(global_label "SEL_SW" (shape passive) (at 91.44 53.34 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "72367bc7-5d7c-505a-85fe-ac768ba139e0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 91.44 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(symbol (lib_id "viaggio_micromod:Conn_01x04_MountingPin") (at 124.46 50.8 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "bd68597a-b747-5fd6-899e-f80f92322e39")
+		(property "Reference" "J401" (at 119.38 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "SM04B-SRSS-TB" (at 119.38 64.77 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/40c649e22fa9bda892cfec952005fd51.pdf?productCode=C160404" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "tela OLED 0,96 pol. 128 x 64 (SSD1306, I2C 0x3C) por cabo JST SH de 4 vias, ordem Qwiic: 1 GND, 2 3V3, 3 SDA, 4 SCL" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "I3" (at 124.46 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C160404" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "930e3a2f-5883-5fe8-8901-98d7fa6c9a0f"))
+		(pin "2" (uuid "2f0d1cc1-c8cc-5a7f-9542-bc605858f382"))
+		(pin "3" (uuid "7cd8400b-9763-5e35-900f-a1efb0509862"))
+		(pin "4" (uuid "936e81ab-f96f-53d1-bca3-f273149a9850"))
+		(pin "MP" (uuid "1b2b5290-66c9-52f5-a6b7-eaca71fef701"))
+		(instances (project "student_v03" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/6bee8ded-6107-5f0f-8cd2-5597276bbfc6" (reference "J401") (unit 1))))
+	)
+	(wire (pts (xy 119.38 48.26) (xy 116.84 48.26)) (stroke (width 0) (type default)) (uuid "6153b443-15e4-5dc8-b48d-7c23a1aed55f"))
+	(global_label "GND" (shape passive) (at 116.84 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "36164a2d-ef00-5bb6-840b-1b4906e4c8cf") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 119.38 50.8) (xy 116.84 50.8)) (stroke (width 0) (type default)) (uuid "af9d8499-3d20-5956-b1ae-f98a1cb820bf"))
+	(global_label "+3V3" (shape passive) (at 116.84 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "abd53f23-5853-53ea-8e22-e5ea5c0bce22") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 119.38 53.34) (xy 116.84 53.34)) (stroke (width 0) (type default)) (uuid "ad2108d8-f006-53c2-9310-a3534201e1fe"))
+	(global_label "I2C_SDA" (shape passive) (at 116.84 53.34 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "03758d7a-acac-5ddf-88e7-d69141a7c2a1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 119.38 55.88) (xy 116.84 55.88)) (stroke (width 0) (type default)) (uuid "97099ad5-ccba-5493-820b-427b5c513005"))
+	(global_label "I2C_SCL" (shape passive) (at 116.84 55.88 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "a381abd6-32b3-5334-aed6-4a8159a48292") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 55.88 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 124.46 60.96) (xy 124.46 63.5)) (stroke (width 0) (type default)) (uuid "bfe0c049-407f-5ab7-9409-8c8b65bdcf72"))
+	(global_label "GND" (shape passive) (at 124.46 63.5 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "6f9b8099-7fda-507f-9ddc-3f87badc0a84") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 124.46 63.5 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "viaggio_micromod:SW_Push") (at 147.32 48.26 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "19515440-f6c2-5504-b3f6-2e80202734ae")
+		(property "Reference" "SW403" (at 142.24 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "Program" (at 142.24 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A" (at 147.32 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 147.32 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "no verso, por um furo no fundo; 5,1 x 5,1 (a SPEC pedia 4 x 4)" (at 147.32 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Codigo" "I4" (at 152.4 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
+		(property "LCSC" "C318884" (at 147.32 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 147.32 48.26 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "b3b2e9c6-49d9-5713-a4b5-c183d1ed48b2"))
+		(pin "2" (uuid "5328b043-c60a-5a2d-9c41-a7ad4bf6ab26"))
+		(instances (project "student_v03" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/6bee8ded-6107-5f0f-8cd2-5597276bbfc6" (reference "SW403") (unit 1))))
+	)
+	(wire (pts (xy 142.24 48.26) (xy 139.7 48.26)) (stroke (width 0) (type default)) (uuid "df0a6519-5668-546c-8727-5a7d91e3b288"))
+	(global_label "PROG" (shape passive) (at 139.7 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "cc42ba4e-3eab-52fa-8ef2-a10b7b78d2fa") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 139.7 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 152.4 48.26) (xy 154.94 48.26)) (stroke (width 0) (type default)) (uuid "a5240584-68de-5164-b709-0cd16411583d"))
+	(global_label "GND" (shape passive) (at 154.94 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "3dc01971-cdf7-52bf-a9a0-da68926d5082") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 154.94 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(embedded_fonts no)
+)

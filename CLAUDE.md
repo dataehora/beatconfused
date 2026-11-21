@@ -1113,3 +1113,24 @@ left wall (connectors now under the board) and the V3 page.
 
 - **Student V3 page and assembly manual (18 Nov):** `/etutti/studentV3/` (unlisted, noindex, Portuguese; `index.html` = concept, block diagram, KiCad schematic sheets as SVG in `esquema/`, parts by area and supplier, numbered exploded view, budget; `montagem.html` = ten-step manual, each step an exploded picture). Written by `student_v03/pagina.py` (texts and prices live there); pictures by `student_v03/case/passos.py` (CadQuery venv, ~3 min, run after `case.py` + `render.py`; steps 8-9 are drawn view-up = -z, lid face down as on the bench). Schematics: `kicad-cli sch export svg --exclude-drawing-sheet` on `kicad/student_v03.kicad_sch`. The 5 DRC *warnings* (via/track dangling) were analysed on 18 Nov: removing them cascades through whole routes (ends sit off a via's centre, KiCad's check is topological); the board was left as ordered. The lid's printed logo still reads "STUDENT · V2" (SPEC v3, paint only).
 - **Student V3 photo-real renders (18 Nov):** Blender 5.2 (Cycles, OptiX) via `student_v03/case/blender_export.py` (CadQuery venv: writes `case/blender/build/` PLYs + manifest + KiCad GLB of the board; shots = the steps' cameras and offsets plus beauty shots) -> `case/render_blender.py` (`blender -b --python ... -- [shots] [--fast]`, ~10 min for all 17) -> `case/blender_finish.py` (lays the transparent PNGs on the paper colour, writes `etutti/studentV3/img/foto_*.jpg`). `pagina.py` uses `foto_<name>` when it exists and links the clay version. Gotchas: PLY import brings custom normals that smear flat plates (the mesh is rebuilt with `from_pydata`); use "Standard" view transform (AgX washes the cream paint); keep the same camera as pyvista and the numbered pins of `ancoras.json` still line up. `case/blender/{build,out}` are gitignored.
+
+## eTutti Student V4 (21 Nov 2026) — SPEC R1V4 + R2V4, Phase A (studies)
+
+`etutti/hardware/student_v04/`: Chat's `SPEC.md` (nomenclature **RnV4** = revision n of the V4 SPEC; reports cite the revision they meet).
+Base = the V3's scripts and sources copied (no `fab/`, renders or generated output; V3/V2/V1 untouched); `README.md` has the run order.
+Only the keyboard layout is fixed. **F2 chosen (R2V4):** main board only for the interface (Teensy, power, audio, connectors, screen,
+encoders), **sensor rulers** (universal 4-key board, 74 x 12 x 1.2 mm, 2 layers, 4 TMAG5253 + 74HC595 + 2 JST SH 6-pin) on the case's
+steps, one cap for all rows; 28 keys = 8 rulers, each +16-key module = +4; **T3** = the lid presses key bodies against the board.
+No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2/3 (`pcb/PINOS.md`, the electronics-to-firmware contract).
+- **Agents** (`.claude/agents/`): `design`, `eletronica`, `programacao-som` now list the V4 folders (see each file); new agent
+  **`roteamento`** owns only routing (`pcb/rota/`, `ROTEAMENTO.md`): it starts **only after J approves the placement gate P**
+  (`POSICIONAMENTO.md`), never moves a part (asks `eletronica` for a placement change instead), picks the method and justifies it, works in
+  idempotent resumable stages (`pcb/rota/estado.json`, one commit per finished stage on a work branch, stages < ~10 min, long ones in
+  the background) and accepts only DRC 0 errors **and 0 warnings**, 0 unconnected, parity 0, no sub-minimum tracks, no dangling ends, no
+  plane islands.
+- Reports (Portuguese, end with "Perguntas para o design"): `ELETRONICA.md` (E1 BOM review, E2 scan, E3 cost check, E4 USB pair, E5
+  ruler), `FIT_CHECK.md` (design), `FIRMWARE.md` (programacao-som). Numbers regenerate with `student_v04/calculos_eletronica.py` and
+  `fornecimento/precos_jlc.py` (JLCPCB parts library via plain curl, 2 s apart).
+- Findings worth remembering: the 74HC595D (C5947) is JLCPCB **Basic** (the 164/4094/4017 are all Extended); no Basic connector, jack,
+  LDO or ESD part exists; TMAG5253 BA tON is 20 typ / **45 us max** (UA 55 / 130); F2 costs about 12-22 % less than F1 (US$ 292-371 vs 332-477, MJF case print US$ 51) at the minimum order
+  (estimates marked in `ELETRONICA.md`); JLCPCB WMSC search endpoints are blocked for curl, the assembly parts-library endpoint works.
