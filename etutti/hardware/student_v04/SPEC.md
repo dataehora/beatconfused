@@ -1,4 +1,47 @@
-# eTutti Student V4 — SPEC R1V4
+# eTutti Student V4 — SPEC R2V4
+
+Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Nomenclatura e protocolo como na R1V4 (anexo abaixo). Tudo o que não é mencionado aqui continua como na R1V4. O Code atende R1V4 e R2V4 juntas, num só ciclo, e o relatório cita "R2V4".
+
+## Mudanças desde a R1V4
+
+### 1. Fileiras: F2 escolhida (decisão 14)
+
+O J aceitou a **F2: réguas de sensores em degraus no case inferior, com botão único**, combinada com a **T3**, e pede para verificar o que acontece com o custo.
+
+- A **régua universal de 4 teclas** (§4.2 da R1V4) passa a ser a base do projeto. Para 28 teclas são 8 réguas, e cada módulo de +16 acrescenta 4.
+- A placa principal fica só na área de interface (Teensy, energia, áudio, conectores, tela, encoders).
+- O case inferior tem 4 degraus (passos de 2, 2 e 3 mm), e cada régua se apoia inteira no seu degrau. O deck da tampa acompanha os degraus e prende teclas e réguas (T3).
+- Um modelo só de botão, com a mesma haste em todas as fileiras.
+- A F1 deixa de ser projetada. Ela fica apenas como **referência de custo**, calculada a partir dos números da V3.
+
+### 2. Verificação de custo (portão de custo)
+
+A escolha está feita, mas o custo tem de ser confirmado antes da Fase B:
+- custo por instrumento de 28 teclas e por pedido mínimo da JLCPCB, separado em placa principal, réguas, montagem (setup, estêncil, tipos Extended por desenho), cabos e conectores, e impressão do case;
+- a mesma conta para a F1 (com os números da V3) e a diferença entre as duas;
+- custo incremental de cada módulo de +16 na F2;
+- **se a F2 sair mais de 25% mais cara que a F1** no protótipo de 28 teclas, o Code apresenta onde está a diferença e as formas de reduzi-la antes de seguir. Exemplos: régua de 2 camadas, painel com várias réguas num desenho só, conector mais barato ou solda direta. Abaixo disso, segue sem parar. O limite de 25% é critério do Chat, e o J pode mudar.
+
+### 3. Régua: o que definir já nesta rodada
+
+- **Ligação em cadeia** dentro da fileira e da fileira até a placa principal: comparar conector com cabo pronto (JST SH ou similar, com Basic se houver), FFC/FPC e solda direta de barra de pinos. Pesar custo, montagem em casa, confiabilidade e altura disponível sob o degrau. Nenhuma peça no topo da régua, onde fica a tecla.
+- **Sinais:** VCC, GND, OUT da fileira e a cadeia de habilitação (DADO, CLOCK) com registrador de deslocamento, conforme a §5.2 da R1V4. Confirmar o registrador (Basic, se possível) e se o OUT compartilhado aguenta a carga de 20 sensores mais o cabo.
+- **Painel:** ver se várias réguas cabem num desenho só, com destaque por furinhos (mouse bites) ou V-cut, para pagar uma taxa de preparação só. Confirmar que a JLCPCB monta pelo fundo um painel assim.
+- **Encaixe no degrau:** como a régua é localizada (pinos do case em furos da régua ou rebaixo) e o bolso no degrau para os sensores e o registrador do fundo da régua.
+- **Distância ímã-sensor:** igual à da V3, para que a calibração do firmware continue valendo.
+
+## Tarefas para o Code (R2V4, somadas às da R1V4)
+
+1. **[Eletrônica]** E3 passa a ser a **verificação de custo** do item 2, com a F1 só como referência. Em `ELETRONICA.md`, com a tabela de custo.
+2. **[Eletrônica]** E5: esquema de princípio da régua (4 sensores, registrador, desacoplamento, conector), a forma de ligação escolhida e a viabilidade do painel (item 3).
+3. **[Design]** D2 passa a ser só a F2: case conceitual com os 4 degraus, réguas, deck escalonado da T3, placa principal na interface e partições possíveis. Tamanho para 28, 44, 60 e 76.
+4. **[Programação e som]** P1 e P2 partem da F2: varredura por fileira (4 linhas OUT) com a cadeia de registradores, para N réguas por fileira.
+5. **[Design]** A tabela de decisão da tarefa 12 da R1V4 vira **tabela de custo e riscos da F2** (com a F1 de referência). Terminar com "Perguntas para o design".
+
+---
+
+# Anexo — SPEC R1V4 (referência)
 
 Nomenclatura: **RnV4** = revisão n da SPEC da placa/instrumento V4 (R1V4, R2V4…). Os relatórios do Code citam sempre a revisão que atendem.
 
