@@ -4,7 +4,7 @@ import os, re, sys
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-H = open(os.path.join(HERE, "..", "..", "etutti_synth", "oled_font.h"), encoding="utf-8").read()
+H = open(os.path.join(HERE, "..", "..", "student_v4", "oled_font.h"), encoding="utf-8").read()
 ASCII = {}
 EXT = {}
 for m in re.finditer(r"\{(0x[0-9A-F]{4}),(0x[0-9A-F]{4}),(0x[0-9A-F]{4}),(0x[0-9A-F]{4}),(0x[0-9A-F]{4})\},\s+// (.*)", H):

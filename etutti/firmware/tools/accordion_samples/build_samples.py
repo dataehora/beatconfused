@@ -4,7 +4,7 @@ For each reed rank (L, M, M2, H) and each recorded note it keeps the real
 start of the note, cross-fades it into a steady stretch, and loops a whole
 number of periods of that stretch. It writes
 
-  ../../etutti_synth/reed_samples.cpp + .h   the sample data (not tracked by
+  ../../student_v4/reed_samples.cpp + .h   the sample data (not tracked by
                                              git: it is made from a licensed
                                              library and stays on this PC)
   capturas/preview/<rank>_<key>.wav          each sample played for 4 s, to
@@ -23,7 +23,7 @@ from analyse import load, find_notes, fundamental
 from make_capture_midi import NOTES, SOUNDING_OFFSET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SKETCH = os.path.normpath(os.path.join(HERE, "..", "..", "etutti_synth"))
+SKETCH = os.path.normpath(os.path.join(HERE, "..", "..", "student_v4"))
 PREVIEW = os.path.join(HERE, "capturas", "preview")
 
 # rank -> (octave of its pitch relative to the 8' reeds, stored sample rate).

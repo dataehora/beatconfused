@@ -1,4 +1,4 @@
-"""Builds etutti/firmware/etutti_synth/oled_font.h: the 5 x 10 font of the Student V4's OLED (SPEC R6V4 item 7).
+"""Builds etutti/firmware/student_v4/oled_font.h: the 5 x 10 font of the Student V4's OLED (SPEC R6V4 item 7).
 
 Why a font of our own: the old 5 x 7 table had capitals, digits and a few signs only. The menu now speaks
 Portuguese and English in lower case with accents, and the table is meant to grow to other languages.
@@ -9,14 +9,14 @@ Cell: 5 columns x 10 rows (bit r of a column byte = row r, row 0 at the top).
   rows 4-8   x-height of the lower case (5 rows); accents of the lower case sit on rows 1-2
   row 9      the single descender row (g j p q y) and the cedilla
 Everything is built from ASCII art below, so a new letter is a few lines. Run with any python 3 (stdlib only):
-    python make_font.py            writes ../../etutti_synth/oled_font.h
+    python make_font.py            writes ../../student_v4/oled_font.h
     python make_font.py --png X    also writes a preview sheet to X (needs Pillow)
 """
 import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, "..", "..", "etutti_synth", "oled_font.h")
+OUT = os.path.join(HERE, "..", "..", "student_v4", "oled_font.h")
 
 # The classic 5 x 7 table (ASCII 32..90), columns with bit 0 at the top; the old FONT5X7 of the sketch.
 OLD = [

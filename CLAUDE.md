@@ -1173,3 +1173,17 @@ No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2
   pads 1.4 x 0.7 at u 2.1 / 71.9; J2 stays on the ruler without a cable): `layout_r4.LINK = "D"`, `link_box`; 0 mm3 vs tray, pegs, sensors, screws, rulers at
   every junction (32-80 keys); the OUT plug windows are gone (`J2_FITTED = False` would also drop the J2 header notch). Option C (FPC 3.9 mm deep) hits the pegs. Report: `student_v04/FIT_CHECK.md`
   R5V4 section; numbers in `estudos/r5v4.json`, `case/out/ligacao_v5.json`. Heredocs in Bash lose backslashes: edit strings with `\n` through the Edit tool.
+
+### Student V4, R7V4 (22 Nov 2026): general rules and the H-link study
+
+- **General rules (J's decision, valid for every later revision; also in `.claude/agents/*.md`):** (1) **only the 32-key version is detailed**
+  (model, fit check, figures, cost, assembly, firmware); 48/64/80 keys get only a short "validation of the modular concept" section (the universal
+  ruler repeats, the chain and the scan grow without changing the main board, the case grows by the same length rule), with no figures, cost tables
+  or per-size fit checks; (2) **only the modular Student V4** is worked on, compiled and checked: Student V01, V2, V3, Lite, Viaggio, Pocket,
+  eTuttino, eTutti and eTuttiChorus stay in the repo frozen (not updated, not kept compiling, nothing in the V4 reports depends on them);
+  (3) the V4 firmware gets its **own sketch**, `etutti/firmware/student_v4/` (created by `programacao-som`); the shared `etutti/firmware/etutti_synth/`
+  is frozen.
+- **H link study (design part, nothing applied to the official case):** `student_v04/case/ligacao_h.py` (CadQuery venv python, ~6 s; plain
+  numpy raster at 0.1 mm over `layout_r4.py`, does not touch `case_r4.py`) writes `case/out/ligacao_h.json` and `case/renders/ligacao_h_*_r7.png`.
+  The JST SH datasheet PDF (`jst-mfg.com/product/pdf/eng/eSH.pdf`) has font-obfuscated text (digits lost): header 4.3, plug 7.6 x 5.0 x 3.9 and the
+  4 mm minimum bend radius are still "conferir". Result and open questions in `student_v04/FIT_CHECK.md` (R7V4 section on top).
