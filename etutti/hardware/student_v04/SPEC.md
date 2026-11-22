@@ -1,4 +1,117 @@
-# eTutti Student V4 — SPEC R6V4
+# eTutti Student V4 — SPEC R7V4
+
+Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #189 (relatórios da R6V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R7V4".
+
+**Regras que continuam:** resumos visuais de **planta e corte** para cada decisão; **nome da nota em cada tecla** em toda figura do teclado.
+
+**Ordem desta revisão (pedido do J):** o item 1 é um **estudo dedicado da ligação**, feito **antes de qualquer outro passo**. Nenhuma mudança de esquema, posicionamento ou case entra antes de o J aprovar a ligação. O item 3 (microfone) é só estudo de mesa, sem mudar a placa.
+
+## Mudanças desde a R6V4
+
+### 1. Ligação das réguas: estudo dedicado da opção "H" (cabo SH de estoque + rebaixo na base)
+
+**Modelo de fornecimento (novo, decisão do J):**
+- case, réguas e placa de interface são fornecidos **em separado**;
+- as réguas vêm como peças de um conjunto modular: a fábrica **nunca** monta réguas no case nem as liga;
+- todo o encaixe e a ligação são feitos **em casa, pelo usuário**.
+
+**Restrições:**
+- nenhum componente a mais e nenhuma fixação a mais na base do case: **sem ponte e sem berço** (a opção G da R6V4 fica suspensa);
+- os comprimentos de cabo podem variar.
+
+**O conceito H, descrito pelo J:**
+1. A placa principal tem **4 conectores SH** (J601–J604, como hoje), um por fileira.
+2. Cada régua tem um **SH de entrada** embaixo, perto da ponta esquerda, e um **SH de saída** embaixo, na ponta direita (o mesmo cabeçalho SM06B-SRSS, ou o clone C56123098).
+   - Nota de nomenclatura: no sistema SH o lado da placa é sempre o cabeçalho com pinos ("macho"); as duas pontas do cabo são o plugue ("fêmea").
+3. A base do case tem um **rebaixo** sob a zona de conectores de cada régua. Por ele:
+   - o cabo passa antes de a régua ser posta;
+   - o cabo é ligado à régua;
+   - a régua desce e é parafusada.
+4. Entre réguas de uma fileira, um **cabo SH de estoque de ~50 mm** liga a saída de uma régua à entrada da seguinte.
+   - Existe jumper JST original de 6 vias com 50,8 mm: A06SR06SR30K51B, em estoque na DigiKey; o mesmo jumper existe também em 4", 6" e 12".
+5. Da placa à 1ª régua: cabo SH de estoque (50 ou 100 mm). O rebaixo guarda a sobra.
+
+**O que o estudo precisa responder (Design + Eletrônica), com desenhos reais:**
+1. **Viabilidade geral:**
+   - o cabo de 50 mm (e o de 100 mm da placa) cabe no rebaixo, com a régua no lugar, sem pressionar sensores, pinos de tecla ou o 595?
+   - qual profundidade e largura de rebaixo isso pede?
+   - o que muda no piso (espessura, rigidez sob a régua, trilhos e bossas M2), no volume e no custo de impressão?
+2. **Posição e orientação dos cabeçalhos na régua:**
+   - boca para trás (−y), como na R4V4, para os lados (±x) ou outra;
+   - a posição deve deixar o plugue entrar com a régua **erguida** acima do degrau (o cabo tem de ser longo o bastante para isso) e depois descer sem dobrar o cabo contra a régua;
+   - conferir com o desenho do fabricante a altura do cabeçalho e o raio de dobra mínimo do cabo de 28–32 AWG.
+3. **Posicionamento geral das réguas sobre o case** (pedido do J para decidir):
+   - planta de **todas** as réguas com conectores, rebaixos e caminho de cada cabo, em 32 teclas e numa versão modular (80);
+   - cortes do rebaixo em cada fileira, porque os degraus mudam a altura: a fileira 1 tem o bolso mais raso.
+4. **Ordem dos pinos dos cabos:**
+   - alguns cabos SH prontos são "invertidos" (com o cabo plano, os dois plugues ficam do mesmo lado, e o pino 1 de uma ponta liga ao pino 6 da outra);
+   - a pinagem da entrada e da saída da régua (e de J601–J604) deve funcionar com o cabo comprado, de preferência com os dois tipos de cabo; se não der, dizer qual comprar;
+   - um cabo ao contrário nunca pode inverter a alimentação.
+5. **Montagem em casa:**
+   - passos com figuras, do cabo solto à régua parafusada;
+   - como trocar uma régua;
+   - como acrescentar um módulo.
+6. **Custo:**
+   - tabela 32/48/64/80 contra a G e a D: peças da régua, cabos de estoque, tipos Extended, impressão do case;
+   - o SH continua sendo o único conector das réguas.
+7. **Se a H não fechar:** dizer exatamente o que impede e qual a menor mudança que a faria funcionar. Exemplos de ajuste: outra posição do cabeçalho, outro comprimento de cabo, rebaixo mais fundo ou um degrau maior na fileira 1.
+
+### 2. Case: aprovado
+
+- 244 mm.
+- Chanfro de 2 × 2 em cima e 1 × 1 embaixo.
+- Borda direita de 5,8 mm.
+
+**Tamanho e custo (orientação do J):** não há limite fixo de tamanho. Considerar os limites que mudam o custo: a mesa de impressão de 250 mm, as faixas de preço do MJF por volume e o painel de 100 × 100 mm da JLCPCB. Se o desenho passar um pouco de um desses limites, propor a redução que o faça caber.
+
+### 3. Microfone: eletreto comum **e** Sennheiser ME 3 (estudo de mesa)
+
+O J quer que a entrada IN aceite, além de uma cápsula de eletreto comum, um microfone profissional como o **Sennheiser ME 3** (art. 508928).
+
+Dados do fabricante:
+- condensador pré-polarizado, cardioide;
+- sensibilidade de 1,6 mV/Pa;
+- conector de 3,5 mm;
+- tensão de alimentação de 10 V.
+
+**Tarefa (Eletrônica, só estudo; a placa não muda nesta revisão):**
+1. **Pinagem do plugue do ME 3** (quick guide e folha de especificação da Sennheiser): o sinal e a alimentação vêm na ponta? O anel é usado? Funciona no J302 como está (cápsula na ponta, anel NC)?
+2. **Alimentação:**
+   - o MIC_BIAS do SGTL5000 chega a 3,0 V, contra os 10 V especificados;
+   - o ME 3 funciona com 3 V? Com que perda de nível máximo e de ruído?
+   - se precisar de mais, qual a menor solução (fonte de bias de 5–10 V com resistor, ligada só com microfone detectado) e quanto custa em peças, tipos Extended e espaço.
+3. **Ganho:** 1,6 mV/Pa fica ~14 dB abaixo de uma cápsula comum de −42 dBV/Pa. O ganho do SGTL5000 (até 40 dB + ADC) basta para voz cantada a 2–3 cm com boa relação sinal/ruído?
+4. **Detecção (MIC_DET):** com a corrente do ME 3, a tensão cai dentro da faixa "microfone" dos limiares da R6V4?
+5. **Recomendação:** o que a placa precisa ter para servir aos dois microfones, ou por que não dá.
+
+O padrão continua sendo o headset de eletreto comum com a cápsula na ponta. Microfone de PC com bias no anel continua fora (decisão do J).
+
+### 4. Adiados para depois do protótipo
+
+- **Modos de voz:** os detalhes do harmonizador (mistura seca/ajudada, tecla sozinha no modo intervalo, padrão de vozes) ficam como estão até haver instrumento para testar. O firmware atual já basta.
+- **Espanhol na tela:** depois do protótipo.
+
+### 5. Portão P
+
+Continua **fechado** até o J escolher a ligação (item 1).
+
+## Tarefas para o Code (R7V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Design + Eletrônica | **estudo da ligação H** (item 1): viabilidade, posicionamento geral das réguas, rebaixos, cabos, pinagem, montagem, custo; planta e corte com as notas; nenhuma mudança de projeto antes da aprovação do J |
+| 2 | Eletrônica | estudo de mesa do microfone ME 3 + eletreto (item 3), sem mudar a placa |
+| — | Programação e som | nada novo (aguarda o protótipo) |
+| — | Roteamento | aguarda o portão P |
+
+**Perguntas que o Chat espera nos relatórios:**
+- a H é possível? Se sim, com qual rebaixo, qual cabo e qual custo; se não, o que impede e qual a menor mudança que a faria funcionar;
+- o ME 3 funciona como está ou precisa de quê.
+
+---
+
+# Anexo — SPEC R6V4 (referência)
 
 Data: 21 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #187 (relatórios da R5V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R6V4".
