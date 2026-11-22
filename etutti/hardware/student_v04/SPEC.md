@@ -1,4 +1,104 @@
-# eTutti Student V4 — SPEC R8V4
+# eTutti Student V4 — SPEC R9V4
+
+Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #194 (relatórios da R8V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R9V4".
+
+**Regras que continuam:**
+- resumos visuais de planta e corte;
+- nome da nota em cada tecla;
+- só 32 teclas detalhadas, só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+**Regra nova:** junto da planta e do corte, entregar **uma vista isométrica da base (bandeja)** sempre que a base mudar. O Chat fez a primeira a partir do modelo oficial: `spec_img/iso_base_r9.png` (script `spec_img/iso_base_r9.py`; painel A só a base, painel B com réguas, conectores, cabos, M2 e notas). O design pode melhorá-la (render real, cortes de detalhe da junção).
+
+## Decisões do J sobre a R8V4
+
+- Case de **102 mm**: aprovado.
+- Riscos do cabo (comprimento útil, fios soltos ou fita) conferidos só na compra: aceito.
+- **Portão P: ainda fechado.** Os itens 1 a 3 abaixo precisam fechar antes do roteamento.
+
+## Mudanças desde a R8V4
+
+### 1. Segundo ponto de fixação da régua (Design + Eletrônica)
+
+O J quer **dois pontos de fixação por régua**, para garantir que ela não gire nem levante. Estudar:
+1. **Outras posições:** todos os vãos entre carcaças ao longo da régua (não só u 18,5 / 37 / 55,5), nas duas faixas, frente (v +5,2) e trás, e em outras posições de v. Também as pontas da régua, na junção. A posição do furo na régua pode mudar (a eletrônica atualiza a régua).
+2. **Parafusos menores:**
+   - M1,6 (cabeça ~Ø3,0) ou M1,4 com inserto;
+   - parafuso autoatarraxante para plástico (por exemplo PT/plastite ~Ø1,7–2,0) direto na bossa, sem inserto;
+   - ver se cabem onde o M2 (cabeça Ø3,8, bossa Ø6) não cabe.
+3. **Critérios:**
+   - dois pontos por régua, separados o suficiente para travar a rotação;
+   - zero conflito com plugues, cabos (45,8 e 50,8), cabeçalhos, pinos, sensores, 595, postes e rebaixos;
+   - bossa imprimível (MJF) e inserto ou rosca confiável;
+   - rigidez ≤ 0,05 mm a 3 N.
+4. **Entregar:**
+   - as opções com planta, corte e isométrico da base (com as notas nas teclas);
+   - a recomendada;
+   - o que muda na régua (furos) e no case.
+5. Se nenhuma opção der dois pontos em alguma régua, explicar o porquê e quantificar com o pior caso de carga: tecla apertada na ponta e retorno da mola. Isso mostra se o ponto único, mais o sanduíche régua + grade + teclas + deck, segura a régua contra giro e levantamento.
+
+### 2. OLED desalinhado no corte da interface (Design)
+
+No `corte_interface_v4_r8.png` (corte A-A, x = 37):
+- o vidro do OLED (y ~12–28) não parece centrado na janela da tampa (y ~15,5–28,5);
+- o módulo parece **solto**, sem apoio visível, ao contrário do alto-falante, que aparece encaixado na caixa.
+
+Conferir:
+- **Desenho real do módulo:** a área ativa do vidro centrada na janela. Se o deslocamento de 1,9 mm de `oled_centre()` estiver certo, mostrar a cota da área ativa contra a janela.
+- **Apoios no corte:** os 4 postes `oled_posts()` e o aperto do módulo devem aparecer no corte (ou num corte extra que passe por eles).
+- **Folgas:** vidro–janela e módulo–teto.
+
+Corrigir o modelo se estiver errado e refazer o corte.
+
+### 3. Microfone: microfones dinâmicos de headset (Eletrônica + Programação e som)
+
+**O Sennheiser ME 3 sai como referência, e o boost de 9–10 V é abandonado** (sai também do plano B).
+
+Novas referências, ligadas por fio:
+- **Audio-Technica PRO 8HEx:** dinâmico hipercardioide, 1,7 mV/Pa, 600 Ω, XLR macho.
+- **Shure WH20XLR:** dinâmico cardioide, −67 dBV/Pa (0,45 mV/Pa), 150 Ω nominal (200 Ω real), XLR macho.
+
+São **dinâmicos** (bobina móvel): não pedem alimentação, e o bias DC é desnecessário. O headset de eletreto comum continua suportado.
+
+Estudar, de preferência **sem mudar a placa**:
+1. **Ligação:** adaptador passivo XLR fêmea → plugue de 3,5 mm desbalanceado (pino 2 → ponta; pinos 1 e 3 → luva). Conferir que funciona no J302 como está e se o anel NC atrapalha.
+2. **Bias:**
+   - com o microfone dinâmico, o MIC_BIAS deve ficar **desligado** (o SGTL5000 desliga por registro, BIAS_RESISTOR = 0);
+   - dizer se o bias de 3 V com 2 kΩ através da bobina (~1 mA) faz mal ou só desloca o diafragma, para decidir se basta desligar por software.
+3. **Detecção (MIC_DET):**
+   - com 2 kΩ, uma bobina de 150–600 Ω dá ~0,2–0,7 V, que cai perto do limiar de "curto" (0,30 V) e se mistura com o eletreto de corrente alta;
+   - propor a regra que distingue **nada / linha / eletreto / dinâmico**, ou dizer que não dá;
+   - nesse caso, um item de menu "tipo de microfone" (eletreto / dinâmico) que desliga o bias e libera os efeitos de voz;
+   - os efeitos de voz continuam só com microfone na entrada IN.
+4. **Ganho e ruído:**
+   - SGTL5000 com +40 dB e o ADC;
+   - voz cantada a 1–3 cm do headset (o WH20 especifica a resposta a 8 mm);
+   - dizer o nível em dBFS e a relação sinal/ruído para 0,45 e 1,7 mV/Pa;
+   - se faltar ganho, qual a menor mudança: um pré-amplificador simples na placa, o custo e os tipos Extended.
+5. **Recomendação:** o que a placa e o firmware precisam para eletreto e dinâmico, com o mínimo de peças.
+
+### 4. Portão P
+
+Continua **fechado** até o J aprovar os itens 1 a 3. Então a planta é reapresentada (se mudar) para a aprovação final e o roteamento.
+
+## Tarefas para o Code (R9V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Design + Eletrônica | item 1: segundo ponto de fixação (posições, parafusos menores, opções, recomendação, isométrico) |
+| 2 | Design | item 2: OLED (alinhamento, apoios, corte refeito) |
+| 3 | Eletrônica + Programação e som | item 3: microfones dinâmicos (adaptador, bias, detecção, ganho, recomendação); retirar ME 3 e boost dos relatórios |
+| — | Roteamento | aguarda o portão P |
+
+**Perguntas que o Chat espera nos relatórios:**
+- a fixação de dois pontos recomendada (ou a prova de que um basta);
+- o OLED corrigido;
+- o que é preciso para os microfones dinâmicos.
+
+---
+
+# Anexo — SPEC R8V4 (referência)
 
 Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #192 (relatórios da R7V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R8V4".
