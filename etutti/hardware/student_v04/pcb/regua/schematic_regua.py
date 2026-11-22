@@ -9,8 +9,8 @@ The ruler (R2V4 E5, R3V4 contract, R4V4): 4 x TMAG5253BA3 (one per key), one 74H
 (QA..QD), decoupling, two JST SH 6-way connectors (IN and OUT, both on the bottom). All parts on the bottom (JLCPCB
 bottom assembly); nothing on the top, where the key sits.
 
-  J1 IN  : 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 SER (to 595 pin 14), 6 reserved (NC); cable of the first ruler of a row
-  LK1/LK2 (R5V4): 5 solder pads each end for the in-row link (+3V3, GND, OUT, CLK, SER / QH' through 100 ohm)
+  J1 IN  : R8V4 P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (= SER, 595 pin 14); J2 OUT: same, pin 6 = QH' through 330 ohm
+  (LK1/LK2 solder pads of the R5V4 are gone: link H = stock cable, no solder)
   595    : VCC +3V3, GND, ~OE GND, ~SRCLR +3V3, SRCLK + RCLK = CLK, QA..QD -> EN of the sensors 1..4 (QE..QH unused)
 
 Writes under etutti/hardware/student_v04/: kicad/regua/student_v04_regua.kicad_sch (+ sheet, library, tables),
@@ -39,10 +39,10 @@ M.CUR = ["R"]
 M.PROJECT = "student_v04_regua"
 M.KDIR = KD
 M.BUILD = BUILD
-M.REV = "Student V4 R5V4 regua"
+M.REV = "Student V4 R8V4 regua"
 M.NOTES = {"R": [
-    "R · Regua universal de 4 teclas (74 x 14 x 1,2 mm): 4 TMAG5253BA3 + 74HC595D + 2 conectores SH de 6 vias (J1 entrada, J2 saida: opcao A) + 2 grupos de pads de solda (LK1, LK2: opcao B/D), tudo no fundo.",
-    "J1 (entrada, cabo SH-6 de 25 mm da placa principal): 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 SER, 6 reservado. J2 (saida, so opcao A): igual com o pino 5 = QH'. LK1/LK2: pads do elo soldado, mesma ordem; LK2 pino 5 = QH' (por 100 ohm).",
+    "R · Regua universal de 4 teclas (74 x 14 x 1,2 mm): 4 TMAG5253BA3 + 74HC595 + 2 conectores SH de 6 vias (J1 entrada em u 5,9, J2 saida em u 47,5), tudo no fundo. R8V4: ligacao H (cabo de estoque, sem solda).",
+    "Pinagem P6s (J1, J2 e J601-J604 da principal): 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO (J1: SER; J2: QH' por 330 ohm).",
     "O 595 liga o EN de cada sensor (QA..QD); SRCLK e RCLK juntos (a saida travada atrasa 1 pulso); OE em GND, SRCLR em +3V3.",
 ]}
 M.ROOT_UUID = M.uid("root-regua")
@@ -52,7 +52,6 @@ M.sym("PWR_FLAG", "power")
 SH_FP = "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal"
 TMAG_FP = "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm"
 DFN_FP = "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm"
-LINK_FP = "viaggio_micromod:LINK_5x1.00mm"   # footprint do projeto (so pads), escrito abaixo
 
 # ------------------------------------------------------------------ parts
 for k in range(1, 5):
@@ -79,53 +78,29 @@ M.part("U5", "74HC595BQ", "74HC595BQ,115", {
     note="registrador de deslocamento 8 bits em DHVQFN-16 (2,5 x 3,5 mm): o SOIC-16 (C5947, Basic) tem 6,9 mm de pads e nao cabe numa "
          "regua de 14 mm com pinos a 10,16 mm; QA..QD ligam o EN dos sensores 1..4, QE..QH sem uso; QH' = cascata; pad 17 no GND",
     datasheet="https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
-# R5V4 (ligacao das reguas, opcao D): J1 = entrada por cabo SH-6 sob medida (placa principal -> 1a regua da fileira);
-# LK1/LK2 = grupos de 5 pads de solda (1,0 mm) nas duas pontas, para o ELO SOLDADO regua -> regua (sem conector, sem J2).
+# R8V4 (ligacao H, SPEC R8V4): J1 = entrada e J2 = saida, os dois SM06B-SRSS-TB (clone C56123098) no fundo, boca para tras;
+# cabo de estoque JST A06SR06SR30K51B (reto, pino k -> pino k). Pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO.
+# Os pads de solda LK1/LK2 da R5V4 (elo soldado, opcao D) saem: na H nao ha solda.
 M.part("J1", "Conn_01x06_MountingPin", "XY-SM06B-SRSS-TB",
-       {"1": "+3V3", "2": "GND", "3": "OUT", "4": "CLK", "5": "SER", "6": "NC", "MP": "GND"}, "S6", fp=SH_FP,
+       {"1": "+3V3", "2": "GND", "3": "OUT", "4": "GND", "5": "CLK", "6": "SER", "MP": "GND"}, "S6", fp=SH_FP,
        lcsc="C56123098", cls="estendida", price=0.069, status="conferir",
-       note="entrada por cabo SH-6 sob medida (25 mm) vindo da placa principal; so e usado na 1a regua de cada fileira (nas outras fica sem cabo); "
-            "no fundo, faixa de tras; mesmo conector SH-6 clone XYECONN da placa principal",
+       note="entrada (P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO = SER do 595); cabo JST A06SR06SR30K51B vindo da placa principal ou do OUT da regua anterior; "
+            "no fundo, faixa de tras, boca para tras; u = 5,9",
        datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 M.part("J2", "Conn_01x06_MountingPin", "XY-SM06B-SRSS-TB",
-       {"1": "+3V3", "2": "GND", "3": "OUT", "4": "CLK", "5": "QHP_J", "6": "NC", "MP": "GND"}, "S7", fp=SH_FP,
+       {"1": "+3V3", "2": "GND", "3": "OUT", "4": "GND", "5": "CLK", "6": "QHP_J", "MP": "GND"}, "S7", fp=SH_FP,
        lcsc="C56123098", cls="estendida", price=0.069, status="conferir",
-       note="saida por cabo SH-6 de 15 mm (opcao A) para a regua seguinte; pino 5 = QH' do 595 por 100 ohm; na recomendada (D) fica sem cabo "
-            "(o elo e soldado em LK2): mantido so para a regua aceitar a opcao A sem mexer na placa (US$ 0,07 por regua)",
+       note="saida (P6s, igual ao J1; o pino 6 = QH' do 595 por 330 ohm) para a regua seguinte da fileira; no fundo, faixa de tras, boca para tras; "
+            "R8V4: u = 47,5 (era 68,1) para o cabo de 45,8-50,8 mm fechar",
        datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-M.sym("Conn_01x05", "Connector_Generic")
-for ref, what, net5 in (("LK1", "IN", "SER"), ("LK2", "OUT", "QHP_J")):
-    M.part(ref, "Conn_01x05", "ELO " + what,
-           {"1": "+3V3", "2": "GND", "3": "OUT", "4": "CLK", "5": net5}, "S6", fp=LINK_FP, lcsc="", cls="", price=0.0,
-           status="final", mount="em casa (solda)",
-           note=("pads do elo soldado, entrada (vem do OUT da regua anterior da fileira)" if what == "IN"
-                 else "pads do elo soldado, saida (vai para a entrada da regua seguinte): 5 pads de 1,4 x 0,7 mm a 1,0 mm, no fundo, na ponta da regua; fio 28-30 AWG de 7 mm; sem peca do pedido JLCPCB"))
-M.R("R1", "100", "QHP", "QHP_J", "S7", note="serie no QH' (cascata para a proxima regua)")
+M.R("R1", "330", "QHP", "QHP_J", "S7", note="R8V4: 330 ohm (era 100) em serie no QH' (cascata para a proxima regua; limita a 10 mA o pior caso de cabo errado)")
 for k in range(1, 5):
     M.C("C%d" % k, "100nF", "+3V3", "GND", "S%d" % k, note="desacoplamento do TMAG5253 %d, junto do pino 1" % k)
 M.C("C5", "100nF", "+3V3", "GND", "S5", note="desacoplamento do 595")
 M.C("C6", "10uF", "+3V3", "GND", "S5", "0805", note="reservatorio da regua (junto do conector de entrada)")
 
 
-def write_link_fp():
-    """5 SMD pads 1.4 x 0.7 mm, pitch 1.0 mm along y (pad 1 at y = -2.0), centred; board-only (not in the BOM/CPL)."""
-    d = os.path.join(KD, "viaggio_micromod.pretty")
-    os.makedirs(d, exist_ok=True)
-    nl = chr(10)
-    lines = ['(footprint "LINK_5x1.00mm" (version 20240108) (generator "pcbnew") (layer "F.Cu")',
-             '  (descr "R5V4: 5 pads de solda do elo da regua, passo 1,0 mm, 1,4 x 0,7 mm")',
-             '  (attr smd board_only exclude_from_pos_files exclude_from_bom)',
-             '  (fp_rect (start -0.9 -2.45) (end 0.9 2.45) (stroke (width 0.05) (type default)) (fill none) (layer "F.CrtYd"))']
-    for i in range(5):
-        lines.append('  (pad "%d" smd rect (at 0 %.2f) (size 1.4 0.7) (layers "F.Cu" "F.Mask" "F.Paste"))' % (i + 1, -2.0 + i))
-    lines.append(')')
-    open(os.path.join(d, "LINK_5x1.00mm.kicad_mod"), "w", newline=nl).write(nl.join(lines) + nl)
-
-
-
-
 def main():
-    write_link_fp()
     M.check_footprints()
     declared, pages = {}, {}
     for s, title in M.SHEETS:
@@ -156,8 +131,6 @@ def main():
     # BOM
     rows = {}
     for p in parts:
-        if p["ref"].startswith("LK"):          # pads de solda: nada no pedido da JLCPCB
-            continue
         r = rows.setdefault(p["lcsc"], dict(p, refs=[]))
         r["refs"].append(p["ref"])
     with open(os.path.join(HW, "bom_regua.csv"), "w", newline="", encoding="utf-8") as f:

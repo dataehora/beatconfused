@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\student_v04\\kicad\\regua\\student_v04_regua.kicad_sch")
-		(date "2026-11-21T21:03:39")
+		(date "2026-11-22T14:40:44")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -11,7 +11,7 @@
 			(title_block
 				(title "eTutti Student V4 · esquema")
 				(company "beatconfused.com")
-				(rev "Student V4 R5V4 regua")
+				(rev "Student V4 R8V4 regua")
 				(date "2026-11-21")
 				(source "student_v04_regua.kicad_sch")
 				(comment
@@ -59,7 +59,7 @@
 			(title_block
 				(title "eTutti Student V4 · R · Regua")
 				(company "beatconfused.com")
-				(rev "Student V4 R5V4 regua")
+				(rev "Student V4 R8V4 regua")
 				(date "2026-11-21")
 				(source "student_v04_regua_R.kicad_sch")
 				(comment
@@ -539,7 +539,7 @@
 			(value "XY-SM06B-SRSS-TB")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-			(description "entrada por cabo SH-6 sob medida (25 mm) vindo da placa principal; so e usado na 1a regua de cada fileira (nas outras fica sem cabo); no fundo, faixa de tras; mesmo conector SH-6 clone XYECONN da placa principal")
+			(description "entrada (P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO = SER do 595); cabo JST A06SR06SR30K51B vindo da placa principal ou do OUT da regua anterior; no fundo, faixa de tras, boca para tras; u = 5,9")
 			(fields
 				(field
 					(name "Codigo") "S6")
@@ -552,7 +552,7 @@
 				(field
 					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 				(field
-					(name "Description") "entrada por cabo SH-6 sob medida (25 mm) vindo da placa principal; so e usado na 1a regua de cada fileira (nas outras fica sem cabo); no fundo, faixa de tras; mesmo conector SH-6 clone XYECONN da placa principal")
+					(name "Description") "entrada (P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO = SER do 595); cabo JST A06SR06SR30K51B vindo da placa principal ou do OUT da regua anterior; no fundo, faixa de tras, boca para tras; u = 5,9")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -626,7 +626,7 @@
 			(value "XY-SM06B-SRSS-TB")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-			(description "saida por cabo SH-6 de 15 mm (opcao A) para a regua seguinte; pino 5 = QH' do 595 por 100 ohm; na recomendada (D) fica sem cabo (o elo e soldado em LK2): mantido so para a regua aceitar a opcao A sem mexer na placa (US$ 0,07 por regua)")
+			(description "saida (P6s, igual ao J1; o pino 6 = QH' do 595 por 330 ohm) para a regua seguinte da fileira; no fundo, faixa de tras, boca para tras; R8V4: u = 47,5 (era 68,1) para o cabo de 45,8-50,8 mm fechar")
 			(fields
 				(field
 					(name "Codigo") "S7")
@@ -639,7 +639,7 @@
 				(field
 					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 				(field
-					(name "Description") "saida por cabo SH-6 de 15 mm (opcao A) para a regua seguinte; pino 5 = QH' do 595 por 100 ohm; na recomendada (D) fica sem cabo (o elo e soldado em LK2): mantido so para a regua aceitar a opcao A sem mexer na placa (US$ 0,07 por regua)")
+					(name "Description") "saida (P6s, igual ao J1; o pino 6 = QH' do 595 por 330 ohm) para a regua seguinte da fileira; no fundo, faixa de tras, boca para tras; R8V4: u = 47,5 (era 68,1) para o cabo de 45,8-50,8 mm fechar")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -709,179 +709,15 @@
 			)
 		)
 		(comp
-			(ref "LK1")
-			(value "ELO IN")
-			(footprint "viaggio_micromod:LINK_5x1.00mm")
-			(description "pads do elo soldado, entrada (vem do OUT da regua anterior da fileira)")
-			(fields
-				(field
-					(name "Codigo") "S6")
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "Montagem") "em casa (solda)")
-				(field
-					(name "Footprint") "viaggio_micromod:LINK_5x1.00mm")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "pads do elo soldado, entrada (vem do OUT da regua anterior da fileira)")
-			)
-			(libsource
-				(lib "viaggio_micromod")
-				(part "Conn_01x05")
-				(description "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			)
-			(property
-				(name "Codigo")
-				(value "S6")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "Montagem")
-				(value "em casa (solda)")
-			)
-			(property
-				(name "Sheetname")
-				(value "R · Regua")
-			)
-			(property
-				(name "Sheetfile")
-				(value "student_v04_regua_R.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "connector")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Connector*:*_1x??_*")
-			)
-			(sheetpath
-				(names "/R · Regua/")
-				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
-			)
-			(tstamps "e8b613b8-28fa-5b77-a0cf-823f47808626")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-						(pin
-							(num "3")
-						)
-						(pin
-							(num "4")
-						)
-						(pin
-							(num "5")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "LK2")
-			(value "ELO OUT")
-			(footprint "viaggio_micromod:LINK_5x1.00mm")
-			(description "pads do elo soldado, saida (vai para a entrada da regua seguinte): 5 pads de 1,4 x 0,7 mm a 1,0 mm, no fundo, na ponta da regua; fio 28-30 AWG de 7 mm; sem peca do pedido JLCPCB")
-			(fields
-				(field
-					(name "Codigo") "S6")
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "Montagem") "em casa (solda)")
-				(field
-					(name "Footprint") "viaggio_micromod:LINK_5x1.00mm")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "pads do elo soldado, saida (vai para a entrada da regua seguinte): 5 pads de 1,4 x 0,7 mm a 1,0 mm, no fundo, na ponta da regua; fio 28-30 AWG de 7 mm; sem peca do pedido JLCPCB")
-			)
-			(libsource
-				(lib "viaggio_micromod")
-				(part "Conn_01x05")
-				(description "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			)
-			(property
-				(name "Codigo")
-				(value "S6")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "Montagem")
-				(value "em casa (solda)")
-			)
-			(property
-				(name "Sheetname")
-				(value "R · Regua")
-			)
-			(property
-				(name "Sheetfile")
-				(value "student_v04_regua_R.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "connector")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Connector*:*_1x??_*")
-			)
-			(sheetpath
-				(names "/R · Regua/")
-				(tstamps "/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/")
-			)
-			(tstamps "eb899a08-c590-5584-8a18-a68b34f15990")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-						(pin
-							(num "3")
-						)
-						(pin
-							(num "4")
-						)
-						(pin
-							(num "5")
-						)
-					)
-				)
-			)
-		)
-		(comp
 			(ref "R1")
-			(value "100")
+			(value "330")
 			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "serie no QH' (cascata para a proxima regua)")
+			(description "R8V4: 330 ohm (era 100) em serie no QH' (cascata para a proxima regua; limita a 10 mA o pior caso de cabo errado)")
 			(fields
 				(field
 					(name "Codigo") "S7")
 				(field
-					(name "LCSC") "C25076")
+					(name "LCSC") "C25104")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -890,7 +726,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "serie no QH' (cascata para a proxima regua)")
+					(name "Description") "R8V4: 330 ohm (era 100) em serie no QH' (cascata para a proxima regua; limita a 10 mA o pior caso de cabo errado)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -903,7 +739,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C25076")
+				(value "C25104")
 			)
 			(property
 				(name "Montagem")
@@ -1491,55 +1327,6 @@
 		)
 		(libpart
 			(lib "viaggio_micromod")
-			(part "Conn_01x05")
-			(description "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			(footprints
-				(fp "Connector*:*_1x??_*")
-			)
-			(fields
-				(field
-					(name "Reference") "J")
-				(field
-					(name "Value") "Conn_01x05")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			)
-			(pins
-				(pin
-					(num "1")
-					(name "Pin_1")
-					(type "passive")
-				)
-				(pin
-					(num "2")
-					(name "Pin_2")
-					(type "passive")
-				)
-				(pin
-					(num "3")
-					(name "Pin_3")
-					(type "passive")
-				)
-				(pin
-					(num "4")
-					(name "Pin_4")
-					(type "passive")
-				)
-				(pin
-					(num "5")
-					(name "Pin_5")
-					(type "passive")
-				)
-			)
-		)
-		(libpart
-			(lib "viaggio_micromod")
 			(part "Conn_01x06_MountingPin")
 			(description "Generic connectable mounting pin connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)")
 			(footprints
@@ -1732,18 +1519,6 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "LK1")
-				(pin "1")
-				(pinfunction "Pin_1_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "LK2")
-				(pin "1")
-				(pinfunction "Pin_1_1")
-				(pintype "passive")
-			)
-			(node
 				(ref "U1")
 				(pin "1")
 				(pinfunction "VCC_1")
@@ -1786,26 +1561,14 @@
 			(class "Default")
 			(node
 				(ref "J1")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
 				(ref "J2")
-				(pin "4")
-				(pinfunction "Pin_4_4")
-				(pintype "passive")
-			)
-			(node
-				(ref "LK1")
-				(pin "4")
-				(pinfunction "Pin_4_4")
-				(pintype "passive")
-			)
-			(node
-				(ref "LK2")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
@@ -1931,6 +1694,12 @@
 			)
 			(node
 				(ref "J1")
+				(pin "4")
+				(pinfunction "Pin_4_4")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
 				(pin "MP")
 				(pinfunction "MountPin_MP")
 				(pintype "passive")
@@ -1943,20 +1712,14 @@
 			)
 			(node
 				(ref "J2")
+				(pin "4")
+				(pinfunction "Pin_4_4")
+				(pintype "passive")
+			)
+			(node
+				(ref "J2")
 				(pin "MP")
 				(pinfunction "MountPin_MP")
-				(pintype "passive")
-			)
-			(node
-				(ref "LK1")
-				(pin "2")
-				(pinfunction "Pin_2_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "LK2")
-				(pin "2")
-				(pinfunction "Pin_2_2")
 				(pintype "passive")
 			)
 			(node
@@ -2043,18 +1806,6 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "LK1")
-				(pin "3")
-				(pinfunction "Pin_3_3")
-				(pintype "passive")
-			)
-			(node
-				(ref "LK2")
-				(pin "3")
-				(pinfunction "Pin_3_3")
-				(pintype "passive")
-			)
-			(node
 				(ref "U1")
 				(pin "4")
 				(pinfunction "OUT_4")
@@ -2101,14 +1852,8 @@
 			(class "Default")
 			(node
 				(ref "J2")
-				(pin "5")
-				(pinfunction "Pin_5_5")
-				(pintype "passive")
-			)
-			(node
-				(ref "LK2")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
@@ -2123,14 +1868,8 @@
 			(class "Default")
 			(node
 				(ref "J1")
-				(pin "5")
-				(pinfunction "Pin_5_5")
-				(pintype "passive")
-			)
-			(node
-				(ref "LK1")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
@@ -2142,28 +1881,6 @@
 		)
 		(net
 			(code "12")
-			(name "unconnected-(J1-Pin_6-Pad6)")
-			(class "Default")
-			(node
-				(ref "J1")
-				(pin "6")
-				(pinfunction "Pin_6_6")
-				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "13")
-			(name "unconnected-(J2-Pin_6-Pad6)")
-			(class "Default")
-			(node
-				(ref "J2")
-				(pin "6")
-				(pinfunction "Pin_6_6")
-				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "14")
 			(name "unconnected-(U5-QE-Pad4)")
 			(class "Default")
 			(node
@@ -2174,7 +1891,7 @@
 			)
 		)
 		(net
-			(code "15")
+			(code "13")
 			(name "unconnected-(U5-QF-Pad5)")
 			(class "Default")
 			(node
@@ -2185,7 +1902,7 @@
 			)
 		)
 		(net
-			(code "16")
+			(code "14")
 			(name "unconnected-(U5-QG-Pad6)")
 			(class "Default")
 			(node
@@ -2196,7 +1913,7 @@
 			)
 		)
 		(net
-			(code "17")
+			(code "15")
 			(name "unconnected-(U5-QH-Pad7)")
 			(class "Default")
 			(node

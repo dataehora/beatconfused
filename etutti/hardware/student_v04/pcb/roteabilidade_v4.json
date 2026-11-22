@@ -1,21 +1,21 @@
 {
- "redes_roteadas": 61,
- "ligacoes_MST": 129,
- "comprimento_total_mm": 1842.9,
+ "redes_roteadas": 62,
+ "ligacoes_MST": 132,
+ "comprimento_total_mm": 1858.3,
  "maior_celula_mm": 60.9,
- "celula_media_mm": 5.97,
- "mm_por_cm2": 25.82,
+ "celula_media_mm": 6.02,
+ "mm_por_cm2": 26.04,
  "maiores_redes": [
   [
    109.6,
    "VSYS"
   ],
   [
-   105.9,
+   106.0,
    "SCAN_DATA"
   ],
   [
-   93.9,
+   94.2,
    "SCAN_CLK"
   ],
   [

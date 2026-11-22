@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\student_v04\\kicad\\student_v04.kicad_sch")
-		(date "2026-11-22T01:23:37")
+		(date "2026-11-22T14:39:29")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -5012,14 +5012,14 @@
 		)
 		(comp
 			(ref "R305")
-			(value "2.2k")
+			(value "0")
 			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "bias do microfone de eletreto (como a Audio Board: 2,2k do MICBIAS)")
+			(description "R8V4: 0 ohm (aprovado): bias total = 2 k internos do SGTL5000 (BIAS_RESISTOR 2k); era 2,2 k em serie (4,2 k). Mais tensao para microfones que pedem mais")
 			(fields
 				(field
 					(name "Codigo") "F3")
 				(field
-					(name "LCSC") "C25879")
+					(name "LCSC") "C17168")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -5028,7 +5028,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "bias do microfone de eletreto (como a Audio Board: 2,2k do MICBIAS)")
+					(name "Description") "R8V4: 0 ohm (aprovado): bias total = 2 k internos do SGTL5000 (BIAS_RESISTOR 2k); era 2,2 k em serie (4,2 k). Mais tensao para microfones que pedem mais")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -5041,7 +5041,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C25879")
+				(value "C17168")
 			)
 			(property
 				(name "Montagem")
@@ -6101,7 +6101,7 @@
 			(value "XY-SM06B-SRSS-TB")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-			(description "fileira 1 (a da frente): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)")
+			(description "fileira 1 (a da frente): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
 			(fields
 				(field
 					(name "Codigo") "R1")
@@ -6114,7 +6114,7 @@
 				(field
 					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 				(field
-					(name "Description") "fileira 1 (a da frente): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)")
+					(name "Description") "fileira 1 (a da frente): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -6188,7 +6188,7 @@
 			(value "XY-SM06B-SRSS-TB")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-			(description "fileira 2 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)")
+			(description "fileira 2 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
 			(fields
 				(field
 					(name "Codigo") "R2")
@@ -6201,7 +6201,7 @@
 				(field
 					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 				(field
-					(name "Description") "fileira 2 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)")
+					(name "Description") "fileira 2 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -6275,7 +6275,7 @@
 			(value "XY-SM06B-SRSS-TB")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-			(description "fileira 3 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)")
+			(description "fileira 3 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
 			(fields
 				(field
 					(name "Codigo") "R3")
@@ -6288,7 +6288,7 @@
 				(field
 					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 				(field
-					(name "Description") "fileira 3 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)")
+					(name "Description") "fileira 3 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -6362,7 +6362,7 @@
 			(value "XY-SM06B-SRSS-TB")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-			(description "fileira 4 (a de tras): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)")
+			(description "fileira 4 (a de tras): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
 			(fields
 				(field
 					(name "Codigo") "R4")
@@ -6375,7 +6375,7 @@
 				(field
 					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 				(field
-					(name "Description") "fileira 4 (a de tras): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)")
+					(name "Description") "fileira 4 (a de tras): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -6734,14 +6734,14 @@
 		)
 		(comp
 			(ref "R605")
-			(value "100")
+			(value "330")
 			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)")
+			(description "R8V4: 330 ohm (era 100; limita a 10 mA o pior caso de cabo errado); serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)")
 			(fields
 				(field
 					(name "Codigo") "R5")
 				(field
-					(name "LCSC") "C25076")
+					(name "LCSC") "C25104")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -6750,7 +6750,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)")
+					(name "Description") "R8V4: 330 ohm (era 100; limita a 10 mA o pior caso de cabo errado); serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -6763,7 +6763,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C25076")
+				(value "C25104")
 			)
 			(property
 				(name "Montagem")
@@ -6806,14 +6806,14 @@
 		)
 		(comp
 			(ref "R606")
-			(value "100")
+			(value "330")
 			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "serie no DATA comum, junto do J101")
+			(description "R8V4: 330 ohm; serie no DATA comum, junto do J101")
 			(fields
 				(field
 					(name "Codigo") "R5")
 				(field
-					(name "LCSC") "C25076")
+					(name "LCSC") "C25104")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -6822,7 +6822,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "serie no DATA comum, junto do J101")
+					(name "Description") "R8V4: 330 ohm; serie no DATA comum, junto do J101")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -6835,7 +6835,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C25076")
+				(value "C25104")
 			)
 			(property
 				(name "Montagem")
@@ -9076,6 +9076,12 @@
 			)
 			(node
 				(ref "J601")
+				(pin "4")
+				(pinfunction "Pin_4_4")
+				(pintype "passive")
+			)
+			(node
+				(ref "J601")
 				(pin "MP")
 				(pinfunction "MountPin_MP")
 				(pintype "passive")
@@ -9084,6 +9090,12 @@
 				(ref "J602")
 				(pin "2")
 				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J602")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive")
 			)
 			(node
@@ -9096,6 +9108,12 @@
 				(ref "J603")
 				(pin "2")
 				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J603")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive")
 			)
 			(node
@@ -9108,6 +9126,12 @@
 				(ref "J604")
 				(pin "2")
 				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J604")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive")
 			)
 			(node
@@ -9819,26 +9843,26 @@
 			(class "Default")
 			(node
 				(ref "J601")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
 				(ref "J602")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
 				(ref "J603")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
 				(ref "J604")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
@@ -9869,26 +9893,26 @@
 			(class "Default")
 			(node
 				(ref "J601")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
 				(ref "J602")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
 				(ref "J603")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
 				(ref "J604")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
@@ -10833,50 +10857,6 @@
 		)
 		(net
 			(code "101")
-			(name "unconnected-(J601-Pin_6-Pad6)")
-			(class "Default")
-			(node
-				(ref "J601")
-				(pin "6")
-				(pinfunction "Pin_6_6")
-				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "102")
-			(name "unconnected-(J602-Pin_6-Pad6)")
-			(class "Default")
-			(node
-				(ref "J602")
-				(pin "6")
-				(pinfunction "Pin_6_6")
-				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "103")
-			(name "unconnected-(J603-Pin_6-Pad6)")
-			(class "Default")
-			(node
-				(ref "J603")
-				(pin "6")
-				(pinfunction "Pin_6_6")
-				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "104")
-			(name "unconnected-(J604-Pin_6-Pad6)")
-			(class "Default")
-			(node
-				(ref "J604")
-				(pin "6")
-				(pinfunction "Pin_6_6")
-				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "105")
 			(name "unconnected-(U202-ITERM-Pad15)")
 			(class "Default")
 			(node
@@ -10887,7 +10867,7 @@
 			)
 		)
 		(net
-			(code "106")
+			(code "102")
 			(name "unconnected-(U202-TMR-Pad14)")
 			(class "Default")
 			(node
@@ -10898,7 +10878,7 @@
 			)
 		)
 		(net
-			(code "107")
+			(code "103")
 			(name "unconnected-(U202-~{PGOOD}-Pad7)")
 			(class "Default")
 			(node
@@ -10909,7 +10889,7 @@
 			)
 		)
 		(net
-			(code "108")
+			(code "104")
 			(name "unconnected-(U301-LINEIN_L-Pad9)")
 			(class "Default")
 			(node
@@ -10920,7 +10900,7 @@
 			)
 		)
 		(net
-			(code "109")
+			(code "105")
 			(name "unconnected-(U301-LINEIN_R-Pad8)")
 			(class "Default")
 			(node
@@ -10931,7 +10911,7 @@
 			)
 		)
 		(net
-			(code "110")
+			(code "106")
 			(name "unconnected-(U301-LINEOUT_L-Pad7)")
 			(class "Default")
 			(node
@@ -10942,7 +10922,7 @@
 			)
 		)
 		(net
-			(code "111")
+			(code "107")
 			(name "unconnected-(U301-LINEOUT_R-Pad6)")
 			(class "Default")
 			(node
@@ -10953,7 +10933,7 @@
 			)
 		)
 		(net
-			(code "112")
+			(code "108")
 			(name "unconnected-(U501-GAIN_SLOT-Pad2)")
 			(class "Default")
 			(node
@@ -10964,7 +10944,7 @@
 			)
 		)
 		(net
-			(code "113")
+			(code "109")
 			(name "unconnected-(U501-NC-Pad5)")
 			(class "Default")
 			(node
@@ -10975,7 +10955,7 @@
 			)
 		)
 		(net
-			(code "114")
+			(code "110")
 			(name "unconnected-(U501-NC-Pad6)")
 			(class "Default")
 			(node
@@ -10986,7 +10966,7 @@
 			)
 		)
 		(net
-			(code "115")
+			(code "111")
 			(name "unconnected-(U501-NC-Pad12)")
 			(class "Default")
 			(node
@@ -10997,7 +10977,7 @@
 			)
 		)
 		(net
-			(code "116")
+			(code "112")
 			(name "unconnected-(U501-NC-Pad13)")
 			(class "Default")
 			(node

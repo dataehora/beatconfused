@@ -1,4 +1,20 @@
-# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4; teclado de 32 teclas, R5V4; microfone R6V4)
+# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4; teclado de 32 teclas, R5V4; microfone R6V4; conector P6s e R305 = 0 ohm, R8V4)
+
+## R8V4: o que mudou para a programação (os pinos do Teensy NÃO mudam)
+
+- **Nenhum pino, nenhuma rede e nenhuma temporização do Teensy muda.** Muda só a **ordem dos pinos do conector** de 6 vias (J601..J604 na principal, J1 = entrada e J2 = saída de cada régua), a nova pinagem **P6s**:
+
+  | Pino do conector | 1 | 2 | 3 | 4 | 5 | 6 |
+  |---|---|---|---|---|---|---|
+  | R7V4 e antes | +3V3 | GND | OUT | CLK | DADO | NC |
+  | **P6s (R8V4)** | **+3V3** | **GND** | **OUT** | **GND** | **CLK** | **DADO** |
+
+  O CLK continua sendo `SCAN_CLK` (pino 3) e o DADO `SCAN_DATA` (pino 2); só o pino físico do cabo mudou (CLK 4 → 5, DADO 5 → 6, o 4 virou GND). **Nada na firmware depende da ordem do conector** (ela só conhece pinos do Teensy); basta não haver comentário ou tabela que cite "conector pino 4 = CLK".
+- **Resistores em série de CLK e DADO: 330 ohm** (R605 = CLK, R606 = DADO; eram 100). RC de ~7 ns com ~20 pF contra 100 ns de meio período a 5 MHz: **o CLK de 5 MHz continua valendo**, mas a borda é um pouco mais lenta; use `digitalWriteFast` como antes e, se a leitura de bancada mostrar atraso, 2,5-3 MHz sobra com folga (a varredura de 32 teclas, 17 pulsos, passa de ~3,4 us a 5 MHz para ~6,8 us a 2,5 MHz: irrelevante frente aos 8 x 70 us por varredura).
+- **Cabo de estoque:** o JST `A06SR06SR30K51B` (reto, pino k → pino k). Com um cabo "invertido" (sufixo A) não há dano (todas as redes cruzadas passam por resistor ou por GND), mas **a varredura não funciona**; a firmware não consegue detectar isso, só o teste de continuidade do usuário.
+- **R305 = 0 ohm** (aprovado): o bias do microfone é só o interno do SGTL5000. A firmware já escolhe `BIAS_RESISTOR` (2 kohm): **use 2 kohm**; a faixa de detecção MIC_DET (0,30 V < v < 2,85 V) continua válida (cai em 2,6 a 2,0 V com 0,2 a 0,5 mA; limites de corrente: 0,075 a 1,35 mA). **Sem boost de 9-10 V** nesta fase; o plano B só fica registrado (ver `ELETRONICA.md`, R8V4).
+- Contagem de pinos usados: **28** (igual).
+
 
 ## R6V4: o que mudou para a programação (dois pinos trocam de função)
 
@@ -99,8 +115,8 @@ Livres: 1, 4, 5, 13 e 29-45. **Para 80 teclas não faltam pinos.**
 
 ## A varredura (R2V4, E2): o contrato de tempo e de ordem
 
-**Barramento da régua** (R5V4: conector de 6 vias nas duas pontas OU elo soldado de 5 fios; o sinal é o mesmo): 1 +3V3 · 2 GND · 3 OUT · 4 CLK · 5 DATA · 6 reservado
-(OUT_B). Na ponta de entrada o pino 5 é o SER do 595; na ponta de saída é o QH' (cascata). VCC, GND, OUT e CLK passam direto.
+**Barramento da régua** (R8V4: conector de 6 vias nas duas pontas, pinagem **P6s**; o sinal é o mesmo): 1 +3V3 · 2 GND · 3 OUT · 4 GND · 5 CLK · 6 DATA
+(a coluna "4 CLK, 5 DATA, 6 reservado" das revisões antigas está superada). Na ponta de entrada o pino 6 é o SER do 595; na ponta de saída é o QH' (por 330 ohm) (cascata). VCC, GND, OUT e CLK passam direto.
 Na placa principal há **4 conectores, um por fileira**: OUT_Rk próprio, SCAN_CLK e SCAN_DATA **comuns às 4**.
 
 **Registrador:** 74HC595, SRCLK e RCLK juntos (uma linha CLK), SRCLR em 3,3 V, OE em GND. Efeitos que a firmware tem de saber:
@@ -144,7 +160,7 @@ pelo USB (D206); KEEP no 10; AMP_SD no 12; HP_DET no 17; CHG_STAT agora no **0**
 
 ## Microfone (R3V4, item 6; datasheet do SGTL5000, Freescale rev. 2, texto lido)
 
-- Jack IN (J302, XUNPU PJ-327A): manga no GND, **ponta = MIC_J**; R305 2,2 k de MIC_BIAS à ponta; C309 1 uF da ponta ao MIC (pino 10); C310 100 nF no MIC_BIAS (Fig. 20 do datasheet).
+- Jack IN (J302, XUNPU PJ-327A): manga no GND, **ponta = MIC_J**; R305 (R8V4: 0 ohm; era 2,2 k) de MIC_BIAS à ponta; C309 1 uF da ponta ao MIC (pino 10); C310 100 nF no MIC_BIAS (Fig. 20 do datasheet).
 - MIC_BIAS: 1,25 a 3,00 V em passos de 0,25 V (`CHIP_MIC_CTRL.BIAS_VOLT`), **no máximo VDDA - 200 mV** (VDDA = 3,3 V pelo ferrite: até 3,0 V vale). `BIAS_RESISTOR` (2/4/8 k) **não pode ser 0**
   (0 desliga o bloco). A biblioteca de áudio do Teensy (`micGain`) liga 2 k + 3,0 V: com o R305 em série são 4,2 k, ~0,45 mA num eletreto de 1 V. O datasheet diz que o R1 externo só é preciso se os resistores
   internos não servem: **o R305 pode virar 0 ohm** se a cápsula pedir mais corrente (a firmware escolhe; a placa aceita as duas).

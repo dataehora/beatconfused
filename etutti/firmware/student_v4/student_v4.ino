@@ -115,11 +115,13 @@ const uint32_t PASS_NOMINAL_US = (uint32_t)(LAYOUT_COLS * 72);   // one pass wit
 // R6V4 item 5: the voice effects (expander, harmonizer, feedback suppressor, vocoder, echo, voice reverb) only work
 // with a MICROPHONE plugged into the IN jack (J302); without one the voice items leave the menu and the effects are
 // silent. Detection (PINOS.md, R6V4): MIC_DET = pin 25 (ADC) reads the DC voltage of the jack's tip (MIC_J, which the
-// codec's MIC_BIAS feeds through 2 k + R305 2.2 k) through R306 100 k + C311 100 nF:
+// codec's MIC_BIAS feeds through the codec's 2 k BIAS_RESISTOR only: R305 = 0 ohm since R8V4) through R306 100 k + C311 100 nF:
 //   v >= 2.85 V  nothing plugged, or a line plug (no DC load)  -> voice effects off
-//   0.30 < v < 2.85 V  an electret capsule (0.1/0.3/0.5 mA = 2.6/1.7/0.9 V)  -> voice effects allowed
+//   0.30 < v < 2.85 V  an electret capsule (0.1/0.3/0.5/1 mA = 2.8/2.4/2.0/1.0 V)  -> voice effects allowed
 //   v <= 0.30 V  short, or a low-impedance dynamic microphone  -> off
-// The 2.85 / 0.30 V limits are a calculation (bias 3.0 V), to be measured with a real capsule and a line plug.
+// R8V4 (R305 0 ohm, 2 k in total instead of 4.2 k): a capsule's voltage is higher than with 4.2 k (0.1 mA: 2.8 V, was 2.6),
+// so the 2.85 V limit sits only 0.15 V under the open-jack 3.0 V (and 50 mV above a 0.1 mA capsule): a capsule drawing under ~0.075 mA would read as absent.
+// Limits kept (a calculation, TO BE MEASURED ON THE BOARD with a real capsule and a line plug; the bias tolerance is unknown).
 const uint8_t MIC_DET_PIN = 25;          // R6V4: MIC_DET (ADC). VOL_SW moved to pin 4 in the same revision
 const float MIC_DET_MIN_V = 0.30f, MIC_DET_MAX_V = 2.85f;
 const uint8_t OLED_ADDR = 0x3C;

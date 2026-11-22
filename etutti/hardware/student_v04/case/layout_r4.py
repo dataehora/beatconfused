@@ -27,7 +27,8 @@ T_PCB = 1.2
 Z_BOARD_BOTTOM = -T_PCB
 ROOF_TOP, ROOF_T = 14.6, 2.0                # SPEC R4V4: deck 2.5 + gap 1.0 + housing 11.10 -> the interface roof is level with row 1's deck
 CEILING = ROOF_TOP - ROOF_T                 # 12.6
-CASE = (252.0, 100.0)
+Y_FRONT, Y_BACK = 100.0, float(os.environ.get("ETUTTI_Y_BACK", "-2.0"))                # R8V4: the back wall moves 2 mm back (row 4's cable loop needs it with the 50.8 mm jumper); the board and everything else keep their y
+CASE = (252.0, Y_FRONT - Y_BACK)             # 102 mm deep
 WALL = 2.0
 CASE_R = 6.0                                # plan corner radius of the case (outside); V3 had 9.0, which cuts the board and the USB-C (FIT_CHECK R4V4 section 2)
 X_IF = 79.0
@@ -66,20 +67,25 @@ M2_BOSS_D, M2_PILOT, M2_HEAD = 6.0, 3.2, 3.8
 PEG_DX, PEG_D, PEG_BELOW = 5.08, 1.7, 1.5      # 2 pegs at +-5.08 from the key centre, 1.5 mm below the ruler's underside
 
 # ---------------------------------------------------------------- the ruler's connectors (task 3)
-# SH side-entry header SM06B-SRSS-TB (clone XYECONN C56123098), taken from the board's footprint J601: 9.9 wide, 6.65 deep (courtyards).
-HDR_W, HDR_D, HDR_H = 9.4, 6.15, 4.25         # footprint along the pin row, depth along the mating axis, height from the ruler's underside
+# SH side-entry header SM06B-SRSS-TB (clone XYECONN C56123098), R8V4 numbers (JST eSR_SZ.pdf, read by the electronics in R7V4): foot 9.4 x 5.55, 4.85 deep body,
+# 2.95 high. Plug 06SR-3S: 3.6 high x 7.0 wide x 2.45 deep. (The R4V4-R6V4 estimates, 4.25 high and 5.0 deep, were wrong.)
+HDR_W, HDR_D, HDR_H = 9.4, 5.55, 2.95         # footprint along the pin row, depth along the mating axis (from the mouth), height from the ruler's underside
 HDR_OVER = 0.5                                # the mouth is 0.5 mm past the ruler's back edge
-PLUG_W, PLUG_D, PLUG_H = 7.6, 5.0, 3.9        # SHR-06V-S plug (estimate: check JST's drawing)
-AXIS_Z = -(RULER_T + 2.1)                     # the mating axis below the ruler's top (header mid-height)
-SOCK_W, SOCK_H, SOCK_V = 6.76, 3.4, (-6.9, -1.7)   # R6V4 female 1x5 1.27 (EasyEDA footprint of the H4.3 twin; H3.4 to confirm)
-IN_X, OUT_X = 5.9, 68.1                       # centres along the ruler (0 = its start, 74 = its end)
+PLUG_W, PLUG_D, PLUG_H = 7.0, 2.45, 3.6
+AXIS_Z = -(RULER_T + HDR_H / 2.0)             # the mating axis below the ruler's top (header mid-height): -2.675
+IN_X, OUT_X = 5.9, 47.5                       # R8V4: OUT moved from 68.1 (R4V4) to 47.5, C3 moves out of its footprint (electronics)
 LANE_Y0, LANE_Y1 = -(RULER_W / 2 + HDR_OVER), -1.35   # back lane: y from the row axis (the sensor pocket ends at +-1.1)
-CABLE_ROW_MM, CABLE_MAIN_MM = 15.0, 25.0     # plug-to-plug lengths asked for (custom)
-CABLE_D = 3.5                                 # the six wires as a flat bundle seen from the side: about 3.5 x 1.2 mm; 3.5 used as a width
+CABLE_FREE_MM = (45.8, 50.8)                  # free wire length of the stock jumper A06SR06SR30K51B: 50.8 - 2 x 2.5 (plug bodies) or the whole 50.8 (NOT MEASURED)
+BUNDLE_W, BUNDLE_T = 5.6, 0.6                 # six loose AWG30 wires lying flat
+CABLE_D = BUNDLE_W
 NOTCH_PLUG_W = PLUG_W + 0.4                   # the plug's notch in the next row's front rail
 NOTCH_HDR_W = HDR_W + 1.0                     # the header's notch in the ruler's own back rail
 
-M2_BY_ROW = {1: (18.5, 55.5), 2: (37.0, 55.5), 3: (18.5, 37.0), 4: (37.0, 55.5)}   # R5V4: row 4 now starts like row 2 (x 79.95), so it takes row 2 positions   # chosen so no M2 boss meets a plug's notch (see conflicts())
+# R8V4: the universal ruler keeps its three M2 holes (u 18.5 / 37 / 55.5, v +5.2: the only gaps between the key bodies where an M2 head fits). With OUT at u 47.5
+# only some of them are clear of the cable loops, the plugs and the headers of the row in front (ligacao_h.hole_feasible_per_ruler, boss D 6 + 0.4): row 1 takes
+# all three, rows 2 and 4 only u 37 and row 3 only u 18.5 (plus 55.5 on its second ruler). A PAIR per row is NOT possible: see FIT_CHECK R8V4.
+M2_BY_ROW = {1: (18.5, 55.5), 2: (37.0,), 3: (18.5,), 4: (37.0,)}
+M2_BY_RULER = {(3, 1): (18.5, 55.5)}         # the second ruler of row 3 has no OUT plug of row 2 in front of u 55.5
 
 
 def length(mod):
@@ -107,13 +113,14 @@ def rulers(mod):
     out = []
     for r, y, x0, n in ROWS:
         n += 4 * mod
-        for k in range(int(math.ceil(n / 4.0))):
-            out.append({"row": r, "x0": x0 - PITCH / 2 + k * RULER_L, "y": y, "k": k})
+        nk = int(math.ceil(n / 4.0))
+        for k in range(nk):
+            out.append({"row": r, "x0": x0 - PITCH / 2 + k * RULER_L, "y": y, "k": k, "last": k == nk - 1})
     return out
 
 
 def m2_points(ru):
-    return [(ru["x0"] + dx, ru["y"] + 5.2) for dx in M2_BY_ROW[ru["row"]]]
+    return [(ru["x0"] + dx, ru["y"] + 5.2) for dx in M2_BY_RULER.get((ru["row"], ru["k"]), M2_BY_ROW[ru["row"]])]
 
 
 def post_candidates(mod):
@@ -135,7 +142,12 @@ def post_candidates(mod):
     return out
 
 
+POSTS_H = [(107.7, 68.69), (116.95, 52.67), (181.7, 36.65), (200.2, 68.69), (218.7, 36.65)]   # R8V4: three of the R7V4 posts stay, two move (135.45;52.67 -> 116.95;52.67 and 126.2;36.65 -> 181.7;36.65), clear of every loop at OUT u 47.5
+
+
 def pick_posts(mod):
+    if mod == 0:
+        return list(POSTS_H)
     n = {0: 5, 1: 8, 2: 11, 3: 14}[mod]
     c = post_candidates(mod)
     idx = sorted(set(int(round(i * (len(c) - 1) / (n - 1))) for i in range(n)))
@@ -156,69 +168,35 @@ def post_checks(mod):
     return out
 
 
+WALL_POST_X = (102.5, 176.6, 234.0)
+
+
 def wall_posts(mod):
     """Perimeter bosses of the keyboard area (every <= 80 mm along the long walls, plus the corners). The two interface-side
     bosses of the R3V4 model (7; 12) and (7; 88) are gone: the interface's four posts are the board's H1..H4."""
     L = length(mod)
-    xs = [X_IF + 10.0, L - 10.0]
-    n = int(math.ceil((xs[1] - xs[0]) / 80.0))
-    xs = [xs[0] + (xs[1] - xs[0]) * k / n for k in range(n + 1)]
-    return [(x, 7.0) for x in xs] + [(x, CASE[1] - 7.0) for x in xs]
+    xs = [x for x in WALL_POST_X if x < L - 1.0]                  # R8V4: x 102.5 / 176.6 / 234 (clear of every cable loop and plug; 74 and 57 mm apart)
+    return [(x, Y_BACK + 7.0) for x in xs] + [(x, Y_FRONT - 7.0) for x in xs]
 
 
-# ---------------------------------------------------------------- R5V4: the recommended link (option D, ELETRONICA.md R5V4)
-LINK = "E2"           # R6V4: "E2" = 4 SH cables board -> 1st ruler (J1/IN only) + a bridge with two male 1x5 headers under every junction (juncao_r6.py); "D" = soldered links (R5V4); "A": SH cable everywhere
-J2_FITTED = True      # E2: J1/J2 are the two identical female sockets (real part, ELETRONICA R6V4). # R6V4: with fixed connectors between rulers J2 is not needed (SPEC R6V4 item 2); in "D" True meant J2 left on the ruler without a cable
-LK_U = (2.1, 71.9)    # centres of the link pads along the ruler (u), ELETRONICA R5V4: 5 pads 1.4 x 0.7 mm, 1.0 mm from each end
-LK_PAD = (1.4, 0.7)   # along u, along v
-LK_V = (-0.4, 3.6)    # span of the 5 pads across the ruler (v = y - y_row; + towards the player), pitch 1.0
-LK_WIRE_DEPTH = 1.4   # wire + solder below the ruler's underside: ~1 mm (ELETRONICA) + 0.4 margin
-LK_LEN = 7.0
+# ---------------------------------------------------------------- R8V4: the link "H" (SH stock cables + a recess in the tray)
+LINK = "H"            # R8V4 (approved by J): every ruler has an SH IN header (u 5.9) and an SH OUT header (u 47.5), mouth to -y; a stock jumper
+                      # (A06SR06SR30K51B, 50.8 mm, free wire 45.8 or 50.8: not measured, nothing is bought before the prototype) links OUT of one ruler to
+                      # IN of the next; the 4 board cables J601..J604 -> IN of the row's first ruler. No bridge, no cradle (E2 / G are gone).
+J2_FITTED = True
 
 
-def solder_links(mod):
-    """Junctions of every row: (row, x_j, y) with x_j = the second ruler's start."""
-    out = []
-    rs = rulers(mod)
-    for r, y, x0, n in ROWS:
-        row = [q for q in rs if q["row"] == r]
-        for a, b in zip(row[:-1], row[1:]):
-            out.append((r, b["x0"], y))
-    return out
-
-
-def link_box(xj, y, z0):
-    """Envelope of one soldered link: pads + 7 mm wires + solder, under the ruler (absolute z), along the junction x_j."""
-    ut = LK_U[1]                                    # pad centre of the left ruler, u = 71.9 of 74 -> 2.1 before the junction
-    a = xj - (RULER_L - ut) - LK_PAD[0] / 2
-    b = xj + LK_U[0] + LK_PAD[0] / 2
-    return (a, b, y + LK_V[0] - LK_PAD[1] / 2, y + LK_V[1] + LK_PAD[1] / 2, z0 - RULER_T - LK_WIRE_DEPTH, z0 - RULER_T)
-
-
-# ---------------------------------------------------------------- connectors: positions, notches, cables
+# ---------------------------------------------------------------- connectors: positions, notches
 def conn_boxes(ru):
-    """(name, x0, x1, y0, y1, z0, z1) of one ruler's header and plug for IN and OUT, in absolute x and y."""
+    """(name, x0, x1, y0, y1, z0, z1) of one ruler's header and plug for IN and OUT, in absolute x and y, z relative to the ruler's top."""
     x0, y = ru["x0"], ru["y"]
     out = []
-    zt = -RULER_T                                   # the ruler's underside (z relative to the ruler's top, absolute z = ZR + this)
+    zt = -RULER_T                                   # the ruler's underside
     for name, c in (("IN", IN_X), ("OUT", OUT_X)):
-        if name == "OUT" and LINK in ("D", "E2") and not J2_FITTED:
-            continue
-        xa, xb = x0 + c - HDR_W / 2, x0 + c + HDR_W / 2
-        if LINK == "E2":     # R6V4: SHOU HAN PM1.27-1x5PLT-H3.4 (C55566451): footprint 6.76 x 5.2 (alternate pads), insulator 3.4, in the back lane v -6.9..-1.7
-            out.append((name + "_header", x0 + c - SOCK_W / 2, x0 + c + SOCK_W / 2, y + SOCK_V[0], y + SOCK_V[1], zt - SOCK_H, zt))
-            if name == "IN" and ru["k"] == 0:       # the pigtail's male 1x5 (C55213903: 1.0 plastic, 0.6 mm short of the socket's face) soldered to the cable
-                out.append(("IN_plug", x0 + c - 3.2, x0 + c + 3.2, y - 5.5, y - 2.1, zt - 5.0, zt - 4.0))
-            continue
-        out.append((name + "_header", xa, xb, y + LANE_Y0, y + LANE_Y0 + HDR_D, zt - HDR_H, zt))
-        if name == "OUT" and LINK in ("D", "E2"):
-            continue                                # options D and E2: J2 has no plug
-        if LINK == "E2":
-            if name == "IN" and ru["k"] == 0:       # the pigtail's male 1x5 (C55213903: 1.0 plastic, 0.6 mm short of the socket's face) soldered to the cable
-                out.append(("IN_plug", x0 + c - 3.2, x0 + c + 3.2, y - 5.5, y - 2.1, zt - 5.0, zt - 4.0))
-            continue                                # E2: only the row's first ruler has a cable; the others' J1 stays empty
-        pa, pb = x0 + c - PLUG_W / 2, x0 + c + PLUG_W / 2
-        out.append((name + "_plug", pa, pb, y + LANE_Y0 - PLUG_D, y + LANE_Y0, zt - 0.3 - PLUG_H, zt - 0.3))
+        out.append((name + "_header", x0 + c - HDR_W / 2, x0 + c + HDR_W / 2, y + LANE_Y0, y + LANE_Y0 + HDR_D, zt - HDR_H, zt))
+        if name == "OUT" and ru["last"]:
+            continue                                # the last ruler of a row has its OUT header unused: no plug, no cable
+        out.append((name + "_plug", x0 + c - PLUG_W / 2, x0 + c + PLUG_W / 2, y + LANE_Y0 - PLUG_D, y + LANE_Y0, AXIS_Z - PLUG_H / 2, AXIS_Z + PLUG_H / 2))
     return out
 
 
@@ -254,81 +232,113 @@ def cable_between(a, da, b, db, target):
     return pts
 
 
-def cables(mod):
-    """Every cable of the instrument: the main board's J60x -> the row's first ruler (IN), and ruler k (OUT) -> ruler k+1 (IN)."""
+RC_BEND = 6.0                                  # bend radius of the stock cable (electronics R7V4; minimum static 3 mm, to confirm)
+Y_EXIT = LANE_Y0 - PLUG_D                      # the plugs' back face (-9.95 from the row's axis)
+RECESS = []                                    # extra rectangles cut from the rails (the cable loops' recesses), filled by ligacao_h.recess_notches()
+
+
+def ensure_recess():
+    """Fill RECESS (the cable loops' recesses) from ligacao_h's raster analysis, once."""
+    if RECESS:
+        return
+    import ligacao_h as H           # noqa: E402  (imported late: it imports this module)
+    H.configure(OUT_X)
+    RECESS[:] = H.recess_notches()
+
+
+def d_link():
+    """x distance from a ruler's OUT plug to the next ruler's IN plug."""
+    return (RULER_L - OUT_X) + IN_X
+
+
+def loop_radius():
+    return min(RC_BEND, d_link() / 2.0)
+
+
+def loop_a(F):
+    """Straight leg behind each plug of the U-shaped loop: F = 2a + pi R + (d - 2R)."""
+    d, R = d_link(), loop_radius()
+    return (F - math.pi * R - max(0.0, d - 2 * R)) / 2.0
+
+
+def loop_path(xj, y_row, a):
+    """Centre line (x, y) of the jumper between a ruler's OUT plug and the next ruler's IN plug (xj = the next ruler's start): leg a towards -y,
+    a 90 degree bend of radius R, a straight run along x, a 90 degree bend and the leg back to the IN plug."""
+    xa, xb = xj - (RULER_L - OUT_X), xj + IN_X
+    ye = y_row + Y_EXIT
+    R = loop_radius()
+    pts = [(xa, ye), (xa, ye - a)]
+    cy = ye - a
+    for k in range(1, 46):
+        t = math.pi + (math.pi / 2) * k / 45.0
+        pts.append((xa + R + R * math.cos(t), cy + R * math.sin(t)))
+    pts.append((xb - R, cy - R))
+    for k in range(1, 46):
+        t = 1.5 * math.pi + (math.pi / 2) * k / 45.0
+        pts.append((xb - R + R * math.cos(t), cy + R * math.sin(t)))
+    pts.append((xb, ye))
+    return pts
+
+
+def junction_list(mod):
+    """(row, x_j, y_row): x_j = the second ruler's start."""
+    out = []
+    rs = rulers(mod)
+    for r, y, x0, n in ROWS:
+        row = [q for q in rs if q["row"] == r]
+        for a, b in zip(row[:-1], row[1:]):
+            out.append((r, b["x0"], y))
+    return out
+
+
+def cables(mod, F=CABLE_FREE_MM[0]):
+    """Every cable of the instrument for a free wire length F: the main board's J60x -> the row's first ruler IN (a Bezier of length F) and the
+    junction loops. The cable is a drawing aid: the real wires lie where they fall inside the recess."""
     out = []
     rs = rulers(mod)
     mouth = POS["metricas"]["mouth_x_fileiras"]
     for r, y, x0, n in ROWS:
         row = [q for q in rs if q["row"] == r]
         j_back = float(mouth[str(r)]) + PLUG_D                    # J60x plug: mouth + the plug's depth; the wires leave towards +x
-        if LINK == "E2":                                          # pigtail: the wires leave the male towards -x, no more bend under the next row
-            pin = (row[0]["x0"] + IN_X - 3.2, y - 3.8)
-            chord = math.hypot(pin[0] - j_back, pin[1] - y)
-            tgt = chord * 1.25 + 4.0
-            out.append({"row": r, "de": "J60%d" % r, "para": "R%d.0 IN" % r, "pts": cable_between((j_back, y), (1, 0), pin, (-1, 0), tgt), "alvo_mm": round(tgt, 1)})
-            continue
         pin = plug_back_points(row[0])["IN"]
-        out.append({"row": r, "de": "J60%d" % r, "para": "R%d.0 IN" % r,
-                    "pts": cable_between((j_back, y), (1, 0), pin, (0, -1), CABLE_MAIN_MM), "alvo_mm": CABLE_MAIN_MM})
-        for a, b in zip(row[:-1], row[1:]):
-            if LINK in ("D", "E2"):
-                continue                                # the links are soldered wires (D) or a bridge (E2), not SH cables
-            po, pi = plug_back_points(a)["OUT"], plug_back_points(b)["IN"]
-            out.append({"row": r, "de": "R%d.%d OUT" % (r, a["k"]), "para": "R%d.%d IN" % (r, b["k"]),
-                        "pts": cable_between(po, (0, -1), pi, (0, -1), CABLE_ROW_MM), "alvo_mm": CABLE_ROW_MM})
+        out.append({"row": r, "de": "J60%d" % r, "para": "R%d.0 IN" % r, "pts": cable_between((j_back, y), (1, 0), pin, (0, -1), F), "alvo_mm": F})
+    for r, xj, y in junction_list(mod):
+        out.append({"row": r, "de": "R%d OUT" % r, "para": "R%d IN" % r, "pts": loop_path(xj, y, loop_a(F)), "alvo_mm": F, "juncao": xj})
     return out
 
 
-def notches(mod):
-    """Rectangles (x0, x1, y0, y1, row) cut from the tray's rails: the header's notch in the ruler's own back rail and the plug's
-    notch in the next row's front rail (the plug passes under that higher ruler)."""
+def notches(mod, recess=True):
+    """Rectangles cut from the tray's rails: the header's notch in the ruler's own back rail and the plug's notch in the next row's front rail (the
+    plug passes under that higher ruler), for both IN and OUT; plus (recess=True) the cable loops' recesses (RECESS, R8V4)."""
     out = []
     for ru in rulers(mod):
         x0, y, r = ru["x0"], ru["y"], ru["row"]
         for c in (IN_X, OUT_X):
-            if c == OUT_X and LINK in ("D", "E2") and not J2_FITTED:
-                continue
             hx0, hx1 = x0 + c - NOTCH_HDR_W / 2, x0 + c + NOTCH_HDR_W / 2
             hx0, hx1 = (x0 if hx0 - x0 < 1.5 else hx0), (x0 + RULER_L if x0 + RULER_L - hx1 < 1.5 else hx1)      # no stub of rail left at a ruler's end
             out.append({"x0": hx0, "x1": hx1, "y0": y - RAIL_OUT - 0.5, "y1": y - RAIL_IN + 0.3,
                         "row": r, "tipo": "cabeçalho (trilho de trás da própria fileira)"})
-            if r < 4 and LINK != "E2" and (c == IN_X or LINK == "A"):
+            if r < 4 and not (c == OUT_X and ru["last"]):       # no plug on the last ruler's OUT: no plug notch
                 yn = ROWS[r][1]                                  # the next row's (r+1) centre
                 out.append({"x0": x0 + c - NOTCH_PLUG_W / 2, "x1": x0 + c + NOTCH_PLUG_W / 2, "y0": yn + RAIL_IN - 0.3, "y1": yn + RAIL_OUT + 0.3,
                             "row": r + 1, "tipo": "plugue (trilho da frente da fileira %d)" % (r + 1)})
-    # the main board's cable of row r reaches the first ruler's IN plug: where the next row's ruler starts EARLIER (row 1 -> row 2, 9.25 mm)
-    # it has to cross that row's front rail before the plug's notch: one longer notch there
-    for c in cables(mod):
-        r = c["row"]
-        if not c["de"].startswith("J60") or r >= 4 or LINK == "E2":
-            continue
-        yn = ROWS[r][1]
-        band = (yn + RAIL_IN - 0.3, yn + RAIL_OUT + 0.3)
-        xs = [p[0] for p in c["pts"] if band[0] - CABLE_D / 2 < p[1] < band[1] + CABLE_D / 2]
-        first = [q for q in rulers(mod) if q["row"] == r][0]
-        if not xs:
-            continue
-        for n in out:
-            if n["row"] == r + 1 and n["tipo"].startswith("plugue") and abs(n["x0"] + NOTCH_PLUG_W / 2 - (first["x0"] + IN_X)) < 0.01:
-                lo, hi = min(xs) - CABLE_D / 2 - 0.3, max(xs) + CABLE_D / 2 + 0.3
-                if lo < n["x0"] or hi > n["x1"]:
-                    n["x0"], n["x1"] = min(n["x0"], lo), max(n["x1"], hi)
-                    n["tipo"] = "plugue + passagem do cabo da placa principal (trilho da frente da fileira %d)" % (r + 1)
+    if recess:
+        ensure_recess()
+        out += [dict(n) for n in RECESS]
     return out
 
 
 def conflicts(mod):
-    """Every plug notch against every M2 boss (circle D6 + 0.4) and every lid post (D5 + 0.8) of the rows concerned."""
+    """Every notch against every M2 boss (circle D6 + 0.4) and every lid post (D5 + 0.8) of the rows concerned."""
     bad = []
     posts = pick_posts(mod)
     for nt in notches(mod):
         for ru in rulers(mod):
             for (mx, my) in m2_points(ru):
-                if nt["x0"] - 3.4 < mx < nt["x1"] + 3.4 and nt["y0"] - 3.4 < my < nt["y1"] + 3.4:
+                if nt["x0"] - 3.4 < mx < nt["x1"] + 3.4 and nt["y0"] - 3.4 < my < nt["y1"] + 3.4 and _rect_dist(mx, my, (nt["x0"], nt["x1"], nt["y0"], nt["y1"])) < 3.4:
                     bad.append(("M2", ru["row"], round(mx, 2), round(my, 2), nt["tipo"]))
         for px, py in posts:
-            if nt["x0"] - 3.3 < px < nt["x1"] + 3.3 and nt["y0"] - 3.3 < py < nt["y1"] + 3.3:
+            if _rect_dist(px, py, (nt["x0"], nt["x1"], nt["y0"], nt["y1"])) < 3.3:
                 bad.append(("poste", round(px, 2), round(py, 2), nt["tipo"]))
     return bad
 
@@ -360,9 +370,9 @@ def _rect_dist(px, py, r):
     return math.hypot(dx, dy)
 
 
-def rail_rects(mod):
+def rail_rects(mod, recess=True):
     """The tray's rails after the notches, as (x0, x1, y0, y1, row) rectangles (plan)."""
-    nts = notches(mod)
+    nts = notches(mod, recess)
     out = []
     for ru in rulers(mod):
         for sgn in (-1, 1):
@@ -404,22 +414,22 @@ def cable_clearance(mod):
 
 # ---------------------------------------------------------------- the lid corner and the board (plan, analytic)
 def inner_corner_clearance():
-    """Distance from the board's / the sockets' corners to the lid's inner wall at the two left corners (positive = clear)."""
+    """Distance from the board's / the sockets' corners to the lid's inner wall at the two left corners (positive = clear; R8V4: the back wall is at y -2)."""
     ri = CASE_R - WALL
     out = {}
-    cy = {"trás": CASE_R, "frente": CASE[1] - CASE_R}
     x0, y0, x1, y1 = BOARD_OUT
-    for name, ycen, yb in (("trás (y=0)", CASE_R, y0), ("frente (y=100)", CASE[1] - CASE_R, y1)):
-        # the board's corner arc: centre and radius
-        bc = (x0 + BOARD_R, yb + BOARD_R if yb == y0 else yb - BOARD_R)
-        d_centres = math.hypot(bc[0] - CASE_R, bc[1] - ycen)
-        out["placa x parede interna, canto " + name] = round(ri - (d_centres + BOARD_R), 2)
+    for name, cx, cy, bx, by, a0 in (("trás (y=-2)", CASE_R, Y_BACK + CASE_R, x0 + BOARD_R, y0 + BOARD_R, 180), ("frente (y=100)", CASE_R, Y_FRONT - CASE_R, x0 + BOARD_R, y1 - BOARD_R, 90)):
+        worst = 9.0
+        for k in range(0, 91):
+            th = math.radians(a0 + k)
+            px, py = bx + BOARD_R * math.cos(th), by + BOARD_R * math.sin(th)
+            if px < cx and ((py < cy) if "trás" in name else (py > cy)):
+                worst = min(worst, ri - math.hypot(px - cx, py - cy))
+        out["placa x parede interna, canto " + name] = round(min(worst, x0 - WALL, (y0 - (Y_BACK + WALL)) if "trás" in name else (Y_FRONT - WALL - y1)), 2)
     # the USB-C receptacle: its corner at (front x, y +- half width): CONN_FRONT_X = 2.3, the body is 9 wide (y 5.5..14.5 at y=10)
     for yy in (USB_Y - 4.5, USB_Y + 4.5):
-        if yy < CASE_R:
-            xwall = CASE_R - math.sqrt(max(ri ** 2 - (CASE_R - yy) ** 2, 0.0))
-        else:
-            xwall = WALL
+        cyb = Y_BACK + CASE_R
+        xwall = CASE_R - math.sqrt(max(ri ** 2 - (cyb - yy) ** 2, 0.0)) if yy < cyb else WALL
         out["USB-C: face da frente do conector (x 2,3) menos a parede interna, em y=%.1f" % yy] = round(2.3 - xwall, 2)
     return out
 

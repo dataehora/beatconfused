@@ -1,10 +1,39 @@
 # eTutti Student V4 · relatório da eletrônica
 
-**SPEC atendida: R1V4 a R7V4 (R7V4: 22 nov 2026, tarefas 1 e 2, seção logo abaixo, só estudo; R6V4: 22 nov 2026, seção logo abaixo; R5V4: tarefas 2 e 3).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
+**SPEC atendida: R1V4 a R8V4 (R8V4: 22 nov 2026, tarefa 2, seção logo abaixo; R7V4: 22 nov 2026, tarefas 1 e 2, seção logo abaixo, só estudo; R6V4: 22 nov 2026, seção logo abaixo; R5V4: tarefas 2 e 3).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
 Data: 21 nov 2026. Nada foi posicionado, roteado, encomendado nem gerado em `fab/`: é estudo (Fase A). A V3, a V2 e a V1 não foram tocadas.
 Scripts novos (reproduzem os números): `calculos_eletronica.py` (E2, E3), `fornecimento/precos_jlc.py` (preços e classe na
 biblioteca da JLCPCB, 21 nov, curl de 2 em 2 s). Contrato com a programação: `pcb/PINOS.md` (rascunho já entregue).
 Convenção: **(conferir)** = sem medida ou datasheet conferido; **estimativa** = conta minha, sem cotação.
+
+## R8V4 · ligação H aplicada (régua e principal), R305 = 0 ohm, portão P (tarefa 2, parte da eletrônica)
+
+**SPEC atendida: R8V4 (22 nov 2026), tarefa 2 (eletrônica).** Regra nova (J): **nada é comprado até o protótipo inteiro estar fechado**; o que só a peça real responde está na lista de riscos abaixo. Só 32 teclas, só a Student V4. **Nada roteado** (0 trilhas, 0 vias, principal e régua); nada encomendado. O portão P (planta final para o J aprovar) está em **`POSICIONAMENTO.md`**; o roteamento só começa depois do "aprovado".
+
+### O que foi aplicado
+1. **Régua** (`pcb/regua/schematic_regua.py`, `posiciona_regua.py`): **J2 (OUT) de u 68,1 para u 47,5**, J1 (IN) em u 5,9; os dois SM06B-SRSS-TB / clone C56123098, no fundo, boca para −y. **Pinagem P6s** nos dois: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO (J1: SER do 595; J2: QH' por R1). **R1 de 330 ohm** (era 100). **C3 saiu da pegada do OUT** (agora u 47,9, v −0,47, ao lado do sensor U3: 0 mm² dentro da pegada de J2, u 42,8..52,2). **Saíram os pads LK1/LK2** (elo soldado da R5V4: na H não há solda; o 595 e o resto não mudam). Altura de J1/J2 corrigida para 2,95 mm (R7V4). ERC 0/0, netlist igual; **DRC sem trilhas: 0 erros, 0 avisos, paridade 0** (52 ligações faltando, esperado).
+2. **Placa principal** (`pcb/schematic.py`, `posiciona_v4.py`): **J601..J604 em P6s** (pino 4 = GND, 5 = SCAN_CLK, 6 = SCAN_DATA; o NC sumiu), **R605/R606 = 330 ohm** (C25104), **R305 = 0 ohm** (C17168). **ERC 0/0**, netlist igual à V3 fora das mudanças listadas, **DRC sem trilhas: 0 erros, paridade 0**, 242 ligações faltando (esperado; eram 234: o GND do pino 4 de cada J60k e o DADO no pino 6 criam 8 pontas) e **1 aviso `isolated_copper` do plano +3V3 sem vias (esperado sem trilhas, some ao rotear; igual às revisões anteriores)**. Posicionamento: nenhuma peça mudou de lugar (os J60k têm o mesmo pátio).
+3. **`pcb/PINOS.md`** (seção R8V4 no topo): **os pinos do Teensy não mudam**; só a ordem do conector e os 330 ohm. A firmware não depende da ordem do conector; `programacao-som` confirma contra o sketch da V4.
+4. **Painel de réguas e Gerbers** regenerados (`pcb/regua/fab_regua.py`; conferência, **SEM ROTA, NÃO ENCOMENDAR**), `bom_regua.csv`, `bom_v4.csv`, figuras `pcb/img/*`, `pcb/regua/img/regua_planta.png` e `regua_corte.png`, e a figura do portão `pcb/img/portao_p_instrumento.png`.
+
+### Custo do R305 = 0 ohm e dos 330 ohm
+**Nenhum tipo Extended novo; impacto menor que US$ 0,01 por placa.** C17168 (0 ohm 0402, UNI-ROYAL 0402WGF0000TCE) e C25104 (330 ohm 0402, 0402WGF3300TCE) são **Basic** na biblioteca da JLCPCB (consulta de 22 nov: estoque 13,9 milhões e 2,1 milhões; US$ 0,0012 e 0,0011 a 1 unidade); trocam C25879 (R305) e C25076 (R605/R606, R1), que continuam na BOM (outras peças usam). Só há **+2 linhas Basic** na principal (31 linhas), sem taxa por tipo. Principal: 79 peças, **13 tipos Extended**, US$ 17,87 por placa; régua: 14 peças, **3 tipos Extended** (TMAG, SH-6, 74HC595BQ). Custo total de 32 teclas (F2, pedido mínimo, sem frete, estimativas): **US$ 296,6-370,3 sem a ligação (R5V4) + 11,4-12,1 dos 8 cabos `A06SR06SR30K51B` = ~US$ 301-376** (o case entra com o valor do design, **US$ 44,3**, no lugar dos US$ 51,2 da R5V4).
+
+### Plano B do microfone (só registrado, não aplicado)
+Se uma cápsula (por exemplo o Sennheiser ME 3, que a folha só especifica "10 V") não partir com 3,0 V e 2 kohm: **boost de 9-10 V ligado por GPIO** (MT3608 C84817 + indutor 10 uH + diodo SS14 + 2 capacitores de >= 16 V + realimentação + PMOS de desconexão + resistor de bias de 4,7-6,8 kohm; ~US$ 0,35 de peças + 2 tipos Extended = ~US$ 6,5; ~9 x 7 mm no fundo; C309 de >= 16 V; 1 GPIO, o pino 5 está livre). Fica para uma revisão futura da principal; **não há teste de bancada nem compra nesta fase**: é risco do protótipo.
+
+### Riscos aceitos (só a peça real fecha; nada é comprado antes do protótipo fechado)
+1. **Cabo `A06SR06SR30K51B`:** se é mesmo reto (pino k → pino k) e se os "50,8 mm" são entre plugues ou entre fios (45,8 ou 50,8 de fio livre): o desenho do design fecha com os dois (profundidade de 102 mm). **Fita colada x fios soltos:** colada só dobra no plano da fita (laço em pé não cabe: folga 0,02-0,35 mm); se o cabo vier colado, é risco a conferir na compra. Com cabo invertido não há dano, mas a varredura não funciona.
+2. **Clone XYECONN C56123098:** medidas e compatibilidade com o plugue JST SR (06SR-3S) sem desenho do fabricante **(conferir)**; altura do conjunto 2,95 + 3,6 mm nominal.
+3. **330 ohm:** a borda do CLK a 5 MHz perde ~7 ns (RC com ~20 pF): sobra margem; se algo falhar, cai a 2,5 MHz por firmware.
+4. **Microfone:** limiares MIC_DET e partida do ME 3 a 3,0 V são cálculo; a leitura real só com o hardware.
+5. **Painel de réguas:** aceitação do painel do cliente com abas e microfuros pela montagem econômica da JLCPCB; pads do DHVQFN-16 (C730243) contra o EasyEDA no `cpl_jlc.py` (depois do portão).
+6. **Furos M2 da régua:** ficam **três** (u 18,5 / 37 / 55,5, v +5,2), como antes (o design descartou os pares u 12 / 15 / 26,5 / 47,5 / 62: caem sob carcaça ou no 595); 11 M2 no total (R1: 18,5 e 55,5; R2 e R4: 37; R3.0: 18,5; R3.1: 18,5 e 55,5). Rigidez 0,028 mm a 3 N (≤ 0,05 ✓). Fita colada não fecha: risco a conferir na compra.
+
+### Perguntas para o design (R8V4)
+Respondidas pelo `FIT_CHECK.md` R8V4: (1) M2: três furos na régua, 11 M2, rigidez 0,028 mm a 3 N; (2) OUT u 47,5 / R1 u 53: fit check 0 mm³, rebaixo 39,8 x 22,5 mm; (3) cabeçalho 2,95 + plugue 3,6 no bolso de 6,9 mm: cabe (folga vertical ≥ 2,3 mm), case de y −2 a 100.
+1. O J aceita **11 M2** (um por régua nas fileiras 2-4)? (pergunta do design ao J; a régua não muda.)
+2. A reta de 3,3 mm após o plugue com 45,8 mm de fio útil só se confere no protótipo: aceito como risco.
 
 ## R7V4 · ligação H (cabo SH de estoque + rebaixo) e microfone Sennheiser ME 3 (tarefas 1 e 2, parte da eletrônica)
 

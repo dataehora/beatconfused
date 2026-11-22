@@ -4,7 +4,7 @@
 	(generator_version "10.0")
 	(uuid "08455c1b-380d-5a26-b3c0-1c074bcddde4")
 	(paper "A4")
-	(title_block (title "eTutti Student V4 · esquema") (date "2026-11-21") (rev "Student V4 R5V4 regua") (company "beatconfused.com") (comment 1 "etutti/hardware/student_v04/pcb/schematic.py escreve este arquivo; nao editar a mao"))
+	(title_block (title "eTutti Student V4 · esquema") (date "2026-11-21") (rev "Student V4 R8V4 regua") (company "beatconfused.com") (comment 1 "etutti/hardware/student_v04/pcb/schematic.py escreve este arquivo; nao editar a mao"))
 	(lib_symbols
 		(symbol "viaggio_micromod:PWR_FLAG"
 		(power global)

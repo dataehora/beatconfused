@@ -60,7 +60,7 @@ def draw(side, out):
     for ref in ("H1", "H2", "H3", "H4", "H101"):
         p = P[ref]
         ax.add_patch(Circle((X(p["x"]), p["y"]), 1.1 if ref != "H101" else 1.35, fc="white", ec="k", lw=0.8))
-        ax.text(X(p["x"]) + 1.8, p["y"], ref, fontsize=6, va="center")
+        ax.text(X(p["x"]) + 1.8, p["y"], "%s (%.1f; %.1f)" % (ref, p["x"], p["y"]), fontsize=6, va="center")
     if side == "F":
         for ref in ("SW401", "SW402"):
             p = P[ref]
@@ -80,11 +80,12 @@ def draw(side, out):
                 fontsize=7, arrowprops=dict(arrowstyle="->"), annotation_clip=False)
     mx = d["metricas"]["mouth_x_fileiras"]
     for k, ry in ((1, 74.03), (2, 58.01), (3, 41.99), (4, 25.97)):
-        ax.text(X(x1 + 0.5) if side == "F" else X(x1) - 0.5, ry + (7 if False else 0), "", fontsize=6)
+        if side == "B":
+            ax.text(X(x1) + 1.0, ry + 5.2, "J60%d  y %.2f" % (k, ry), fontsize=6, ha="right", color="#8a2250")
     ax.set_xlim((x0 - 6, x1 + 12) if side == "F" else (x0 - 12, x1 + 6))
     ax.set_ylim(y1 + 8, y0 - 6)
     ax.set_aspect("equal")
-    ax.set_title("Placa principal V4 (R4V4): %s\n(cor clara = peca neste lado; circulos tracejados = knobs)" %
+    ax.set_title("Placa principal V4 (R8V4, portao P): %s\n(cor clara = peca neste lado; circulos tracejados = knobs)" %
                  ("topo (so os 2 encoders, o furo do modulo e os pads do alto-falante)" if side == "F" else "fundo, visto DE BAIXO (x espelhado): "
                   "tudo o que a JLCPCB monta"), fontsize=9)
     handles = [Rectangle((0, 0), 1, 1, fc=g[1], alpha=0.55) for g in sorted(seen)]

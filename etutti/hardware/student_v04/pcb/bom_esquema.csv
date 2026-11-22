@@ -39,10 +39,10 @@ F2,R303,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
 F2,C308,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
 F2,R304,1,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,
 F2,J301,1,PJ-327A,Jack_3.5mm_PJ-327A_SMD,C49284723,estendida,0.100,JLC,conferir,"SMD, angulo reto, XUNPU (V3; o SHOU HAN 5JJ foi trocado porque a JLCPCB o marca como dificil de montar); 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (fechado sem plugue)"
+F3,R305,1,0,R_0402_1005Metric,C17168,basica,0.001,JLC,final,"R8V4: 0 ohm (aprovado): bias total = 2 k internos do SGTL5000 (BIAS_RESISTOR 2k); era 2,2 k em serie (4,2 k). Mais tensao para microfones que pedem mais"
 F3,R306,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,R6V4: toma de CC da ponta do IN para o ADC (pino 25): distingue microfone de eletreto de plugue de linha/sem plugue
 F3,C310 C311,2,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,R6V4: filtro da toma MIC_DET (RC 10 ms; o ADC lê devagar)
 F3,C309,1,1uF,C_0402_1005Metric,C52923,basica,0.002,JLC,final,"acoplamento do microfone ao pino MIC (o datasheet mostra 0,1 uF; 1 uF baixa o corte da voz)"
-F3,R305,1,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,"bias do microfone de eletreto (como a Audio Board: 2,2k do MICBIAS)"
 F3,J302,1,PJ-327A,Jack_3.5mm_PJ-327A_SMD,C49284723,estendida,0.100,JLC,final,"IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)"
 I1,SW401,1,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,estendida,1.920,"sem peca (encoder soldado em casa, topo)",final,volume; clique de 2 s liga/desliga; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2
 I2,SW402,1,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,estendida,1.920,"sem peca (encoder soldado em casa, topo)",final,seletor; clique = funcoes de som; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2
@@ -54,11 +54,11 @@ A1,R501,1,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,"com os 100k intern
 A1,U501,1,MAX98357AETE+T,TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm,C910544,estendida,1.400,JLC,final,GAIN_SLOT aberto = 9 dB; mono (L+R)/2 pelo divisor do SD_MODE
 A2,J501,1,alto-falante (fios),SolderWire-0.127sqmm_1x02_P3.7mm_D0.48mm_OD1mm,-,-,0.000,sem peca (pads; fios do A2 soldados em casa),conferir,
 R1,R601,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (datasheet do TMAG5253)
-R1,J601,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 1 (a da frente): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
+R1,J601,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 1 (a da frente): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)"
 R2,R602,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (datasheet do TMAG5253)
-R2,J602,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 2 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
+R2,J602,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 2 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)"
 R3,R603,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (datasheet do TMAG5253)
-R3,J603,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 3 (intermediaria): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
+R3,J603,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 3 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)"
 R4,R604,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (datasheet do TMAG5253)
-R4,J604,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 4 (a de tras): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
-R5,R605 R606,2,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,"serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)"
+R4,J604,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"fileira 4 (a de tras): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)"
+R5,R605 R606,2,330,R_0402_1005Metric,C25104,basica,0.001,JLC,conferir,"R8V4: 330 ohm (era 100; limita a 10 mA o pior caso de cabo errado); serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)"

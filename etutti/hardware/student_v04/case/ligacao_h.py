@@ -1,4 +1,4 @@
-"""eTutti Student V4 (R7V4 item 1): estudo dedicado da ligacao "H" (cabo SH de estoque + rebaixo na base), so 32 teclas.
+"""eTutti Student V4 (R7V4 item 1, aplicado na R8V4): estudo e analise da ligacao "H" (cabo SH de estoque + rebaixo na base), so 32 teclas.
 
     C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/student_v04/case/ligacao_h.py [analise|figuras|tudo]
 
@@ -42,14 +42,14 @@ PLUG_W, PLUG_D, PLUG_H = 7.0, 2.45, 3.6         # plugue 06SR-3S (JST eSR_SZ.pdf
 HDR_W, HDR_D, HDR_FOOT, HDR_H = 9.4, 4.85, 5.55, 2.95   # SM06B-SRSS-TB lateral: largura da pegada, fundo do corpo, fundo da pegada, altura
 STRAIGHT = 5.0                             # reta minima depois do plugue (eletronica; conferir)
 IN_U = 5.9
-OUT_U = 49.5                               # posicao do cabecalho OUT (R7V4, proposta da eletronica); a R4V4 tinha 68,1
+OUT_U = L.OUT_X                            # R8V4: cabecalho OUT em u 47,5 (aprovado pelo J); a R7V4 estudou 49,5 e a R4V4 tinha 68,1
 RLOOP = 5.9
 CLR = 0.5                                  # folga lateral do feixe a trilho, boss, parede
 Z_FLOOR = L.Z_FLOOR                        # -8,1
 GRID = 0.1
-XMAX, YMAX = 252.0, 100.0
+XMAX, YMAX = 252.0, 100.0                  # raster de y 0 a 100 (os lacos ficam em y > 0; a parede de tras, em y -2, so entra nas contas)
 NX, NY = int(XMAX / GRID), int(YMAX / GRID)
-WALL_IN = L.WALL + 0.15                    # face interna da parede da bandeja
+WALL_IN = L.Y_BACK + L.WALL + 0.15         # R8V4: face interna da parede de tras da bandeja (a parede vai a y -2: 102 mm de largura)
 LANE_Y0 = L.LANE_Y0                        # -7,5 (boca do cabecalho em relacao ao eixo da fileira)
 Y_EXIT = LANE_Y0 - PLUG_D                  # -9,95: face de tras do plugue
 Z_AXIS = -(L.RULER_T + HDR_H / 2.0)         # eixo de encaixe abaixo do topo da regua (-2,675)
@@ -538,7 +538,7 @@ def present_rails_at(x, spans):
     return out
 
 
-def section_figure(F=45.8):
+def section_figure(F=45.8, fname="ligacao_h_cortes_r8.png"):
     spans = removed_spans(F)
     a = loop_a(F)
     fig, axs = plt.subplots(4, 1, figsize=(17.0, 15.5))
@@ -547,7 +547,7 @@ def section_figure(F=45.8):
         xs = j["xj"] - (74.0 - OUT_U)               # secao pela perna da regua A (saida)
         y0 = j["y"]
         ax.add_patch(Rectangle((0, L.Z_BOT), 100, L.Z_FLOOR - L.Z_BOT, fc="#6B7280", ec="black", lw=0.6, zorder=2))     # piso
-        ax.add_patch(Rectangle((0, L.Z_BOT), L.WALL, 40, fc="#6B7280", ec="black", lw=0.6, zorder=2))                   # parede de tras
+        ax.add_patch(Rectangle((L.Y_BACK, L.Z_BOT), L.WALL, 40, fc="#6B7280", ec="black", lw=0.6, zorder=2))                   # parede de tras (y -2..0)
         ax.add_patch(Rectangle((0, L.CEILING if False else 12.6), 100, 2.0, fc="#D3D1C7", ec="black", lw=0.5, zorder=2))   # telhado da interface (referencia)
         for ru in L.rulers(0):
             if not (ru["x0"] <= xs <= ru["x0"] + L.RULER_L):
@@ -583,7 +583,7 @@ def section_figure(F=45.8):
         ax.set_title("Corte y-z em x = %.2f (perna de saida da regua A, fileira %d): bolso sob a regua %.1f mm; plug eixo z %.1f; %s" %
                      (xs, row, zr(row) - L.RULER_T - Z_FLOOR, z0, "o laco CABE (borda a %.1f mm da parede)" % (apex - WALL_IN) if ok else
                       "o laco NAO CABE: passa %.1f mm da parede de tras" % (WALL_IN + CLR - apex)), fontsize=9, color="black" if ok else "#B91C1C")
-        ax.set_xlim(0, y0 + 9)
+        ax.set_xlim(L.Y_BACK - 1, y0 + 9)
         for t_ in ax.texts:
             t_.set_clip_on(True)
         ax.set_ylim(L.Z_BOT - 0.6, 21)
@@ -591,9 +591,9 @@ def section_figure(F=45.8):
         ax.set_ylabel("z (mm)")
         ax.invert_xaxis() if False else None
         ax.set_aspect("equal")
-    fig.suptitle("R7V4 - ligacao H: cortes do rebaixo em cada fileira (trilho hachurado = vao cortado; piso NAO muda: 2,0 mm)", fontsize=11)
+    fig.suptitle("R8V4 - ligacao H (OUT u 47,5): cortes do rebaixo em cada fileira (trilho hachurado = vao cortado; piso NAO muda: 2,0 mm)", fontsize=11)
     fig.tight_layout()
-    fig.savefig(os.path.join(REN, "ligacao_h_cortes_r7.png"), dpi=130, bbox_inches="tight")
+    fig.savefig(os.path.join(REN, fname), dpi=130, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -690,7 +690,7 @@ def assembly_figure(F=45.8):
         ("3  A regua B erguida 12 mm acima do degrau; o plugue livre sobe ate o cabecalho", 12),
         ("4  O plugue entra (movimento -y da regua, 4 mm): cabecalho e plugue travados", 12),
         ("5  A regua desce; o cabo cai no rebaixo, nada fica sob a regua", 0),
-        ("6  Dois M2 de baixo para cima na bossa; regua B presa", 0),
+        ("6  O M2 (1 ou 2 por regua) desce na bossa; regua B presa; pinca fina para trocar uma regua depois", 0),
     ]
     fig, axs = plt.subplots(3, 2, figsize=(16.0, 11.0))
     for ax, (title, lift) in zip(axs.flat, steps):
@@ -746,9 +746,9 @@ def assembly_figure(F=45.8):
         ax.set_ylim(L.Z_BOT - 0.6, 22)
         ax.set_aspect("equal")
         ax.set_xlabel("y (mm) -> frente")
-    fig.suptitle("R7V4 - montagem em casa da ligacao H (corte y-z pela perna de uma juncao da fileira 2; ordem das fileiras: da frente para tras)", fontsize=11)
+    fig.suptitle("R8V4 - montagem oficial em casa da ligacao H (corte y-z pela perna de uma juncao da fileira 2; ordem das fileiras: da frente para tras)", fontsize=11)
     fig.tight_layout()
-    fig.savefig(os.path.join(REN, "ligacao_h_montagem_r7.png"), dpi=130, bbox_inches="tight")
+    fig.savefig(os.path.join(REN, "ligacao_h_montagem_r8.png"), dpi=130, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -784,12 +784,11 @@ def rails_left_h(F=45.8):
 
 
 def main_figuras():
-    configure(49.5)
-    plan_figure()
+    configure(L.OUT_X)
     section_figure()
-    opts = header_figure()
     assembly_figure()
-    return opts
+    section_figure(50.8, "ligacao_h_cortes_r8_50.png")
+    return None
 
 
 def pick_posts_h():
@@ -890,10 +889,174 @@ def full_report():
     return res
 
 
+# ============================================================================= R8V4: recessos, M2 e postes aplicados no modelo oficial
+HOLE_FORBID_U = (24.5, 33.0)    # a regua leva o 595 (u 26,56..28,94, v 2,5..5,9) e C5 (u 30,2..31,2, v 6,2) ao lado do furo M2 (v +5,2): sem furo nesta faixa
+HOLE_U_RANGE = (4.0, 70.0)
+
+
+def plugs_and_headers_mask():
+    m = blank()
+    for ru in L.rulers(0):
+        for nm in ("IN", "OUT"):
+            hb, pb = hdr_box(ru, nm), plug_box(ru, nm)
+            stamp_rect(m, hb[0], hb[1], hb[2], hb[3])
+            if nm == "OUT" and ru["last"]:
+                continue                       # no plug on the last ruler of a row
+            stamp_rect(m, pb[0] - 0.2, pb[1] + 0.2, pb[2], pb[3])
+    return m
+
+
+def cable_zone():
+    """Zona de cabos: lacos e cabos da placa nos dois comprimentos (45,8 e 50,8), mais plugues e cabecalhos de todas as reguas."""
+    zone = plugs_and_headers_mask()
+    for F in F_LIST.values():
+        for j in junctions():
+            zone |= loop_body(j["xj"], j["y"], loop_a(F))
+        for r in (1, 2, 3, 4):
+            pts, _a, _b = board_cable(r, F)
+            zone |= sweep(pts, BW / 2 + CLR)
+    return zone
+
+
+def hole_feasible_per_ruler(zone, us=(18.5, 37.0, 55.5), bossd=None):
+    """Para cada regua (fileira, k): quais dos tres vaos entre as teclas (u 18,5 / 37 / 55,5: o unico lugar onde a cabeca do M2 cabe entre as carcacas)
+    deixam o boss D6 (+0,4) livre da zona de cabos, plugues e cabecalhos."""
+    out = {}
+    d = (bossd or (L.M2_BOSS_D + 0.8)) / 2
+    for ru in L.rulers(0):
+        ok = []
+        for u in us:
+            t = blank()
+            stamp_disk(t, ru["x0"] + u, ru["y"] + 5.2, d)
+            if not (t & zone).any():
+                ok.append(u)
+        out[(ru["row"], ru["k"])] = ok
+    return out
+
+
+def hole_feasible(zone):
+    """Por fileira: u (passo 0,5) em que o boss D6 (+0,4) de TODAS as reguas da fileira nao toca zona de cabos, plugue ou cabecalho."""
+    feas = {}
+    rs = L.rulers(0)
+    for row in (1, 2, 3, 4):
+        ok = []
+        for u in np.arange(HOLE_U_RANGE[0], HOLE_U_RANGE[1] + 0.01, 0.5):
+            if HOLE_FORBID_U[0] < u < HOLE_FORBID_U[1]:
+                continue
+            good = True
+            for ru in [q for q in rs if q["row"] == row]:
+                t = blank()
+                stamp_disk(t, ru["x0"] + u, ru["y"] + 5.2, L.M2_BOSS_D / 2 + 0.4)
+                if (t & zone).any():
+                    good = False
+            if good:
+                ok.append(float(u))
+        feas[row] = ok
+    return feas
+
+
+def post_feasible(zone):
+    """Postes internos candidatos (L.post_candidates) que nao tocam a zona de cabos (circulo D5,4 + lamina 1,4 x 4,0, folga 0,4)."""
+    ok = []
+    for px, py in L.post_candidates(0):
+        t = blank()
+        stamp_disk(t, px, py, 2.7 + 0.4)
+        stamp_rect(t, px - 0.7 - 0.4, px + 0.7 + 0.4, py - 1.66 - 0.4, py + 2.34 + 0.4)
+        ok.append(((px, py), not (t & zone).any()))
+    return ok
+
+
+def recess_notches(Fs=(45.8, 50.8), min_stub=3.0):
+    """Rebaixos nos trilhos para os lacos e os cabos da placa (os dois comprimentos): um retangulo por trilho cruzado (so do que sobra dos entalhes
+    de cabecalho e plugue), e tambem os tocos de trilho com menos de `min_stub` mm que sobrariam entre dois cortes (nao se imprimem nem seguram nada).
+    Devolve a lista de notches no formato de layout_r4.notches()."""
+    body = blank()
+    for F in Fs:
+        for j in junctions():
+            body |= loop_body(j["xj"], j["y"], loop_a(F))
+        for r in (1, 2, 3, 4):
+            pts, _a, _b = board_cable(r, F)
+            body |= sweep(pts, BW / 2 + CLR)
+    out = []
+    for (ra, rb, ya, yb, rr) in L.rail_rects(0, recess=False):
+        cuts = []
+        sub = body[int(ya / GRID):int(math.ceil(yb / GRID)), int(ra / GRID):int(math.ceil(rb / GRID))]
+        if sub.any():
+            cols = np.where(sub.any(axis=0))[0]
+            runs, start = [], cols[0]
+            for a, b in zip(cols[:-1], cols[1:]):
+                if b - a > 5:                      # a gap of more than 0,5 mm starts a new run (one recess per crossing, not one for the whole rail)
+                    runs.append((start, a))
+                    start = b
+            runs.append((start, cols[-1]))
+            cuts = [(max(ra, ra + c0 * GRID - 0.1), min(rb, ra + (c1 + 1) * GRID + 0.1)) for c0, c1 in runs]
+        # stubs: the pieces left between the cuts (and the piece's own ends) shorter than min_stub go too
+        edges = [ra] + [v for c in sorted(cuts) for v in c] + [rb]
+        for k in range(0, len(edges), 2):
+            a_, b_ = edges[k], edges[k + 1]
+            if 0 < b_ - a_ < min_stub:
+                cuts.append((a_ - 0.05, b_ + 0.05))
+        # merge touching cuts
+        cuts.sort()
+        merged = []
+        for c in cuts:
+            if merged and c[0] <= merged[-1][1] + 0.05:
+                merged[-1] = (merged[-1][0], max(merged[-1][1], c[1]))
+            else:
+                merged.append(c)
+        for c0, c1 in merged:
+            out.append({"x0": round(c0, 3), "x1": round(c1, 3), "y0": ya - 0.01, "y1": yb + 0.01, "row": rr,
+                        "tipo": "rebaixo do cabo (laço ou cabo da placa)"})
+    return out
+
+
+def main_r8():
+    """Numeros da R8V4 (OUT u 47,5, case de 102 mm): folga na fileira 4, perfil vertical, cruzamentos, cabos da placa, recessos, M2, fita colada."""
+    global BT_REST
+    configure(L.OUT_X)
+    res = {"parametros": {"out_u": OUT_U, "d": d_link(), "raio": RLOOP, "parede_interna_y": WALL_IN, "profundidade_case": L.CASE[1]}}
+    # fileira 4 por profundidade do case
+    rows4 = []
+    for back in (0.0, -1.0, -1.5, -2.0, -2.5):
+        wall_in = back + L.WALL + 0.15
+        for F in (45.8, 50.8):
+            a = loop_a(F)
+            avail = 25.97 + Y_EXIT - wall_in
+            need = a + RLOOP + BW / 2 + CLR
+            rows4.append({"y_costas": back, "profundidade": round(100 - back, 1), "F": F, "perna_a": round(a, 2), "pede": round(need, 2), "livre": round(avail, 2),
+                          "folga_mm": round(avail - need, 2), "borda_do_feixe_a_parede_mm": round(avail - need + CLR, 2)})
+    res["fileira4_por_profundidade"] = rows4
+    res["sensibilidade_OUT_costas_0"] = sensibilidade()
+    res["perfil_vertical"] = {str(F): [profile_clearance(r, F) for r in (1, 2, 3, 4)] for F in F_LIST.values()}
+    BT_REST = BW                                      # fita colada em pe: 5,6 de altura
+    res["perfil_vertical_fita_em_pe"] = {str(F): [profile_clearance(r, F) for r in (1, 2, 3, 4)] for F in F_LIST.values()}
+    BT_REST = None
+    res["cruzamentos_mm2"] = {str(F): crossings(F) for F in F_LIST.values()}
+    res["cabo_da_placa"] = {}
+    for r in (1, 2, 3, 4):
+        for F in (45.8, 50.8):
+            b = board_cable_report(r, F)
+            b.pop("pts")
+            res["cabo_da_placa"]["f%d_%g" % (r, F)] = json.loads(json.dumps(b, default=float))
+    zone = cable_zone()
+    res["m2_viaveis_por_regua"] = {"%d.%d" % k: v for k, v in hole_feasible_per_ruler(zone).items()}
+    res["m2_viaveis_boss_D5"] = {"%d.%d" % k: v for k, v in hole_feasible_per_ruler(zone, bossd=5.0).items()}
+    res["postes_viaveis"] = [[list(c), bool(ok)] for c, ok in post_feasible(zone)]
+    rec = L.RECESS if L.RECESS else recess_notches()
+    res["rebaixos"] = [{k: (round(float(v), 2) if not isinstance(v, str) else v) for k, v in n.items()} for n in rec]
+    res["rebaixo_por_juncao_mm"] = {"x": round(d_link() + PLUG_W + 0.4, 1), "y_45_8": round(-Y_EXIT + loop_a(45.8) + RLOOP + BW / 2 + CLR, 1),
+                                    "y_50_8": round(-Y_EXIT + loop_a(50.8) + RLOOP + BW / 2 + CLR, 1)}
+    res["trilhos_que_sobram"] = {"%d.%d" % k: v for k, v in L.rails_left(0).items()}
+    json.dump(res, open(os.path.join(OUT, "ligacao_h_r8.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False, default=float)
+    return res
+
+
 if __name__ == "__main__":
     arg = sys.argv[1] if len(sys.argv) > 1 else "tudo"
-    if arg in ("analise", "tudo"):
-        r = full_report()
+    if arg == "r8":
+        r = main_r8()
     if arg in ("figuras", "tudo"):
         main_figuras()
     print("ok")
+
+
