@@ -1,10 +1,144 @@
-# eTutti Student V4 · firmware e som (R1V4 + R2V4 + R3V4 + R4V4 + R5V4)
+# eTutti Student V4 · firmware e som (R1V4 + R2V4 + R3V4 + R4V4 + R5V4 + R6V4)
 
 21 nov 2026. **R4V4 (atendida nesta revisão):** voz só no fone/AUX por padrão, expansor e supressor de microfonia, harmonizador que segue a tecla, menu pelos dois knobs na OLED e varredura em `IntervalTimer`: ver a seção **"R4V4"** logo abaixo. O resto do texto (R1V4, R2V4 e R3V4) continua valendo, com as correções marcadas "(R4V4)". **R3V4:** varredura com ADC duplo e leitura quente em rodízio (item 5) e voz com efeitos junto com o teclado (item 6): ver a seção **"R3V4"** adiante. Atende as tarefas **P1** (capacidade do Teensy MicroMod para 76 teclas, Full Speed USB) e **P2** (começo do firmware V4, §9 itens 1–3) da **R1V4**, com a varredura da **R2V4** (F2: réguas de 4 teclas, 4 linhas OUT, cadeia de registradores de deslocamento).
 
 **O firmware compila para a V4 (28, 44, 60 e 76 teclas), para o Student V01 e para o eTuttino (R4V4: de novo, com a varredura em interrupção). Nada foi gravado e nada rodou numa placa: a V4 não existe.** Tudo o que é tempo medido abaixo é **conta** (marcada "estimado"), a partir das medições do eTuttino (CLAUDE.md) e dos números do datasheet que o repositório já traz. Os pinos e o contrato de varredura seguem o `student_v04/pcb/PINOS.md` (rascunho da eletrônica, 74HC595 C5947, SCAN_DATA = 2, SCAN_CLK = 3); o que o PINOS.md ainda marca "(conferir)" continua a conferir.
 
 **R5V4 (atendida nesta revisão):** teclado de 32 / 48 / 64 / 80 teclas com réguas sempre cheias, mapa de notas e equalização do alto-falante de estudo: ver a seção **"R5V4"** logo abaixo. **Onde o texto mais antigo fala em 28 / 44 / 60 / 76 teclas (ou em posições sem tecla), vale a R5V4: 32 / 48 / 64 / 80, todas as posições com tecla; as colunas, as passadas e a CPU da varredura são as mesmas.**
+
+**R6V4 (atendida nesta revisão):** voz só com microfone no IN, padrão headset, harmonizador de 3 modos com até 4 vozes e tela em português e inglês com acentos: ver a seção **"R6V4"** logo abaixo. Onde as seções antigas falam em tela só com maiúsculas e sem acento, ou em 3 vozes, vale a R6V4.
+
+## R6V4 · voz só com microfone (item 5), harmonizador de 3 modos e até 4 vozes (item 6), tela em português e inglês (item 7)
+
+**Atende a SPEC R6V4** (itens 5, 6, 7 e 8; os itens 1 a 4 não são da programação). **Compila** (V4 32/48/64/80, Student V01 e eTuttino; tabela no fim desta seção). **Nada gravado e nada rodou numa placa**: CPU, latência e níveis do microfone são **conta** (marcados "estimado"). As telas abaixo foram desenhadas com os dados reais da fonte (`img/tela_pt.png`, `img/tela_en.png`, gerados por `etutti/firmware/tools/oled_font/render_screens.py`), mas **não vistas num SSD1306**.
+
+### 1 · Item 5: microfone na entrada IN, padrão headset a 2–3 cm
+
+**Regra.** Os efeitos de voz (expansor, harmonizador, supressor de microfonia, vocoder, eco, reverb da voz) só funcionam com **um microfone ligado no IN (J302)**. Sem microfone:
+- as páginas **Voz** e **Captação** somem do menu, e também as linhas **Saída voz** e **Teclas** (nível do teclado na mistura da voz), porque só existem para a voz; o resto fica como está;
+- `voiceFxApply()` cala tudo da voz (`voiceBlocked()` = sem plugue de fone/AUX, ou sem microfone): o expansor, o vocoder, os deslocadores, o rastreador de afinação e a FFT do supressor deixam de rodar (CPU 0);
+- a tela principal mostra `sem mic` (no lugar da barra de nível do microfone e, se algum efeito de voz estiver ajustado, na linha do volume); os ajustes ficam guardados e voltam ao plugar o microfone;
+- um CC de voz vindo da página ainda é aceito e guardado, mas nada soa.
+
+**Como o plugue é detectado** (resposta da eletrônica, `pcb/PINOS.md` seção R6V4; `V4_MIC_DETECT 2`): o pino **25 (MIC_DET, ADC)** lê a tensão CC da ponta do jack (R306 100 k + C311 100 nF). Com o MIC_BIAS a 3,0 V e 4,2 kΩ em série:
+
+| Tensão no pino | O que há no jack | Efeitos de voz |
+|---|---|---|
+| >= 2,85 V | nada, ou plugue de linha (sem carga CC) | **desligados** |
+| 0,30 V < v < 2,85 V | cápsula de eletreto (0,1 / 0,3 / 0,5 mA = 2,6 / 1,7 / 0,9 V) | **liberados** |
+| <= 0,30 V | curto, ou dinâmico de baixa impedância | desligados |
+
+Leitura a cada 50 ms, **3 leituras iguais** para mudar (antirruído); os limiares são conta e **precisam ser medidos** com um eletreto e um plugue de linha de verdade (pergunta 1). Resposta à pergunta do Chat: **o hardware distingue microfone de plugue de linha** (pelo CC), mas **não** o microfone de PC com bias no anel (a ponta só tem sinal; J302 pino 6 NC), como a eletrônica anotou. **VOL_SW passou do pino 25 para o 4** na mesma revisão: o sketch já usa o 4 na V4 (a V01 continua no 25). Sem a detecção (`V4_MIC_DETECT 0`) assume-se sempre um microfone; o modo 1 (digital) ficou só para uma placa sem o R306.
+
+**Padrão de fábrica = headset a 2–3 cm da boca** (`VoiceFx`; a ação **Mic headset** do menu Captação volta a estes valores):
+
+| Ajuste | Antes (R4V4) | **Fábrica R6V4** |
+|---|---:|---:|
+| Ganho do microfone | 35 dB | **26 dB** |
+| Limiar do expansor | 240 | **~550** (valor 32) |
+| Razão | forte (n = 3) | forte (n = 3) |
+| Ataque / retenção / soltura | 2 / 63 / 143 ms | **1,2 / 78 / 117 ms** |
+| Passa-altas | 89 Hz | **167 Hz** |
+| Supressor de microfonia | desligado | **desligado** |
+| Voz no alto-falante | desligada, **nunca salva** | desligada, **nunca salva** |
+
+Conta (estimada): cápsula de -42 dBV/Pa (~8 mV/Pa); voz a 60 dB SPL a 1 m = 0,02 Pa, a 2,5 cm são +32 dB = ~0,8 Pa (92 dB SPL) = 6,3 mV rms; o pré-amplificador do codec a 26 dB (x20) dá ~126 mV; a plena escala do ADC do SGTL5000 a 0 dB é ~0,9 Vrms (conferir), logo **~0,14 da escala, rms ~4600 em int16, pico ~14 000** (sem corte; a 35 dB a mesma voz daria rms ~13 000 e cortaria). O som do alto-falante a ~30 cm do mic (70 dB SPL = 0,063 Pa) chega 22 dB abaixo: nível retificado ~300, **abaixo do limiar 550** (cai ~16 dB com a razão cúbica); sílabas suaves da voz (-15 dB do médio) ainda ficam em ~650, acima do limiar. É um **ponto de partida de conta, não ouvido**: a regulagem certa é na placa com a cápsula escolhida.
+
+### 2 · Item 6: harmonizador que segue a tecla, 3 modos, 3 ou 4 vozes
+
+Menu **Voz > Modo harm.** gira por: **Fixo** (intervalo fixo em semitons, como antes), **Exato**, **Ajuda**, **Intervalo**. CCs: 95 (seguir liga/desliga), **108 modo (valor/32: 0 exato, 1 ajuda, 2 intervalo)**, **109 intensidade da ajuda (0..127)**, **110 vozes (>= 64 = 4)**, 97 oitava (perto/exata). Só no sketch, como os outros CCs de voz.
+
+| Modo | O que faz | Linhas do menu |
+|---|---|---|
+| **Exato** | cada nota segurada ganha um deslocador que põe a voz **exatamente** na nota (razão = Hz da nota / Hz da voz). Vários dedos = acorde cantado | Oitava, Vozes |
+| **Ajuda** | **um** deslocador: a nota segurada **mais perto da voz** (dentro de 3 semitons, ignorando oitavas) puxa a voz só em parte: deslocamento = intensidade x (nota - voz) em semitons (127 = exato, 0 = nada). Enquanto soa, a voz seca faz um fade para fora (~40 ms), para ouvir só a voz ajudada | **Intensidade** (padrão 63 %), Vozes |
+| **Intervalo** | a voz fica **natural**: a nota mais perto da voz é a referência ("onde o cantor está") e cada **outra** nota segurada ganha um deslocador de exatamente (nota - referência) semitons: mantém a distância entre as teclas, sem tocar na afinação nem no vibrato do cantor. Uma só tecla = silêncio | Oitava (perto: deslocamento dentro de ±6; senão até ±12), Vozes |
+
+**Até 4 vozes** (**Vozes 3 / 4**, padrão 3). Há 4 deslocadores (`VOICE_HARM_N = 4`, 25,6 KB de RAM2 cada); com 3 o quarto fica parado (CPU 0). Em Intervalo, com N vozes o sketch lê N+1 teclas (uma é a referência). O detector de afinação (YIN) precisa ser bom em Exato e Ajuda; no Intervalo só escolhe a referência. As linhas que não valem no modo atual somem do menu (Intervalo em semitons só no modo Fixo; Intensidade só na Ajuda; Oitava e Vozes só quando segue a tecla).
+
+**Medidas (compiladas) e estimativas** (V4 de 32 teclas; 48/64/80 somam 32 bytes de RAM1 por 16 teclas, tabela no fim):
+
+| | R5V4 | **R6V4** | |
+|---|---:|---:|---|
+| Código em flash | 143 088 B | **146 096 B** | +3,0 KB (fonte com acentos, textos, 3 modos) |
+| RAM1 (variáveis) | 106 400 B | **108 576 B** | +2,2 KB |
+| RAM2 | 175 648 B | **202 272 B** | +26,6 KB (o 4º deslocador, 25,6 KB) |
+| `AudioMemory` | 100 | **104** | estimado (+4 blocos para o 4º deslocador); medir `AudioMemoryUsageMax()` |
+
+Folga: RAM1 ~252 KB, RAM2 ~322 KB: cabe com muita folga.
+
+| Estimado, 396 MHz | CPU |
+|---|---:|
+| Harmonizador Exato com **4 notas** (YIN 1,2 % + filtro 0,1 % + 4 x 0,3 %) | **~2,5 %** (3 notas ~2,2 %) |
+| Ajuda (YIN + 1 deslocador) | ~1,6 % |
+| Intervalo com 4 vozes | ~2,5 % |
+| **Pior caso, tudo ligado** (acordeão de **4 registros** com 8 notas 30 % + voz, vocoder, eco e reverb 5,5 % + harmonizador de 4 vozes 2,5 % + supressor 1,7 % + expansor 0,2 % + EQ 0,45 % + varredura 19 %, igual para 32 a 80 teclas) | **~60 %** (R5V4: ~59,5 %) |
+
+**Cabe a 396 MHz** (estimado): o áudio fica com ~81 % da CPU (a varredura leva ~19 %) e o pior caso precisa de ~41 %; o critério de passar a 600 MHz continua o da R4V4 (`AudioProcessorUsageMax()` acima de ~80 %). A varredura é em interrupção acima do áudio, então a latência das **teclas** não muda com 4 vozes (nota ~1 ms + bloco de áudio 2,9 ms). **Latência da voz (estimada):** a voz harmonizada sai ~25–30 ms atrás da seca (grão de 25 ms + bloco); uma tecla nova se ouve em ~40 ms (laço de 12 ms + grão + bloco); em Exato e Ajuda uma mudança de nota do cantor leva ~60 ms para a harmonia seguir; em Intervalo a razão é fixa e só a troca da referência leva ~60 ms. **O `V4_BENCH` mede** estas CPUs quando houver placa (passos novos: 4 vozes em Exato, Intervalo e Ajuda).
+
+### 3 · Item 7: tela em português e inglês, com minúsculas e acentos
+
+- **Fonte nova** 5 x 10 (`oled_font.h`, gerada por `etutti/firmware/tools/oled_font/make_font.py`): ASCII 32..126 mais as letras latinas com acento (à á â ã ä ç è é ê ë ì í î ï ñ ò ó ô õ ö ù ú û ü, as maiúsculas, ¡ ¿): **~1,6 KB** de flash (a SPEC estimava ~2 KB). Texto em **UTF-8**; maiúsculas nas linhas 2–8, minúsculas nas 4–8, acento acima, descendente de 1 linha. Uma linha do menu continua com 10 px, **5 linhas por tela**.
+- **Idioma:** menu **Sistema > Idioma** (Português / English), **gravado na hora na EEPROM** (endereço 250, marca 0xB1; sem precisar de Salvar). Padrão: português. O nome de cada idioma é escrito no próprio idioma.
+- **Tabela de textos fácil de estender:** `ui_text.h` tem o enum de idiomas (`LANG_PT, LANG_EN`), `LANG_NAME[]`, a tabela `STR[]` das frases soltas e os tipos do menu; as linhas do menu (`ITEMS_*` no sketch) e as listas de valores são `{"português", "inglês"}`. **Para um idioma novo:** pôr o código no enum, o nome em `LANG_NAME` e **um texto a mais em cada `{...}`** (o que faltar cai para o inglês); se usar letras que a fonte não tem, acrescentá-las em `make_font.py`.
+- Nomes dos registros e dos instrumentos (Bassoon, Violin...) continuam em inglês maiúsculo, como na página.
+
+**Telas** (`img/tela_pt.png` e `img/tela_en.png`: menu principal sem microfone, Voz, Captação, Sistema, tela principal com e sem microfone, aviso). Em texto, português (`[...]` = linha invertida):
+
+![telas em português](img/tela_pt.png)
+![screens in English](img/tela_en.png)
+
+
+```
+MENU (com microfone)               MENU > VOZ (modo Ajuda)
+[Menu                  1/5]        [Menu > Voz            4/9]
+[Voz                     >]         Voz seca     [=   ]    20%
+ Captação                 >         Harmoniz.    [==  ]    55%
+ Saída                    >         Modo harm.            Ajuda
+ Som                      >        [Intensidade  [==  ]    63%]   <- só na Ajuda
+ Sistema                  >         Oitava                Perto
+
+MENU (sem microfone)               MENU > SISTEMA
+[Menu                  1/3]        [Menu > Sistema        5/5]
+[Saída                   >]         Salvar
+ Som                      >         Zerar voz
+ Sistema                  >         Calibrar
+                                    Teste tec.        Desligado
+TELA PRINCIPAL                     [Idioma            Português]
+ BAT 85%      (corpo 2x)
+ VIOLIN       (corpo 2x)           MENU > CAPTAÇÃO
+ vol 90 fone         voz C#4       [Menu > Captação      1/10]
+ [=========]  mic [==]             [Ganho mic   [=   ]  26 dB]
+ (sem microfone: "sem mic" no lugar da barra do mic)
+```
+
+Em inglês: `Menu > Voice`, `Dry voice`, `Harmonizer`, `Harm mode` (`Fixed / Exact / Assist / Interval`), `Strength`, `Octave` (`Near / Exact`), `Menu > Input` (`Mic gain`, `Threshold`, `Ratio`, `Headset mic`), `Menu > System` (`Save`, `Reset voice`, `Calibrate`, `Key test`, `Language English`), tela principal `vol 90 hp`, `voice C#4`, `no mic`.
+
+**Item 8 (sem mudança):** o clique curto do seletor age **ao soltar** (o longo de 0,7 s abre o menu) e o alto-falante da voz **nunca é salvo ligado** (cada partida volta ao fone/AUX); conferido no código.
+
+**Persistência:** SALVAR guarda agora também modo, intensidade e 3/4 vozes (EEPROM 210, bytes 26 a 29, atrás da marca `0xE6`; dados antigos continuam valendo). O supressor, se o J o ligar e salvar, volta ligado; a fábrica é desligado.
+
+### Conferências da R6V4
+
+| Compilação (`--fqbn teensy:avr:teensyMM:usb=midi,speed=396`, nada gravado) | Código (flash) | RAM1 (variáveis) | RAM2 |
+|---|---:|---:|---:|
+| V4 32 teclas | 146 096 B | 108 576 B | 202 272 B |
+| V4 48 teclas | 146 096 B | 108 608 B | 202 272 B |
+| V4 64 teclas | 146 096 B | 108 640 B | 202 272 B |
+| V4 80 teclas | 146 096 B | 108 672 B | 202 272 B |
+| V4 32 com `V4_BENCH 1` (`usb=serialmidi`) | 147 696 B | 108 352 B | (compila) |
+| Student V01 | 90 040 B (igual) | 65 760 B | 22 400 B |
+| eTuttino (Teensy 4.0, `usb=midi`) | 88 824 B (igual) | 65 664 B | 22 400 B |
+
+
+| Conferência | Resultado |
+|---|---|
+| `pcb/PINOS.md` relido no fim | seção R6V4: **MIC_DET = pino 25 (ADC)** e **VOL_SW = pino 4**; o sketch segue as duas coisas (a V01 continua com VOL_SW no 25); os demais pinos sem mudança |
+| Telas | desenhadas com a fonte real; **não vistas** num SSD1306 |
+| Microfone, CPU, latência | **estimados** (contas acima) |
+
+
+---
 
 ## R5V4 · réguas sempre cheias (32 / 48 / 64 / 80 teclas) e equalização do alto-falante de estudo
 
@@ -565,6 +699,17 @@ Compilado com `arduino-cli compile --fqbn teensy:avr:teensyMM:usb=midi,speed=396
 5. Conferir no host (USBView ou equivalente) a velocidade 12 Mbit/s com `V4_FORCE_FULL_SPEED 1`.
 
 ## Perguntas para o design
+
+**R6V4 (novas; as numeradas depois continuam das revisões anteriores):**
+
+R1. **Limiares do microfone (MIC_DET):** 2,85 V e 0,30 V são conta (bias 3,0 V). Na primeira placa, medir a tensão do pino 25 com o eletreto escolhido (e com um plugue de linha de verdade) e dizer os valores: os dois limiares são constantes no começo do sketch (`MIC_DET_MIN_V`, `MIC_DET_MAX_V`).
+R2. **Padrão headset (ganho 26 dB, limiar ~550):** é de conta (cápsula de -42 dBV/Pa, 2,5 cm). Que headset/cápsula será usado? Um headset de PC com microfone no anel não é detectado (a eletrônica avisou).
+R3. **Ajuda:** captura só dentro de 3 semitons e tira a voz seca enquanto soa (fade de ~40 ms). Serve, ou prefere misturar seca e ajudada e deixar o J baixar a seca?
+R4. **Intervalo:** a referência é a nota mais perto da voz; uma só tecla segurada não toca nada. Prefere que uma tecla sozinha ponha uma harmonia fixa (uma terça, por exemplo)?
+R5. **Vozes:** padrão 3 (a RAM2 já reserva as 4). Tudo bem, ou o padrão deve ser 4 (+0,3 % de CPU)?
+R6. **Idioma:** só português e inglês, gravado na hora (sem Salvar). Espanhol entra depois só com texto a mais em cada tabela (o `make_font.py` já traz ñ ¿ ¡). Quando?
+R7. **Pino de VOL_SW:** o sketch da V4 usa o 4 e a V01 o 25; o J ou o Chat não precisam fazer nada, só saber se a página de simulação vier a copiar o mapa.
+
 
 (R4V4: retiradas as respondidas pelas decisões do J e feitas nesta revisão: varredura em `IntervalTimer` a 396 MHz, voz só no fone/AUX, harmonizador que segue a tecla, menu pelos knobs. Ficam as que dependem de placa ou de decisão.)
 

@@ -1,10 +1,69 @@
 # eTutti Student V4 · relatório da eletrônica
 
-**SPEC atendida: R1V4, R2V4, R3V4, R4V4 e R5V4 (21 nov 2026; R5V4: tarefas 2 e 3, abaixo).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
+**SPEC atendida: R1V4 a R6V4 (R6V4: 22 nov 2026, seção logo abaixo; R5V4: tarefas 2 e 3).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
 Data: 21 nov 2026. Nada foi posicionado, roteado, encomendado nem gerado em `fab/`: é estudo (Fase A). A V3, a V2 e a V1 não foram tocadas.
 Scripts novos (reproduzem os números): `calculos_eletronica.py` (E2, E3), `fornecimento/precos_jlc.py` (preços e classe na
 biblioteca da JLCPCB, 21 nov, curl de 2 em 2 s). Contrato com a programação: `pcb/PINOS.md` (rascunho já entregue).
 Convenção: **(conferir)** = sem medida ou datasheet conferido; **estimativa** = conta minha, sem cotação.
+
+## R6V4 · conectores fixos entre réguas (item 1), entrada placa → régua (item 2), microfone (item 5)
+
+**SPEC atendida: R6V4 (parte da eletrônica; atualizada em 22 nov 2026).** Nada roteado (portão P fechado). Medidas marcadas **(conferir)** vêm de ficha genérica ou de footprint do EasyEDA, não de desenho dimensional do fabricante.
+
+### Peças reais achadas (biblioteca da JLCPCB / LCSC, 21-22 nov; todas Extended)
+| Uso | Peça (LCSC) | Estoque | US$ (1 un.) | Medidas | Observação |
+|---|---|---|---|---|---|
+| **Fêmea 1x5, 1,27 mm, SMD vertical (a recomendada)** | SHOU HAN PM1.27-1x5PLT-H3.4-R **C55566451** | 864 | 0,115 | isolante 3,4 mm | footprint do EasyEDA não existe para o H3.4 |
+| mesma, mais alta | SHOU HAN PM1.27-1x5PLT-H4.3-R **C55218862** | 3 147 | 0,115 | isolante 4,3; **pads 0,74 x 2,10 mm, pernas alternadas a 3,10 mm: footprint 6,76 x 5,20 mm, corpo só 2,0 mm de fundo** (EasyEDA) | o H3.4 deve ser parecido **(conferir)** |
+| **Macho 1x5, 1,27 mm, SMD vertical (ponte e ponta do cabo de entrada)** | SHOU HAN PZ1.27-1x5PLT-L7.2-R **C55213903** | 2 303 | **0,019** | plástico 1,0 mm, pino de encaixe 4 mm | 4 mm de pino numa fêmea de 3,4 mm: sobra 0,6 mm de plástico fora **(conferir)** |
+| (descartadas) | Harwin M50-3200545 C7297883 (ângulo reto 2x5) | **0** | 2,79 | | sem estoque |
+| | Sullins PPPC051LGBN-RC C7327802 (a do J) | **0** | 0,86 | PTH, 2,54 | sem estoque; as fêmeas em ângulo 1x5 de 2,54 que existem (C35167, C225513, SHOU HAN C54876734) são PTH de **8,5 mm** de altura: não cabem no bolso de 6,9 |
+| | BOOMELE 1.27-2P C49000 (ângulo reto 1,27) | 927 | 0,10 | só 2 vias, PTH | não serve |
+Fichas lidas: a SHOU HAN do H3.4 que o LCSC serve é uma "specification for approval" genérica (contato de bronze fosforoso estanhado, placa de 1,2 a 1,6 mm, 7 páginas, **sem a folha de desenho**); por isso as medidas acima são do footprint do H4.3 no EasyEDA, não do fabricante.
+
+### O que cada opção dá (resumo; planta e corte em `pcb/regua/img/conectores_*.png`)
+- **E1 (a ideia literal: macho em ângulo à direita, fêmea em ângulo à esquerda): inviável com peças de estoque.** Não existe fêmea 1x5 de 1,27 mm em ângulo reto SMD no estoque (só a Harwin 2x5, estoque 0, e uma de 2 vias PTH); as de 2,54 mm medem 12,7 mm de comprimento e 8,5 mm de altura. E, mesmo achando a peça, a fileira de contatos fica ao longo de y e atravessa o eixo das teclas: bate no pino da 1ª tecla da régua seguinte (faixa livre de 6,6 mm).
+- **E2 (ponte): viável, é a recomendada.** Fêmea SMD vertical (C55566451) **igual nas duas pontas de toda régua, boca para baixo**, no lugar do J1/J2: a mesma **faixa de trás** (v -6,9..-1,05, 5,84 mm) que o design já reservou, não a da frente: o footprint real tem **5,2 mm de fundo** (os pads alternados), e a faixa da frente (y +1,0..+4,1) só tem 3,1 mm, além do trilho da frente (v +4,2..+7). Na faixa de trás cabem 6,76 x 5,2 mm centrados em u = 5,6 (entrada: u 2,2..9,0, sobra 1,5 até o capacitor C1) e u = 68,1 (saída). **Ponte** = PCB de 1,2 mm (mesma espessura da régua, **no mesmo painel**) com dois machos C55213903 a 11,8 mm de centro a centro (J2 de A em u 68,1, J1 de B em 74,0 + 5,6). Altura sob a régua: fêmea 3,4 + 0,6 de pino que sobra + macho 1,0 + PCB 1,2 = **6,2 mm** (com a ponte em 0,8 mm: 5,8) contra 6,9 mm do bolso da fileira 1: **folga 0,7 mm (conferir)**; as fileiras 2 a 4 têm bolso de 8,9 / 10,9 / 13,9 mm. Sem conflito com pinos de tecla (v 0, a ponte está em v -6,9..-1,7), sensores (pads até v -1,06), 595 (v +4,2), M2 (v +5,2) e trilhos (frente); os capacitores C1/C4 ficam a 1,5 mm. Montagem: sobe-se a régua nos pinos da bandeja, desce-se sobre a ponte já posta no bolso. Retenção: atrito de 5 pinos de 1,27 mm (~0,5 N por pino; **conferir**); o design deve dar à ponte um rebaixo de 18,5 x 7 mm no piso (ela não tem para onde subir: a régua está presa por 2 M2 e pelo deck).
+- **E3 (FFC/FPC 1,0 mm): fora.** O conector FPC de 6 vias que a JLCPCB tem em estoque não achei (C48735 estoque 0); +1 tipo Extended.
+- **E4 (contato de mola SMD): descartada sem detalhar.** Existem contatos de mola SMD de 2 mm (BAT WIRELESS BWCD-L3W2.0H1.0 C2988082, US$ 0,076, 75 mil em estoque), mas pedem passo de 2,54 mm (5 contatos = 10 mm), pressão contínua e ponte com almofadas banhadas a ouro; sem retenção própria, o risco de ruído com vibração é o pior do conjunto.
+- **Cartão de borda:** nenhum conector de borda de 1,27 mm para PCB de 1,2 mm achei no estoque; não cotei.
+
+### Entrada placa → 1ª régua (item 2)
+**Confirmado: encaixe rígido direto não serve.** Os planos das réguas são ZR = 0 / 2 / 4 / 7 mm acima do topo da placa e a fileira 1 só começa 11,7 mm depois da borda (as 2 e 4, 2,45 mm): uma ponte plana só alcança a fileira 1 (e ainda por cima numa distância de ~18 mm, longe demais para uma ponte de 11,8 mm); as outras três precisam de degrau de 2, 4 e 7 mm. **Proposta: pigtail de SH-6 cortado.** Compro 2 cabos SH-6 de 100 mm com plugue nas duas pontas ([Pololu #5543](https://www.pololu.com/product/5543), US$ 3,32), corto cada um ao meio e aparo para ~25 mm: saem 4 pigtails com plugue SH numa ponta (o plugue entra no J601..J604 da placa principal, que **não muda**) e fios livres na outra, **soldados em casa a um macho C55213903** (5 juntas por pigtail, 20 no total; o fio 6 é cortado) que entra na fêmea de entrada da régua. Só esse macho é novo; as outras três saídas (cabo pronto de 15/25 mm, fita IDC, adaptador) ficam piores: não existe cabo pronto com SH numa ponta e macho de 1,27 na outra; fita IDC pede 10 vias de 12,7 mm de largura; o adaptador seria outra PCB com SH + macho (~US$ 6 por lote com PCB, sem ganho).
+
+### Custo (item 3, US$, só a ligação, 32 / 48 / 64 / 80 teclas; D = referência da R5V4: cabos crimpados em casa com ferramenta de US$ 30 + elos de fio)
+
+| Teclas | Réguas | **G** (E2 + pigtail) US$ | D (R5V4) US$ | G - D | Juntas de solda G / D | Tiras sobrando no pedido de 10 réguas |
+|---:|---|---:|---|---:|---|---:|
+| 32 | 8 + 4 pontes | 11.11 | 36.40 (6.40 sem a ferramenta) | **-25.29** | 20 / 40 | 2 |
+| 48 | 12 + 8 pontes | 11.73 | 36.40 (6.40 sem a ferramenta) | **-24.67** | 20 / 80 | 3 |
+| 64 | 16 + 12 pontes | 12.35 | 36.40 (6.40 sem a ferramenta) | **-24.05** | 20 / 120 | 4 |
+| 80 | 20 + 16 pontes | 21.50 | 36.40 (6.40 sem a ferramenta) | **-14.90** | 20 / 160 | 0 |
+
+- **G custa menos que a D** (e bem menos juntas de solda), e **dentro do critério** de "até ~US$ 15 acima da D". Composição de G (32 teclas): fêmeas 0,12 - 0,069 SH a mais em 20 réguas montadas = 0,92; machos 0,45; **+1 tipo Extended (o macho C55213903) = 3,09**; 2 cabos SH de 100 mm = 6,64 (Pololu); sem painel extra enquanto sobrarem tiras (**80 teclas não sobra: +1 painel de 5 tiras, estimativa US$ 9**). Troca SH -> fêmea nas réguas: **o número de tipos Extended das réguas sobe de 3 para 4** (TMAG, fêmea, 595, macho); a placa principal **não muda de tipos** (J601-J604 continuam SH, como o J401 da tela).
+- **Estimativas, sem cotação:** a ponte no painel das réguas (PCB 1,2 mm, mesmo pedido) e o cabo de 100 mm são os dois pontos fracos: a JLCPCB pode recusar peça "nua" misturada no painel econômico (a testar na cotação); o plano B da ponte é uma tira de 10 PCBs de 0,8 mm à parte (~US$ 3-8).
+- **Recomendação (o J decide; D fica como reserva): G.** Réguas todas iguais (mesmo PCB), sem solda entre réguas, 20 juntas só no pigtail de entrada (feitas uma vez, com ferro, na bancada), troca de régua = puxar a régua para baixo. Riscos a medir no protótipo: folga de 0,7 mm sob a ponte na fileira 1, retenção do encaixe de 1,27 mm com vibração, resistência de contato de 5 pinos em série com +3V3/GND (1 A por pino, ficha), fêmea H3,4 sem footprint (use o do H4.3 e confira no desenho do fabricante).
+
+### J2 da régua (item 2 da SPEC)
+Segue o item 1: **na G os dois SH saem da régua** (J1 e J2 viram as duas fêmeas 1x5 de 1,27 mm, mesma peça); o SH deixa de existir nas réguas (-1 tipo Extended nas réguas; +2 = fêmea e macho). Economia pelo SH: o J2 (~US$ 0,08 por régua) deixa de importar. **Pendente (não aplicado):** o esquema e o posicionamento da régua (`pcb/regua/`) ainda são os da R5V4 (SH-6 em J1/J2, pads LK1/LK2); só mudo depois que o J escolher G, para não refazer a régua duas vezes.
+
+### Microfone em J302 (item 5, aplicado: pequena mudança)
+- **O pino 3 (contato da ponta) do PJ-327A não chega ao Teensy e não resolveria:** diria "tem plugue", não "tem microfone". **Falta algo na placa: sim, uma tomada de CC.** Mudança: **R306 100 k (MIC_J -> MIC_DET) + C311 100 nF (MIC_DET -> GND)**, MIC_DET no **pino 25** (ADC); o VOL_SW, que estava no 25, passa para o **pino 4** (livre, só digital). Duas peças Basic 0402 (C25741, C1525), sem tipo Extended novo.
+- **Como distingue:** com o MIC_BIAS ligado (3,0 V, resistência total 4,2 k), sem carga MIC_J fica em 3,0 V; eletreto de 0,1 / 0,3 / 0,5 mA dá 2,6 / 1,7 / 0,9 V; dinâmico ~0,14 V. **Regra para a firmware: 0,30 V < v < 2,85 V = microfone de eletreto (liga os efeitos de voz); v >= 2,85 V = nada ou plugue de linha acoplado por capacitor (efeitos desligados); v <= 0,30 V = curto/fonte de baixa resistência (não liga).** Plugue de linha com saída DC-coupled e baixa impedância cairia na terceira faixa: tratado como "sem microfone" (o que se quer). Os limiares são **cálculo, a medir na primeira placa** com um eletreto e uma linha.
+- **Limite:** microfone de PC com bias no **anel** (J302 pino 6 NC) não funciona; só cápsula na ponta (headset mono). Pergunta abaixo.
+- Estado: `schematic.py` (**ERC 0/0**, netlist igual à V3 fora das mudanças listadas), `posiciona_v4.py` (R306, C311 no fundo ao lado do C309; **DRC sem trilhas: 0 erros, 1 aviso `isolated_copper` do plano +3V3 sem vias (como antes), paridade 0**), `bom_v4.csv` (79 peças, 13 tipos Extended, US$ 17,87). **A programação deve ler `pcb/PINOS.md` (seção "R6V4"): VOL_SW no pino 4, MIC_DET no 25.**
+
+### Arquivos 32 teclas (item 4)
+`geometria.py`: `ROWS` com 8 teclas por fileira (rows 2 e 4 em x 89,2; 1 e 3 em 98,45), `CASE` = 244 x 100 mm (R6V4: +4 mm de deck; 48/64/80: 318/392/466). `pcb/grade_fab.py` (a grade única do F1, com contorno de 32 teclas) foi regenerada como `fab/student_v04_grade_contorno32_gerbers.zip` (181,85 x 91,16 mm, 32 furos de botão, DRC 0 erros) **só como alternativa**: o contorno + 21,5 mm passa de x = 249 e **não cabe no case de 244 mm** (na F2 a grade é a grade-régua, que não depende do número de teclas). Painéis e Gerbers das réguas não mudam (`fab/regua_painel_SEM_ROTA_NAO_ENCOMENDAR/`). `pcb/PINOS.md` corrigido para 32/48/64/80.
+
+### Figuras desta revisão (todas com o nome da nota em cada tecla)
+`pcb/regua/img/conectores_E1.png` (E1: inviável), **`conectores_E2.png`** (recomendada: planta e corte), `conectores_entrada.png` (placa -> 1ª régua: planta e corte com os degraus), `conectores_descartadas.png` (E3 FFC e E4 mola), **`conectores_teclado32.png`** (32 teclas, C azul, F laranja, fêmeas, 4 pontes, 4 pigtails). Reproduz: venv CadQuery `pcb/regua/conectores_r6.py`; custo: `python pcb/regua/custo_r6.py`.
+
+### Perguntas para o design (R6V4)
+1. A ponte e as duas fêmeas ocupam a **faixa de trás** (v -6,9..-1,05, 6,76 x 5,2 mm por fêmea; ponte de 18,2 x 6,8 mm) e descem **6,2 mm** sob a régua: o bolso da fileira 1 (6,9) tem folga de **0,7 mm**. Cabe o rebaixo de 18,5 x 7 mm no piso que prenda a ponte (retenção contra vibração)? E a janela de plugue do J1/J2 (e o entalhe da trilha da fileira seguinte) deixa de ser necessária: o design confirma que pode sumir?
+2. O pigtail de entrada (25 mm, plugue SH + macho) segue o contrato da R4V4 (J601..J604 em x 77,4 boca +x; IN da régua em u 5,6 na faixa de trás)? O macho fica sob a régua com 6,2 mm de altura na fileira 1 (a mais apertada): cabe no desenho do design?
+3. Com a G, a régua perde o SH (J1/J2 viram fêmeas 1x5): o design aprova trocar o contrato (boca para baixo, não para trás)? O plugue de 7,6 x 5,0 sai do bolso.
+4. J (gestão): microfone de PC com bias no anel deve ser aceito (ligar o anel ao MIC_J exige trocar o jack ou o fio)?
 
 ## R5V4 · teclado de 32 teclas e ligação das réguas (tarefas 2 e 3)
 

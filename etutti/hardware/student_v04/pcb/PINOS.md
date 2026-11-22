@@ -1,4 +1,15 @@
-# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4; teclado de 32 teclas, R5V4)
+# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4; teclado de 32 teclas, R5V4; microfone R6V4)
+
+## R6V4: o que mudou para a programação (dois pinos trocam de função)
+
+- **VOL_SW passa do pino 25 para o pino 4** (clique do volume, a mesma lógica: o clique de 2 s liga/desliga pelo hardware; a firmware só lê). O pino 25 (A11) virou **MIC_DET**, entrada analógica.
+- **Detecção do microfone em J302 (IN)** (detalhe na seção "Microfone"): `analogRead(25)` com o **MIC_BIAS ligado** (3,0 V, `BIAS_RESISTOR` 2 k); leitura em volts `v = analogRead(25) * 3.3 / 1023` (10 bits) ou 4095 (12 bits):
+  - **v >= 2,85 V:** nada ligado, ou plugue de linha com acoplamento por capacitor (sem corrente CC) → **efeitos de voz desligados / escondidos**;
+  - **0,30 V < v < 2,85 V:** carga CC de microfone de eletreto → **efeitos de voz disponíveis**;
+  - **v <= 0,30 V:** curto ou fonte com resistência CC baixa (microfone dinâmico, saída de linha ligada em CC) → tratar como "sem microfone de eletreto" (não liga os efeitos);
+  - filtre com 8 leituras e histerese de 0,1 V; o RC é de 10 ms. Com o bias desligado a leitura é 0 V e não vale.
+- Pino 25 deixa de servir de entrada digital; nada mais mudou. **Contagem de pinos usados: 28.**
+- Mapa de notas e tamanhos: **32 / 48 / 64 / 80 teclas** (R5V4); conectores da principal J601..J604 sem mudança na recomendada da R6V4 (o plugue SH-6 da principal continua; o que muda é a régua, ver `POSICIONAMENTO.md`, parte 4).
 
 ## R5V4: o que mudou para a programação (os pinos NÃO mudam)
 
@@ -15,7 +26,7 @@ nenhuma rede e nenhuma temporização muda; muda só o **mapa de notas**:
 - `FIRST_NOTE = {57, 55, 56, 54}` (o da fileira 4 era 57), `FIRST_COL = {0, 0, 0, 0}` como antes; **8 teclas em todas as fileiras** (antes 7, 8, 7, 6).
 - Colunas globais: 32 teclas = 8 colunas (2 réguas por fileira); 48 = 12; 64 = 16; 80 = 20, **todas ocupadas nas 4 fileiras**: `V4_KEYS` = 32 / 48 / 64 / 80
   (4 x 8, 4 x 12, 4 x 16, 4 x 20). Para a fileira 4, a régua começa em x 79,95 (alinhada com a fileira 2, antes 89,2).
-- Pulsos do acesso aleatório = 8 x N + 1 (N = réguas por fileira): **17 / 25 / 33 / 41** (os mesmos de 28/44/60/76: o número de réguas não mudou).
+- Pulsos do acesso aleatório = 8 x N + 1 (N = réguas por fileira): **17 / 25 / 33 / 41** (32 / 48 / 64 / 80 teclas; o número de réguas por fileira, 2 / 3 / 4 / 5, é o que conta).
   A varredura completa em ordem (colunas 8/12/16/20, 70 us/passo) também é a mesma: 0,56 / 0,84 / 1,12 / 1,40 ms.
 - **Cadeia de registradores:** nada a ajustar. Cada régua continua com 8 estágios (QA..QD = sensores 1..4, QE..QH mortos), e agora os 4 sensores de
   toda régua são notas de verdade: o "1" que anda passa pelos mesmos 4 estágios mortos entre uma régua e a seguinte. A ligação física das réguas (R5V4, item 3)
@@ -29,8 +40,8 @@ Conferido contra o esquema da V4 (`pcb/schematic.py`, ERC 0/0, netlist = `TEENSY
 ## Correções da R3V4 (o que a programação ajusta)
 
 1. **Pulsos do acesso aleatório = 8 x N + 1 por fileira** (N = réguas por fileira; as 4 fileiras andam em paralelo, DATA/CLK comuns).
-   28 teclas: 17; 44: 25; 60: 33; 76: 41 (~10 us a 5 MHz). A linha "20 colunas = 160 pulsos" da R2V4 estava **errada** (contava 8 estágios por
-   coluna). A conta do `FIRMWARE.md` (41 com 76 teclas) está certa.
+   32 teclas: 17; 48: 25; 64: 33; 80: 41 (~10 us a 5 MHz). A linha "20 colunas = 160 pulsos" da R2V4 estava **errada** (contava 8 estágios por
+   coluna). A conta do `FIRMWARE.md` (41 com 80 teclas) está certa.
 2. **Coluna 0 = a régua mais perto da placa principal**, estágio 0 = QA da primeira régua (a que recebe o DATA do conector J60k); o primeiro bit
    empurrado vai para a última régua.
 3. **FIRST_COL = {0, 0, 0, 0}** (era {1, 0, 1, 1} na V3): a régua começa **na primeira tecla da fileira** (início = x da primeira tecla - 9,25 mm).
@@ -56,7 +67,7 @@ Conferido contra o esquema da V4 (`pcb/schematic.py`, ERC 0/0, netlist = `TEENSY
 | 1 | 17 (TX1) | - | livre | - |
 | **2** | 47 (PWM1) | **SCAN_DATA** | entrada serial (SER) da primeira régua de cada fileira, por 100 ohm | saída |
 | **3** | 32 (PWM0) | **SCAN_CLK** | SRCLK e RCLK dos 595 (ligados juntos), por 100 ohm | saída |
-| 4 | 10 (D0) | - | livre (era SENS_EN) | - |
+| **4** | 10 (D0) | **VOL_SW** (R6V4, **movido do 25**) | clique do volume (liga/desliga); só digital, INPUT_PULLUP como antes | entrada |
 | 5 | 18 (D1) | - | livre | - |
 | 6 | 71 (G6) | SEL_SW | clique do seletor de registro, INPUT_PULLUP | entrada |
 | 7 | 56 (AUD_OUT) | I2S_TX | I2S para SGTL5000 e MAX98357A | - |
@@ -77,13 +88,13 @@ Conferido contra o esquema da V4 (`pcb/schematic.py`, ERC 0/0, netlist = `TEENSY
 | 22 (A8) | 49 | VOL_A | volume A | entrada |
 | 23 | 58 (AUD_MCLK) | AUD_MCLK_P | MCLK, 100 ohm junto do J101 | - |
 | 24 (A10) | 53 | VOL_B | volume B | entrada |
-| 25 (A11) | 51 | VOL_SW | clique do volume (liga/desliga) | entrada |
+| **25 (A11)** | 51 | **MIC_DET** (R6V4) | tomada de CC da ponta do jack IN (via R306 100 k + C311 100 nF): detecta microfone de eletreto | **ADC** |
 | **26 (A12)** | 67 (G8) | **OUT_R3** | fileira 3 | ADC |
 | **27 (A13)** | 8 (G11) | **OUT_R4** | fileira 4 (a de trás) | ADC |
 | 28 | 4 (3.3V_EN) | NC | sem uso (a cadeia PWR_EN da V1 não existe na V3/V4) | - |
 | 29-45 | 16, 41, 43, 65, 63, 66, 64, 60, 62, 70, 68, 40, 42, 44, 46, 48, 73 | - | livres. **(conferir)** 38, 39, 40, 41 (pads 70, 68, 40, 42) têm ADC no Teensy 4.1; se valerem no MicroMod, servem de **OUT_B** (2ª linha por fileira) | - |
 
-Resumo de uso: 27 sinais (0, 2, 3, 6-12, 14-28 menos 13) e, nos pads que não são pinos, ONOFF (6), PROGRAM (11), USB, 3,3 V.
+Resumo de uso: 28 sinais (0, 2, 3, 6-12, 14-28 menos 13) e, nos pads que não são pinos, ONOFF (6), PROGRAM (11), USB, 3,3 V.
 Livres: 1, 4, 5, 13 e 29-45. **Para 80 teclas não faltam pinos.**
 
 ## A varredura (R2V4, E2): o contrato de tempo e de ordem
@@ -137,8 +148,14 @@ pelo USB (D206); KEEP no 10; AMP_SD no 12; HP_DET no 17; CHG_STAT agora no **0**
 - MIC_BIAS: 1,25 a 3,00 V em passos de 0,25 V (`CHIP_MIC_CTRL.BIAS_VOLT`), **no máximo VDDA - 200 mV** (VDDA = 3,3 V pelo ferrite: até 3,0 V vale). `BIAS_RESISTOR` (2/4/8 k) **não pode ser 0**
   (0 desliga o bloco). A biblioteca de áudio do Teensy (`micGain`) liga 2 k + 3,0 V: com o R305 em série são 4,2 k, ~0,45 mA num eletreto de 1 V. O datasheet diz que o R1 externo só é preciso se os resistores
   internos não servem: **o R305 pode virar 0 ohm** se a cápsula pedir mais corrente (a firmware escolhe; a placa aceita as duas).
-- Ganho do pré-amplificador (`GAIN`): 0 / +20 / +30 / +40 dB. **Fonte de linha no IN não está prevista** (o LINEIN do codec fica sem ligação nesta placa): só microfone de eletreto; a alternativa de nível de linha pediria outro jack (fora da R3V4).
+- Ganho do pré-amplificador (`GAIN`): 0 / +20 / +30 / +40 dB. **Fonte de linha no IN não está prevista** (R6V4: um plugue de linha, sem CC, lê >= 2,85 V em MIC_DET e **não** liga os efeitos de voz) (o LINEIN do codec fica sem ligação nesta placa): só microfone de eletreto; a alternativa de nível de linha pediria outro jack (fora da R3V4).
 - A impedância de entrada do MIC está na tabela 5 do datasheet (extração do PDF sem o número): **(conferir)**; C309 de 1 uF dá corte de voz seguro para Zin >= 2 kohm.
+
+### Detecção de microfone (R6V4, item 5)
+- O contato de chave da ponta do PJ-327A (pino 3) **não chega ao Teensy** (fica solto) e **não adianta**: dá só "tem plugue", não "tem microfone". Em vez disso, **R306 (100 k) liga a ponta (MIC_J) ao pino 25**, com C311 (100 nF) no pino: lê a tensão CC da ponta.
+- Contas (bias 3,0 V, 2 k interno + R305 2,2 k = 4,2 k): sem carga, MIC_J = 3,0 V; eletreto de 0,1 / 0,3 / 0,5 mA: **2,6 / 1,7 / 0,9 V**; dinâmico (~200 ohm): ~0,14 V. O R306 de 100 k tira só 3 % do sinal de áudio (Z do C311 a 1 kHz é 1,6 k; o caminho de 100 k é de ordem maior que o R305). **(conferir na primeira placa)** com um eletreto e um plugue de linha: o limiar de 2,85 V é conta, não medida.
+- Custo: 2 peças Basic 0402 (100 k C25741 como R305-série; 100 nF C1525), ~US$ 0,002, sem tipo Extended novo. Placa: **posicionadas sem trilhas, DRC 0 erros, paridade 0, ERC 0/0**.
+- Limitação: um microfone de PC com bias no **anel** (a ponta é só sinal) e anel não ligado aqui (J302 pino 6 NC) não funciona nem é detectado; só vale microfone com a cápsula ligada à ponta (headset mono). Pergunta ao design/gestão.
 
 ## Pendências desta tabela (da R2V4, ainda valem)
 

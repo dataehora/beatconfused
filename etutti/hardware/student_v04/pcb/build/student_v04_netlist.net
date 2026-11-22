@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\student_v04\\kicad\\student_v04.kicad_sch")
-		(date "2026-11-21T16:41:25")
+		(date "2026-11-22T01:23:37")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -4433,6 +4433,78 @@
 			)
 		)
 		(comp
+			(ref "C311")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "R6V4: filtro da toma MIC_DET (RC 10 ms; o ADC lê devagar)")
+			(fields
+				(field
+					(name "Codigo") "F3")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "R6V4: filtro da toma MIC_DET (RC 10 ms; o ADC lê devagar)")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "F3")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "F · Fone")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_F.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/F · Fone/")
+				(tstamps "/5da1b986-40e4-59ed-afc2-0b6ae3263df1/")
+			)
+			(tstamps "481f5788-6c5b-508a-8e41-da5999866aa5")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "FB301")
 			(value "600R@100MHz")
 			(footprint "Inductor_SMD:L_0603_1608Metric")
@@ -4996,6 +5068,78 @@
 				(tstamps "/5da1b986-40e4-59ed-afc2-0b6ae3263df1/")
 			)
 			(tstamps "0f73df57-d0a6-56c4-8d4f-27cdc8034d65")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R306")
+			(value "100k")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(description "R6V4: toma de CC da ponta do IN para o ADC (pino 25): distingue microfone de eletreto de plugue de linha/sem plugue")
+			(fields
+				(field
+					(name "Codigo") "F3")
+				(field
+					(name "LCSC") "C25741")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "R6V4: toma de CC da ponta do IN para o ADC (pino 25): distingue microfone de eletreto de plugue de linha/sem plugue")
+			)
+			(libsource
+				(lib "viaggio_micromod")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "F3")
+			)
+			(property
+				(name "LCSC")
+				(value "C25741")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "F · Fone")
+			)
+			(property
+				(name "Sheetfile")
+				(value "student_v04_F.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/F · Fone/")
+				(tstamps "/5da1b986-40e4-59ed-afc2-0b6ae3263df1/")
+			)
+			(tstamps "755b8549-4c36-5b48-bbb3-f36397737028")
 			(units
 				(unit
 					(name "A")
@@ -8790,6 +8934,11 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "C311")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
 				(ref "C501")
 				(pin "2")
 				(pintype "passive")
@@ -9455,6 +9604,27 @@
 		)
 		(net
 			(code "32")
+			(name "MIC_DET")
+			(class "Default")
+			(node
+				(ref "C311")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J101")
+				(pin "51")
+				(pinfunction "I2C_SDA1_(25/A11)_51")
+				(pintype "bidirectional")
+			)
+			(node
+				(ref "R306")
+				(pin "2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "33")
 			(name "MIC_IN")
 			(class "Default")
 			(node
@@ -9470,7 +9640,7 @@
 			)
 		)
 		(net
-			(code "33")
+			(code "34")
 			(name "MIC_J")
 			(class "Default")
 			(node
@@ -9489,9 +9659,14 @@
 				(pin "2")
 				(pintype "passive")
 			)
+			(node
+				(ref "R306")
+				(pin "1")
+				(pintype "passive")
+			)
 		)
 		(net
-			(code "34")
+			(code "35")
 			(name "ONOFF")
 			(class "Default")
 			(node
@@ -9513,7 +9688,7 @@
 			)
 		)
 		(net
-			(code "35")
+			(code "36")
 			(name "OUT_R1")
 			(class "Default")
 			(node
@@ -9535,7 +9710,7 @@
 			)
 		)
 		(net
-			(code "36")
+			(code "37")
 			(name "OUT_R2")
 			(class "Default")
 			(node
@@ -9557,7 +9732,7 @@
 			)
 		)
 		(net
-			(code "37")
+			(code "38")
 			(name "OUT_R3")
 			(class "Default")
 			(node
@@ -9579,7 +9754,7 @@
 			)
 		)
 		(net
-			(code "38")
+			(code "39")
 			(name "OUT_R4")
 			(class "Default")
 			(node
@@ -9601,7 +9776,7 @@
 			)
 		)
 		(net
-			(code "39")
+			(code "40")
 			(name "PROG")
 			(class "Default")
 			(node
@@ -9618,7 +9793,7 @@
 			)
 		)
 		(net
-			(code "40")
+			(code "41")
 			(name "PWR_KEY")
 			(class "Default")
 			(node
@@ -9639,7 +9814,7 @@
 			)
 		)
 		(net
-			(code "41")
+			(code "42")
 			(name "SCAN_CLK")
 			(class "Default")
 			(node
@@ -9673,7 +9848,7 @@
 			)
 		)
 		(net
-			(code "42")
+			(code "43")
 			(name "SCAN_CLK_P")
 			(class "Default")
 			(node
@@ -9689,7 +9864,7 @@
 			)
 		)
 		(net
-			(code "43")
+			(code "44")
 			(name "SCAN_DATA")
 			(class "Default")
 			(node
@@ -9723,7 +9898,7 @@
 			)
 		)
 		(net
-			(code "44")
+			(code "45")
 			(name "SCAN_DATA_P")
 			(class "Default")
 			(node
@@ -9739,7 +9914,7 @@
 			)
 		)
 		(net
-			(code "45")
+			(code "46")
 			(name "SEL_A")
 			(class "Default")
 			(node
@@ -9756,7 +9931,7 @@
 			)
 		)
 		(net
-			(code "46")
+			(code "47")
 			(name "SEL_B")
 			(class "Default")
 			(node
@@ -9773,7 +9948,7 @@
 			)
 		)
 		(net
-			(code "47")
+			(code "48")
 			(name "SEL_SW")
 			(class "Default")
 			(node
@@ -9790,7 +9965,7 @@
 			)
 		)
 		(net
-			(code "48")
+			(code "49")
 			(name "SGTL_VAG")
 			(class "Default")
 			(node
@@ -9806,7 +9981,7 @@
 			)
 		)
 		(net
-			(code "49")
+			(code "50")
 			(name "SGTL_VDDA")
 			(class "Default")
 			(node
@@ -9832,7 +10007,7 @@
 			)
 		)
 		(net
-			(code "50")
+			(code "51")
 			(name "SGTL_VDDD")
 			(class "Default")
 			(node
@@ -9854,7 +10029,7 @@
 			)
 		)
 		(net
-			(code "51")
+			(code "52")
 			(name "SPK_N")
 			(class "Default")
 			(node
@@ -9871,7 +10046,7 @@
 			)
 		)
 		(net
-			(code "52")
+			(code "53")
 			(name "SPK_P")
 			(class "Default")
 			(node
@@ -9888,7 +10063,7 @@
 			)
 		)
 		(net
-			(code "53")
+			(code "54")
 			(name "USB_DN")
 			(class "USB")
 			(node
@@ -9923,7 +10098,7 @@
 			)
 		)
 		(net
-			(code "54")
+			(code "55")
 			(name "USB_DP")
 			(class "USB")
 			(node
@@ -9958,7 +10133,7 @@
 			)
 		)
 		(net
-			(code "55")
+			(code "56")
 			(name "VBAT")
 			(class "Corrente")
 			(node
@@ -9991,7 +10166,7 @@
 			)
 		)
 		(net
-			(code "56")
+			(code "57")
 			(name "VBAT_S")
 			(class "Default")
 			(node
@@ -10017,7 +10192,7 @@
 			)
 		)
 		(net
-			(code "57")
+			(code "58")
 			(name "VBUS")
 			(class "Corrente")
 			(node
@@ -10090,7 +10265,7 @@
 			)
 		)
 		(net
-			(code "58")
+			(code "59")
 			(name "VBUS_S")
 			(class "Default")
 			(node
@@ -10110,7 +10285,7 @@
 			)
 		)
 		(net
-			(code "59")
+			(code "60")
 			(name "VOL_A")
 			(class "Default")
 			(node
@@ -10127,7 +10302,7 @@
 			)
 		)
 		(net
-			(code "60")
+			(code "61")
 			(name "VOL_B")
 			(class "Default")
 			(node
@@ -10144,7 +10319,7 @@
 			)
 		)
 		(net
-			(code "61")
+			(code "62")
 			(name "VOL_SW")
 			(class "Default")
 			(node
@@ -10154,13 +10329,13 @@
 			)
 			(node
 				(ref "J101")
-				(pin "51")
-				(pinfunction "I2C_SDA1_(25/A11)_51")
+				(pin "10")
+				(pinfunction "D0_(4)_10")
 				(pintype "bidirectional")
 			)
 		)
 		(net
-			(code "62")
+			(code "63")
 			(name "VOL_SW_N")
 			(class "Default")
 			(node
@@ -10187,7 +10362,7 @@
 			)
 		)
 		(net
-			(code "63")
+			(code "64")
 			(name "VSYS")
 			(class "Corrente")
 			(node
@@ -10263,7 +10438,7 @@
 			)
 		)
 		(net
-			(code "64")
+			(code "65")
 			(name "unconnected-(D202-Pad2)")
 			(class "Default")
 			(node
@@ -10273,7 +10448,7 @@
 			)
 		)
 		(net
-			(code "65")
+			(code "66")
 			(name "unconnected-(D206-Pad2)")
 			(class "Default")
 			(node
@@ -10283,7 +10458,7 @@
 			)
 		)
 		(net
-			(code "66")
+			(code "67")
 			(name "unconnected-(J101A-3.3V_EN_(28)-Pad4)")
 			(class "Default")
 			(node
@@ -10294,7 +10469,7 @@
 			)
 		)
 		(net
-			(code "67")
+			(code "68")
 			(name "unconnected-(J101A-RTC_3V_(VBAT_SNVS)-Pad72)")
 			(class "Default")
 			(node
@@ -10305,7 +10480,7 @@
 			)
 		)
 		(net
-			(code "68")
+			(code "69")
 			(name "unconnected-(J101B-CAN_RX_(30)-Pad41)")
 			(class "Default")
 			(node
@@ -10316,7 +10491,7 @@
 			)
 		)
 		(net
-			(code "69")
+			(code "70")
 			(name "unconnected-(J101B-CAN_TX_(31)-Pad43)")
 			(class "Default")
 			(node
@@ -10327,7 +10502,7 @@
 			)
 		)
 		(net
-			(code "70")
+			(code "71")
 			(name "unconnected-(J101B-CTS1-Pad15)")
 			(class "Default")
 			(node
@@ -10335,17 +10510,6 @@
 				(pin "15")
 				(pinfunction "CTS1_15")
 				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "71")
-			(name "unconnected-(J101B-D0_(4)-Pad10)")
-			(class "Default")
-			(node
-				(ref "J101")
-				(pin "10")
-				(pinfunction "D0_(4)_10")
-				(pintype "bidirectional+no_connect")
 			)
 		)
 		(net

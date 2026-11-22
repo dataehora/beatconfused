@@ -1,0 +1,86 @@
+{
+ "32": {
+  "reguas": 8,
+  "pontes": 4,
+  "pigtails": 4,
+  "montadas_no_pedido": 10,
+  "tiras_sobrando": 2,
+  "G_USD": 11.11,
+  "G_detalhe": {
+   "fêmeas a mais": 0.92,
+   "machos": 0.46,
+   "tipo Extended novo": 3.09,
+   "2 cabos SH 100 mm": 6.64,
+   "painel extra (est.)": 0.0
+  },
+  "D_USD": 36.4,
+  "D_sem_ferramenta_USD": 6.4,
+  "G_menos_D": -25.29,
+  "juntas_de_solda_G": 20,
+  "juntas_de_solda_D": 40,
+  "tipos_extended_reguas": "TMAG + fêmea 1x5 + 595 + macho = 4 (era 3; D: 3)"
+ },
+ "48": {
+  "reguas": 12,
+  "pontes": 8,
+  "pigtails": 4,
+  "montadas_no_pedido": 15,
+  "tiras_sobrando": 3,
+  "G_USD": 11.73,
+  "G_detalhe": {
+   "fêmeas a mais": 1.39,
+   "machos": 0.61,
+   "tipo Extended novo": 3.09,
+   "2 cabos SH 100 mm": 6.64,
+   "painel extra (est.)": 0.0
+  },
+  "D_USD": 36.4,
+  "D_sem_ferramenta_USD": 6.4,
+  "G_menos_D": -24.67,
+  "juntas_de_solda_G": 20,
+  "juntas_de_solda_D": 80,
+  "tipos_extended_reguas": "TMAG + fêmea 1x5 + 595 + macho = 4 (era 3; D: 3)"
+ },
+ "64": {
+  "reguas": 16,
+  "pontes": 12,
+  "pigtails": 4,
+  "montadas_no_pedido": 20,
+  "tiras_sobrando": 4,
+  "G_USD": 12.35,
+  "G_detalhe": {
+   "fêmeas a mais": 1.85,
+   "machos": 0.77,
+   "tipo Extended novo": 3.09,
+   "2 cabos SH 100 mm": 6.64,
+   "painel extra (est.)": 0.0
+  },
+  "D_USD": 36.4,
+  "D_sem_ferramenta_USD": 6.4,
+  "G_menos_D": -24.05,
+  "juntas_de_solda_G": 20,
+  "juntas_de_solda_D": 120,
+  "tipos_extended_reguas": "TMAG + fêmea 1x5 + 595 + macho = 4 (era 3; D: 3)"
+ },
+ "80": {
+  "reguas": 20,
+  "pontes": 16,
+  "pigtails": 4,
+  "montadas_no_pedido": 20,
+  "tiras_sobrando": 0,
+  "G_USD": 21.5,
+  "G_detalhe": {
+   "fêmeas a mais": 1.85,
+   "machos": 0.92,
+   "tipo Extended novo": 3.09,
+   "2 cabos SH 100 mm": 6.64,
+   "painel extra (est.)": 9.0
+  },
+  "D_USD": 36.4,
+  "D_sem_ferramenta_USD": 6.4,
+  "G_menos_D": -14.9,
+  "juntas_de_solda_G": 20,
+  "juntas_de_solda_D": 160,
+  "tipos_extended_reguas": "TMAG + fêmea 1x5 + 595 + macho = 4 (era 3; D: 3)"
+ }
+}

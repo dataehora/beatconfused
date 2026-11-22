@@ -13,7 +13,7 @@
    "7": "GND",
    "8": "OUT_R4",
    "9": "VBUS",
-   "10": "NC",
+   "10": "VOL_SW",
    "11": "PROG",
    "12": "I2C_SDA",
    "13": "NC",
@@ -46,7 +46,7 @@
    "48": "NC",
    "49": "VOL_A",
    "50": "I2S_BCLK",
-   "51": "VOL_SW",
+   "51": "MIC_DET",
    "52": "I2S_LRCLK",
    "53": "VOL_B",
    "54": "I2S_RX",
@@ -1298,6 +1298,44 @@
   "price": 0.002,
   "datasheet": "",
   "path": "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1/c9384114-9a1a-5782-86dd-0c22e1d7e31c"
+ },
+ {
+  "ref": "R306",
+  "value": "100k",
+  "nets": {
+   "1": "MIC_J",
+   "2": "MIC_DET"
+  },
+  "code": "F3",
+  "fp": "Resistor_SMD:R_0402_1005Metric",
+  "lcsc": "C25741",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "R6V4: toma de CC da ponta do IN para o ADC (pino 25): distingue microfone de eletreto de plugue de linha/sem plugue",
+  "dnp": false,
+  "sheet": "F",
+  "price": 0.001,
+  "datasheet": "",
+  "path": "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1/755b8549-4c36-5b48-bbb3-f36397737028"
+ },
+ {
+  "ref": "C311",
+  "value": "100nF",
+  "nets": {
+   "1": "MIC_DET",
+   "2": "GND"
+  },
+  "code": "F3",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "R6V4: filtro da toma MIC_DET (RC 10 ms; o ADC lê devagar)",
+  "dnp": false,
+  "sheet": "F",
+  "price": 0.001,
+  "datasheet": "",
+  "path": "/e693166a-2568-51ba-a195-f3779f9f1bbe/5da1b986-40e4-59ed-afc2-0b6ae3263df1/481f5788-6c5b-508a-8e41-da5999866aa5"
  },
  {
   "ref": "C310",

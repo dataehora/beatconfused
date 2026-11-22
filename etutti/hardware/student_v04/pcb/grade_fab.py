@@ -28,7 +28,7 @@ import geometria as G      # noqa: E402
 
 KICAD_CLI = "C:/Program Files/KiCad/10.0/bin/kicad-cli.exe"
 KICAD_FP = "C:/Program Files/KiCad/10.0/share/kicad/footprints"
-NAME = "student_v03_grade"
+NAME = "student_v04_grade_contorno32"   # R6V4: the single-grid alternative (F1), outline = hull of the 32 keys; the F2 ruler grid is pcb/regua/fab_regua.py
 BOARD = os.path.join(V2, "kicad", NAME + ".kicad_pcb")
 BUILD = os.path.join(HERE, "build")
 FAB = os.path.join(V2, "fab")

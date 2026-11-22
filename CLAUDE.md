@@ -1138,6 +1138,13 @@ No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2
   (up to 1.84), so a **1.2 mm grade leaves 0.16 mm of vertical play, 1.6 mm sits inside the window**. **T3-G** model: `case/case_t3g.py`
   (patches `case_f2.py`: grade-ruler, no foam, no preload, deck 2.5, gap 1.0, M2 screws instead of pins), numbers in `estudos/t3g.py`;
   `FIT_CHECK.md` has the R3V4 section on top. The STEP's face-by-face reading is slow to redo: reuse `estudos/ks20_step.json`.
+- **R6V4 (22 nov, design part):** case `CASE_LEN` 244 (+4 mm flat deck; 318/392/466 for 48/64/80; the 32-key lid fits a 250 mm FDM bed with 3 mm
+  spare; MJF ~US$ 46). Ruler-to-ruler joint studied in `case/juncao_r6.py` (data: E1, E1c, E2, E2b, F) + `case/juncao_v6.py` (checks and figures
+  `juncao_opcoes_r6.png`, `juncao_E2_r6.png`, `juncao_placa_r6.png`). **E1 is dead** (the ruler cannot slide in x: D1.7 pegs in D1.7 holes and M2 with 0.1 mm
+  play; the contact row crosses the 1st peg). **E2 recommended** with the electronics' real parts (female SHOU HAN 1x5 H3.4 C55566451 at u 5.9 / 68.1 in the BACK lane
+  v -6.9..-1.7 = J1/J2; bridge PCB 1.2 mm with two male C55213903): 6.2 mm under the ruler in a 6.9 mm pocket (0.7 mm spare, to confirm), 0 mm3 at 32/48/64/80 keys,
+  tray cradle (`CRADLE_OPT` in `case_r4.py`), 70 % of the back rail left. Board -> 1st ruler: rigid plug impossible (gap 2.45 / 11.7 mm, step 0/2/4/7 mm) -> SH pigtail ending
+  in a male 1x5 (about 9 mm rows 2/4, 17 mm rows 1/3). `layout_r4.LINK = "E2"` (D and A still selectable). Report: `student_v04/FIT_CHECK.md` top section.
 - Findings worth remembering: the 74HC595D (C5947) is JLCPCB **Basic** (the 164/4094/4017 are all Extended); no Basic connector, jack,
   LDO or ESD part exists; TMAG5253 BA tON is 20 typ / **45 us max** (UA 55 / 130); F2 costs about 12-22 % less than F1 (US$ 292-371 vs 332-477, MJF case print US$ 51) at the minimum order
   (estimates marked in `ELETRONICA.md`); JLCPCB WMSC search endpoints are blocked for curl, the assembly parts-library endpoint works.
