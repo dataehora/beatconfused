@@ -58,7 +58,7 @@ PITCH, ROWP = G.PITCH, G.ROW_PITCH
 # (row 4 is one button to the left, aligned with row 2; its notes are one semitone below row 2's in each column)
 ROWS = [(1, 74.03, 98.45, 8), (2, 58.01, 89.2, 8), (3, 41.99, 98.45, 8), (4, 25.97, 89.2, 8)]
 FIRST_MIDI = {1: 57, 2: 55, 3: 56, 4: 54}      # A3, G3, G#3, F#3; each column +3 semitones along a row (a minor third), as the SPEC's figure
-CASE_LEN = 240.0                               # R5V4: was 252. Rule: the ruler's body end (237.0) + 1.0 clearance = inner face 238.0, + 2.0 wall
+CASE_LEN = 244.0                               # R6V4: +4 mm of flat deck after the last button (R5V4 had 240: ruler end 237.0 + 1.0 clearance + 2.0 wall; now inner face 242.0)
 ZR = [0.0, 2.0, 4.0, 7.0]
 RULER_L, RULER_W, RULER_T = 4 * PITCH, 14.0, 1.2
 RAIL_IN, RAIL_OUT = 4.2, 7.0
@@ -71,6 +71,7 @@ HDR_W, HDR_D, HDR_H = 9.4, 6.15, 4.25         # footprint along the pin row, dep
 HDR_OVER = 0.5                                # the mouth is 0.5 mm past the ruler's back edge
 PLUG_W, PLUG_D, PLUG_H = 7.6, 5.0, 3.9        # SHR-06V-S plug (estimate: check JST's drawing)
 AXIS_Z = -(RULER_T + 2.1)                     # the mating axis below the ruler's top (header mid-height)
+SOCK_W, SOCK_H, SOCK_V = 6.76, 3.4, (-6.9, -1.7)   # R6V4 female 1x5 1.27 (EasyEDA footprint of the H4.3 twin; H3.4 to confirm)
 IN_X, OUT_X = 5.9, 68.1                       # centres along the ruler (0 = its start, 74 = its end)
 LANE_Y0, LANE_Y1 = -(RULER_W / 2 + HDR_OVER), -1.35   # back lane: y from the row axis (the sensor pocket ends at +-1.1)
 CABLE_ROW_MM, CABLE_MAIN_MM = 15.0, 25.0     # plug-to-plug lengths asked for (custom)
@@ -166,8 +167,8 @@ def wall_posts(mod):
 
 
 # ---------------------------------------------------------------- R5V4: the recommended link (option D, ELETRONICA.md R5V4)
-LINK = "D"            # "D": 4 SH cables board -> 1st ruler (J1/IN only) + 5-wire soldered link between rulers of a row; "A": SH cable everywhere
-J2_FITTED = True      # D leaves J2 (OUT) on the ruler without a cable (same BOM as option A); False = J2 removed from the BOM
+LINK = "E2"           # R6V4: "E2" = 4 SH cables board -> 1st ruler (J1/IN only) + a bridge with two male 1x5 headers under every junction (juncao_r6.py); "D" = soldered links (R5V4); "A": SH cable everywhere
+J2_FITTED = True      # E2: J1/J2 are the two identical female sockets (real part, ELETRONICA R6V4). # R6V4: with fixed connectors between rulers J2 is not needed (SPEC R6V4 item 2); in "D" True meant J2 left on the ruler without a cable
 LK_U = (2.1, 71.9)    # centres of the link pads along the ruler (u), ELETRONICA R5V4: 5 pads 1.4 x 0.7 mm, 1.0 mm from each end
 LK_PAD = (1.4, 0.7)   # along u, along v
 LK_V = (-0.4, 3.6)    # span of the 5 pads across the ruler (v = y - y_row; + towards the player), pitch 1.0
@@ -201,12 +202,21 @@ def conn_boxes(ru):
     out = []
     zt = -RULER_T                                   # the ruler's underside (z relative to the ruler's top, absolute z = ZR + this)
     for name, c in (("IN", IN_X), ("OUT", OUT_X)):
-        if name == "OUT" and LINK == "D" and not J2_FITTED:
+        if name == "OUT" and LINK in ("D", "E2") and not J2_FITTED:
             continue
         xa, xb = x0 + c - HDR_W / 2, x0 + c + HDR_W / 2
+        if LINK == "E2":     # R6V4: SHOU HAN PM1.27-1x5PLT-H3.4 (C55566451): footprint 6.76 x 5.2 (alternate pads), insulator 3.4, in the back lane v -6.9..-1.7
+            out.append((name + "_header", x0 + c - SOCK_W / 2, x0 + c + SOCK_W / 2, y + SOCK_V[0], y + SOCK_V[1], zt - SOCK_H, zt))
+            if name == "IN" and ru["k"] == 0:       # the pigtail's male 1x5 (C55213903: 1.0 plastic, 0.6 mm short of the socket's face) soldered to the cable
+                out.append(("IN_plug", x0 + c - 3.2, x0 + c + 3.2, y - 5.5, y - 2.1, zt - 5.0, zt - 4.0))
+            continue
         out.append((name + "_header", xa, xb, y + LANE_Y0, y + LANE_Y0 + HDR_D, zt - HDR_H, zt))
-        if name == "OUT" and LINK == "D":
-            continue                                # option D: J2 has no plug
+        if name == "OUT" and LINK in ("D", "E2"):
+            continue                                # options D and E2: J2 has no plug
+        if LINK == "E2":
+            if name == "IN" and ru["k"] == 0:       # the pigtail's male 1x5 (C55213903: 1.0 plastic, 0.6 mm short of the socket's face) soldered to the cable
+                out.append(("IN_plug", x0 + c - 3.2, x0 + c + 3.2, y - 5.5, y - 2.1, zt - 5.0, zt - 4.0))
+            continue                                # E2: only the row's first ruler has a cable; the others' J1 stays empty
         pa, pb = x0 + c - PLUG_W / 2, x0 + c + PLUG_W / 2
         out.append((name + "_plug", pa, pb, y + LANE_Y0 - PLUG_D, y + LANE_Y0, zt - 0.3 - PLUG_H, zt - 0.3))
     return out
@@ -252,12 +262,18 @@ def cables(mod):
     for r, y, x0, n in ROWS:
         row = [q for q in rs if q["row"] == r]
         j_back = float(mouth[str(r)]) + PLUG_D                    # J60x plug: mouth + the plug's depth; the wires leave towards +x
+        if LINK == "E2":                                          # pigtail: the wires leave the male towards -x, no more bend under the next row
+            pin = (row[0]["x0"] + IN_X - 3.2, y - 3.8)
+            chord = math.hypot(pin[0] - j_back, pin[1] - y)
+            tgt = chord * 1.25 + 4.0
+            out.append({"row": r, "de": "J60%d" % r, "para": "R%d.0 IN" % r, "pts": cable_between((j_back, y), (1, 0), pin, (-1, 0), tgt), "alvo_mm": round(tgt, 1)})
+            continue
         pin = plug_back_points(row[0])["IN"]
         out.append({"row": r, "de": "J60%d" % r, "para": "R%d.0 IN" % r,
                     "pts": cable_between((j_back, y), (1, 0), pin, (0, -1), CABLE_MAIN_MM), "alvo_mm": CABLE_MAIN_MM})
         for a, b in zip(row[:-1], row[1:]):
-            if LINK == "D":
-                continue                                # the links are soldered wires, not SH cables
+            if LINK in ("D", "E2"):
+                continue                                # the links are soldered wires (D) or a bridge (E2), not SH cables
             po, pi = plug_back_points(a)["OUT"], plug_back_points(b)["IN"]
             out.append({"row": r, "de": "R%d.%d OUT" % (r, a["k"]), "para": "R%d.%d IN" % (r, b["k"]),
                         "pts": cable_between(po, (0, -1), pi, (0, -1), CABLE_ROW_MM), "alvo_mm": CABLE_ROW_MM})
@@ -271,13 +287,13 @@ def notches(mod):
     for ru in rulers(mod):
         x0, y, r = ru["x0"], ru["y"], ru["row"]
         for c in (IN_X, OUT_X):
-            if c == OUT_X and LINK == "D" and not J2_FITTED:
+            if c == OUT_X and LINK in ("D", "E2") and not J2_FITTED:
                 continue
             hx0, hx1 = x0 + c - NOTCH_HDR_W / 2, x0 + c + NOTCH_HDR_W / 2
             hx0, hx1 = (x0 if hx0 - x0 < 1.5 else hx0), (x0 + RULER_L if x0 + RULER_L - hx1 < 1.5 else hx1)      # no stub of rail left at a ruler's end
             out.append({"x0": hx0, "x1": hx1, "y0": y - RAIL_OUT - 0.5, "y1": y - RAIL_IN + 0.3,
                         "row": r, "tipo": "cabeçalho (trilho de trás da própria fileira)"})
-            if r < 4 and (c == IN_X or LINK == "A"):
+            if r < 4 and LINK != "E2" and (c == IN_X or LINK == "A"):
                 yn = ROWS[r][1]                                  # the next row's (r+1) centre
                 out.append({"x0": x0 + c - NOTCH_PLUG_W / 2, "x1": x0 + c + NOTCH_PLUG_W / 2, "y0": yn + RAIL_IN - 0.3, "y1": yn + RAIL_OUT + 0.3,
                             "row": r + 1, "tipo": "plugue (trilho da frente da fileira %d)" % (r + 1)})
@@ -285,7 +301,7 @@ def notches(mod):
     # it has to cross that row's front rail before the plug's notch: one longer notch there
     for c in cables(mod):
         r = c["row"]
-        if not c["de"].startswith("J60") or r >= 4:
+        if not c["de"].startswith("J60") or r >= 4 or LINK == "E2":
             continue
         yn = ROWS[r][1]
         band = (yn + RAIL_IN - 0.3, yn + RAIL_OUT + 0.3)

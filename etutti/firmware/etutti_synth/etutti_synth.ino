@@ -125,7 +125,12 @@ const uint32_t SENSOR_WAKE_US = 60;                    // TMAG5253BA3 is ready 4
 const uint8_t LED_PINS[2] = {13, 5};                   // red (also the module's blue LED), green
 const uint32_t LED_STARTUP_MS = 600;
 // Two encoders with a push switch (to GND, pull-ups here): volume and selector.
-const uint8_t VOL_A_PIN = 22, VOL_B_PIN = 24, VOL_SW_PIN = 25;   // the volume click is also the power switch
+const uint8_t VOL_A_PIN = 22, VOL_B_PIN = 24;
+#if ETUTTI_V4
+const uint8_t VOL_SW_PIN = 4;           // R6V4: moved off 25 (now MIC_DET)
+#else
+const uint8_t VOL_SW_PIN = 25;
+#endif   // the volume click is also the power switch
 const uint8_t ENC_A_PIN = 11, ENC_B_PIN = 9, ENC_SW_PIN = 6;     // selector
 const int ENC_STEPS_PER_DETENT = 2;     // EC11E18244A5: 18 pulses, 36 detents per turn
 const uint8_t KEEP_PIN = 10;            // high holds the 3.3 V supply on
@@ -162,6 +167,7 @@ const uint8_t HP_DET_PIN = 17;          // headphones in: ~0 V; out: ~1.4 V
 #if V4_VOICE_FX
 #include "voice_fx.h"
 #endif
+#include "ui_text.h"
 #endif
 #if !(ETUTTI_V4 && V4_ADC_DUAL)
 inline int analogReadSlow(uint8_t pin) { return analogRead(pin); }   // V4 with the ADC library has its own (below)
@@ -236,6 +242,19 @@ const uint32_t PASS_NOMINAL_US = (uint32_t)(LAYOUT_COLS * 67 + 40);   // one pas
 #define V4_FORCE_FULL_SPEED 1            // USB at 12 Mbit/s (R1V4 5.4 item 3); untested on a board
 #define V4_HAVE_OLED 1                   // 128 x 64 SSD1306 on I2C 0x3C (J401, I2C shared with the codec)
 #define V4_HAVE_MIC 1                    // PINOS: pin 8 = I2S_RX, "microphone IN" of the codec
+// R6V4 item 5: the voice effects (expander, harmonizer, feedback suppressor, vocoder, echo, voice reverb) only work
+// with a MICROPHONE plugged into the IN jack (J302); without one the voice items leave the menu and the effects are
+// silent. Detection (PINOS.md, R6V4): MIC_DET = pin 25 (ADC) reads the DC voltage of the jack's tip (MIC_J, which the
+// codec's MIC_BIAS feeds through 2 k + R305 2.2 k) through R306 100 k + C311 100 nF:
+//   v >= 2.85 V  nothing plugged, or a line plug (no DC load)  -> voice effects off
+//   0.30 < v < 2.85 V  an electret capsule (0.1/0.3/0.5 mA = 2.6/1.7/0.9 V)  -> voice effects allowed
+//   v <= 0.30 V  short, or a low-impedance dynamic microphone  -> off
+// The 2.85 / 0.30 V limits are a calculation (bias 3.0 V), to be measured with a real capsule and a line plug.
+//   0 = no detection, a microphone is assumed to be always plugged   2 = the analog rule above (the real one)
+//   1 = digital, MIC_DET_PIN low = a plug (kept only for a board without the R306 tap; cannot tell mic from line)
+#define V4_MIC_DETECT 2
+const uint8_t MIC_DET_PIN = 25;          // R6V4: MIC_DET (ADC). VOL_SW moved to pin 4 in the same revision
+const float MIC_DET_MIN_V = 0.30f, MIC_DET_MAX_V = 2.85f;
 #if V4_VOICE_FX && !V4_HAVE_MIC
 #error "V4_VOICE_FX needs V4_HAVE_MIC"
 #endif
@@ -446,12 +465,12 @@ AudioConnection          pmic(i2sIn, 0, micPeak, 0);
 #if V4_VOICE_FX
 // Voice effects (R3V4 item 6, R4V4 item 4, voice_fx.h): mic -> VoiceInput (high-pass, gain, expander, notches), then
 //   vin -> vocoder voice input; the keyboard (toneFilter) is its carrier,
-//   vin -> three pitch shifters (AudioEffectGranular), fixed interval or following the keys' notes,
+//   vin -> four pitch shifters (AudioEffectGranular; 3 or 4 in use), fixed interval or following the keys' notes,
 //   vin -> pitch tracker (YIN), vin -> FFT (feedback suppressor),
 //   vin + shifted -> echo,
 //   vin, shifted, echo -> voiceBus -> master (and into the reverb together with the keys).
 const int VOICE_HARM_SAMPLES = 12800;           // grain memory of one pitch shifter (library example size)
-const int VOICE_HARM_N = 3;                     // pitch shifters: one per note the harmonizer follows (R4V4)
+const int VOICE_HARM_N = 4;                     // pitch shifters: one per note the harmonizer follows (R4V4: 3, R6V4: up to 4, 3 or 4 chosen in the menu)
 const int VOICE_ECHO_SAMPLES = 32768;           // 743 ms
 DMAMEM int16_t harmMem[VOICE_HARM_N][VOICE_HARM_SAMPLES];
 DMAMEM int16_t echoMem[VOICE_ECHO_SAMPLES];
@@ -468,9 +487,11 @@ AudioConnection          pvi(i2sIn, 0, vin, 0);
 AudioConnection          pvh0(vin, 0, harm[0], 0);
 AudioConnection          pvh1(vin, 0, harm[1], 0);
 AudioConnection          pvh2(vin, 0, harm[2], 0);
+AudioConnection          pvh3(vin, 0, harm[3], 0);
 AudioConnection          phm0(harm[0], 0, harmMix, 0);
 AudioConnection          phm1(harm[1], 0, harmMix, 1);
 AudioConnection          phm2(harm[2], 0, harmMix, 2);
+AudioConnection          phm3(harm[3], 0, harmMix, 3);
 AudioConnection          ppt(vin, 0, pitchTrk, 0);
 AudioConnection          pes0(vin, 0, echoSrc, 0);
 AudioConnection          pes1(harmMix, 0, echoSrc, 1);
@@ -882,17 +903,29 @@ void registerChanged();   // keeps the selector in step with a register set over
 //   CC 97 followed notes folded to the voice's own octave (>= 64, the default) or exact
 // R5V4 (speaker equalizer, only with no headphones plugged):
 //   CC 105 on / off (>= 64, default on)  CC 106 high-pass corner 150..450 Hz (63 = 300)  CC 107 dip at 1 kHz 0..-12 dB (63 = -6)
+// R6V4 (harmonizer that follows the keys, 3 modes, 3 or 4 voices):
+//   CC 108 follow mode, value / 32: 0 exact, 1 assist, 2 interval (CC 95 still switches "follow" on / off)
+//   CC 109 assist strength 0..127 (how far the voice is pulled towards the held note; 127 = exact)
+//   CC 110 harmonizer voices: >= 64 four, otherwise three
 // The menu on the OLED (two knobs) drives the same state and sends the CCs back, so a page can follow.
 // The numbers are in the sketch only for now: the page (script.js) has no V4 model yet, and the
 // CC map has to change in both together.
 extern bool headphones;                 // defined with the other jack state, further down
+extern bool micPlugged;                 // R6V4: a microphone sits in the IN jack (J302); defined with the jack state
+enum { FM_EXACT, FM_ASSIST, FM_INTERVAL };   // harmonizer follow modes (CC 108)
 uint8_t keysCC = 127;                   // CC 83, as sent (the menu shows it)
 uint32_t speakerWarnAt = 0;             // millis() when the voice was sent to the speaker (the screen warns), 0 = nothing pending
 struct VoiceFx {
   uint8_t voice = 0, vocoder = 0, harm = 0, interval = 64, echo = 0, echoTime = 40, echoFb = 40;
-  uint8_t reverb = 40, gate = 20, micGain = 60;
-  uint8_t gateAtk = 30, gateHold = 45, gateRel = 45, gateRatio = 2, hpf = 11;
-  bool antiFb = false, harmFollow = false, harmFold = true, speaker = false;
+  uint8_t reverb = 40;
+  // R6V4 item 5, factory values for a HEADSET microphone 2-3 cm from the mouth (calculation, not heard: FIRMWARE.md):
+  // gain 26 dB, expander threshold ~550 (int16 units on the rectified level), ratio "hard" (cube), 1.2 ms attack,
+  // ~78 ms hold, ~117 ms release, high-pass 167 Hz (the proximity effect boosts the lows).
+  uint8_t gate = 32, micGain = 24;
+  uint8_t gateAtk = 20, gateHold = 50, gateRel = 40, gateRatio = 2, hpf = 40;
+  bool antiFb = false, harmFollow = false, harmFold = true, speaker = false;   // suppressor off and speaker off by default
+  uint8_t followMode = FM_EXACT, helpAmt = 80;   // R6V4: how the harmonizer follows the keys; assist strength
+  bool harm4 = false;                   // R6V4: 3 (default) or 4 harmony voices
   bool eq = true;                       // R5V4 speaker equalizer: on by default (it does nothing with headphones)
   uint8_t eqCut = 63, eqDip = 63;       // CC 106: 150..450 Hz (63 = ~300); CC 107: 0..-12 dB at 1 kHz (63 = -6)
 } vfxState;
@@ -907,6 +940,10 @@ inline float hpfHz(uint8_t v) { return 60.0f + v * (340.0f / 127.0f); }
 // Voice goes to the headphone / AUX jack by default: with no jack plugged the voice is muted
 // (the speaker is the output), unless the user switched the speaker on.
 inline bool speakerMutesVoice() { return !headphones && !vfxState.speaker; }
+// R6V4: the voice effects need a microphone in IN as well: without one everything of the voice is silent.
+inline bool voiceBlocked() { return speakerMutesVoice() || !micPlugged; }
+float helpDryScale = 1.0f;              // assist mode takes the dry voice away while the assisted voice sounds (crossfade)
+inline int harmVoicesWanted() { return vfxState.harm4 ? 4 : 3; }
 
 inline float eqCutHz(uint8_t v) { return 150.0f + v * (300.0f / 127.0f); }
 inline float eqDipDb(uint8_t v) { return v * (12.0f / 127.0f); }
@@ -942,7 +979,7 @@ void speakerEqApply() {
 }
 #endif
 
-static bool shifterOn[VOICE_HARM_N] = {false, false, false};
+static bool shifterOn[VOICE_HARM_N] = {false, false, false, false};
 #if V4_FEEDBACK_SUPPRESSOR
 vfx::FeedbackWatch fbWatch;
 bool fbConnected = true;                // pfft starts connected
@@ -953,7 +990,7 @@ void voiceFxApply() {
 #if V4_SPEAKER_EQ
   speakerEqApply();
 #endif
-  bool duck = speakerMutesVoice();
+  bool duck = voiceBlocked();
   float live = duck ? 0.0f : 1.0f;
   bool any = f.voice || f.vocoder || f.harm || f.echo;
   bool vinOn = any && !duck;
@@ -965,7 +1002,7 @@ void voiceFxApply() {
   voc.setLevel(vfxCurve(f.vocoder) * 1.5f);
   bool harmOn = f.harm > 0 && vinOn;
   for (int k = 0; k < VOICE_HARM_N; k++) {
-    bool want = harmOn && (k == 0 || f.harmFollow);
+    bool want = harmOn && (k == 0 || (f.harmFollow && k < harmVoicesWanted()));
     if (want && !shifterOn[k]) {
       harm[k].begin(harmMem[k], VOICE_HARM_SAMPLES);
       harm[k].beginPitchShift(25.0f);
@@ -978,18 +1015,16 @@ void voiceFxApply() {
   if (!f.harmFollow) {
     harm[0].setSpeed(powf(2.0f, ((int)f.interval - 64) / 64.0f));    // -12 .. +12 semitones
     harmMix.gain(0, 1.0f);
-    harmMix.gain(1, 0.0f);
-    harmMix.gain(2, 0.0f);
+    for (int k = 1; k < VOICE_HARM_N; k++) harmMix.gain(k, 0.0f);
   } else {                                                           // harmFollowUpdate() sets these
     for (int k = 0; k < VOICE_HARM_N; k++) harmMix.gain(k, 0.0f);
   }
-  harmMix.gain(3, 0.0f);
   pitchTrk.setActive(harmOn && f.harmFollow);
   echo.setDelayMs(60.0f + f.echoTime * (680.0f / 127.0f));
   echo.setFeedback(f.echoFb * (0.85f / 127.0f));
   echoSrc.gain(0, 1.0f);
   echoSrc.gain(1, f.harm > 0 ? 1.0f : 0.0f);                       // the shifter passes the voice through when it is off
-  voiceBus.gain(0, vfxCurve(f.voice) * 1.5f * live);
+  voiceBus.gain(0, vfxCurve(f.voice) * 1.5f * live * helpDryScale);
   voiceBus.gain(1, vfxCurve(f.harm) * 1.5f * live);
   voiceBus.gain(2, vfxCurve(f.echo) * 1.5f * live);
   roomIn.gain(0, 1.0f);
@@ -1039,6 +1074,9 @@ bool voiceFxControl(byte control, byte value) {
       f.speaker = value >= 64;
       break;
     case 97: f.harmFold = value >= 64; break;
+    case 108: f.followMode = min(value / 32, 2); break;        // R6V4: exact / assist / interval
+    case 109: f.helpAmt = value; break;                        // R6V4: assist strength
+    case 110: f.harm4 = value >= 64; break;                    // R6V4: 3 or 4 harmony voices
     case 105: f.eq = value >= 64; break;                       // R5V4 speaker equalizer on / off
     case 106: f.eqCut = value; break;                          // 150..450 Hz
     case 107: f.eqDip = value; break;                          // 0..-12 dB at 1 kHz
@@ -1053,10 +1091,14 @@ bool voiceFxControl(byte control, byte value) {
   return true;
 }
 
-// "Close microphone" preset: only a voice a few centimetres from the capsule passes.
-void voiceFxCloseMic() {
+// "Headset mic" action (menu): the input settings back to the factory values for a headset microphone 2-3 cm from the mouth
+// (R6V4 item 5; the same values VoiceFx starts with).
+void voiceFxHeadsetMic() {
+  VoiceFx d;
   VoiceFx &f = vfxState;
-  f.gate = 90; f.gateRatio = 3; f.gateAtk = 20; f.gateHold = 50; f.gateRel = 40; f.hpf = 40;
+  f.gate = d.gate; f.gateRatio = d.gateRatio; f.gateAtk = d.gateAtk; f.gateHold = d.gateHold; f.gateRel = d.gateRel;
+  f.hpf = d.hpf; f.micGain = d.micGain;
+  voiceFxMicGain();
   voiceFxApply();
 }
 
@@ -1070,20 +1112,21 @@ void voiceFxClearNotches() {
 // ---- settings kept in EEPROM (menu "SAVE"). The speaker option is never kept: the voice is on
 // the headphones / AUX at every start. ----
 const int EEPROM_VOICE = 210;           // after the register (200..201)
-const uint8_t VOICE_MAGIC = 0xA7, EQ_MAGIC = 0xE5;
+const uint8_t VOICE_MAGIC = 0xA7, EQ_MAGIC = 0xE5, HARM_MAGIC = 0xE6;
 void voiceFxSave() {
   VoiceFx &f = vfxState;
-  uint8_t b[26] = {VOICE_MAGIC, f.voice, f.vocoder, f.harm, f.interval, f.echo, f.echoTime, f.echoFb, f.reverb, f.gate,
+  uint8_t b[30] = {VOICE_MAGIC, f.voice, f.vocoder, f.harm, f.interval, f.echo, f.echoTime, f.echoFb, f.reverb, f.gate,
                    f.micGain, f.gateAtk, f.gateHold, f.gateRel, f.gateRatio, f.hpf, (uint8_t)f.antiFb,
                    (uint8_t)f.harmFollow, (uint8_t)f.harmFold, keysCC, 0, 0,
-                   EQ_MAGIC, (uint8_t)f.eq, f.eqCut, f.eqDip};          // R5V4: the equalizer, after its own marker
-  for (int i = 0; i < 26; i++) EEPROM.write(EEPROM_VOICE + i, b[i]);
+                   EQ_MAGIC, (uint8_t)f.eq, f.eqCut, f.eqDip,           // R5V4: the equalizer, after its own marker
+                   HARM_MAGIC, f.followMode, f.helpAmt, (uint8_t)f.harm4};   // R6V4: harmonizer mode, assist strength, 3/4 voices
+  for (int i = 0; i < 30; i++) EEPROM.write(EEPROM_VOICE + i, b[i]);
 }
 
 void voiceFxLoad() {
   if (EEPROM.read(EEPROM_VOICE) != VOICE_MAGIC) return;
-  uint8_t b[26];
-  for (int i = 0; i < 26; i++) b[i] = EEPROM.read(EEPROM_VOICE + i);
+  uint8_t b[30];
+  for (int i = 0; i < 30; i++) b[i] = EEPROM.read(EEPROM_VOICE + i);
   VoiceFx &f = vfxState;
   f.voice = min(b[1], (uint8_t)127); f.vocoder = min(b[2], (uint8_t)127); f.harm = min(b[3], (uint8_t)127);
   f.interval = min(b[4], (uint8_t)127); f.echo = min(b[5], (uint8_t)127); f.echoTime = min(b[6], (uint8_t)127);
@@ -1094,6 +1137,7 @@ void voiceFxLoad() {
   keysCC = min(b[19], (uint8_t)127);
   keysLevel = keysCC / 127.0f;
   if (b[22] == EQ_MAGIC) { f.eq = b[23] != 0; f.eqCut = min(b[24], (uint8_t)127); f.eqDip = min(b[25], (uint8_t)127); }
+  if (b[26] == HARM_MAGIC) { f.followMode = min(b[27], (uint8_t)FM_INTERVAL); f.helpAmt = min(b[28], (uint8_t)127); f.harm4 = b[29] != 0; }
 }
 
 void voiceFxDefaults() {
@@ -1105,16 +1149,26 @@ void voiceFxDefaults() {
   voiceFxMicGain();
 }
 
-// ---- harmonizer that follows the keys (R4V4) ----
-// The voice's pitch comes from the YIN tracker (pitchTrk); every 12 ms each note held on the
-// keyboard (newest first, up to VOICE_HARM_N of them) gets a pitch shifter whose speed is
-// note frequency / voice frequency. With "octave near" (the default) the ratio is folded into
-// 0.71 .. 1.41, i.e. the note is taken in the octave closest to the voice: small shifts, far
-// fewer artefacts. The ratio follows the singer smoothly (about 25 ms), so a little of the vibrato
-// stays. Nothing held, or the voice unpitched for 300 ms: the harmony is silent.
-static int harmNote[VOICE_HARM_N] = {-1, -1, -1};
-static float harmRatio[VOICE_HARM_N] = {1, 1, 1};
+// ---- harmonizer that follows the keys (R4V4, three modes and up to four voices in R6V4) ----
+// The voice's pitch comes from the YIN tracker (pitchTrk). Every 12 ms the notes held on the keyboard (newest
+// first) are shared out among the pitch shifters (the library's AudioEffectGranular), whose speed is set by the mode:
+//   EXACT     each held note gets a shifter that puts the voice exactly on that note: speed = note Hz / voice Hz
+//             (the voice's own vibrato and out-of-tune drift are taken out, "autotune"). Several notes = a sung chord.
+//   ASSIST    one shifter: the held note nearest to the voice (within 3 semitones, octaves ignored) pulls the voice
+//             only part of the way: shift = strength x (note - voice) in semitones, strength = CC 109 (127 = exact).
+//             While it sounds the dry voice is crossfaded out (helpDryScale), so only the pulled voice is heard.
+//   INTERVAL  the voice stays natural: the held note nearest to the voice is the one it "is on" (the reference) and every
+//             other held note gets a shifter moved by exactly (that note - the reference) semitones: the distances
+//             between the keys are kept, the voice's own intonation and vibrato are not touched.
+// "Octave near" (CC 97, default) keeps the shift inside +-6 semitones (exact: ratio 0.71..1.41); off, an interval may
+// go up to +-12 semitones (exact: ratio 0.25..4). The shifter ratio is smoothed (about 25 ms) while it follows the singer.
+// Nothing held, or the voice unpitched for 300 ms: the harmony is silent. Up to harmVoicesWanted() (3 or 4) shifters work.
+static int harmKey[VOICE_HARM_N] = {-1, -1, -1, -1};
+static float harmRatio[VOICE_HARM_N] = {1, 1, 1, 1};
 float voiceHzShown = 0;                 // last pitch the tracker found (for the screen)
+
+// d (semitones) folded to the nearest octave: -6..+6
+static inline float foldSemis(float d) { return d - 12.0f * roundf(d / 12.0f); }
 
 void harmFollowUpdate() {
   VoiceFx &f = vfxState;
@@ -1123,13 +1177,21 @@ void harmFollowUpdate() {
   uint32_t now = millis();
   if (now - lastAt < 12) return;
   lastAt = now;
-  if (!f.harmFollow || f.harm == 0 || speakerMutesVoice()) return;
+  bool active = f.harmFollow && f.harm > 0 && !voiceBlocked();
+  if (!active) {
+    if (helpDryScale != 1.0f) { helpDryScale = 1.0f; voiceFxApply(); }   // leaving the assist mode: the dry voice comes back
+    return;
+  }
   float f0 = pitchTrk.pitch();
   if (f0 > 0) { seenAt = now; lastF0 = f0; voiceHzShown = f0; }
   bool voiced = seenAt != 0 && now - seenAt < 300 && lastF0 > 0;
-  int notes[VOICE_HARM_N];
+  const int nv = harmVoicesWanted();
+  int mode = f.followMode;
+  // the held notes, newest first, without repeats (interval mode needs one more: the reference note)
+  int notes[VOICE_HARM_N + 1];
   int n = 0;
-  for (int k = 0; k < VOICE_HARM_N; k++) {                           // newest notes first, no repeats
+  int limit = mode == FM_INTERVAL ? nv + 1 : nv;
+  for (int k = 0; k < limit; k++) {
     int best = -1;
     for (int v = 0; v < NUM_VOICES; v++) {
       if (voices[v].note < 0) continue;
@@ -1140,27 +1202,73 @@ void harmFollowUpdate() {
     if (best < 0) break;
     notes[n++] = voices[best].note;
   }
-  float share = n > 0 ? 1.0f / sqrtf((float)n) : 0.0f;
-  for (int k = 0; k < VOICE_HARM_N; k++) {
-    if (k < n && voiced) {
-      float target = 440.0f * powf(2.0f, (notes[k] - 69) / 12.0f) / lastF0;
-      if (f.harmFold) {
-        while (target > 1.4142f) target *= 0.5f;
-        while (target < 0.7071f) target *= 2.0f;
-      } else {
-        target = constrain(target, 0.25f, 4.0f);
+  float voiceMidi = voiced ? 69.0f + 12.0f * log2f(lastF0 / 440.0f) : 0.0f;
+  // the note nearest to the voice (octaves ignored), for assist and interval
+  int ref = -1;
+  float refDist = 99.0f;
+  if (voiced) {
+    for (int j = 0; j < n; j++) {
+      float d = fabsf(foldSemis(notes[j] - voiceMidi));
+      if (d < refDist) { refDist = d; ref = j; }
+    }
+  }
+  // the shifters to run: key (identity, to jump the ratio when it changes), target ratio, share of the mix
+  int key[VOICE_HARM_N];
+  float target[VOICE_HARM_N];
+  int count = 0;
+  bool assisted = false;
+  if (voiced && n > 0) {
+    if (mode == FM_EXACT) {
+      for (int j = 0; j < n && count < nv; j++) {
+        float r = 440.0f * powf(2.0f, (notes[j] - 69) / 12.0f) / lastF0;
+        if (f.harmFold) {
+          while (r > 1.4142f) r *= 0.5f;
+          while (r < 0.7071f) r *= 2.0f;
+        } else {
+          r = constrain(r, 0.25f, 4.0f);
+        }
+        key[count] = notes[j]; target[count++] = r;
       }
-      if (harmNote[k] != notes[k]) harmRatio[k] = target;
-      else harmRatio[k] += (target - harmRatio[k]) * 0.4f;
-      harmNote[k] = notes[k];
+    } else if (mode == FM_ASSIST) {
+      if (ref >= 0 && refDist <= 3.0f) {
+        float d = foldSemis(notes[ref] - voiceMidi);
+        key[0] = notes[ref];
+        target[0] = powf(2.0f, d * (f.helpAmt / 127.0f) / 12.0f);
+        count = 1;
+        assisted = true;
+      }
+    } else if (ref >= 0) {                                              // interval
+      for (int j = 0; j < n && count < nv; j++) {
+        if (j == ref) continue;
+        float d = notes[j] - notes[ref];
+        if (f.harmFold) d = foldSemis(d);
+        else d -= 24.0f * roundf(d / 24.0f);                              // -12..+12
+        key[count] = notes[j] * 128 + notes[ref];
+        target[count++] = powf(2.0f, d / 12.0f);
+      }
+    }
+  }
+  float share = count > 0 ? (mode == FM_ASSIST ? 1.0f : 1.0f / sqrtf((float)count)) : 0.0f;
+  for (int k = 0; k < VOICE_HARM_N; k++) {
+    if (k < count) {
+      if (harmKey[k] != key[k]) harmRatio[k] = target[k];
+      else harmRatio[k] += (target[k] - harmRatio[k]) * 0.4f;
+      harmKey[k] = key[k];
       AudioNoInterrupts();
       harm[k].setSpeed(harmRatio[k]);
       AudioInterrupts();
       harmMix.gain(k, share);
     } else {
       harmMix.gain(k, 0.0f);
-      harmNote[k] = -1;
+      harmKey[k] = -1;
     }
+  }
+  // assist: the dry voice goes out while the assisted voice sounds (smoothed, the mixer's gain steps are audible)
+  float dryTarget = assisted ? 0.0f : 1.0f;
+  if (fabsf(dryTarget - helpDryScale) > 0.001f) {
+    helpDryScale += (dryTarget - helpDryScale) * 0.35f;
+    if (fabsf(dryTarget - helpDryScale) < 0.02f) helpDryScale = dryTarget;
+    voiceBus.gain(0, vfxCurve(f.voice) * 1.5f * helpDryScale);
   }
 }
 
@@ -2083,6 +2191,11 @@ bool volIgnoreHold = false;             // the hold that switched it on must not
 float batteryVolts = 4.0f;
 uint32_t batteryReadAt = 0, batteryEmptySince = 0;
 bool headphones = false, resting = false;
+#if ETUTTI_V4
+bool micPlugged = (V4_MIC_DETECT == 0 || V4_BENCH);   // the bench has no jack: a microphone is assumed   // R6V4: see V4_MIC_DETECT; set by updatePower()
+#else
+bool micPlugged = true;
+#endif
 uint32_t jackReadAt = 0;
 
 // Gray-code state table: +1 / -1 per valid transition, 0 for bounces.
@@ -2210,6 +2323,11 @@ void setupControls() {
   pinMode(ENC_B_PIN, INPUT_PULLUP);
   pinMode(ENC_SW_PIN, INPUT_PULLUP);
   pinMode(HP_DET_PIN, INPUT_DISABLE);
+#if ETUTTI_V4 && V4_MIC_DETECT == 1
+  pinMode(MIC_DET_PIN, INPUT_PULLUP);
+#elif ETUTTI_V4 && V4_MIC_DETECT == 2
+  pinMode(MIC_DET_PIN, INPUT_DISABLE);
+#endif
   pinMode(VBAT_PIN, INPUT_DISABLE);
   volPrev = (digitalReadFast(VOL_A_PIN) << 1) | digitalReadFast(VOL_B_PIN);
   encPrev = (digitalReadFast(ENC_A_PIN) << 1) | digitalReadFast(ENC_B_PIN);
@@ -2243,6 +2361,7 @@ void menuTurn(int d);
 void menuAdjust(int d);
 void menuClick();
 void menuBack();
+void menuMicChanged();
 #endif
 
 void updateControls() {
@@ -2365,11 +2484,35 @@ void updatePower() {
     if (volts < 0.5f) headphones = true;
     else if (volts > 0.9f) headphones = false;
   }
+#if ETUTTI_V4 && V4_MIC_DETECT && !V4_BENCH
+  {                                          // R6V4: is a microphone in the IN jack? (debounced: 3 equal reads, 50 ms apart)
+    static uint32_t micReadAt = 0;
+    static uint8_t micSame = 0;
+    static bool micRaw = false, micInit = false;
+    if (now - micReadAt >= 50) {
+      micReadAt = now;
+      bool raw;
+#if V4_MIC_DETECT == 2
+      { float v = analogReadSlow(MIC_DET_PIN) / ADC_PER_VOLT; raw = v > MIC_DET_MIN_V && v < MIC_DET_MAX_V; }
+#else
+      raw = digitalReadFast(MIC_DET_PIN) == LOW;
+#endif
+      micSame = (micInit && raw == micRaw) ? min(micSame + 1, 3) : 1;
+      micRaw = raw;
+      micInit = true;
+      if (micSame >= 3) micPlugged = raw;
+    }
+  }
+#endif
 #if ETUTTI_V4 && V4_VOICE_FX
-  static bool lastHeadphones = headphones;
-  if (lastHeadphones != headphones) {       // the voice follows the jack: headphones / AUX in, speaker out (R4V4)
+  static bool lastHeadphones = headphones, lastMic = micPlugged;
+  if (lastHeadphones != headphones || lastMic != micPlugged) {   // the voice follows the jack (headphones / AUX in, speaker out, R4V4) and the microphone (R6V4)
     lastHeadphones = headphones;
+    lastMic = micPlugged;
     voiceFxApply();
+#if V4_MENU
+    menuMicChanged();
+#endif
   }
 #endif
 #if !ETUTTI_V4
@@ -2392,24 +2535,6 @@ bool oledPresent = false;
 int oledSent = 1024;                    // bytes of the frame already sent (1024 = idle)
 uint32_t oledSig = 0xFFFFFFFF, oledDrawnAt = 0;
 
-const uint8_t FONT5X7[59][5] = {        // ASCII 32 (space) .. 90 (Z)
-  {0x00,0x00,0x00,0x00,0x00},{0x00,0x00,0x5F,0x00,0x00},{0x00,0x07,0x00,0x07,0x00},{0x14,0x7F,0x14,0x7F,0x14},
-  {0x24,0x2A,0x7F,0x2A,0x12},{0x23,0x13,0x08,0x64,0x62},{0x36,0x49,0x55,0x22,0x50},{0x00,0x05,0x03,0x00,0x00},
-  {0x00,0x1C,0x22,0x41,0x00},{0x00,0x41,0x22,0x1C,0x00},{0x14,0x08,0x3E,0x08,0x14},{0x08,0x08,0x3E,0x08,0x08},
-  {0x00,0x50,0x30,0x00,0x00},{0x08,0x08,0x08,0x08,0x08},{0x00,0x60,0x60,0x00,0x00},{0x20,0x10,0x08,0x04,0x02},
-  {0x3E,0x51,0x49,0x45,0x3E},{0x00,0x42,0x7F,0x40,0x00},{0x42,0x61,0x51,0x49,0x46},{0x21,0x41,0x45,0x4B,0x31},
-  {0x18,0x14,0x12,0x7F,0x10},{0x27,0x45,0x45,0x45,0x39},{0x3C,0x4A,0x49,0x49,0x30},{0x01,0x71,0x09,0x05,0x03},
-  {0x36,0x49,0x49,0x49,0x36},{0x06,0x49,0x49,0x29,0x1E},{0x00,0x36,0x36,0x00,0x00},{0x00,0x56,0x36,0x00,0x00},
-  {0x08,0x14,0x22,0x41,0x00},{0x14,0x14,0x14,0x14,0x14},{0x00,0x41,0x22,0x14,0x08},{0x02,0x01,0x51,0x09,0x06},
-  {0x32,0x49,0x79,0x41,0x3E},{0x7E,0x11,0x11,0x11,0x7E},{0x7F,0x49,0x49,0x49,0x36},{0x3E,0x41,0x41,0x41,0x22},
-  {0x7F,0x41,0x41,0x22,0x1C},{0x7F,0x49,0x49,0x49,0x41},{0x7F,0x09,0x09,0x09,0x01},{0x3E,0x41,0x49,0x49,0x7A},
-  {0x7F,0x08,0x08,0x08,0x7F},{0x00,0x41,0x7F,0x41,0x00},{0x20,0x40,0x41,0x3F,0x01},{0x7F,0x08,0x14,0x22,0x41},
-  {0x7F,0x40,0x40,0x40,0x40},{0x7F,0x02,0x0C,0x02,0x7F},{0x7F,0x04,0x08,0x10,0x7F},{0x3E,0x41,0x41,0x41,0x3E},
-  {0x7F,0x09,0x09,0x09,0x06},{0x3E,0x41,0x51,0x21,0x5E},{0x7F,0x09,0x19,0x29,0x46},{0x46,0x49,0x49,0x49,0x31},
-  {0x01,0x01,0x7F,0x01,0x01},{0x3F,0x40,0x40,0x40,0x3F},{0x1F,0x20,0x40,0x20,0x1F},{0x3F,0x40,0x38,0x40,0x3F},
-  {0x63,0x14,0x08,0x14,0x63},{0x07,0x08,0x70,0x08,0x07},{0x61,0x51,0x49,0x45,0x43}
-};
-
 void oledCmd(uint8_t c) {
   Wire.beginTransmission(OLED_ADDR);
   Wire.write(0x00);
@@ -2427,20 +2552,58 @@ void oledRect(int x, int y, int w, int h, bool on) {
   for (int j = 0; j < h; j++) for (int i = 0; i < w; i++) oledPixel(x + i, y + j, on);
 }
 
-// Capitals, digits and a little punctuation only (ASCII 32..90); lower case is shown as capitals.
-void oledText(int x, int y, const char *str, int scale) {
-  for (; *str; str++) {
-    int ch = *str;
-    if (ch >= 'a' && ch <= 'z') ch -= 32;
-    if (ch < 32 || ch > 90) ch = '?';
+// R6V4 item 7: a 5 x 10 font with lower case and accents (oled_font.h, made by tools/oled_font/make_font.py) and UTF-8
+// strings. The cell is 10 rows high: capitals sit on rows 2..8, lower-case x-height on rows 4..8, accents above, and a
+// one-row descender (row 9). Text coordinates (x, y) are the top-left corner of the cell; at scale 1 a menu line is 10 px.
+#include "oled_font.h"
+
+const uint16_t *oledGlyph(uint32_t cp) {
+  if (cp >= 32 && cp <= 126) return OLED_FONT_ASCII[cp - 32];
+  int lo = 0, hi = OLED_FONT_EXT_COUNT - 1;
+  while (lo <= hi) {                                    // OLED_FONT_EXT is sorted by code point
+    int mid = (lo + hi) / 2;
+    if (OLED_FONT_EXT[mid].cp == cp) return OLED_FONT_EXT[mid].col;
+    if (OLED_FONT_EXT[mid].cp < cp) lo = mid + 1; else hi = mid - 1;
+  }
+  return OLED_FONT_ASCII['?' - 32];
+}
+
+// The next Unicode code point of a UTF-8 string (advances s); bad bytes come out as '?'.
+uint32_t utf8Next(const char *&s) {
+  uint8_t c = (uint8_t)*s++;
+  if (c < 0x80) return c;
+  int extra = (c >= 0xF0) ? 3 : (c >= 0xE0) ? 2 : (c >= 0xC0) ? 1 : -1;
+  if (extra < 0) return '?';
+  uint32_t cp = c & (0x3F >> extra);
+  for (int i = 0; i < extra; i++) {
+    if (((uint8_t)*s & 0xC0) != 0x80) return '?';
+    cp = (cp << 6) | ((uint8_t)*s++ & 0x3F);
+  }
+  return cp;
+}
+
+int oledTextLen(const char *s) {                        // glyphs in a UTF-8 string
+  int n = 0;
+  while (*s) { utf8Next(s); n++; }
+  return n;
+}
+
+// Text with a colour: on = false draws black on a white bar (the highlighted menu line).
+void oledTextOn(int x, int y, const char *str, int scale, bool on) {
+  while (*str) {
+    const uint16_t *g = oledGlyph(utf8Next(str));
     for (int col = 0; col < 5; col++) {
-      uint8_t bits = FONT5X7[ch - 32][col];
-      for (int row = 0; row < 7; row++) {
-        if (bits & (1 << row)) oledRect(x + col * scale, y + row * scale, scale, scale, true);
+      uint16_t bits = g[col];
+      for (int row = 0; row < 10; row++) {
+        if (bits & (1 << row)) oledRect(x + col * scale, y + row * scale, scale, scale, on);
       }
     }
     x += 6 * scale;
   }
+}
+
+void oledTextRight(int xRight, int y, const char *str, bool on) {
+  oledTextOn(xRight - 6 * oledTextLen(str), y, str, 1, on);
 }
 
 // Battery charge from its voltage at rest (a first, typical LiPo curve; 4.2 V full).
@@ -2475,85 +2638,95 @@ void oledOff() {
   if (oledPresent) oledCmd(0xAE);
 }
 
-// Text with a colour: on = false draws black on a white bar (the highlighted menu line).
-void oledTextOn(int x, int y, const char *str, int scale, bool on) {
-  for (; *str; str++) {
-    int ch = *str;
-    if (ch >= 'a' && ch <= 'z') ch -= 32;
-    if (ch < 32 || ch > 90) ch = '?';
-    for (int col = 0; col < 5; col++) {
-      uint8_t bits = FONT5X7[ch - 32][col];
-      for (int row = 0; row < 7; row++) {
-        if (bits & (1 << row)) oledRect(x + col * scale, y + row * scale, scale, scale, on);
-      }
-    }
-    x += 6 * scale;
-  }
+// ---- Screen texts (R6V4 item 7): Portuguese and English, lower case with accents. Every text of the screen is in
+// this section: STR[] (single strings) and the Txt tables of the menu. To add a language: add its name to LANG_NAME and an
+// entry in LANG_COUNT's enum, then add one more string to every Txt initializer below (a missing one falls back to English).
+// The strings are UTF-8; the characters must exist in oled_font.h (ASCII and the Latin-1 letters with accents).
+const int EEPROM_LANG = 250;            // after the voice settings (210..239)
+const uint8_t LANG_MAGIC = 0xB1;
+void uiLangSave() { EEPROM.write(EEPROM_LANG, LANG_MAGIC); EEPROM.write(EEPROM_LANG + 1, uiLang); }
+void uiLangLoad() {
+  if (EEPROM.read(EEPROM_LANG) == LANG_MAGIC && EEPROM.read(EEPROM_LANG + 1) < LANG_COUNT) uiLang = EEPROM.read(EEPROM_LANG + 1);
 }
 
-void oledTextRight(int xRight, int y, const char *str, bool on) {
-  oledTextOn(xRight - 6 * (int)strlen(str), y, str, 1, on);
-}
-
-// The text of the menu and the warning is in Portuguese (MENU_LANG_PT 1) or English (0); the font has no accents.
-#define MENU_LANG_PT 1
-#define TXT(pt, en) (MENU_LANG_PT ? (pt) : (en))
 #if V4_MENU
 // ---- Student V4 menu (R4V4 item 4): drawn on the OLED, driven by the two knobs ----
-enum { PG_MAIN, PG_VOICE, PG_INPUT, PG_OUTPUT, PG_SOUND, PG_SYSTEM, PG_COUNT };
-enum { MK_SUB, MK_LEVEL, MK_ENUM, MK_ACTION };
-enum {
-  M_VOICE_DRY, M_VOCODER, M_HARM, M_HARM_MODE, M_HARM_INT, M_HARM_FOLD, M_ECHO, M_ECHO_TIME, M_ECHO_FB, M_VOICE_REV,
-  M_MIC_GAIN, M_GATE_THR, M_GATE_RATIO, M_GATE_ATK, M_GATE_HOLD, M_GATE_REL, M_HPF, M_CLOSE_MIC, M_ANTI_FB, M_CLEAR_NOTCH,
-  M_VOLUME, M_VOICE_OUT, M_KEYS_LEVEL, M_SPK_EQ, M_EQ_CUT, M_EQ_DIP,
-  M_REGISTER, M_INSTRUMENT, M_AMBIENCE, M_VEL_CURVE,
-  M_SAVE, M_RESET_VOICE, M_CAL_KEYS, M_KEY_TEST
-};
-struct MenuItem { const char *pt; const char *en; uint8_t kind; uint8_t id; };   // SUB: id = the page
-struct MenuPage { const char *pt; const char *en; const MenuItem *items; uint8_t count; };
-
+// Layout: 21 columns. A level line is a label (up to 11 characters), a 19-pixel bar and a value of up to 6 characters;
+// a choice line is a label and a value, together up to 21 characters.
 const MenuItem ITEMS_MAIN[] = {
-  {"VOZ", "VOICE", MK_SUB, PG_VOICE}, {"CAPTACAO", "INPUT", MK_SUB, PG_INPUT}, {"SAIDA", "OUTPUT", MK_SUB, PG_OUTPUT},
-  {"SOM", "SOUND", MK_SUB, PG_SOUND}, {"SISTEMA", "SYSTEM", MK_SUB, PG_SYSTEM}};
+  {{"Voz", "Voice"}, MK_SUB, PG_VOICE, true}, {{"Captação", "Input"}, MK_SUB, PG_INPUT, true},
+  {{"Saída", "Output"}, MK_SUB, PG_OUTPUT, false}, {{"Som", "Sound"}, MK_SUB, PG_SOUND, false},
+  {{"Sistema", "System"}, MK_SUB, PG_SYSTEM, false}};
 const MenuItem ITEMS_VOICE[] = {
-  {"VOZ SECA", "DRY VOICE", MK_LEVEL, M_VOICE_DRY}, {"VOCODER", "VOCODER", MK_LEVEL, M_VOCODER},
-  {"HARMONIZ.", "HARMONIZER", MK_LEVEL, M_HARM}, {"MODO HARM", "HARM MODE", MK_ENUM, M_HARM_MODE},
-  {"INTERVALO", "INTERVAL", MK_LEVEL, M_HARM_INT}, {"OITAVA", "OCTAVE", MK_ENUM, M_HARM_FOLD},
-  {"ECO", "ECHO", MK_LEVEL, M_ECHO}, {"TEMPO ECO", "ECHO TIME", MK_LEVEL, M_ECHO_TIME},
-  {"REALIM ECO", "ECHO FDBK", MK_LEVEL, M_ECHO_FB}, {"REVERB VOZ", "VOICE REV", MK_LEVEL, M_VOICE_REV}};
+  {{"Voz seca", "Dry voice"}, MK_LEVEL, M_VOICE_DRY, true}, {{"Vocoder", "Vocoder"}, MK_LEVEL, M_VOCODER, true},
+  {{"Harmoniz.", "Harmonizer"}, MK_LEVEL, M_HARM, true}, {{"Modo harm.", "Harm mode"}, MK_ENUM, M_HARM_MODE, true},
+  {{"Intervalo", "Interval"}, MK_LEVEL, M_HARM_INT, true}, {{"Intensidade", "Strength"}, MK_LEVEL, M_HARM_HELP, true},
+  {{"Vozes", "Voices"}, MK_ENUM, M_HARM_VOICES, true}, {{"Oitava", "Octave"}, MK_ENUM, M_HARM_FOLD, true},
+  {{"Eco", "Echo"}, MK_LEVEL, M_ECHO, true}, {{"Tempo eco", "Echo time"}, MK_LEVEL, M_ECHO_TIME, true},
+  {{"Realim. eco", "Echo fdbk"}, MK_LEVEL, M_ECHO_FB, true}, {{"Reverb voz", "Voice rev"}, MK_LEVEL, M_VOICE_REV, true}};
 const MenuItem ITEMS_INPUT[] = {
-  {"GANHO MIC", "MIC GAIN", MK_LEVEL, M_MIC_GAIN}, {"LIMIAR", "THRESHOLD", MK_LEVEL, M_GATE_THR},
-  {"RAZAO", "RATIO", MK_ENUM, M_GATE_RATIO}, {"ATAQUE", "ATTACK", MK_LEVEL, M_GATE_ATK},
-  {"RETENCAO", "HOLD", MK_LEVEL, M_GATE_HOLD}, {"SOLTURA", "RELEASE", MK_LEVEL, M_GATE_REL},
-  {"PASSA-ALTAS", "HIGH-PASS", MK_LEVEL, M_HPF}, {"MIC PERTO", "CLOSE MIC", MK_ACTION, M_CLOSE_MIC},
-  {"ANTIMICROF.", "ANTI-FEEDBK", MK_ENUM, M_ANTI_FB}, {"LIMPAR NOTCH", "CLEAR NOTCH", MK_ACTION, M_CLEAR_NOTCH}};
+  {{"Ganho mic", "Mic gain"}, MK_LEVEL, M_MIC_GAIN, true}, {{"Limiar", "Threshold"}, MK_LEVEL, M_GATE_THR, true},
+  {{"Razão", "Ratio"}, MK_ENUM, M_GATE_RATIO, true}, {{"Ataque", "Attack"}, MK_LEVEL, M_GATE_ATK, true},
+  {{"Retenção", "Hold"}, MK_LEVEL, M_GATE_HOLD, true}, {{"Soltura", "Release"}, MK_LEVEL, M_GATE_REL, true},
+  {{"Passa-altas", "High-pass"}, MK_LEVEL, M_HPF, true}, {{"Mic headset", "Headset mic"}, MK_ACTION, M_CLOSE_MIC, true},
+  {{"Antimicrof.", "Anti-feedbk"}, MK_ENUM, M_ANTI_FB, true}, {{"Limpar notch", "Clear notch"}, MK_ACTION, M_CLEAR_NOTCH, true}};
 const MenuItem ITEMS_OUTPUT[] = {
-  {"VOLUME", "VOLUME", MK_LEVEL, M_VOLUME}, {"SAIDA VOZ", "VOICE OUT", MK_ENUM, M_VOICE_OUT},
-  {"TECLAS", "KEYS", MK_LEVEL, M_KEYS_LEVEL}, {"EQ ALTOF.", "SPK EQ", MK_ENUM, M_SPK_EQ},
-  {"CORTE", "CUTOFF", MK_LEVEL, M_EQ_CUT}, {"PICO 1K", "1K DIP", MK_LEVEL, M_EQ_DIP}};
+  {{"Volume", "Volume"}, MK_LEVEL, M_VOLUME, false}, {{"Saída voz", "Voice out"}, MK_ENUM, M_VOICE_OUT, true},
+  {{"Teclas", "Keys"}, MK_LEVEL, M_KEYS_LEVEL, true}, {{"EQ alto-f.", "Speaker EQ"}, MK_ENUM, M_SPK_EQ, false},
+  {{"Corte", "Cutoff"}, MK_LEVEL, M_EQ_CUT, false}, {{"Pico 1k", "1k dip"}, MK_LEVEL, M_EQ_DIP, false}};
 const MenuItem ITEMS_SOUND[] = {
-  {"REGISTRO", "REGISTER", MK_ENUM, M_REGISTER}, {"INSTRUMENTO", "INSTRUMENT", MK_ENUM, M_INSTRUMENT},
-  {"REVERB", "REVERB", MK_LEVEL, M_AMBIENCE}, {"CURVA VEL.", "VEL CURVE", MK_ENUM, M_VEL_CURVE}};
+  {{"Registro", "Register"}, MK_ENUM, M_REGISTER, false}, {{"Instrumento", "Instrument"}, MK_ENUM, M_INSTRUMENT, false},
+  {{"Reverb", "Reverb"}, MK_LEVEL, M_AMBIENCE, false}, {{"Curva vel.", "Vel curve"}, MK_ENUM, M_VEL_CURVE, false}};
 const MenuItem ITEMS_SYSTEM[] = {
-  {"SALVAR", "SAVE", MK_ACTION, M_SAVE}, {"ZERAR VOZ", "RESET VOICE", MK_ACTION, M_RESET_VOICE},
-  {"CALIBRAR", "CALIBRATE", MK_ACTION, M_CAL_KEYS}, {"TESTE TECLAS", "KEY TEST", MK_ENUM, M_KEY_TEST}};
-#define PAGE_OF(name, pt, en, arr) {pt, en, arr, (uint8_t)(sizeof(arr) / sizeof(arr[0]))}
+  {{"Salvar", "Save"}, MK_ACTION, M_SAVE, false}, {{"Zerar voz", "Reset voice"}, MK_ACTION, M_RESET_VOICE, false},
+  {{"Calibrar", "Calibrate"}, MK_ACTION, M_CAL_KEYS, false}, {{"Teste tec.", "Key test"}, MK_ENUM, M_KEY_TEST, false},
+  {{"Idioma", "Language"}, MK_ENUM, M_LANGUAGE, false}};
+#define PAGE_OF(name, arr) {name, arr, (uint8_t)(sizeof(arr) / sizeof(arr[0]))}
 const MenuPage MENU_PAGES[PG_COUNT] = {
-  PAGE_OF(main, "MENU", "MENU", ITEMS_MAIN), PAGE_OF(voice, "VOZ", "VOICE", ITEMS_VOICE),
-  PAGE_OF(input, "CAPTACAO", "INPUT", ITEMS_INPUT), PAGE_OF(output, "SAIDA", "OUTPUT", ITEMS_OUTPUT),
-  PAGE_OF(sound, "SOM", "SOUND", ITEMS_SOUND), PAGE_OF(system, "SISTEMA", "SYSTEM", ITEMS_SYSTEM)};
+  PAGE_OF((Txt{{"Menu", "Menu"}}), ITEMS_MAIN), PAGE_OF((Txt{{"Voz", "Voice"}}), ITEMS_VOICE),
+  PAGE_OF((Txt{{"Captação", "Input"}}), ITEMS_INPUT), PAGE_OF((Txt{{"Saída", "Output"}}), ITEMS_OUTPUT),
+  PAGE_OF((Txt{{"Som", "Sound"}}), ITEMS_SOUND), PAGE_OF((Txt{{"Sistema", "System"}}), ITEMS_SYSTEM)};
 
 uint8_t menuPage = PG_MAIN;
-int menuCursor = 0, menuScroll = 0;
+int menuCursor = 0, menuScroll = 0;         // cursor and scroll count VISIBLE lines only
 uint8_t menuDepth = 0;
 struct MenuFrame { uint8_t page; int cursor, scroll; } menuStack[3];
 const char *menuToast = nullptr;
 uint32_t menuToastAt = 0;
 
-const char *const RATIO_NAMES_PT[4] = {"SUAVE", "MEDIA", "FORTE", "PORTA"};
-const char *const RATIO_NAMES_EN[4] = {"SOFT", "MEDIUM", "HARD", "GATE"};
-const char *const CURVE_NAMES_PT[4] = {"FIXA", "SUAVE", "NORMAL", "DURA"};
-const char *const CURVE_NAMES_EN[4] = {"FIXED", "SOFT", "NORMAL", "HARD"};
+// Is a line on the menu now? Needs a microphone, or depends on the harmonizer's mode.
+bool menuShown(const MenuItem &it) {
+  if (it.needsMic && !micPlugged) return false;
+  if (it.kind == MK_SUB) return true;
+  const VoiceFx &f = vfxState;
+  switch (it.id) {
+    case M_HARM_INT: return !f.harmFollow;                           // fixed interval: only when the harmonizer does not follow
+    case M_HARM_HELP: return f.harmFollow && f.followMode == FM_ASSIST;
+    case M_HARM_VOICES: return f.harmFollow;
+    case M_HARM_FOLD: return f.harmFollow && f.followMode != FM_ASSIST;
+  }
+  return true;
+}
+int menuCount(int page) {
+  int n = 0;
+  for (int i = 0; i < MENU_PAGES[page].count; i++) n += menuShown(MENU_PAGES[page].items[i]);
+  return n;
+}
+const MenuItem &menuLine(int page, int vi) {                          // the vi-th visible line
+  const MenuPage &pg = MENU_PAGES[page];
+  for (int i = 0; i < pg.count; i++) {
+    if (!menuShown(pg.items[i])) continue;
+    if (vi-- == 0) return pg.items[i];
+  }
+  return pg.items[0];
+}
+void menuClamp() {
+  int count = menuCount(menuPage);
+  if (menuCursor >= count) menuCursor = max(count - 1, 0);
+  if (menuScroll > menuCursor) menuScroll = menuCursor;
+  if (menuCursor > menuScroll + 4) menuScroll = menuCursor - 4;
+  if (menuScroll < 0) menuScroll = 0;
+}
 
 // The CC and the current value of a level line (volume: copied, it is an int).
 bool menuLevelRef(uint8_t id, uint8_t *&p, uint8_t &cc) {
@@ -2564,6 +2737,7 @@ bool menuLevelRef(uint8_t id, uint8_t *&p, uint8_t &cc) {
     case M_VOCODER: p = &f.vocoder; cc = 17; return true;
     case M_HARM: p = &f.harm; cc = 18; return true;
     case M_HARM_INT: p = &f.interval; cc = 19; return true;
+    case M_HARM_HELP: p = &f.helpAmt; cc = 109; return true;
     case M_ECHO: p = &f.echo; cc = 76; return true;
     case M_ECHO_TIME: p = &f.echoTime; cc = 77; return true;
     case M_ECHO_FB: p = &f.echoFb; cc = 78; return true;
@@ -2583,32 +2757,34 @@ bool menuLevelRef(uint8_t id, uint8_t *&p, uint8_t &cc) {
   return false;
 }
 
-// The text of a line's value (at most 9 characters).
+// The text of a line's value (at most 9 characters; level lines at most 6).
 void menuValueText(uint8_t id, char *b, size_t n) {
   VoiceFx &f = vfxState;
   uint8_t *p;
   uint8_t cc;
   b[0] = 0;
   switch (id) {
-    case M_HARM_INT: { int st = lroundf(((int)f.interval - 64) * 12.0f / 64.0f); snprintf(b, n, "%+d ST", st); return; }
-    case M_ECHO_TIME: snprintf(b, n, "%d MS", (int)lroundf(60.0f + f.echoTime * (680.0f / 127.0f))); return;
-    case M_MIC_GAIN: snprintf(b, n, "%d DB", 20 + (f.micGain * 32) / 127); return;
-    case M_GATE_ATK: snprintf(b, n, "%.1f MS", gateAtkMs(f.gateAtk)); return;
-    case M_GATE_HOLD: snprintf(b, n, "%d MS", (int)gateHoldMs(f.gateHold)); return;
-    case M_GATE_REL: snprintf(b, n, "%d MS", (int)gateRelMs(f.gateRel)); return;
-    case M_HPF: snprintf(b, n, "%d HZ", (int)hpfHz(f.hpf)); return;
-    case M_EQ_CUT: snprintf(b, n, "%d HZ", (int)lroundf(eqCutHz(f.eqCut))); return;
-    case M_EQ_DIP: snprintf(b, n, "-%d DB", (int)lroundf(eqDipDb(f.eqDip))); return;
-    case M_SPK_EQ: snprintf(b, n, "%s", f.eq ? TXT("LIGADO", "ON") : TXT("DESLIG", "OFF")); return;
-    case M_HARM_MODE: snprintf(b, n, "%s", f.harmFollow ? TXT("TECLA", "KEY") : TXT("FIXO", "FIXED")); return;
-    case M_HARM_FOLD: snprintf(b, n, "%s", f.harmFold ? TXT("PERTO", "NEAR") : TXT("EXATA", "EXACT")); return;
-    case M_GATE_RATIO: snprintf(b, n, "%s", (MENU_LANG_PT ? RATIO_NAMES_PT : RATIO_NAMES_EN)[f.gateRatio]); return;
-    case M_ANTI_FB: snprintf(b, n, "%s", f.antiFb ? TXT("LIGADO", "ON") : TXT("DESLIG", "OFF")); return;
-    case M_VOICE_OUT: snprintf(b, n, "%s", f.speaker ? TXT("+ ALTOFAL", "+ SPEAKER") : TXT("FONE/AUX", "PHONES")); return;
+    case M_HARM_INT: { int st = lroundf(((int)f.interval - 64) * 12.0f / 64.0f); snprintf(b, n, "%+d st", st); return; }
+    case M_ECHO_TIME: snprintf(b, n, "%d ms", (int)lroundf(60.0f + f.echoTime * (680.0f / 127.0f))); return;
+    case M_MIC_GAIN: snprintf(b, n, "%d dB", 20 + (f.micGain * 32) / 127); return;
+    case M_GATE_ATK: snprintf(b, n, "%.1f ms", gateAtkMs(f.gateAtk)); return;
+    case M_GATE_HOLD: snprintf(b, n, "%d ms", (int)gateHoldMs(f.gateHold)); return;
+    case M_GATE_REL: snprintf(b, n, "%d ms", (int)gateRelMs(f.gateRel)); return;
+    case M_HPF: snprintf(b, n, "%d Hz", (int)hpfHz(f.hpf)); return;
+    case M_EQ_CUT: snprintf(b, n, "%d Hz", (int)lroundf(eqCutHz(f.eqCut))); return;
+    case M_EQ_DIP: snprintf(b, n, "-%d dB", (int)lroundf(eqDipDb(f.eqDip))); return;
+    case M_SPK_EQ: snprintf(b, n, "%s", tx(f.eq ? S_ON : S_OFF)); return;
+    case M_HARM_MODE: snprintf(b, n, "%s", tr(HARM_MODES[f.harmFollow ? 1 + f.followMode : 0])); return;
+    case M_HARM_VOICES: snprintf(b, n, "%d", harmVoicesWanted()); return;
+    case M_HARM_FOLD: snprintf(b, n, "%s", tr(FOLD_NAMES[f.harmFold ? 1 : 0])); return;
+    case M_GATE_RATIO: snprintf(b, n, "%s", tr(RATIO_NAMES[f.gateRatio])); return;
+    case M_ANTI_FB: snprintf(b, n, "%s", tx(f.antiFb ? S_ON : S_OFF)); return;
+    case M_VOICE_OUT: snprintf(b, n, "%s", tx(f.speaker ? S_SPEAKER_ON : S_PHONES)); return;
     case M_REGISTER: snprintf(b, n, "%s", REGISTER_NAMES[registerIndex]); return;
     case M_INSTRUMENT: snprintf(b, n, "%s", INSTRUMENT_NAMES[instrument]); return;
-    case M_VEL_CURVE: snprintf(b, n, "%s", (MENU_LANG_PT ? CURVE_NAMES_PT : CURVE_NAMES_EN)[velocityCurve]); return;
-    case M_KEY_TEST: snprintf(b, n, "%s", keyTest ? TXT("LIGADO", "ON") : TXT("DESLIG", "OFF")); return;
+    case M_VEL_CURVE: snprintf(b, n, "%s", tr(CURVE_NAMES[velocityCurve])); return;
+    case M_KEY_TEST: snprintf(b, n, "%s", tx(keyTest ? S_ON : S_OFF)); return;
+    case M_LANGUAGE: snprintf(b, n, "%s", LANG_NAME[uiLang]); return;
   }
   if (menuLevelRef(id, p, cc)) snprintf(b, n, "%d%%", (*p * 100 + 63) / 127);
 }
@@ -2625,8 +2801,16 @@ void menuToggle() {
   menuToast = nullptr;
 }
 
+// The microphone was plugged or pulled out: the voice pages appear or go away. If the cursor was in one, back to the top.
+void menuMicChanged() {
+  if (!menuOpen) return;
+  if (!micPlugged && (menuPage == PG_VOICE || menuPage == PG_INPUT)) { menuPage = PG_MAIN; menuDepth = 0; menuCursor = menuScroll = 0; }
+  menuClamp();
+}
+
 void menuTurn(int d) {
-  int count = MENU_PAGES[menuPage].count;
+  int count = menuCount(menuPage);
+  if (count < 1) return;
   menuCursor = ((menuCursor + d) % count + count) % count;
   if (menuCursor < menuScroll) menuScroll = menuCursor;
   if (menuCursor > menuScroll + 4) menuScroll = menuCursor - 4;
@@ -2641,6 +2825,7 @@ void menuBack() {
   menuPage = fr.page;
   menuCursor = fr.cursor;
   menuScroll = fr.scroll;
+  menuClamp();
 }
 
 void menuSetCC(uint8_t cc, uint8_t value) {
@@ -2650,7 +2835,7 @@ void menuSetCC(uint8_t cc, uint8_t value) {
 
 // Volume knob: the value of the line under the cursor, one step per detent.
 void menuAdjust(int d) {
-  const MenuItem &it = MENU_PAGES[menuPage].items[menuCursor];
+  const MenuItem &it = menuLine(menuPage, menuCursor);
   VoiceFx &f = vfxState;
   uint8_t *p;
   uint8_t cc;
@@ -2666,7 +2851,14 @@ void menuAdjust(int d) {
     return;
   }
   switch (it.id) {
-    case M_HARM_MODE: menuSetCC(95, f.harmFollow ? 0 : 127); break;
+    case M_HARM_MODE: {                                 // fixed, exact, assist, interval
+      int cur = f.harmFollow ? 1 + f.followMode : 0;
+      int next = ((cur + d) % 4 + 4) % 4;
+      if (next == 0) menuSetCC(95, 0);
+      else { menuSetCC(108, (uint8_t)((next - 1) * 32)); menuSetCC(95, 127); }
+      break;
+    }
+    case M_HARM_VOICES: menuSetCC(110, f.harm4 ? 0 : 127); break;
     case M_HARM_FOLD: menuSetCC(97, f.harmFold ? 0 : 127); break;
     case M_GATE_RATIO: menuSetCC(93, (uint8_t)(constrain((int)f.gateRatio + d, 0, 3) * 32)); break;
     case M_ANTI_FB: menuSetCC(94, f.antiFb ? 0 : 127); break;
@@ -2682,12 +2874,14 @@ void menuAdjust(int d) {
     }
     case M_VEL_CURVE: menuSetCC(9, (uint8_t)((((velocityCurve + d) % 4 + 4) % 4) * 32)); break;
     case M_KEY_TEST: menuSetCC(15, keyTest ? 0 : 127); break;
+    case M_LANGUAGE: uiLang = (uiLang + d + LANG_COUNT * 4) % LANG_COUNT; uiLangSave(); break;   // kept at once, no "Save" needed
   }
+  menuClamp();                                          // a change of mode can add or remove lines
 }
 
 // Selector click.
 void menuClick() {
-  const MenuItem &it = MENU_PAGES[menuPage].items[menuCursor];
+  const MenuItem &it = menuLine(menuPage, menuCursor);
   switch (it.kind) {
     case MK_SUB:
       if (menuDepth < 3) {
@@ -2699,11 +2893,11 @@ void menuClick() {
     case MK_ENUM: menuAdjust(1); break;
     case MK_ACTION:
       switch (it.id) {
-        case M_CLOSE_MIC: voiceFxCloseMic(); menuToast = TXT("MIC PERTO", "CLOSE MIC"); break;
-        case M_CLEAR_NOTCH: voiceFxClearNotches(); menuToast = TXT("NOTCH LIMPOS", "NOTCH CLEARED"); break;
-        case M_SAVE: voiceFxSave(); saveRegister(registerIndex); menuToast = TXT("SALVO", "SAVED"); break;
-        case M_RESET_VOICE: voiceFxDefaults(); menuToast = TXT("VOZ ZERADA", "VOICE RESET"); break;
-        case M_CAL_KEYS: handleControlChange(1, 14, 127); menuToast = TXT("CALIBRADO", "CALIBRATED"); break;
+        case M_CLOSE_MIC: voiceFxHeadsetMic(); menuToast = tx(S_T_HEADSET); break;
+        case M_CLEAR_NOTCH: voiceFxClearNotches(); menuToast = tx(S_T_NOTCH); break;
+        case M_SAVE: voiceFxSave(); saveRegister(registerIndex); menuToast = tx(S_T_SAVED); break;
+        case M_RESET_VOICE: voiceFxDefaults(); menuToast = tx(S_T_RESET); break;
+        case M_CAL_KEYS: handleControlChange(1, 14, 127); menuToast = tx(S_T_CAL); break;
       }
       menuToastAt = millis();
       break;
@@ -2713,34 +2907,37 @@ void menuClick() {
 void drawMenu() {
   const MenuPage &pg = MENU_PAGES[menuPage];
   oledRect(0, 0, 128, 10, true);                        // title bar
-  char line[24];
+  char line[40];
   if (menuToast && millis() - menuToastAt < 1500) {
-    oledTextOn(2, 1, menuToast, 1, false);
+    oledTextOn(2, 0, menuToast, 1, false);
+  } else if (menuPage == PG_MAIN) {
+    oledTextOn(2, 0, tx(S_MENU), 1, false);
   } else {
-    snprintf(line, sizeof(line), "%s%s", menuPage == PG_MAIN ? "" : "MENU > ", MENU_LANG_PT ? pg.pt : pg.en);
-    oledTextOn(2, 1, line, 1, false);
+    snprintf(line, sizeof(line), "%s > %s", tx(S_MENU), tr(pg.name));
+    oledTextOn(2, 0, line, 1, false);
   }
-  snprintf(line, sizeof(line), "%d/%d", menuCursor + 1, pg.count);
-  oledTextRight(126, 1, line, false);
+  int count = menuCount(menuPage);
+  snprintf(line, sizeof(line), "%d/%d", menuCursor + 1, count);
+  oledTextRight(126, 0, line, false);
   for (int r = 0; r < 5; r++) {
     int idx = menuScroll + r;
-    if (idx >= pg.count) break;
-    const MenuItem &it = pg.items[idx];
-    int y = 12 + r * 10;
+    if (idx >= count) break;
+    const MenuItem &it = menuLine(menuPage, idx);
+    int y = 11 + r * 10;                                // top of a 10-row line
     bool sel = idx == menuCursor;
-    if (sel) oledRect(0, y - 1, 128, 10, true);
-    oledTextOn(2, y, MENU_LANG_PT ? it.pt : it.en, 1, !sel);
+    if (sel) oledRect(0, y, 128, 10, true);
+    oledTextOn(2, y, tr(it.name), 1, !sel);
     if (it.kind == MK_SUB) {
       oledTextRight(126, y, ">", !sel);
     } else if (it.kind == MK_LEVEL) {
       uint8_t *p;
       uint8_t cc;
       if (menuLevelRef(it.id, p, cc)) {
-        int fill = *p * 26 / 127;                       // bar, 28 px wide
+        int fill = *p * 15 / 127;                       // bar 70..88, 19 px wide
         bool on = !sel;
-        oledRect(70, y + 1, 28, 1, on); oledRect(70, y + 6, 28, 1, on);
-        oledRect(70, y + 1, 1, 6, on); oledRect(97, y + 1, 1, 6, on);
-        oledRect(71, y + 3, fill, 2, on);
+        oledRect(70, y + 3, 19, 1, on); oledRect(70, y + 8, 19, 1, on);
+        oledRect(70, y + 3, 1, 6, on); oledRect(88, y + 3, 1, 6, on);
+        oledRect(72, y + 5, fill, 2, on);
       }
       menuValueText(it.id, line, sizeof(line));
       oledTextRight(126, y, line, !sel);
@@ -2758,11 +2955,12 @@ void drawWarning(uint32_t now) {
   bool blink = (now / 350) % 2 == 0;
   if (blink) { oledRect(0, 0, 128, 64, true); oledRect(2, 2, 124, 60, false); }
   else { oledRect(0, 0, 128, 1, true); oledRect(0, 63, 128, 1, true); }
-  oledTextOn(34, 6, TXT("AVISO", "WARNING"), 2, true);
-  oledTextOn(8, 26, TXT("VOZ NO ALTO-FALANTE", "VOICE ON SPEAKER"), 1, true);
-  oledTextOn(8, 36, TXT("PODE DAR MICROFONIA", "MAY CAUSE FEEDBACK"), 1, true);
-  oledTextOn(8, 46, TXT("MIC PERTO DA BOCA E", "MIC AT THE MOUTH"), 1, true);
-  oledTextOn(8, 54, TXT("VOLUME BAIXO", "VOLUME LOW"), 1, true);
+  int w = 12 * oledTextLen(tx(S_WARN_TITLE));
+  oledTextOn((128 - w) / 2, 2, tx(S_WARN_TITLE), 2, true);
+  oledTextOn(4, 24, tx(S_WARN_1), 1, true);
+  oledTextOn(4, 34, tx(S_WARN_2), 1, true);
+  oledTextOn(4, 44, tx(S_WARN_3), 1, true);
+  oledTextOn(4, 52, tx(S_WARN_4), 1, true);
 }
 #endif
 
@@ -2775,35 +2973,44 @@ void drawStatus(uint32_t now) {
 #if V4_HAVE_MIC
   if (micPeak.available()) mic = (int)(micPeak.read() * 8.0f);   // 0..8
 #endif
-  char line[24];
+  char line[40];
   snprintf(line, sizeof(line), "%s %d%%", charging ? "CHG" : (usb ? "USB" : "BAT"), pct);
   oledTextOn(0, 0, line, 2, true);
   oledTextOn(0, 20, instrument == INST_ACCORDION ? REGISTER_NAMES[registerIndex] : INSTRUMENT_NAMES[instrument], 2, true);
   // voice status, right of the volume line
-  char vs[16] = "";
+  char vs[24] = "";
 #if V4_VOICE_FX
   VoiceFx &f = vfxState;
   if (f.voice || f.vocoder || f.harm || f.echo) {
-    if (speakerMutesVoice()) snprintf(vs, sizeof(vs), "%s", TXT("VOZ MUDA", "VOICE OFF"));
-    else if (!headphones && (now / 400) % 2 == 0) snprintf(vs, sizeof(vs), "%s", TXT("!MICROFONIA", "!FEEDBACK"));
+    if (!micPlugged) snprintf(vs, sizeof(vs), "%s", tx(S_NO_MIC));
+    else if (speakerMutesVoice()) snprintf(vs, sizeof(vs), "%s", tx(S_VOICE_OFF));
+    else if (!headphones && (now / 400) % 2 == 0) snprintf(vs, sizeof(vs), "%s", tx(S_FEEDBACK));
     else if (!headphones) vs[0] = 0;
     else if (f.harmFollow && f.harm > 0 && voiceHzShown > 0) {
       static const char *const names[12] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
       int m = (int)lroundf(69.0f + 12.0f * log2f(voiceHzShown / 440.0f));
-      snprintf(vs, sizeof(vs), "VOZ %s%d", names[((m % 12) + 12) % 12], m / 12 - 1);
-    } else snprintf(vs, sizeof(vs), "%s", vin.isOpen() ? TXT("VOZ *", "VOICE *") : TXT("VOZ", "VOICE"));
+      snprintf(vs, sizeof(vs), "%s %s%d", tx(S_VOICE), names[((m % 12) + 12) % 12], m / 12 - 1);
+    } else snprintf(vs, sizeof(vs), "%s%s", tx(S_VOICE), vin.isOpen() ? " *" : "");
   }
 #endif
-  snprintf(line, sizeof(line), "VOL %d %s%s", volumeNow, headphones ? "HP" : "SPK", (resting && !vs[0]) ? " REST" : "");
-  oledTextOn(0, 42, line, 1, true);
-  if (vs[0]) oledTextRight(127, 42, vs, true);
+  bool showRest = resting && !vs[0];
+  snprintf(line, sizeof(line), "%s %d %s%s%s", tx(S_VOL), volumeNow, headphones ? tx(S_HP) : tx(S_SPK), showRest ? " " : "",
+           showRest ? tx(S_REST) : "");
+  oledTextOn(0, 41, line, 1, true);
+  if (vs[0]) oledTextRight(127, 41, vs, true);
   oledRect(0, 54, 82, 1, true);         // battery bar
   oledRect(0, 63, 82, 1, true);
   oledRect(0, 54, 1, 10, true);
   oledRect(81, 54, 1, 10, true);
   oledRect(2, 56, pct * 78 / 100, 6, true);
-  oledTextOn(90, 55, "MIC", 1, true);
-  oledRect(112, 56, mic * 2, 6, true);
+#if V4_MIC_DETECT
+  if (!micPlugged) oledTextOn(86, 54, tx(S_NO_MIC), 1, true);
+  else
+#endif
+  {
+    oledTextOn(88, 54, tx(S_MIC), 1, true);
+    oledRect(112, 56, mic * 2, 6, true);
+  }
 }
 
 // Redraws (the menu and the warning quickly, the status screen 4 times a second) and, when the
@@ -2893,12 +3100,15 @@ const BenchStep BENCH_STEPS[] = {
   {"+ vocoder         ", 0b0110, 0, 100, 0, 0, 0, 0, 0},
   {"+ pitch shifter   ", 0b0110, 0, 0, 100, 0, 0, 0, 0},
   {"+ harm follows key", 0b0110, 0, 0, 100, 0, 0, 1, 0},
+  {"+ harm exact 4 v. ", 0b0110, 0, 0, 100, 0, 0, 2, 0},      // follow: 1 exact 3 voices, 2 exact 4, 3 interval 4, 4 assist
+  {"+ harm interval 4 ", 0b0110, 0, 0, 100, 0, 0, 3, 0},
+  {"+ harm assist     ", 0b0110, 0, 0, 100, 0, 0, 4, 0},
   {"+ anti-feedback   ", 0b0110, 100, 0, 0, 0, 0, 0, 1},
   {"+ echo            ", 0b0110, 0, 0, 0, 90, 0, 0, 0},
   {"+ reverb send     ", 0b0110, 100, 0, 0, 0, 100, 0, 0},
   {"ALL voice fx      ", 0b0110, 100, 100, 100, 90, 100, 1, 1},
   {"4 ranks keys only ", 0b1111, 0, 0, 0, 0, 0, 0, 0},
-  {"4 ranks ALL fx    ", 0b1111, 100, 100, 100, 90, 100, 1, 1},
+  {"4 ranks ALL fx 4 v", 0b1111, 100, 100, 100, 90, 100, 2, 1},
 };
 const int BENCH_COUNT = sizeof(BENCH_STEPS) / sizeof(BENCH_STEPS[0]);
 const uint32_t BENCH_STEP_MS = 6000;
@@ -2920,6 +3130,8 @@ void benchApply(int step) {
   handleControlChange(1, 80, b.reverb);
   handleControlChange(1, 81, 0);                      // gate wide open
   handleControlChange(1, 95, b.follow ? 127 : 0);
+  handleControlChange(1, 108, b.follow == 3 ? 64 : (b.follow == 4 ? 32 : 0));
+  handleControlChange(1, 110, b.follow >= 2 ? 127 : 0);
   handleControlChange(1, 94, b.antiFb ? 127 : 0);
   handleControlChange(1, 96, 127);                    // the bench has no jack: the voice goes to the speaker
 }
@@ -2965,7 +3177,7 @@ void setup() {
   setLed(true, true);                            // orange: reading the keys
   uint32_t started = millis();
 #if ETUTTI_V4 && V4_VOICE_FX
-  AudioMemory(100);  // + the voice chain, three shifters, tracker and FFT: ~30 more blocks in flight (estimate, see student_v04/FIRMWARE.md)
+  AudioMemory(104);  // + the voice chain, four shifters, tracker and FFT: ~34 more blocks in flight (estimate, see student_v04/FIRMWARE.md)
 #else
   AudioMemory(60);   // measured peak: 32 blocks (8 voices x 4 reeds + reverb); 8 with sampled reeds
 #endif
@@ -2984,6 +3196,7 @@ void setup() {
 #endif
 #if ETUTTI_V4 && V4_HAVE_OLED
   oledSetup();
+  uiLangLoad();
 #endif
   setVolume(90);
 

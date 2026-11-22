@@ -5,7 +5,7 @@
 Plain Python. Frame of the SPEC: origin at the case's back-left corner, x right (0-252),
 y towards the player (0-100), z = 0 at the board's top. KiCad uses the same x, y.
 
-The keyboard is the Student V1's: 28 keys, 18.5 mm along a row, 16.02 mm between rows.
+The keyboard is the Student V4's (R5V4/R6V4): 32 keys, 18.5 mm along a row, 16.02 mm between rows.
 Everything round it is an offset of the convex hull of the key centres:
 
     12.5 mm   the well's wall (5 mm from a 15 mm button)
@@ -19,7 +19,7 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-CASE = (252.0, 100.0)
+CASE = (244.0, 100.0)               # R6V4: 32 keys, +4 mm of flat deck after the last button (SPEC R6V4 item 3); 48/64/80: 318/392/466
 CASE_R = 9.0
 Z_BASE, Z_TOP = -10.1, 14.5          # SPEC v4: no base/lid split in the wall; the top came down 3.7 mm
 WALL = 2.0
@@ -28,8 +28,10 @@ BOARD_R = 6.5                         # V1 had 5.0: 6.5 keeps 0.5 mm from the ca
 T_PCB = 1.2
 
 PITCH, ROW_PITCH = 18.5, 16.02
+# R5V4/R6V4: 32 keys, rulers always full (8 per row); rows 2 and 4 start at 89.2, rows 1 and 3 at 98.45 (first KEY centre; the
+# rulers start at 79.95 / 89.2). Same numbers as case/layout_r4.py ROWS. Each +16-key module adds one ruler (4 keys) per row.
 ROWS = [  # (row, y, first x, keys); row 1 is the front one
-    (1, 74.03, 98.45, 7), (2, 58.01, 89.2, 8), (3, 41.99, 98.45, 7), (4, 25.97, 107.7, 6)]
+    (1, 74.03, 98.45, 8), (2, 58.01, 89.2, 8), (3, 41.99, 98.45, 8), (4, 25.97, 89.2, 8)]
 KEYS = [(r, round(x0 + i * PITCH, 3), y) for r, y, x0, n in ROWS for i in range(n)]
 
 WELL_WALL, WELL_EDGE, GRID_SCREW, GRID_EDGE = 12.5, 15.5, 18.5, 21.5

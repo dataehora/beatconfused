@@ -144,3 +144,19 @@ Régua: 2,33 de peças por régua (10 montadas = 23,28); 3 tipos Extended x 3,09
 3. (ver 2) grade-régua de 16,0 mm: serve às presilhas e ao deck?
 4. Furo do USB-C na parede esquerda em **y 10** e o J602 na borda x 77,4: o plugue passa por baixo da ponta da régua da fileira 2 (x 79,95..82,4)? A planta do design já mostra isso, confirmar.
 5. Furos da principal: H1 em (62; 48) e posição das pernas da interface.
+
+---
+
+# PARTE 4 · R6V4 (22 nov 2026): ligação fixa entre réguas e microfone
+
+**Portão P continua fechado; nada roteado.** Detalhe, peças e custo: `ELETRONICA.md`, seção R6V4.
+- **Recomendada (G):** fêmea 1x5 de 1,27 mm (SHOU HAN C55566451, 6,76 x 5,2 mm de footprint, **(conferir)**) em **cada ponta da régua, faixa de trás, boca para baixo**, mais **ponte** (PCB 1,2 mm de 18,2 x 6,8 mm, dois machos C55213903) entre réguas da mesma fileira, e **pigtail** de SH-6 cortado (25 mm, plugue na principal, macho na régua) na entrada. A placa principal **não muda** (J601..J604 continuam). **A régua ainda não foi refeita** (esquema e posicionamento seguem os da R5V4: SH-6 em J1/J2 + pads LK): só muda se o J escolher G.
+- **Placa principal (mudança aplicada):** R306 (100 k) e C311 (100 nF) no fundo, ao lado do C309 (x 20,45 / 23,45; y 39,45 / 41,95), rede MIC_DET no pino 25; VOL_SW passou para o pino 4. ERC 0/0, DRC sem trilhas 0 erros (1 aviso `isolated_copper` do +3V3, como antes), paridade 0.
+
+| Figura | Arquivo |
+|---|---|
+| E1 (inviável), planta e corte | `pcb/regua/img/conectores_E1.png` |
+| **E2 (recomendada), planta e corte** | `pcb/regua/img/conectores_E2.png` |
+| Placa -> 1ª régua (degraus 0/2/4/7), planta e corte | `pcb/regua/img/conectores_entrada.png` |
+| E3 (FFC) e E4 (mola), planta e corte | `pcb/regua/img/conectores_descartadas.png` |
+| 32 teclas com as notas e a ligação | `pcb/regua/img/conectores_teclado32.png` |

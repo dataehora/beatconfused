@@ -25,6 +25,7 @@ import layout_r4 as L    # noqa: E402
 import case_t3g as T     # noqa: E402
 import case_f2 as F      # noqa: E402
 import case as C3        # noqa: E402  (the V3 case's functions: knob and acoustic box, patched below)
+import juncao_r6 as J    # noqa: E402  (R6V4: the ruler-to-ruler joints)
 
 OUT = F.OUT
 G = L.G
@@ -42,6 +43,7 @@ T.pick_posts = L.pick_posts
 # R5V4: 32 keys (rulers always full) and the shorter case
 F.ROWS = L.ROWS
 F.length = L.length
+CRADLE_OPT = "E2"                       # R6V4: the joint option whose bridge cradle the tray carries (None = no cradle)
 CHAMFER_TOP, CHAMFER_BOT = 2.0, 1.0       # R5V4: 45 deg chamfer on the outer top edge (where the hand rests) and a small one on the bottom edge
 R_OUT, R_IN = L.CASE_R, L.CASE_R - L.WALL
 
@@ -217,6 +219,11 @@ def tray(mod):
     for nt in L.notches(mod):
         z1 = L.ZR[nt["row"] - 1] - L.RULER_T
         b = b.cut(box(nt["x0"], nt["x1"], nt["y0"], nt["y1"], L.Z_FLOOR, z1 + 0.1))
+    # R6V4: the bridge's cradle (a block under the bridge and two end lips) at every junction, in the option E2
+    if CRADLE_OPT:
+        for r, xj, y, z0 in J.bridges(mod):
+            for c in J.cradle(CRADLE_OPT, r):
+                b = b.union(box(*J.to_box_cradle(c, xj, y, z0)))
     # interface: bosses under H1..H4 up to the board's underside, with the screw's hole and head recess
     for x, y in L.LID_POSTS:
         b = b.union(cyl(x, y, L.Z_FLOOR - 0.01, -L.T_PCB, 6.0))
@@ -280,7 +287,14 @@ def screws(mod):
 
 def connectors(mod):
     """Headers and plugs of every ruler (envelopes, absolute z) plus the pegs and the sensors' pockets for the clearance check."""
-    parts = {"cabecalhos": None, "plugues": None, "pinos": None, "sensores": None, "elos": None}
+    parts = {"cabecalhos": None, "plugues": None, "pinos": None, "sensores": None, "elos": None, "pontes": None}
+    if L.LINK == "E2":
+        for r, xj, y, z0 in J.bridges(mod):
+            for pt in J.OPTIONS["E2"]["parts"]:
+                if pt[1] == "femea":
+                    continue                        # the sockets ARE the J1/J2 headers of conn_boxes
+                s_ = box(*J.to_box(pt, xj, y, z0))
+                parts["pontes"] = s_ if parts["pontes"] is None else parts["pontes"].union(s_)
     if L.LINK == "D":
         for r, xj, y in L.solder_links(mod):
             a, b, ya, yb, za, zb = L.link_box(xj, y, L.ZR[r - 1])
@@ -417,6 +431,11 @@ def build(mod):
         I["conectores"].update({"elos x base": round(inter(cn["elos"], tray_), 2), "elos x pinos": round(inter(cn["elos"], cn["pinos"]), 2),
                                 "elos x sensores": round(inter(cn["elos"], cn["sensores"]), 2), "elos x parafusos": round(inter(cn["elos"], sc), 2),
                                 "elos x cabecalhos": round(inter(cn["elos"], cn["cabecalhos"]), 2), "elos x reguas": round(inter(cn["elos"], ru), 2)})
+    if cn["pontes"] is not None:
+        I["conectores"].update({"pontes x base (com berço)": round(inter(cn["pontes"], tray_), 2), "pontes x pinos": round(inter(cn["pontes"], cn["pinos"]), 2),
+                                "pontes x sensores": round(inter(cn["pontes"], cn["sensores"]), 2), "pontes x parafusos": round(inter(cn["pontes"], sc), 2),
+                                "pontes x cabecalhos": round(inter(cn["pontes"], cn["cabecalhos"]), 2), "pontes x plugues": round(inter(cn["pontes"], cn["plugues"]), 2),
+                                "pontes x tampa": round(inter(cn["pontes"], lid_), 2)})
     # ---- interface
     comp = {"placa": brd, "modulo": mdl, "bateria": bat, "alto-falante": spk, "caixa acustica": bx, "OLED": ole,
             "encoder 1": encs[0], "encoder 2": encs[1], "knob 1": knobs[0], "knob 2": knobs[1]}

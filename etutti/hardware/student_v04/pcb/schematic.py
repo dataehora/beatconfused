@@ -352,11 +352,11 @@ sym("TMAG5253BA3", "custom", tmag_symbol)
 
 # Teensy MicroMod pin -> net. Same Teensy numbers as the Viaggio v2.1 (PINOS.md), plus 28 = 3.3V_EN.
 TEENSY_NETS = {
-    "0": "CHG_STAT", "2": "SCAN_DATA_P", "3": "SCAN_CLK_P", "6": "SEL_SW",
+    "0": "CHG_STAT", "4": "VOL_SW", "2": "SCAN_DATA_P", "3": "SCAN_CLK_P", "6": "SEL_SW",
     "7": "I2S_TX", "8": "I2S_RX", "9": "SEL_B", "10": "KEEP", "11": "SEL_A", "12": "AMP_SD",
     "14/A0": "OUT_R1", "15/A1": "OUT_R2", "16/A2": "VBAT_S", "17/A3": "HP_DET", "18/A4": "I2C_SDA",
     "19/A5": "I2C_SCL", "20/A6": "I2S_LRCLK", "21/A7": "I2S_BCLK", "22/A8": "VOL_A", "23/A9": "AUD_MCLK_P",
-    "24/A10": "VOL_B", "25/A11": "VOL_SW", "26/A12": "OUT_R3", "27/A13": "OUT_R4", "28": "NC",
+    "24/A10": "VOL_B", "25/A11": "MIC_DET", "26/A12": "OUT_R3", "27/A13": "OUT_R4", "28": "NC",
 }
 
 
@@ -521,6 +521,8 @@ part("J302", "PJ-327A", "PJ-327A",
      datasheet="https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf")
 R("R305", "2.2k", "MIC_BIAS", "MIC_J", "F3", note="bias do microfone de eletreto (como a Audio Board: 2,2k do MICBIAS)")
 C("C309", "1uF", "MIC_J", "MIC_IN", "F3", note="acoplamento do microfone ao pino MIC (o datasheet mostra 0,1 uF; 1 uF baixa o corte da voz)")
+R("R306", "100k", "MIC_J", "MIC_DET", "F3", note="R6V4: toma de CC da ponta do IN para o ADC (pino 25): distingue microfone de eletreto de plugue de linha/sem plugue")
+C("C311", "100nF", "MIC_DET", "GND", "F3", note="R6V4: filtro da toma MIC_DET (RC 10 ms; o ADC lê devagar)")
 C("C310", "100nF", "MIC_BIAS", "GND", "F3", note="datasheet SGTL5000 Fig. 20 (20 QFN): 0,1 uF no MIC_BIAS (C4)")
 
 # ---------------------------------------------------------------- I: interface
@@ -935,9 +937,9 @@ def compare_v3():
     """Every part kept from the V3 has the same pins on the same nets; only the listed R3V4 changes differ."""
     mine = netlist_of(os.path.join(KDIR, PROJECT + ".kicad_sch"), os.path.join(BUILD, PROJECT + "_netlist.net"))
     gone = {"U601", "U602", "U603", "U604", "U605", "C601", "C602", "C603"} | {"U7%02d" % n for n in range(1, 29)} |         {"C7%02d" % n for n in range(1, 29)}
-    new = {"J601", "J602", "J603", "J604", "R601", "R602", "R603", "R604", "R605", "R606", "C310"}
+    new = {"J601", "J602", "J603", "J604", "R601", "R602", "R603", "R604", "R605", "R606", "C310", "R306", "C311"}
     # Teensy pads 19 (CHG_STAT), 10/18/32/47/34/38/8/67 etc. change by design (PINOS.md); J401 5 and 6 are new pins
-    allowed = {("J101", p) for p in ("19", "10", "32", "47", "34", "38", "8", "67", "17", "18", "28", "4", "9")}
+    allowed = {("J101", p) for p in ("19", "10", "32", "47", "34", "38", "8", "67", "17", "18", "28", "4", "9", "51")}
     allowed |= {("D202", "1"), ("J401", "1"), ("J401", "2"), ("J401", "3"), ("J401", "4"), ("J401", "5"), ("J401", "6")}
 
     def nc(n):

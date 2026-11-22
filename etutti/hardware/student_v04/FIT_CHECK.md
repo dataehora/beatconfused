@@ -1,5 +1,73 @@
 # eTutti Student V4 — FIT_CHECK (design)
 
+## R6V4 — atendida (22 nov 2026, tarefas de Design: itens 1 e 3)
+
+Nada foi encomendado, impresso ou montado. As seções R5V4 e anteriores valem, menos onde esta diz o contrário. Peças e medidas: **as reais da eletrônica** (`ELETRONICA.md`, R6V4); o que ainda é estimativa está marcado **(conferir)** (a ficha da fêmea H3,4 não tem folha de desenho: uso o footprint do irmão H4,3).
+Reproduz (venv CadQuery; `case/out/` fora do git): `case/case_r4.py 0 1 2 3` (modelo + interferências; já com o elo E2) → `case/juncao_v6.py --tudo` (opções, figuras, `case/out/juncao_r6.json`) → `case/planta_v4.py`, `case/corte_teclado_v5.py`. Dados das opções: `case/juncao_r6.py`.
+Imagens novas (`case/renders/`, com o **nome da nota em cada tecla**, C e F destacados): **`juncao_opcoes_r6.png`** (planta da junção E4|G4 e corte da F#4|A4 de E1, E1c, E2, E2b, F), **`juncao_E2_r6.png`** (a recomendada: planta, dois cortes, montagem), `juncao_placa_r6.png` (placa → 1ª régua). Atualizadas para 244 mm: `planta_geral_v4.png`, `corte_chanfro_v5.png`.
+
+### 1. Item 3 — case +4 mm, chanfro, mesa FDM
+
+- `CASE_LEN` 240 → **244 mm** (`layout_r4.py`); módulos **318 / 392 / 466** (48 / 64 / 80 teclas). Régua mais à direita termina em x 237,0, parede interna em 242,0: folga de 5,0 (era 1,0); **deck plano da borda do último botão (236,2) até o começo do chanfro (242): 5,8 mm** (era 1,8), 7,8 mm até a borda externa. Chanfro 2,0 x 2,0 em cima e 1,0 x 1,0 embaixo (aprovados) mantidos; nenhuma interseção nova.
+- **FDM 250 x 250: a tampa de 32 teclas (244 x 100) cabe**, com 3 mm de sobra de cada lado em x: só com mesa de 250 inteira e sem aba/brim maior que ~2,5 mm (Prusa MK4 250, Bambu A1 256; não Ender 3, 220). 48 teclas (318) e acima: MJF/SLA/FDM grande.
+- Volumes (com o berço do elo E2, abaixo) e impressão MJF PA12 (US$ 0,275/g, 1,01 g/cm³, sem cotação):
+
+| Teclas | Comprimento | Tampa + base (cm³) | Massa | Impressão (US$) | R5V4 (240) |
+|---|---|---|---|---|---|
+| 32 | 244 | 88,1 + 76,8 = **164,9** | 167 g | **~45,8** | 44,4 |
+| 48 | 318 | 113,7 + 106,7 = 220,4 | 223 g | ~61,2 | 59,2 |
+| 64 | 392 | 139,2 + 136,6 = 275,8 | 279 g | ~76,6 | 74,0 |
+| 80 | 466 | 164,8 + 166,4 = 331,2 | 335 g | ~92,0 | 88,9 |
+
+(+US$ 1,4 pelos 4 mm e ~0,3 por módulo pelos berços.)
+
+### 2. Item 1 — geometria das opções de junção (planta e corte: `juncao_opcoes_r6.png`)
+
+Dados de partida conferidos no modelo: régua 73,6 x 14 x 1,2 (passo 74,0, vão 0,4); **faixa livre no eixo entre o pino da última tecla de A e o da 1ª de B = 6,64 mm** (confere com o Chat); pinos D1,7 com furo D1,7 e M2 com folga de ~0,1 mm: **a régua não anda em x**. Bolso sob a régua: **6,9 / 8,9 / 10,9 / 13,9 mm** (fileiras 1-4).
+
+| Opção | Peças (medidas) | Altura sob a régua | Folga no bolso da fil. 1 | Conflitos no modelo (4 junções, 32 teclas) | Veredito |
+|---|---|---|---|---|---|
+| **E1** macho/fêmea em ângulo, pinos ao longo de x (esboço: fêmea 5,6, macho 3,1) | não existe peça 1x5 de 1,27 em ângulo, SMD, em estoque (ELETRONICA) | 3,4 | 3,5 | **pinos das teclas 13,6 mm³**; J1/J2 94-145 mm³; C6 31 mm³ | **inviável** |
+| **E1c** o mesmo com <= 3,3 mm de fundo (peça hipotética) | não existe | 3,4 | 3,5 | pinos 0; J1/J2 59-65 mm³, C6 | geometria quase serve, **montagem impossível** |
+| **E2** fêmea igual nas duas pontas + ponte com 2 machos, por baixo (C55566451, C55213903) | fêmea 6,76 x 5,2 x 3,4 em u 5,9 / 68,1, faixa de **trás** (v -6,9..-1,7); macho 1,0 (+0,6 de vão); ponte PCB 1,2 x 19,8 x 5,3 | **6,2** | **0,7** (ponte de 0,8 mm: 1,1) | **0 mm³** com tudo, em 32 / 48 / 64 / 80 | **recomendada** |
+| E2b machos nas réguas + ponte com fêmeas | (estimativa) macho 1,5 + fêmea 3,4 + 0,8 | 5,7 | 1,2 | R1 3 mm³, C6 41 mm³ (faixa da frente) | pinos expostos na régua solta; pior que E2 |
+| F contatos de mola contra pads | (estimativa) mola 3,0 montada, passo 2,0, ponte 20,8 | 3,8 | 3,1 | R1, C6 (faixa da frente) | reserva; a eletrônica descartou (retenção, ruído) |
+| cartão de borda | nenhum para PCB de 1,2 mm (eletrônica); também encaixaria em x | — | — | — | fora |
+
+**Por que o E1 está morto, com dois motivos que independem da peça:** (a) a fileira de contatos fica ao longo de y e atravessa o pino da 1ª tecla de B (o footprint de 5,6 mm bate nele: 13,6 mm³; mesmo com 3,3 mm sobra o J1/J2 de 9,4 mm no fundo da régua); (b) o encaixe é em x: a régua B teria de deslizar ~3 mm, mas só se posiciona pelos 8 pinos D1,7 e pelo M2 (folga 0,1 mm); "montar a fileira da direita para a esquerda" não existe. Inclinar a régua como num módulo de memória exigiria ~20 graus em torno do conector e não cabe no bolso.
+
+**E2, números (`juncao_r6.json`, `juncao_E2_r6.png`):**
+- **Fit check 32 / 48 / 64 / 80 teclas (4 / 8 / 12 / 16 junções): 0 mm³** de ponte, machos, fêmeas, berço e macho do pigtail contra bandeja, pinos de tecla, sensores, parafusos M2, cabeçalhos, plugue e tampa; mais todos os pares do R5V4 (as colunas de sensibilidade carcaça +0,5 / +0,8 mm seguem as de sempre: 8,3 / 50,4 mm³ em 32). Nenhum poste a menos de 18,5 mm de uma junção; a faixa de trás não alcança os M2 (v +5,2).
+- **Bolso da fileira 1: ponte a 6,2 mm de 6,9 (0,7 mm de folga).** No piso o berço da fileira 1 é um bloco de só 0,5 mm mais duas abas (0,3 mm das pontas da ponte); nas fileiras 2 / 3 / 4 o bloco sobe 2,7 / 4,7 / 7,7 mm (berços no total: 1,4 / 2,8 / 4,2 / 5,6 cm³ em 32 / 48 / 64 / 80). **A folga de 0,7 mm some com tolerância de PCB, piso e altura da fêmea; a ponte de 0,8 mm dá 1,1.**
+- **Trilho de trás:** o mesmo entalhe do cabeçalho de antes (10,4 mm) em cada ponta de régua; ficam **70 %** do trilho de trás (100 % o da frente); nenhum entalhe encontra M2 ou poste (`conflicts()` vazio). Sai o entalhe de plugue sob a régua de trás (o macho do pigtail é pequeno).
+- **Faixa de trás, não a da frente do esboço do Chat:** a fêmea real tem footprint de 5,2 mm de fundo (pads alternados) e a faixa da frente só tem 3,1 mm até o trilho; concordo com a eletrônica. No modelo J1 e J2 viram a fêmea (`SOCK_*`, `LINK = "E2"`, `J2_FITTED = True` em `layout_r4.py`).
+- **C6 e R1 da régua** (faixa da frente) **não conflitam** com E2; conflitariam com E2b e F. LK1/LK2 e o SH J1/J2 da R5V4 saem (eletrônica).
+- **Montagem (vertical, sem deslizar):** bandeja para cima → ponte no berço (machos para cima) → as duas réguas descem sobre os machos (curso 3,4 mm, 5 contatos) → M2 → tampa com as teclas. **Desmontagem:** tampa, 2 M2, régua para cima; a ponte fica no berço. **Retenção:** o M2 fixa a altura da régua e o berço a da ponte: o encaixe não sobe nem desce sozinho, só um parafuso solto o libera; a ponte pesa < 1 g. Risco: a tolerância de ±0,2 mm em x entre M2 e ponte pede entrada cônica nos machos (conferir).
+
+### 3. Placa principal → 1ª régua (item 2): encaixe rígido é impossível; o pigtail
+
+| Fileira | Início da régua (x) | Vão da borda da placa (77,5) | Desnível (z) | Pigtail, plugue SH → macho (modelo) |
+|---|---|---|---|---|
+| 1 | 89,20 | **11,7** | 0 | 16,8 mm |
+| 2 | 79,95 | **2,45** | 2,0 | 8,8 mm |
+| 3 | 89,20 | **11,7** | 4,0 | 16,8 mm |
+| 4 | 79,95 | **2,45** | 7,0 | 8,8 mm |
+
+- **Confirmado:** além do desnível de 0 a 7 mm e do vão de 2,45 ou 11,7 mm, a placa fica presa por 4 posts e as réguas por M2 nas bossas: duas cadeias de tolerância sem folga para um encaixe cego. Uma ponte plana só alcançaria a fileira 1 (e a ~18 mm), as fileiras 2-4 pedem degraus de 2, 4 e 7 mm. Cabo flexível é obrigatório.
+- **Desenhado** (`juncao_placa_r6.png`): pigtail com plugue SH no J60x (a placa não muda) e fios soldados a um macho 1x5 que sobe na fêmea de entrada (a do J1, faixa de trás), com os fios saindo para -x. Comprimentos = corda 3D x 1,25 + 4 mm: **os ~25 mm da eletrônica fazem laço nas fileiras 2 e 4 (aparar a ~9 mm) e sobram 8 mm nas 1 e 3**; peça cortes por fileira. Nas fileiras 2 e 4 o plugue SH (x 77,4..82,4) fica sob o início da régua, como antes; a folga dele ao macho do pigtail é para medir com as peças reais.
+
+### Pendências
+- E2 depende da **fêmea H3,4 real**: altura do isolante (3,4), footprint (6,76 x 5,2 do H4,3), pino do macho (4 mm numa fêmea de 3,4: 0,6 mm de plástico fora). Se a fêmea passar de 3,6 mm a fileira 1 perde a folga: ponte de 0,8 mm ou rebaixo do piso sob o berço.
+- Contrato para a eletrônica: J1/J2 da régua = fêmea 1x5 de 6,76 x 5,2 x 3,4 (u 5,9 / 68,1, v -6,9..-1,7); a **ponte** é uma PCB de 1,2 x 19,8 x 5,3 mm com dois machos a 11,8 mm entre centros. Nada muda em `pcb_envelope` nem na placa principal.
+
+### Perguntas para o design
+1. A folga de 0,7 mm sob a ponte na fileira 1 é aceitável (ou ponte de 0,8 mm, ou piso rebaixado 0,5 mm sob o berço)?
+2. Pode ir o pigtail em dois comprimentos (17 mm nas fileiras 1 e 3, 9 mm nas 2 e 4)?
+3. O J aceita um berço de 4 a 16 blocos pequenos no piso (1,4 a 5,6 cm³ no total), com o macho do pigtail solto?
+4. A mesa FDM de 250 mm do J é inteira (sem brim largo)? Senão a tampa de 32 teclas vai para MJF/SLA.
+
+---
+
 ## R5V4 — atendida (21 nov 2026, tarefas 1 e 2 sua parte)
 
 Respondo à **R5V4** (SPEC do Chat). Nada foi encomendado, impresso ou montado. As seções R4V4 e anteriores abaixo valem, menos onde esta diz o contrário.

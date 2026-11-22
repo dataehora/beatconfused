@@ -296,7 +296,7 @@ def main():
         for k in ("Altura_mm", "Cabe_sob_cartao"):
             if k in src.get("fields", {}):
                 extra[k] = src["fields"][k]
-        if ref.startswith(("J60", "R60", "C310")) or ref == "J401":
+        if ref.startswith(("J60", "R60", "C310", "R306", "C311")) or ref == "J401":
             if ref.startswith("J60") or ref == "J401":
                 extra = {"Altura_mm": "4.3", "Cabe_sob_cartao": "nao"}
             else:
@@ -423,7 +423,7 @@ def main():
     placed = set(fixed)
     pending = []
     for ref in keep_order:
-        if ref in ("U201", "R201", "R202", "D201", "J401") or ref.startswith(("J60", "R60", "C310")):
+        if ref in ("U201", "R201", "R202", "D201", "J401") or ref.startswith(("J60", "R60", "C310", "R306", "C311")):
             pending.append(ref)
             continue
         fp = fps[ref]
@@ -448,6 +448,9 @@ def main():
         if ref == "C310":
             u = fps["U301"]
             return (T(u.GetX()), T(u.GetY()) + 3.0)
+        if ref in ("R306", "C311"):          # R6V4: next to C309 (the MIC_J node)
+            c9 = fps["C309"]
+            return (T(c9.GetX()) + (2.0 if ref == "R306" else 4.0), T(c9.GetY()) + 2.5)
         if ref == "J401":
             return (35.5 + DX * 0.6, 37.5)
         if ref in v3:
