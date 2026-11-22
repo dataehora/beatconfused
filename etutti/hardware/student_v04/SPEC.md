@@ -1,4 +1,81 @@
-# eTutti Student V4 — SPEC R7V4
+# eTutti Student V4 — SPEC R8V4
+
+Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #192 (relatórios da R7V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R8V4".
+
+**Regras que continuam:**
+- resumos visuais de **planta e corte**;
+- **nome da nota em cada tecla**;
+- as regras gerais da R7V4: só 32 teclas detalhadas e só a Student V4.
+
+**Regra nova (J): nada é comprado até o protótipo inteiro estar fechado.** Nem amostras de cabo. As dúvidas que só a peça real responde ficam como risco no relatório. O projeto deve ser robusto a elas (item 1.3).
+
+## Mudanças desde a R7V4
+
+### 1. Ligação H aprovada
+
+1. **Cabeçalho OUT da régua em u 47,5** (recomendação do Chat, aprovada).
+   - O C3 sai da pegada do OUT (eletrônica).
+   - O IN continua em u 5,9.
+   - Os dois são o SM06B-SRSS-TB (ou o clone C56123098), no fundo, com a boca para trás (−y).
+2. **Pinagem P6s:** +3V3, GND, OUT, GND, CLK, DADO.
+   - Vale na entrada e na saída da régua e em J601–J604.
+   - Os resistores em série de CLK/DADO passam a 330 Ω: R605/R606 na principal e o do QH' na régua.
+   - O cabo previsto é o JST **A06SR06SR30K51B** (50,8 mm, reto).
+3. **Robustez ao cabo não medido** (consequência da regra de compra):
+   - Ainda não se sabe se o comprimento útil é 45,8 ou 50,8 mm, nem se os fios são soltos ou em fita colada.
+   - **Comprimento:** o desenho deve fechar nas quatro fileiras com **45,8 e com 50,8 mm**, com folga ≥ 0,5 mm.
+     - Com o OUT em 47,5 isso falha na fileira 4 para 50,8 (−1,2 mm).
+     - Resolver pela menor mudança, nesta ordem:
+       1. aumentar a profundidade do case atrás da fileira 4 (a largura passa de 100 mm para o necessário, ~102 mm; dizer o custo);
+       2. só se isso for pior, outra posição do OUT.
+   - **Fio solto x fita colada:** dizer o que acontece com uma fita colada e se algum ajuste barato do rebaixo a acomoda. Se não houver, fica registrado como risco a conferir na compra.
+4. **Mudanças no case aprovadas** (as quatro da R7V4):
+   - postes de parede em x 102,5 / 176,6 / 234;
+   - os 2 postes internos novos;
+   - os pares de M2 por fileira;
+   - os rebaixos por junção.
+   
+   Saem o berço e tudo o que era da G. **Conferir a rigidez da régua** com os M2 mais próximos entre si (21–50 mm): flexão ≤ 0,05 mm a 3 N, como antes.
+5. **Montagem:** a sequência da R7V4 (da fileira da frente para a de trás; régua erguida → plugue → desce → M2) entra no relatório como procedimento oficial. Inclui a pinça fina para trocar uma régua.
+
+### 2. Microfone
+
+- **R305 = 0 Ω na BOM** (aprovado): 2 kΩ de bias no total, mais tensão para microfones que pedem mais.
+- O ME 3 era só uma referência; o J não tem um. **Sem teste de bancada e sem o boost de 9–10 V** nesta fase.
+- O plano B do boost fica registrado no relatório para uma revisão futura.
+
+### 3. Aplicar tudo e apresentar o portão P
+
+Com os itens 1 e 2 decididos, esta revisão **aplica as mudanças** e **apresenta o portão P**:
+- **Régua:** esquema e posicionamento com OUT em u 47,5, C3 movido, P6s e 330 Ω. DRC sem trilhas: 0 erros, 0 avisos; paridade 0.
+- **Placa principal:**
+  - J601–J604 na pinagem P6s;
+  - R605/R606 de 330 Ω;
+  - R305 de 0 Ω;
+  - DRC sem trilhas: 0 erros, paridade 0;
+  - posicionamento final.
+- **Case:** `LINK = "H"` no modelo oficial (`case_r4.py`). Fit check só das 32 teclas: cabos (45,8 e 50,8), plugues, rebaixos, postes, M2 e réguas. Mais a profundidade do item 1.3.
+- **Firmware** (sketch próprio da V4): a pinagem P6s não muda pinos do Teensy; conferir que nada depende da ordem antiga do conector.
+- **Portão P:** entregar ao J a **planta final de posicionamento da placa principal e da régua**, com blocos, conectores, furos e as figuras de sempre, para aprovação. O **roteamento só começa depois de o J aprovar** essa planta.
+
+## Tarefas para o Code (R8V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Design | item 1.3 (comprimento 45,8/50,8 e fita colada) e 1.4 (postes, M2, rebaixos, rigidez); `LINK = "H"`; fit check das 32 teclas; montagem oficial (1.5) |
+| 2 | Eletrônica | régua (OUT u 47,5, C3, P6s, 330 Ω), principal (J601–J604 P6s, R605/R606 330 Ω, R305 0 Ω), DRC e paridade; planta do portão P |
+| 3 | Programação e som | conferir o firmware da V4 contra a P6s; compilar só a V4 |
+| — | Roteamento | aguarda a aprovação do portão P pelo J |
+
+**Perguntas que o Chat espera nos relatórios:**
+- a profundidade (ou posição) que fecha com os dois comprimentos de cabo, e quanto custa;
+- a rigidez com os novos M2;
+- a planta do portão P pronta para o J aprovar.
+
+---
+
+# Anexo — SPEC R7V4 (referência)
 
 Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #189 (relatórios da R6V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R7V4".
