@@ -1,5 +1,5 @@
 /* ============================================================
-   eTutti Student V4 — Teensy MicroMod firmware (SPEC R7V4)
+   eTutti Student V4 — Teensy MicroMod firmware (SPEC R10V4)
    etutti/hardware/student_v04/FIRMWARE.md is the report; student_v04/pcb/PINOS.md
    is the pin contract. This sketch is the Student V4 only: 32 keys in the modular
    keyboard, nothing of any other instrument.
@@ -7,8 +7,8 @@
    Hardware: SparkFun MicroMod Teensy (i.MX RT1062), SGTL5000 codec (headphones,
    microphone IN, speaker amplifier MAX98357A on the same I2S), SSD1306 OLED (J401),
    two encoders with a push switch (volume, selector), LiPo + charger, USB MIDI.
-   Keys: sensor rulers (4 TMAG5253 + one 74HC595 each) chained along each of the 4
-   rows; one "1" in the chain switches one column on; 4 analogue OUT lines (14, 15,
+   Keys: one sensor ruler R8 (8 TMAG5253 + one 74HC595, all 8 stages) per row, 4 rows = 32 keys; one "1"
+   in the chain switches one column on; 4 analogue OUT lines (14, 15,
    26, 27) are read by both ADCs. The key's travel comes from the cube root of the
    field, its velocity from the time it took to go from 12 % to 45 % travel.
 
@@ -77,21 +77,25 @@ const uint8_t AMP_SD_PIN = 12;          // high = speaker amplifier on
 const uint8_t VBAT_PIN = 16;            // battery / 2
 const uint8_t HP_DET_PIN = 17;          // headphones in: ~0 V; out: ~1.4 V
 
-// ---- Keyboard: modular, N rulers per row ----
-// One ruler = 4 sensors (pitch 18.5 mm) + one 74HC595 that switches one sensor on at a
-// time. Rulers are chained along each row; the 4 rows carry the same DATA/CLK, so a single
-// "1" walking along the chain switches ONE COLUMN on, i.e. 4 sensors (one per row) at once.
-// Each row's sensors share one analogue OUT line (a switched-off TMAG5253 leaves OUT high
-// impedance), 4 lines in all. Every ruler is full (4 keys). The detailed build is 2 rulers
-// per row = 32 keys; STRIPS_PER_ROW is the only constant the keyboard's size depends on
-// (concept check of the modular system, FIRMWARE.md: the main board does not change).
-const int STRIPS_PER_ROW = 2;
+// ---- Keyboard: modular, rulers R8 (and R4 at the treble end) along each row (SPEC R10V4) ----
+// A ruler = sensors at pitch 18.5 mm + one 74HC595 that switches one sensor on at a time: the R8 has 8 sensors
+// (all 8 stages QA..QH), the R4 has 4 (QA..QD; QE..QH unused). Rulers are chained along each row; the 4 rows carry the
+// same DATA/CLK, so a single "1" walking along the chain switches ONE COLUMN on, i.e. 4 sensors (one per row) at once.
+// Each row's sensors share one analogue OUT line (a switched-off TMAG5253 leaves OUT high impedance), 4 lines in all.
+// The detailed build is ONE R8 per row = 32 keys, 8 columns, one stage per column. The R4, when there is one, is always
+// the LAST ruler of the row (treble end): its unused stages come after the last column, so the "1" never crosses a
+// dead stage and the column number is the stage number (48 keys = R8 + R4, 64 = R8 + R8, 80 = R8 + R8 + R4).
+// Only these two constants change with the keyboard's size (concept check of the modular system, FIRMWARE.md).
+const int RULERS_R8 = 1;                      // per row
+const int RULERS_R4 = 0;                      // per row, at the treble end
 const int LAYOUT_ROWS = 4;
-const int LAYOUT_COLS = 4 * STRIPS_PER_ROW;
+const int LAYOUT_COLS = 8 * RULERS_R8 + 4 * RULERS_R4;
+const int V4_KEYS = LAYOUT_ROWS * LAYOUT_COLS;
+static_assert(V4_KEYS == 32, "the detailed Student V4 has 32 keys (4 x R8)");
 const uint8_t ROW_OUT_PINS[LAYOUT_ROWS] = {14, 15, 26, 27};   // OUT_R1..R4 (A0, A1, A12, A13); no internal pull: 100 kohm to GND on the board
 const uint8_t SR_DATA_PIN = 2, SR_CLK_PIN = 3;                // SCAN_DATA, SCAN_CLK (SRCLK and RCLK of every 595 tied together)
 const uint8_t CHG_STAT_PIN = 0;         // low = charging, only with USB power
-const int SR_STAGES = 8 * STRIPS_PER_ROW;      // each ruler's 595 has 8 stages, only QA..QD (the first 4) carry sensors
+const int SR_STAGES = 8 * (RULERS_R8 + RULERS_R4);   // every ruler's 595 has 8 stages (an R4 uses only the first 4, at the end of the chain)
 const uint32_t SR_HALF_PERIOD_NS = 100;        // 74HC595 at 3.3 V: CLK up to 5 MHz
 // Hot scan (R3V4 item 5): a key that has started to move up is read again on its own
 // column (~85 us per column change, ~56 us for the same column again, instead of a whole
@@ -112,18 +116,23 @@ const int SCAN_PRIORITY = 96;                 // NVIC: lower = more urgent. USB 
 const uint32_t PASS_NOMINAL_US = (uint32_t)(LAYOUT_COLS * 72);   // one pass with no hot reads: 60 us wake + ~12 us work
 // OLED: 128 x 64 SSD1306 on I2C 0x3C (J401, the I2C is shared with the codec). USB runs at 12 Mbit/s
 // (startup_late_hook, untested on a board). Microphone: pin 8 = I2S_RX, the codec's MIC input.
-// R6V4 item 5: the voice effects (expander, harmonizer, feedback suppressor, vocoder, echo, voice reverb) only work
-// with a MICROPHONE plugged into the IN jack (J302); without one the voice items leave the menu and the effects are
-// silent. Detection (PINOS.md, R6V4): MIC_DET = pin 25 (ADC) reads the DC voltage of the jack's tip (MIC_J, which the
-// codec's MIC_BIAS feeds through the codec's 2 k BIAS_RESISTOR only: R305 = 0 ohm since R8V4) through R306 100 k + C311 100 nF:
-//   v >= 2.85 V  nothing plugged, or a line plug (no DC load)  -> voice effects off
-//   0.30 < v < 2.85 V  an electret capsule (0.1/0.3/0.5/1 mA = 2.8/2.4/2.0/1.0 V)  -> voice effects allowed
-//   v <= 0.30 V  short, or a low-impedance dynamic microphone  -> off
-// R8V4 (R305 0 ohm, 2 k in total instead of 4.2 k): a capsule's voltage is higher than with 4.2 k (0.1 mA: 2.8 V, was 2.6),
-// so the 2.85 V limit sits only 0.15 V under the open-jack 3.0 V (and 50 mV above a 0.1 mA capsule): a capsule drawing under ~0.075 mA would read as absent.
-// Limits kept (a calculation, TO BE MEASURED ON THE BOARD with a real capsule and a line plug; the bias tolerance is unknown).
+// R10V4 item 5: ELECTRET (plug-in power) and DYNAMIC microphones, only through the 3.5 mm jack IN (J302). The voice effects
+// (expander, harmonizer, feedback suppressor, vocoder, echo, voice reverb) only work with a microphone detected or declared in
+// the menu ("Tipo mic"); without one the voice items leave the menu and the effects are silent.
+// Detection (PINOS.md, R6V4): MIC_DET = pin 25 (ADC) reads the DC voltage of the jack's tip (MIC_J) through R306 100 k + C311
+// 100 nF, with the codec's MIC_BIAS ON (3.0 V behind its internal 2 k BIAS_RESISTOR; R305 = 0 ohm since R8V4):
+//   v >= 2.85 V          nothing plugged, or a line plug (no DC load)                 -> no microphone
+//   v <= 0.10 V          short, or a DC-coupled low-impedance source (< ~70 ohm)       -> no microphone
+//   0.10 < v < ~0.85 V   a dynamic coil of 70 .. ~600 ohm (3.0 V x Rc / (2 k + Rc): 150 / 300 / 600 ohm = 0.21 / 0.39 / 0.69 V)
+//   ~0.95 .. 2.85 V      an electret capsule (0.1 / 0.3 / 0.5 / 1 mA = 2.8 / 2.4 / 2.0 / 1.0 V)
+// The two microphone bands touch (a 600-700 ohm coil, the 2 k resistor's tolerance, an electret at >1 mA), so the TYPE is
+// not trusted for the bias: "Tipo mic" = Auto (default: bias ALWAYS on, because the detector needs it; the reading only picks the
+// factory gain), Eletreto (bias on) or Dinâmico (bias OFF, declared: MIC_DET reads 0 V with the bias off, so nothing is detected
+// and the voice stays enabled until the type is changed). A bias left on a 150-600 ohm coil by mistake does no harm: 1.15-1.4 mA,
+// ~0.3 mW in the coil, blocked from the codec by C309; it costs 1-2 dB of signal and ~0.1 uV of noise (FIRMWARE.md).
 const uint8_t MIC_DET_PIN = 25;          // R6V4: MIC_DET (ADC). VOL_SW moved to pin 4 in the same revision
-const float MIC_DET_MIN_V = 0.30f, MIC_DET_MAX_V = 2.85f;
+const float MIC_SHORT_V = 0.10f, MIC_OPEN_V = 2.85f;
+const float MIC_DYN_UP_V = 0.85f, MIC_DYN_DOWN_V = 0.95f;   // R10V4 (electronics): below 0.85 V dynamic; once dynamic, back to electret above 0.95 V (hysteresis)
 const uint8_t OLED_ADDR = 0x3C;
 const int OLED_ROTATION = 2;             // as Adafruit_SSD1306::setRotation(2): upside down
 
@@ -138,10 +147,10 @@ const int8_t FIRST_NOTE[2][LAYOUT_ROWS] = {
 const uint8_t FIRST_COL[LAYOUT_ROWS] = {0, 0, 0, 0};   // each ruler starts at the row's first key
 int layoutSystem = 0;   // 0 = C-griff, 1 = B-griff
 
-// Modular note map: the keyboard grows to the right in modules of 16 keys (one more ruler per row,
-// 4 columns = one octave). The 1st extra module adds treble and the 2nd bass, and so on; adding bass shifts
-// every key down an octave. With the detailed 32 keys (STRIPS_PER_ROW 2) there are no extra modules: G3-E5.
-const int EXTRA_MODULES = STRIPS_PER_ROW - 2;
+// Modular note map: the keyboard grows to the right by 4 columns (= one octave) per module: an R4 (+4) or the second R8
+// (+8 = two modules). The 1st extra module adds treble and the 2nd bass, and so on; adding bass shifts every key down an
+// octave. With the detailed 32 keys (one R8, 8 columns) there are no extra modules: F#3-F#5 (25 notes).
+const int EXTRA_MODULES = (LAYOUT_COLS - 8) / 4;
 const int BASS_MODULES = EXTRA_MODULES / 2;
 int noteShift = -12 * BASS_MODULES;   // semitones
 
@@ -170,7 +179,7 @@ const float ADC_PER_VOLT = 4095.0f / 3.3f;
 const float SENSOR_ZERO = 1.65f * ADC_PER_VOLT;  // TMAG5253 output at 0 mT
 const float SIGN_MIN = 0.04f * ADC_PER_VOLT;     // rest must be this far from 1.65 V to tell the direction
 const int DEFAULT_SIGN = 1;                      // direction assumed when it cannot be told (unverified: no board yet)
-const uint32_t EEPROM_MAGIC = 0xE7770107;        // bump when the key count/order changes (row by row from row 1)
+const uint32_t EEPROM_MAGIC = 0xE7770108;        // bump when the key count/order changes (row by row from row 1)
 const int MIN_SPAN = 120;          // ADC counts: the least a key is assumed to swing
 const float PRESENT_MIN = 0.4f * ADC_PER_VOLT;   // below this, no sensor answered
 const float VEL_START = 0.12f;     // travel where the velocity timer starts
@@ -238,7 +247,22 @@ AudioEffectFreeverb      room;
 AudioMixer4              master;              // dry, reverb
 AudioAmplifier           outAmp;              // the volume (see setVolume): the speaker amplifier has none of its own
 AudioOutputI2S           i2sOut;
-AudioControlSGTL5000     codec;
+// R10V4 item 5: the library's micGain() always writes CHIP_MIC_CTRL with the bias block ON (2 kohm, 3.0 V). The same
+// arithmetic here, but the bias can be switched off (BIAS_RESISTOR = 0 powers the block down) for a dynamic microphone.
+// CHIP_MIC_CTRL (0x002A): bits 9:8 BIAS_RESISTOR (0 off, 1 = 2 k, 2 = 4 k, 3 = 8 k), 6:4 BIAS_VOLT (1.25 V + 0.25 V x n; 7 = 3.0 V),
+// 1:0 GAIN (0 / +20 / +30 / +40 dB); CHIP_ANA_ADC_CTRL (0x0020): ADC gain 0..22.5 dB in 1.5 dB steps, both channels.
+class MicCodec : public AudioControlSGTL5000 {
+ public:
+  bool micSetup(unsigned int dB, bool bias) {
+    unsigned int pre = 0;
+    if (dB >= 40) { pre = 3; dB -= 40; }
+    else if (dB >= 30) { pre = 2; dB -= 30; }
+    else if (dB >= 20) { pre = 1; dB -= 20; }
+    unsigned int adc = min((dB * 2) / 3, 15u);
+    return write(0x002A, (bias ? 0x0170 : 0x0070) | pre) && write(0x0020, (adc << 4) | adc);
+  }
+};
+MicCodec                 codec;
 // Microphone through the codec's MIC input (I2S RX, pin 8); here only a level meter for the OLED.
 AudioInputI2S            i2sIn;
 AudioAnalyzePeak         micPeak;
@@ -586,17 +610,30 @@ void registerChanged();   // keeps the selector in step with a register set over
 // The numbers are in the sketch only for now: the page (script.js) has no V4 model yet, and the
 // CC map has to change in both together.
 extern bool headphones;                 // defined with the other jack state, further down
-extern bool micPlugged;                 // R6V4: a microphone sits in the IN jack (J302); defined with the jack state
+extern bool micPlugged;                 // R6V4: a microphone sits in the IN jack (J302) (= micKind != MIC_NONE); defined with the jack state
+// R10V4 item 5: electret (plug-in power, 2-5 V) and dynamic microphones, only through the 3.5 mm jack J302.
+enum { MIC_NONE, MIC_ELECTRET, MIC_DYNAMIC };            // what the jack holds (micKind)
+enum { MICTYPE_AUTO, MICTYPE_ELECTRET, MICTYPE_DYNAMIC }; // the menu "Tipo mic" / CC 111 (value / 43)
+uint8_t micKind = MIC_NONE;             // from MIC_DET (auto, electret) or the menu (dynamic: declared, nothing to detect)
+uint8_t micType = MICTYPE_AUTO;         // kept in EEPROM at once
+inline bool micBiasWanted() { return micType != MICTYPE_DYNAMIC; }   // bias ON for electret and for auto (the detection needs it)
+inline int micSlot() { return micKind == MIC_DYNAMIC ? 1 : 0; }     // gain slot: 0 electret, 1 dynamic
+// Factory gain per type (CC 82 scale 0..127 = 0..60 dB), from the dBFS calculation in FIRMWARE.md (R10V4): singing at 2 cm
+// ~105 dB SPL (3.5 Pa), target ~ -22 dBFS rms (between -26 and the electronics' -18). Electret -42 dBV/Pa -> 9 dB; dynamic 0.45 mV/Pa -> 34 dB,
+// 1.7 mV/Pa -> 22 dB: the dynamic default is the middle, 28 dB (-6 / +6 dB off the target for the two reference headsets).
+const uint8_t MICGAIN_ELECTRET = 19, MICGAIN_DYNAMIC = 59;
+uint8_t micGainSlot[2] = {MICGAIN_ELECTRET, MICGAIN_DYNAMIC};
+inline int micDb(uint8_t v) { return (v * 60 + 63) / 127; }          // 0 .. 60 dB
 enum { FM_EXACT, FM_ASSIST, FM_INTERVAL };   // harmonizer follow modes (CC 108)
 uint8_t keysCC = 127;                   // CC 83, as sent (the menu shows it)
 uint32_t speakerWarnAt = 0;             // millis() when the voice was sent to the speaker (the screen warns), 0 = nothing pending
 struct VoiceFx {
   uint8_t voice = 0, vocoder = 0, harm = 0, interval = 64, echo = 0, echoTime = 40, echoFb = 40;
   uint8_t reverb = 40;
-  // R6V4 item 5, factory values for a HEADSET microphone 2-3 cm from the mouth (calculation, not heard: FIRMWARE.md):
-  // gain 26 dB, expander threshold ~550 (int16 units on the rectified level), ratio "hard" (cube), 1.2 ms attack,
+  // R6V4 item 5, factory values for a HEADSET microphone 2-3 cm from the mouth (calculation, not heard: FIRMWARE.md);
+  // R10V4: the gain follows the microphone type (micGainSlot), here the electret's 6 dB; the rest as before: expander threshold ~550 (int16 units on the rectified level), ratio "hard" (cube), 1.2 ms attack,
   // ~78 ms hold, ~117 ms release, high-pass 167 Hz (the proximity effect boosts the lows).
-  uint8_t gate = 32, micGain = 24;
+  uint8_t gate = 32, micGain = MICGAIN_ELECTRET;
   uint8_t gateAtk = 20, gateHold = 50, gateRel = 40, gateRatio = 2, hpf = 40;
   bool antiFb = false, harmFollow = false, harmFold = true, speaker = false;   // suppressor off and speaker off by default
   uint8_t followMode = FM_EXACT, helpAmt = 80;   // R6V4: how the harmonizer follows the keys; assist strength
@@ -616,7 +653,8 @@ inline float hpfHz(uint8_t v) { return 60.0f + v * (340.0f / 127.0f); }
 // (the speaker is the output), unless the user switched the speaker on.
 inline bool speakerMutesVoice() { return !headphones && !vfxState.speaker; }
 // R6V4: the voice effects need a microphone in IN as well: without one everything of the voice is silent.
-inline bool voiceBlocked() { return speakerMutesVoice() || !micPlugged; }
+uint32_t micMuteUntil = 0;              // R10V4: the voice is silent ~150 ms after the bias block is switched (the DC step)
+inline bool voiceBlocked() { return speakerMutesVoice() || !micPlugged || (micMuteUntil && (int32_t)(micMuteUntil - millis()) > 0); }
 float helpDryScale = 1.0f;              // assist mode takes the dry voice away while the assisted voice sounds (crossfade)
 inline int harmVoicesWanted() { return vfxState.harm4 ? 4 : 3; }
 
@@ -714,7 +752,15 @@ void voiceFxApply() {
   }
 }
 
-void voiceFxMicGain() { codec.micGain(20 + (vfxState.micGain * 32) / 127); }   // 20 .. 52 dB (I2C: only when it changes)
+void voiceFxMicGain() {
+  static int8_t lastBias = -1;
+  bool bias = micBiasWanted();
+  codec.micSetup(micDb(vfxState.micGain), bias);
+  if (lastBias >= 0 && lastBias != (int8_t)bias) { micMuteUntil = millis() + 150; voiceFxApply(); }   // silence the DC step of the bias switching
+  lastBias = bias;
+}   // 0 .. 60 dB and the bias (I2C: only when it changes)
+
+void micTypeChanged();                  // R10V4: defined below, after the EEPROM code
 
 bool voiceFxControl(byte control, byte value) {
   VoiceFx &f = vfxState;
@@ -728,7 +774,8 @@ bool voiceFxControl(byte control, byte value) {
     case 78: f.echoFb = value; break;
     case 80: f.reverb = value; break;
     case 81: f.gate = value; break;
-    case 82: f.micGain = value; voiceFxMicGain(); break;
+    case 82: f.micGain = value; micGainSlot[micSlot()] = value; voiceFxMicGain(); break;
+    case 111: micType = min(value / 43, 2); micTypeChanged(); return true;     // R10V4: 0 auto, 1 electret, 2 dynamic
     case 84: f.gateAtk = value; break;
     case 89: f.gateHold = value; break;
     case 90: f.gateRel = value; break;
@@ -758,13 +805,15 @@ bool voiceFxControl(byte control, byte value) {
   return true;
 }
 
-// "Headset mic" action (menu): the input settings back to the factory values for a headset microphone 2-3 cm from the mouth
+// "Mic padrão" action (menu): the input settings back to the factory values for the microphone type in use, 2-3 cm from the mouth
 // (R6V4 item 5; the same values VoiceFx starts with).
 void voiceFxHeadsetMic() {
   VoiceFx d;
   VoiceFx &f = vfxState;
   f.gate = d.gate; f.gateRatio = d.gateRatio; f.gateAtk = d.gateAtk; f.gateHold = d.gateHold; f.gateRel = d.gateRel;
-  f.hpf = d.hpf; f.micGain = d.micGain;
+  f.hpf = d.hpf;
+  micGainSlot[micSlot()] = micSlot() ? MICGAIN_DYNAMIC : MICGAIN_ELECTRET;
+  f.micGain = micGainSlot[micSlot()];
   voiceFxMicGain();
   voiceFxApply();
 }
@@ -777,7 +826,7 @@ void voiceFxClearNotches() {
 // ---- settings kept in EEPROM (menu "SAVE"). The speaker option is never kept: the voice is on
 // the headphones / AUX at every start. ----
 const int EEPROM_VOICE = 210;           // after the register (200..201)
-const uint8_t VOICE_MAGIC = 0xA7, EQ_MAGIC = 0xE5, HARM_MAGIC = 0xE6;
+const uint8_t VOICE_MAGIC = 0xA8, EQ_MAGIC = 0xE5, HARM_MAGIC = 0xE6;
 void voiceFxSave() {
   VoiceFx &f = vfxState;
   uint8_t b[30] = {VOICE_MAGIC, f.voice, f.vocoder, f.harm, f.interval, f.echo, f.echoTime, f.echoFb, f.reverb, f.gate,
@@ -796,7 +845,7 @@ void voiceFxLoad() {
   f.voice = min(b[1], (uint8_t)127); f.vocoder = min(b[2], (uint8_t)127); f.harm = min(b[3], (uint8_t)127);
   f.interval = min(b[4], (uint8_t)127); f.echo = min(b[5], (uint8_t)127); f.echoTime = min(b[6], (uint8_t)127);
   f.echoFb = min(b[7], (uint8_t)127); f.reverb = min(b[8], (uint8_t)127); f.gate = min(b[9], (uint8_t)127);
-  f.micGain = min(b[10], (uint8_t)127); f.gateAtk = min(b[11], (uint8_t)127); f.gateHold = min(b[12], (uint8_t)127);
+  f.gateAtk = min(b[11], (uint8_t)127); f.gateHold = min(b[12], (uint8_t)127);
   f.gateRel = min(b[13], (uint8_t)127); f.gateRatio = min(b[14], (uint8_t)3); f.hpf = min(b[15], (uint8_t)127);
   f.antiFb = b[16] != 0; f.harmFollow = b[17] != 0; f.harmFold = b[18] != 0;
   keysCC = min(b[19], (uint8_t)127);
@@ -807,11 +856,40 @@ void voiceFxLoad() {
 
 void voiceFxDefaults() {
   vfxState = VoiceFx();
+  micGainSlot[0] = MICGAIN_ELECTRET;
+  micGainSlot[1] = MICGAIN_DYNAMIC;
+  vfxState.micGain = micGainSlot[micSlot()];
   keysCC = 127;
   keysLevel = 1.0f;
   setAmbience(ambienceNow);
   voiceFxApply();
   voiceFxMicGain();
+}
+
+// Microphone type and the gain of each type (R10V4): kept at once when the type changes and with "Salvar".
+const int EEPROM_MIC = 256;             // after the language (250..251)
+const uint8_t MIC_MAGIC = 0xB2;
+void micSave() {
+  EEPROM.write(EEPROM_MIC, MIC_MAGIC);
+  EEPROM.write(EEPROM_MIC + 1, micType);
+  EEPROM.write(EEPROM_MIC + 2, micGainSlot[0]);
+  EEPROM.write(EEPROM_MIC + 3, micGainSlot[1]);
+}
+void micLoad() {
+  if (EEPROM.read(EEPROM_MIC) != MIC_MAGIC) return;
+  micType = min((int)EEPROM.read(EEPROM_MIC + 1), 2);
+  micGainSlot[0] = min((int)EEPROM.read(EEPROM_MIC + 2), 127);
+  micGainSlot[1] = min((int)EEPROM.read(EEPROM_MIC + 3), 127);
+}
+// The type, or what the jack holds, changed: the gain of that type, the bias block, the voice chain.
+void micTypeChanged() {
+  if (micType == MICTYPE_DYNAMIC) micKind = MIC_DYNAMIC;        // declared: nothing to detect (the bias is off, MIC_DET reads 0 V)
+  else if (micKind == MIC_DYNAMIC) micKind = MIC_NONE;          // leaving "dynamic": the detector decides again
+  vfxState.micGain = micGainSlot[micSlot()];
+  micPlugged = micKind != MIC_NONE;
+  voiceFxMicGain();
+  voiceFxApply();
+  micSave();
 }
 
 // ---- harmonizer that follows the keys (R4V4, three modes and up to four voices in R6V4) ----
@@ -1098,9 +1176,9 @@ void resetCalibration() {
 // else is off, so the OUT lines stay free. Contract from PINOS.md:
 //  - SRCLK and RCLK share one line, so the OUTPUT lags the shift by one pulse (it shows the
 //    state before the pulse);
-//  - each strip has 8 stages but only QA..QD carry sensors: global column c = strip c/4,
-//    sensor c%4 = stage 8 * (c/4) + c%4 (stage 0 = first strip's QA, nearest DATA); between
-//    strips the "1" passes 4 dead stages (columns 3 -> 4 take 5 pulses, others 1);
+//  - R10V4: an R8 uses all 8 stages and an R4 (always the last ruler of the row) the first 4 of its own, so column c =
+//    stage c (stage 0 = the first ruler's QA, nearest DATA) and the next column is always 1 pulse away (no dead stage
+//    between two columns, R10V4; the R7V4 chain of R4 rulers had 4 of them between rulers);
 //  - the outputs are not high-impedance at power-up: srClear() shifts zeros through every stage.
 int srPos = -1;                         // column switched on, -1 = none known
 uint32_t srOnAt = 0;                    // micros() when it was switched on (the sensors need SENSOR_WAKE_US)
@@ -1119,15 +1197,14 @@ void srClear() {                        // every sensor off (SR_STAGES zeros + t
   srPos = -1;
 }
 
-// Switches column c on. The next column in order is 1 pulse away (5 across a strip boundary).
-// Anywhere else: push the whole pattern (the first bit sent ends in the LAST stage), plus one
-// pulse to latch it: SR_STAGES + 1 pulses, ~3 us per pulse pair, a few us with 2 rulers per row.
+// Switches column c on. The next column in order is 1 pulse away. Anywhere else (random access, the hot
+// reads and the wrap from the last column to the first): push the whole pattern (the first bit sent ends in the
+// LAST stage), plus one pulse to latch it: SR_STAGES + 1 pulses = 9 with one R8 per row (~1.8 us at 5 MHz).
 void srSelect(int c) {
   if (srPos >= 0 && c == srPos + 1) {
-    int pulses = (c % 4 == 0) ? 5 : 1;
-    for (int i = 0; i < pulses; i++) srPulse(0);
+    srPulse(0);
   } else {
-    int target = 8 * (c / 4) + c % 4;
+    int target = c;                                       // stage = column
     for (int k = 0; k < SR_STAGES; k++) srPulse(SR_STAGES - 1 - k == target);
     srPulse(0);
   }
@@ -1789,24 +1866,37 @@ void updatePower() {
   {                                          // R6V4: is a microphone in the IN jack? (debounced: 3 equal reads, 50 ms apart)
     static uint32_t micReadAt = 0;
     static uint8_t micSame = 0;
-    static bool micRaw = false, micInit = false;
+    static uint8_t micRaw = MIC_NONE;
+    static bool micInit = false;
     if (now - micReadAt >= 50) {
       micReadAt = now;
-      bool raw;
-      { float v = analogReadSlow(MIC_DET_PIN) / ADC_PER_VOLT; raw = v > MIC_DET_MIN_V && v < MIC_DET_MAX_V; }
+      uint8_t raw;
+      float v = analogReadSlow(MIC_DET_PIN) / ADC_PER_VOLT;
+      if (v <= MIC_SHORT_V || v >= MIC_OPEN_V) raw = MIC_NONE;
+      else if (micType == MICTYPE_ELECTRET) raw = MIC_ELECTRET;           // declared: any microphone-like load is the electret
+      else raw = v < (micKind == MIC_DYNAMIC ? MIC_DYN_DOWN_V : MIC_DYN_UP_V) ? MIC_DYNAMIC : MIC_ELECTRET;
+      if (micType == MICTYPE_DYNAMIC) raw = MIC_DYNAMIC;                  // declared: the bias is off, the detector is blind
       micSame = (micInit && raw == micRaw) ? min(micSame + 1, 3) : 1;
       micRaw = raw;
       micInit = true;
-      if (micSame >= 3) micPlugged = raw;
+      if (micSame >= 3 && raw != micKind) {
+        micKind = raw;                                                    // the gain of this kind (the bias does not change in auto)
+        micPlugged = micKind != MIC_NONE;
+        vfxState.micGain = micGainSlot[micSlot()];
+        voiceFxMicGain();
+      }
     }
   }
   static bool lastHeadphones = headphones, lastMic = micPlugged;
-  if (lastHeadphones != headphones || lastMic != micPlugged) {   // the voice follows the jack (headphones / AUX in, speaker out, R4V4) and the microphone (R6V4)
+  static uint8_t lastKind = micKind;
+  if (lastHeadphones != headphones || lastMic != micPlugged || lastKind != micKind) {   // the voice follows the jack (headphones / AUX in, speaker out, R4V4) and the microphone (R6V4)
     lastHeadphones = headphones;
     lastMic = micPlugged;
+    lastKind = micKind;
     voiceFxApply();
     menuMicChanged();
   }
+  if (micMuteUntil && (int32_t)(now - micMuteUntil) >= 0) { micMuteUntil = 0; voiceFxApply(); }
   resting = now - lastActivityAt > IDLE_REST_MS;
   if (now - lastActivityAt > IDLE_OFF_MS) powerOff();
   digitalWriteFast(AMP_SD_PIN, !headphones && !resting);
@@ -1954,7 +2044,7 @@ const MenuItem ITEMS_INPUT[] = {
   {{"Ganho mic", "Mic gain"}, MK_LEVEL, M_MIC_GAIN, true}, {{"Limiar", "Threshold"}, MK_LEVEL, M_GATE_THR, true},
   {{"Razão", "Ratio"}, MK_ENUM, M_GATE_RATIO, true}, {{"Ataque", "Attack"}, MK_LEVEL, M_GATE_ATK, true},
   {{"Retenção", "Hold"}, MK_LEVEL, M_GATE_HOLD, true}, {{"Soltura", "Release"}, MK_LEVEL, M_GATE_REL, true},
-  {{"Passa-altas", "High-pass"}, MK_LEVEL, M_HPF, true}, {{"Mic headset", "Headset mic"}, MK_ACTION, M_CLOSE_MIC, true},
+  {{"Passa-altas", "High-pass"}, MK_LEVEL, M_HPF, true}, {{"Mic padrão", "Mic default"}, MK_ACTION, M_CLOSE_MIC, true},
   {{"Antimicrof.", "Anti-feedbk"}, MK_ENUM, M_ANTI_FB, true}, {{"Limpar notch", "Clear notch"}, MK_ACTION, M_CLEAR_NOTCH, true}};
 const MenuItem ITEMS_OUTPUT[] = {
   {{"Volume", "Volume"}, MK_LEVEL, M_VOLUME, false}, {{"Saída voz", "Voice out"}, MK_ENUM, M_VOICE_OUT, true},
@@ -1966,7 +2056,7 @@ const MenuItem ITEMS_SOUND[] = {
 const MenuItem ITEMS_SYSTEM[] = {
   {{"Salvar", "Save"}, MK_ACTION, M_SAVE, false}, {{"Zerar voz", "Reset voice"}, MK_ACTION, M_RESET_VOICE, false},
   {{"Calibrar", "Calibrate"}, MK_ACTION, M_CAL_KEYS, false}, {{"Teste tec.", "Key test"}, MK_ENUM, M_KEY_TEST, false},
-  {{"Idioma", "Language"}, MK_ENUM, M_LANGUAGE, false}};
+  {{"Tipo mic", "Mic type"}, MK_ENUM, M_MIC_TYPE, false}, {{"Idioma", "Language"}, MK_ENUM, M_LANGUAGE, false}};
 #define PAGE_OF(name, arr) {name, arr, (uint8_t)(sizeof(arr) / sizeof(arr[0]))}
 const MenuPage MENU_PAGES[PG_COUNT] = {
   PAGE_OF((Txt{{"Menu", "Menu"}}), ITEMS_MAIN), PAGE_OF((Txt{{"Voz", "Voice"}}), ITEMS_VOICE),
@@ -2052,7 +2142,8 @@ void menuValueText(uint8_t id, char *b, size_t n) {
   switch (id) {
     case M_HARM_INT: { int st = lroundf(((int)f.interval - 64) * 12.0f / 64.0f); snprintf(b, n, "%+d st", st); return; }
     case M_ECHO_TIME: snprintf(b, n, "%d ms", (int)lroundf(60.0f + f.echoTime * (680.0f / 127.0f))); return;
-    case M_MIC_GAIN: snprintf(b, n, "%d dB", 20 + (f.micGain * 32) / 127); return;
+    case M_MIC_GAIN: snprintf(b, n, "%d dB", micDb(f.micGain)); return;
+    case M_MIC_TYPE: snprintf(b, n, "%s", tr(MIC_TYPE_NAMES[micType])); return;
     case M_GATE_ATK: snprintf(b, n, "%.1f ms", gateAtkMs(f.gateAtk)); return;
     case M_GATE_HOLD: snprintf(b, n, "%d ms", (int)gateHoldMs(f.gateHold)); return;
     case M_GATE_REL: snprintf(b, n, "%d ms", (int)gateRelMs(f.gateRel)); return;
@@ -2152,6 +2243,7 @@ void menuAdjust(int d) {
     case M_REGISTER: applyRegister(registerIndex + d, true); registerPending = false; break;
     case M_VEL_CURVE: menuSetCC(9, (uint8_t)((((velocityCurve + d) % 4 + 4) % 4) * 32)); break;
     case M_KEY_TEST: menuSetCC(15, keyTest ? 0 : 127); break;
+    case M_MIC_TYPE: menuSetCC(111, (uint8_t)((((micType + d) % 3 + 3) % 3) * 43)); break;    // kept in EEPROM at once
     case M_LANGUAGE: uiLang = (uiLang + d + LANG_COUNT * 4) % LANG_COUNT; uiLangSave(); break;   // kept at once, no "Save" needed
   }
   menuClamp();                                          // a change of mode can add or remove lines
@@ -2173,7 +2265,7 @@ void menuClick() {
       switch (it.id) {
         case M_CLOSE_MIC: voiceFxHeadsetMic(); menuToast = tx(S_T_HEADSET); break;
         case M_CLEAR_NOTCH: voiceFxClearNotches(); menuToast = tx(S_T_NOTCH); break;
-        case M_SAVE: voiceFxSave(); saveRegister(registerIndex); menuToast = tx(S_T_SAVED); break;
+        case M_SAVE: voiceFxSave(); micSave(); saveRegister(registerIndex); menuToast = tx(S_T_SAVED); break;
         case M_RESET_VOICE: voiceFxDefaults(); menuToast = tx(S_T_RESET); break;
         case M_CAL_KEYS: handleControlChange(1, 14, 127); menuToast = tx(S_T_CAL); break;
       }
@@ -2351,9 +2443,12 @@ void setup() {
 
   codecOk = codec.enable();
   codec.volume(0.7f);                            // fixed: the volume knob works before the I2S output
-  codec.inputSelect(AUDIO_INPUT_MIC);            // TODO(PINOS): the V4 board's microphone input
-  codec.micGain(36);
-  voiceFxBegin();                                // all the voice effects start off
+  codec.inputSelect(AUDIO_INPUT_MIC);            // the codec's MIC input (J302 through C309)
+  micLoad();                                     // R10V4: microphone type and the gain of each type
+  micKind = micType == MICTYPE_DYNAMIC ? MIC_DYNAMIC : MIC_NONE;
+  micPlugged = micKind != MIC_NONE;
+  vfxState.micGain = micGainSlot[micSlot()];
+  voiceFxBegin();                                // (ends with the codec's gain and bias)                                // all the voice effects start off
   oledSetup();
   uiLangLoad();
   setVolume(90);

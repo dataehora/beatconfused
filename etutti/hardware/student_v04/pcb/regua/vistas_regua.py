@@ -17,10 +17,13 @@ from matplotlib.patches import Rectangle, Polygon, Circle
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, "img")
 os.makedirs(IMG, exist_ok=True)
-d = json.load(open(os.path.join(HERE, "posicao_regua.json"), encoding="utf-8"))
+NPOS = int(os.environ.get("REGUA_N", "4"))
+SUF = "" if NPOS == 4 else "8"
+d = json.load(open(os.path.join(HERE, "posicao_regua%s.json" % SUF), encoding="utf-8"))
+LEN = 18.5 * NPOS
 OX, OY = d["origem"]
 COL = {"U": "#3b78c4", "J": "#d9548a", "C": "#3fa66b", "R": "#3fa66b", "L": "#e08a1e"}
-NOTAS = ["A3", "C4", "D#4", "F#4"]      # exemplo: 1a regua da fileira 1 (R8V4, 32 teclas); as outras reguas trocam os nomes, a posicao e a mesma
+NOTAS = ["A3", "C4", "D#4", "F#4"] if NPOS == 4 else ["A3", "C4", "D#4", "F#4", "A4", "C5", "D#5", "F#5"]      # exemplo: 1a regua da fileira 1 (R8V4, 32 teclas); as outras reguas trocam os nomes, a posicao e a mesma
 CF = {"C": "#1f5fbf", "F": "#e07b00"}   # C azul, F laranja (so as naturais)
 U5C = "#8a6fd1"
 ZR = [0.0, 2.0, 4.0, 7.0]
@@ -34,7 +37,7 @@ def part_color(ref):
 
 
 def plan():
-    fig, ax = plt.subplots(figsize=(13, 5.6))
+    fig, ax = plt.subplots(figsize=(13 if NPOS == 4 else 22, 5.6 if NPOS == 4 else 4.6))
     poly = d["contorno_uv"]
     ax.add_patch(Polygon(poly, closed=True, fc="#e9f2e0", ec="#2f5d1c", lw=1.4, zorder=1))
     for k, uc in enumerate(d["teclas_u"]):
@@ -66,26 +69,26 @@ def plan():
     for r, w in d["janelas_plugue"].items():
         ax.add_patch(Rectangle((w[0], w[1]), w[2] - w[0], w[3] - w[1], fill=True, fc="#d9f0ff", ec="#2a7fb8", ls="--", lw=0.8, zorder=0))
         ax.text((w[0] + w[2]) / 2, (w[1] + w[3]) / 2, "plugue\n" + r, ha="center", va="center", fontsize=6.5, color="#1d5d86")
-    for nu in (0, 18.5, 37, 55.5, 74):
+    for nu in [18.5 * i for i in range(NPOS + 1)]:
         ax.text(nu, -8.3 - 4.6 + 3.2 if False else -7.6, "entalhe", ha="center", fontsize=5, color="#555")
     # dimensions
     y0 = 12.4
-    ax.annotate("", xy=(0.2, y0), xytext=(73.8, y0), arrowprops=dict(arrowstyle="<->", lw=0.8))
-    ax.text(37, y0 + 0.7, "73,6 mm (74 nominais menos 0,2 de folga em cada ponta)", ha="center", fontsize=7)
+    ax.annotate("", xy=(0.2, y0), xytext=(LEN - 0.2, y0), arrowprops=dict(arrowstyle="<->", lw=0.8))
+    ax.text(LEN / 2, y0 + 0.7, "%.1f mm (%d nominais menos 0,2 de folga em cada ponta)" % (LEN - 0.4, LEN), ha="center", fontsize=7)
     ax.annotate("", xy=(-3, -7), xytext=(-3, 7), arrowprops=dict(arrowstyle="<->", lw=0.8))
     ax.text(-3.3, 0, "14", ha="right", va="center", fontsize=7)
-    for ref in ("J1", "J2", "U5"):
+    for ref in ("J1", "J2", "U%d" % (NPOS + 1)):
         p = d["pecas"][ref]
-        ax.text(p["u"], p["patio_uv"][3] + 0.9 if ref == "U5" else p["patio_uv"][1] - 0.5, "u %.1f / v %.2f" % (p["u"], p["v"]), ha="center", fontsize=6, color="#444")
-    ax.set_xlim(-8, 82)
+        ax.text(p["u"], p["patio_uv"][3] + 0.9 if ref == "U%d" % (NPOS + 1) else p["patio_uv"][1] - 0.5, "u %.1f / v %.2f" % (p["u"], p["v"]), ha="center", fontsize=6, color="#444")
+    ax.set_xlim(-8, LEN + 8)
     ax.set_ylim(14, -15)
     ax.set_aspect("equal")
     ax.set_xlabel("u (mm) ao longo da fileira")
     ax.set_ylabel("v (mm)  +v = frente (jogador)")
-    ax.set_title("Regua universal de 4 teclas, R8V4 (portao P): vista de cima, em transparencia (todas as pecas estao no FUNDO; exemplo: 1a regua da fileira 1, A3 C4 D#4 F#4; C azul, F laranja)." + chr(10) + "Azul = TMAG5253, roxo = 74HC595, rosa = SH-6 (J1 ENTRADA u 5,9; J2 SAIDA u 47,5; pinagem P6s), verde = passivos; M2: furos do contrato do design", fontsize=7)
+    ax.set_title(("Regua R%d de %d teclas, R10V4 (portao P)" % (NPOS, NPOS)) + (": vista de cima, em transparencia (todas as pecas estao no FUNDO; exemplo: regua da fileira 1, notas na figura; C azul, F laranja)." + chr(10) + "Azul = TMAG5253, roxo = 74HC595, rosa = SH-6 (J1 ENTRADA u 5,9; J2 SAIDA u %.1f; pinagem P6s), verde = passivos; M2: furos de fixacao (patamar embaixo)" % d["pecas"]["J2"]["u"]), fontsize=7)
     ax.grid(True, lw=0.15)
     fig.tight_layout()
-    fig.savefig(os.path.join(IMG, "regua_planta.png"), dpi=170)
+    fig.savefig(os.path.join(IMG, "regua%s_planta.png" % SUF), dpi=170)
     plt.close(fig)
 
 
@@ -117,13 +120,13 @@ def section():
     ax.set_xlim(-62, 10)
     ax.set_ylim(-10.5, 12)
     ax.set_aspect("equal")
-    ax.set_title(("(a) Corte por J1 (u = %.1f; o J2, em u 47,5, e igual), atravessando as quatro fileiras (atras = -v, a esquerda)." + chr(10) + "Rosa = SH-6 (2,95 mm; com o plugue, 3,6), azul claro tracejado = onde o plugue entra: "
-                 "a trilha (cinza) da fileira de tras, mais alta, precisa de uma janela de ~7 x 2,8 mm") % j1["u"], fontsize=7.5)
+    ax.set_title(("(a) Corte por J1 (u = %.1f; o J2, em u %.1f, e igual), atravessando as quatro fileiras (atras = -v, a esquerda)." + chr(10) + "Rosa = SH-6 (2,95 mm; com o plugue, 3,6), azul claro tracejado = onde o plugue entra: "
+                 "a trilha (cinza) da fileira de tras, mais alta, precisa de uma janela de ~7 x 2,8 mm") % (j1["u"], d["pecas"]["J2"]["u"]), fontsize=7.5)
     ax.set_xlabel("v (mm)")
     ax.set_ylabel("z (mm), 0 = topo da regua da fileira 1")
     # (b) u-z along the row at the connector line (v = -3.95): parts hanging below the ruler row 1
     ax = fig.add_subplot(2, 1, 2)
-    ax.add_patch(Rectangle((0.2, -T), 73.6, T, fc="#c9a86a", ec="k", lw=0.6))
+    ax.add_patch(Rectangle((0.2, -T), LEN - 0.4, T, fc="#c9a86a", ec="k", lw=0.6))
     for ref, p in d["pecas"].items():
         if ref.startswith(("PEG", "H")):
             continue
@@ -137,19 +140,19 @@ def section():
     for uc in d["teclas_u"]:
         ax.add_patch(Rectangle((uc - 7, 0), 14, 5.0, fc="#7fb3e8", ec="k", lw=0.4, alpha=0.35))
     ax.axhline(FLOOR, color="k", lw=1)
-    ax.add_patch(Rectangle((0.2, FLOOR), 73.6, 1.0, fc="#ddd", ec="none"))
-    ax.set_xlim(-2, 76)
+    ax.add_patch(Rectangle((0.2, FLOOR), LEN - 0.4, 1.0, fc="#ddd", ec="none"))
+    ax.set_xlim(-2, LEN + 2)
     ax.set_ylim(-9, 7)
     ax.set_title("(b) Corte ao longo da regua (projecao de todas as pecas do fundo; alturas: TMAG 0,4, 74HC595 0,9, capacitor 0805 1,4, SH-6 2,95; pinos da tecla 1,5 abaixo). "
                  "Pocket da fileira 1: 6,9 mm entre a regua (z -1,2) e o piso (z -8,1)", fontsize=8)
     ax.set_xlabel("u (mm)")
     ax.set_ylabel("z (mm)")
     fig.tight_layout()
-    fig.savefig(os.path.join(IMG, "regua_corte.png"), dpi=150)
+    fig.savefig(os.path.join(IMG, "regua%s_corte.png" % SUF), dpi=150)
     plt.close(fig)
 
 
 if __name__ == "__main__":
     plan()
     section()
-    print("wrote regua_planta.png, regua_corte.png")
+    print("wrote regua%s_planta.png, regua%s_corte.png" % (SUF, SUF))

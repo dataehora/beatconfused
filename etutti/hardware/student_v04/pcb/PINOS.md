@@ -1,4 +1,47 @@
-# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4; teclado de 32 teclas, R5V4; microfone R6V4; conector P6s e R305 = 0 ohm, R8V4)
+# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4; teclado de 32 teclas, R5V4; microfone R6V4; conector P6s e R305 = 0 ohm, R8V4; régua R8 e microfones eletreto/dinâmico, R10V4)
+
+## R10V4: o que mudou para a programação (os pinos do Teensy NÃO mudam)
+
+**Nenhum pino, nenhuma rede muda.** Mudam: (1) a régua padrão de 32 teclas passa a ser a **R8** (uma por fileira, 8 TMAG5253 e um 74HC595 com os **8 estágios usados**); (2) o contrato do microfone; (3) o C310 deixa de ser montado. Este bloco **substitui** o que as seções R8V4, R6V4, R5V4 e "A varredura" abaixo dizem sobre estágios mortos, pulsos e limiar de curto (cada trecho superado está marcado).
+
+### Régua e varredura (32 teclas = 4 x R8)
+- **R8:** 8 posições, passo 18,5 mm, 148 mm nominais (147,6 mm de placa). QA..QH = EN dos sensores 1..8: **nenhum estágio morto**. Terminações **idênticas** às da R4: IN (SH à esquerda, u 5,9), OUT (SH à direita, a 26,5 mm da ponta direita nominal), mesma pinagem P6s, mesma altura (2,95 mm), mesma boca (−y), 330 ohm no QH'. Qualquer régua liga a qualquer outra com o mesmo cabo.
+- **Regra de coluna: coluna = estágio** da cadeia da fileira (estágio 0 = QA da régua mais perto da placa). Com a R4 sempre na ponta do agudo (SPEC R10V4), os estágios mortos (QE..QH da R4) ficam **só no fim** da cadeia, nunca entre colunas vivas.
+- **Pulsos:** S = 8 x (número de registradores 595 da fileira, sejam de R8 ou de R4: cada um tem 8 estágios).
+
+  | Teclas | Réguas por fileira | Estágios S | Colunas vivas | Acesso aleatório (S + 1 pulsos) | Passada em ordem (70 us/coluna) |
+  |---:|---|---:|---:|---:|---:|
+  | **32** | R8 | 8 | 8 | **9** | 0,56 ms |
+  | 48 | R8 + R4 | 16 | 12 | 17 | 0,84 ms |
+  | 64 | R8 + R8 | 16 | 16 | 17 | 1,12 ms |
+  | 80 | R8 + R8 + R4 | 24 | 20 | 25 | 1,40 ms |
+
+  (R8V4 e antes, só R4: 17 / 25 / 33 / 41. A fórmula 8 N + 1 continua valendo com **N = número de registradores de 8 estágios na fileira**, não "réguas de 4 teclas".) A 5 MHz, 9 pulsos = 1,8 us; a 2,5 MHz, 3,6 us.
+- **Em ordem (32 teclas):** DATA = 1 só no primeiro pulso, 0 nos outros; a saída travada atrasa 1 pulso e **a coluna seguinte está sempre a 1 pulso**: uma passada de 8 colunas gasta 8 pulsos (antes: passo 8 por régua, com 4 estágios mortos no meio). Como a R4 só existe no fim, o "1" pode ser reinjetado a cada `colunas vivas` pulsos (12 / 16 / 20) sem esperar os estágios mortos.
+- **Partida:** S pulsos com DATA = 0 zeram a cadeia (8 com 32 teclas); os 8N + 1 = 9 do sketch servem (sobra 1). **Acesso aleatório:** padrão de S bits + 1 pulso; bit k (0 = primeiro enviado) = estágio S − 1 − k: o primeiro bit vai para o último estágio.
+- Sem mudança: SRCLK + RCLK juntos, ~OE em GND, SRCLR em 3,3 V, saídas desligadas em alta impedância, CLK até 5 MHz (330 ohm em CLK e DADO), t_espera de 60 us.
+- **Para 48/64/80 teclas só muda o número de estágios S** (a tabela); a principal e os pinos não mudam.
+
+### Microfone: eletreto com alimentação de plug-in e dinâmico, só pelo J302 (IN)
+Adaptadores, phantom de 48 V e microfone de PC com bias no anel estão fora do escopo. **O ME 3 e o boost de 9-10 V saíram do projeto.** Detalhes e contas em `ELETRONICA.md` (R10V4) e `pcb/mic_ganho.py`.
+
+- **Bias (CHIP_MIC_CTRL, 0x002A):** `BIAS_RESISTOR` (bits 9:8): 0 = bloco desligado **e saída em alta impedância (datasheet, Tabela 29)**, 1 = 2 k, 2 = 4 k, 3 = 8 k; `BIAS_VOLT` (bits 6:4): 1,25 V + 0,25 V x n, 7 = 3,0 V (no máximo VDDA − 0,2 V); `GAIN` (bits 1:0): 0 / +20 / +30 / +40 dB. Eletreto: `0x0170 | ganho` (2 k, 3,0 V; com R305 = 0 ohm são 2 kohm no total). Dinâmico: `0x0070 | ganho` (bias desligado; a ponta fica sem carga do lado do codec). O sketch já faz isto (`MicCodec`).
+- **Bias ligado por engano numa bobina de 150-600 ohm não faz mal:** 1,15-1,4 mA, 0,3-0,8 mW na bobina (sem aquecimento); o diafragma só é empurrado por uma força estática equivalente a ~20 Pa (estimativa, da ordem de uma variação barométrica de 0,2 hPa); o codec não vê o CC (C309). Custa **0,6-1,9 dB de sinal** (a bobina enxerga 2 k em paralelo com os 2,9 k de entrada do codec). **Ligar ou desligar o bias gera um degrau de ~20 Pa no diafragma: silenciar a entrada ~150 ms em volta da troca.**
+- **Carga da entrada (datasheet, Tabela 4): impedância do MIC = 2,9 kohm típica;** fundo de escala 2,83 Vpp = 1,0 Vrms (0 dB total).
+- **MIC_DET (pino 25, leitura com o bias LIGADO, 8 leituras, histerese)** — substitui a regra de 0,30 V da R6V4:
+
+  | v (V) | O que é |
+  |---|---|
+  | **>= 2,85** | nada ligado, ou plugue de linha com acoplamento por capacitor: sem microfone |
+  | **<= 0,10** | curto, ou fonte de baixa resistência CC (< ~70 ohm): sem microfone |
+  | 0,10 a ~0,85 | bobina dinâmica de 70 a ~600 ohm (150 / 300 / 600 ohm = 0,21 / 0,39 / 0,69 V; com +-20 % no resistor interno de 2 k, 600 ohm vai de 0,60 a 0,82 V) |
+  | ~0,95 a 2,85 | eletreto (0,1 / 0,3 / 0,5 mA = 2,8 / 2,4 / 2,0 V; o FET da cápsula não deixa a ponta abaixo de ~0,9 V, estimativa) |
+
+  **Limiar sugerido dinâmico/eletreto: 0,85 V descendo, 0,95 V subindo** (o sketch usa 0,60 / 0,80: uma bobina de 600 ohm, 0,60-0,82 V, cairia do lado "eletreto"; como o Auto mantém o bias ligado nos dois casos, isso só muda o ganho de fábrica, não faz mal). **As faixas se tocam** (bobina de ~800 ohm = 0,75-1,0 V; eletreto de >= 1 mA = 0,6-1,4 V), por isso fica o item de menu **"Tipo mic" Auto / Eletreto / Dinâmico (CC 111)**: Dinâmico declarado desliga o bias e **cega** o MIC_DET (lê 0 V; não há como saber se o plugue saiu: o contato de chave do jack não chega ao Teensy).
+- **Efeitos de voz** só com microfone detectado (Auto/Eletreto) ou declarado (Dinâmico).
+- **Ganho de fábrica (cálculo, `pcb/mic_ganho.py`; alvo -18 dBFS rms em 105 dB SPL a 1-3 cm):** dinâmico 0,45 mV/Pa ~39 dB; 1,7 mV/Pa ~30 dB; eletreto -44 dBV/Pa ~20 dB (passos: pré 0/20/30/40 + ADC 0 a 22,5 dB de 1,5 em 1,5). **Os padrões do sketch (24 dB dinâmico, 6 dB eletreto) ficam 9-14 dB abaixo desse alvo**: conservadores contra picos e canto a 1 cm (+9 dB); a SNR cai o mesmo tanto (tabela no relatório).
+- **C310 (100 nF no MIC_BIAS) NÃO é montado** (R10V4): com R305 = 0 ohm ele ficava na ponta do jack e cortava o agudo (eletreto -1,9 / -9,9 / -17,5 dB a 1 / 4 / 10 kHz; bobina de 600 ohm -3 dB a 4 kHz). O pad fica para um 220-470 pF opcional.
+
 
 ## R8V4: o que mudou para a programação (os pinos do Teensy NÃO mudam)
 
@@ -12,14 +55,14 @@
   O CLK continua sendo `SCAN_CLK` (pino 3) e o DADO `SCAN_DATA` (pino 2); só o pino físico do cabo mudou (CLK 4 → 5, DADO 5 → 6, o 4 virou GND). **Nada na firmware depende da ordem do conector** (ela só conhece pinos do Teensy); basta não haver comentário ou tabela que cite "conector pino 4 = CLK".
 - **Resistores em série de CLK e DADO: 330 ohm** (R605 = CLK, R606 = DADO; eram 100). RC de ~7 ns com ~20 pF contra 100 ns de meio período a 5 MHz: **o CLK de 5 MHz continua valendo**, mas a borda é um pouco mais lenta; use `digitalWriteFast` como antes e, se a leitura de bancada mostrar atraso, 2,5-3 MHz sobra com folga (a varredura de 32 teclas, 17 pulsos, passa de ~3,4 us a 5 MHz para ~6,8 us a 2,5 MHz: irrelevante frente aos 8 x 70 us por varredura).
 - **Cabo de estoque:** o JST `A06SR06SR30K51B` (reto, pino k → pino k). Com um cabo "invertido" (sufixo A) não há dano (todas as redes cruzadas passam por resistor ou por GND), mas **a varredura não funciona**; a firmware não consegue detectar isso, só o teste de continuidade do usuário.
-- **R305 = 0 ohm** (aprovado): o bias do microfone é só o interno do SGTL5000. A firmware já escolhe `BIAS_RESISTOR` (2 kohm): **use 2 kohm**; a faixa de detecção MIC_DET (0,30 V < v < 2,85 V) continua válida (cai em 2,6 a 2,0 V com 0,2 a 0,5 mA; limites de corrente: 0,075 a 1,35 mA). **Sem boost de 9-10 V** nesta fase; o plano B só fica registrado (ver `ELETRONICA.md`, R8V4).
+- **R305 = 0 ohm** (aprovado): o bias do microfone é só o interno do SGTL5000. A firmware já escolhe `BIAS_RESISTOR` (2 kohm): **use 2 kohm**. **(Superado na R10V4: a regra de MIC_DET e o C310 estão na seção R10V4; o boost de 9-10 V saiu do projeto.)**
 - Contagem de pinos usados: **28** (igual).
 
 
 ## R6V4: o que mudou para a programação (dois pinos trocam de função)
 
 - **VOL_SW passa do pino 25 para o pino 4** (clique do volume, a mesma lógica: o clique de 2 s liga/desliga pelo hardware; a firmware só lê). O pino 25 (A11) virou **MIC_DET**, entrada analógica.
-- **Detecção do microfone em J302 (IN)** (detalhe na seção "Microfone"): `analogRead(25)` com o **MIC_BIAS ligado** (3,0 V, `BIAS_RESISTOR` 2 k); leitura em volts `v = analogRead(25) * 3.3 / 1023` (10 bits) ou 4095 (12 bits):
+- **(Regra superada na R10V4: limiar de curto 0,10 V e dinâmico/eletreto em 0,85/0,95 V.)** **Detecção do microfone em J302 (IN)** (detalhe na seção "Microfone"): `analogRead(25)` com o **MIC_BIAS ligado** (3,0 V, `BIAS_RESISTOR` 2 k); leitura em volts `v = analogRead(25) * 3.3 / 1023` (10 bits) ou 4095 (12 bits):
   - **v >= 2,85 V:** nada ligado, ou plugue de linha com acoplamento por capacitor (sem corrente CC) → **efeitos de voz desligados / escondidos**;
   - **0,30 V < v < 2,85 V:** carga CC de microfone de eletreto → **efeitos de voz disponíveis**;
   - **v <= 0,30 V:** curto ou fonte com resistência CC baixa (microfone dinâmico, saída de linha ligada em CC) → tratar como "sem microfone de eletreto" (não liga os efeitos);
@@ -42,9 +85,9 @@ nenhuma rede e nenhuma temporização muda; muda só o **mapa de notas**:
 - `FIRST_NOTE = {57, 55, 56, 54}` (o da fileira 4 era 57), `FIRST_COL = {0, 0, 0, 0}` como antes; **8 teclas em todas as fileiras** (antes 7, 8, 7, 6).
 - Colunas globais: 32 teclas = 8 colunas (2 réguas por fileira); 48 = 12; 64 = 16; 80 = 20, **todas ocupadas nas 4 fileiras**: `V4_KEYS` = 32 / 48 / 64 / 80
   (4 x 8, 4 x 12, 4 x 16, 4 x 20). Para a fileira 4, a régua começa em x 79,95 (alinhada com a fileira 2, antes 89,2).
-- Pulsos do acesso aleatório = 8 x N + 1 (N = réguas por fileira): **17 / 25 / 33 / 41** (32 / 48 / 64 / 80 teclas; o número de réguas por fileira, 2 / 3 / 4 / 5, é o que conta).
+- **(Superado na R10V4: 9 / 17 / 17 / 25 pulsos; N = registradores de 8 estágios.)** Pulsos do acesso aleatório = 8 x N + 1 (N = réguas por fileira): **17 / 25 / 33 / 41** (32 / 48 / 64 / 80 teclas; o número de réguas por fileira, 2 / 3 / 4 / 5, é o que conta).
   A varredura completa em ordem (colunas 8/12/16/20, 70 us/passo) também é a mesma: 0,56 / 0,84 / 1,12 / 1,40 ms.
-- **Cadeia de registradores:** nada a ajustar. Cada régua continua com 8 estágios (QA..QD = sensores 1..4, QE..QH mortos), e agora os 4 sensores de
+- **(Superado na R10V4: a R8 usa os 8 estágios; a R4 só no agudo, com os mortos no fim.)** **Cadeia de registradores:** nada a ajustar. Cada régua continua com 8 estágios (QA..QD = sensores 1..4, QE..QH mortos), e agora os 4 sensores de
   toda régua são notas de verdade: o "1" que anda passa pelos mesmos 4 estágios mortos entre uma régua e a seguinte. A ligação física das réguas (R5V4, item 3)
   não altera o protocolo: continuam 5 condutores (+3V3, GND, OUT, CLK, DATA/QH').
 
@@ -114,6 +157,8 @@ Resumo de uso: 28 sinais (0, 2, 3, 6-12, 14-28 menos 13) e, nos pads que não s�
 Livres: 1, 4, 5, 13 e 29-45. **Para 80 teclas não faltam pinos.**
 
 ## A varredura (R2V4, E2): o contrato de tempo e de ordem
+
+**(R10V4: a R8 não tem estágios mortos e os pulsos são 9 / 17 / 17 / 25; ver o início deste arquivo. O que segue vale para tempos e para o atraso de 1 pulso.)**
 
 **Barramento da régua** (R8V4: conector de 6 vias nas duas pontas, pinagem **P6s**; o sinal é o mesmo): 1 +3V3 · 2 GND · 3 OUT · 4 GND · 5 CLK · 6 DATA
 (a coluna "4 CLK, 5 DATA, 6 reservado" das revisões antigas está superada). Na ponta de entrada o pino 6 é o SER do 595; na ponta de saída é o QH' (por 330 ohm) (cascata). VCC, GND, OUT e CLK passam direto.

@@ -1,5 +1,94 @@
 # eTutti Student V4 — FIT_CHECK (design)
 
+## R10V4 — 4 x R8, base robusta, fixação, OLED (22 nov 2026, parte de Design)
+
+**SPEC atendida: R10V4** (item 2 base, item 3 fixação, item 4 OLED, validação curta do conceito modular). Nada foi comprado, impresso ou montado; só 32 teclas, só a Student V4. Modelo oficial `case/case_r4.py` (+ `case/layout_r4.py`): **uma R8 de 148 mm por fileira**, sem junção régua–régua, sem cabo entre réguas e sem rebaixo de junção; ficam os 4 cabos da placa à régua de cada fileira (45,8 e 50,8 mm de fio útil, os dois fecham). Posições de teclas, placa, interface e o case de **244 x 102 mm** não mudaram.
+Reproduz (venv CadQuery, raiz do repositório): `case/case_r4.py 0` (~45 s) → `case/fixacao_r10.py`, `estudos/rigidez_regua_r10.py`, `case/confere_r8.py`, `case/planta_v4.py`, `case/corte_v4.py`, `case/corte_base_r10.py`, `case/iso_base_r10.py`. Figuras em `case/renders/`: **`planta_geral_v4_r10.png`** (planta geral oficial), `planta_interface_v4_r10.png`, **`corte_interface_v4_r10.png`** (A: x = 37; P: pelos apoios do OLED; B: knob), **`corte_base_r10.png`** (4 cortes pelas quatro fileiras), **`iso_base_r10.png`** (isométrico da base sem e com réguas, nome da nota em cada tecla, C e F em amarelo) e `iso_base_r10_detalhe.png`.
+
+### Resposta curta
+
+- **Base fechada:** trilhos contínuos (só interrompidos onde há peça), o vão de 2 mm entre fileiras preenchido por um **riser** (parede cheia do trilho da frente da fileira ao trilho de trás da fileira vizinha, até o topo do trilho mais baixo; na fileira 1, parede da frente 2 mm mais grossa), **paredes de ponta** de 2 mm nas duas extremidades de cada degrau e piso de 2,0 mm. Aberturas só onde passa algo: cabeçalho IN e OUT (10,4 mm no trilho de trás), plugue IN (7,4 mm, **atravessando o riser** até o trilho de trás da fileira da frente), túnel dos 4 cabos da placa (5,6 + 0,8 mm de largura, do piso à altura do eixo do plugue) e recortes do 595 e do C5 no trilho da frente (u 25,5 a 32,0).
+- **Custo MJF:** base **69,9 → 84,9 cm³ (+15,0 cm³)**, tampa 89,4 cm³ (igual): total 174,3 cm³ ≈ 176 g, **+US$ 4,2** (US$ 0,275/g, 1,01 g/cm³, estimativa por volume, sem cotação) → **case ≈ US$ 48,5** (R8V4: 44,3). Cabe na mesa FDM de 250 mm (244 x 102 mm). Há menos cortes (sem rebaixos de junção) e muito mais parede.
+- **Rigidez:** flexão da régua R8 a 3 N na tecla, no pior caso das 8 teclas das 4 réguas: **0,0153 mm** (grelha de 3 linhas com torção; 0,0126 no modelo de faixa) ≤ 0,05 ✓ (3,3 x de margem; pior: tecla 1 das réguas 2 e 4, onde o plugue e o recorte do 595 deixam um vão de 20 a 25 mm no trilho da frente). **Montante** (PA12, E = 1,7 GPa, 13,9 mm de altura na fileira 4, 2,8 mm de espessura): encurtamento a 3 N 0,002 mm; lateral 1 N no topo de um pedaço isolado de 10 mm 0,029 mm e **0,006 mm com o riser** (parede de 4,8 mm).
+- **Fixação:** **2 M2 por régua com rosca de máquina em inserto** (bossa D6 impressa, piloto do inserto; **sem autoatarraxante**), **8 M2 no total**. A R8 tem **4 furos Ø2,2 em u 18,5 / 37 / 111 / 129,5** (v +5,2); fileiras 1 e 3 usam **18,5 + 129,5 (111 mm de vão)**, fileiras 2 e 4 usam **37 + 111 (74 mm)**. Os outros são bloqueados (ver §2). A rigidez não muda com os M2 (os trilhos carregam).
+- **OLED:** o vidro estava desenhado 26 x 16 centrado na placa e a área ativa não aparecia, daí a impressão de descentralizado. Corrigido: vidro **26,7 x 19,26** (centrado na placa, entre as duas fileiras de furos) e **área ativa 21,74 x 10,86 centrada na janela** (janela 24 x 13: margens 1,13 x 1,07 mm). Corte novo **P-P pelos dois apoios** (x = 25,35, postes em y 8,2 e 32,0). **Pendência real:** o deslocamento de 1,9 mm entre o centro da placa e o da área ativa é da SPEC v4 (item 7), não confirmado em módulo real (risco §6).
+- **Fit check das 32 teclas (4 x R8): 0 mm³** em todos os pares de conectores, cabos (45,8 e 50,8), peças sob a régua e interface; no teclado, tampa x carcaça (+0,5 / +0,8 mm) 8,3 / 50,4 mm³ (a folga crítica de sempre da rampa do degrau). Malhas: 0 arestas abertas (tampa, base, réguas, teclas); ray-probe dos 32 furos de tecla: 0 filme.
+
+### 1. Item 2 — o que a base tem agora (`corte_base_r10.png`, `iso_base_r10.png`)
+
+| Elemento | Antes (R8V4, 8 réguas R4) | Agora (4 x R8) |
+|---|---|---|
+| Trilhos | 2 por régua (74 mm), cortados por rebaixos de laço | 2 contínuos de 148 mm; sobram 77-85 % (trás) e 83-96 % (frente), menor peça 7,1 mm |
+| Frente do degrau | trilho de 2,8 mm e vão aberto de 2 mm até a fileira da frente | riser cheio de 4,8 mm (trilho + vão) até o trilho vizinho; o plugue IN passa por um túnel de 7,4 mm |
+| Pontas | abertas | paredes de 2 mm (recortadas para o cabeçalho IN, o C6 e o cabo da placa) |
+| Cabos | 8 laços + 4 cabos da placa | só os 4 cabos da placa (túneis); OUT da R8 sem plugue |
+| Fixação | 11 M2 (1 ou 2 por régua) | 8 M2 (2 por régua) |
+| Volume da base | 69,9 cm³ | 84,9 cm³ |
+
+- **Caminho e rebaixo dos 4 cabos:** garantidos pelo túnel (corta riser, pontas e trilhos, nos dois comprimentos); folga do feixe a trilho ≥ 0,9 mm, a M2 ≥ 5,6 mm, a poste ≥ 5,8 mm; a ponta do laço da fileira 4 como na R8V4 (parede de trás em y −2).
+- **Montagem e troca:** com a tampa fora, a régua sobe 12 mm, o plugue é pego com a pinça pelo túnel aberto por cima, a régua anda 4 mm para −y e desce; troca: tira os 2 M2, levanta, empurra 4 mm para +y. **Folga vertical do topo do plugue à face de baixo da régua de trás: 1,7 mm (fileiras 1 e 2) e 2,7 mm (fileira 3)**; o plugue só entra 0,93 mm sob essa régua. É mais apertado que os 2,3-3,3 mm da R8V4 (que eu tinha medido ao eixo do plugue): risco §6.3.
+- **Peças sob a régua:** o 595 (u 25,85-29,65, v até +6,59) e o C5 passam do bolso e ficam sobre o trilho da frente; o modelo anterior não os recortava (colisão que nenhum teste pegava). Agora o trilho tem um recorte de u 25,5 a 32,0 e o fit check testa **peças sob a régua x base = 0 mm³** (595, C5, C6, R1, capacitores, sensores das 8 teclas). **A posição do 595 da R8 é da eletrônica: adotei a da R4; se mudar, o recorte muda** (contrato §3).
+
+### 2. Item 3 — os dois pontos de fixação (`fixacao_r10.py`, `estudos/fixacao_r10.json`)
+
+Candidatos: os vãos entre carcaças u = 18,5 k (v +5,2; a cabeça do M2 só cabe aí). Raster de 0,1 mm: livre quando a bossa D6 (+0,4 mm) não toca cabeçalho, plugue, cabo da placa (os dois comprimentos), poste interno nem poste de parede.
+
+| Fileira | Furos livres (u) | Par escolhido (vão) | Bloqueados |
+|---|---|---|---|
+| 1 | todos (18,5 … 129,5) | 18,5 + 129,5 (111 mm) | nenhum |
+| 2 | 37, 55,5, 74, 92,5, 111 | 37 + 111 (74 mm) | 18,5 (plugue IN da fileira 1), 129,5 (cabeçalho OUT da fileira 1, a 0,08 mm) |
+| 3 | 18,5 … 92,5, 129,5 | 18,5 + 129,5 (111 mm) | 111 (cabeçalho OUT da fileira 2) |
+| 4 | como a 2 | 37 + 111 (74 mm) | como a 2 |
+
+- **Régua universal:** os 4 furos u 18,5 / 37 / 111 / 129,5, cada um com um **patamar sem peças Ø6,4**; cada fileira usa 2. Nas versões de 48 / 64 / 80 teclas a primeira R8 de cada fileira ganha plugue e laço no OUT; os pares escolhidos **continuam livres** (fileira 1: 18,5 / 129,5; 2 e 4: 37 / 111; 3: 18,5 / 129,5).
+- **R4:** mantém seus furos u 18,5 / 37 / 55,5. Na ponta direita da fileira (OUT sem plugue): **dois pontos cabem em todas as fileiras**: fileiras 1 e 3 em u 18,5 + 55,5 (37 mm) e fileiras 2 e 4 em u 37 + 55,5 (18,5 mm: vão curto, trava pouco o giro; as 4 teclas e os pinos ajudam).
+- **Imprimível:** bossa D6 com piloto de inserto (parede de 1,4 mm), do piso ao fundo da régua; inserto de latão de rosca M2 (térmico ou de pressão); parafuso M2 de cabeça baixa por cima, no vão de 3,1 mm entre carcaças (cabeça 3,8 mm: como na R3V4, o fit check dá 0). **Não usei autoatarraxante em lugar nenhum da régua.** M1,6 / M1,4 não são necessários.
+- **Postes internos:** (107,7; 68,69), (116,95; 52,67), (181,7; 36,65), (200,2; 68,69), **(200,2; 36,65)** (o (218,7; 36,65) saiu: ficava a 2,8 mm do recorte do cabeçalho OUT da fileira 3); pior distância de uma tecla ao apoio mais perto 38,2 mm (igual).
+
+### 3. Contrato para a eletrônica (régua R8 e R4)
+
+- **R8:** 148 mm nominais (placa 147,6, de u 0,2 a 147,8), largura de 14 mm, 8 sensores em u 9,25 + 18,5 k (k = 0 … 7), 16 pinos de tecla (±5,08 de cada centro), **IN em u 5,9, OUT em u 121,5 (= 148 − 26,5, a mesma distância da ponta direita que na R4), boca para −v, pegada 9,4 x 5,55 em v −7,5 a −1,95**, cabeçalhos SM06B-SRSS-TB (altura 2,95), plugue 3,6 x 7,0 x 2,45.
+- **Furos M2 (Ø2,2, v +5,2):** **u 18,5 / 37 / 111 / 129,5** (R8) e **u 18,5 / 37 / 55,5** (R4, os atuais), cada um com patamar Ø6,4 sem peças no fundo. **Entalhes de poste** (2,0 x 4,3, borda de trás) em u 0, 18,5, 37, … 148 (múltiplos de 18,5), como na R4.
+- **Peças sob a régua:** o 595 e o C5 da R4 (u 25,85-31,66, v até +6,69) estão sobre o trilho da frente (v +4,2 a +7,0): o trilho é recortado sob eles. **Se o 595 da R8 ficar em outro lugar, me avise** (ou mantenha-o em |v| ≤ 3,9, sem recorte). Todo o resto sob a régua deve ficar em |v| ≤ 3,9 (bolso) ou na faixa de trás dos cabeçalhos (v −7,5 a −1,95).
+- **Alturas:** 2,95 sob a régua (cabeçalho), 1,0 (595) e 0,8 (TMAG, capacitores) no bolso; bolso de 6,9 mm na fileira 1.
+- A **R4** e a **R8** têm as mesmas terminações (IN u 5,9; OUT a 26,5 mm da ponta direita; pinagem P6s; altura): conferido contra `pcb/regua/posicao_regua.json` (R4: OUT u 47,5 de 74 → 26,5).
+
+### 4. Item 4 — OLED (`corte_interface_v4_r10.png`)
+
+- Janela da tampa 24 x 13 (x 25-49, y 15,5-28,5, centro 22,0); placa do módulo 27,3 x 27,8 (y 6,2-34,0, centro 20,1, deslocada 1,9 mm para trás: SPEC v4 item 7); **vidro 26,7 x 19,26 (y 10,5-29,7) centrado na placa; área ativa 21,74 x 10,86 (y 16,6-27,4) centrada na janela**: margens 1,13 (x) e 1,07 (y) mm; o vidro fica 0,1 mm sob o teto (o vidro da janela, 1 mm, assenta no rebaixo da tampa).
+- **Os 4 apoios** são postes D3,2 da tampa a ±11,65 x ±11,9 mm do centro da placa (x 25,35 / 48,65; y 8,2 / 32,0), que descem do teto até a face de cima da placa do módulo; piloto de 1,5 mm. O corte A-A em x = 37 passa entre os postes, **por isso o módulo parecia sem apoio**: o corte P-P mostra os postes. O vidro (±13,35 x ±9,63) fica a 0,67 mm dos postes. Folgas: sem interferência (tampa x OLED 0 mm³).
+- **Atenção:** os postes seguram o módulo por parafusos pela face de baixo no piloto de 1,5 mm (rosca no plástico = autoatarraxante, fora da regra do item 3, que vale para a régua). Pergunta 1 abaixo.
+
+### 5. Validação curta do conceito modular (sem figuras por tamanho)
+
+| Teclas | Réguas por fileira | Comprimento do case | Junções por fileira |
+|---:|---|---:|---:|
+| 32 | R8 | 244 | 0 |
+| 48 | R8 + R4 | 318 (244 + 74) | 1 |
+| 64 | R8 + R8 | 392 (244 + 148) | 1 |
+| 80 | R8 + R8 + R4 | 466 (244 + 222) | 2 |
+
+O comprimento do case segue a **mesma regra**: 244 + o comprimento de régua acrescentado (74 por R4, 148 por R8). Todas as combinações usam **o mesmo cabo A06SR06SR30K51B** do OUT de uma régua ao IN da seguinte: a distância entre os plugues é 26,5 + 5,9 = **32,4 mm** (R8 → R4 e R8 → R8; a R4 não tem saída), logo o mesmo laço (R 5,9; rebaixo de 39,8 x 22,5 mm) e as mesmas regras de postes de parede. A R4 fica sempre na ponta direita (último OUT sem plugue); as terminações IN / OUT são idênticas nas duas réguas; a placa principal e a varredura crescem só em número de estágios (8 por R8, 4 por R4). Furos: os pares da R8 continuam livres com junção (§2) e a R4 tem dois pontos.
+
+### 6. Riscos aceitos (nada foi comprado)
+
+1. Comprimento útil do cabo (45,8 ou 50,8), fios soltos ou fita e reta de 3,3 mm depois do plugue: o projeto fecha com os dois comprimentos; fita colada não fecha (R8V4 §5).
+2. Posição do 595 da R8 (recorte do trilho da frente).
+3. Acesso ao plugue com a régua de trás no lugar: 1,7 mm de folga vertical (fileiras 1 e 2): pinça fina; se não servir, plugar a régua antes de descer a de trás (ordem de montagem da frente para trás, como na R8V4).
+4. OLED: deslocamento de 1,9 mm da área ativa e posição do vidro dentro da placa (vêm da SPEC, sem a peça).
+5. Inserto M2 em PA12 MJF: parede de 1,4 mm; o fabricante do inserto indica o piloto (3,2 mm usado).
+
+### Perguntas para o design (R10V4)
+
+1. **OLED:** os 4 postes D3,2 seguram o módulo com rosca no plástico. A regra de "sem autoatarraxante" vale também para o OLED? Nesse caso proponho pinos de Ø1,9 que entram nos furos do módulo e uma presilha (inserto não cabe em D3,2).
+2. **Fileiras 2 e 4:** o par u 37 + 111 (vão de 74 mm) basta, ou quer o OUT em outro lugar para liberar o par de 111 mm também nelas (muda o contrato da eletrônica)?
+3. O **riser** cheio (+15 cm³, +US$ 4,2) é aceitável, ou prefere um riser vazado (parede de 1,2 mm com nervuras) que devolve alguns cm³?
+4. A posição do 595 da R8 fica por conta da eletrônica, com a regra do §3?
+5. **Portão P:** a planta oficial para o J é `case/renders/planta_geral_v4_r10.png` (4 x R8, 8 M2, OUT em u 121,5); a eletrônica reapresenta as da principal e da R8.
+
+---
+
+
 ## R8V4 — ligação H aplicada no modelo oficial (22 nov 2026, parte de Design)
 
 Nada foi comprado, impresso ou montado (regra nova do J: **nada é comprado até o protótipo inteiro estar fechado, nem amostras**; as dúvidas que só a peça real responde ficam como risco abaixo). Só as 32 teclas, só a Student V4. O modelo oficial `case/case_r4.py` agora é `LINK = "H"`: cabeçalhos SM06B-SRSS-TB (altura 2,95; pegada 9,4 × 5,55) com IN em u 5,9 e OUT em **u 47,5**, boca para −y; plugue 3,6 × 7,0 × 2,45; berço e ponte (E2/G) removidos; rebaixos por junção; postes e M2 novos; **case de 244 × 102 mm**. Reproduz: `case/case_r4.py 0` (~40 s, venv CadQuery), `case/ligacao_h.py r8` (números em `case/out/ligacao_h_r8.json`, cópia em `estudos/`), `case/ligacao_h.py figuras`, `case/planta_v4.py`, `case/corte_v4.py`, `case/confere_r8.py`, `estudos/rigidez_regua_r8.py`. Figuras em `case/renders/`: `planta_geral_v4_r8.png`, `planta_interface_v4_r8.png`, `corte_interface_v4_r8.png`, `ligacao_h_cortes_r8.png` (corte pelo rebaixo, 45,8), `ligacao_h_cortes_r8_50.png` (50,8), `ligacao_h_montagem_r8.png`; todas com nome da nota em cada tecla onde há teclado (C e F em xadrez diagonal).
