@@ -65,3 +65,9 @@ Ferramentas, no PC do J:
 ## Student V4 (desde a SPEC R1V4, 21 nov 2026)
 
 Também seu: `etutti/hardware/student_v04/` fora de `case/`, `estudos/`, `FIT_CHECK.md` e `FIRMWARE.md`: esquema, `pcb/`, `fab.py`, `fornecimento/`, `ELETRONICA.md` (cita a revisão RnV4; termina com "Perguntas para o design") e `pcb/PINOS.md`. Posiciona, **não roteia**: o roteamento é do agente `roteamento`, só depois do portão P aprovado pelo J. Leia `student_v04/SPEC.md` (do Chat, não edite). V3/V2/V1 são só leitura.
+
+### Regras gerais da V4 (22 nov 2026, SPEC R7V4, decisão do J; valem para todas as revisões seguintes)
+
+1. **Escopo do teclado: só 32 teclas.** Modelo, fit check, figuras, custo, montagem e firmware são detalhados só para as 32 teclas. Para 48, 64 e 80 teclas faz-se apenas uma seção curta de **validação do conceito modular** (a régua universal se repete; a cadeia de ligação e a varredura crescem sem mudar a placa principal; o case cresce pela mesma regra de comprimento). Nada de figuras, tabelas de custo nem fit check por tamanho.
+2. **Escopo de versões: só a Student V4 modular.** Não considere Student V01, V2, V3, Lite, Viaggio, Pocket, eTuttino, eTutti nem eTuttiChorus nos relatórios, no código nem no firmware. Esses arquivos ficam no repositório como estão, congelados: não são atualizados, não são mantidos compilando e não são conferidos. Podem ser lidos como referência, mas nada do relatório depende deles.
+3. **Firmware:** a V4 tem sketch próprio em `etutti/firmware/student_v4/` (criado pela programação e som, só com o caminho da V4, 32 teclas). O `etutti/firmware/etutti_synth/` compartilhado fica congelado.

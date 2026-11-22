@@ -1,5 +1,119 @@
 # eTutti Student V4 — FIT_CHECK (design)
 
+## R7V4 — estudo da ligação H, atendida na parte de Design (22 nov 2026; refeita com os números da eletrônica)
+
+Nada foi encomendado, impresso ou montado, **e nenhuma mudança de esquema, posicionamento ou case foi aplicada**: o estudo roda em um script novo, `case/ligacao_h.py` (venv CadQuery, ~7 s; raster de 0,1 mm sobre `layout_r4.py`, sem tocar no `case_r4.py`). Regras gerais novas (SPEC R7V4): só as 32 teclas são detalhadas e só a Student V4 modular conta. As seções R6V4 para trás (E2, ponte, berço) ficam como histórico.
+Reproduz: `case/ligacao_h.py tudo` → `case/out/ligacao_h.json` (todos os números abaixo) e as quatro figuras `case/renders/ligacao_h_*_r7.png` (planta, cortes, cabeçalhos, montagem; **nome da nota em cada tecla**, C e F em xadrez diagonal).
+
+### Dados usados (da eletrônica, `ELETRONICA.md` R7V4, JST `eSR_SZ.pdf`)
+
+Cabeçalho lateral SM06B-SRSS-TB: **altura 2,95**, corpo 4,85 de fundo, pegada 9,4 × 5,55 com a boca 0,5 além da borda de trás da régua (v −7,5 a −1,95). Plugue 06SR-3S: **3,6 de altura × 7,0 de largura × 2,45 de fundo**; reta de **5 mm** de fio depois do plugue e **raio de dobra R ≥ 6 mm** (mínimo estático 3 mm), ambos **conferir**. Cabo A06SR06SR30K51B de 50,8 mm: comprimento **útil 45,8 mm** (50,8 − 2 × 2,5), com 50,8 como limite alto. A estimativa de 4,3 mm de altura (R4V4/R6V4) estava errada e as contas da primeira versão desta seção foram refeitas. Feixe de 6 fios solto: 5,6 mm de largura × 0,6 de espessura. A posição do cabeçalho **OUT passa de u 68,1 para u 49,5** (d = 30,4 mm até o IN da régua seguinte; IN fica em u 5,9).
+
+### Resposta curta
+
+- **A H fecha para as quatro fileiras com o OUT em u 49,5 e o cabo de 45,8 mm úteis, mas a fileira 4 fica no limite: 0,29 mm de folga contra a parede de trás.** Com 50,8 mm de fio livre a fileira 4 **não** fecha (faltam 2,2 mm). Se o OUT for para u 47,5 a folga vai a 1,3 mm (com 45,8) e a u 44,5 fecha também com 50,8 (0,29 mm).
+- **Rebaixo por junção: ~37,8 mm em x × 16,0 mm em y** (45,8 mm de cabo; 18,5 mm se 50,8), a partir da boca do cabeçalho (30,4 de distância entre os plugues + 7,0 + 0,4); **profundidade até o piso, que não muda (2,0 mm)**. Os "~40 × 20" da eletrônica se confirmam com folga.
+- Para fechar sem conflito são necessárias quatro mudanças **só de design do case (não aplicadas)**: postes de parede para x 102,5 / 176,6 / 234, dois postes internos para outras posições, quatro pares de M2 em outras posições (as da R5V4 ficam sob o plugue ou a perna de outra fileira) e a eletrônica mover o **C3** (cai dentro da pegada do OUT).
+- **Cabo da placa:** o de 45,8 úteis cabe nas quatro fileiras (fileira 4 no limite, 0,05 mm); o de 50,8 não cabe na 4; **o de 100 mm não cabe em nenhuma**.
+
+### 1. Viabilidade (cortes: `ligacao_h_cortes_r7.png`; planta: `ligacao_h_planta_r7.png`)
+
+**Geometria do cabo.** Com d = 30,4 entre as saídas dos plugues, o cabo é um **estádio**: perna reta *a* para trás, curva de 90° de R 6, reta de 18,4 ao longo de x, curva de 90° e perna de volta; F = 2a + π·6 + 18,4. Com F = 45,8, **a = 4,28** (menos que os 5 mm de reta da eletrônica: com d = 30,4 a reta de 5 mm só cabe se F ≥ 47,3; fica como **pendência**) e com F = 50,8, a = 6,78.
+
+| F (mm) | perna *a* | profundidade atrás da face do plugue (a + R + 2,8 + 0,5) | folga até a parede na fileira 4 (livre 13,87) |
+|---|---|---|---|
+| 45,8 | 4,28 | 13,6 | **+0,29** |
+| 50,8 | 6,78 | 16,1 | **−2,21** |
+
+Sensibilidade da fileira 4 à posição do OUT (`sensibilidade_fileira4`):
+
+| OUT em u | d | F = 45,8 | F = 50,8 | reta de 5 mm |
+|---|---|---|---|---|
+| 68,1 (R4V4) | 11,8 | −8,96 (não) | −11,46 (não) | cumpre |
+| 55,0 | 24,9 | −2,46 (não) | −4,96 (não) | cumpre |
+| **49,5** | 30,4 | **+0,29** | −2,21 | só com F ≥ 47,3 |
+| 47,5 | 32,4 | +1,29 | −1,21 | só com F ≥ 49,3 |
+| 44,5 | 35,4 | +2,79 | **+0,29** | não (a = 1,8 / 4,3) |
+
+Por fileira (F = 45,8, OUT em u 49,5; a ponta é o fundo do feixe):
+
+| Fileira | Bolso sob a régua | Queda do plugue ao piso | Curva (R ≥ 6) pede / disponível | Ponta do laço em y (parede 2,15) | Cabe? |
+|---|---|---|---|---|---|
+| 1 | 6,9 | 5,1 | 12,3 / 22,9 | 51,0 | sim |
+| 2 | 8,9 | 7,1 | 14,5 / 22,9 | 35,0 | sim |
+| 3 | 10,9 | 9,1 | 16,4 / 22,9 | 19,0 | sim |
+| 4 | 13,9 | 12,1 | 18,9 / 22,9 | **2,94** | **no limite (0,29 mm)** |
+
+- **Cabo no bolso da fileira 1:** cabeçalho 2,95 + plugue 3,6 ocupam o bolso de 6,9 com o plugue a 3,6 mm do piso (eixo em −2,675, base −4,475). O cabo desce 5,1 mm numa curva de 12,3 mm que usa a perna, a curva e parte da reta; a folga vertical do feixe às peças de baixo da régua de cima é **≥ 3,0 mm** (3,05 nos pinos de tecla da fileira 2, 3,0 no R1 da fileira 3, 4,1 na 4). Nada é pressionado. O degrau da fileira 1 e o rebaixo mais fundo **não são necessários**.
+- **A sobra (15,4 mm com 45,8; 20,4 com 50,8) fica deitada no piso**, como fios soltos (feixe de 5,6 × 0,6). **Em pé não serve:** uma fita colada (5,6 de altura) teria folga de **0,35 mm** sob o J1 da régua da fileira 2, 0,5 sob o R1 da 3 e **0,02–0,07 mm** com 50,8; além disso uma fita colada só dobra no plano da fita, o que exigiria o laço em pé. **Pendência:** confirmar que o A06SR06SR30K51B tem fios soltos (se for fita colada, a H não fecha como está).
+- **Piso e trilhos:** o piso **segue com 2,0 mm**. Os vãos tiram trilho; resta, por régua, **40–71 % do trilho de trás** (pior: régua 3.0 com 40 %, maior vão de 33 mm) e 82–100 % do da frente. Flecha conservadora (régua de 14 × 1,2 mm FR-4 sobre o maior vão, 3 N no meio, sem contar o outro trilho nem as bossas): **0,05 mm** na régua 3.0 e ≤ 0,004 nas outras.
+- **Janela e entalhe do plugue:** o plugue de 7,0 mm pede um vão de **7,4 mm** no trilho da frente da fileira de trás (um vão por plugue, os dois ligados pela perna e pela reta); o cabeçalho pede o vão de 10,4 mm no trilho de trás da própria régua, agora em u 44,3–54,7.
+- **Volume e impressão (MJF PA12, US$ 0,275/g, 1,01 g/cm³):** vãos dos laços 3,8 cm³ + cabos da placa 1,8 cm³ + o berço do E2 (1,4 cm³) que sai = **−7,1 cm³ ≈ −US$ 2,0**: o case de 32 teclas fica em **~US$ 43,8** (R6V4: ~45,8); com 50,8 mm o corte é de −9,9 cm³ (−US$ 2,7). Estimativa por integração, não do CAD. Nenhuma faixa do MJF nem a mesa de 250 mm mudam.
+- **Cruzamentos:** com o laço de 13,6 mm atrás do plugue e fileiras a 16,02 mm, os laços de fileiras vizinhas **não se cruzam** (0 mm²); com 50,8 mm eles se tocam em ~10 mm². (Na versão de 68,1 eram 36 mm².)
+
+**O que precisa mudar no case para a H fechar (proposta, nada aplicado):**
+1. **Postes de parede** (a perna de uma fileira e o laço batem em x 161,5 e 89): para **x 102,5 / 176,6 / 234**, nas duas paredes; espaçamentos 74 e 57 mm.
+2. **Postes internos:** os de u ≈ 55,5 da régua (dois dos cinco) caem na pegada do OUT (u 44,8–54,2; 1,4 mm) e na fenda do poste (u 54,5–56,5); proposta: `(107,7; 68,69)`, `(200,2; 68,69)`, **`(172,45; 52,67)`**, `(107,7; 36,65)`, `(200,2; 36,65)`.
+3. **M2:** os bosses D6 de u 55,5 das fileiras 2 e 4 (e o de u 37 da 3) ficam sob o plugue ou a perna do laço da fileira da frente (15 mm² de conflito). Pares viáveis procurados contra todos os laços e cabos da placa: **fileira 1 (12,0; 62,0), 2 (26,5; 47,5), 3 (15,0; 47,5), 4 (26,5; 47,5)**; o espaçamento cai de 37 para 21–50 mm em x (confirmar a rigidez com a eletrônica).
+4. **C3** (u 45,5–47,5, v −3,2 a −2,2) está **dentro da pegada do OUT**: a eletrônica o move. O sensor U3 (u 46,25) fica a 0,84 mm da pegada.
+
+**Cabo da placa (J601–J604 → IN da 1ª régua),** Bézier de comprimento F do plugue do J60x (fios para +x) ao IN (fios para −y), com os postes e M2 propostos:
+
+| F | Caixa ocupada | Conflito M2 / postes | Veredito |
+|---|---|---|---|
+| 45,8 | x 80–99, y 37–74 (fileira 1 a 4: caixa y mín. 52,7 / 36,9 / 20,7 / 4,9) | 0 / 0 | cabe; na fileira 4 o centro chega a y 4,9 (feixe 0,05 mm além da parede) |
+| 50,8 | até y 3,3 na fileira 4 | 0 / 0 | cabe nas fileiras 1–3; **na 4 passa da parede em 1,6 mm** |
+| 100 | até x 111 e y −8,3 | 16–50 mm² / 12–27 mm² | **não cabe** |
+
+A distância reta é 18,2 (fileiras 1 e 3) e 11,6 (2 e 4): **a sobra é 27,6 e 34,2 mm com o cabo de 45,8**, que se deita no piso do canal sob a régua. O laço do cabo da placa não é um desenho único (a curva é só um modelo).
+
+### 2. Posição e orientação dos cabeçalhos (`ligacao_h_cabecalhos_r7.png`)
+
+| Opção (OUT em u 49,5) | Resultado em planta com as peças reais da régua |
+|---|---|
+| **A: boca para trás (−y), faixa de trás** (a da R4V4 e a que a eletrônica mantém) | **a única que dá.** O cabeçalho fica dentro da régua (a boca passa 0,5 da borda de propósito), o plugue sai para trás e passa sob a régua da fileira de trás (**folga vertical de 2,3 a 3,3 mm**: o plugue de 3,6 mm tem o topo 0,33 acima da face de baixo da régua, mas fora da régua dele). **Conflito só com C3**, que a eletrônica move. |
+| B: boca para a frente (+y) | toca o R1 e o plugue pousa sobre a régua da fileira da frente, mais baixa: colide. |
+| C: boca para a ponta (+x) | cabeçalho de 9,4 mm passa 2,2 mm da borda da régua e o plugue bate em 1 pino de tecla da régua seguinte. |
+| D: boca para dentro (−x) | mesma largura impossível; bate em 1 pino. |
+
+O plugue entra com a régua **erguida 12 mm** acima do degrau, num movimento de 4 mm no sentido −y da régua; depois a régua desce e **o cabo não se dobra contra ela**: a face de trás do plugue (y −9,95) fica além da borda da régua (−7,0). Altura do cabeçalho (2,95), plugue (3,6) e raio (6) são os da eletrônica; **o clone XYECONN C56123098 não tem desenho lido** (conferir o encaixe do plugue SR).
+
+### 3. Posicionamento geral (`ligacao_h_planta_r7.png`)
+
+Planta das 8 réguas e 32 teclas (nome da nota em cada tecla; C e F em xadrez diagonal) com cabeçalhos, plugues, laços de 45,8 mm (cor por fileira), vãos cortados nos trilhos (hachurado), cabos da placa (tracejado), postes atuais e os propostos (tracejado verde), M2 atuais que mudam (pontilhado vermelho) e os propostos. Os cortes y-z de cada fileira estão em `ligacao_h_cortes_r7.png`.
+
+### 5. Montagem em casa (`ligacao_h_montagem_r7.png`)
+
+Regra: **montar da fileira da frente para trás** e, em cada fileira, da régua mais perto da placa para a ponta: o plugue fica sob os 2,45 mm de trás da régua da fileira de trás e o laço corre sob as réguas de trás.
+1. Base com os rebaixos; a régua anterior já ligada e parafusada.
+2. O cabo de estoque (um plugue já na régua anterior, ou o do J60x) deita no rebaixo, com os fios soltos em estádio.
+3. A régua nova sobe 12 mm acima do degrau; o plugue livre sobe com a pinça até o eixo do cabeçalho.
+4. A régua vai 4 mm para −y: plugue e cabeçalho travam.
+5. A régua desce; o cabo cai no rebaixo (curva de 12 a 19 mm a partir do plugue).
+6. Dois M2 de baixo para cima nas bossas D6 (nas posições novas). Repita; só então a tampa.
+- **Trocar uma régua:** tampa, 2 M2, levante 2 mm (folga do plugue à régua de trás: 2,3 mm nas fileiras 1 e 2, 3,3 na 3; a 4 não tem régua atrás) e empurre a régua 4 mm para +y; o cabeçalho sai do plugue; a nova entra pelos passos 3 a 6. **Pendência:** o plugue com a régua de trás no lugar tem ~2 mm de acesso: pinça fina.
+- **Acrescentar um módulo:** validação, não detalhe. O case cresce 74 mm; cada módulo traz **uma junção a mais por fileira, com o mesmo laço e o mesmo passo de 74 mm**, e os postes de parede ficam fora de x_j − 31 a x_j + 13 (dá um por 74 mm). A placa e a varredura não mudam.
+
+### 6. Custo (parte de Design)
+
+Impressão: **~US$ 43,8** (−US$ 2,0 contra a R6V4). Cabos: 8 jumpers; preço e tipo (reto/invertido) estão na eletrônica (US$ 1,42 a 1,21). A H não adiciona peça nem fixação na base.
+
+### 7. O que impede e a menor mudança (fileira 4)
+
+- **Impede:** a profundidade atrás da régua 4 é de 13,87 mm; o estádio pede 13,6 (45,8) ou 16,1 mm (50,8). Fecha **só por 0,29 mm** com 45,8 mm de fio útil.
+- **Menor mudança, em ordem:** (1) **OUT em u 47,5** (folga 1,29 com 45,8; depois do C3 mover); (2) OUT em **u 44,5** se o comprimento útil for 50,8 (fecha os dois, mas a reta de 5 mm cai para 1,8 mm); (3) cabo sob medida de ~40 mm só para a fileira 4.
+  Rebaixo mais fundo ou degrau maior na fileira 1 **não ajudam**: o que falta é espaço em y.
+
+### Perguntas para o design
+1. **OUT em u 49,5 (limite de 0,29 mm) ou 47,5 (1,29 mm)?** A de 47,5 deixa o laço de 45,8 mm um pouco mais esticado: a reta de 5 mm após o plugue cai para 3,3 mm.
+2. A eletrônica **move o C3** (u 45,5–47,5, v −3,2 a −2,2) para fora da pegada do OUT?
+3. O comprimento **útil** de 45,8 mm do A06SR06SR30K51B é o real, e o cabo é de **fios soltos** (não fita colada)? Em pé não cabe.
+4. Posso aplicar as quatro mudanças do case (postes de parede, 2 postes internos, M2 por fileira)? Os pares de M2 ficam mais perto (21–50 mm) em x.
+5. **Jack IN e o colar do ME 3:** a abertura do jack IN na parede esquerda hoje é de **6,5 mm** (a do OUT também); um colar de ~6–7 mm pede ~8 mm. Pode ser alargada sem conflito (os vizinhos estão a mais de 20 mm), mas não medi o colar. Alguém tem o diâmetro do plugue do ME 3 com o colar?
+6. Cabo da placa: 45,8 mm úteis nas quatro fileiras (e não o de 100)?
+
+---
+
 ## R6V4 — atendida (22 nov 2026, tarefas de Design: itens 1 e 3)
 
 Nada foi encomendado, impresso ou montado. As seções R5V4 e anteriores valem, menos onde esta diz o contrário. Peças e medidas: **as reais da eletrônica** (`ELETRONICA.md`, R6V4); o que ainda é estimativa está marcado **(conferir)** (a ficha da fêmea H3,4 não tem folha de desenho: uso o footprint do irmão H4,3).

@@ -1,10 +1,171 @@
 # eTutti Student V4 · relatório da eletrônica
 
-**SPEC atendida: R1V4 a R6V4 (R6V4: 22 nov 2026, seção logo abaixo; R5V4: tarefas 2 e 3).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
+**SPEC atendida: R1V4 a R7V4 (R7V4: 22 nov 2026, tarefas 1 e 2, seção logo abaixo, só estudo; R6V4: 22 nov 2026, seção logo abaixo; R5V4: tarefas 2 e 3).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
 Data: 21 nov 2026. Nada foi posicionado, roteado, encomendado nem gerado em `fab/`: é estudo (Fase A). A V3, a V2 e a V1 não foram tocadas.
 Scripts novos (reproduzem os números): `calculos_eletronica.py` (E2, E3), `fornecimento/precos_jlc.py` (preços e classe na
 biblioteca da JLCPCB, 21 nov, curl de 2 em 2 s). Contrato com a programação: `pcb/PINOS.md` (rascunho já entregue).
 Convenção: **(conferir)** = sem medida ou datasheet conferido; **estimativa** = conta minha, sem cotação.
+
+## R7V4 · ligação H (cabo SH de estoque + rebaixo) e microfone Sennheiser ME 3 (tarefas 1 e 2, parte da eletrônica)
+
+**SPEC atendida: R7V4 (22 nov 2026), tarefas 1 e 2 (eletrônica).** **Só estudo:** esquema, posicionamento, régua, placa e `pcb/PINOS.md` **não mudaram** e não mudam antes de o J aprovar a ligação. Regras gerais da R7V4 aplicadas: só a versão de 32 teclas é detalhada (a seção 7 abaixo é a validação curta do conceito modular) e só a Student V4 entra nas contas. Medidas **(conferir)** = suposição minha ou ficha incompleta; **estimativa** = conta minha, sem cotação.
+Script novo (números e figuras): `pcb/regua/ligacao_h_r7.py` → `pcb/regua/ligacao_h_r7.json` e `pcb/regua/img/h_*_r7.png`. Fontes lidas: JST `eSR_SZ.pdf` (desenhos do cabeçalho SM06B-SRSS-TB e do plugue 06SR-3S, 22 nov), páginas DigiKey/Pololu/Pimoroni, biblioteca da JLCPCB (curl), guia rápido e folha de especificação do ME 3 (Sennheiser), datasheet do SGTL5000.
+
+### Resposta curta
+
+- **A H é possível pelo lado elétrico: sim.** Sinais (CLK a 5 MHz em 46 mm de fio AWG 30, ~9 pF de cabo por fileira contra o limite de 1 nF da linha OUT), corrente (~2,6 mA por fileira) e queda de tensão (0,5 mV no GND ao longo de 2 elos) não são problema. O que a H pede da eletrônica é **a pinagem** e **uma posição melhor do cabeçalho OUT** (seção 2).
+- **Ordem dos pinos: com 6 vias NENHUMA pinagem funciona com os dois tipos de cabo** (prova na seção 1). Duas saídas: **P6s + cabo reto** (barato; compre `A06SR06SR30K51B`) ou **P9 simétrica de 9 vias** (funciona com qualquer cabo, +~US$ 13 e +1 tipo Extended na principal). **Recomendo P6s + cabo reto**; P9 se o J quiser comprar cabo sem pensar no tipo. Nos dois casos a alimentação **nunca** inverte.
+- **Cabos:** 8 de **50,8 mm** (4 placa → 1ª régua + 4 entre réguas), nenhum de 100 mm (a sobra de 65-74 mm não tem onde ficar).
+- **Custo (32 teclas, só a ligação):** **~US$ 11,4-12,1** com P6s (G: 11,11; D: 36,40 com a ferramenta), zero solda, zero tipo Extended novo; P9 ~US$ 25. Impressão do case: valor da R6V4 do design, **~US$ 45,8 (inclui os berços da G, ~US$ 0,4); o rebaixo da H soma volume que o design calcula**.
+- **O que impede a H, e a menor mudança:** com a régua do jeito que está (OUT em u 68,1, 11,8 mm do IN da seguinte) o cabo de 50,8 mm sobra **17,3 mm** e o U que guarda a sobra vai **19,5 mm para trás da boca**; atrás da fileira 4 só há **14,3 mm** até a parede do case. **Menor mudança: mover o cabeçalho OUT da régua de u 68,1 para u ≈ 49,5** (cabo quase esticado, U de ~10 mm). Descrita, **não aplicada**.
+- **ME 3:** o plugue liga no J302 **como está** (ponta = sinal e alimentação; anel e luva = GND). Com 3 V de MIC_BIAS **não dá para garantir só pela folha** (ela só diz "10 V"); o nível e o ganho do SGTL5000 **sobram**; a detecção MIC_DET **cai na faixa** de microfone. Recomendo **testar na bancada antes de mudar a placa**; plano B (boost 9-10 V) custa ~US$ 6,5. Seção 6.
+- **Alinhamento com o design:** o estudo de geometria do design (`case/ligacao_h.py`, em paralelo) usa comprimento livre de 44,0-50,8 mm e raio de dobra mínimo de 4 mm; as contas acima usam 45,8 mm e 6 mm. **Onde divergirem, valem as do `FIT_CHECK.md` (R7V4)**; as minhas são a checagem elétrica e do que a pinagem pede da régua.
+- **Pendências:** tipo real (reto/invertido) de cada cabo comprado (continuidade com multímetro), cabo plano colado x fios soltos (decide se o U pode ficar deitado), medidas do clone XYECONN do cabeçalho, corrente do ME 3 com 3 V.
+
+### 1. Cabos de estoque e ordem dos pinos (item 4)
+
+**Cabos reais** (nenhum tem o desenho com a ordem dos pinos; a distinção vem dos títulos do distribuidor e do texto do vendedor):
+
+| Cabo | Comprimento / fio | Pinagem | Estoque / preço | Fonte |
+|---|---|---|---|---|
+| JST **A06SR06SR30K51B** (plugue SR, 6 vias nas duas pontas) | 50,8 mm, AWG 30 | **reto**: o título do DigiKey não diz "Reversed" | 2 186 em estoque; US$ 1,42 (1), **1,206 (10)**, 1,03 (100) | [DigiKey 455-3011-ND](https://www.digikey.com/en/products/detail/jst-sales-america-inc/A06SR06SR30K51B/6009387) |
+| JST **A06SR06SR30K51A** | 50,8 mm | **invertido** ("Socket to Socket, **Reversed**") | **0** (previsto 1 000 em 28 dez 2026); US$ 1,42 | [DigiKey 455-2999-ND](https://www.digikey.com/en/products/detail/jst-sales-america-inc/A06SR06SR30K51A/6009375) |
+| JST A06SR06SR30K102A/B, 152, 203, 254 (4, 6, 8, 10 pol) | AWG 30 | A = invertido, B = reto (mesmo código) | **(conferir)** estoque de cada um | DigiKey |
+| Pimoroni "JST SH cable 6 pin" | 100 ou 300 mm, 26 AWG | **invertido** (texto do vendedor: pino 1 de uma ponta no pino 6 da outra) | (conferir) | [Pimoroni](https://shop.pimoroni.com/products/jst-sh-cable-6-pin) |
+| Pololu 5543 / 5544 / 5545 (10 / 16 / 25 cm) | 28 AWG, fios torcidos | **não informada** (só "preto no pino 1, vermelho no pino 2") | US$ 3,32 / 3,61 / 4,06; **esgotado** (encomenda) | [Pololu 5543](https://www.pololu.com/product/5543) |
+| Adafruit/SparkFun Qwiic, STEMMA QT | 4 vias, 50-400 mm | simétrico, mas **só 4 vias** | | não serve (6 vias) |
+
+- **Nomenclatura JST (a mesma dos dois tipos):** `…B` = pino k liga ao pino k; `…A` = "Reversed", pino k liga ao pino 7-k. O PDF `eSR_SZ.pdf` da JST traz só os desenhos dos conectores (plugue SR 06SR-3S, fio AWG 30 de 7 fios, isolante OD 0,54-0,58 mm, 0,7 A, contato 20 mOhm máx. inicial / 40 depois de ensaio); **o arranjo dos circuitos do cabo não está nele (conferir ao receber: continuidade entre os pinos 1 das duas pontas)**.
+- **Todos esses cabos têm plugue (fêmea SR/SH) nas duas pontas**; o lado da placa é sempre o cabeçalho com pinos: `SM06B-SRSS-TB` / clone XYECONN `C56123098` (o SM06B-SRSS-TB está no mesmo PDF da série SR de plugue IDC; o plugue SR de IDC entrar no clone XYECONN é **conferir**).
+- **Por que existem os dois tipos:** num cabo plano colado, com os dois plugues voltados para o mesmo lado, a volta em U só sai com meia torção e isso inverte a ordem dos pinos. Por isso o J viu "invertidos".
+
+**Por que 6 vias não aceitam os dois tipos.** Um cabo invertido liga o pino k da saída da régua A ao pino 7-k da entrada da régua B. Para funcionar com os dois tipos, a rede do pino k tem de ser igual à do pino 7-k: **três redes distintas no máximo** em 6 vias (e 4 em 8). Preciso de cinco (+3V3, GND, OUT, CLK, DADO). Logo: ou 9 vias (4 pares espelhados + 1 central = 5 redes), ou um tipo só de cabo.
+
+Figura `pcb/regua/img/h_pinagem_r7.png` (as três pinagens contra os dois cabos):
+
+| Pinagem | Pinos 1..n | Cabo reto | Cabo invertido |
+|---|---|---|---|
+| **de hoje** (R5V4) | +3V3, GND, OUT, CLK, DADO, NC | funciona | não funciona, **sem inverter a alimentação** (o +3V3 cai no pino NC), mas CLK x OUT se encostam (o clock da MCU contra a saída de um TMAG) |
+| **P6s** (recomendada, 6 vias) | **+3V3, GND, OUT, GND, CLK, DADO** | funciona | não funciona, **sem dano**: +3V3 x DADO, GND x CLK, OUT x GND; todas por resistor em série |
+| **P9** (9 vias) | **GND, +3V3, OUT, CLK, DADO, CLK, OUT, +3V3, GND** | funciona | **funciona** (cada pino liga à mesma rede) |
+
+- **P6s:** o OUT analógico fica entre dois GND (blindagem do sinal mais sensível), +3V3 e GND nunca são vizinhos espelhados (reverso: +3V3 encontra DADO, nunca GND), e a única mudança em relação a hoje é o **pino 4 = GND novo, CLK no 5, DADO no 6** (o pino NC some). Escolhida por busca exaustiva das 360 permutações que mantêm +3V3 e GND longe um do outro (pior caso: +3V3 x DADO). **Recomendo subir os resistores em série de CLK/DADO para 330 ohm** (R605/R606 na principal, o 100 ohm do QH' na régua): limita a 10 mA o pior caso de um cabo errado (33 mA com 100 ohm) e custa nada (330 ohm x ~20 pF = 7 ns contra 100 ns de meio período a 5 MHz). **(descrição; não aplicado.)**
+- **P9:** GND nos pinos 1 e 9, +3V3 em 2 e 8, OUT em 3 e 7, CLK em 4 e 6, DADO no 5 (central). Funciona com qualquer cabo (reto ou invertido), dobra os contatos de alimentação (queda de GND 0,25 mV em vez de 0,5), e um cabo de outro tipo nunca é erro. Custo: cabeçalho JST `SM09B-SRSS-TB(LF)(SN)` **C160408** (US$ 0,35 a 10, estoque 2 582), mais largo (B = 11,0 mm; footprint ~12,4 x 5,55) e plugue de 10,0 mm. Existe cabo `A09SR09SR30K51A/B` no DigiKey (~763 em estoque, ~US$ 1,80, **conferir**); o de 10 vias (C160408 -> **C160409**, estoque 75 725) é a alternativa com mais estoque (+1,0 mm de largura).
+- **Placa → 1ª régua: o mesmo cabo e a mesma pinagem** (J601-J604 acompanham a régua; os dois cabeçalhos ficam com a mesma ordem).
+- **Como o J confere um cabo recebido:** continuidade do pino 1 de uma ponta com o pino 1 da outra (reto) ou com o 6 (invertido). Etiquetar.
+
+### 2. Cabeçalho, raio de dobra e o que muda no layout da régua (item 2, minha parte)
+
+**Medidas do fabricante** (JST `eSR_SZ.pdf`, página 3; `h_juncao_r7.png`):
+
+| Peça | Altura | Fundo | Largura |
+|---|---|---|---|
+| `SM06B-SRSS-TB` lateral (SMT) | **2,95 mm** | 4,85 (footprint 5,55 ± 0,1) | 8,0 (9 vias: 11,0) |
+| `BM06B-SRSS-TB` topo (SMT) | 4,9 | 2,9 | 8,0 |
+| plugue `06SR-3S` | **3,6** | ~2,45 | 7,0 (9 vias: 10,0) |
+
+- **Correção a números anteriores:** a altura do cabeçalho lateral é **2,95 mm**, não os 4,25-4,3 estimados (R4V4/R6V4): o conjunto cabeçalho + plugue ocupa **3,6 mm** sob a régua, e a fileira 1 (bolso de 6,9 mm) deixa **3,3 mm** livres. **O clone XYECONN `C56123098` não tem desenho dimensional lido por mim (conferir)**: o footprint dele no EasyEDA já é o da régua.
+- **Raio de dobra: o desenho da JST não dá.** Fio AWG 30, 7 fios, isolante OD 0,56 mm. Regra adotada, de fio de ligação comum: **R ≥ 6 mm** (~10 x OD) e **3 mm** como mínimo estático absoluto, com uma **reta de 5 mm** depois do plugue (os fios saem do plugue de IDC sem alívio de tração) **(conferir com o cabo comprado)**. Cabo plano de 6 fios: 5,6 mm de largura (9 vias: 8,6); só dobra "deitado" (em torno do eixo da largura).
+- **Cabeçalho lateral, boca para trás (−y), como na R4V4:** é a posição que cabe nos 6,15 mm da faixa de trás (footprint 5,55 + a boca 0,5 além da borda) e o plugue entra pela janela de plugue já existente. **Boca para os lados (±x) não serve:** os dois plugues se encontrariam nos 0,4 mm de vão entre as réguas (cada plugue tem 2,45 mm de fundo). **Cabeçalho de topo `BM06B` (boca para baixo)** só ajudaria o plug com a régua erguida, mas pede ~12 mm de curva vertical sob a régua (o bolso da fileira 1 tem 6,9): descartado.
+- **Quanto de cabo, de verdade** (`ligacao_h_r7.json`; comprimento útil = 50,8 − 2 x 2,5 = 45,8 mm, **conferir como a JST mede** o comprimento):
+
+| Elo | Caminho mínimo | Sobra com 50,8 mm | Sobra com 101,6 mm |
+|---|---|---|---|
+| placa → 1ª régua, fileiras 1 e 3 (J60k x 77,4 → IN em x0 + 5,9 = 95,1) | 32,0 | **13,8** | 64,6 |
+| placa → 1ª régua, fileiras 2 e 4 (IN em 85,85) | 22,8 | **23,0** | 73,8 |
+| entre réguas (OUT u 68,1 → IN da seguinte, d = 11,8 mm) | 28,5 | **17,3** | 68,1 |
+
+Resposta ao "50 ou 100 mm": **só 50,8 mm**. Com 100 mm a sobra (65-74 mm) vira ~2 voltas de Ø 12 mm.
+- **O problema da sobra:** o cabo de 50,8 mm entre réguas, com as bocas lado a lado, faz um U que vai **19,5 mm para trás** (reta 13,6 + raio 5,9); atrás da fileira 4 há **14,3 mm** até a parede (y = 2): **não cabe** (figura `h_teclado32_r7.png`, trecho em vermelho). Os U das fileiras 1-3 passam sob a régua da fileira de trás (o bolso dela é mais fundo: 8,9 / 10,9 / 13,9 mm), cabem em altura, mas pedem o rebaixo em planta (~40 x 20 mm por junção).
+- **O que a pinagem e a posição do cabeçalho exigem do layout da régua (só descrição, nada aplicado):**
+  1. **OUT de u 68,1 para u ≈ 49,5** (entre o U3 em 46,25 e o entalhe de u 54,5-56,5; footprint 44,8-54,2): d passa a 30,4 mm, o cabo de 50,8 mm fica quase esticado e o U cai para **~10 mm** (reta 4,3 + raio 6) - cabe atrás da fileira 4. O IN fica em u 5,9. (Para um cabo de 50,8 sem folga o valor exato seria d = 29,0, u = 50,9, mas bate no entalhe.) O número depende de como a JST mede o comprimento: ±5 mm de cabo = ±5 mm em d.
+  2. **P6s:** re-numerar J1/J2 (pino 4 = GND novo; 5 = CLK; 6 = DADO; no OUT o pino 6 é o QH' por resistor, no IN é o SER) e o resistor do QH' de 100 para 330 ohm; o NC do pino 6 deixa de existir.
+  3. **P9:** footprint de 9 vias (~12,4 x 5,55; plugue 10,0) no lugar do de 6; IN passa de u 5,9 para ~6,6 (para não sair da régua: 0,4..12,8) e C1 sai da frente; OUT em u ≈ 47,5 (41,3..53,7, livre do entalhe de 54,5; d ≈ 32,4 mm: o cabo de 50,8 mm fica no limite, reta de ~3 mm antes da dobra).
+  4. **Principal:** J601-J604 acompanham a pinagem (P6s: só a ordem; P9: troca de peça, J401 da tela continua de 6 vias) e R605/R606 = 330 ohm.
+  5. **Os conectores continuam no fundo da régua (nada no topo)** e a régua continua 74 x 14 x 1,2 (a largura de 14 mm não muda).
+
+Figuras (todas com o nome da nota em cada tecla, C azul, F laranja, onde há teclado):
+`pcb/regua/img/h_pinagem_r7.png` (ordem dos pinos), **`h_teclado32_r7.png`** (planta das 32 teclas com cabeçalhos, cabos e a parede), **`h_juncao_r7.png`** (planta e corte do elo E4 | G4 e a alternativa OUT'), `h_microfone_r7.png` (item 6).
+
+### 3. Custo (item 6): 32 teclas contra a G (R6V4) e a D (R5V4), só a ligação
+
+| US$ | **H + P6s (reto)** | **H + P9** | G (R6V4) | D (R5V4) |
+|---|---:|---:|---:|---:|
+| cabos de estoque (4 placa → 1ª + 4 entre réguas) | **11,4** (8 x 1,42; 12,1 comprando 10 a 1,206) | ~14,4 (8 x ~1,80, **conferir**) | 6,6 (2 cabos de 100 mm) | ~6,4 (cabos crimpados + elos) |
+| cabeçalhos a mais nas 10 réguas pedidas (20) | 0 (o SH de 6 vias já estava) | +5,6 (JST 9 vias a 0,350 contra 0,069) | +0,9 e machos 0,46 | 0 |
+| tipos Extended a mais | **0** (réguas: TMAG, SH-6 clone, 595; principal igual) | +1 na principal (+3,09; J401 fica de 6 vias) e +1,75 de peças | +1 (macho; +3,09) | 0 |
+| ferramenta | 0 | 0 | 0 | 30 (crimpadora) |
+| juntas de solda | **0** | **0** | 20 | 40 |
+| **total da ligação** | **~11,4-12,1** | **~25** | 11,11 | 36,40 (6,40 sem a ferramenta) |
+| ponte / berço / pigtail na base | nenhum | nenhum | 4 pontes + 4 pigtails + berços | |
+
+- **Impressão do case** (valor do design, `FIT_CHECK.md` R6V4, MJF PA12, sem tabela por tamanho): **US$ 45,8** para 32 teclas, **já com os berços da G** (1,4 cm³ = ~US$ 0,4). Na H os berços somem e entra o **volume dos rebaixos**, que é do design (cada junção ~40 x 20 mm em planta; o volume cai no piso da bandeja). Não somei nada além disso; estimativa de ordem de grandeza: cada cm³ de PA12 custa ~US$ 0,28.
+- **A H custa o mesmo que a G (+~US$ 0,3-1,0) e ~US$ 25 menos que a D; sem solda, sem peça nova, sem ponte nem berço.** P9 custa ~US$ 13 mais que P6s.
+- **O SH continua sendo o único conector das réguas** (clone `C56123098`, estoque 5 971, 0,069; P9: JST original C160408).
+- **Estimativas sem cotação:** o preço do cabo de 9 vias e a metade dos de 4/6 pol; a JLCPCB não monta cabos.
+
+### 4. Lista para o usuário e plano B (item 5, minha parte)
+
+**Lista (32 teclas, tudo "em casa", sem solda e sem ferramenta):**
+1. 1 placa principal (JLCPCB, montada), 8 réguas (JLCPCB; o pedido mínimo traz 10: 2 sobressalentes), o case e os botões, a ferragem de sempre (M2, insertos).
+2. **8 cabos JST `A06SR06SR30K51B` (50,8 mm, reto, plugue nas duas pontas); compre 10** (2 sobressalentes, preço de 10 unidades). **Não** compre o sufixo `A` nem o da Pimoroni (invertidos) com a pinagem P6s; com P9 qualquer sufixo serve.
+3. Etiquetar na chegada: continuidade pino 1 - pino 1.
+
+**Passos (descrição; as figuras de montagem são do design):** 1) deixar a base aberta, com os cabos nos rebaixos; 2) régua erguida, plugue no cabeçalho de baixo (boca para trás); 3) acomodar a sobra de ~10-17 mm no rebaixo; 4) descer a régua nos pinos e parafusar; 5) próxima régua; 6) a placa → 1ª régua é o mesmo plugue. Trocar uma régua: soltar o parafuso, erguer, puxar os dois plugues (sem solda). Acrescentar módulo: +4 réguas e +4 cabos de 50,8 mm.
+
+**Se a H não fechar, o que a eletrônica muda (menor para maior):** (a) só o OUT para u ≈ 49,5 (item 2.1: cabo quase esticado, U de 10 mm); (b) P6s e 330 ohm; (c) P9 se o J quiser qualquer cabo; (d) como último recurso, o cabeçalho **de topo** `BM06B` (boca para baixo, 4,9 mm de altura) no lugar do lateral, que pede rebaixo vertical de ~12 mm sob a régua (não cabe no bolso de 6,9 da fileira 1 sem o rebaixo mais fundo).
+
+### 5. Riscos que só o protótipo fecha
+
+1. **Cabo plano colado ou fios soltos?** Num cabo colado o U só dobra "deitado" no eixo da largura (flat-wise), com a boca para trás o U fica em planta, sobre o piso: **edgewise é impossível**; com fios soltos tanto faz. Pedir 2 amostras e dobrar.
+2. **Comprimento "50,8"**: é entre plugues ou entre fios? Muda a sobra em ± 5 mm.
+3. **Altura do conjunto montado** (cabeçalho 2,95 + plugue encaixado) sob a régua: 3,6 mm nominal; o clone XYECONN e a tolerância de ±0,1 do footprint ainda sem medida **(conferir)**.
+4. **Retenção:** o SH segura por atrito + trava de 3 pontos do plugue; a vibração do teclado é baixa, mas fica o teste de "bater a mão" com o case fechado.
+
+### 6. Microfone Sennheiser ME 3 (tarefa 2, estudo de mesa; a placa não muda)
+
+Fontes: [especificação do ME 3 (art. 508928)](https://www.sennheiser.com/globalassets/digizuite/41606-en-sp_1167_v2.1_me_3_product_specification_en.pdf), [guia rápido](https://www.sennheiser.com/globalassets/digizuite/41080-en-me_3_quick_guide_04_2025.pdf), SGTL5000 (Freescale, Tabela 6 e "Microphone Input"). Figura: `pcb/regua/img/h_microfone_r7.png`.
+
+**(1) Pinagem do plugue.** O guia rápido (esquema "Connector assignment") mostra um plugue de **3 contatos** (ponta, anel, luva): **"+" na ponta; "−" abrange o anel e a luva juntos** (leitura do desenho: os dois ficam em GND). A folha de especificação traz só o "+/−" sem texto. Logo: **sinal e alimentação vêm na ponta** (condutor único, 2 fios), **o anel não é usado** (curto à luva). **No J302 como está** (ponta → MIC_J, anel pino 6 NC, luva → GND) **funciona**: o anel do plugue (GND) toca o contato NC do jack. **Conferir:** continuidade anel-luva com multímetro; o plugue tem colar de travamento (descrição de varejista; a folha não cita): ver se passa pelo furo do jack do case (pergunta ao design).
+
+**(2) Alimentação.** A folha dá **um só número, "supply voltage 10 V"** (sem faixa, corrente, ruído nem impedância; as especificações de máximo SPL 150 dB e 1,6 mV/Pa valem a 10 V). O MIC_BIAS do SGTL5000 chega a **3,0 V** (VDDA − 0,2 V) por **2 kΩ internos + R305 2,2 kΩ = 4,2 kΩ** (ou 2 kΩ com R305 = 0 Ω, valor só de BOM).
+- Tensão na ponta, V = 3,0 − I · R (figura): com **4,2 kΩ**, 0,2 / 0,3 / 0,5 mA dão **2,16 / 1,74 / 0,90 V**; com **2,0 kΩ**, **2,6 / 2,4 / 2,0 V**. A corrente do ME 3 é desconhecida **(suposição 0,2-0,5 mA, típico de cápsula com FET; conferir)**.
+- **Funciona com 3 V? Não dá para garantir só pela folha.** Estágios a FET desse tipo costumam operar de ~1,5-2 V para cima (suposição), o que **com R305 = 0 Ω** (2 kΩ, V ≥ 2,0 V até 0,5 mA) é plausível; com 4,2 kΩ é marginal a partir de 0,35 mA. **Perda de nível máximo:** a excursão cai com a tensão disponível; mesmo 1 V de pico (3 V de bias, folga de 1 V) é ~600 Pa = ~150 dB SPL a 1,6 mV/Pa, então **o limite elétrico fica muito acima do canto a 2-3 cm (≤ 126 dB SPL)**: a perda de máximo não importa para voz. **Ruído:** o ruído é do FET e da cápsula e quase não depende da tensão; o ganho do seguidor pode cair 1-3 dB (suposição). A coisa que pode falhar de verdade é a **partida** abaixo de uma tensão mínima desconhecida.
+- **Teste de bancada (30 min, sem mudar a placa):** fonte de 3,0 V + 2,0 kΩ (e depois 4,2 kΩ) → ME 3 na ponta; medir a tensão CC na ponta e a corrente; tom de 1 kHz de um alto-falante pequeno a 3 cm, medir o nível (esperado 1,6 mV/Pa) e a distorção a ~114 dB SPL.
+- **Se precisar de mais (plano B): boost 9-10 V ligado só por GPIO,** o menor circuito: `MT3608` (C84817, Extended, US$ 0,063) + indutor `CD54` 10 µH (Extended, ~0,04) + diodo `SS14` (C2480, Basic, 0,019) + 2 capacitores (≥ 16-25 V, **conferir** se há Basic) + 2 resistores de realimentação (0402) + 1 PMOS de desconexão da carga (o MT3608 sozinho deixa ~VBAT − 0,3 V na saída desligado) + 1 resistor de bias 4,7-6,8 kΩ + 1 GPIO (pino 5 está livre). **Custo ≈ US$ 0,35 de peças + 2 tipos Extended (6,18) = ~US$ 6,5; ocupa ~9 x 7 mm no fundo da principal** (o design diria onde). Pede C309 de ≥ 16 V (hoje 10 V) e filtro RC no bias (a ondulação do boost entra direto no sinal de um microfone de 1,6 mV/Pa). A firmware só liga o boost quando o usuário escolher "Sennheiser" (um eletreto comum com 10 V na ponta pode sofrer): **detectar** o tipo não é possível só pela corrente. Não é "ligada só com microfone detectado": é "ligada só com o modo pro".
+- **Opção sem peça nova:** bias a partir de VBAT (3,0-4,2 V) por PMOS + resistor: +~0,7 V; ondulação do amplificador classe D no mesmo trilho: **não recomendo**.
+
+**(3) Ganho** (SGTL5000, Tabela 6, 3,3 V: fundo de escala do ADC **1,0 Vrms** **(conferir se vale para o caminho MIC com ganho 0)**; pré-amplificador 0 / 20 / 30 / 40 dB + 0 a 22,5 dB no ADC; SNR do ADC **90 dB**, entrada −60 dB). A tensão do ME 3 a 1,6 mV/Pa e a de um eletreto de −42 dBV/Pa (7,9 mV/Pa; 14 dB mais):
+
+| Nível na cápsula | ME 3 (rms) | com +20 dB | com +30 dB | eletreto (rms) |
+|---|---:|---:|---:|---:|
+| 100 dB SPL (canto suave) | 3,2 mV | −30 dBFS | −20 dBFS | 16 mV |
+| 114 dB SPL (canto normal) | 16 mV | −16 dBFS | −6 dBFS | 79 mV |
+| 120 dB SPL | 32 mV | −10 dBFS | 0 dBFS (limite) | 158 mV |
+| 126 dB SPL (grito) | 64 mV | −4 dBFS | clipa | 316 mV |
+
+**Basta.** Canto a 2-3 cm (guia rápido: 2-3 cm) fica entre 100 e 120 dB SPL (estimativa: ~21 dB acima de um canto a 30 cm); o ME 3 pede **+20 dB (padrão) a +30 dB (canto suave)**; o eletreto, 0-20 dB. **Ruído:** o ADC sozinho (31 µV a 0 dB) vira 3 µV de entrada com +20 dB e 1 µV com +30 dB; o resistor de bias de 4,2 kΩ junto da saída do microfone soma ~1 µV (Johnson, só em parte curto-circuitado pela impedância de saída do FET); o pré-amplificador do SGTL5000 não tem ruído de entrada na folha. Estimativa: **~2-3 µV no total** = ~36-40 dB SPL equivalente com o ME 3 e a **SNR de 75-78 dB a 114 dB SPL** (~62-64 dB num canto de 100 dB). Com o eletreto a mesma eletrônica dá 14 dB melhor. **A cadeia de voz (expansor, YIN, vocoder)** vê o nível em dBFS: o ganho de +20 a +30 dB do ME 3 (contra 0-20 dB do eletreto) compensa os 14 dB e os limiares do expansor ficam iguais. Ruído da cápsula não está na folha. A curva de resposta do guia rápido mostra ~−59 dBV a 1 kHz, ~3 dB abaixo dos −55,9 dBV de 1,6 mV/Pa **(conferir; as contas usam 1,6 mV/Pa e o pior caso fica 3 dB pior, ainda com folga)** (referência: o SL Headmic 1 da mesma linha tem 27 dB(A)).
+
+**(4) MIC_DET (pino 25; R306 100 kΩ, C311 100 nF; limiares 0,30 e 2,85 V).** Com a corrente I do microfone, V = 3,0 − I · R. **Fica na faixa "microfone" (0,30 a 2,85 V) para I entre 0,036 e 0,64 mA com 4,2 kΩ; entre 0,075 e 1,35 mA com 2 kΩ.** O ME 3 (suposição 0,2-0,5 mA) cai dentro nos dois casos: 2,16 a 0,90 V (4,2 kΩ) ou 2,6 a 2,0 V (2 kΩ). Só sairia da faixa com mais de 0,64 mA (leria como "curto") ou menos de 0,036 mA (leria como "nada"). **Cálculo; a medir com o ME 3 na primeira placa.**
+
+**(5) Recomendação.**
+1. **A placa como está serve aos dois microfones**, desde que o ME 3 parta com 3 V de bias: o plugue, a ponta, o anel NC, o ganho (+20/+30 dB) e a detecção estão todos dentro. **Mudança de BOM (não de placa) recomendada: R305 = 0 Ω** (2 kΩ em vez de 4,2 kΩ; o eletreto comum aguenta: o datasheet só pede o resistor externo se os internos não servem) - dá 0,6-1,1 V a mais de tensão na ponta para o ME 3. **Não é aplicada** (a R7V4 pede só estudo); a firmware já escolhe `BIAS_RESISTOR` (2 kΩ).
+2. **O ME 3 só precisa de mais se o teste de bancada falhar:** aí o boost de 9-10 V (~US$ 6,5, +2 Extended, ~9 x 7 mm, 1 GPIO) entra numa revisão da principal. **Isso é o que impediria o ME 3 no J302 como está: a tensão mínima real da cápsula, desconhecida.**
+3. Microfone de PC com bias no anel continua fora. Padrão continua o headset de eletreto comum.
+
+### 7. Validação do conceito modular (regra geral 1; sem tabelas por tamanho)
+
+- **A régua universal se repete:** 74 x 14 x 1,2 mm, 4 TMAG5253 + 1 74HC595 + 2 SH, o mesmo painel e a mesma BOM (3 tipos Extended); +16 teclas = +4 réguas (uma por fileira) e +4 cabos de 50,8 mm.
+- **A cadeia e a varredura crescem sem mudar a placa principal:** a principal tem 4 conectores (um por fileira), OUT_Rk nos pinos 14/15/26/27 e SCAN_DATA/SCAN_CLK nos 2/3; o número de pulsos é 8N + 1 (N = réguas por fileira) e a capacitância da linha OUT (cabo de 1 pF/cm, 3 pF por conector) fica em ~490 pF com 5 réguas contra 1 nF (a H com cabo de 50,8 mm soma só ~9 pF por fileira).
+- **O case cresce pela mesma regra de comprimento** (+74 mm por módulo); a H não acrescenta peça à base.
+
+### Perguntas para o design (R7V4)
+1. **Boca para trás (−y) com cabeçalho lateral SM06B (2,95 mm de altura, plugue de 3,6):** confirmam que o conjunto cabe no bolso da fileira 1 (6,9 mm; sobram 3,3) e que o plugue passa pela janela e pelo entalhe do trilho da fileira de trás como na R4V4?
+2. **O cabeçalho OUT pode ir de u 68,1 para u ≈ 49,5?** O cabo passa a correr pela faixa de trás ao longo de ~30 mm (d = 30,4) e o U cai para ~10 mm; o rebaixo precisa de ~40 x 20 mm por junção (planta) em vez de uma janela só no fim. Há conflito com a bossa/entalhe de u 54,5-56,5 e com a parede atrás da fileira 4 (14,3 mm)?
+3. **A sobra de 10-17 mm de cabo no rebaixo:** cabe deitada no piso (cabo com fios soltos) ou precisa de curva em pé (cabo colado: ~12 mm)? O rebaixo é planta + profundidade: qual profundidade o piso aceita sem furar o fundo?
+4. **P6s (recomendada) ou P9 (qualquer cabo):** o design aceita o cabeçalho de 9 vias (footprint ~12,4 x 5,55; plugue de 10,0) na faixa de trás se o J escolher P9?
+5. **Colar de travamento do plugue do ME 3:** o furo do jack IN deixa passar um colar de ~6-7 mm? (Descrição de varejista; a folha da Sennheiser não cita.)
+6. **J (gestão):** (a) P6s + cabo reto `A06SR06SR30K51B` ou P9; (b) aceita o teste de bancada do ME 3 antes de qualquer mudança de placa; (c) R305 = 0 Ω na BOM da próxima revisão.
 
 ## R6V4 · conectores fixos entre réguas (item 1), entrada placa → régua (item 2), microfone (item 5)
 
