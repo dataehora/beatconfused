@@ -1,10 +1,116 @@
 # eTutti Student V4 · relatório da eletrônica
 
-**SPEC atendida: R1V4 a R8V4 (R8V4: 22 nov 2026, tarefa 2, seção logo abaixo; R7V4: 22 nov 2026, tarefas 1 e 2, seção logo abaixo, só estudo; R6V4: 22 nov 2026, seção logo abaixo; R5V4: tarefas 2 e 3).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
+**SPEC atendida: R1V4 a R10V4 (R10V4: 22 nov 2026, seção logo abaixo; R8V4: 22 nov 2026, tarefa 2, seção logo abaixo; R7V4: 22 nov 2026, tarefas 1 e 2, seção logo abaixo, só estudo; R6V4: 22 nov 2026, seção logo abaixo; R5V4: tarefas 2 e 3).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
 Data: 21 nov 2026. Nada foi posicionado, roteado, encomendado nem gerado em `fab/`: é estudo (Fase A). A V3, a V2 e a V1 não foram tocadas.
 Scripts novos (reproduzem os números): `calculos_eletronica.py` (E2, E3), `fornecimento/precos_jlc.py` (preços e classe na
 biblioteca da JLCPCB, 21 nov, curl de 2 em 2 s). Contrato com a programação: `pcb/PINOS.md` (rascunho já entregue).
 Convenção: **(conferir)** = sem medida ou datasheet conferido; **estimativa** = conta minha, sem cotação.
+
+## R10V4 · régua R8, 4 × R8 contra 8 × R4, microfones eletreto e dinâmico, portão P (tarefas 1 e 3, parte da eletrônica)
+
+**SPEC atendida: R10V4 (22 nov 2026), tarefas 1 e 3 (eletrônica).** Só 32 teclas detalhadas (dos outros tamanhos, só a validação curta), só a Student V4. **Nada roteado** (0 trilhas, 0 vias, principal e réguas); nada encomendado nem cotado como compra (regra do J). Reproduz (raiz do repositório): `REGUA_N=8 python pcb/regua/schematic_regua.py` → `REGUA_N=8` KiCad python `pcb/regua/posiciona_regua.py` → `REGUA_N=8` venv CadQuery `pcb/regua/vistas_regua.py`; `pcb/regua/custo_r10.py`, `pcb/regua/painel_r8.py`, `pcb/mic_ganho.py`, `pcb/portao_p_r10.py`. A R4 continua como estava (as mesmas scripts com `REGUA_N` ausente ou 4).
+
+### Resposta curta
+- **R8 pronta para o portão:** 8 TMAG5253 + **um** 74HC595 com os 8 estágios usados + 2 SH (22 peças, **3 tipos Extended**, ~US$ 4,3-5,5 de peças), 147,6 x 14 x 1,2 mm, tudo no fundo. **ERC 0/0, DRC sem trilhas 0 erros e 0 avisos, paridade 0** (80 ligações faltando, esperado). **Terminações idênticas às da R4** (seção 1).
+- **Painel da R8: passa de 100 x 100 mm, é inevitável** (a diagonal de 100 x 100 mede 141 mm e a régua, 148). Mais barato: **2 tiras por painel, 161,6 x 44 mm (71 cm², área parecida com a do painel de 5 da R4)**; 2 painéis montados dão exatamente as 4 R8. **PCB estimado US$ 5-17** (R4: 5-13); o preço acima de 100 x 100 não foi cotado.
+- **4 x R8 contra 8 x R4:** cabos **4 em vez de 8** (−US$ 4,8-5,7), 2 cabeçalhos a menos por fileira, 0 junção, 8 M2 em vez de 11, 8 plugues em vez de 16, ~8 min a menos de montagem (palpite). Variável (peças + PCB + cabos): **−US$ 9 a −11 sem reserva**; com 2 R8 de reserva (3 painéis montados) fica **−3 a +2**. O case do design sobe de US$ 44,3 para ~48,5 (base robusta, +15 cm³): líquido **−7 a −5** sem reserva. Tipos Extended iguais (3); preparação, estêncil, Extended e SMT iguais (US$ 22,3).
+- **Varredura:** coluna = estágio; **9 pulsos** de acesso aleatório com 32 teclas (antes 17), passada em ordem em 8 pulsos; 0,56 ms por varredura (igual). 48/64/80: 17 / 17 / 25 pulsos. `pcb/PINOS.md` atualizado.
+- **Microfone, sem mudar a placa (uma troca de BOM):** bias ligado para eletreto e desligado para dinâmico por registrador (**CHIP_MIC_CTRL 0x002A, bits 9:8 = 0: bloco desligado e saída em alta impedância**, datasheet); bias numa bobina de 150-600 ohm **não faz mal**; **MIC_DET separa nada / dinâmico / eletreto para os casos comuns, mas as faixas se tocam**: fica o menu "Tipo mic"; ganho e ruído **sobram** (dinâmicos de 0,45 e 1,7 mV/Pa e eletreto, voz a 1-3 cm). **Achado de placa: o C310 (100 nF no MIC_BIAS) com R305 = 0 ohm cortava o agudo (eletreto −9,9 dB a 4 kHz): passa a "não montar".**
+- **Riscos:** seção 6.
+
+### 1. Régua R8 (esquema, posicionamento, terminações)
+`pcb/regua/schematic_regua.py` e `posiciona_regua.py` ganharam `REGUA_N` (4 = a de sempre, 8 = R8); arquivos da R8: `kicad/regua/student_v04_regua8.*`, `bom_regua8.csv`, `pcb/regua/build8/`, `pcb/regua/posicao_regua8.json`. A R4 (`student_v04_regua.*`) foi reproduzida sem mudança (DRC 0 / 52 faltando / paridade 0).
+- **Esquema:** U1..U8 (TMAG5253BA3, EN1..EN8 = QA..QH), U9 = 74HC595BQ com SER = J1 pino 6, SRCLK e RCLK juntos, ~OE em GND, SRCLR em +3V3, **QH' (cascata) por R1 de 330 ohm** ao J2 pino 6; C1..C8 (100 nF por sensor), C9 (100 nF do 595), C10 (10 uF). J1 = IN, J2 = OUT, SM06B-SRSS-TB (clone C56123098). **A R4 deixa QE..QH sem uso; a R8 usa os 8 estágios.**
+- **Terminações R4 x R8 (conferido nos dois `posicao_regua*.json`):**
+
+  | | R4 | R8 |
+  |---|---|---|
+  | comprimento nominal / placa | 74 / 73,6 mm | 148 / 147,6 mm |
+  | J1 IN (u; v; lado; altura) | 5,9; −3,95; fundo; 2,95 mm | **igual** |
+  | J2 OUT (u) | 47,5 | 121,5 |
+  | **J2 até a ponta direita nominal** | **26,5 mm** | **26,5 mm** |
+  | pinagem P6s (pads relativos ao J) | 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO | **idêntica pad a pad (conferido por script)** |
+  | boca / pegada / R1 em relação ao J2 | −v; 9,4 x 5,55; (+5,5; +1,5) | **igual** |
+  | distância OUT (anterior) → IN (seguinte) | 32,4 mm | 32,4 mm |
+  | 595 e C do 595 | u 27,75 (pátio 25,85-29,65); C5 29,74-31,66 | **mesmo lugar** (o design já corta o trilho da frente ali) |
+
+  Qualquer régua liga a qualquer outra pelo mesmo cabo; R8 → R4 fecha na mesma distância.
+- **Furos de fixação (contrato fechado pelo design, `FIT_CHECK.md` R10V4 §3):** a R8 tem **4 furos de M2 (Ø2,2, patamar sem peças Ø6,4 embaixo) em u 18,5 / 37,0 / 111,0 / 129,5, v +5,2** (vãos entre carcaças; cada fileira usa um par: fileiras 1 e 3 usam 18,5 + 129,5, 111 mm de separação; 2 e 4 usam 37 + 111, 74 mm). Zero conflito com J1/J2, C, R1 e o 595 (pátios conferidos pelo DRC e pela figura). **Parafuso:** M2 com rosca de máquina em inserto de latão numa bossa Ø6 impressa (furo da régua Ø2,2; sem autoatarraxante); o design não precisou de M1,6 / M1,4 (se precisar: `REGUA_M2D` e `REGUA_M2` do script). A R4 mantém seus 3 furos (u 18,5 / 37 / 55,5): os dois mais afastados são 18,5 e 55,5 (37 mm), e o do meio serve ao par das fileiras 2 e 4; **a R4 não precisou mudar.**
+- **Figuras** (nome da nota em cada tecla; C azul, F laranja): `pcb/regua/img/regua8_planta.png` (planta com notas A3 C4 D#4 F#4 A4 C5 D#5 F#5, conectores, furos), `regua8_corte.png` (cortes), `regua8_painel.png` (painéis na mesma escala).
+
+### 2. Painel da R8 e custo de PCB (estimativa; nada cotado)
+Régua de 147,6 mm: com 5 mm de trilho e 2 mm de vão, o painel tem 161,6 mm de comprimento e **sempre passa de 100 x 100 mm**. JLCPCB (páginas públicas): o preço promocional de US$ 2 vale até 100 x 100 mm; acima, é por área (valor não cotado aqui); montagem padrão aceita painel de 70 x 70 a 250 x 250 mm, a econômica faixas mais largas (as páginas divergem), e **uma placa com lado menor que 70 mm recebe trilhos acrescentados pela própria JLCPCB** (custo não informado); painel com furos de abas ("stamp holes") não tem tamanho mínimo.
+
+| Painel | mm | cm² | R8 por painel; nos 2 painéis montados | PCB, 5 painéis (US$, estimativa) |
+|---|---|---:|---|---:|
+| 1 tira | 161,6 x 28 | 45 | 1; 2 | 3-11 |
+| **2 tiras (recomendado)** | **161,6 x 44** | **71** | **2; 4 (exato)** | **5-17** |
+| 3 tiras | 161,6 x 60 | 97 | 3; 6 | 7-23 |
+| 4 tiras (lado menor ≥ 70) | 161,6 x 76 | 123 | 4; 8 | 8-30 |
+| (R4: 5 tiras, hoje) | 87,6 x 92 | 81 | 5; 10 | 5-13 |
+
+Estimativa de PCB: US$ 0,0135-0,032 por cm² e painel (derivada dos US$ 5-12 da R5V4 para 5 painéis de R4) com fator 1,0-1,5 acima de 100 x 100 mm (suposição). **Recomendado: 2 tiras (menor área e exatamente 4 R8 em 2 painéis montados)**, com abas e microfuros como no painel da R4; o risco é a JLCPCB acrescentar trilho por o lado menor ser 44 mm (< 70): se acrescentar ou recusar, a saída é o painel de 4 tiras (76 mm, 8 R8 montadas: +US$ 17-22 de peças, mas as 4 R8 a mais valem para o instrumento de 64 teclas). Gerbers do painel da R8 **não foram gerados** (nada será pedido antes do protótipo fechado); o painel da R4 existente não mudou.
+
+### 3. Varredura (R8, 32 teclas)
+Quatro fileiras em paralelo (DATA/CLK comuns), uma R8 por fileira, 8 estágios. **Coluna = estágio.** Acesso aleatório: **8 N + 1 com N = 1 = 9 pulsos** (1,8 us a 5 MHz; 3,6 us a 2,5 MHz), contra 17 antes; em ordem, a coluna seguinte está a 1 pulso (a saída atrasa 1): uma passada gasta 8 pulsos; partida com 8 pulsos de DATA = 0. **Tempo de passada (70 us por coluna, 8 colunas): 0,56 ms** (igual: o tempo é dominado pela espera de 60 us do TMAG5253 e pelo ADC, não pelos pulsos). Para 48 / 64 / 80 teclas: 17 / 17 / 25 pulsos e 0,84 / 1,12 / 1,40 ms; a R4 só no agudo deixa os 4 estágios mortos no fim da cadeia (coluna = estágio, sem buracos no meio). Um só 74HC595 por fileira agora: 4 em vez de 8 no instrumento de 32 teclas. `pcb/PINOS.md` (seção R10V4) é o contrato.
+Capacitância da linha OUT: os 8 sensores da fileira são os mesmos de antes (2 x 4), mas sem cabo nem conector no meio: menor que na R8V4 (a margem para 1 nF só aumentou). Corrente e queda de tensão: um sensor ligado por coluna, como antes; a trilha de 3,3 V e GND de 148 mm com ~2,5 mA não é problema.
+
+### 4. 4 x R8 contra 8 x R4, 32 teclas (US$, estimativas; `pcb/regua/custo_r10.py`)
+Peças: tabelas de preço da biblioteca da JLCPCB (baixo = faixa de quantidade do pedido; alto = 1 peça). Cabos `A06SR06SR30K51B` a 1,206 (10) / 1,42 (1).
+
+| | **4 x R8 (2 painéis de 2, 4 montadas)** | 4 x R8 + 2 de reserva (3 painéis) | 8 x R4 (2 painéis de 5, 10 montadas; R8V4) |
+|---|---:|---:|---:|
+| réguas montadas | 4 | 6 | 10 |
+| peças | 17,2-21,8 | 25,9-32,8 | 23,3-29,0 |
+| PCB das réguas | 4,8-17,1 | 4,8-17,1 | 5,4-12,9 |
+| cabos | 4,8-5,7 (4 cabos) | 4,8-5,7 | 9,7-11,4 (8 cabos) |
+| **soma variável** | **26,9-44,6** | 35,5-55,5 | **38,3-53,3** |
+| case MJF (valor do design, base robusta e riser cheio; não é só efeito da R8) | 48,5 | 48,5 | 44,3 (R8V4, sem a base robusta) |
+| diferença contra 8 x R4 | **−11 a −9** | −3 a +2 | |
+| tipos Extended | 3 (TMAG, SH-6, 595) | 3 | 3 |
+| iguais nos três: preparação + estêncil 9,79, 3 Extended 9,27, SMT 3,2 | 22,3 | 22,3 | 22,3 |
+| juntas régua-régua; rebaixos de junção | **0; 0** | 0; 0 | 0 (cabo); 4 junções com rebaixo |
+| cabos / plugues / M2 / insertos | 4 / 8 / 8 / 8 | 4 / 8 / 8 / 8 | 8 / 16 / 11 / 11 |
+| 595 e SH no total | 4 e 8 | 6 e 12 (montados) | 10 e 20 (montados) |
+| montagem em casa (palpite sem protótipo) | ~16 min | ~16 min | ~24 min |
+
+A economia das réguas é pequena em dólares (≈3 % do instrumento, ~US$ 301-376) e vem dos 4 cabos, das peças e do PCB. **O case do design sobe de US$ 44,3 para ~48,5 (+15 cm³ de base robusta: riser cheio, sem rebaixos de junção, mais parede)**, o que **consome a economia das réguas** (−11 a −9 mais +4,2 = −7 a −5 sem reserva; com reserva, +1 a +6); o ganho que fica é **menos peças soltas, menos rebaixos e menos pontos de falha**. A conta usa o PCB da R8 com fator 1,0-1,5 acima de 100 x 100 mm (suposição, não cotado): **se o preço por área acima de 100 x 100 for maior que o suposto, cada US$ 10 a mais no PCB da R8 consome essa economia**; sem reserva ela é pequena, com reserva some.
+
+### 5. Microfone: eletreto (plug-in) e dinâmico, só pelo J302 (`pcb/mic_ganho.py`)
+Fora de escopo: phantom de 48 V, microfone de PC com bias no anel, adaptadores. **O ME 3 e o boost de 9-10 V saíram do projeto** (também dos relatórios). Fonte: datasheet do SGTL5000 (NXP), lido agora no PDF (Tabela 4: impedância de entrada do MIC **2,9 kohm típica**, nível máximo 2,83 Vpp = 1,0 Vrms; Tabela 29: CHIP_MIC_CTRL; Tabela 6: SNR do ADC 90 dB a −60 dB de entrada; circuito típico: R1 2,2 k "só se os internos não servem" e C4 100 nF no MIC_BIAS).
+1. **Bias:** `CHIP_MIC_CTRL` (0x002A), `BIAS_RESISTOR` bits 9:8 (**0 = bloco desligado e saída em alta impedância**, 1 = 2 k, 2 = 4 k, 3 = 8 k), `BIAS_VOLT` bits 6:4 (7 = 3,0 V), `GAIN` bits 1:0. **Eletreto: `0x0170 | ganho` (3,0 V, 2 k, R305 = 0 ohm: 2 kohm no total; cápsula de 0,5 mA fica com 2,0 V, melhor que os ~1,4 V de uma entrada de PC). Dinâmico: `0x0070 | ganho` (bias desligado).** Como o pino fica em alta impedância, o dinâmico com bias desligado **não** fica em curto: a pergunta da programação está respondida pelo datasheet (a firmware pode manter o desligamento). **Bias por engano numa bobina de 150-600 ohm: não faz mal:** 1,40 / 1,30 / 1,15 mA e 0,29 / 0,51 / 0,80 mW na bobina de 150 / 300 / 600 ohm; a força estática no diafragma equivale a ~20 Pa (estimativa com Bl ~1,3 T·m e 0,8 cm²: da ordem de uma variação barométrica); o codec não vê o CC (C309). Custa 0,6 / 1,1 / 1,9 dB de sinal (a bobina vê 2 k em paralelo com os 2,9 k do codec: −1,0 / −2,0 / −3,6 dB com bias contra −0,4 / −0,9 / −1,6 sem). **Trocar o bias dá um degrau de ~20 Pa: silenciar ~150 ms em volta.**
+2. **Detecção (MIC_DET, bias ligado):** tensão na ponta = 3,0 x Rc / (2 k + Rc) para bobina; 3,0 − I x 2 k para eletreto (piso estimado ~0,9 V pelo FET). Bobina de 70 / 150 / 300 / 600 ohm: **0,10 / 0,21 / 0,39 / 0,69 V** (600 ohm com ±20 % no resistor interno: 0,60-0,82 V; 800 ohm: até 1,0 V); eletreto de 0,1 / 0,3 / 0,5 / 1,0 mA: **2,8 / 2,4 / 2,0 / 1,0 V**. **Regra:** ≥ 2,85 V = nada (ou plugue de linha); ≤ 0,10 V = curto; 0,10 a ~0,85 V = dinâmico; ~0,95 a 2,85 V = eletreto, com histerese de 0,10 V em 0,85 / 0,95 V (o sketch usa 0,60 / 0,80: uma bobina de 600 ohm cairia no lado eletreto; sem dano, porque o Auto mantém o bias ligado, só muda o ganho de fábrica). **Não é seguro nos extremos** (dinâmico de ≥ 700 ohm e eletreto de ≥ 1 mA se tocam), portanto o **menu "Tipo mic" (Auto / Eletreto / Dinâmico) fica**; Dinâmico declarado desliga o bias e o MIC_DET passa a ler 0 V (não detecta mais a retirada do plugue; o contato de chave do jack não chega ao Teensy). Os efeitos de voz exigem microfone detectado ou declarado.
+3. **Ganho e ruído** (alvo −18 dBFS rms; voz cantada a 1-3 cm = 100 / 105 / 114 / 120 dB SPL = 2,0 / 3,6 / 10 / 20 Pa; sensibilidade efetiva com a carga de 2 k ‖ 2,9 k: dinâmicos 0,40 e 1,13 mV/Pa, eletreto de −44 dBV/Pa a 2,2 k vale ~3,4 mV/Pa; ganho total até 62,5 dB = pré 40 + ADC 22,5; **SNR ideal** = só ADC (90 dB abaixo do fundo de escala) + ruído térmico da bobina / do próprio eletreto (60 dB de SNR re 94 dB SPL, suposição); **SNR com EIN** soma 3 uV de ruído do pré-amplificador, **suposição pessimista, a medir**: o datasheet não dá o ruído de entrada do pré):
+
+   | SPL a 1-3 cm | dinâmico 0,45 mV/Pa: ganho; SNR ideal / com EIN | dinâmico 1,7 mV/Pa | eletreto |
+   |---|---|---|---|
+   | 100 dB | 44,5 dB; 69,7 / 48,4 dB | 34,5 dB; 70,2 / 57,3 dB | 26 dB; 65,1 / 63,0 dB |
+   | **105 dB** | **39 dB; 71,0 / 53,4 dB** | **30,5 dB; 72,0 / 62,0 dB** | **20 dB; 68,3 / 66,8 dB** |
+   | 114 dB | 30,5 dB; 72,4 / 62,1 dB | 21,5 dB; 72,5 / 69,0 dB | 12 dB; 71,9 / 71,4 dB |
+   | 120 dB | 24,5 dB; 72,5 / 67,0 dB | 15 dB; 72,0 / 70,9 dB | 6 dB; 72,4 / 72,3 dB |
+
+   Com o ganho máximo (62,5 dB) o fundo de escala é 0,75 mV na entrada: **o ganho não falta**. O caso mais fraco, fala suave (90 dB SPL) com o dinâmico de 0,45 mV/Pa, pede 54 dB para −18 dBFS: cabe, com SNR de ~62 dB ideal ou ~38 dB se o ruído do pré for mesmo 3 uV. **Se a bancada mostrar EIN alto** e a voz for mais distante que 3 cm, a menor mudança seria um pré-amplificador de +20 dB na ponta: ~US$ 3,5-4,5 (1 amplificador operacional Extended = US$ 3,09 de taxa + ~8 passivos Basic), cerca de 6 x 5 mm no fundo; **não recomendo agora**. Os padrões do sketch (24 dB dinâmico e 6 dB eletreto) ficam 9-14 dB abaixo do meu alvo de −18 dBFS: conservadores; a SNR cai o mesmo tanto.
+4. **O C310 (100 nF no MIC_BIAS) e o passa-baixas:** no circuito típico o C está **antes** do R1 de 2,2 k; com R305 = 0 ohm ele vai para a ponta do jack e vira um shunt de 100 nF sobre os 2 k de bias (em paralelo com a entrada de 2,9 k): corte de ~1,3 kHz para o eletreto (a carga cai de 1,18 k a 0): **−1,9 / −9,9 / −17,5 dB a 1 / 4 / 10 kHz**; sobre a bobina de 150 / 300 / 600 ohm: −0,5 / −1,3 / −3,0 dB a 4 kHz e −2,3 / −5,1 / −8,6 dB a 10 kHz. A conta da programação (~800 Hz, −14 dB a 4 kHz) não considerava os 2,9 k da entrada; **a conclusão é a mesma: não montar**. **Aplicado:** C310 marcado "não montar" (`dnp`) no esquema, na BOM (`bom_v4.csv`: 78 peças JLC, 31 linhas, 13 tipos Extended, US$ 17,87, sem mudança de custo) e no posicionamento; **o pad e a posição ficam** para um 220-470 pF opcional se a bancada mostrar ruído do bias (sem C310 o ruído do MIC_BIAS entra direto na ponta: **(conferir na bancada)**). ERC 0/0, DRC sem trilhas 0 erros, 1 aviso `isolated_copper` (+3V3 sem vias, como antes), 242 ligações faltando, paridade 0. R305 continua 0 ohm.
+5. **Recomendação (mínimo de peças):** a placa serve aos dois tipos como está, com uma troca de BOM (C310 fora); o firmware precisa de: bias por registrador, MIC_DET com os limiares acima, "Tipo mic" Auto / Eletreto / Dinâmico, ganho de fábrica por tipo, silêncio de ~150 ms ao trocar o bias. Sem preamp, sem boost, sem peça nova.
+
+### 6. Validação do conceito modular (curta, sem figuras por tamanho)
+- **Terminações iguais:** R4 e R8 têm o mesmo IN, o mesmo OUT (26,5 mm da ponta), a mesma pinagem P6s, a mesma altura e boca; o cabo `A06SR06SR30K51B` liga qualquer par, com a mesma distância (32,4 mm) entre OUT e o IN seguinte.
+- **Combinações fecham:** 32 = R8; 48 = R8 + R4; 64 = R8 + R8; 80 = R8 + R8 + R4 por fileira (4 x R8; 4 R8 + 4 R4; 8 R8; 8 R8 + 4 R4). A R4 fica sempre no agudo, o que põe os estágios mortos no fim da cadeia: a coluna é o estágio e os pulsos são 8 N + 1 com N = registradores de 8 estágios (9 / 17 / 17 / 25).
+- **A placa principal não muda:** 4 conectores, OUT_Rk = pinos 14/15/26/27, SCAN = 2/3; a capacitância da linha OUT fica longe de 1 nF. O comprimento do case cresce pela mesma regra do design.
+
+### 7. Riscos que só a peça real fecha (nada é comprado antes do protótipo)
+1. **Painel da R8:** o preço acima de 100 x 100 mm não foi cotado e a JLCPCB pode acrescentar trilho ou recusar o painel de 44 mm de lado (< 70 mm); alternativa: 4 tiras (76 mm).
+2. **Ruído do pré-amplificador do SGTL5000** (EIN) e o do MIC_BIAS sem o C310: suposições; limiares do MIC_DET (resistor interno de 2 k com tolerância não dada no datasheet; FET do eletreto): conta.
+3. Os riscos de cabo e do clone SH da R8V4 continuam (cabo reto, comprimento útil, fita colada, medidas do C56123098).
+4. **Roteabilidade:** a R8 tem 80 ligações faltando em ~2 100 mm²; a principal, 242 e 1 aviso `isolated_copper` (some ao rotear); bloco de energia e pads 3/5 do M.2 apertados.
+5. Do design (`FIT_CHECK.md` R10V4): folga vertical do plugue à régua de trás de **1,7 mm** (fileiras 1 e 2; 2,7 na 3): acesso com pinça ou plugar antes de descer a régua de trás; inserto M2 em PA12 MJF com parede de 1,4 mm. O 595 da R8 fica em |v| ≤ 3,9 + recorte do trilho da frente (mesma posição da R4); se mudar, avisar.
+
+### Perguntas para o design (R10V4)
+1. **Furos:** a R8 tem 4 M2 (u 18,5 / 37 / 111 / 129,5, v +5,2) e a R4 tem os 3 de sempre: confirmam esses u e o parafuso (M2 ou M1,6 / M1,4 em inserto, Ø do furo)?
+2. **595 e C9 da R8** estão no mesmo lugar da R4 (pátio u 25,85-31,66): o corte do trilho da frente de vocês cobre?
+3. **Painel de 44 mm de lado:** se a JLCPCB recusar ou acrescentar trilho, o design aceita o painel de 4 tiras (que dá 8 R8)?
+4. O furo do jack IN (J302) no case deixa passar o plugue de 3,5 mm de um headset comum, inclusive com colar de travamento (~6-7 mm)?
+5. **J:** com ou sem 2 R8 de reserva (US$ ~9-11 de peças)? O portão P está em `POSICIONAMENTO.md`.
 
 ## R8V4 · ligação H aplicada (régua e principal), R305 = 0 ohm, portão P (tarefa 2, parte da eletrônica)
 
@@ -19,14 +125,14 @@ Convenção: **(conferir)** = sem medida ou datasheet conferido; **estimativa** 
 ### Custo do R305 = 0 ohm e dos 330 ohm
 **Nenhum tipo Extended novo; impacto menor que US$ 0,01 por placa.** C17168 (0 ohm 0402, UNI-ROYAL 0402WGF0000TCE) e C25104 (330 ohm 0402, 0402WGF3300TCE) são **Basic** na biblioteca da JLCPCB (consulta de 22 nov: estoque 13,9 milhões e 2,1 milhões; US$ 0,0012 e 0,0011 a 1 unidade); trocam C25879 (R305) e C25076 (R605/R606, R1), que continuam na BOM (outras peças usam). Só há **+2 linhas Basic** na principal (31 linhas), sem taxa por tipo. Principal: 79 peças, **13 tipos Extended**, US$ 17,87 por placa; régua: 14 peças, **3 tipos Extended** (TMAG, SH-6, 74HC595BQ). Custo total de 32 teclas (F2, pedido mínimo, sem frete, estimativas): **US$ 296,6-370,3 sem a ligação (R5V4) + 11,4-12,1 dos 8 cabos `A06SR06SR30K51B` = ~US$ 301-376** (o case entra com o valor do design, **US$ 44,3**, no lugar dos US$ 51,2 da R5V4).
 
-### Plano B do microfone (só registrado, não aplicado)
-Se uma cápsula (por exemplo o Sennheiser ME 3, que a folha só especifica "10 V") não partir com 3,0 V e 2 kohm: **boost de 9-10 V ligado por GPIO** (MT3608 C84817 + indutor 10 uH + diodo SS14 + 2 capacitores de >= 16 V + realimentação + PMOS de desconexão + resistor de bias de 4,7-6,8 kohm; ~US$ 0,35 de peças + 2 tipos Extended = ~US$ 6,5; ~9 x 7 mm no fundo; C309 de >= 16 V; 1 GPIO, o pino 5 está livre). Fica para uma revisão futura da principal; **não há teste de bancada nem compra nesta fase**: é risco do protótipo.
+### Microfone (R10V4)
+O Sennheiser ME 3 e o boost de 9-10 V saíram do projeto (R10V4). O microfone é tratado na seção R10V4, no topo: eletreto com alimentação de plug-in e dinâmico, só pelo J302.
 
 ### Riscos aceitos (só a peça real fecha; nada é comprado antes do protótipo fechado)
 1. **Cabo `A06SR06SR30K51B`:** se é mesmo reto (pino k → pino k) e se os "50,8 mm" são entre plugues ou entre fios (45,8 ou 50,8 de fio livre): o desenho do design fecha com os dois (profundidade de 102 mm). **Fita colada x fios soltos:** colada só dobra no plano da fita (laço em pé não cabe: folga 0,02-0,35 mm); se o cabo vier colado, é risco a conferir na compra. Com cabo invertido não há dano, mas a varredura não funciona.
 2. **Clone XYECONN C56123098:** medidas e compatibilidade com o plugue JST SR (06SR-3S) sem desenho do fabricante **(conferir)**; altura do conjunto 2,95 + 3,6 mm nominal.
 3. **330 ohm:** a borda do CLK a 5 MHz perde ~7 ns (RC com ~20 pF): sobra margem; se algo falhar, cai a 2,5 MHz por firmware.
-4. **Microfone:** limiares MIC_DET e partida do ME 3 a 3,0 V são cálculo; a leitura real só com o hardware.
+4. **Microfone:** limiares MIC_DET, ganho e ruído são cálculo (R10V4); a leitura real só com o hardware.
 5. **Painel de réguas:** aceitação do painel do cliente com abas e microfuros pela montagem econômica da JLCPCB; pads do DHVQFN-16 (C730243) contra o EasyEDA no `cpl_jlc.py` (depois do portão).
 6. **Furos M2 da régua:** ficam **três** (u 18,5 / 37 / 55,5, v +5,2), como antes (o design descartou os pares u 12 / 15 / 26,5 / 47,5 / 62: caem sob carcaça ou no 595); 11 M2 no total (R1: 18,5 e 55,5; R2 e R4: 37; R3.0: 18,5; R3.1: 18,5 e 55,5). Rigidez 0,028 mm a 3 N (≤ 0,05 ✓). Fita colada não fecha: risco a conferir na compra.
 
@@ -35,10 +141,10 @@ Respondidas pelo `FIT_CHECK.md` R8V4: (1) M2: três furos na régua, 11 M2, rigi
 1. O J aceita **11 M2** (um por régua nas fileiras 2-4)? (pergunta do design ao J; a régua não muda.)
 2. A reta de 3,3 mm após o plugue com 45,8 mm de fio útil só se confere no protótipo: aceito como risco.
 
-## R7V4 · ligação H (cabo SH de estoque + rebaixo) e microfone Sennheiser ME 3 (tarefas 1 e 2, parte da eletrônica)
+## R7V4 · ligação H (cabo SH de estoque + rebaixo) e microfone (tarefas 1 e 2, parte da eletrônica; a parte do microfone foi substituída na R10V4)
 
 **SPEC atendida: R7V4 (22 nov 2026), tarefas 1 e 2 (eletrônica).** **Só estudo:** esquema, posicionamento, régua, placa e `pcb/PINOS.md` **não mudaram** e não mudam antes de o J aprovar a ligação. Regras gerais da R7V4 aplicadas: só a versão de 32 teclas é detalhada (a seção 7 abaixo é a validação curta do conceito modular) e só a Student V4 entra nas contas. Medidas **(conferir)** = suposição minha ou ficha incompleta; **estimativa** = conta minha, sem cotação.
-Script novo (números e figuras): `pcb/regua/ligacao_h_r7.py` → `pcb/regua/ligacao_h_r7.json` e `pcb/regua/img/h_*_r7.png`. Fontes lidas: JST `eSR_SZ.pdf` (desenhos do cabeçalho SM06B-SRSS-TB e do plugue 06SR-3S, 22 nov), páginas DigiKey/Pololu/Pimoroni, biblioteca da JLCPCB (curl), guia rápido e folha de especificação do ME 3 (Sennheiser), datasheet do SGTL5000.
+Script novo (números e figuras): `pcb/regua/ligacao_h_r7.py` → `pcb/regua/ligacao_h_r7.json` e `pcb/regua/img/h_*_r7.png`. Fontes lidas: JST `eSR_SZ.pdf` (desenhos do cabeçalho SM06B-SRSS-TB e do plugue 06SR-3S, 22 nov), páginas DigiKey/Pololu/Pimoroni, biblioteca da JLCPCB (curl), datasheet do SGTL5000.
 
 ### Resposta curta
 
@@ -47,9 +153,8 @@ Script novo (números e figuras): `pcb/regua/ligacao_h_r7.py` → `pcb/regua/lig
 - **Cabos:** 8 de **50,8 mm** (4 placa → 1ª régua + 4 entre réguas), nenhum de 100 mm (a sobra de 65-74 mm não tem onde ficar).
 - **Custo (32 teclas, só a ligação):** **~US$ 11,4-12,1** com P6s (G: 11,11; D: 36,40 com a ferramenta), zero solda, zero tipo Extended novo; P9 ~US$ 25. Impressão do case: valor da R6V4 do design, **~US$ 45,8 (inclui os berços da G, ~US$ 0,4); o rebaixo da H soma volume que o design calcula**.
 - **O que impede a H, e a menor mudança:** com a régua do jeito que está (OUT em u 68,1, 11,8 mm do IN da seguinte) o cabo de 50,8 mm sobra **17,3 mm** e o U que guarda a sobra vai **19,5 mm para trás da boca**; atrás da fileira 4 só há **14,3 mm** até a parede do case. **Menor mudança: mover o cabeçalho OUT da régua de u 68,1 para u ≈ 49,5** (cabo quase esticado, U de ~10 mm). Descrita, **não aplicada**.
-- **ME 3:** o plugue liga no J302 **como está** (ponta = sinal e alimentação; anel e luva = GND). Com 3 V de MIC_BIAS **não dá para garantir só pela folha** (ela só diz "10 V"); o nível e o ganho do SGTL5000 **sobram**; a detecção MIC_DET **cai na faixa** de microfone. Recomendo **testar na bancada antes de mudar a placa**; plano B (boost 9-10 V) custa ~US$ 6,5. Seção 6.
 - **Alinhamento com o design:** o estudo de geometria do design (`case/ligacao_h.py`, em paralelo) usa comprimento livre de 44,0-50,8 mm e raio de dobra mínimo de 4 mm; as contas acima usam 45,8 mm e 6 mm. **Onde divergirem, valem as do `FIT_CHECK.md` (R7V4)**; as minhas são a checagem elétrica e do que a pinagem pede da régua.
-- **Pendências:** tipo real (reto/invertido) de cada cabo comprado (continuidade com multímetro), cabo plano colado x fios soltos (decide se o U pode ficar deitado), medidas do clone XYECONN do cabeçalho, corrente do ME 3 com 3 V.
+- **Pendências:** tipo real (reto/invertido) de cada cabo comprado (continuidade com multímetro), cabo plano colado x fios soltos (decide se o U pode ficar deitado), medidas do clone XYECONN do cabeçalho.
 
 ### 1. Cabos de estoque e ordem dos pinos (item 4)
 
@@ -114,7 +219,7 @@ Resposta ao "50 ou 100 mm": **só 50,8 mm**. Com 100 mm a sobra (65-74 mm) vira 
   5. **Os conectores continuam no fundo da régua (nada no topo)** e a régua continua 74 x 14 x 1,2 (a largura de 14 mm não muda).
 
 Figuras (todas com o nome da nota em cada tecla, C azul, F laranja, onde há teclado):
-`pcb/regua/img/h_pinagem_r7.png` (ordem dos pinos), **`h_teclado32_r7.png`** (planta das 32 teclas com cabeçalhos, cabos e a parede), **`h_juncao_r7.png`** (planta e corte do elo E4 | G4 e a alternativa OUT'), `h_microfone_r7.png` (item 6).
+`pcb/regua/img/h_pinagem_r7.png` (ordem dos pinos), **`h_teclado32_r7.png`** (planta das 32 teclas com cabeçalhos, cabos e a parede), **`h_juncao_r7.png`** (planta e corte do elo E4 | G4 e a alternativa OUT').
 
 ### 3. Custo (item 6): 32 teclas contra a G (R6V4) e a D (R5V4), só a ligação
 
@@ -133,7 +238,7 @@ Figuras (todas com o nome da nota em cada tecla, C azul, F laranja, onde há tec
 - **O SH continua sendo o único conector das réguas** (clone `C56123098`, estoque 5 971, 0,069; P9: JST original C160408).
 - **Estimativas sem cotação:** o preço do cabo de 9 vias e a metade dos de 4/6 pol; a JLCPCB não monta cabos.
 
-### 4. Lista para o usuário e plano B (item 5, minha parte)
+### 4. Lista para o usuário (item 5, minha parte)
 
 **Lista (32 teclas, tudo "em casa", sem solda e sem ferramenta):**
 1. 1 placa principal (JLCPCB, montada), 8 réguas (JLCPCB; o pedido mínimo traz 10: 2 sobressalentes), o case e os botões, a ferragem de sempre (M2, insertos).
@@ -151,36 +256,8 @@ Figuras (todas com o nome da nota em cada tecla, C azul, F laranja, onde há tec
 3. **Altura do conjunto montado** (cabeçalho 2,95 + plugue encaixado) sob a régua: 3,6 mm nominal; o clone XYECONN e a tolerância de ±0,1 do footprint ainda sem medida **(conferir)**.
 4. **Retenção:** o SH segura por atrito + trava de 3 pontos do plugue; a vibração do teclado é baixa, mas fica o teste de "bater a mão" com o case fechado.
 
-### 6. Microfone Sennheiser ME 3 (tarefa 2, estudo de mesa; a placa não muda)
-
-Fontes: [especificação do ME 3 (art. 508928)](https://www.sennheiser.com/globalassets/digizuite/41606-en-sp_1167_v2.1_me_3_product_specification_en.pdf), [guia rápido](https://www.sennheiser.com/globalassets/digizuite/41080-en-me_3_quick_guide_04_2025.pdf), SGTL5000 (Freescale, Tabela 6 e "Microphone Input"). Figura: `pcb/regua/img/h_microfone_r7.png`.
-
-**(1) Pinagem do plugue.** O guia rápido (esquema "Connector assignment") mostra um plugue de **3 contatos** (ponta, anel, luva): **"+" na ponta; "−" abrange o anel e a luva juntos** (leitura do desenho: os dois ficam em GND). A folha de especificação traz só o "+/−" sem texto. Logo: **sinal e alimentação vêm na ponta** (condutor único, 2 fios), **o anel não é usado** (curto à luva). **No J302 como está** (ponta → MIC_J, anel pino 6 NC, luva → GND) **funciona**: o anel do plugue (GND) toca o contato NC do jack. **Conferir:** continuidade anel-luva com multímetro; o plugue tem colar de travamento (descrição de varejista; a folha não cita): ver se passa pelo furo do jack do case (pergunta ao design).
-
-**(2) Alimentação.** A folha dá **um só número, "supply voltage 10 V"** (sem faixa, corrente, ruído nem impedância; as especificações de máximo SPL 150 dB e 1,6 mV/Pa valem a 10 V). O MIC_BIAS do SGTL5000 chega a **3,0 V** (VDDA − 0,2 V) por **2 kΩ internos + R305 2,2 kΩ = 4,2 kΩ** (ou 2 kΩ com R305 = 0 Ω, valor só de BOM).
-- Tensão na ponta, V = 3,0 − I · R (figura): com **4,2 kΩ**, 0,2 / 0,3 / 0,5 mA dão **2,16 / 1,74 / 0,90 V**; com **2,0 kΩ**, **2,6 / 2,4 / 2,0 V**. A corrente do ME 3 é desconhecida **(suposição 0,2-0,5 mA, típico de cápsula com FET; conferir)**.
-- **Funciona com 3 V? Não dá para garantir só pela folha.** Estágios a FET desse tipo costumam operar de ~1,5-2 V para cima (suposição), o que **com R305 = 0 Ω** (2 kΩ, V ≥ 2,0 V até 0,5 mA) é plausível; com 4,2 kΩ é marginal a partir de 0,35 mA. **Perda de nível máximo:** a excursão cai com a tensão disponível; mesmo 1 V de pico (3 V de bias, folga de 1 V) é ~600 Pa = ~150 dB SPL a 1,6 mV/Pa, então **o limite elétrico fica muito acima do canto a 2-3 cm (≤ 126 dB SPL)**: a perda de máximo não importa para voz. **Ruído:** o ruído é do FET e da cápsula e quase não depende da tensão; o ganho do seguidor pode cair 1-3 dB (suposição). A coisa que pode falhar de verdade é a **partida** abaixo de uma tensão mínima desconhecida.
-- **Teste de bancada (30 min, sem mudar a placa):** fonte de 3,0 V + 2,0 kΩ (e depois 4,2 kΩ) → ME 3 na ponta; medir a tensão CC na ponta e a corrente; tom de 1 kHz de um alto-falante pequeno a 3 cm, medir o nível (esperado 1,6 mV/Pa) e a distorção a ~114 dB SPL.
-- **Se precisar de mais (plano B): boost 9-10 V ligado só por GPIO,** o menor circuito: `MT3608` (C84817, Extended, US$ 0,063) + indutor `CD54` 10 µH (Extended, ~0,04) + diodo `SS14` (C2480, Basic, 0,019) + 2 capacitores (≥ 16-25 V, **conferir** se há Basic) + 2 resistores de realimentação (0402) + 1 PMOS de desconexão da carga (o MT3608 sozinho deixa ~VBAT − 0,3 V na saída desligado) + 1 resistor de bias 4,7-6,8 kΩ + 1 GPIO (pino 5 está livre). **Custo ≈ US$ 0,35 de peças + 2 tipos Extended (6,18) = ~US$ 6,5; ocupa ~9 x 7 mm no fundo da principal** (o design diria onde). Pede C309 de ≥ 16 V (hoje 10 V) e filtro RC no bias (a ondulação do boost entra direto no sinal de um microfone de 1,6 mV/Pa). A firmware só liga o boost quando o usuário escolher "Sennheiser" (um eletreto comum com 10 V na ponta pode sofrer): **detectar** o tipo não é possível só pela corrente. Não é "ligada só com microfone detectado": é "ligada só com o modo pro".
-- **Opção sem peça nova:** bias a partir de VBAT (3,0-4,2 V) por PMOS + resistor: +~0,7 V; ondulação do amplificador classe D no mesmo trilho: **não recomendo**.
-
-**(3) Ganho** (SGTL5000, Tabela 6, 3,3 V: fundo de escala do ADC **1,0 Vrms** **(conferir se vale para o caminho MIC com ganho 0)**; pré-amplificador 0 / 20 / 30 / 40 dB + 0 a 22,5 dB no ADC; SNR do ADC **90 dB**, entrada −60 dB). A tensão do ME 3 a 1,6 mV/Pa e a de um eletreto de −42 dBV/Pa (7,9 mV/Pa; 14 dB mais):
-
-| Nível na cápsula | ME 3 (rms) | com +20 dB | com +30 dB | eletreto (rms) |
-|---|---:|---:|---:|---:|
-| 100 dB SPL (canto suave) | 3,2 mV | −30 dBFS | −20 dBFS | 16 mV |
-| 114 dB SPL (canto normal) | 16 mV | −16 dBFS | −6 dBFS | 79 mV |
-| 120 dB SPL | 32 mV | −10 dBFS | 0 dBFS (limite) | 158 mV |
-| 126 dB SPL (grito) | 64 mV | −4 dBFS | clipa | 316 mV |
-
-**Basta.** Canto a 2-3 cm (guia rápido: 2-3 cm) fica entre 100 e 120 dB SPL (estimativa: ~21 dB acima de um canto a 30 cm); o ME 3 pede **+20 dB (padrão) a +30 dB (canto suave)**; o eletreto, 0-20 dB. **Ruído:** o ADC sozinho (31 µV a 0 dB) vira 3 µV de entrada com +20 dB e 1 µV com +30 dB; o resistor de bias de 4,2 kΩ junto da saída do microfone soma ~1 µV (Johnson, só em parte curto-circuitado pela impedância de saída do FET); o pré-amplificador do SGTL5000 não tem ruído de entrada na folha. Estimativa: **~2-3 µV no total** = ~36-40 dB SPL equivalente com o ME 3 e a **SNR de 75-78 dB a 114 dB SPL** (~62-64 dB num canto de 100 dB). Com o eletreto a mesma eletrônica dá 14 dB melhor. **A cadeia de voz (expansor, YIN, vocoder)** vê o nível em dBFS: o ganho de +20 a +30 dB do ME 3 (contra 0-20 dB do eletreto) compensa os 14 dB e os limiares do expansor ficam iguais. Ruído da cápsula não está na folha. A curva de resposta do guia rápido mostra ~−59 dBV a 1 kHz, ~3 dB abaixo dos −55,9 dBV de 1,6 mV/Pa **(conferir; as contas usam 1,6 mV/Pa e o pior caso fica 3 dB pior, ainda com folga)** (referência: o SL Headmic 1 da mesma linha tem 27 dB(A)).
-
-**(4) MIC_DET (pino 25; R306 100 kΩ, C311 100 nF; limiares 0,30 e 2,85 V).** Com a corrente I do microfone, V = 3,0 − I · R. **Fica na faixa "microfone" (0,30 a 2,85 V) para I entre 0,036 e 0,64 mA com 4,2 kΩ; entre 0,075 e 1,35 mA com 2 kΩ.** O ME 3 (suposição 0,2-0,5 mA) cai dentro nos dois casos: 2,16 a 0,90 V (4,2 kΩ) ou 2,6 a 2,0 V (2 kΩ). Só sairia da faixa com mais de 0,64 mA (leria como "curto") ou menos de 0,036 mA (leria como "nada"). **Cálculo; a medir com o ME 3 na primeira placa.**
-
-**(5) Recomendação.**
-1. **A placa como está serve aos dois microfones**, desde que o ME 3 parta com 3 V de bias: o plugue, a ponta, o anel NC, o ganho (+20/+30 dB) e a detecção estão todos dentro. **Mudança de BOM (não de placa) recomendada: R305 = 0 Ω** (2 kΩ em vez de 4,2 kΩ; o eletreto comum aguenta: o datasheet só pede o resistor externo se os internos não servem) - dá 0,6-1,1 V a mais de tensão na ponta para o ME 3. **Não é aplicada** (a R7V4 pede só estudo); a firmware já escolhe `BIAS_RESISTOR` (2 kΩ).
-2. **O ME 3 só precisa de mais se o teste de bancada falhar:** aí o boost de 9-10 V (~US$ 6,5, +2 Extended, ~9 x 7 mm, 1 GPIO) entra numa revisão da principal. **Isso é o que impediria o ME 3 no J302 como está: a tensão mínima real da cápsula, desconhecida.**
-3. Microfone de PC com bias no anel continua fora. Padrão continua o headset de eletreto comum.
+### 6. Microfone
+(Removido na R10V4: o ME 3 e o boost de 9-10 V deixaram de ser referência; ver a seção R10V4 no topo.)
 
 ### 7. Validação do conceito modular (regra geral 1; sem tabelas por tamanho)
 
@@ -193,8 +270,7 @@ Fontes: [especificação do ME 3 (art. 508928)](https://www.sennheiser.com/globa
 2. **O cabeçalho OUT pode ir de u 68,1 para u ≈ 49,5?** O cabo passa a correr pela faixa de trás ao longo de ~30 mm (d = 30,4) e o U cai para ~10 mm; o rebaixo precisa de ~40 x 20 mm por junção (planta) em vez de uma janela só no fim. Há conflito com a bossa/entalhe de u 54,5-56,5 e com a parede atrás da fileira 4 (14,3 mm)?
 3. **A sobra de 10-17 mm de cabo no rebaixo:** cabe deitada no piso (cabo com fios soltos) ou precisa de curva em pé (cabo colado: ~12 mm)? O rebaixo é planta + profundidade: qual profundidade o piso aceita sem furar o fundo?
 4. **P6s (recomendada) ou P9 (qualquer cabo):** o design aceita o cabeçalho de 9 vias (footprint ~12,4 x 5,55; plugue de 10,0) na faixa de trás se o J escolher P9?
-5. **Colar de travamento do plugue do ME 3:** o furo do jack IN deixa passar um colar de ~6-7 mm? (Descrição de varejista; a folha da Sennheiser não cita.)
-6. **J (gestão):** (a) P6s + cabo reto `A06SR06SR30K51B` ou P9; (b) aceita o teste de bancada do ME 3 antes de qualquer mudança de placa; (c) R305 = 0 Ω na BOM da próxima revisão.
+5. **J (gestão):** (a) P6s + cabo reto `A06SR06SR30K51B` ou P9; (b) R305 = 0 Ω na BOM da próxima revisão (aprovado na R8V4).
 
 ## R6V4 · conectores fixos entre réguas (item 1), entrada placa → régua (item 2), microfone (item 5)
 

@@ -36,24 +36,32 @@ import sexpr as S  # noqa: E402
 
 HW = os.path.normpath(os.path.join(PCB, ".."))
 KD = os.path.join(HW, "kicad", "regua")
-NAME = "student_v04_regua"
+NPOS = int(os.environ.get("REGUA_N", "4"))             # R10V4: 4 = R4 (default, unchanged), 8 = R8
+SUF = "" if NPOS == 4 else "8"
+BUILD = os.path.join(HERE, "build" + SUF)
+NAME = "student_v04_regua" + SUF
+LEN = 18.5 * NPOS                                      # nominal length (74 / 148)
 OUT = os.path.join(KD, NAME + ".kicad_pcb")
 KICAD_FP = P.KICAD_FP
 M, T, V = P.M, P.T, P.V
 GRAVE = []
+SENS = ["U%d" % i for i in range(1, NPOS + 1)]
+R595, RC5, RC6 = "U%d" % (NPOS + 1), "C%d" % (NPOS + 1), "C%d" % (NPOS + 2)
+PASSIVES = ["C%d" % i for i in range(1, NPOS + 3)] + ["R1"]
 
 OX, OY = 10.0, 17.0
-U0, U1 = 0.2, 73.8                 # PCB ends (nominal ruler 0..74, 0.2 mm short at each end)
+U0, U1 = 0.2, LEN - 0.2        # PCB ends (nominal ruler 0..LEN, 0.2 mm short at each end)
 VB, VF = -7.0, 7.0                 # back / front edge
 PITCH = 18.5
-KEYS = [9.25 + PITCH * k for k in range(4)]
+KEYS = [9.25 + PITCH * k for k in range(NPOS)]
 PEG_DX, PEG_D = 5.08, 1.70
-M2_U, M2_V, M2_D = (18.5, 37.0, 55.5), 5.2, 2.2   # R8V4 final (design): the universal ruler keeps its three holes; 11 M2 in all (see case/layout_r4.M2_BY_ROW)
-NOTCH_U = (0.0, 18.5, 37.0, 55.5, 74.0)
+M2_U = (18.5, 37.0, 55.5) if NPOS == 4 else tuple(float(x) for x in os.environ.get("REGUA_M2", "18.5,37.0,111.0,129.5").split(","))
+M2_V, M2_D = 5.2, float(os.environ.get("REGUA_M2D", "2.2"))   # R8V4 final (design): the universal ruler keeps its three holes; 11 M2 in all (see case/layout_r4.M2_BY_ROW)
+NOTCH_U = tuple(18.5 * i for i in range(NPOS + 1))
 NOTCH_W, NOTCH_D = 2.0, 4.3
-CONN = {"J1": (5.9, -3.95), "J2": (47.5, -3.95)}   # R8V4: OUT moved from 68.1 to 47.5 (link H); IN stays at 5.9
+CONN = {"J1": (5.9, -3.95), "J2": (47.5 + LEN - 74.0, -3.95)}     # R10V4: OUT keeps its distance from the right end (R4: 74 - 47.5 = 26.5; R8: 121.5)   # R8V4: OUT moved from 68.1 to 47.5 (link H); IN stays at 5.9
 _OLD = {"J1": (5.9, -3.95), "J2": (68.1, -3.95)}   # R4V4 contract of the design: IN x 5.9, OUT x 68.1, back strip, mouth -v     # (u, v) of the connectors' origin (centre of the pin row), mouth -v
-U5_POS = (27.75, 4.2)
+U5_POS = (27.75, 4.2)              # R8: the same place as the R4 (key cell 2 centre): the design already cuts the front rail under it (layout_r4.UNDER_FRONT_U)
 EDGE = 0.25                         # copper-to-edge
 
 
@@ -133,8 +141,8 @@ def text(b, s, u, v, layer, size=1.0, rot=0, mirror=False, just=pcbnew.GR_TEXT_H
 
 
 def main():
-    parts = json.load(open(os.path.join(HERE, "build", "partes_regua.json"), encoding="utf-8"))
-    nl = P.netlist(os.path.join(HERE, "build", "regua_netlist.net"))
+    parts = json.load(open(os.path.join(BUILD, "partes_regua.json"), encoding="utf-8"))
+    nl = P.netlist(os.path.join(BUILD, "regua_netlist.net"))
     main_board = pcbnew.LoadBoard(os.path.join(HW, "kicad", "student_v04.kicad_pcb"))
     b = pcbnew.CreateEmptyBoard()
     b.SetCopperLayerCount(2)
@@ -160,7 +168,7 @@ def main():
         fp.Reference().SetVisible(False)
         fp.Value().SetVisible(False)
         fp.SetPath(pcbnew.KIID_PATH(p["path"]))
-        h = {"J1": "2.95", "J2": "2.95", "U5": "1.0", "C6": "1.45"}.get(p["ref"], "0.4" if p["ref"].startswith("U") else "0.55")
+        h = {"J1": "2.95", "J2": "2.95", R595: "1.0", RC6: "1.45"}.get(p["ref"], "0.4" if p["ref"].startswith("U") else "0.55")
         for k, v in (("Codigo", p["code"]), ("LCSC", p["lcsc"]), ("Montagem", p["mount"]), ("Description", p["note"]),
                      ("Datasheet", p.get("datasheet", "")), ("Altura_mm", h)):
             fp.SetField(k, v or "")
@@ -172,7 +180,7 @@ def main():
                 pad.SetNet(net_of(n))
         if p["ref"] in ("J1", "J2"):
             set_courtyard(fp, -4.5, -2.85, 4.5, 2.9)
-        elif p["ref"] in ("U1", "U2", "U3", "U4"):
+        elif p["ref"] in SENS:
             set_courtyard(fp, -0.6, -1.06, 0.6, 1.06)
         b.Add(fp)
         fps[p["ref"]] = fp
@@ -220,10 +228,10 @@ def main():
     def pose(ref, u, v, rot):
         P.set_pose(fps[ref], X(u), Y(v), rot)
 
-    for k in range(4):
+    for k in range(NPOS):
         pose("U%d" % (k + 1), KEYS[k], 0.0, 0)
     # U1..U4 orientation: pins 1 (VCC) and 4 (OUT) towards the back (-v), where the connectors are
-    for k in range(4):
+    for k in range(NPOS):
         pins = {n: P.pad_xy(fps["U%d" % (k + 1)], n)[0] for n in ("1", "2", "3", "4")}
         if pins["1"][1] > pins["2"][1]:
             pose("U%d" % (k + 1), KEYS[k], 0.0, 180)
@@ -235,11 +243,10 @@ def main():
     for ref, (u, v) in CONN.items():
         mouth_back(ref)
         P.set_pose(fps[ref], X(u), Y(v), fps[ref].GetOrientationDegrees())
-    u5 = fps["U5"]
-    pose("U5", U5_POS[0], U5_POS[1], 0)
+    pose(R595, U5_POS[0], U5_POS[1], 0)
 
     # ---- passives: search near an anchor (nearest free spot), in the order of importance
-    placed = {"J1", "J2", "U5", "U1", "U2", "U3", "U4"}
+    placed = {"J1", "J2", R595} | set(SENS)
     holes = [r for r in fps if r.startswith(("PEG", "H"))]
 
     def court_u(fp):
@@ -259,7 +266,7 @@ def main():
             if P.overlap(box, o, 0.0):
                 return False
         # inside the board (courtyard), clear of the edges by EDGE
-        if ref in ("C6", "R1", "C1", "C2", "C3", "C4") and box[3] > Y(4.2):      # inside the pocket (v <= 4.2), not on the front rail
+        if ref in PASSIVES and box[3] > Y(4.2):      # inside the pocket (v <= 4.2), not on the front rail
             return False
         if box[0] < X(U0 + EDGE) or box[2] > X(U1 - EDGE) or box[3] > Y(VF - EDGE) or box[1] < Y(VB + EDGE):
             return False
@@ -287,16 +294,16 @@ def main():
         return best
 
     anchors = {}
-    for k in range(4):
+    for k in range(NPOS):
         vcc = P.pad_xy(fps["U%d" % (k + 1)], "1")[0]
         anchors["C%d" % (k + 1)] = (vcc[0], vcc[1] + (-1.9 if True else 0))
     j1pin1 = P.pad_xy(fps["J1"], "1")[0]
-    anchors["C6"] = (j1pin1[0] - 3.5, j1pin1[1] - 0.0)
-    u5v = P.pad_xy(fps["U5"], "16")[0]
-    anchors["C5"] = (u5v[0] + 2.5, u5v[1] + 2.0)
+    anchors[RC6] = (j1pin1[0] - 3.5, j1pin1[1] - 0.0)
+    u5v = P.pad_xy(fps[R595], "16")[0]
+    anchors[RC5] = (u5v[0] + 2.5, u5v[1] + 2.0)
     j2p6 = P.pad_xy(fps["J2"], "6")[0]
     anchors["R1"] = (j2p6[0] + 3.0, j2p6[1] - 0.5)       # R8V4: QH' resistor beside J2 pin 6, in the back strip
-    for ref in ("C1", "C2", "C3", "C4", "C6", "C5", "R1"):
+    for ref in ["C%d" % i for i in range(1, NPOS + 1)] + [RC6, RC5, "R1"]:
         best = settle(ref, anchors[ref])
 
     # ---- keep-out areas (rule areas) and markings
@@ -315,7 +322,7 @@ def main():
             sh.SetWidth(M(0.1))
             b.Add(sh)
         text(b, "tecla %d" % (k + 1), uc, 2.5, pcbnew.F_SilkS, 0.9)
-    text(b, "STUDENT V4 REGUA R8V4 - FRENTE (jogador) em baixo", 37.0, 5.6, pcbnew.F_SilkS, 0.9)
+    text(b, "STUDENT V4 REGUA R%d (R10V4) - FRENTE (jogador) em baixo" % NPOS, LEN / 2, 6.2, pcbnew.F_SilkS, 0.9)
     text(b, "J1 IN", CONN["J1"][0], -1.5, pcbnew.B_SilkS, 0.8, mirror=True)
     text(b, "J2 OUT", CONN["J2"][0], -1.5, pcbnew.B_SilkS, 0.8, mirror=True)
 
@@ -351,7 +358,7 @@ def main():
 """)
 
     # ---- dump
-    rec = {"origem": [OX, OY], "u_v": "x = OX + u, y = OY + v; +v para o jogador (borda da frente)", "pcb_mm": [U1 - U0, VF - VB],
+    rec = {"npos": NPOS, "origem": [OX, OY], "u_v": "x = OX + u, y = OY + v; +v para o jogador (borda da frente)", "pcb_mm": [U1 - U0, VF - VB],
            "pecas": {}, "pads": [], "furos": [], "entalhes": [], "contorno_uv": notch_polygon(), "teclas_u": KEYS}
     for ref, fp in fps.items():
         c = P.court(fp)
@@ -372,8 +379,8 @@ def main():
         rec["entalhes"].append([nu - NOTCH_W / 2, VB, nu + NOTCH_W / 2, VB + NOTCH_D])
     # contract with the case: plug windows beyond the back edge (mouth -v): u extent of the plug (7.0 housing), v from the edge to 4.6 past it
     rec["janelas_plugue"] = {r: [round(T(fps[r].GetX()) - OX - 3.8, 2), VB - 5.0, round(T(fps[r].GetX()) - OX + 3.8, 2), VB] for r in ("J1", "J2")}
-    json.dump(rec, open(os.path.join(HERE, "posicao_regua.json"), "w", encoding="utf-8"), indent=1)
-    for ref in ("U1", "U2", "U3", "U4", "U5", "J1", "J2", "C1", "C2", "C3", "C4", "C5", "C6", "R1"):
+    json.dump(rec, open(os.path.join(HERE, "posicao_regua%s.json" % SUF), "w", encoding="utf-8"), indent=1)
+    for ref in SENS + [R595, "J1", "J2"] + ["C%d" % i for i in range(1, NPOS + 3)] + ["R1"]:
         q = rec["pecas"][ref]
         print("%-3s u %7.2f v %6.2f rot %5.1f  patio %s" % (ref, q["u"], q["v"], q["rot"], q["patio_uv"]))
 

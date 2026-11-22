@@ -1188,3 +1188,17 @@ No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2
   numpy raster at 0.1 mm over `layout_r4.py`, does not touch `case_r4.py`) writes `case/out/ligacao_h.json` and `case/renders/ligacao_h_*_r7.png`.
   The JST SH datasheet PDF (`jst-mfg.com/product/pdf/eng/eSH.pdf`) has font-obfuscated text (digits lost): header 4.3, plug 7.6 x 5.0 x 3.9 and the
   4 mm minimum bend radius are still "conferir". Result and open questions in `student_v04/FIT_CHECK.md` (R7V4 section on top).
+
+- **R10V4 (22 nov 2026, design part): 4 x R8, robust base.** The standard rulers are the **R8** (8 positions, 148 mm, one per row; 32 keys = 4 x R8) and the
+  **R4** (74 mm, only ends a longer row, always at the right/treble end); both have an SH IN header at u 5.9 and an SH OUT header 26.5 mm from the right end
+  (R8 u 121.5, R4 u 47.5), same P6s pinout. The 32-key model has no ruler-to-ruler junction, no junction cable and no junction recess: only the board's 4
+  cables (45.8 / 50.8 mm free wire) to each row's R8 IN; the R8's OUT header stays unplugged. Model: `case/layout_r4.py` + `case/case_r4.py` (`RULER_L` =
+  148). Base: continuous rails, the 2 mm trench between rows closed by a **riser** up to the lower neighbour's rail top (row 1: a 2 mm thicker front wall),
+  end walls, tunnels cut for the 4 board cables (`cable_cutter`, chain of slots: `_flat_prism` self-intersects on tight curves and breaks the cut), notches for
+  headers, the IN plug (through the riser) and the 595/C5 that stand over the front rail. **Two M2 per ruler in a heat-set insert (no self-tapping):** R8 has four
+  holes u 18.5 / 37 / 111 / 129.5 (v +5.2), rows 1 and 3 use 18.5 + 129.5, rows 2 and 4 use 37 + 111 (`case/fixacao_r10.py`; they stay free in the 48/64/80
+  arrangements). Base 84.9 cm3 (was 69.9: +15.0 cm3 = about +US$ 4.2 MJF). Ruler bending 0.015 mm at 3 N (`estudos/rigidez_regua_r10.py`). OLED: glass 26.7 x
+  19.26 centred on the module's board, the viewing area (21.74 x 10.86) centred on the window; the 1.9 mm offset between them is the SPEC's assumption, not
+  confirmed on a real module. Figures `case/renders/*_r10.png` (`planta_v4.py`, `corte_v4.py`, `corte_base_r10.py`, `iso_base_r10.py`). Older rules still
+  hold: only 32 keys detailed, only the Student V4, nothing is bought before the prototype closes. The Sennheiser ME 3 and the 9-10 V boost are out of the
+  project (microphones: electret and dynamic through the 3.5 mm jack only).

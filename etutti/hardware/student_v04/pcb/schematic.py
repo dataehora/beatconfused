@@ -524,7 +524,7 @@ R("R305", "0", "MIC_BIAS", "MIC_J", "F3", note="R8V4: 0 ohm (aprovado): bias tot
 C("C309", "1uF", "MIC_J", "MIC_IN", "F3", note="acoplamento do microfone ao pino MIC (o datasheet mostra 0,1 uF; 1 uF baixa o corte da voz)")
 R("R306", "100k", "MIC_J", "MIC_DET", "F3", note="R6V4: toma de CC da ponta do IN para o ADC (pino 25): distingue microfone de eletreto de plugue de linha/sem plugue")
 C("C311", "100nF", "MIC_DET", "GND", "F3", note="R6V4: filtro da toma MIC_DET (RC 10 ms; o ADC lê devagar)")
-C("C310", "100nF", "MIC_BIAS", "GND", "F3", note="datasheet SGTL5000 Fig. 20 (20 QFN): 0,1 uF no MIC_BIAS (C4)")
+C("C310", "100nF", "MIC_BIAS", "GND", "F3", dnp=True, note="R10V4: NAO MONTAR. Datasheet SGTL5000 Fig. 20 poe 0,1 uF no MIC_BIAS (C4) COM o R1 de 2,2 k em serie; com R305 = 0 ohm o C310 fica na ponta do jack e forma um passa-baixas com os 2 k do bias (~800 Hz, -14 dB a 4 kHz). Pad mantido para um 220-470 pF opcional se a bancada mostrar ruido do bias")
 
 # ---------------------------------------------------------------- I: interface
 CUR[0] = "I"

@@ -25,13 +25,14 @@ const Txt STR[S_COUNT] = {
   {"Mic perto da boca e", "Mic at the mouth and"}, {"volume baixo", "volume low"},
   {"voz muda", "voice off"}, {"!microfonia", "!feedback"}, {"voz", "voice"}, {"sem mic", "no mic"}, {"mic", "mic"},
   {"vol", "vol"}, {"fone", "hp"}, {"alto", "spk"}, {"repouso", "rest"},
-  {"Mic headset", "Headset mic"}, {"Notch limpos", "Notch cleared"}, {"Salvo", "Saved"}, {"Voz zerada", "Voice reset"},
+  {"Mic padrão", "Mic default"}, {"Notch limpos", "Notch cleared"}, {"Salvo", "Saved"}, {"Voz zerada", "Voice reset"},
   {"Calibrado", "Calibrated"}, {"Fone/AUX", "Phones/AUX"}, {"+ Alto-fal.", "+ Speaker"}};
 inline const char *tx(StrId id) { return tr(STR[id]); }
 
 const Txt HARM_MODES[4] = {{"Fixo", "Fixed"}, {"Exato", "Exact"}, {"Ajuda", "Assist"}, {"Intervalo", "Interval"}};
 const Txt FOLD_NAMES[2] = {{"Exata", "Exact"}, {"Perto", "Near"}};                     // index = harmFold
 const Txt RATIO_NAMES[4] = {{"Suave", "Soft"}, {"Média", "Medium"}, {"Forte", "Hard"}, {"Porta", "Gate"}};
+const Txt MIC_TYPE_NAMES[3] = {{"Auto", "Auto"}, {"Eletreto", "Electret"}, {"Dinâmico", "Dynamic"}};   // index = micType
 const Txt CURVE_NAMES[4] = {{"Fixa", "Fixed"}, {"Suave", "Soft"}, {"Normal", "Normal"}, {"Dura", "Hard"}};
 
 
@@ -43,7 +44,7 @@ enum {
   M_MIC_GAIN, M_GATE_THR, M_GATE_RATIO, M_GATE_ATK, M_GATE_HOLD, M_GATE_REL, M_HPF, M_CLOSE_MIC, M_ANTI_FB, M_CLEAR_NOTCH,
   M_VOLUME, M_VOICE_OUT, M_KEYS_LEVEL, M_SPK_EQ, M_EQ_CUT, M_EQ_DIP,
   M_REGISTER, M_AMBIENCE, M_VEL_CURVE,
-  M_SAVE, M_RESET_VOICE, M_CAL_KEYS, M_KEY_TEST, M_LANGUAGE
+  M_SAVE, M_RESET_VOICE, M_CAL_KEYS, M_KEY_TEST, M_MIC_TYPE, M_LANGUAGE
 };
 // needsMic: the line (or page) only exists while a microphone is plugged into IN (R6V4 item 5)
 struct MenuItem { Txt name; uint8_t kind; uint8_t id; bool needsMic; };   // SUB: id = the page

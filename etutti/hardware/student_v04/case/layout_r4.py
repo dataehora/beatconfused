@@ -61,7 +61,8 @@ ROWS = [(1, 74.03, 98.45, 8), (2, 58.01, 89.2, 8), (3, 41.99, 98.45, 8), (4, 25.
 FIRST_MIDI = {1: 57, 2: 55, 3: 56, 4: 54}      # A3, G3, G#3, F#3; each column +3 semitones along a row (a minor third), as the SPEC's figure
 CASE_LEN = 244.0                               # R6V4: +4 mm of flat deck after the last button (R5V4 had 240: ruler end 237.0 + 1.0 clearance + 2.0 wall; now inner face 242.0)
 ZR = [0.0, 2.0, 4.0, 7.0]
-RULER_L, RULER_W, RULER_T = 4 * PITCH, 14.0, 1.2
+RULER_L, RULER_W, RULER_T = 8 * PITCH, 14.0, 1.2     # R10V4: the standard ruler is the R8 (8 positions, 148 mm); the R4 (74 mm) only ends a longer row
+R4_L = 4 * PITCH
 RAIL_IN, RAIL_OUT = 4.2, 7.0
 M2_BOSS_D, M2_PILOT, M2_HEAD = 6.0, 3.2, 3.8
 PEG_DX, PEG_D, PEG_BELOW = 5.08, 1.7, 1.5      # 2 pegs at +-5.08 from the key centre, 1.5 mm below the ruler's underside
@@ -73,7 +74,7 @@ HDR_W, HDR_D, HDR_H = 9.4, 5.55, 2.95         # footprint along the pin row, dep
 HDR_OVER = 0.5                                # the mouth is 0.5 mm past the ruler's back edge
 PLUG_W, PLUG_D, PLUG_H = 7.0, 2.45, 3.6
 AXIS_Z = -(RULER_T + HDR_H / 2.0)             # the mating axis below the ruler's top (header mid-height): -2.675
-IN_X, OUT_X = 5.9, 47.5                       # R8V4: OUT moved from 68.1 (R4V4) to 47.5, C3 moves out of its footprint (electronics)
+IN_X, OUT_X = 5.9, RULER_L - (R4_L - 47.5)                       # R8V4: OUT moved from 68.1 (R4V4) to 47.5, C3 moves out of its footprint (electronics)
 LANE_Y0, LANE_Y1 = -(RULER_W / 2 + HDR_OVER), -1.35   # back lane: y from the row axis (the sensor pocket ends at +-1.1)
 CABLE_FREE_MM = (45.8, 50.8)                  # free wire length of the stock jumper A06SR06SR30K51B: 50.8 - 2 x 2.5 (plug bodies) or the whole 50.8 (NOT MEASURED)
 BUNDLE_W, BUNDLE_T = 5.6, 0.6                 # six loose AWG30 wires lying flat
@@ -84,8 +85,12 @@ NOTCH_HDR_W = HDR_W + 1.0                     # the header's notch in the ruler'
 # R8V4: the universal ruler keeps its three M2 holes (u 18.5 / 37 / 55.5, v +5.2: the only gaps between the key bodies where an M2 head fits). With OUT at u 47.5
 # only some of them are clear of the cable loops, the plugs and the headers of the row in front (ligacao_h.hole_feasible_per_ruler, boss D 6 + 0.4): row 1 takes
 # all three, rows 2 and 4 only u 37 and row 3 only u 18.5 (plus 55.5 on its second ruler). A PAIR per row is NOT possible: see FIT_CHECK R8V4.
-M2_BY_ROW = {1: (18.5, 55.5), 2: (37.0,), 3: (18.5,), 4: (37.0,)}
-M2_BY_RULER = {(3, 1): (18.5, 55.5)}         # the second ruler of row 3 has no OUT plug of row 2 in front of u 55.5
+# R10V4: ONE ruler per row (R8, 148 mm). Every R8 has four M2 holes (u 18.5 / 37 / 111 / 129.5, v +5.2: gaps between housings, two pairs); a row uses the pair that
+# clears the row in front (fixacao_r10.py: rows 1 and 3 take u 18.5 + 129.5 = 111 mm apart, rows 2 and 4 take u 37 + 111 = 74 mm apart; u 18.5 / 129.5 of rows 2 and 4 would sit
+# on row 1's (3's) IN plug and OUT header). The R4 (only ends a longer row, validation only): u 18.5 + 55.5 in rows 1 and 3, u 37 alone in rows 2 and 4.
+M2_HOLES_R8 = (18.5, 37.0, 111.0, 129.5)
+M2_BY_ROW = {1: (18.5, 129.5), 2: (37.0, 111.0), 3: (18.5, 129.5), 4: (37.0, 111.0)}
+M2_BY_RULER = {}
 
 
 def length(mod):
@@ -113,7 +118,7 @@ def rulers(mod):
     out = []
     for r, y, x0, n in ROWS:
         n += 4 * mod
-        nk = int(math.ceil(n / 4.0))
+        nk = int(math.ceil(n / 8.0))
         for k in range(nk):
             out.append({"row": r, "x0": x0 - PITCH / 2 + k * RULER_L, "y": y, "k": k, "last": k == nk - 1})
     return out
@@ -142,7 +147,7 @@ def post_candidates(mod):
     return out
 
 
-POSTS_H = [(107.7, 68.69), (116.95, 52.67), (181.7, 36.65), (200.2, 68.69), (218.7, 36.65)]   # R8V4: three of the R7V4 posts stay, two move (135.45;52.67 -> 116.95;52.67 and 126.2;36.65 -> 181.7;36.65), clear of every loop at OUT u 47.5
+POSTS_H = [(107.7, 68.69), (116.95, 52.67), (181.7, 36.65), (200.2, 68.69), (200.2, 36.65)]   # R8V4: three of the R7V4 posts stay, two move (135.45;52.67 -> 116.95;52.67 and 126.2;36.65 -> 181.7;36.65), clear of every loop at OUT u 47.5
 
 
 def pick_posts(mod):
@@ -307,6 +312,10 @@ def cables(mod, F=CABLE_FREE_MM[0]):
     return out
 
 
+# 74HC595 (u 25.85..29.65, v to +6.59) and its C5 (u 29.74..31.66, v +5.7..+6.7) of the R4 sit over the front rail; the R8's 595 is the electronics' choice: assumed in the same place
+UNDER_FRONT_U = ((25.85, 31.66),)
+
+
 def notches(mod, recess=True):
     """Rectangles cut from the tray's rails: the header's notch in the ruler's own back rail and the plug's notch in the next row's front rail (the
     plug passes under that higher ruler), for both IN and OUT; plus (recess=True) the cable loops' recesses (RECESS, R8V4)."""
@@ -320,8 +329,12 @@ def notches(mod, recess=True):
                         "row": r, "tipo": "cabeçalho (trilho de trás da própria fileira)"})
             if r < 4 and not (c == OUT_X and ru["last"]):       # no plug on the last ruler's OUT: no plug notch
                 yn = ROWS[r][1]                                  # the next row's (r+1) centre
-                out.append({"x0": x0 + c - NOTCH_PLUG_W / 2, "x1": x0 + c + NOTCH_PLUG_W / 2, "y0": yn + RAIL_IN - 0.3, "y1": yn + RAIL_OUT + 0.3,
+                out.append({"x0": x0 + c - NOTCH_PLUG_W / 2, "x1": x0 + c + NOTCH_PLUG_W / 2, "y0": yn + RAIL_IN - 0.3, "y1": y - RAIL_OUT + 0.1,   # R10V4: through the riser up to this row's own back rail
                             "row": r + 1, "tipo": "plugue (trilho da frente da fileira %d)" % (r + 1)})
+    for ru in rulers(mod):                                  # R10V4: parts under the ruler that stand beyond the pocket (|v| > 3.9): the front rail is cut under them
+        for u0, u1 in UNDER_FRONT_U:
+            out.append({"x0": ru["x0"] + u0 - 0.3, "x1": ru["x0"] + u1 + 0.3, "y0": ru["y"] + RAIL_IN - 0.3, "y1": ru["y"] + RAIL_OUT + 0.3,
+                        "row": ru["row"], "tipo": "peça sob a régua (595 e C5) no trilho da frente"})
     if recess:
         ensure_recess()
         out += [dict(n) for n in RECESS]
@@ -355,10 +368,9 @@ def rails_left(mod):
             lo, hi = max(nt["x0"], ru["x0"] + 0.2), min(nt["x1"], ru["x0"] + RULER_L - 0.2)
             if hi <= lo:
                 continue
-            yc = nt["y0"] + (nt["y1"] - nt["y0"]) / 2
-            if abs(yc - (ru["y"] - 5.6)) < 3.0:
+            if min(nt["y1"], ru["y"] - RAIL_IN) - max(nt["y0"], ru["y"] - RAIL_OUT) > 0.5:
                 lost_back += hi - lo
-            elif abs(yc - (ru["y"] + 5.6)) < 3.0:
+            if min(nt["y1"], ru["y"] + RAIL_OUT) - max(nt["y0"], ru["y"] + RAIL_IN) > 0.5:
                 lost_front += hi - lo
         out[key] = {"fundo_%": round(100 * (1 - lost_back / L)), "frente_%": round(100 * (1 - lost_front / L))}
     return out
@@ -379,7 +391,7 @@ def rail_rects(mod, recess=True):
             ya, yb = sorted((ru["y"] + sgn * RAIL_IN, ru["y"] + sgn * RAIL_OUT))
             xa, xb = ru["x0"] + 0.2, ru["x0"] + RULER_L - 0.2
             cuts = sorted((max(n["x0"], xa), min(n["x1"], xb)) for n in nts
-                          if n["y0"] < yb and n["y1"] > ya and n["x0"] < xb and n["x1"] > xa and abs((n["y0"] + n["y1"]) / 2 - (ya + yb) / 2) < 1.0)
+                          if n["y0"] < yb and n["y1"] > ya and n["x0"] < xb and n["x1"] > xa and min(n["y1"], yb) - max(n["y0"], ya) > 0.5)
             x = xa
             for c0, c1 in cuts:
                 if c0 > x:

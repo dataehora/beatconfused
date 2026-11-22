@@ -132,6 +132,12 @@ def draw(ax, xlim, mod=0, detail=True, sockets=True):
     ax.text(hx + 1.9, hy, "H101", fontsize=5.2, va="center", zorder=12)
     # keyboard
     rs = L.rulers(mod)
+    for ru in rs:                                    # R10V4: the closed front (riser) and the end walls of the robust base
+        xa, xb, y = ru["x0"] + 0.2, ru["x0"] + L.RULER_L - 0.2, ru["y"]
+        ynext = L.ROWS[ru["row"] - 2][1] - L.RAIL_OUT if ru["row"] > 1 else y + L.RAIL_OUT + 2.0
+        ax.add_patch(Rectangle((xa, y + L.RAIL_OUT), xb - xa, ynext - y - L.RAIL_OUT, fc="#E7E5E4", ec="#A8A29E", lw=0.4, zorder=2))
+        for ex in (xa, xb - 2.0):
+            ax.add_patch(Rectangle((ex, y - L.RAIL_OUT), 2.0, 2 * L.RAIL_OUT, fc="#E7E5E4", ec="#A8A29E", lw=0.4, zorder=2))
     posts = L.pick_posts(mod)
     for ru in rs:
         xa, y = ru["x0"], ru["y"]
@@ -179,11 +185,11 @@ def legend(ax):
     h = [Patch(fc=C["board"], ec=C["board_ec"], label="placa principal 75,05 x 95,1"), Patch(fc="#CECBF6", ec="#534AB7", label="módulo (sob a placa)"),
          Patch(fc="none", ec=C["batt"], ls="--", label="bateria (sob a placa)"), Patch(fc="#CFFAFE", ec=C["spk"], label="alto-falante / caixa (sobre a placa)"),
          Patch(fc="#BFDBFE", ec=C["oled"], label="janela / módulo da tela (sobre a placa)"), Patch(fc="#FDE68A", ec=C["ui"], label="encoders e knobs"),
-         Patch(fc="#FED7AA", ec=C["post"], label="postes da tampa (H1..H4, internos, de parede)"), Patch(fc=C["ruler"], ec=C["ruler_ec"], label="réguas de 4 teclas"),
-         Patch(fc="#D1D5DB", ec="black", label="parafusos M2 (1 ou 2 por régua, 11 ao todo)"), Patch(fc="#FDE047", ec="black", label="cabeçalho SH da régua (IN u 5,9, OUT u 47,5)"),
-         Patch(fc="#FB7185", ec="black", label="plugue SH (3,6 x 7,0 x 2,45)"), Line2D([0], [0], color=C["cable"], lw=1.5, label="cabo SH, 45,8 mm de fio útil (placa -> 1a régua e régua -> régua)"), Line2D([0], [0], color="#7C3AED", lw=1.0, ls="--", label="o mesmo com 50,8 mm de fio útil"),
+         Patch(fc="#FED7AA", ec=C["post"], label="postes da tampa (H1..H4, internos, de parede)"), Patch(fc=C["ruler"], ec=C["ruler_ec"], label="réguas R8 (8 teclas, 148 mm), uma por fileira"),
+         Patch(fc="#D1D5DB", ec="black", label="parafusos M2 em inserto (2 por régua, 8 ao todo)"), Patch(fc="#FDE047", ec="black", label="cabeçalho SH da régua (IN u 5,9, OUT u 121,5; o OUT sem cabo)"),
+         Patch(fc="#FB7185", ec="black", label="plugue SH (3,6 x 7,0 x 2,45)"), Line2D([0], [0], color=C["cable"], lw=1.5, label="cabo SH da placa, 45,8 mm de fio útil (placa -> régua da fileira)"), Line2D([0], [0], color="#7C3AED", lw=1.0, ls="--", label="o mesmo com 50,8 mm de fio útil"),
          Patch(fc="none", ec=C["notch"], hatch="xxxx", label="rebaixo / entalhe nos trilhos da bandeja (piso intacto)"),
-         Line2D([0], [0], color=C["case"], lw=0.8, label="parede 2 mm (case de 244 x 102 mm; a parede de trás recuou 2 mm na R8V4)")]
+         Line2D([0], [0], color=C["case"], lw=0.8, label="parede 2 mm (case de 244 x 102 mm; parede de trás em y = -2)")]
     ax.legend(handles=h, loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=5, fontsize=6.4, frameon=False)
 
 
@@ -191,28 +197,26 @@ def main(mod=0):
     Lx = L.length(mod)
     fig, ax = plt.subplots(figsize=(17.5, 8.2))
     draw(ax, (-26, Lx + 12), mod)
-    ax.set_title("eTutti Student V4 (R8V4, ligação H) - planta geral oficial, %d teclas, vista de cima: nome da nota em cada tecla; naturais brancas, sustenidos pretos, "
+    ax.set_title("eTutti Student V4 (R10V4, 4 x R8) - planta geral oficial, %d teclas, vista de cima: nome da nota em cada tecla; naturais brancas, sustenidos pretos, "
                  "C e F em xadrez diagonal" % (32 + 16 * mod), fontsize=9.5)
     ax.annotate("", xy=(0, L.Y_BACK - 1.0), xytext=(Lx, L.Y_BACK - 1.0), arrowprops=dict(arrowstyle="<->", lw=0.7))
     ax.text(Lx / 2, L.Y_BACK - 1.6, "%g mm" % Lx, ha="center", fontsize=7)
     ax.annotate("", xy=(Lx + 3.0, L.Y_BACK), xytext=(Lx + 3.0, L.Y_FRONT), arrowprops=dict(arrowstyle="<->", lw=0.7))
-    ax.text(Lx + 4.2, (L.Y_BACK + L.Y_FRONT) / 2, "%g mm (era 100)" % L.CASE[1], rotation=90, va="center", fontsize=7)
+    ax.text(Lx + 4.2, (L.Y_BACK + L.Y_FRONT) / 2, "%g mm" % L.CASE[1], rotation=90, va="center", fontsize=7)
     xr = max(q["x0"] for q in L.rulers(mod)) + L.RULER_L
     ax.annotate("", xy=(xr - 0.2, 100.8), xytext=(Lx, 100.8), arrowprops=dict(arrowstyle="<->", lw=0.6, color="#B91C1C"))
     ax.text(xr - 1, 102.6, "folga %.1f" % (Lx - L.WALL - xr + 0.2), fontsize=5.8, color="#B91C1C", ha="right")
     legend(ax)
     fig.tight_layout()
-    fig.savefig(os.path.join(REN, "planta_geral_v4.png"), dpi=150, bbox_inches="tight")
-    fig.savefig(os.path.join(REN, "planta_geral_v4_r8.png"), dpi=150, bbox_inches="tight")
+    fig.savefig(os.path.join(REN, "planta_geral_v4_r10.png"), dpi=150, bbox_inches="tight")
     plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(13.5, 9.5))
     draw(ax, (-22, 135))
-    ax.set_title("Interface e começo do teclado (R8V4), zoom da planta geral, com os nomes das notas", fontsize=10)
+    ax.set_title("Interface e começo do teclado (R10V4), zoom da planta geral, com os nomes das notas", fontsize=10)
     legend(ax)
     fig.tight_layout()
-    fig.savefig(os.path.join(REN, "planta_interface_v4.png"), dpi=140)
-    fig.savefig(os.path.join(REN, "planta_interface_v4_r8.png"), dpi=140)
+    fig.savefig(os.path.join(REN, "planta_interface_v4_r10.png"), dpi=140)
     plt.close(fig)
     print("ok")
 

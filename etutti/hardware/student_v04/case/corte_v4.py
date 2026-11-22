@@ -74,21 +74,28 @@ def panel(ax, x0, parts, ylim):
 def main():
     lid, tray, brd, mdl, bat, spk = R.lid(0), R.tray(0), R.board(), R.module(), R.battery(), R.speaker()
     bx, _ = R.acoustic_box()
-    ole = R.oled()
+    ole, act = R.oled(), R.oled_active()
     knob = [R.knob(x, y) for x, y in L.KNOBS]
     enc = [R.encoder(x, y) for x, y in L.KNOBS]
     bots = R.bottom_parts()
+    cx, cy = R.oled_centre()
+    wx0, wy0, wx1, wy1 = R.C3.WINDOW
     parts_a = [("tampa", lid, "#D3D1C7"), ("bandeja", tray, "#9CA3AF"), ("placa", brd, "#86EFAC"), ("módulo", mdl, "#A5B4FC"), ("bateria", bat, "#FDBA74"),
-               ("falante", spk, "#67E8F9"), ("caixa", bx, "#A5F3FC"), ("OLED", ole, "#93C5FD")]
+               ("falante", spk, "#67E8F9"), ("caixa", bx, "#A5F3FC"), ("OLED", ole, "#93C5FD"), ("área ativa", act, "#1E3A8A")]
+    parts_p = [("tampa", lid, "#D3D1C7"), ("OLED", ole, "#93C5FD"), ("área ativa", act, "#1E3A8A"), ("placa", brd, "#86EFAC")]
     parts_b = [("tampa", lid, "#D3D1C7"), ("placa", brd, "#86EFAC"), ("encoder", enc[0], "#FCD34D"), ("knob", knob[0], "#FEF3C7")]
     for ref in ("J401", "U501", "SW403", "U301"):
         if ref in bots:
             parts_a.append((ref, bots[ref], "#E5E7EB"))
-    fig, axs = plt.subplots(2, 1, figsize=(15, 13), gridspec_kw={"height_ratios": [1.0, 1.0]})
+    fig, axs = plt.subplots(3, 1, figsize=(15, 19), gridspec_kw={"height_ratios": [1.0, 0.8, 1.0]})
     panel(axs[0], 37.0, parts_a, (-3, 102))
-    axs[0].set_title("Corte A-A em x = 37 mm: tampa, caixa acústica, alto-falante, OLED, placa, módulo, bateria e bandeja (R8V4)", fontsize=10)
-    panel(axs[1], 28.0, parts_b, (-2, 102))
-    axs[1].set_title("Corte B-B em x = 28 mm (eixo do knob de volume; o de registro está em x = 46, igual)", fontsize=10)
+    axs[0].set_title("Corte A-A em x = 37 mm: tampa, caixa acústica, alto-falante, OLED, placa, módulo, bateria e bandeja (R10V4)", fontsize=10)
+    xp = cx - (R.C3.OLED_PCB[0] / 2 - 2.0)
+    panel(axs[1], xp, parts_p, (-3, 60))
+    axs[1].set_ylim(5, 18)
+    axs[1].set_title("Corte P-P em x = %.2f mm: pelos dois apoios do OLED (postes em y = %.2f e %.2f); a janela da tampa e a área ativa" % (xp, cy - 11.9, cy + 11.9), fontsize=10)
+    panel(axs[2], 28.0, parts_b, (-2, 102))
+    axs[2].set_title("Corte B-B em x = 28 mm (eixo do knob de volume; o de registro está em x = 46, igual)", fontsize=10)
     a = axs[0]
     notes = [(L.Z_BOT, "fundo da caixa -10,1"), (L.Z_FLOOR, "piso da bandeja -8,1"), (L.Z_FLOOR + 5, "topo da bateria -3,1 (5 mm)"),
              (-L.T_PCB, "fundo da placa -1,2"), (0.0, "topo da placa 0"), (6.8, "fundo do falante 6,8"), (11.3, "frente do falante 11,3"),
@@ -96,15 +103,24 @@ def main():
     for z, t in notes:
         a.annotate(t, xy=(101, z), xytext=(103, z), fontsize=6.5, va="center", annotation_clip=False)
     a.annotate("módulo: fundo em -5,9", xy=(18, -5.9), xytext=(4, -9.4), fontsize=6.5, arrowprops=dict(arrowstyle="->", lw=0.5))
-    a.annotate("OLED 9,4 a 12,5", xy=(10, 11), xytext=(-1, 17), fontsize=6.5, arrowprops=dict(arrowstyle="->", lw=0.5))
+    a.annotate("OLED: placa y %.1f..%.1f, vidro y %.1f..%.1f (corte em x = 37: sem apoio no plano)" % (cy - 13.9, cy + 13.9, cy - R.OLED_GLASS[1] / 2, cy + R.OLED_GLASS[1] / 2),
+               xy=(cy, 11), xytext=(-1, 18), fontsize=6.5, arrowprops=dict(arrowstyle="->", lw=0.5))
+    a.annotate("janela y %.1f..%.1f (centro %.1f); área ativa 21,74 x 10,86 centrada nela; vidro centrado na placa (%.1f)" % (wy0, wy1, (wy0 + wy1) / 2, cy),
+               xy=((wy0 + wy1) / 2, 14.6), xytext=(0, 22.5), fontsize=6.5, arrowprops=dict(arrowstyle="->", lw=0.5))
     a.annotate("caixa: 0,3 a 12,0", xy=(60, 6), xytext=(60, 18), fontsize=6.5, arrowprops=dict(arrowstyle="->", lw=0.5))
-    b = axs[1]
+    p = axs[1]
+    p.axvline(wy0, color="#B91C1C", lw=0.6, ls="--")
+    p.axvline(wy1, color="#B91C1C", lw=0.6, ls="--")
+    p.axvline((wy0 + wy1) / 2, color="#1E3A8A", lw=0.6, ls=":")
+    p.text(wy0 + 0.3, 17.0, "janela 13 mm", fontsize=7, color="#B91C1C")
+    p.text(cy - 11.9, 16.0, "poste", fontsize=7, ha="center")
+    p.text(cy + 11.9, 16.0, "poste", fontsize=7, ha="center")
+    b = axs[2]
     for z, t in ((11.5, "bucha do encoder 11,5"), (24.5, "ponta do eixo 24,5"), (25.9, "topo do knob 25,9"), (14.6, "topo da tampa 14,6")):
         b.annotate(t, xy=(101, z), xytext=(103, z), fontsize=6.5, va="center", annotation_clip=False)
     fig.tight_layout()
     fig.subplots_adjust(right=0.88)
-    fig.savefig(os.path.join(REN, "corte_interface_v4.png"), dpi=140)
-    fig.savefig(os.path.join(REN, "corte_interface_v4_r8.png"), dpi=140)
+    fig.savefig(os.path.join(REN, "corte_interface_v4_r10.png"), dpi=140)
     print("ok")
 
 

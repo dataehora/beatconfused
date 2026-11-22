@@ -8,7 +8,7 @@ pj = json.load(open(os.path.join(HERE, "fornecimento", "precos_jlc.json"), encod
 parts = json.load(open(os.path.join(HERE, "pcb", "build", "partes_v4.json"), encoding="utf-8"))
 rows, ext, total, unknown = {}, set(), 0.0, []
 for p in parts:
-    if not p["lcsc"] or p["mount"].startswith(("sem peca", "em casa")):
+    if not p["lcsc"] or p["mount"].startswith(("sem peca", "em casa", "nao montar")):
         continue
     info = pj.get(p["lcsc"])
     if not info:

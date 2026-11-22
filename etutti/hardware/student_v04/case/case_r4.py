@@ -204,6 +204,24 @@ def tray(mod):
         # real bosses D6 under the M2 points (R3V4 had only the 2.8 mm rail): from the floor to the ruler's underside
         for mx, my in L.m2_points(ru):
             b = b.union(cyl(mx, my, L.Z_FLOOR, z1, L.M2_BOSS_D))
+        # R10V4 robust base: the gaps are closed. (1) the riser: the 2 mm trench between this row's front rail and the next row's back rail (rows 2-4), or a 2 mm
+        # thicker front wall (row 1), from the floor to the lower neighbour's rail top; (2) the end walls of the pocket (left and right) between the rails.
+        # The cable tunnels, the plug / header notches and the 595 cut-outs are subtracted afterwards.
+        xa, xb, y = ru["x0"] + 0.2, ru["x0"] + L.RULER_L - 0.2, ru["y"]
+        if ru["row"] > 1:
+            ynext = L.ROWS[ru["row"] - 2][1]
+            ztop = L.ZR[ru["row"] - 2] - L.RULER_T
+            b = b.union(box(xa, xb, y + L.RAIL_OUT - 0.01, ynext - L.RAIL_OUT + 0.01, L.Z_FLOOR, ztop))
+        else:
+            b = b.union(box(xa, xb, y + L.RAIL_OUT - 0.01, y + L.RAIL_OUT + 2.0, L.Z_FLOOR, z1))
+        for ex0, ex1 in ((xa, xa + 2.0), (xb - 2.0, xb)):
+            ew = box(ex0, ex1, y - L.RAIL_OUT, y + L.RAIL_OUT, L.Z_FLOOR, z1)
+            for nm, hx0, hx1, hy0, hy1, _za, _zb in L.conn_boxes(ru):       # the headers and plugs of the ruler keep their room in the end walls
+                ew = ew.cut(box(hx0 - 0.3, hx1 + 0.3, hy0 - 0.3, hy1 + 0.3, L.Z_FLOOR - 1, z1 + 1))
+            for ref, (u0, v0, u1, v1), _h in H.UNDER_PARTS:                    # and so do the parts under the ruler (C6 at the left end)
+                if ref not in ("J1", "J2"):
+                    ew = ew.cut(box(ru["x0"] + u0 - 0.3, ru["x0"] + u1 + 0.3, y + v0 - 0.3, y + v1 + 0.3, L.Z_FLOOR - 1, z1 + 1))
+            b = b.union(ew)
     # the interior posts come down through the tray: clear the rails round them, drill the screw holes
     for x, y in L.pick_posts(mod):
         b = b.cut(cyl(x, y, L.Z_FLOOR - 0.1, L.Z_FLOOR + 30, F.POST_D + 0.8)).cut(box(x - 1.1, x + 1.1, y - 1.66 - 0.3, y + 2.34 + 0.3, L.Z_FLOOR - 0.1, L.Z_FLOOR + 30))
@@ -217,6 +235,9 @@ def tray(mod):
         z1 = L.ZR[ru["row"] - 1] - L.RULER_T
         for mx, my in L.m2_points(ru):
             b = b.cut(cyl(mx, my, z1 - 6.0, z1 + 0.1, T.SCREW_PILOT))
+    # R10V4: the board's four cables go through the walls in tunnels (both free-wire lengths): cut their plan envelope from the floor up to the plug's axis
+    for F_ in L.CABLE_FREE_MM:
+        b = b.cut(cable_cutter(mod, F_))
     # connectors: the notches in the rails (the plug passes under the next, higher ruler)
     for nt in L.notches(mod):
         z1 = L.ZR[nt["row"] - 1] - L.RULER_T
@@ -263,7 +284,7 @@ def grades(mod):
     for ru in L.rulers(mod):
         x0, y, z1 = ru["x0"], ru["y"], L.ZR[ru["row"] - 1] + 5.0
         g = box(x0 + 0.2, x0 + L.RULER_L - 0.2, y - GRADE_W / 2, y + GRADE_W / 2, z1 - T.GRADE_T, z1)
-        for i in range(4):
+        for i in range(int(L.RULER_L // L.PITCH)):
             xc = x0 + L.PITCH / 2 + i * L.PITCH
             g = g.cut(box(xc - T.GRADE_OPEN / 2, xc + T.GRADE_OPEN / 2, y - T.GRADE_OPEN / 2, y + T.GRADE_OPEN / 2, z1 - 2, z1 + 1))
         for px, py in posts:
@@ -298,10 +319,29 @@ def _flat_prism(pts, half, z0, z1):
     return cq.Workplane("XY").workplane(offset=z0).polyline(poly).close().extrude(z1 - z0)
 
 
+def cable_cutter(mod, F_):
+    """R10V4: the tunnels of the board's four cables: a chain of slots (stadium prisms, 5.6 + 0.8 wide) along each centre line from the floor to 0.3 mm above the
+    plug's axis of its row. (_flat_prism self-intersects on the tight curves; this one stays valid.)"""
+    res = None
+    for c in L.cables(mod, F_):
+        z0, z1 = L.Z_FLOOR, L.ZR[c["row"] - 1] + L.AXIS_Z + 0.3
+        pts = c["pts"][::3] + [c["pts"][-1]]
+        for (xa, ya), (xb, yb) in zip(pts[:-1], pts[1:]):
+            ln = math.hypot(xb - xa, yb - ya)
+            if ln < 1e-6:
+                continue
+            sl = (cq.Workplane("XY").workplane(offset=z0).center((xa + xb) / 2, (ya + yb) / 2)
+                  .slot2D(ln + L.BUNDLE_W + 0.8, L.BUNDLE_W + 0.8, math.degrees(math.atan2(yb - ya, xb - xa))).extrude(z1 - z0))
+            res = sl if res is None else res.union(sl)
+    return res
+
+
 def cabos(mod, F_, full=True):
     """Envelope of every cable (junction loops and the four board cables) of free-wire length F_: the bundle's plan (5.6 mm wide + 0.4 each side)
     from the tray's floor up to 0.3 mm above the plugs' axis of its row (full=True: the plan check against the tray), or only the 0.8 mm the bundle
     lies on the floor (full=False: the rest of the model; the rise to the plug is checked by ligacao_h.profile_clearance)."""
+    if full:
+        return cable_cutter(mod, F_)
     res = None
     for c in L.cables(mod, F_):
         row = c["row"]
@@ -309,6 +349,25 @@ def cabos(mod, F_, full=True):
         pts = c["pts"][::2] if len(c["pts"]) > 120 else c["pts"]
         p = _flat_prism(pts, L.BUNDLE_W / 2 + 0.4, L.Z_FLOOR, z1)
         res = p if res is None else res.union(p)
+    return res
+
+
+def under_parts(mod):
+    """R10V4: every part under the rulers except the headers (those are in connectors()): the R4 board's parts (595, capacitors, R1) at their real u, v, height, and
+    the sensor + 100 nF of keys 5..8 (the R8's second half, assumed like the first: sensor at the key centre, capacitor 2.7 mm behind it)."""
+    import ligacao_h as H
+    res = None
+    for ru in L.rulers(mod):
+        z0 = L.ZR[ru["row"] - 1] - L.RULER_T
+        for ref, (u0, v0, u1, v1), h in H.UNDER_PARTS:
+            if ref in ("J1", "J2"):
+                continue
+            s_ = box(ru["x0"] + u0, ru["x0"] + u1, ru["y"] + v0, ru["y"] + v1, z0 - max(h, 0.3), z0)
+            res = s_ if res is None else res.union(s_)
+        for k in range(4, int(L.RULER_L // L.PITCH)):
+            uc = 9.25 + 18.5 * k
+            res = res.union(box(ru["x0"] + uc - 0.9, ru["x0"] + uc + 0.9, ru["y"] - 1.1, ru["y"] + 1.1, z0 - 0.8, z0))
+            res = res.union(box(ru["x0"] + uc + 1.3, ru["x0"] + uc + 2.3, ru["y"] - 3.6, ru["y"] - 1.7, z0 - 0.55, z0))
     return res
 
 
@@ -321,7 +380,7 @@ def connectors(mod):
             s = box(xa, xb, ya, yb, z0 + za, z0 + zb)
             k = "cabecalhos" if name.endswith("header") else "plugues"
             parts[k] = s if parts[k] is None else parts[k].union(s)
-        for i in range(4):
+        for i in range(int(L.RULER_L // L.PITCH)):
             xc = ru["x0"] + L.PITCH / 2 + i * L.PITCH
             for dx in (-L.PEG_DX, L.PEG_DX):
                 p = cyl(xc + dx, ru["y"], z0 - L.RULER_T - L.PEG_BELOW, z0 - L.RULER_T, L.PEG_D)
@@ -367,8 +426,22 @@ def oled():
     cx, cy = oled_centre()
     lv = C3.oled_levels()
     pcb = box(cx - C3.OLED_PCB[0] / 2, cx + C3.OLED_PCB[0] / 2, cy - C3.OLED_PCB[1] / 2, cy + C3.OLED_PCB[1] / 2, lv["pcb_bottom"], lv["pcb_top"])
-    glass = box(cx - 13.0, cx + 13.0, cy - 8.0, cy + 8.0, lv["pcb_top"], lv["glass_top"])
+    glass = box(cx - OLED_GLASS[0] / 2, cx + OLED_GLASS[0] / 2, cy - OLED_GLASS[1] / 2, cy + OLED_GLASS[1] / 2, lv["pcb_top"], lv["glass_top"])
     return pcb.union(glass)
+
+
+# R10V4 item 4: the 0.96 in SSD1306 module (27.3 x 27.8 board, glass 26.7 x 19.26 centred on the board between the mounting-hole rows, viewing area 21.74 x 10.86).
+# Before, the glass was drawn 26 x 16 (a box that did not match the panel) and the picture did not show the viewing area: the window (centre 1.9 mm in front of the
+# board's centre: the viewing area sits 1.9 mm nearer the pin edge than the glass's middle, SPEC v4 item 7, NOT confirmed on a real module) looked off-centre.
+OLED_GLASS = (26.7, 19.26)
+OLED_ACTIVE = (21.74, 10.86)
+
+
+def oled_active():
+    wx0, wy0, wx1, wy1 = C3.WINDOW
+    lv = C3.oled_levels()
+    cx, cy = (wx0 + wx1) / 2, (wy0 + wy1) / 2                    # the viewing area is centred on the window
+    return box(cx - OLED_ACTIVE[0] / 2, cx + OLED_ACTIVE[0] / 2, cy - OLED_ACTIVE[1] / 2, cy + OLED_ACTIVE[1] / 2, lv["glass_top"] - 0.3, lv["glass_top"])
 
 
 def encoder(x, y):
@@ -442,6 +515,9 @@ def build(mod):
         "cabecalhos x sensores": round(inter(cn["cabecalhos"], cn["sensores"]), 2), "plugues x sensores": round(inter(cn["plugues"], cn["sensores"]), 2),
         "cabecalhos x reguas (so o topo toca: 0)": round(inter(cn["cabecalhos"], ru), 2), "plugues x reguas": round(inter(cn["plugues"], ru), 2),
         "plugues x cabecalhos": round(inter(cn["plugues"], cn["cabecalhos"]), 2), "plugues x parafusos": round(inter(cn["plugues"], sc), 2)}
+    up = under_parts(mod)
+    I["conectores"]["pecas sob a regua (595, capacitores, sensores) x base"] = round(inter(up, tray_), 2)
+    I["conectores"]["pecas sob a regua x tampa"] = round(inter(up, lid_), 2)
     # R8V4: the cable envelopes (both free-wire lengths), a prism over the cable's plan from the floor to 0.3 mm above the plugs' axis, against everything it must clear
     for Fk, F_ in (("45,8", L.CABLE_FREE_MM[0]), ("50,8", L.CABLE_FREE_MM[1])):
         cb_full, cb = cabos(mod, F_, True), cabos(mod, F_, False)

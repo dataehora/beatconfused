@@ -4,7 +4,7 @@ posicionamento, regua nem placa. Numeros e figuras (CadQuery venv: matplotlib):
     "C:/Users/julia/.venvs/cadquery/Scripts/python.exe" etutti/hardware/student_v04/pcb/regua/ligacao_h_r7.py
 
 Escreve pcb/regua/ligacao_h_r7.json e pcb/regua/img/h_pinagem_r7.png, h_teclado32_r7.png, h_juncao_r7.png (planta e corte do elo),
-h_microfone_r7.png (ME 3). Reutiliza as funcoes de desenho de conectores_r6.py (nome da nota em cada tecla; C azul, F laranja).
+(R10V4: a figura do microfone saiu; o ME 3 deixou de ser referencia). Reutiliza as funcoes de desenho de conectores_r6.py (nome da nota em cada tecla; C azul, F laranja).
 
 Dados de fabricante usados (JST, eSR_SZ.pdf, lido em 22 nov 2026):
   cabecalho SM06B-SRSS-TB (lateral, SMT): altura 2,95 mm, profundidade 4,85, B = 8,0 (6 vias), footprint 5,55 +- 0,1 de fundo;
@@ -302,71 +302,6 @@ def fig_juncao(st):
     plt.close(fig)
 
 
-# ------------------------------------------------------------------ figura 4: microfone ME 3
-def fig_microfone():
-    fig, axs = plt.subplots(1, 3, figsize=(19, 6.2))
-    # (a) plugue e jack
-    ax = axs[0]
-    ax.set_xlim(0, 100)
-    ax.set_ylim(0, 60)
-    ax.set_aspect("equal")
-    ax.axis("off")
-    ax.set_title("plugue do ME 3 (guia rápido da Sennheiser) no J302 (PJ-327A)", fontsize=8, loc="left")
-    ax.add_patch(Rectangle((10, 36), 30, 8, fc="#cfcfcf", ec="k"))
-    ax.add_patch(Rectangle((40, 36), 10, 8, fc="#cfcfcf", ec="k"))
-    ax.add_patch(Rectangle((50, 36), 4, 8, fc="#222", ec="k"))
-    ax.add_patch(Rectangle((54, 36), 10, 8, fc="#cfcfcf", ec="k"))
-    ax.add_patch(Rectangle((64, 33), 30, 14, fc="#444", ec="k"))
-    ax.text(25, 40, "ponta (+)", ha="center", va="center", fontsize=7)
-    ax.text(45, 40, "anel", ha="center", va="center", fontsize=7)
-    ax.text(59, 40, "luva", ha="center", va="center", fontsize=7)
-    ax.annotate("", (46, 33), (60, 33), arrowprops=dict(arrowstyle="-"))
-    ax.text(53, 29, "anel e luva = ‘-’ (juntos)", ha="center", fontsize=7, color="#1565c0")
-    ax.text(25, 31, "‘+’ = sinal e alimentação", ha="center", fontsize=7, color="#c62828")
-    ax.text(50, 16, "J302: ponta -> MIC_J (R305 + C309 + R306)\nanel (pino 6) -> NC     luva -> GND\n=> o ME 3 liga sem mudar nada:\nanel do plugue (GND) toca o contato NC do jack", ha="center", fontsize=7.5)
-    ax.text(50, 6, "colar de travamento do plugue: conferir se passa pelo furo do jack do case", ha="center", fontsize=6.5, color="#a04000")
-    # (b) tensao no microfone x corrente
-    ax = axs[1]
-    I = [i / 100.0 for i in range(0, 121)]
-    for R, col, lbl in ((4.2, "#c62828", "R305 = 2,2 k (hoje): 4,2 k"), (2.0, "#1565c0", "R305 = 0: 2,0 k"), (6.2, "#6a1b9a", "BIAS_RESISTOR 4 k + 2,2 k: 6,2 k")):
-        ax.plot(I, [max(0.0, 3.0 - i * R) for i in I], color=col, label=lbl)
-    ax.axhspan(0.30, 2.85, color="#c8e6c9", alpha=0.5)
-    ax.text(0.62, 2.6, "faixa MIC_DET 'microfone': 0,30 a 2,85 V", fontsize=7)
-    ax.axhline(1.5, color="gray", ls=":")
-    ax.text(0.52, 1.55, "~1,5 V: mínimo típico de um FET (suposição)", fontsize=6.5, color="gray")
-    ax.axvspan(0.2, 0.5, color="#ffe0b2", alpha=0.6)
-    ax.text(0.205, 0.35, "0,2 a 0,5 mA: corrente típica\nde cápsula com FET (suposição)", fontsize=6.5)
-    ax.set_xlabel("corrente do microfone (mA)")
-    ax.set_ylabel("tensão na ponta do plugue (V), MIC_BIAS = 3,0 V")
-    ax.set_title("alimentação: o que sobra para o ME 3 com 3 V", fontsize=8, loc="left")
-    ax.grid(True, lw=0.2)
-    ax.legend(fontsize=7, loc="upper right")
-    ax.set_xlim(0, 1.2)
-    ax.set_ylim(0, 3.2)
-    # (c) nivel do ME 3 x eletreto e fundo de escala
-    ax = axs[2]
-    spl = [80 + i for i in range(56)]
-    def dbv(spl_, mv_per_pa):
-        return 20 * math.log10(mv_per_pa * 1e-3 * 10 ** ((spl_ - 94) / 20.0))
-    for mv, col, lbl in ((1.6, "#c62828", "ME 3 (1,6 mV/Pa = -55,9 dBV/Pa)"), (7.9, "#1565c0", "eletreto comum (-42 dBV/Pa = 7,9 mV/Pa)")):
-        ax.plot(spl, [dbv(s, mv) for s in spl], color=col, label=lbl)
-    for g, col in ((20, "#2e7d32"), (30, "#ef6c00"), (40, "#6a1b9a")):
-        ax.axhline(0 - g, color=col, ls="--", lw=1)
-        ax.text(80.5, -g + 0.8, "fundo de escala (1,0 Vrms) com ganho +%d dB" % g, fontsize=6.5, color=col)
-    ax.axvspan(100, 120, color="#ffe0b2", alpha=0.5)
-    ax.text(100.5, -70, "canto a 2-3 cm:\n100 a 120 dB SPL (estimativa)", fontsize=7)
-    ax.set_xlabel("nível sonoro na cápsula (dB SPL)")
-    ax.set_ylabel("tensão da cápsula (dBV rms) / fundo de escala depois do ganho")
-    ax.set_title("ganho: o SGTL5000 tem 0/20/30/40 dB de pré + até 22,5 dB no ADC", fontsize=8, loc="left")
-    ax.grid(True, lw=0.2)
-    ax.legend(fontsize=7, loc="lower right")
-    ax.set_ylim(-95, 5)
-    fig.suptitle("R7V4 · microfone Sennheiser ME 3 na entrada IN (estudo de mesa; a placa não muda)", fontsize=10)
-    fig.tight_layout(rect=(0, 0, 1, 0.95))
-    fig.savefig(os.path.join(IMG, "h_microfone_r7.png"), dpi=100)
-    plt.close(fig)
-
-
 if __name__ == "__main__":
     st = study()
     json.dump(st, open(os.path.join(HERE, "ligacao_h_r7.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
@@ -374,5 +309,4 @@ if __name__ == "__main__":
     fig_pinagem()
     fig_teclado32(st)
     fig_juncao(st)
-    fig_microfone()
     print("ok")

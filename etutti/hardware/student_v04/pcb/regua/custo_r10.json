@@ -1,0 +1,160 @@
+{
+ "paineis": {
+  "R8, 1 tira(s) por painel": {
+   "painel_mm": [
+    161.6,
+    28.0
+   ],
+   "area_cm2": 45.2,
+   "passa_de_100x100": true,
+   "R8_por_painel": 1,
+   "R8_nos_2_paineis_montados": 2,
+   "lado_menor_que_70": true,
+   "PCB_5_paineis_USD": [
+    3.1,
+    10.8
+   ]
+  },
+  "R8, 2 tira(s) por painel": {
+   "painel_mm": [
+    161.6,
+    44.0
+   ],
+   "area_cm2": 71.1,
+   "passa_de_100x100": true,
+   "R8_por_painel": 2,
+   "R8_nos_2_paineis_montados": 4,
+   "lado_menor_que_70": true,
+   "PCB_5_paineis_USD": [
+    4.8,
+    17.1
+   ]
+  },
+  "R8, 3 tira(s) por painel": {
+   "painel_mm": [
+    161.6,
+    60.0
+   ],
+   "area_cm2": 97.0,
+   "passa_de_100x100": true,
+   "R8_por_painel": 3,
+   "R8_nos_2_paineis_montados": 6,
+   "lado_menor_que_70": true,
+   "PCB_5_paineis_USD": [
+    6.5,
+    23.3
+   ]
+  },
+  "R8, 4 tira(s) por painel": {
+   "painel_mm": [
+    161.6,
+    76.0
+   ],
+   "area_cm2": 122.8,
+   "passa_de_100x100": true,
+   "R8_por_painel": 4,
+   "R8_nos_2_paineis_montados": 8,
+   "lado_menor_que_70": false,
+   "PCB_5_paineis_USD": [
+    8.3,
+    29.5
+   ]
+  },
+  "R4, 5 tiras por painel (a de hoje)": {
+   "painel_mm": [
+    87.6,
+    92.0
+   ],
+   "area_cm2": 80.6,
+   "passa_de_100x100": false,
+   "R4_por_painel": 5,
+   "PCB_5_paineis_USD": [
+    5.4,
+    12.9
+   ]
+  }
+ },
+ "custo_32_teclas": {
+  "4 x R8 (2 paineis de 2, 4 montadas, sem reserva)": {
+   "reguas_montadas": 4,
+   "pecas": [
+    17.23,
+    21.84
+   ],
+   "pcb": [
+    4.8,
+    17.1
+   ],
+   "cabos": [
+    4.82,
+    5.68
+   ],
+   "m2": 8,
+   "plugues": 8,
+   "total_variavel_USD": [
+    26.9,
+    44.6
+   ]
+  },
+  "4 x R8 + 2 de reserva (3 paineis de 2, 6 montadas)": {
+   "reguas_montadas": 6,
+   "pecas": [
+    25.85,
+    32.76
+   ],
+   "pcb": [
+    4.8,
+    17.1
+   ],
+   "cabos": [
+    4.82,
+    5.68
+   ],
+   "m2": 8,
+   "plugues": 8,
+   "total_variavel_USD": [
+    35.5,
+    55.5
+   ]
+  },
+  "8 x R4 (2 paineis de 5, 10 montadas; a R8V4)": {
+   "reguas_montadas": 10,
+   "pecas": [
+    23.28,
+    29.04
+   ],
+   "pcb": [
+    5.4,
+    12.9
+   ],
+   "cabos": [
+    9.65,
+    11.36
+   ],
+   "m2": 11,
+   "plugues": 16,
+   "total_variavel_USD": [
+    38.3,
+    53.3
+   ]
+  }
+ },
+ "diferenca_contra_8xR4_4_x_R8": [
+  -11.4,
+  -8.7
+ ],
+ "diferenca_contra_8xR4_4_x_R8_+_2_de_reserva": [
+  -2.8,
+  2.2
+ ],
+ "itens_iguais_USD": {
+  "preparacao + estencil": 9.79,
+  "3 tipos Extended x 3,09": 9.27,
+  "SMT e nitrogenio": 3.2,
+  "soma": 22.26
+ },
+ "montagem_em_casa_min_(palpite)": {
+  "4 x R8": 15.6,
+  "8 x R4": 23.7
+ }
+}

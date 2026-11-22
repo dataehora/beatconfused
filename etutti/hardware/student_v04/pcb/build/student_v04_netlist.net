@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\student_v04\\kicad\\student_v04.kicad_sch")
-		(date "2026-11-22T14:39:29")
+		(date "2026-11-22T17:40:49")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -4364,21 +4364,21 @@
 			(ref "C310")
 			(value "100nF")
 			(footprint "Capacitor_SMD:C_0402_1005Metric")
-			(description "datasheet SGTL5000 Fig. 20 (20 QFN): 0,1 uF no MIC_BIAS (C4)")
+			(description "R10V4: NAO MONTAR. Datasheet SGTL5000 Fig. 20 poe 0,1 uF no MIC_BIAS (C4) COM o R1 de 2,2 k em serie; com R305 = 0 ohm o C310 fica na ponta do jack e forma um passa-baixas com os 2 k do bias (~800 Hz, -14 dB a 4 kHz). Pad mantido para um 220-470 pF opcional se a bancada mostrar ruido do bias")
 			(fields
 				(field
 					(name "Codigo") "F3")
 				(field
 					(name "LCSC") "C1525")
 				(field
-					(name "Montagem") "JLC")
+					(name "Montagem") "nao montar")
 				(field
 					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "datasheet SGTL5000 Fig. 20 (20 QFN): 0,1 uF no MIC_BIAS (C4)")
+					(name "Description") "R10V4: NAO MONTAR. Datasheet SGTL5000 Fig. 20 poe 0,1 uF no MIC_BIAS (C4) COM o R1 de 2,2 k em serie; com R305 = 0 ohm o C310 fica na ponta do jack e forma um passa-baixas com os 2 k do bias (~800 Hz, -14 dB a 4 kHz). Pad mantido para um 220-470 pF opcional se a bancada mostrar ruido do bias")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -4395,7 +4395,7 @@
 			)
 			(property
 				(name "Montagem")
-				(value "JLC")
+				(value "nao montar")
 			)
 			(property
 				(name "Sheetname")
@@ -4404,6 +4404,9 @@
 			(property
 				(name "Sheetfile")
 				(value "student_v04_F.kicad_sch")
+			)
+			(property
+				(name "dnp")
 			)
 			(property
 				(name "ki_keywords")
