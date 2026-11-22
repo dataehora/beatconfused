@@ -1,4 +1,133 @@
-# eTutti Student V4 — SPEC R9V4
+# eTutti Student V4 — SPEC R10V4
+
+Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+**Substitui as tarefas da R9V4** (ainda não atendida): o que valia da R9V4 foi trazido para cá, ajustado. Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R10V4".
+
+**Regras que continuam:**
+- planta, corte e **isométrico da base** a cada mudança dela;
+- nome da nota em cada tecla;
+- só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+**Regra 1, reescrita:** só a versão de **32 teclas** é detalhada (elétrica, case, firmware). Das outras, só a validação do conceito modular.
+
+## Mudanças desde a R9V4
+
+### 1. Duas réguas padrão: 4 e 8 posições (mudança principal)
+
+O conjunto modular passa a ter **dois modelos de régua**, ambos com as mesmas terminações:
+- **R4:** a régua de hoje, 4 posições.
+- **R8:** nova, 8 posições, mesmo passo de 18,5 mm, ~148 mm de comprimento.
+
+Nas duas:
+- **cabeçalho SH de entrada à esquerda e de saída à direita**, pinagem P6s e mesma geometria de junção (o OUT fica à mesma distância da ponta direita que na R4);
+- qualquer régua liga a qualquer outra pelo mesmo cabo.
+
+| Teclas | Réguas por fileira (da placa para o agudo) | Réguas no total | Extensão (notas) | Comprimento do case |
+|---:|---|---|---|---:|
+| **32** (detalhado) | R8 | **4 × R8** | F#3–F#5 (25) | 244 mm |
+| 48 | R8 + R4 | 4 × R8 + 4 × R4 | F#3–F#6 (37) | 318 mm |
+| 64 | R8 + R8 | 8 × R8 | F#2–F#6 (49) | 392 mm |
+| 80 | R8 + R8 + R4 | 8 × R8 + 4 × R4 | F#2–F#7 (61) | 466 mm |
+
+**Regras da tabela:**
+- A R4 fica sempre **na ponta direita, no agudo** (decisão do J).
+- A extensão segue a ordem padrão das oitavas do mapa de notas (1º módulo no agudo, 2º no grave). A distribuição física das réguas não muda essa regra.
+- Os comprimentos do case não mudam (mesmo passo e mesma regra).
+
+**O que isso muda no modelo de 32 teclas:**
+- **uma régua por fileira**: não há junção régua–régua, nem cabo entre réguas, nem rebaixo de junção. Ficam só os 4 cabos da placa à 1ª régua;
+- o cabeçalho de saída continua na R8 (terminação modular), sem cabo no modelo de 32.
+
+**Tarefas:**
+1. **Eletrônica, régua R8:**
+   - esquema: 8 TMAG5253 e **um** 74HC595 usando os 8 estágios (a R4 deixa 4 mortos);
+   - posicionamento com IN/OUT e furos de fixação (item 3);
+   - DRC sem trilhas 0/0, paridade 0;
+   - painel da R8 e custo: o painel passa de 100 × 100 mm? Qual o arranjo mais barato na JLCPCB?
+   - varredura: pulsos por fileira e tempo de passada para 32 teclas (8 estágios por régua), atualizando `pcb/PINOS.md` se mudar.
+2. **R4:** continua como está (já desenhada), só como peça do conjunto modular. Não detalhar além do que existe; conferir só que as terminações da R4 e da R8 são idênticas (posição relativa do OUT, pinagem, altura).
+3. **Custo do modelo de 32 teclas com 4 × R8** contra a solução de 8 × R4 da R8V4: peças, tipos Extended, painel, cabos (4 em vez de 8), juntas e tempo de montagem.
+4. **Firmware** (sketch próprio da V4): 8 estágios por régua, mapa das 32 teclas, `V4_KEYS`. Validação curta de que 48/64/80 só mudam o número de réguas e estágios.
+5. **Validação do conceito modular** (curta, sem figuras por tamanho): as combinações da tabela fecham com as mesmas terminações, cabos e regra de case.
+
+### 2. Base do case: robustez (Design)
+
+Com uma régua por fileira e sem junções, revisar a base priorizando a **robustez do conjunto**:
+- **Montantes (trilhos) rígidos:** altura, espessura e continuidade conferidas contra a carga da tecla. Flexão da régua ≤ 0,05 mm a 3 N, e também do próprio montante.
+- **Fechar os espaços onde couber, principalmente na frente das réguas:** a face frontal de cada degrau pode virar parede cheia, ligando trilhos e piso.
+- **Sempre garantir:**
+  - o caminho e o rebaixo dos 4 cabos da placa;
+  - o acesso para ligar o plugue com a régua erguida e para montar e trocar a régua;
+  - a folga das peças de baixo da régua (sensores, 595, cabeçalhos, pinos).
+- O volume a mais entra no custo de impressão (MJF), informado.
+- Entregar planta, cortes e **isométrico da base** (sem e com réguas, com as notas), mostrando o que foi fechado.
+
+### 3. Fixação da régua: dois pontos por régua (Design + Eletrônica)
+
+- **Dois pontos de fixação por régua**, para travar giro e levantamento. Na R8 de 148 mm há mais vãos entre carcaças: escolher os dois mais afastados que não conflitem com nada.
+- **Parafusos permitidos:** M2, ou menores (M1,6 / M1,4), sempre com **rosca de máquina em inserto**. **Sem parafuso autoatarraxante.**
+- Critérios:
+  - zero conflito com plugues, cabos, cabeçalhos, pinos, sensores, 595 e postes;
+  - bossa imprimível;
+  - rigidez ≤ 0,05 mm.
+- Definir os furos da R8 e da R4. Na R4, dois pontos se couberem; senão, explicar.
+- Mostrar em planta, corte e isométrico.
+
+### 4. OLED no corte da interface (Design; vinha da R9V4)
+
+No `corte_interface_v4_r8.png`, o vidro do OLED não parece centrado na janela, e o módulo aparece sem apoio. Conferir:
+- a área ativa do vidro contra a janela, pelo desenho do módulo;
+- os 4 postes de apoio, num corte que passe por eles;
+- as folgas.
+
+Corrigir o modelo se estiver errado.
+
+### 5. Microfone: eletreto e dinâmico, só pelo plugue de 3,5 mm (Eletrônica + Programação e som)
+
+- **Suportar, na eletrônica e no firmware:**
+  - microfones **de condensador com alimentação de plug-in** (eletreto, 2–5 V pelo plugue: headsets e lapelas comuns);
+  - microfones **dinâmicos** comuns.
+- **Conexão só pelo jack de 3,5 mm (J302).** Adaptadores (XLR etc.) são problema do usuário: o projeto não estuda nem fornece adaptador.
+- **Fora do escopo:**
+  - condensadores de estúdio com phantom de 48 V;
+  - microfone de PC com bias no anel.
+- **Sai do projeto:** o Sennheiser ME 3 como referência e o boost de 9–10 V, inclusive dos relatórios como plano B.
+- **Estudar, de preferência sem mudar a placa:**
+  1. **Bias:** ligado para eletreto (MIC_BIAS 3,0 V, 2 kΩ, R305 = 0 Ω) e desligado para dinâmico (registro do SGTL5000). Dizer se o bias por engano numa bobina de 150–600 Ω faz mal.
+  2. **Detecção (MIC_DET):** regra que distingue nada / eletreto / dinâmico; uma bobina dá ~0,2–0,7 V com 2 kΩ, perto do limiar de curto (0,30 V). Se não der para distinguir com segurança, item de menu **"tipo de microfone"** (eletreto / dinâmico).
+  3. **Ganho e ruído:**
+     - casos de referência: dinâmico de 0,45 e de 1,7 mV/Pa (sensibilidades de headsets dinâmicos comuns) e eletreto comum;
+     - voz cantada a 1–3 cm;
+     - resultado em dBFS e relação sinal/ruído com o ganho máximo do SGTL5000;
+     - se faltar ganho, a menor mudança e o custo.
+  4. Os efeitos de voz continuam só com microfone detectado (ou declarado no menu) na entrada IN.
+
+### 6. Portão P
+
+Continua **fechado**. Depois desta revisão, a planta de posicionamento (principal, R8 e R4) é reapresentada para a aprovação do J. O roteamento só começa depois disso.
+
+## Tarefas para o Code (R10V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Eletrônica | item 1: régua R8 (esquema, posicionamento, painel, custo, varredura); terminações iguais às da R4; custo 4 × R8 contra 8 × R4 |
+| 2 | Design | item 2: base robusta para 4 × R8 (montantes, frentes fechadas, cabos e montagem garantidos); item 3 (dois pontos, sem autoatarraxante) com a eletrônica; item 4 (OLED); planta, cortes e isométricos |
+| 3 | Eletrônica + Programação e som | item 5: microfones eletreto e dinâmico pelo 3,5 mm (bias, detecção, ganho, menu) |
+| 4 | Programação e som | firmware da V4: 4 × R8, 8 estágios por régua, mapa das 32 teclas; validação curta dos outros tamanhos |
+| — | Roteamento | aguarda o portão P |
+
+**Perguntas que o Chat espera nos relatórios:**
+- o custo e a montagem de 4 × R8 contra 8 × R4;
+- a base revista, com o que foi fechado;
+- os dois pontos de fixação;
+- o OLED corrigido;
+- o que eletreto e dinâmico pedem da placa e do firmware;
+- a planta de posicionamento para o portão P.
+
+---
+
+# Anexo — SPEC R9V4 (referência; tarefas substituídas pela R10V4)
 
 Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #194 (relatórios da R8V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R9V4".
