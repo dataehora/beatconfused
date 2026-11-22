@@ -1,4 +1,134 @@
-# eTutti Student V4 — SPEC R10V4
+# eTutti Student V4 — SPEC R11V4
+
+Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #197 (relatórios da R10V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R11V4".
+
+**Regras que continuam:**
+- planta, corte e isométrico da base a cada mudança dela;
+- nome da nota em cada tecla;
+- só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+**Regra 1, ajustada:** só o instrumento de **32 teclas** é detalhado até orçamento e compra. **As quatro variantes de régua** (item 3) são detalhadas até o **pacote de cotação da JLCPCB**, para o J cotar e comparar sozinho.
+
+## Decisões do J sobre a R10V4
+
+- **Parede cheia entre degraus (riser):** aprovada. O custo é pequeno e garante a estabilidade do teclado.
+- **Montagem da frente para trás** (o cabo ligado antes de descer a régua de trás): aprovada, procedimento oficial.
+- **Painel da R8:** o alvo é **2 painéis com 2 réguas cada** (161,6 × 44 mm). O J vai conferir com os Gerbers (item 4) se a JLCPCB aceita.
+- **Réguas de reserva:** de preferência nenhuma. Decide-se no orçamento, com os Gerbers.
+- **Fixação do OLED e regra do autoatarraxante:** ver item 2 (a regra cai).
+
+## Mudanças desde a R10V4
+
+### 1. OLED: escolher o modelo e detalhar (Design + Eletrônica)
+
+Fazer com o OLED o que foi feito com o alto-falante: **selecionar um modelo real** e detalhar o projeto em torno dele.
+- **Modelo escolhido:**
+  - fabricante e referência, com fornecedor (de preferência LCSC/JLCPCB ou outro com desenho mecânico publicado);
+  - desenho mecânico: placa, vidro, área ativa, furos, conector;
+  - controlador (SSD1306 / SH1106 ou outro) e tensão;
+  - interface I²C compatível com J401 (JST SH, ordem Qwiic) ou o cabo necessário;
+  - preço.
+- **Detalhar com as medidas reais:**
+  - área ativa centrada na janela, substituindo o deslocamento de 1,9 mm suposto;
+  - apoios e fixação (item 2);
+  - folgas com a tampa;
+  - caminho do cabo até J401.
+- Se nenhum modelo com desenho publicado couber na janela atual (24 × 13), propor a menor mudança da janela ou do modelo.
+- Firmware: confirmar o controlador e a resolução no menu (PT/EN com acentos) e no tamanho de fonte.
+- Entregar planta, corte e isométrico da interface com o OLED real.
+
+### 2. Parafusos: a solução mais econômica que garante a estabilidade (Design)
+
+**A exigência de "sem autoatarraxante" sai.** A regra passa a ser: **a solução mais econômica que garanta a estabilidade das placas** (réguas, OLED, placa principal, tampa), sabendo que as teclas são tocadas e geram forças repetidas.
+- **Comparar pelo menos:**
+  - parafuso formador de rosca para plástico (tipo PT/Delta PT ou equivalente) direto na bossa;
+  - parafuso de máquina em inserto de latão (quente ou de pressão);
+  - parafuso passante com porca.
+  
+  Para cada um: diâmetro, comprimento e bitola.
+- **Critérios:**
+  - **estabilidade:** sem folga nem afrouxamento sob a força repetida das teclas;
+  - **vibração e impacto absorvidos sem rachar o PA12 (MJF):** bossa com diâmetro, furo-piloto, raios e nervuras pelas regras do fabricante do parafuso ou do inserto, sem cantos vivos que concentrem tensão; dizer se vale uma arruela, ou um apoio elástico onde ajudar;
+  - **desmontagem:** quantas vezes a régua pode ser trocada sem perder a rosca (o conjunto é modular e montado em casa);
+  - **custo:** peças, insertos, ferramentas e tempo de montagem.
+- **Adotar a melhor opção** para cada uso (pode ser diferente na régua, no OLED e na tampa) e justificar.
+- Os pontos de fixação podem ser revistos com o parafuso novo. Na R10V4 as fileiras 2 e 4 ficaram com 74 mm entre parafusos; se o parafuso novo liberar um par mais afastado, melhor.
+
+### 3. Réguas: OUT só quando há extensão; quatro variantes para cotação (Eletrônica + Design)
+
+Para baixar o custo e simplificar, **a régua só tem conector OUT quando precisa estender**. O instrumento de 32 teclas usa **4 réguas de 8 posições com IN e sem OUT**.
+
+**As quatro variantes:**
+
+| Variante | Posições | Conector OUT | Uso |
+|---|---:|---|---|
+| **R8** | 8 | não | **32 teclas** (4 ×); ponta direita de 64 e 80 |
+| **R8E** | 8 | sim | primeira R8 de 48, 64 e 80 |
+| **R4** | 4 | não | ponta direita de 48 e 80 |
+| **R4E** | 4 | sim | reserva do conceito (fica como variante cotável) |
+
+**A eletrônica decide**, com o menor custo e o menor número de desenhos, se cada comprimento é:
+- **uma só placa** (OUT e o resistor da cascata como itens montados ou não na BOM); ou
+- **placas distintas**: se a placa sem OUT ficar mais simples ou menor de forma que pague um desenho a mais.
+
+Em todas: IN em u 5,9; mesma pinagem P6s; mesmas terminações; furos de fixação conforme o item 2.
+
+**No case de 32 teclas:** sem cabeçalho OUT, sem plugue OUT e sem recorte de OUT. Rever o que isso libera (pontos de fixação, trilhos, parede).
+
+### 4. Pacotes de cotação JLCPCB das quatro variantes (Eletrônica + Roteamento)
+
+O J vai cotar e comparar as réguas sozinho. Para cada variante, entregar um **pacote completo e pronto para subir na JLCPCB**:
+- Gerbers e furação (zip);
+- BOM e CPL no formato da JLCPCB, com códigos LCSC conferidos e rotações pelo método de `cpl_jlc.py`;
+- **painel**:
+  - R8: 2 réguas por painel, 161,6 × 44 mm (alvo); se houver risco de recusa, também o de 4 réguas como alternativa;
+  - R4: o de 5;
+- uma folha curta (`fab/regua/LEIAME_COTACAO.md`) com espessura, camadas, acabamento, opções da JLCPCB a marcar, quantidades sugeridas e o que muda entre as variantes.
+
+**Portão P das réguas: liberado nesta revisão.** Um pacote de cotação precisa de Gerbers completos.
+- **Sequência:** a eletrônica fecha o esquema e o posicionamento das variantes (com OUT só onde há extensão e os furos do item 2) → o agente `roteamento` roteia as placas de régua.
+- **Critério de aceitação:** DRC 0 erros e 0 avisos, 0 ligações faltando, paridade 0 → gera os pacotes.
+- **A placa principal continua com o portão fechado.**
+
+### 5. Isométrico detalhado da base (Design)
+
+O J quer conferir **todas as linhas da base**, só ela, para entender os pontos de apoio:
+- só a base (bandeja), sem tampa nem réguas;
+- **arestas desenhadas** (linhas de contorno visíveis, de preferência também as ocultas tracejadas numa vista à parte);
+- em **várias vistas**: isométrico da frente-esquerda e da trás-direita, mais uma vista de cima;
+- os **pontos de apoio destacados e numerados**: trilhos, parede cheia, paredes de ponta, bossas dos parafusos, postes e túneis de cabo;
+- a posição de cada tecla marcada sobre o trilho, **com o nome da nota**;
+- uma legenda com o que cada número apoia (que régua, que tecla);
+- resolução suficiente para ampliar (PNG grande ou PDF vetorial).
+
+### 6. Portão P da placa principal
+
+Continua **fechado**. Depois desta revisão, a planta de posicionamento da placa principal é reapresentada (com o OLED real e as fixações novas) para a aprovação do J.
+
+## Tarefas para o Code (R11V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Design + Eletrônica | item 1: OLED real escolhido e detalhado |
+| 2 | Design | item 2: parafusos (comparação, escolha por uso, bossas contra trincas, pontos de fixação revistos) |
+| 3 | Eletrônica + Design | item 3: OUT só com extensão; as 4 variantes R8, R8E, R4, R4E; case de 32 sem OUT |
+| 4 | Roteamento | item 4: rotear as placas de régua (portão P das réguas liberado) |
+| 5 | Eletrônica | item 4: pacotes de cotação das 4 variantes + painéis + `LEIAME_COTACAO.md` |
+| 6 | Design | item 5: isométricos detalhados da base, com arestas, apoios numerados e notas |
+| — | Roteamento | placa principal: aguarda o portão P |
+
+**Perguntas que o Chat espera nos relatórios:**
+- o OLED escolhido;
+- o parafuso escolhido para cada uso e por quê;
+- uma placa ou duas por comprimento de régua;
+- os 4 pacotes prontos para cotar;
+- a planta da placa principal para o portão P.
+
+---
+
+# Anexo — SPEC R10V4 (referência)
 
 Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 **Substitui as tarefas da R9V4** (ainda não atendida): o que valia da R9V4 foi trazido para cá, ajustado. Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R10V4".
