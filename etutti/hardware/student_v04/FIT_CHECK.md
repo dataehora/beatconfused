@@ -1,5 +1,76 @@
 # eTutti Student V4 — FIT_CHECK (design)
 
+## R8V4 — ligação H aplicada no modelo oficial (22 nov 2026, parte de Design)
+
+Nada foi comprado, impresso ou montado (regra nova do J: **nada é comprado até o protótipo inteiro estar fechado, nem amostras**; as dúvidas que só a peça real responde ficam como risco abaixo). Só as 32 teclas, só a Student V4. O modelo oficial `case/case_r4.py` agora é `LINK = "H"`: cabeçalhos SM06B-SRSS-TB (altura 2,95; pegada 9,4 × 5,55) com IN em u 5,9 e OUT em **u 47,5**, boca para −y; plugue 3,6 × 7,0 × 2,45; berço e ponte (E2/G) removidos; rebaixos por junção; postes e M2 novos; **case de 244 × 102 mm**. Reproduz: `case/case_r4.py 0` (~40 s, venv CadQuery), `case/ligacao_h.py r8` (números em `case/out/ligacao_h_r8.json`, cópia em `estudos/`), `case/ligacao_h.py figuras`, `case/planta_v4.py`, `case/corte_v4.py`, `case/confere_r8.py`, `estudos/rigidez_regua_r8.py`. Figuras em `case/renders/`: `planta_geral_v4_r8.png`, `planta_interface_v4_r8.png`, `corte_interface_v4_r8.png`, `ligacao_h_cortes_r8.png` (corte pelo rebaixo, 45,8), `ligacao_h_cortes_r8_50.png` (50,8), `ligacao_h_montagem_r8.png`; todas com nome da nota em cada tecla onde há teclado (C e F em xadrez diagonal).
+
+### Resposta curta
+
+- **Profundidade que fecha com 45,8 e 50,8 mm: 102 mm** (a parede de trás recua 2 mm, de y 0 para y −2; placa, interface e teclas **não mudam de y**). Fileira 4, OUT em u 47,5: folga ao fio de 50,8 mm **0,79 mm além dos 0,5 de margem** (borda do feixe a 1,29 mm da parede) e 3,29 mm com 45,8. O mínimo seria ~101,2 mm (borda a 0,5 mm); 102 é o arredondado. Não precisou da opção (2) (outra posição do OUT).
+- **Custo:** +2,3 cm³ (tampa 88,1 → 89,4; base 68,9 → 69,9; total 159,3 cm³) = **≈ +US$ 0,64** de MJF (US$ 0,275/g, 1,01 g/cm³); case ≈ **US$ 44,3** (R7V4: ~43,8). Cabe na mesa FDM de 250 mm (244 × 102 mm de planta, 6 mm de sobra em x) e o volume envolvente do MJF mal muda (estimativa por volume; as faixas de preço do MJF por volume não foram conferidas de novo).
+- **Rigidez da régua** (3 N na tecla, trilhos depois dos rebaixos): **0,028 mm no pior caso** (grelha de 3 linhas com torção, réguas 2.0 e 4.0, tecla 4); 0,010 mm no modelo de faixa. ≤ 0,05 ✓. **Os M2 não entram na conta**: com ou sem eles dá o mesmo, quem segura a tecla são os trilhos.
+- **Fit check das 32 teclas: 0 mm³** em todos os pares (cabeçalhos, plugues, cabos de 45,8 e de 50,8, rebaixos, postes, M2, réguas, grades, tampa, base, pinos, sensores, interface). Malhas: 0 arestas abertas; ray-probe dos 32 furos de tecla: 0 filme. (Os valores "tampa × carcaça +0,5/+0,8 mm" de 8,3 e 50 mm³ são a folga crítica de sempre, da rampa do degrau, não da H.)
+- **Achado que muda o pedido: não cabe um PAR de M2 por fileira.** Os três furos da régua (u 18,5 / 37 / 55,5) são os únicos vãos entre as carcaças onde a cabeça do M2 cabe (as posições propostas, u 12; 15; 26,5; 47,5; 62, caem **sob uma carcaça**: o fit check deu 216 mm³ de tecla × parafuso, e u 26,5 bate no 595). Com o OUT em 47,5 o plugue/laço da fileira da frente ocupa os outros (§3). Resultado: **11 M2** (R1: u 18,5 e 55,5 nas duas réguas; R2 e R4: u 37; R3.0: u 18,5; R3.1: u 18,5 e 55,5), **sem mudar a régua da eletrônica**.
+- **Fita colada:** não fecha como está (laço em U exige dobra no plano da fita): risco a conferir na compra (§5).
+
+### 1. Item 1.3 — comprimento do cabo e profundidade (`ligacao_h_r8.json`)
+
+Laço em estádio (R 6, d = 32,4 entre plugues). Fileira 4 (a mais apertada), por profundidade do case:
+
+| Profundidade | y da parede de trás | F = 45,8: perna a / folga | F = 50,8: perna a / folga |
+|---|---|---|---|
+| 100 mm (R7V4) | 0 | 3,28 / +1,29 | 5,78 / **−1,21** (não fecha) |
+| 101,5 | −1,5 | 3,28 / +2,79 | 5,78 / +0,29 |
+| **102 (adotado)** | **−2,0** | 3,28 / **+3,29** | 5,78 / **+0,79** |
+| 102,5 | −2,5 | 3,28 / +3,79 | 5,78 / +1,29 |
+
+(Folga = espaço livre além da margem de 0,5 mm do feixe de 5,6 mm.) Cabo da placa na fileira 4: ponta em y 4,9 (45,8) e 3,3 (50,8), parede interna em y 0 ✓. A reta de 5 mm depois do plugue (suposição da eletrônica, a conferir) **só existe com 50,8**: com 45,8 a perna é de **3,3 mm** (o raio estático mínimo de 3 mm ainda cabe); risco a conferir com o cabo real.
+Perfil vertical (queda do cabo até o piso, curva suave R ≥ 6): folga do feixe às peças de baixo das réguas de cima **≥ 2,3 mm** (2,52/2,53/3,54 com 45,8; 2,34/2,35/3,35 com 50,8); todas as curvas cabem (queda de 5,1 a 12,1 mm em 12,3 a 18,9 mm). Cruzamento de laços de fileiras vizinhas: 0 mm² com 45,8; ~4,5 mm² com 50,8 (fios soltos se deitam um sobre o outro: 1,2 mm de altura somada, sobram mais de 2 mm).
+**Rebaixo por junção:** 39,8 mm em x × 22,5 mm em y (25,0 com 50,8), a partir da boca do cabeçalho; **o piso continua com 2,0 mm**; só os trilhos são cortados (rebaixo vazado até o piso, junto com os entalhes de cabeçalho de 10,4 mm e de plugue de 7,4 mm). Tocos de trilho com menos de 3 mm foram removidos junto. Trilho que resta por régua (fundo/frente): R1 70/100 %, R2.0 25/74 %, R2.1 62/90 %, R3.0 32/64 %, R3.1 71/100 %, R4.0 25/68 %, R4.1 63/90 %. **Rigidez do piso sob os rebaixos:** inalterada (piso de 2,0 mm íntegro, apoiado na mesa; ali só deita cabo, não há carga).
+
+### 2. Item 1.4 — rigidez da régua (`estudos/rigidez_regua_r8.py`, `rigidez_regua_r8.json`)
+
+Grelha de 3 linhas (trás, eixo, frente; 74 × 14 × 1,2 mm FR-4, E = 18 GPa, elementos de 0,5 mm, flexão + torção), apoiada nos trilhos que sobram; 3 N em cada uma das 4 teclas, uma por vez, nas 8 réguas. **Pior: 0,0278 mm** (R2.0 e R4.0, tecla 4: sem trilho de trás de u 54 a 74); as demais ≤ 0,015 (R2.0 e R4.0, tecla 1: 0,015); réguas sem rebaixo: 0,003 mm (flexão transversal da própria tira). Modelo mais simples (faixa de 5,6 mm em cantilever): 0,010 mm. O limite inferior "sem ajuda transversal nem torção" dá até 0,3 mm e **não é físico** (a régua é uma placa de 14 mm). Conclusão: ≤ 0,05 ✓ (margem de 1,8×); os M2 não mudam o número (os trilhos carregam); eles só seguram a régua contra o levantamento, e as teclas travam o resto (pinos nos furos de 8 mm do deck).
+
+### 3. Posições finais (contrato para a placa e a régua)
+
+- **Régua (eletrônica):** nada muda além do que a SPEC já pediu: IN u 5,9 e OUT u 47,5 (boca para −y, 2,95 de altura, pegada 9,4 × 5,55 de v −7,5 a −1,95), 3 furos M2 em u 18,5 / 37 / 55,5, v +5,2 (**iguais aos de antes**), 3 entalhes de poste em u 18,5 / 37 / 55,5. **Cada régua usa só 1 ou 2 dos furos** (lista abaixo). A última régua de cada fileira leva o cabeçalho OUT sem plugue.
+- **M2 (centros, mm):** x = x0 + u, y = y_fileira + 5,2 (x0 = 89,2 nas fileiras 1 e 3; 79,95 nas 2 e 4; segunda régua + 74). R1.0 e R1.1: u 18,5 e 55,5; R2.0 e R2.1: u 37; R3.0: u 18,5; R3.1: u 18,5 e 55,5; R4.0 e R4.1: u 37. Por que não há par em R2–R4: u 18,5 bate no plugue IN da fileira da frente (3,35 mm de distância dos centros) e u 55,5 no plugue OUT (cai na vertical do boss).
+- **Postes internos (5):** (107,7; 68,69), (116,95; 52,67), (181,7; 36,65), (200,2; 68,69), (218,7; 36,65). Três ficam; **(135,45; 52,67) → (116,95; 52,67)** e **(126,2; 36,65) → (181,7; 36,65)** saem do laço. Pior distância de uma tecla ao apoio mais perto: 38,2 mm (era 37,2). Todos nos entalhes de poste da régua.
+- **Postes de parede (6):** x = 102,5 / 176,6 / 234 em y = 5,0 e y = 93,0 (espaços de 74 e 57,4 mm).
+- **Case:** 244 × **102** mm; face de trás externa em **y = −2**, interna em y = 0; face da frente em y = 100 (`L.Y_BACK`, `L.Y_FRONT`). A placa principal (2,45 … 97,55), os furos, os soquetes e a interface **não mudam de coordenada**; a folga da placa à parede de trás passa de 0,45 para 2,45 mm; folga do canto de trás 0,83 mm. Não existe `pcb_envelope.json` na V4: quem assume "case = 0…100 em y" (posicionamento, figura do portão P) deve usar **−2…100**.
+
+### 4. Item 1.5 — montagem oficial (`ligacao_h_montagem_r8.png`)
+
+1. Base impressa com os rebaixos. Monte **da fileira da frente para a de trás** e, em cada fileira, da régua mais perto da placa para a ponta.
+2. Cabo de estoque com um plugue na régua anterior (ou no J60x): deite o resto no rebaixo, fios soltos em estádio.
+3. Régua nova **erguida 12 mm** acima do degrau; com a pinça fina o plugue livre sobe até a boca do cabeçalho.
+4. Empurre a régua 4 mm para −y: plugue e cabeçalho travam.
+5. Desça a régua: o cabo cai no rebaixo (nada fica sob a régua).
+6. M2 (1 ou 2, conforme a lista) de cima para baixo na bossa. Repita; só então a tampa.
+- **Trocar uma régua:** tampa, tire o M2, levante 2 mm (folga do plugue à régua de trás: 2,3 mm nas fileiras 1 e 2, 3,3 na 3), empurre 4 mm para +y e solte o plugue **com a pinça fina** (acesso de ~2 mm); a nova entra pelos passos 3 a 6.
+- **Acrescentar módulo:** só validação do conceito: mais uma régua por fileira, mesma junção, mesmo laço, postes de parede a cada ~74 mm; o case cresce 74 mm; a placa e a varredura não mudam.
+
+### 5. Fita colada em vez de fios soltos
+
+Com fita (feixe em pé, 5,6 mm de altura) a folga vertical às peças de baixo da régua de cima vai a **−0,03 … −0,19 mm nas fileiras 1 e 2** (batem nos pinos de tecla), +0,0 a +1,0 nas outras. Mais grave: um U deitado pede dobra **no plano** da fita, que ela não faz (R 6 pede ~10 mm de diferença de comprimento entre as bordas). Um rebaixo com piso 1 mm mais fundo daria folga vertical (≈ +0,8 mm), mas **não resolve a dobra no plano**: não apliquei. **Risco registrado:** conferir na compra se o A06SR06SR30K51B é de fios soltos; se for fita, voltar ao cabo sob medida ou a outra geometria de laço.
+
+### 6. Riscos aceitos (nada foi comprado)
+
+1. Comprimento útil 45,8 ou 50,8 e fios soltos x fita: o projeto fecha com os dois comprimentos e com fios soltos; fita = §5.
+2. Reta de 5 mm após o plugue: 3,3 mm com 45,8 mm.
+3. Altura 2,95 do cabeçalho e plugue 3,6 × 7,0 (desenho da JST lido pela eletrônica; o clone C56123098 não tem desenho lido).
+4. Raio de dobra 6 mm (mínimo estático 3 mm): robusto, a folga vertical é ≥ 2,3 mm.
+5. Um M2 por régua em R2–R4: a retenção depende também dos furos de 8 mm do deck e dos pinos.
+
+### Perguntas para o design (R8V4)
+
+1. **Um M2 por régua nas fileiras 2–4** (11 M2 ao todo) é aceitável? O par não cabe com o OUT em 47,5 (§3); alternativas: (a) mover o furo M2 da régua para v +2,2 (muda o contrato da régua e o roteamento da tira; liberaria o boss do plugue da fileira da frente); (b) um M2 no vão da junção. Recomendo manter 1 M2.
+2. **Case de 102 mm** (parede de trás em y −2) aprovado? A placa fica 2,45 mm da parede de trás.
+3. O comprimento útil do cabo e fios soltos x fita só serão conferidos depois do protótipo fechado, como risco aceito?
+
+---
+
 ## R7V4 — estudo da ligação H, atendida na parte de Design (22 nov 2026; refeita com os números da eletrônica)
 
 Nada foi encomendado, impresso ou montado, **e nenhuma mudança de esquema, posicionamento ou case foi aplicada**: o estudo roda em um script novo, `case/ligacao_h.py` (venv CadQuery, ~7 s; raster de 0,1 mm sobre `layout_r4.py`, sem tocar no `case_r4.py`). Regras gerais novas (SPEC R7V4): só as 32 teclas são detalhadas e só a Student V4 modular conta. As seções R6V4 para trás (E2, ponte, berço) ficam como histórico.

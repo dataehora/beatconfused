@@ -14,12 +14,12 @@ post notches (u = 0, 18.5, 37, 55.5, 74; the end ones are halves).
 
 Placement logic (what is where, and why):
   * TMAG5253 U1..U4 at the cell centres (9.25 + 18.5 k, 0): the sensor under the key's magnet.
-  * the SH-6 side-entry connector J1 (IN; R5V4: no J2, the OUT end has 5 solder pads LK2, the IN end LK1 too) in the BACK half (v about -3.9), pins along u, mouth towards -v (the back
+  * the SH-6 side-entry connector J1 (IN at u 5.9; R8V4: J2 = OUT at u 47.5, link H = stock cable, no solder pads) in the BACK half (v about -3.9), pins along u, mouth towards -v (the back
     edge): the central band (v = 0) is full of pegs and sensors, the front half is where the lower neighbour's ruler sits (a plug going
     that way would hit it, a plug going back passes over the higher neighbour's ruler: it only needs a window in the case's rail), and
     the 9.9 mm of the connector does not fit between two pegs. They sit between the post notches (u = 31.2 and 42.8, mirror images about u = 37).
   * the 74HC595 in the FRONT half (rotated 90, pins along u) between the connectors (u = 37): short SER / QH' / CLK.
-  * 100 nF at each TMAG's VCC pin, 100 nF + 10 uF at the connector/595, the 100 ohm of QH' next to LK2: found by a small search.
+  * 100 nF at each TMAG's VCC pin, 100 nF + 10 uF at the connector/595, the 330 ohm of QH' next to J2: found by a small search.
 """
 import json
 import math
@@ -48,12 +48,12 @@ VB, VF = -7.0, 7.0                 # back / front edge
 PITCH = 18.5
 KEYS = [9.25 + PITCH * k for k in range(4)]
 PEG_DX, PEG_D = 5.08, 1.70
-M2_U, M2_V, M2_D = (18.5, 37.0, 55.5), 5.2, 2.2   # R4V4: each row uses two of the three (row 1: 18.5+55.5, row 2: 37+55.5, rows 3,4: 18.5+37)
+M2_U, M2_V, M2_D = (18.5, 37.0, 55.5), 5.2, 2.2   # R8V4 final (design): the universal ruler keeps its three holes; 11 M2 in all (see case/layout_r4.M2_BY_ROW)
 NOTCH_U = (0.0, 18.5, 37.0, 55.5, 74.0)
 NOTCH_W, NOTCH_D = 2.0, 4.3
-CONN = {"J1": (5.9, -3.95), "J2": (68.1, -3.95)}   # R4V4 contract of the design: IN x 5.9, OUT x 68.1, back strip, mouth -v     # (u, v) of the connectors' origin (centre of the pin row), mouth -v
+CONN = {"J1": (5.9, -3.95), "J2": (47.5, -3.95)}   # R8V4: OUT moved from 68.1 to 47.5 (link H); IN stays at 5.9
+_OLD = {"J1": (5.9, -3.95), "J2": (68.1, -3.95)}   # R4V4 contract of the design: IN x 5.9, OUT x 68.1, back strip, mouth -v     # (u, v) of the connectors' origin (centre of the pin row), mouth -v
 U5_POS = (27.75, 4.2)
-LINK = {"LK1": (2.1, 1.6), "LK2": (71.9, 1.6)}   # R5V4: 5 solder pads (1.4 x 0.7, pitch 1.0) at each end, v -0.4..3.6, pin 1 towards the back
 EDGE = 0.25                         # copper-to-edge
 
 
@@ -160,7 +160,7 @@ def main():
         fp.Reference().SetVisible(False)
         fp.Value().SetVisible(False)
         fp.SetPath(pcbnew.KIID_PATH(p["path"]))
-        h = {"J1": "4.3", "J2": "4.3", "LK1": "0.05", "LK2": "0.05", "U5": "1.0", "C6": "1.45"}.get(p["ref"], "0.4" if p["ref"].startswith("U") else "0.55")
+        h = {"J1": "2.95", "J2": "2.95", "U5": "1.0", "C6": "1.45"}.get(p["ref"], "0.4" if p["ref"].startswith("U") else "0.55")
         for k, v in (("Codigo", p["code"]), ("LCSC", p["lcsc"]), ("Montagem", p["mount"]), ("Description", p["note"]),
                      ("Datasheet", p.get("datasheet", "")), ("Altura_mm", h)):
             fp.SetField(k, v or "")
@@ -237,15 +237,9 @@ def main():
         P.set_pose(fps[ref], X(u), Y(v), fps[ref].GetOrientationDegrees())
     u5 = fps["U5"]
     pose("U5", U5_POS[0], U5_POS[1], 0)
-    for ref, (u, v) in LINK.items():       # pads along v, pin 1 towards the back (-v): try both rotations after the flip to the bottom
-        for rot in (0, 180):
-            pose(ref, u, v, rot)
-            ys = {pd.GetNumber(): pd.GetPosition().y for pd in fps[ref].Pads()}
-            if ys["1"] < ys["5"]:
-                break
 
     # ---- passives: search near an anchor (nearest free spot), in the order of importance
-    placed = {"J1", "J2", "LK1", "LK2", "U5", "U1", "U2", "U3", "U4"}
+    placed = {"J1", "J2", "U5", "U1", "U2", "U3", "U4"}
     holes = [r for r in fps if r.startswith(("PEG", "H"))]
 
     def court_u(fp):
@@ -265,7 +259,7 @@ def main():
             if P.overlap(box, o, 0.0):
                 return False
         # inside the board (courtyard), clear of the edges by EDGE
-        if ref in ("C6", "R1") and box[3] > Y(4.2):      # R5V4: the elo/cable end stays inside the pocket (v <= 4.2), not on the front rail
+        if ref in ("C6", "R1", "C1", "C2", "C3", "C4") and box[3] > Y(4.2):      # inside the pocket (v <= 4.2), not on the front rail
             return False
         if box[0] < X(U0 + EDGE) or box[2] > X(U1 - EDGE) or box[3] > Y(VF - EDGE) or box[1] < Y(VB + EDGE):
             return False
@@ -300,8 +294,8 @@ def main():
     anchors["C6"] = (j1pin1[0] - 3.5, j1pin1[1] - 0.0)
     u5v = P.pad_xy(fps["U5"], "16")[0]
     anchors["C5"] = (u5v[0] + 2.5, u5v[1] + 2.0)
-    lk2p5 = P.pad_xy(fps["LK2"], "5")[0]
-    anchors["R1"] = (lk2p5[0] - 3.0, lk2p5[1] + 0.5)
+    j2p6 = P.pad_xy(fps["J2"], "6")[0]
+    anchors["R1"] = (j2p6[0] + 3.0, j2p6[1] - 0.5)       # R8V4: QH' resistor beside J2 pin 6, in the back strip
     for ref in ("C1", "C2", "C3", "C4", "C6", "C5", "R1"):
         best = settle(ref, anchors[ref])
 
@@ -321,11 +315,9 @@ def main():
             sh.SetWidth(M(0.1))
             b.Add(sh)
         text(b, "tecla %d" % (k + 1), uc, 2.5, pcbnew.F_SilkS, 0.9)
-    text(b, "STUDENT V4 REGUA R4V4 - FRENTE (jogador) em baixo", 37.0, 5.6, pcbnew.F_SilkS, 0.9)
-    text(b, "J1 ENTRADA", CONN["J1"][0], -1.5, pcbnew.B_SilkS, 0.8, mirror=True)
-    text(b, "J2 SAIDA", CONN["J2"][0], -1.5, pcbnew.B_SilkS, 0.8, mirror=True)
-    text(b, "ELO IN", LINK["LK1"][0] + 0.2, 5.6, pcbnew.B_SilkS, 0.6, mirror=True)
-    text(b, "ELO OUT", LINK["LK2"][0] - 0.2, 5.6, pcbnew.B_SilkS, 0.6, mirror=True)
+    text(b, "STUDENT V4 REGUA R8V4 - FRENTE (jogador) em baixo", 37.0, 5.6, pcbnew.F_SilkS, 0.9)
+    text(b, "J1 IN", CONN["J1"][0], -1.5, pcbnew.B_SilkS, 0.8, mirror=True)
+    text(b, "J2 OUT", CONN["J2"][0], -1.5, pcbnew.B_SilkS, 0.8, mirror=True)
 
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     b.BuildConnectivity()
@@ -381,7 +373,7 @@ def main():
     # contract with the case: plug windows beyond the back edge (mouth -v): u extent of the plug (7.0 housing), v from the edge to 4.6 past it
     rec["janelas_plugue"] = {r: [round(T(fps[r].GetX()) - OX - 3.8, 2), VB - 5.0, round(T(fps[r].GetX()) - OX + 3.8, 2), VB] for r in ("J1", "J2")}
     json.dump(rec, open(os.path.join(HERE, "posicao_regua.json"), "w", encoding="utf-8"), indent=1)
-    for ref in ("U1", "U2", "U3", "U4", "U5", "J1", "J2", "LK1", "LK2", "C1", "C2", "C3", "C4", "C5", "C6", "R1"):
+    for ref in ("U1", "U2", "U3", "U4", "U5", "J1", "J2", "C1", "C2", "C3", "C4", "C5", "C6", "R1"):
         q = rec["pecas"][ref]
         print("%-3s u %7.2f v %6.2f rot %5.1f  patio %s" % (ref, q["u"], q["v"], q["rot"], q["patio_uv"]))
 

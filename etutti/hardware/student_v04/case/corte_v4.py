@@ -85,8 +85,8 @@ def main():
         if ref in bots:
             parts_a.append((ref, bots[ref], "#E5E7EB"))
     fig, axs = plt.subplots(2, 1, figsize=(15, 13), gridspec_kw={"height_ratios": [1.0, 1.0]})
-    panel(axs[0], 37.0, parts_a, (-2, 102))
-    axs[0].set_title("Corte A-A em x = 37 mm: tampa, caixa acústica, alto-falante, OLED, placa, módulo, bateria e bandeja (R4V4)", fontsize=10)
+    panel(axs[0], 37.0, parts_a, (-3, 102))
+    axs[0].set_title("Corte A-A em x = 37 mm: tampa, caixa acústica, alto-falante, OLED, placa, módulo, bateria e bandeja (R8V4)", fontsize=10)
     panel(axs[1], 28.0, parts_b, (-2, 102))
     axs[1].set_title("Corte B-B em x = 28 mm (eixo do knob de volume; o de registro está em x = 46, igual)", fontsize=10)
     a = axs[0]
@@ -104,6 +104,7 @@ def main():
     fig.tight_layout()
     fig.subplots_adjust(right=0.88)
     fig.savefig(os.path.join(REN, "corte_interface_v4.png"), dpi=140)
+    fig.savefig(os.path.join(REN, "corte_interface_v4_r8.png"), dpi=140)
     print("ok")
 
 

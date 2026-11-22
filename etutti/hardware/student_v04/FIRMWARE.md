@@ -161,6 +161,16 @@ Reli `pcb/PINOS.md` e `ELETRONICA.md` ao fim: **nenhuma mudança de pino nem de 
 5. Menu: clique longo do seletor; girar o seletor, girar o volume, clique do volume = voltar; segurar o volume 2 s desliga.
 6. Conferir no host a velocidade USB de 12 Mbit/s.
 
+## R8V4: conferência contra a pinagem P6s (22 nov 2026)
+
+Atende **R8V4**, ordem 3. `PINOS.md` relido no fim (versão do commit 5f6c68e; a eletrônica atualiza em paralelo, sem pino novo até aqui).
+
+- **Pinos do Teensy: nenhum muda.** J601-J604 em P6s (1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO) só reordena o conector; OUT 14/15/26/27, SCAN_DATA 2, SCAN_CLK 3 e todos os outros ficam. O sketch não tem nada da ordem do conector: só conhece pinos, a cadeia (8 estágios por régua, 5 pulsos entre réguas, 8N+1 pulsos) e os pinos de OUT. O segundo GND (pino 4) e o DADO no pino 6 não têm função no código. **Nenhuma mudança de lógica.**
+- **CLK com 330 Ω em série** (R605/R606; o do QH' na régua): constante de tempo tau = R x C. Pior caso, CLK comum às 4 fileiras com 2 réguas cada: 8 entradas de 595 (~3,5 pF) + 4 cabos (~9 pF) + trilhas = ~65 pF, tau = 330 x 65 pF = ~21 ns, subida 10-90 % de ~47 ns. O meio período do sketch é 100 ns (5 MHz): o nível chega a 99 % antes da próxima borda, e o limiar de 50 % é cruzado com ~15 ns de atraso, igual em CLK e DADO (mesmo 330 Ω), então o preparo do dado se mantém. **`SR_HALF_PERIOD_NS = 100` fica.** Cálculo, não medido; se o osciloscópio mostrar subida lenta, subir para 150 ns custa ~1 us na varredura rápida.
+- **Microfone, R305 = 0 ohm:** só os 2 k internos do codec (`BIAS_RESISTOR`) em série com a cápsula, bias 3,0 V. Tensão na ponta = 3,0 - 2 k x I: 0,1 / 0,3 / 0,5 / 1 mA dão **2,8 / 2,4 / 2,0 / 1,0 V** (com 4,2 k eram 2,6 / 1,7 / 0,9 / sem 1 mA). Aberto ou linha com capacitor: 3,0 V; curto: 0 V. Limiares mantidos (`MIC_DET_MIN_V` 0,30 V, `MIC_DET_MAX_V` 2,85 V): o limite alto está 0,15 V abaixo do aberto e só 50 mV acima da cápsula de 0,1 mA, então uma cápsula que puxe menos de ~0,075 mA seria lida como ausente; o limite baixo corresponde a 1,35 mA. Só os comentários do sketch mudaram. **A medir na placa** (cápsula real, plugue de linha, tolerância do bias).
+- **Compilação** só da V4 (`teensy:avr:teensyMM:usb=midi,speed=396`, com `reed_samples`): flash code 140784 + data 1239352 + headers 8404 (livre 15126532); RAM1 variáveis 105024, code 138184, padding 25656 (livre 255424); RAM2 variáveis 202272 (livre 322016). `grep` por outras versões/modelos em `student_v4` (fora de `reed_samples.*`): nenhuma ocorrência.
+- Regra nova do J (nada é comprado até o protótipo fechar): o limiar do microfone fica como risco, o sketch é robusto a ele (só desliga os efeitos de voz).
+
 ## Perguntas para o design
 
 1. **Instrumentos fora:** o sketch próprio só toca acordeão (os sete registros; sem piano, baixo, violão nem synth). Está certo para a V4? A página V4 só precisa dos CCs listados nas seções 2 a 4.
@@ -168,3 +178,4 @@ Reli `pcb/PINOS.md` e `ELETRONICA.md` ao fim: **nenhuma mudança de pino nem de 
 3. **Limite de N:** o sketch aceita N <= 6 réguas por fileira (EEPROM). É folga suficiente para a validação do conceito modular, ou o design quer o mapa da EEPROM já reorganizado?
 4. **Ligação H:** se o estudo escolher um cabo com pinagem invertida ou um pino de detecção de régua, a firmware só precisa do pino novo (seção 8). Há previsão de pino de detecção?
 5. **Pendentes das revisões anteriores, que dependem de placa ou decisão:** limiares do microfone (R6V4), padrão do headset (que cápsula?), EQ do alto-falante de ouvido (300 Hz / -6 dB é de conta), supressor de microfonia (primeiro modelo, não ouvido), modos do harmonizador (R7V4 item 4: ficam como estão até haver instrumento), espanhol na tela (depois do protótipo), página V4 (os CCs de voz existem só no sketch), mapa de notas do usuário (CC e EEPROM) e notas até E7 (as amostras cobrem bem até a tecla 79).
+6. **R8V4, microfone:** com R305 = 0 ohm uma cápsula de menos de ~0,075 mA não é detectada. Para a cápsula escolhida, qual a corrente típica (datasheet)? Se for menor, subir `MIC_DET_MAX_V` (ex.: 2,92 V) estreita a margem contra o jack aberto (3,0 V).

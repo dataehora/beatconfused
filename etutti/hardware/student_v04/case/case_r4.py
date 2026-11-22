@@ -25,7 +25,7 @@ import layout_r4 as L    # noqa: E402
 import case_t3g as T     # noqa: E402
 import case_f2 as F      # noqa: E402
 import case as C3        # noqa: E402  (the V3 case's functions: knob and acoustic box, patched below)
-import juncao_r6 as J    # noqa: E402  (R6V4: the ruler-to-ruler joints)
+import ligacao_h as H    # noqa: E402  (R8V4: the cable loops, the recesses, the M2 / post search)
 
 OUT = F.OUT
 G = L.G
@@ -43,7 +43,9 @@ T.pick_posts = L.pick_posts
 # R5V4: 32 keys (rulers always full) and the shorter case
 F.ROWS = L.ROWS
 F.length = L.length
-CRADLE_OPT = "E2"                       # R6V4: the joint option whose bridge cradle the tray carries (None = no cradle)
+# R8V4: the 102 mm deep case: the back outer face moves from y 0 to y -2 (the board, the interface and the keys keep their y)
+F.Y0 = L.Y_BACK
+F.CASE_W = L.Y_FRONT
 CHAMFER_TOP, CHAMFER_BOT = 2.0, 1.0       # R5V4: 45 deg chamfer on the outer top edge (where the hand rests) and a small one on the bottom edge
 R_OUT, R_IN = L.CASE_R, L.CASE_R - L.WALL
 
@@ -71,21 +73,21 @@ def chamfer_cutters(mod, c, top_of, flat=False, up=True):
     cut = []
     # straight edges
     xs = [R, Lx - R]
-    ys = [R, L.CASE[1] - R]
+    ys = [L.Y_BACK + R, L.Y_FRONT - R]
     # left edge (x = 0): interface roof
     z = top_of(1.0, 50.0)
     cut.append(cq.Workplane("XZ").polyline(_tri_x(0, 0, z, c, True)).close().extrude(-(ys[1] - ys[0])).translate((0, ys[0], 0)))
     # front edge (y = 100): flat
     z = top_of(150.0, 99.0)
-    tri = [(L.CASE[1] + 1, z - c - 1), (L.CASE[1] - c - 1, z + 1), (L.CASE[1] + 1, z + 1)]
+    tri = [(L.Y_FRONT + 1, z - c - 1), (L.Y_FRONT - c - 1, z + 1), (L.Y_FRONT + 1, z + 1)]
     cut.append(cq.Workplane("YZ").workplane(offset=xs[0]).polyline(tri).close().extrude(xs[1] - xs[0]))
     # back edge (y = 0): two levels (interface roof, keyboard back deck)
     for xa, xb in ((xs[0], L.X_IF), (L.X_IF, xs[1])):
         z = top_of((xa + xb) / 2, 1.0)
-        tri = [(-1, z - c - 1), (c + 1, z + 1), (-1, z + 1)]
+        tri = [(L.Y_BACK - 1, z - c - 1), (L.Y_BACK + c + 1, z + 1), (L.Y_BACK - 1, z + 1)]
         cut.append(cq.Workplane("YZ").workplane(offset=xa).polyline(tri).close().extrude(xb - xa))
     # right end (x = L): follows the deck's profile: ONE ruled loft between a sliver above the profile and the full wedge
-    prof = [(y, z) for y, z in F.deck_profile()] if not flat else [(0.0, 0.0), (L.CASE[1], 0.0)]
+    prof = [(y, z) for y, z in F.deck_profile()] if not flat else [(L.Y_BACK, 0.0), (L.Y_FRONT, 0.0)]
     pts = [(ys[0], None)] + [p for p in prof if ys[0] < p[0] < ys[1]] + [(ys[1], None)]
 
     def zat(y):
@@ -103,7 +105,7 @@ def chamfer_cutters(mod, c, top_of, flat=False, up=True):
          .workplane(offset=x2 - x1).polyline(poly(x2)).close().loft(ruled=True))
     cut.append(w)
     # corners: a cone each (revolved triangle) limited to its quadrant
-    for cx, cy, sx, sy in ((R, R, -1, -1), (Lx - R, R, 1, -1), (R, L.CASE[1] - R, -1, 1), (Lx - R, L.CASE[1] - R, 1, 1)):
+    for cx, cy, sx, sy in ((R, L.Y_BACK + R, -1, -1), (Lx - R, L.Y_BACK + R, 1, -1), (R, L.Y_FRONT - R, -1, 1), (Lx - R, L.Y_FRONT - R, 1, 1)):
         z = top_of(cx, cy) if not flat else 0.0
         tri = [(R - c - 1, z + 1), (R + 1, z - c - 1), (R + 1, z + 1)]
         cone = cq.Workplane("XZ").polyline(tri).close().revolve(360, (0, 0, 0), (0, 1, 0)).translate((cx, cy, 0))
@@ -121,11 +123,11 @@ def top_level(x, y):
 
 def round_and_chamfer_lid(body, mod):
     """Plan corners R_OUT outside / R_IN inside, then the chamfers (top c = CHAMFER_TOP following the deck, bottom c = CHAMFER_BOT)."""
-    Lx, W = L.length(mod), L.CASE[1]
+    Lx, YB, YF = L.length(mod), L.Y_BACK, L.Y_FRONT
     zlo, zhi = L.Z_BOT - 1.0, 40.0
-    outer = box(0, Lx, 0, W, zlo, zhi).edges("|Z").fillet(R_OUT)
+    outer = box(0, Lx, YB, YF, zlo, zhi).edges("|Z").fillet(R_OUT)
     body = body.intersect(outer)
-    for cx, cy, sx, sy in ((R_OUT, R_OUT, -1, -1), (Lx - R_OUT, R_OUT, 1, -1), (R_OUT, W - R_OUT, -1, 1), (Lx - R_OUT, W - R_OUT, 1, 1)):
+    for cx, cy, sx, sy in ((R_OUT, YB + R_OUT, -1, -1), (Lx - R_OUT, YB + R_OUT, 1, -1), (R_OUT, YF - R_OUT, -1, 1), (Lx - R_OUT, YF - R_OUT, 1, 1)):
         # the inner corner: square from the wall's inner faces to the arc centre, minus the R_IN circle
         a0, a1 = sorted((cx + sx * R_OUT, cx))
         b0, b1 = sorted((cy + sy * R_OUT, cy))
@@ -139,8 +141,8 @@ def round_and_chamfer_lid(body, mod):
 
 
 def round_tray(b, mod):
-    Lx, W, g = L.length(mod), L.CASE[1], 0.15
-    rr = box(L.WALL + g, Lx - L.WALL - g, L.WALL + g, W - L.WALL - g, L.Z_BOT - 1, 40).edges("|Z").fillet(R_IN - g)
+    Lx, g = L.length(mod), 0.15
+    rr = box(L.WALL + g, Lx - L.WALL - g, L.Y_BACK + L.WALL + g, L.Y_FRONT - L.WALL - g, L.Z_BOT - 1, 40).edges("|Z").fillet(R_IN - g)
     return b.intersect(rr)
 
 
@@ -192,7 +194,7 @@ def oled_centre():
 def tray(mod):
     Lx = L.length(mod)
     gap = 0.15
-    b = box(L.WALL + gap, Lx - L.WALL - gap, L.WALL + gap, L.CASE[1] - L.WALL - gap, L.Z_BOT, L.Z_FLOOR)
+    b = box(L.WALL + gap, Lx - L.WALL - gap, L.Y_BACK + L.WALL + gap, L.Y_FRONT - L.WALL - gap, L.Z_BOT, L.Z_FLOOR)
     # rails under the rulers (two per row)
     for ru in L.rulers(mod):
         z1 = L.ZR[ru["row"] - 1] - L.RULER_T
@@ -219,11 +221,7 @@ def tray(mod):
     for nt in L.notches(mod):
         z1 = L.ZR[nt["row"] - 1] - L.RULER_T
         b = b.cut(box(nt["x0"], nt["x1"], nt["y0"], nt["y1"], L.Z_FLOOR, z1 + 0.1))
-    # R6V4: the bridge's cradle (a block under the bridge and two end lips) at every junction, in the option E2
-    if CRADLE_OPT:
-        for r, xj, y, z0 in J.bridges(mod):
-            for c in J.cradle(CRADLE_OPT, r):
-                b = b.union(box(*J.to_box_cradle(c, xj, y, z0)))
+    # R8V4: the cable recesses are in L.notches() (header, plug and loop recesses); no bridge and no cradle (E2 / G are gone)
     # interface: bosses under H1..H4 up to the board's underside, with the screw's hole and head recess
     for x, y in L.LID_POSTS:
         b = b.union(cyl(x, y, L.Z_FLOOR - 0.01, -L.T_PCB, 6.0))
@@ -285,21 +283,38 @@ def screws(mod):
     return res
 
 
+def _flat_prism(pts, half, z0, z1):
+    """A prism over the plan of the centre line `pts` (width 2 x half), from z0 to z1 (offset by the local normal; the bends are wider than half)."""
+    left, right = [], []
+    n = len(pts)
+    for i in range(n):
+        a, b = pts[max(i - 1, 0)], pts[min(i + 1, n - 1)]
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        d = math.hypot(dx, dy) or 1.0
+        nx, ny = -dy / d, dx / d
+        left.append((pts[i][0] + nx * half, pts[i][1] + ny * half))
+        right.append((pts[i][0] - nx * half, pts[i][1] - ny * half))
+    poly = left + right[::-1]
+    return cq.Workplane("XY").workplane(offset=z0).polyline(poly).close().extrude(z1 - z0)
+
+
+def cabos(mod, F_, full=True):
+    """Envelope of every cable (junction loops and the four board cables) of free-wire length F_: the bundle's plan (5.6 mm wide + 0.4 each side)
+    from the tray's floor up to 0.3 mm above the plugs' axis of its row (full=True: the plan check against the tray), or only the 0.8 mm the bundle
+    lies on the floor (full=False: the rest of the model; the rise to the plug is checked by ligacao_h.profile_clearance)."""
+    res = None
+    for c in L.cables(mod, F_):
+        row = c["row"]
+        z1 = (L.ZR[row - 1] + L.AXIS_Z + 0.3) if full else (L.Z_FLOOR + 0.8)
+        pts = c["pts"][::2] if len(c["pts"]) > 120 else c["pts"]
+        p = _flat_prism(pts, L.BUNDLE_W / 2 + 0.4, L.Z_FLOOR, z1)
+        res = p if res is None else res.union(p)
+    return res
+
+
 def connectors(mod):
     """Headers and plugs of every ruler (envelopes, absolute z) plus the pegs and the sensors' pockets for the clearance check."""
     parts = {"cabecalhos": None, "plugues": None, "pinos": None, "sensores": None, "elos": None, "pontes": None}
-    if L.LINK == "E2":
-        for r, xj, y, z0 in J.bridges(mod):
-            for pt in J.OPTIONS["E2"]["parts"]:
-                if pt[1] == "femea":
-                    continue                        # the sockets ARE the J1/J2 headers of conn_boxes
-                s_ = box(*J.to_box(pt, xj, y, z0))
-                parts["pontes"] = s_ if parts["pontes"] is None else parts["pontes"].union(s_)
-    if L.LINK == "D":
-        for r, xj, y in L.solder_links(mod):
-            a, b, ya, yb, za, zb = L.link_box(xj, y, L.ZR[r - 1])
-            s = box(a, b, ya, yb, za, zb)
-            parts["elos"] = s if parts["elos"] is None else parts["elos"].union(s)
     for ru in L.rulers(mod):
         z0 = L.ZR[ru["row"] - 1]
         for name, xa, xb, ya, yb, za, zb in L.conn_boxes(ru):
@@ -402,12 +417,12 @@ def build(mod):
     encs = [encoder(x, y) for x, y in L.KNOBS]
     knobs = [knob(x, y) for x, y in L.KNOBS]
     bots, tops = bottom_parts(), top_parts()
-    info = {"teclas": n, "modulos": mod, "comprimento_mm": Lx, "largura_mm": L.CASE[1], "grade_mm": T.GRADE_T, "folga_deck_mm": T.GAP, "deck_mm": F.DECK_T,
+    info = {"teclas": n, "modulos": mod, "comprimento_mm": Lx, "largura_mm": L.CASE[1], "y_costas_mm": L.Y_BACK, "grade_mm": T.GRADE_T, "folga_deck_mm": T.GAP, "deck_mm": F.DECK_T,
             "haste_cabeca_topo": T.CAP_TOP, "teto_interface_z": L.CEILING, "topo_interface_z": L.ROOF_TOP,
             "z_topo_tampa": F.ZR[3] + F.DECK_TOP, "altura_atras_mm": round(F.ZR[3] + F.DECK_TOP - F.Z_BOT, 2),
             "altura_frente_mm": round(F.ZR[0] + F.DECK_TOP - F.Z_BOT, 2), "reguas": len(L.rulers(mod)),
             "postes_internos": len(L.pick_posts(mod)), "postes": L.pick_posts(mod), "bossas_de_parede": len(L.wall_posts(mod)),
-            "parafusos_M2": 2 * len(L.rulers(mod)), "m2_por_fileira": {str(k): v for k, v in L.M2_BY_ROW.items()},
+            "parafusos_M2": sum(len(L.m2_points(q)) for q in L.rulers(mod)), "m2_por_regua": {"R%d.%d" % (q["row"], q["k"]): [round(x - q["x0"], 1) for x, _y in L.m2_points(q)] for q in L.rulers(mod)},
             "volume_cm3": {"tampa": round(vol(lid_) / 1000, 1), "base": round(vol(tray_) / 1000, 1)},
             "caixa_acustica": bxinfo}
     I = {}
@@ -427,15 +442,14 @@ def build(mod):
         "cabecalhos x sensores": round(inter(cn["cabecalhos"], cn["sensores"]), 2), "plugues x sensores": round(inter(cn["plugues"], cn["sensores"]), 2),
         "cabecalhos x reguas (so o topo toca: 0)": round(inter(cn["cabecalhos"], ru), 2), "plugues x reguas": round(inter(cn["plugues"], ru), 2),
         "plugues x cabecalhos": round(inter(cn["plugues"], cn["cabecalhos"]), 2), "plugues x parafusos": round(inter(cn["plugues"], sc), 2)}
-    if cn["elos"] is not None:
-        I["conectores"].update({"elos x base": round(inter(cn["elos"], tray_), 2), "elos x pinos": round(inter(cn["elos"], cn["pinos"]), 2),
-                                "elos x sensores": round(inter(cn["elos"], cn["sensores"]), 2), "elos x parafusos": round(inter(cn["elos"], sc), 2),
-                                "elos x cabecalhos": round(inter(cn["elos"], cn["cabecalhos"]), 2), "elos x reguas": round(inter(cn["elos"], ru), 2)})
-    if cn["pontes"] is not None:
-        I["conectores"].update({"pontes x base (com berço)": round(inter(cn["pontes"], tray_), 2), "pontes x pinos": round(inter(cn["pontes"], cn["pinos"]), 2),
-                                "pontes x sensores": round(inter(cn["pontes"], cn["sensores"]), 2), "pontes x parafusos": round(inter(cn["pontes"], sc), 2),
-                                "pontes x cabecalhos": round(inter(cn["pontes"], cn["cabecalhos"]), 2), "pontes x plugues": round(inter(cn["pontes"], cn["plugues"]), 2),
-                                "pontes x tampa": round(inter(cn["pontes"], lid_), 2)})
+    # R8V4: the cable envelopes (both free-wire lengths), a prism over the cable's plan from the floor to 0.3 mm above the plugs' axis, against everything it must clear
+    for Fk, F_ in (("45,8", L.CABLE_FREE_MM[0]), ("50,8", L.CABLE_FREE_MM[1])):
+        cb_full, cb = cabos(mod, F_, True), cabos(mod, F_, False)
+        I["cabos_%s" % Fk] = {"cabo x base (trilhos, bossas, postes; prisma ate o eixo do plugue)": round(inter(cb_full, tray_), 2), "cabo x tampa": round(inter(cb, lid_), 2),
+                              "cabo x reguas": round(inter(cb, ru), 2), "cabo x grades": round(inter(cb, gr), 2), "cabo x parafusos": round(inter(cb, sc), 2),
+                              "cabo x pinos das teclas": round(inter(cb, cn["pinos"]), 2), "cabo x sensores": round(inter(cb, cn["sensores"]), 2),
+                              "cabo x cabecalhos": round(inter(cb, cn["cabecalhos"]), 2), "cabo x plugues": round(inter(cb, cn["plugues"]), 2),
+                              "cabo x placa principal": round(inter(cb, board()), 2)}
     # ---- interface
     comp = {"placa": brd, "modulo": mdl, "bateria": bat, "alto-falante": spk, "caixa acustica": bx, "OLED": ole,
             "encoder 1": encs[0], "encoder 2": encs[1], "knob 1": knobs[0], "knob 2": knobs[1]}

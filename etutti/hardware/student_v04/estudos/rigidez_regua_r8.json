@@ -1,0 +1,262 @@
+{
+ "EI_Nmm2": 36287.99999999999,
+ "k_um_trilho": 44.27842565597668,
+ "regua": {
+  "R1.0": {
+   "m2_u": [
+    18.5,
+    55.5
+   ],
+   "trilho_que_resta_%": {
+    "frente": 100,
+    "fundo": 70
+   },
+   "maior_vao_mm": {
+    "frente": 0.0,
+    "fundo": 10.4
+   },
+   "flexao_grelha_mm": [
+    0.0032,
+    0.0026,
+    0.0027,
+    0.0028
+   ],
+   "flexao_faixa_mm": [
+    0.0005,
+    0.0,
+    0.0005,
+    0.0
+   ],
+   "flexao_pessimista_mm": [
+    0.0009,
+    0.0,
+    0.0005,
+    0.0
+   ]
+  },
+  "R1.1": {
+   "m2_u": [
+    18.5,
+    55.5
+   ],
+   "trilho_que_resta_%": {
+    "frente": 100,
+    "fundo": 71
+   },
+   "maior_vao_mm": {
+    "frente": 0.0,
+    "fundo": 10.4
+   },
+   "flexao_grelha_mm": [
+    0.003,
+    0.0026,
+    0.0027,
+    0.0028
+   ],
+   "flexao_faixa_mm": [
+    0.0002,
+    0.0,
+    0.0005,
+    0.0
+   ],
+   "flexao_pessimista_mm": [
+    0.0003,
+    0.0,
+    0.0005,
+    0.0
+   ]
+  },
+  "R2.0": {
+   "m2_u": [
+    37.0
+   ],
+   "trilho_que_resta_%": {
+    "frente": 74,
+    "fundo": 26
+   },
+   "maior_vao_mm": {
+    "frente": 11.7,
+    "fundo": 0.0
+   },
+   "flexao_grelha_mm": [
+    0.015,
+    0.0026,
+    0.0034,
+    0.0278
+   ],
+   "flexao_faixa_mm": [
+    0.0056,
+    0.0,
+    0.001,
+    0.0058
+   ],
+   "flexao_pessimista_mm": [
+    0.0879,
+    0.0,
+    0.0021,
+    0.3233
+   ]
+  },
+  "R2.1": {
+   "m2_u": [
+    37.0
+   ],
+   "trilho_que_resta_%": {
+    "frente": 90,
+    "fundo": 62
+   },
+   "maior_vao_mm": {
+    "frente": 7.4,
+    "fundo": 10.4
+   },
+   "flexao_grelha_mm": [
+    0.007,
+    0.0026,
+    0.0027,
+    0.0028
+   ],
+   "flexao_faixa_mm": [
+    0.004,
+    0.0,
+    0.0005,
+    0.0
+   ],
+   "flexao_pessimista_mm": [
+    0.0294,
+    0.0,
+    0.0005,
+    0.0
+   ]
+  },
+  "R3.0": {
+   "m2_u": [
+    18.5
+   ],
+   "trilho_que_resta_%": {
+    "frente": 64,
+    "fundo": 32
+   },
+   "maior_vao_mm": {
+    "frente": 7.7,
+    "fundo": 16.7
+   },
+   "flexao_grelha_mm": [
+    0.0042,
+    0.0026,
+    0.0037,
+    0.0142
+   ],
+   "flexao_faixa_mm": [
+    0.0009,
+    0.0,
+    0.0026,
+    0.0101
+   ],
+   "flexao_pessimista_mm": [
+    0.0009,
+    0.0,
+    0.0051,
+    0.1033
+   ]
+  },
+  "R3.1": {
+   "m2_u": [
+    18.5,
+    55.5
+   ],
+   "trilho_que_resta_%": {
+    "frente": 100,
+    "fundo": 71
+   },
+   "maior_vao_mm": {
+    "frente": 0.2,
+    "fundo": 10.4
+   },
+   "flexao_grelha_mm": [
+    0.003,
+    0.0026,
+    0.0027,
+    0.0028
+   ],
+   "flexao_faixa_mm": [
+    0.0002,
+    0.0,
+    0.0005,
+    0.0
+   ],
+   "flexao_pessimista_mm": [
+    0.0003,
+    0.0,
+    0.0005,
+    0.0
+   ]
+  },
+  "R4.0": {
+   "m2_u": [
+    37.0
+   ],
+   "trilho_que_resta_%": {
+    "frente": 68,
+    "fundo": 26
+   },
+   "maior_vao_mm": {
+    "frente": 16.0,
+    "fundo": 0.0
+   },
+   "flexao_grelha_mm": [
+    0.0151,
+    0.0026,
+    0.0034,
+    0.0278
+   ],
+   "flexao_faixa_mm": [
+    0.0083,
+    0.0,
+    0.001,
+    0.0058
+   ],
+   "flexao_pessimista_mm": [
+    0.0879,
+    0.0,
+    0.0021,
+    0.3233
+   ]
+  },
+  "R4.1": {
+   "m2_u": [
+    37.0
+   ],
+   "trilho_que_resta_%": {
+    "frente": 90,
+    "fundo": 63
+   },
+   "maior_vao_mm": {
+    "frente": 7.4,
+    "fundo": 10.4
+   },
+   "flexao_grelha_mm": [
+    0.007,
+    0.0026,
+    0.0027,
+    0.0028
+   ],
+   "flexao_faixa_mm": [
+    0.004,
+    0.0,
+    0.0005,
+    0.0
+   ],
+   "flexao_pessimista_mm": [
+    0.0294,
+    0.0,
+    0.0005,
+    0.0
+   ]
+  }
+ },
+ "pior_mm": {
+  "real": 0.0278,
+  "faixa": 0.0101,
+  "pessimista": 0.3233
+ }
+}

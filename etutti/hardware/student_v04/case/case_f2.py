@@ -33,7 +33,8 @@ os.makedirs(OUT, exist_ok=True)
 
 PITCH, ROWP = G.PITCH, G.ROW_PITCH
 ROWS = G.ROWS                         # (row, y, first x, keys); row 1 is the front one
-CASE_W = 100.0
+CASE_W = 100.0                        # y of the front outer face
+Y0 = 0.0                              # y of the back outer face (R8V4: case_r4 sets -2.0, a 102 mm deep case)
 WALL, FLOOR = 2.0, 2.0
 Z_BOT = -10.1                         # V3's outer bottom (SPEC v4); the interface keeps its depth
 Z_FLOOR = Z_BOT + FLOOR               # = -8.1: tray top, boss bottoms (the reference plane Pm of the stack)
@@ -117,8 +118,8 @@ def wall_posts(mod):
     xs = [X_IF + 10.0, L - 8.0]
     n = int(math.ceil((xs[1] - xs[0]) / 80.0))
     xs = [xs[0] + (xs[1] - xs[0]) * k / n for k in range(n + 1)]
-    pts = [(x, 7.0) for x in xs] + [(x, CASE_W - 7.0) for x in xs]
-    pts += [(7.0, 12.0), (7.0, CASE_W - 12.0)]                  # interface side
+    pts = [(x, Y0 + 7.0) for x in xs] + [(x, CASE_W - 7.0) for x in xs]
+    pts += [(7.0, Y0 + 12.0), (7.0, CASE_W - 12.0)]                  # interface side
     return pts
 
 
@@ -130,7 +131,7 @@ def deck_profile():
     for i in range(3):
         y0 = c[i] - RAMP_START
         pts += [(y0, ZR[i] + DECK_TOP), (y0 - s[i] / RAMP_TAN, ZR[i + 1] + DECK_TOP)]
-    pts.append((0.0, ZR[3] + DECK_TOP))
+    pts.append((Y0, ZR[3] + DECK_TOP))
     return sorted(pts)
 
 
@@ -143,9 +144,9 @@ def lid(mod):
     L = length(mod)
     top = deck_profile()
     # outer: from the bottom plane up to the top profile; inner (cavity): walls 2 mm, roof = profile - DECK_T
-    outer_poly = [(0.0, Z_BOT)] + top + [(CASE_W, Z_BOT)]
+    outer_poly = [(Y0, Z_BOT)] + top + [(CASE_W, Z_BOT)]
     outer = prism_yz(outer_poly, X_IF, L)
-    inner_top = [(max(WALL, min(CASE_W - WALL, y)), z - DECK_T) for y, z in top]
+    inner_top = [(max(Y0 + WALL, min(CASE_W - WALL, y)), z - DECK_T) for y, z in top]
     inner_top = [(y, z) for y, z in inner_top]
     # keep strictly increasing y after the clamp
     dedup = []
@@ -154,12 +155,12 @@ def lid(mod):
             dedup.append(p)
         else:
             dedup[-1] = (dedup[-1][0], max(dedup[-1][1], p[1]))
-    inner_poly = [(WALL, Z_BOT - 1)] + dedup + [(CASE_W - WALL, Z_BOT - 1)]
+    inner_poly = [(Y0 + WALL, Z_BOT - 1)] + dedup + [(CASE_W - WALL, Z_BOT - 1)]
     inner = prism_yz(inner_poly, X_IF - 0.0, L - WALL)
     kb = outer.cut(inner)
     # interface block: flat roof
-    ifo = box(0, X_IF, 0, CASE_W, Z_BOT, IF_ROOF_TOP)
-    ifi = box(WALL, X_IF + 0.1, WALL, CASE_W - WALL, Z_BOT - 1, IF_ROOF_TOP - IF_ROOF_T)
+    ifo = box(0, X_IF, Y0, CASE_W, Z_BOT, IF_ROOF_TOP)
+    ifi = box(WALL, X_IF + 0.1, Y0 + WALL, CASE_W - WALL, Z_BOT - 1, IF_ROOF_TOP - IF_ROOF_T)
     ifb = ifo.cut(ifi)
     body = kb.union(ifb)
     # open the wall between interface and keyboard where the bands start (the cavity is continuous)
@@ -193,7 +194,7 @@ def lid(mod):
 def base(mod):
     L = length(mod)
     gap = 0.15
-    fl = box(WALL + gap, L - WALL - gap, WALL + gap, CASE_W - WALL - gap, Z_BOT, Z_FLOOR)
+    fl = box(WALL + gap, L - WALL - gap, Y0 + WALL + gap, CASE_W - WALL - gap, Z_BOT, Z_FLOOR)
     b = fl
     rail_cut = []
     for r, x0, y in rulers(mod):

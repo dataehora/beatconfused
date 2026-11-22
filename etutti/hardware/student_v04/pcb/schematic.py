@@ -6,7 +6,7 @@ Plain CPython (stdlib only); it calls KiCad 10's kicad-cli for ERC and the netli
 
 The V3 circuit with the F2 changes (SPEC R2V4/R3V4): no sensors and no multiplexers on the main board (the 4-sensor
 rulers carry the TMAG5253 and a 74HC595 each); sheet R = the four row connectors (JST SH 6-way, one per row) with
-the OUT_R1..R4 pull-downs and the 100 ohm series resistors of the shared SCAN_CLK / SCAN_DATA; the screen connector
+the OUT_R1..R4 pull-downs and the 330 ohm series resistors (R8V4) of the shared SCAN_CLK / SCAN_DATA; the screen connector
 J401 is the same 6-way SH (4 used); microphone: C310 on MIC_BIAS (datasheet Fig. 20); Teensy pins as pcb/PINOS.md.
 The part references and the symbol uuids are the V3's (same uuid namespace).
 
@@ -272,6 +272,7 @@ PASSIVES = {
     ("C", "10uF", "0805"): ("C15850", "basica", 0.008, "final"),
     ("C", "12pF", "0402"): ("C1547", "basica", 0.001, "conferir"),
     ("C", "20pF", "0402"): ("C1554", "basica", 0.001, "conferir"),
+    ("R", "0", "0402"): ("C17168", "basica", 0.001, "final"),        # R8V4: R305 (0 ohm, bias total de 2 k)
     ("R", "100", "0402"): ("C25076", "basica", 0.001, "final"),
     ("R", "270", "0402"): ("C25099", "estendida", 0.001, "final"),
     ("R", "330", "0402"): ("C25104", "basica", 0.001, "conferir"),
@@ -519,7 +520,7 @@ part("J302", "PJ-327A", "PJ-327A",
      fp="%s:Jack_3.5mm_PJ-327A_SMD" % LIB, lcsc="C49284723", cls="estendida", price=0.10, status="final",
      note="IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)",
      datasheet="https://atta.szlcsc.com/upload/public/pdf/source/20250630/AB61CB55FE842E2CCBB937FDB8FB366C.pdf")
-R("R305", "2.2k", "MIC_BIAS", "MIC_J", "F3", note="bias do microfone de eletreto (como a Audio Board: 2,2k do MICBIAS)")
+R("R305", "0", "MIC_BIAS", "MIC_J", "F3", note="R8V4: 0 ohm (aprovado): bias total = 2 k internos do SGTL5000 (BIAS_RESISTOR 2k); era 2,2 k em serie (4,2 k). Mais tensao para microfones que pedem mais")
 C("C309", "1uF", "MIC_J", "MIC_IN", "F3", note="acoplamento do microfone ao pino MIC (o datasheet mostra 0,1 uF; 1 uF baixa o corte da voz)")
 R("R306", "100k", "MIC_J", "MIC_DET", "F3", note="R6V4: toma de CC da ponta do IN para o ADC (pino 25): distingue microfone de eletreto de plugue de linha/sem plugue")
 C("C311", "100nF", "MIC_DET", "GND", "F3", note="R6V4: filtro da toma MIC_DET (RC 10 ms; o ADC lê devagar)")
@@ -584,15 +585,15 @@ CUR[0] = "R"
 sym("Conn_01x06_MountingPin", "Connector_Generic_MountingPin")
 for k in range(1, 5):
     part("J60%d" % k, "Conn_01x06_MountingPin", "XY-SM06B-SRSS-TB",
-         {"1": "+3V3", "2": "GND", "3": "OUT_R%d" % k, "4": "SCAN_CLK", "5": "SCAN_DATA", "6": "NC", "MP": "GND"}, "R%d" % k,
+         {"1": "+3V3", "2": "GND", "3": "OUT_R%d" % k, "4": "GND", "5": "SCAN_CLK", "6": "SCAN_DATA", "MP": "GND"}, "R%d" % k,
          fp="Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", lcsc="C56123098", cls="estendida",
          price=0.069, status="conferir",
-         note="fileira %d (%s): cabo SH de 6 vias ate a primeira regua; 1 +3V3, 2 GND, 3 OUT, 4 CLK, 5 DATA (SER da 1a regua), 6 reservado (OUT_B)"
+         note="fileira %d (%s): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)"
               % (k, "a da frente" if k == 1 else "a de tras" if k == 4 else "intermediaria"),
          datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
     R("R60%d" % k, "100k", "OUT_R%d" % k, "GND", "R%d" % k, note="pull-down da linha OUT da fileira (datasheet do TMAG5253)")
-R("R605", "100", "SCAN_CLK_P", "SCAN_CLK", "R5", note="serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)")
-R("R606", "100", "SCAN_DATA_P", "SCAN_DATA", "R5", note="serie no DATA comum, junto do J101")
+R("R605", "330", "SCAN_CLK_P", "SCAN_CLK", "R5", note="R8V4: 330 ohm (era 100; limita a 10 mA o pior caso de cabo errado); serie no CLK comum, junto do J101 (as 4 fileiras em paralelo)")
+R("R606", "330", "SCAN_DATA_P", "SCAN_DATA", "R5", note="R8V4: 330 ohm; serie no DATA comum, junto do J101")
 
 
 # ====================================================================== layout + writer
@@ -704,7 +705,7 @@ NOTES = {
           "O clique do volume (I1) liga/desliga (circuito na folha E); o do seletor (I2) e uma entrada comum (pino 6)."],
     "A": ["A · Alto-falante: MAX98357A no mesmo I2S do codec, mono (L+R)/2; SD_MODE pelo pino 12."],
     "R": ["R · Reguas: 4 conectores SH de 6 vias (um por fileira) levam +3V3, GND, OUT_Rk, CLK e DATA aos 74HC595 + 4 TMAG5253 de cada regua.",
-          "OUT_Rk: pull-down de 100 k na placa principal; CLK e DATA comuns as 4 fileiras, por 100 ohm. Sem sensores nem multiplexadores aqui."],
+          "OUT_Rk: pull-down de 100 k na placa principal; CLK e DATA comuns as 4 fileiras, por 330 ohm (R8V4, pinagem P6s). Sem sensores nem multiplexadores aqui."],
 }
 
 
