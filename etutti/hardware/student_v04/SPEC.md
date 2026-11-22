@@ -5,6 +5,20 @@ Responde ao PR #189 (relatórios da R6V4). Tudo o que não é mencionado aqui co
 
 **Regras que continuam:** resumos visuais de **planta e corte** para cada decisão; **nome da nota em cada tecla** em toda figura do teclado.
 
+**Regras gerais do projeto (novas, 22 nov, decisão do J; valem para esta e para todas as revisões seguintes):**
+1. **Escopo do teclado: só 32 teclas.**
+   - Todo detalhamento (modelo, fit check, figuras, custo, montagem, firmware) é feito só para a versão de **32 teclas**.
+   - As versões de 48, 64 e 80 teclas **não são detalhadas**. Delas só se faz a **validação do conceito modular**, numa seção curta:
+     - a régua universal se repete;
+     - a cadeia de ligação e a varredura crescem sem mudar a placa principal;
+     - o case cresce pela mesma regra de comprimento.
+   - Não fazer figuras, tabelas de custo nem fit check por tamanho.
+2. **Escopo de versões: só a Student V4.**
+   - No detalhamento das 32 teclas e no firmware, não considerar nenhuma versão anterior (Student V01, V2, V3, Lite, Viaggio, Pocket) nem o eTuttino, eTutti ou eTuttiChorus.
+   - A única versão em que se trabalha, que se compila e que se verifica é a **Student V4 modular**.
+   - Os arquivos das outras versões ficam no repositório como estão, congelados. Não são atualizados, nem mantidos compilando, nem conferidos.
+   - Podem ser lidos como referência, mas nada do relatório depende deles.
+
 **Ordem desta revisão (pedido do J):** o item 1 é um **estudo dedicado da ligação**, feito **antes de qualquer outro passo**. Nenhuma mudança de esquema, posicionamento ou case entra antes de o J aprovar a ligação. O item 3 (microfone) é só estudo de mesa, sem mudar a placa.
 
 ## Mudanças desde a R6V4
@@ -42,7 +56,7 @@ Responde ao PR #189 (relatórios da R6V4). Tudo o que não é mencionado aqui co
    - a posição deve deixar o plugue entrar com a régua **erguida** acima do degrau (o cabo tem de ser longo o bastante para isso) e depois descer sem dobrar o cabo contra a régua;
    - conferir com o desenho do fabricante a altura do cabeçalho e o raio de dobra mínimo do cabo de 28–32 AWG.
 3. **Posicionamento geral das réguas sobre o case** (pedido do J para decidir):
-   - planta de **todas** as réguas com conectores, rebaixos e caminho de cada cabo, em 32 teclas e numa versão modular (80);
+   - planta de **todas** as réguas da versão de 32 teclas com conectores, rebaixos e caminho de cada cabo (dos módulos, só a validação do conceito: regra geral 1);
    - cortes do rebaixo em cada fileira, porque os degraus mudam a altura: a fileira 1 tem o bolso mais raso.
 4. **Ordem dos pinos dos cabos:**
    - alguns cabos SH prontos são "invertidos" (com o cabo plano, os dois plugues ficam do mesmo lado, e o pino 1 de uma ponta liga ao pino 6 da outra);
@@ -53,7 +67,7 @@ Responde ao PR #189 (relatórios da R6V4). Tudo o que não é mencionado aqui co
    - como trocar uma régua;
    - como acrescentar um módulo.
 6. **Custo:**
-   - tabela 32/48/64/80 contra a G e a D: peças da régua, cabos de estoque, tipos Extended, impressão do case;
+   - custo da versão de 32 teclas contra a G e a D: peças da régua, cabos de estoque, tipos Extended, impressão do case (sem tabela por tamanho: regra geral 1);
    - o SH continua sendo o único conector das réguas.
 7. **Se a H não fechar:** dizer exatamente o que impede e qual a menor mudança que a faria funcionar. Exemplos de ajuste: outra posição do cabeçalho, outro comprimento de cabo, rebaixo mais fundo ou um degrau maior na fileira 1.
 
@@ -102,7 +116,7 @@ Continua **fechado** até o J escolher a ligação (item 1).
 |---|---|---|
 | 1 | Design + Eletrônica | **estudo da ligação H** (item 1): viabilidade, posicionamento geral das réguas, rebaixos, cabos, pinagem, montagem, custo; planta e corte com as notas; nenhuma mudança de projeto antes da aprovação do J |
 | 2 | Eletrônica | estudo de mesa do microfone ME 3 + eletreto (item 3), sem mudar a placa |
-| — | Programação e som | nada novo (aguarda o protótipo) |
+| 3 | Programação e som + integração | aplicar a regra geral 2 ao firmware: a V4 passa a ter **sketch próprio** (por exemplo `etutti/firmware/student_v4/`, só com o caminho da V4, 32 teclas); o sketch compartilhado `etutti_synth/` fica congelado como está; compila-se e confere-se só a V4. Atualizar `CLAUDE.md` e os arquivos dos agentes (`.claude/agents/`) com as duas regras gerais |
 | — | Roteamento | aguarda o portão P |
 
 **Perguntas que o Chat espera nos relatórios:**
