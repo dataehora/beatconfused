@@ -1,4 +1,100 @@
-# eTutti Student V4 — SPEC R13V4
+# eTutti Student V4 — SPEC R14V4
+
+Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #204 (relatórios da R13V4) e às cotações e pré-visualizações da JLCPCB que o J fez. Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R14V4".
+
+**Regras que continuam:**
+- planta, corte e isométrico da base a cada mudança dela;
+- nome da nota em cada tecla;
+- só o instrumento de 32 teclas detalhado até a compra;
+- só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+## Cotação e pré-visualização da JLCPCB (J, 23 nov)
+
+- **Placa principal: US$ 158** (5 placas, 2 montadas; ENIG, JLC04121H-7628, JST originais). A estimativa do Code era 113–138: o J manda ao Chat a decomposição; o Code usa US$ 158 como valor real.
+- **Régua R8, painel de 2: US$ 72** (5 painéis, 2 montados = 4 réguas). Bate com a estimativa (~73).
+- **Pré-visualização conferida pelo Chat contra as figuras do Code: bate.**
+  - **Principal:** J601–J604 na borda dos cabos, USB-C e os dois jacks na borda oposta, J401, J202, SW403, M.2 e os CIs nos lugares das figuras do Code, com o pino 1 no mesmo canto.
+  - **Régua:** J1 IN com corpo e boca, 8 TMAG5253, 74HC595 e C10 nos lugares.
+  - Os 4 modelos deslocados da EasyEDA não aparecem como problema na tela da JLCPCB.
+- O texto de serigrafia "J2 OUT (só nas E)" aparece na R8: aceito (ajuda a quem monta uma R8E).
+
+## Decisões
+
+1. **Costelas de pressão** nos bolsos sextavados das porcas M2 (opção proposta pelo design): a porca fica presa ao virar a base.
+2. **Pés adesivos** colados direto na face de baixo da base, sem rebaixo.
+3. **Recomendações do Chat aceitas** (o J não se opôs):
+   - os 15 parafusos da tampa em **M2 × 14**;
+   - a eletrônica confirma o giro do MicroMod pelo desenho da SparkFun;
+   - a página segue a ordem de montagem do design;
+   - os 4 modelos deslocados da EasyEDA ficam como estão.
+
+## Tarefas
+
+### 1. Espaço dos parafusos M2 das réguas: conferência e figura (Design)
+
+O J quer ver que os parafusos cabem. O relatório R11V4 diz "cabeça Ø3,8 sobre a régua, no vão de 3,1 mm entre carcaças (fit check 0)": explicar com números como uma cabeça de 3,8 cabe num vão de 3,1 (a que altura estão a cabeça, as abas das carcaças e a grade-régua).
+
+**Figura** `case/renders/regua_parafusos_r14.png`: vista de cima de uma R8, em escala, com a grade-régua e os 2 parafusos M2 encaixados:
+- **metade esquerda com as teclas KS-20 montadas;**
+- **metade direita sem teclas**, mostrando a grade, os furos dos pinos, os sensores, o 74HC595, o J1 e as cabeças dos parafusos;
+- cotas: cabeça até a carcaça vizinha, cabeça até a borda da janela da grade, cabeça até o trilho;
+- nome da nota sobre cada posição de tecla;
+- um corte no eixo de um parafuso (régua, grade, cabeça, porca no bolso com as costelas, trilho).
+
+**Acesso da ferramenta:** o passo 8 aperta os parafusos com as teclas já montadas. Conferir que a ponta da chave (dizer qual: Phillips #0, sextavada 1,5 ou Torx) e a haste passam entre as carcaças até a cabeça. Se não passarem, mudar a ordem (parafusos antes das teclas, sem tirar a grade) ou o parafuso (cabeça menor, sextavado interno), e dizer qual.
+
+### 2. Renders conferidos peça por peça (Design)
+
+- **Conectores e cabos fora do lugar nos renders:** no `passo_8` os plugues IN e os cabos aparecem soltos fora das réguas e do case, e há barras pretas finas passando das pontas das réguas (fileiras 1 a 3). Na JLCPCB os conectores estão no lugar certo da placa. Conferir cada peça da cena contra as placas e o case:
+  - J1 de cada régua na posição do CPL;
+  - cabos pelo túnel até J601–J604;
+  - grade-régua do comprimento certo.
+  
+  Corrigir e renderizar de novo todas as figuras afetadas.
+- **Janela do OLED** em `foto_instrumento`: parece um recorte vazio. Mostrar a tela (acesa, com a tela de estado do firmware, `telas_oled.py`) atrás do acrílico.
+- **Alto-falante, bateria, capas, parafusos, pés:** continuam primitivas com medidas reais (aceito).
+
+### 3. Costelas de pressão e pés (Design)
+
+- **Costelas** nos bolsos das 8 porcas M2, incluindo o bolso da porca fina da fileira 4 (parede fina, risco 5 do R11V4): número, altura e interferência (o design propõe ~0,1 mm), para MJF PA12. Conferir que a porca entra com o dedo ou com o parafuso puxando e não cai com a base virada.
+- **Pés adesivos:** escolher o produto (redondo, adesivo 3M, borracha ou silicone, altura 1–2 mm), posições a ≥ 9 mm de furos e bolsos, quantidade (6 ou mais se a figura pedir). Mandar para `fab/COMPRA.md` (loja e código).
+- Fit check das 32 teclas e figuras da base (planta, corte, isométrico, `iso_base_r14`).
+
+### 4. Eletrônica
+
+- **MicroMod:** confirmar giro e altura pelo desenho de montagem da SparkFun (folga de 0,3 mm sob a placa).
+- **`MODELOS_3D.md`:** corrigir a tabela da R4E (74HC595 com "1142,50 mm", o mesmo erro de unidade já tratado na R8).
+- **`fab/COMPRA.md`:** cotações reais (principal US$ 158, R8 US$ 72), M2 × 14 na tampa, pés escolhidos, total novo do protótipo.
+
+### 5. Página e manual (Programação e som)
+
+- Ordem e textos dos passos do design (R13V4), com M2 × 14, costelas de pressão (o passo 7 deixa de pedir fita) e pés adesivos.
+- **Botão PROG:** dizer que se aperta com um palito pelo furo de Ø3 da base, e mostrar onde fica (figura).
+- Incluir a figura da tarefa 1 no passo 8.
+- Valores reais da JLCPCB em "Peças" e "Como pedir".
+- Conferir no navegador outra vez (pt e en, 375 px, imagens e links).
+
+## Tarefas para o Code (R14V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Design | parafusos M2 das réguas: números, acesso da ferramenta e figura (tarefa 1) |
+| 2 | Design | costelas de pressão, pés adesivos, fit check e figuras da base (tarefa 3) |
+| 3 | Design | renders conferidos e refeitos (tarefa 2) |
+| 4 | Eletrônica | MicroMod, tabela R4E, `COMPRA.md` com valores reais (tarefa 4) |
+| 5 | Programação e som | página e manual atualizados (tarefa 5) |
+
+**Perguntas que o Chat espera nos relatórios:**
+- a figura dos parafusos sobre a régua e a resposta sobre o acesso da ferramenta (e a ordem de montagem, se mudar);
+- os renders corrigidos (o que estava fora do lugar e por quê);
+- o total do protótipo com as cotações reais;
+- o link da página atualizada.
+
+---
+
+# Anexo — SPEC R13V4 (referência)
 
 Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #201 (relatórios da R12V4) e à primeira cotação do J. Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R13V4".
