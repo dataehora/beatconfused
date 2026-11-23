@@ -1,4 +1,79 @@
-# eTutti Student V4 — SPEC R11V4
+# eTutti Student V4 — SPEC R12V4
+
+Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #199 (relatórios da R11V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R12V4".
+
+**Regras que continuam:**
+- planta, corte e isométrico da base a cada mudança dela;
+- nome da nota em cada tecla;
+- só o instrumento de 32 teclas detalhado até a compra;
+- só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+## Decisões do J sobre a R11V4
+
+1. **OLED Adafruit 326:** aprovado, compra à parte da JLCPCB, com o cabo Qwiic de estoque. J401 em SH de 4 vias, ordem Qwiic.
+2. **Portão P da placa principal: APROVADO.** O posicionamento está fechado (`POSICIONAMENTO.md` R11V4, `pcb/img/portao_p_r11_instrumento.png`).
+3. **Cotação das réguas:** o J cota os pacotes de `fab/regua/` (painel da R8 de 2 ou 4 réguas, réguas de reserva) e passa o resultado ao Chat. Isso não bloqueia o roteamento.
+
+## Mudanças desde a R11V4
+
+### 1. Roteamento da placa principal (Roteamento)
+
+O agente **`roteamento`** começa agora, sobre o posicionamento aprovado. As regras do agente valem:
+- **escolha do método:** o agente escolhe e justifica;
+- **etapas:** idempotentes e retomáveis (`pcb/rota/estado.json`), um commit por etapa terminada no ramo de trabalho, etapas curtas, as longas em segundo plano;
+- **nunca move peça:** se uma rede não fechar por falta de espaço, pede à eletrônica a menor mudança de posição, que volta ao J **só se mexer em conector, furo, contorno ou em algo que o case vê**;
+- **par USB** como no estudo E4 (≤ 10 mm, In2 = GND, Full Speed);
+- **aceitação:** DRC **0 erros e 0 avisos**, 0 ligações faltando, paridade 0, nenhuma trilha abaixo do mínimo, nenhuma ponta solta, nenhuma ilha de plano.
+
+### 2. Arquivos de fábrica da placa principal (Eletrônica, depois do roteamento)
+
+Com a placa roteada e aceita:
+- **Gerbers e furação;**
+- **BOM e CPL:**
+  - formato JLCPCB;
+  - montagem só no fundo;
+  - posições e giros pelo `cpl_jlc.py`;
+  - todos os códigos LCSC conferidos (encapsulamento contra footprint, estoque, Basic/Extended);
+  - C310 marcado "não montar";
+  - R305 = 0 Ω;
+  - J401 SH-4.
+- **Folha curta de cotação** no mesmo molde da das réguas (`fab/principal/LEIAME_COTACAO.md`): opções a marcar, quantidades mínimas, peças compradas à parte e montadas em casa (módulo MicroMod, OLED Adafruit 326, cabo Qwiic, cabos SH das réguas, bateria, alto-falante, teclas, parafusos e porcas), o que conferir na pré-visualização (pino 1 dos CIs, giro dos conectores SH, USB-C, jacks).
+- **Nada é encomendado.** O J cota quando quiser.
+
+### 3. Firmware da V4 (Programação e som; pode correr em paralelo)
+
+Conferir o sketch próprio da V4 contra a placa roteada:
+- pinos do `PINOS.md` contra as redes do J101;
+- 4 × R8 sem OUT, 9 pulsos por varredura;
+- OLED SSD1306 em 0x3D, imagem girada 180°;
+- menu "Tipo mic" e bias por registro.
+
+Compilar só a V4.
+
+### 4. Case (Design; só se o roteamento pedir)
+
+O case não muda nesta revisão. Se a eletrônica ou o roteamento pedirem uma mudança de algo que o case vê, o design a confere (fit check das 32 teclas) e a reporta antes de aplicar.
+
+## Tarefas para o Code (R12V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Roteamento | rotear a placa principal (item 1) até a aceitação |
+| 2 | Eletrônica | arquivos de fábrica e folha de cotação da principal (item 2) |
+| 3 | Programação e som | firmware da V4 contra a placa roteada (item 3) |
+| — | Design | só se o roteamento pedir (item 4) |
+
+**Perguntas que o Chat espera nos relatórios:**
+- a placa principal roteada e aceita (números do DRC);
+- qualquer mudança de posição que o roteamento tenha pedido;
+- o pacote de fábrica da principal pronto para cotar;
+- o firmware conferido contra a placa.
+
+---
+
+# Anexo — SPEC R11V4 (referência)
 
 Data: 22 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #197 (relatórios da R10V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R11V4".
