@@ -28,7 +28,7 @@ def tier(code, qty):
 def parts_usd(n_sens, n_595, n_conn, n_100nf, n_10uf, n_330, assembled_rulers, ruler_qty_each=1):
     """Parts cost of `assembled_rulers` rulers; qty drives the tier (low) or 1 piece (high)."""
     q = assembled_rulers
-    lines = {"C22401868": n_sens * q, "C730243": n_595 * q, "C56123098": n_conn * q, "C1525": n_100nf * q, "C15850": n_10uf * q, "C25104": n_330 * q}
+    lines = {"C22401868": n_sens * q, "C730243": n_595 * q, "C160405": n_conn * q, "C1525": n_100nf * q, "C15850": n_10uf * q, "C25104": n_330 * q}
     low = sum(tier(c, n) * n for c, n in lines.items())
     high = sum(P[c]["tiers"][0][1] * n for c, n in lines.items())
     return round(low, 2), round(high, 2)

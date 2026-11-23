@@ -824,7 +824,7 @@
 		)
 		(comp
 			(ref "J1")
-			(value "XY-SM06B-SRSS-TB")
+			(value "SM06B-SRSS-TB(LF)(SN)")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 			(description "entrada (P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO = SER do 595); cabo JST A06SR06SR30K51B vindo da placa principal ou do OUT da regua anterior; no fundo, faixa de tras, boca para tras; u = 5,9")
@@ -832,7 +832,7 @@
 				(field
 					(name "Codigo") "S10")
 				(field
-					(name "LCSC") "C56123098")
+					(name "LCSC") "C160405")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -853,7 +853,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C56123098")
+				(value "C160405")
 			)
 			(property
 				(name "Montagem")
@@ -911,7 +911,7 @@
 		)
 		(comp
 			(ref "J2")
-			(value "XY-SM06B-SRSS-TB")
+			(value "SM06B-SRSS-TB(LF)(SN)")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 			(description "saida (P6s, igual ao J1; o pino 6 = QH' do 595 por 330 ohm) para a regua seguinte da fileira; no fundo, faixa de tras, boca para tras; R8V4: u = 47,5 (era 68,1) para o cabo de 45,8-50,8 mm fechar")
@@ -919,7 +919,7 @@
 				(field
 					(name "Codigo") "S11")
 				(field
-					(name "LCSC") "C56123098")
+					(name "LCSC") "C160405")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -940,7 +940,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C56123098")
+				(value "C160405")
 			)
 			(property
 				(name "Montagem")

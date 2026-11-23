@@ -85,18 +85,18 @@ M.part(REF595, "74HC595BQ", "74HC595BQ,115", n595,
     note="registrador de deslocamento 8 bits em DHVQFN-16 (2,5 x 3,5 mm): o SOIC-16 (C5947, Basic) tem 6,9 mm de pads e nao cabe numa "
          "regua de 14 mm com pinos a 10,16 mm; QA..QD ligam o EN dos sensores 1..4, QE..QH sem uso; QH' = cascata; pad 17 no GND",
     datasheet="https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
-# R8V4 (ligacao H, SPEC R8V4): J1 = entrada e J2 = saida, os dois SM06B-SRSS-TB (clone C56123098) no fundo, boca para tras;
+# R8V4 (ligacao H, SPEC R8V4): J1 = entrada e J2 = saida, os dois SM06B-SRSS-TB (clone C160405) no fundo, boca para tras;
 # cabo de estoque JST A06SR06SR30K51B (reto, pino k -> pino k). Pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO.
 # Os pads de solda LK1/LK2 da R5V4 (elo soldado, opcao D) saem: na H nao ha solda.
-M.part("J1", "Conn_01x06_MountingPin", "XY-SM06B-SRSS-TB",
+M.part("J1", "Conn_01x06_MountingPin", "SM06B-SRSS-TB(LF)(SN)",
        {"1": "+3V3", "2": "GND", "3": "OUT", "4": "GND", "5": "CLK", "6": "SER", "MP": "GND"}, "S%d" % (NPOS + 2), fp=SH_FP,
-       lcsc="C56123098", cls="estendida", price=0.069, status="conferir",
+       lcsc="C160405", cls="estendida", price=0.897, status="conferir",
        note="entrada (P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO = SER do 595); cabo JST A06SR06SR30K51B vindo da placa principal ou do OUT da regua anterior; "
             "no fundo, faixa de tras, boca para tras; u = 5,9",
        datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-M.part("J2", "Conn_01x06_MountingPin", "XY-SM06B-SRSS-TB",
+M.part("J2", "Conn_01x06_MountingPin", "SM06B-SRSS-TB(LF)(SN)",
        {"1": "+3V3", "2": "GND", "3": "OUT", "4": "GND", "5": "CLK", "6": "QHP_J", "MP": "GND"}, "S%d" % (NPOS + 3), fp=SH_FP,
-       lcsc="C56123098", cls="estendida", price=0.069, status="conferir",
+       lcsc="C160405", cls="estendida", price=0.897, status="conferir",
        note="saida (P6s, igual ao J1; o pino 6 = QH' do 595 por 330 ohm) para a regua seguinte da fileira; no fundo, faixa de tras, boca para tras; "
             "R8V4: u = 47,5 (era 68,1) para o cabo de 45,8-50,8 mm fechar",
        datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")

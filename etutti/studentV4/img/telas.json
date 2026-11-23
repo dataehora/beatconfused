@@ -1,0 +1,781 @@
+{
+ "screens": [
+  {
+   "name": "status",
+   "group": "status",
+   "caption": {
+    "pt": "Tela comum: bateria, registro (MM = VIOLIN), volume, saída (alto-falante), sem microfone.",
+    "en": "The ordinary screen: battery, register (MM = VIOLIN), volume, output (speaker), no microphone."
+   }
+  },
+  {
+   "name": "status_fone",
+   "group": "status",
+   "caption": {
+    "pt": "Com fone no jack OUT: o texto da saída passa a \"fone\" e o alto-falante se cala.",
+    "en": "With headphones in the OUT jack: the output reads \"hp\" and the speaker goes quiet."
+   }
+  },
+  {
+   "name": "status_carga",
+   "group": "status",
+   "caption": {
+    "pt": "USB ligado e carregando: \"CHG\" no lugar de \"BAT\" (sem carga: \"USB\").",
+    "en": "USB plugged in and charging: \"CHG\" instead of \"BAT\" (charged: \"USB\")."
+   }
+  },
+  {
+   "name": "status_bateria_baixa",
+   "group": "status",
+   "caption": {
+    "pt": "Bateria baixa: a barra quase vazia (o LED pisca vermelho devagar abaixo de 3,5 V).",
+    "en": "Low battery: the bar is almost empty (the LED blinks red slowly under 3.5 V)."
+   }
+  },
+  {
+   "name": "status_repouso",
+   "group": "status",
+   "caption": {
+    "pt": "Cinco minutos sem tocar: \"repouso\" (o amplificador descansa; aos 15 minutos o instrumento desliga).",
+    "en": "Five minutes without playing: \"rest\" (the amplifier rests; after 15 minutes the instrument switches off)."
+   }
+  },
+  {
+   "name": "status_registro",
+   "group": "status",
+   "caption": {
+    "pt": "Girar o seletor muda o registro (aqui BANDONEON); o LED verde pisca até você clicar para guardar.",
+    "en": "Turning the selector changes the register (here BANDONEON); the green LED blinks until you click to keep it."
+   }
+  },
+  {
+   "name": "status_mic",
+   "group": "status",
+   "caption": {
+    "pt": "Com um microfone no IN e fone: \"voz\" quando algum efeito de voz está ligado, mais o medidor do nível do microfone.",
+    "en": "With a microphone in IN and headphones: \"voice\" when a voice effect is on, plus the microphone level meter."
+   }
+  },
+  {
+   "name": "status_mic_nota",
+   "group": "status",
+   "caption": {
+    "pt": "Harmonizador que segue as teclas: a nota que a tela ouve na sua voz (aqui A4).",
+    "en": "Harmonizer following the keys: the note the screen hears in your voice (here A4)."
+   }
+  },
+  {
+   "name": "status_sem_mic_voz",
+   "group": "status",
+   "caption": {
+    "pt": "Efeito de voz ligado, mas sem microfone: a tela avisa \"sem mic\".",
+    "en": "A voice effect is on but no microphone: the screen says \"no mic\"."
+   }
+  },
+  {
+   "name": "status_voz_muda",
+   "group": "status",
+   "caption": {
+    "pt": "Microfone e alto-falante, sem a voz no alto-falante: \"voz muda\" (para evitar microfonia).",
+    "en": "Microphone and speaker, voice not on the speaker: \"voice off\" (to avoid feedback)."
+   }
+  },
+  {
+   "name": "status_microfonia",
+   "group": "status",
+   "caption": {
+    "pt": "Voz no alto-falante ligada: \"!microfonia\" pisca ao lado do volume.",
+    "en": "Voice on the speaker switched on: \"!feedback\" blinks beside the volume."
+   }
+  },
+  {
+   "name": "aviso_a",
+   "group": "aviso",
+   "caption": {
+    "pt": "Ao ligar a voz no alto-falante, este aviso ocupa a tela por 4 s (quadro 1 de 2, a moldura pisca).",
+    "en": "Switching the voice onto the speaker shows this warning for 4 s (frame 1 of 2, the border blinks)."
+   }
+  },
+  {
+   "name": "aviso_b",
+   "group": "aviso",
+   "caption": {
+    "pt": "O mesmo aviso, quadro 2 de 2.",
+    "en": "The same warning, frame 2 of 2."
+   }
+  },
+  {
+   "name": "menu_principal",
+   "group": "menu",
+   "caption": {
+    "pt": "Clique longo (0,7 s) no seletor abre o menu. Com microfone: Voz, Captação, Saída, Som, Sistema.",
+    "en": "A long click (0.7 s) on the selector opens the menu. With a microphone: Voice, Input, Output, Sound, System."
+   }
+  },
+  {
+   "name": "menu_principal_sem_mic",
+   "group": "menu",
+   "caption": {
+    "pt": "Sem microfone no IN, as páginas Voz e Captação não aparecem.",
+    "en": "With no microphone in IN, the Voice and Input pages are not listed."
+   }
+  },
+  {
+   "name": "menu_voz",
+   "group": "menu",
+   "caption": {
+    "pt": "Voz (só com microfone): voz seca, vocoder, harmonizador, modo, intervalo, eco e reverb da voz.",
+    "en": "Voice (only with a microphone): dry voice, vocoder, harmonizer, mode, interval, echo and voice reverb."
+   }
+  },
+  {
+   "name": "menu_voz_rolada",
+   "group": "menu",
+   "caption": {
+    "pt": "A lista rola: cinco linhas por vez, com \"posição/total\" no canto.",
+    "en": "The list scrolls: five lines at a time, with \"position/total\" in the corner."
+   }
+  },
+  {
+   "name": "menu_voz_exato",
+   "group": "menu",
+   "caption": {
+    "pt": "Modo do harmonizador \"Exato\": somem o intervalo e a força; entram \"Vozes\" e \"Oitava\".",
+    "en": "Harmonizer mode \"Exact\": interval and strength disappear; \"Voices\" and \"Octave\" appear."
+   }
+  },
+  {
+   "name": "menu_voz_ajuda",
+   "group": "menu",
+   "caption": {
+    "pt": "Modo \"Ajuda\": aparece a \"Intensidade\" (quanto a voz é puxada para a nota).",
+    "en": "Mode \"Assist\": the \"Strength\" line appears (how far the voice is pulled to the note)."
+   }
+  },
+  {
+   "name": "menu_entrada",
+   "group": "menu",
+   "caption": {
+    "pt": "Captação (só com microfone): ganho, porta de ruído (limiar, razão, ataque, retenção, soltura), passa-altas, antimicrofonia.",
+    "en": "Input (only with a microphone): gain, noise gate (threshold, ratio, attack, hold, release), high-pass, anti-feedback."
+   }
+  },
+  {
+   "name": "menu_entrada_rolada",
+   "group": "menu",
+   "caption": {
+    "pt": "Final da lista da Captação: \"Mic padrão\" (ajustes de fábrica de um headset) e \"Limpar notch\".",
+    "en": "End of the Input list: \"Mic default\" (factory settings for a headset) and \"Clear notch\"."
+   }
+  },
+  {
+   "name": "menu_saida",
+   "group": "menu",
+   "caption": {
+    "pt": "Saída: volume, para onde vai a voz, nível das teclas, equalizador do alto-falante (corte e pico de 1 kHz).",
+    "en": "Output: volume, where the voice goes, key level, speaker equaliser (cutoff and 1 kHz dip)."
+   }
+  },
+  {
+   "name": "menu_saida_sem_mic",
+   "group": "menu",
+   "caption": {
+    "pt": "Sem microfone, a Saída perde \"Saída voz\" e \"Teclas\".",
+    "en": "With no microphone, Output loses \"Voice out\" and \"Keys\"."
+   }
+  },
+  {
+   "name": "menu_som",
+   "group": "menu",
+   "caption": {
+    "pt": "Som: registro (um clique troca ao próximo), reverb e curva de velocity.",
+    "en": "Sound: register (a click goes to the next), reverb and velocity curve."
+   }
+  },
+  {
+   "name": "menu_sistema",
+   "group": "menu",
+   "caption": {
+    "pt": "Sistema: salvar, zerar a voz, calibrar as teclas, teste de teclas, tipo de microfone, idioma.",
+    "en": "System: save, reset voice, calibrate keys, key test, microphone type, language."
+   }
+  },
+  {
+   "name": "menu_sistema_rolado",
+   "group": "menu",
+   "caption": {
+    "pt": "Final do Sistema: \"Tipo mic\" (Auto, Eletreto, Dinâmico) e \"Idioma\".",
+    "en": "End of System: \"Mic type\" (Auto, Electret, Dynamic) and \"Language\"."
+   }
+  },
+  {
+   "name": "menu_tipo_mic",
+   "group": "menu",
+   "caption": {
+    "pt": "\"Tipo mic\" em \"Dinâmico\": o bias do microfone fica desligado (gravado na hora).",
+    "en": "\"Mic type\" set to \"Dynamic\": the microphone bias is off (kept at once)."
+   }
+  },
+  {
+   "name": "menu_idioma",
+   "group": "menu",
+   "caption": {
+    "pt": "O idioma do menu troca na hora (Português / English) e fica guardado.",
+    "en": "The menu language changes at once (Português / English) and is kept."
+   }
+  },
+  {
+   "name": "menu_salvo",
+   "group": "menu",
+   "caption": {
+    "pt": "Clicar em \"Salvar\" mostra \"Salvo\" por 1,5 s na barra de título.",
+    "en": "Clicking \"Save\" shows \"Saved\" for 1.5 s in the title bar."
+   }
+  },
+  {
+   "name": "menu_calibrado",
+   "group": "menu",
+   "caption": {
+    "pt": "\"Calibrar\" esquece e reaprende a amplitude de cada tecla: \"Calibrado\".",
+    "en": "\"Calibrate\" forgets and relearns each key's travel: \"Calibrated\"."
+   }
+  },
+  {
+   "name": "menu_registro",
+   "group": "menu",
+   "caption": {
+    "pt": "Em Som > Registro, o volume gira muda o registro sem sair do menu.",
+    "en": "In Sound > Register, turning the volume knob changes the register without leaving the menu."
+   }
+  },
+  {
+   "name": "menu_volume",
+   "group": "menu",
+   "caption": {
+    "pt": "Em Saída > Volume, o botão de volume muda o valor da linha sob o cursor.",
+    "en": "In Output > Volume, the volume knob changes the value of the line under the cursor."
+   }
+  }
+ ],
+ "tree": {
+  "pt": [
+   {
+    "name": "Voz",
+    "needsMic": true,
+    "children": [
+     {
+      "name": "Voz seca",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_VOICE_DRY"
+     },
+     {
+      "name": "Vocoder",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_VOCODER"
+     },
+     {
+      "name": "Harmoniz.",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_HARM"
+     },
+     {
+      "name": "Modo harm.",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_HARM_MODE"
+     },
+     {
+      "name": "Intervalo",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_HARM_INT"
+     },
+     {
+      "name": "Intensidade",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_HARM_HELP"
+     },
+     {
+      "name": "Vozes",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_HARM_VOICES"
+     },
+     {
+      "name": "Oitava",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_HARM_FOLD"
+     },
+     {
+      "name": "Eco",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_ECHO"
+     },
+     {
+      "name": "Tempo eco",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_ECHO_TIME"
+     },
+     {
+      "name": "Realim. eco",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_ECHO_FB"
+     },
+     {
+      "name": "Reverb voz",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_VOICE_REV"
+     }
+    ]
+   },
+   {
+    "name": "Captação",
+    "needsMic": true,
+    "children": [
+     {
+      "name": "Ganho mic",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_MIC_GAIN"
+     },
+     {
+      "name": "Limiar",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_GATE_THR"
+     },
+     {
+      "name": "Razão",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_GATE_RATIO"
+     },
+     {
+      "name": "Ataque",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_GATE_ATK"
+     },
+     {
+      "name": "Retenção",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_GATE_HOLD"
+     },
+     {
+      "name": "Soltura",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_GATE_REL"
+     },
+     {
+      "name": "Passa-altas",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_HPF"
+     },
+     {
+      "name": "Mic padrão",
+      "kind": "MK_ACTION",
+      "needsMic": true,
+      "id": "M_CLOSE_MIC"
+     },
+     {
+      "name": "Antimicrof.",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_ANTI_FB"
+     },
+     {
+      "name": "Limpar notch",
+      "kind": "MK_ACTION",
+      "needsMic": true,
+      "id": "M_CLEAR_NOTCH"
+     }
+    ]
+   },
+   {
+    "name": "Saída",
+    "needsMic": false,
+    "children": [
+     {
+      "name": "Volume",
+      "kind": "MK_LEVEL",
+      "needsMic": false,
+      "id": "M_VOLUME"
+     },
+     {
+      "name": "Saída voz",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_VOICE_OUT"
+     },
+     {
+      "name": "Teclas",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_KEYS_LEVEL"
+     },
+     {
+      "name": "EQ alto-f.",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_SPK_EQ"
+     },
+     {
+      "name": "Corte",
+      "kind": "MK_LEVEL",
+      "needsMic": false,
+      "id": "M_EQ_CUT"
+     },
+     {
+      "name": "Pico 1k",
+      "kind": "MK_LEVEL",
+      "needsMic": false,
+      "id": "M_EQ_DIP"
+     }
+    ]
+   },
+   {
+    "name": "Som",
+    "needsMic": false,
+    "children": [
+     {
+      "name": "Registro",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_REGISTER"
+     },
+     {
+      "name": "Reverb",
+      "kind": "MK_LEVEL",
+      "needsMic": false,
+      "id": "M_AMBIENCE"
+     },
+     {
+      "name": "Curva vel.",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_VEL_CURVE"
+     }
+    ]
+   },
+   {
+    "name": "Sistema",
+    "needsMic": false,
+    "children": [
+     {
+      "name": "Salvar",
+      "kind": "MK_ACTION",
+      "needsMic": false,
+      "id": "M_SAVE"
+     },
+     {
+      "name": "Zerar voz",
+      "kind": "MK_ACTION",
+      "needsMic": false,
+      "id": "M_RESET_VOICE"
+     },
+     {
+      "name": "Calibrar",
+      "kind": "MK_ACTION",
+      "needsMic": false,
+      "id": "M_CAL_KEYS"
+     },
+     {
+      "name": "Teste tec.",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_KEY_TEST"
+     },
+     {
+      "name": "Tipo mic",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_MIC_TYPE"
+     },
+     {
+      "name": "Idioma",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_LANGUAGE"
+     }
+    ]
+   }
+  ],
+  "en": [
+   {
+    "name": "Voice",
+    "needsMic": true,
+    "children": [
+     {
+      "name": "Dry voice",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_VOICE_DRY"
+     },
+     {
+      "name": "Vocoder",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_VOCODER"
+     },
+     {
+      "name": "Harmonizer",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_HARM"
+     },
+     {
+      "name": "Harm mode",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_HARM_MODE"
+     },
+     {
+      "name": "Interval",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_HARM_INT"
+     },
+     {
+      "name": "Strength",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_HARM_HELP"
+     },
+     {
+      "name": "Voices",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_HARM_VOICES"
+     },
+     {
+      "name": "Octave",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_HARM_FOLD"
+     },
+     {
+      "name": "Echo",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_ECHO"
+     },
+     {
+      "name": "Echo time",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_ECHO_TIME"
+     },
+     {
+      "name": "Echo fdbk",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_ECHO_FB"
+     },
+     {
+      "name": "Voice rev",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_VOICE_REV"
+     }
+    ]
+   },
+   {
+    "name": "Input",
+    "needsMic": true,
+    "children": [
+     {
+      "name": "Mic gain",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_MIC_GAIN"
+     },
+     {
+      "name": "Threshold",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_GATE_THR"
+     },
+     {
+      "name": "Ratio",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_GATE_RATIO"
+     },
+     {
+      "name": "Attack",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_GATE_ATK"
+     },
+     {
+      "name": "Hold",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_GATE_HOLD"
+     },
+     {
+      "name": "Release",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_GATE_REL"
+     },
+     {
+      "name": "High-pass",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_HPF"
+     },
+     {
+      "name": "Mic default",
+      "kind": "MK_ACTION",
+      "needsMic": true,
+      "id": "M_CLOSE_MIC"
+     },
+     {
+      "name": "Anti-feedbk",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_ANTI_FB"
+     },
+     {
+      "name": "Clear notch",
+      "kind": "MK_ACTION",
+      "needsMic": true,
+      "id": "M_CLEAR_NOTCH"
+     }
+    ]
+   },
+   {
+    "name": "Output",
+    "needsMic": false,
+    "children": [
+     {
+      "name": "Volume",
+      "kind": "MK_LEVEL",
+      "needsMic": false,
+      "id": "M_VOLUME"
+     },
+     {
+      "name": "Voice out",
+      "kind": "MK_ENUM",
+      "needsMic": true,
+      "id": "M_VOICE_OUT"
+     },
+     {
+      "name": "Keys",
+      "kind": "MK_LEVEL",
+      "needsMic": true,
+      "id": "M_KEYS_LEVEL"
+     },
+     {
+      "name": "Speaker EQ",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_SPK_EQ"
+     },
+     {
+      "name": "Cutoff",
+      "kind": "MK_LEVEL",
+      "needsMic": false,
+      "id": "M_EQ_CUT"
+     },
+     {
+      "name": "1k dip",
+      "kind": "MK_LEVEL",
+      "needsMic": false,
+      "id": "M_EQ_DIP"
+     }
+    ]
+   },
+   {
+    "name": "Sound",
+    "needsMic": false,
+    "children": [
+     {
+      "name": "Register",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_REGISTER"
+     },
+     {
+      "name": "Reverb",
+      "kind": "MK_LEVEL",
+      "needsMic": false,
+      "id": "M_AMBIENCE"
+     },
+     {
+      "name": "Vel curve",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_VEL_CURVE"
+     }
+    ]
+   },
+   {
+    "name": "System",
+    "needsMic": false,
+    "children": [
+     {
+      "name": "Save",
+      "kind": "MK_ACTION",
+      "needsMic": false,
+      "id": "M_SAVE"
+     },
+     {
+      "name": "Reset voice",
+      "kind": "MK_ACTION",
+      "needsMic": false,
+      "id": "M_RESET_VOICE"
+     },
+     {
+      "name": "Calibrate",
+      "kind": "MK_ACTION",
+      "needsMic": false,
+      "id": "M_CAL_KEYS"
+     },
+     {
+      "name": "Key test",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_KEY_TEST"
+     },
+     {
+      "name": "Mic type",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_MIC_TYPE"
+     },
+     {
+      "name": "Language",
+      "kind": "MK_ENUM",
+      "needsMic": false,
+      "id": "M_LANGUAGE"
+     }
+    ]
+   }
+  ]
+ },
+ "registers": [
+  "BASSOON",
+  "BANDONEON",
+  "VIOLIN",
+  "OBOE",
+  "PICCOLO",
+  "ORGAN",
+  "CLARINET"
+ ],
+ "w": 528,
+ "h": 272
+}

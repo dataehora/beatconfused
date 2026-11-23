@@ -1,93 +1,24 @@
 {
- "pecas": 79,
+ "pecas": 14,
  "sem_footprint": [],
- "ambiguas": [
-  [
-   "SW403",
-   "SW_Push_1P1T_XKB_TS-1187A",
-   [
-    180
-   ]
-  ]
- ],
+ "ambiguas": [],
  "footprints": {
-  "C_0805_2012Metric": {
-   "lcsc": "C15850",
-   "refs": [
-    "C101",
-    "C201",
-    "C202",
-    "C203",
-    "C206",
-    "C207",
-    "C208",
-    "C501"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.05,
-   "antes_depois": [
-    [
-     null,
-     0,
-     180.0
-    ],
-    [
-     null,
-     180,
-     0.0
-    ],
-    [
-     null,
-     270,
-     -90.0
-    ],
-    [
-     null,
-     90,
-     90.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
   "C_0402_1005Metric": {
    "lcsc": "C1525",
    "refs": [
-    "C102",
-    "C204",
-    "C205",
-    "C209",
-    "C301",
-    "C302",
-    "C303",
-    "C304",
-    "C305",
-    "C306",
-    "C307",
-    "C308",
-    "C309",
-    "C310",
-    "C311",
-    "C502"
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5"
    ],
    "como": "numeros",
    "erro_max_mm": 0.06,
    "antes_depois": [
     [
      null,
-     0,
-     180.0
-    ],
-    [
-     null,
      180,
      0.0
-    ],
-    [
-     null,
-     270,
-     -90.0
     ],
     [
      null,
@@ -99,172 +30,18 @@
    "lado": "baixo",
    "rotacao_mudou_em": []
   },
-  "C_0603_1608Metric": {
-   "lcsc": "C19702",
+  "C_0805_2012Metric": {
+   "lcsc": "C15850",
    "refs": [
-    "C210"
+    "C6"
    ],
    "como": "numeros",
-   "erro_max_mm": 0.075,
+   "erro_max_mm": 0.05,
    "antes_depois": [
     [
      null,
      90,
      90.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "D_SOD-123F": {
-   "lcsc": "C151296",
-   "refs": [
-    "D201"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.25,
-   "antes_depois": [
-    [
-     null,
-     180,
-     0.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "SOT-23": {
-   "lcsc": "C68978",
-   "refs": [
-    "D202",
-    "D203",
-    "D205",
-    "D206",
-    "Q203"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.283,
-   "antes_depois": [
-    [
-     null,
-     0,
-     0.0
-    ],
-    [
-     null,
-     270,
-     90.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "L_0603_1608Metric": {
-   "lcsc": "C1002",
-   "refs": [
-    "FB301"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.088,
-   "antes_depois": [
-    [
-     null,
-     180,
-     0.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "M.2_E_H4.2_UMAX_91302-42-067": {
-   "lcsc": "C48985906",
-   "refs": [
-    "J101"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.0,
-   "antes_depois": [
-    [
-     null,
-     270,
-     90.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "USB_C_Receptacle_HRO_TYPE-C-31-M-12": {
-   "lcsc": "C165948",
-   "refs": [
-    "J201"
-   ],
-   "como": "posicoes",
-   "erro_max_mm": 0.118,
-   "antes_depois": [
-    [
-     null,
-     90,
-     90.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal": {
-   "lcsc": "C265101",
-   "refs": [
-    "J202"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.0,
-   "antes_depois": [
-    [
-     null,
-     180,
-     180.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "Jack_3.5mm_PJ-327A_SMD": {
-   "lcsc": "C49284723",
-   "refs": [
-    "J301",
-    "J302"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.234,
-   "antes_depois": [
-    [
-     null,
-     180,
-     -90.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal": {
-   "lcsc": "C51940130",
-   "refs": [
-    "J401"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.0,
-   "antes_depois": [
-    [
-     null,
-     180,
-     0.0
     ]
    ],
    "deslocamento_mm": 0.0,
@@ -272,38 +49,18 @@
    "rotacao_mudou_em": []
   },
   "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal": {
-   "lcsc": "C56123098",
+   "lcsc": "C160405",
    "refs": [
-    "J601",
-    "J602",
-    "J603",
-    "J604"
+    "J1",
+    "J2"
    ],
    "como": "numeros",
    "erro_max_mm": 0.0,
    "antes_depois": [
     [
      null,
-     270,
-     -90.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "L_Changjiang_FNR4020S": {
-   "lcsc": "C167825",
-   "refs": [
-    "L201"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.0,
-   "antes_depois": [
-    [
-     null,
-     90,
-     90.0
+     180,
+     0.0
     ]
    ],
    "deslocamento_mm": 0.0,
@@ -311,56 +68,13 @@
    "rotacao_mudou_em": []
   },
   "R_0402_1005Metric": {
-   "lcsc": "C25076",
+   "lcsc": "C25104",
    "refs": [
-    "R105",
-    "R201",
-    "R202",
-    "R203",
-    "R204",
-    "R205",
-    "R206",
-    "R208",
-    "R209",
-    "R210",
-    "R211",
-    "R212",
-    "R213",
-    "R214",
-    "R215",
-    "R216",
-    "R301",
-    "R302",
-    "R303",
-    "R304",
-    "R305",
-    "R306",
-    "R501",
-    "R601",
-    "R602",
-    "R603",
-    "R604",
-    "R605",
-    "R606"
+    "R1"
    ],
    "como": "numeros",
    "erro_max_mm": 0.077,
    "antes_depois": [
-    [
-     null,
-     0,
-     180.0
-    ],
-    [
-     null,
-     180,
-     0.0
-    ],
-    [
-     null,
-     270,
-     -90.0
-    ],
     [
      null,
      90,
@@ -371,17 +85,20 @@
    "lado": "baixo",
    "rotacao_mudou_em": []
   },
-  "SW_Push_1P1T_XKB_TS-1187A": {
-   "lcsc": "C318884",
+  "Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm": {
+   "lcsc": "C22401868",
    "refs": [
-    "SW403"
+    "U1",
+    "U2",
+    "U3",
+    "U4"
    ],
-   "como": "posicoes",
-   "erro_max_mm": 0.025,
+   "como": "numeros",
+   "erro_max_mm": 0.075,
    "antes_depois": [
     [
      null,
-     0,
+     90,
      180.0
     ]
    ],
@@ -389,108 +106,18 @@
    "lado": "baixo",
    "rotacao_mudou_em": []
   },
-  "SOT-23-6": {
-   "lcsc": "C7519",
+  "DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm": {
+   "lcsc": "C730243",
    "refs": [
-    "U201"
+    "U5"
    ],
    "como": "numeros",
-   "erro_max_mm": 0.012,
+   "erro_max_mm": 0.03,
    "antes_depois": [
     [
      null,
-     270,
-     180.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm": {
-   "lcsc": "C54313",
-   "refs": [
-    "U202"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.063,
-   "antes_depois": [
-    [
-     null,
-     0,
-     180.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "Texas_DRC0010J": {
-   "lcsc": "C28060",
-   "refs": [
-    "U204"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.1,
-   "antes_depois": [
-    [
-     null,
-     0,
-     180.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm": {
-   "lcsc": "C2651833",
-   "refs": [
-    "U301"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.043,
-   "antes_depois": [
-    [
-     null,
-     270,
-     180.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "SOT-23-3": {
-   "lcsc": "C347373",
-   "refs": [
-    "U302"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.048,
-   "antes_depois": [
-    [
-     null,
-     0,
+     90,
      0.0
-    ]
-   ],
-   "deslocamento_mm": 0.0,
-   "lado": "baixo",
-   "rotacao_mudou_em": []
-  },
-  "TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm": {
-   "lcsc": "C910544",
-   "refs": [
-    "U501"
-   ],
-   "como": "numeros",
-   "erro_max_mm": 0.063,
-   "antes_depois": [
-    [
-     null,
-     270,
-     180.0
     ]
    ],
    "deslocamento_mm": 0.0,

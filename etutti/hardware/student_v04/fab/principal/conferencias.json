@@ -183,24 +183,24 @@
    "preco_1": 0.2194
   },
   {
-   "lcsc": "C51940130",
-   "valor": "XY-SM04B-SRSS-TB",
+   "lcsc": "C160404",
+   "valor": "SM04B-SRSS-TB(LF)(SN)",
    "footprint": "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
    "qtd": 1,
    "classe": "Extended",
-   "estoque": 17958,
-   "modelo": "XY-SM04B-SRSS-TB",
-   "preco_1": 0.0393
+   "estoque": 4511,
+   "modelo": "SM04B-SRSS-TB(LF)(SN)",
+   "preco_1": 0.2147
   },
   {
-   "lcsc": "C56123098",
-   "valor": "XY-SM06B-SRSS-TB",
+   "lcsc": "C160405",
+   "valor": "SM06B-SRSS-TB(LF)(SN)",
    "footprint": "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal",
    "qtd": 4,
    "classe": "Extended",
-   "estoque": 5971,
-   "modelo": "XY-SM06B-SRSS-TB",
-   "preco_1": 0.0691
+   "estoque": 16812,
+   "modelo": "SM06B-SRSS-TB(LF)(SN)",
+   "preco_1": 0.8966
   },
   {
    "lcsc": "C167825",
@@ -384,5 +384,5 @@
   }
  ],
  "tipos_extended": 14,
- "custo_pecas_USD_1_placa": 17.84
+ "custo_pecas_USD_1_placa": 21.33
 }

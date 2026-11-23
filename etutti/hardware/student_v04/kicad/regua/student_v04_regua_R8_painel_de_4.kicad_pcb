@@ -16187,7 +16187,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -16250,7 +16250,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 180)
 			(layer "B.SilkS")
 			(hide yes)
@@ -19849,7 +19849,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -19912,7 +19912,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 180)
 			(layer "B.SilkS")
 			(hide yes)
@@ -22789,7 +22789,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -22852,7 +22852,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 180)
 			(layer "B.SilkS")
 			(hide yes)
@@ -24212,7 +24212,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -24275,7 +24275,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 180)
 			(layer "B.SilkS")
 			(hide yes)
@@ -32322,7 +32322,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -32385,7 +32385,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 180)
 			(layer "B.SilkS")
 			(hide yes)
@@ -33152,7 +33152,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -33215,7 +33215,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 180)
 			(layer "B.SilkS")
 			(hide yes)
@@ -35755,7 +35755,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -35818,7 +35818,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 180)
 			(layer "B.SilkS")
 			(hide yes)
@@ -36098,7 +36098,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -36161,7 +36161,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 180)
 			(layer "B.SilkS")
 			(hide yes)

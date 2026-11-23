@@ -3118,7 +3118,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 90)
 			(layer "B.Fab")
 			(hide yes)
@@ -3180,7 +3180,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 90)
 			(layer "B.SilkS")
 			(uuid "16b70d53-c650-4f7b-b32b-424a018366aa")
@@ -8618,7 +8618,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 90)
 			(layer "B.Fab")
 			(hide yes)
@@ -8680,7 +8680,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 90)
 			(layer "B.SilkS")
 			(uuid "7eba54a6-cb3c-4fab-b681-cc12e8782974")
@@ -11932,7 +11932,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 90)
 			(layer "B.Fab")
 			(hide yes)
@@ -11994,7 +11994,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 90)
 			(layer "B.SilkS")
 			(uuid "6787e37b-e775-45c4-95e0-7a1142676f76")
@@ -17896,7 +17896,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM04B-SRSS-TB"
+		(property "Value" "SM04B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -17921,7 +17921,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Description" "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404"
+		(property "Description" "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone SM04B-SRSS-TB(LF)(SN) (C160404, 17958 em estoque); original JST C160404"
 			(at 0 0 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -17958,7 +17958,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C51940130"
+		(property "LCSC" "C160404"
 			(at 0 0 180)
 			(layer "B.SilkS")
 			(uuid "22bb1f6e-ffc2-4b55-8919-8dcbbd625f9a")
@@ -21928,7 +21928,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "XY-SM06B-SRSS-TB"
+		(property "Value" "SM06B-SRSS-TB(LF)(SN)"
 			(at 0 -3.98 90)
 			(layer "B.Fab")
 			(hide yes)
@@ -21990,7 +21990,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC" "C56123098"
+		(property "LCSC" "C160405"
 			(at 0 0 90)
 			(layer "B.SilkS")
 			(uuid "36a2c028-2512-445d-a9a0-1f3e6356cf94")

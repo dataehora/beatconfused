@@ -5363,15 +5363,15 @@
 		)
 		(comp
 			(ref "J401")
-			(value "XY-SM04B-SRSS-TB")
+			(value "SM04B-SRSS-TB(LF)(SN)")
 			(footprint "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-			(description "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404")
+			(description "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone SM04B-SRSS-TB(LF)(SN) (C160404, 17958 em estoque); original JST C160404")
 			(fields
 				(field
 					(name "Codigo") "I3")
 				(field
-					(name "LCSC") "C51940130")
+					(name "LCSC") "C160404")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -5379,7 +5379,7 @@
 				(field
 					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 				(field
-					(name "Description") "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404")
+					(name "Description") "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone SM04B-SRSS-TB(LF)(SN) (C160404, 17958 em estoque); original JST C160404")
 			)
 			(libsource
 				(lib "viaggio_micromod")
@@ -5392,7 +5392,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C51940130")
+				(value "C160404")
 			)
 			(property
 				(name "Montagem")
@@ -6095,7 +6095,7 @@
 		)
 		(comp
 			(ref "J601")
-			(value "XY-SM06B-SRSS-TB")
+			(value "SM06B-SRSS-TB(LF)(SN)")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 			(description "fileira 1 (a da frente): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
@@ -6103,7 +6103,7 @@
 				(field
 					(name "Codigo") "R1")
 				(field
-					(name "LCSC") "C56123098")
+					(name "LCSC") "C160405")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -6124,7 +6124,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C56123098")
+				(value "C160405")
 			)
 			(property
 				(name "Montagem")
@@ -6182,7 +6182,7 @@
 		)
 		(comp
 			(ref "J602")
-			(value "XY-SM06B-SRSS-TB")
+			(value "SM06B-SRSS-TB(LF)(SN)")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 			(description "fileira 2 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
@@ -6190,7 +6190,7 @@
 				(field
 					(name "Codigo") "R2")
 				(field
-					(name "LCSC") "C56123098")
+					(name "LCSC") "C160405")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -6211,7 +6211,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C56123098")
+				(value "C160405")
 			)
 			(property
 				(name "Montagem")
@@ -6269,7 +6269,7 @@
 		)
 		(comp
 			(ref "J603")
-			(value "XY-SM06B-SRSS-TB")
+			(value "SM06B-SRSS-TB(LF)(SN)")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 			(description "fileira 3 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
@@ -6277,7 +6277,7 @@
 				(field
 					(name "Codigo") "R3")
 				(field
-					(name "LCSC") "C56123098")
+					(name "LCSC") "C160405")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -6298,7 +6298,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C56123098")
+				(value "C160405")
 			)
 			(property
 				(name "Montagem")
@@ -6356,7 +6356,7 @@
 		)
 		(comp
 			(ref "J604")
-			(value "XY-SM06B-SRSS-TB")
+			(value "SM06B-SRSS-TB(LF)(SN)")
 			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 			(description "fileira 4 (a de tras): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)")
@@ -6364,7 +6364,7 @@
 				(field
 					(name "Codigo") "R4")
 				(field
-					(name "LCSC") "C56123098")
+					(name "LCSC") "C160405")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -6385,7 +6385,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C56123098")
+				(value "C160405")
 			)
 			(property
 				(name "Montagem")

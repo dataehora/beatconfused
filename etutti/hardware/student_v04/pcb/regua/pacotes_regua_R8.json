@@ -6,8 +6,8 @@
    "pecas_por_regua": 20,
    "linhas_bom": 5,
    "tipos_extended": [
+    "C160405",
     "C22401868",
-    "C56123098",
     "C730243"
    ],
    "n_extended": 3
@@ -17,8 +17,8 @@
    "pecas_por_regua": 22,
    "linhas_bom": 6,
    "tipos_extended": [
+    "C160405",
     "C22401868",
-    "C56123098",
     "C730243"
    ],
    "n_extended": 3
@@ -28,8 +28,8 @@
    "pecas_por_regua": 20,
    "linhas_bom": 5,
    "tipos_extended": [
+    "C160405",
     "C22401868",
-    "C56123098",
     "C730243"
    ],
    "n_extended": 3
@@ -39,8 +39,8 @@
    "pecas_por_regua": 22,
    "linhas_bom": 6,
    "tipos_extended": [
+    "C160405",
     "C22401868",
-    "C56123098",
     "C730243"
    ],
    "n_extended": 3

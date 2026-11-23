@@ -239,6 +239,17 @@ Atende **R12V4**, item 3. Novo `firmware_check.py` (KiCad python; lê `kicad/stu
 - **Observação para a eletrônica (não é do sketch):** o `PINOS.md` (linhas dos pinos 2 e 3) ainda diz "por 100 ohm" para SCAN_DATA/SCAN_CLK; a placa tem R605/R606 de **330 ohm** (R8V4). O sketch independe do valor (meio período de 100 ns, tau ~21 ns).
 - **Pendente:** reler o script quando a placa roteada for aceita (basta rodar `firmware_check.py`); nada de bancada (nada foi comprado).
 
+## R13V4 · página do modelo e manual (item 5, parte da programação e som; 23 nov 2026)
+
+Atende a **R13V4**, item 5 (tarefa 6). Nada do firmware mudou nem foi recompilado, salvo o `.hex` abaixo.
+
+- **Página** `/etutti/studentV4/` (`noindex`, fora do sitemap, sem card na home), escrita por `student_v04/pagina.py` (textos e preços lá), **português e inglês** (um `.lang-block` por língua, `html[lang]`, botões PT/EN, `?lang=`). Dez seções do item 5. Verificada no navegador: 85 imagens e links abrem, sem erro de console, sem rolagem lateral a 375 px nas duas línguas.
+- **Prontas:** 1, 2 (diagrama de blocos em SVG), 3 (planta de 32 teclas com o nome da nota, de `layout_r4.py`; C-griff e B-griff), 7 (gravação, primeira ligação, calibração, LED), 8 (knobs, árvore do menu, telas, registros, microfone, bateria, MIDI/CCs), 9, e 4, 5, 6, 10 com o que existe no repositório (peças por área, preços da `LEIAME_COTACAO.md`, passos de pedido da principal e das réguas, 11 passos de montagem em texto, links dos arquivos).
+- **Telas do OLED** (`student_v04/telas_oled.py`, Pillow): lê `oled_font.h`, `ui_text.h` e as tabelas `ITEMS_*` do `.ino` e refaz `drawMenu` / `drawStatus` / `drawWarning` pixel a pixel; 32 telas por língua em `etutti/studentV4/img/tela_*_{pt,en}.png` (128 x 64 ampliado 4x) + `telas.json` (a árvore do menu na página sai dele). Rodar de novo quando o menu ou os textos mudarem. **Não vistas num SSD1306 real.**
+- **`.hex`:** `arduino-cli compile --fqbn teensy:avr:teensyMM:usb=midi,speed=396` de uma cópia do sketch **sem `reed_samples.*`** (dados licenciados): flash code 141 232 + data 41 496 B, RAM1 104 000, RAM2 202 272 (o build com amostras tem ~1,4 MB). Guardado em `student_v04/firmware_hex/` e publicado em `etutti/studentV4/arquivos/`. Sem as amostras o timbre do acordeão é o das tabelas sintetizadas (diferente; a página diz isso). O build com amostras **não** é publicado.
+- **Ganchos para integrar:** figuras `etutti/studentV4/img/{foto_instrumento, foto_explodido?, passo_1..passo_11, pedido_previa_principal}.(jpg|png)` (design e eletrônica; sem elas a página mostra uma caixa "figura a chegar"; hoje 14 pendentes); `fab/COMPRA.md` (embutido na seção 5, em português, quando existir); `precos_pagina.json` opcional substitui a tabela de preços; `fab/MODELOS_3D.md` é linkado na seção 10 quando existir. Textos dos passos 6 (montagem) são provisórios até os renders do design.
+- **Pendências:** os passos 8 e 9 (ordem real réguas/placa/tampa) e os comprimentos M2 por fileira (10/12/14/16) vêm do `FIT_CHECK.md` e precisam ser conferidos contra as figuras; botão PROG e o auto-reboot do Teensy Loader por MIDI não foram verificados; a página do eTuttino do site ainda não conhece o V4.
+
 ## Perguntas para o design
 
 1. **Instrumentos fora:** o sketch próprio só toca acordeão (os sete registros; sem piano, baixo, violão nem synth). Está certo para a V4? A página V4 só precisa dos CCs listados nas seções 2 a 4.
@@ -252,3 +263,4 @@ Atende **R12V4**, item 3. Novo `firmware_check.py` (KiCad python; lê `kicad/stu
 9. **R10V4, PINOS.md:** a eletrônica atualiza para 8 estágios por R8 (coluna = estágio, 9 pulsos) e para o limiar de curto de 0,10 V?
 10. **R10V4, sensibilidade:** os dois dinâmicos de referência (0,45 e 1,7 mV/Pa) pedem 34 e 22 dB; o padrão do tipo Dinâmico é 28 dB. Quer um item de menu com a sensibilidade, ou o ganho manual basta?
 11. **R11V4, OLED:** qual o modelo escolhido (controlador, resolução, endereço)? Se não for SSD1306 128 x 64 em 0x3C, a firmware ajusta `OLED_SH1106`/endereço (ou o layout, se a resolução mudar) e regera as telas. O módulo precisa de pull-ups de I²C? Os do codec (2,2 kohm) já servem para os dois.
+- **R13V4:** (1) as figuras de montagem dos passos 1 a 11 e a foto do instrumento (nomes acima) entram pelo design; (2) o design confirma a ordem real de montagem (réguas, placa, tampa, bateria) para eu reescrever os passos 8 e 9? (3) a eletrônica confirma o botão de gravação (PROG) e onde ele fica na placa montada.
