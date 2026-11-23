@@ -1,0 +1,239 @@
+{
+ "placa": "kicad\\student_v04_roteada.kicad_pcb",
+ "pinos_conferidos": 25,
+ "pinos_ok": 25,
+ "problemas": [],
+ "notas": [
+  "LED pin 13: pad 57, net on the board 'unconnected-(J101B-SPI_SCK_(13)-Pad57)' (free pad)",
+  "LED pin 5: pad 18, net on the board 'unconnected-(J101B-D1_(5)-Pad18)' (free pad)",
+  "tip voltage, 2 k only: electret 0.1/0.3/0.5/1 mA = 2.8/2.4/2.0/1.0 V; coil 150/300/600 ohm = 0.21/0.39/0.69 V",
+  "MIC_DET filter R306 x C311 = 10 ms"
+ ],
+ "pinos": [
+  {
+   "firmware": "ROW_OUT_PINS",
+   "pino": 14,
+   "rede": "OUT_R1",
+   "pad_J101": "34",
+   "rede_na_placa": "OUT_R1",
+   "rede_no_netlist": "OUT_R1",
+   "ok": true
+  },
+  {
+   "firmware": "ROW_OUT_PINS",
+   "pino": 15,
+   "rede": "OUT_R2",
+   "pad_J101": "38",
+   "rede_na_placa": "OUT_R2",
+   "rede_no_netlist": "OUT_R2",
+   "ok": true
+  },
+  {
+   "firmware": "ROW_OUT_PINS",
+   "pino": 26,
+   "rede": "OUT_R3",
+   "pad_J101": "67",
+   "rede_na_placa": "OUT_R3",
+   "rede_no_netlist": "OUT_R3",
+   "ok": true
+  },
+  {
+   "firmware": "ROW_OUT_PINS",
+   "pino": 27,
+   "rede": "OUT_R4",
+   "pad_J101": "8",
+   "rede_na_placa": "OUT_R4",
+   "rede_no_netlist": "OUT_R4",
+   "ok": true
+  },
+  {
+   "firmware": "SR_DATA_PIN",
+   "pino": 2,
+   "rede": "SCAN_DATA",
+   "pad_J101": "47",
+   "rede_na_placa": "SCAN_DATA_P",
+   "rede_no_netlist": "SCAN_DATA_P",
+   "ok": true
+  },
+  {
+   "firmware": "SR_CLK_PIN",
+   "pino": 3,
+   "rede": "SCAN_CLK",
+   "pad_J101": "32",
+   "rede_na_placa": "SCAN_CLK_P",
+   "rede_no_netlist": "SCAN_CLK_P",
+   "ok": true
+  },
+  {
+   "firmware": "VOL_A_PIN",
+   "pino": 22,
+   "rede": "VOL_A",
+   "pad_J101": "49",
+   "rede_na_placa": "VOL_A",
+   "rede_no_netlist": "VOL_A",
+   "ok": true
+  },
+  {
+   "firmware": "VOL_B_PIN",
+   "pino": 24,
+   "rede": "VOL_B",
+   "pad_J101": "53",
+   "rede_na_placa": "VOL_B",
+   "rede_no_netlist": "VOL_B",
+   "ok": true
+  },
+  {
+   "firmware": "VOL_SW_PIN",
+   "pino": 4,
+   "rede": "VOL_SW",
+   "pad_J101": "10",
+   "rede_na_placa": "VOL_SW",
+   "rede_no_netlist": "VOL_SW",
+   "ok": true
+  },
+  {
+   "firmware": "ENC_A_PIN",
+   "pino": 11,
+   "rede": "SEL_A",
+   "pad_J101": "59",
+   "rede_na_placa": "SEL_A",
+   "rede_no_netlist": "SEL_A",
+   "ok": true
+  },
+  {
+   "firmware": "ENC_B_PIN",
+   "pino": 9,
+   "rede": "SEL_B",
+   "pad_J101": "69",
+   "rede_na_placa": "SEL_B",
+   "rede_no_netlist": "SEL_B",
+   "ok": true
+  },
+  {
+   "firmware": "ENC_SW_PIN",
+   "pino": 6,
+   "rede": "SEL_SW",
+   "pad_J101": "71",
+   "rede_na_placa": "SEL_SW",
+   "rede_no_netlist": "SEL_SW",
+   "ok": true
+  },
+  {
+   "firmware": "KEEP_PIN",
+   "pino": 10,
+   "rede": "KEEP",
+   "pad_J101": "55",
+   "rede_na_placa": "KEEP",
+   "rede_no_netlist": "KEEP",
+   "ok": true
+  },
+  {
+   "firmware": "AMP_SD_PIN",
+   "pino": 12,
+   "rede": "AMP_SD",
+   "pad_J101": "61",
+   "rede_na_placa": "AMP_SD",
+   "rede_no_netlist": "AMP_SD",
+   "ok": true
+  },
+  {
+   "firmware": "VBAT_PIN",
+   "pino": 16,
+   "rede": "VBAT_S",
+   "pad_J101": "20",
+   "rede_na_placa": "VBAT_S",
+   "rede_no_netlist": "VBAT_S",
+   "ok": true
+  },
+  {
+   "firmware": "HP_DET_PIN",
+   "pino": 17,
+   "rede": "HP_DET",
+   "pad_J101": "22",
+   "rede_na_placa": "HP_DET",
+   "rede_no_netlist": "HP_DET",
+   "ok": true
+  },
+  {
+   "firmware": "CHG_STAT_PIN",
+   "pino": 0,
+   "rede": "CHG_STAT",
+   "pad_J101": "19",
+   "rede_na_placa": "CHG_STAT",
+   "rede_no_netlist": "CHG_STAT",
+   "ok": true
+  },
+  {
+   "firmware": "MIC_DET_PIN",
+   "pino": 25,
+   "rede": "MIC_DET",
+   "pad_J101": "51",
+   "rede_na_placa": "MIC_DET",
+   "rede_no_netlist": "MIC_DET",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 7,
+   "rede": "I2S_TX",
+   "pad_J101": "56",
+   "rede_na_placa": "I2S_TX",
+   "rede_no_netlist": "I2S_TX",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 8,
+   "rede": "I2S_RX",
+   "pad_J101": "54",
+   "rede_na_placa": "I2S_RX",
+   "rede_no_netlist": "I2S_RX",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 20,
+   "rede": "I2S_LRCLK",
+   "pad_J101": "52",
+   "rede_na_placa": "I2S_LRCLK",
+   "rede_no_netlist": "I2S_LRCLK",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 21,
+   "rede": "I2S_BCLK",
+   "pad_J101": "50",
+   "rede_na_placa": "I2S_BCLK",
+   "rede_no_netlist": "I2S_BCLK",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 23,
+   "rede": "AUD_MCLK_P",
+   "pad_J101": "58",
+   "rede_na_placa": "AUD_MCLK_P",
+   "rede_no_netlist": "AUD_MCLK_P",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 18,
+   "rede": "I2C_SDA",
+   "pad_J101": "12",
+   "rede_na_placa": "I2C_SDA",
+   "rede_no_netlist": "I2C_SDA",
+   "ok": true
+  },
+  {
+   "firmware": "audio library",
+   "pino": 19,
+   "rede": "I2C_SCL",
+   "pad_J101": "14",
+   "rede_na_placa": "I2C_SCL",
+   "rede_no_netlist": "I2C_SCL",
+   "ok": true
+  }
+ ]
+}

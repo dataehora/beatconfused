@@ -1,13 +1,13 @@
 {
  "redes_roteadas": 62,
  "ligacoes_MST": 132,
- "comprimento_total_mm": 1858.3,
- "maior_celula_mm": 60.9,
- "celula_media_mm": 6.02,
- "mm_por_cm2": 26.04,
+ "comprimento_total_mm": 1861.3,
+ "maior_celula_mm": 66.5,
+ "celula_media_mm": 6.03,
+ "mm_por_cm2": 26.08,
  "maiores_redes": [
   [
-   109.6,
+   109.8,
    "VSYS"
   ],
   [
@@ -15,7 +15,7 @@
    "SCAN_DATA"
   ],
   [
-   94.2,
+   95.3,
    "SCAN_CLK"
   ],
   [
@@ -27,15 +27,15 @@
    "AMP_SD"
   ],
   [
-   74.9,
+   73.7,
    "I2S_BCLK"
   ],
   [
-   73.9,
+   72.8,
    "I2S_LRCLK"
   ],
   [
-   73.6,
+   72.6,
    "I2S_TX"
   ]
  ]

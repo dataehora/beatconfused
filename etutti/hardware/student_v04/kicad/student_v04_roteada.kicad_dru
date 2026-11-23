@@ -1,0 +1,38 @@
+(version 1)
+# eTutti Student V4 main board -- custom rules (R3V4; derived from the V3's by pcb/posiciona_v4.py's author)
+# Every number carries its unit; no rule names the "Default" class.
+(rule "Vias 0,5 / furo 0,3 em todas as classes"
+    (condition "A.Type == 'via'")
+    (constraint via_diameter (min 0.5mm))
+    (constraint hole_size (min 0.3mm)))
+(rule "Sinais: minimo 0,15 (afinacao na entrada de pinos finos)"
+    (condition "A.Type == 'track' && A.NetClass != 'USB' && A.NetClass != 'Corrente'")
+    (constraint track_width (min 0.15mm) (opt 0.2mm)))
+(rule "USB: so em B.Cu (par de ponta a ponta no fundo, sem vias, sobre a In2 = GND inteira)"
+    (condition "A.NetClass == 'USB' && A.Type == 'track' && A.Layer != 'B.Cu'")
+    (constraint disallow track))
+(rule "USB: 0,2 mm, vao do par >= 0,127"
+    (condition "A.NetClass == 'USB' && A.Type == 'track'")
+    (constraint track_width (min 0.19mm) (opt 0.2mm))
+    (constraint diff_pair_gap (min 0.127mm)))
+(rule "USB: 0,25 mm de qualquer outra rede (os planos ficam de fora), fora dos patios do J201, U201 e J101"
+    (condition "A.NetClass == 'USB' && B.NetClass != 'USB' && A.Type == 'track' && B.Type != 'Zone' && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U201') && !A.intersectsCourtyard('J101')")
+    (constraint clearance (min 0.25mm)))
+(rule "VSYS: minimo 0,5 mm entre C206, U204 e C210 (area vsys_estreito, R12V4): o bloco de energia nao deixa 0,8 mm; ~1,5 A no pico (amplificador 0,8 W + 3,3 V), 0,5 mm de cobre 1 oz sobe < 10 C em pescoco de poucos mm"
+    (condition "A.Type == 'track' && A.NetName == 'VSYS' && A.intersectsArea('vsys_estreito')")
+    (constraint track_width (min 0.5mm)))
+(rule "Corrente: minimo 0,8 fora dos patios de E1, E3, E4, E6, A1 e J101 (e fora da area vsys_estreito para VSYS)"
+    (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !(A.NetName == 'VSYS' && A.intersectsArea('vsys_estreito')) && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101')")
+    (constraint track_width (min 0.8mm)))
+(rule "Corrente: afinacao na entrada dos pinos (patios)"
+    (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !(!A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101') && !A.intersectsCourtyard('R205') && !A.intersectsCourtyard('R206') && !A.intersectsCourtyard('R214') && !A.intersectsCourtyard('Q201') && !A.intersectsCourtyard('U201') && !A.intersectsCourtyard('C201'))")
+    (constraint track_width (min 0.15mm)))
+(rule "Sob o cartao MicroMod: so pecas de ate 1,9 mm (campo Cabe_sob_cartao, de Altura_mm)"
+    (condition "A.Type == 'Footprint' && A.Layer == 'B.Cu' && A.intersectsArea('cartao_MicroMod') && A.Reference != 'J101' && A.Reference != 'H101'")
+    (constraint assertion "A.getField('Cabe_sob_cartao') == 'sim'"))
+(rule "OUT_Rk (analogico) a 0,3 mm de CLK/DATA/I2S/MCLK (diafonia nas leituras dos sensores)"
+    (condition "A.Type == 'track' && (A.NetName == 'OUT_R1' || A.NetName == 'OUT_R2' || A.NetName == 'OUT_R3' || A.NetName == 'OUT_R4') && (B.NetName == 'SCAN_CLK' || B.NetName == 'SCAN_DATA' || B.NetName == 'SCAN_CLK_P' || B.NetName == 'SCAN_DATA_P' || B.NetName == 'I2S_BCLK' || B.NetName == 'I2S_LRCLK' || B.NetName == 'I2S_TX' || B.NetName == 'I2S_RX' || B.NetName == 'AUD_MCLK' || B.NetName == 'AUD_MCLK_P')")
+    (constraint clearance (min 0.3mm)))
+(rule "Linhas dos conectores de fileira: 0,2 mm de largura no minimo (cabo de ate 5 reguas)"
+    (condition "A.Type == 'track' && (A.NetName == 'SCAN_CLK' || A.NetName == 'SCAN_DATA' || A.NetName == 'OUT_R1' || A.NetName == 'OUT_R2' || A.NetName == 'OUT_R3' || A.NetName == 'OUT_R4')")
+    (constraint track_width (min 0.2mm)))

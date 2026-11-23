@@ -41,6 +41,12 @@ GRAVE = []
 X0, Y0, X1, Y1 = 2.45, 2.45, 77.5, 97.55
 CORNER_R = 3.0
 DX = -5.5                       # J101 and its cluster: pads 3/5 end 6.74 mm from the USB-C pad row
+# R12V4 (roteamento's request, 2nd run): U301 +2.0 mm in x (and its east-side decoupling with it) and R105 +1.5 mm in y: opens the ring of OUT/SCAN beams west of the codec
+# (x 17..21, y 28..45); C304, C305, R305, C309, R306 (west side) stay.
+R12_DELTA = {"U301": (2.0, 0.0), "C301": (2.0, 0.0), "C302": (2.0, 0.0), "C306": (3.5, 0.0), "C307": (2.0, 0.0), "FB301": (3.2, 0.0),
+             "C310": (2.0, 0.0), "R105": (0.0, 1.5),
+             "R605": (0.0, 0.0), "C305": (-1.0, 0.0), "C303": (0.0, 0.5), "C209": (0.0, -0.8), "R216": (0.0, -0.8)}      # 3rd run: C306 +1.5 and FB301 +1.0 more (north channel of U301 pins 16/18), R605 -1.0 x, C209 -0.8 y
+R12_ROT = {"R605": 90.0}      # 4th run: R605 turned 90 deg (its courtyard then ends 0.5 mm nearer the J101 pad)
 CLUSTER = {"J101", "H101", "TP101", "C101", "C102", "R301", "R302", "R105"}
 USB_Y = 10.0                    # B6 (DP) and A7 (DN) level with pads 3/5 (y 9.25 / 9.75)
 ROW_Y = {1: 74.03, 2: 58.01, 3: 41.99, 4: 25.97}      # the rows' centres (geometria.py)
@@ -418,6 +424,10 @@ def main():
             return True
         return any(overlap(box, o, MARGIN) for o in ob[side])
 
+    for ref_, (dx_, dy_) in R12_DELTA.items():           # R12V4: the codec group and R105 start from their displaced spots (a part still free there stays; the others settle nearby)
+        if ref_ in fps and ref_ not in fixed:
+            f_ = fps[ref_]
+            set_pose(f_, T(f_.GetX()) + dx_, T(f_.GetY()) + dy_, R12_ROT.get(ref_, f_.GetOrientationDegrees()))
     keep_order = [r for r in fps if r not in fixed]
     # (1) everything already on the board but in the way of a fixed part or of another part moves
     placed = set(fixed)
@@ -444,7 +454,8 @@ def main():
             return (T(j.GetX()) - 8.0, T(j.GetY()))
         if ref in ("R605", "R606"):
             n = "47" if ref == "R606" else "32"        # SCAN_DATA_P pad 47, SCAN_CLK_P pad 32
-            return pad_xy(fps["J101"], n)[0]
+            px_, py_ = pad_xy(fps["J101"], n)[0]
+            return (px_ + R12_DELTA.get(ref, (0.0, 0.0))[0], py_ + R12_DELTA.get(ref, (0.0, 0.0))[1])
         if ref == "C310":
             u = fps["U301"]
             return (T(u.GetX()), T(u.GetY()) + 3.0)
@@ -454,7 +465,8 @@ def main():
         if ref == "J401":
             return (35.5 + DX * 0.6, 37.5)
         if ref in v3:
-            return (v3[ref]["x"] + (DX if ref in CLUSTER else 0.0), v3[ref]["y"])
+            dxr, dyr = R12_DELTA.get(ref, (0.0, 0.0))
+            return (v3[ref]["x"] + (DX if ref in CLUSTER else 0.0) + dxr, v3[ref]["y"] + dyr)
         return (40.0, 50.0)
 
     for ref in [r for r in pending if r not in ("U201", "R201", "R202", "D201", "J401")]:
@@ -472,7 +484,8 @@ def main():
     best = None
     ob = obstacles(set(fps) - placed - {"U201"})
     cj = court(jm)
-    for rot in (0, 90, 180, 270):
+    USB_ROTS = tuple(int(x) for x in os.environ.get("U201_ROTS", "0,180").split(","))   # R12V4 (roteamento's request): U201 turned 90 deg from the R3V4 choice (90): D+ (pins 1/6) and D- (3/4) then run straight across the chip
+    for rot in USB_ROTS:
         u.SetOrientation(pcbnew.EDA_ANGLE(rot, pcbnew.DEGREES_T))
         for ix in range(int((11.0) / 0.25), int((cj[0] + 2) / 0.25)):
             for iy in range(int(4.5 / 0.25), int(22.0 / 0.25)):
@@ -493,6 +506,18 @@ def main():
                     best = (cost, x, y, rot)
     if best is None:
         raise SystemExit("U201: no spot")
+    # R12V4: the pair goes STRAIGHT through the chip: rot 0/180 (pins 1,2,3 in one column... D+ pins 1 and 6 on opposite columns), centred on the pair's line
+    # (y 9.5, between the USB-C pads and the M.2's 3/5), D+ row to the north (M.2 pad 3 is the northern one). The courtyard is 4.19 mm wide and the gap between
+    # J201's and J101's courtyards 4.34 mm: the 0.25 mm grid search cannot find it, so it is placed by hand (checked below against the courtyards).
+    ux = (court(j201)[2] + court(jm)[0]) / 2
+    for rot in (0, 180):
+        set_pose(u, ux, 9.5, rot)
+        if pad_xy(u, "1")[0][1] < pad_xy(u, "3")[0][1]:
+            break
+    bx = court(u)
+    if bx[0] < court(j201)[2] or bx[2] > court(jm)[0]:
+        raise SystemExit("U201 straight-through does not fit between J201 and J101: %s" % (bx,))
+    best = (0.0, ux, 9.5, rot)
     set_pose(u, best[1], best[2], best[3])
     placed.add("U201")
     rec["metricas"]["usb_par_estimado_mm"] = round(best[0], 2)
@@ -556,6 +581,8 @@ def main():
         add_zone(b, allcu, rect_pts(x - r_, y - r_, x + r_, y + r_), "M2 " + ref, rule=True, no_tracks=True,
                  no_vias=True, no_fill=True)
     add_zone(b, [pcbnew.B_Cu], rect_pts(*card), "cartao_MicroMod", rule=True)
+    # R12V4: marker for the .kicad_dru: VSYS may be 0.5 mm (not 0.8) between C206, U204 and C210, where the outline of the power block leaves no room (marker only: nothing is forbidden)
+    add_zone(b, [pcbnew.B_Cu, pcbnew.F_Cu], rect_pts(63.0, 6.5, 72.5, 15.5), "vsys_estreito", rule=True)
     add_zone(b, allcu, rect_pts(*slot), "fenda do cabo da tela", rule=True, no_tracks=True, no_vias=True, no_fill=True)
     for k, pb in plug_boxes.items():
         add_zone(b, [pcbnew.B_Cu], rect_pts(*pb), "plugue J60%d (cabo SH)" % k, rule=True, no_fp=True)

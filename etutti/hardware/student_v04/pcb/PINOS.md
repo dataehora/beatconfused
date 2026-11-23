@@ -150,8 +150,8 @@ Conferido contra o esquema da V4 (`pcb/schematic.py`, ERC 0/0, netlist = `TEENSY
 |---:|---|---|---|---|
 | 0 | 19 (RX1) | CHG_STAT | ~CHG do BQ24074 (baixo = carregando), INPUT_PULLUP, só vale com USB. **Movido do 26** | entrada |
 | 1 | 17 (TX1) | - | livre | - |
-| **2** | 47 (PWM1) | **SCAN_DATA** | entrada serial (SER) da primeira régua de cada fileira, por 100 ohm | saída |
-| **3** | 32 (PWM0) | **SCAN_CLK** | SRCLK e RCLK dos 595 (ligados juntos), por 100 ohm | saída |
+| **2** | 47 (PWM1) | **SCAN_DATA** | entrada serial (SER) da primeira régua de cada fileira, por 330 ohm (R606) | saída |
+| **3** | 32 (PWM0) | **SCAN_CLK** | SRCLK e RCLK dos 595 (ligados juntos), por 330 ohm (R605) | saída |
 | **4** | 10 (D0) | **VOL_SW** (R6V4, **movido do 25**) | clique do volume (liga/desliga); só digital, INPUT_PULLUP como antes | entrada |
 | 5 | 18 (D1) | - | livre | - |
 | 6 | 71 (G6) | SEL_SW | clique do seletor de registro, INPUT_PULLUP | entrada |
