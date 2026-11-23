@@ -1,4 +1,61 @@
-# eTutti Student V4 — SPEC R14V4
+# eTutti Student V4 — SPEC R15V4
+
+Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Complementa a R14V4: o Code atende a R14V4 primeiro e depois esta, no mesmo PR ou no seguinte. Tudo o que não é mencionado aqui continua como nas revisões anteriores. Os relatórios citam "R15V4".
+
+**Regras que continuam:**
+- só o instrumento de 32 teclas detalhado;
+- só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+## 1. Serigrafia da placa principal (Eletrônica)
+
+Na pré-visualização da JLCPCB e no 3D do KiCad os textos da serigrafia ficam empilhados e ilegíveis: referências e valores (inclusive os códigos LCSC, como "C25741") de todas as peças 0402/0603, uma em cima da outra. Limpar, **só na serigrafia** (nenhuma trilha, pad, via, zona ou posição muda):
+
+- **Fica na serigrafia** (o que ajuda quem monta em casa):
+  - nome e versão da placa;
+  - rótulos dos conectores: J601–J604 como "FILEIRA 1…4 / ROW 1…4" (J601 = fileira 1), J401 "OLED", J202 "BAT", J201 "USB", J301/J302 com a função de cada um, pads do alto-falante "SPK + / −";
+  - "PROG" junto ao SW403;
+  - marcas de pino 1 e de polaridade;
+  - furos H1..H4 e H101 se ajudarem na montagem.
+- **Sai da serigrafia** para a camada de fabricação (F.Fab/B.Fab), onde continua no KiCad e nos desenhos de montagem: todas as outras referências e todos os valores, incluindo os campos de código LCSC e os textos "sem peça (pad)" e "não montar".
+- **Nenhum texto sobre pad nem sobre outro texto.** Altura e traço dentro do mínimo da JLCPCB (o Code confirma os números). Checagens de serigrafia do KiCad (sobreposição e texto sobre cobre exposto) com **0**.
+- **Régua:** só conferir que já atende (parece limpa); não mexer se atender.
+- **Depois:** DRC 0 erros e 0 avisos, 0 faltando, paridade 0, cobre idêntico ao da roteada (comparar os Gerbers de cobre, máscara e furação: só a serigrafia pode mudar). Regenerar `fab/principal/` e os renders, e o 3D do KiCad (`*_3d.kicad_pcb`).
+
+## 2. Configuração de compra da principal (Eletrônica, `fab/COMPRA.md` e página)
+
+- **Specify Stackup = No.** O empilhamento padrão da JLCPCB basta: o par USB é Full Speed e tem 7,4 mm; não há linha de impedância controlada. Um empilhamento especificado obriga a montagem Standard.
+- **PCBA Type = Economic sempre que a placa permitir.** A JLCPCB passou a principal para Standard ao subir BOM e CPL, sem aviso. Nenhuma peça é "Standard only" (o J conferiu). Suspeitas, pela tabela de capacidades:
+  - o U301 (SGTL5000), com pinos a 0,4 mm, no limite do Economic;
+  - USB-C e jacks passando da borda.
+  
+  O J vai testar e informa o resultado. Se for o codec, fica Standard (cerca de US$ 24 a mais). Se forem as peças na borda, o Code avalia tirá-las da montagem e passá-las para as peças soldadas em casa, e informa o custo e o risco antes de mudar.
+- Cotação real da principal com Standard: US$ 158 (placa 25,50 + montagem 132,62; setup 25,75, stencil 8,27, peças 46,29, carga dos alimentadores 49,60, SMT 2,21, embalagem 0,50; montagem em 3–4 dias, sem custo extra).
+
+## 3. Opção futura registrada (Eletrônica, só texto)
+
+Em `ELETRONICA.md`, uma nota curta: **"RT1062 na placa (chip-down) para produção em quantidade (≥ ~50 unidades)"**:
+- ganho estimado de cerca de US$ 10 por placa e de alguns milímetros de altura;
+- custo de um projeto novo da seção do processador (o fan-out do BGA foi o que parou o Viaggio), de 6 a 8 tipos Extended a mais e do chip de bootloader da PJRC.
+
+Não é feito agora: o protótipo segue com o MicroMod.
+
+## Tarefas para o Code (R15V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Eletrônica | limpar a serigrafia da principal e regenerar o pacote (item 1) |
+| 2 | Eletrônica | configuração de compra e opção futura (itens 2 e 3) |
+| 3 | Programação e som | página: imagens da placa novas e "Como pedir" com Specify Stackup = No |
+
+**Perguntas que o Chat espera:**
+- os renders novos da principal (topo e fundo) mostrando a serigrafia limpa;
+- a confirmação de que o cobre não mudou.
+
+---
+
+# Anexo — SPEC R14V4 (referência)
 
 Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #204 (relatórios da R13V4) e às cotações e pré-visualizações da JLCPCB que o J fez. Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R14V4".
