@@ -216,6 +216,17 @@ Atende **R8V4**, ordem 3. `PINOS.md` relido no fim (versão do commit 5f6c68e; a
 - **Compilação** só da V4 (`teensy:avr:teensyMM:usb=midi,speed=396`, com `reed_samples`): flash code 140784 + data 1239352 + headers 8404 (livre 15126532); RAM1 variáveis 105024, code 138184, padding 25656 (livre 255424); RAM2 variáveis 202272 (livre 322016). `grep` por outras versões/modelos em `student_v4` (fora de `reed_samples.*`): nenhuma ocorrência.
 - Regra nova do J (nada é comprado até o protótipo fechar): o limiar do microfone fica como risco, o sketch é robusto a ele (só desliga os efeitos de voz).
 
+## R11V4 · OLED real e OUT (22 nov 2026)
+
+Atende **R11V4**, item 1 (parte da firmware). Quando esta seção foi escrita, `ELETRONICA.md` e `FIT_CHECK.md` ainda **não traziam o modelo de OLED escolhido** (só o módulo assumido: vidro 26,7 x 19,26, área ativa 21,74 x 10,86 mm, janela 24 x 13, 4 furos; isso é o 0,96" 128 x 64, **SSD1306**). Reler quando a escolha entrar.
+
+- **Controlador, resolução, endereço, tensão (premissa até a escolha):** SSD1306, 128 x 64, I²C 0x3C, 3,3 V no J401 (pinos 1 +3V3, 2 GND, 3 SDA, 4 SCL), varredura horizontal em páginas de 8 linhas, girado 180° (`OLED_ROTATION = 2`). A área ativa de 21,74 mm / 128 px = 0,17 mm por pixel: a fonte 5 x 10 (com acentos) fica com **0,85 x 1,70 mm por caractere** e o menu de 21 colunas ocupa 17,8 mm dos 21,74. Como a resolução e a área ativa **não mudaram**, `img/tela_pt.png` e `img/tela_en.png` continuam valendo (não regerados).
+- **O que mudou no sketch:** nova chave `OLED_SH1106` (padrão 0 = SSD1306; `-DOLED_SH1106=1` ou editar a linha). Com 1: coluna inicial 2 (vidro de 128 colunas num controlador de 132), sem o comando de modo de endereçamento, DC-DC interno ligado (0xAD 0x8B) e o quadro enviado página por página (0xB0+página, coluna baixa/alta) em vez da janela de colunas. O menu e as telas são os mesmos. Se o modelo escolhido for de outra resolução (ex.: 128 x 32), é preciso redesenhar as telas (pedir antes à firmware).
+- **OUT / R4 / cascata:** o sketch **não depende** de OUT nem de R4 para a V4 de 32 teclas: `RULERS_R8 = 1`, `RULERS_R4 = 0` por fileira, a cadeia termina na R8 (a firmware só lê as 4 linhas OUT das fileiras e o DATA/CLK da placa; nenhum pino ou conector de saída da cadeia é usado). `RULERS_R8`/`RULERS_R4` ficam como parâmetros do conceito modular, sem efeito no uso normal.
+- **Compilação** (só a V4, `teensy:avr:teensyMM:usb=midi,speed=396`): flash code 141488 + data 1239352 + headers 8724 (livre 15125508); RAM1 variáveis 105024, code 138888, padding 24952 (livre 255424); RAM2 variáveis 202272 (livre 322016). Compilou com `OLED_SH1106` 0 e 1 (o tamanho reportado é igual; a variante 1 só não foi gravada nem testada em tela). Nada foi gravado.
+
+**R11V4, OLED escolhido (Adafruit 326, SSD1306 128 x 64, 3,3 V):** a rotação de 180° do driver (`OLED_ROTATION = 2` = segmento A0 + COM C0, como `setRotation(2)`) já atende a orientação "B"; `OLED_SH1106 = 0`. Endereço conforme `PINOS.md`: o sketch tenta **0x3D** (fábrica, sem jumper) e, se não responder, **0x3C** (jumper fechado). Layout e telas inalterados. Recompilado: ver números na seção acima (código do driver só ganhou o teste de endereço).
+
 ## Perguntas para o design
 
 1. **Instrumentos fora:** o sketch próprio só toca acordeão (os sete registros; sem piano, baixo, violão nem synth). Está certo para a V4? A página V4 só precisa dos CCs listados nas seções 2 a 4.
@@ -228,3 +239,4 @@ Atende **R8V4**, ordem 3. `PINOS.md` relido no fim (versão do commit 5f6c68e; a
 8. **R10V4, tipo de microfone:** o modo Auto deixa o bias sempre ligado (o detector precisa dele) e só o tipo Dinâmico declarado o desliga e fica cego ao plugue. Serve, ou o design prefere bias sempre ligado também no Dinâmico (perda de 1-2 dB, nenhum risco de ponta em curto)?
 9. **R10V4, PINOS.md:** a eletrônica atualiza para 8 estágios por R8 (coluna = estágio, 9 pulsos) e para o limiar de curto de 0,10 V?
 10. **R10V4, sensibilidade:** os dois dinâmicos de referência (0,45 e 1,7 mV/Pa) pedem 34 e 22 dB; o padrão do tipo Dinâmico é 28 dB. Quer um item de menu com a sensibilidade, ou o ganho manual basta?
+11. **R11V4, OLED:** qual o modelo escolhido (controlador, resolução, endereço)? Se não for SSD1306 128 x 64 em 0x3C, a firmware ajusta `OLED_SH1106`/endereço (ou o layout, se a resolução mudar) e regera as telas. O módulo precisa de pull-ups de I²C? Os do codec (2,2 kohm) já servem para os dois.

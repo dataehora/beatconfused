@@ -1,5 +1,135 @@
 # eTutti Student V4 — FIT_CHECK (design)
 
+## R11V4 — OLED real, parafusos por uso, 4 x R8 sem OUT, isométricos detalhados da base (22 nov 2026, parte de Design)
+
+**SPEC atendida: R11V4** (itens 1 OLED, 2 parafusos, 3 OUT só com extensão, 5 isométrico da base). Nada foi comprado, impresso ou montado; só 32 teclas, só a Student V4. Modelo oficial `case/case_r4.py` (+ `layout_r4.py`, novo `oled_r11.py`). Reproduz (venv CadQuery, raiz do repositório): `python estudos/parafusos_r11.py` → `case/case_r4.py 0` (~45 s) → `case/planta_v4.py`, `case/corte_v4.py`, `case/corte_base_r10.py` (agora grava `corte_base_r11.png`), `case/iso_base_r11.py` (~30 s), `case/confere_r8.py`, `case/fixacao_r10.py`, `estudos/rigidez_regua_r10.py`. Figuras novas em `case/renders/`: **`planta_geral_v4_r11.png`**, `planta_interface_v4_r11.png`, **`corte_interface_v4_r11.png`** (A: x = 37; P-P: pelos furos do OLED; B: knob; **C-C: pelo eixo do conector do OLED, com o cabo**), `corte_base_r11.png`, **`iso_base_r11_frente_esq.png`, `iso_base_r11_tras_dir.png`, `iso_base_r11_topo.png`, `iso_base_r11_ocultas.png`** (7800 x 6300 px) e **`iso_base_r11.pdf`** (vetorial, uma página por vista, ampliável sem perda).
+
+### Resposta curta
+
+- **OLED escolhido: Adafruit 326** (0,96 pol., SSD1306, 128 x 64, 3,3 V pelo regulador de bordo, I²C, 2 conectores STEMMA QT / Qwiic SH de 4 vias, US$ 17,50). Escolhido junto com a eletrônica (ela chegou ao mesmo módulo e trocou o J401 para SH de 4 vias, ordem Qwiic). Desenho mecânico **publicado**: arquivo de placa da Adafruit (Eagle, GitHub `adafruit/Adafruit-128x64-Monochrome-OLED-PCB`), do qual li contorno, furos, conectores e o pacote do painel Univision UG-2864HSWEG01. **Cabe na janela 24 x 13 atual, sem mudar a janela**: área ativa 21,744 x 10,864 **centrada na janela** (margens 1,128 x 1,068 mm); o deslocamento de 1,9 mm suposto era na verdade **2,098 mm** (o vidro, não a área ativa, é que fica fora do centro).
+- **Parafusos, por uso:** **régua = parafuso passante M2 + porca** (M2 x 10 / 12 / 14 / 16 por fileira, bolso sextavado por baixo); **tampa (postes internos e de parede), H1..H4 e OLED = parafuso formador de rosca M2** (PT 2,0 x 8; x 16 nos H; x 4 no OLED) direto no poste. O inserto perdeu: as bossas do modelo (D6,0 e D5,0) ficam abaixo dos 6,4 mm que um inserto M2 pede, custa 3x e pede ferramenta e calor.
+- **O sem-OUT liberou:** cabeçalho, entalhe de 10,4 mm no trilho de trás e a janela de plugue na parede de ponta direita; os trilhos de trás sobram **92 %** (R1, R3) e 84 % (R2, R4) (eram 77-85 %) e os da frente **100 / 92 / 92 / 89 %** (R1..R4; o 595 saiu do trilho, ver a atualização abaixo); o furo **u 129,5 das fileiras 2 e 4** (par **37 + 129,5 = 92,5 mm**, era 74); o furo u 111 fica livre (só serve às R8E); todos os 20 postes candidatos ficam livres (o (218,7; 36,65) volta a ser possível). A profundidade do case continua 102 (pergunta 1).
+- **Contrato de furos:** abaixo (§2). **Não mudou nenhuma posição nem diâmetro**; muda só o que a eletrônica deve manter livre sob a cabeça e a porca (§2).
+- **Fit check das 32 teclas: 0 mm³** em todos os pares (cabeçalhos, plugues, cabos de 45,8 e 50,8, peças sob a régua, parafusos, **porcas x base = 0, porcas x réguas = 0**, OLED, plugue do OLED, interface). No teclado, tampa x carcaça (+0,5 / +0,8 mm) 8,3 / 50,4 mm³ (a folga crítica de sempre). Malhas: 0 arestas abertas (tampa, base, réguas, teclas); ray-probe dos 32 furos de tecla: 0 filme. Volumes: base **87,0 cm³** (R10V4: 84,9), tampa **89,9** (89,4): total 176,9 cm³, **+US$ 0,6** de MJF (case ≈ US$ 49,1). Rigidez da régua: 0,0153 mm a 3 N (igual).
+
+### Atualização (pedido da eletrônica e do roteamento, mesma data): o 595 da R8 no meio da régua
+
+A R8 não roteava com o 595 em u 27,75 (EN8 de 111 mm). A eletrônica o levou para **u 74, v 0 (rot 90, |v| ≤ 1,9)**, com **C1..C8 na linha central à direita de cada sensor** e C9 em u 78,2, v +1,75 (`posicao_regua8.json`, 22 nov 23:46). Apliquei no modelo: `ligacao_h.py` passa a ler `posicao_regua8.json` (a R8, em vez do arquivo da R4); o recorte do trilho da frente em u 25,5..32 **sai** (`UNDER_FRONT_U = ()`); as peças de baixo da régua são exatamente as do arquivo (sensores, 595, C1..C10).
+- **Fit check das 32 teclas: 0 mm³ em tudo** (peças sob a régua x base e x tampa incluídos); só a folga crítica de sempre (+0,5 / +0,8 mm: 8,3 / 50,4 mm³). 0 arestas abertas; ray-probe 0 filme.
+- **Longe dos furos e dos postes:** o 595 (u 71,6..76,4) está a ≥ 24 mm dos furos u 37 e u 111 (patamar de Ø6,4: até u 107,8) e a 55 mm de u 18,5 / 129,5; **nenhum conflito** nos postes internos (`layout_r4.conflicts` = []). Os pares de furos não mudam (`fixacao_r10.json`: R1 e R3 18,5 + 129,5, R2 e R4 37 + 129,5).
+- **Trilhos:** o trilho da frente fica contínuo (100 / 92 / 92 / 89 % após o plugue IN; o maior vão cai a 11,7 mm na fileira 2 e 16,0 na 4, só o corte do plugue IN através do riser); o volume da base sobe a **87,0 cm³** (+1,1 cm³ pelo trilho que voltou), sem custo relevante. Rigidez da régua: pior caso **0,0153 mm** a 3 N (tecla 1 das R2 e R4, vão do plugue), igual.
+- Figuras refeitas: `planta_geral_v4_r11.png`, `planta_interface_v4_r11.png`, `corte_base_r11.png`, `iso_base_r11_*.png` e `iso_base_r11.pdf` (o trilho da frente agora é uma peça só); olhei cada PNG; nome da nota em cada tecla.
+
+### Decisões do J sobre as perguntas desta seção (recebidas pela coordenação)
+
+1. **Profundidade: 102 mm mantida** (largura constante da família; o recuo continua).
+2. **Orientação "B" do OLED aceita** (a programação gira a imagem 180°).
+3. **Régua com parafuso passante + porca e tampa / OLED com formador de rosca: aceitos.**
+4. **Bolso da fileira 4:** resolvido com a porca fina (acima); a solução mais econômica.
+5. **Ensaio de remontagem do PT (20 vezes em PA12 MJF, depois arrancamento) e medição do OLED real: obrigatórios antes de fechar o projeto.**
+6. **Tabela da SPEC (80 teclas):** a R8 do meio é **R8E** (com OUT); a ponta direita é a R4 (sem OUT). 48 = R8E + R4, 64 = R8E + R8, 80 = R8E + R8E + R4.
+
+### 1. Item 1 — OLED real (`case/oled_r11.py`, `corte_interface_v4_r11.png`, `planta_interface_v4_r11.png`)
+
+**Candidatos comparados.**
+
+| Modelo | Desenho publicado | Área ativa | Cabe na janela 24 x 13? | Conector | Preço | Resultado |
+|---|---|---|---|---|---:|---|
+| **Adafruit 326** (0,96 pol., SSD1306) | sim (arquivo de placa Eagle + desenho de fabricação) | 21,74 x 10,86 | **sim** (margens 1,13 x 1,07) | SH 4 vias x2 | US$ 17,50 | **escolhido** |
+| SparkFun Qwiic OLED 1,3 pol. (LCD-23453) | só imagem de dimensões | 29,42 x 14,70 | **não** (janela de 30 x 15 + mexe na tampa) | SH 4 vias | não conferido | descartado |
+| genérico 0,96 pol. 27,3 x 27,8 (o do R10V4) | **não** | ~21,7 x 10,9 (sem garantia) | sim | 4 pinos | US$ 2-3 | descartado: sem desenho, cabo sob medida |
+
+Fonte: a loja da Adafruit (espessura 6,2 mm, furos "a 24 mm", I²C, 0x3C/0x3D), o arquivo `.brd` (GitHub) e o desenho de fabricação da página Learn (`fab.png`, 1,15 x 1,25 pol.). O PDF/imagens não vieram ilegíveis; **o que não está em nenhum desenho** (espessura da placa 1,6 mm, vidro + fita 1,5 mm sobre a placa, tolerância de posição do painel na placa) fecha com a soma de 6,2 mm da loja (1,5 + 1,6 + 3,1 mm dos conectores) e fica como **risco 1**.
+
+**O que lê o arquivo de placa (mm, quadro do módulo: vista de trás, origem no canto inferior esquerdo).** Placa 29,21 x 31,75 (duas orelhas embaixo, y 0..5,08, entalhe de 19,05 entre elas; cantos de cima R 2,54); **4 furos Ø2,5** (ilhós Ø3,2) em x 2,54 / 26,67 e y 2,54 / 29,21 (**24,13 x 26,67 de distância**); vidro 26,7 x 19,26 em x 1,255..27,955, y 7,673..26,933; **área ativa 21,744 x 10,864** em y 13,969..24,833 (centro 19,401: **2,098 acima do centro do vidro**, porque o FPC fica no lado de baixo do vidro); os dois SH4 em y 16,51, um em cada borda lateral, **na face de trás** (a do vidro é a da frente), bocas para fora.
+
+**Posição no instrumento (orientação "B").** Vidro para cima; borda do cabeçalho de 8 pinos (sem uso) voltada para **+y (o jogador)**, ou seja, **imagem girada 180° no firmware** (remapa SEG/COM do SSD1306, sem custo; pergunta 4). Com isso o **conector direito do módulo fica em y 19,11**, na altura da fenda que já existia na placa principal. Mapa: `x = 22,395 + xb`, `y = 2,599 + yb`, escolhido para que o **centro da área ativa caia em (37,0; 22,0), o centro da janela**. Resultado: placa x 22,40..51,61, y 2,60..34,35; vidro x 23,65..50,35, y 10,27..29,53; área ativa x 26,13..47,87, y 16,57..27,43; janela x 25..49, y 15,5..28,5. Níveis (z, topo da placa principal = 0): vidro 12,5 (0,1 abaixo do teto de 12,6, sob o vidro da janela), placa do módulo 9,4..11,0, conectores até 6,3.
+
+**Apoios e fixação.** Quatro postes D4,2 da tampa **sobre os furos reais** (x 24,935 / 49,065, y 5,139 / 31,809), do teto até a face da frente da placa do módulo (z 11,0); piloto de 1,75 até 0,8 mm abaixo do topo do teto (z 13,8): **PT M2 x 4 por baixo**, atravessando a placa (1,6) e entrando 2,4 mm (**engate curto, risco 3**; o módulo pesa 4,5 g: 2,2 N num choque de 50 g contra mais de 250 N de arrancamento estimado). D4,2 dá 0,18 mm de folga ao vidro nos furos de cima. Montagem: tampa de cabeça para baixo, módulo pelos 4 parafusos. **Folgas:** vidro 0,1 mm sob o teto; tampa x OLED = 0; OLED x placa, x encoders, x alto-falante, x caixa acústica = 0; módulo (z 6,3..12,5) sobre a placa (z 0) sem peça do topo no caminho.
+
+**Caminho do cabo até o J401** (`corte_interface_v4_r11.png`, corte C-C): o cabo de estoque Qwiic de 50 mm (Adafruit 4210, ~45,8 mm de fio útil, ou 50,8) liga o plugue **direito** do módulo (saída dos fios em x 53,6, z 7,85) ao J401 (SH de 4 vias, fundo da placa, boca para −y). Percurso em **S com raio 3**: meia volta para baixo e de volta (x até 56,6), trecho de 0,6 mm e curva de 90° descendo **pela fenda que já existe (x 44,45..51,45; y 18,17..20,67) em x 50,0**: **≈ 17 mm até a fenda e ≈ 21 mm até o plugue do J401**; sobra **~25 mm de fio**, guardados sobre a placa (x > 56; nada no topo da placa ali, 6,3 mm livres sob o módulo). **Responde a pergunta 1 da eletrônica: o laço cabe, a fenda não muda.** O corpo do conector do módulo fica sobre a fenda (z 6,3..9,4), a 6 mm acima da placa. O conector esquerdo do módulo não é usado.
+
+### 2. Item 3 — contrato dos furos de fixação das réguas (para a eletrônica e o roteamento) e o sem-OUT
+
+| Variante | Posições | OUT | Furos M2 (Ø2,2, v +5,2) | Entalhes de poste (2,0 x 4,3, borda de trás) |
+|---|---:|---|---|---|
+| **R8** | 8 | não | **u 18,5 / 37 / 111 / 129,5** | u 0, 18,5, ... 148 (múltiplos de 18,5) |
+| **R8E** | 8 | sim (u 121,5) | **os mesmos** | os mesmos |
+| **R4** | 4 | não | **u 18,5 / 37 / 55,5** | u 0, 18,5, ... 74 |
+| **R4E** | 4 | sim (u 47,5) | **os mesmos da R4** | os mesmos |
+
+- **A régua é a mesma placa nas quatro** (a "E" só monta o OUT): os furos não mudam com a variante nem com o parafuso novo. **Diâmetro Ø2,2 (folga do M2) continua certo para o parafuso passante.** IN em u 5,9.
+- **Cada furo tem um patamar sem peças de Ø6,4 no fundo** (boss D6 da bandeja) **e, no topo, cobre proibido de Ø4,6 sob a cabeça (Ø3,8)**, como a eletrônica já fez (F.Cu proibido em 4,6 mm). A porca fica **sob a bandeja**, não na régua: nada muda na placa.
+- **Uso no instrumento de 32 teclas (R8 sem OUT):** fileiras 1 e 3 em **u 18,5 + 129,5 (vão de 111 mm)**; fileiras 2 e 4 em **u 37 + 129,5 (92,5 mm)**. Os furos livres de cada fileira (raster de 0,1 mm, `fixacao_r10.json`): R1 e R3: todos (18,5 ... 129,5); R2 e R4: 37 ... 129,5 (o 18,5 cai no plugue IN da fileira da frente). O **u 111** não é usado (serve só às R8E: com OUT em 121,5 o 129,5 da fileira de trás cai no cabeçalho da fileira da frente e o par vira 37 + 111, vão 74 mm). Nas R8E de 48 / 64 / 80 teclas os pares continuam livres.
+- **R4 / R4E (só validação):** u 18,5 + 55,5 nas fileiras 1 e 3; u 37 + 55,5 nas 2 e 4 (vão curto, trava pouco o giro; as teclas ajudam).
+- **Peças sob a régua:** vêm de `pcb/regua/posicao_regua8.json` (posicionamento da eletrônica, ver a atualização abaixo): 595 em u 74, v 0, rot 90 (u 71,61..76,39, v ±1,89, 1,0 mm); C1..C8 na linha central, 1,0 x 1,9 mm, à direita de cada sensor (u + 1,75); C9 em u 77,23..79,14, v +1,25..+2,25; tudo com |v| ≤ 2,25, dentro do bolso. **Não há mais recorte do trilho da frente para o 595.**
+
+### 3. Item 2 — parafusos por uso (`estudos/parafusos_r11.py`, `estudos/parafusos_r11.json`)
+
+**Premissas (nada foi comprado nem medido).** Preços de catálogo em pequena quantidade (US$): parafuso M2 A2 0,03-0,05, formador de rosca PT 2,0 0,04, porca M2 0,015, inserto de latão M2 0,09; ferramenta de inserto (ponta para o ferro) US$ 8. As regras de bossa são as **gerais dos fabricantes** (EJOT Delta PT / Würth para formador de rosca em termoplástico: D externo ≥ 2 x d, piloto ≈ 0,8-0,9 d; Ruthex / CNC Kitchen para inserto térmico: D externo ≥ 2 x o D do inserto, 6,4 mm), **citadas de memória e não reconferidas nas folhas dos fabricantes**; as contagens de remontagem são julgamento de engenharia. **Tudo isso é o que um ensaio no protótipo precisa confirmar** (risco 3).
+
+**Os três sistemas, para M2:**
+
+| | A: formador de rosca (PT 2,0) | B: M2 de máquina em inserto de latão | C: passante M2 + porca |
+|---|---|---|---|
+| Bossa pedida | D ≥ 4,0 (piloto 1,75, 7 mm de fundo) | D ≥ 6,4 (piloto 3,2, ferramenta quente) | furo D2,4; D ≥ ~3 (sem tensão radial); bolso sextavado AF 4,2 por baixo |
+| **Estabilidade** | pré-carga relaxa 30-50 % em semanas (fluência do PA12 na rosca); sob choque repetido **afrouxa primeiro** | **rosca metálica**; a pré-carga passa pelo inserto | **rosca metálica nos dois lados**, parafuso comprido segura a pré-carga; só a cabeça e a porca apertam o plástico (~2 MPa) |
+| **Trinca no PA12 MJF** | ok se D ≥ 2 d; sem cantos vivos | **o inserto quente tensiona a parede**: D6,0 dá 1,4 mm de parede (pede 1,6-1,7) | sem tensão radial; o bolso fica no piso (parede de 0,58 mm nos cantos da fileira 4, ver risco 5) |
+| Remontagens da rosca | **~5-10** (estimativa) | 50 ou mais | ilimitado (rosca metálica) |
+| Custo, régua (8) / tampa (15) / OLED (4) | 0,32 / 0,60 / 0,16 | 0,96 / 1,80 / 0,48 + ferramenta 8 | 0,52 / 0,98 / 0,26 |
+| Tempo, régua / tampa | 4 / 7,5 min | 16 / 30 min | 8 / 15 min |
+| Atende ao uso | **tampa ✓ OLED ✓; régua ✗ (10 trocas)** | ciclos ✓ mas **bossas ✗ nos três usos** | **régua ✓ (única) ; tampa e OLED sem acesso para porca** |
+
+**Adotado:**
+- **Régua: C (passante + porca).** Critério: trocas de régua (extensão modular e régua defeituosa) pedem pelo menos 10 remontagens, o que o formador de rosca não garante; o inserto não cabe na bossa D6 do modelo (2,4 mm abaixo da regra de 2 x D); a porca é a mais barata que atende. **Comprimentos M2 x 10 (fileira 1), 12 (2), 14 (3), 16 (4)**: a ponta chega à face de baixo da porca. **Porca M2 (AF 4,0 x 1,6) num bolso sextavado AF 4,2 aberto na face de baixo da bandeja**: a porca descansa na mesa e o parafuso a puxa para o teto do bolso (sem queda com o case parado; na montagem, bandeja de cabeça para baixo). Fileiras 1-3: bolso de 1,8 mm no piso (0,2 mm de piso acima do teto do bolso mais a bossa de 5 a 12 mm); **fileira 4: porca fina (DIN 439, 1,2 mm) num bolso de 2,3 mm** (o M2 x 16 só alcança 0,9 mm de uma porca comum; com a fina o teto do bolso fica em z −7,8, só 0,3 mm acima do piso, e a parede de 0,58 mm nos cantos do sextavado quase some: risco 5). Cabeça Ø3,8 sobre a régua, no vão de 3,1 mm entre carcaças (fit check 0). Custo por régua acrescentada: US$ 0,13.
+- **Tampa (11 postes) e placa (H1..H4): A (formador de rosca M2)**, PT 2,0 x 8 por baixo nos 11 postes (engate 7 mm) e **PT 2,0 x 16 nos 4 H** (atravessam bandeja e placa e entram 7 mm no poste da tampa); **piloto 1,75 de 7 mm**. Critério: a tampa abre a cada troca de régua (~10 vezes na vida do instrumento: no limite do A), **mas** a bossa D5,0 / D5,4 / D6,0 só cumpre a regra do formador de rosca (≥ 4,0), não a do inserto; o inserto custa 3x e pede ferramenta. **Mitigação se o ensaio mostrar desgaste: o mesmo furo aceita um PT M2,5 (rosca nova) sem reimprimir; ou passar os postes a D6,4 e usar inserto (a folga dos postes internos ao corpo das teclas precisa ser conferida antes).** Custo: US$ 0,76 (peças) para os 15.
+- **OLED: A (PT M2 x 4)**, montado uma vez, carga de 2,2 N; engate de 2,4 mm.
+- **Total 32 teclas: US$ 1,28 de peças, nenhuma ferramenta, ~17,5 min de montagem.** Tudo inserto: US$ 3,24 + ferramenta 8 + 54 min. Tudo formador de rosca: US$ 1,08, mas a régua fica sem garantia de remontagem.
+- **Arruela / apoio elástico:** não preciso: nas réguas o parafuso aperta uma placa FR-4 de 1,2 mm sobre a bossa e os trilhos carregam a tecla; no PT, uma arruela plana M2 (US$ 0,005) pode entrar se o ensaio mostrar a cabeça afundando. Torque: 0,15 N·m no PT (o PA12 aguenta ~0,3 antes de espanar), parafuso passante 0,2 N·m.
+
+### 4. Item 5 — isométricos detalhados da base (`iso_base_r11.py`)
+
+Só a **base (bandeja)**: sem tampa nem réguas. As arestas são **exatas** (remoção de linhas ocultas do OpenCascade sobre o sólido real da bandeja; verificado contra um cubo conhecido), em quatro folhas: **frente-esquerda**, **trás-direita**, **vista de cima** e **linhas ocultas tracejadas** (frente-esquerda). Cada folha traz a **legenda de 50 números** (o que cada um apoia, com régua e teclas), em PNG de 7800 x 6300 px e no PDF vetorial. Sobre cada trilho, **a carcaça de cada tecla (14 x 14) com o nome da nota** (C e F em amarelo). Círculo cheio = apoio visível naquele ponto de vista; tracejado = atrás de outra parede (teste por raio).
+
+| Números | Apoio | O que apoia |
+|---|---|---|
+| 1-4 | trilho de trás das fileiras 1-4 | borda de trás da régua R1..R4 (A3..F#5 na R1, A#3..E5 na R2, G#3..F5 na R3, A3..D#5 na R4) |
+| 5-8 | trilho da frente das fileiras 1-4 (2 pedaços: recorte do 595) | borda da frente da régua |
+| 9-12 | parede da frente da fileira 1 e os 3 **risers** | fecha o degrau; trava os dois trilhos |
+| 13-20 | paredes de ponta (esquerda e direita, 4 fileiras) | pontas dos trilhos; a esquerda com o recorte do IN, a direita **sem recorte de OUT** |
+| 21-28 | bossas M2 das réguas (8) | o parafuso passante de cada régua (M2 x 10/12/14/16) |
+| 29-33 | postes internos (5) | o poste da tampa pousa no piso, entre as fileiras |
+| 34-39 | postes de parede (6) | a bossa D6 da tampa, junto das paredes |
+| 40-43 | bossas H1..H4 | sobem à face de baixo da placa principal |
+| 44-47 | túneis dos 4 cabos da placa | caminho do cabo até o IN de cada régua |
+| 48-50 | berço da bateria, furo do PROG, rebaixo do H101 | interface |
+
+### 5. Validação curta do conceito modular (sem figuras por tamanho)
+
+Sem mudança de regra: 48 = R8E + R4, 64 = R8E + R8, 80 = R8E + R8E + R4 (a eletrônica notou que a R8 do meio precisa do OUT: no meio entra a **R8E**; a tabela da SPEC pôs "R8" como ponta direita de 80, mas o 80 termina em R4). As terminações são as mesmas nas quatro variantes; o comprimento do case segue 244 + 74 por R4 e + 148 por R8; o cabo é o mesmo (OUT -> IN a 32,4 mm). Os furos: os pares da R8E (18,5 + 129,5 nas fileiras 1 e 3 e **37 + 111** nas 2 e 4, porque o OUT da fileira da frente ocupa o 129,5 da de trás) continuam livres.
+
+### 6. Riscos aceitos (nada foi comprado)
+
+1. **OLED:** espessura da placa (1,6) e do vidro + fita (1,5), posição do painel na placa e os furos "a 24 mm" da loja contra os 24,13 x 26,67 do arquivo: só a peça real responde. O vidro está 0,1 mm sob o teto: se o conjunto de vidro e fita for mais de 0,1 mm mais alto que o suposto, ele encosta no vidro da janela; **medir o módulo antes de fechar a tampa** (o poste pode ficar 0,3 mm mais curto sem outra mudança).
+2. **Imagem girada 180°:** o firmware precisa remapear o SSD1306 (pergunta 4).
+3. **Formador de rosca no PA12 MJF:** reuso de 5-10 vezes, pré-carga e engate curto (2,4 mm) no OLED são estimativas; o ensaio é montar e desmontar 20 vezes uma bossa impressa e medir o arrancamento.
+4. **Cabo Qwiic de 50 mm:** comprimento útil ~45,8 (fios soltos) a 50,8; o S precisa de ~21 mm: folga de ~25 mm que fica solta sobre a placa (o laço cabe; fita colada não faz o S de raio 3).
+5. **Bolso sextavado da fileira 4:** resolvido com a porca fina (1,2 mm): o bolso passa 0,3 mm do piso (era 0,7); a parede de 0,58 mm nos cantos só existe nesses 0,3 mm. Uma porca fina custa ~US$ 0,02 (o M2 x 18 sobraria 0,9 mm abaixo do case).
+6. **Fundo da bandeja:** os 8 bolsos sextavados (4 por baixo do piso com 1,8 mm, 2 da fileira 4 com 2,3 mm) ficam abertos na face de baixo (poeira); pés de silicone ou um adesivo resolvem.
+7. Comprimento útil do cabo, posição do 595 da R8 e acesso ao plugue (1,7 mm sob a régua de trás): como no R10V4 (§6 do relatório anterior).
+
+### Perguntas para o design (R11V4)
+
+*(As perguntas 1 a 5 abaixo foram respondidas pelo J; ver "Decisões" acima. Ficam registradas.)*
+
+1. **Profundidade de 102 mm:** o recuo de 2 mm da parede de trás só existe por causa do laço de cabo entre réguas (48 / 64 / 80 teclas); no instrumento de 32 teclas (sem OUT) a parede poderia voltar a y 0 (case de 100 mm; os cabos da placa cabem em y 0). Mantenho 102 para que a profundidade seja a mesma de toda a família ("a largura do case é constante"), ou o de 32 teclas passa a 100?
+2. **Orientação do OLED:** aceita a "B" (cabeçalho para +y; **a programação gira a imagem 180°**), que mantém o cabo e a fenda onde a eletrônica já os pôs? A "A" (sem rotação) leva o conector direito para y 24,9 e pede mover fenda e J401 ~5,8 mm.
+3. **Régua com parafuso passante e porca** (bolsos abertos no fundo, 4 comprimentos de M2: 10/12/14/16) e **tampa/OLED com formador de rosca:** aceita? Ou prefere inserto na tampa (postes a D6,4 e US$ 8 de ferramenta)?
+4. **Bolso da fileira 4:** parede de 0,58 mm; aceita a porca fina ou o M2 x 18 se o impressor recusar?
+5. **Ensaio no protótipo:** posso definir o roteiro de 20 remontagens do PT no PA12 e a medição do módulo OLED (espessura, posição do painel) como itens obrigatórios antes de fechar o projeto?
+
+---
+
 ## R10V4 — 4 x R8, base robusta, fixação, OLED (22 nov 2026, parte de Design)
 
 **SPEC atendida: R10V4** (item 2 base, item 3 fixação, item 4 OLED, validação curta do conceito modular). Nada foi comprado, impresso ou montado; só 32 teclas, só a Student V4. Modelo oficial `case/case_r4.py` (+ `case/layout_r4.py`): **uma R8 de 148 mm por fileira**, sem junção régua–régua, sem cabo entre réguas e sem rebaixo de junção; ficam os 4 cabos da placa à régua de cada fileira (45,8 e 50,8 mm de fio útil, os dois fecham). Posições de teclas, placa, interface e o case de **244 x 102 mm** não mudaram.

@@ -27,6 +27,8 @@ PCB = os.path.normpath(os.path.join(HERE, ".."))
 sys.path.insert(0, PCB)
 sys.path.insert(0, HERE)
 import posiciona_regua as PR  # noqa: E402
+if os.environ.get("REGUA_BOARD"):                     # R11V4: the routed board (posiciona_regua.py rebuilds the unrouted one from scratch: never over a routed board)
+    PR.OUT = os.path.abspath(os.environ["REGUA_BOARD"])
 
 HW = os.path.normpath(os.path.join(PCB, ".."))
 KD = os.path.join(HW, "kicad", "regua")
@@ -38,8 +40,11 @@ V = PR.V
 U0, U1, VB, VF = PR.U0, PR.U1, PR.VB, PR.VF
 KEYS = PR.KEYS
 RAIL, GAP, TABW = 5.0, 2.0, 3.0
-TAB_U = (10.0, 65.0)                # tab centres along u (back edge flat spans [1,17.5] and [56.5,73]; front edge is flat)
-N = 5
+# R11V4: R8 (REGUA_N=8) has 3 tabs per long edge (back edge flat spans [1+18.5k, 17.5+18.5k]; the front edge is flat); N = strips per panel
+TAB_U = (16.0, 65.0) if PR.NPOS == 4 else (14.0, 83.0, 138.0)    # 14, not 10: the mouse bites at u 10 sat on J1's mounting pad (back edge)
+N = int(os.environ.get("PAINEL_N", "5"))
+MODO = os.environ.get("MODO", "ambos")      # grade | regua | ambos
+TAGP = "R%d_painel_de_%d" % (PR.NPOS, N)
 STRIP_W, STRIP_H = U1 - U0, VF - VB
 PW = RAIL + GAP + STRIP_W + GAP + RAIL
 PH = RAIL + GAP + N * STRIP_H + (N - 1) * GAP + GAP + RAIL
@@ -134,7 +139,7 @@ def frame(b, fiducials):
                     x, y = ox + tc + 0.9 * k, oy + ev
                     hole(b, "MB", x, y, 0.5)
     if fiducials:
-        for (x, y) in ((PW / 2 - 25, PH - 2.5), (PW / 2 + 25, PH - 2.5), (PW - 2.5, 2.5)):
+        for (x, y) in ((PW / 2 - 25, PH - 2.5), (PW / 2 + 25, PH - 2.5), (PW - 12.0, 2.5)):
             fid(b, x, y)
 
 
@@ -283,9 +288,10 @@ def build_regua_panel():
         off = pcbnew.VECTOR2I(dx, dy)
 
         def netfor(item):
-            nm = item.GetNetname()
+            nm0 = item.GetNetname()
+            nm = nm0 if nm0 == "" else "%s_%d" % (nm0, i + 1)       # one net set per strip (the strips are separate boards)
             if nm not in nets:
-                ni = pcbnew.NETINFO_ITEM(b, nm + ("" if i == 0 and False else ""))
+                ni = pcbnew.NETINFO_ITEM(b, nm)
                 b.Add(ni)
                 nets[nm] = ni
             return nets[nm]
@@ -305,7 +311,9 @@ def build_regua_panel():
                     pd.SetNet(netfor(pd))
             b.Add(c)
         for t in src.GetTracks():
-            c = pcbnew.Cast_to_BOARD_CONNECTED_ITEM(dup(t))
+            cls = t.GetClass()
+            c = dup(t)
+            c = {"PCB_VIA": pcbnew.Cast_to_PCB_VIA, "PCB_ARC": pcbnew.Cast_to_PCB_ARC}.get(cls, pcbnew.Cast_to_PCB_TRACK)(c)
             c.Move(off)
             c.SetNet(netfor(t))
             b.Add(c)
@@ -317,14 +325,18 @@ def build_regua_panel():
             b.Add(c)
         # outline with tabs
         strip_outline(b, sx - U0, sy - VB, True)
-    text(b, "STUDENT V4 REGUA R4V4 painel de 5 (SEM ROTA)", PW / 2, 2.5, pcbnew.B_SilkS, 1.0, True)
+    ROTEADA = bool(os.environ.get("REGUA_BOARD"))
+    text(b, "STUDENT V4 REGUA R%d R11V4 painel de %d%s" % (PR.NPOS, N, "" if ROTEADA else " (SEM ROTA)"), PW / 2, 2.5, pcbnew.B_SilkS, 1.0, True)
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
-    panel = os.path.join(KD, "student_v04_regua_painel.kicad_pcb")
+    panel = os.path.join(KD, "student_v04_regua_" + TAGP + ".kicad_pcb") if PR.NPOS != 4 or N != 5 else os.path.join(KD, "student_v04_regua_painel.kicad_pcb")
     pcbnew.SaveBoard(panel, b)
     rec = {"painel_mm": [round(PW, 2), round(PH, 2)], "tracks_copiadas": len(src.GetTracks())}
-    zp, files = gerbers(panel, "student_v04_regua_painel_SEM_ROTA", os.path.join(FAB, "regua_painel_SEM_ROTA_NAO_ENCOMENDAR"),
+    pdir = os.path.join(FAB, "regua", "gerbers") if ROTEADA else os.path.join(FAB, "regua_painel_SEM_ROTA_NAO_ENCOMENDAR")
+    zp, files = gerbers(panel, "student_v04_regua_" + TAGP + ("" if ROTEADA else "_SEM_ROTA"), pdir,
                         "F.Cu,B.Cu,F.Mask,B.Mask,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,Edge.Cuts")
     rec["zip"] = os.path.relpath(zp, HW)
+    rec["drc_painel"] = drc(panel, "painel_" + TAGP)
+    rec["arquivos"] = files
     # provisional BOM / CPL of the whole panel (positions from KiCad; rotations still to be fitted to the EasyEDA footprints by cpl_jlc.py after the gate)
     rows = []
     for fp in b.GetFootprints():
@@ -333,21 +345,26 @@ def build_regua_panel():
             continue
         rows.append([ref, round(TOMM(fp.GetX()), 3), round(-TOMM(fp.GetY()), 3) if False else round(TOMM(fp.GetY()), 3), "Bottom",
                      round(fp.GetOrientationDegrees(), 1)])
-    with open(os.path.join(FAB, "regua_painel_SEM_ROTA_NAO_ENCOMENDAR", "regua_painel_cpl_PROVISORIO.csv"), "w", newline="") as f:
+    with open(os.path.join(FAB, "regua_painel_SEM_ROTA_NAO_ENCOMENDAR", "regua_%s_cpl_PROVISORIO.csv" % TAGP), "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["Designator", "Mid X", "Mid Y", "Layer", "Rotation(KiCad, sem ajuste EasyEDA)"])
         w.writerows(rows)
     rec["pecas_no_painel"] = len(rows)
     run([KICAD_CLI, "pcb", "render", "--side", "bottom", "--width", "1800", "--height", "1800", "--quality", "basic",
-         "--output", os.path.join(HERE, "img", "regua_painel_fundo.png"), panel])
+         "--output", os.path.join(HERE, "img", "regua_%s_fundo.png" % TAGP), panel])
     return rec
 
 
 def main():
     os.makedirs(FAB, exist_ok=True)
     os.makedirs(os.path.join(HERE, "img"), exist_ok=True)
-    out = {"grade": build_grade(), "regua": build_regua_panel()}
-    json.dump(out, open(os.path.join(HERE, "fab_regua.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    out = {}
+    if MODO in ("grade", "ambos"):
+        out["grade"] = build_grade()
+    if MODO in ("regua", "ambos"):
+        out["regua"] = build_regua_panel()
+    if MODO == "ambos":
+        json.dump(out, open(os.path.join(HERE, "fab_regua.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print(json.dumps(out, indent=1, ensure_ascii=False))
 
 

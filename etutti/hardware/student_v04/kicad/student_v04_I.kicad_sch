@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block (title "eTutti Student V4 · I · Interface") (date "2026-11-21") (rev "Student V4 R3V4") (company "beatconfused.com") (comment 1 "etutti/hardware/student_v04/pcb/schematic.py escreve este arquivo; nao editar a mao"))
 	(lib_symbols
-		(symbol "viaggio_micromod:Conn_01x06_MountingPin"
+		(symbol "viaggio_micromod:Conn_01x04_MountingPin"
 		(pin_names
 			(offset 1.016)
 			(hide yes)
@@ -17,7 +17,7 @@
 		(in_pos_files yes)
 		(duplicate_pin_numbers_are_jumpers no)
 		(property "Reference" "J"
-			(at 0 7.62 0)
+			(at 0 5.08 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26,8 +26,8 @@
 				)
 			)
 		)
-		(property "Value" "Conn_01x06_MountingPin"
-			(at 1.27 -10.16 0)
+		(property "Value" "Conn_01x04_MountingPin"
+			(at 1.27 -7.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -59,7 +59,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connectable mounting pin connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "Generic connectable mounting pin connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -92,27 +92,16 @@
 				)
 			)
 		)
-		(symbol "Conn_01x06_MountingPin_1_1"
+		(symbol "Conn_01x04_MountingPin_1_1"
 			(rectangle
-				(start -1.27 6.35)
-				(end 1.27 -8.89)
+				(start -1.27 3.81)
+				(end 1.27 -6.35)
 				(stroke
 					(width 0.254)
 					(type default)
 				)
 				(fill
 					(type background)
-				)
-			)
-			(rectangle
-				(start -1.27 5.207)
-				(end 0 4.953)
-				(stroke
-					(width 0.1524)
-					(type default)
-				)
-				(fill
-					(type none)
 				)
 			)
 			(rectangle
@@ -159,21 +148,10 @@
 					(type none)
 				)
 			)
-			(rectangle
-				(start -1.27 -7.493)
-				(end 0 -7.747)
-				(stroke
-					(width 0.1524)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
 			(polyline
 				(pts
-					(xy -1.016 -9.652)
-					(xy 1.016 -9.652)
+					(xy -1.016 -7.112)
+					(xy 1.016 -7.112)
 				)
 				(stroke
 					(width 0.1524)
@@ -184,7 +162,7 @@
 				)
 			)
 			(text "Mounting"
-				(at 0 -9.271 0)
+				(at 0 -6.731 0)
 				(effects
 					(font
 						(size 0.381 0.381)
@@ -192,7 +170,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 5.08 0)
+				(at -5.08 2.54 0)
 				(length 3.81)
 				(name "Pin_1"
 					(effects
@@ -210,7 +188,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 2.54 0)
+				(at -5.08 0 0)
 				(length 3.81)
 				(name "Pin_2"
 					(effects
@@ -228,7 +206,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 0 0)
+				(at -5.08 -2.54 0)
 				(length 3.81)
 				(name "Pin_3"
 					(effects
@@ -246,7 +224,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 -2.54 0)
+				(at -5.08 -5.08 0)
 				(length 3.81)
 				(name "Pin_4"
 					(effects
@@ -264,43 +242,7 @@
 				)
 			)
 			(pin passive line
-				(at -5.08 -5.08 0)
-				(length 3.81)
-				(name "Pin_5"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "5"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin passive line
-				(at -5.08 -7.62 0)
-				(length 3.81)
-				(name "Pin_6"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "6"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin passive line
-				(at 0 -12.7 90)
+				(at 0 -10.16 90)
 				(length 3.048)
 				(name "MountPin"
 					(effects
@@ -992,36 +934,32 @@
 	(global_label "GND" (shape passive) (at 91.44 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "401c0b48-faef-5aa5-bfdd-034eaf6b11dc") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 91.44 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
 	(wire (pts (xy 88.9 53.34) (xy 91.44 53.34)) (stroke (width 0) (type default)) (uuid "58a099ca-e92e-5697-8182-dbdc59ed4f09"))
 	(global_label "SEL_SW" (shape passive) (at 91.44 53.34 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "72367bc7-5d7c-505a-85fe-ac768ba139e0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 91.44 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
-	(symbol (lib_id "viaggio_micromod:Conn_01x06_MountingPin") (at 124.46 53.34 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "bd68597a-b747-5fd6-899e-f80f92322e39")
+	(symbol (lib_id "viaggio_micromod:Conn_01x04_MountingPin") (at 124.46 50.8 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "bd68597a-b747-5fd6-899e-f80f92322e39")
 		(property "Reference" "J401" (at 119.38 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
-		(property "Value" "XY-SM06B-SRSS-TB" (at 119.38 69.85 0) (effects (font (size 1.27 1.27)) (justify left)))
-		(property "Footprint" "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal" (at 124.46 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Datasheet" "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf" (at 124.46 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Description" "tela OLED por cabo SH de 6 vias, o MESMO conector das reguas (um tipo Extended a menos); usa 4 vias na ordem das reguas: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 livres). Pino 1 = +3V3 como nas reguas: um plugue trocado nunca inverte a alimentacao" (at 124.46 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Value" "XY-SM04B-SRSS-TB" (at 119.38 64.77 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Codigo" "I3" (at 124.46 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
-		(property "LCSC" "C56123098" (at 124.46 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Montagem" "JLC" (at 124.46 53.34 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "LCSC" "C51940130" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 124.46 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(pin "1" (uuid "930e3a2f-5883-5fe8-8901-98d7fa6c9a0f"))
 		(pin "2" (uuid "2f0d1cc1-c8cc-5a7f-9542-bc605858f382"))
 		(pin "3" (uuid "7cd8400b-9763-5e35-900f-a1efb0509862"))
 		(pin "4" (uuid "936e81ab-f96f-53d1-bca3-f273149a9850"))
-		(pin "5" (uuid "3f7bd008-eafa-5a2c-8ad7-4cb51e64d269"))
-		(pin "6" (uuid "e845321e-c1cc-5e40-92d7-30eae9f2c3b0"))
 		(pin "MP" (uuid "1b2b5290-66c9-52f5-a6b7-eaca71fef701"))
 		(instances (project "student_v04" (path "/e693166a-2568-51ba-a195-f3779f9f1bbe/6bee8ded-6107-5f0f-8cd2-5597276bbfc6" (reference "J401") (unit 1))))
 	)
 	(wire (pts (xy 119.38 48.26) (xy 116.84 48.26)) (stroke (width 0) (type default)) (uuid "6153b443-15e4-5dc8-b48d-7c23a1aed55f"))
-	(global_label "+3V3" (shape passive) (at 116.84 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "36164a2d-ef00-5bb6-840b-1b4906e4c8cf") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(global_label "GND" (shape passive) (at 116.84 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "36164a2d-ef00-5bb6-840b-1b4906e4c8cf") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
 	(wire (pts (xy 119.38 50.8) (xy 116.84 50.8)) (stroke (width 0) (type default)) (uuid "af9d8499-3d20-5956-b1ae-f98a1cb820bf"))
-	(global_label "GND" (shape passive) (at 116.84 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "abd53f23-5853-53ea-8e22-e5ea5c0bce22") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(global_label "+3V3" (shape passive) (at 116.84 50.8 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "abd53f23-5853-53ea-8e22-e5ea5c0bce22") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 50.8 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
 	(wire (pts (xy 119.38 53.34) (xy 116.84 53.34)) (stroke (width 0) (type default)) (uuid "ad2108d8-f006-53c2-9310-a3534201e1fe"))
 	(global_label "I2C_SDA" (shape passive) (at 116.84 53.34 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "03758d7a-acac-5ddf-88e7-d69141a7c2a1") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 53.34 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
 	(wire (pts (xy 119.38 55.88) (xy 116.84 55.88)) (stroke (width 0) (type default)) (uuid "97099ad5-ccba-5493-820b-427b5c513005"))
 	(global_label "I2C_SCL" (shape passive) (at 116.84 55.88 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "a381abd6-32b3-5334-aed6-4a8159a48292") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 116.84 55.88 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
-	(no_connect (at 119.38 58.42) (uuid "8386e0da-bb6d-5e5b-94ad-6c751ffae249"))
-	(no_connect (at 119.38 60.96) (uuid "b233b92d-c17f-5348-a151-c7aa610cf739"))
-	(wire (pts (xy 124.46 66.04) (xy 124.46 68.58)) (stroke (width 0) (type default)) (uuid "bfe0c049-407f-5ab7-9409-8c8b65bdcf72"))
-	(global_label "GND" (shape passive) (at 124.46 68.58 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "6f9b8099-7fda-507f-9ddc-3f87badc0a84") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 124.46 68.58 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 124.46 60.96) (xy 124.46 63.5)) (stroke (width 0) (type default)) (uuid "bfe0c049-407f-5ab7-9409-8c8b65bdcf72"))
+	(global_label "GND" (shape passive) (at 124.46 63.5 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "6f9b8099-7fda-507f-9ddc-3f87badc0a84") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 124.46 63.5 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
 	(symbol (lib_id "viaggio_micromod:SW_Push") (at 147.32 48.26 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "19515440-f6c2-5504-b3f6-2e80202734ae")
 		(property "Reference" "SW403" (at 142.24 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
 		(property "Value" "Program" (at 142.24 52.07 0) (effects (font (size 1.27 1.27)) (justify left)))

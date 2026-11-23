@@ -1,10 +1,69 @@
 # eTutti Student V4 · relatório da eletrônica
 
-**SPEC atendida: R1V4 a R10V4 (R10V4: 22 nov 2026, seção logo abaixo; R8V4: 22 nov 2026, tarefa 2, seção logo abaixo; R7V4: 22 nov 2026, tarefas 1 e 2, seção logo abaixo, só estudo; R6V4: 22 nov 2026, seção logo abaixo; R5V4: tarefas 2 e 3).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
+**SPEC atendida: R1V4 a R11V4 (R11V4: 22 nov 2026, seção logo abaixo, fase 1: OLED e variantes de régua; R10V4: 22 nov 2026, seção logo abaixo; R8V4: 22 nov 2026, tarefa 2, seção logo abaixo; R7V4: 22 nov 2026, tarefas 1 e 2, seção logo abaixo, só estudo; R6V4: 22 nov 2026, seção logo abaixo; R5V4: tarefas 2 e 3).** As seções 0 a 7 abaixo são da R2V4; a **R3V4** (tarefas 4 e 5) está na seção R3V4 logo abaixo.
 Data: 21 nov 2026. Nada foi posicionado, roteado, encomendado nem gerado em `fab/`: é estudo (Fase A). A V3, a V2 e a V1 não foram tocadas.
 Scripts novos (reproduzem os números): `calculos_eletronica.py` (E2, E3), `fornecimento/precos_jlc.py` (preços e classe na
 biblioteca da JLCPCB, 21 nov, curl de 2 em 2 s). Contrato com a programação: `pcb/PINOS.md` (rascunho já entregue).
 Convenção: **(conferir)** = sem medida ou datasheet conferido; **estimativa** = conta minha, sem cotação.
+
+## R11V4 · OLED real, quatro variantes de régua, posicionamento congelado das réguas (tarefas 1, 3 e 5, fase 1)
+
+**SPEC atendida: R11V4 (22 nov 2026), tarefa 1 (OLED, parte da eletrônica), tarefa 3 (OUT só com extensão, 4 variantes) e a preparação das tarefas 4 e 5 (entrega ao roteamento, BOM/CPL, painéis).** Só 32 teclas detalhadas; das outras, só o conceito. **Nada roteado** (0 trilhas, 0 vias, na principal e nas réguas); nada encomendado nem cotado como compra. Os **Gerbers de produção das réguas ainda não existem**: dependem do roteamento (agente `roteamento`, `pcb/regua/ROTEAMENTO_ENTREGA.md`). Reproduz (raiz): `python pcb/schematic.py` → `python bom_v4.py` → KiCad python `pcb/posiciona_v4.py`; réguas (`REGUA_N=8` e `4`): `python pcb/regua/schematic_regua.py` → KiCad python `pcb/regua/posiciona_regua.py` → KiCad python `pcb/regua/pacotes_regua.py` → KiCad python `MODO=regua PAINEL_N=2|4|5 pcb/regua/fab_regua.py` → venv CadQuery `pcb/regua/vistas_regua.py`; `pcb/regua/custo_r11.py`, `pcb/portao_p_r11.py`.
+
+- **Reposicionamento da R8 (pedido do roteamento, 22 nov):** a R8 roteada não fechou o GND dos capacitores (bolsões entre o tronco de +3V3 e os sinais). Aplicado o menor ajuste, **só na R8**: (1) **74HC595 (U9) de u 27,75 / v +4,2 para u 74,0 / v 0 (rot 90, meio da régua, entre as células 4 e 5, |v| ≤ 1,9: sem corte de trilho da frente)**; o maior EN cai de ~111 para ~65 mm; (2) **C1..C8 passam para a linha central, ao lado direito de cada sensor (u + 1,75, v 0, rot 270): pad +3V3 ao fundo-trás (v −0,48) e pad GND à frente (v +0,48)**, entre o pino 1 (+3V3) e o pino 2 (GND) do TMAG, pernas de ~1 mm, sem bolsão de GND do lado errado; C9 (do 595) em u 78,2 / v +1,75. Não mudaram: furos, J1, J2, R1, sensores, terminações (idênticas à R4). ERC 0/0, DRC sem trilhas 0 erros e 0 avisos, 80 faltando, paridade 0. **A R4 NÃO recebe o ajuste:** já foi aceita roteada (DRC 0/0/0), BOM e terminações são as mesmas (as posições internas de 595 e capacitores não são terminação) e o recorte de trilho do design em u 25,5..32 continua valendo para ela. 
+### Pacotes de cotação das réguas (23 nov 2026, fase 2, a partir das réguas roteadas)
+Roteamento aceitou **R4 e R8** (`kicad/regua/student_v04_regua_roteada.kicad_pcb`, `student_v04_regua8_roteada.kicad_pcb`: DRC com paridade 0 erros, 0 avisos, 0 faltando, 2 camadas, 1,2 mm). **+3V3 a 0,2 mm perto de pads de 0,25 mm: aceito** (2,5 mA; mínimo da JLCPCB 0,1 mm). **Pacotes em `fab/regua/<variante>_painel<N>/` (`gerbers.zip`, `bom.csv`, `cpl.csv`) para R8, R8E (painel de 2 e de 4), R4 e R4E (painel de 5)**; os Gerbers só têm F.Cu e B.Cu (nenhuma In1/In2) e são os mesmos de R8/R8E e de R4/R4E. DRC dos painéis: **0 ligações faltando, 0 folga, 0 avisos; só `invalid_outline` do contorno aberto nas abas** (e 5 `npth_inside_courtyard` na R4, microfuro a 1,05 mm do furo M2). Abas movidas para u 14/83/138 (R8) e 16/65 (R4), fora de vias e do pad do J1. Giro do J1 e do J401 conferidos pelos pads (180 no fundo); **os clones SH não existem na EasyEDA: confirmar na pré-visualização**. Custo final por variante (US$, estimativa, mínimo de 5 painéis nus e 2 montados): **R8 44,0-60,9 (4 montadas); R8E 44,3-61,2; R8 em painéis de 4 (8 montadas) 64,5-94,9; R4 50,2-63,5 (10 montadas); R4E 50,9-64,2**. Riscos e opções a marcar: `fab/regua/LEIAME_COTACAO.md`.
+
+### Resposta curta
+- **OLED escolhido: Adafruit 326** (0,96 pol., **SSD1306**, **128 x 64**, I²C, **3,3 V pelo regulador de bordo**, **2 conectores STEMMA QT / Qwiic**, PCB 29,2 x 26,7 mm + orelhas, vidro 26,7 x 19,26, área ativa 21,74 x 10,86). **US$ 17,50** (1-9 unidades; 15,75 a 10+), **não está na LCSC/JLCPCB** (compra à parte). Endereço I²C **0x3D** de fábrica (0x3C por jumper). O design chegou ao **mesmo modelo** e leu o arquivo de placa da Adafruit para os furos (Ø2,5 a 24,13 x 26,67 mm; ver `FIT_CHECK.md`).
+- **Mudança de esquema por causa do OLED:** **J401 passa de SH de 6 vias para SH de 4 vias, ordem Qwiic (1 GND, 2 +3V3, 3 SDA, 4 SCL)** (XY-SM04B-SRSS-TB, C51940130, US$ 0,039, 17 958 em estoque; original JST C160404). Com isso um **cabo Qwiic / STEMMA QT de estoque** (Adafruit 4210, 50 mm, ~US$ 1) liga o módulo ao J401 **sem cabo sob medida**. Custo: **+1 tipo Extended (US$ 3,09 por pedido da principal)** → principal **14 tipos Extended, 78 peças, US$ 17,84**. A alternativa (manter o SH-6 e fazer um cabo 6-4) exigia cabo sob medida e **cruzar +3V3/GND** (a pinagem das réguas tem o pino 1 = +3V3, a do Qwiic tem o pino 1 = GND). Pull-ups: o módulo traz 10 kohm (conferir) e a principal 2,2 kohm: ~1,8 kohm, bom a 400 kHz; **nenhuma mudança de resistor ou de tensão**. ERC 0/0, DRC sem trilhas 0 erros e 1 aviso `isolated_copper` (+3V3 sem vias, esperado), 242 faltando, paridade 0; a fenda do cabo ficou em (44,45..51,45; 18,17..20,67).
+- **Réguas: DOIS desenhos (R8 e R4), quatro variantes por BOM.** R8 e R8E (e R4 e R4E) usam a **mesma placa**; a "E" só monta o J2 e o R1. **Por quê:** o comprimento da placa é ditado pelos sensores (8 x 18,5 mm), não pelo OUT; sem OUT cairiam só **J2, R1 e ~35 mm de trilha do QH'** = **US$ 0,07 por régua**, sem libertar área nem espaço de linha. Um segundo desenho custaria um roteamento, um Gerber e um pedido a mais para economizar menos de US$ 0,3 por pedido de 4 réguas. O **número de tipos Extended não muda** (o J1 já usa o SH-6): 3 por variante. **Cai, nas sem OUT:** J2, R1 (o resistor da cascata); o QH' do 595 fica só no pad de R1 (sem trilha solta). A JLCPCB monta **uma variante por pedido** (todas as placas de um pedido saem iguais): R8 e R8E são dois pedidos com os mesmos Gerbers.
+- **Custo por variante** (estimativa, nada cotado; `pcb/regua/custo_r11.py`; mínimo de 5 painéis nus e 2 montados; fixo de montagem US$ 22,3): **R8 (2 painéis de 2, 4 montadas) US$ 44,0-60,9 (11,0-15,2 por régua); R8E 44,3-61,2**; R8 em painéis de 4 (8 montadas) 64,5-94,9; **R4 (2 painéis de 5, 10 montadas) 50,2-63,5; R4E 50,9-64,2**. O PCB acima de 100 x 100 mm usa o fator 1,0-1,5 **suposto** (não cotado).
+- **Painéis:** R8 de 2 tiras **161,6 x 44 mm** (alvo) e de 4 tiras 161,6 x 76 mm (alternativa se a JLCPCB recusar o lado de 44 mm, abaixo dos 70 mm da montagem padrão); R4 de 5 tiras 87,6 x 92 mm. Painéis **sem trilha** (conferência de geometria) em `fab/regua_painel_SEM_ROTA_NAO_ENCOMENDAR/`; BOM e CPL em `fab/regua/<variante>_painel<N>/` (`R8_painel2`, `R8E_painel2`, `R8_painel4`, `R8E_painel4`, `R4_painel5`, `R4E_painel5`; rotações por `cpl_jlc`, **0 peças sem footprint da EasyEDA**); folha `fab/regua/LEIAME_COTACAO.md` (rascunho). **Atenção:** o clone XY-SM06B (C56123098) e o XY-SM04B (C51940130) **não existem na API da EasyEDA (404)**: usei o footprint do original JST (C160405 / C160404), com os mesmos pads; **conferir na pré-visualização da JLCPCB** a posição e o giro do J1 (e do J401 na principal).
+- **Posicionamento congelado das réguas:** `pcb/regua/ROTEAMENTO_ENTREGA.md` (placas, redes críticas, regras, camadas, larguras, o que não pode mover, aceitação). **R8: ERC 0/0, DRC sem trilhas 0 erros e 0 avisos, 80 faltando, paridade 0; R4: 0/0, 0, 52 faltando, paridade 0.** Mudanças desde a R10V4: área de proibição **F.Cu de 4,6 mm** em cada furo M2 (a **cabeça do parafuso M2 passante** do design, D3,8, fica no topo: nenhum cobre embaixo), silk "J2 OUT (so nas E)". **Furos e peças não mudaram.**
+
+### 1. OLED: modelo, conector, cabo e firmware (detalhe)
+| Item | Valor (fonte) |
+|---|---|
+| Modelo | Adafruit **326**, "Monochrome 0.96" 128x64 OLED Graphic Display - STEMMA QT" (página do produto da Adafruit; desenho de fabricação e esquema salvos em `fornecimento/oled/adafruit_326_fab_print.png` e `adafruit_326_esquema.png`) |
+| Painel | UG-2864HSWEG01 (lido pelo design na placa da Adafruit); **SSD1306**, 128 x 64, branco |
+| Tensão / regulador | 3,3 V (3-5 V) pelo AP2112K-3,3 de bordo; deslocadores MOSFET nas linhas I²C |
+| I²C | 0x3D (DC/SA0 em cima), 0x3C com o jumper; sem pino de reset (supervisor APX803 de bordo) |
+| Conector | 2 x JST SH 4 vias (STEMMA QT), ordem Qwiic: 1 GND, 2 3V3, 3 SDA, 4 SCL |
+| Placa | 29,2 x 26,7 mm (+ orelhas até 31,75 mm), 6,2 mm de espessura; 4 furos Ø2,5 **(conferir: a loja diz "24 mm"; o desenho de fabricação mostra 1,05 pol. e o arquivo de placa lido pelo design dá 24,13 x 26,67)** |
+| Corrente | 10-20 mA com texto, até ~30 mA com tudo aceso (estimativa; **a conferir na bancada**) |
+| Preço | US$ 17,50 (1-9), 15,75 (10-99), 14,00 (100+) |
+| Alternativa mais barata | módulo genérico 0,96 pol. SSD1306 (US$ 2-3), 4 pinos de 2,54 mm (ordem a conferir), **sem desenho mecânico publicado e com cabo sob medida**; alguns módulos de 1,3 pol. são SH1106 (132 colunas). **Não recomendo.** |
+O orçamento anterior previa "OLED + cabo" por ~US$ 10: o módulo real custa **~US$ 17,5 + ~1 do cabo**, **cerca de US$ 8,5 a mais** no custo do instrumento (compra à parte da JLCPCB). **Firmware** (`pcb/PINOS.md`, bloco R11V4): SSD1306, 128 x 64, I²C 400 kHz, endereço 0x3D com tentativa de 0x3C; fonte de 8 px com glifos Latin-1 para os acentos (21 colunas x 8 linhas com 6 x 8); atualizar por linhas.
+
+### 2. Variantes: números
+| | R8 (sem OUT) | R8E | R4 | R4E |
+|---|---:|---:|---:|---:|
+| Posições | 8 | 8 | 4 | 4 |
+| Peças por régua | 20 | 22 | 12 | 14 |
+| Linhas de BOM | 5 | 6 | 5 | 6 |
+| Tipos Extended | 3 | 3 | 3 | 3 |
+| Gerber | R8 | R8 (o mesmo) | R4 | R4 (o mesmo) |
+| Uso (SPEC) | 32 teclas; ponta direita de 64 e 80 | primeira R8 de 48, 64, 80 | ponta direita de 48 e 80 | reserva |
+O instrumento de 32 teclas: **4 x R8 sem cabeçalho OUT e sem o resistor da cascata**. Furos de fixação: **R8 u 18,5 / 37 / 111 / 129,5; R4 u 18,5 / 37 / 55,5; v +5,2; D2,2** (o design usa 18,5 + 129,5 nas fileiras 1 e 3 e **37 + 129,5 nas 2 e 4, 92,5 mm entre parafusos** com o OUT fora; o 111 só serve às R8E).
+
+### 3. Validação do conceito modular (curta)
+As terminações **continuam idênticas** nas quatro variantes (IN em u 5,9; OUT, quando montado, a 26,5 mm da ponta direita; pinagem P6s; cabo `A06SR06SR30K51B`). Só a **última régua de cada fileira** dispensa o OUT; as demais precisam dele para ligar a seguinte: 48 = R8E + R4; 64 = R8E + R8; 80 = R8E + R8E + R4 (**a tabela da SPEC põe a R8 sem OUT como ponta direita de 80, mas o 80 termina em R4 e a R8 do meio precisa de OUT: no meio entra a R8E**; ver pergunta 4). A varredura (8 N + 1 pulsos) não muda; a principal não muda.
+
+### 4. Riscos e pendências
+1. **Roteamento das réguas** (80 ligações em ~2 066 mm², EN8 de ~111 mm): a capacidade de linha sobra no topo (§7 do `ROTEAMENTO_ENTREGA.md`); o risco é a saída dos pads de 0,5 mm; se não fechar, mover o 595 (pedido a mim e ao design).
+2. **Painel de 44 mm de lado:** pode ser recusado ou receber trilho acrescentado pela JLCPCB (alternativa pronta: 4 tiras).
+3. **Footprint dos clones SH** (XY-SM06B, XY-SM04B): usei o do original; conferir na pré-visualização.
+4. **Furos do OLED:** 24 mm (loja) contra 26,67 (desenho): o design usa o arquivo de placa; conferir com a peça.
+5. **J2 e R1 sem montar** deixam pads nus no fundo da régua (sem função): inofensivo (a base é de plástico).
+6. O módulo OLED (cerca de +US$ 8,5) e o tipo Extended a mais na principal (+US$ 3,09 por pedido) sobem o custo do instrumento.
+
+### Perguntas para o design (R11V4)
+1. **Cabo Qwiic** de 50 mm (o menor de estoque) até o J401: o laço cabe entre o módulo e a fenda (x 44,45..51,45; y 18,17..20,67; boca do J401 para −y)?
+2. **Cabeça do parafuso M2 passante** no topo da régua: F.Cu proibido em 4,6 mm (feito); o furo D2,2 serve ao parafuso M2?
+3. O furo de **u 111 da R8** fica sem uso nas 32 teclas: mantemos (serve às R8E)?
+4. Validação do conceito: confirmam que só a **última** régua da fileira é sem OUT (80 = R8E + R8E + R4)?
+5. **J:** módulo Adafruit 326 (US$ 17,5, desenho publicado, cabo de estoque) ou o genérico (US$ 2-3, sem desenho, cabo sob medida)? Painel de 2 tiras (44 mm) ou de 4?
 
 ## R10V4 · régua R8, 4 × R8 contra 8 × R4, microfones eletreto e dinâmico, portão P (tarefas 1 e 3, parte da eletrônica)
 

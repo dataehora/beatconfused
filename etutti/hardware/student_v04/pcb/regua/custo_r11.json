@@ -1,0 +1,156 @@
+{
+ "fixo_montagem_USD": 22.26,
+ "variantes": {
+  "R8": {
+   "painel_mm": [
+    161.6,
+    44.0
+   ],
+   "cm2": 71.1,
+   "reguas_montadas": 4,
+   "pecas_USD": [
+    16.95,
+    21.56
+   ],
+   "pcb_USD": [
+    4.8,
+    17.1
+   ],
+   "fixo_USD": 22.26,
+   "pedido_USD": [
+    44.0,
+    60.9
+   ],
+   "por_regua_montada_USD": [
+    11.0,
+    15.22
+   ]
+  },
+  "R8E": {
+   "painel_mm": [
+    161.6,
+    44.0
+   ],
+   "cm2": 71.1,
+   "reguas_montadas": 4,
+   "pecas_USD": [
+    17.23,
+    21.84
+   ],
+   "pcb_USD": [
+    4.8,
+    17.1
+   ],
+   "fixo_USD": 22.26,
+   "pedido_USD": [
+    44.3,
+    61.2
+   ],
+   "por_regua_montada_USD": [
+    11.07,
+    15.3
+   ]
+  },
+  "R8 (painel de 4)": {
+   "painel_mm": [
+    161.6,
+    76.0
+   ],
+   "cm2": 122.8,
+   "reguas_montadas": 8,
+   "pecas_USD": [
+    33.91,
+    43.12
+   ],
+   "pcb_USD": [
+    8.3,
+    29.5
+   ],
+   "fixo_USD": 22.26,
+   "pedido_USD": [
+    64.5,
+    94.9
+   ],
+   "por_regua_montada_USD": [
+    8.06,
+    11.86
+   ]
+  },
+  "R8E (painel de 4)": {
+   "painel_mm": [
+    161.6,
+    76.0
+   ],
+   "cm2": 122.8,
+   "reguas_montadas": 8,
+   "pecas_USD": [
+    34.47,
+    43.68
+   ],
+   "pcb_USD": [
+    8.3,
+    29.5
+   ],
+   "fixo_USD": 22.26,
+   "pedido_USD": [
+    65.0,
+    95.4
+   ],
+   "por_regua_montada_USD": [
+    8.12,
+    11.93
+   ]
+  },
+  "R4": {
+   "painel_mm": [
+    87.6,
+    92.0
+   ],
+   "cm2": 80.6,
+   "reguas_montadas": 10,
+   "pecas_USD": [
+    22.58,
+    28.34
+   ],
+   "pcb_USD": [
+    5.4,
+    12.9
+   ],
+   "fixo_USD": 22.26,
+   "pedido_USD": [
+    50.2,
+    63.5
+   ],
+   "por_regua_montada_USD": [
+    5.02,
+    6.35
+   ]
+  },
+  "R4E": {
+   "painel_mm": [
+    87.6,
+    92.0
+   ],
+   "cm2": 80.6,
+   "reguas_montadas": 10,
+   "pecas_USD": [
+    23.28,
+    29.04
+   ],
+   "pcb_USD": [
+    5.4,
+    12.9
+   ],
+   "fixo_USD": 22.26,
+   "pedido_USD": [
+    50.9,
+    64.2
+   ],
+   "por_regua_montada_USD": [
+    5.09,
+    6.42
+   ]
+  }
+ },
+ "custo_do_OUT_por_regua_USD": 0.07
+}

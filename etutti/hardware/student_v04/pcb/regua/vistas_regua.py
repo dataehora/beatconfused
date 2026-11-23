@@ -85,7 +85,7 @@ def plan():
     ax.set_aspect("equal")
     ax.set_xlabel("u (mm) ao longo da fileira")
     ax.set_ylabel("v (mm)  +v = frente (jogador)")
-    ax.set_title(("Regua R%d de %d teclas, R10V4 (portao P)" % (NPOS, NPOS)) + (": vista de cima, em transparencia (todas as pecas estao no FUNDO; exemplo: regua da fileira 1, notas na figura; C azul, F laranja)." + chr(10) + "Azul = TMAG5253, roxo = 74HC595, rosa = SH-6 (J1 ENTRADA u 5,9; J2 SAIDA u %.1f; pinagem P6s), verde = passivos; M2: furos de fixacao (patamar embaixo)" % d["pecas"]["J2"]["u"]), fontsize=7)
+    ax.set_title(("Regua R%d de %d teclas, R11V4 (portao P)" % (NPOS, NPOS)) + (": vista de cima, em transparencia (todas as pecas estao no FUNDO; exemplo: regua da fileira 1, notas na figura; C azul, F laranja)." + chr(10) + "Azul = TMAG5253, roxo = 74HC595, rosa = SH-6 (J1 ENTRADA u 5,9; J2 SAIDA u %.1f: so nas variantes com OUT, R%dE, sem J2 e R1 nas outras; pinagem P6s), verde = passivos; M2: furos de fixacao (patamar embaixo)" % (d["pecas"]["J2"]["u"], NPOS)), fontsize=7)
     ax.grid(True, lw=0.15)
     fig.tight_layout()
     fig.savefig(os.path.join(IMG, "regua%s_planta.png" % SUF), dpi=170)

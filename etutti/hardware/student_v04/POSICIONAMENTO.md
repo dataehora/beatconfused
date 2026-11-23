@@ -1,3 +1,38 @@
+# eTutti Student V4 · portão P (posicionamento), R11V4 · principal com o OLED real e as fixações novas, réguas R8 (sem OUT) e R4
+
+**PARA APROVAÇÃO DO J. NÃO APROVADO.** Nada roteado (0 trilhas, 0 vias, na principal e nas réguas); nada encomendado nem cotado como compra. Data: 22 nov 2026. **A placa principal continua com o portão fechado: o roteamento dela só começa depois do "aprovado" do J.** O das réguas está liberado pela SPEC R11V4 (entrega em `pcb/regua/ROTEAMENTO_ENTREGA.md`).
+
+## R11V4 · o que mudou na planta de posicionamento
+1. **Tela OLED real (Adafruit 326)** no lugar do módulo genérico: PCB 29,2 x 26,7 mm (+ orelhas, 31,75 mm), vidro 26,7 x 19,26, área ativa 21,74 x 10,86 **centrada na janela de 24 x 13**, 4 postes da tampa nos furos Ø2,5 do módulo (24,13 x 26,67 mm, conferir). **J401 passou a um SH de 4 vias, ordem Qwiic**, para o cabo Qwiic de estoque. A **fenda do cabo** ficou em x 44,45..51,45; y 18,17..20,67 (a principal foi reposicionada por script; DRC sem trilhas **0 erros, 1 aviso `isolated_copper` esperado, 242 faltando, paridade 0; ERC 0/0**). Nenhuma outra peça da principal mudou de lugar.
+2. **Fixações (design):** réguas por **parafuso M2 passante com porca embaixo** (2 por régua, **8 no total**; fileiras 1 e 3 em u 18,5 + 129,5, fileiras 2 e 4 em u 37 + 129,5); postes da tampa, bossas de parede, H1..H4 e OLED com parafuso formador de rosca direto no plástico (detalhes e justificativa em `FIT_CHECK.md`, R11V4, do design). **Na régua** isso pediu **área sem cobre no topo, 4,6 mm em cada furo M2** (cabeça do parafuso de 3,8 mm sobre o topo da régua): já aplicada.
+3b. **Reposicionamento da R8 (pedido do roteamento, 22 nov):** a R8 roteada não fechou o GND dos capacitores (bolsões entre o tronco de +3V3 e os sinais). Aplicado o menor ajuste, **só na R8**: (1) **74HC595 (U9) de u 27,75 / v +4,2 para u 74,0 / v 0 (rot 90, meio da régua, entre as células 4 e 5, |v| ≤ 1,9: sem corte de trilho da frente)**; o maior EN cai de ~111 para ~65 mm; (2) **C1..C8 passam para a linha central, ao lado direito de cada sensor (u + 1,75, v 0, rot 270): pad +3V3 ao fundo-trás (v −0,48) e pad GND à frente (v +0,48)**, entre o pino 1 (+3V3) e o pino 2 (GND) do TMAG, pernas de ~1 mm, sem bolsão de GND do lado errado; C9 (do 595) em u 78,2 / v +1,75. Não mudaram: furos, J1, J2, R1, sensores, terminações (idênticas à R4). ERC 0/0, DRC sem trilhas 0 erros e 0 avisos, 80 faltando, paridade 0. **A R4 NÃO recebe o ajuste:** já foi aceita roteada (DRC 0/0/0), BOM e terminações são as mesmas (as posições internas de 595 e capacitores não são terminação) e o recorte de trilho do design em u 25,5..32 continua valendo para ela. 
+3. **Réguas:** o instrumento de 32 teclas usa **4 x R8 sem OUT e sem o resistor da cascata** (R8 e R8E são a mesma placa; só a BOM muda). R4 sem mudança de placa.
+
+**Confirmado em 23 nov:** o portão P da principal continua válido (nada mudou na principal desde a R11V4; a R8 foi reposicionada, 595 em u 74, e o design já aplicou isso no modelo). As figuras do design `*_r11` estão incorporadas na tabela abaixo (planta geral, interface, corte da interface, e os isométricos da base `iso_base_r11_*.png` / `iso_base_r11.pdf`, `corte_base_r11.png`).
+
+## Figuras (abra estas para decidir)
+| Nº | Figura | Arquivo |
+|---:|---|---|
+| 1 | **Instrumento de 32 teclas, planta final do posicionamento** (principal + 4 x R8 sem OUT; nome de cada nota, C azul, F laranja; cabeçalhos IN, M2 e postes; cabos de 45,8 e 50,8 mm) | `pcb/img/portao_p_r11_instrumento.png` |
+| 2 | **Planta geral oficial do design** (modelo real, OLED Adafruit 326, 4 x R8, nome das notas, C e F em xadrez) | `case/renders/planta_geral_v4_r11.png` |
+| 3 | **Interface: planta com o OLED real** (placa, vidro, área ativa, janela, postes, fenda e cabo) | `case/renders/planta_interface_v4_r11.png` |
+| 4 | Corte da interface (OLED, tampa, placa) | `case/renders/corte_interface_v4_r11.png` |
+| 5 | Principal, topo e fundo, blocos, conectores e cotas | `pcb/img/principal_blocos_topo.png`, `principal_blocos_fundo.png` |
+| 6 | **Régua R8** (planta com as notas A3 C4 D#4 F#4 A4 C5 D#5 F#5, C azul e F laranja; conectores, furos; J2 só nas E) e cortes | `pcb/regua/img/regua8_planta.png`, `regua8_corte.png` |
+| 7 | R4 (planta e cortes) | `pcb/regua/img/regua_planta.png`, `regua_corte.png` |
+| 8 | Painéis: R4 de 5, R8 de 2 e de 4 tiras, mesma escala contra 100 x 100 mm | `pcb/regua/img/regua8_painel.png` |
+| 9 | Painéis em KiCad (fundo) | `pcb/regua/img/regua_R8_painel_de_2_fundo.png`, `regua_R8_painel_de_4_fundo.png`, `regua_R4_painel_de_5_fundo.png` |
+| 10 | Base e isométricos (do design) | `case/renders/corte_base_r11.png`, `iso_base_r11_frente_esq.png`, `iso_base_r11_tras_dir.png`, `iso_base_r11_topo.png`, `iso_base_r11_ocultas.png`, `iso_base_r11.pdf` |
+
+## Para o J decidir
+1. Aprovar a **principal** (75,05 x 95,1 mm, 4 camadas, 1,2 mm, 78 peças JLC no fundo + 2 encoders no topo) com o OLED Adafruit 326 e o J401 de 4 vias (+1 tipo Extended, US$ 3,09 por pedido; módulo ~US$ 17,5 contra ~US$ 3 de um genérico).
+2. Aprovar a **R8** (uma por fileira, sem OUT) e a **R4** (extensões), com as quatro variantes por BOM.
+3. Painel de 2 tiras (44 mm) ou de 4 (76 mm)?
+
+---
+
+# (anexo) portão P da R10V4, referência
+
 # eTutti Student V4 · portão P (posicionamento), R10V4 · principal, régua R8 e régua R4
 
 **PARA APROVAÇÃO DO J. NÃO APROVADO.** Nada roteado (0 trilhas, 0 vias, na principal e nas réguas); nada encomendado nem cotado como compra (regra do J: nada é comprado até o protótipo inteiro estar fechado). Data: 22 nov 2026. **O roteamento só começa depois do "aprovado" do J nesta planta** (agente `roteamento`; ele nunca move peça: pedido de mudança volta para a eletrônica). Só 32 teclas, só a Student V4.

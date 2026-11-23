@@ -1,0 +1,6 @@
+00:17:54 tentativa 1 itens 4 erros 4
+00:19:24 tentativa 2 itens 6 erros 6
+00:20:38 tentativa 3 itens 4 erros 4
+00:21:53 tentativa 4 itens 7 erros 7
+00:23:24 tentativa 5 itens 0 erros 0
+melhor 0

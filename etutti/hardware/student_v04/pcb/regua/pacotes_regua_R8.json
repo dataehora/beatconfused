@@ -1,0 +1,49 @@
+{
+ "comprimento": 8,
+ "variantes": {
+  "R8_painel2": {
+   "pecas_por_painel": 40,
+   "pecas_por_regua": 20,
+   "linhas_bom": 5,
+   "tipos_extended": [
+    "C22401868",
+    "C56123098",
+    "C730243"
+   ],
+   "n_extended": 3
+  },
+  "R8E_painel2": {
+   "pecas_por_painel": 44,
+   "pecas_por_regua": 22,
+   "linhas_bom": 6,
+   "tipos_extended": [
+    "C22401868",
+    "C56123098",
+    "C730243"
+   ],
+   "n_extended": 3
+  },
+  "R8_painel4": {
+   "pecas_por_painel": 80,
+   "pecas_por_regua": 20,
+   "linhas_bom": 5,
+   "tipos_extended": [
+    "C22401868",
+    "C56123098",
+    "C730243"
+   ],
+   "n_extended": 3
+  },
+  "R8E_painel4": {
+   "pecas_por_painel": 88,
+   "pecas_por_regua": 22,
+   "linhas_bom": 6,
+   "tipos_extended": [
+    "C22401868",
+    "C56123098",
+    "C730243"
+   ],
+   "n_extended": 3
+  }
+ }
+}

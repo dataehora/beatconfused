@@ -1,0 +1,5 @@
+23:50:14 tentativa 1 itens 5 erros 5
+23:52:28 tentativa 2 itens 4 erros 4
+23:56:14 tentativa 3 itens 9 erros 9
+23:57:28 tentativa 4 itens 4 erros 4
+melhor 4

@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\student_v04\\kicad\\student_v04.kicad_sch")
-		(date "2026-11-22T17:40:49")
+		(date "2026-11-22T19:50:46")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -5363,28 +5363,28 @@
 		)
 		(comp
 			(ref "J401")
-			(value "XY-SM06B-SRSS-TB")
-			(footprint "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
+			(value "XY-SM04B-SRSS-TB")
+			(footprint "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal")
 			(datasheet "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
-			(description "tela OLED por cabo SH de 6 vias, o MESMO conector das reguas (um tipo Extended a menos); usa 4 vias na ordem das reguas: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 livres). Pino 1 = +3V3 como nas reguas: um plugue trocado nunca inverte a alimentacao")
+			(description "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404")
 			(fields
 				(field
 					(name "Codigo") "I3")
 				(field
-					(name "LCSC") "C56123098")
+					(name "LCSC") "C51940130")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal")
+					(name "Footprint") "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal")
 				(field
 					(name "Datasheet") "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 				(field
-					(name "Description") "tela OLED por cabo SH de 6 vias, o MESMO conector das reguas (um tipo Extended a menos); usa 4 vias na ordem das reguas: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 livres). Pino 1 = +3V3 como nas reguas: um plugue trocado nunca inverte a alimentacao")
+					(name "Description") "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404")
 			)
 			(libsource
 				(lib "viaggio_micromod")
-				(part "Conn_01x06_MountingPin")
-				(description "Generic connectable mounting pin connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)")
+				(part "Conn_01x04_MountingPin")
+				(description "Generic connectable mounting pin connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
 			)
 			(property
 				(name "Codigo")
@@ -5392,7 +5392,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C56123098")
+				(value "C51940130")
 			)
 			(property
 				(name "Montagem")
@@ -5434,12 +5434,6 @@
 						)
 						(pin
 							(num "4")
-						)
-						(pin
-							(num "5")
-						)
-						(pin
-							(num "6")
 						)
 						(pin
 							(num "MP")
@@ -7181,6 +7175,55 @@
 		)
 		(libpart
 			(lib "viaggio_micromod")
+			(part "Conn_01x04_MountingPin")
+			(description "Generic connectable mounting pin connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			(footprints
+				(fp "Connector*:*_1x??-1MP*")
+			)
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "Conn_01x04_MountingPin")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Generic connectable mounting pin connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "Pin_1")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "Pin_2")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "Pin_3")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "Pin_4")
+					(type "passive")
+				)
+				(pin
+					(num "MP")
+					(name "MountPin")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "viaggio_micromod")
 			(part "Conn_01x06_MountingPin")
 			(description "Generic connectable mounting pin connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)")
 			(footprints
@@ -8485,8 +8528,8 @@
 			)
 			(node
 				(ref "J401")
-				(pin "1")
-				(pinfunction "Pin_1_1")
+				(pin "2")
+				(pinfunction "Pin_2_2")
 				(pintype "passive")
 			)
 			(node
@@ -9061,8 +9104,8 @@
 			)
 			(node
 				(ref "J401")
-				(pin "2")
-				(pinfunction "Pin_2_2")
+				(pin "1")
+				(pinfunction "Pin_1_1")
 				(pintype "passive")
 			)
 			(node
@@ -10838,28 +10881,6 @@
 		)
 		(net
 			(code "99")
-			(name "unconnected-(J401-Pin_5-Pad5)")
-			(class "Default")
-			(node
-				(ref "J401")
-				(pin "5")
-				(pinfunction "Pin_5_5")
-				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "100")
-			(name "unconnected-(J401-Pin_6-Pad6)")
-			(class "Default")
-			(node
-				(ref "J401")
-				(pin "6")
-				(pinfunction "Pin_6_6")
-				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "101")
 			(name "unconnected-(U202-ITERM-Pad15)")
 			(class "Default")
 			(node
@@ -10870,7 +10891,7 @@
 			)
 		)
 		(net
-			(code "102")
+			(code "100")
 			(name "unconnected-(U202-TMR-Pad14)")
 			(class "Default")
 			(node
@@ -10881,7 +10902,7 @@
 			)
 		)
 		(net
-			(code "103")
+			(code "101")
 			(name "unconnected-(U202-~{PGOOD}-Pad7)")
 			(class "Default")
 			(node
@@ -10892,7 +10913,7 @@
 			)
 		)
 		(net
-			(code "104")
+			(code "102")
 			(name "unconnected-(U301-LINEIN_L-Pad9)")
 			(class "Default")
 			(node
@@ -10903,7 +10924,7 @@
 			)
 		)
 		(net
-			(code "105")
+			(code "103")
 			(name "unconnected-(U301-LINEIN_R-Pad8)")
 			(class "Default")
 			(node
@@ -10914,7 +10935,7 @@
 			)
 		)
 		(net
-			(code "106")
+			(code "104")
 			(name "unconnected-(U301-LINEOUT_L-Pad7)")
 			(class "Default")
 			(node
@@ -10925,7 +10946,7 @@
 			)
 		)
 		(net
-			(code "107")
+			(code "105")
 			(name "unconnected-(U301-LINEOUT_R-Pad6)")
 			(class "Default")
 			(node
@@ -10936,7 +10957,7 @@
 			)
 		)
 		(net
-			(code "108")
+			(code "106")
 			(name "unconnected-(U501-GAIN_SLOT-Pad2)")
 			(class "Default")
 			(node
@@ -10947,7 +10968,7 @@
 			)
 		)
 		(net
-			(code "109")
+			(code "107")
 			(name "unconnected-(U501-NC-Pad5)")
 			(class "Default")
 			(node
@@ -10958,7 +10979,7 @@
 			)
 		)
 		(net
-			(code "110")
+			(code "108")
 			(name "unconnected-(U501-NC-Pad6)")
 			(class "Default")
 			(node
@@ -10969,7 +10990,7 @@
 			)
 		)
 		(net
-			(code "111")
+			(code "109")
 			(name "unconnected-(U501-NC-Pad12)")
 			(class "Default")
 			(node
@@ -10980,7 +11001,7 @@
 			)
 		)
 		(net
-			(code "112")
+			(code "110")
 			(name "unconnected-(U501-NC-Pad13)")
 			(class "Default")
 			(node

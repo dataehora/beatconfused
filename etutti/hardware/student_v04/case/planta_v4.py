@@ -96,16 +96,33 @@ def draw(ax, xlim, mod=0, detail=True, sockets=True):
     for ex, ey in G.SPEAKER_SCREWS:
         ax.add_patch(Circle((ex, ey), 2.5, fc="white", ec=C["spk"], lw=0.7, zorder=8))
     ax.text((a + 5), d - 1.2, "caixa acústica (L)", fontsize=5.6, color=C["spk"], zorder=12)
-    # OLED, window, slit
-    cx, cy = (G.OLED_WINDOW[0] + G.OLED_WINDOW[2]) / 2, (G.OLED_WINDOW[1] + G.OLED_WINDOW[3]) / 2 - 1.9
-    ax.add_patch(Rectangle((cx - 13.65, cy - 13.9), 27.3, 27.8, fc="none", ec=C["oled"], lw=0.9, ls="--", zorder=7))
+    # OLED (R11V4: the real module, Adafruit 326), window, slit
+    import oled_r11 as OL
     wx0, wy0, wx1, wy1 = G.OLED_WINDOW
-    ax.add_patch(Rectangle((wx0, wy0), wx1 - wx0, wy1 - wy0, fc="#BFDBFE", ec=C["oled"], lw=1.2, zorder=8))
-    ax.text((wx0 + wx1) / 2, (wy0 + wy1) / 2, "janela 24 x 13", ha="center", va="center", fontsize=6, color="#1E3A8A", zorder=12)
+    ax.add_patch(Polygon([OL.world(x, y) for x, y in OL.outline_b()], closed=True, fc="#DBEAFE", ec=C["oled"], lw=0.9, ls="--", alpha=0.55, zorder=7))
+    gx0, gy0 = OL.world(OL.GLASS_X[0], OL.GLASS_Y[0])
+    gx1, gy1 = OL.world(OL.GLASS_X[1], OL.GLASS_Y[1])
+    ax.add_patch(Rectangle((gx0, gy0), gx1 - gx0, gy1 - gy0, fc="#BFDBFE", ec=C["oled"], lw=0.8, alpha=0.7, zorder=7))
+    ax0, ay0 = OL.world(OL.ACT_X[0], OL.ACT_Y[0])
+    ax1, ay1 = OL.world(OL.ACT_X[1], OL.ACT_Y[1])
+    ax.add_patch(Rectangle((ax0, ay0), ax1 - ax0, ay1 - ay0, fc="#1E3A8A", ec="none", alpha=0.85, zorder=8))
+    ax.add_patch(Rectangle((wx0, wy0), wx1 - wx0, wy1 - wy0, fc="none", ec="#B91C1C", lw=1.2, zorder=9))
+    ax.text((wx0 + wx1) / 2, (wy0 + wy1) / 2, "área ativa 21,74 x 10,86", ha="center", va="center", fontsize=5.4, color="white", zorder=12)
+    ax.text((wx0 + wx1) / 2, wy0 - 0.8, "janela 24 x 13", ha="center", va="bottom", fontsize=5.4, color="#B91C1C", zorder=12)
+    for hx, hy in OL.holes_world():
+        ax.add_patch(Circle((hx, hy), OL.POST_D / 2, fc="#FED7AA", ec=C["post"], lw=0.8, zorder=10))
+        ax.add_patch(Circle((hx, hy), OL.HOLE_D / 2, fc="white", ec=C["post"], lw=0.5, zorder=11))
+    for nm, xb0, xb1, yb0, yb1, _d0, _d1 in OL.conn_boxes_b():
+        if nm == "plugue left":
+            continue                                    # only the right-hand connector is cabled
+        (x0_, y0_), (x1_, y1_) = OL.world(xb0, yb0), OL.world(xb1, yb1)
+        ax.add_patch(Rectangle((min(x0_, x1_), min(y0_, y1_)), abs(x1_ - x0_), abs(y1_ - y0_), fc="#FDE047" if nm.startswith("corpo") else "#FB7185", ec="black", lw=0.5, alpha=0.8, zorder=11))
+    pxe, pye, _pz = OL.plug_exit_world()
+    ax.annotate("cabo de 4 fios\nao J401 (fenda)", xy=(pxe, pye), xytext=(pxe + 3.0, pye - 7.5), fontsize=5.2, zorder=12, arrowprops=dict(arrowstyle="->", lw=0.5))
+    ax.text(37.0, OL.WY0 - 0.6, "OLED Adafruit 326 (29,2 x 31,75; furos Ø2,5 a 24,13 x 26,67)", ha="center", va="bottom", fontsize=5.2, color=C["oled"], zorder=12)
     sx0, sy0, sx1, sy1 = L.SLIT
     ax.add_patch(Rectangle((sx0, sy0), sx1 - sx0, sy1 - sy0, fc="white", ec="black", lw=0.8, hatch="////", zorder=9))
-    ax.text(sx1 + 1, sy0 + 1, "fenda\ndo cabo", fontsize=5.4, zorder=12)
-    ax.text(cx, cy - 15.3, "módulo OLED 27,3 x 27,8", ha="center", fontsize=5.4, color=C["oled"], zorder=12)
+    ax.text(sx0, sy1 + 1.0, "fenda do cabo (mantida)", fontsize=4.6, zorder=12, ha="left", va="bottom")
     # knobs, encoders, PROG
     for kx, ky in L.KNOBS:
         ax.add_patch(Rectangle((kx - 6.0, ky - 6.7), 12.0, 13.4, fc="#FDE68A", ec=C["ui"], lw=0.8, alpha=0.6, zorder=7))
@@ -184,9 +201,9 @@ def legend(ax):
     from matplotlib.patches import Patch
     h = [Patch(fc=C["board"], ec=C["board_ec"], label="placa principal 75,05 x 95,1"), Patch(fc="#CECBF6", ec="#534AB7", label="módulo (sob a placa)"),
          Patch(fc="none", ec=C["batt"], ls="--", label="bateria (sob a placa)"), Patch(fc="#CFFAFE", ec=C["spk"], label="alto-falante / caixa (sobre a placa)"),
-         Patch(fc="#BFDBFE", ec=C["oled"], label="janela / módulo da tela (sobre a placa)"), Patch(fc="#FDE68A", ec=C["ui"], label="encoders e knobs"),
+         Patch(fc="#BFDBFE", ec=C["oled"], label="OLED Adafruit 326: placa, vidro, área ativa; janela vermelha"), Patch(fc="#FDE68A", ec=C["ui"], label="encoders e knobs"),
          Patch(fc="#FED7AA", ec=C["post"], label="postes da tampa (H1..H4, internos, de parede)"), Patch(fc=C["ruler"], ec=C["ruler_ec"], label="réguas R8 (8 teclas, 148 mm), uma por fileira"),
-         Patch(fc="#D1D5DB", ec="black", label="parafusos M2 em inserto (2 por régua, 8 ao todo)"), Patch(fc="#FDE047", ec="black", label="cabeçalho SH da régua (IN u 5,9, OUT u 121,5; o OUT sem cabo)"),
+         Patch(fc="#D1D5DB", ec="black", label="parafusos M2 passantes com porca embaixo (2 por régua, 8 ao todo)"), Patch(fc="#FDE047", ec="black", label="cabeçalho SH IN da régua (u 5,9); a R8 não tem OUT"),
          Patch(fc="#FB7185", ec="black", label="plugue SH (3,6 x 7,0 x 2,45)"), Line2D([0], [0], color=C["cable"], lw=1.5, label="cabo SH da placa, 45,8 mm de fio útil (placa -> régua da fileira)"), Line2D([0], [0], color="#7C3AED", lw=1.0, ls="--", label="o mesmo com 50,8 mm de fio útil"),
          Patch(fc="none", ec=C["notch"], hatch="xxxx", label="rebaixo / entalhe nos trilhos da bandeja (piso intacto)"),
          Line2D([0], [0], color=C["case"], lw=0.8, label="parede 2 mm (case de 244 x 102 mm; parede de trás em y = -2)")]
@@ -197,7 +214,7 @@ def main(mod=0):
     Lx = L.length(mod)
     fig, ax = plt.subplots(figsize=(17.5, 8.2))
     draw(ax, (-26, Lx + 12), mod)
-    ax.set_title("eTutti Student V4 (R10V4, 4 x R8) - planta geral oficial, %d teclas, vista de cima: nome da nota em cada tecla; naturais brancas, sustenidos pretos, "
+    ax.set_title("eTutti Student V4 (R11V4, 4 x R8 sem OUT) - planta geral oficial, %d teclas, vista de cima: nome da nota em cada tecla; naturais brancas, sustenidos pretos, "
                  "C e F em xadrez diagonal" % (32 + 16 * mod), fontsize=9.5)
     ax.annotate("", xy=(0, L.Y_BACK - 1.0), xytext=(Lx, L.Y_BACK - 1.0), arrowprops=dict(arrowstyle="<->", lw=0.7))
     ax.text(Lx / 2, L.Y_BACK - 1.6, "%g mm" % Lx, ha="center", fontsize=7)
@@ -208,15 +225,15 @@ def main(mod=0):
     ax.text(xr - 1, 102.6, "folga %.1f" % (Lx - L.WALL - xr + 0.2), fontsize=5.8, color="#B91C1C", ha="right")
     legend(ax)
     fig.tight_layout()
-    fig.savefig(os.path.join(REN, "planta_geral_v4_r10.png"), dpi=150, bbox_inches="tight")
+    fig.savefig(os.path.join(REN, "planta_geral_v4_r11.png"), dpi=150, bbox_inches="tight")
     plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(13.5, 9.5))
     draw(ax, (-22, 135))
-    ax.set_title("Interface e começo do teclado (R10V4), zoom da planta geral, com os nomes das notas", fontsize=10)
+    ax.set_title("Interface e começo do teclado (R11V4), zoom da planta geral, com os nomes das notas", fontsize=10)
     legend(ax)
     fig.tight_layout()
-    fig.savefig(os.path.join(REN, "planta_interface_v4_r10.png"), dpi=140)
+    fig.savefig(os.path.join(REN, "planta_interface_v4_r11.png"), dpi=140)
     plt.close(fig)
     print("ok")
 

@@ -1,6 +1,6 @@
 codigo,referencias,qtd,valor_peca,encapsulamento,lcsc,classe_jlc,preco_unit_usd_est,montagem,status,nota
-I3,DS1,1,"modulo OLED 0,96 pol. 128 x 64 SSD1306, I2C, 4 pinos (GND VCC SCL SDA)",27 x 27 mm,-,-,3.000,em casa (preso na tampa; cabo JST SH de 4 vias ao J401),conferir,ver COMPRAS.md: ordem dos pinos do modulo
-I3,CAB1,1,"cabo JST SH 1,0 mm de 4 vias, 50-100 mm (Qwiic / STEMMA QT)",-,-,-,1.000,em casa,final,
+I3,DS1,1,"Adafruit 326: OLED 0,96 pol. monocromatico 128 x 64, SSD1306, 2 conectores STEMMA QT (SH 4 vias), regulador de bordo AP2112K-3.3","29,2 x 26,7 mm (+ orelhas, 31,75 de comprimento) (conferir)",-,-,17.500,em casa (preso na tampa; cabo Qwiic ao J401),conferir,"R11V4: 4 furos; endereco I2C 0x3D de fabrica (0x3C por jumper); US$ 17,50 (1-9), 15,75 (10-99)"
+I3,CAB1,1,"cabo Qwiic / STEMMA QT (SH 1,0 mm, 4 vias, pino a pino), 50 mm (Adafruit 4210 ou SparkFun)",-,-,-,1.000,em casa,final,
 P1,MOD1,1,SparkFun MicroMod Teensy Processor (DEV-16402),M.2 2222 Key E,-,-,24.950,"em casa (encaixar no J101, apertar o parafuso)",final,"i.MX RT1062 600 MHz, 16 MB flash, 1 MB RAM, bootloader MKL02; fqbn teensy:avr:teensyMM"
 P1,SCR1,1,"parafuso M2.5 x 3, cabeca chata (Phillips)",-,-,-,0.050,em casa,conferir,prende o modulo no espacador H101 (vem no KIT-16549 da SparkFun)
 P1,R105,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,"MCLK 11,3 MHz: em serie, junto do J101 (SPEC 4, 5o)"
@@ -47,7 +47,7 @@ F3,C309,1,1uF,C_0402_1005Metric,C52923,basica,0.002,JLC,final,"acoplamento do mi
 F3,J302,1,PJ-327A,Jack_3.5mm_PJ-327A_SMD,C49284723,estendida,0.100,JLC,final,"IN (microfone): manga no GND, ponta = sinal com bias; anel e contato da ponta soltos (XUNPU, V3)"
 I1,SW401,1,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,estendida,1.920,"sem peca (encoder soldado em casa, topo)",final,volume; clique de 2 s liga/desliga; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2
 I2,SW402,1,EC11E18244AU,RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,C202365,estendida,1.920,"sem peca (encoder soldado em casa, topo)",final,seletor; clique = funcoes de som; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2
-I3,J401,1,XY-SM06B-SRSS-TB,JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal,C56123098,estendida,0.069,JLC,conferir,"tela OLED por cabo SH de 6 vias, o MESMO conector das reguas (um tipo Extended a menos); usa 4 vias na ordem das reguas: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 livres). Pino 1 = +3V3 como nas reguas: um plugue trocado nunca inverte a alimentacao"
+I3,J401,1,XY-SM04B-SRSS-TB,JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal,C51940130,estendida,0.039,JLC,conferir,"R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404"
 I4,SW403,1,Program,SW_Push_1P1T_XKB_TS-1187A,C318884,basica,0.020,JLC,conferir,"no verso, por um furo no fundo; 5,1 x 5,1 (a SPEC pedia 4 x 4)"
 A1,C502,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
 A1,C501,1,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,

@@ -1202,3 +1202,16 @@ No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2
   confirmed on a real module. Figures `case/renders/*_r10.png` (`planta_v4.py`, `corte_v4.py`, `corte_base_r10.py`, `iso_base_r10.py`). Older rules still
   hold: only 32 keys detailed, only the Student V4, nothing is bought before the prototype closes. The Sennheiser ME 3 and the 9-10 V boost are out of the
   project (microphones: electret and dynamic through the 3.5 mm jack only).
+- **R11V4 (22 nov 2026, design part): real OLED, fasteners by use, R8 without OUT, detailed base drawings.** (1) **OLED = Adafruit 326** (SSD1306, 3.3 V, I2C, two
+  STEMMA QT / Qwiic SH-4 connectors on the module's BACK, edges facing outwards): every number read from Adafruit's Eagle board file
+  (`Adafruit-128x64-Monochrome-OLED-PCB`, UG-2864HSWEG01 panel: glass 26.7 x 19.26, viewing area 21.744 x 10.864, 2.098 mm off the glass centre; board
+  29.21 x 31.75 with two lugs, holes D2.5 at 24.13 x 26.67) in `case/oled_r11.py`. PCB 1.6 / glass+tape 1.5 are ASSUMED (6.2 mm total in the shop). Viewing area
+  centred on the 24 x 13 window (margins 1.13 x 1.07); module turned so the header edge faces +y (firmware rotates the image 180 deg); four lid posts D4.2 on the real
+  holes, PT M2 x 4; the right-hand plug exits at x 53.6, the Qwiic cable makes an S (R 3) down the existing board slit (J401 is now an SH-4, the electronics'
+  change). (2) **The "no self-tapping" rule is GONE: the cheapest joint that is stable.** Study `estudos/parafusos_r11.py`: ruler = **through M2 bolt + nut in a hex
+  pocket from the tray's underside** (M2 x 10/12/14/16 by row; the D6 boss is under the 6.4 mm an insert needs; unlimited reuse; ~US$ 0.5), lid posts / wall
+  bosses / H1..H4 / OLED = **thread-forming M2** straight into the post (pilot 1.75, 7 mm deep; D5.0 is right for PT, too thin for an insert). Reuse of PT in PA12
+  (5-10) and the boss rules are estimates to be tested on the prototype. (3) **Ruler variants R8 / R8E / R4 / R4E (OUT only on a ruler that extends):** 32 keys = 4 x R8
+  with no OUT header, plug or notch (`layout_r4.OUT_ON_LAST = False`); frees u 129.5 in rows 2 and 4 (pair 37 + 129.5 = 92.5 mm, was 74). (4) **Base drawings**
+  `case/iso_base_r11.py`: OpenCascade HLR edges of the real tray, numbered supports with a legend, notes on the key squares, hidden-line view, PDF.
+  Update the same day: the R8's 74HC595 is at u 74, v 0 (rot 90) per `pcb/regua/posicao_regua8.json`, which `ligacao_h.py` now reads; no front-rail cut-out for it; row 4's bolt uses a thin (1.2 mm) M2 nut. The J accepted: 102 mm depth, OLED orientation B, through-bolt + nut on rulers, thread-forming on lid/OLED, mandatory PT reassembly test and OLED measurement before closing; the 80-key middle R8 is an R8E.
