@@ -1,4 +1,75 @@
-# eTutti Student V4 — SPEC R12V4
+# eTutti Student V4 — SPEC R13V4
+
+Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #201 (relatórios da R12V4) e à primeira cotação do J. Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R13V4".
+
+**Regras que continuam:**
+- planta, corte e isométrico da base a cada mudança dela;
+- nome da nota em cada tecla;
+- só o instrumento de 32 teclas detalhado até a compra;
+- só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+**Objetivo desta revisão: fechar o projeto para compra.** Toda peça das duas placas tem de aparecer no lugar e no giro certos, com um modelo 3D fiel, antes de o J encomendar.
+
+## Cotação do J (23 nov)
+
+- **Régua R8, painel de 2 réguas:** cerca de US$ 70 (5 painéis nus, 2 montados = 4 réguas = 32 sensores). É o painel escolhido.
+- **Placa principal:** cerca de US$ 105, com:
+  - **ENIG** (escolhido pelo J: passo fino no M.2, USB-C e codec);
+  - empilhamento **JLC04121H-7628** (espessura real 1,12 mm ± 10 %, aceita);
+  - vias "Plugged", via mínima 0,3/(0,4/0,45), sem controle de impedância.
+- **Problema achado na pré-visualização da JLCPCB:** os conectores SH clone **XY-SM06B-SRSS-TB (C56123098)** aparecem sem corpo (sem modelo 3D), tanto em J1 das réguas quanto em J601–J604 da principal. Não dá para conferir giro e pino 1.
+
+## Mudanças desde a R12V4
+
+### 1. Conectores SH originais JST (Eletrônica)
+
+- **J1 das réguas (R8, R8E, R4, R4E) e J601–J604 da principal:** de C56123098 para o **JST SM06B-SRSS-TB(LF)(SN), C160405** (mesmos pads, mesma altura; cerca de US$ 0,90 contra 0,07; no protótipo, cerca de US$ 7 a mais).
+- **J401 (OLED):** de C51940130 para o **JST SM04B-SRSS-TB(LF)(SN), C160404**, pelo mesmo motivo de fidelidade (cerca de US$ 0,20).
+- Conferir no EasyEDA que os dois códigos têm modelo 3D e que os pads do footprint deles batem com os da placa (`cpl_jlc.py`; os números dos pads iguais aos do componente novo, a lição dos jacks da V3).
+- **Os clones ficam registrados** em `ELETRONICA.md` como opção para produção em quantidade, com a nota de que não têm modelo 3D na JLCPCB.
+- Regenerar BOM e CPL de `fab/principal/` e de todos os pacotes de `fab/regua/`, e as folhas de cotação.
+
+### 2. Conferência de posição e modelo 3D de todas as peças (Eletrônica)
+
+Para cada peça montada pela JLCPCB nas duas placas (principal e R8; R8E/R4/R4E só a tabela):
+1. **Modelo 3D:** baixar o STEP do EasyEDA pelo código LCSC (`fetch_models.py`, curl simples, sem rajadas: o EasyEDA recusa depois de uns doze pedidos) e anotar se existe. Peça sem modelo na JLCPCB é peça que o J não consegue conferir: trocar por um equivalente com modelo ou explicar por que não dá.
+2. **Posição e giro:** montar uma **pré-visualização própria igual à da JLCPCB**: cada modelo do EasyEDA posto na posição e no giro do CPL (as mesmas regras do `cpl_jlc.py`, fundo espelhado), sobre a placa. Conferir:
+   - o corpo cai sobre os pads (erro de ajuste em mm);
+   - o pino 1 cai no pad 1 de cada CI, diodo, conector e polarizado (U*, D*, Q*, J*, L201 se tiver polaridade);
+   - os conectores SH, o USB-C e os jacks com a boca para a borda certa.
+3. **Placa em KiCad com modelos 3D fiéis:** ligar os mesmos STEP aos footprints (caminho relativo, a pasta de modelos fica fora do git como antes) e gerar renders do fundo e do topo da principal e da R8 com todos os corpos.
+4. **Peças montadas em casa** (encoders EC11E18244AU, MicroMod, OLED Adafruit 326, alto-falante, bateria, teclas KS-20, parafusos): confirmar que cada uma tem modelo fiel na cena do instrumento (`model3d`/case) e listar as que ainda são caixas.
+
+**Entrega:** `fornecimento/MODELOS_3D.md` (tabela: referência, código LCSC, modelo 3D sim/não, erro de ajuste, pino 1 ok, boca do conector ok) e as figuras `pcb/img/previa_jlc_principal_bottom.png`, `previa_jlc_principal_top.png`, `previa_jlc_r8_bottom.png`, `previa_jlc_r8_top.png`, com as referências escritas sobre as peças. **Critério de aceitação: nenhuma peça sem modelo, nenhum erro de pino 1 ou de boca, erro de ajuste ≤ 0,3 mm.**
+
+### 3. O que o J confere depois (Eletrônica escreve, o J faz)
+
+Na folha de cotação de cada placa, uma lista curta do que o J compara entre a pré-visualização da JLCPCB e as figuras do item 2: os 4 SH da principal, o J401, o USB-C, os 2 jacks, o J202 da bateria, o pino 1 de U202/U204/U301/U501 e, na régua, o J1, o 74HC595 e o giro dos 8 TMAG5253 (simétricos: conferir pelo ponto do pino 1).
+
+### 4. Firmware e case
+
+Não mudam (os conectores trocados têm os mesmos pads). O firmware não precisa ser recompilado; o case só é conferido se o corpo do JST original for diferente do clone em altura ou profundidade (o design confere o túnel e o encaixe do plugue).
+
+## Tarefas para o Code (R13V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Eletrônica | trocar os SH pelos originais JST e regenerar os pacotes de fábrica (item 1) |
+| 2 | Eletrônica | conferência de modelo 3D, posição, giro e pino 1 de todas as peças, pré-visualização própria e renders (item 2) |
+| 3 | Eletrônica | lista de conferência para o J nas folhas de cotação (item 3) |
+| — | Design | só se o corpo do JST original mudar algo que o case vê (item 4) |
+
+**Perguntas que o Chat espera nos relatórios:**
+- o custo novo da principal e da R8 com os JST originais;
+- a tabela de modelos 3D, com toda peça sem modelo ou com ajuste ruim e o que foi feito;
+- as quatro figuras de pré-visualização;
+- qualquer coisa que o Code precise do J (por exemplo, prints da pré-visualização da JLCPCB depois de subir os pacotes novos).
+
+---
+
+# Anexo — SPEC R12V4 (referência)
 
 Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #199 (relatórios da R11V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R12V4".
