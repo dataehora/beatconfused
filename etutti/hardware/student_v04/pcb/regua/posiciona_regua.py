@@ -61,7 +61,9 @@ NOTCH_U = tuple(18.5 * i for i in range(NPOS + 1))
 NOTCH_W, NOTCH_D = 2.0, 4.3
 CONN = {"J1": (5.9, -3.95), "J2": (47.5 + LEN - 74.0, -3.95)}     # R10V4: OUT keeps its distance from the right end (R4: 74 - 47.5 = 26.5; R8: 121.5)   # R8V4: OUT moved from 68.1 to 47.5 (link H); IN stays at 5.9
 _OLD = {"J1": (5.9, -3.95), "J2": (68.1, -3.95)}   # R4V4 contract of the design: IN x 5.9, OUT x 68.1, back strip, mouth -v     # (u, v) of the connectors' origin (centre of the pin row), mouth -v
-U5_POS = (27.75, 4.2)              # R8: the same place as the R4 (key cell 2 centre): the design already cuts the front rail under it (layout_r4.UNDER_FRONT_U)
+U5_POS = (27.75, 4.2) if NPOS == 4 else (74.0, 0.0)     # R11V4 (roteamento's request): the R8's 595 goes to the middle of the strip (u 74 = between cells 4 and 5, rot 90, |v| <= 3.9: no rail cut); the R4 keeps its place
+U5_ROT = 0 if NPOS == 4 else 90
+             # R8: the same place as the R4 (key cell 2 centre): the design already cuts the front rail under it (layout_r4.UNDER_FRONT_U)
 EDGE = 0.25                         # copper-to-edge
 
 
@@ -243,7 +245,7 @@ def main():
     for ref, (u, v) in CONN.items():
         mouth_back(ref)
         P.set_pose(fps[ref], X(u), Y(v), fps[ref].GetOrientationDegrees())
-    pose(R595, U5_POS[0], U5_POS[1], 0)
+    pose(R595, U5_POS[0], U5_POS[1], U5_ROT)
 
     # ---- passives: search near an anchor (nearest free spot), in the order of importance
     placed = {"J1", "J2", R595} | set(SENS)
@@ -304,6 +306,13 @@ def main():
     j2p6 = P.pad_xy(fps["J2"], "6")[0]
     anchors["R1"] = (j2p6[0] + 3.0, j2p6[1] - 0.5)       # R8V4: QH' resistor beside J2 pin 6, in the back strip
     for ref in ["C%d" % i for i in range(1, NPOS + 1)] + [RC6, RC5, "R1"]:
+        if NPOS == 8 and ref in ["C%d" % i for i in range(1, NPOS + 1)]:
+            # R11V4: the sensor's two pins on its right (u + 0.25) are 1 (+3V3, back) and 2 (GND, front): the 100 nF goes between them, on the row's centre line,
+            # +3V3 pad towards the back and GND pad towards the front (rot 270): both legs ~1 mm, no GND pocket on the wrong side of the sensor
+            k = int(ref[1:]) - 1
+            pose(ref, KEYS[k] + 1.75, 0.0, 270)
+            placed.add(ref)
+            continue
         best = settle(ref, anchors[ref])
 
     # ---- keep-out areas (rule areas) and markings
@@ -311,6 +320,9 @@ def main():
     for i, u in enumerate(M2_U):
         P.add_zone(b, [pcbnew.B_Cu], P.rect_pts(X(u) - 3.2, Y(M2_V) - 3.2, X(u) + 3.2, Y(M2_V) + 3.2), "M2 fundo (patamar 6,4)",
                    rule=True, no_fp=True)
+        # R11V4: the bolt's head (pan head D3.8) sits on the TOP face (the key side): no copper of any net under it (tracks, vias, pours), 4.6 mm square
+        P.add_zone(b, [pcbnew.F_Cu], P.rect_pts(X(u) - 2.3, Y(M2_V) - 2.3, X(u) + 2.3, Y(M2_V) + 2.3), "M2 topo (cabeca do parafuso D3,8)",
+                   rule=True, no_tracks=True, no_vias=True, no_fill=True)
     # silkscreen / drawings (top = the key side; bottom = the assembly side)
     for k, uc in enumerate(KEYS):
         for (a, c, d, e) in ((uc - 7, -7, uc + 7, -7), (uc + 7, -7, uc + 7, 7), (uc + 7, 7, uc - 7, 7), (uc - 7, 7, uc - 7, -7)):
@@ -322,9 +334,9 @@ def main():
             sh.SetWidth(M(0.1))
             b.Add(sh)
         text(b, "tecla %d" % (k + 1), uc, 2.5, pcbnew.F_SilkS, 0.9)
-    text(b, "STUDENT V4 REGUA R%d (R10V4) - FRENTE (jogador) em baixo" % NPOS, LEN / 2, 6.2, pcbnew.F_SilkS, 0.9)
+    text(b, "STUDENT V4 REGUA R%d (R11V4) - FRENTE (jogador) em baixo" % NPOS, LEN / 2, 6.2, pcbnew.F_SilkS, 0.9)
     text(b, "J1 IN", CONN["J1"][0], -1.5, pcbnew.B_SilkS, 0.8, mirror=True)
-    text(b, "J2 OUT", CONN["J2"][0], -1.5, pcbnew.B_SilkS, 0.8, mirror=True)
+    text(b, "J2 OUT (so nas E)", CONN["J2"][0], -1.5, pcbnew.B_SilkS, 0.8, mirror=True)
 
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     b.BuildConnectivity()

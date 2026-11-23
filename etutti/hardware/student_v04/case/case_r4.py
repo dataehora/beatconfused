@@ -26,6 +26,7 @@ import case_t3g as T     # noqa: E402
 import case_f2 as F      # noqa: E402
 import case as C3        # noqa: E402  (the V3 case's functions: knob and acoustic box, patched below)
 import ligacao_h as H    # noqa: E402  (R8V4: the cable loops, the recesses, the M2 / post search)
+import oled_r11 as OL   # noqa: E402  (R11V4: the real OLED, Adafruit 326)
 
 OUT = F.OUT
 G = L.G
@@ -54,6 +55,15 @@ JACK_D, JACK_Z = G.JACK_OPENING_D, G.JACK_Z
 KNOB_HOLE = C3.KNOB_HOLE
 POST_D = 5.4                  # the V3 had 4.6; 5.4 keeps 1.1 mm round the insert's pilot and 0.2 mm clear of the acoustic box at H4
 BOARD_Z = (-L.T_PCB, 0.0)
+# ---- R11V4 item 2: fasteners by use (FIT_CHECK R11V4 section 2, estudos/parafusos_r11.py)
+#  ruler: through-bolt M2 + nut in a hex pocket from the tray's underside (length by row);  lid posts, wall bosses and H1..H4: thread-forming M2 (PT 2.0 x 8 / x 16) straight into
+#  the post (pilot 1.75, 7 mm deep);  OLED: thread-forming M2 x 4 into its four posts.
+PT_PILOT, PT_DEPTH = 1.75, 7.0
+F.POST_PILOT, F.PILOT_DEPTH = PT_PILOT, PT_DEPTH
+T.SCREW_PILOT = PT_PILOT
+BOLT_LEN = {1: 10.0, 2: 12.0, 3: 14.0, 4: 16.0}      # M2 x L of the ruler bolts, by row (head on the ruler's top, tip at the nut)
+NUT_AF, NUT_T, NUT_POCKET_AF = 4.0, {1: 1.6, 2: 1.6, 3: 1.6, 4: 1.2}, 4.2     # M2 nut (DIN 934, 1.6 thick; row 4: thin DIN 439, 1.2: the M2 x 16 reaches only 0.9 mm into a standard nut there) and its hex pocket
+BOLT_HOLE = 2.4
 GRADE_W = 16.0                # the electronics' grade-regua strip (1 mm of border each side of the 14.00 openings)
 
 
@@ -163,8 +173,9 @@ def lid(mod):
     body = body.cut(box(wx0, wx1, wy0, wy1, ceiling - 1, L.ROOF_TOP + 1))
     body = body.cut(box(wx0 - C3.WINDOW_LEDGE, wx1 + C3.WINDOW_LEDGE, wy0 - C3.WINDOW_LEDGE, wy1 + C3.WINDOW_LEDGE,
                         ceiling - 0.01, ceiling + C3.WINDOW_PANE_T))
-    for (x, y) in oled_posts():
-        body = body.union(cyl(x, y, C3.oled_levels()["pcb_top"], ceiling + 0.01, 3.2).cut(cyl(x, y, C3.oled_levels()["pcb_top"] - 1, ceiling - 0.8, 1.5)))
+    lv = OL.levels(ceiling)
+    for (x, y) in oled_posts():                   # R11V4: the four posts stand on the real module's holes; PT 2.0 x 4 from below, pilot to 0.8 mm under the roof's top
+        body = body.union(cyl(x, y, lv["pcb_top"], ceiling + 0.01, OL.POST_D).cut(cyl(x, y, lv["pcb_top"] - 1, L.ROOF_TOP - 0.8, PT_PILOT)))
     # speaker slots and the two posts for the acoustic box
     g = G.GRILLE
     for i in range(g["n"]):
@@ -180,14 +191,14 @@ def lid(mod):
 
 
 def oled_posts():
-    cx, cy = oled_centre()
-    dx, dy = C3.OLED_PCB[0] / 2 - 2.0, C3.OLED_PCB[1] / 2 - 2.0
-    return [(cx - dx, cy - dy), (cx + dx, cy - dy), (cx - dx, cy + dy), (cx + dx, cy + dy)]
+    return OL.holes_world()
 
 
 def oled_centre():
-    wx0, wy0, wx1, wy1 = C3.WINDOW
-    return (wx0 + wx1) / 2, (wy0 + wy1) / 2 - 1.9       # SPEC y: the module is turned 180 deg, its board centre is 1.9 mm BEHIND the window centre
+    """Centre of the module's glass in plan (the viewing area is on the window's centre; the glass is 2.1 mm off)."""
+    gx = (OL.GLASS_X[0] + OL.GLASS_X[1]) / 2
+    gy = (OL.GLASS_Y[0] + OL.GLASS_Y[1]) / 2
+    return OL.world(gx, gy)
 
 
 # ------------------------------------------------------------------ the tray
@@ -230,11 +241,11 @@ def tray(mod):
         h = cyl(x, y, L.Z_BOT - 0.1, L.Z_FLOOR + 0.1, 2.4).union(cyl(x, y, L.Z_BOT - 0.1, L.Z_BOT + 1.0, 4.2))
         cut = h if cut is None else cut.union(h)
     b = b.cut(cut)
-    # M2 pilots (insert) in the bosses
+    # R11V4: ruler bolts go THROUGH the boss and the floor: hole D2.4 and a hex pocket for the nut from the underside (open at the bottom face, the nut rests on the table)
     for ru in L.rulers(mod):
         z1 = L.ZR[ru["row"] - 1] - L.RULER_T
         for mx, my in L.m2_points(ru):
-            b = b.cut(cyl(mx, my, z1 - 6.0, z1 + 0.1, T.SCREW_PILOT))
+            b = b.cut(cyl(mx, my, L.Z_BOT - 1, z1 + 0.1, BOLT_HOLE)).cut(nut_pocket(mx, my, ru["row"]))
     # R10V4: the board's four cables go through the walls in tunnels (both free-wire lengths): cut their plan envelope from the floor up to the plug's axis
     for F_ in L.CABLE_FREE_MM:
         b = b.cut(cable_cutter(mod, F_))
@@ -294,12 +305,42 @@ def grades(mod):
     return res
 
 
+def hexprism(x, y, z0, z1, af):
+    """Hexagonal prism of across-flats `af` (corners on the x axis)."""
+    r = af / math.sqrt(3.0)
+    pts = [(x + r * math.cos(math.radians(60 * i)), y + r * math.sin(math.radians(60 * i))) for i in range(6)]
+    return cq.Workplane("XY").workplane(offset=z0).polyline(pts).close().extrude(z1 - z0)
+
+
+def nut_z(row):
+    """Nut's lower and upper face: the nut sits against the pocket's ceiling, the bolt's tip at the nut's lower face (standard lengths by row: M2 x 10/12/14/16)."""
+    tip = L.ZR[row - 1] - BOLT_LEN[row]
+    top = max(tip + NUT_T[row], L.Z_BOT + NUT_T[row] + 0.2)
+    return top - NUT_T[row], top
+
+
+def nut_pocket(x, y, row):
+    z0, z1 = nut_z(row)
+    return hexprism(x, y, L.Z_BOT - 1, z1, NUT_POCKET_AF)
+
+
 def screws(mod):
+    """The ruler bolts (M2 pan head D3.8 x 1.6 on the ruler's top, shank D2 down to the tip). R11V4: through-bolts, 10/12/14/16 mm by row."""
     res = None
     for ru in L.rulers(mod):
         z0 = L.ZR[ru["row"] - 1]
         for mx, my in L.m2_points(ru):
-            s = cyl(mx, my, z0 - L.RULER_T - 4, z0 + 1.6, 2.0).union(cyl(mx, my, z0, z0 + 1.6, T.SCREW_HEAD))
+            s = cyl(mx, my, z0 - BOLT_LEN[ru["row"]], z0 + 1.6, 2.0).union(cyl(mx, my, z0, z0 + 1.6, T.SCREW_HEAD))
+            res = s if res is None else res.union(s)
+    return res
+
+
+def nuts(mod):
+    res = None
+    for ru in L.rulers(mod):
+        z0, z1 = nut_z(ru["row"])
+        for mx, my in L.m2_points(ru):
+            s = hexprism(mx, my, z0, z1, NUT_AF).cut(cyl(mx, my, z0 - 1, z1 + 1, 2.0))
             res = s if res is None else res.union(s)
     return res
 
@@ -353,8 +394,7 @@ def cabos(mod, F_, full=True):
 
 
 def under_parts(mod):
-    """R10V4: every part under the rulers except the headers (those are in connectors()): the R4 board's parts (595, capacitors, R1) at their real u, v, height, and
-    the sensor + 100 nF of keys 5..8 (the R8's second half, assumed like the first: sensor at the key centre, capacitor 2.7 mm behind it)."""
+    """R10V4: every part under the rulers except the headers (those are in connectors()): the R8 board's parts (sensors, 595 at u 74, capacitors on the centre line, R1, C10) from pcb/regua/posicao_regua8.json (the electronics' placement, R11V4)."""
     import ligacao_h as H
     res = None
     for ru in L.rulers(mod):
@@ -364,10 +404,6 @@ def under_parts(mod):
                 continue
             s_ = box(ru["x0"] + u0, ru["x0"] + u1, ru["y"] + v0, ru["y"] + v1, z0 - max(h, 0.3), z0)
             res = s_ if res is None else res.union(s_)
-        for k in range(4, int(L.RULER_L // L.PITCH)):
-            uc = 9.25 + 18.5 * k
-            res = res.union(box(ru["x0"] + uc - 0.9, ru["x0"] + uc + 0.9, ru["y"] - 1.1, ru["y"] + 1.1, z0 - 0.8, z0))
-            res = res.union(box(ru["x0"] + uc + 1.3, ru["x0"] + uc + 2.3, ru["y"] - 3.6, ru["y"] - 1.7, z0 - 0.55, z0))
     return res
 
 
@@ -422,25 +458,47 @@ def acoustic_box():
     return mirror(c), info
 
 
+def _poly_world(pts, z0, z1):
+    return cq.Workplane("XY").workplane(offset=z0).polyline([OL.world(x, y) for x, y in pts]).close().extrude(z1 - z0)
+
+
 def oled():
-    cx, cy = oled_centre()
-    lv = C3.oled_levels()
-    pcb = box(cx - C3.OLED_PCB[0] / 2, cx + C3.OLED_PCB[0] / 2, cy - C3.OLED_PCB[1] / 2, cy + C3.OLED_PCB[1] / 2, lv["pcb_bottom"], lv["pcb_top"])
-    glass = box(cx - OLED_GLASS[0] / 2, cx + OLED_GLASS[0] / 2, cy - OLED_GLASS[1] / 2, cy + OLED_GLASS[1] / 2, lv["pcb_top"], lv["glass_top"])
-    return pcb.union(glass)
+    """The module (Adafruit 326): PCB with its lugs and the four holes, the panel's glass, the two SH4 connector bodies on the back (R11V4)."""
+    lv = OL.levels(L.CEILING)
+    pcb = _poly_world(OL.outline_b(), lv["pcb_bottom"], lv["pcb_top"])
+    for x, y in OL.holes_world():
+        pcb = pcb.cut(cyl(x, y, lv["pcb_bottom"] - 1, lv["pcb_top"] + 1, OL.HOLE_D))
+    gx0, gy0 = OL.world(OL.GLASS_X[0], OL.GLASS_Y[0])
+    gx1, gy1 = OL.world(OL.GLASS_X[1], OL.GLASS_Y[1])
+    res = pcb.union(box(gx0, gx1, gy0, gy1, lv["pcb_top"], lv["glass_top"]))
+    for nm, xb0, xb1, yb0, yb1, dz0, dz1 in OL.conn_boxes_b():
+        if nm.startswith("corpo"):
+            (x0, y0), (x1, y1) = OL.world(xb0, yb0), OL.world(xb1, yb1)
+            res = res.union(box(min(x0, x1), max(x0, x1), min(y0, y1), max(y0, y1), lv["pcb_bottom"] + dz0, lv["pcb_bottom"] + dz1))
+    return res
 
 
-# R10V4 item 4: the 0.96 in SSD1306 module (27.3 x 27.8 board, glass 26.7 x 19.26 centred on the board between the mounting-hole rows, viewing area 21.74 x 10.86).
-# Before, the glass was drawn 26 x 16 (a box that did not match the panel) and the picture did not show the viewing area: the window (centre 1.9 mm in front of the
-# board's centre: the viewing area sits 1.9 mm nearer the pin edge than the glass's middle, SPEC v4 item 7, NOT confirmed on a real module) looked off-centre.
-OLED_GLASS = (26.7, 19.26)
-OLED_ACTIVE = (21.74, 10.86)
+def oled_plugs():
+    """The two SH4 plugs that would sit on the module's connectors (only the right one is used: the cable to J401)."""
+    lv = OL.levels(L.CEILING)
+    res = None
+    for nm, xb0, xb1, yb0, yb1, dz0, dz1 in OL.conn_boxes_b():
+        if nm.startswith("plugue"):
+            (x0, y0), (x1, y1) = OL.world(xb0, yb0), OL.world(xb1, yb1)
+            p = box(min(x0, x1), max(x0, x1), min(y0, y1), max(y0, y1), lv["pcb_bottom"] + dz0, lv["pcb_bottom"] + dz1)
+            res = p if res is None else res.union(p)
+    return res
+
+
+# R11V4 item 1: the OLED is the Adafruit 326 (UG-2864HSWEG01 panel, glass 26.7 x 19.26, viewing area 21.744 x 10.864, both read from Adafruit's board file).
+OLED_GLASS = (OL.GLASS_X[1] - OL.GLASS_X[0], OL.GLASS_Y[1] - OL.GLASS_Y[0])
+OLED_ACTIVE = (OL.ACT_X[1] - OL.ACT_X[0], OL.ACT_Y[1] - OL.ACT_Y[0])
 
 
 def oled_active():
     wx0, wy0, wx1, wy1 = C3.WINDOW
-    lv = C3.oled_levels()
-    cx, cy = (wx0 + wx1) / 2, (wy0 + wy1) / 2                    # the viewing area is centred on the window
+    lv = OL.levels(L.CEILING)
+    cx, cy = (wx0 + wx1) / 2, (wy0 + wy1) / 2                    # the viewing area is centred on the window by construction (OL.WX0, OL.WY0)
     return box(cx - OLED_ACTIVE[0] / 2, cx + OLED_ACTIVE[0] / 2, cy - OLED_ACTIVE[1] / 2, cy + OLED_ACTIVE[1] / 2, lv["glass_top"] - 0.3, lv["glass_top"])
 
 
@@ -481,7 +539,7 @@ def build(mod):
     t0 = time.time()
     n = 32 + 16 * mod
     Lx = L.length(mod)
-    lid_, tray_, ru, gr, sc = lid(mod), tray(mod), rulers_solid(mod), grades(mod), screws(mod)
+    lid_, tray_, ru, gr, sc, nt = lid(mod), tray(mod), rulers_solid(mod), grades(mod), screws(mod), nuts(mod)
     keys0 = T.key_bodies(mod, 0.0)
     keys5 = T.key_bodies(mod, 0.5, False)
     keys8 = T.key_bodies(mod, 0.8, False)
@@ -507,7 +565,8 @@ def build(mod):
         "tampa x grades": round(inter(lid_, gr), 2), "tampa x reguas": round(inter(lid_, ru), 2), "tampa x parafusos": round(inter(lid_, sc), 2),
         "base x teclas": round(inter(tray_, keys0), 2), "base x reguas": round(inter(tray_, ru), 2), "base x grades": round(inter(tray_, gr), 2),
         "base x parafusos (cabeca)": round(inter(tray_, sc), 2), "grades x teclas": round(inter(gr, keys0), 2),
-        "grades x reguas": round(inter(gr, ru), 2), "grades x parafusos": round(inter(gr, sc), 2), "teclas x parafusos": round(inter(keys0, sc), 2)}
+        "grades x reguas": round(inter(gr, ru), 2), "grades x parafusos": round(inter(gr, sc), 2), "teclas x parafusos": round(inter(keys0, sc), 2),
+        "base x porcas (bolsos sextavados)": round(inter(tray_, nt), 2), "porcas x parafusos (furo da porca: 0)": round(inter(nt, sc), 2), "porcas x reguas": round(inter(nt, ru), 2)}
     # ---- connectors, pegs and sensors
     I["conectores"] = {
         "cabecalhos x base": round(inter(cn["cabecalhos"], tray_), 2), "plugues x base": round(inter(cn["plugues"], tray_), 2),
@@ -528,7 +587,7 @@ def build(mod):
                               "cabo x placa principal": round(inter(cb, board()), 2)}
     # ---- interface
     comp = {"placa": brd, "modulo": mdl, "bateria": bat, "alto-falante": spk, "caixa acustica": bx, "OLED": ole,
-            "encoder 1": encs[0], "encoder 2": encs[1], "knob 1": knobs[0], "knob 2": knobs[1]}
+            "encoder 1": encs[0], "encoder 2": encs[1], "knob 1": knobs[0], "knob 2": knobs[1], "plugue do OLED": oled_plugs()}
     names = list(comp)
     ifc = {}
     for nm in names:
@@ -552,9 +611,9 @@ def build(mod):
     info["interferencias_mm3"] = I
     info["lugar"] = {"bateria": [L.BATTERY_XY[0], L.BATTERY_XY[1], L.BATTERY_XY[0] + L.BATTERY_CELL[0], L.BATTERY_XY[1] + L.BATTERY_CELL[1]],
                      "bateria_z": [L.Z_FLOOR, L.Z_FLOOR + L.BATTERY_CELL[2]], "falante_z": [C3.box_levels()["back"], C3.box_levels()["front"]],
-                     "oled_z": [C3.oled_levels()["pcb_bottom"], C3.oled_levels()["glass_top"]], "oled_centro": list(oled_centre()),
+                     "oled_z": [OL.levels(L.CEILING)["back_bottom"], OL.levels(L.CEILING)["glass_top"]], "oled": OL.summary(L.CEILING), "oled_centro": list(oled_centre()),
                      "modulo_z": [-L.T_PCB - L.CARD_BELOW, -L.T_PCB], "encoder_topo_do_eixo": 24.5, "knob_topo": C3.KNOB["top"]}
-    for name, w in (("tampa", lid_), ("base", tray_), ("reguas", ru), ("grades", gr), ("teclas", keys0), ("parafusos", sc)) + tuple(
+    for name, w in (("tampa", lid_), ("base", tray_), ("reguas", ru), ("grades", gr), ("teclas", keys0), ("parafusos", sc), ("porcas", nt)) + tuple(
             (k, w_) for k, w_ in comp.items()):
         fn = name.replace(" ", "_")
         cq.exporters.export(mirror(w), os.path.join(OUT, "r4_%d_%s.stl" % (n, fn)), tolerance=0.05, angularTolerance=0.2)

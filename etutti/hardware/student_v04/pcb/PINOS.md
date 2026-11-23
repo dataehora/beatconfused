@@ -1,4 +1,30 @@
-# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4; teclado de 32 teclas, R5V4; microfone R6V4; conector P6s e R305 = 0 ohm, R8V4; régua R8 e microfones eletreto/dinâmico, R10V4)
+# eTutti Student V4 · mapa de pinos (FINAL da placa principal, R3V4; OLED real e variantes de régua, R11V4; teclado de 32 teclas, R5V4; microfone R6V4; conector P6s e R305 = 0 ohm, R8V4; régua R8 e microfones eletreto/dinâmico, R10V4)
+
+## R11V4: o que mudou para a programação (os pinos do Teensy NÃO mudam)
+
+**Nenhum pino, nenhuma rede muda.** Mudam só: (1) a **tela OLED passa a ser um modelo real** (abaixo); (2) o J401 virou um **SH de 4 vias, ordem Qwiic** (o cabo de estoque Qwiic liga o módulo, sem cabo sob medida); (3) a régua do instrumento de 32 teclas é a **R8 sem OUT** (nada muda na varredura: o OUT nunca foi usado com uma só régua por fileira).
+
+### Tela OLED (Adafruit 326, `fornecimento/oled/`)
+| Item | Valor |
+|---|---|
+| Módulo | Adafruit 326 · "Monochrome 0.96" 128x64 OLED Graphic Display - STEMMA QT" (US$ 17,50 a 1-9, 15,75 a 10-99, na loja da Adafruit; **não está na LCSC/JLCPCB**, compra à parte) |
+| Controlador | **SSD1306** (nome impresso na serigrafia do módulo e no esquema da Adafruit) |
+| Resolução | **128 x 64**, monocromático (branco), área ativa ~21,7 x 10,9 mm (conferir: a página da Adafruit só dá o vidro, 26,6 x 19 mm) |
+| Interface | **I²C** (SPI só cortando dois jumpers: não usar). Conector J401 = SH de 4 vias: **1 GND, 2 +3V3, 3 SDA (Teensy 18), 4 SCL (Teensy 19)**, mesma ordem do Qwiic / STEMMA QT |
+| **Endereço I²C** | **0x3D de fábrica** (DC/SA0 em cima); **0x3C** com o jumper de endereço (SJ) fechado para GND. O SGTL5000 é 0x0A: sem conflito. **Firmware: usar 0x3D e, se não responder, tentar 0x3C** |
+| Tensão | **3,3 V pelo J401**: o módulo tem regulador de bordo AP2112K-3,3 (entrada 3-5 V) e deslocadores de nível MOSFET nas linhas I²C; trabalha com 3,3 V |
+| Pull-ups | o módulo tem 10 kohm (conferir o valor no esquema) em SDA e SCL; somam-se aos 2,2 kohm da principal (resultante ~1,8 kohm: bom até 400 kHz) |
+| Reset | **sem pino de reset ligado**: o módulo tem supervisor de reset de bordo (APX803); não usar RST na firmware |
+| Corrente | tipicamente 10-20 mA com texto, até ~30 mA com tudo aceso (estimativa por datasheet do SSD1306; conferir na bancada); com 3,3 V pelo regulador de bordo o consumo se soma ao do 3,3 V |
+| Taxa | I²C até 400 kHz (o do SSD1306); uma tela cheia (1024 bytes) leva ~25 ms a 400 kHz: **atualizar por regiões/linhas, nunca a tela inteira por laço** |
+| Fonte (PT/EN com acentos) | 128 x 64 = 21 colunas x 8 linhas com fonte 6 x 8, ou 25 x 5 com 5 x 7 + espaço; para acentos latinos use uma fonte de 8 px de altura **com os glifos Latin-1** (u8g2 `u8g2_font_6x12_t_latin` ou `helvR08_te`); biblioteca `U8g2` (`SSD1306_128X64_NONAME`, I²C por hardware) ou `Adafruit_SSD1306` |
+
+A firmware deve **confirmar o controlador no menu** só se a compra mudar de módulo: com o Adafruit 326 é SSD1306. Se a compra for um módulo genérico de 0,96 pol. (eBay/AliExpress, US$ 2-3) o controlador também é SSD1306 (alguns de 1,3 pol. são **SH1106**, com 132 colunas e deslocamento de 2: **não** trocar sem avisar), mas o módulo genérico tem 4 pinos de 2,54 mm (GND VCC SCL SDA, ordem a conferir) e exige cabo sob medida.
+
+### Réguas (para a varredura)
+Quatro variantes, **dois desenhos**: R8 e R8E (8 posições), R4 e R4E (4 posições). "E" = com o conector OUT e o resistor da cascata montados (são os mesmos Gerbers: só a BOM muda). **A R8 sem OUT é a do instrumento de 32 teclas (4 x R8).** Para a programação nada muda: coluna = estágio, 9 pulsos, 0,56 ms.
+
+---
 
 ## R10V4: o que mudou para a programação (os pinos do Teensy NÃO mudam)
 
@@ -106,7 +132,7 @@ Conferido contra o esquema da V4 (`pcb/schematic.py`, ERC 0/0, netlist = `TEENSY
 3. **FIRST_COL = {0, 0, 0, 0}** (era {1, 0, 1, 1} na V3): a régua começa **na primeira tecla da fileira** (início = x da primeira tecla - 9,25 mm).
    **R5V4:** 8 teclas em todas as fileiras, sem posição vazia; `FIRST_NOTE = {57, 55, 56, 54}` (o da fileira 4 era 57); 3 semitons por coluna; +4 teclas por módulo.
 4. O **microfone** entra no **MIC do SGTL5000** (pino 10 do codec, via C309 1 uF), nunca no LINE IN: ver "Microfone".
-5. **J401 (tela) é o mesmo SH de 6 vias das fileiras**: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 sem uso); no cabo só 4 fios.
+5. **J401 (tela), R11V4: SH de 4 vias (XY-SM04B-SRSS-TB), ordem Qwiic**: 1 GND, 2 +3V3, 3 SDA, 4 SCL; cabo Qwiic / STEMMA QT de estoque, pino a pino, para o módulo Adafruit 326. (Antes: SH de 6 vias das fileiras, 1 +3V3.)
 
 ## O que mudou em relação à V3 (e à `viaggio_micromod/pcb/PINOS.md`)
 

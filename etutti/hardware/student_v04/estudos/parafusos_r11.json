@@ -1,0 +1,174 @@
+{
+ "premissas": "estimativas de catalogo e regras gerais dos fabricantes, nada comprado nem medido",
+ "usos": {
+  "regua": {
+   "n": 8,
+   "carga": "levantar a regua (plugue SH: 1-2 N de extracao) e rattle; a forca das teclas passa pelos trilhos, nao pelo parafuso; trocas: extensao modular + regua defeituosa",
+   "ciclos_exigidos": 10,
+   "boss_D_modelo": 6.0,
+   "comparacao": {
+    "A: formador de rosca (PT 2.0) direto na bossa": {
+     "custo_pecas_US$": 0.32,
+     "tempo_montagem_min": 4.0,
+     "ciclos_ok": false,
+     "boss_min_mm": 4.0,
+     "boss_do_modelo_ok": true,
+     "ferramenta_US$": 0.0,
+     "pilot_mm": 1.75
+    },
+    "B: parafuso de maquina M2 em inserto de latao": {
+     "custo_pecas_US$": 0.96,
+     "tempo_montagem_min": 16.0,
+     "ciclos_ok": true,
+     "boss_min_mm": 6.4,
+     "boss_do_modelo_ok": false,
+     "ferramenta_US$": 8.0,
+     "pilot_mm": 3.2
+    },
+    "C: parafuso passante M2 + porca": {
+     "custo_pecas_US$": 0.52,
+     "tempo_montagem_min": 8.0,
+     "ciclos_ok": true,
+     "boss_min_mm": 2.9,
+     "boss_do_modelo_ok": true,
+     "ferramenta_US$": 0.0,
+     "pilot_mm": 2.4
+    }
+   }
+  },
+  "tampa": {
+   "n": 15,
+   "carga": "pre-carga que segura a tampa na bandeja (5 internos + 6 de parede + 4 H); aberta a cada troca de regua e a cada servico",
+   "ciclos_exigidos": 10,
+   "boss_D_modelo": 5.0,
+   "comparacao": {
+    "A: formador de rosca (PT 2.0) direto na bossa": {
+     "custo_pecas_US$": 0.6,
+     "tempo_montagem_min": 7.5,
+     "ciclos_ok": false,
+     "boss_min_mm": 4.0,
+     "boss_do_modelo_ok": true,
+     "ferramenta_US$": 0.0,
+     "pilot_mm": 1.75
+    },
+    "B: parafuso de maquina M2 em inserto de latao": {
+     "custo_pecas_US$": 1.8,
+     "tempo_montagem_min": 30.0,
+     "ciclos_ok": true,
+     "boss_min_mm": 6.4,
+     "boss_do_modelo_ok": false,
+     "ferramenta_US$": 8.0,
+     "pilot_mm": 3.2
+    },
+    "C: parafuso passante M2 + porca": {
+     "custo_pecas_US$": 0.98,
+     "tempo_montagem_min": 15.0,
+     "ciclos_ok": true,
+     "boss_min_mm": 2.9,
+     "boss_do_modelo_ok": true,
+     "ferramenta_US$": 0.0,
+     "pilot_mm": 2.4
+    }
+   }
+  },
+  "oled": {
+   "n": 4,
+   "carga": "peso do modulo (4,5 g) e choque (50 g = 2,2 N); montado uma vez, trocado so se falhar",
+   "ciclos_exigidos": 3,
+   "boss_D_modelo": 4.2,
+   "comparacao": {
+    "A: formador de rosca (PT 2.0) direto na bossa": {
+     "custo_pecas_US$": 0.16,
+     "tempo_montagem_min": 2.0,
+     "ciclos_ok": true,
+     "boss_min_mm": 4.0,
+     "boss_do_modelo_ok": true,
+     "ferramenta_US$": 0.0,
+     "pilot_mm": 1.75
+    },
+    "B: parafuso de maquina M2 em inserto de latao": {
+     "custo_pecas_US$": 0.48,
+     "tempo_montagem_min": 8.0,
+     "ciclos_ok": true,
+     "boss_min_mm": 6.4,
+     "boss_do_modelo_ok": false,
+     "ferramenta_US$": 8.0,
+     "pilot_mm": 3.2
+    },
+    "C: parafuso passante M2 + porca": {
+     "custo_pecas_US$": 0.26,
+     "tempo_montagem_min": 4.0,
+     "ciclos_ok": true,
+     "boss_min_mm": 2.9,
+     "boss_do_modelo_ok": true,
+     "ferramenta_US$": 0.0,
+     "pilot_mm": 2.4
+    }
+   }
+  }
+ },
+ "opcoes": {
+  "A: formador de rosca (PT 2.0) direto na bossa": {
+   "peca": 0.04,
+   "extra": 0.0,
+   "min": 0.5,
+   "ciclos": 7,
+   "boss_min_mult": 2.0,
+   "ferramenta": 0.0,
+   "pilot": 1.75,
+   "nota": "pre-carga relaxa 30-50 % em semanas (fluencia do PA12 na rosca); 5-10 remontagens; sem calor, sem inserto"
+  },
+  "B: parafuso de maquina M2 em inserto de latao": {
+   "peca": 0.03,
+   "extra": 0.09,
+   "min": 2.0,
+   "ciclos": 50,
+   "boss_min_mult": 3.2,
+   "ferramenta": 8.0,
+   "pilot": 3.2,
+   "nota": "rosca metalica (50+ remontagens); o inserto quente deforma e tensiona a parede: regra D externo >= 2 x D do inserto (6,4 mm)"
+  },
+  "C: parafuso passante M2 + porca": {
+   "peca": 0.05,
+   "extra": 0.015,
+   "min": 1.0,
+   "ciclos": 1000,
+   "boss_min_mult": 1.2,
+   "ferramenta": 0.0,
+   "pilot": 2.4,
+   "nota": "rosca metalica dos dois lados, sem tensao radial na bossa; pre-carga mantida (parafuso comprido); exige acesso por baixo e bolso sextavado"
+  }
+ },
+ "escolha": {
+  "regua": "C: parafuso passante M2 (10/12/14/16 mm por fileira) + porca em bolso sextavado por baixo",
+  "tampa": "A: formador de rosca M2 (PT 2.0 x 8 por baixo; x 16 nos 4 H, que atravessam bandeja e placa), piloto 1,75 de 7 mm nos postes",
+  "oled": "A: formador de rosca M2 x 4 nos 4 postes D4,2 (piloto 1,75), o modulo tem furos de 2,5"
+ },
+ "totais_32_teclas": {
+  "adotado (C na regua, A na tampa e no OLED)": {
+   "pecas_US$": 1.28,
+   "ferramentas_US$": 0,
+   "tempo_min": 17.5
+  },
+  "tudo A (formador de rosca)": {
+   "pecas_US$": 1.08,
+   "ferramentas_US$": 0,
+   "tempo_min": 13.5
+  },
+  "tudo B (inserto)": {
+   "pecas_US$": 3.24,
+   "ferramentas_US$": 8.0,
+   "tempo_min": 54.0
+  },
+  "regua C, tampa B, OLED A": {
+   "pecas_US$": 2.48,
+   "ferramentas_US$": 8.0,
+   "tempo_min": 40.0
+  }
+ },
+ "por_regua_acrescentada": {
+  "A": 0.08,
+  "B": 0.24,
+  "C": 0.13
+ }
+}

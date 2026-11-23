@@ -51,6 +51,7 @@ KEY_HOLE = 8.0
 X_IF = 79.0                           # interface | keyboard
 IF_ROOF_TOP, IF_ROOF_T = DECK_TOP, 2.0
 POST_D, POST_PILOT, BOSS_WALL_D = 5.0, 3.2, 6.0
+PILOT_DEPTH = 6.0                # R11V4: case_r4 sets it to 7.0 (thread-forming M2 x 8 from below) and POST_PILOT to 1.75
 BLADE_W = 1.4                         # the post's blade between two keys of a row (the corridor is 18.5 - 15.4 = 3.1 mm)
 RAIL_IN, RAIL_OUT = 4.2, 7.0          # rail from |y| = 4.2 to 7.0 from the row centre (ruler 14.0 wide)
 PIN_D, PIN_H, PIN_HOLE = 2.0, 2.5, 2.4
@@ -185,7 +186,7 @@ def lid(mod):
     # pilot holes in the posts (inserts from below, 6 mm deep)
     pil = None
     for x, y in pick_posts(mod) + wall_posts(mod):
-        h = cyl(x, y, Z_FLOOR - 0.1, Z_FLOOR + 6.0, POST_PILOT)
+        h = cyl(x, y, Z_FLOOR - 0.1, Z_FLOOR + PILOT_DEPTH, POST_PILOT)
         pil = h if pil is None else pil.union(h)
     body = body.cut(pil)
     return body

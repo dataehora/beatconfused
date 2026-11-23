@@ -7,7 +7,7 @@ Plain CPython (stdlib only); it calls KiCad 10's kicad-cli for ERC and the netli
 The V3 circuit with the F2 changes (SPEC R2V4/R3V4): no sensors and no multiplexers on the main board (the 4-sensor
 rulers carry the TMAG5253 and a 74HC595 each); sheet R = the four row connectors (JST SH 6-way, one per row) with
 the OUT_R1..R4 pull-downs and the 330 ohm series resistors (R8V4) of the shared SCAN_CLK / SCAN_DATA; the screen connector
-J401 is the same 6-way SH (4 used); microphone: C310 on MIC_BIAS (datasheet Fig. 20); Teensy pins as pcb/PINOS.md.
+J401 is a 4-way SH (Qwiic order: GND, 3V3, SDA, SCL; R11V4); microphone: C310 on MIC_BIAS (datasheet Fig. 20); Teensy pins as pcb/PINOS.md.
 The part references and the symbol uuids are the V3's (same uuid namespace).
 
 Writes (under etutti/hardware/student_v04/): kicad/student_v04.kicad_sch (root) + student_v04_<S>.kicad_sch,
@@ -537,11 +537,13 @@ for ref, code, a, b, sw, what in (("SW401", "I1", "VOL_A", "VOL_B", "VOL_SW_N", 
          fp="Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm", lcsc="C202365", cls="estendida", price=1.92,
          status="final", mount="sem peca (encoder soldado em casa, topo)", note=what + "; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2",
          datasheet="https://datasheet.lcsc.com/datasheet/pdf/00ace576d31da40a390056171db2037f.pdf?productCode=C202365")
-part("J401", sym("Conn_01x06_MountingPin", "Connector_Generic_MountingPin"), "XY-SM06B-SRSS-TB",
-     {"1": "+3V3", "2": "GND", "3": "I2C_SDA", "4": "I2C_SCL", "5": "NC", "6": "NC", "MP": "GND"}, "I3",
-     fp="Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", lcsc="C56123098", cls="estendida",
-     price=0.069, status="conferir",
-     note="tela OLED por cabo SH de 6 vias, o MESMO conector das reguas (um tipo Extended a menos); usa 4 vias na ordem das reguas: 1 +3V3, 2 GND, 3 SDA, 4 SCL (5 e 6 livres). Pino 1 = +3V3 como nas reguas: um plugue trocado nunca inverte a alimentacao",
+part("J401", sym("Conn_01x04_MountingPin", "Connector_Generic_MountingPin"), "XY-SM04B-SRSS-TB",
+     {"1": "GND", "2": "+3V3", "3": "I2C_SDA", "4": "I2C_SCL", "MP": "GND"}, "I3",
+     fp="Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal", lcsc="C51940130", cls="estendida",
+     price=0.039, status="conferir",
+     note="R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): "
+          "ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; "
+          "o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404",
      datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 part("SW403", sym("SW_Push", "Switch"), "Program", {"1": "PROG", "2": "GND"}, "I4",
      fp="Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A", lcsc="C318884", cls="basica", price=0.02,
@@ -864,9 +866,9 @@ def check_footprints():
 
 # Lines with no schematic symbol (bought apart, fitted at home).
 BOM_EXTRA = [
-    ["I3", "DS1", 1, "modulo OLED 0,96 pol. 128 x 64 SSD1306, I2C, 4 pinos (GND VCC SCL SDA)", "27 x 27 mm", "-", "-", "3.000",
-     "em casa (preso na tampa; cabo JST SH de 4 vias ao J401)", "conferir", "ver COMPRAS.md: ordem dos pinos do modulo"],
-    ["I3", "CAB1", 1, "cabo JST SH 1,0 mm de 4 vias, 50-100 mm (Qwiic / STEMMA QT)", "-", "-", "-", "1.000", "em casa", "final", ""],
+    ["I3", "DS1", 1, "Adafruit 326: OLED 0,96 pol. monocromatico 128 x 64, SSD1306, 2 conectores STEMMA QT (SH 4 vias), regulador de bordo AP2112K-3.3", "29,2 x 26,7 mm (+ orelhas, 31,75 de comprimento) (conferir)", "-", "-", "17.500",
+     "em casa (preso na tampa; cabo Qwiic ao J401)", "conferir", "R11V4: 4 furos; endereco I2C 0x3D de fabrica (0x3C por jumper); US$ 17,50 (1-9), 15,75 (10-99)"],
+    ["I3", "CAB1", 1, "cabo Qwiic / STEMMA QT (SH 1,0 mm, 4 vias, pino a pino), 50 mm (Adafruit 4210 ou SparkFun)", "-", "-", "-", "1.000", "em casa", "final", ""],
     ["P1", "MOD1", 1, "SparkFun MicroMod Teensy Processor (DEV-16402)", "M.2 2222 Key E", "-", "-", "24.950",
      "em casa (encaixar no J101, apertar o parafuso)", "final",
      "i.MX RT1062 600 MHz, 16 MB flash, 1 MB RAM, bootloader MKL02; fqbn teensy:avr:teensyMM"],
@@ -941,7 +943,7 @@ def compare_v3():
     new = {"J601", "J602", "J603", "J604", "R601", "R602", "R603", "R604", "R605", "R606", "C310", "R306", "C311"}
     # Teensy pads 19 (CHG_STAT), 10/18/32/47/34/38/8/67 etc. change by design (PINOS.md); J401 5 and 6 are new pins
     allowed = {("J101", p) for p in ("19", "10", "32", "47", "34", "38", "8", "67", "17", "18", "28", "4", "9", "51")}
-    allowed |= {("D202", "1"), ("J401", "1"), ("J401", "2"), ("J401", "3"), ("J401", "4"), ("J401", "5"), ("J401", "6")}
+    allowed |= {("D202", "1"), ("J401", "1"), ("J401", "2"), ("J401", "3"), ("J401", "4")}
 
     def nc(n):
         return n is None or n.startswith("unconnected-")

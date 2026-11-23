@@ -1,0 +1,27 @@
+{
+ "comprimento": 4,
+ "variantes": {
+  "R4_painel5": {
+   "pecas_por_painel": 60,
+   "pecas_por_regua": 12,
+   "linhas_bom": 5,
+   "tipos_extended": [
+    "C22401868",
+    "C56123098",
+    "C730243"
+   ],
+   "n_extended": 3
+  },
+  "R4E_painel5": {
+   "pecas_por_painel": 70,
+   "pecas_por_regua": 14,
+   "linhas_bom": 6,
+   "tipos_extended": [
+    "C22401868",
+    "C56123098",
+    "C730243"
+   ],
+   "n_extended": 3
+  }
+ }
+}

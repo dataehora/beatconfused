@@ -89,7 +89,7 @@ NOTCH_HDR_W = HDR_W + 1.0                     # the header's notch in the ruler'
 # clears the row in front (fixacao_r10.py: rows 1 and 3 take u 18.5 + 129.5 = 111 mm apart, rows 2 and 4 take u 37 + 111 = 74 mm apart; u 18.5 / 129.5 of rows 2 and 4 would sit
 # on row 1's (3's) IN plug and OUT header). The R4 (only ends a longer row, validation only): u 18.5 + 55.5 in rows 1 and 3, u 37 alone in rows 2 and 4.
 M2_HOLES_R8 = (18.5, 37.0, 111.0, 129.5)
-M2_BY_ROW = {1: (18.5, 129.5), 2: (37.0, 111.0), 3: (18.5, 129.5), 4: (37.0, 111.0)}
+M2_BY_ROW = {1: (18.5, 129.5), 2: (37.0, 129.5), 3: (18.5, 129.5), 4: (37.0, 129.5)}   # R11V4: no OUT header on the R8, so u 129.5 is free in rows 2 and 4 (92.5 mm apart, was 74)
 M2_BY_RULER = {}
 
 
@@ -189,6 +189,7 @@ LINK = "H"            # R8V4 (approved by J): every ruler has an SH IN header (u
                       # (A06SR06SR30K51B, 50.8 mm, free wire 45.8 or 50.8: not measured, nothing is bought before the prototype) links OUT of one ruler to
                       # IN of the next; the 4 board cables J601..J604 -> IN of the row's first ruler. No bridge, no cradle (E2 / G are gone).
 J2_FITTED = True
+OUT_ON_LAST = False   # R11V4: the 32-key instrument uses 4 x R8 WITHOUT the OUT header (variants: R8 no OUT, R8E with, R4 no OUT, R4E with); OUT only where a ruler extends
 
 
 # ---------------------------------------------------------------- connectors: positions, notches
@@ -198,9 +199,11 @@ def conn_boxes(ru):
     out = []
     zt = -RULER_T                                   # the ruler's underside
     for name, c in (("IN", IN_X), ("OUT", OUT_X)):
+        if name == "OUT" and ru["last"] and not OUT_ON_LAST:
+            continue                                # R11V4: the last ruler of a row is the R8 (no OUT header, no plug, no notch)
         out.append((name + "_header", x0 + c - HDR_W / 2, x0 + c + HDR_W / 2, y + LANE_Y0, y + LANE_Y0 + HDR_D, zt - HDR_H, zt))
         if name == "OUT" and ru["last"]:
-            continue                                # the last ruler of a row has its OUT header unused: no plug, no cable
+            continue                                # (R8E as the last ruler would keep its header unused: no plug, no cable)
         out.append((name + "_plug", x0 + c - PLUG_W / 2, x0 + c + PLUG_W / 2, y + LANE_Y0 - PLUG_D, y + LANE_Y0, AXIS_Z - PLUG_H / 2, AXIS_Z + PLUG_H / 2))
     return out
 
@@ -313,7 +316,7 @@ def cables(mod, F=CABLE_FREE_MM[0]):
 
 
 # 74HC595 (u 25.85..29.65, v to +6.59) and its C5 (u 29.74..31.66, v +5.7..+6.7) of the R4 sit over the front rail; the R8's 595 is the electronics' choice: assumed in the same place
-UNDER_FRONT_U = ((25.85, 31.66),)
+UNDER_FRONT_U = ()                       # R11V4: the electronics moved the R8's 595 to u 74, v 0 (rot 90, |v| <= 1.9, inside the pocket): no cut-out in the front rail any more (the R4's 595 at u 27.75 only matters for the R4, not modelled)
 
 
 def notches(mod, recess=True):
@@ -323,6 +326,8 @@ def notches(mod, recess=True):
     for ru in rulers(mod):
         x0, y, r = ru["x0"], ru["y"], ru["row"]
         for c in (IN_X, OUT_X):
+            if c == OUT_X and ru["last"] and not OUT_ON_LAST:
+                continue
             hx0, hx1 = x0 + c - NOTCH_HDR_W / 2, x0 + c + NOTCH_HDR_W / 2
             hx0, hx1 = (x0 if hx0 - x0 < 1.5 else hx0), (x0 + RULER_L if x0 + RULER_L - hx1 < 1.5 else hx1)      # no stub of rail left at a ruler's end
             out.append({"x0": hx0, "x1": hx1, "y0": y - RAIL_OUT - 0.5, "y1": y - RAIL_IN + 0.3,

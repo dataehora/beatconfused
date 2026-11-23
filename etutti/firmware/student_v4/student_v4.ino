@@ -114,7 +114,7 @@ const uint32_t HOT_BUDGET_MIN_US = 300;       // a few rounds even when the pass
 const uint32_t SCAN_TICK_US = 12;             // scanTick() runs this often (it returns at once until the sensors are awake)
 const int SCAN_PRIORITY = 96;                 // NVIC: lower = more urgent. USB 112, DMA 128 (I2S), audio update 208
 const uint32_t PASS_NOMINAL_US = (uint32_t)(LAYOUT_COLS * 72);   // one pass with no hot reads: 60 us wake + ~12 us work
-// OLED: 128 x 64 SSD1306 on I2C 0x3C (J401, the I2C is shared with the codec). USB runs at 12 Mbit/s
+// OLED: 128 x 64 SSD1306 on I2C 0x3D or 0x3C (J401, the I2C is shared with the codec). USB runs at 12 Mbit/s
 // (startup_late_hook, untested on a board). Microphone: pin 8 = I2S_RX, the codec's MIC input.
 // R10V4 item 5: ELECTRET (plug-in power) and DYNAMIC microphones, only through the 3.5 mm jack IN (J302). The voice effects
 // (expander, harmonizer, feedback suppressor, vocoder, echo, voice reverb) only work with a microphone detected or declared in
@@ -133,8 +133,16 @@ const uint32_t PASS_NOMINAL_US = (uint32_t)(LAYOUT_COLS * 72);   // one pass wit
 const uint8_t MIC_DET_PIN = 25;          // R6V4: MIC_DET (ADC). VOL_SW moved to pin 4 in the same revision
 const float MIC_SHORT_V = 0.10f, MIC_OPEN_V = 2.85f;
 const float MIC_DYN_UP_V = 0.85f, MIC_DYN_DOWN_V = 0.95f;   // R10V4 (electronics): below 0.85 V dynamic; once dynamic, back to electret above 0.95 V (hysteresis)
-const uint8_t OLED_ADDR = 0x3C;
+// R11V4: Adafruit 326 (SSD1306 128 x 64): 0x3D from the factory, 0x3C with its address jumper closed (PINOS.md). Tried in this order.
+uint8_t OLED_ADDR = 0x3D;
 const int OLED_ROTATION = 2;             // as Adafruit_SSD1306::setRotation(2): upside down
+// R11V4 item 1: the controller of the real module. 0 = SSD1306 (the usual 0.96" 128 x 64, active area 21.74 x 10.86 mm), 1 = SH1106
+// (the 1.3" modules: 132 columns, the glass starts at column 2, no horizontal addressing, so the frame goes page by page). Same 128 x 64
+// menu either way. Change this line (or build with -DOLED_SH1106=1) once the module is chosen.
+#ifndef OLED_SH1106
+#define OLED_SH1106 0
+#endif
+const int OLED_COL_OFFSET = OLED_SH1106 ? 2 : 0;
 
 // Chromatic button accordion (C-griff). Along a row each key is a minor third (+3) above the previous one.
 // B-griff is the mirror image of C-griff: rows 1 and 3 swap places, so a diagonal step goes the other way.
@@ -2001,10 +2009,19 @@ void oledSetup() {
   Wire.setClock(400000);
   Wire.beginTransmission(OLED_ADDR);
   oledPresent = Wire.endTransmission() == 0;
+  if (!oledPresent) {
+    OLED_ADDR = 0x3C;
+    Wire.beginTransmission(OLED_ADDR);
+    oledPresent = Wire.endTransmission() == 0;
+  }
   if (!oledPresent) return;
   static const uint8_t init[] = {0xAE, 0xD5, 0x80, 0xA8, 0x3F, 0xD3, 0x00, 0x40, 0x8D, 0x14, 0x20, 0x00,
                                  0xDA, 0x12, 0x81, 0xCF, 0xD9, 0xF1, 0xDB, 0x40, 0xA4, 0xA6};
-  for (uint8_t c : init) oledCmd(c);
+  for (unsigned i = 0; i < sizeof(init); i++) {
+    if (OLED_SH1106 && (i == 10 || i == 11)) continue;                        // 0x20 0x00: the SH1106 has no addressing-mode command
+    oledCmd(init[i]);
+  }
+  if (OLED_SH1106) { oledCmd(0xAD); oledCmd(0x8B); }                          // internal DC-DC on
   // Rotation 0 as Adafruit_SSD1306 starts it = segment remap + COM scan decrement; rotation 2 = both off.
   oledCmd(OLED_ROTATION == 2 ? 0xA0 : 0xA1);
   oledCmd(OLED_ROTATION == 2 ? 0xC0 : 0xC8);
@@ -2380,6 +2397,9 @@ uint32_t oledHash = 0xFFFFFFFF;
 void updateOled() {
   if (!oledPresent) return;
   if (oledSent < 1024) {
+    if (OLED_SH1106 && (oledSent & 127) == 0) {      // a new page: page address + start column (2)
+      oledCmd(0xB0 | (oledSent >> 7)); oledCmd(OLED_COL_OFFSET & 15); oledCmd(0x10 | (OLED_COL_OFFSET >> 4));
+    }
     Wire.beginTransmission(OLED_ADDR);
     Wire.write(0x40);
     for (int i = 0; i < 16; i++) Wire.write(oledBuf[oledSent + i]);
@@ -2409,8 +2429,10 @@ void updateOled() {
   if (h == oledHash) return;
   oledHash = h;
   oledSent = 0;
-  oledCmd(0x21); oledCmd(0); oledCmd(127);   // column window
-  oledCmd(0x22); oledCmd(0); oledCmd(7);     // page window
+  if (!OLED_SH1106) {
+    oledCmd(0x21); oledCmd(0); oledCmd(127);   // column window
+    oledCmd(0x22); oledCmd(0); oledCmd(7);     // page window
+  }
 }
 
 void updateLed() {

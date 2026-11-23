@@ -1,0 +1,396 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-23T00:26:40",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint attributes don't match symbol",
+            "key": "footprint_symbol_mismatch"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "key": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "key": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "key": "silk_edge_clearance"
+        },
+        {
+            "description": "Text height out of range",
+            "key": "text_height"
+        },
+        {
+            "description": "Text thickness out of range",
+            "key": "text_thickness"
+        },
+        {
+            "description": "Non-Mirrored text on back layer",
+            "key": "nonmirrored_text_on_back_layer"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint not found in libraries",
+            "key": "lib_footprint_issues"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.7",
+    "schematic_parity": [],
+    "source": "student_v04_regua_R8_painel_de_2.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 1.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 7.0,
+                        "y": 21.0
+                    },
+                    "uuid": "fad8cbcd-6f4e-4996-b8ae-a81a52fc65bb"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 7.8,
+                        "y": 23.0
+                    },
+                    "uuid": "97bf452f-cbc8-4609-b161-e4e230ad27e5"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 2.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 7.8,
+                        "y": 7.0
+                    },
+                    "uuid": "4ffe324f-dcec-4cc3-8d75-a7bf8954a609"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 22.3,
+                        "y": 7.0
+                    },
+                    "uuid": "d023e8fd-8659-4d7e-bdf3-9b904132c0b4"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 2.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 7.0,
+                        "y": 37.0
+                    },
+                    "uuid": "88ec0a4f-33f4-47a7-88b1-15837987f916"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 22.3,
+                        "y": 37.0
+                    },
+                    "uuid": "bc434f78-e899-486e-b131-18d05ac368f9"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 22.3,
+                        "y": 7.0
+                    },
+                    "uuid": "d023e8fd-8659-4d7e-bdf3-9b904132c0b4"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 24.3,
+                        "y": 7.0
+                    },
+                    "uuid": "0185ad7f-98cc-4dd4-8fc6-c3e4868feb07"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 2.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 81.8,
+                        "y": 7.0
+                    },
+                    "uuid": "d57d6c18-6a22-412a-9e19-73854cde5c9f"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 91.3,
+                        "y": 7.0
+                    },
+                    "uuid": "536b98a0-585b-48b9-80d1-973b4d147fb1"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 1.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 22.3,
+                        "y": 21.0
+                    },
+                    "uuid": "c6f03a55-1f3e-4cc7-923f-69f52cf01f67"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 22.3,
+                        "y": 23.0
+                    },
+                    "uuid": "db3eb118-84e3-4a56-a064-39d575a55022"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 1.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 22.3,
+                        "y": 21.0
+                    },
+                    "uuid": "c6f03a55-1f3e-4cc7-923f-69f52cf01f67"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 81.8,
+                        "y": 23.0
+                    },
+                    "uuid": "3cda143d-d5e6-4686-8bd0-400056b61e93"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 22.3,
+                        "y": 23.0
+                    },
+                    "uuid": "db3eb118-84e3-4a56-a064-39d575a55022"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 24.3,
+                        "y": 23.0
+                    },
+                    "uuid": "7b0e1a10-fda0-4ff2-923f-3c32afdd7951"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 2.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 22.3,
+                        "y": 37.0
+                    },
+                    "uuid": "bc434f78-e899-486e-b131-18d05ac368f9"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 91.3,
+                        "y": 37.0
+                    },
+                    "uuid": "b028b12d-f415-465f-83bb-556fa1b8a83c"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 2.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 7.0
+                    },
+                    "uuid": "ef973d9c-cdb1-4383-ab74-77fb3b61adfb"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 146.3,
+                        "y": 7.0
+                    },
+                    "uuid": "850dfe6a-c1e3-4c33-81bc-111526796e8c"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 1.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 91.3,
+                        "y": 21.0
+                    },
+                    "uuid": "ec756f10-df5a-47c4-b4b0-621f982cc0ac"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 91.3,
+                        "y": 23.0
+                    },
+                    "uuid": "86862d1e-3f8c-498d-9fc2-ca4bfcf54470"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 1.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 91.3,
+                        "y": 21.0
+                    },
+                    "uuid": "ec756f10-df5a-47c4-b4b0-621f982cc0ac"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 23.0
+                    },
+                    "uuid": "8699e17a-cc59-4119-950d-4c6e5a9f531d"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 2.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 91.3,
+                        "y": 37.0
+                    },
+                    "uuid": "b028b12d-f415-465f-83bb-556fa1b8a83c"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 146.3,
+                        "y": 37.0
+                    },
+                    "uuid": "85fb415a-ea74-4b5f-8e0a-1a515dbb87e2"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        },
+        {
+            "description": "Board has malformed outline (not a closed shape) (gap 1.9000 mm)",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 146.3,
+                        "y": 21.0
+                    },
+                    "uuid": "675b985a-5775-4b89-8142-eeaf68f09192"
+                },
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 146.3,
+                        "y": 23.0
+                    },
+                    "uuid": "ba9b7c47-fb0d-4ffb-b9ff-fc5bd4606bb8"
+                }
+            ],
+            "severity": "error",
+            "type": "invalid_outline"
+        }
+    ]
+}

@@ -19,3 +19,9 @@ Páginas, Blender e passos de manual da V3 não foram copiados (página e manual
    `estudos/flexao.py` (KiCad python).
 
 KiCad python: `C:/Program Files/KiCad/10.0/bin/python.exe`. CadQuery: `C:/Users/julia/.venvs/cadquery/Scripts/python.exe`.
+
+## Réguas (R11V4)
+Dois desenhos (R8 de 8 posições, R4 de 4), quatro variantes por BOM (R8, R8E, R4, R4E: "E" = com o OUT). Ordem, com `REGUA_N=8` ou `4`:
+`python pcb/regua/schematic_regua.py` -> KiCad python `pcb/regua/posiciona_regua.py` -> KiCad python `pcb/regua/pacotes_regua.py` (BOM e CPL em `fab/regua/`) ->
+KiCad python `MODO=regua PAINEL_N=2|4|5 pcb/regua/fab_regua.py` (painéis) -> venv CadQuery `pcb/regua/vistas_regua.py`; custo: `pcb/regua/custo_r11.py`.
+Entrega ao roteamento: `pcb/regua/ROTEAMENTO_ENTREGA.md`; folha de cotação: `fab/regua/LEIAME_COTACAO.md`. Nunca rodar `posiciona_regua.py` sobre uma placa roteada (use `REGUA_BOARD`).

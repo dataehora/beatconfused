@@ -254,7 +254,7 @@ def main_analise():
 
 
 # ============================================================================= parte 2: perfil vertical, folgas, cruzamentos, cabo da placa, cabecalhos
-RULER = json.load(open(os.path.join(HERE, "..", "pcb", "regua", "posicao_regua.json"), encoding="utf-8"))
+RULER = json.load(open(os.path.join(HERE, "..", "pcb", "regua", "posicao_regua8.json"), encoding="utf-8"))
 UNDER_PARTS = []
 
 
@@ -265,7 +265,7 @@ def build_under_parts():
         if p["lado"] != "B" or ref in ("J1", "J2", "LK1", "LK2"):
             continue
         h = float(p["altura_mm"]) if p["altura_mm"] not in ("", None) else 0.0
-        if ref.startswith("U") and ref != "U5":
+        if ref.startswith("U") and ref != "U9":      # R8 file (R11V4): U1..U8 sensors, U9 the 595 (mid-ruler, u 74, rot 90)
             h = 0.8
         UNDER_PARTS.append((ref, p["patio_uv"], h))
     for ref, u in (("J1", IN_U), ("J2", OUT_U)):
@@ -898,6 +898,8 @@ def plugs_and_headers_mask():
     m = blank()
     for ru in L.rulers(0):
         for nm in ("IN", "OUT"):
+            if nm == "OUT" and ru["last"] and not L.OUT_ON_LAST:
+                continue                       # R11V4: no OUT header on the R8
             hb, pb = hdr_box(ru, nm), plug_box(ru, nm)
             stamp_rect(m, hb[0], hb[1], hb[2], hb[3])
             if nm == "OUT" and ru["last"]:

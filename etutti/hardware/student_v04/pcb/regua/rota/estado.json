@@ -1,0 +1,18 @@
+{
+ "R4": {
+  "status": "ACEITA",
+  "metodo": "misto: escapes de OUT e GND (A* proprio) + Freerouting 2.5.0 (largura 0,2, 100 passes) + costura de GND + 3V3 alargado a 0,3 onde cabe",
+  "drc_final": "0 erros, 0 avisos, 0 ligacoes faltando, paridade 0",
+  "placa": "kicad/regua/student_v04_regua_roteada.kicad_pcb",
+  "trechos_3V3_a_0,3": "48 de 73",
+  "comando": "bash pcb/regua/rota/roda_regua.sh 4"
+ },
+ "R8": {
+  "status": "ACEITA (reposicionada: 595 em u 74, C1..C8 na linha central)",
+  "metodo": "idem R4, Freerouting largura 0,15; melhor de 10 execucoes novas (melhor.py), 5a execucao da ultima serie = 0 itens",
+  "drc_final": "0 erros, 0 avisos, 0 ligacoes faltando, paridade 0",
+  "placa": "kicad/regua/student_v04_regua8_roteada.kicad_pcb",
+  "trechos_3V3_a_0,3": "63 de 96",
+  "comando": "cd pcb/regua/rota; python melhor.py 8 6  (GMAX=600000)"
+ }
+}

@@ -1,6 +1,6 @@
-"""R10V4 item 2: cross sections of the robust base across the four rows (y-z planes), from the real solids of case_r4.py.
+"""R11V4 item 2: cross sections of the robust base across the four rows (y-z planes), from the real solids of case_r4.py.
 
-    C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/student_v04/case/corte_base_r10.py  ->  renders/corte_base_r10.png
+    C:/Users/julia/.venvs/cadquery/Scripts/python.exe etutti/hardware/student_v04/case/corte_base_r10.py  ->  renders/corte_base_r11.png
 A: x = 150 (between M2 holes: rails, risers, rulers, key housings, lid); B: x = 116.95 (M2 boss of rows 2 and 4 and the interior post (116.95; 52.67));
 C: x = 107.7 (M2 boss of rows 1 and 3, post (107.7; 68.69)); D: x = 92 (through the IN plugs and board cables of rows 1 and 3).
 """
@@ -42,7 +42,7 @@ def main():
         for r, y, _x, _n in L.ROWS:
             ax.text(y, 21.0, "fileira %d" % r, ha="center", fontsize=8)
     fig.tight_layout()
-    fig.savefig(os.path.join(R.HERE, "renders", "corte_base_r10.png"), dpi=130)
+    fig.savefig(os.path.join(R.HERE, "renders", "corte_base_r11.png"), dpi=130)
     print("ok")
 
 
