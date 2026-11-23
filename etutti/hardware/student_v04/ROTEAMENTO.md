@@ -1,3 +1,35 @@
+# ROTEAMENTO · Student V4, seção R12V4 (placa principal, 5ª execução do zero, 4ª entrega) — ACEITA: DRC 0 erros, 0 avisos, 0 faltando, paridade 0
+
+**Placa: `kicad/student_v04_roteada.kicad_pcb` (+ .kicad_pro/.kicad_dru/.kicad_sch de mesmo nome). Posicionada intacta; nenhuma peça movida.**
+
+## Resultado (`kicad-cli pcb drc --schematic-parity --severity-all`, conferido na placa final)
+**0 violações (0 erros, 0 avisos), 0 ligações faltando, paridade 0.** Nenhuma trilha abaixo do mínimo da regra (VSYS 0,8 mm, 0,5 mm em vsys_estreito; sinais ≥ 0,15; SCAN_CLK/SCAN_DATA/OUT ≥ 0,2), sem pontas soltas, planos sem ilhas (as vias do fan-out ligam In1/In2). ERC não repetido (esquema inalterado, 0/0 da eletrônica).
+Convergência: faltando 11 → 4 → 2 → 1 → 0 ao longo de cinco execuções (cada uma com uma entrega pequena de posição da eletrônica); a última peça (SCAN_CLK_P) fechou com a etapa 8 (arranca KEEP, OUT_R2 e SCAN_CLK da caixa em volta do pad e refaz). Tempo de uma execução completa ≈ 45 min.
+
+## USB (E4)
+Par em B.Cu, sem via, sobre In2 = GND inteira, reto pelo U201 girado: **D+ = D− = 7,426 mm** (centro a centro de pad, ≤ 10 mm); USB-C a 6,73 mm dos pads 3/5 do M.2 (≤ 7); largura 0,24 mm, vão ~0,26 mm onde acoplado (os pads de 0,5 mm de passo não dão o 0,15 do E4). A6/B6 ligados a oeste dos pads, A7/B7 por ponte a leste. VBUS (pino 5) e GND (pino 2) do USBLC6 saem por duas vias entre as colunas do chip.
+
+## Método e justificativa
+`pcb/rota/roda2.sh` (= `roda.sh` etapas 1 a 5, `etapa6_fecha.py` ×2, `etapa7_final.py`) + `etapa8_local.py x0 y0 x1 y1`; estado em `pcb/rota/estado.json`; log `build/log.txt`; cada etapa idempotente (o Freerouting não é determinístico: o resultado varia entre execuções).
+1. USB à mão (`usb.py`): a topologia exige controle fino dos pads de 0,5 mm.
+2. Potência e BB_VINA à mão com roteador de grade próprio `wide.py` (0,05 mm, 2 camadas, largura por zona 0,25/0,5/0,8): o Freerouting 2.5.0 não fecha 0,8 mm em pinos de 0,5 mm de passo.
+3. Fan-out próprio dos planos (`fanout.py`): o Freerouting não liga pads SMD a planos.
+4. Freerouting 2.5.0 para os sinais (classe Out 0,3 mm, faixa de borda, fenda da tela e NPTH no DSN), `post.py` (alarga pescoços, tira pontas), iteração só nas redes de sinal (potência protegida), fechamento com `wide.py`, desbloqueio local (etapa 8).
+Lições: `ImportSpecctraSES`/`SaveBoard` apagam trilhas fixas (reaplicar); redes de fios existentes não podem sair do DSN; `PCB_VIA.GetWidth()` sem camada trava; várias placas no mesmo processo viram SwigPyObject; NPTH aparece com todas as camadas de cobre (tratar pelo atributo); BB_VINA precisa vir antes do VSYS.
+
+## Imagens (olhadas)
+`pcb/img/principal_roteada_B.png` (B.Cu: tronco VSYS 0,8 mm à direita, feixes OUT/SCAN) e `principal_roteada_F.png` (F.Cu tracejado: tronco VBUS pela faixa de cima, acessos longos). Vista de cima, sem espelhar.
+
+## Próximo passo (eletrônica)
+Arquivos de fábrica da principal (R12V4 item 2) a partir de `kicad/student_v04_roteada.kicad_pcb`. Os planos são reenchidos ao abrir no KiCad (`B` para reencher).
+
+## Perguntas para o design
+1. Nenhuma peça do case mudou nas cinco entregas; o design confirma o fit check com as posições finais (U201, U301, R105, C303, C305, C306, C310, FB301, C209, R216, R605)?
+2. A largura de 0,35 mm nos fios do indutor (BB_L1/BB_L2) dentro do pátio do U204 (~1 mm) é aceita pela eletrônica (pino de 0,5 mm de passo)?
+
+
+---
+
 # ROTEAMENTO · Student V4 (agente `roteamento`)
 
 **SPEC atendida: R11V4 (item 4: portão P das réguas liberado; a placa principal continua fechada e NÃO foi roteada).**

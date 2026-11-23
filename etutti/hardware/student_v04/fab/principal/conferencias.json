@@ -1,0 +1,388 @@
+{
+ "camadas_de_cobre": 4,
+ "espessura_mm": 1.2,
+ "drc": {
+  "violacoes": [],
+  "nao_conectadas": 0,
+  "paridade": 0
+ },
+ "gerbers": {
+  "zip": "fab/principal/student_v04_gerbers.zip",
+  "arquivos": [
+   "student_v04_roteada-B_Cu.gbl",
+   "student_v04_roteada-B_Mask.gbs",
+   "student_v04_roteada-B_Paste.gbp",
+   "student_v04_roteada-B_Silkscreen.gbo",
+   "student_v04_roteada-Edge_Cuts.gm1",
+   "student_v04_roteada-F_Cu.gtl",
+   "student_v04_roteada-F_Mask.gts",
+   "student_v04_roteada-F_Paste.gtp",
+   "student_v04_roteada-F_Silkscreen.gto",
+   "student_v04_roteada-In1_Cu.g1",
+   "student_v04_roteada-In2_Cu.g2",
+   "student_v04_roteada-NPTH.drl",
+   "student_v04_roteada-PTH.drl",
+   "student_v04_roteada-job.gbrjob"
+  ],
+  "camadas_cobre_nos_arquivos": [
+   "B_Cu.gbl",
+   "F_Cu.gtl",
+   "In1_Cu.g1",
+   "In2_Cu.g2"
+  ]
+ },
+ "furos": {
+  "placa_PTH_vias_e_pads": 250,
+  "placa_NPTH": 13,
+  "arquivos_drl": {
+   "student_v04_roteada-NPTH.drl": 13,
+   "student_v04_roteada-PTH.drl": 250
+  }
+ },
+ "bom": {
+  "linhas": 32,
+  "pecas": 78
+ },
+ "cpl": {
+  "pecas": 78,
+  "baixo": 78,
+  "cima": 0
+ },
+ "fora": [
+  "C310",
+  "H1",
+  "H101",
+  "H2",
+  "H3",
+  "H4",
+  "J501",
+  "SW401",
+  "SW402",
+  "TP101"
+ ],
+ "bom_igual_cpl": true,
+ "lcsc": [
+  {
+   "lcsc": "C15850",
+   "valor": "10uF",
+   "footprint": "C_0805_2012Metric",
+   "qtd": 8,
+   "classe": "Basic",
+   "estoque": 8811884,
+   "modelo": "CL21A106KAYNNNE",
+   "preco_1": 0.0311
+  },
+  {
+   "lcsc": "C1525",
+   "valor": "100nF",
+   "footprint": "C_0402_1005Metric",
+   "qtd": 11,
+   "classe": "Basic",
+   "estoque": 33508907,
+   "modelo": "CL05B104KO5NNNC",
+   "preco_1": 0.0025
+  },
+  {
+   "lcsc": "C19702",
+   "valor": "10uF",
+   "footprint": "C_0603_1608Metric",
+   "qtd": 1,
+   "classe": "Basic",
+   "estoque": 9904985,
+   "modelo": "CL10A106KP8NNNC",
+   "preco_1": 0.0167
+  },
+  {
+   "lcsc": "C12530",
+   "valor": "2.2uF",
+   "footprint": "C_0402_1005Metric",
+   "qtd": 3,
+   "classe": "Basic",
+   "estoque": 3065564,
+   "modelo": "CL05A225MQ5NSNC",
+   "preco_1": 0.005
+  },
+  {
+   "lcsc": "C52923",
+   "valor": "1uF",
+   "footprint": "C_0402_1005Metric",
+   "qtd": 1,
+   "classe": "Basic",
+   "estoque": 9197864,
+   "modelo": "CL05A105KA5NQNC",
+   "preco_1": 0.0055
+  },
+  {
+   "lcsc": "C151296",
+   "valor": "SMF5.0A",
+   "footprint": "D_SOD-123F",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 57349,
+   "modelo": "SMF5.0A",
+   "preco_1": 0.1144
+  },
+  {
+   "lcsc": "C68978",
+   "valor": "BAV70",
+   "footprint": "SOT-23",
+   "qtd": 4,
+   "classe": "Basic",
+   "estoque": 543203,
+   "modelo": "BAV70",
+   "preco_1": 0.0152
+  },
+  {
+   "lcsc": "C1002",
+   "valor": "600R@100MHz",
+   "footprint": "L_0603_1608Metric",
+   "qtd": 1,
+   "classe": "Basic",
+   "estoque": 1327134,
+   "modelo": "GZ1608D601TF",
+   "preco_1": 0.0105
+  },
+  {
+   "lcsc": "C48985906",
+   "valor": "91302-42-067RCE",
+   "footprint": "M.2_E_H4.2_UMAX_91302-42-067",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 553,
+   "modelo": "91302-42-067RCE",
+   "preco_1": 1.2304
+  },
+  {
+   "lcsc": "C165948",
+   "valor": "TYPE-C-31-M-12",
+   "footprint": "USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 483647,
+   "modelo": "TYPE-C-31-M-12",
+   "preco_1": 0.1869
+  },
+  {
+   "lcsc": "C265101",
+   "valor": "S3B-PH-SM4-TB",
+   "footprint": "JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 20522,
+   "modelo": "S3B-PH-SM4-TB(LF)(SN)",
+   "preco_1": 0.2641
+  },
+  {
+   "lcsc": "C49284723",
+   "valor": "PJ-327A",
+   "footprint": "Jack_3.5mm_PJ-327A_SMD",
+   "qtd": 2,
+   "classe": "Extended",
+   "estoque": 3259,
+   "modelo": "PJ-327A",
+   "preco_1": 0.2194
+  },
+  {
+   "lcsc": "C51940130",
+   "valor": "XY-SM04B-SRSS-TB",
+   "footprint": "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 17958,
+   "modelo": "XY-SM04B-SRSS-TB",
+   "preco_1": 0.0393
+  },
+  {
+   "lcsc": "C56123098",
+   "valor": "XY-SM06B-SRSS-TB",
+   "footprint": "JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal",
+   "qtd": 4,
+   "classe": "Extended",
+   "estoque": 5971,
+   "modelo": "XY-SM06B-SRSS-TB",
+   "preco_1": 0.0691
+  },
+  {
+   "lcsc": "C167825",
+   "valor": "2.2uH",
+   "footprint": "L_Changjiang_FNR4020S",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 11826,
+   "modelo": "FNR4020S2R2MT",
+   "preco_1": 0.0516
+  },
+  {
+   "lcsc": "C15127",
+   "valor": "AO3401A",
+   "footprint": "SOT-23",
+   "qtd": 1,
+   "classe": "Basic",
+   "estoque": 1207006,
+   "modelo": "AO3401A",
+   "preco_1": 0.082
+  },
+  {
+   "lcsc": "C25076",
+   "valor": "100",
+   "footprint": "R_0402_1005Metric",
+   "qtd": 2,
+   "classe": "Basic",
+   "estoque": 9904913,
+   "modelo": "0402WGF1000TCE",
+   "preco_1": 0.0011
+  },
+  {
+   "lcsc": "C25905",
+   "valor": "5.1k",
+   "footprint": "R_0402_1005Metric",
+   "qtd": 2,
+   "classe": "Basic",
+   "estoque": 4009131,
+   "modelo": "0402WGF5101TCE",
+   "preco_1": 0.0014
+  },
+  {
+   "lcsc": "C25879",
+   "valor": "2.2k",
+   "footprint": "R_0402_1005Metric",
+   "qtd": 3,
+   "classe": "Basic",
+   "estoque": 2776000,
+   "modelo": "0402WGF2201TCE",
+   "preco_1": 0.0011
+  },
+  {
+   "lcsc": "C25867",
+   "valor": "1.5k",
+   "footprint": "R_0402_1005Metric",
+   "qtd": 1,
+   "classe": "Basic",
+   "estoque": 1479841,
+   "modelo": "0402WGF1501TCE",
+   "preco_1": 0.0029
+  },
+  {
+   "lcsc": "C25744",
+   "valor": "10k",
+   "footprint": "R_0402_1005Metric",
+   "qtd": 2,
+   "classe": "Basic",
+   "estoque": 34957038,
+   "modelo": "0402WGF1002TCE",
+   "preco_1": 0.001
+  },
+  {
+   "lcsc": "C25741",
+   "valor": "100k",
+   "footprint": "R_0402_1005Metric",
+   "qtd": 11,
+   "classe": "Basic",
+   "estoque": 12007419,
+   "modelo": "0402WGF1003TCE",
+   "preco_1": 0.0009
+  },
+  {
+   "lcsc": "C26083",
+   "valor": "1M",
+   "footprint": "R_0402_1005Metric",
+   "qtd": 5,
+   "classe": "Basic",
+   "estoque": 3463138,
+   "modelo": "0402WGF1004TCE",
+   "preco_1": 0.001
+  },
+  {
+   "lcsc": "C17168",
+   "valor": "0",
+   "footprint": "R_0402_1005Metric",
+   "qtd": 1,
+   "classe": "Basic",
+   "estoque": 13928317,
+   "modelo": "0402WGF0000TCE",
+   "preco_1": 0.0012
+  },
+  {
+   "lcsc": "C25104",
+   "valor": "330",
+   "footprint": "R_0402_1005Metric",
+   "qtd": 2,
+   "classe": "Basic",
+   "estoque": 2140604,
+   "modelo": "0402WGF3300TCE",
+   "preco_1": 0.0011
+  },
+  {
+   "lcsc": "C318884",
+   "valor": "Program",
+   "footprint": "SW_Push_1P1T_XKB_TS-1187A",
+   "qtd": 1,
+   "classe": "Basic",
+   "estoque": 714923,
+   "modelo": "TS-1187A-B-A-B",
+   "preco_1": 0.0212
+  },
+  {
+   "lcsc": "C7519",
+   "valor": "USBLC6-2SC6",
+   "footprint": "SOT-23-6",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 43273,
+   "modelo": "USBLC6-2SC6",
+   "preco_1": 0.1561
+  },
+  {
+   "lcsc": "C54313",
+   "valor": "BQ24074RGTR",
+   "footprint": "VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 2837,
+   "modelo": "BQ24074RGTR",
+   "preco_1": 2.1646
+  },
+  {
+   "lcsc": "C28060",
+   "valor": "TPS63001DRCR",
+   "footprint": "Texas_DRC0010J",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 12484,
+   "modelo": "TPS63001DRCR",
+   "preco_1": 1.6247
+  },
+  {
+   "lcsc": "C2651833",
+   "valor": "SGTL5000XNLA3",
+   "footprint": "QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 1150,
+   "modelo": "SGTL5000XNLA3R2",
+   "preco_1": 9.5073
+  },
+  {
+   "lcsc": "C347373",
+   "valor": "XC6206P182MR",
+   "footprint": "SOT-23-3",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 44023,
+   "modelo": "XC6206P182MR",
+   "preco_1": 0.021
+  },
+  {
+   "lcsc": "C910544",
+   "valor": "MAX98357AETE+T",
+   "footprint": "TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm",
+   "qtd": 1,
+   "classe": "Extended",
+   "estoque": 24140,
+   "modelo": "MAX98357AETE+T",
+   "preco_1": 1.2451
+  }
+ ],
+ "tipos_extended": 14,
+ "custo_pecas_USD_1_placa": 17.84
+}

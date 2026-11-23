@@ -227,6 +227,18 @@ Atende **R11V4**, item 1 (parte da firmware). Quando esta seção foi escrita, `
 
 **R11V4, OLED escolhido (Adafruit 326, SSD1306 128 x 64, 3,3 V):** a rotação de 180° do driver (`OLED_ROTATION = 2` = segmento A0 + COM C0, como `setRotation(2)`) já atende a orientação "B"; `OLED_SH1106 = 0`. Endereço conforme `PINOS.md`: o sketch tenta **0x3D** (fábrica, sem jumper) e, se não responder, **0x3C** (jumper fechado). Layout e telas inalterados. Recompilado: ver números na seção acima (código do driver só ganhou o teste de endereço).
 
+## R12V4 · conferência do sketch contra a placa (23 nov 2026)
+
+Atende **R12V4**, item 3. Novo `firmware_check.py` (KiCad python; lê `kicad/student_v04_roteada.kicad_pcb` quando existe, senão `kicad/student_v04.kicad_pcb`; redes e pinos não mudam com o roteamento) e escreve `firmware_check.json`.
+
+- **Pinos: 25/25 conferidos, 0 divergências.** Cada pino do sketch (OUT_R1..R4 = 14/15/26/27, SCAN_DATA 2, SCAN_CLK 3, VOL_A/B 22/24, VOL_SW 4, SEL_A/B/SW 11/9/6, KEEP 10, AMP_SD 12, VBAT_S 16, HP_DET 17, CHG_STAT 0, MIC_DET 25) e os fixos da biblioteca de áudio (I2S 7/8/20/21/23, I²C 18/19) é comparado em três lugares: `PINOS.md`, a rede do pad correspondente do J101 na placa e a do netlist do esquema (`pcb/build/student_v04_netlist.net`). Conferido nas duas placas (posicionada e a roteada em andamento). Nenhum pino repetido. Os dois LED do sketch (13 e 5) caem em pads sem rede (o 13 é o LED azul do módulo; a placa não tem LED): sem divergência, nenhum sinal usa esses pinos.
+- **Varredura:** 4 × R8 por fileira (`RULERS_R8 = 1`, `RULERS_R4 = 0`, `static_assert` de 32 teclas), nenhum OUT/R4 usado; `SR_STAGES = 8`; o script simula o `srSelect()` numa cadeia de 8 estágios com SRCLK e RCLK juntos: a coluna c acende o estágio c, **9 pulsos** (8N+1, N = 1), e o `srClear()` também 9. `FIRST_NOTE` = {57, 55, 56, 54} (C) e {56, 55, 57, 53} (B), `FIRST_COL` = 0, como no `PINOS.md`.
+- **OLED:** SSD1306 128 x 64 (`0xA8 0x3F`), endereço 0x3D e, se não responder, 0x3C; imagem girada 180° (`OLED_ROTATION = 2` = segmento 0xA0 + COM 0xC0); `OLED_SH1106 = 0`. J401 na placa: 1 GND, 2 +3V3, 3 SDA, 4 SCL (ordem Qwiic), SDA/SCL nos pads do Teensy 18/19.
+- **Microfone:** menu "Tipo mic" (Auto / Eletreto / Dinâmico); `micSetup()` escreve CHIP_MIC_CTRL (0x002A) com 0x0170 (bias 2 kohm, 3,0 V) ou 0x0070 (bias desligado) mais o ganho do pré-amplificador. Limiares: curto <= 0,10 V, dinâmico < 0,85 V (volta a eletreto acima de 0,95 V), eletreto até 2,85 V, nada >= 2,85 V. Esquema/placa: R305 = 0 ohm (MIC_BIAS-MIC_J), **C310 "nao montar"**, R306 100 kohm (MIC_J-MIC_DET), C311 100 nF no MIC_DET (filtro de 10 ms). Com o bias de 2 kohm sozinho: eletreto de 0,1/0,3/0,5/1 mA = 2,8/2,4/2,0/1,0 V; bobina de 150/300/600 ohm = 0,21/0,39/0,69 V, coerente com as faixas do sketch. **Nenhuma correção no sketch.**
+- **Compilação** (só a V4, `teensy:avr:teensyMM:usb=midi,speed=396`): flash code 141552 + data 1239352 + headers 8660 (livre 15125508); RAM1 variáveis 105024, code 138952, padding 24888 (livre 255424); RAM2 variáveis 202272 (livre 322016).
+- **Observação para a eletrônica (não é do sketch):** o `PINOS.md` (linhas dos pinos 2 e 3) ainda diz "por 100 ohm" para SCAN_DATA/SCAN_CLK; a placa tem R605/R606 de **330 ohm** (R8V4). O sketch independe do valor (meio período de 100 ns, tau ~21 ns).
+- **Pendente:** reler o script quando a placa roteada for aceita (basta rodar `firmware_check.py`); nada de bancada (nada foi comprado).
+
 ## Perguntas para o design
 
 1. **Instrumentos fora:** o sketch próprio só toca acordeão (os sete registros; sem piano, baixo, violão nem synth). Está certo para a V4? A página V4 só precisa dos CCs listados nas seções 2 a 4.

@@ -1,0 +1,11 @@
+referencia,peca,por que
+C310,100nF,nao montar
+H1,MountingHole_2.2mm_M2,MountingHole_2.2mm_M2
+H101,MountingHole_2.7mm_M2.5,MountingHole_2.7mm_M2.5
+H2,MountingHole_2.2mm_M2,MountingHole_2.2mm_M2
+H3,MountingHole_2.2mm_M2,MountingHole_2.2mm_M2
+H4,MountingHole_2.2mm_M2,MountingHole_2.2mm_M2
+J501,alto-falante (fios),sem peca (pads; fios do A2 soldados em casa)
+SW401,EC11E18244AU,"sem peca (encoder soldado em casa, topo)"
+SW402,EC11E18244AU,"sem peca (encoder soldado em casa, topo)"
+TP101,RESET#/ONOFF,sem peca (pad)

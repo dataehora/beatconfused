@@ -18,8 +18,11 @@
 (rule "USB: 0,25 mm de qualquer outra rede (os planos ficam de fora), fora dos patios do J201, U201 e J101"
     (condition "A.NetClass == 'USB' && B.NetClass != 'USB' && A.Type == 'track' && B.Type != 'Zone' && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U201') && !A.intersectsCourtyard('J101')")
     (constraint clearance (min 0.25mm)))
-(rule "Corrente: minimo 0,8 fora dos patios de E1, E3, E4, E6, A1 e J101"
-    (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101')")
+(rule "VSYS: minimo 0,5 mm entre C206, U204 e C210 (area vsys_estreito, R12V4): o bloco de energia nao deixa 0,8 mm; ~1,5 A no pico (amplificador 0,8 W + 3,3 V), 0,5 mm de cobre 1 oz sobe < 10 C em pescoco de poucos mm"
+    (condition "A.Type == 'track' && A.NetName == 'VSYS' && A.intersectsArea('vsys_estreito')")
+    (constraint track_width (min 0.5mm)))
+(rule "Corrente: minimo 0,8 fora dos patios de E1, E3, E4, E6, A1 e J101 (e fora da area vsys_estreito para VSYS)"
+    (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !(A.NetName == 'VSYS' && A.intersectsArea('vsys_estreito')) && !A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101')")
     (constraint track_width (min 0.8mm)))
 (rule "Corrente: afinacao na entrada dos pinos (patios)"
     (condition "A.Type == 'track' && A.NetClass == 'Corrente' && !(!A.intersectsCourtyard('J201') && !A.intersectsCourtyard('U202') && !A.intersectsCourtyard('U204') && !A.intersectsCourtyard('J202') && !A.intersectsCourtyard('U501') && !A.intersectsCourtyard('J101') && !A.intersectsCourtyard('R205') && !A.intersectsCourtyard('R206') && !A.intersectsCourtyard('R214') && !A.intersectsCourtyard('Q201') && !A.intersectsCourtyard('U201') && !A.intersectsCourtyard('C201'))")
