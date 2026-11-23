@@ -537,13 +537,13 @@ for ref, code, a, b, sw, what in (("SW401", "I1", "VOL_A", "VOL_B", "VOL_SW_N", 
          fp="Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm", lcsc="C202365", cls="estendida", price=1.92,
          status="final", mount="sem peca (encoder soldado em casa, topo)", note=what + "; eixo de 20 mm (o knob chapeu tem 7 mm); 18 pulsos / 36 detentes: ENC_STEPS_PER_DETENT = 2",
          datasheet="https://datasheet.lcsc.com/datasheet/pdf/00ace576d31da40a390056171db2037f.pdf?productCode=C202365")
-part("J401", sym("Conn_01x04_MountingPin", "Connector_Generic_MountingPin"), "XY-SM04B-SRSS-TB",
+part("J401", sym("Conn_01x04_MountingPin", "Connector_Generic_MountingPin"), "SM04B-SRSS-TB(LF)(SN)",
      {"1": "GND", "2": "+3V3", "3": "I2C_SDA", "4": "I2C_SCL", "MP": "GND"}, "I3",
-     fp="Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal", lcsc="C51940130", cls="estendida",
-     price=0.039, status="conferir",
+     fp="Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal", lcsc="C160404", cls="estendida",
+     price=0.215, status="conferir",
      note="R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): "
           "ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; "
-          "o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404",
+          "o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone SM04B-SRSS-TB(LF)(SN) (C160404, 17958 em estoque); original JST C160404",
      datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")
 part("SW403", sym("SW_Push", "Switch"), "Program", {"1": "PROG", "2": "GND"}, "I4",
      fp="Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A", lcsc="C318884", cls="basica", price=0.02,
@@ -586,10 +586,10 @@ V3 = netlist_of(V3_SCH, os.path.join(BUILD, "v3_netlist.net"))
 CUR[0] = "R"
 sym("Conn_01x06_MountingPin", "Connector_Generic_MountingPin")
 for k in range(1, 5):
-    part("J60%d" % k, "Conn_01x06_MountingPin", "XY-SM06B-SRSS-TB",
+    part("J60%d" % k, "Conn_01x06_MountingPin", "SM06B-SRSS-TB(LF)(SN)",
          {"1": "+3V3", "2": "GND", "3": "OUT_R%d" % k, "4": "GND", "5": "SCAN_CLK", "6": "SCAN_DATA", "MP": "GND"}, "R%d" % k,
-         fp="Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", lcsc="C56123098", cls="estendida",
-         price=0.069, status="conferir",
+         fp="Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal", lcsc="C160405", cls="estendida",
+         price=0.897, status="conferir",
          note="fileira %d (%s): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)"
               % (k, "a da frente" if k == 1 else "a de tras" if k == 4 else "intermediaria"),
          datasheet="https://www.jst-mfg.com/product/pdf/eng/eSH.pdf")

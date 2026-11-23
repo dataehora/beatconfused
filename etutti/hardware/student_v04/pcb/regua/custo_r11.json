@@ -9,8 +9,8 @@
    "cm2": 71.1,
    "reguas_montadas": 4,
    "pecas_USD": [
-    16.95,
-    21.56
+    20.26,
+    24.87
    ],
    "pcb_USD": [
     4.8,
@@ -18,12 +18,12 @@
    ],
    "fixo_USD": 22.26,
    "pedido_USD": [
-    44.0,
-    60.9
+    47.3,
+    64.2
    ],
    "por_regua_montada_USD": [
-    11.0,
-    15.22
+    11.82,
+    16.05
    ]
   },
   "R8E": {
@@ -34,8 +34,8 @@
    "cm2": 71.1,
    "reguas_montadas": 4,
    "pecas_USD": [
-    17.23,
-    21.84
+    23.85,
+    28.46
    ],
    "pcb_USD": [
     4.8,
@@ -43,12 +43,12 @@
    ],
    "fixo_USD": 22.26,
    "pedido_USD": [
-    44.3,
-    61.2
+    50.9,
+    67.8
    ],
    "por_regua_montada_USD": [
-    11.07,
-    15.3
+    12.72,
+    16.95
    ]
   },
   "R8 (painel de 4)": {
@@ -59,8 +59,8 @@
    "cm2": 122.8,
    "reguas_montadas": 8,
    "pecas_USD": [
-    33.91,
-    43.12
+    40.53,
+    49.74
    ],
    "pcb_USD": [
     8.3,
@@ -68,12 +68,12 @@
    ],
    "fixo_USD": 22.26,
    "pedido_USD": [
-    64.5,
-    94.9
+    71.1,
+    101.5
    ],
    "por_regua_montada_USD": [
-    8.06,
-    11.86
+    8.89,
+    12.69
    ]
   },
   "R8E (painel de 4)": {
@@ -84,8 +84,8 @@
    "cm2": 122.8,
    "reguas_montadas": 8,
    "pecas_USD": [
-    34.47,
-    43.68
+    45.2,
+    56.92
    ],
    "pcb_USD": [
     8.3,
@@ -93,12 +93,12 @@
    ],
    "fixo_USD": 22.26,
    "pedido_USD": [
-    65.0,
-    95.4
+    75.8,
+    108.7
    ],
    "por_regua_montada_USD": [
-    8.12,
-    11.93
+    9.47,
+    13.59
    ]
   },
   "R4": {
@@ -109,8 +109,8 @@
    "cm2": 80.6,
    "reguas_montadas": 10,
    "pecas_USD": [
-    22.58,
-    28.34
+    29.29,
+    36.62
    ],
    "pcb_USD": [
     5.4,
@@ -118,12 +118,12 @@
    ],
    "fixo_USD": 22.26,
    "pedido_USD": [
-    50.2,
-    63.5
+    57.0,
+    71.8
    ],
    "por_regua_montada_USD": [
-    5.02,
-    6.35
+    5.7,
+    7.18
    ]
   },
   "R4E": {
@@ -134,8 +134,8 @@
    "cm2": 80.6,
    "reguas_montadas": 10,
    "pecas_USD": [
-    23.28,
-    29.04
+    36.69,
+    45.59
    ],
    "pcb_USD": [
     5.4,
@@ -143,14 +143,14 @@
    ],
    "fixo_USD": 22.26,
    "pedido_USD": [
-    50.9,
-    64.2
+    64.3,
+    80.8
    ],
    "por_regua_montada_USD": [
-    5.09,
-    6.42
+    6.43,
+    8.08
    ]
   }
  },
- "custo_do_OUT_por_regua_USD": 0.07
+ "custo_do_OUT_por_regua_USD": 0.898
 }

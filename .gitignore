@@ -9,3 +9,6 @@ etutti/hardware/kicad/etuttino_cased.kicad_pro
 etutti/hardware/kicad/etuttino_tray.kicad_pro
 etutti/hardware/student_v03/case/blender/build/
 etutti/hardware/student_v03/case/blender/out/
+
+# Student V4: modelos 3D baixados da EasyEDA (R13V4), fora do git
+etutti/hardware/student_v04/fornecimento/modelos3d/

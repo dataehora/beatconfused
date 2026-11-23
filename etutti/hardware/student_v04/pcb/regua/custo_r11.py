@@ -29,7 +29,7 @@ def panel(n, L, rail=5.0, gap=2.0):
 
 
 def parts(sens, conn, r330, rulers):
-    n = {"C22401868": sens, "C730243": 1, "C56123098": conn, "C1525": sens + 1, "C15850": 1, "C25104": r330}
+    n = {"C22401868": sens, "C730243": 1, "C160405": conn, "C1525": sens + 1, "C15850": 1, "C25104": r330}
     low = sum(tier(c, k * rulers) * k * rulers for c, k in n.items() if k)
     high = sum(P[c]["tiers"][0][1] * k * rulers for c, k in n.items() if k)
     return round(low, 2), round(high, 2)
@@ -51,7 +51,7 @@ for name, sens, L, out_on, per in (("R8", 8, 148.0, False, 2), ("R8E", 8, 148.0,
                               "fixo_USD": FIXED, "pedido_USD": tot, "por_regua_montada_USD": one}
     print("%-20s %5.1f x %4.1f  %3d reguas  pecas %s  pcb %s  pedido %s  por regua %s" % (name, w, h, rulers, pc, pcb, tot, one))
 # the part that OUT costs on one ruler
-d = tier("C56123098", 8) + tier("C25104", 8)
+d = tier("C160405", 8) + tier("C25104", 8)
 out["custo_do_OUT_por_regua_USD"] = round(d, 3)
 json.dump(out, open(os.path.join(HERE, "custo_r11.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 print("OUT (J2 + R1) por regua: US$ %.3f" % d)

@@ -53,7 +53,7 @@ def numbers():
         out["tamanhos"][keys] = {"reguas_por_fileira": n, "reguas": 4 * n, "elos_placa_regua": 4, "elos_regua_regua": 4 * (n - 1),
                                  "elos_total": 4 + 4 * (n - 1), "pulsos_acesso_aleatorio": 8 * n + 1, "colunas": 4 * n, "sensores_ocupados": keys}
     # option costs (US$) -- (est.) where marked; prices seen: Pololu #5543 (10 cm, 6 pin, double ended) US$ 3.32, #5545 25 cm US$ 4.06,
-    # JLCPCB library SH-6 clone C56123098 US$ 0.069 (Extended, 3.09 per type per order), LCSC FFC 6P 1.0 mm cables C90533 (7 cm) 0.055
+    # JLCPCB library SH-6 clone C160405 US$ 0.069 (Extended, 3.09 per type per order), LCSC FFC 6P 1.0 mm cables C90533 (7 cm) 0.055
     P = {"cabo_100mm": 3.32, "sh6_clone": 0.069, "ext_tipo": 3.09, "fio_30awg_kit": 4.0, "ffc_cabo": 0.06, "fpc_conector": 0.12,
          "custom_25mm_moq50": 150.0 / 50, "crimp_ferramenta": 30.0, "contatos_caixas_por_cabo": 0.6}
     out["precos"] = P

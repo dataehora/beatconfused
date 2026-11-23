@@ -211,7 +211,7 @@
  },
  {
   "ref": "J1",
-  "value": "XY-SM06B-SRSS-TB",
+  "value": "SM06B-SRSS-TB(LF)(SN)",
   "nets": {
    "1": "+3V3",
    "2": "GND",
@@ -223,19 +223,19 @@
   },
   "code": "S10",
   "fp": "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal",
-  "lcsc": "C56123098",
+  "lcsc": "C160405",
   "cls": "estendida",
   "mount": "JLC",
   "note": "entrada (P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DADO = SER do 595); cabo JST A06SR06SR30K51B vindo da placa principal ou do OUT da regua anterior; no fundo, faixa de tras, boca para tras; u = 5,9",
   "dnp": false,
   "sheet": "R",
-  "price": 0.069,
+  "price": 0.897,
   "datasheet": "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf",
   "path": "/08455c1b-380d-5a26-b3c0-1c074bcddde4/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/d24bd473-f0ce-54d3-83b6-527ff0ad4a29"
  },
  {
   "ref": "J2",
-  "value": "XY-SM06B-SRSS-TB",
+  "value": "SM06B-SRSS-TB(LF)(SN)",
   "nets": {
    "1": "+3V3",
    "2": "GND",
@@ -247,13 +247,13 @@
   },
   "code": "S11",
   "fp": "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal",
-  "lcsc": "C56123098",
+  "lcsc": "C160405",
   "cls": "estendida",
   "mount": "JLC",
   "note": "saida (P6s, igual ao J1; o pino 6 = QH' do 595 por 330 ohm) para a regua seguinte da fileira; no fundo, faixa de tras, boca para tras; R8V4: u = 47,5 (era 68,1) para o cabo de 45,8-50,8 mm fechar",
   "dnp": false,
   "sheet": "R",
-  "price": 0.069,
+  "price": 0.897,
   "datasheet": "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf",
   "path": "/08455c1b-380d-5a26-b3c0-1c074bcddde4/1a3bce20-43be-59e6-bd5e-2e54b6ecdecf/1ec4fd0e-ffb6-5d2e-9a55-5c03eaa56147"
  },

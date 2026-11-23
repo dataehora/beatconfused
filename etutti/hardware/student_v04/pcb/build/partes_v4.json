@@ -1404,7 +1404,7 @@
  },
  {
   "ref": "J401",
-  "value": "XY-SM04B-SRSS-TB",
+  "value": "SM04B-SRSS-TB(LF)(SN)",
   "nets": {
    "1": "GND",
    "2": "+3V3",
@@ -1414,13 +1414,13 @@
   },
   "code": "I3",
   "fp": "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
-  "lcsc": "C51940130",
+  "lcsc": "C160404",
   "cls": "estendida",
   "mount": "JLC",
-  "note": "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone XY-SM04B-SRSS-TB (C51940130, 17958 em estoque); original JST C160404",
+  "note": "R11V4: tela OLED Adafruit 326 (0,96 pol., SSD1306, 128 x 64, STEMMA QT) por um cabo Qwiic / STEMMA QT de estoque (SH de 4 vias nas duas pontas, pino a pino): ordem Qwiic 1 GND, 2 +3V3, 3 SDA, 4 SCL. Era um SH de 6 vias (o mesmo das reguas, ordem 1 +3V3) que obrigava a um cabo 6-4 sob medida; o tipo Extended a mais custa US$ 3,09 por pedido e economiza o cabo sob medida. Clone SM04B-SRSS-TB(LF)(SN) (C160404, 17958 em estoque); original JST C160404",
   "dnp": false,
   "sheet": "I",
-  "price": 0.039,
+  "price": 0.215,
   "datasheet": "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf",
   "path": "/e693166a-2568-51ba-a195-f3779f9f1bbe/6bee8ded-6107-5f0f-8cd2-5597276bbfc6/bd68597a-b747-5fd6-899e-f80f92322e39"
  },
@@ -1555,7 +1555,7 @@
  },
  {
   "ref": "J601",
-  "value": "XY-SM06B-SRSS-TB",
+  "value": "SM06B-SRSS-TB(LF)(SN)",
   "nets": {
    "1": "+3V3",
    "2": "GND",
@@ -1567,13 +1567,13 @@
   },
   "code": "R1",
   "fp": "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal",
-  "lcsc": "C56123098",
+  "lcsc": "C160405",
   "cls": "estendida",
   "mount": "JLC",
   "note": "fileira 1 (a da frente): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)",
   "dnp": false,
   "sheet": "R",
-  "price": 0.069,
+  "price": 0.897,
   "datasheet": "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf",
   "path": "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6/170afa57-32cc-58d9-94f2-92212e1c8405"
  },
@@ -1598,7 +1598,7 @@
  },
  {
   "ref": "J602",
-  "value": "XY-SM06B-SRSS-TB",
+  "value": "SM06B-SRSS-TB(LF)(SN)",
   "nets": {
    "1": "+3V3",
    "2": "GND",
@@ -1610,13 +1610,13 @@
   },
   "code": "R2",
   "fp": "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal",
-  "lcsc": "C56123098",
+  "lcsc": "C160405",
   "cls": "estendida",
   "mount": "JLC",
   "note": "fileira 2 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)",
   "dnp": false,
   "sheet": "R",
-  "price": 0.069,
+  "price": 0.897,
   "datasheet": "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf",
   "path": "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6/0dbf4b13-ccea-5fca-89f5-42a581b437a2"
  },
@@ -1641,7 +1641,7 @@
  },
  {
   "ref": "J603",
-  "value": "XY-SM06B-SRSS-TB",
+  "value": "SM06B-SRSS-TB(LF)(SN)",
   "nets": {
    "1": "+3V3",
    "2": "GND",
@@ -1653,13 +1653,13 @@
   },
   "code": "R3",
   "fp": "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal",
-  "lcsc": "C56123098",
+  "lcsc": "C160405",
   "cls": "estendida",
   "mount": "JLC",
   "note": "fileira 3 (intermediaria): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)",
   "dnp": false,
   "sheet": "R",
-  "price": 0.069,
+  "price": 0.897,
   "datasheet": "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf",
   "path": "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6/dd7d8585-5d9b-5cb2-b3f2-dbea29a725f7"
  },
@@ -1684,7 +1684,7 @@
  },
  {
   "ref": "J604",
-  "value": "XY-SM06B-SRSS-TB",
+  "value": "SM06B-SRSS-TB(LF)(SN)",
   "nets": {
    "1": "+3V3",
    "2": "GND",
@@ -1696,13 +1696,13 @@
   },
   "code": "R4",
   "fp": "Connector_JST:JST_SH_SM06B-SRSS-TB_1x06-1MP_P1.00mm_Horizontal",
-  "lcsc": "C56123098",
+  "lcsc": "C160405",
   "cls": "estendida",
   "mount": "JLC",
   "note": "fileira 4 (a de tras): cabo SH de 6 vias (JST A06SR06SR30K51B, reto) ate a primeira regua; R8V4 pinagem P6s: 1 +3V3, 2 GND, 3 OUT, 4 GND, 5 CLK, 6 DATA (SER da 1a regua)",
   "dnp": false,
   "sheet": "R",
-  "price": 0.069,
+  "price": 0.897,
   "datasheet": "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf",
   "path": "/e693166a-2568-51ba-a195-f3779f9f1bbe/29e8b50d-5b48-570c-b27d-761541d3a4c6/5d2e62b2-84aa-5ce5-9bee-fe2e0487b5ae"
  },

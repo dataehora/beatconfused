@@ -104,13 +104,13 @@ def cost():
         keep.append(r)
     f2_main_parts, f2_main_ext = parts_cost(keep)
     # + 4 row connectors (XYECONN SH-6, Extended), 4 x 100k pull-down, 2 x 100 ohm (Basic): small
-    con = price("C56123098", 8) * 4 * 2
+    con = price("C160405", 8) * 4 * 2
     f2_main_parts += round(con + 8 * 0.002 + 6 * 0.002, 2)
     f2_main_ext += 1
     # one ruler: 4 TMAG, 1 x 74HC595D, 2 x SH-6, 5 x 100 nF, 1 x 10 uF 0805, 1 x 100 ohm
     def ruler_parts(n_rulers):
         tm = price("C22401868", 4 * n_rulers) * 4
-        one = tm + price("C730243", n_rulers) + 2 * price("C56123098", 2 * n_rulers) + 5 * price("C1525", 5 * n_rulers) + \
+        one = tm + price("C730243", n_rulers) + 2 * price("C160405", 2 * n_rulers) + 5 * price("C1525", 5 * n_rulers) + \
             price("C15850", n_rulers) + price("C25076", n_rulers)
         return one
     ruler_one_12 = ruler_parts(10)

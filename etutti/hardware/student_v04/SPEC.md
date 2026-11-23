@@ -1,4 +1,148 @@
-# eTutti Student V4 — SPEC R12V4
+# eTutti Student V4 — SPEC R13V4
+
+Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #201 (relatórios da R12V4) e à primeira cotação do J. Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R13V4".
+
+**Regras que continuam:**
+- planta, corte e isométrico da base a cada mudança dela;
+- nome da nota em cada tecla;
+- só o instrumento de 32 teclas detalhado até a compra;
+- só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+**Objetivo desta revisão: fechar o projeto para compra.** Toda peça das duas placas tem de aparecer no lugar e no giro certos, com um modelo 3D fiel, antes de o J encomendar.
+
+## Cotação do J (23 nov)
+
+- **Régua R8, painel de 2 réguas:** cerca de US$ 70 (5 painéis nus, 2 montados = 4 réguas = 32 sensores). É o painel escolhido.
+- **Placa principal:** cerca de US$ 105, com:
+  - **ENIG** (escolhido pelo J: passo fino no M.2, USB-C e codec);
+  - empilhamento **JLC04121H-7628** (espessura real 1,12 mm ± 10 %, aceita);
+  - vias "Plugged", via mínima 0,3/(0,4/0,45), sem controle de impedância.
+- **Problema achado na pré-visualização da JLCPCB:** os conectores SH clone **XY-SM06B-SRSS-TB (C56123098)** aparecem sem corpo (sem modelo 3D), tanto em J1 das réguas quanto em J601–J604 da principal. Não dá para conferir giro e pino 1.
+
+## Mudanças desde a R12V4
+
+### 1. Conectores SH originais JST (Eletrônica)
+
+- **J1 das réguas (R8, R8E, R4, R4E) e J601–J604 da principal:** de C56123098 para o **JST SM06B-SRSS-TB(LF)(SN), C160405** (mesmos pads, mesma altura; cerca de US$ 0,90 contra 0,07; no protótipo, cerca de US$ 7 a mais).
+- **J401 (OLED):** de C51940130 para o **JST SM04B-SRSS-TB(LF)(SN), C160404**, pelo mesmo motivo de fidelidade (cerca de US$ 0,20).
+- Conferir no EasyEDA que os dois códigos têm modelo 3D e que os pads do footprint deles batem com os da placa (`cpl_jlc.py`; os números dos pads iguais aos do componente novo, a lição dos jacks da V3).
+- **Os clones ficam registrados** em `ELETRONICA.md` como opção para produção em quantidade, com a nota de que não têm modelo 3D na JLCPCB.
+- Regenerar BOM e CPL de `fab/principal/` e de todos os pacotes de `fab/regua/`, e as folhas de cotação.
+
+### 2. Conferência de posição e modelo 3D de todas as peças (Eletrônica)
+
+Para cada peça montada pela JLCPCB nas duas placas (principal e R8; R8E/R4/R4E só a tabela):
+1. **Modelo 3D:** baixar o STEP do EasyEDA pelo código LCSC (`fetch_models.py`, curl simples, sem rajadas: o EasyEDA recusa depois de uns doze pedidos) e anotar se existe. Peça sem modelo na JLCPCB é peça que o J não consegue conferir: trocar por um equivalente com modelo ou explicar por que não dá.
+2. **Posição e giro:** montar uma **pré-visualização própria igual à da JLCPCB**: cada modelo do EasyEDA posto na posição e no giro do CPL (as mesmas regras do `cpl_jlc.py`, fundo espelhado), sobre a placa. Conferir:
+   - o corpo cai sobre os pads (erro de ajuste em mm);
+   - o pino 1 cai no pad 1 de cada CI, diodo, conector e polarizado (U*, D*, Q*, J*, L201 se tiver polaridade);
+   - os conectores SH, o USB-C e os jacks com a boca para a borda certa.
+3. **Placa em KiCad com modelos 3D fiéis:** ligar os mesmos STEP aos footprints (caminho relativo, a pasta de modelos fica fora do git como antes) e gerar renders do fundo e do topo da principal e da R8 com todos os corpos.
+4. **Peças montadas em casa** (encoders EC11E18244AU, MicroMod, OLED Adafruit 326, alto-falante, bateria, teclas KS-20, parafusos): confirmar que cada uma tem modelo fiel na cena do instrumento (`model3d`/case) e listar as que ainda são caixas.
+
+**Entrega:** `fornecimento/MODELOS_3D.md` (tabela: referência, código LCSC, modelo 3D sim/não, erro de ajuste, pino 1 ok, boca do conector ok) e as figuras `pcb/img/previa_jlc_principal_bottom.png`, `previa_jlc_principal_top.png`, `previa_jlc_r8_bottom.png`, `previa_jlc_r8_top.png`, com as referências escritas sobre as peças. **Critério de aceitação: nenhuma peça sem modelo, nenhum erro de pino 1 ou de boca, erro de ajuste ≤ 0,3 mm.**
+
+### 3. O que o J confere depois (Eletrônica escreve, o J faz)
+
+Na folha de cotação de cada placa, uma lista curta do que o J compara entre a pré-visualização da JLCPCB e as figuras do item 2: os 4 SH da principal, o J401, o USB-C, os 2 jacks, o J202 da bateria, o pino 1 de U202/U204/U301/U501 e, na régua, o J1, o 74HC595 e o giro dos 8 TMAG5253 (simétricos: conferir pelo ponto do pino 1).
+
+### 4. Configuração de compra de cada item (Eletrônica)
+
+Um arquivo, `fab/COMPRA.md`, com **tudo o que o J marca ou preenche em cada loja, item por item**, na ordem das telas, para que a compra seja copiar e conferir. Nada é comprado; o arquivo só deixa a compra pronta.
+
+**JLCPCB, placa principal** (as escolhas já feitas pelo J; o Code confere e completa):
+
+| Campo | Valor |
+|---|---|
+| Layers | 4 |
+| Delivery Format | Single PCB |
+| PCB Thickness | 1.2 mm |
+| Specify Stackup | Yes → JLC04121H-7628 (1,12 mm real, aceito) |
+| Material | FR4 TG135 |
+| Surface Finish | ENIG |
+| Outer / Inner Copper | 1 oz / 0,5 oz |
+| Specify Layer Sequence | No |
+| Via Covering | Plugged |
+| Min via hole/diameter | 0.3 mm / (0.4/0.45 mm) |
+| Board Outline Tolerance | ±0.2 mm (Regular) |
+| Impedance control | não |
+| Confirm Production file | No |
+| Mark on PCB | Remove Mark |
+| Electrical Test | Flying Probe Fully Test |
+| Demais opções avançadas | No |
+| PCB Assembly | ligado |
+| PCBA Type | Economic |
+| Assembly Side | Bottom Side |
+| PCBA Qty | 2 (o mínimo; o Code confirma) |
+| Tooling holes | Added by JLCPCB |
+| Confirm Parts Placement | Yes no primeiro pedido, se for grátis (o Code confere; a JLCPCB manda a posição para o J aprovar antes de soldar) |
+| Stencil / Fixture Storage | No |
+| Parts Selection | By Customer (Self-Service) |
+| BOM / CPL | `fab/principal/bom.csv` / `cpl.csv` |
+
+**JLCPCB, régua R8 em painel de 2:** a mesma tabela, com: 2 camadas, Panel by Customer (1 coluna × 2 linhas, sem V-cut), HASL sem chumbo, sem stackup, 5 painéis nus, 2 montados (4 réguas), Tooling holes **Added by Customer** (o Code confere se o painel os tem; se não, Added by JLCPCB), BOM "Complete File". Para R8E, R4 e R4E, só as linhas que mudam.
+
+**Demais itens**, cada um com loja (pelo menos uma no Reino Unido quando existir), código ou link, quantidade e opções a escolher:
+- módulo SparkFun MicroMod Teensy;
+- OLED Adafruit 326 + cabo Qwiic de 50 mm;
+- cabos SH 6 vias A06SR06SR30K51B (4 + reserva? o Code propõe, o J decide);
+- bateria 503450 de 3 fios com NTC;
+- alto-falante Dayton CE28MB-8;
+- teclas Gateron KS-20 Orange (32) e molas opcionais;
+- capas das teclas;
+- encoders EC11E18244AU e knobs;
+- parafusos M2 (passantes por fileira, porcas, porca fina, PT formadores de rosca), pés de silicone;
+- case em MJF PA12 (arquivos STL, material, cor, acabamento, opções do serviço).
+
+O mesmo conteúdo vai para a página (item 5), na seção "Como pedir".
+
+### 5. Página do modelo e manual completo (Programação e som, com figuras do Design)
+
+Fechar a **página da Student V4** em `/etutti/studentV4/` (sem link na home, `noindex`, como as da V2/V3), escrita por script (`student_v04/pagina.py`, textos e preços lá), em **português e inglês** (um `.lang-block` por língua). O leitor é **alguém que nunca viu o projeto**: precisa entender o que é, pedir, montar e tocar sem outra ajuda.
+
+Seções:
+1. **O que é:** um acordeão cromático C-griff eletrônico de 32 teclas com sensores Hall e velocidade, som próprio (alto-falante, fones, MIDI USB); foto do instrumento pronto.
+2. **Como funciona:** diagrama de blocos (réguas de sensores → varredura → MicroMod Teensy → codec/amplificador → saídas; bateria e carga; OLED e encoders); como a tecla vira nota e velocidade; o conceito modular em um parágrafo (48/64/80 teclas, sem detalhar).
+3. **O teclado:** planta com o nome da nota em cada tecla; C-griff e B-griff.
+4. **Peças:** lista por área e por fornecedor, com preço (faixas, como nas páginas anteriores) e total; o que vem montado da JLCPCB e o que é soldado ou montado em casa; ferramentas necessárias.
+5. **Como pedir:** o conteúdo do `fab/COMPRA.md`, passo a passo, com as telas da JLCPCB descritas (o que subir, o que marcar, o que conferir na pré-visualização com as figuras do item 2).
+6. **Montagem:** sequência completa, da frente para trás, **um passo por figura** em vista explodida com peças numeradas (renders fotográficos no Blender como na V3, versão em linhas se ajudar): separar as réguas do painel, soldar o que é de casa (encoders, fios do alto-falante), módulo MicroMod e parafuso, OLED, bateria, teclas nas réguas, réguas na base com cabos e parafusos (ordem e comprimento por fileira), tampa, capas, pés. Cuidados (LiPo, pó de fibra, torque do parafuso formador de rosca, ESD).
+7. **Primeiro uso:** gravar o firmware (Teensyduino ou o arquivo `.hex` com o Teensy Loader), primeira ligação, calibração das teclas, o que o LED e a tela mostram.
+8. **A interface:** os dois knobs (girar, clicar, segurar), a árvore completa do menu do OLED com uma figura de cada tela (simulada a partir do firmware), registros, instrumentos, volume, tipo de microfone e modos, bateria e desligamento, MIDI no computador.
+9. **Problemas comuns** e o que fazer.
+10. **Arquivos:** links para Gerbers, BOM/CPL, STL do case, firmware.
+
+Conferir no navegador (cada língua, 375 px sem rolagem lateral, todas as imagens e links abrem). Prioridade: depois dos itens 1–3, porque as figuras de montagem usam os modelos 3D fiéis.
+
+### 6. Firmware e case
+
+Não mudam (os conectores trocados têm os mesmos pads). O firmware não precisa ser recompilado; o case só é conferido se o corpo do JST original for diferente do clone em altura ou profundidade (o design confere o túnel e o encaixe do plugue).
+
+## Tarefas para o Code (R13V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Eletrônica | trocar os SH pelos originais JST e regenerar os pacotes de fábrica (item 1) |
+| 2 | Eletrônica | conferência de modelo 3D, posição, giro e pino 1 de todas as peças, pré-visualização própria e renders (item 2) |
+| 3 | Eletrônica | lista de conferência para o J nas folhas de cotação (item 3) |
+| 4 | Eletrônica | `fab/COMPRA.md` com a configuração de compra de cada item (item 4) |
+| 5 | Design | renders fotográficos do instrumento e da montagem, passo a passo, com os modelos fiéis (item 5, seções 1 e 6) |
+| 6 | Programação e som | página `/etutti/studentV4/` com o manual completo, em pt e en, e as telas do menu (item 5) |
+| — | Design | só se o corpo do JST original mudar algo que o case vê (item 6) |
+
+**Perguntas que o Chat espera nos relatórios:**
+- o custo novo da principal e da R8 com os JST originais;
+- a tabela de modelos 3D, com toda peça sem modelo ou com ajuste ruim e o que foi feito;
+- as quatro figuras de pré-visualização;
+- `fab/COMPRA.md` pronto, com o total do protótipo;
+- a página publicada e conferida, com o link;
+- qualquer coisa que o Code precise do J (por exemplo, prints da pré-visualização da JLCPCB depois de subir os pacotes novos).
+
+---
+
+# Anexo — SPEC R12V4 (referência)
 
 Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #199 (relatórios da R11V4). Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R12V4".
