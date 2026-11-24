@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "MIMXRT1062DVJ6B"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2022-12-27-12:55:45)
+    (mountForm default
+        (footprintRef "BGA196C80P14X14_1200X1200X152")
+        (spec "System")
+    )
+)

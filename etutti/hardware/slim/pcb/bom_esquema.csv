@@ -1,0 +1,80 @@
+codigo,referencias,qtd,valor_peca,encapsulamento,lcsc,classe_jlc,preco_unit_usd_est,montagem,status,nota
+P1,R105,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,"MCLK 11,3 MHz: serie, junto do processador"
+P1,R101 R106 R107,3,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,Teensy R7 (sem sequenciamento por PMIC: o 3V3 sobe sozinho com o OUT do BQ24075)
+P1,C107 C111,2,10nF,C_0402_1005Metric,C15195,basica,0.001,JLC,final,Teensy C5
+P1,C101 C104,2,10uF,C_0603_1608Metric,C19702,basica,0.005,JLC,final,Teensy C32
+P1,C117,1,10uF,C_0402_1005Metric,C15525,basica,0.004,JLC,conferir,Teensy C31
+P1,L101,1,120R@100MHz 2A,L_0603_1608Metric,C14709,basica,0.005,JLC,final,Teensy L3
+P1,C108,1,2.2uF,C_0402_1005Metric,C12530,basica,0.003,JLC,conferir,Teensy C28 (NVCC)
+P1,C103 C106 C110 C113 C115 C116 C118 C119,8,220nF,C_0402_1005Metric,C16772,basica,0.002,JLC,conferir,Teensy C19
+P1,C102 C105,2,4.7uF,C_0603_1608Metric,C19666,basica,0.004,JLC,final,Teensy C24
+P1,C109 C112 C114,3,4.7uF,C_0402_1005Metric,C23733,basica,0.003,JLC,conferir,Teensy C23
+P1,L102,1,4.7uH 800mA,L_0805_2012Metric,C63166,estendida,0.050,JLC,conferir,"Teensy L1; MPL2012S4R7MHT (TDK, 800 mA, 250 mohm)"
+P1,D101 D102,2,BAV70,SOT-23,C68978,basica,0.015,JLC,final,Teensy D2: o SNVS vem do 3V3 (sem pilha); os dois anodos no 3V3
+P1,U101,1,MIMXRT1062DVJ6B,BGA-196_12x12mm_P0.8mm_RT1062,C3216699,estendida,14.000,consignada (so 1 em estoque na LCSC),conferir,"12x12 mm, 0,8 mm, 196 bolas (DVJ6B). ATENCAO: a SPEC cita DVL6B, que e o 10x10 mm de 0,65 mm (LCSC C2847497, 64 em estoque); os nomes das bolas sao os mesmos, so o footprint muda. ONOFF sem ligacao (como a Teensy 4.1 sem botao)."
+P2,R104,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,Teensy R6
+P2,C124,1,220nF,C_0402_1005Metric,C16772,basica,0.002,JLC,conferir,Teensy C8
+P2,U102,1,PJRC MKL02 bootloader (Teensy 4.1),QFN-16-1EP_3x3mm_P0.5mm_EP1.9x1.9mm,-,-,6.000,consignada (so a PJRC vende),conferir,"PTA3 -> DCDC_PSWITCH, PTB5 -> AD_B0_08 (pagina da PJRC); LED de erro do bootloader nao montado"
+P3,C125,1,220nF,C_0402_1005Metric,C16772,basica,0.002,JLC,conferir,desacoplamento da flash
+P3,U103,1,W25Q64JVSSIM,SOIC-8_5.3x5.3mm_P1.27mm,C5362615,estendida,2.970,JLC,final,64 Mbit como a Teensy 4.1; 3944 em estoque
+P5,C120 C121,2,12pF,C_0402_1005Metric,C1547,basica,0.001,JLC,conferir,Teensy C1
+P5,R102,1,2.2M,R_0402_1005Metric,C11490,estendida,0.002,JLC,final,Teensy R5
+P5,C122 C123,2,20pF,C_0402_1005Metric,C1554,basica,0.001,JLC,conferir,Teensy C3
+P5,Y101,1,24MHz 8pF,Crystal_SMD_3225-4Pin_3.2x2.5mm,C524739,estendida,0.120,JLC,conferir,7U24000E08UCG (3410 em estoque); o C431156 do Viaggio ficou sem estoque; 8 pF de carga com 12 pF + ~3 pF de placa (conferir ESR)
+P5,Y102,1,32.768kHz,Crystal_SMD_3215-2Pin_3.2x1.5mm,C32346,basica,0.150,JLC,conferir,"Teensy Y2, opcional (o RTC so serve com o SNVS; aqui sem pilha, ele reinicia a cada partida)"
+E1,R201 R202,2,5.1k,R_0402_1005Metric,C25905,basica,0.001,JLC,final,
+E1,J201,1,TYPE-C-31-M-14 (mid-mount),USB_C_Receptacle_HRO_TYPE-C-31-M-12,C223907,estendida,0.150,JLC,conferir,"HRO, 16 pinos, 'laminated board' = encaixado na borda da placa (mid-mount), 2218 em estoque. Pinagem do M-14 e footprint a conferir (o footprint aqui e o do M-12, so para o esquema); a JLCPCB pode nao montar peca mid-mount pela face de baixo"
+E2,F201,1,500mA 6V PTC,R_0603_1608Metric,C69679,estendida,0.030,JLC,conferir,"PTC do VBUS (SPEC 5.2); mais um tipo Extended (+US$ 3,09 na JLCPCB): pode sair, o BQ24075 ja limita a corrente"
+E2,D201,1,SMF5.0A,D_SOD-123F,C151296,estendida,0.050,JLC,final,TVS do VBUS
+E2,U201,1,USBLC6-2SC6,SOT-23-6,C7519,estendida,0.050,JLC,conferir,
+E3,R204,1,1.5k,R_0402_1005Metric,C25867,basica,0.001,JLC,conferir,obrigatorio (teste de curto no start-up); so vale com EN2=1
+E3,C204,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E3,R205,1,10k,R_0402_1005Metric,C25744,basica,0.001,JLC,final,EN1 = 1 quando ha USB (USB500)
+E3,C201 C202 C203,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+E3,R208 R209,2,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,medida da bateria: V(pino 16) = VBAT/2
+E3,R203,1,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,"ICHG = 890/2200 = 0,405 A (0,4 C da bateria de 1000 mAh)"
+E3,U202,1,BQ24075RGTR,VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm,C15464,estendida,0.900,JLC,final,"USB500 (EN2=0, EN1=1), ICHG 0,4 A, TS = NTC da bateria, TMR aberto (timers de fabrica 0,5 h / 5 h); OUT regulado a 5,5 V com USB; SYSOFF tem pull-up interno de ~5 Mohm no VBAT: sem acionamento externo a bateria fica DESLIGADA do OUT (e nao carrega com adaptador)"
+E4,R211 R212 R213 R214,4,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,
+E4,C206,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E4,R210 R215 R216,3,1M,R_0402_1005Metric,C26083,basica,0.001,JLC,final,descarga do ONG
+E4,C205,1,4.7uF,C_0603_1608Metric,C19666,basica,0.004,JLC,final,borda do knob: o fechamento da chave empurra ~VBAT no ONG e ele decai (tau ~3 s com a perda de capacitancia): tempo para o firmware ligar o KEEP
+E4,Q201 Q203 Q204,3,AO3400A,SOT-23,C20917,basica,0.010,JLC,final,liga o OUT: puxa o SYSOFF a GND (a bateria passa a alimentar o sistema)
+E4,Q202,1,AO3401A,SOT-23,C15127,basica,0.010,JLC,final,mantem o ONG em SWV enquanto o KEEP estiver alto E a chave do knob fechada (abrir o knob desliga em hardware)
+E5,R217,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,
+E5,C210 C211,2,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+E5,C207 C208 C209,3,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,
+E5,L201,1,2.2uH,L_Changjiang_FNR4020S,C167825,estendida,0.080,JLC,final,"FNR4020S2R2MT, 2 mm de altura (folga abaixo da placa: SPEC 3)"
+E5,U204,1,TPS63001DRCR,Texas_DRC0010J,C28060,estendida,1.400,JLC,final,"3,3 V fixo; EN em VSYS (sempre ligado com OUT); PS/SYNC baixo = economia"
+E6,J202,1,S3B-PH-SM4-TB,JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal,C265101,estendida,0.270,JLC,final,"bateria: 1 +, 2 NTC, 3 - (conferir a ordem do cabo da bateria escolhida)"
+F1,C302 C304 C305 C307,4,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+F1,R301 R302,2,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,
+F1,C301 C303 C306,3,2.2uF,C_0402_1005Metric,C12530,basica,0.003,JLC,conferir,
+F1,FB301,1,600R@100MHz,L_0603_1608Metric,C19330,estendida,0.020,JLC,conferir,Audio Board: ferrite 600 no VDDA
+F1,U301,1,SGTL5000XNLA3R2,QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm,C2651833,estendida,9.350,JLC,final,"QFN-20 (C2651833, 952 em estoque; o C511764 do Viaggio era a variante QFN-32); sem microfone nem entrada de linha; I2C fixo 0x0A"
+F1,U302,1,XC6206P182MR,SOT-23-3,C347373,estendida,0.030,JLC,conferir,"1,8 V do VDDD (a Audio Board usa AP7313)"
+F2,J301,1,"jack 3,5 mm mid-mount (a definir)",Jack_3.5mm_PJ-327A_SMD,-,-,0.150,sem LCSC em estoque (mid-mount nao achado): montar em casa ou consignar,conferir,"P2 mid-mount na parede esquerda; o footprint e o do PJ-327A de topo, so para o esquema; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta; contato da ponta nao usado (sem alto-falante)"
+I1,C401,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,filtro do cursor do pot
+I1,SW401,1,pot 9 mm 50k B c/ chave (a definir),Potentiometer_Alps_RK097_Single_Horizontal_Switch,-,-,1.500,sem LCSC (nenhum pot de 9 mm com chave rotativa no catalogo da JLCPCB): montar em casa,conferir,"volume continuo; a chave fecha SW1-SW2 ao sair de OFF no sentido horario. O footprint e o do RK097 horizontal com chave, so para o esquema. O RK097 da LCSC com 5 pinos (RK0971114Z1N) tem chave de EMPURRAR, nao rotativa"
+I2,R408,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,"posicao 7: V = 3,3 x R/(10k+R) = 3.00 V"
+I2,C402,1,100nF,C_0402_1005Metric,C1525,basica,0.001,JLC,final,
+I2,R401 R405,2,10k,R_0402_1005Metric,C25744,basica,0.001,JLC,final,"topo da escada: aberto entre posicoes = 3,3 V"
+I2,R402,1,1k,R_0402_1005Metric,C11702,basica,0.001,JLC,final,"posicao 1: V = 3,3 x R/(10k+R) = 0.30 V"
+I2,R403,1,2.2k,R_0402_1005Metric,C25879,basica,0.001,JLC,conferir,"posicao 2: V = 3,3 x R/(10k+R) = 0.60 V"
+I2,R406,1,22k,R_0402_1005Metric,C25768,basica,0.001,JLC,final,"posicao 5: V = 3,3 x R/(10k+R) = 2.27 V"
+I2,R404,1,4.7k,R_0402_1005Metric,C25900,basica,0.001,JLC,final,"posicao 3: V = 3,3 x R/(10k+R) = 1.06 V"
+I2,R407,1,47k,R_0402_1005Metric,C25792,basica,0.001,JLC,final,"posicao 6: V = 3,3 x R/(10k+R) = 2.72 V"
+I2,SW402,1,Alps SRBV170501,Rotary_Alps_SRBV_7p5_Vertical,C470375,estendida,3.620,THT: montar em casa,conferir,"7 posicoes, 1 polo, sem curto entre posicoes, corpo de 7,5 mm; L = 15 ou 20 mm de eixo (o 170501 e o 170701 de L diferente: conferir qual); 325 em estoque; footprint aproximado"
+I3,R410,1,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,
+I3,R409,1,330,R_0402_1005Metric,C25104,basica,0.001,JLC,conferir,
+I3,D401,1,TJ-S1615SW6TGLCRG-A5,LED_1615_RG_4pad,C273605,estendida,0.080,JLC,final,"1615 vermelho/verde (laranja = os dois); face de baixo, montagem reversa, acende o anel do knob de volume"
+I4,SW403,1,Program,SW_Push_1P1T_XKB_TS-1187A,C318884,basica,0.020,JLC,conferir,"PROG: dentro do case, so abrindo a base (SPEC 4)"
+R1,R601,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (saidas dos TMAG5253 ficam em alta impedancia sem EN)
+R1,J601,1,"FFC 8P 0.5 mm, contato por baixo",Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal,C66953,estendida,0.100,JLC,conferir,"fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)"
+R2,R602,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (saidas dos TMAG5253 ficam em alta impedancia sem EN)
+R2,J602,1,"FFC 8P 0.5 mm, contato por baixo",Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal,C66953,estendida,0.100,JLC,conferir,"fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)"
+R3,R603,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (saidas dos TMAG5253 ficam em alta impedancia sem EN)
+R3,J603,1,"FFC 8P 0.5 mm, contato por baixo",Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal,C66953,estendida,0.100,JLC,conferir,"fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)"
+R4,R604,1,100k,R_0402_1005Metric,C25741,basica,0.001,JLC,final,pull-down da linha OUT da fileira (saidas dos TMAG5253 ficam em alta impedancia sem EN)
+R4,J604,1,"FFC 8P 0.5 mm, contato por baixo",Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal,C66953,estendida,0.100,JLC,conferir,"fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)"
+R5,R605 R606 R607,3,100,R_0402_1005Metric,C25076,basica,0.001,JLC,final,serie junto do processador (as 4 fileiras em paralelo)
+R5,C601,1,10uF,C_0805_2012Metric,C15850,basica,0.008,JLC,final,"reservatorio do +3V3 das reguas (um TMAG5253 por vez, ~2 mA)"

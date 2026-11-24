@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP MIMXRT1062DVJ6B
+D i.MX RT1060: Crossover MCU with Arm Cortex-M7
+K
+F https://www.nxp.com/part/MIMXRT1062DVJ6B#/
+$ENDCMP
+#
+#End Doc Library

@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/13561072/2239641/2.50/196/2/Integrated Circuit/-->
+<!DOCTYPE curve SYSTEM "eagle.dtd">
+<eagle version="7.7.0">
+<drawing>
+<settings>
+<setting alwaysvectorfont="no"/>
+<setting verticaltext="up"/>
+</settings>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<layers>
+<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
+<layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
+<layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
+<layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
+<layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
+<layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
+<layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
+<layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
+<layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
+<layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
+<layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
+<layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="93" name="Pins" color="2" fill="1" visible="no" active="yes"/>
+<layer number="94" name="Symbols" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="95" name="Names" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="96" name="Values" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
+</layers>
+<library>
+<description>&lt;i.MX RT1060: Crossover MCU with Arm Cortex-M7&lt;/b&gt;&lt;p&gt;
+&lt;author&gt;Created by SamacSys&lt;/author&gt;</description>
+<packages>
+<package name="BGA196C80P14X14_1200X1200X152">
+<description>&lt;b&gt;12 mm x 12 mm x 1.37 mm&lt;/b&gt;&lt;br&gt;
+</description>
+<smd name="A1" x="-5.2" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A2" x="-4.4" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A3" x="-3.6" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A4" x="-2.8" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A5" x="-2" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A6" x="-1.2" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A7" x="-0.4" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A8" x="0.4" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A9" x="1.2" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A10" x="2" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A11" x="2.8" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A12" x="3.6" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A13" x="4.4" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="A14" x="5.2" y="5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B1" x="-5.2" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B2" x="-4.4" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B3" x="-3.6" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B4" x="-2.8" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B5" x="-2" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B6" x="-1.2" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B7" x="-0.4" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B8" x="0.4" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B9" x="1.2" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B10" x="2" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B11" x="2.8" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B12" x="3.6" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B13" x="4.4" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="B14" x="5.2" y="4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C1" x="-5.2" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C2" x="-4.4" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C3" x="-3.6" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C4" x="-2.8" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C5" x="-2" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C6" x="-1.2" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C7" x="-0.4" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C8" x="0.4" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C9" x="1.2" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C10" x="2" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C11" x="2.8" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C12" x="3.6" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C13" x="4.4" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="C14" x="5.2" y="3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D1" x="-5.2" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D2" x="-4.4" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D3" x="-3.6" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D4" x="-2.8" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D5" x="-2" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D6" x="-1.2" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D7" x="-0.4" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D8" x="0.4" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D9" x="1.2" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D10" x="2" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D11" x="2.8" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D12" x="3.6" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D13" x="4.4" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="D14" x="5.2" y="2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E1" x="-5.2" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E2" x="-4.4" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E3" x="-3.6" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E4" x="-2.8" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E5" x="-2" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E6" x="-1.2" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E7" x="-0.4" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E8" x="0.4" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E9" x="1.2" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E10" x="2" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E11" x="2.8" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E12" x="3.6" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E13" x="4.4" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="E14" x="5.2" y="2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F1" x="-5.2" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F2" x="-4.4" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F3" x="-3.6" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F4" x="-2.8" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F5" x="-2" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F6" x="-1.2" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F7" x="-0.4" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F8" x="0.4" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F9" x="1.2" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F10" x="2" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F11" x="2.8" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F12" x="3.6" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F13" x="4.4" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="F14" x="5.2" y="1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G1" x="-5.2" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G2" x="-4.4" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G3" x="-3.6" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G4" x="-2.8" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G5" x="-2" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G6" x="-1.2" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G7" x="-0.4" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G8" x="0.4" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G9" x="1.2" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G10" x="2" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G11" x="2.8" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G12" x="3.6" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G13" x="4.4" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="G14" x="5.2" y="0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H1" x="-5.2" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H2" x="-4.4" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H3" x="-3.6" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H4" x="-2.8" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H5" x="-2" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H6" x="-1.2" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H7" x="-0.4" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H8" x="0.4" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H9" x="1.2" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H10" x="2" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H11" x="2.8" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H12" x="3.6" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H13" x="4.4" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="H14" x="5.2" y="-0.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J1" x="-5.2" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J2" x="-4.4" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J3" x="-3.6" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J4" x="-2.8" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J5" x="-2" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J6" x="-1.2" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J7" x="-0.4" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J8" x="0.4" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J9" x="1.2" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J10" x="2" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J11" x="2.8" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J12" x="3.6" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J13" x="4.4" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="J14" x="5.2" y="-1.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K1" x="-5.2" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K2" x="-4.4" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K3" x="-3.6" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K4" x="-2.8" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K5" x="-2" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K6" x="-1.2" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K7" x="-0.4" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K8" x="0.4" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K9" x="1.2" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K10" x="2" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K11" x="2.8" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K12" x="3.6" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K13" x="4.4" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="K14" x="5.2" y="-2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L1" x="-5.2" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L2" x="-4.4" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L3" x="-3.6" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L4" x="-2.8" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L5" x="-2" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L6" x="-1.2" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L7" x="-0.4" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L8" x="0.4" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L9" x="1.2" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L10" x="2" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L11" x="2.8" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L12" x="3.6" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L13" x="4.4" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="L14" x="5.2" y="-2.8" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M1" x="-5.2" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M2" x="-4.4" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M3" x="-3.6" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M4" x="-2.8" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M5" x="-2" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M6" x="-1.2" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M7" x="-0.4" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M8" x="0.4" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M9" x="1.2" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M10" x="2" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M11" x="2.8" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M12" x="3.6" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M13" x="4.4" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="M14" x="5.2" y="-3.6" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N1" x="-5.2" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N2" x="-4.4" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N3" x="-3.6" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N4" x="-2.8" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N5" x="-2" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N6" x="-1.2" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N7" x="-0.4" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N8" x="0.4" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N9" x="1.2" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N10" x="2" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N11" x="2.8" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N12" x="3.6" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N13" x="4.4" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="N14" x="5.2" y="-4.4" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P1" x="-5.2" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P2" x="-4.4" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P3" x="-3.6" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P4" x="-2.8" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P5" x="-2" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P6" x="-1.2" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P7" x="-0.4" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P8" x="0.4" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P9" x="1.2" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P10" x="2" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P11" x="2.8" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P12" x="3.6" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P13" x="4.4" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<smd name="P14" x="5.2" y="-5.2" dx="0.394" dy="0.394" layer="1" roundness="100" rot="R0"/>
+<text x="0" y="0" align="center" size="1.27" layer="25" rot="R0" >&gt;NAME</text>
+<text x="0" y="0" align="center" size="1.27" layer="27" rot="R0" >&gt;VALUE</text>
+<wire x1="-7" y1="7" x2="7" y2="7" width="0.05" layer="51"/>
+<wire x1="7" y1="7" x2="7" y2="-7" width="0.05" layer="51"/>
+<wire x1="7" y1="-7" x2="-7" y2="-7" width="0.05" layer="51"/>
+<wire x1="-7" y1="-7" x2="-7" y2="7" width="0.05" layer="51"/>
+<wire x1="-6" y1="6" x2="6" y2="6" width="0.1" layer="51"/>
+<wire x1="6" y1="6" x2="6" y2="-6" width="0.1" layer="51"/>
+<wire x1="6" y1="-6" x2="-6" y2="-6" width="0.1" layer="51"/>
+<wire x1="-6" y1="-6" x2="-6" y2="6" width="0.1" layer="51"/>
+<wire x1="-6" y1="3" x2="-3" y2="6" width="0.1" layer="51"/>
+<wire x1="-5.2" y1="6" x2="6" y2="6" width="0.2" layer="21"/>
+<wire x1="6" y1="6" x2="6" y2="-6" width="0.2" layer="21"/>
+<wire x1="6" y1="-6" x2="-6" y2="-6" width="0.2" layer="21"/>
+<wire x1="-6" y1="-6" x2="-6" y2="5.2" width="0.2" layer="21"/>
+<wire x1="-6" y1="5.2" x2="-5.2" y2="6" width="0.2" layer="21"/>
+<circle x="-6" y="6" radius="0.1" width="0.2" layer="25"/>
+</package>
+</packages>
+<symbols>
+<symbol name="MIMXRT1062DVJ6B">
+<wire x1="5.08" y1="2.54" x2="48.26" y2="2.54" width="0.254" layer="94"/>
+<wire x1="48.26" y1="-248.92" x2="48.26" y2="2.54" width="0.254" layer="94"/>
+<wire x1="48.26" y1="-248.92" x2="5.08" y2="-248.92" width="0.254" layer="94"/>
+<wire x1="5.08" y1="2.54" x2="5.08" y2="-248.92" width="0.254" layer="94"/>
+<text x="49.53" y="7.62" align="center-left" size="1.778" layer="95">&gt;NAME</text>
+<text x="49.53" y="5.08" align="center-left" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="VSS_1" x="0" y="0" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_27" x="0" y="-2.54" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_20" x="0" y="-5.08" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_17" x="0" y="-7.62" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_16" x="0" y="-10.16" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_13" x="0" y="-12.7" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_40" x="0" y="-15.24" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_06" x="0" y="-17.78" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_07" x="0" y="-20.32" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_11" x="0" y="-22.86" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_00" x="0" y="-25.4" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_08" x="0" y="-27.94" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_09" x="0" y="-30.48" length="middle" direction="io" rot="R0"/>
+<pin name="VSS_2" x="0" y="-33.02" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_15" x="0" y="-35.56" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_18" x="0" y="-38.1" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_26" x="0" y="-40.64" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_19" x="0" y="-43.18" length="middle" direction="io" rot="R0"/>
+<pin name="VSS_3" x="0" y="-45.72" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_14" x="0" y="-48.26" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_39" x="0" y="-50.8" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_05" x="0" y="-53.34" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_08" x="0" y="-55.88" length="middle" direction="io" rot="R0"/>
+<pin name="VSS_4" x="0" y="-58.42" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_01" x="0" y="-60.96" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_07" x="0" y="-63.5" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_10" x="0" y="-66.04" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_15" x="0" y="-68.58" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_21" x="0" y="-71.12" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_09" x="0" y="-73.66" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_36" x="0" y="-76.2" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_33" x="0" y="-78.74" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_31" x="0" y="-81.28" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_30" x="0" y="-83.82" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_41" x="0" y="-86.36" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_04" x="0" y="-88.9" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_09" x="0" y="-91.44" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_12" x="0" y="-93.98" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_02" x="0" y="-96.52" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_06" x="0" y="-99.06" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_11" x="0" y="-101.6" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_14" x="0" y="-104.14" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_28" x="0" y="-106.68" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_25" x="0" y="-109.22" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_24" x="0" y="-111.76" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_34" x="0" y="-114.3" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_32" x="0" y="-116.84" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_38" x="0" y="-119.38" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_00" x="0" y="-121.92" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_03" x="0" y="-124.46" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_10" x="0" y="-127" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_13" x="0" y="-129.54" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_03" x="0" y="-132.08" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_05" x="0" y="-134.62" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_12" x="0" y="-137.16" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_13" x="0" y="-139.7" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_29" x="0" y="-142.24" length="middle" direction="io" rot="R0"/>
+<pin name="VSS_5" x="0" y="-144.78" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_00" x="0" y="-147.32" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_37" x="0" y="-149.86" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_35" x="0" y="-152.4" length="middle" direction="io" rot="R0"/>
+<pin name="NVCC_EMC_1" x="0" y="-154.94" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_01" x="0" y="-157.48" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_02" x="0" y="-160.02" length="middle" direction="io" rot="R0"/>
+<pin name="NVCC_GPIO_1" x="0" y="-162.56" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_14" x="0" y="-165.1" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B0_15" x="0" y="-167.64" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_B1_04" x="0" y="-170.18" length="middle" direction="io" rot="R0"/>
+<pin name="VSS_6" x="0" y="-172.72" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B0_06" x="0" y="-175.26" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_22" x="0" y="-177.8" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_04" x="0" y="-180.34" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_01" x="0" y="-182.88" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_02" x="0" y="-185.42" length="middle" direction="io" rot="R0"/>
+<pin name="NVCC_EMC_2" x="0" y="-187.96" length="middle" direction="io" rot="R0"/>
+<pin name="VDD_SOC_IN_1" x="0" y="-190.5" length="middle" direction="io" rot="R0"/>
+<pin name="VDD_SOC_IN_2" x="0" y="-193.04" length="middle" direction="io" rot="R0"/>
+<pin name="VDD_SOC_IN_3" x="0" y="-195.58" length="middle" direction="io" rot="R0"/>
+<pin name="VDD_SOC_IN_4" x="0" y="-198.12" length="middle" direction="io" rot="R0"/>
+<pin name="NVCC_GPIO_2" x="0" y="-200.66" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B0_04" x="0" y="-203.2" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B0_07" x="0" y="-205.74" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B0_08" x="0" y="-208.28" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B0_09" x="0" y="-210.82" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_10" x="0" y="-213.36" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_23" x="0" y="-215.9" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_11" x="0" y="-218.44" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_03" x="0" y="-220.98" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_05" x="0" y="-223.52" length="middle" direction="io" rot="R0"/>
+<pin name="VDD_SOC_IN_5" x="0" y="-226.06" length="middle" direction="io" rot="R0"/>
+<pin name="VSS_7" x="0" y="-228.6" length="middle" direction="io" rot="R0"/>
+<pin name="VSS_8" x="0" y="-231.14" length="middle" direction="io" rot="R0"/>
+<pin name="VDD_SOC_IN_6" x="0" y="-233.68" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B0_11" x="0" y="-236.22" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B0_03" x="0" y="-238.76" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B1_14" x="0" y="-241.3" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B0_10" x="0" y="-243.84" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_AD_B0_05" x="0" y="-246.38" length="middle" direction="io" rot="R0"/>
+<pin name="GPIO_EMC_12" x="53.34" y="0" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B0_04" x="53.34" y="-2.54" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_EMC_08" x="53.34" y="-5.08" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_EMC_07" x="53.34" y="-7.62" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_EMC_06" x="53.34" y="-10.16" length="middle" direction="io" rot="R180"/>
+<pin name="VDD_SOC_IN_7" x="53.34" y="-12.7" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_9" x="53.34" y="-15.24" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_10" x="53.34" y="-17.78" length="middle" direction="io" rot="R180"/>
+<pin name="VDD_SOC_IN_8" x="53.34" y="-20.32" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B0_01" x="53.34" y="-22.86" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_13" x="53.34" y="-25.4" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_12" x="53.34" y="-27.94" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_08" x="53.34" y="-30.48" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B0_14" x="53.34" y="-33.02" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B0_02" x="53.34" y="-35.56" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B0_05" x="53.34" y="-38.1" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B0_01" x="53.34" y="-40.64" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B0_00" x="53.34" y="-43.18" length="middle" direction="io" rot="R180"/>
+<pin name="DCDC_SENSE" x="53.34" y="-45.72" length="middle" direction="io" rot="R180"/>
+<pin name="NVCC_SD0" x="53.34" y="-48.26" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_11" x="53.34" y="-50.8" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_12" x="53.34" y="-53.34" length="middle" direction="io" rot="R180"/>
+<pin name="VDD_SOC_IN_9" x="53.34" y="-55.88" length="middle" direction="io" rot="R180"/>
+<pin name="NVCC_GPIO_3" x="53.34" y="-58.42" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_00" x="53.34" y="-60.96" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_06" x="53.34" y="-63.5" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_11" x="53.34" y="-66.04" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_15" x="53.34" y="-68.58" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B0_03" x="53.34" y="-71.12" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_13" x="53.34" y="-73.66" length="middle" direction="io" rot="R180"/>
+<pin name="DCDC_PSWITCH" x="53.34" y="-76.2" length="middle" direction="io" rot="R180"/>
+<pin name="DCDC__IN_Q" x="53.34" y="-78.74" length="middle" direction="io" rot="R180"/>
+<pin name="NVCC_SD1" x="53.34" y="-81.28" length="middle" direction="io" rot="R180"/>
+<pin name="TEST_MODE" x="53.34" y="-83.82" length="middle" direction="io" rot="R180"/>
+<pin name="PMIC_ON_REQ" x="53.34" y="-86.36" length="middle" direction="io" rot="R180"/>
+<pin name="VDD_USB_CAP" x="53.34" y="-88.9" length="middle" direction="io" rot="R180"/>
+<pin name="NGND_KEL0" x="53.34" y="-91.44" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_07" x="53.34" y="-93.98" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_01" x="53.34" y="-96.52" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_05" x="53.34" y="-99.06" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_14" x="53.34" y="-101.6" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B0_12" x="53.34" y="-104.14" length="middle" direction="io" rot="R180"/>
+<pin name="DCDC_IN_1" x="53.34" y="-106.68" length="middle" direction="io" rot="R180"/>
+<pin name="DCDC_IN_2" x="53.34" y="-109.22" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_06" x="53.34" y="-111.76" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_07" x="53.34" y="-114.3" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_00" x="53.34" y="-116.84" length="middle" direction="io" rot="R180"/>
+<pin name="WAKEUP" x="53.34" y="-119.38" length="middle" direction="io" rot="R180"/>
+<pin name="PMIC_STBY_REQ" x="53.34" y="-121.92" length="middle" direction="io" rot="R180"/>
+<pin name="USB_OTG1_DP" x="53.34" y="-124.46" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_15" x="53.34" y="-127" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B0_15" x="53.34" y="-129.54" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_02" x="53.34" y="-132.08" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_04" x="53.34" y="-134.62" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_10" x="53.34" y="-137.16" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B0_13" x="53.34" y="-139.7" length="middle" direction="io" rot="R180"/>
+<pin name="DCDC_LP_1" x="53.34" y="-142.24" length="middle" direction="io" rot="R180"/>
+<pin name="DCDC_LP_2" x="53.34" y="-144.78" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_02" x="53.34" y="-147.32" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_03" x="53.34" y="-149.86" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_01" x="53.34" y="-152.4" length="middle" direction="io" rot="R180"/>
+<pin name="ONOFF" x="53.34" y="-154.94" length="middle" direction="io" rot="R180"/>
+<pin name="POR_B" x="53.34" y="-157.48" length="middle" direction="io" rot="R180"/>
+<pin name="USB_OTG1_DN" x="53.34" y="-160.02" length="middle" direction="io" rot="R180"/>
+<pin name="VDD_SNVS_IN" x="53.34" y="-162.56" length="middle" direction="io" rot="R180"/>
+<pin name="VDD_SNVS_CAP" x="53.34" y="-165.1" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B0_02" x="53.34" y="-167.64" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_03" x="53.34" y="-170.18" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B1_09" x="53.34" y="-172.72" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_AD_B0_00" x="53.34" y="-175.26" length="middle" direction="io" rot="R180"/>
+<pin name="DCDC_GND_1" x="53.34" y="-177.8" length="middle" direction="io" rot="R180"/>
+<pin name="DCDC_GND_2" x="53.34" y="-180.34" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_05" x="53.34" y="-182.88" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_09" x="53.34" y="-185.42" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_16" x="53.34" y="-187.96" length="middle" direction="io" rot="R180"/>
+<pin name="USB_OTG1_VBUS" x="53.34" y="-190.5" length="middle" direction="io" rot="R180"/>
+<pin name="USB_OTG2_DN" x="53.34" y="-193.04" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_17" x="53.34" y="-195.58" length="middle" direction="io" rot="R180"/>
+<pin name="RTC_XTALI" x="53.34" y="-198.12" length="middle" direction="io" rot="R180"/>
+<pin name="GPANAIO" x="53.34" y="-200.66" length="middle" direction="io" rot="R180"/>
+<pin name="XTALO" x="53.34" y="-203.2" length="middle" direction="io" rot="R180"/>
+<pin name="USB_OTG1_CHD_B" x="53.34" y="-205.74" length="middle" direction="io" rot="R180"/>
+<pin name="CCM_CLK1_P" x="53.34" y="-208.28" length="middle" direction="io" rot="R180"/>
+<pin name="VDDA_ADC_3P3" x="53.34" y="-210.82" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_18" x="53.34" y="-213.36" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_04" x="53.34" y="-215.9" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_08" x="53.34" y="-218.44" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_10" x="53.34" y="-220.98" length="middle" direction="io" rot="R180"/>
+<pin name="GPIO_SD_B1_11" x="53.34" y="-223.52" length="middle" direction="io" rot="R180"/>
+<pin name="USB_OTG2_VBUS" x="53.34" y="-226.06" length="middle" direction="io" rot="R180"/>
+<pin name="USB_OTG2_DP" x="53.34" y="-228.6" length="middle" direction="io" rot="R180"/>
+<pin name="VDD_HIGH_CAP" x="53.34" y="-231.14" length="middle" direction="io" rot="R180"/>
+<pin name="RTC_XTALO" x="53.34" y="-233.68" length="middle" direction="io" rot="R180"/>
+<pin name="NVCC_PLL" x="53.34" y="-236.22" length="middle" direction="io" rot="R180"/>
+<pin name="XTALI" x="53.34" y="-238.76" length="middle" direction="io" rot="R180"/>
+<pin name="VDD_HIGH_IN" x="53.34" y="-241.3" length="middle" direction="io" rot="R180"/>
+<pin name="CCM_CLK1_N" x="53.34" y="-243.84" length="middle" direction="io" rot="R180"/>
+<pin name="VSS_19" x="53.34" y="-246.38" length="middle" direction="io" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="MIMXRT1062DVJ6B" prefix="IC">
+<description>&lt;b&gt;i.MX RT1060: Crossover MCU with Arm Cortex-M7&lt;/b&gt;&lt;p&gt;
+Source: &lt;a href="https://www.nxp.com/part/MIMXRT1062DVJ6B#/"&gt; Datasheet &lt;/a&gt;</description>
+<gates>
+<gate name="G$1" symbol="MIMXRT1062DVJ6B" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="BGA196C80P14X14_1200X1200X152">
+<connects>
+<connect gate="G$1" pin="VSS_1" pad="A1"/>
+<connect gate="G$1" pin="GPIO_EMC_27" pad="A2"/>
+<connect gate="G$1" pin="GPIO_EMC_20" pad="A3"/>
+<connect gate="G$1" pin="GPIO_EMC_17" pad="A4"/>
+<connect gate="G$1" pin="GPIO_EMC_16" pad="A5"/>
+<connect gate="G$1" pin="GPIO_EMC_13" pad="A6"/>
+<connect gate="G$1" pin="GPIO_EMC_40" pad="A7"/>
+<connect gate="G$1" pin="GPIO_B0_06" pad="A8"/>
+<connect gate="G$1" pin="GPIO_B0_07" pad="A9"/>
+<connect gate="G$1" pin="GPIO_B0_11" pad="A10"/>
+<connect gate="G$1" pin="GPIO_B1_00" pad="A11"/>
+<connect gate="G$1" pin="GPIO_B1_08" pad="A12"/>
+<connect gate="G$1" pin="GPIO_B1_09" pad="A13"/>
+<connect gate="G$1" pin="VSS_2" pad="A14"/>
+<connect gate="G$1" pin="GPIO_EMC_15" pad="B1"/>
+<connect gate="G$1" pin="GPIO_EMC_18" pad="B2"/>
+<connect gate="G$1" pin="GPIO_EMC_26" pad="B3"/>
+<connect gate="G$1" pin="GPIO_EMC_19" pad="B4"/>
+<connect gate="G$1" pin="VSS_3" pad="B5"/>
+<connect gate="G$1" pin="GPIO_EMC_14" pad="B6"/>
+<connect gate="G$1" pin="GPIO_EMC_39" pad="B7"/>
+<connect gate="G$1" pin="GPIO_B0_05" pad="B8"/>
+<connect gate="G$1" pin="GPIO_B0_08" pad="B9"/>
+<connect gate="G$1" pin="VSS_4" pad="B10"/>
+<connect gate="G$1" pin="GPIO_B1_01" pad="B11"/>
+<connect gate="G$1" pin="GPIO_B1_07" pad="B12"/>
+<connect gate="G$1" pin="GPIO_B1_10" pad="B13"/>
+<connect gate="G$1" pin="GPIO_B1_15" pad="B14"/>
+<connect gate="G$1" pin="GPIO_EMC_21" pad="C1"/>
+<connect gate="G$1" pin="GPIO_EMC_09" pad="C2"/>
+<connect gate="G$1" pin="GPIO_EMC_36" pad="C3"/>
+<connect gate="G$1" pin="GPIO_EMC_33" pad="C4"/>
+<connect gate="G$1" pin="GPIO_EMC_31" pad="C5"/>
+<connect gate="G$1" pin="GPIO_EMC_30" pad="C6"/>
+<connect gate="G$1" pin="GPIO_EMC_41" pad="C7"/>
+<connect gate="G$1" pin="GPIO_B0_04" pad="C8"/>
+<connect gate="G$1" pin="GPIO_B0_09" pad="C9"/>
+<connect gate="G$1" pin="GPIO_B0_12" pad="C10"/>
+<connect gate="G$1" pin="GPIO_B1_02" pad="C11"/>
+<connect gate="G$1" pin="GPIO_B1_06" pad="C12"/>
+<connect gate="G$1" pin="GPIO_B1_11" pad="C13"/>
+<connect gate="G$1" pin="GPIO_B1_14" pad="C14"/>
+<connect gate="G$1" pin="GPIO_EMC_28" pad="D1"/>
+<connect gate="G$1" pin="GPIO_EMC_25" pad="D2"/>
+<connect gate="G$1" pin="GPIO_EMC_24" pad="D3"/>
+<connect gate="G$1" pin="GPIO_EMC_34" pad="D4"/>
+<connect gate="G$1" pin="GPIO_EMC_32" pad="D5"/>
+<connect gate="G$1" pin="GPIO_EMC_38" pad="D6"/>
+<connect gate="G$1" pin="GPIO_B0_00" pad="D7"/>
+<connect gate="G$1" pin="GPIO_B0_03" pad="D8"/>
+<connect gate="G$1" pin="GPIO_B0_10" pad="D9"/>
+<connect gate="G$1" pin="GPIO_B0_13" pad="D10"/>
+<connect gate="G$1" pin="GPIO_B1_03" pad="D11"/>
+<connect gate="G$1" pin="GPIO_B1_05" pad="D12"/>
+<connect gate="G$1" pin="GPIO_B1_12" pad="D13"/>
+<connect gate="G$1" pin="GPIO_B1_13" pad="D14"/>
+<connect gate="G$1" pin="GPIO_EMC_29" pad="E1"/>
+<connect gate="G$1" pin="VSS_5" pad="E2"/>
+<connect gate="G$1" pin="GPIO_EMC_00" pad="E3"/>
+<connect gate="G$1" pin="GPIO_EMC_37" pad="E4"/>
+<connect gate="G$1" pin="GPIO_EMC_35" pad="E5"/>
+<connect gate="G$1" pin="NVCC_EMC_1" pad="E6"/>
+<connect gate="G$1" pin="GPIO_B0_01" pad="E7"/>
+<connect gate="G$1" pin="GPIO_B0_02" pad="E8"/>
+<connect gate="G$1" pin="NVCC_GPIO_1" pad="E9"/>
+<connect gate="G$1" pin="GPIO_B0_14" pad="E10"/>
+<connect gate="G$1" pin="GPIO_B0_15" pad="E11"/>
+<connect gate="G$1" pin="GPIO_B1_04" pad="E12"/>
+<connect gate="G$1" pin="VSS_6" pad="E13"/>
+<connect gate="G$1" pin="GPIO_AD_B0_06" pad="E14"/>
+<connect gate="G$1" pin="GPIO_EMC_22" pad="F1"/>
+<connect gate="G$1" pin="GPIO_EMC_04" pad="F2"/>
+<connect gate="G$1" pin="GPIO_EMC_01" pad="F3"/>
+<connect gate="G$1" pin="GPIO_EMC_02" pad="F4"/>
+<connect gate="G$1" pin="NVCC_EMC_2" pad="F5"/>
+<connect gate="G$1" pin="VDD_SOC_IN_1" pad="F6"/>
+<connect gate="G$1" pin="VDD_SOC_IN_2" pad="F7"/>
+<connect gate="G$1" pin="VDD_SOC_IN_3" pad="F8"/>
+<connect gate="G$1" pin="VDD_SOC_IN_4" pad="F9"/>
+<connect gate="G$1" pin="NVCC_GPIO_2" pad="F10"/>
+<connect gate="G$1" pin="GPIO_AD_B0_04" pad="F11"/>
+<connect gate="G$1" pin="GPIO_AD_B0_07" pad="F12"/>
+<connect gate="G$1" pin="GPIO_AD_B0_08" pad="F13"/>
+<connect gate="G$1" pin="GPIO_AD_B0_09" pad="F14"/>
+<connect gate="G$1" pin="GPIO_EMC_10" pad="G1"/>
+<connect gate="G$1" pin="GPIO_EMC_23" pad="G2"/>
+<connect gate="G$1" pin="GPIO_EMC_11" pad="G3"/>
+<connect gate="G$1" pin="GPIO_EMC_03" pad="G4"/>
+<connect gate="G$1" pin="GPIO_EMC_05" pad="G5"/>
+<connect gate="G$1" pin="VDD_SOC_IN_5" pad="G6"/>
+<connect gate="G$1" pin="VSS_7" pad="G7"/>
+<connect gate="G$1" pin="VSS_8" pad="G8"/>
+<connect gate="G$1" pin="VDD_SOC_IN_6" pad="G9"/>
+<connect gate="G$1" pin="GPIO_AD_B0_11" pad="G10"/>
+<connect gate="G$1" pin="GPIO_AD_B0_03" pad="G11"/>
+<connect gate="G$1" pin="GPIO_AD_B1_14" pad="G12"/>
+<connect gate="G$1" pin="GPIO_AD_B0_10" pad="G13"/>
+<connect gate="G$1" pin="GPIO_AD_B0_05" pad="G14"/>
+<connect gate="G$1" pin="GPIO_EMC_12" pad="H1"/>
+<connect gate="G$1" pin="GPIO_SD_B0_04" pad="H2"/>
+<connect gate="G$1" pin="GPIO_EMC_08" pad="H3"/>
+<connect gate="G$1" pin="GPIO_EMC_07" pad="H4"/>
+<connect gate="G$1" pin="GPIO_EMC_06" pad="H5"/>
+<connect gate="G$1" pin="VDD_SOC_IN_7" pad="H6"/>
+<connect gate="G$1" pin="VSS_9" pad="H7"/>
+<connect gate="G$1" pin="VSS_10" pad="H8"/>
+<connect gate="G$1" pin="VDD_SOC_IN_8" pad="H9"/>
+<connect gate="G$1" pin="GPIO_AD_B0_01" pad="H10"/>
+<connect gate="G$1" pin="GPIO_AD_B1_13" pad="H11"/>
+<connect gate="G$1" pin="GPIO_AD_B1_12" pad="H12"/>
+<connect gate="G$1" pin="GPIO_AD_B1_08" pad="H13"/>
+<connect gate="G$1" pin="GPIO_AD_B0_14" pad="H14"/>
+<connect gate="G$1" pin="GPIO_SD_B0_02" pad="J1"/>
+<connect gate="G$1" pin="GPIO_SD_B0_05" pad="J2"/>
+<connect gate="G$1" pin="GPIO_SD_B0_01" pad="J3"/>
+<connect gate="G$1" pin="GPIO_SD_B0_00" pad="J4"/>
+<connect gate="G$1" pin="DCDC_SENSE" pad="J5"/>
+<connect gate="G$1" pin="NVCC_SD0" pad="J6"/>
+<connect gate="G$1" pin="VSS_11" pad="J7"/>
+<connect gate="G$1" pin="VSS_12" pad="J8"/>
+<connect gate="G$1" pin="VDD_SOC_IN_9" pad="J9"/>
+<connect gate="G$1" pin="NVCC_GPIO_3" pad="J10"/>
+<connect gate="G$1" pin="GPIO_AD_B1_00" pad="J11"/>
+<connect gate="G$1" pin="GPIO_AD_B1_06" pad="J12"/>
+<connect gate="G$1" pin="GPIO_AD_B1_11" pad="J13"/>
+<connect gate="G$1" pin="GPIO_AD_B1_15" pad="J14"/>
+<connect gate="G$1" pin="GPIO_SD_B0_03" pad="K1"/>
+<connect gate="G$1" pin="VSS_13" pad="K2"/>
+<connect gate="G$1" pin="DCDC_PSWITCH" pad="K3"/>
+<connect gate="G$1" pin="DCDC__IN_Q" pad="K4"/>
+<connect gate="G$1" pin="NVCC_SD1" pad="K5"/>
+<connect gate="G$1" pin="TEST_MODE" pad="K6"/>
+<connect gate="G$1" pin="PMIC_ON_REQ" pad="K7"/>
+<connect gate="G$1" pin="VDD_USB_CAP" pad="K8"/>
+<connect gate="G$1" pin="NGND_KEL0" pad="K9"/>
+<connect gate="G$1" pin="GPIO_AD_B1_07" pad="K10"/>
+<connect gate="G$1" pin="GPIO_AD_B1_01" pad="K11"/>
+<connect gate="G$1" pin="GPIO_AD_B1_05" pad="K12"/>
+<connect gate="G$1" pin="VSS_14" pad="K13"/>
+<connect gate="G$1" pin="GPIO_AD_B0_12" pad="K14"/>
+<connect gate="G$1" pin="DCDC_IN_1" pad="L1"/>
+<connect gate="G$1" pin="DCDC_IN_2" pad="L2"/>
+<connect gate="G$1" pin="GPIO_SD_B1_06" pad="L3"/>
+<connect gate="G$1" pin="GPIO_SD_B1_07" pad="L4"/>
+<connect gate="G$1" pin="GPIO_SD_B1_00" pad="L5"/>
+<connect gate="G$1" pin="WAKEUP" pad="L6"/>
+<connect gate="G$1" pin="PMIC_STBY_REQ" pad="L7"/>
+<connect gate="G$1" pin="USB_OTG1_DP" pad="L8"/>
+<connect gate="G$1" pin="VSS_15" pad="L9"/>
+<connect gate="G$1" pin="GPIO_AD_B0_15" pad="L10"/>
+<connect gate="G$1" pin="GPIO_AD_B1_02" pad="L11"/>
+<connect gate="G$1" pin="GPIO_AD_B1_04" pad="L12"/>
+<connect gate="G$1" pin="GPIO_AD_B1_10" pad="L13"/>
+<connect gate="G$1" pin="GPIO_AD_B0_13" pad="L14"/>
+<connect gate="G$1" pin="DCDC_LP_1" pad="M1"/>
+<connect gate="G$1" pin="DCDC_LP_2" pad="M2"/>
+<connect gate="G$1" pin="GPIO_SD_B1_02" pad="M3"/>
+<connect gate="G$1" pin="GPIO_SD_B1_03" pad="M4"/>
+<connect gate="G$1" pin="GPIO_SD_B1_01" pad="M5"/>
+<connect gate="G$1" pin="ONOFF" pad="M6"/>
+<connect gate="G$1" pin="POR_B" pad="M7"/>
+<connect gate="G$1" pin="USB_OTG1_DN" pad="M8"/>
+<connect gate="G$1" pin="VDD_SNVS_IN" pad="M9"/>
+<connect gate="G$1" pin="VDD_SNVS_CAP" pad="M10"/>
+<connect gate="G$1" pin="GPIO_AD_B0_02" pad="M11"/>
+<connect gate="G$1" pin="GPIO_AD_B1_03" pad="M12"/>
+<connect gate="G$1" pin="GPIO_AD_B1_09" pad="M13"/>
+<connect gate="G$1" pin="GPIO_AD_B0_00" pad="M14"/>
+<connect gate="G$1" pin="DCDC_GND_1" pad="N1"/>
+<connect gate="G$1" pin="DCDC_GND_2" pad="N2"/>
+<connect gate="G$1" pin="GPIO_SD_B1_05" pad="N3"/>
+<connect gate="G$1" pin="GPIO_SD_B1_09" pad="N4"/>
+<connect gate="G$1" pin="VSS_16" pad="N5"/>
+<connect gate="G$1" pin="USB_OTG1_VBUS" pad="N6"/>
+<connect gate="G$1" pin="USB_OTG2_DN" pad="N7"/>
+<connect gate="G$1" pin="VSS_17" pad="N8"/>
+<connect gate="G$1" pin="RTC_XTALI" pad="N9"/>
+<connect gate="G$1" pin="GPANAIO" pad="N10"/>
+<connect gate="G$1" pin="XTALO" pad="N11"/>
+<connect gate="G$1" pin="USB_OTG1_CHD_B" pad="N12"/>
+<connect gate="G$1" pin="CCM_CLK1_P" pad="N13"/>
+<connect gate="G$1" pin="VDDA_ADC_3P3" pad="N14"/>
+<connect gate="G$1" pin="VSS_18" pad="P1"/>
+<connect gate="G$1" pin="GPIO_SD_B1_04" pad="P2"/>
+<connect gate="G$1" pin="GPIO_SD_B1_08" pad="P3"/>
+<connect gate="G$1" pin="GPIO_SD_B1_10" pad="P4"/>
+<connect gate="G$1" pin="GPIO_SD_B1_11" pad="P5"/>
+<connect gate="G$1" pin="USB_OTG2_VBUS" pad="P6"/>
+<connect gate="G$1" pin="USB_OTG2_DP" pad="P7"/>
+<connect gate="G$1" pin="VDD_HIGH_CAP" pad="P8"/>
+<connect gate="G$1" pin="RTC_XTALO" pad="P9"/>
+<connect gate="G$1" pin="NVCC_PLL" pad="P10"/>
+<connect gate="G$1" pin="XTALI" pad="P11"/>
+<connect gate="G$1" pin="VDD_HIGH_IN" pad="P12"/>
+<connect gate="G$1" pin="CCM_CLK1_N" pad="P13"/>
+<connect gate="G$1" pin="VSS_19" pad="P14"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="Manufacturer_Name" value="NXP" constant="no"/>
+<attribute name="Manufacturer_Part_Number" value="MIMXRT1062DVJ6B" constant="no"/>
+<attribute name="Mouser_Part_Number" value="771-MIMXRT1062DVJ6B" constant="no"/>
+<attribute name="Mouser_Price-Stock" value="https://www.mouser.co.uk/ProductDetail/NXP-Semiconductors/MIMXRT1062DVJ6B?qs=BJlw7L4Cy7%252B08A9rbTO5WQ%3D%3D" constant="no"/>
+<attribute name="Arrow_Part_Number" value="MIMXRT1062DVJ6B" constant="no"/>
+<attribute name="Arrow_Price-Stock" value="https://www.arrow.com/en/products/mimxrt1062dvj6b/nxp-semiconductors.html?utm_currency=USD&amp;region=nac" constant="no"/>
+<attribute name="Description" value="i.MX RT1060: Crossover MCU with Arm Cortex-M7" constant="no"/>
+<attribute name="Height" value="1.52mm" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+</drawing>
+</eagle>

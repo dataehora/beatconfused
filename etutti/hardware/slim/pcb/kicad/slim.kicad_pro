@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "filename": "slim.kicad_pro",
+    "version": 3
+  },
+  "sheets": [
+    [
+      "1334544a-ab0d-5385-a5b2-3013af2a9cd8",
+      "Root"
+    ],
+    [
+      "091129e6-97e2-5e6c-a85a-6c91be2d6cf7",
+      "P \u00b7 Processador"
+    ],
+    [
+      "d1d05e4a-fc45-5fb6-bdce-da9af9c63ede",
+      "E \u00b7 Energia"
+    ],
+    [
+      "e46aa03b-2f84-51d9-a670-3ac76229fb4a",
+      "F \u00b7 Fone"
+    ],
+    [
+      "e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964",
+      "I \u00b7 Interface"
+    ],
+    [
+      "7239cbb0-74f3-599a-860d-ff7ea64186fd",
+      "R \u00b7 Reguas"
+    ]
+  ]
+}

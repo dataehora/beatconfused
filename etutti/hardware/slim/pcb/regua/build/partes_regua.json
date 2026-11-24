@@ -1,0 +1,408 @@
+[
+ {
+  "ref": "U1",
+  "value": "TMAG5253BA3IQDMRR",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND",
+   "3": "EN1",
+   "4": "OUT",
+   "5": "GND"
+  },
+  "code": "S1",
+  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "lcsc": "C22401868",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "tecla 1: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QA do 595",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.6,
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+ },
+ {
+  "ref": "U2",
+  "value": "TMAG5253BA3IQDMRR",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND",
+   "3": "EN2",
+   "4": "OUT",
+   "5": "GND"
+  },
+  "code": "S2",
+  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "lcsc": "C22401868",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "tecla 2: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QB do 595",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.6,
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+ },
+ {
+  "ref": "U3",
+  "value": "TMAG5253BA3IQDMRR",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND",
+   "3": "EN3",
+   "4": "OUT",
+   "5": "GND"
+  },
+  "code": "S3",
+  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "lcsc": "C22401868",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "tecla 3: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QC do 595",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.6,
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+ },
+ {
+  "ref": "U4",
+  "value": "TMAG5253BA3IQDMRR",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND",
+   "3": "EN4",
+   "4": "OUT",
+   "5": "GND"
+  },
+  "code": "S4",
+  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "lcsc": "C22401868",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "tecla 4: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QD do 595",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.6,
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+ },
+ {
+  "ref": "U5",
+  "value": "TMAG5253BA3IQDMRR",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND",
+   "3": "EN5",
+   "4": "OUT",
+   "5": "GND"
+  },
+  "code": "S5",
+  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "lcsc": "C22401868",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "tecla 5: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QE do 595",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.6,
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+ },
+ {
+  "ref": "U6",
+  "value": "TMAG5253BA3IQDMRR",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND",
+   "3": "EN6",
+   "4": "OUT",
+   "5": "GND"
+  },
+  "code": "S6",
+  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "lcsc": "C22401868",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "tecla 6: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QF do 595",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.6,
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+ },
+ {
+  "ref": "U7",
+  "value": "TMAG5253BA3IQDMRR",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND",
+   "3": "EN7",
+   "4": "OUT",
+   "5": "GND"
+  },
+  "code": "S7",
+  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "lcsc": "C22401868",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "tecla 7: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QG do 595",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.6,
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+ },
+ {
+  "ref": "U8",
+  "value": "TMAG5253BA3IQDMRR",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND",
+   "3": "EN8",
+   "4": "OUT",
+   "5": "GND"
+  },
+  "code": "S8",
+  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "lcsc": "C22401868",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "tecla 8: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QH do 595",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.6,
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+ },
+ {
+  "ref": "U9",
+  "value": "74HC595BQ,115",
+  "nets": {
+   "8": "GND",
+   "9": "NC",
+   "10": "+3V3",
+   "11": "CLK",
+   "12": "LATCH",
+   "13": "GND",
+   "14": "DATA",
+   "16": "+3V3",
+   "17": "GND",
+   "15": "EN1",
+   "1": "EN2",
+   "2": "EN3",
+   "3": "EN4",
+   "4": "EN5",
+   "5": "EN6",
+   "6": "EN7",
+   "7": "EN8"
+  },
+  "code": "S9",
+  "fp": "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm",
+  "lcsc": "C730243",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "registrador de deslocamento 8 bits (DHVQFN-16, 2,5 x 3,5 mm), 137 mil em estoque; QA..QH = EN dos sensores 1..8, QH' sem uso; pad 17 no GND",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.176,
+  "datasheet": "https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf"
+ },
+ {
+  "ref": "J1",
+  "value": "FFC 8P 0.5 mm, contato por baixo",
+  "nets": {
+   "1": "GND",
+   "2": "+3V3",
+   "3": "OUT",
+   "4": "DATA",
+   "5": "CLK",
+   "6": "LATCH",
+   "7": "GND",
+   "8": "GND",
+   "MP": "GND"
+  },
+  "code": "S10",
+  "fp": "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal",
+  "lcsc": "C66953",
+  "cls": "estendida",
+  "mount": "JLC",
+  "note": "na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector na principal); footprint = placeholder Amphenol",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.1,
+  "datasheet": ""
+ },
+ {
+  "ref": "C1",
+  "value": "100nF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S1",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "desacoplamento do TMAG5253 1, junto do pino 1",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.001,
+  "datasheet": ""
+ },
+ {
+  "ref": "C2",
+  "value": "100nF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S2",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "desacoplamento do TMAG5253 2, junto do pino 1",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.001,
+  "datasheet": ""
+ },
+ {
+  "ref": "C3",
+  "value": "100nF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S3",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "desacoplamento do TMAG5253 3, junto do pino 1",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.001,
+  "datasheet": ""
+ },
+ {
+  "ref": "C4",
+  "value": "100nF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S4",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "desacoplamento do TMAG5253 4, junto do pino 1",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.001,
+  "datasheet": ""
+ },
+ {
+  "ref": "C5",
+  "value": "100nF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S5",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "desacoplamento do TMAG5253 5, junto do pino 1",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.001,
+  "datasheet": ""
+ },
+ {
+  "ref": "C6",
+  "value": "100nF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S6",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "desacoplamento do TMAG5253 6, junto do pino 1",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.001,
+  "datasheet": ""
+ },
+ {
+  "ref": "C7",
+  "value": "100nF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S7",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "desacoplamento do TMAG5253 7, junto do pino 1",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.001,
+  "datasheet": ""
+ },
+ {
+  "ref": "C8",
+  "value": "100nF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S8",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "desacoplamento do TMAG5253 8, junto do pino 1",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.001,
+  "datasheet": ""
+ },
+ {
+  "ref": "C9",
+  "value": "100nF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S9",
+  "fp": "Capacitor_SMD:C_0402_1005Metric",
+  "lcsc": "C1525",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "desacoplamento do 595",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.001,
+  "datasheet": ""
+ },
+ {
+  "ref": "C10",
+  "value": "10uF",
+  "nets": {
+   "1": "+3V3",
+   "2": "GND"
+  },
+  "code": "S10",
+  "fp": "Capacitor_SMD:C_0805_2012Metric",
+  "lcsc": "C15850",
+  "cls": "basica",
+  "mount": "JLC",
+  "note": "reservatorio da regua (junto do conector)",
+  "dnp": false,
+  "sheet": "R",
+  "price": 0.008,
+  "datasheet": ""
+ }
+]

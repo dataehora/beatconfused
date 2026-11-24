@@ -1,0 +1,2450 @@
+(export
+	(version "E")
+	(design
+		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\slim\\pcb\\kicad_regua\\slim_regua.kicad_sch")
+		(date "2026-11-24T23:19:03")
+		(tool "Eeschema 10.0.7")
+		(sheet
+			(number "1")
+			(name "/")
+			(tstamps "/")
+			(title_block
+				(title "eTutti Slim · esquema")
+				(company "beatconfused.com")
+				(rev "Slim R1SL regua R8")
+				(date "2026-11-24")
+				(source "slim_regua.kicad_sch")
+				(comment
+					(number "1")
+					(value "etutti/hardware/slim/pcb/schematic.py escreve este arquivo; nao editar a mao")
+				)
+				(comment
+					(number "2")
+					(value "")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+		(sheet
+			(number "2")
+			(name "/R · Regua/")
+			(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			(title_block
+				(title "eTutti Slim · R · Regua")
+				(company "beatconfused.com")
+				(rev "Slim R1SL regua R8")
+				(date "2026-11-24")
+				(source "slim_regua_R.kicad_sch")
+				(comment
+					(number "1")
+					(value "etutti/hardware/slim/pcb/schematic.py escreve este arquivo; nao editar a mao")
+				)
+				(comment
+					(number "2")
+					(value "")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+	)
+	(components
+		(comp
+			(ref "C1")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 1, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S1")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 1, junto do pino 1")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S1")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "c8e1cf36-641b-58d9-b594-18e3da46a99b")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C2")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 2, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S2")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 2, junto do pino 1")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S2")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "deccde2d-dee0-516f-a60b-544f78951f7a")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C3")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 3, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S3")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 3, junto do pino 1")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S3")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "ce03180f-a199-58e3-9310-362cbbcaccae")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C4")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 4, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S4")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 4, junto do pino 1")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S4")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "769b47ea-8bdd-5f48-a327-637fec8b3325")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C5")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 5, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S5")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 5, junto do pino 1")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S5")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "c87e475e-274b-5805-9ae8-a7cbba88b8aa")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C6")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 6, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S6")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 6, junto do pino 1")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S6")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "805d84f8-c62f-5232-bb44-d00febc17f80")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C7")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 7, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S7")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 7, junto do pino 1")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S7")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "41cbe916-88ff-547e-943b-4f4ccc300678")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C8")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do TMAG5253 8, junto do pino 1")
+			(fields
+				(field
+					(name "Codigo") "S8")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do TMAG5253 8, junto do pino 1")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S8")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "0f6accf8-572e-5cfb-b597-33e480e55a73")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C9")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do 595")
+			(fields
+				(field
+					(name "Codigo") "S9")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento do 595")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S9")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "89c5493b-7c1b-57ce-9e6d-ecc068e56974")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C10")
+			(value "10uF")
+			(footprint "Capacitor_SMD:C_0805_2012Metric")
+			(description "reservatorio da regua (junto do conector)")
+			(fields
+				(field
+					(name "Codigo") "S10")
+				(field
+					(name "LCSC") "C15850")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0805_2012Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "reservatorio da regua (junto do conector)")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "S10")
+			)
+			(property
+				(name "LCSC")
+				(value "C15850")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "0151e5ac-0a68-5104-9084-18308483bbb8")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J1")
+			(value "FFC 8P 0.5 mm, contato por baixo")
+			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+			(description "na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector na principal); footprint = placeholder Amphenol")
+			(fields
+				(field
+					(name "Codigo") "S10")
+				(field
+					(name "LCSC") "C66953")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector na principal); footprint = placeholder Amphenol")
+			)
+			(libsource
+				(lib "slim")
+				(part "Conn_01x08_MountingPin")
+				(description "Generic connectable mounting pin connector, single row, 01x08, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(property
+				(name "Codigo")
+				(value "S10")
+			)
+			(property
+				(name "LCSC")
+				(value "C66953")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "connector")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Connector*:*_1x??-1MP*")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "3fabf566-6357-550c-a883-22940118f5c6")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "7")
+						)
+						(pin
+							(num "8")
+						)
+						(pin
+							(num "MP")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U1")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 1: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QA do 595")
+			(fields
+				(field
+					(name "Codigo") "S1")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 1: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QA do 595")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			)
+			(property
+				(name "Codigo")
+				(value "S1")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "2cc5690a-5f39-50e4-8dcc-8353e1de502c")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U2")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 2: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QB do 595")
+			(fields
+				(field
+					(name "Codigo") "S2")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 2: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QB do 595")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			)
+			(property
+				(name "Codigo")
+				(value "S2")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "3fb23c9f-10f3-537c-86cc-08d6ccfe5359")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U3")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 3: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QC do 595")
+			(fields
+				(field
+					(name "Codigo") "S3")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 3: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QC do 595")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			)
+			(property
+				(name "Codigo")
+				(value "S3")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "dcf71845-daf2-5981-bf0f-927118b2b8ec")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U4")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 4: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QD do 595")
+			(fields
+				(field
+					(name "Codigo") "S4")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 4: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QD do 595")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			)
+			(property
+				(name "Codigo")
+				(value "S4")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "da280169-aa0c-579e-8aca-70919bcad510")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U5")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 5: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QE do 595")
+			(fields
+				(field
+					(name "Codigo") "S5")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 5: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QE do 595")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			)
+			(property
+				(name "Codigo")
+				(value "S5")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "73ca0806-a34a-5634-b014-a723a26365e6")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U6")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 6: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QF do 595")
+			(fields
+				(field
+					(name "Codigo") "S6")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 6: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QF do 595")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			)
+			(property
+				(name "Codigo")
+				(value "S6")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "793e8e30-9fe1-5d06-8491-9386535bfe2a")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U7")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 7: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QG do 595")
+			(fields
+				(field
+					(name "Codigo") "S7")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 7: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QG do 595")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			)
+			(property
+				(name "Codigo")
+				(value "S7")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "6724fa3d-b48b-53dd-9394-c595274763c5")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U8")
+			(value "TMAG5253BA3IQDMRR")
+			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+			(description "tecla 8: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QH do 595")
+			(fields
+				(field
+					(name "Codigo") "S8")
+				(field
+					(name "LCSC") "C22401868")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
+				(field
+					(name "Description") "tecla 8: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QH do 595")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5253BA3")
+				(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			)
+			(property
+				(name "Codigo")
+				(value "S8")
+			)
+			(property
+				(name "LCSC")
+				(value "C22401868")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "99d3fddc-1702-56f9-8ee9-bf85e8ad1ffe")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U9")
+			(value "74HC595BQ,115")
+			(footprint "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm")
+			(datasheet "https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
+			(description "registrador de deslocamento 8 bits (DHVQFN-16, 2,5 x 3,5 mm), 137 mil em estoque; QA..QH = EN dos sensores 1..8, QH' sem uso; pad 17 no GND")
+			(fields
+				(field
+					(name "Codigo") "S9")
+				(field
+					(name "LCSC") "C730243")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm")
+				(field
+					(name "Datasheet") "https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
+				(field
+					(name "Description") "registrador de deslocamento 8 bits (DHVQFN-16, 2,5 x 3,5 mm), 137 mil em estoque; QA..QH = EN dos sensores 1..8, QH' sem uso; pad 17 no GND")
+			)
+			(libsource
+				(lib "slim")
+				(part "74HC595BQ")
+				(description "8-bit shift register with output latch, DHVQFN-16, 17 = exposed pad = GND")
+			)
+			(property
+				(name "Codigo")
+				(value "S9")
+			)
+			(property
+				(name "LCSC")
+				(value "C730243")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "R · Regua")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_regua_R.kicad_sch")
+			)
+			(sheetpath
+				(names "/R · Regua/")
+				(tstamps "/43f3e6bf-683b-567a-a921-d4ed2152b370/")
+			)
+			(tstamps "1f630d42-57a7-5f83-9f12-62f93e01ad00")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "14")
+						)
+						(pin
+							(num "11")
+						)
+						(pin
+							(num "12")
+						)
+						(pin
+							(num "13")
+						)
+						(pin
+							(num "10")
+						)
+						(pin
+							(num "16")
+						)
+						(pin
+							(num "8")
+						)
+						(pin
+							(num "17")
+						)
+						(pin
+							(num "15")
+						)
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "7")
+						)
+						(pin
+							(num "9")
+						)
+					)
+				)
+			)
+		)
+	)
+	(groups)
+	(variants)
+	(libparts
+		(libpart
+			(lib "slim")
+			(part "74HC595BQ")
+			(description "8-bit shift register with output latch, DHVQFN-16, 17 = exposed pad = GND")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "74HC595BQ")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "8-bit shift register with output latch, DHVQFN-16, 17 = exposed pad = GND")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "QB")
+					(type "output")
+				)
+				(pin
+					(num "2")
+					(name "QC")
+					(type "output")
+				)
+				(pin
+					(num "3")
+					(name "QD")
+					(type "output")
+				)
+				(pin
+					(num "4")
+					(name "QE")
+					(type "output")
+				)
+				(pin
+					(num "5")
+					(name "QF")
+					(type "output")
+				)
+				(pin
+					(num "6")
+					(name "QG")
+					(type "output")
+				)
+				(pin
+					(num "7")
+					(name "QH")
+					(type "output")
+				)
+				(pin
+					(num "8")
+					(name "GND")
+					(type "power_in")
+				)
+				(pin
+					(num "9")
+					(name "QH'")
+					(type "output")
+				)
+				(pin
+					(num "10")
+					(name "~{SRCLR}")
+					(type "input")
+				)
+				(pin
+					(num "11")
+					(name "SRCLK")
+					(type "input")
+				)
+				(pin
+					(num "12")
+					(name "RCLK")
+					(type "input")
+				)
+				(pin
+					(num "13")
+					(name "~{OE}")
+					(type "input")
+				)
+				(pin
+					(num "14")
+					(name "SER")
+					(type "input")
+				)
+				(pin
+					(num "15")
+					(name "QA")
+					(type "output")
+				)
+				(pin
+					(num "16")
+					(name "VCC")
+					(type "power_in")
+				)
+				(pin
+					(num "17")
+					(name "EP")
+					(type "power_in")
+				)
+			)
+		)
+		(libpart
+			(lib "slim")
+			(part "C")
+			(description "Unpolarized capacitor")
+			(footprints
+				(fp "C_*")
+			)
+			(fields
+				(field
+					(name "Reference") "C")
+				(field
+					(name "Value") "C")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Unpolarized capacitor")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "slim")
+			(part "Conn_01x08_MountingPin")
+			(description "Generic connectable mounting pin connector, single row, 01x08, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			(footprints
+				(fp "Connector*:*_1x??-1MP*")
+			)
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "Conn_01x08_MountingPin")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Generic connectable mounting pin connector, single row, 01x08, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "Pin_1")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "Pin_2")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "Pin_3")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "Pin_4")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "Pin_5")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "Pin_6")
+					(type "passive")
+				)
+				(pin
+					(num "7")
+					(name "Pin_7")
+					(type "passive")
+				)
+				(pin
+					(num "8")
+					(name "Pin_8")
+					(type "passive")
+				)
+				(pin
+					(num "MP")
+					(name "MountPin")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "slim")
+			(part "TMAG5253BA3")
+			(description "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "TMAG5253BA3")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "TI TMAG5253 linear Hall sensor with enable, X2SON-4 (OUT high-impedance with EN low)")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "VCC")
+					(type "power_in")
+				)
+				(pin
+					(num "2")
+					(name "GND")
+					(type "power_in")
+				)
+				(pin
+					(num "3")
+					(name "EN")
+					(type "input")
+				)
+				(pin
+					(num "4")
+					(name "OUT")
+					(type "tri_state")
+				)
+				(pin
+					(num "5")
+					(name "EP")
+					(type "passive")
+				)
+			)
+		)
+	)
+	(libraries
+		(library
+			(logical "slim")
+			(uri "${KIPRJMOD}/slim.kicad_sym")
+		)
+	)
+	(nets
+		(net
+			(code "1")
+			(name "+3V3")
+			(class "Default")
+			(node
+				(ref "C1")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C10")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C2")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C3")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C4")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C5")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C6")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C7")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C8")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C9")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "2")
+				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U2")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U3")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U4")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U5")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U6")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U7")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U8")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U9")
+				(pin "10")
+				(pinfunction "~{SRCLR}_10")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "16")
+				(pinfunction "VCC_16")
+				(pintype "power_in")
+			)
+		)
+		(net
+			(code "2")
+			(name "CLK")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "5")
+				(pinfunction "Pin_5_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U9")
+				(pin "11")
+				(pinfunction "SRCLK_11")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "3")
+			(name "DATA")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "4")
+				(pinfunction "Pin_4_4")
+				(pintype "passive")
+			)
+			(node
+				(ref "U9")
+				(pin "14")
+				(pinfunction "SER_14")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "4")
+			(name "EN1")
+			(class "Default")
+			(node
+				(ref "U1")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "15")
+				(pinfunction "QA_15")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "5")
+			(name "EN2")
+			(class "Default")
+			(node
+				(ref "U2")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "1")
+				(pinfunction "QB_1")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "6")
+			(name "EN3")
+			(class "Default")
+			(node
+				(ref "U3")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "2")
+				(pinfunction "QC_2")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "7")
+			(name "EN4")
+			(class "Default")
+			(node
+				(ref "U4")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "3")
+				(pinfunction "QD_3")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "8")
+			(name "EN5")
+			(class "Default")
+			(node
+				(ref "U5")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "4")
+				(pinfunction "QE_4")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "9")
+			(name "EN6")
+			(class "Default")
+			(node
+				(ref "U6")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "5")
+				(pinfunction "QF_5")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "10")
+			(name "EN7")
+			(class "Default")
+			(node
+				(ref "U7")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "6")
+				(pinfunction "QG_6")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "11")
+			(name "EN8")
+			(class "Default")
+			(node
+				(ref "U8")
+				(pin "3")
+				(pinfunction "EN_3")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "7")
+				(pinfunction "QH_7")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "12")
+			(name "GND")
+			(class "Default")
+			(node
+				(ref "C1")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C10")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C2")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C3")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C4")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C5")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C6")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C7")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C8")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C9")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "7")
+				(pinfunction "Pin_7_7")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "8")
+				(pinfunction "Pin_8_8")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "MP")
+				(pinfunction "MountPin_MP")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U1")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U2")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U3")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U4")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U4")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U5")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U5")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U6")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U6")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U7")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U7")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U8")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U8")
+				(pin "5")
+				(pinfunction "EP_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "U9")
+				(pin "13")
+				(pinfunction "~{OE}_13")
+				(pintype "input")
+			)
+			(node
+				(ref "U9")
+				(pin "17")
+				(pinfunction "EP_17")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U9")
+				(pin "8")
+				(pinfunction "GND_8")
+				(pintype "power_in")
+			)
+		)
+		(net
+			(code "13")
+			(name "LATCH")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "6")
+				(pinfunction "Pin_6_6")
+				(pintype "passive")
+			)
+			(node
+				(ref "U9")
+				(pin "12")
+				(pinfunction "RCLK_12")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "14")
+			(name "OUT")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "3")
+				(pinfunction "Pin_3_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U2")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U3")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U4")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U5")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U6")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U7")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+			(node
+				(ref "U8")
+				(pin "4")
+				(pinfunction "OUT_4")
+				(pintype "tri_state")
+			)
+		)
+		(net
+			(code "15")
+			(name "unconnected-(U9-QH'-Pad9)")
+			(class "Default")
+			(node
+				(ref "U9")
+				(pin "9")
+				(pinfunction "QH'_9")
+				(pintype "output+no_connect")
+			)
+		)
+	)
+)

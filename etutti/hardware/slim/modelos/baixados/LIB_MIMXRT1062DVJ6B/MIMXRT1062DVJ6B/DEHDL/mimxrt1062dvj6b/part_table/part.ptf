@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'MIMXRT1062DVJ6B'
+CLASS = IC
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "NXP", "MIMXRT1062DVJ6B" (!) = "", "BGA196C80P14X14_1200X1200X152", "BGA", "771-MIMXRT1062DVJ6B", "https://www.mouser.co.uk/ProductDetail/NXP-Semiconductors/MIMXRT1062DVJ6B?qs=BJlw7L4Cy7%252B08A9rbTO5WQ%3D%3D", "MIMXRT1062DVJ6B", "https://www.arrow.com/en/products/mimxrt1062dvj6b/nxp-semiconductors.html?utm_currency=USD&region=nac", "i.MX RT1060: Crossover MCU with Arm Cortex-M7", "https://www.nxp.com/part/MIMXRT1062DVJ6B#/", "1.52 mm"
+END_PART
+
+END.
