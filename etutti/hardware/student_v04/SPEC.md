@@ -1,7 +1,7 @@
 # eTutti Student V4 — SPEC R15V4
 
 Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
-Complementa a R14V4: o Code atende a R14V4 primeiro e depois esta, no mesmo PR ou no seguinte. Tudo o que não é mencionado aqui continua como nas revisões anteriores. Os relatórios citam "R15V4".
+Complementa a R14V4. **O J manda as duas juntas ao Code: atender a R14V4 e a R15V4 num único PR**, na ordem da tabela consolidada abaixo. Tudo o que não é mencionado aqui continua como nas revisões anteriores. Os relatórios citam "R15V4".
 
 **Regras que continuam:**
 - só o instrumento de 32 teclas detalhado;
@@ -26,11 +26,7 @@ Na pré-visualização da JLCPCB e no 3D do KiCad os textos da serigrafia ficam 
 ## 2. Configuração de compra da principal (Eletrônica, `fab/COMPRA.md` e página)
 
 - **Specify Stackup = No.** O empilhamento padrão da JLCPCB basta: o par USB é Full Speed e tem 7,4 mm; não há linha de impedância controlada. Um empilhamento especificado obriga a montagem Standard.
-- **PCBA Type = Economic sempre que a placa permitir.** A JLCPCB passou a principal para Standard ao subir BOM e CPL, sem aviso. Nenhuma peça é "Standard only" (o J conferiu). Suspeitas, pela tabela de capacidades:
-  - o U301 (SGTL5000), com pinos a 0,4 mm, no limite do Economic;
-  - USB-C e jacks passando da borda.
-  
-  O J vai testar e informa o resultado. Se for o codec, fica Standard (cerca de US$ 24 a mais). Se forem as peças na borda, o Code avalia tirá-las da montagem e passá-las para as peças soldadas em casa, e informa o custo e o risco antes de mudar.
+- **PCBA Type = Economic.** Causa achada pelo J (24 nov): o **acabamento ENIG** fazia a JLCPCB passar a montagem para Standard ao subir BOM e CPL. O suporte da JLCPCB confirmou que é um erro do site. Nenhuma peça é "Standard only", e o codec e as peças na borda **não** são a causa: nada muda na BOM nem na montagem. O J refaz a cotação quando o erro for corrigido. Se o erro continuar, a alternativa é HASL sem chumbo (placa cerca de US$ 12 mais barata e Economic, cerca de US$ 24 mais barato); o J decide na hora de pedir. `COMPRA.md` registra as duas opções.
 - Cotação real da principal com Standard: US$ 158 (placa 25,50 + montagem 132,62; setup 25,75, stencil 8,27, peças 46,29, carga dos alimentadores 49,60, SMT 2,21, embalagem 0,50; montagem em 3–4 dias, sem custo extra).
 
 ## 3. Opção futura registrada (Eletrônica, só texto)
@@ -41,13 +37,16 @@ Em `ELETRONICA.md`, uma nota curta: **"RT1062 na placa (chip-down) para produç�
 
 Não é feito agora: o protótipo segue com o MicroMod.
 
-## Tarefas para o Code (R15V4)
+## Tarefas para o Code (R14V4 + R15V4, um PR)
 
 | Ordem | Área | Tarefa |
 |---|---|---|
-| 1 | Eletrônica | limpar a serigrafia da principal e regenerar o pacote (item 1) |
-| 2 | Eletrônica | configuração de compra e opção futura (itens 2 e 3) |
-| 3 | Programação e som | página: imagens da placa novas e "Como pedir" com Specify Stackup = No |
+| 1 | Eletrônica | R15V4 item 1: limpar a serigrafia da principal, provar que o cobre não mudou, regenerar `fab/principal/` e o 3D |
+| 2 | Design | R14V4 tarefa 1: parafusos M2 das réguas (números, acesso da ferramenta, figura) |
+| 3 | Design | R14V4 tarefa 3: costelas de pressão, pés adesivos, fit check e figuras da base |
+| 4 | Design | R14V4 tarefa 2: renders conferidos peça por peça e refeitos (com a serigrafia nova) |
+| 5 | Eletrônica | R14V4 tarefa 4 + R15V4 itens 2 e 3: MicroMod, tabela R4E, `COMPRA.md` (Specify Stackup = No, Economic, ENIG ou HASL, valores reais), nota da opção chip-down |
+| 6 | Programação e som | R14V4 tarefa 5: página e manual atualizados, com as imagens novas |
 
 **Perguntas que o Chat espera:**
 - os renders novos da principal (topo e fundo) mostrando a serigrafia limpa;
