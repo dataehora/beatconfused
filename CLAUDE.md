@@ -1215,3 +1215,11 @@ No multiplexers: one OUT line per row (pins 14/15/26/27), SCAN_DATA/SCAN_CLK = 2
   with no OUT header, plug or notch (`layout_r4.OUT_ON_LAST = False`); frees u 129.5 in rows 2 and 4 (pair 37 + 129.5 = 92.5 mm, was 74). (4) **Base drawings**
   `case/iso_base_r11.py`: OpenCascade HLR edges of the real tray, numbered supports with a legend, notes on the key squares, hidden-line view, PDF.
   Update the same day: the R8's 74HC595 is at u 74, v 0 (rot 90) per `pcb/regua/posicao_regua8.json`, which `ligacao_h.py` now reads; no front-rail cut-out for it; row 4's bolt uses a thin (1.2 mm) M2 nut. The J accepted: 102 mm depth, OLED orientation B, through-bolt + nut on rulers, thread-forming on lid/OLED, mandatory PT reassembly test and OLED measurement before closing; the 80-key middle R8 is an R8E.
+
+## eTutti Slim (24 nov 2026) — start here
+
+`etutti/hardware/slim/`: the newest instrument, **independent of the Student V4** (own folder; the V4 is only a source to learn from, never referenced or changed). Chat owns `SPEC.md` (R1SL, R2SL...; Portuguese) and `conceito/`; Code answers in `ELETRONICA.md`, `FIRMWARE.md`, `FIT_CHECK.md` (each ends with "Perguntas para o design"). Three stages with gates the J approves: **A** components + logic (stage 1), **B** placement (ruler and main board in separate sessions), **C** routing (idem). Nothing is quoted, bought or ordered until the J says so.
+- Owners (also in `.claude/agents/*.md`): eletronica = `slim/pcb/`, `slim/ELETRONICA.md`; programacao-som = `etutti/firmware/slim/` (sketch for `teensy:avr:teensy41`), `slim/FIRMWARE.md`; design = `slim/case/`, `slim/estudos/`, `slim/modelos/`, `slim/FIT_CHECK.md`; roteamento = nothing until gate B.
+- "Only the V4" (R7V4 rule) applies to the old versions, not to the Slim.
+- **GitHub here:** `gh auth status` says the token is invalid but access works; `gh pr` (GraphQL) is blocked. Open and merge PRs through the REST API: `gh api repos/dataehora/beatconfused/pulls ...` and `.../pulls/<n>/merge`.
+- **Git gotcha (24 nov):** `git checkout`/`switch`/`merge` that touch the working tree fail with `error: cannot stat 'etutti': Invalid argument`; build commits with plumbing (temporary index + `commit-tree` + `update-ref`) and push the ref.

@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-24T23:18:52",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.7",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/1334544a-ab0d-5385-a5b2-3013af2a9cd8",
+            "violations": []
+        },
+        {
+            "path": "/P · Processador/",
+            "uuid_path": "/1334544a-ab0d-5385-a5b2-3013af2a9cd8/091129e6-97e2-5e6c-a85a-6c91be2d6cf7",
+            "violations": []
+        },
+        {
+            "path": "/E · Energia/",
+            "uuid_path": "/1334544a-ab0d-5385-a5b2-3013af2a9cd8/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede",
+            "violations": []
+        },
+        {
+            "path": "/F · Fone/",
+            "uuid_path": "/1334544a-ab0d-5385-a5b2-3013af2a9cd8/e46aa03b-2f84-51d9-a670-3ac76229fb4a",
+            "violations": []
+        },
+        {
+            "path": "/I · Interface/",
+            "uuid_path": "/1334544a-ab0d-5385-a5b2-3013af2a9cd8/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964",
+            "violations": []
+        },
+        {
+            "path": "/R · Reguas/",
+            "uuid_path": "/1334544a-ab0d-5385-a5b2-3013af2a9cd8/7239cbb0-74f3-599a-860d-ff7ea64186fd",
+            "violations": []
+        }
+    ],
+    "source": "slim.kicad_sch"
+}
