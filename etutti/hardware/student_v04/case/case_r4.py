@@ -27,6 +27,7 @@ import case_f2 as F      # noqa: E402
 import case as C3        # noqa: E402  (the V3 case's functions: knob and acoustic box, patched below)
 import ligacao_h as H    # noqa: E402  (R8V4: the cable loops, the recesses, the M2 / post search)
 import oled_r11 as OL   # noqa: E402  (R11V4: the real OLED, Adafruit 326)
+import fragil_r15 as FR  # noqa: E402  (R15V4: thin-wall removal)
 
 OUT = F.OUT
 G = L.G
@@ -47,7 +48,7 @@ F.length = L.length
 # R8V4: the 102 mm deep case: the back outer face moves from y 0 to y -2 (the board, the interface and the keys keep their y)
 F.Y0 = L.Y_BACK
 F.CASE_W = L.Y_FRONT
-CHAMFER_TOP, CHAMFER_BOT = 2.0, 1.0       # R5V4: 45 deg chamfer on the outer top edge (where the hand rests) and a small one on the bottom edge
+CHAMFER_TOP, CHAMFER_BOT = 2.0, 0.5       # R5V4: 45 deg chamfer on the outer top edge (where the hand rests) and a small one on the bottom edge
 R_OUT, R_IN = L.CASE_R, L.CASE_R - L.WALL
 
 USB = {"y": L.USB_Y, "z": G.USB_Z, "w": G.USB_OPENING[0], "h": G.USB_OPENING[1], "r": G.USB_OPENING[2]}
@@ -64,6 +65,10 @@ T.SCREW_PILOT = PT_PILOT
 BOLT_LEN = {1: 10.0, 2: 12.0, 3: 14.0, 4: 16.0}      # M2 x L of the ruler bolts, by row (head on the ruler's top, tip at the nut)
 NUT_AF, NUT_T, NUT_POCKET_AF = 4.0, {1: 1.6, 2: 1.6, 3: 1.6, 4: 1.2}, 4.2     # M2 nut (DIN 934, 1.6 thick; row 4: thin DIN 439, 1.2: the M2 x 16 reaches only 0.9 mm into a standard nut there) and its hex pocket
 BOLT_HOLE = 2.4
+F.BLADE_W = 1.5               # R15V4: 1.4 -> 1.5 (the rule is "under 1.5"); the ruler / grade notch (2.0) keeps 0.25 mm each side, so no contract change
+REMOVED = []                  # R15V4: pieces removed by the thin-wall pass (filled by tray())
+SPLIT_RIB = 2.0               # R15V4: battery cradle rib width (was 1.2)
+POST_WEB = 2.0                # R15V4: web joining each wall post to the wall (the posts hung free from the deck: 20-27 mm long, 5.4 wide)
 GRADE_W = 16.0                # the electronics' grade-regua strip (1 mm of border each side of the 14.00 openings)
 
 
@@ -159,6 +164,12 @@ def round_tray(b, mod):
 # ------------------------------------------------------------------ the lid
 def lid(mod):
     body = round_and_chamfer_lid(F.lid(mod), mod)
+    # R15V4: wall posts joined to their wall by a 2 mm web (a free post of 20-27 mm x D5.4 is a slender pin); the web stops 2 mm short of the post's axis so the pilot stays open
+    for x, y in L.wall_posts(mod):
+        zt = (L.ZR[3] + F.DECK_UNDER + 0.5) if y < 18 else (L.ZR[0] + F.DECK_UNDER + 0.5)
+        yw = L.Y_BACK + L.WALL - 0.3 if y < 18 else L.Y_FRONT - L.WALL + 0.3
+        ye = y - 2.0 if y < 18 else y + 2.0
+        body = body.union(box(x - POST_WEB / 2, x + POST_WEB / 2, min(yw, ye), max(yw, ye), L.Z_FLOOR, zt - 0.3))
     ceiling = L.CEILING
     # sockets in the left wall (closed holes; the board goes into the lid from below)
     body = body.cut(cq.Workplane("YZ").workplane(offset=-1).center(USB["y"], USB["z"]).rect(USB["w"], USB["h"])
@@ -209,6 +220,11 @@ def tray(mod):
     # rails under the rulers (two per row)
     for ru in L.rulers(mod):
         z1 = L.ZR[ru["row"] - 1] - L.RULER_T
+        if CRADLE:                                   # R15V4: continuous cradle under the whole ruler, pockets only where the ruler has parts underneath (0.3 mm clear)
+            fill = box(ru["x0"] + 0.2, ru["x0"] + L.RULER_L - 0.2, ru["y"] - L.RAIL_IN - 0.01, ru["y"] + L.RAIL_IN + 0.01, L.Z_FLOOR, z1)
+            for (u0, v0, u1, v1, dep) in cradle_pockets():
+                fill = fill.cut(box(ru["x0"] + u0, ru["x0"] + u1, ru["y"] + v0, ru["y"] + v1, z1 - dep, z1 + 0.1))
+            b = b.union(fill)
         for sgn in (-1, 1):
             ya, yb = sorted((ru["y"] + sgn * L.RAIL_IN, ru["y"] + sgn * L.RAIL_OUT))
             b = b.union(box(ru["x0"] + 0.2, ru["x0"] + L.RULER_L - 0.2, ya, yb, L.Z_FLOOR, z1))
@@ -246,9 +262,13 @@ def tray(mod):
         z1 = L.ZR[ru["row"] - 1] - L.RULER_T
         for mx, my in L.m2_points(ru):
             b = b.cut(cyl(mx, my, L.Z_BOT - 1, z1 + 0.1, BOLT_HOLE)).cut(nut_pocket(mx, my, ru["row"]))
+            b = b.union(nut_ribs(mx, my, ru["row"]))
     # R10V4: the board's four cables go through the walls in tunnels (both free-wire lengths): cut their plan envelope from the floor up to the plug's axis
+    env = None                                  # R15V4: ONE cut with the union of the two cable lengths' envelopes (no blade left between two cuts)
     for F_ in L.CABLE_FREE_MM:
-        b = b.cut(cable_cutter(mod, F_))
+        c_ = cable_cutter(mod, F_)
+        env = c_ if env is None else env.union(c_)
+    b = b.cut(env)
     # connectors: the notches in the rails (the plug passes under the next, higher ruler)
     for nt in L.notches(mod):
         z1 = L.ZR[nt["row"] - 1] - L.RULER_T
@@ -262,7 +282,7 @@ def tray(mod):
     # battery cradle: low ribs behind and at the two ends (the front is open for the cell and its wires)
     bx0, by0 = L.BATTERY_XY
     bx1, by1 = bx0 + L.BATTERY_CELL[0], by0 + L.BATTERY_CELL[1]
-    rib, h, m = 1.2, 2.0, 0.5
+    rib, h, m = SPLIT_RIB, 2.0, 0.5
     for r in ((bx0 - m - rib, by1 + m, bx1 + m + rib, by1 + m + rib),            # the end opposite to the wires
               (bx1 + m, by0 + 6.0, bx1 + m + rib, by1 + m),                      # right side
               (bx0 - m - rib, 66.0, bx0 - m, by1 + m)):                          # left side, only beyond the jack IN (J302, y 54.8..65.2)
@@ -270,7 +290,12 @@ def tray(mod):
     # the module's screw: a recess under H101; the PROG button's hole
     b = b.cut(cyl(L.H101[0], L.H101[1], L.Z_FLOOR - 1.0, L.Z_FLOOR + 1, 8.0))
     b = b.cut(cyl(L.PROG[0], L.PROG[1], L.Z_BOT - 1, L.Z_FLOOR + 1, 3.0))
-    return round_tray(b, mod)
+    b = round_tray(b, mod)
+    REMOVED[:] = []
+    for _pass in range(2):                       # R15V4: no wall thinner than 1.5 mm left by the cut-outs (x >= 79: the keyboard area); a second pass for what the first cut uncovers
+        b, rem = FR.prune(b)
+        REMOVED.extend(rem)
+    return b
 
 
 # ------------------------------------------------------------------ the keyboard's thin parts (M2 per row)
@@ -305,6 +330,31 @@ def grades(mod):
     return res
 
 
+CRADLE = os.environ.get("ETUTTI_CRADLE", "1") == "1"     # R15V4: the continuous cradle (see estudos/berco_r15.py); "0" = the R14V4 two rails
+POCKET_CLEAR, POCKET_MERGE = 0.3, 1.5
+
+
+def cradle_pockets():
+    """Pockets of the cradle in ruler coordinates (u0, v0, u1, v1, depth): every part under the ruler grown by 0.3 mm; pockets closer than 1.5 mm are merged into their hull
+    (no wall under 1.5 mm between two pockets); depth = tallest part + 0.3. The header's pocket is open to the back (v -7.5 on the rail's side is the notch)."""
+    boxes = [[u0 - POCKET_CLEAR, v0 - POCKET_CLEAR, u1 + POCKET_CLEAR, v1 + POCKET_CLEAR, h + POCKET_CLEAR] for ref, (u0, v0, u1, v1), h in H.UNDER_PARTS
+             if not (ref == "J2" and not L.OUT_ON_LAST)]
+    merged = True
+    while merged:
+        merged = False
+        for i in range(len(boxes)):
+            for j in range(i + 1, len(boxes)):
+                a, b = boxes[i], boxes[j]
+                if a[0] - POCKET_MERGE < b[2] and b[0] - POCKET_MERGE < a[2] and a[1] - POCKET_MERGE < b[3] and b[1] - POCKET_MERGE < a[3]:
+                    boxes[i] = [min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3]), max(a[4], b[4])]
+                    del boxes[j]
+                    merged = True
+                    break
+            if merged:
+                break
+    return [tuple(b) for b in boxes]
+
+
 def hexprism(x, y, z0, z1, af):
     """Hexagonal prism of across-flats `af` (corners on the x axis)."""
     r = af / math.sqrt(3.0)
@@ -317,6 +367,22 @@ def nut_z(row):
     tip = L.ZR[row - 1] - BOLT_LEN[row]
     top = max(tip + NUT_T[row], L.Z_BOT + NUT_T[row] + 0.2)
     return top - NUT_T[row], top
+
+
+RIB_W, RIB_PROTRUDE, RIB_LEAD = 0.4, 0.2, 0.3      # R15V4: crush ribs in the nut pockets: 3 ribs (alternate flats), 0.4 wide, standing 0.2 mm off the flat = 0.1 mm of interference with the nut (AF 4.0 in AF 4.2)
+
+
+def nut_ribs(x, y, row):
+    """Three crush ribs on alternate flats of the hex pocket (flats at 30, 90, 150 ... degrees from the corner axis: ribs at 30, 150, 270), from RIB_LEAD above the pocket's mouth to its ceiling."""
+    z0, z1 = nut_z(row)
+    zlo, zhi = L.Z_BOT + RIB_LEAD, z1
+    res = None
+    for ang in (30.0, 150.0, 270.0):
+        r_in = NUT_POCKET_AF / 2 - RIB_PROTRUDE
+        rib = (cq.Workplane("XY").workplane(offset=zlo).center(0, 0).rect(NUT_POCKET_AF / 2 + 0.3 - r_in, RIB_W, centered=(False, True)).extrude(zhi - zlo)
+               .translate((r_in, 0, 0)).rotate((0, 0, 0), (0, 0, 1), ang).translate((x, y, 0)))
+        res = rib if res is None else res.union(rib)
+    return res
 
 
 def nut_pocket(x, y, row):

@@ -165,7 +165,7 @@ def main():
         b.annotate(t, xy=(101, z), xytext=(103, z), fontsize=6.5, va="center", annotation_clip=False)
     fig.tight_layout()
     fig.subplots_adjust(right=0.88)
-    fig.savefig(os.path.join(REN, "corte_interface_v4_r11.png"), dpi=140)
+    fig.savefig(os.path.join(REN, "corte_interface_v4_r15.png"), dpi=140)
     print("ok")
 
 

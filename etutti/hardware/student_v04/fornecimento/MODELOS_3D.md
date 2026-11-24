@@ -57,10 +57,10 @@
 |---|---|---|:-:|---:|---:|---|---|---|
 | C1-1 ... C9-2 (18) | C1525 | C0402_L1.0-W0.5-H0.5 | sim | 0.00 | 0.06 | - | - |  |
 | C10-1, C10-2 | C15850 | C0805_L2.0-W1.3-H1.3 | sim | 1.35 | 0.05 | - | - | modelo da biblioteca deslocado (c_origin da EasyEDA); o CPL está certo (pads); o KiCad usa o modelo corrigido |
-| J1-1, J1-2, J2-1, J2-2 | C160405 | CONN-SMD_SR1.00-WS-6P | sim | 0.00 | 0.00 | - | - |  |
+| J1-1, J1-2, J2-1, J2-2 | C160405 | CONN-SMD_SR1.00-WS-6P | sim | 0.00 | 0.00 | - | +y (cima); esperado : visual |  |
 | R1-1, R1-2 | C25104 | R0402_L1.0-W0.5-H0.4 | sim | 0.05 | 0.08 | - | - |  |
-| U1-1 ... U8-2 (16) | C22401868 | X2SON-4_L1.4-W1.1-P0.50-TR-EP | sim | 0.10 | 0.07 | - | - |  |
-| U9-1, U9-2 | C730243 | DHVQFN-16_L3.5-W2.5-H1.0-P0.50 | sim | 0.00 | 0.03 | - | - |  |
+| U1-1 ... U8-2 (16) | C22401868 | X2SON-4_L1.4-W1.1-P0.50-TR-EP | sim | 0.10 | 0.07 | ok (pads 1/5) | - |  |
+| U9-1, U9-2 | C730243 | DHVQFN-16_L3.5-W2.5-H1.0-P0.50 | sim | 0.00 | 0.03 | ERRO (pads 15/14) | - | a heurística achou o ponto do corpo junto aos pads 15/14 (lado oposto do pino 1 em y); o modelo de 2,2 MB não tem marcador claro e o pino 1 conferido pelo CPL e pelos pads é 0,03 mm: **marcador ambíguo, conferir o ponto do 74HC595 na prévia da JLCPCB** |
 
 ### Régua R4E em painel de 5 (só tabela; R8E, R4 e R4E repetem as mesmas peças)
 
@@ -68,10 +68,10 @@
 |---|---|---|:-:|---:|---:|---|---|---|
 | C1-1 ... C5-5 (25) | C1525 | C0402_L1.0-W0.5-H0.5 | sim | 0.05 | 0.06 | - | - |  |
 | C6-1, C6-2, C6-3, C6-4, C6-5 | C15850 | C0805_L2.0-W1.3-H1.3 | sim | 1.35 | 0.05 | - | - | modelo da biblioteca deslocado (c_origin da EasyEDA); o CPL está certo (pads); o KiCad usa o modelo corrigido |
-| J1-1 ... J2-5 (10) | C160405 | CONN-SMD_SR1.00-WS-6P | sim | 0.00 | 0.00 | - | - |  |
+| J1-1 ... J2-5 (10) | C160405 | CONN-SMD_SR1.00-WS-6P | sim | 0.00 | 0.00 | - | +y (cima); esperado : visual |  |
 | R1-1, R1-2, R1-3, R1-4, R1-5 | C25104 | R0402_L1.0-W0.5-H0.4 | sim | 0.05 | 0.08 | - | - |  |
-| U1-1 ... U4-5 (20) | C22401868 | X2SON-4_L1.4-W1.1-P0.50-TR-EP | sim | 0.10 | 0.07 | - | - |  |
-| U5-1, U5-2, U5-3, U5-4, U5-5 | C730243 | DHVQFN-16_L3.5-W2.5-H1.0-P0.50 | sim | 1142.50 | 0.03 | - | - | modelo da biblioteca deslocado (c_origin da EasyEDA); o CPL está certo (pads); o KiCad usa o modelo corrigido |
+| U1-1 ... U4-5 (20) | C22401868 | X2SON-4_L1.4-W1.1-P0.50-TR-EP | sim | 0.10 | 0.07 | ok (pads 1/5) | - |  |
+| U5-1, U5-2, U5-3, U5-4, U5-5 | C730243 | DHVQFN-16_L3.5-W2.5-H1.0-P0.50 | sim | 0.00 | 0.03 | ERRO (pads 15/14) | - | a heurística achou o ponto do corpo junto aos pads 15/14 (lado oposto do pino 1 em y); o modelo de 2,2 MB não tem marcador claro e o pino 1 conferido pelo CPL e pelos pads é 0,03 mm: **marcador ambíguo, conferir o ponto do 74HC595 na prévia da JLCPCB** |
 
 ## Peças montadas em casa: modelo na cena do instrumento (`student_v04/case`)
 | Peça | Modelo na cena | Fiel? |

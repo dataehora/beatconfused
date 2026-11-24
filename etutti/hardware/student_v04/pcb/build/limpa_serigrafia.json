@@ -1,0 +1,161 @@
+{
+ "student_v04.kicad_pcb": {
+  "campos_para_Fab": 581,
+  "linhas_alargadas": 298,
+  "rotulos": [
+   {
+    "texto": "FILEIRA 1 / ROW 1",
+    "lado": "B",
+    "x": 69.08,
+    "y": 74.03,
+    "angulo": 90,
+    "ancora": "J601",
+    "deslocamento_mm": 5.0
+   },
+   {
+    "texto": "FILEIRA 2 / ROW 2",
+    "lado": "B",
+    "x": 69.08,
+    "y": 58.01,
+    "angulo": 90,
+    "ancora": "J602",
+    "deslocamento_mm": 5.0
+   },
+   {
+    "texto": "FILEIRA 3 / ROW 3",
+    "lado": "B",
+    "x": 69.08,
+    "y": 41.99,
+    "angulo": 90,
+    "ancora": "J603",
+    "deslocamento_mm": 5.0
+   },
+   {
+    "texto": "FILEIRA 4 / ROW 4",
+    "lado": "B",
+    "x": 56.0,
+    "y": 19.0,
+    "angulo": 90,
+    "ancora": [
+     74.0,
+     16.0
+    ],
+    "deslocamento_mm": 18.25
+   },
+   {
+    "texto": "OLED",
+    "lado": "B",
+    "x": 47.95,
+    "y": 25.25,
+    "angulo": 0,
+    "ancora": "J401",
+    "deslocamento_mm": 4.25
+   },
+   {
+    "texto": "BAT",
+    "lado": "B",
+    "x": 64.5,
+    "y": 26.75,
+    "angulo": 0,
+    "ancora": "J202",
+    "deslocamento_mm": 0.25
+   },
+   {
+    "texto": "USB",
+    "lado": "B",
+    "x": 5.95,
+    "y": 10.0,
+    "angulo": 0,
+    "ancora": "J201",
+    "deslocamento_mm": 0.0
+   },
+   {
+    "texto": "FONE / PHONES",
+    "lado": "B",
+    "x": 7.3,
+    "y": 28.75,
+    "angulo": 0,
+    "ancora": "J301",
+    "deslocamento_mm": 7.85
+   },
+   {
+    "texto": "ENTRADA / IN (MIC)",
+    "lado": "B",
+    "x": 7.55,
+    "y": 52.75,
+    "angulo": 0,
+    "ancora": "J302",
+    "deslocamento_mm": 7.95
+   },
+   {
+    "texto": "PROG",
+    "lado": "B",
+    "x": 52.0,
+    "y": 36.0,
+    "angulo": 0,
+    "ancora": "SW403",
+    "deslocamento_mm": 0.0
+   },
+   {
+    "texto": "+",
+    "lado": "F",
+    "x": 47.0,
+    "y": 91.5,
+    "angulo": 0,
+    "ancora": [
+     47.0,
+     91.5
+    ],
+    "deslocamento_mm": 0.0
+   },
+   {
+    "texto": "-",
+    "lado": "F",
+    "x": 53.0,
+    "y": 91.5,
+    "angulo": 0,
+    "ancora": [
+     53.0,
+     91.5
+    ],
+    "deslocamento_mm": 0.0
+   },
+   {
+    "texto": "SPK",
+    "lado": "F",
+    "x": 50.0,
+    "y": 90.5,
+    "angulo": 0,
+    "ancora": [
+     50.0,
+     90.5
+    ],
+    "deslocamento_mm": 0.0
+   },
+   {
+    "texto": "eTutti Student V4 / placa principal",
+    "lado": "F",
+    "x": 41.0,
+    "y": 72.0,
+    "angulo": 0,
+    "ancora": [
+     41.0,
+     72.0
+    ],
+    "deslocamento_mm": 0.0
+   },
+   {
+    "texto": "STUDENT V4",
+    "lado": "B",
+    "x": 41.0,
+    "y": 72.0,
+    "angulo": 0,
+    "ancora": [
+     41.0,
+     72.0
+    ],
+    "deslocamento_mm": 0.0
+   }
+  ]
+ }
+}

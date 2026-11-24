@@ -1,6 +1,6 @@
-# Student V4 (32 teclas) · COMPRA.md: o que marcar e preencher em cada loja (R13V4)
+# Student V4 (32 teclas) · COMPRA.md: o que marcar e preencher em cada loja (R15V4)
 
-23 nov 2026. **Nada foi comprado, cotado como compra nem subido.** A regra do projeto continua: nada se compra antes de o protótipo fechar. Este arquivo deixa a compra pronta para copiar e conferir. Convenções: **visto** = preço visto numa página de loja ou na biblioteca da JLCPCB (data indicada, sem frete e sem imposto); **estim.** = conta minha, sem cotação; **(conferir)** = sem medida ou página conferida agora. Moeda: US$ (a libra é suposição de 1,30 US$ por £). Páginas das lojas não foram abertas nesta rodada (só a biblioteca da JLCPCB, por curl, e as páginas de 15 a 22 nov): **confira estoque, preço e a loja do Reino Unido na hora.**
+24 nov 2026 (R15V4; texto de 23 nov, R13V4, corrigido com as cotações reais do J e a decisão de empilhamento/acabamento). **Nada foi comprado, cotado como compra nem subido.** A regra do projeto continua: nada se compra antes de o protótipo fechar. Este arquivo deixa a compra pronta para copiar e conferir. Convenções: **visto** = preço visto numa página de loja ou na biblioteca da JLCPCB (data indicada, sem frete e sem imposto); **estim.** = conta minha, sem cotação; **(conferir)** = sem medida ou página conferida agora. Moeda: US$ (a libra é suposição de 1,30 US$ por £). Páginas das lojas não foram abertas nesta rodada (só a biblioteca da JLCPCB, por curl, e as páginas de 15 a 22 nov): **confira estoque, preço e a loja do Reino Unido na hora.**
 
 Arquivos que vão para a JLCPCB (todos nesta pasta):
 - principal: `principal/student_v04_gerbers.zip`, `principal/bom.csv`, `principal/cpl.csv`
@@ -20,9 +20,9 @@ Telas na ordem da página de pedido (Instant Quote). Valor = o que marcar.
 | 5 | PCB Qty | 5 | mínimo; as 3 nuas sobram |
 | 6 | Product Type / Delivery Format | Industrial/Consumer, **Single PCB** | |
 | 7 | PCB Thickness | **1.2 mm** | |
-| 8 | Specify Stackup | **Yes → JLC04121H-7628** | espessura real 1,12 mm ±10 %, aceita pelo J |
+| 8 | Specify Stackup | **No** (R15V4) | o empilhamento padrão da JLCPCB basta: o par USB é Full Speed e tem 7,4 mm, não há linha de impedância controlada. **Um empilhamento especificado obriga a montagem Standard.** (A R13V4 pedia JLC04121H-7628; não vale mais.) |
 | 9 | Material Type | FR4 **TG135** | |
-| 10 | Surface Finish | **ENIG** | decisão do J (passo fino: M.2, USB-C, QFN 0,4 mm); Au 1 U" é o padrão |
+| 10 | Surface Finish | **ENIG** ou **HASL sem chumbo** (o J decide na hora, ver a nota abaixo da tabela) | ENIG = decisão do J (passo fino: M.2, USB-C, QFN 0,4 mm); Au 1 U" é o padrão |
 | 11 | Outer / Inner Copper | **1 oz / 0.5 oz** | |
 | 12 | Specify Layer Sequence | No | |
 | 13 | Via Covering | **Plugged** | decisão do J |
@@ -34,7 +34,7 @@ Telas na ordem da página de pedido (Instant Quote). Valor = o que marcar.
 | 19 | Electrical Test | **Flying Probe Fully Test** | |
 | 20 | Demais opções avançadas (cor, serigrafia, borda dourada, ...) | defaults / No | cor verde |
 | 21 | **PCB Assembly** | ligado | |
-| 22 | PCBA Type | **Economic** | se recusar (75 x 95 mm cabe nos limites do econômico), usar Standard e avisar: o preço muda |
+| 22 | PCBA Type | **Economic** | o site pode passar para Standard sozinho ao subir BOM e CPL: ver a nota abaixo (erro do site com ENIG, confirmado pelo suporte) |
 | 23 | Assembly Side | **Bottom Side** | as 78 peças estão no fundo, 0 no topo |
 | 24 | PCBA Qty | **2** | mínimo; uma para o instrumento, outra reserva (a segunda custa só peças, ~US$ 21) |
 | 25 | Tooling holes | **Added by JLCPCB** | a placa não tem trilho |
@@ -43,10 +43,12 @@ Telas na ordem da página de pedido (Instant Quote). Valor = o que marcar.
 | 28 | Parts Selection | **By Customer (Self-Service)** | |
 | 29 | BOM / CPL | `principal/bom.csv` / `principal/cpl.csv` | |
 
+**ENIG ou HASL, e por que o site passa a montagem para Standard (R15V4, achado do J em 24 nov):** com **ENIG** a JLCPCB passa o PCBA para **Standard** ao subir BOM e CPL. **O suporte da JLCPCB confirmou que é um erro do site.** Nenhuma peça da BOM é "Standard only"; o codec, as peças perto da borda e a placa de 75 x 95 mm **não** são a causa; nada muda na BOM nem na montagem. O J refaz a cotação quando o erro for corrigido. Se o erro continuar, a alternativa é **HASL sem chumbo**: **placa cerca de US$ 12 mais barata** e **Economic**, **cerca de US$ 24 mais barato no total**. As duas opções ficam registradas; o J escolhe na hora de pedir (HASL perde um pouco de planeza nos pads de 0,4-0,5 mm do QFN-20 e do M.2; ENIG foi a escolha do J por isso).
+
 **Na tela da BOM:** as 32 linhas devem aparecer **encontradas e com estoque** (14 tipos Extended); C310 **não** está na BOM (não montar). **Estoque mais baixo (conferir):** M.2 C48985906 (553), SGTL5000 C2651833 (1 150), BQ24074 C54313 (2 837), PJ-327A C49284723 (3 259), SM04B C160404 (4 511). Qualquer linha sem estoque: parar e avisar.
 **Na tela de posições (pré-visualização):** use a lista de conferência de `principal/LEIAME_COTACAO.md` contra `pcb/img/previa_jlc_principal_bottom.png`. Peças de furo passante: **não há** na BOM (os 2 encoders e o alto-falante são de casa).
-**Preço visto (R13V4, estimativa nossa; a cotação do J era ~105 antes da troca dos SH):** ~US$ 112 (113,4-138,4 com o PCB suposto); mínimo 5 placas nuas, 2 montadas.
-Tabela da principal conferida: ela bate com a do J (4 camadas, 1,2 mm, JLC04121H-7628, ENIG, 1 oz/0,5 oz, Plugged 0,3/0,4/0,45, Flying Probe, Economic, Bottom, Qty 2, tooling by JLCPCB). **Nada a corrigir.**
+**Cotação real do J (24 nov, ENIG, PCBA Standard porque o site trocou): US$ 158** = placa 25,50 + montagem 132,62 (setup 25,75, stencil 8,27, peças 46,29, carga dos alimentadores 49,60, SMT 2,21, embalagem 0,50); montagem em 3-4 dias, sem custo extra. **É o valor oficial** (substitui a estimativa 113,4-138,4). Com HASL e Economic: **cerca de US$ 134** (-24; estimativa a partir da informação do J, não cotada). Mínimo 5 placas nuas, 2 montadas.
+Tabela da principal: bate com a do J (4 camadas, 1,2 mm, ENIG, 1 oz/0,5 oz, Plugged 0,3/0,4/0,45, Flying Probe, Economic, Bottom, Qty 2, tooling by JLCPCB); **a única mudança da R15V4 é Specify Stackup = No.** A serigrafia da placa foi limpa na R15V4 (`principal/LEIAME_COTACAO.md`): a pré-visualização mostra só os rótulos.
 
 ## 2. JLCPCB · régua R8 em painel de 2 (pedido 2, outro pedido: uma variante por pedido)
 
@@ -72,7 +74,7 @@ Mesma tabela da principal, com as diferenças:
 
 **Mínimos:** 5 painéis nus, **2 montados**: o instrumento de 32 teclas usa exatamente os 2 (4 R8); sobram 3 painéis nus (6 R8 sem peças).
 **Risco principal:** o lado de 44 mm do painel é menor que os 70 mm da montagem padrão: a JLCPCB pode recusar, acrescentar trilho (custo não informado) ou pedir o painel de 4 (`R8_painel4/`, 161,6 x 76 mm, 8 réguas montadas, ~US$ 71-102) ou "Panel by JLCPCB" com 1 tira.
-**Preço (estim., `custo_r11.json`, R13V4):** **47,3-64,2** (4 réguas); a cotação do J era ~70 antes da troca do SH (agora ~73).
+**Cotação real do J (23 nov): US$ 72** (5 painéis, 2 montados = 4 réguas), valor oficial (a estimativa era 47,3-64,2).
 **Outras variantes** (só as linhas que mudam): **R8E** (primeira régua de 48/64/80 teclas): mesmo Gerber, `regua/R8E_painel2/bom.csv` e `cpl.csv` (com J2 e R1), pedido à parte; **R4 / R4E:** `regua/R4_painel5/` (gerbers diferentes: painel 87,6 x 92 mm, 5 tiras), 5 painéis nus, 2 montados = 10 réguas; fora das 32 teclas.
 
 ## 3. Itens fora da JLCPCB
@@ -95,7 +97,7 @@ Lojas do Reino Unido citadas são as que tenho como prováveis; **nenhuma foi ab
 | 12 | **Parafusos M2 passantes** (régua): 8, **2 de cada comprimento M2 x 10, 12, 14, 16** (fileiras 1 a 4) | 8 (+4) | ferragem online UK (Accu, Bolt Base, Ebay) | **aço inox A2**, cabeça panela, **não magnético** (sensores Hall); sempre pedir M2 x 10 / 12 / 14 / 16 | centavos (estim. US$ 0,03-0,05) |
 | 13 | **Porcas M2** | 6 normais + **2 finas (1,2 mm) para a fileira 4** | idem | A2, não magnéticas | US$ 0,015 |
 | 14 | **Parafusos formadores de rosca M2 (PT 2,0)**: **tampa, 15 x M2 x 14** (H1..H4, 5 postes internos, 6 postes de parede); **OLED, 4 x M2 x 4** | 19 (+10 reserva) | idem | cabeça panela, inox ou aço; **reaplicar o parafuso formador de rosca tem limite (5-10 vezes, estimativa)** | US$ 0,04 |
-| 15 | **Pés de silicone** (Ø8 x 1,0, colados direto, sem rebaixo) | **6** | Amazon/eBay UK | **dureza 70A ou mais** (mole demais deixa a placa fletir) | ~£3 (estim.) |
+| 15 | **Pés adesivos** (colados direto na face de baixo da base, sem rebaixo): **3M Bumpon SJ5302** (poliuretano, 70A+ de dureza: Shore A 72, hemisférico, **Ø7,94 x 2,2 mm**, adesivo acrílico) · loja **RS Components UK, código 179-4811** (pacote de 80). **Posições (x; y na planta, mm, a ≥ 9 mm de qualquer furo ou bolso e ≥ 7 mm da borda):** (9; 7), (9; 66), (72; 26), (63; 90), (134; 7), (150; 90), (212; 7), (234; 81) | **8** (1 pacote de 80 sobra para trocas) | RS Components UK (179-4811); alternativa: Farnell/Rapid, SJ5302 | altura de 2,2 mm (a lista pedia 1-2: é o menor Bumpon 3M achado); a RS UK mostra também uma ficha "buffer preto" no 192-5624: **confira a cor e a altura na página antes de pedir** (o SJ5302 da 3M é transparente) | pacote de 80: preço **não lido** (estim. £5-8) |
 | 16 | **MicroMod no H101**: parafuso de **náilon M2,5 x 8** + **porca de náilon M2,5** + **espaçador de náilon de 2,5 mm** | **2 parafusos, 2 porcas, 2 espaçadores** (1 + 1 reserva) | ferragem (Accu, Bolt Base, eBay UK) | o parafuso atravessa **placa 1,2 + espaçador 2,5 + módulo ~1,0 = 4,7 mm** e fecha na porca (~2 mm): 4,7 + 2 = 6,7, então **M2,5 x 8** (x 6 não fecha); **conferir a espessura real do módulo** e que a ponta (1,3 mm além da porca) não toca a base: pedido ao design | centavos (estim.) |
 | 17 | **Case em MJF PA12** (tampa, base, e os impressos 9 e 11) | 1 jogo | JLC3DP, PCBWay, Craftcloud (Reino Unido: via Craftcloud/Shapeways; conferir) | **material PA12 MJF**, cor **cinza/preto** (tintável, pintar depois), acabamento **tingido/alisado se houver**, **sem** vapor-smoothing nas roscas (conferir com o serviço), **paredes mínimas 0,58 mm** nos bolsos hexagonais da fileira 4; arquivos STL de `student_v04/case/out/` (tampa, base, capas, knob); **não enviar o STL das réguas** | ~US$ 46-51 (estim. do design, MJF; não cotado) |
 | 18 | Ferramentas | — | — | ferro de solda (fios do alto-falante, encoders), multímetro (NTC), chave Phillips pequena, **chave de torque** se houver | — |
@@ -105,17 +107,17 @@ Lojas do Reino Unido citadas são as que tenho como prováveis; **nenhuma foi ab
 
 | Grupo | Faixa (US$) | Tipo |
 |---|---:|---|
-| Principal (PCB + montagem, 2 montadas) | 113,4-138,4 | **estim.** (PCB 4 camadas ENIG é suposição; a cotação do J era ~105 antes dos SH originais, +7,0) |
-| Réguas 4 x R8 (painel de 2) | 47,3-64,2 | **estim.** (a cotação do J era ~70, +3,3) |
+| Principal (PCB + montagem, 2 montadas) | 158 | **cotação real do J, 24 nov** (ENIG, PCBA Standard; com HASL + Economic ~134) |
+| Réguas 4 x R8 (painel de 2) | 72 | **cotação real do J, 23 nov** |
 | Grade-régua FR-4 1,6 mm (JLCPCB, item 19) | 8-15 | **estim.** |
 | Cabos SH (6) + cabo Qwiic | 8-10 | visto 22 nov |
 | OLED Adafruit 326 | 17,5 | visto 22 nov |
 | Ferragem (M2 passantes e porcas, PT, M2,5 náilon, pés; itens 12-16) | 6-12 | **estim.** |
 | Case MJF (inclui capas, knobs e caixa acústica) | 46-51 | **estim.** (não cotado) |
 | Teclas, módulo, bateria, alto-falante, encoders, molas, cabo USB-C (MicroMod ~24 + KS-20 24,5-26,6 + molas 3-8 + bateria 6-10 + alto-falante 7-10 + encoders 4-6 + USB-C 3-8) | 71,5-92,6 | misto: visto 15 nov (módulo, teclas, bateria) e **estim.** |
-| **Total (soma das linhas)** | **318-401** | R13V4; a soma das linhas é o número oficial |
+| **Total (soma das linhas)** | **387-428** | R15V4; a soma das linhas é o número oficial (**363-404** com HASL + Economic na principal); era 318-401 na R13V4, com a principal e as réguas estimadas |
 
-O piso usa preços por quantidade e o PCB mínimo; o teto, o preço de 1 peça e o PCB suposto de US$ 39,50.
+As duas placas já são cotações reais (158 e 72); nas demais linhas o piso usa preços por quantidade e o teto, o preço de 1 peça.
 
 ## 5. O que o J faz, na ordem
 1. Subir a principal (seção 1) até a **pré-visualização das posições**; comparar com `pcb/img/previa_jlc_principal_bottom.png` e a lista de `principal/LEIAME_COTACAO.md`; mandar o print ao Chat/Code. Não pagar ainda.

@@ -1,4 +1,6 @@
-# Placa principal da Student V4 · como cotar na JLCPCB (R13V4)
+# Placa principal da Student V4 · como cotar na JLCPCB (R15V4)
+
+**R15V4 (24 nov 2026): serigrafia limpa** (`pcb/limpa_serigrafia.py`): só ficam o nome, os rótulos dos conectores (FILEIRA 1..4 / ROW 1..4, OLED, BAT, USB, FONE / PHONES, ENTRADA / IN (MIC), SPK + / -, PROG) e as marcas de pino 1 e polaridade; referências, valores e códigos LCSC foram para F.Fab/B.Fab. Texto 1,0 mm, traço 0,15 mm (mínimos da JLCPCB: 1,0 e 0,15 mm), nenhum texto sobre pad (folga 0,3 mm; a JLCPCB pede 0,15). **Cobre, máscara, pasta, contorno e furação idênticos aos da R13V4** (Gerbers comparados); BOM e CPL idênticos. Cotação real do J: **US$ 158** (Standard; ver `../COMPRA.md`: Specify Stackup = No, ENIG ou HASL).
 
 **Estado (23 nov 2026): ARQUIVOS PRONTOS PARA COTAR, nada encomendado nem cotado como compra.** Gerados por `fab_principal.py` a partir da placa **roteada** (`kicad/student_v04_roteada.kicad_pcb`), sem rodar `posiciona_v4.py`. Preços **estimados** (`ELETRONICA.md`, R12V4), não cotações.
 
@@ -23,7 +25,7 @@
 - **BB_L1/BB_L2 (aceito):** os fios do indutor têm 0,35 mm por ~1 mm dentro do pátio do U204 (pinos de 0,5 mm). **Aceito:** ~1,4 mohm, ~6 mW a 2 A de pico; a corrente média no indutor é bem menor; o mínimo da JLCPCB é 0,09 mm.
 
 ## O que marcar na JLCPCB (sugestão; conferir na tela da cotação)
-- **PCB:** 4 camadas, **1,2 mm**, pilha **JLC04121H-7628** (a da V3; conferir na tela), vias **0,5 / furo 0,3** (mínimo de furo 0,3 mm), trilha mínima 0,15 mm, folga 0,1 mm, **acabamento ENIG** (decisão do J na V3; o QFN-20 do SGTL5000 de passo 0,4 mm e o M.2 pedem pads planos; HASL é mais barato: cote os dois), máscara verde, **vias tampadas (tented)**, sem borda dourada, **sem impedância controlada** (o par USB tem 7,4 mm: 90 ohm só por cálculo, conferir).
+- **PCB:** 4 camadas, **1,2 mm**, **Specify Stackup = No** (R15V4: a pilha padrão da JLCPCB; a JLC04121H-7628 da R13V4 obrigava a montagem Standard), vias **0,5 / furo 0,3** (mínimo de furo 0,3 mm), trilha mínima 0,15 mm, folga 0,1 mm, **acabamento ENIG** (decisão do J na V3; o QFN-20 do SGTL5000 de passo 0,4 mm e o M.2 pedem pads planos) **ou HASL sem chumbo** (R15V4: placa ~US$ 12 mais barata e Economic, ~US$ 24 no total; o ENIG fez o site passar a montagem para Standard, erro do site confirmado pelo suporte), máscara verde, **vias tampadas (tented)**, sem borda dourada, **sem impedância controlada** (o par USB tem 7,4 mm: 90 ohm só por cálculo, conferir).
 - **Montagem (PCBA):** **só o fundo (Bottom)**, montagem econômica (se aceitar a placa de 75 x 95 mm), "Tooling holes: added by JLCPCB" (a placa não tem trilho; a JLCPCB acrescenta), confirmar a orientação na **pré-visualização** antes de pagar.
 - **Quantidades mínimas:** **5 placas nuas e 2 montadas**; para as 32 teclas basta **1** montada: a segunda sai como reserva (US$ ~18 de peças).
 
@@ -36,6 +38,8 @@
 Módulo **SparkFun MicroMod Teensy (DEV-16402)** no M.2 + **parafuso M2,5 com espaçador de 2,5 mm** no H101; **OLED Adafruit 326** (US$ 17,50) e **cabo Qwiic / STEMMA QT de 50 mm** (~US$ 1) ao J401; **4 cabos SH** da placa às réguas (`A06SR06SR30K51B`, 45,8-50,8 mm); **4 réguas R8** (pedido à parte, `fab/regua/`); **bateria LiPo 1S 503450 (3 fios, NTC)** no J202; **alto-falante CE28MB-8** (fios soldados no J501); **2 encoders EC11E18244AU com os knobs** (solda em casa); **32 teclas Gateron KS-20 Orange**; **parafusos M2 passantes com porcas** e os de rosca para plástico (pelo design).
 
 ## Estimativa de custo (32 teclas, US$, pedido mínimo, sem frete/IVA; `ELETRONICA.md` R12V4)
+**Superada na R15V4 pela cotação real do J: principal US$ 158 (placa 25,50 + montagem 132,62), régua R8 painel de 2 US$ 72; total do protótipo US$ 387-428 (`fab/COMPRA.md` seção 4).** A conta abaixo fica como histórico.
+
 Principal: PCB 14,5-39,5 (**estimativa**, 4L 75 x 95) + preparação e estêncil 9,79 + 14 Extended x 3,09 = 43,26 + peças das 2 montadas **42,7** (os SH originais: +US$ 7,0 contra os clones) + SMT 3,2 = **113,4-138,4** (R12V4: 106,4-131,4; a cotação do J, ~105, passa a ~112). Réguas (4 R8, pedido à parte): **47,3-64,2**. Cabos SH 4,8-5,7. OLED + cabo Qwiic 18,5. Ferragem 6-12 (estimativa). Case MJF ~48,5 (valor do design). Teclas, módulo, bateria, alto-falante, caixa acústica, USB, kit M2,5 e encoders (itens comuns da E3, reescalados para 32 teclas): ~90-131. **Total ≈ US$ 318-401** (soma das linhas de `fab/COMPRA.md` seção 4, com a grade-régua; ver `ELETRONICA.md` R13V4) (o piso usa os preços por quantidade e o PCB mínimo; o teto, o preço de 1 peça e o PCB de 39,50).
 
 ## Riscos

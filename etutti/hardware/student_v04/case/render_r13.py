@@ -76,7 +76,7 @@ def look(group, col):
     if g == "pes":
         return ("#1E1E1E", 0.85, 0.0, {})
     if g == "janela":
-        return ("#0E0D0C", 0.04, 0.0, {"Specular IOR Level": 0.8, "Coat Weight": 0.6, "Coat Roughness": 0.02})
+        return ("#0E0D0C", 0.04, 0.0, {"Specular IOR Level": 0.25, "Coat Weight": 0.12, "Coat Roughness": 0.05, "Alpha": 0.25})
     if g == "knobs":
         return (c, 0.3, 0.0, {"Coat Weight": 0.2})
     if g == "oled":
@@ -209,6 +209,30 @@ def build_scene():
         clean(o, flat=g in ("base", "tampa") and False)
         o.parent = group_empty(g)
         GROUP_OBJS[g].append(o)
+    # R15V4: the OLED shows the firmware's status screen (telas_oled.py -> studentV4/img/tela_status_pt.png), emissive, behind the acrylic
+    t = MAN["tela"]
+    img = bpy.data.images.load(os.path.normpath(os.path.join(HERE, "..", "..", "..", "studentV4", "img", "tela_status_pt.png")))
+    bpy.ops.mesh.primitive_plane_add(size=1.0)
+    pl = bpy.context.active_object
+    pl.name = "oled_tela"
+    pl.scale = M(t["w"], t["h"], 1.0)
+    pl.location = M(t["cx"], t["cy_file"], t["z"])
+    mt = bpy.data.materials.new("tela_oled")
+    mt.use_nodes = True
+    nt = mt.node_tree
+    for n in list(nt.nodes):
+        nt.nodes.remove(n)
+    tx = nt.nodes.new("ShaderNodeTexImage")
+    tx.image = img
+    tx.interpolation = "Closest"
+    em = nt.nodes.new("ShaderNodeEmission")
+    em.inputs["Strength"].default_value = 9.0
+    out = nt.nodes.new("ShaderNodeOutputMaterial")
+    nt.links.new(tx.outputs["Color"], em.inputs["Color"])
+    nt.links.new(em.outputs["Emission"], out.inputs["Surface"])
+    pl.data.materials.append(mt)
+    pl.parent = group_empty("oled")
+    GROUP_OBJS["oled"].append(pl)
     new = import_glb(os.path.join(BUILD, "principal_full.glb"), "placa", (0, 0, -1.12), "placa")
     tune_board_materials(new)
     for r in (1, 2, 3, 4):
@@ -286,6 +310,7 @@ def shots():
 
     closed = ["tampa", "base", "janela", "oled", "encoders", "knobs"] + rows("capa")
     add("foto_instrumento", closed + ["rotulos"], [(CX - 170, CY - 290, 190), (CX - 5, CY + 5, 8), (0, 0, 1)], 1.18, (2400, 1500), floor=True, labels=True)
+    add("foto_tela", closed + ["rotulos"], [(30, -75, 150), (37, -24, 12), (0, 0, 1)], 2.2, (2000, 1200), floor=True, labels=False)
     off_ex = {"base": (0, 0, -70), "parafusos_base": (0, 0, -70), "pes": (0, 0, -78)}
     for r in (1, 2, 3, 4):
         for p in ("reg", "cab", "por"):
@@ -324,27 +349,27 @@ def shots():
     add("passo_5", ["placa", "encoders", "modulo", "m25_parafuso", "m25_espacador", "m25_porca", "bateria"], [(-60, -230, -190), (40, -50, -14), (0, 0, 1)], 1.25, (2000, 1250),
         {"bateria": (0, 0, 0)}, fade=["placa", "encoders", "modulo", "m25_parafuso", "m25_espacador", "m25_porca"], under=True,
         anchors={"1": ("bateria", (34, 65, -3)), "2": ("bateria", (30, 37, -5)), "3": ("placa", (64.5, 26.5, -4.5)), "4": ("placa", (40, 70, -1.2))})
-    # 6: keys on the rulers (grade first)
-    six = rows("reg") + rows("gra") + rows("tec")
+    # R15V4 (bolts BEFORE the keys: with the grade and the keys on, the grade's web covers the bolt heads and the gap between the covers is 3.1 mm)
+    # 6: the tray with the nuts (seen from below)
+    add("passo_6", ["base"] + rows("por"), [(CX - 110, CY - 250, -250), (CX, CY + 5, -12), (0, 0, 1)], 1.0, (2000, 1250), {("por_r%d" % r): (0, 0, -30) for r in (1, 2, 3, 4)}, under=True,
+        anchors={"1": ("base", (120, 10, -10)), "2": ("por_r1", (107.7, 79.2, -9)), "3": ("por_r4", (116.95, 31.2, -5)), "4": ("base", (200, 90, -10))})
+    # 7: rulers (with their cables) into the tray, front to back (row 1 first), then the bolts
+    o8 = {}
+    for r in (1, 2, 3, 4):
+        z = 22.0 * r
+        for p in ("reg", "cab"):
+            o8["%s_r%d" % (p, r)] = (0, 0, z)
+        o8["par_r%d" % r] = (0, 0, z + 20)
+    add("passo_7", ["base"] + rows("por") + rows("reg") + rows("cab") + rows("par"),
+        [(CX - 260, CY - 330, 200), (CX, CY + 5, 40), (0, 0, 1)], 1.08, (2000, 1350), o8,
+        anchors={"1": ("base", (120, 95, -6)), "2": ("reg_r1", (130, 74, 0)), "3": ("cab_r1", (100, 62, -7)), "4": ("par_r1", (107.7, 79.2, 1)), "5": ("par_r4", (116.95, 31.2, 8)), "6": ("cab_r4", (100, 20, 0))})
+    # 8: grade + 4 keys of each row down onto the bolted rulers (pegs into the ruler)
     o6 = {}
     for r in (1, 2, 3, 4):
         o6["gra_r%d" % r] = (0, 0, 16)
         o6["tec_r%d" % r] = (0, 0, 34)
-    add("passo_6", six, [(CX - 150, CY - 260, 190), (CX + 20, CY, 12), (0, 0, 1)], 1.3, (2000, 1250), o6,
+    add("passo_8", ["base"] + rows("por") + rows("reg") + rows("cab") + rows("par") + rows("gra") + rows("tec"), [(CX - 150, CY - 260, 190), (CX + 20, CY, 12), (0, 0, 1)], 1.3, (2000, 1250), o6,
         anchors={"1": ("reg_r1", (130, 74, 0)), "2": ("gra_r1", (136, 74, 4.5)), "3": ("tec_r1", (116.95, 74, 8)), "4": ("reg_r4", (130, 26, 7))})
-    # 7: the tray with the nuts (seen from below)
-    add("passo_7", ["base"] + rows("por"), [(CX - 110, CY - 250, -250), (CX, CY + 5, -12), (0, 0, 1)], 1.0, (2000, 1250), {("por_r%d" % r): (0, 0, -30) for r in (1, 2, 3, 4)}, under=True,
-        anchors={"1": ("base", (120, 10, -10)), "2": ("por_r1", (107.7, 79.2, -9)), "3": ("por_r4", (116.95, 31.2, -5)), "4": ("base", (200, 90, -10))})
-    # 8: rulers into the tray, front to back (row 1 first)
-    o8 = {}
-    for r in (1, 2, 3, 4):
-        z = 22.0 * r
-        for p in ("reg", "gra", "tec", "cab"):
-            o8["%s_r%d" % (p, r)] = (0, 0, z)
-        o8["par_r%d" % r] = (0, 0, z + 20)
-    add("passo_8", ["base"] + rows("por") + rows("reg") + rows("gra") + rows("tec") + rows("cab") + rows("par"),
-        [(CX - 260, CY - 330, 200), (CX, CY + 5, 40), (0, 0, 1)], 1.08, (2000, 1350), o8,
-        anchors={"1": ("base", (120, 95, -6)), "2": ("reg_r1", (130, 74, 0)), "3": ("cab_r1", (100, 62, -7)), "4": ("par_r1", (107.7, 79.2, 1)), "5": ("par_r4", (116.95, 31.2, 8)), "6": ("cab_r4", (100, 20, 0))})
     # 9: the board into the lid, cables (lid face down)
     o9 = {g: (0, 0, -60) for g in boardg}
     o9["pta_r1"] = o9["pta_r2"] = o9["pta_r3"] = o9["pta_r4"] = (0, 0, -60)

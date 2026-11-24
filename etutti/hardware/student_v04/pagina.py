@@ -28,7 +28,7 @@ OUT = os.path.join(ETUTTI, "studentV4")
 IMG = os.path.join(OUT, "img")
 ARQ = os.path.join(OUT, "arquivos")
 REN = os.path.join(HERE, "case", "renders")
-VER = "20261123b"
+VER = "20261124a"
 sys.path.insert(0, os.path.join(HERE, "case"))
 import layout_r4 as LAY    # noqa: E402  (stdlib only)
 
@@ -48,12 +48,14 @@ def B(pt, en, tag="div"):
 
 # ---------------------------------------------------------------- pictures
 FALLBACK = {   # name -> (render in case/renders, max width)
-    "planta": ("planta_geral_v4_r11.png", 1700),
-    "planta_interface": ("planta_interface_v4_r11.png", 1500),
-    "corte_interface": ("corte_interface_v4_r11.png", 1500),
-    "base": ("iso_base_r11_topo.png", 1500),
-    "base_frente": ("iso_base_r11_frente_esq.png", 1500),
-    "ligacao": ("ligacao_h_montagem_r8.png", 1500),
+    "planta": ("planta_geral_v4_r15.png", 1700),
+    "planta_interface": ("planta_interface_v4_r15.png", 1500),
+    "corte_interface": ("corte_interface_v4_r15.png", 1500),
+    "iso_base_r15": ("iso_base_r15_frente_esq.png", 2200),
+    "iso_base_r15_tras": ("iso_base_r15_tras_dir.png", 2200),
+    "corte_base_r15": ("corte_base_r15.png", 1700),
+    "base_antes_depois_r15": ("base_antes_depois_r15.png", 1700),
+    "prog_r15": ("base_fundo_prog_r15.png", 1900),
 }
 
 
@@ -65,15 +67,34 @@ def find_img(name):
     return None
 
 
+def trim(im, pad=12):
+    """Crop the white margins of a drawing sheet (matplotlib figures come with a lot of blank paper)."""
+    from PIL import ImageChops
+    bg = Image.new("RGB", im.size, (255, 255, 255))
+    box = ImageChops.difference(im, bg).convert("L").point(lambda v: 255 if v > 12 else 0).getbbox()
+    if not box:
+        return im
+    return im.crop((max(box[0] - pad, 0), max(box[1] - pad, 0), min(box[2] + pad, im.width), min(box[3] + pad, im.height)))
+
+
 def prepare_fallbacks():
     for name, (src, mw) in FALLBACK.items():
         sp = os.path.join(REN, src)
-        if not os.path.exists(sp) or find_img(name):
+        if not os.path.exists(sp):
             continue
-        im = Image.open(sp).convert("RGB")
+        im = trim(Image.open(sp).convert("RGB"))
         if im.width > mw:
             im = im.resize((mw, int(im.height * mw / im.width)), Image.LANCZOS)
         im.save(os.path.join(IMG, name + ".jpg"), quality=86, optimize=True)
+
+
+def prepare_extra():
+    sp = os.path.join(REN, "regua_parafusos_r14.png")
+    if os.path.exists(sp):
+        im = trim(Image.open(sp).convert("RGB"))
+        if im.width > 2000:
+            im = im.resize((2000, int(im.height * 2000 / im.width)), Image.LANCZOS)
+        im.save(os.path.join(IMG, "regua_parafusos_r14.jpg"), quality=86, optimize=True)
 
 
 PREVIAS = {"previa_principal_bottom": "previa_jlc_principal_bottom.png", "previa_principal_top": "previa_jlc_principal_top.png", "previa_r8_bottom": "previa_jlc_r8_bottom.png"}
@@ -242,17 +263,18 @@ def md_to_html(md):
 
 
 # ---------------------------------------------------------------- prices (ESTIMATES: fab/principal/LEIAME_COTACAO.md, R12V4)
-PRICES = [   # area_pt, area_en, low, high, note_pt, note_en  (same lines as fab/COMPRA.md section 4; the sum is the official total)
-    ("Placa principal montada (JLCPCB)", "Main board, assembled (JLCPCB)", 113.4, 138.4,
-     "PCB 4 camadas 75 x 95 mm (preço do PCB suposto), 78 peças soldadas pelo fundo, 14 tipos Extended; 5 placas, 2 montadas", "4-layer PCB 75 x 95 mm (assumed PCB price), 78 parts soldered on the bottom, 14 Extended types; 5 boards, 2 assembled"),
-    ("4 réguas R8 montadas (JLCPCB, pedido à parte)", "4 R8 rulers, assembled (JLCPCB, separate order)", 47.3, 64.2,
-     "2 painéis de 2 réguas; 32 sensores TMAG5253 e 4 registradores 74HC595", "2 panels of 2 rulers; 32 TMAG5253 sensors and 4 74HC595 registers"),
+PRICES = [   # area_pt, area_en, low, high, note_pt, note_en  (same lines as fab/COMPRA.md section 4, R15V4; the sum is the official total)
+    ("Placa principal montada (JLCPCB)", "Main board, assembled (JLCPCB)", 158.0, 158.0,
+     "cotação real do J (24 nov, ENIG, o site passou a montagem para Standard): placa 25,50 + montagem 132,62; 5 placas, 2 montadas. Com HASL e montagem Economic: cerca de 134 (estimativa)",
+     "J's real quote (24 Nov, ENIG, the site switched assembly to Standard): board 25.50 + assembly 132.62; 5 boards, 2 assembled. With HASL and Economic assembly: about 134 (estimate)"),
+    ("4 réguas R8 montadas (JLCPCB, pedido à parte)", "4 R8 rulers, assembled (JLCPCB, separate order)", 72.0, 72.0,
+     "cotação real do J (23 nov): painel de 2 réguas, 5 painéis, 2 montados", "J's real quote (23 Nov): panel of 2 rulers, 5 panels, 2 assembled"),
     ("Grade-régua FR-4 1,6 mm (JLCPCB, placa nua)", "1.6 mm FR-4 ruler grid (JLCPCB, bare board)", 8.0, 15.0, "estimativa, não cotada", "estimate, not quoted"),
     ("6 cabos JST SH (placa → réguas, 2 de reserva) e cabo Qwiic 50 mm", "6 JST SH cables (board → rulers, 2 spare) and 50 mm Qwiic cable", 8.0, 10.0, "A06SR06SR30K51B", "A06SR06SR30K51B"),
     ("Tela OLED Adafruit 326", "Adafruit 326 OLED", 17.5, 17.5, "SSD1306 128 x 64, I²C", "SSD1306 128 x 64, I²C"),
-    ("Ferragem (M2 passantes e porcas, formadores de rosca, M2,5 de náilon, pés)", "Hardware (M2 through bolts and nuts, thread-forming screws, nylon M2.5, feet)", 6.0, 12.0, "estimativa", "estimate"),
+    ("Ferragem (M2 passantes e porcas, formadores de rosca, M2,5 de náilon, 8 pés 3M Bumpon)", "Hardware (M2 through bolts and nuts, thread-forming screws, nylon M2.5, 8 3M Bumpon feet)", 6.0, 12.0, "estimativa", "estimate"),
     ("Case impresso em MJF PA12 (base, tampa, capas, caixa acústica, knobs)", "Case printed in MJF PA12 (base, lid, caps, acoustic box, knobs)", 46.0, 51.0,
-     "valor do design, por volume; não cotado", "design's figure, by volume; not quoted"),
+     "valor de COMPRA.md, por volume; não cotado (o berço contínuo da base nova não está incluído, ver a nota abaixo)", "COMPRA.md's figure, by volume; not quoted (the new base's continuous cradle is not included, see the note below)"),
     ("Teclas, módulo, bateria, alto-falante, encoders, molas e cabo USB-C", "Keys, module, battery, speaker, encoders, springs and USB-C cable", 71.5, 92.6,
      "KS-20 Orange; MicroMod DEV-16402; LiPo 503450; CE28MB-8; EC11E18244AU", "KS-20 Orange; MicroMod DEV-16402; LiPo 503450; CE28MB-8; EC11E18244AU"),
 ]
@@ -308,7 +330,7 @@ def menu_tree_html(L):
 
 
 # ---------------------------------------------------------------- the assembly steps (section 6): texts in pagina_passos.py
-from pagina_passos import STEPS   # noqa: E402
+from pagina_passos import STEPS, EXTRA   # noqa: E402
 
 CARES = ("pt", "en")
 
@@ -317,11 +339,14 @@ def steps_html():
     pt, en = [], []
     for i, (f, tp, te, tm, ptp, pte, xp, xe, wp, we, bal) in enumerate(STEPS, 1):
         figh = fig(f, "Passo %d" % i, "Step %d" % i, "Passo %d: %s" % (i, tp), "Step %d: %s" % (i, te))
+        xf = EXTRA.get(i)
+        xfig = fig(xf[0], xf[3], xf[4], xf[1], xf[2]) if xf else None
         for lst, L, ti, parts, tx, wr, lab, k in ((pt, "pt", tp, ptp, xp, wp, ("Tempo", "Peças", "Números na figura"), 0), (en, "en", te, pte, xe, we, ("Time", "Parts", "Numbers in the figure"), 1)):
             w = '<div class="warn">%s</div>' % esc(wr) if wr else ""
             leg = '<ol class="legend" aria-label="%s">%s</ol>' % (lab[2], "".join("<li>%s</li>" % esc(b[k]) for b in bal)) if bal else ""
-            lst.append('<article class="step"><h3><span class="n">%d</span> %s</h3>%s%s<dl class="meta"><dt>%s</dt><dd>%s</dd><dt>%s</dt><dd>%s</dd></dl><p>%s</p>%s</article>'
-                       % (i, esc(ti), figh_block(figh, L), leg, lab[0], esc(tm), lab[1], esc(parts), tx, w))
+            extra = figh_block(xfig, L) if xfig else ""
+            lst.append('<article class="step" id="passo-%d%s"><h3><span class="n">%d</span> %s</h3>%s%s<dl class="meta"><dt>%s</dt><dd>%s</dd><dt>%s</dt><dd>%s</dd></dl><p>%s</p>%s%s</article>'
+                       % (i, "" if L == "pt" else "-en", i, esc(ti), figh_block(figh, L), leg, lab[0], esc(tm), lab[1], esc(parts), tx, extra, w))
     return B("".join(pt), "".join(en))
 
 
@@ -350,6 +375,7 @@ def copy_files():
         (src("fab", "student_v04_grade_regua_painel_gerbers.zip"), "grade_regua_painel_gerbers.zip", "Grade-régua FR-4 de 1,6 mm (painel): Gerbers, placa nua sem montagem", "FR-4 ruler grid 1.6 mm (panel): Gerbers, bare board, no assembly", "fab"),
         (src("fab", "student_v04_grade_contorno32_gerbers.zip"), "grade_contorno32_gerbers.zip", "Grade FR-4 (contorno de 32 teclas): Gerbers", "FR-4 grid (32-key outline): Gerbers", "fab"),
         (src("fab", "COMPRA.md"), "COMPRA.md", "COMPRA.md: o que marcar e preencher em cada loja (eletrônica, pt)", "COMPRA.md: what to tick and fill in at each shop (electronics, pt)", "doc"),
+        (src("compra_en.md"), "COMPRA_en.md", "COMPRA_en.md: o mesmo texto em inglês (tradução)", "COMPRA_en.md: the same text in English (translation)", "doc"),
         (src("fornecimento", "MODELOS_3D.md"), "MODELOS_3D.md", "MODELOS_3D.md: modelo 3D, posição, giro e pino 1 das peças montadas pela JLCPCB (pt)", "MODELOS_3D.md: 3D model, position, rotation and pin 1 of the parts JLCPCB assembles (pt)", "doc"),
         (src("fab", "principal", "LEIAME_COTACAO.md"), "LEIAME_COTACAO_principal.md", "Placa principal: como cotar, conferências e lista de pré-visualização (pt)", "Main board: how to quote, checks and preview checklist (pt)", "doc"),
         (src("fab", "regua", "LEIAME_COTACAO.md"), "LEIAME_COTACAO_regua.md", "Réguas: como cotar, variantes e painéis (pt)", "Rulers: how to quote, variants and panels (pt)", "doc"),
@@ -410,12 +436,6 @@ PAGE_NAMES = [   # (path as written in COMPRA.md, name of the same file in secti
     ("`principal/student_v04_gerbers.zip`", "`placa_principal_gerbers.zip`"), ("`principal/bom.csv`", "`placa_principal_bom.csv`"), ("`principal/cpl.csv`", "`placa_principal_cpl.csv`"),
     ("`regua/R8_painel2/gerbers.zip`", "`regua_R8_painel2_gerbers.zip`"), ("`regua/R8_painel2/bom.csv`", "`regua_R8_painel2_bom.csv`"), ("`regua/R8_painel2/cpl.csv`", "`regua_R8_painel2_cpl.csv`"),
 ]
-ROW14_PT = ("| 14 | **Parafusos formadores de rosca M2 (PT 2,0)**: **tampa, 15 x M2 x 14** (H1..H4, 5 postes internos, 6 postes de parede); **OLED, 4 x M2 x 4** | 19 (+10 reserva) | idem | cabeça panela, inox ou aço; "
-            "**reaplicar o parafuso formador de rosca tem limite (5-10 vezes, estimativa)**. *Corrigido nesta página (design, R13V4): o COMPRA.md ainda diz x 16 nos H e x 8 nos postes.* | US$ 0,04 |")
-ROW15_PT = ("| 15 | **Pés de silicone** (D8 x 1,0, adesivos) | **6** | Amazon/eBay UK | **dureza 70A ou mais** (mole demais deixa a placa fletir). "
-            "*Corrigido nesta página (design): o COMPRA.md diz 9 pés D8 x 1,5.* | ~£3 (estim.) |")
-
-
 def compra_md(L):
     if L == "en":
         f = os.path.join(HERE, "compra_en.md")
@@ -451,6 +471,7 @@ def compra_md(L):
 # ---------------------------------------------------------------- sections
 def build():
     prepare_fallbacks()
+    prepare_extra()
     prepare_previews()
     price_html, lo, hi = price_table()
     files = copy_files()
@@ -513,22 +534,35 @@ def build():
     parts_pt = ("<h3>O que vem montado e o que é de casa</h3><ul>"
                 "<li><strong>JLCPCB monta:</strong> a placa principal (78 peças, todas no fundo: sensor de energia, codec, amplificador, carregador, conversor, conectores USB-C, OUT, IN, SH e M.2) e as 4 réguas R8 (32 sensores TMAG5253, 4 registradores 74HC595 e os conectores SH).</li>"
                 "<li><strong>Soldado em casa:</strong> os 2 encoders EC11E18244AU e os 2 fios do alto-falante.</li>"
-                "<li><strong>Encaixado ou parafusado, sem solda:</strong> módulo MicroMod Teensy (DEV-16402) com parafuso e espaçador M2,5 de náilon, tela OLED Adafruit 326 e cabo Qwiic, bateria LiPo 503450, 32 teclas Gateron KS-20 Orange, 4 cabos SH, parafusos e porcas M2, pés.</li>"
+                "<li><strong>Encaixado ou parafusado, sem solda:</strong> módulo MicroMod Teensy (DEV-16402) com parafuso e espaçador M2,5 de náilon, tela OLED Adafruit 326 e cabo Qwiic, bateria LiPo 503450, 32 teclas Gateron KS-20 Orange, 4 cabos SH, parafusos e porcas M2, 8 pés adesivos 3M Bumpon.</li>"
                 "<li><strong>Impresso (MJF PA12):</strong> base, tampa, 32 botões, 2 knobs, caixa acústica em L.</li></ul>"
-                "<h3>Ferramentas</h3><p>Ferro de solda com ponta fina, solda 0,6 mm, alicate de corte, pinça fina, chaves Phillips pequenas, multímetro, lupa ou microscópio, lixa fina, silicone, cola quente. Parafusos e ferramentas <strong>não magnéticos</strong> perto das teclas.</p>"
+                "<h3>Ferramentas</h3><p>Ferro de solda com ponta fina, solda 0,6 mm, alicate de corte, pinça fina, chave Phillips #0 não magnética, multímetro, lupa ou microscópio, lixa fina, silicone, cola quente. Parafusos e ferramentas <strong>não magnéticos</strong> perto das teclas.</p>"
                 "<h3>Preço (estimativa)</h3>")
     parts_en = ("<h3>What arrives assembled and what is done at home</h3><ul>"
                 "<li><strong>JLCPCB assembles:</strong> the main board (78 parts, all on the bottom: power ICs, codec, amplifier, charger, converter, the USB-C, OUT, IN, SH and M.2 connectors) and the 4 R8 rulers (32 TMAG5253 sensors, 4 74HC595 registers and the SH connectors).</li>"
                 "<li><strong>Soldered at home:</strong> the 2 EC11E18244AU encoders and the 2 speaker wires.</li>"
-                "<li><strong>Snapped or screwed in, no soldering:</strong> the MicroMod Teensy module (DEV-16402) with an M2.5 nylon screw and spacer, the Adafruit 326 OLED and Qwiic cable, the LiPo 503450 battery, 32 Gateron KS-20 Orange keys, 4 SH cables, M2 screws and nuts, feet.</li>"
+                "<li><strong>Snapped or screwed in, no soldering:</strong> the MicroMod Teensy module (DEV-16402) with an M2.5 nylon screw and spacer, the Adafruit 326 OLED and Qwiic cable, the LiPo 503450 battery, 32 Gateron KS-20 Orange keys, 4 SH cables, M2 screws and nuts, 8 adhesive 3M Bumpon feet.</li>"
                 "<li><strong>Printed (MJF PA12):</strong> base, lid, 32 buttons, 2 knobs, L-shaped acoustic box.</li></ul>"
-                "<h3>Tools</h3><p>Soldering iron with a fine tip, 0.6 mm solder, side cutters, fine tweezers, small Phillips screwdrivers, multimeter, magnifier or microscope, fine sandpaper, silicone, hot glue. <strong>Non-magnetic</strong> screws and tools near the keys.</p>"
+                "<h3>Tools</h3><p>Soldering iron with a fine tip, 0.6 mm solder, side cutters, fine tweezers, non-magnetic Phillips #0 screwdriver, multimeter, magnifier or microscope, fine sandpaper, silicone, hot glue. <strong>Non-magnetic</strong> screws and tools near the keys.</p>"
                 "<h3>Price (estimate)</h3>")
     expl = fig("foto_explodido", "Vista explodida do instrumento", "Exploded view of the instrument", "Vista explodida: tampa, tela, alto-falante e caixa, placa, módulo, bateria, bandeja com as quatro réguas, teclas, capas e knobs.",
                "Exploded view: lid, screen, speaker and box, board, module, battery, tray with the four rulers, keys, caps and knobs.")
+    case_figs = (fig("iso_base_r15", "Isométrico da base, com os apoios numerados", "Isometric of the base, with numbered supports",
+                     "A base sozinha, vista de frente e da esquerda: o berço contínuo sob cada régua (azul), os risers, as paredes de ponta, as bossas dos parafusos e os apoios numerados, com o nome da nota em cada tecla. A legenda de cada número está na própria figura (clique para ampliar).",
+                     "The base alone, seen from the front-left: the continuous cradle under each ruler (blue), the risers, end walls, bolt bosses and the numbered supports, with the note name on each key. Each number's legend is in the figure itself (click to enlarge).")
+                 + fig("iso_base_r15_tras", "Isométrico da base, visto de trás e da direita", "Isometric of the base, seen from the back-right",
+                       "A mesma base, de trás e da direita.", "The same base, from the back-right.")
+                 + fig("base_antes_depois_r15", "As pontas das réguas na base, antes e depois", "The ruler ends in the base, before and after",
+                       "Antes e depois: em vermelho, as paredes e hastes de menos de 1,5 mm que a base antiga tinha nas pontas das réguas; a base nova não as tem (resta um degrau de 0,7 mm preso ao longo do comprimento na fileira 4). Figura de trabalho do design, em português.",
+                       "Before and after: in red, the walls and stubs under 1.5 mm that the old base had at the ruler ends; the new base has none (one 0.7 mm step remains, attached along its length, on row 4). Design working figure, in Portuguese.")
+                 + fig("planta", "Planta do instrumento", "Plan of the instrument", "Planta, de cima, com o nome da nota em cada tecla.", "Plan from above, with the note name on each key.")
+                 + fig("planta_interface", "Planta da interface", "Plan of the interface", "A área da interface (esquerda): tela, knobs, alto-falante, bateria, módulo e placa.", "The interface area (left): screen, knobs, speaker, battery, module and board.")
+                 + fig("corte_interface", "Cortes da interface", "Sections of the interface", "Cortes pela interface: tampa, caixa acústica, alto-falante, OLED, placa, módulo, bateria e base.", "Sections through the interface: lid, acoustic box, speaker, OLED, board, module, battery and base."))
+    case_txt = B("<h3>O case: base e tampa</h3><p>A base de MJF PA12 (130 cm³) leva as quatro réguas num <strong>berço contínuo</strong>: cada régua repousa numa laje sólida da largura dela (14 mm), com bolsos só onde há peça sob a régua, em vez de dois trilhos finos. Apoia 86 % da face de baixo da régua (contra 37 %), e a régua flete 0,0013 mm a 3 N na tecla (contra 0,0151 mm). A base não tem partes frágeis: uma varredura de paredes e hastes de menos de 1,5 mm achou 11 grupos na base antiga e deixou 1 (um degrau de 0,7 mm preso ao longo do comprimento). Cada bolso de porca tem três costelas de pressão que a seguram. Embaixo há 8 pés adesivos e o furo de Ø3 para o botão PROG (passo 11).</p>",
+                 "<h3>The case: base and lid</h3><p>The MJF PA12 base (130 cm³) carries the four rulers on a <strong>continuous cradle</strong>: each ruler rests on a solid slab as wide as itself (14 mm), with pockets only where a part sits under the ruler, instead of two thin rails. It supports 86 % of the ruler's underside (against 37 %), and the ruler deflects 0.0013 mm at 3 N on the key (against 0.0151 mm). The base has no fragile parts: a scan for walls and stubs under 1.5 mm found 11 groups in the old base and left 1 (a 0.7 mm step attached along its length). Each nut pocket has three pressure ribs that hold it. Underneath are 8 adhesive feet and the dia 3 hole for the PROG button (step 11).</p>")
     section("pecas", "4 · Peças e preço", "4 · Parts and price", expl + B(parts_pt, parts_en) + price_html + B(
-        "<p><small>Estimativas de <code>ELETRONICA.md</code> e <code>fab/COMPRA.md</code> (R13V4), pedido mínimo, sem frete nem IVA. O piso usa preços por quantidade e o PCB mínimo; o teto, o preço de uma peça e o PCB suposto. A soma das linhas dá US$ 318–401, o mesmo número de <code>fab/COMPRA.md</code>. Nada foi cotado como compra. As peças da JLCPCB têm modelo 3D, posição, giro e pino 1 conferidos: <a href=\"arquivos/MODELOS_3D.md\">MODELOS_3D.md</a>.</small></p>",
-        "<p><small>Estimates from <code>ELETRONICA.md</code> and <code>fab/COMPRA.md</code> (R13V4), minimum order, no shipping or VAT. The low end uses quantity prices and the minimum PCB; the high end, single-piece prices and the assumed PCB. The lines add up to US$ 318–401, the same number as <code>fab/COMPRA.md</code>. Nothing has been quoted as a purchase. The JLCPCB parts have their 3D model, position, rotation and pin 1 checked: <a href=\"arquivos/MODELOS_3D.md\">MODELOS_3D.md</a> (Portuguese).</small></p>"))
+        "<p><small>Valores de <code>fab/COMPRA.md</code> (R15V4), pedido mínimo, sem frete nem IVA. As duas placas são cotações reais do J (158 e 72); nas demais linhas o piso usa preços por quantidade e o teto, o preço de uma peça. A soma das linhas dá US$ 387–428, o mesmo número de <code>fab/COMPRA.md</code> (com HASL e montagem Economic na principal: 363–404). Nada foi comprado. <strong>Nota:</strong> a base nova tem um berço contínuo sob as réguas (apoio de 86 % contra 37 %, flecha de 0,0013 mm contra 0,0151 mm a 3 N); o design estima que ele acrescente cerca de US$ 12 à impressão (+43 cm³ de MJF), valor ainda não somado à linha do case. As peças da JLCPCB têm modelo 3D, posição, giro e pino 1 conferidos: <a href=\"arquivos/MODELOS_3D.md\">MODELOS_3D.md</a>.</small></p>",
+        "<p><small>Figures from <code>fab/COMPRA.md</code> (R15V4), minimum order, no shipping or VAT. Both boards are J's real quotes (158 and 72); in the other lines the low end uses quantity prices and the high end single-piece prices. The lines add up to US$ 387–428, the same number as <code>fab/COMPRA.md</code> (with HASL and Economic assembly on the main board: 363–404). Nothing has been bought. <strong>Note:</strong> the new base has a continuous cradle under the rulers (86 % support against 37 %, deflection 0.0013 mm against 0.0151 mm at 3 N); the design estimates it adds about US$ 12 to the print (+43 cm³ of MJF), not yet added to the case line. The JLCPCB parts have their 3D model, position, rotation and pin 1 checked: <a href=\"arquivos/MODELOS_3D.md\">MODELOS_3D.md</a> (Portuguese).</small></p>") + case_txt + case_figs)
 
     # 5
     chk_pt = ("<h3>O que conferir na pré-visualização da JLCPCB</h3><p>Antes de pagar, compare a tela de posições da JLCPCB com as figuras abaixo (a pré-visualização própria do projeto, com os mesmos modelos 3D nas posições do CPL; <strong>o anel vermelho marca o pino 1 da placa</strong>; a vista de baixo é espelhada, porque a placa foi virada em torno do eixo vertical). "
@@ -540,6 +574,7 @@ def build():
               "<li><strong>J101</strong> (M.2): o encaixe aberto para o lado do espaçador H101 (para a direita no desenho do topo).</li>"
               "<li><strong>Pino 1</strong> de U202 (BQ24074), U204 (TPS63001), U301 (SGTL5000), U501 (MAX98357A) e U201 (USBLC6): o ponto do corpo no canto do anel. <strong>U302</strong> e os SOT-23 (D202, D203, D205, D206, Q203): a perna isolada (1 de um lado, 2 e 3 do outro, conforme o anel).</li>"
               "<li><strong>D201</strong> (SMF5.0A): a faixa do cátodo do lado do pino 1 do footprint (pad 1 = cátodo na EasyEDA; confira).</li>"
+              "<li><strong>Serigrafia:</strong> a placa traz só rótulos curtos (FILEIRA 1 a 4, OLED, BAT, USB, FONE, ENTRADA, PROG, SPK). <strong>O rótulo da FILEIRA 4 fica ao lado do J202</strong> (o conector da bateria), junto do J604: não confunda os dois.</li>"
               "<li>Os corpos de <strong>C101 a C501 (0805), FB301, U201 e C210</strong> podem aparecer deslocados dos pads: é erro do modelo da biblioteca da EasyEDA, não da posição. Se aparecerem <strong>girados</strong> ou fora por mais de 2 mm, avise.</li></ol>"
               "<p>Todas as peças da principal e das réguas têm modelo 3D na EasyEDA; pino 1 e boca já foram conferidos no projeto. A tabela completa, peça a peça, é a <a href=\"arquivos/MODELOS_3D.md\">MODELOS_3D.md</a>.</p>")
     chk_en = ("<h3>What to check in JLCPCB's preview</h3><p>Before paying, compare JLCPCB's placement screen with the figures below (the project's own preview, with the same 3D models at the CPL positions; <strong>the red ring marks the board's pin 1</strong>; the bottom view is mirrored because the board was turned about its vertical axis). "
@@ -551,11 +586,13 @@ def build():
               "<li><strong>J101</strong> (M.2): the open slot towards the H101 spacer (to the right in the top view).</li>"
               "<li><strong>Pin 1</strong> of U202 (BQ24074), U204 (TPS63001), U301 (SGTL5000), U501 (MAX98357A) and U201 (USBLC6): the body's dot at the ring's corner. <strong>U302</strong> and the SOT-23s (D202, D203, D205, D206, Q203): the lone leg (1 on one side, 2 and 3 on the other, per the ring).</li>"
               "<li><strong>D201</strong> (SMF5.0A): the cathode stripe on the side of the footprint's pin 1 (pad 1 = cathode in EasyEDA; check).</li>"
+              "<li><strong>Silkscreen:</strong> the board carries only short labels (ROW 1 to 4, OLED, BAT, USB, PHONES, IN, PROG, SPK). <strong>The ROW 4 label sits next to J202</strong> (the battery connector), by J604: do not confuse the two.</li>"
               "<li>The bodies of <strong>C101 to C501 (0805), FB301, U201 and C210</strong> may look displaced from their pads: that is an error in the EasyEDA library model, not in the position. If they look <strong>rotated</strong> or off by more than 2 mm, say so.</li></ol>"
               "<p>All parts of the main board and of the rulers have a 3D model on EasyEDA; pin 1 and mouth were already checked in the project. The full part-by-part table is <a href=\"arquivos/MODELOS_3D.md\">MODELOS_3D.md</a> (Portuguese).</p>")
     intro5 = B("<p>São <strong>duas encomendas à JLCPCB</strong> (placa principal e réguas, cada uma com os seus arquivos da seção 10), mais lojas e a impressão 3D. O texto abaixo é o <code>fab/COMPRA.md</code> da eletrônica: o que marcar em cada tela, o que comprar, onde e por quanto. <strong>Nada disso deve ser comprado antes de o protótipo inteiro ser fechado.</strong></p>"
-               "",
-               "<p>There are <strong>two JLCPCB orders</strong> (main board and rulers, each with its own files from section 10), plus shops and 3D printing. The text below is the electronics' <code>fab/COMPRA.md</code>: what to tick on each screen, what to buy, where and for how much (English translation; the Portuguese file is the source). <strong>None of this should be bought before the whole prototype design is closed.</strong></p>")
+               "<div class=\"status\"><strong>Valores reais da JLCPCB (cotações do J):</strong> placa principal <strong>US$ 158</strong> (placa 25,50 + montagem 132,62, 24 nov); régua R8 em painel de 2 <strong>US$ 72</strong> (23 nov). Na principal: <strong>Specify Stackup = No</strong> (um empilhamento especificado obriga a montagem Standard), montagem <strong>Economic</strong>, acabamento <strong>ENIG ou HASL sem chumbo</strong>. Com ENIG o site da JLCPCB passa a montagem para Standard ao subir BOM e CPL: o suporte dela confirmou que é um erro do site, e nenhuma peça da BOM é “Standard only”. A alternativa é HASL, cerca de US$ 24 mais barato no total (estimativa); o J escolhe na hora. Total do protótipo: <strong>US$ 387–428</strong> (363–404 com HASL e Economic).</div>",
+               "<p>There are <strong>two JLCPCB orders</strong> (main board and rulers, each with its own files from section 10), plus shops and 3D printing. The text below is the electronics' <code>fab/COMPRA.md</code>: what to tick on each screen, what to buy, where and for how much (English translation; the Portuguese file is the source). <strong>None of this should be bought before the whole prototype design is closed.</strong></p>"
+               "<div class=\"status\"><strong>Real JLCPCB figures (J's quotes):</strong> main board <strong>US$ 158</strong> (board 25.50 + assembly 132.62, 24 Nov); R8 ruler in a panel of 2 <strong>US$ 72</strong> (23 Nov). On the main board: <strong>Specify Stackup = No</strong> (a specified stackup forces Standard assembly), <strong>Economic</strong> assembly, <strong>ENIG or lead-free HASL</strong> finish. With ENIG JLCPCB's site switches assembly to Standard when BOM and CPL are uploaded: its support confirmed this is a site error, and no part on the BOM is Standard-only. The alternative is HASL, about US$ 24 cheaper in total (estimate); J chooses when ordering. Prototype total: <strong>US$ 387–428</strong> (363–404 with HASL and Economic).</div>")
     if compra_pt_html and compra_en_html:
         extra = B('<div class="compra">%s</div>' % compra_pt_html, '<div class="compra">%s</div>' % compra_en_html)
     else:
@@ -569,10 +606,10 @@ def build():
     section("como-pedir", "5 · Como pedir", "5 · How to order", intro5 + extra + B(chk_pt, chk_en) + prev)
 
     # 6
-    section("montagem", "6 · Montagem", "6 · Assembly", B("<p>Onze passos, um por figura, na ordem do projeto. Leva uma tarde. Os números das figuras estão listados em cada passo.</p>"
+    section("montagem", "6 · Montagem", "6 · Assembly", B("<p>Onze passos, um por figura, na ordem do projeto: as réguas são parafusadas na base antes das teclas (passos 6 a 8). Leva uma tarde. Os números das figuras estão listados em cada passo.</p>"
                                                           "<div class=\"warn\"><strong>A confirmar antes de montar:</strong> o giro do módulo MicroMod (dedos no J101, meia-lua no H101, componentes para fora) foi deduzido do modelo 3D da SparkFun e deve ser confirmado pelo desenho de montagem dela (passo 3).</div>"
                                                           "<div class=\"warn\"><strong>Cuidados:</strong> a bateria LiPo não pode ser perfurada, dobrada, aquecida nem ter os polos encostados; os formadores de rosca cortam a própria rosca no plástico (sem apertar demais); o pó de fibra de FR-4 é irritante (lixe com cuidado); toque num metal aterrado antes de pegar o módulo e as placas (descarga eletrostática); parafusos de ferro perto das teclas distorcem a leitura.</div>",
-                                                          "<p>Eleven steps, one per figure, in the design's order. It takes an afternoon. The numbers in each figure are listed in its step.</p>"
+                                                          "<p>Eleven steps, one per figure, in the design's order: the rulers are bolted to the base before the keys go on (steps 6 to 8). It takes an afternoon. The numbers in each figure are listed in its step.</p>"
                                                           "<div class=\"warn\"><strong>To confirm before building:</strong> the MicroMod module's orientation (fingers into J101, half-moon on H101, components facing out) was deduced from SparkFun's 3D model and must be confirmed against their assembly drawing (step 3).</div>"
                                                           "<div class=\"warn\"><strong>Care:</strong> a LiPo cell must not be punctured, bent, heated or have its terminals shorted; thread-forming screws cut their own thread in the plastic (do not over-tighten); FR-4 dust is an irritant (sand carefully); touch earthed metal before handling the module and boards (ESD); iron screws near the keys distort the reading.</div>")
             + steps_html())
@@ -584,7 +621,7 @@ def build():
         "<li>Instale o Arduino IDE e o <a href=\"https://www.pjrc.com/teensy/td_download.html\">Teensyduino</a>.</li>"
         "<li>Baixe o <a href=\"arquivos/student_v4_sketch.zip\">sketch</a> e abra <code>student_v4.ino</code>.</li>"
         "<li>Em <em>Ferramentas</em>: placa <strong>Teensy MicroMod</strong>, <em>USB Type</em> <strong>MIDI</strong>, <em>CPU Speed</em> <strong>396 MHz</strong>.</li>"
-        "<li>Conecte o USB-C, aperte o botão <strong>PROG</strong> da placa se o Teensy não entrar no modo de gravação sozinho, e clique em <em>Carregar</em>.</li></ol>"
+        "<li>Conecte o USB-C, aperte o botão <strong>PROG</strong> da placa se o Teensy não entrar no modo de gravação sozinho (com o instrumento fechado, use um palito de dente pelo furo de Ø3 na base, em x 52; y 36: <a href=\"#passo-11\">figura no passo 11</a>), e clique em <em>Carregar</em>.</li></ol>"
         "<h4>Caminho 2: o arquivo .hex (sem compilar)</h4><ol>"
         "<li>Baixe o <a href=\"arquivos/student_v4_teensyMM_midi_396.hex\" download>arquivo .hex</a> e abra o <a href=\"https://www.pjrc.com/teensy/loader.html\">Teensy Loader</a>.</li>"
         "<li><em>File → Open HEX File</em> e escolha o arquivo; ligue o USB-C; aperte <strong>PROG</strong> se pedido; <em>Program</em>.</li></ol>"
@@ -606,7 +643,7 @@ def build():
         "<li>Install the Arduino IDE and <a href=\"https://www.pjrc.com/teensy/td_download.html\">Teensyduino</a>.</li>"
         "<li>Download the <a href=\"arquivos/student_v4_sketch.zip\">sketch</a> and open <code>student_v4.ino</code>.</li>"
         "<li>Under <em>Tools</em>: board <strong>Teensy MicroMod</strong>, <em>USB Type</em> <strong>MIDI</strong>, <em>CPU Speed</em> <strong>396 MHz</strong>.</li>"
-        "<li>Plug in the USB-C, press the board's <strong>PROG</strong> button if the Teensy does not enter programming mode by itself, and click <em>Upload</em>.</li></ol>"
+        "<li>Plug in the USB-C, press the board's <strong>PROG</strong> button if the Teensy does not enter programming mode by itself (with the instrument closed, use a toothpick through the dia 3 hole in the base, at x 52; y 36: <a href=\"#passo-11-en\">figure in step 11</a>), and click <em>Upload</em>.</li></ol>"
         "<h4>Way 2: the .hex file (no compiling)</h4><ol>"
         "<li>Download the <a href=\"arquivos/student_v4_teensyMM_midi_396.hex\" download>.hex file</a> and open the <a href=\"https://www.pjrc.com/teensy/loader.html\">Teensy Loader</a>.</li>"
         "<li><em>File → Open HEX File</em> and choose it; plug in the USB-C; press <strong>PROG</strong> if asked; <em>Program</em>.</li></ol>"
@@ -636,7 +673,10 @@ def build():
              "<tr><td><strong>Volume</strong></td><td>volume (3 per knob click); inside the menu, changes the value of the line</td><td>inside the menu: back (on the first page, closes the menu)</td><td><strong>2 s: power on/off</strong>, menu or not</td></tr>"
              "<tr><td><strong>Selector</strong> (register)</td><td>changes the register; inside the menu, moves the cursor</td><td>after turning: keeps the register for next time; without turning: back to Violin. In the menu: enters, flips or runs</td><td><strong>0.7 s: opens the menu</strong> (closes itself after 30 s)</td></tr></table></div>"
              "<h3>The ordinary screens</h3><p>Outside the menu the screen shows the battery (BAT, USB or CHG when charging), the register, the volume and the output (headphones or speaker), and at the bottom the battery bar and the microphone meter. Every figure below is <strong>simulated from the firmware's own code</strong> (same font, same positions, 128 × 64 pixels enlarged 4×); the real screen has not been seen yet.</p>")
-    body8 = B(ui_pt, ui_en) + screens_gallery("status") + B(
+    tela_fig = fig("foto_tela", "A tela do instrumento acesa na janela da tampa", "The instrument's screen lit in the lid's window",
+                   "A janela da tampa com a tela de estado acesa (render com a tela simulada a partir do código do firmware; a tela real ainda não foi vista).",
+                   "The lid's window with the status screen lit (render with the screen simulated from the firmware's own code; the real screen has not been seen yet).")
+    body8 = B(ui_pt, ui_en) + tela_fig + screens_gallery("status") + B(
         "<h3>Registros</h3><p>O V4 tem <strong>um instrumento: o acordeão</strong>, com sete registros (que palhetas soam), na ordem em que o seletor gira: " + ", ".join(regn["pt"]) + ".</p>",
         "<h3>Registers</h3><p>The V4 has <strong>one instrument: the accordion</strong>, with seven registers (which reeds sound), in the order the selector turns: " + ", ".join(regn["en"]) + ".</p>")
     if TELAS:
@@ -744,7 +784,7 @@ def build():
 </html>
 """ % {"v": VER, "nav": nav_html, "sections": "\n".join(S),
        "lead": B("Acordeão cromático eletrônico de 32 teclas: manual completo para entender, pedir, montar e tocar.", "32-key electronic chromatic accordion: the complete manual to understand, order, build and play it.", "span"),
-       "foot": B("SPEC R13V4. Projeto não construído: preços, tempos e medidas são estimativas. Gerado por student_v04/pagina.py.", "SPEC R13V4. Not built yet: prices, times and measures are estimates. Generated by student_v04/pagina.py.", "span")}
+       "foot": B("SPEC R15V4. Projeto não construído: preços, tempos e medidas são estimativas. Gerado por student_v04/pagina.py.", "SPEC R15V4. Not built yet: prices, times and measures are estimates. Generated by student_v04/pagina.py.", "span")}
     open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(page)
     open(os.path.join(OUT, "styles.css"), "w", encoding="utf-8").write(CSS)
     open(os.path.join(OUT, "script.js"), "w", encoding="utf-8").write(JS)

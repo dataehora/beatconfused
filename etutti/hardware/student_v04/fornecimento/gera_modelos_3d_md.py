@@ -43,6 +43,9 @@ def table(board, title):
         if ea > 0.3:
             note = "modelo da biblioteca deslocado (c_origin da EasyEDA); o CPL está certo (pads); o KiCad usa o modelo corrigido"
             bad.append(code)
+        if code == "C730243" and mk and "erro" not in mk and not mk["ok"]:
+            note += (" a heurística achou o ponto do corpo junto aos pads 15/14 (lado oposto do pino 1 em y); o modelo de 2,2 MB não tem marcador claro e o pino 1 conferido "
+                     "pelo CPL e pelos pads é 0,03 mm: **marcador ambíguo, conferir o ponto do 74HC595 na prévia da JLCPCB**")
         if p1 is None:
             note += " pads com nomes diferentes: pino 1 conferido pela posição (erro máx. dos pads %.2f)" % v.get("dist_max_pads_mm", 0)
         rs = ", ".join(refs) if len(refs) <= 6 else "%s ... %s (%d)" % (refs[0], refs[-1], len(refs))

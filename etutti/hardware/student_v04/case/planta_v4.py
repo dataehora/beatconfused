@@ -225,7 +225,7 @@ def main(mod=0):
     ax.text(xr - 1, 102.6, "folga %.1f" % (Lx - L.WALL - xr + 0.2), fontsize=5.8, color="#B91C1C", ha="right")
     legend(ax)
     fig.tight_layout()
-    fig.savefig(os.path.join(REN, "planta_geral_v4_r11.png"), dpi=150, bbox_inches="tight")
+    fig.savefig(os.path.join(REN, "planta_geral_v4_r15.png"), dpi=150, bbox_inches="tight")
     plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(13.5, 9.5))
@@ -233,7 +233,7 @@ def main(mod=0):
     ax.set_title("Interface e começo do teclado (R11V4), zoom da planta geral, com os nomes das notas", fontsize=10)
     legend(ax)
     fig.tight_layout()
-    fig.savefig(os.path.join(REN, "planta_interface_v4_r11.png"), dpi=140)
+    fig.savefig(os.path.join(REN, "planta_interface_v4_r15.png"), dpi=140)
     plt.close(fig)
     print("ok")
 
