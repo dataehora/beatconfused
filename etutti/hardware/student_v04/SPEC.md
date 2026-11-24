@@ -37,13 +37,38 @@ Em `ELETRONICA.md`, uma nota curta: **"RT1062 na placa (chip-down) para produç�
 
 Não é feito agora: o protótipo segue com o MicroMod.
 
+## 4. Base sem peças frágeis e com apoio uniforme da régua (Design)
+
+O J viu, nos isométricos da base (`iso_base_r11`, `passo_8`), **hastes e paredes finas que sobraram dos recortes** perto das pontas esquerdas das réguas. Elas aparecem onde os túneis dos cabos (os dois comprimentos, 45,8 e 50,8, cortados em sequência), os entalhes de conectores e plugues e as paredes de ponta de 2 mm se cruzam. O J quer:
+- **nenhum elemento frágil** no case;
+- **a régua apoiada por igual** ao longo do comprimento.
+
+Hoje a régua pousa em **dois trilhos de 2,8 mm** (`RAIL_IN` 4,2 / `RAIL_OUT` 7,0), com um canal oco no meio para as peças de baixo, mais as bossas D6 dos parafusos.
+
+1. **Varredura automática** da base e da tampa à procura de partes finas ou esbeltas: espessura de parede abaixo de **1,5 mm** (regra do projeto para PA12 em MJF com carga; dizer a regra do fornecedor), pinos e lâminas soltos com altura maior que 3 vezes a menor largura, e ilhas ligadas ao resto por menos de 1,5 mm. Entregar a lista com posição e uma figura com cada uma marcada.
+2. **Eliminar cada uma:**
+   - cortar os túneis **uma vez só**, com o envelope dos dois comprimentos de cabo unido e arredondado, para não sobrar lâmina entre os dois cortes;
+   - parede de ponta ou cheia (≥ 2 mm, com o recorte do conector bem definido) ou retirada;
+   - o que não sustenta nada sai, o que sustenta fica grosso.
+3. **Apoio uniforme:** estudar, contra os dois trilhos atuais, um **berço contínuo** sob a régua, maciço da largura dela, com bolsos só onde ela tem peças embaixo (sensores, 74HC595, capacitores, J1 e o plugue) e folga de 0,3 mm a elas.
+
+   Comparar:
+   - área de apoio (% da face de baixo da régua);
+   - flecha da régua a 3 N (`rigidez_regua`);
+   - volume e custo de MJF;
+   - fit check;
+   - montagem (o cabo ainda passa pelo túnel e o plugue entra com a régua no lugar).
+
+   Escolher a solução mais uniforme sem parte frágil, e dizer por quê.
+4. Fit check das 32 teclas, planta, corte e isométrico da base novos (`iso_base_r15`, com os apoios numerados), e uma figura **antes e depois** das regiões que tinham as hastes.
+
 ## Tarefas para o Code (R14V4 + R15V4, um PR)
 
 | Ordem | Área | Tarefa |
 |---|---|---|
 | 1 | Eletrônica | R15V4 item 1: limpar a serigrafia da principal, provar que o cobre não mudou, regenerar `fab/principal/` e o 3D |
 | 2 | Design | R14V4 tarefa 1: parafusos M2 das réguas (números, acesso da ferramenta, figura) |
-| 3 | Design | R14V4 tarefa 3: costelas de pressão, pés adesivos, fit check e figuras da base |
+| 3 | Design | R15V4 item 4 + R14V4 tarefa 3: base sem partes frágeis, apoio uniforme da régua, costelas de pressão, pés adesivos, fit check e figuras da base |
 | 4 | Design | R14V4 tarefa 2: renders conferidos peça por peça e refeitos (com a serigrafia nova) |
 | 5 | Eletrônica | R14V4 tarefa 4 + R15V4 itens 2 e 3: MicroMod, tabela R4E, `COMPRA.md` (Specify Stackup = No, Economic, ENIG ou HASL, valores reais), nota da opção chip-down |
 | 6 | Programação e som | R14V4 tarefa 5: página e manual atualizados, com as imagens novas |
