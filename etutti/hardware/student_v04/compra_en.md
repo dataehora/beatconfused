@@ -1,6 +1,6 @@
-# Student V4 (32 keys) · what to tick and fill in at each shop (English translation of fab/COMPRA.md, R13V4)
+# Student V4 (32 keys) · what to tick and fill in at each shop (English translation of fab/COMPRA.md, R15V4)
 
-23 Nov 2026. **Nothing has been bought, quoted as a purchase or uploaded.** The project rule still holds: nothing is bought before the prototype is closed. This text gets the order ready to copy and check. Conventions: **seen** = price seen on a shop page or in JLCPCB's parts library (date given, no shipping, no tax); **est.** = our own calculation, not quoted; **(check)** = no measurement or page checked now. Currency: US$ (GBP is an assumption of 1.30 US$ per £). The shop pages were not opened in this round (only JLCPCB's library, by curl, and the pages of 15 to 22 Nov): **check stock, price and the UK shop at the time.**
+24 Nov 2026 (R15V4; text of 23 Nov, R13V4, corrected with J's real quotes and the stackup/finish decision). **Nothing has been bought, quoted as a purchase or uploaded.** The project rule still holds: nothing is bought before the prototype is closed. This text gets the order ready to copy and check. Conventions: **seen** = price seen on a shop page or in JLCPCB's parts library (date given, no shipping, no tax); **est.** = our own calculation, not quoted; **(check)** = no measurement or page checked now. Currency: US$ (GBP is an assumption of 1.30 US$ per £). The shop pages were not opened in this round (only JLCPCB's library, by curl, and the pages of 15 to 22 Nov): **check stock, price and the UK shop at the time.**
 
 Files that go to JLCPCB (section 10 of this page has them under these names):
 - main board: `placa_principal_gerbers.zip`, `placa_principal_bom.csv`, `placa_principal_cpl.csv`
@@ -20,9 +20,9 @@ Screens in the order of the order page (Instant Quote). Value = what to choose.
 | 5 | PCB Qty | 5 | minimum; the 3 bare ones are spare |
 | 6 | Product Type / Delivery Format | Industrial/Consumer, **Single PCB** | |
 | 7 | PCB Thickness | **1.2 mm** | |
-| 8 | Specify Stackup | **Yes → JLC04121H-7628** | real thickness 1.12 mm ±10 %, accepted by J |
+| 8 | Specify Stackup | **No** (R15V4) | JLCPCB's default stackup is enough: the USB pair is Full Speed and 7.4 mm long, there is no controlled-impedance line. **A specified stackup forces Standard assembly.** (R13V4 asked for JLC04121H-7628; no longer valid.) |
 | 9 | Material Type | FR4 **TG135** | |
-| 10 | Surface Finish | **ENIG** | J's decision (fine pitch: M.2, USB-C, 0.4 mm QFN); Au 1 U" is the default |
+| 10 | Surface Finish | **ENIG** or **lead-free HASL** (J decides when ordering, see the note under the table) | ENIG = J's decision (fine pitch: M.2, USB-C, 0.4 mm QFN); Au 1 U" is the default |
 | 11 | Outer / Inner Copper | **1 oz / 0.5 oz** | |
 | 12 | Specify Layer Sequence | No | |
 | 13 | Via Covering | **Plugged** | J's decision |
@@ -34,7 +34,7 @@ Screens in the order of the order page (Instant Quote). Value = what to choose.
 | 19 | Electrical Test | **Flying Probe Fully Test** | |
 | 20 | Other advanced options (colour, silkscreen, gold edge, ...) | defaults / No | green colour |
 | 21 | **PCB Assembly** | on | |
-| 22 | PCBA Type | **Economic** | if refused (75 x 95 mm is within the economic limits), use Standard and note it: the price changes |
+| 22 | PCBA Type | **Economic** (the site may switch it to Standard by itself: see the note) | the site may switch it to Standard by itself when BOM and CPL are uploaded: see the note below (site bug with ENIG, confirmed by support) |
 | 23 | Assembly Side | **Bottom Side** | all 78 parts are on the bottom, 0 on top |
 | 24 | PCBA Qty | **2** | minimum; one for the instrument, one spare (the second costs only parts, ~US$ 21) |
 | 25 | Tooling holes | **Added by JLCPCB** | the board has no rail |
@@ -43,10 +43,12 @@ Screens in the order of the order page (Instant Quote). Value = what to choose.
 | 28 | Parts Selection | **By Customer (Self-Service)** | |
 | 29 | BOM / CPL | `placa_principal_bom.csv` / `placa_principal_cpl.csv` | |
 
+**ENIG or HASL, and why the site switches assembly to Standard (R15V4, J's finding of 24 Nov):** with **ENIG** JLCPCB switches PCBA to **Standard** when BOM and CPL are uploaded. **JLCPCB support confirmed it is a site bug.** No part in the BOM is "Standard only"; the codec, the parts near the edge and the 75 x 95 mm board are **not** the cause; nothing changes in the BOM or the assembly. J re-quotes when the bug is fixed. If it persists, the alternative is **lead-free HASL**: **board about US$ 12 cheaper** and **Economic**, **about US$ 24 cheaper in total**. Both options are recorded; J chooses when ordering (HASL is a little less flat on the 0.4-0.5 mm pads of the QFN-20 and the M.2; ENIG was J's choice for that reason).
+
 **On the BOM screen:** the 32 lines should show **found and in stock** (14 Extended types); C310 is **not** in the BOM (do not assemble). **Lowest stock (check):** M.2 C48985906 (553), SGTL5000 C2651833 (1 150), BQ24074 C54313 (2 837), PJ-327A C49284723 (3 259), SM04B C160404 (4 511). Any line without stock: stop and say so.
 **On the placement (preview) screen:** use the checklist further down against the preview pictures. Through-hole parts: **none** in the BOM (the 2 encoders and the speaker are done at home).
-**Price seen (R13V4, our estimate; J's quote was ~105 before the SH swap):** ~US$ 112 (113.4-138.4 with the assumed PCB); minimum 5 bare boards, 2 assembled.
-The main board table was checked against J's: it matches (4 layers, 1.2 mm, JLC04121H-7628, ENIG, 1 oz/0.5 oz, Plugged 0.3/0.4/0.45, Flying Probe, Economic, Bottom, Qty 2, tooling by JLCPCB). **Nothing to correct.**
+**J's real quote (24 Nov, ENIG, PCBA Standard because the site switched it): US$ 158** = board 25.50 + assembly 132.62 (setup 25.75, stencil 8.27, parts 46.29, feeder loading 49.60, SMT 2.21, packing 0.50); assembly in 3-4 days, no extra cost. **This is the official value** (replaces the 113.4-138.4 estimate). With HASL and Economic: **about US$ 134** (-24; estimate from J's information, not quoted). Minimum 5 bare boards, 2 assembled.
+The main board table matches J's (4 layers, 1.2 mm, ENIG, 1 oz/0.5 oz, Plugged 0.3/0.4/0.45, Flying Probe, Economic, Bottom, Qty 2, tooling by JLCPCB). **the only R15V4 change is Specify Stackup = No.** The board's silkscreen was cleaned in R15V4: the preview shows only the labels.
 
 ## 2. JLCPCB · R8 ruler in a panel of 2 (order 2, a separate order: one variant per order)
 
@@ -72,7 +74,7 @@ Same table as the main board, with these differences:
 
 **Minimums:** 5 bare panels, **2 assembled**: the 32-key instrument uses exactly the 2 (4 R8); 3 bare panels are left over (6 R8 without parts).
 **Main risk:** the panel's 44 mm side is smaller than the 70 mm of the standard assembly: JLCPCB may refuse, add a rail (cost not stated) or ask for the 4-panel (`R8_painel4`, 161.6 x 76 mm, 8 assembled rulers, ~US$ 71-102) or "Panel by JLCPCB" with 1 strip.
-**Price (est., `custo_r11.json`, R13V4):** **47.3-64.2** (4 rulers); J's quote was ~70 before the SH swap (now ~73).
+**J's real quote (23 Nov): US$ 72** (5 panels, 2 assembled = 4 rulers), the official value (the estimate was 47.3-64.2).
 **Other variants** (only the lines that change): **R8E** (first ruler of 48/64/80 keys): same Gerber, `R8E_painel2/bom.csv` and `cpl.csv` (with J2 and R1), separate order; **R4 / R4E:** `R4_painel5/` (different Gerbers: panel 87.6 x 92 mm, 5 strips), 5 bare panels, 2 assembled = 10 rulers; outside the 32 keys.
 
 ## 3. Items outside JLCPCB
@@ -95,7 +97,7 @@ The UK shops named are the ones I take as likely; **none was opened now (check)*
 | 12 | **M2 through bolts** (rulers): 8, **2 of each length M2 x 10, 12, 14, 16** (rows 1 to 4) | 8 (+4) | UK online hardware (Accu, Bolt Base, eBay) | **A2 stainless**, pan head, **non-magnetic** (Hall sensors); always M2 x 10 / 12 / 14 / 16 | pennies (est. US$ 0.03-0.05) |
 | 13 | **M2 nuts** | 6 normal + **2 thin (1.2 mm) for row 4** | same | A2, non-magnetic | US$ 0.015 |
 | 14 | **M2 thread-forming screws (PT 2.0)**: **lid, 15 x M2 x 14** (H1..H4, 5 inner posts, 6 wall posts); **OLED, 4 x M2 x 4** | 19 (+10 spare) | same | pan head, stainless or steel; **re-using a thread-forming screw has a limit (5-10 times, estimate)** | US$ 0.04 |
-| 15 | **Silicone feet** (Ø8 x 1.0, stuck on directly, no recess) | **6** | Amazon/eBay UK | **hardness 70A or more** (too soft lets the board flex) | ~£3 (est.) |
+| 15 | **Adhesive feet** (stuck straight on the underside of the base, no recess): **3M Bumpon SJ5302** (polyurethane, Shore A 72, hemispherical, **dia 7.94 x 2.2 mm high**, acrylic adhesive) · shop **RS Components UK, stock no. 179-4811** (pack of 80). **Positions (x; y on the plan, mm, at least 9 mm from any hole or pocket and 7 mm from the edge):** (9; 7), (9; 66), (72; 26), (63; 90), (134; 7), (150; 90), (212; 7), (234; 81) | **8** (the pack of 80 leaves spares) | RS Components UK (179-4811); alternative: Farnell/Rapid, SJ5302 | 2.2 mm high (the list asked 1-2: it is the smallest 3M Bumpon found); RS UK also shows a "black buffer" sheet under 192-5624: **check colour and height on the page before ordering** (3M lists the SJ5302 as clear) | pack of 80: price **not read** (est. £5-8) |
 | 16 | **MicroMod at H101**: **nylon M2.5 x 8** screw + **nylon M2.5 nut** + **2.5 mm nylon spacer** | **2 screws, 2 nuts, 2 spacers** (1 + 1 spare) | hardware (Accu, Bolt Base, eBay UK) | the screw goes through **board 1.2 + spacer 2.5 + module ~1.0 = 4.7 mm** and closes on the nut (~2 mm): 4.7 + 2 = 6.7, so **M2.5 x 8** (x 6 does not close); **check the module's real thickness** and that the tip (1.3 mm past the nut) does not touch the base: request to the design | pennies (est.) |
 | 17 | **MJF PA12 case** (lid, base, and the printed items 9 and 11) | 1 set | JLC3DP, PCBWay, Craftcloud (UK: via Craftcloud/Shapeways; check) | **MJF PA12 material**, colour **grey/black** (dyeable, paint later), finish **dyed/smoothed if offered**, **no** vapour smoothing on the threads (check with the service), **minimum walls 0.58 mm** in row 4's hexagonal pockets; STL files from `student_v04/case/out/` (lid, base, caps, knob); **do not send the rulers' STL** | ~US$ 46-51 (design est., MJF; not quoted) |
 | 18 | Tools | — | — | soldering iron (speaker wires, encoders), multimeter (NTC), small Phillips screwdriver, **torque driver** if any | — |
@@ -105,17 +107,17 @@ The UK shops named are the ones I take as likely; **none was opened now (check)*
 
 | Group | Range (US$) | Type |
 |---|---:|---|
-| Main board (PCB + assembly, 2 assembled) | 113.4-138.4 | **est.** (4-layer ENIG PCB is an assumption; J's quote was ~105 before the original SH, +7.0) |
-| 4 x R8 rulers (panel of 2) | 47.3-64.2 | **est.** (J's quote was ~70, +3.3) |
+| Main board (PCB + assembly, 2 assembled) | 158 | **J's real quote, 24 Nov** (ENIG, PCBA Standard; with HASL + Economic ~134) |
+| 4 x R8 rulers (panel of 2) | 72 | **J's real quote, 23 Nov** |
 | 1.6 mm FR-4 ruler grid (JLCPCB, item 19) | 8-15 | **est.** |
 | SH cables (6) + Qwiic cable | 8-10 | seen 22 Nov |
 | Adafruit 326 OLED | 17.5 | seen 22 Nov |
 | Hardware (M2 through bolts and nuts, PT, nylon M2.5, feet; items 12-16) | 6-12 | **est.** |
 | MJF case (includes caps, knobs and acoustic box) | 46-51 | **est.** (not quoted) |
 | Keys, module, battery, speaker, encoders, springs, USB-C cable (MicroMod ~24 + KS-20 24.5-26.6 + springs 3-8 + battery 6-10 + speaker 7-10 + encoders 4-6 + USB-C 3-8) | 71.5-92.6 | mixed: seen 15 Nov (module, keys, battery) and **est.** |
-| **Total (sum of the lines)** | **318-401** | R13V4; the sum of the lines is the official number |
+| **Total (sum of the lines)** | **387-428** | R15V4; the sum of the lines is the official number (**363-404** with HASL + Economic on the main board); it was 318-401 in R13V4, with both boards estimated |
 
-The low end uses quantity prices and the minimum PCB; the high end, the one-piece price and the assumed US$ 39.50 PCB.
+Both boards are now real quotes (158 and 72); in the other lines the low end uses quantity prices and the high end the one-piece price.
 
 ## 5. What J does, in order
 1. Upload the main board (section 1) up to the **placement preview**; compare with the preview pictures and the checklist; send the screenshot to Chat/Code. Do not pay yet.

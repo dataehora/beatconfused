@@ -73,3 +73,5 @@ Compare com `pcb/img/previa_jlc_r8_bottom.png` (e `MODELOS_3D.md`):
 3. **Os 8 TMAG5253 (U1..U8):** o desenho é simétrico girado 180: **confira só o ponto do pino 1** de cada um, no anel (o modelo tem a cova do pino 1; o corpo é de 1,4 x 1,1 mm).
 4. O corpo do **C10 (10 uF 0805)** pode aparecer deslocado dos pads (modelo da biblioteca): normal.
 Se algo diferir, mande o print.
+
+**R15V4 (24 nov):** cotação real do J para a R8 em painel de 2 (5 painéis, 2 montados = 4 réguas): **US$ 72** (a estimativa da tabela acima era 47,3-64,2). Total do protótipo atualizado em `../COMPRA.md`.

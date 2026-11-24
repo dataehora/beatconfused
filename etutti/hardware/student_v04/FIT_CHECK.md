@@ -1,5 +1,98 @@
 # eTutti Student V4 — FIT_CHECK (design)
 
+## R15V4 — parafusos M2 das réguas, base sem partes frágeis, berço contínuo, costelas, pés, PROG, renders refeitos (24 nov 2026, parte de Design)
+
+**SPEC atendida: R15V4** (item 4) **e R14V4** (tarefas 1, 2 e 3). Nada foi comprado, impresso ou montado; só 32 teclas, só a Student V4. **O case mudou** (base e tampa, ver 2 e 3); nada que a eletrônica lê mudou de posição, de diâmetro ou de contrato, **exceto uma restrição nova sobre o espaço sob a régua (2.5, pergunta 1)**. Reproduz (venv CadQuery, raiz do repositório): `case/case_r4.py` (agora ~5 min: a varredura de partes finas roda dentro de `tray()`), `case/varredura_r15.py antes|depois` (4 min cada), `case/certifica_r15.py [stl]`, `estudos/berco_r15.py`, `case/pes_r15.py`, `case/regua_parafusos_r14.py`, `case/fundo_prog_r15.py`, `case/antes_depois_r15.py`, `case/iso_base_r15.py`, `case/planta_v4.py`, `case/corte_v4.py`, `case/corte_base_r10.py`.
+
+### Resposta curta
+
+1. **Como a cabeça Ø3,8 cabe "no vão de 3,1": ela não precisa caber nele.** O vão de 3,1 mm é entre as **coberturas** das carcaças (15,4 mm), que começam em z +5,0 acima da régua. A cabeça está em z 0 a 1,6, **abaixo da grade** (z 3,4 a 5,0) e entre os **corpos** de 14 mm (vão de 4,50): sobram **0,35 mm de cada lado** (0,25 se a cabeça tiver o máximo de catálogo, Ø4,0) e 1,8 mm até a grade. O fit check "0 mm³" era isso.
+2. **O achado: com a grade e as teclas montadas a cabeça NÃO é alcançável** (a grade fecha o vão de 4,5 com uma teia de 1,6 mm; acima dela o vão é 3,1). Não é questão de chave: **mudei a ordem** (a régua é parafusada na base antes; só depois a grade com as 4 teclas desce nos pinos). Chave: **Phillips #0**, não magnética. Isso troca os passos 6, 7 e 8 (ver 1.3); a programação e o som atualizam a página.
+3. **Partes frágeis da base: 11 grupos (35 pedaços) com parede < 1,5 mm antes, 1 depois** (um degrau de 0,7 x 5 mm na ponta esquerda da fileira 4, preso ao longo do comprimento, não solto). Cada um foi eliminado pela varredura exata (raster de 0,05 mm) dentro de `tray()`; os túneis dos cabos agora são cortados **uma vez só** com o envelope unido dos dois comprimentos; a tampa ganhou ligação de cada poste de parede à parede (antes eram pinos soltos de 20 a 27 mm) e o chanfro de baixo caiu de 1,0 para 0,5 mm.
+4. **Apoio da régua: escolhi o berço contínuo** (86,5 % da face de baixo apoiada contra 36,7 % dos dois trilhos; flecha a 3 N de 0,0013 contra 0,0151 mm). **Custo: +43,5 cm³ de MJF = +US$ 12,2** e +43 g. Ver 2.3: há uma alternativa mais barata se o J não quiser pagar isso.
+5. **Costelas de pressão:** 3 por bolso, 0,4 mm de largura, 0,2 mm de saliência = **0,1 mm de interferência** com a porca (AF 4,0 num bolso AF 4,2), do bolso até 0,3 mm acima da boca (entrada livre). 8 bolsos, 24 costelas, **1,37 mm³ de interferência intencional** no fit check (0,17 mm³ por porca).
+6. **Pés:** 8 pés **3M Bumpon SJ5302** (Ø7,94 x 2,2 mm, Shore A 72), **RS Components UK 179-4811** (pacote de 80), posições a 9,2 mm ou mais de qualquer furo ou bolso. Escritos na linha 15 de `fab/COMPRA.md` e `compra_en.md`. **Altura 2,2 mm, 0,2 acima da faixa pedida (1 a 2)**: é o menor 3M achado; pergunta 4.
+7. **PROG:** furo Ø3 no piso em (52,0; 36,0), **exatamente sob o SW403** (a placa dá o mesmo ponto); um palito de dente de Ø2 chega ao atuador, 3,4 mm acima do piso. Figura para a página: `case/renders/base_fundo_prog_r15.png`.
+8. **Fit check das 32 teclas: 0 mm³** em todos os 71 pares do relatório (cabeçalhos, plugues, os dois cabos, peças sob a régua, parafusos, porcas x réguas, OLED, interface), **exceto** os dois de sempre da folga crítica da rampa (tampa x carcaça +0,5 / +0,8: 8,3 / 50,4 mm³) e a interferência intencional das costelas (1,37 mm³). Volumes: base **130,5 cm³** (87,0), tampa **90,8** (89,9).
+9. **Renders (R14V4 tarefa 2): refeitos todos** com a serigrafia nova da principal (GLB regenerado), a base nova, os 8 pés e a janela do OLED **acesa** (tela de estado do firmware). Ver seção 4.
+
+### 1. Parafusos M2 das réguas (R14V4 tarefa 1)
+
+**Figura:** `case/renders/regua_parafusos_r14.png` (também em `etutti/studentV4/img/regua_parafusos_r14.png`): R8 da fileira 1 em escala; esquerda com 4 KS-20 montadas, direita sem teclas (grade vista por transparência, furos, pinos, sensores, 74HC595, J1, cabeças), nome da nota em cada posição, cotas, e dois cortes (A-A ao longo da linha dos parafusos; B-B através da régua no eixo do parafuso, com a porca no bolso e as costelas).
+
+**1.1 Números (z acima do topo da régua; furos em u 18,5 e 129,5, v +5,2):**
+
+| Elemento | z (mm) | Observação |
+|---|---|---|
+| régua FR-4 | -1,2 a 0 | |
+| cabeça M2 panela Ø3,8 (máx. Ø4,0) | 0 a 1,6 | passa 0,1 (0,2) da borda da régua (v +7,0): nada ali |
+| grade-régua 1,6 mm | 3,4 a 5,0 | teia de 4,5 mm entre as janelas de 14,00; **1,8 mm acima da cabeça** |
+| corpo da carcaça 14 x 14 | 0 a 5,0 | vão de 4,50 entre corpos vizinhos |
+| cobertura 15,4 x 15,1 | 5,0 a 8,6 | vão de **3,1** entre coberturas, só aqui |
+
+Distâncias (planta): **cabeça até o corpo / a borda da janela da grade: 0,35 mm** (0,25 com Ø4,0); eixo até a borda de dentro do trilho (v +4,2): 1,0; até a de fora (v +7,0): 1,8; a bossa D6 da base fica sob a cabeça (sustenta o aperto).
+
+**1.2 Acesso da ferramenta (passo 8 atual, teclas montadas): não passa.** Não pela chave: o vão de 3,1 deixa passar uma haste de 3,0 só com 0,05 de folga, e a grade (teia de 1,6 mm em z 3,4 a 5,0) cobre a cabeça por inteiro (o modelo da grade não tem furo de acesso; a grade que a eletrônica fabrica também não). Hex 1,5 ou Torx T6 (haste de 2 mm) passariam o vão de 3,1, mas **não atravessam a teia**. A cabeça só é alcançável antes de a grade e as teclas descerem.
+
+**1.3 Decisão: parafusos antes das teclas, sem tirar a grade** (a primeira opção da tarefa). Novos passos 6, 7 e 8 (os números dos demais não mudam): **6** base com as 8 porcas (o antigo 7); **7** réguas com os cabos na base, da frente para trás, e os 8 parafusos (o antigo 8 sem grade e teclas), chave **Phillips #0** de cima, cabeça livre; **8** a grade com as 4 teclas de cada fileira (montadas na bancada, como o antigo 6) desce sobre os pinos da régua já parafusada (0,35 mm de cada lado da cabeça, 1,8 acima). Fica a **ressalva de manutenção**: trocar uma régua pede levantar antes a grade com as teclas dela (puxar das 4 pegas) e só então chegar aos parafusos. Se o J preferir acesso sem desmontar, a alternativa é um furo Ø3,2 na grade sobre cada parafuso (muda o arquivo da grade da eletrônica e a teia de 4,5 vira 1,3 mm de cada lado do furo): **pergunta 2**.
+
+### 2. Base e tampa sem partes frágeis (R15V4 item 4)
+
+**2.1 Varredura automática** (`case/varredura_r15.py`, `case/certifica_r15.py`). Regra do projeto: **parede < 1,5 mm** em PA12 MJF com carga. O fornecedor (MJF, HP 3D HR PA12; folhas de fabricantes citadas **de memória, não reconferidas agora**): parede mínima de 0,5 a 0,7 mm, recomendada 1,0 a 1,5 mm; pinos e lâminas livres devem ter altura de no máximo 3 a 5 vezes a largura. A regra do J (1,5) é mais conservadora que a do fornecedor. Métodos: (a) varredura voxel (0,25 mm) da malha com abertura por disco de 0,75 mm em cada camada, lista os grupos com posição; (b) **certificado exato**: seção em planta a cada altura de nível da malha, raster de 0,05 mm, abertura por disco (transformadas de distância), listando peças < 1,5 mm de área ≥ 0,2 mm² (os restos de quina convexa, ≤ 0,13 mm², não contam); (c) altura/largura de pinos livres.
+
+**Base antes (certificado, x ≥ 79):** **11 grupos / 35 pedaços**, todos nas pontas esquerdas das réguas, onde se cruzam a parede de ponta de 2 mm, o recorte do cabeçalho J1 (±0,3), o C6, o plugue e o túnel do cabo: pontas das fileiras 4 e 2 (80,2-82,2; y 22,0-24,6 e 54,1-56,7; 1,4 x 2,0 mm, altura 13,9 e 8,9 mm até o topo do degrau: as hastes do J), pedaços de 1,4 x 2,0 a 2,8 x 1,4 em x 89,4-91,5 (y 38,0-40,6; 44,7-46,1; 48,9-50,5; 70,1-72,7) entre o túnel do cabo e o entalhe do plugue, um fio de 0,7 mm em x 98,8-99,6 e **dois anéis de 0,58 mm** em volta do bolso sextavado da fileira 4 (x 114-120 e 206-212: lábios de 0,2 mm de altura, não paredes). Mais a **nervura do berço da bateria, 1,2 mm** (fora do teclado).
+**Tampa antes:** (i) **6 postes de parede livres** (D5,4 x 20 e 27 mm, razão 3,7 a 5,0, presos só no deck); (ii) **5 lâminas de poste interno de 1,4 mm** de largura e 12 a 13 mm de altura; (iii) **bordas de baixo da parede em 1,0 mm** (chanfro de 1,0 x 1,0 numa parede de 2,0); (iv) **4 colares dos postes do OLED** (D4,2 com piloto 1,75: parede de 1,2 mm, 1,3 mm de altura).
+
+**2.2 O que foi feito:**
+- **Base, túneis:** `case_r4.tray()` corta os túneis dos cabos **uma vez só**, com a união dos envelopes de 45,8 e 50,8 (`cable_cutter`).
+- **Base, varredura embutida:** `case/fragil_r15.py`, dentro de `tray()` (duas passadas, x ≥ 79): por nível, abre a seção com disco de **0,8 mm** (1,6 mm, 0,1 de folga para a impressora), recorta em retângulos as peças mais finas que isso e que persistem **≥ 0,6 mm de altura** (lábios mais baixos não são parede). **O que não sustenta sai**: as hastes da ponta e os fios entre cortes. O que sustenta (paredes de ponta de 2 mm, trilhos de 2,8, risers, bossas) não é tocado. Retirou algumas dezenas de mm³.
+- **Resultado (certificado exato, final):** **1 grupo** (80,2-85,2 x 22,0-22,7, um degrau de 0,7 mm preso ao longo do comprimento na ponta esquerda da fileira 4, atrás do túnel do J604; não é livre). Reconheço que a segunda passada o enxerga de novo: é resto do mesmo corte; não o apaguei à mão por ficar a 0,7 mm de uma parede de 2,0 (pergunta 3).
+- **Varredura voxel final (0,25 mm):** 5 grupos na base, dos quais **4 são ruído do voxel** (as quatro bossas das placas H1 a H4 têm parede nominal de 1,8 mm: D6,0 menos o furo de 2,4) e 1 é o degrau acima.
+- **Berço da bateria:** nervuras 1,2 → **2,0 mm** (mesma altura de 2,0).
+- **Tampa:** (i) cada **poste de parede ganhou uma teia de 2,0 mm** até a parede (para na 2,0 mm do eixo do furo: o piloto fica aberto); (ii) **lâmina de 1,4 → 1,5 mm** (cabe no entalhe de 2,0 mm da régua e da grade com 0,25 de cada lado: **nenhum contrato muda**; mais que 1,5 pediria alargar o entalhe da eletrônica: pergunta 3); a razão altura/largura da lâmina (8,7) **continua acima de 3**: é uma lâmina presa no deck e na bossa, que o corredor de 3,1 mm entre carcaças não deixa engrossar; (iii) chanfro de baixo **1,0 → 0,5 mm** (borda de 1,5); (iv) **colares do OLED mantidos** (D4,2 é medida do furo do módulo: 0,18 mm de folga ao vidro; colar de 1,3 mm de altura sobre o teto: razão 1,1, não é pino).
+- **Varredura voxel final da tampa:** 10 grupos, **todos explicados**: 4 colares do OLED (acima), 5 lâminas de 1,5 mm (nominais, na fronteira da regra) e a rampa do deck (113 mm³, e_min 1,5: espessura nominal 2,5 mm vista na seção; é ruído voxel da inclinação de 60°).
+
+**Figuras:** `case/renders/base_antes_depois_r15.png` (as pontas esquerdas das 4 réguas e as direitas, antes e depois, com as peças achadas em vermelho); `case/renders/varredura_r15_antes_zoom.png` (base, x 76 a 130, grupos numerados).
+
+**2.3 Apoio uniforme: três soluções contra os dois trilhos** (`estudos/berco_r15.py`; modelo de grelha de 3 linhas com torção de `rigidez_regua_r10.py`; a flecha de 0,0151 mm do A é do modelo atual dos trilhos com o novo raster; 3 N na tecla):
+
+| | A: 2 trilhos de 2,8 (atual) | **B: berço contínuo com bolsos (escolhido)** | C: trilhos largos (grooves) |
+|---|---|---|---|
+| apoio (% da face de baixo da régua) | **36,7** | **86,5** | ~51 (conta de área, não rodada) |
+| maior vão sem apoio no eixo | 147,6 mm (canal oco) | 11,6 | 147,6 |
+| flecha a 3 N, pior fileira | 0,0151 mm | **0,0013 mm** | não rodada (entre as duas) |
+| volume da base | 87,0 cm³ | **130,5 cm³** | ~96 cm³ (conta, não construída) |
+| MJF (US$ 0,28/cm³) | referência | **+12,2** | ~+2,5 |
+| fit check (32 teclas) | 0 | **0** (+1,37 das costelas) | 0 |
+| cabo pelo túnel e plugue com a régua no lugar | sim | **sim** (bolsos abertos para trás) | sim |
+
+B: a régua repousa em **uma laje sólida da largura dela** (14 mm) até o topo do trilho de cada degrau; bolsos de 0,3 mm de folga só onde há peça sob a régua (10 bolsos por régua: o do J1 + C10 na ponta esquerda, um por sensor com seu capacitor, o 595 com o C9, e o R1), cada um com a profundidade da peça mais alta + 0,3; bolsos a menos de 1,5 mm foram fundidos (sem paredes finas entre eles); os entalhes dos plugues e dos cabos continuam como estavam. **Por que B:** é a única que dá apoio por igual no comprimento **e** na largura (a chave do J), sem parte frágil (laje maciça, 14 mm de largura, sem paredes finas), e deixa a flecha 10 vezes menor, com folga larga sobre o limite de 0,05 mm. O preço (US$ 12 e 43 g) é o que o J deve decidir; **C** (só estimado, não construído) custaria ~US$ 2,5 mas deixa o canal oco e a régua com ~51 % de apoio. **Restrição nova para a eletrônica:** sob a régua só pode haver peça dentro dos bolsos (a faixa livre |v| ≤ 4,2 virou: J1 em v -7,8 a 2,8 nos primeiros 11,8 mm; 595 em u 71,3 a 79,4; R1 em u 126,2 a 127,8): **qualquer peça nova ou deslocada sob a régua pede avisar o design**. Hoje todas as peças de `posicao_regua8.json` cabem.
+
+### 3. Costelas de pressão e pés (R14V4 tarefa 3)
+
+**3.1 Costelas** (`case_r4.nut_ribs`): bolso AF 4,2 (cantos 4,85) para a porca AF 4,0 (cantos 4,62): folga de 0,1 mm por face. 3 costelas nas faces alternadas (30°, 150°, 270° a partir do eixo dos cantos), **0,4 mm de largura, 0,2 mm de saliência**: ponta da costela a 1,9 mm do eixo, face da porca a 2,0 = **0,1 mm de interferência**; do bolso até o teto; começam 0,3 mm acima da boca (entrada livre). Fileiras 1 a 3: 1,5 mm de costela útil; **fileira 4 (porca fina de 1,2): 2,0 mm**. **Número, altura, interferência para PA12 MJF:** 3, 1,5 a 2,0 mm, 0,1 mm (a tolerância típica do MJF em peças pequenas, ±0,2 a ±0,3 mm por dimensão, é do tamanho da interferência: **risco**; a costela amassa e absorve parte). Estimativa de engenharia (não medida; o ensaio no protótipo confirma): cada costela amassa ~0,1 mm sob ~10 N e dá ~3 N de atrito: **a porca entra com a pressão do dedo (~10 N) ou puxada pelo parafuso, e a gravidade (0,001 N) não a derruba com a base virada**. Não conferido em peça real. Se a porca ficar frouxa, +0,05 mm de saliência; se apertada demais, -0,05.
+
+**3.2 Pés** (`case/pes_r15.py`, `out/pes_r15.json`): **3M Bumpon SJ5302** (hemisférico, poliuretano, **Shore A 72**, adesivo acrílico, **Ø7,94 x 2,2**), **RS Components UK, 179-4811** (pacote de 80; preço **não lido**). **8 pés** nas posições (x; y), mm: **(9; 7), (9; 66), (72; 26), (63; 90), (134; 7), (150; 90), (212; 7), (234; 81)**; distância mínima a um furo, bolso ou rebaixo: **9,2 mm** (a exigência era 9), à borda da bandeja: ≥ 7 mm, entre pés: ≥ 59 mm. Escolhi 8 (a lista admitia 6 ou mais) para cobrir os 244 mm de comprimento: o pé mais próximo de qualquer ponto está a poucas dezenas de mm; não calculei a estabilidade de assento. Figura: `case/renders/base_fundo_prog_r15.png`.
+
+**3.3 Botão PROG:** furo Ø3 mm no piso (z -10,1 a -8,1) em **(52,0; 36,0)**, que é a posição do SW403 na placa (`pcb/posicao_v4.json`). O botão está sob a placa: a ponta do palito (Ø2) chega ao atuador 3,4 mm acima do piso, passando o furo. O furo fica a 22 mm do pé mais perto. Figura: `base_fundo_prog_r15.png` (planta com os pés, os bolsos e o furo, e um corte pelo furo).
+
+### 4. Renders (R14V4 tarefa 2)
+
+Refeitos **todos**: `foto_instrumento`, `foto_explodido`, `passo_1` a `passo_11` e os novos `foto_tela` (OLED aceso em close) e as figuras da base (`etutti/studentV4/img/`). Pipeline: `kicad-cli pcb export glb` das duas placas (serigrafia nova, `student_v04_roteada_3d.kicad_pcb`), `case/cena_r13.py`, Blender (`case/render_r13.py`), `case/finish_r13.py`. **Conferência peça por peça (posição contra as placas e o case):** a régua é colocada em (x0 - 10; 17 - y) porque a origem da R8 no KiCad é (10; 17) e a linha de centro da régua está em y 17: **o J1 da R8 (KiCad 15,9; 13,05) cai em u 5,9, v -3,95**, o do CPL, e o plugue IN fica na boca do J1 (v -7,5 a -9,95). Os cabos saem do plugue de cada J60x da placa e entram pelo túnel até o plugue IN. A grade tem 147,6 mm, igual à régua. **No passo 7 (novo) a outra ponta do cabo fica solta de propósito: a placa só entra no passo 9.** Não achei, nesta cena, as barras pretas finas passando das pontas das réguas das fileiras 1 a 3 nem plugues fora do lugar: as hastes de que o J falava eram as da base antiga (ver 2.1). **Janela do OLED:** agora mostra a tela de estado do firmware (`telas_oled.py`, `tela_status_pt.png`) acesa atrás do acrílico, visível em `foto_tela`; em `foto_instrumento` o ângulo baixo e os knobs escondem a tela (por isso o close).
+
+### Peças numeradas dos passos que mudaram
+
+`passo_6` (base com as 8 porcas, vista de baixo): 1 base, 2 porca (fileira 1), 3 porca fina de 1,2 mm (fileira 4), 4 face de baixo. `passo_7` (réguas e parafusos): 1 base com porcas, 2 régua da fileira 1, 3 cabo SH da fileira 1, 4 parafuso M2 x 10, 5 parafuso M2 x 16 (fileira 4), 6 cabo SH da fileira 4. `passo_8` (grade e teclas): 1 régua parafusada, 2 grade, 3 tecla, 4 régua da fileira 4. Os balões de `passo_9` a `passo_11` não mudaram (o passo 11 mostra os 8 pés novos).
+
+### Perguntas para o design (R15V4)
+
+1. **Berço contínuo (B) a +US$ 12,2 e 43 g, ou trilhos largos (C) a +US$ 2,5?** B é o que o J pediu (uniforme); a restrição nova de espaço sob a régua vale só para B (a eletrônica foi avisada neste relatório).
+2. **Parafusos antes das teclas** (mantém a grade fechada, mas trocar uma régua pede levantar a grade com as teclas) **ou furo de acesso Ø3,2 na grade** (muda o arquivo da grade da eletrônica)? O texto da página segue o primeiro.
+3. **Lâmina dos postes internos da tampa:** 1,5 mm de largura por 12 a 13 mm de altura (razão 8,7 > 3): para engrossar sem mexer no contrato precisa alargar o entalhe da régua e da grade de 2,0 para ≥ 2,8 mm (lâmina de 2,2). Alarga? O degrau de 0,7 x 5 mm que sobra na ponta esquerda da fileira 4 também pode sair com um recorte à mão; avisem se querem.
+4. **Pés de 2,2 mm** (SJ5302): serve (a faixa pedida era 1 a 2)? Cor: a RS UK mostra um "buffer preto" no 192-5624; a 3M lista o SJ5302 como transparente.
+5. **Costelas de pressão:** as medidas (0,4 x 0,2) e a interferência de 0,1 mm são estimativas para PA12; o ensaio com a porca real no protótipo as confirma. Há risco de a porca entrar apertada demais.
+6. **Chanfro de baixo da tampa 0,5 mm** (era 1,0): aceita? O visual muda por 0,5 mm.
+
 ## R13V4 — modelos 3D fiéis na cena, fotos do instrumento e 11 passos de montagem (23 nov 2026, parte de Design)
 
 **SPEC atendida: R13V4** (item 2 seção 1 e 6, item 5 seções 1 e 6, item 6). Nada foi comprado, impresso ou montado; só 32 teclas, só a Student V4. **O case não mudou** (nenhuma linha de `case_r4.py` / `layout_r4.py` foi tocada). Figuras em **`etutti/studentV4/img/`**: `foto_instrumento.jpg`, `foto_explodido.jpg`, `passo_1.jpg` … `passo_11.jpg` (1700 px de largura, balões numerados; os nomes que o `pagina.py` espera). Os PNG transparentes, sem balões, ficam em `case/blender/out/` (fora do git).

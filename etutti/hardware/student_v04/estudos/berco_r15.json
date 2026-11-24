@@ -1,0 +1,157 @@
+{
+ "pockets_u_v_prof": [
+  [
+   0.17,
+   -7.8,
+   11.8,
+   2.8,
+   3.25
+  ],
+  [
+   26.8,
+   -1.41,
+   30.31,
+   1.41,
+   1.1
+  ],
+  [
+   45.3,
+   -1.41,
+   48.81,
+   1.41,
+   1.1
+  ],
+  [
+   63.81,
+   -1.41,
+   67.3,
+   1.41,
+   1.1
+  ],
+  [
+   82.31,
+   -1.41,
+   85.8,
+   1.41,
+   1.1
+  ],
+  [
+   100.81,
+   -1.41,
+   104.3,
+   1.41,
+   1.1
+  ],
+  [
+   119.3,
+   -1.41,
+   122.8,
+   1.41,
+   1.1
+  ],
+  [
+   137.8,
+   -1.41,
+   141.3,
+   1.41,
+   1.1
+  ],
+  [
+   71.31,
+   -2.19,
+   79.44,
+   2.55,
+   1.3
+  ],
+  [
+   126.19,
+   -3.73,
+   127.81,
+   -1.17,
+   0.85
+  ]
+ ],
+ "regua": {
+  "R1": {
+   "apoio_A_%": 38.8,
+   "apoio_B_%": 88.7,
+   "maior_vao_sem_apoio_mm_A": {
+    "tras": 11.8,
+    "centro": 147.6,
+    "frente": 2.2
+   },
+   "maior_vao_sem_apoio_mm_B": {
+    "tras": 11.8,
+    "centro": 11.6,
+    "frente": 2.2
+   },
+   "flecha_A_mm": 0.0032,
+   "flecha_B_mm": 0.001
+  },
+  "R2": {
+   "apoio_A_%": 35.6,
+   "apoio_B_%": 85.4,
+   "maior_vao_sem_apoio_mm_A": {
+    "tras": 23.3,
+    "centro": 147.6,
+    "frente": 11.6
+   },
+   "maior_vao_sem_apoio_mm_B": {
+    "tras": 23.3,
+    "centro": 11.6,
+    "frente": 11.7
+   },
+   "flecha_A_mm": 0.015,
+   "flecha_B_mm": 0.00128
+  },
+  "R3": {
+   "apoio_A_%": 37.2,
+   "apoio_B_%": 87.1,
+   "maior_vao_sem_apoio_mm_A": {
+    "tras": 11.9,
+    "centro": 147.6,
+    "frente": 11.6
+   },
+   "maior_vao_sem_apoio_mm_B": {
+    "tras": 11.9,
+    "centro": 11.6,
+    "frente": 11.7
+   },
+   "flecha_A_mm": 0.0042,
+   "flecha_B_mm": 0.00134
+  },
+  "R4": {
+   "apoio_A_%": 35.1,
+   "apoio_B_%": 84.8,
+   "maior_vao_sem_apoio_mm_A": {
+    "tras": 23.3,
+    "centro": 147.6,
+    "frente": 15.9
+   },
+   "maior_vao_sem_apoio_mm_B": {
+    "tras": 23.3,
+    "centro": 11.6,
+    "frente": 16.0
+   },
+   "flecha_A_mm": 0.0151,
+   "flecha_B_mm": 0.00133
+  }
+ },
+ "resumo": {
+  "apoio_A_%": 36.7,
+  "apoio_B_%": 86.5,
+  "flecha_pior_A_mm": 0.0151,
+  "flecha_pior_B_mm": 0.00134,
+  "volume_cm3": {
+   "antes": {
+    "tampa": 89.9,
+    "base": 87.0
+   },
+   "depois": {
+    "tampa": 90.8,
+    "base": 130.5
+   }
+  },
+  "custo_extra_MJF_US$": 12.2
+ }
+}

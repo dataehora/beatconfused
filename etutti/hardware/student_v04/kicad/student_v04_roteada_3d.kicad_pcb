@@ -158,7 +158,7 @@
 		(tags "mountinghole M2")
 		(property "Reference" "H4"
 			(at 0 -3.15 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "14b3e430-adfb-4466-9363-a6f4015329ce")
 			(effects
@@ -204,7 +204,7 @@
 		)
 		(property "KiLib_Generator" "mounting_hardware/mounting_hole"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "c137372d-7bb2-457a-88d2-6d0074b99a2d")
 			(effects
@@ -266,7 +266,7 @@
 		(tags "mountinghole M2")
 		(property "Reference" "H1"
 			(at 0 -3.15 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "bcc5418b-daa2-4fbb-9e2c-0fef2e1198ef")
 			(effects
@@ -312,7 +312,7 @@
 		)
 		(property "KiLib_Generator" "mounting_hardware/mounting_hole"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "5a6cb47f-f179-409f-8c04-38dabdcbc559")
 			(effects
@@ -374,7 +374,7 @@
 		(tags "rotary encoder")
 		(property "Reference" "SW401"
 			(at 2.8 -4.7 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "efd14200-9d9d-4071-ac53-ebfc74718e7c")
 			(effects
@@ -424,7 +424,7 @@
 		)
 		(property "Codigo" "I1"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "3387ed4c-a709-41b5-9909-fded234afdb3")
 			(effects
@@ -436,7 +436,7 @@
 		)
 		(property "LCSC" "C202365"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "4476824b-a336-40c9-8cf5-0f4160a55d38")
 			(effects
@@ -448,7 +448,7 @@
 		)
 		(property "Montagem" "sem peca (encoder soldado em casa, topo)"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "ce4c96e7-8db2-44c6-a0b6-5e1b7cd65bb1")
 			(effects
@@ -460,7 +460,7 @@
 		)
 		(property "Altura_mm" "20"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "c0587f26-6fb9-4484-9e20-7ba07ab9aea1")
 			(effects
@@ -472,7 +472,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "272a3b84-7938-4ebf-80c2-8eabb8a795b8")
 			(effects
@@ -489,7 +489,7 @@
 			(start -0.3 -1.6)
 			(end 0.3 -1.6)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -499,7 +499,7 @@
 			(start 0 -1.3)
 			(end -0.3 -1.6)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -509,7 +509,7 @@
 			(start 0.3 -1.6)
 			(end 0 -1.3)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -519,7 +519,7 @@
 			(start 1.4 -3.4)
 			(end 1.4 8.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -529,7 +529,7 @@
 			(start 5.5 -3.4)
 			(end 1.4 -3.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -539,7 +539,7 @@
 			(start 5.5 8.4)
 			(end 1.4 8.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -549,7 +549,7 @@
 			(start 7 2.5)
 			(end 8 2.5)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -559,7 +559,7 @@
 			(start 7.5 2)
 			(end 7.5 3)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -569,7 +569,7 @@
 			(start 9.5 -3.4)
 			(end 13.6 -3.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -579,7 +579,7 @@
 			(start 13.6 -3.4)
 			(end 13.6 -1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -589,7 +589,7 @@
 			(start 13.6 1.2)
 			(end 13.6 3.8)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -599,7 +599,7 @@
 			(start 13.6 6)
 			(end 13.6 8.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -609,7 +609,7 @@
 			(start 13.6 8.4)
 			(end 9.5 8.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -619,7 +619,7 @@
 			(center 7.5 2.5)
 			(end 10.5 2.5)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill no)
@@ -831,7 +831,7 @@
 		(tags "mountinghole M2.5")
 		(property "Reference" "H101"
 			(at 0 -3.65 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "0fda4424-e365-4bf4-b953-5c766cafd284")
 			(effects
@@ -877,7 +877,7 @@
 		)
 		(property "KiLib_Generator" "mounting_hardware/mounting_hole"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "59253bc1-9685-4408-a0cc-8ec5c86e542f")
 			(effects
@@ -939,7 +939,7 @@
 		(tags "rotary encoder")
 		(property "Reference" "SW402"
 			(at 2.8 -4.7 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "cb244b63-2f92-4187-abbe-fdb9b189f874")
 			(effects
@@ -989,7 +989,7 @@
 		)
 		(property "Codigo" "I2"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "2624074f-a2d8-49aa-94c1-fc7707f598b2")
 			(effects
@@ -1001,7 +1001,7 @@
 		)
 		(property "LCSC" "C202365"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "3a5366b5-de74-4171-b3bc-897d2fdbd09d")
 			(effects
@@ -1013,7 +1013,7 @@
 		)
 		(property "Montagem" "sem peca (encoder soldado em casa, topo)"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "fcee034e-272e-4f0c-ac33-14298ff10b5d")
 			(effects
@@ -1025,7 +1025,7 @@
 		)
 		(property "Altura_mm" "20"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "dfc700f7-c389-4a8d-bb1d-f8005dcc9996")
 			(effects
@@ -1037,7 +1037,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "a10c3b9d-4e3e-4604-9080-f254a9638147")
 			(effects
@@ -1054,7 +1054,7 @@
 			(start -0.3 -1.6)
 			(end 0.3 -1.6)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1064,7 +1064,7 @@
 			(start 0 -1.3)
 			(end -0.3 -1.6)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1074,7 +1074,7 @@
 			(start 0.3 -1.6)
 			(end 0 -1.3)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1084,7 +1084,7 @@
 			(start 1.4 -3.4)
 			(end 1.4 8.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1094,7 +1094,7 @@
 			(start 5.5 -3.4)
 			(end 1.4 -3.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1104,7 +1104,7 @@
 			(start 5.5 8.4)
 			(end 1.4 8.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1114,7 +1114,7 @@
 			(start 7 2.5)
 			(end 8 2.5)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1124,7 +1124,7 @@
 			(start 7.5 2)
 			(end 7.5 3)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1134,7 +1134,7 @@
 			(start 9.5 -3.4)
 			(end 13.6 -3.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1144,7 +1144,7 @@
 			(start 13.6 -3.4)
 			(end 13.6 -1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1154,7 +1154,7 @@
 			(start 13.6 1.2)
 			(end 13.6 3.8)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1164,7 +1164,7 @@
 			(start 13.6 6)
 			(end 13.6 8.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1174,7 +1174,7 @@
 			(start 13.6 8.4)
 			(end 9.5 8.4)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "F.SilkS")
@@ -1184,7 +1184,7 @@
 			(center 7.5 2.5)
 			(end 10.5 2.5)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill no)
@@ -1396,7 +1396,7 @@
 		(tags "mountinghole M2")
 		(property "Reference" "H2"
 			(at 0 -3.15 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "021e9850-8fef-420c-ba70-52bbeec2f0ae")
 			(effects
@@ -1442,7 +1442,7 @@
 		)
 		(property "KiLib_Generator" "mounting_hardware/mounting_hole"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "25615259-8c73-4f26-9dce-1e340082aedf")
 			(effects
@@ -1504,7 +1504,7 @@
 		(tags "mountinghole M2")
 		(property "Reference" "H3"
 			(at 0 -3.15 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "70b5342b-46df-43ce-9aeb-f27b4fae92ab")
 			(effects
@@ -1550,7 +1550,7 @@
 		)
 		(property "KiLib_Generator" "mounting_hardware/mounting_hole"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "a2c8807e-b404-4bd6-9b89-dc45128828ca")
 			(effects
@@ -1612,7 +1612,7 @@
 		(tags "connector wire 0.127sqmm")
 		(property "Reference" "J501"
 			(at 1.85 -2.05 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "123c6236-53d9-41f2-b4d5-fdb99fcdaf4b")
 			(effects
@@ -1658,7 +1658,7 @@
 		)
 		(property "KiLib_Generator" "connector/wire"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "d643a285-e992-4289-b0fd-67626abfa527")
 			(effects
@@ -1670,7 +1670,7 @@
 		)
 		(property "Codigo" "A2"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "86633ed6-a144-4077-a48f-bb3b694bcc4e")
 			(effects
@@ -1682,7 +1682,7 @@
 		)
 		(property "LCSC" ""
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "2e3ae7e3-2663-4973-88b2-c009f38f1e8a")
 			(effects
@@ -1694,7 +1694,7 @@
 		)
 		(property "Montagem" "sem peca (pads; fios do A2 soldados em casa)"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "6f0072cb-695e-4a64-af85-64d20620f221")
 			(effects
@@ -1706,7 +1706,7 @@
 		)
 		(property "Altura_mm" "0"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "3ebcc969-2fb3-48cb-8c9d-008d778a22b5")
 			(effects
@@ -1718,7 +1718,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "F.SilkS")
+			(layer "F.Fab")
 			(hide yes)
 			(uuid "88380238-8c1b-44b2-a8cb-f0057a2ab3ec")
 			(effects
@@ -1815,7 +1815,7 @@
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "U201"
 			(at 0 2.4 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dde7790a-88f2-4a1f-b3bf-6696a3908b0b")
 			(effects
@@ -1865,7 +1865,7 @@
 		)
 		(property "KiLib_Generator" "package/gullwing"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8c1ccaf2-8fe3-463c-89fd-eb30bd9208da")
 			(effects
@@ -1878,7 +1878,7 @@
 		)
 		(property "Codigo" "E2"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "01ac5663-3e60-40d9-a4c2-b280df581030")
 			(effects
@@ -1891,7 +1891,7 @@
 		)
 		(property "LCSC" "C7519"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3189d9c2-b435-42c9-81cc-042957964efa")
 			(effects
@@ -1904,7 +1904,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a0ddae38-1fc5-48a7-b9c8-30f78cbe20b0")
 			(effects
@@ -1917,7 +1917,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b0769701-85e8-485d-b514-8389f9648a12")
 			(effects
@@ -1930,7 +1930,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "514e6968-e5d7-4b34-8f51-f772321f181a")
 			(effects
@@ -1948,7 +1948,7 @@
 			(start 0.91 1.56)
 			(end 0.91 1.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -1958,7 +1958,7 @@
 			(start 0.91 -1.51)
 			(end 0.91 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -1968,7 +1968,7 @@
 			(start 0.91 -1.56)
 			(end -0.91 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -1978,7 +1978,7 @@
 			(start -0.91 1.56)
 			(end 0.91 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -1988,7 +1988,7 @@
 			(start -0.91 1.51)
 			(end -0.91 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -1998,7 +1998,7 @@
 			(start -0.91 -1.56)
 			(end -0.91 -1.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2009,7 +2009,7 @@
 				(xy -1.45 1.51) (xy -1.69 1.84) (xy -1.21 1.84)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -2229,7 +2229,7 @@
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "D206"
 			(at 0 2.4 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "26f94d13-a90e-462a-b7b6-93594554f593")
 			(effects
@@ -2279,7 +2279,7 @@
 		)
 		(property "KiLib_Generator" "package/gullwing"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "81b7a2ec-517c-45fa-93ac-3339e02305d7")
 			(effects
@@ -2292,7 +2292,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b7b0cb2d-03cc-4b20-9523-d8e61755fa5e")
 			(effects
@@ -2305,7 +2305,7 @@
 		)
 		(property "LCSC" "C68978"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dcc53e8c-acb8-4c20-a50a-534baa879f15")
 			(effects
@@ -2318,7 +2318,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c5e38413-6f41-471d-88c6-a0d988f0f553")
 			(effects
@@ -2331,7 +2331,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "60665b94-0527-4cab-9d8d-06f86fa1dd1b")
 			(effects
@@ -2344,7 +2344,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2947e2a7-c2b1-498b-a12d-19ef965a4ad6")
 			(effects
@@ -2362,7 +2362,7 @@
 			(start 0.76 -1.56)
 			(end -0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2372,7 +2372,7 @@
 			(start -0.76 -1.56)
 			(end -0.76 -1.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2382,7 +2382,7 @@
 			(start 0.76 -0.56)
 			(end 0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2392,7 +2392,7 @@
 			(start -0.76 -0.39)
 			(end -0.76 0.39)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2402,7 +2402,7 @@
 			(start -0.76 1.51)
 			(end -0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2412,7 +2412,7 @@
 			(start 0.76 1.56)
 			(end 0.76 0.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2422,7 +2422,7 @@
 			(start -0.76 1.56)
 			(end 0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2433,7 +2433,7 @@
 				(xy -1.3 0.38) (xy -1.06 0.05) (xy -1.54 0.05)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -2669,7 +2669,7 @@
 		(tags "capacitor")
 		(property "Reference" "C205"
 			(at 0 1.16 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "05dc2234-871e-422f-973a-967c7e3163e6")
 			(effects
@@ -2719,7 +2719,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1f51d646-6c97-4a60-b1fb-a28bc81e2959")
 			(effects
@@ -2732,7 +2732,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bf2f6e7d-65c5-49c6-8435-6b7d72013e90")
 			(effects
@@ -2745,7 +2745,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d5190f41-c817-43c7-81d0-bac74a44a880")
 			(effects
@@ -2758,7 +2758,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "232f755a-a3d4-482a-a801-ba84b191c7b3")
 			(effects
@@ -2771,7 +2771,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c5aab0f3-d1bb-4468-a840-b47ae414064b")
 			(effects
@@ -2784,7 +2784,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "77c139bb-4bab-4e49-9983-61f32d1a0219")
 			(effects
@@ -2802,7 +2802,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2812,7 +2812,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -2889,7 +2889,7 @@
 		(tags "resistor")
 		(property "Reference" "R302"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "082f03c1-51fd-499f-9348-8f47b060698e")
 			(effects
@@ -2939,7 +2939,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "417995b9-fadd-4d98-98d6-fd731c754056")
 			(effects
@@ -2952,7 +2952,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6d205c00-2007-489a-8030-7dbe81caa422")
 			(effects
@@ -2965,7 +2965,7 @@
 		)
 		(property "LCSC" "C25879"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "91bce8e7-945d-45de-9d16-b38848ceee4c")
 			(effects
@@ -2978,7 +2978,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "61057e94-7c6c-4534-bb4e-24d6f2aa99d9")
 			(effects
@@ -2991,7 +2991,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "abcef354-2c57-4ed9-82c2-773332135f0e")
 			(effects
@@ -3004,7 +3004,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4e7fa20c-e579-4fa2-82e9-c3dadd741200")
 			(effects
@@ -3022,7 +3022,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3032,7 +3032,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3109,7 +3109,7 @@
 		(tags "connector JST SH horizontal")
 		(property "Reference" "J603"
 			(at 0 3.98 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "873bfc9b-73ba-4bc0-81b6-4adc99d5202b")
 			(effects
@@ -3159,7 +3159,7 @@
 		)
 		(property "KiLib_Generator" "connector/SMD_single_row_plus_mounting_pad"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2e5c8ed2-c77a-4f57-be53-8bf8f40a7e8f")
 			(effects
@@ -3172,7 +3172,7 @@
 		)
 		(property "Codigo" "R3"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1cdd81b8-2fcd-4ff5-8cb6-01e14bc99043")
 			(effects
@@ -3185,7 +3185,7 @@
 		)
 		(property "LCSC" "C160405"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "16b70d53-c650-4f7b-b32b-424a018366aa")
 			(effects
@@ -3198,7 +3198,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "22da2bc6-959c-45aa-ae2d-db74e07c2a81")
 			(effects
@@ -3211,7 +3211,7 @@
 		)
 		(property "Altura_mm" "4.3"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bb618b02-d704-4fc4-b518-7af9b76784ba")
 			(effects
@@ -3224,7 +3224,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7318c933-dcf9-4925-a326-975e107b7238")
 			(effects
@@ -3242,7 +3242,7 @@
 			(start -4.11 1.785)
 			(end -3.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3252,7 +3252,7 @@
 			(start -3.06 1.785)
 			(end -3.06 2.775)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3262,7 +3262,7 @@
 			(start 4.11 1.785)
 			(end 3.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3272,7 +3272,7 @@
 			(start -4.11 -0.715)
 			(end -4.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3282,7 +3282,7 @@
 			(start 4.11 -0.715)
 			(end 4.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3292,7 +3292,7 @@
 			(start -2.94 -2.685)
 			(end 2.94 -2.685)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3615,7 +3615,7 @@
 		(tags "resistor")
 		(property "Reference" "R211"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0dc134ae-be66-4a80-b4cd-d12088324b3f")
 			(effects
@@ -3665,7 +3665,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2fe1ac6d-65ee-412c-94a0-17cfc7a1d586")
 			(effects
@@ -3678,7 +3678,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b4ce7976-94b5-4e3d-a116-2df312c6ac04")
 			(effects
@@ -3691,7 +3691,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "62ff1601-8dd5-43d3-95e4-68622f834dbf")
 			(effects
@@ -3704,7 +3704,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2783491c-eab1-402f-88eb-e5c15f4bcb0a")
 			(effects
@@ -3717,7 +3717,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ffc0bfdc-ac06-4c28-bcfb-c8402acc84c9")
 			(effects
@@ -3730,7 +3730,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a521aea0-f974-4d98-8f99-dd4a6d706654")
 			(effects
@@ -3748,7 +3748,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3758,7 +3758,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3835,7 +3835,7 @@
 		(tags "capacitor")
 		(property "Reference" "C310"
 			(at 0 1.16 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "09ae4cf0-b57d-4301-82a1-ff1625fc9621")
 			(effects
@@ -3885,7 +3885,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "29ba2087-b1da-40dd-b1c1-57bc5cf19869")
 			(effects
@@ -3898,7 +3898,7 @@
 		)
 		(property "Codigo" "F3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9baf7248-a628-4655-81cd-d385ee290bdf")
 			(effects
@@ -3911,7 +3911,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "58856e55-4dd6-4b35-90e2-fe07cf8f8109")
 			(effects
@@ -3924,7 +3924,7 @@
 		)
 		(property "Montagem" "nao montar"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4dd45378-6d5c-42db-94ba-ff38a2434605")
 			(effects
@@ -3937,7 +3937,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9c8eef45-1bd7-4a80-8877-6afd289dd015")
 			(effects
@@ -3950,7 +3950,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bb27e503-0350-4029-bc53-efaa3c63da04")
 			(effects
@@ -3968,7 +3968,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -3978,7 +3978,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -4044,7 +4044,7 @@
 		(tags "capacitor")
 		(property "Reference" "C308"
 			(at 0 1.16 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b27869e0-8b61-4bf2-90ab-57e5bdcb0936")
 			(effects
@@ -4094,7 +4094,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "39f907e3-ad5e-4576-b54f-85070d7dece8")
 			(effects
@@ -4107,7 +4107,7 @@
 		)
 		(property "Codigo" "F2"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8b334fd9-ab9f-4c47-9874-c3aa955ade38")
 			(effects
@@ -4120,7 +4120,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "16c1232b-7c0c-4b10-abd9-597f56a444ac")
 			(effects
@@ -4133,7 +4133,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "aa154b8a-f917-4136-915d-0b89af07d799")
 			(effects
@@ -4146,7 +4146,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b2691dec-b635-447c-9a1d-727444e68777")
 			(effects
@@ -4159,7 +4159,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9ddbe3ef-ca81-4ef5-a164-0cd185011be7")
 			(effects
@@ -4177,7 +4177,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -4187,7 +4187,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -4264,7 +4264,7 @@
 		(tags "resistor")
 		(property "Reference" "R208"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "465dd61f-832c-4f24-b732-c7f8e0dcf9fe")
 			(effects
@@ -4314,7 +4314,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "94bb10db-8bda-4dc1-bf55-833004846f95")
 			(effects
@@ -4327,7 +4327,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "99a88d48-ddfe-4fc8-8db5-cda96a3168c5")
 			(effects
@@ -4340,7 +4340,7 @@
 		)
 		(property "LCSC" "C26083"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2ee2e4fa-caeb-4c67-a412-0a34480fd900")
 			(effects
@@ -4353,7 +4353,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2efe9055-e7cc-4034-b1af-65138956c92b")
 			(effects
@@ -4366,7 +4366,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4aa0365a-8567-4dbb-a289-2da16f5928c2")
 			(effects
@@ -4379,7 +4379,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7ea8d4d5-9e1e-4dd1-bae5-e4a95eb1a731")
 			(effects
@@ -4397,7 +4397,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -4407,7 +4407,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -4484,7 +4484,7 @@
 		(tags "capacitor")
 		(property "Reference" "C502"
 			(at 0 1.16 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "54f79501-8af4-400b-a468-4f1e5db9f178")
 			(effects
@@ -4534,7 +4534,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3b1bc5fb-cc59-41e3-af80-81eef5d00006")
 			(effects
@@ -4547,7 +4547,7 @@
 		)
 		(property "Codigo" "A1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c3132d02-32bc-48e1-9fba-51ceefa10020")
 			(effects
@@ -4560,7 +4560,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b458eac0-0314-415d-b992-6b8c46d7e15b")
 			(effects
@@ -4573,7 +4573,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "62870ed2-8b60-4afd-8700-f0537d763c73")
 			(effects
@@ -4586,7 +4586,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "74f926c9-d910-4417-b19d-dfe00bbae72d")
 			(effects
@@ -4599,7 +4599,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4a51111f-72fc-4e56-84b2-77c6ceb6cc60")
 			(effects
@@ -4617,7 +4617,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -4627,7 +4627,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -4704,7 +4704,7 @@
 		(tags "resistor")
 		(property "Reference" "R604"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "511bb5a8-0fab-49b7-a24d-5ecd55db1c76")
 			(effects
@@ -4754,7 +4754,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6d62fe17-2d1c-4b9c-b189-f2269ccb86b5")
 			(effects
@@ -4767,7 +4767,7 @@
 		)
 		(property "Codigo" "R4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bcd55fcd-411e-49c5-8c22-ab9037372a6b")
 			(effects
@@ -4780,7 +4780,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "5c170d10-91c3-4346-9c91-ebaa110ef894")
 			(effects
@@ -4793,7 +4793,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9c1989b7-c6c1-43bd-855f-24abaffbbf23")
 			(effects
@@ -4806,7 +4806,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4ea1c836-625d-4c56-b53f-4d1d275f2cf4")
 			(effects
@@ -4819,7 +4819,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8c2452ff-fbb3-4796-ade4-31103af9e999")
 			(effects
@@ -4837,7 +4837,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -4847,7 +4847,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -4924,7 +4924,7 @@
 		(tags "capacitor")
 		(property "Reference" "C209"
 			(at 0 1.16 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1587c66a-55c2-4a0f-aadf-99e166260bf2")
 			(effects
@@ -4974,7 +4974,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0cd9ce30-a044-4182-a4dc-a158be7a4345")
 			(effects
@@ -4987,7 +4987,7 @@
 		)
 		(property "Codigo" "E4"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6c84b6ee-a7ec-4eec-88e8-f4f1cce23356")
 			(effects
@@ -5000,7 +5000,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bab126a0-0bf5-4345-a525-7ebb136f99de")
 			(effects
@@ -5013,7 +5013,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dc019571-cd71-47ad-846d-d3b88739f882")
 			(effects
@@ -5026,7 +5026,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d231d107-0849-4b63-81d2-bf4fce3ecc54")
 			(effects
@@ -5039,7 +5039,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "64b60019-88ea-4c8b-a32e-6fc413595e76")
 			(effects
@@ -5057,7 +5057,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -5067,7 +5067,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -5144,7 +5144,7 @@
 		(tags "resistor")
 		(property "Reference" "R303"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "fa67c215-b3e6-414e-adb5-0f377f1484bd")
 			(effects
@@ -5194,7 +5194,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ccd37180-a5ad-48ba-906f-4f39e487aa0a")
 			(effects
@@ -5207,7 +5207,7 @@
 		)
 		(property "Codigo" "F2"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "68474f89-2ff8-4363-9e0e-4c3342a99c1f")
 			(effects
@@ -5220,7 +5220,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "31584edf-fb52-4b75-aa35-25e174385d84")
 			(effects
@@ -5233,7 +5233,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b82354f8-5108-4f1f-b557-9128c7989a54")
 			(effects
@@ -5246,7 +5246,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "fabfd1dc-ee24-4a67-9681-bab1477d7197")
 			(effects
@@ -5259,7 +5259,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8ec8be39-48c5-49e2-8a9f-6ba662ae2832")
 			(effects
@@ -5277,7 +5277,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -5287,7 +5287,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -5364,7 +5364,7 @@
 		(tags "resistor")
 		(property "Reference" "R202"
 			(at 0 1.17 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "366fa3b0-5707-490a-a51a-6e4fddb9a10b")
 			(effects
@@ -5414,7 +5414,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7fcdf2f4-cbfe-47c5-afa7-69871fcdfbc0")
 			(effects
@@ -5427,7 +5427,7 @@
 		)
 		(property "Codigo" "E1"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "72715d5c-06c1-4827-8342-3ed76790dc02")
 			(effects
@@ -5440,7 +5440,7 @@
 		)
 		(property "LCSC" "C25905"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6d58a05c-ac9d-448b-a770-c977c1d3e563")
 			(effects
@@ -5453,7 +5453,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3a7ca7f2-8c79-46e7-a4d6-af47b9eea840")
 			(effects
@@ -5466,7 +5466,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "da69f3c4-ed67-4312-b995-f4ee0f8a6761")
 			(effects
@@ -5479,7 +5479,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a51be7fe-0ee7-47ca-971a-9cf6e043c5ef")
 			(effects
@@ -5497,7 +5497,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -5507,7 +5507,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -5584,7 +5584,7 @@
 		(tags "capacitor")
 		(property "Reference" "C202"
 			(at 0 1.68 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2aafc1a5-f96f-41b3-a591-66ceaa1816ff")
 			(effects
@@ -5634,7 +5634,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0656be74-bce6-40ff-a695-f8a1ac465c22")
 			(effects
@@ -5647,7 +5647,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2999d46a-c9f9-4c99-a207-0c2da5812551")
 			(effects
@@ -5660,7 +5660,7 @@
 		)
 		(property "LCSC" "C15850"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "be624df4-ff39-45ed-88f8-2ea137ce1d10")
 			(effects
@@ -5673,7 +5673,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ff950953-508f-40e3-86c3-e63b7af6d7b0")
 			(effects
@@ -5686,7 +5686,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a515efdf-a051-4da5-bdee-8dd7a2b6fa1a")
 			(effects
@@ -5699,7 +5699,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "da5564f2-a11c-4d90-9620-6fe1bf0b30f9")
 			(effects
@@ -5717,7 +5717,7 @@
 			(start -0.261252 0.735)
 			(end 0.261252 0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -5727,7 +5727,7 @@
 			(start -0.261252 -0.735)
 			(end 0.261252 -0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -5804,7 +5804,7 @@
 		(tags "resistor")
 		(property "Reference" "R301"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "86816fc3-48e2-484f-b6a6-55eed0658047")
 			(effects
@@ -5854,7 +5854,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0df30f00-38e5-411e-85cc-8fa80810cc67")
 			(effects
@@ -5867,7 +5867,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "40431ff4-3237-4ee0-a8da-d1625a931425")
 			(effects
@@ -5880,7 +5880,7 @@
 		)
 		(property "LCSC" "C25879"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d1e6c033-8388-444c-a057-3c8a42229482")
 			(effects
@@ -5893,7 +5893,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "33c53041-6630-477c-a20e-b5cd087b80b9")
 			(effects
@@ -5906,7 +5906,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "afa3569b-7a06-4a4a-8d27-4319bff69bd5")
 			(effects
@@ -5919,7 +5919,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d570d5b1-4119-4b71-8958-3d4279c0659e")
 			(effects
@@ -5937,7 +5937,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -5947,7 +5947,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6024,7 +6024,7 @@
 		(tags "QFN NoLead")
 		(property "Reference" "U301"
 			(at 0 2.83 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6c7b7d32-d5d6-4867-88af-0f7c6b900e9e")
 			(effects
@@ -6074,7 +6074,7 @@
 		)
 		(property "KiLib_Generator" "package/no_lead"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a579c64e-8cea-497c-8cc2-ad82827b765a")
 			(effects
@@ -6087,7 +6087,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "11efb499-9d69-44fb-a217-024fb4c814b0")
 			(effects
@@ -6100,7 +6100,7 @@
 		)
 		(property "LCSC" "C2651833"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a971a6c3-b810-4f3d-9182-f8078183cc53")
 			(effects
@@ -6113,7 +6113,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "cf323908-e917-4a35-b539-ab3e943adc88")
 			(effects
@@ -6126,7 +6126,7 @@
 		)
 		(property "Altura_mm" "1"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bd97aef8-5047-4a31-8fe9-3e1281928f38")
 			(effects
@@ -6139,7 +6139,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2c854acc-d14b-4256-a898-6a4b2d64fa57")
 			(effects
@@ -6157,7 +6157,7 @@
 			(start 1.61 1.61)
 			(end 1.61 1.16)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6167,7 +6167,7 @@
 			(start 1.61 -1.16)
 			(end 1.61 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6177,7 +6177,7 @@
 			(start 1.61 -1.61)
 			(end 1.16 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6187,7 +6187,7 @@
 			(start 1.16 1.61)
 			(end 1.61 1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6197,7 +6197,7 @@
 			(start -1.16 -1.61)
 			(end -1.61 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6207,7 +6207,7 @@
 			(start -1.313241 1.61)
 			(end -1.16 1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6217,7 +6217,7 @@
 			(start -1.61 1.16)
 			(end -1.61 1.37)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6227,7 +6227,7 @@
 			(start -1.61 -1.61)
 			(end -1.61 -1.16)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6238,7 +6238,7 @@
 				(xy -1.61 1.61) (xy -1.85 1.94) (xy -1.37 1.94)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -6687,7 +6687,7 @@
 		(tags "capacitor")
 		(property "Reference" "C305"
 			(at 0 1.16 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a79b7805-1fe5-49fb-8011-e309c95f599e")
 			(effects
@@ -6737,7 +6737,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "12f87a13-6ef9-4d10-9c72-70e8c403b645")
 			(effects
@@ -6750,7 +6750,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "30b0c7d9-7781-44e7-8422-a6b21b64e50f")
 			(effects
@@ -6763,7 +6763,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f954e591-017c-4025-ad29-e3065d570f70")
 			(effects
@@ -6776,7 +6776,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0331f8a6-b698-46b5-8364-28b95cd77b9c")
 			(effects
@@ -6789,7 +6789,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "55ca400d-4718-4d4a-953d-ad543939fca5")
 			(effects
@@ -6802,7 +6802,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "96af75b3-ec27-4af0-8d9a-dc7011f7a51a")
 			(effects
@@ -6820,7 +6820,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6830,7 +6830,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -6907,7 +6907,7 @@
 		(tags "resistor")
 		(property "Reference" "R205"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "af8b1616-1251-4b3b-8947-907a5b6cb765")
 			(effects
@@ -6957,7 +6957,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "38b5578b-94d6-44aa-826b-b174a869432b")
 			(effects
@@ -6970,7 +6970,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8ed9cca3-70d2-40df-9f9c-82e565014d15")
 			(effects
@@ -6983,7 +6983,7 @@
 		)
 		(property "LCSC" "C25744"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8d4a7bef-2d4f-4e13-ac24-5e813b6a1e6e")
 			(effects
@@ -6996,7 +6996,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "410c7f92-abc3-420e-9862-bf0b184ce95d")
 			(effects
@@ -7009,7 +7009,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "54f0dbd4-8545-447c-8fc7-71a64a0bb1bd")
 			(effects
@@ -7022,7 +7022,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1f4b4f45-81fb-409b-b190-09904bea43da")
 			(effects
@@ -7040,7 +7040,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7050,7 +7050,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7127,7 +7127,7 @@
 		(tags "resistor")
 		(property "Reference" "R209"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a2b11509-38d4-4bc8-9d2f-4db9e1f104ad")
 			(effects
@@ -7177,7 +7177,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9410c03d-3998-4e5f-90d3-864375b456bb")
 			(effects
@@ -7190,7 +7190,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "93981915-0c7c-4c86-81f2-66988ffcf65c")
 			(effects
@@ -7203,7 +7203,7 @@
 		)
 		(property "LCSC" "C26083"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9bf25e34-15b7-46a1-870a-f6d3126e27b2")
 			(effects
@@ -7216,7 +7216,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1f3953f5-0cf4-4d20-88cf-565dad10a168")
 			(effects
@@ -7229,7 +7229,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ce4cffa7-2ba7-4967-b75f-33a447f2770a")
 			(effects
@@ -7242,7 +7242,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "fe40f80b-e6bc-4735-8f20-89bf92beeb5e")
 			(effects
@@ -7260,7 +7260,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7270,7 +7270,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7347,7 +7347,7 @@
 		(tags "capacitor")
 		(property "Reference" "C501"
 			(at 0 1.68 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f7271758-e563-48d0-8c20-e22b39ae080b")
 			(effects
@@ -7397,7 +7397,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0479f24c-c023-46eb-ba5a-edeb31502448")
 			(effects
@@ -7410,7 +7410,7 @@
 		)
 		(property "Codigo" "A1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ec51be6b-fdb6-4a9e-bc40-18c8184ecf9f")
 			(effects
@@ -7423,7 +7423,7 @@
 		)
 		(property "LCSC" "C15850"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "839a2f84-de70-4a95-a59b-636fc24f7709")
 			(effects
@@ -7436,7 +7436,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "42dedd92-ad2b-4380-bc50-bfc7914fb1ac")
 			(effects
@@ -7449,7 +7449,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c0e08c55-6dca-4290-b36d-f7da68686f40")
 			(effects
@@ -7462,7 +7462,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "46beed87-fa4e-4855-a0b5-a00fe5889b92")
 			(effects
@@ -7480,7 +7480,7 @@
 			(start -0.261252 -0.735)
 			(end 0.261252 -0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7490,7 +7490,7 @@
 			(start -0.261252 0.735)
 			(end 0.261252 0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7567,7 +7567,7 @@
 		(tags "resistor")
 		(property "Reference" "R216"
 			(at 0 1.17 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "642456ce-511c-4da0-bc73-42469736498f")
 			(effects
@@ -7617,7 +7617,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "650c95e8-62ab-4c60-b20d-e4015901b7ec")
 			(effects
@@ -7630,7 +7630,7 @@
 		)
 		(property "Codigo" "E4"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "676b58ba-86e7-4f92-8634-35fe77e228a1")
 			(effects
@@ -7643,7 +7643,7 @@
 		)
 		(property "LCSC" "C25076"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9bc79030-ed49-4cf1-b04c-57b54b59d196")
 			(effects
@@ -7656,7 +7656,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "81e2da4a-0257-4135-b695-34982229001c")
 			(effects
@@ -7669,7 +7669,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "39780ee4-7351-44c3-ad09-b90a0b6651e9")
 			(effects
@@ -7682,7 +7682,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ff92922e-684f-42da-acbe-b29899df230e")
 			(effects
@@ -7700,7 +7700,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7710,7 +7710,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7787,7 +7787,7 @@
 		(tags "Texas VSON10 3x3mm")
 		(property "Reference" "U204"
 			(at 0.02032 2.7 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "60803262-570f-4811-9655-243e28d6c2f1")
 			(effects
@@ -7841,7 +7841,7 @@
 		)
 		(property "Codigo" "E4"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ad7627dc-ce8b-451c-85ca-bd9bc44eed83")
 			(effects
@@ -7854,7 +7854,7 @@
 		)
 		(property "LCSC" "C28060"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "da67e797-01fc-415d-900e-060e59e319c5")
 			(effects
@@ -7867,7 +7867,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4c350001-8524-4f8e-86ec-ad215b4c4d02")
 			(effects
@@ -7880,7 +7880,7 @@
 		)
 		(property "Altura_mm" "1"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f5d412ee-4fc2-40f5-99e7-edd42d21164c")
 			(effects
@@ -7893,7 +7893,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "08932af1-e0fe-49ca-b576-841f751d0313")
 			(effects
@@ -7911,7 +7911,7 @@
 			(start 1.61 1.61)
 			(end 1.61 1.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7921,7 +7921,7 @@
 			(start 1.61 -1.38)
 			(end 1.61 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7931,7 +7931,7 @@
 			(start 0.635 1.61)
 			(end 1.61 1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7941,7 +7941,7 @@
 			(start 0.635 -1.61)
 			(end 1.61 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7951,7 +7951,7 @@
 			(start -1.32 1.61)
 			(end -0.635 1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7961,7 +7961,7 @@
 			(start -1.61 -1.38)
 			(end -1.61 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7971,7 +7971,7 @@
 			(start -1.61 -1.61)
 			(end -0.635 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -7982,7 +7982,7 @@
 				(xy -1.64 1.61) (xy -1.92 1.61) (xy -1.64 1.89) (xy -1.64 1.61)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -8263,7 +8263,7 @@
 		(tags "capacitor")
 		(property "Reference" "C206"
 			(at 0 1.68 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "be8b64fc-2d2c-49cb-a5ef-fc3ec7547587")
 			(effects
@@ -8313,7 +8313,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6ad0e06d-a92e-423a-a10f-0ef455f91803")
 			(effects
@@ -8326,7 +8326,7 @@
 		)
 		(property "Codigo" "E4"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e8f7b07d-ecfb-495e-a689-1ea49139afc9")
 			(effects
@@ -8339,7 +8339,7 @@
 		)
 		(property "LCSC" "C15850"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "03a6f79d-289b-4310-8f17-ab54a8fc1f46")
 			(effects
@@ -8352,7 +8352,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f9b7c207-cde7-41cf-8da1-0183614392c8")
 			(effects
@@ -8365,7 +8365,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "833268e1-32bd-4b41-88db-8566fce6b111")
 			(effects
@@ -8378,7 +8378,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e696cb47-2901-4eea-b4a8-09bc335ab16e")
 			(effects
@@ -8396,7 +8396,7 @@
 			(start -0.261252 0.735)
 			(end 0.261252 0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -8406,7 +8406,7 @@
 			(start -0.261252 -0.735)
 			(end 0.261252 -0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -8483,7 +8483,7 @@
 		(tags "resistor")
 		(property "Reference" "R210"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d677b5f3-200a-46bd-8a5a-988daba3a1e2")
 			(effects
@@ -8533,7 +8533,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d165b744-fdb5-426f-9840-a9ccc611c6e5")
 			(effects
@@ -8546,7 +8546,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4defb64a-3fc1-42ff-b595-ed57f91db5d8")
 			(effects
@@ -8559,7 +8559,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "05e12946-31b1-4c08-9eea-c6f88d4b062a")
 			(effects
@@ -8572,7 +8572,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bdc14f13-c3ac-460a-9e50-5830e97f971f")
 			(effects
@@ -8585,7 +8585,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f935fe80-ba25-4317-934d-a97d0f270850")
 			(effects
@@ -8598,7 +8598,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1dbaf6e4-0529-40fa-8205-6be72953256a")
 			(effects
@@ -8616,7 +8616,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -8626,7 +8626,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -8703,7 +8703,7 @@
 		(tags "connector JST SH horizontal")
 		(property "Reference" "J604"
 			(at 0 3.98 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dd9a368f-e38b-41b6-b7e2-31abd0ceb580")
 			(effects
@@ -8753,7 +8753,7 @@
 		)
 		(property "KiLib_Generator" "connector/SMD_single_row_plus_mounting_pad"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0c461d44-4926-4497-ba95-4255dacc3bae")
 			(effects
@@ -8766,7 +8766,7 @@
 		)
 		(property "Codigo" "R4"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bea5c904-8a91-41d2-8552-1186d31ca994")
 			(effects
@@ -8779,7 +8779,7 @@
 		)
 		(property "LCSC" "C160405"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7eba54a6-cb3c-4fab-b681-cc12e8782974")
 			(effects
@@ -8792,7 +8792,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b255dece-2547-4260-86ab-21e01ce894d8")
 			(effects
@@ -8805,7 +8805,7 @@
 		)
 		(property "Altura_mm" "4.3"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b89ddd60-2960-4051-af76-a2db09cb0d52")
 			(effects
@@ -8818,7 +8818,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ee4b2de0-9729-4b92-8363-2b8aa12f459a")
 			(effects
@@ -8836,7 +8836,7 @@
 			(start -4.11 1.785)
 			(end -3.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -8846,7 +8846,7 @@
 			(start -3.06 1.785)
 			(end -3.06 2.775)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -8856,7 +8856,7 @@
 			(start 4.11 1.785)
 			(end 3.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -8866,7 +8866,7 @@
 			(start -4.11 -0.715)
 			(end -4.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -8876,7 +8876,7 @@
 			(start 4.11 -0.715)
 			(end 4.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -8886,7 +8886,7 @@
 			(start -2.94 -2.685)
 			(end 2.94 -2.685)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -9209,7 +9209,7 @@
 		(tags "resistor")
 		(property "Reference" "R213"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b480424c-9755-4260-9786-017d46f1de08")
 			(effects
@@ -9259,7 +9259,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d0435dca-0433-4966-856c-96cf216d2dc1")
 			(effects
@@ -9272,7 +9272,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3a91b051-2470-41c9-96dd-68ea8d4e35f4")
 			(effects
@@ -9285,7 +9285,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "06c9517d-2ac3-4673-9572-9d8e676756fd")
 			(effects
@@ -9298,7 +9298,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4ca861c5-cdc5-4afb-a1f4-f0b24a5ca40e")
 			(effects
@@ -9311,7 +9311,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3d56f6bf-90c6-48f4-8bbb-e5a05202569f")
 			(effects
@@ -9324,7 +9324,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9f9ce2d2-a377-4cd6-9bc4-527ea0d4a3ab")
 			(effects
@@ -9342,7 +9342,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -9352,7 +9352,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -9429,7 +9429,7 @@
 		(tags "capacitor")
 		(property "Reference" "C208"
 			(at 0 1.68 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ac99ef07-2758-4e2c-90b3-9b606a3ae206")
 			(effects
@@ -9479,7 +9479,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a2fc8d33-5192-492c-9ae3-ce7b7261df12")
 			(effects
@@ -9492,7 +9492,7 @@
 		)
 		(property "Codigo" "E4"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8a5bbbc7-fafc-4eb4-9e98-d8bb51343490")
 			(effects
@@ -9505,7 +9505,7 @@
 		)
 		(property "LCSC" "C15850"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b9767802-7908-4bc8-85f9-e92a73b88b1b")
 			(effects
@@ -9518,7 +9518,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d87f42a0-5808-4138-a9bb-eb0d44f495f1")
 			(effects
@@ -9531,7 +9531,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "cf3b918e-3723-43a9-9291-fb3597c19fb0")
 			(effects
@@ -9544,7 +9544,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "98b408bc-319e-4851-8e0c-0230453a4622")
 			(effects
@@ -9562,7 +9562,7 @@
 			(start -0.261252 0.735)
 			(end 0.261252 0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -9572,7 +9572,7 @@
 			(start -0.261252 -0.735)
 			(end 0.261252 -0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -9649,7 +9649,7 @@
 		(tags "resistor")
 		(property "Reference" "R306"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "62271265-0078-4736-bc9e-1e5c8ad5fa7c")
 			(effects
@@ -9699,7 +9699,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d0bb5473-391a-499b-8913-9a8943a26fbe")
 			(effects
@@ -9712,7 +9712,7 @@
 		)
 		(property "Codigo" "F3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "63912155-d0fb-4ca3-aa29-4cc0062caf98")
 			(effects
@@ -9725,7 +9725,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ee70d650-e285-42c0-8261-e4f38d0de203")
 			(effects
@@ -9738,7 +9738,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "df1090b8-3d82-42f4-88c0-2dbc3e721860")
 			(effects
@@ -9751,7 +9751,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b4bd5827-e1df-4e36-8581-a3651b616ef4")
 			(effects
@@ -9764,7 +9764,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2065c17c-cb77-4fb5-98d0-dbc3a6691123")
 			(effects
@@ -9782,7 +9782,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -9792,7 +9792,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -9869,7 +9869,7 @@
 		(tags "resistor")
 		(property "Reference" "R206"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "64d9d861-cb63-47f1-8c61-3733e48c9ee3")
 			(effects
@@ -9919,7 +9919,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a603db60-ab10-4e63-be08-7160ef6cdbd5")
 			(effects
@@ -9932,7 +9932,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0635d393-10c1-445f-8261-0c61f2c21f41")
 			(effects
@@ -9945,7 +9945,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9c0f20f1-2693-4129-a40b-f6c4f9999b40")
 			(effects
@@ -9958,7 +9958,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d11c5cbd-5403-46fb-9f9c-a879a12edd38")
 			(effects
@@ -9971,7 +9971,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f2c92932-bfc5-4a73-88a0-be4cc3d26230")
 			(effects
@@ -9984,7 +9984,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7251cc72-bc10-4cc9-8044-d8333ae06482")
 			(effects
@@ -10002,7 +10002,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10012,7 +10012,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10089,7 +10089,7 @@
 		(tags "resistor")
 		(property "Reference" "R304"
 			(at 0 1.17 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "59789108-25cb-4b83-b114-c35ee884594b")
 			(effects
@@ -10139,7 +10139,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a70ce938-46c8-44b0-a3d6-309146f0827d")
 			(effects
@@ -10152,7 +10152,7 @@
 		)
 		(property "Codigo" "F2"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "78f19513-719c-4021-ba7e-2ca00aac12ab")
 			(effects
@@ -10165,7 +10165,7 @@
 		)
 		(property "LCSC" "C26083"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "40d14248-c24f-41dd-9bc3-a9ca43bf401f")
 			(effects
@@ -10178,7 +10178,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "95fcacba-f9df-4cc4-b07a-3556a0828285")
 			(effects
@@ -10191,7 +10191,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2c5da20d-54ba-478b-891c-65b616024bb9")
 			(effects
@@ -10204,7 +10204,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "62eb7e23-c6f4-4788-9084-fdd72a7fff5d")
 			(effects
@@ -10222,7 +10222,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10232,7 +10232,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10309,7 +10309,7 @@
 		(tags "resistor")
 		(property "Reference" "R603"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "22e52675-7b96-46f0-aa65-5deed3ae7ef7")
 			(effects
@@ -10359,7 +10359,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2bccfb9d-4ebc-4d9b-9eac-6c3011bee655")
 			(effects
@@ -10372,7 +10372,7 @@
 		)
 		(property "Codigo" "R3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b4b9102e-1919-4cee-b92d-36b77cb8674c")
 			(effects
@@ -10385,7 +10385,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "5429a48a-e53c-4466-ba78-ba21414c62d5")
 			(effects
@@ -10398,7 +10398,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b7fe58a1-bc15-4a39-88d7-432442aa989a")
 			(effects
@@ -10411,7 +10411,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ee7ec919-5b72-4ec2-97ca-eaf138b02e90")
 			(effects
@@ -10424,7 +10424,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b9a34747-d6ad-4dca-a61b-c3f5154d03ef")
 			(effects
@@ -10442,7 +10442,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10452,7 +10452,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10529,7 +10529,7 @@
 		(tags "resistor")
 		(property "Reference" "R212"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b3f3597f-02da-4984-9df2-05be8db62397")
 			(effects
@@ -10579,7 +10579,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d7e8d81a-cb56-4a0f-8023-8d4756ba9774")
 			(effects
@@ -10592,7 +10592,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4d48479f-e2e7-4950-b5f6-5bf3083ef42e")
 			(effects
@@ -10605,7 +10605,7 @@
 		)
 		(property "LCSC" "C26083"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "51b785ff-99af-429c-a922-eb091c7b05ab")
 			(effects
@@ -10618,7 +10618,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c1e928a7-c6de-4507-87d3-b376cc481374")
 			(effects
@@ -10631,7 +10631,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ea769cb4-f430-4315-84a0-3955e2a582db")
 			(effects
@@ -10644,7 +10644,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0bcc4273-b7cb-4662-b986-d31b864c22bf")
 			(effects
@@ -10662,7 +10662,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10672,7 +10672,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10749,7 +10749,7 @@
 		(tags "resistor")
 		(property "Reference" "R204"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b32751ee-f914-4c20-933f-7b08edc6efa5")
 			(effects
@@ -10799,7 +10799,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "17ccdcf7-ed6a-4241-ae99-9de138e49c8c")
 			(effects
@@ -10812,7 +10812,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "70033a0d-dcbb-4883-8971-8fce40975b21")
 			(effects
@@ -10825,7 +10825,7 @@
 		)
 		(property "LCSC" "C25867"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d994e987-12f5-410b-a6d5-93f81420d4b5")
 			(effects
@@ -10838,7 +10838,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0b7255de-82bd-4fba-a9a3-24788756b970")
 			(effects
@@ -10851,7 +10851,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6ffc6d55-39a2-4a62-a65f-f1b2ffe8e769")
 			(effects
@@ -10864,7 +10864,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8685741b-91a6-48d2-a890-5fb610ac8e3b")
 			(effects
@@ -10882,7 +10882,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10892,7 +10892,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -10969,7 +10969,7 @@
 		(tags "capacitor")
 		(property "Reference" "C201"
 			(at 0 1.68 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e65a14fb-4877-4be5-a447-c8abb6358254")
 			(effects
@@ -11019,7 +11019,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "97a8c919-048d-4e47-8110-be8a1aaa7208")
 			(effects
@@ -11032,7 +11032,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f2e87cca-32db-4a36-b69d-ed986be117e0")
 			(effects
@@ -11045,7 +11045,7 @@
 		)
 		(property "LCSC" "C15850"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "234e93a4-24c7-4aef-b869-2a657a08f463")
 			(effects
@@ -11058,7 +11058,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e9ba24ce-4b95-4d5a-ab35-9d2c7b68ff36")
 			(effects
@@ -11071,7 +11071,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9a2eca87-17c2-48ae-bd81-a466a7c751e5")
 			(effects
@@ -11084,7 +11084,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a6b5c523-78f5-44e3-ac4e-122d9fa2d230")
 			(effects
@@ -11102,7 +11102,7 @@
 			(start -0.261252 -0.735)
 			(end 0.261252 -0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11112,7 +11112,7 @@
 			(start -0.261252 0.735)
 			(end 0.261252 0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11189,7 +11189,7 @@
 		(tags "resistor")
 		(property "Reference" "R305"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f2f7a495-6462-481f-a2ff-6df39b7bf7d7")
 			(effects
@@ -11239,7 +11239,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "30f17128-9294-467a-b7e2-e3cf4cd1067d")
 			(effects
@@ -11252,7 +11252,7 @@
 		)
 		(property "Codigo" "F3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d7f7d016-10c3-4b9e-b2d8-542c14ced299")
 			(effects
@@ -11265,7 +11265,7 @@
 		)
 		(property "LCSC" "C17168"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7d633f9a-5e2b-43b4-a02e-83ddd0c9dba7")
 			(effects
@@ -11278,7 +11278,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d14b6ef7-f6eb-4dd4-bce4-3aad68298456")
 			(effects
@@ -11291,7 +11291,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "be4cf5c3-dbd0-4af4-807e-454753ab5c74")
 			(effects
@@ -11304,7 +11304,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0b56892b-7b47-4462-8ed9-3a2fcd1330e7")
 			(effects
@@ -11322,7 +11322,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11332,7 +11332,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11409,7 +11409,7 @@
 		(tags "capacitor")
 		(property "Reference" "C204"
 			(at 0 1.16 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "efd4e71f-b208-4076-8d70-306c31a15c8b")
 			(effects
@@ -11459,7 +11459,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "53305cef-a9fe-4d8a-bf1f-c962d3f260a2")
 			(effects
@@ -11472,7 +11472,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dcfc6a0f-7a9d-41ce-ae2d-62721088b6dc")
 			(effects
@@ -11485,7 +11485,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "5f80c966-569e-496f-9bca-d0efc46814a0")
 			(effects
@@ -11498,7 +11498,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "46387021-69e6-413f-929e-e2107ee6a57a")
 			(effects
@@ -11511,7 +11511,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b6c1d1b8-2ae0-4c91-9fc0-817b88dc08c5")
 			(effects
@@ -11524,7 +11524,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "67db224c-da2f-4b93-8ae2-f9a9718ee841")
 			(effects
@@ -11542,7 +11542,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11552,7 +11552,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11629,7 +11629,7 @@
 		(tags "capacitor")
 		(property "Reference" "C301"
 			(at 0 1.16 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f1c391e3-e199-45f1-8550-e13238540dab")
 			(effects
@@ -11679,7 +11679,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "14d36390-5d08-4b9a-8f98-c904a4ca248a")
 			(effects
@@ -11692,7 +11692,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b64ef79d-7269-4f4f-8d94-f8149a7f33b2")
 			(effects
@@ -11705,7 +11705,7 @@
 		)
 		(property "LCSC" "C12530"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a4db2df9-e457-410a-af55-a69189176c7f")
 			(effects
@@ -11718,7 +11718,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "244c1c6d-b142-46d4-9b28-c54a1ed61182")
 			(effects
@@ -11731,7 +11731,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "50069f53-5cda-4197-943b-29d67ae65ef5")
 			(effects
@@ -11744,7 +11744,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d5398bcf-1756-49e8-84bd-1705ff19a3e5")
 			(effects
@@ -11762,7 +11762,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11772,7 +11772,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11849,7 +11849,7 @@
 		(tags "audio jack 3.5 PJ-327A")
 		(property "Reference" "J302"
 			(at 0 3.4 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "78910957-c884-481b-8d92-f0329af908f4")
 			(effects
@@ -11899,7 +11899,7 @@
 		)
 		(property "Codigo" "F3"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "24c73dcc-57c8-4ab5-bd94-ed14bfc82274")
 			(effects
@@ -11912,7 +11912,7 @@
 		)
 		(property "LCSC" "C49284723"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "821de7ed-0158-4ecf-b4de-d907abe21b36")
 			(effects
@@ -11925,7 +11925,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ff516156-d07e-4581-8b64-90f554c0ce1d")
 			(effects
@@ -11938,7 +11938,7 @@
 		)
 		(property "Altura_mm" "5.1"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "57b0b1b6-afe5-4d82-8ee6-e266603f452e")
 			(effects
@@ -11951,7 +11951,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "06c98c0e-7758-4d88-9a8d-043ba772e8cf")
 			(effects
@@ -11969,7 +11969,7 @@
 			(start -2.6 2.1)
 			(end 2.6 2.1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11979,7 +11979,7 @@
 			(start -3.11 -3.9)
 			(end -3.11 -8.5)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -11989,7 +11989,7 @@
 			(start 3.11 -6.65)
 			(end 3.11 -10.1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12098,7 +12098,7 @@
 		(tags "connector JST SH horizontal")
 		(property "Reference" "J602"
 			(at 0 3.98 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "643bae59-954d-494d-a391-349a44288c17")
 			(effects
@@ -12148,7 +12148,7 @@
 		)
 		(property "KiLib_Generator" "connector/SMD_single_row_plus_mounting_pad"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "00cbb0e0-a64d-4856-b026-6fa2b3dadd4e")
 			(effects
@@ -12161,7 +12161,7 @@
 		)
 		(property "Codigo" "R2"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "604c5140-310b-4f26-b826-86ab29932ae5")
 			(effects
@@ -12174,7 +12174,7 @@
 		)
 		(property "LCSC" "C160405"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6787e37b-e775-45c4-95e0-7a1142676f76")
 			(effects
@@ -12187,7 +12187,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "934fe70e-db13-4e19-a43f-8104b2433bdb")
 			(effects
@@ -12200,7 +12200,7 @@
 		)
 		(property "Altura_mm" "4.3"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "de3a9769-d3b3-4159-860d-93ce0b685f77")
 			(effects
@@ -12213,7 +12213,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "139bae5e-e23f-4e9a-a5ea-6ba37039eb47")
 			(effects
@@ -12231,7 +12231,7 @@
 			(start -4.11 1.785)
 			(end -3.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12241,7 +12241,7 @@
 			(start -3.06 1.785)
 			(end -3.06 2.775)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12251,7 +12251,7 @@
 			(start 4.11 1.785)
 			(end 3.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12261,7 +12261,7 @@
 			(start -4.11 -0.715)
 			(end -4.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12271,7 +12271,7 @@
 			(start 4.11 -0.715)
 			(end 4.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12281,7 +12281,7 @@
 			(start -2.94 -2.685)
 			(end 2.94 -2.685)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12604,7 +12604,7 @@
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "U302"
 			(at 0 2.4 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a22dc022-ad7a-49f1-8226-9c85ca5a76e3")
 			(effects
@@ -12654,7 +12654,7 @@
 		)
 		(property "KiLib_Generator" "package/gullwing"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "327899a8-1bc6-4255-858a-8a87210fc77b")
 			(effects
@@ -12667,7 +12667,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8be4b76c-319a-4a74-bd0d-07b1828fa0cf")
 			(effects
@@ -12680,7 +12680,7 @@
 		)
 		(property "LCSC" "C347373"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c4f1a66a-cbf4-4e91-ad38-09dd23e53f5a")
 			(effects
@@ -12693,7 +12693,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b6445d26-94c8-4937-955d-57d3c0c27061")
 			(effects
@@ -12706,7 +12706,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3de4f233-8065-4e7a-a15b-2cd5fc437c4a")
 			(effects
@@ -12719,7 +12719,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dbcdc7a0-8432-4433-9950-949063f0736e")
 			(effects
@@ -12737,7 +12737,7 @@
 			(start -0.91 -1.56)
 			(end -0.91 -1.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12747,7 +12747,7 @@
 			(start -0.91 -0.39)
 			(end -0.91 0.39)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12757,7 +12757,7 @@
 			(start -0.91 1.51)
 			(end -0.91 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12767,7 +12767,7 @@
 			(start -0.91 1.56)
 			(end 0.91 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12777,7 +12777,7 @@
 			(start 0.91 -1.56)
 			(end -0.91 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12787,7 +12787,7 @@
 			(start 0.91 -0.56)
 			(end 0.91 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12797,7 +12797,7 @@
 			(start 0.91 1.56)
 			(end 0.91 0.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -12808,7 +12808,7 @@
 				(xy -1.45 0.38) (xy -1.21 0.05) (xy -1.69 0.05)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -13044,7 +13044,7 @@
 		(tags "resistor")
 		(property "Reference" "R203"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a5a866e8-d7ef-42c5-a852-1ed73af4739e")
 			(effects
@@ -13094,7 +13094,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "93171d63-67bd-448a-9033-bdbbe2670d5c")
 			(effects
@@ -13107,7 +13107,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "71b10fcc-c572-4267-b58c-d5fc42fc16a3")
 			(effects
@@ -13120,7 +13120,7 @@
 		)
 		(property "LCSC" "C25879"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4fe43a15-0b96-4e26-8c20-8a8022b07830")
 			(effects
@@ -13133,7 +13133,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "059ced8b-290e-411c-b3ab-bfa55d738839")
 			(effects
@@ -13146,7 +13146,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6bb8cc83-37cc-4409-8f64-0bece32e6986")
 			(effects
@@ -13159,7 +13159,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b147db70-4eb1-4bec-a58e-6f6b93c95d79")
 			(effects
@@ -13177,7 +13177,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13187,7 +13187,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13264,7 +13264,7 @@
 		(tags "SPST Tactile Switch")
 		(property "Reference" "SW403"
 			(at 0 3.75 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "83a46d27-b230-4983-81c3-53d9f96cc7d4")
 			(effects
@@ -13318,7 +13318,7 @@
 		)
 		(property "Codigo" "I4"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9fa7393f-4afe-4046-b247-a77edff6d039")
 			(effects
@@ -13331,7 +13331,7 @@
 		)
 		(property "LCSC" "C318884"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b778ff3d-ceb0-4ab8-92f7-e964cee4f5a1")
 			(effects
@@ -13344,7 +13344,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c3cf2c04-3551-47fb-b7a4-fde65fa04f84")
 			(effects
@@ -13357,7 +13357,7 @@
 		)
 		(property "Altura_mm" "1.5"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b6731ed4-752e-4b02-8f83-ce6fdff55b4c")
 			(effects
@@ -13370,7 +13370,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "afc38e81-0d85-44af-97cb-6c12785c4c6f")
 			(effects
@@ -13388,7 +13388,7 @@
 			(start 2.75 1)
 			(end 2.75 -1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13398,7 +13398,7 @@
 			(start 1.75 2.3)
 			(end 1.3 2.75)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13408,7 +13408,7 @@
 			(start 1.75 -2.3)
 			(end 1.3 -2.75)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13418,7 +13418,7 @@
 			(start -1.3 2.75)
 			(end 1.3 2.75)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13428,7 +13428,7 @@
 			(start -1.3 -2.75)
 			(end 1.3 -2.75)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13438,7 +13438,7 @@
 			(start -1.75 2.3)
 			(end -1.3 2.75)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13448,7 +13448,7 @@
 			(start -1.75 -2.3)
 			(end -1.3 -2.75)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13458,7 +13458,7 @@
 			(start -2.75 1)
 			(end -2.75 -1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13812,7 +13812,7 @@
 		(tags "wirewound power shielded")
 		(property "Reference" "L201"
 			(at 0 2.95 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9198c54e-b539-4f11-a82e-beea4b774e5c")
 			(effects
@@ -13862,7 +13862,7 @@
 		)
 		(property "KiLib_Generator" "inductor/SMD"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "60d85704-16d8-4961-a833-48a2475a0a36")
 			(effects
@@ -13875,7 +13875,7 @@
 		)
 		(property "Codigo" "E4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "83897286-20dd-4bda-914f-caac43898a2f")
 			(effects
@@ -13888,7 +13888,7 @@
 		)
 		(property "LCSC" "C167825"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "96865090-1563-458f-a40d-e90a63114e14")
 			(effects
@@ -13901,7 +13901,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "84b6cf3e-d2c5-4cf4-8d2a-ef23e1300ceb")
 			(effects
@@ -13914,7 +13914,7 @@
 		)
 		(property "Altura_mm" "2"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8bba9b9e-1448-4ff7-8c70-131c7fd1c7e6")
 			(effects
@@ -13927,7 +13927,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b84a4168-1aa0-4963-a4c6-f1794c90a92e")
 			(effects
@@ -13945,7 +13945,7 @@
 			(start 2.11 -2.11)
 			(end -2.11 -2.11)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -13955,7 +13955,7 @@
 			(start -2.11 2.11)
 			(end 2.11 2.11)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -14141,7 +14141,7 @@
 		(tags "resistor")
 		(property "Reference" "R215"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a58edf1c-5821-49f4-95cb-cfb4aa91369d")
 			(effects
@@ -14191,7 +14191,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "34418574-6434-44c6-95a3-2ff390a523f1")
 			(effects
@@ -14204,7 +14204,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "fa3c7233-8221-43d0-bdd9-7c850a6b9345")
 			(effects
@@ -14217,7 +14217,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6a788712-0563-4986-a62f-f32e0ce13382")
 			(effects
@@ -14230,7 +14230,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "eadf1b14-9970-44c0-9f7a-3260f851f49a")
 			(effects
@@ -14243,7 +14243,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4979260c-ef35-4d3d-9303-e2b3b3268209")
 			(effects
@@ -14256,7 +14256,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "13789a13-c382-4d15-b99b-e419b32fdd88")
 			(effects
@@ -14274,7 +14274,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -14284,7 +14284,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -14361,7 +14361,7 @@
 		(tags "capacitor")
 		(property "Reference" "C302"
 			(at 0 1.16 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4457da50-6cb7-4abc-9158-d1f59fb2d3d0")
 			(effects
@@ -14411,7 +14411,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9acf34dd-4ee4-48fb-8490-5a35f6408256")
 			(effects
@@ -14424,7 +14424,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bf21c8ec-c302-4c99-a161-f9f6f584dcd0")
 			(effects
@@ -14437,7 +14437,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c9b9c878-a33b-48f4-92fd-e16ba918ae13")
 			(effects
@@ -14450,7 +14450,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7ed8b141-e60a-4b21-8d10-0997265fc688")
 			(effects
@@ -14463,7 +14463,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b111c51f-c63a-4081-940b-72692c9d650e")
 			(effects
@@ -14476,7 +14476,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8c724ff8-976c-4ad1-afd4-128ddbf991f6")
 			(effects
@@ -14494,7 +14494,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -14504,7 +14504,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -14581,7 +14581,7 @@
 		(tags "capacitor")
 		(property "Reference" "C210"
 			(at 0 1.43 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "188407ef-2a8e-42e4-8942-85a468a2015c")
 			(effects
@@ -14631,7 +14631,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7deee921-3200-4a9d-95b2-7c571b9fd1c8")
 			(effects
@@ -14644,7 +14644,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d57b4af0-aaa1-4784-840e-7ab4dce974a8")
 			(effects
@@ -14657,7 +14657,7 @@
 		)
 		(property "LCSC" "C19702"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "68f2bfd7-9142-43d5-83f6-95fdd82ef11a")
 			(effects
@@ -14670,7 +14670,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3ee37385-49db-44c0-a54a-806bee300755")
 			(effects
@@ -14683,7 +14683,7 @@
 		)
 		(property "Altura_mm" "0.95"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b83186a4-5a87-476c-aeb1-8e0c951bcd50")
 			(effects
@@ -14696,7 +14696,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a74a2f2a-299d-4777-bc5d-489f11af94e6")
 			(effects
@@ -14714,7 +14714,7 @@
 			(start -0.14058 -0.51)
 			(end 0.14058 -0.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -14724,7 +14724,7 @@
 			(start -0.14058 0.51)
 			(end 0.14058 0.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -14801,7 +14801,7 @@
 		(tags "D_SOD-123F")
 		(property "Reference" "D201"
 			(at -0.127 1.905 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "59a1ac44-95a9-463b-8b2c-7582bc5f624f")
 			(effects
@@ -14855,7 +14855,7 @@
 		)
 		(property "Codigo" "E2"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "eb9e4c19-b80b-4288-bee8-e0b44641a0c0")
 			(effects
@@ -14868,7 +14868,7 @@
 		)
 		(property "LCSC" "C151296"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ed22d9c8-76d3-493f-9694-78d6f4bea66a")
 			(effects
@@ -14881,7 +14881,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b3ac07e6-df33-4981-b4a2-32cf966f2545")
 			(effects
@@ -14894,7 +14894,7 @@
 		)
 		(property "Altura_mm" "1.1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "65802062-ad15-42dc-8eb4-5c8977af0e01")
 			(effects
@@ -14907,7 +14907,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e0ec853a-f686-4b70-997c-0e42354c8397")
 			(effects
@@ -14925,7 +14925,7 @@
 			(start -2.21 -1)
 			(end 1.65 -1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -14935,7 +14935,7 @@
 			(start -2.21 1)
 			(end -2.21 -1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -14945,7 +14945,7 @@
 			(start -2.21 1)
 			(end 1.65 1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -15150,7 +15150,7 @@
 		(tags "resistor")
 		(property "Reference" "R501"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ead22adb-cec6-4b80-a7df-615b55da3849")
 			(effects
@@ -15200,7 +15200,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d108d69c-8e27-4af1-babe-1c9d99758e61")
 			(effects
@@ -15213,7 +15213,7 @@
 		)
 		(property "Codigo" "A1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "49c5e01f-4d91-4cb9-81fb-712b3a427e67")
 			(effects
@@ -15226,7 +15226,7 @@
 		)
 		(property "LCSC" "C26083"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c678c51b-0d36-4777-b2bd-efcb94afe983")
 			(effects
@@ -15239,7 +15239,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "da3974f8-ba24-4cf8-876a-d15320d5a3f7")
 			(effects
@@ -15252,7 +15252,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b4c63c58-e832-4332-bb3d-3d595a7f6052")
 			(effects
@@ -15265,7 +15265,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b6247de8-bac2-4a7e-bce1-d8856dc9dbc4")
 			(effects
@@ -15283,7 +15283,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -15293,7 +15293,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -15370,7 +15370,7 @@
 		(tags "M.2 NGFF key E MicroMod UMAX 91302")
 		(property "Reference" "J101"
 			(at 0 -7.4 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ba81e3ec-cbef-47bc-a2e8-50f6462b1382")
 			(effects
@@ -15420,7 +15420,7 @@
 		)
 		(property "Codigo" "P1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0a7a58a2-b66e-4065-b83e-b5b4069dd04d")
 			(effects
@@ -15433,7 +15433,7 @@
 		)
 		(property "LCSC" "C48985906"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "06523b44-071e-48ea-9c51-ada4e4ff722b")
 			(effects
@@ -15446,7 +15446,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bea81f8b-298c-4173-b158-7388fd0872ec")
 			(effects
@@ -15459,7 +15459,7 @@
 		)
 		(property "Altura_mm" "4.2"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a10376ef-7409-4ef1-a511-c9ae7ccd0030")
 			(effects
@@ -15472,7 +15472,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "da432d8f-044c-4b12-81ec-f3b61d9ed23c")
 			(effects
@@ -15490,7 +15490,7 @@
 			(start 11.05 2.6)
 			(end 11.05 -2)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -15500,7 +15500,7 @@
 			(start 11.05 2.6)
 			(end 9.6 2.6)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -15510,7 +15510,7 @@
 			(start -11.05 2.6)
 			(end -11.05 -2)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -15520,17 +15520,17 @@
 			(start -11.05 2.6)
 			(end -9.6 2.6)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
 			(uuid "419403e3-56b0-4afc-9d23-0fe39618cc05")
 		)
 		(fp_circle
-			(center 9.25 -6.75)
-			(end 9.45 -6.75)
+			(center 9 -3.775)
+			(end 8.8 -3.775)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -16202,7 +16202,7 @@
 		(tags "capacitor")
 		(property "Reference" "C207"
 			(at 0 1.68 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b7b50ec2-58a0-4dc1-856e-b4379c7c74fa")
 			(effects
@@ -16252,7 +16252,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "206f5604-dc4c-4bc7-8645-d6246b41aa3b")
 			(effects
@@ -16265,7 +16265,7 @@
 		)
 		(property "Codigo" "E4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "cf71113a-c68b-4578-b006-b5439fb5ae80")
 			(effects
@@ -16278,7 +16278,7 @@
 		)
 		(property "LCSC" "C15850"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6ac6291e-0693-44d4-9f61-ad1024fbd8fe")
 			(effects
@@ -16291,7 +16291,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e23a7b86-0c64-4696-8416-1fc4f5d4c8d2")
 			(effects
@@ -16304,7 +16304,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1280fd96-be52-46e2-93ea-6bd01dc7a4ad")
 			(effects
@@ -16317,7 +16317,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dff88ce5-d132-4759-872e-d211b6973666")
 			(effects
@@ -16335,7 +16335,7 @@
 			(start -0.261252 -0.735)
 			(end 0.261252 -0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -16345,7 +16345,7 @@
 			(start -0.261252 0.735)
 			(end 0.261252 0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -16422,7 +16422,7 @@
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "Q203"
 			(at 0 2.4 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2eb51b09-3d92-42aa-af95-5b820b5443b8")
 			(effects
@@ -16472,7 +16472,7 @@
 		)
 		(property "KiLib_Generator" "package/gullwing"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "682fb7ab-d9b5-4b13-b6fc-1bf35977298b")
 			(effects
@@ -16485,7 +16485,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "db389672-547a-40fc-876f-96c05043c6f7")
 			(effects
@@ -16498,7 +16498,7 @@
 		)
 		(property "LCSC" "C15127"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0cb87532-deb7-48da-9716-e5257b30b1b1")
 			(effects
@@ -16511,7 +16511,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b73b8d26-c5d3-4633-87ef-5ef698c68f32")
 			(effects
@@ -16524,7 +16524,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f70178cc-9eea-465b-a3cd-6fe7e999c3c7")
 			(effects
@@ -16537,7 +16537,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c2490ed6-3313-4f64-bfec-9c53bf236460")
 			(effects
@@ -16555,7 +16555,7 @@
 			(start -0.76 -1.56)
 			(end -0.76 -1.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -16565,7 +16565,7 @@
 			(start -0.76 -0.39)
 			(end -0.76 0.39)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -16575,7 +16575,7 @@
 			(start -0.76 1.51)
 			(end -0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -16585,7 +16585,7 @@
 			(start -0.76 1.56)
 			(end 0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -16595,7 +16595,7 @@
 			(start 0.76 -1.56)
 			(end -0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -16605,7 +16605,7 @@
 			(start 0.76 -0.56)
 			(end 0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -16615,7 +16615,7 @@
 			(start 0.76 1.56)
 			(end 0.76 0.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -16626,7 +16626,7 @@
 				(xy -1.3 0.38) (xy -1.06 0.05) (xy -1.54 0.05)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -16862,7 +16862,7 @@
 		(tags "VQFN NoLead")
 		(property "Reference" "U202"
 			(at 0 2.83 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7cefad1f-24bc-49ce-98c0-c616e9f46cce")
 			(effects
@@ -16912,7 +16912,7 @@
 		)
 		(property "KiLib_Generator" "package/no_lead"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4193fad9-0799-409e-b117-d0059318fc12")
 			(effects
@@ -16925,7 +16925,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "05bf568e-ed51-4edc-9c6b-68e55db7f094")
 			(effects
@@ -16938,7 +16938,7 @@
 		)
 		(property "LCSC" "C54313"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "efb1268a-11de-44ef-a888-2ae5272b175b")
 			(effects
@@ -16951,7 +16951,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9ce3ad65-694f-418d-b398-3fd840361d85")
 			(effects
@@ -16964,7 +16964,7 @@
 		)
 		(property "Altura_mm" "1"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "14d066cb-d098-42e7-b36c-073c5aa9fb7d")
 			(effects
@@ -16977,7 +16977,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7e3364a1-4840-4df7-9ed3-ad8d791d096c")
 			(effects
@@ -16995,7 +16995,7 @@
 			(start 1.61 1.61)
 			(end 1.61 1.135)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17005,7 +17005,7 @@
 			(start 1.61 -1.135)
 			(end 1.61 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17015,7 +17015,7 @@
 			(start 1.61 -1.61)
 			(end 1.135 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17025,7 +17025,7 @@
 			(start 1.135 1.61)
 			(end 1.61 1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17035,7 +17035,7 @@
 			(start -1.135 -1.61)
 			(end -1.61 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17045,7 +17045,7 @@
 			(start -1.313241 1.61)
 			(end -1.135 1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17055,7 +17055,7 @@
 			(start -1.61 1.135)
 			(end -1.61 1.37)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17065,7 +17065,7 @@
 			(start -1.61 -1.61)
 			(end -1.61 -1.135)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17076,7 +17076,7 @@
 				(xy -1.61 1.61) (xy -1.85 1.94) (xy -1.37 1.94)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -17493,7 +17493,7 @@
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "D202"
 			(at 0 2.4 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d3fb114f-7314-49c2-bb4d-4fb94fce17e4")
 			(effects
@@ -17543,7 +17543,7 @@
 		)
 		(property "KiLib_Generator" "package/gullwing"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a95b68d4-a46f-41cd-82e7-e6167c286329")
 			(effects
@@ -17556,7 +17556,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3e28ad97-3996-48c1-b6c7-a83d22d80e21")
 			(effects
@@ -17569,7 +17569,7 @@
 		)
 		(property "LCSC" "C68978"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9251ad9a-62ad-4d39-bc2f-661c78715791")
 			(effects
@@ -17582,7 +17582,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bc48dd7b-1329-4934-a352-2a1e05e2df5b")
 			(effects
@@ -17595,7 +17595,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ec596d11-e9ed-48cf-9669-68a5d515b482")
 			(effects
@@ -17608,7 +17608,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bdbd6271-b8d7-41c1-8117-47a9af25941a")
 			(effects
@@ -17626,7 +17626,7 @@
 			(start -0.76 -1.56)
 			(end -0.76 -1.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17636,7 +17636,7 @@
 			(start -0.76 -0.39)
 			(end -0.76 0.39)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17646,7 +17646,7 @@
 			(start -0.76 1.51)
 			(end -0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17656,7 +17656,7 @@
 			(start -0.76 1.56)
 			(end 0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17666,7 +17666,7 @@
 			(start 0.76 -1.56)
 			(end -0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17676,7 +17676,7 @@
 			(start 0.76 -0.56)
 			(end 0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17686,7 +17686,7 @@
 			(start 0.76 1.56)
 			(end 0.76 0.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -17697,7 +17697,7 @@
 				(xy -1.3 0.38) (xy -1.06 0.05) (xy -1.54 0.05)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -17933,7 +17933,7 @@
 		(tags "capacitor")
 		(property "Reference" "C307"
 			(at 0 1.16 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e5535500-7cde-47f2-a040-73d0a7a00b9d")
 			(effects
@@ -17983,7 +17983,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c4071784-4325-41e9-a8d5-dae3924dd550")
 			(effects
@@ -17996,7 +17996,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "946a8a78-1a3e-41e7-b19f-9ee9dc280be4")
 			(effects
@@ -18009,7 +18009,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d0f072b8-e2f5-45eb-8d4a-cef939fd167e")
 			(effects
@@ -18022,7 +18022,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c1a1ee33-67ee-4b3c-9d8b-19f60fcaeabe")
 			(effects
@@ -18035,7 +18035,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c886d063-3b1a-42e2-a557-81b31d94f32a")
 			(effects
@@ -18048,7 +18048,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "87855138-3e48-48df-82c8-f09c1fb07ad3")
 			(effects
@@ -18066,7 +18066,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18076,7 +18076,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18153,7 +18153,7 @@
 		(tags "connector JST SH horizontal")
 		(property "Reference" "J401"
 			(at 0 3.98 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2e8b41fb-2b26-458b-87a4-e0144c6be2b5")
 			(effects
@@ -18203,7 +18203,7 @@
 		)
 		(property "KiLib_Generator" "connector/SMD_single_row_plus_mounting_pad"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b294f7d2-02b6-48a3-a2a7-ce4b741b6bac")
 			(effects
@@ -18216,7 +18216,7 @@
 		)
 		(property "Codigo" "I3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b16cd78d-bb24-4445-9f0f-11d4656ff9b3")
 			(effects
@@ -18229,7 +18229,7 @@
 		)
 		(property "LCSC" "C160404"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "22bb1f6e-ffc2-4b55-8919-8dcbbd625f9a")
 			(effects
@@ -18242,7 +18242,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "fa2967e1-e45a-4f7c-8046-c69092e6d789")
 			(effects
@@ -18255,7 +18255,7 @@
 		)
 		(property "Altura_mm" "4.3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c3ef6b4d-4d1d-4265-8f49-c1229fbba297")
 			(effects
@@ -18268,7 +18268,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b6880811-ab24-40f3-9093-f0116609ca1c")
 			(effects
@@ -18286,7 +18286,7 @@
 			(start -3.11 -0.715)
 			(end -3.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18296,7 +18296,7 @@
 			(start -3.11 1.785)
 			(end -2.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18306,7 +18306,7 @@
 			(start -2.06 1.785)
 			(end -2.06 2.775)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18316,7 +18316,7 @@
 			(start -1.94 -2.685)
 			(end 1.94 -2.685)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18326,7 +18326,7 @@
 			(start 3.11 -0.715)
 			(end 3.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18336,7 +18336,7 @@
 			(start 3.11 1.785)
 			(end 2.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18643,7 +18643,7 @@
 		(tags "resistor")
 		(property "Reference" "R602"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e681822b-9f4a-4d4d-88a8-179ccd74df79")
 			(effects
@@ -18693,7 +18693,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3e7f8c4d-2c86-43bf-8898-86dab1f71a8c")
 			(effects
@@ -18706,7 +18706,7 @@
 		)
 		(property "Codigo" "R2"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dcd3e12c-db5d-49cd-9767-18e00597c61d")
 			(effects
@@ -18719,7 +18719,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8ff4480d-e629-47e2-a1ec-a4c360994d2e")
 			(effects
@@ -18732,7 +18732,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bc03770a-fb90-4f51-87a7-22a5e20fcd05")
 			(effects
@@ -18745,7 +18745,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bf0ed30b-6205-4da5-854d-5e6090f4755a")
 			(effects
@@ -18758,7 +18758,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2c7e0f49-d31f-4c38-a643-1ed0ce6d9407")
 			(effects
@@ -18776,7 +18776,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18786,7 +18786,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -18863,7 +18863,7 @@
 		(tags "TQFN NoLead")
 		(property "Reference" "U501"
 			(at 0 2.8 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e8d4ba98-2cac-4964-b382-099f8bf75c54")
 			(effects
@@ -18913,7 +18913,7 @@
 		)
 		(property "KiLib_Generator" "package/no_lead"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d95e7d26-36a0-43f2-b259-8ec9cbb20d43")
 			(effects
@@ -18926,7 +18926,7 @@
 		)
 		(property "Codigo" "A1"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b529ee23-1a68-43a8-b9f2-1fd0d7ea7206")
 			(effects
@@ -18939,7 +18939,7 @@
 		)
 		(property "LCSC" "C910544"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "371fe896-ef09-4bc4-9944-55fd0efe77f3")
 			(effects
@@ -18952,7 +18952,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "26cdc022-d98c-4229-9661-bdfe2dc36ef9")
 			(effects
@@ -18965,7 +18965,7 @@
 		)
 		(property "Altura_mm" "1"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "acd73313-05fb-48e5-989d-95f1b54e2fc3")
 			(effects
@@ -18978,7 +18978,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c836e76d-9f14-4981-bd9d-bc4cc5d784b7")
 			(effects
@@ -18996,7 +18996,7 @@
 			(start 1.61 1.61)
 			(end 1.61 1.135)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19006,7 +19006,7 @@
 			(start 1.61 -1.135)
 			(end 1.61 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19016,7 +19016,7 @@
 			(start 1.61 -1.61)
 			(end 1.135 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19026,7 +19026,7 @@
 			(start 1.135 1.61)
 			(end 1.61 1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19036,7 +19036,7 @@
 			(start -1.135 -1.61)
 			(end -1.61 -1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19046,7 +19046,7 @@
 			(start -1.313241 1.61)
 			(end -1.135 1.61)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19056,7 +19056,7 @@
 			(start -1.61 1.135)
 			(end -1.61 1.37)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19066,7 +19066,7 @@
 			(start -1.61 -1.61)
 			(end -1.61 -1.135)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19077,7 +19077,7 @@
 				(xy -1.61 1.61) (xy -1.85 1.94) (xy -1.37 1.94)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -19494,7 +19494,7 @@
 		(tags "test point SMD pad")
 		(property "Reference" "TP101"
 			(at 0 1.648 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "542b658d-6a60-420a-ba03-41dd4197148e")
 			(effects
@@ -19548,7 +19548,7 @@
 		)
 		(property "Codigo" "P1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "39659f24-168b-47b1-bc5b-169e003da8e5")
 			(effects
@@ -19561,7 +19561,7 @@
 		)
 		(property "LCSC" ""
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "49913af2-088b-45f6-b72e-0984991e0d66")
 			(effects
@@ -19574,7 +19574,7 @@
 		)
 		(property "Montagem" "sem peca (pad)"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "eff11698-1f53-42c0-aa67-ba9fcf1b5231")
 			(effects
@@ -19587,7 +19587,7 @@
 		)
 		(property "Altura_mm" "0"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ef671329-abc3-403a-a165-ec5d6e055ed7")
 			(effects
@@ -19600,7 +19600,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "83e271d0-0176-4e70-a043-f4434ae7095c")
 			(effects
@@ -19618,7 +19618,7 @@
 			(center 0 0)
 			(end 0 -0.95)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill no)
@@ -19665,7 +19665,7 @@
 		(tags "capacitor")
 		(property "Reference" "C309"
 			(at 0 1.16 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1d16d656-49da-4dbb-a4b1-c84c26ca0f94")
 			(effects
@@ -19715,7 +19715,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dc688029-99b5-4fc3-8da4-98e2b42d2654")
 			(effects
@@ -19728,7 +19728,7 @@
 		)
 		(property "Codigo" "F3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a5e03c1f-85a8-45af-a2a7-9e39efaa196c")
 			(effects
@@ -19741,7 +19741,7 @@
 		)
 		(property "LCSC" "C52923"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "16872aa9-2d96-4f07-82a7-a7edcf321b60")
 			(effects
@@ -19754,7 +19754,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "57991581-9579-46aa-b1d8-c4b5e2cb773f")
 			(effects
@@ -19767,7 +19767,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "85134ff4-848e-4d89-87c0-20b96006fc12")
 			(effects
@@ -19780,7 +19780,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c0d58f1d-ee5f-4b97-bd23-545f1cc18f61")
 			(effects
@@ -19798,7 +19798,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19808,7 +19808,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -19885,7 +19885,7 @@
 		(tags "audio jack 3.5 PJ-327A")
 		(property "Reference" "J301"
 			(at 0 3.4 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c1138278-3cc2-4606-a44e-29b8cc4d79be")
 			(effects
@@ -19935,7 +19935,7 @@
 		)
 		(property "Codigo" "F2"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "73d748b9-fc6e-4d7c-be3c-65c08455b7ef")
 			(effects
@@ -19948,7 +19948,7 @@
 		)
 		(property "LCSC" "C49284723"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "84ed8f1a-7f10-47b7-8a41-f7daa6e68c72")
 			(effects
@@ -19961,7 +19961,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "102f5fc9-c2db-44e2-a10c-34d9ed4c4f65")
 			(effects
@@ -19974,7 +19974,7 @@
 		)
 		(property "Altura_mm" "5.1"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0f3beb0a-04d9-41a0-a726-5a6c0b96146f")
 			(effects
@@ -19987,7 +19987,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c38a3e7d-7505-47a2-b3d7-7a6815ccc176")
 			(effects
@@ -20005,7 +20005,7 @@
 			(start -2.6 2.1)
 			(end 2.6 2.1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -20015,7 +20015,7 @@
 			(start -3.11 -3.9)
 			(end -3.11 -8.5)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -20025,7 +20025,7 @@
 			(start 3.11 -6.65)
 			(end 3.11 -10.1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -20134,7 +20134,7 @@
 		(tags "capacitor")
 		(property "Reference" "C102"
 			(at 0 1.16 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "89a4c166-5489-4e4e-b3e9-f4ca69dc2557")
 			(effects
@@ -20184,7 +20184,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2789421a-ee91-46a0-a2bb-3f9b11188f54")
 			(effects
@@ -20197,7 +20197,7 @@
 		)
 		(property "Codigo" "P1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "536d9063-fb9c-4c38-b694-aea5689330c0")
 			(effects
@@ -20210,7 +20210,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2e233925-8fdb-4ddd-853e-568a03254017")
 			(effects
@@ -20223,7 +20223,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a2b1edb3-7603-4bc6-a6e7-914310a30a62")
 			(effects
@@ -20236,7 +20236,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3be8d4d2-39e5-4f50-97e1-e845c7c96aa2")
 			(effects
@@ -20249,7 +20249,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6ffed651-9010-4b64-805a-58b4d2960a1c")
 			(effects
@@ -20267,7 +20267,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -20277,7 +20277,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -20354,7 +20354,7 @@
 		(tags "capacitor")
 		(property "Reference" "C311"
 			(at 0 1.16 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1575ba38-609a-4f7d-b1d6-caeb22d22884")
 			(effects
@@ -20404,7 +20404,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4abd6961-bdf9-4eca-b3f6-abfadb086e76")
 			(effects
@@ -20417,7 +20417,7 @@
 		)
 		(property "Codigo" "F3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0b6f1aca-507e-4341-8f2c-b78360239b2e")
 			(effects
@@ -20430,7 +20430,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "832afb95-edf1-44d4-b61d-1f3753a6268e")
 			(effects
@@ -20443,7 +20443,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1fd632f8-b0a2-482f-ab99-c0e843cf6e13")
 			(effects
@@ -20456,7 +20456,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a410d709-32dc-4a75-81f8-6748ae16256f")
 			(effects
@@ -20469,7 +20469,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "fb73af28-71b9-4ff1-804b-81b55587df32")
 			(effects
@@ -20487,7 +20487,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -20497,7 +20497,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -20574,7 +20574,7 @@
 		(tags "usb usb-c 2.0 pd")
 		(property "Reference" "J201"
 			(at 0 5.645 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "afd5cf74-eefc-4287-9c3b-cc152a929bae")
 			(effects
@@ -20628,7 +20628,7 @@
 		)
 		(property "Codigo" "E1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f1a51030-ebad-4aca-94ea-66972638e4aa")
 			(effects
@@ -20641,7 +20641,7 @@
 		)
 		(property "LCSC" "C165948"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "08503900-2afe-492c-aff4-be428350501d")
 			(effects
@@ -20654,7 +20654,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "50b28e39-c8fc-43d2-8beb-ea580ca3aec2")
 			(effects
@@ -20667,7 +20667,7 @@
 		)
 		(property "Altura_mm" "3.3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "de01eda5-5de7-4ba2-a069-40373205fd90")
 			(effects
@@ -20680,7 +20680,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "abc6e2aa-3a11-429a-98e7-ed0f827bbe0f")
 			(effects
@@ -20695,40 +20695,10 @@
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
-			(start -4.7 -3.9)
-			(end 4.7 -3.9)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "B.SilkS")
-			(uuid "a2d21df1-ff73-495b-9e42-09cac9766b21")
-		)
-		(fp_line
-			(start 4.7 -2)
-			(end 4.7 -3.9)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "B.SilkS")
-			(uuid "85f966e5-6f19-439c-8a4b-c630afea0d39")
-		)
-		(fp_line
-			(start -4.7 -2)
-			(end -4.7 -3.9)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "B.SilkS")
-			(uuid "c381040f-72aa-4222-82da-f9e8bf4a7efd")
-		)
-		(fp_line
 			(start 4.7 1.9)
 			(end 4.7 -0.1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -20738,7 +20708,7 @@
 			(start -4.7 1.9)
 			(end -4.7 -0.1)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21039,7 +21009,7 @@
 		(tags "capacitor")
 		(property "Reference" "C306"
 			(at 0 1.16 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b3e469cd-b083-4da8-9ab7-b3ac7807bfe9")
 			(effects
@@ -21089,7 +21059,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1b9a92ac-557c-437a-9f5d-183f0a3a2e3d")
 			(effects
@@ -21102,7 +21072,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "77ca3161-963c-4b1f-8f00-c6e83efa7d04")
 			(effects
@@ -21115,7 +21085,7 @@
 		)
 		(property "LCSC" "C12530"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c0021f54-3836-4883-a371-08c1582d7245")
 			(effects
@@ -21128,7 +21098,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8d6bab98-c737-4481-b071-5978de8ef944")
 			(effects
@@ -21141,7 +21111,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "1218e879-6f34-4ed2-9ad1-f1f2a057fde7")
 			(effects
@@ -21154,7 +21124,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bbcaf5e3-ff4d-4721-a7ca-3be885001645")
 			(effects
@@ -21172,7 +21142,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21182,7 +21152,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21259,7 +21229,7 @@
 		(tags "capacitor")
 		(property "Reference" "C203"
 			(at 0 1.68 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "55325781-9ee9-4e03-9b04-8b6478f7afc6")
 			(effects
@@ -21309,7 +21279,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "20047d41-dee9-49ab-bfa8-239b8807b445")
 			(effects
@@ -21322,7 +21292,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b8b0e640-5cb0-4678-995e-e5c54ea4c6ae")
 			(effects
@@ -21335,7 +21305,7 @@
 		)
 		(property "LCSC" "C15850"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a25544eb-acde-4141-95af-811a85c8b0ba")
 			(effects
@@ -21348,7 +21318,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ff541e85-236f-41a3-8794-98c6c1bd23c1")
 			(effects
@@ -21361,7 +21331,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "aa013495-e61a-4cc3-bdce-e96dab6d590a")
 			(effects
@@ -21374,7 +21344,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "89be52f3-5891-4b8f-bc97-2eb006f4e4a7")
 			(effects
@@ -21392,7 +21362,7 @@
 			(start -0.261252 0.735)
 			(end 0.261252 0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21402,7 +21372,7 @@
 			(start -0.261252 -0.735)
 			(end 0.261252 -0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21479,7 +21449,7 @@
 		(tags "connector JST PH horizontal")
 		(property "Reference" "J202"
 			(at 0 5.8 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bdd067f5-b50c-4821-b074-3895cdf520e4")
 			(effects
@@ -21529,7 +21499,7 @@
 		)
 		(property "KiLib_Generator" "connector/SMD_single_row_plus_mounting_pad"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3007c544-8ced-411a-8c64-94d2fb254fe2")
 			(effects
@@ -21542,7 +21512,7 @@
 		)
 		(property "Codigo" "E6"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "29e4b901-1014-491f-a425-b9f2a0023464")
 			(effects
@@ -21555,7 +21525,7 @@
 		)
 		(property "LCSC" "C265101"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "4fbd429c-ef8b-4eb2-a1ee-9704f73f4906")
 			(effects
@@ -21568,7 +21538,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d8420382-5dae-4fd3-877b-af98e63a9443")
 			(effects
@@ -21581,7 +21551,7 @@
 		)
 		(property "Altura_mm" "6"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "224fabd3-9708-46ae-aca9-72d60357092e")
 			(effects
@@ -21594,7 +21564,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ff992bae-b3e3-4915-8126-5651c017e7f1")
 			(effects
@@ -21612,7 +21582,7 @@
 			(start 5.06 3.31)
 			(end 4.04 3.31)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21622,7 +21592,7 @@
 			(start 5.06 -0.94)
 			(end 5.06 3.31)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21632,7 +21602,7 @@
 			(start 4.04 3.31)
 			(end 4.04 1.71)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21642,7 +21612,7 @@
 			(start 4.04 1.71)
 			(end 2.76 1.71)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21652,7 +21622,7 @@
 			(start -2.76 1.71)
 			(end -2.76 4.6)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21662,7 +21632,7 @@
 			(start -3.34 -4.51)
 			(end 3.34 -4.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21672,7 +21642,7 @@
 			(start -4.04 3.31)
 			(end -4.04 1.71)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21682,7 +21652,7 @@
 			(start -4.04 1.71)
 			(end -2.76 1.71)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21692,7 +21662,7 @@
 			(start -5.06 3.31)
 			(end -4.04 3.31)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -21702,7 +21672,7 @@
 			(start -5.06 -0.94)
 			(end -5.06 3.31)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22041,7 +22011,7 @@
 		(tags "capacitor")
 		(property "Reference" "C304"
 			(at 0 1.16 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "f17e5e15-0ebc-4a11-bfec-ed0386800b65")
 			(effects
@@ -22091,7 +22061,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "041eeaac-535b-465b-bde8-0b8385d5c83c")
 			(effects
@@ -22104,7 +22074,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c5288763-a8e3-433a-8b95-0a28c0841191")
 			(effects
@@ -22117,7 +22087,7 @@
 		)
 		(property "LCSC" "C1525"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b48c776d-8086-4431-9f0e-14da8f782652")
 			(effects
@@ -22130,7 +22100,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "917110bb-f907-4086-8085-f055356266b0")
 			(effects
@@ -22143,7 +22113,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "814220d8-3a97-44c9-8643-d701f3f203af")
 			(effects
@@ -22156,7 +22126,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 0)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "be2ac1e7-b9d4-48c7-8a5d-55976d88c7b3")
 			(effects
@@ -22174,7 +22144,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22184,7 +22154,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22261,7 +22231,7 @@
 		(tags "connector JST SH horizontal")
 		(property "Reference" "J601"
 			(at 0 3.98 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e6d17542-1f48-4e8f-830a-efdb49836fdc")
 			(effects
@@ -22311,7 +22281,7 @@
 		)
 		(property "KiLib_Generator" "connector/SMD_single_row_plus_mounting_pad"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c3245c35-5a2e-4730-a82b-83996b45b5c5")
 			(effects
@@ -22324,7 +22294,7 @@
 		)
 		(property "Codigo" "R1"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d3899b67-f147-4570-9326-d02976aa01b1")
 			(effects
@@ -22337,7 +22307,7 @@
 		)
 		(property "LCSC" "C160405"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "36a2c028-2512-445d-a9a0-1f3e6356cf94")
 			(effects
@@ -22350,7 +22320,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dc2518b0-a24d-42c9-a037-54aeb3b2a942")
 			(effects
@@ -22363,7 +22333,7 @@
 		)
 		(property "Altura_mm" "4.3"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "cc2b004a-ad86-498e-85a4-8cea05340aca")
 			(effects
@@ -22376,7 +22346,7 @@
 		)
 		(property "Cabe_sob_cartao" "nao"
 			(at 0 0 90)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0cb4365d-0034-43b5-8762-54b03e22ce4c")
 			(effects
@@ -22394,7 +22364,7 @@
 			(start -4.11 1.785)
 			(end -3.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22404,7 +22374,7 @@
 			(start -3.06 1.785)
 			(end -3.06 2.775)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22414,7 +22384,7 @@
 			(start 4.11 1.785)
 			(end 3.06 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22424,7 +22394,7 @@
 			(start -4.11 -0.715)
 			(end -4.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22434,7 +22404,7 @@
 			(start 4.11 -0.715)
 			(end 4.11 1.785)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22444,7 +22414,7 @@
 			(start -2.94 -2.685)
 			(end 2.94 -2.685)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22767,7 +22737,7 @@
 		(tags "resistor")
 		(property "Reference" "R605"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ed221dd9-4627-4754-a542-2cba34329a67")
 			(effects
@@ -22817,7 +22787,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6c00d7a8-80fc-4127-b7d6-4311f87c65a2")
 			(effects
@@ -22830,7 +22800,7 @@
 		)
 		(property "Codigo" "R5"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "de3e2ef5-56e9-4d5c-8297-4135d8ed205c")
 			(effects
@@ -22843,7 +22813,7 @@
 		)
 		(property "LCSC" "C25104"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "20ba5855-8b35-4742-8657-8ad71f8d4b68")
 			(effects
@@ -22856,7 +22826,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0cf6434a-680a-4d7e-b2d5-2893c0d8fd96")
 			(effects
@@ -22869,7 +22839,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "71c3c744-eb22-4b53-be54-71bd689f6554")
 			(effects
@@ -22882,7 +22852,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "2f868788-f54e-4f6f-96b8-8cc7af1ba69b")
 			(effects
@@ -22900,7 +22870,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22910,7 +22880,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -22987,7 +22957,7 @@
 		(tags "resistor")
 		(property "Reference" "R201"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e81ddb57-e43b-4ac8-8137-2b4c50b68d48")
 			(effects
@@ -23037,7 +23007,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "890f3932-ed2d-4c7d-a2c5-34fda9e2cc7a")
 			(effects
@@ -23050,7 +23020,7 @@
 		)
 		(property "Codigo" "E1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0f3f78c8-dfe5-403a-9217-a831a4d319de")
 			(effects
@@ -23063,7 +23033,7 @@
 		)
 		(property "LCSC" "C25905"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a190b608-b98c-4488-9765-ea4ab107a7c9")
 			(effects
@@ -23076,7 +23046,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d63a0304-fa48-4237-920c-9a2f242fd32b")
 			(effects
@@ -23089,7 +23059,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "816817b8-a82f-4322-88b7-73134573e2dc")
 			(effects
@@ -23102,7 +23072,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "167d8232-c3ff-40d3-8355-7387482d7ec5")
 			(effects
@@ -23120,7 +23090,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -23130,7 +23100,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -23207,7 +23177,7 @@
 		(tags "resistor")
 		(property "Reference" "R601"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a495ec7e-282e-45a3-969e-be42a4dbda89")
 			(effects
@@ -23257,7 +23227,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9f8bfb3a-15f3-443a-879b-1a712edc2f22")
 			(effects
@@ -23270,7 +23240,7 @@
 		)
 		(property "Codigo" "R1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9deabe4a-9595-4ff8-8c24-339fc3a7056a")
 			(effects
@@ -23283,7 +23253,7 @@
 		)
 		(property "LCSC" "C25741"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0735f0dd-5e73-4cfc-90f2-85f8715d68e2")
 			(effects
@@ -23296,7 +23266,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6e504daa-1785-4094-89c5-6e91a591f34a")
 			(effects
@@ -23309,7 +23279,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "a1bd747f-7a0b-4d5a-b107-0432e018a6e0")
 			(effects
@@ -23322,7 +23292,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "54dec217-c49e-4122-b90a-1bacfdb6224c")
 			(effects
@@ -23340,7 +23310,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -23350,7 +23320,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -23427,7 +23397,7 @@
 		(tags "inductor")
 		(property "Reference" "FB301"
 			(at 0 1.43 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "50642f91-b38f-40c6-8a71-acf5c5f04bbd")
 			(effects
@@ -23477,7 +23447,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d2ace84a-8304-4025-86f1-f431373c19bc")
 			(effects
@@ -23490,7 +23460,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "63cf6d52-0cb8-4f70-b14e-b3304337f608")
 			(effects
@@ -23503,7 +23473,7 @@
 		)
 		(property "LCSC" "C1002"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c995e44e-352e-40c6-90a4-b2113e4d06a9")
 			(effects
@@ -23516,7 +23486,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7073d613-989d-4eea-a448-8ed3dd95ee23")
 			(effects
@@ -23529,7 +23499,7 @@
 		)
 		(property "Altura_mm" "0.95"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d675b4d3-eef3-4be9-92bb-9639c96fb8bf")
 			(effects
@@ -23542,7 +23512,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "682003ea-51a4-4cb1-9f9a-f95303d5452d")
 			(effects
@@ -23560,7 +23530,7 @@
 			(start -0.162779 -0.51)
 			(end 0.162779 -0.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -23570,7 +23540,7 @@
 			(start -0.162779 0.51)
 			(end 0.162779 0.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -23647,7 +23617,7 @@
 		(tags "resistor")
 		(property "Reference" "R214"
 			(at 0 1.17 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "584addc5-bfae-4f8b-bfe7-3895cc41686e")
 			(effects
@@ -23697,7 +23667,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dd59c19f-7ad0-40fe-8b3a-acb846531bfd")
 			(effects
@@ -23710,7 +23680,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "cb06728a-551c-4a7d-8b81-015791ce490a")
 			(effects
@@ -23723,7 +23693,7 @@
 		)
 		(property "LCSC" "C25744"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "dcaef876-9afc-446e-ab1b-ee81342938db")
 			(effects
@@ -23736,7 +23706,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8a3c3d2a-76b2-4a88-806e-fca2f5ea8968")
 			(effects
@@ -23749,7 +23719,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8b52841d-8344-4eae-a6e7-9665af7cd0eb")
 			(effects
@@ -23762,7 +23732,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "fc547c19-297c-45ee-b8e3-7e6786e260eb")
 			(effects
@@ -23780,7 +23750,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -23790,7 +23760,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -23867,7 +23837,7 @@
 		(tags "resistor")
 		(property "Reference" "R606"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8b0861c5-3192-439d-81cc-ed1e9a9be91d")
 			(effects
@@ -23917,7 +23887,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8ae81545-4328-44a9-ab9b-3067e6ae0d1d")
 			(effects
@@ -23930,7 +23900,7 @@
 		)
 		(property "Codigo" "R5"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "547e5889-43b8-4f11-bed9-8176e9402c78")
 			(effects
@@ -23943,7 +23913,7 @@
 		)
 		(property "LCSC" "C25104"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9d4a9cbc-c159-49ea-bc31-05f5c3ba3036")
 			(effects
@@ -23956,7 +23926,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6a47ba75-f72b-4c88-af05-a643e29cd60d")
 			(effects
@@ -23969,7 +23939,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8ab6ba8c-083d-4728-bec6-8efcd010ba82")
 			(effects
@@ -23982,7 +23952,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c5c0aab5-81d7-4bb1-b8cf-b1ae7020675b")
 			(effects
@@ -24000,7 +23970,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24010,7 +23980,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24087,7 +24057,7 @@
 		(tags "resistor")
 		(property "Reference" "R105"
 			(at 0 1.17 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "7d9b6f09-5450-4ab0-beb1-58e456d5e70f")
 			(effects
@@ -24137,7 +24107,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c3a2bbcf-dab8-4bb0-86b3-1cc6849af68e")
 			(effects
@@ -24150,7 +24120,7 @@
 		)
 		(property "Codigo" "P1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "801d4879-f8b8-4997-94a3-dfed07ea2ab2")
 			(effects
@@ -24163,7 +24133,7 @@
 		)
 		(property "LCSC" "C25076"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d1dac3bd-cd9d-4dcc-a047-fbcc308d9884")
 			(effects
@@ -24176,7 +24146,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "85f6f428-3a06-421c-a9e8-7f4a8ac45c71")
 			(effects
@@ -24189,7 +24159,7 @@
 		)
 		(property "Altura_mm" "0.4"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "3f023164-3e3f-4270-b0f8-bf2a1d00793b")
 			(effects
@@ -24202,7 +24172,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "25e730cd-0ac6-4353-ad85-b2121bf493e2")
 			(effects
@@ -24220,7 +24190,7 @@
 			(start -0.153641 -0.38)
 			(end 0.153641 -0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24230,7 +24200,7 @@
 			(start -0.153641 0.38)
 			(end 0.153641 0.38)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24307,7 +24277,7 @@
 		(tags "capacitor")
 		(property "Reference" "C303"
 			(at 0 1.16 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "796ae8a1-558f-4547-8094-a9efcfad0ab5")
 			(effects
@@ -24357,7 +24327,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "e85748a1-004e-41f0-a71d-6ce79aa08b3b")
 			(effects
@@ -24370,7 +24340,7 @@
 		)
 		(property "Codigo" "F1"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "573366e6-45cd-44ef-a8c4-cd9c5d696f83")
 			(effects
@@ -24383,7 +24353,7 @@
 		)
 		(property "LCSC" "C12530"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b9621df2-1705-43d4-90bd-853cada74ab2")
 			(effects
@@ -24396,7 +24366,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "9488ed5e-e529-4ed5-8d21-33dcbfc7b800")
 			(effects
@@ -24409,7 +24379,7 @@
 		)
 		(property "Altura_mm" "0.55"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6051059f-3140-4f61-ac65-d04172a417fe")
 			(effects
@@ -24422,7 +24392,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "395f3041-2ae4-4101-98ef-d714ad41f5b9")
 			(effects
@@ -24440,7 +24410,7 @@
 			(start -0.107836 -0.36)
 			(end 0.107836 -0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24450,7 +24420,7 @@
 			(start -0.107836 0.36)
 			(end 0.107836 0.36)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24527,7 +24497,7 @@
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "D205"
 			(at 0 2.4 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "b267b91e-6523-4b28-b22e-203103c4f4e6")
 			(effects
@@ -24577,7 +24547,7 @@
 		)
 		(property "KiLib_Generator" "package/gullwing"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ac46c31d-1600-474e-86bd-1780f7513c1c")
 			(effects
@@ -24590,7 +24560,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "eb4d97fd-e046-4c17-a0da-f23c6f0a6a8d")
 			(effects
@@ -24603,7 +24573,7 @@
 		)
 		(property "LCSC" "C68978"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8a48dd6a-137f-43dd-bcef-055a2f53b54a")
 			(effects
@@ -24616,7 +24586,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bce2c000-f4c4-49bb-b17d-badecec25057")
 			(effects
@@ -24629,7 +24599,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "91bed548-e52c-4518-9dd3-fa867b5b82ec")
 			(effects
@@ -24642,7 +24612,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "6cf966d4-6360-4cd1-8976-bdfaab15e83f")
 			(effects
@@ -24660,7 +24630,7 @@
 			(start 0.76 -1.56)
 			(end -0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24670,7 +24640,7 @@
 			(start -0.76 -1.56)
 			(end -0.76 -1.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24680,7 +24650,7 @@
 			(start 0.76 -0.56)
 			(end 0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24690,7 +24660,7 @@
 			(start -0.76 -0.39)
 			(end -0.76 0.39)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24700,7 +24670,7 @@
 			(start -0.76 1.51)
 			(end -0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24710,7 +24680,7 @@
 			(start 0.76 1.56)
 			(end 0.76 0.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24720,7 +24690,7 @@
 			(start -0.76 1.56)
 			(end 0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -24731,7 +24701,7 @@
 				(xy -1.3 0.38) (xy -1.06 0.05) (xy -1.54 0.05)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -24967,7 +24937,7 @@
 		(tags "capacitor")
 		(property "Reference" "C101"
 			(at 0 1.68 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "d3b41d26-9428-492e-bc41-68c1a3b720ac")
 			(effects
@@ -25017,7 +24987,7 @@
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "06135fcc-bdf2-4785-9d31-ef8b53364820")
 			(effects
@@ -25030,7 +25000,7 @@
 		)
 		(property "Codigo" "P1"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "bd7728ae-5c53-4b15-bef3-92f94e0ca0b7")
 			(effects
@@ -25043,7 +25013,7 @@
 		)
 		(property "LCSC" "C15850"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "c6cccfbc-b77b-43d9-aaca-4256acd56ee8")
 			(effects
@@ -25056,7 +25026,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "eddf88e3-ed0e-43ec-ae84-a6a41dccbe43")
 			(effects
@@ -25069,7 +25039,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "094e51e2-4383-47d3-862b-7374edd5dfae")
 			(effects
@@ -25082,7 +25052,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 270)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "90887ae4-3d35-4a88-9393-fb8540ad4704")
 			(effects
@@ -25100,7 +25070,7 @@
 			(start -0.261252 -0.735)
 			(end 0.261252 -0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -25110,7 +25080,7 @@
 			(start -0.261252 0.735)
 			(end 0.261252 0.735)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -25187,7 +25157,7 @@
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "D203"
 			(at 0 2.4 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "8489bdc5-babb-4803-b855-e63d89204703")
 			(effects
@@ -25237,7 +25207,7 @@
 		)
 		(property "KiLib_Generator" "package/gullwing"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "27271bab-f32e-41b2-943b-31e6ede02b23")
 			(effects
@@ -25250,7 +25220,7 @@
 		)
 		(property "Codigo" "E3"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "82a39b79-1747-4021-859d-c157ac256349")
 			(effects
@@ -25263,7 +25233,7 @@
 		)
 		(property "LCSC" "C68978"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "793b3f32-c595-4e48-9aa0-02c60ce4c199")
 			(effects
@@ -25276,7 +25246,7 @@
 		)
 		(property "Montagem" "JLC"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "5d424f53-80de-4e7d-b5b0-816d84bcb534")
 			(effects
@@ -25289,7 +25259,7 @@
 		)
 		(property "Altura_mm" "1.45"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "0feb1970-1a47-431f-8d20-213f707a93bb")
 			(effects
@@ -25302,7 +25272,7 @@
 		)
 		(property "Cabe_sob_cartao" "sim"
 			(at 0 0 180)
-			(layer "B.SilkS")
+			(layer "B.Fab")
 			(hide yes)
 			(uuid "ff89756d-2f36-4b2d-8e1c-9c2150fd820e")
 			(effects
@@ -25320,7 +25290,7 @@
 			(start -0.76 -1.56)
 			(end -0.76 -1.51)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -25330,7 +25300,7 @@
 			(start -0.76 -0.39)
 			(end -0.76 0.39)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -25340,7 +25310,7 @@
 			(start -0.76 1.51)
 			(end -0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -25350,7 +25320,7 @@
 			(start -0.76 1.56)
 			(end 0.76 1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -25360,7 +25330,7 @@
 			(start 0.76 -1.56)
 			(end -0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -25370,7 +25340,7 @@
 			(start 0.76 -0.56)
 			(end 0.76 -1.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -25380,7 +25350,7 @@
 			(start 0.76 1.56)
 			(end 0.76 0.56)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
@@ -25391,7 +25361,7 @@
 				(xy -1.3 0.38) (xy -1.06 0.05) (xy -1.54 0.05)
 			)
 			(stroke
-				(width 0.12)
+				(width 0.15)
 				(type solid)
 			)
 			(fill yes)
@@ -26102,6 +26072,182 @@
 		)
 		(layer "Edge.Cuts")
 		(uuid "1388bd98-a5cf-45f3-b288-b3a7e3211c15")
+	)
+	(gr_text "eTutti Student V4\nplaca principal"
+		(at 41 72 0)
+		(layer "F.SilkS")
+		(uuid "e36619f1-e6c9-4bed-a265-4696ddfc0651")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(gr_text "+"
+		(at 47 91.5 0)
+		(layer "F.SilkS")
+		(uuid "8875bf32-8e30-4818-8f19-590cba400728")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(gr_text "SPK"
+		(at 48.75 89.25 0)
+		(layer "F.SilkS")
+		(uuid "4cad0b9d-1708-4efc-8598-aca38d38a531")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(gr_text "-"
+		(at 52.5 91.5 0)
+		(layer "F.SilkS")
+		(uuid "0d0c498f-6d94-47e2-a79a-be4d21c34278")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(gr_text "USB"
+		(at 5.95 10 0)
+		(layer "B.SilkS")
+		(uuid "1e437647-950f-4430-9ce9-2187c7bbe0a5")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "FONE\nPHONES"
+		(at 7.3 28.75 0)
+		(layer "B.SilkS")
+		(uuid "84014877-9fd4-42cf-bf14-620518031ed4")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "ENTRADA\nIN (MIC)"
+		(at 7.55 52.75 0)
+		(layer "B.SilkS")
+		(uuid "b36dc321-3ed3-45aa-835c-2ab23af6edd6")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "STUDENT V4"
+		(at 41 72 0)
+		(layer "B.SilkS")
+		(uuid "33a3c6b7-1013-4a6c-bd4c-a94a89faaea7")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "OLED"
+		(at 47.95 25.25 0)
+		(layer "B.SilkS")
+		(uuid "1ea3750a-6f47-4b50-8761-8991691f3408")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "PROG"
+		(at 52 36 0)
+		(layer "B.SilkS")
+		(uuid "ea8856b2-331a-443f-98d2-e42507e77368")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "FILEIRA 4\nROW 4"
+		(at 63.25 33.25 0)
+		(layer "B.SilkS")
+		(uuid "09791084-2376-4b6f-8ae5-a35348634db0")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "BAT"
+		(at 65 27.5 90)
+		(layer "B.SilkS")
+		(uuid "409389f5-0757-48c3-a17d-6f5f87771c51")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "FILEIRA 1\nROW 1"
+		(at 68.825 78.53 90)
+		(layer "B.SilkS")
+		(uuid "1d87af8f-c9a2-49c6-bd41-0da465f7848a")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "FILEIRA 3\nROW 3"
+		(at 69.075 38.74 90)
+		(layer "B.SilkS")
+		(uuid "28df7c0a-9324-43c0-a2f3-d30a0b980d04")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "FILEIRA 2\nROW 2"
+		(at 69.075 58.01 90)
+		(layer "B.SilkS")
+		(uuid "e3541b4f-e912-4e95-8854-3791384b8a19")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
 	)
 	(gr_text "corredor audio_fone"
 		(at 6.5 28.8 0)

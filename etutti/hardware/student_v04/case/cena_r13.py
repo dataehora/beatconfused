@@ -391,23 +391,11 @@ def speaker_parts(x, y, zb, zf):
 
 
 def build_feet():
-    forbid = list(L.LID_POSTS) + list(L.pick_posts(0)) + list(L.wall_posts(0)) + [L.H101, L.PROG]
-    for ru in L.rulers(0):
-        forbid += list(L.m2_points(ru))
-    forbid += [(L.BATTERY_XY[0] + 17, L.BATTERY_XY[1] + 25)]
-    cand = []
-    for x in np.arange(12, 240, 4.0):
-        for y in np.arange(8, 94, 4.0):
-            if min(math.hypot(x - a, y - b) for a, b in forbid) >= 9.0:
-                cand.append((float(x), float(y)))
-    # greedy farthest-point selection from the corners of the footprint
-    chosen = []
-    seeds = [(14, 10), (14, 90), (230, 10), (230, 90), (122, 10), (122, 90)]
-    for sx, sy in seeds:
-        best = min(cand, key=lambda p: math.hypot(p[0] - sx, p[1] - sy))
-        chosen.append(best)
+    """R15V4: the 8 feet 3M Bumpon SJ5302 (D 7.94 x 2.2, hemispherical: a cylinder with a rounded top here) at the positions of case/pes_r15.py."""
+    chosen = [tuple(p) for p in json.load(open(os.path.join(OUT, "pes_r15.json")))["pos_xy"]]
     for x, y in chosen:
-        cyl(x, y, L.Z_BOT - 1.0, L.Z_BOT, 4.0, "1E1E1E", "pes", res=40)
+        cyl(x, y, L.Z_BOT - 2.2, L.Z_BOT - 0.8, 3.97, "1E1E1E", "pes", res=40)
+        cyl(x, y, L.Z_BOT - 0.8, L.Z_BOT, 3.97, "1E1E1E", "pes", res=40)
     return chosen
 
 
@@ -467,7 +455,10 @@ def main():
         name = "%s__%s.ply" % (grp, col)
         mm.save(os.path.join(BUILD, name), binary=True)
         files.append({"file": name, "group": grp, "colour": col})
-    man = {"files": files, "keys": KI, "feet": feet, "lid_screws_mm": info,
+    wx0, wy0, wx1, wy1 = C3.WINDOW
+    lvo = OL.levels(L.CEILING)
+    tela = {"cx": (wx0 + wx1) / 2, "cy_file": -(wy0 + wy1) / 2, "z": lvo["glass_top"] + 0.03, "w": OL.ACT_X[1] - OL.ACT_X[0], "h": OL.ACT_Y[1] - OL.ACT_Y[0]}
+    man = {"files": files, "keys": KI, "feet": feet, "lid_screws_mm": info, "tela": tela,
            "rulers": [{"row": r["row"], "x0": r["x0"], "y": r["y"]} for r in L.rulers(0)]}
     json.dump(man, open(os.path.join(BUILD, "manifest_parts.json"), "w"), indent=1)
     print(len(files), "mesh files;", "lid screws:", info, "feet:", feet)

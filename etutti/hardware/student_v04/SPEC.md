@@ -1,4 +1,181 @@
-# eTutti Student V4 — SPEC R13V4
+# eTutti Student V4 — SPEC R15V4
+
+Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Complementa a R14V4. **O J manda as duas juntas ao Code: atender a R14V4 e a R15V4 num único PR**, na ordem da tabela consolidada abaixo. Tudo o que não é mencionado aqui continua como nas revisões anteriores. Os relatórios citam "R15V4".
+
+**Regras que continuam:**
+- só o instrumento de 32 teclas detalhado;
+- só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+## 1. Serigrafia da placa principal (Eletrônica)
+
+Na pré-visualização da JLCPCB e no 3D do KiCad os textos da serigrafia ficam empilhados e ilegíveis: referências e valores (inclusive os códigos LCSC, como "C25741") de todas as peças 0402/0603, uma em cima da outra. Limpar, **só na serigrafia** (nenhuma trilha, pad, via, zona ou posição muda):
+
+- **Fica na serigrafia** (o que ajuda quem monta em casa):
+  - nome e versão da placa;
+  - rótulos dos conectores: J601–J604 como "FILEIRA 1…4 / ROW 1…4" (J601 = fileira 1), J401 "OLED", J202 "BAT", J201 "USB", J301/J302 com a função de cada um, pads do alto-falante "SPK + / −";
+  - "PROG" junto ao SW403;
+  - marcas de pino 1 e de polaridade;
+  - furos H1..H4 e H101 se ajudarem na montagem.
+- **Sai da serigrafia** para a camada de fabricação (F.Fab/B.Fab), onde continua no KiCad e nos desenhos de montagem: todas as outras referências e todos os valores, incluindo os campos de código LCSC e os textos "sem peça (pad)" e "não montar".
+- **Nenhum texto sobre pad nem sobre outro texto.** Altura e traço dentro do mínimo da JLCPCB (o Code confirma os números). Checagens de serigrafia do KiCad (sobreposição e texto sobre cobre exposto) com **0**.
+- **Régua:** só conferir que já atende (parece limpa); não mexer se atender.
+- **Depois:** DRC 0 erros e 0 avisos, 0 faltando, paridade 0, cobre idêntico ao da roteada (comparar os Gerbers de cobre, máscara e furação: só a serigrafia pode mudar). Regenerar `fab/principal/` e os renders, e o 3D do KiCad (`*_3d.kicad_pcb`).
+
+## 2. Configuração de compra da principal (Eletrônica, `fab/COMPRA.md` e página)
+
+- **Specify Stackup = No.** O empilhamento padrão da JLCPCB basta: o par USB é Full Speed e tem 7,4 mm; não há linha de impedância controlada. Um empilhamento especificado obriga a montagem Standard.
+- **PCBA Type = Economic.** Causa achada pelo J (24 nov): o **acabamento ENIG** fazia a JLCPCB passar a montagem para Standard ao subir BOM e CPL. O suporte da JLCPCB confirmou que é um erro do site. Nenhuma peça é "Standard only", e o codec e as peças na borda **não** são a causa: nada muda na BOM nem na montagem. O J refaz a cotação quando o erro for corrigido. Se o erro continuar, a alternativa é HASL sem chumbo (placa cerca de US$ 12 mais barata e Economic, cerca de US$ 24 mais barato); o J decide na hora de pedir. `COMPRA.md` registra as duas opções.
+- Cotação real da principal com Standard: US$ 158 (placa 25,50 + montagem 132,62; setup 25,75, stencil 8,27, peças 46,29, carga dos alimentadores 49,60, SMT 2,21, embalagem 0,50; montagem em 3–4 dias, sem custo extra).
+
+## 3. Opção futura registrada (Eletrônica, só texto)
+
+Em `ELETRONICA.md`, uma nota curta: **"RT1062 na placa (chip-down) para produção em quantidade (≥ ~50 unidades)"**:
+- ganho estimado de cerca de US$ 10 por placa e de alguns milímetros de altura;
+- custo de um projeto novo da seção do processador (o fan-out do BGA foi o que parou o Viaggio), de 6 a 8 tipos Extended a mais e do chip de bootloader da PJRC.
+
+Não é feito agora: o protótipo segue com o MicroMod.
+
+## 4. Base sem peças frágeis e com apoio uniforme da régua (Design)
+
+O J viu, nos isométricos da base (`iso_base_r11`, `passo_8`), **hastes e paredes finas que sobraram dos recortes** perto das pontas esquerdas das réguas. Elas aparecem onde os túneis dos cabos (os dois comprimentos, 45,8 e 50,8, cortados em sequência), os entalhes de conectores e plugues e as paredes de ponta de 2 mm se cruzam. O J quer:
+- **nenhum elemento frágil** no case;
+- **a régua apoiada por igual** ao longo do comprimento.
+
+Hoje a régua pousa em **dois trilhos de 2,8 mm** (`RAIL_IN` 4,2 / `RAIL_OUT` 7,0), com um canal oco no meio para as peças de baixo, mais as bossas D6 dos parafusos.
+
+1. **Varredura automática** da base e da tampa à procura de partes finas ou esbeltas: espessura de parede abaixo de **1,5 mm** (regra do projeto para PA12 em MJF com carga; dizer a regra do fornecedor), pinos e lâminas soltos com altura maior que 3 vezes a menor largura, e ilhas ligadas ao resto por menos de 1,5 mm. Entregar a lista com posição e uma figura com cada uma marcada.
+2. **Eliminar cada uma:**
+   - cortar os túneis **uma vez só**, com o envelope dos dois comprimentos de cabo unido e arredondado, para não sobrar lâmina entre os dois cortes;
+   - parede de ponta ou cheia (≥ 2 mm, com o recorte do conector bem definido) ou retirada;
+   - o que não sustenta nada sai, o que sustenta fica grosso.
+3. **Apoio uniforme:** estudar, contra os dois trilhos atuais, um **berço contínuo** sob a régua, maciço da largura dela, com bolsos só onde ela tem peças embaixo (sensores, 74HC595, capacitores, J1 e o plugue) e folga de 0,3 mm a elas.
+
+   Comparar:
+   - área de apoio (% da face de baixo da régua);
+   - flecha da régua a 3 N (`rigidez_regua`);
+   - volume e custo de MJF;
+   - fit check;
+   - montagem (o cabo ainda passa pelo túnel e o plugue entra com a régua no lugar).
+
+   Escolher a solução mais uniforme sem parte frágil, e dizer por quê.
+4. Fit check das 32 teclas, planta, corte e isométrico da base novos (`iso_base_r15`, com os apoios numerados), e uma figura **antes e depois** das regiões que tinham as hastes.
+
+## Tarefas para o Code (R14V4 + R15V4, um PR)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Eletrônica | R15V4 item 1: limpar a serigrafia da principal, provar que o cobre não mudou, regenerar `fab/principal/` e o 3D |
+| 2 | Design | R14V4 tarefa 1: parafusos M2 das réguas (números, acesso da ferramenta, figura) |
+| 3 | Design | R15V4 item 4 + R14V4 tarefa 3: base sem partes frágeis, apoio uniforme da régua, costelas de pressão, pés adesivos, fit check e figuras da base |
+| 4 | Design | R14V4 tarefa 2: renders conferidos peça por peça e refeitos (com a serigrafia nova) |
+| 5 | Eletrônica | R14V4 tarefa 4 + R15V4 itens 2 e 3: MicroMod, tabela R4E, `COMPRA.md` (Specify Stackup = No, Economic, ENIG ou HASL, valores reais), nota da opção chip-down |
+| 6 | Programação e som | R14V4 tarefa 5: página e manual atualizados, com as imagens novas |
+
+**Perguntas que o Chat espera:**
+- os renders novos da principal (topo e fundo) mostrando a serigrafia limpa;
+- a confirmação de que o cobre não mudou.
+
+---
+
+# Anexo — SPEC R14V4 (referência)
+
+Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
+Responde ao PR #204 (relatórios da R13V4) e às cotações e pré-visualizações da JLCPCB que o J fez. Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R14V4".
+
+**Regras que continuam:**
+- planta, corte e isométrico da base a cada mudança dela;
+- nome da nota em cada tecla;
+- só o instrumento de 32 teclas detalhado até a compra;
+- só a Student V4;
+- nada é comprado antes de o protótipo fechar.
+
+## Cotação e pré-visualização da JLCPCB (J, 23 nov)
+
+- **Placa principal: US$ 158** (5 placas, 2 montadas; ENIG, JLC04121H-7628, JST originais). A estimativa do Code era 113–138: o J manda ao Chat a decomposição; o Code usa US$ 158 como valor real.
+- **Régua R8, painel de 2: US$ 72** (5 painéis, 2 montados = 4 réguas). Bate com a estimativa (~73).
+- **Pré-visualização conferida pelo Chat contra as figuras do Code: bate.**
+  - **Principal:** J601–J604 na borda dos cabos, USB-C e os dois jacks na borda oposta, J401, J202, SW403, M.2 e os CIs nos lugares das figuras do Code, com o pino 1 no mesmo canto.
+  - **Régua:** J1 IN com corpo e boca, 8 TMAG5253, 74HC595 e C10 nos lugares.
+  - Os 4 modelos deslocados da EasyEDA não aparecem como problema na tela da JLCPCB.
+- O texto de serigrafia "J2 OUT (só nas E)" aparece na R8: aceito (ajuda a quem monta uma R8E).
+
+## Decisões
+
+1. **Costelas de pressão** nos bolsos sextavados das porcas M2 (opção proposta pelo design): a porca fica presa ao virar a base.
+2. **Pés adesivos** colados direto na face de baixo da base, sem rebaixo.
+3. **Recomendações do Chat aceitas** (o J não se opôs):
+   - os 15 parafusos da tampa em **M2 × 14**;
+   - a eletrônica confirma o giro do MicroMod pelo desenho da SparkFun;
+   - a página segue a ordem de montagem do design;
+   - os 4 modelos deslocados da EasyEDA ficam como estão.
+
+## Tarefas
+
+### 1. Espaço dos parafusos M2 das réguas: conferência e figura (Design)
+
+O J quer ver que os parafusos cabem. O relatório R11V4 diz "cabeça Ø3,8 sobre a régua, no vão de 3,1 mm entre carcaças (fit check 0)": explicar com números como uma cabeça de 3,8 cabe num vão de 3,1 (a que altura estão a cabeça, as abas das carcaças e a grade-régua).
+
+**Figura** `case/renders/regua_parafusos_r14.png`: vista de cima de uma R8, em escala, com a grade-régua e os 2 parafusos M2 encaixados:
+- **metade esquerda com as teclas KS-20 montadas;**
+- **metade direita sem teclas**, mostrando a grade, os furos dos pinos, os sensores, o 74HC595, o J1 e as cabeças dos parafusos;
+- cotas: cabeça até a carcaça vizinha, cabeça até a borda da janela da grade, cabeça até o trilho;
+- nome da nota sobre cada posição de tecla;
+- um corte no eixo de um parafuso (régua, grade, cabeça, porca no bolso com as costelas, trilho).
+
+**Acesso da ferramenta:** o passo 8 aperta os parafusos com as teclas já montadas. Conferir que a ponta da chave (dizer qual: Phillips #0, sextavada 1,5 ou Torx) e a haste passam entre as carcaças até a cabeça. Se não passarem, mudar a ordem (parafusos antes das teclas, sem tirar a grade) ou o parafuso (cabeça menor, sextavado interno), e dizer qual.
+
+### 2. Renders conferidos peça por peça (Design)
+
+- **Conectores e cabos fora do lugar nos renders:** no `passo_8` os plugues IN e os cabos aparecem soltos fora das réguas e do case, e há barras pretas finas passando das pontas das réguas (fileiras 1 a 3). Na JLCPCB os conectores estão no lugar certo da placa. Conferir cada peça da cena contra as placas e o case:
+  - J1 de cada régua na posição do CPL;
+  - cabos pelo túnel até J601–J604;
+  - grade-régua do comprimento certo.
+  
+  Corrigir e renderizar de novo todas as figuras afetadas.
+- **Janela do OLED** em `foto_instrumento`: parece um recorte vazio. Mostrar a tela (acesa, com a tela de estado do firmware, `telas_oled.py`) atrás do acrílico.
+- **Alto-falante, bateria, capas, parafusos, pés:** continuam primitivas com medidas reais (aceito).
+
+### 3. Costelas de pressão e pés (Design)
+
+- **Costelas** nos bolsos das 8 porcas M2, incluindo o bolso da porca fina da fileira 4 (parede fina, risco 5 do R11V4): número, altura e interferência (o design propõe ~0,1 mm), para MJF PA12. Conferir que a porca entra com o dedo ou com o parafuso puxando e não cai com a base virada.
+- **Pés adesivos:** escolher o produto (redondo, adesivo 3M, borracha ou silicone, altura 1–2 mm), posições a ≥ 9 mm de furos e bolsos, quantidade (6 ou mais se a figura pedir). Mandar para `fab/COMPRA.md` (loja e código).
+- Fit check das 32 teclas e figuras da base (planta, corte, isométrico, `iso_base_r14`).
+
+### 4. Eletrônica
+
+- **MicroMod:** confirmar giro e altura pelo desenho de montagem da SparkFun (folga de 0,3 mm sob a placa).
+- **`MODELOS_3D.md`:** corrigir a tabela da R4E (74HC595 com "1142,50 mm", o mesmo erro de unidade já tratado na R8).
+- **`fab/COMPRA.md`:** cotações reais (principal US$ 158, R8 US$ 72), M2 × 14 na tampa, pés escolhidos, total novo do protótipo.
+
+### 5. Página e manual (Programação e som)
+
+- Ordem e textos dos passos do design (R13V4), com M2 × 14, costelas de pressão (o passo 7 deixa de pedir fita) e pés adesivos.
+- **Botão PROG:** dizer que se aperta com um palito pelo furo de Ø3 da base, e mostrar onde fica (figura).
+- Incluir a figura da tarefa 1 no passo 8.
+- Valores reais da JLCPCB em "Peças" e "Como pedir".
+- Conferir no navegador outra vez (pt e en, 375 px, imagens e links).
+
+## Tarefas para o Code (R14V4)
+
+| Ordem | Área | Tarefa |
+|---|---|---|
+| 1 | Design | parafusos M2 das réguas: números, acesso da ferramenta e figura (tarefa 1) |
+| 2 | Design | costelas de pressão, pés adesivos, fit check e figuras da base (tarefa 3) |
+| 3 | Design | renders conferidos e refeitos (tarefa 2) |
+| 4 | Eletrônica | MicroMod, tabela R4E, `COMPRA.md` com valores reais (tarefa 4) |
+| 5 | Programação e som | página e manual atualizados (tarefa 5) |
+
+**Perguntas que o Chat espera nos relatórios:**
+- a figura dos parafusos sobre a régua e a resposta sobre o acesso da ferramenta (e a ordem de montagem, se mudar);
+- os renders corrigidos (o que estava fora do lugar e por quê);
+- o total do protótipo com as cotações reais;
+- o link da página atualizada.
+
+---
+
+# Anexo — SPEC R13V4 (referência)
 
 Data: 23 nov 2026 · Autor: Claude Chat · Destino: Claude Code
 Responde ao PR #201 (relatórios da R12V4) e à primeira cotação do J. Tudo o que não é mencionado aqui continua como nas revisões anteriores (anexos abaixo). Os relatórios citam "R13V4".
