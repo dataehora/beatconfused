@@ -1,0 +1,161 @@
+(kicad_sch
+	(version 20250610)
+	(generator "slim_schematic")
+	(generator_version "10.0")
+	(uuid "bdf15e72-6526-539e-b474-f8d4054b25ba")
+	(paper "A4")
+	(title_block (title "eTutti Slim · esquema") (date "2026-11-24") (rev "Slim R1SL regua R8") (company "beatconfused.com") (comment 1 "etutti/hardware/slim/pcb/schematic.py escreve este arquivo; nao editar a mao"))
+	(lib_symbols
+		(symbol "slim:PWR_FLAG"
+		(power global)
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "#FLG"
+			(at 0 1.905 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 0 3.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "flag power"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "PWR_FLAG_0_0"
+			(pin power_out line
+				(at 0 0 90)
+				(length 0)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(symbol "PWR_FLAG_0_1"
+			(polyline
+				(pts
+					(xy 0 0)
+					(xy 0 1.27)
+					(xy -1.016 1.905)
+					(xy 0 2.54)
+					(xy 1.016 1.905)
+					(xy 0 1.27)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+	)
+	(text "eTutti Slim · esquema eletrico (SPEC R1SL, etapa 1)." (exclude_from_sim no) (at 25 15 0) (effects (font (size 2 2)) (justify left)) (uuid "3e77de03-5035-5f9d-a5f6-35107204aaf3"))
+	(text "Campo 'Codigo' = grupo da peca (P1... R5) para o posicionamento da etapa 2." (exclude_from_sim no) (at 25 21 0) (effects (font (size 2 2)) (justify left)) (uuid "a3b7487b-9867-5ccb-8d35-056c27687c79"))
+	(text "Etapa 1 (portao A): so esquema. Ligacoes entre folhas por rotulos globais." (exclude_from_sim no) (at 25 27 0) (effects (font (size 2 2)) (justify left)) (uuid "44198c6a-b5a4-53e3-a945-3524b3b407b9"))
+	(text "PWR_FLAG abaixo: redes alimentadas por conector, ferrite, indutor ou diodo (o ERC nao ve a fonte)." (exclude_from_sim no) (at 25 33 0) (effects (font (size 2 2)) (justify left)) (uuid "760e7d8c-0676-5aee-a1ae-cd3afe92f8f8"))
+	(sheet (at 25 45) (size 70 25) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced yes) (stroke (width 0.1524) (type solid)) (fill (color 0 0 0 0.0000)) (uuid "43f3e6bf-683b-567a-a921-d4ed2152b370")
+		(property "Sheetname" "R · Regua" (at 25 44.3 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+		(property "Sheetfile" "slim_regua_R.kicad_sch" (at 25 70.6 0) (effects (font (size 1.27 1.27)) (justify left top)))
+		(instances (project "slim_regua" (path "/bdf15e72-6526-539e-b474-f8d4054b25ba" (page "2"))))
+	)
+	(symbol (lib_id "slim:PWR_FLAG") (at 25.4 149.86 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "e9d58779-dd9b-587d-8d7c-c199c2eef79e")
+		(property "Reference" "#FLG01" (at 25.4 144.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Value" "PWR_FLAG" (at 25.4 146.36 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 25.4 149.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 25.4 149.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "ae157943-9639-514e-a579-9d4d75b39bb1"))
+		(instances (project "slim_regua" (path "/bdf15e72-6526-539e-b474-f8d4054b25ba" (reference "#FLG01") (unit 1))))
+	)
+	(wire (pts (xy 25.4 149.86) (xy 25.4 152.4)) (stroke (width 0) (type default)) (uuid "e003bd00-09b3-5663-a0ee-3b9ed0a70d8e"))
+	(global_label "+3V3" (shape passive) (at 25.4 152.4 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "988bf3ac-5f64-55a3-ba67-fcfb08bf630f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 25.4 152.4 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(symbol (lib_id "slim:PWR_FLAG") (at 66.04 149.86 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "623a1168-6d16-5beb-a632-7de79519abee")
+		(property "Reference" "#FLG02" (at 66.04 144.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Value" "PWR_FLAG" (at 66.04 146.36 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 66.04 149.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "" (at 66.04 149.86 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(pin "1" (uuid "769cef6d-d6e8-57a5-86c9-5007f753cd38"))
+		(instances (project "slim_regua" (path "/bdf15e72-6526-539e-b474-f8d4054b25ba" (reference "#FLG02") (unit 1))))
+	)
+	(wire (pts (xy 66.04 149.86) (xy 66.04 152.4)) (stroke (width 0) (type default)) (uuid "33537f3c-a80b-52cd-8281-b712b31ab16f"))
+	(global_label "GND" (shape passive) (at 66.04 152.4 270) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "facb73cf-5654-53c7-8260-4c6645b54d4f") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 66.04 152.4 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(sheet_instances (path "/" (page "1")))
+	(embedded_fonts no)
+)

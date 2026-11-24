@@ -1,0 +1,6 @@
+lcsc,valor,classe_jlc,qtd,referencias,preco_unit_usd_est
+C1525,100nF,Basic,9,C1 C2 C3 C4 C5 C6 C7 C8 C9,0.001
+C15850,10uF,Basic,1,C10,0.008
+C66953,"FFC 8P 0.5 mm, contato por baixo",Extended,1,J1,0.100
+C22401868,TMAG5253BA3IQDMRR,Extended,8,U1 U2 U3 U4 U5 U6 U7 U8,0.600
+C730243,"74HC595BQ,115",Extended,1,U9,0.176

@@ -12,3 +12,7 @@ etutti/hardware/student_v03/case/blender/out/
 
 # Student V4: modelos 3D baixados da EasyEDA (R13V4), fora do git
 etutti/hardware/student_v04/fornecimento/modelos3d/
+
+# eTutti Slim: STEP baixados do EasyEDA e caches
+etutti/hardware/slim/modelos/baixados/
+__pycache__/
