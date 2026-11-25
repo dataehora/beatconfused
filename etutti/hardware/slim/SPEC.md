@@ -1,4 +1,35 @@
-# eTutti Slim — SPEC R9SL
+# eTutti Slim — SPEC R10SL
+
+## Mudanças desde a R9SL (25 nov 2026)
+
+Resposta do J à sessão A (PR #228). A sessão B (escape do BGA, §8.2) segue como estava, em paralelo.
+
+1. **Um M2 em cada ponta da régua.** Muda a fixação da R9SL (sessão A): sai o par de M2 lado a lado na ponta direita e **a lingueta não será usada**.
+   - **Direita:** **um** M2 no eixo da régua (v = 0), depois da tecla 8.
+   - **Esquerda (cauda):** **um** M2. Ele já estava previsto na R9SL item 1 ("na cauda"). **Crie o espaço para ele.** Opções, nesta ordem de preferência:
+     - (a) rearranjar J1, U9, C9, C10 e as pistas na cauda;
+     - (b) alongar a cauda para a esquerda, conferindo a folga até a principal e o comprimento do FFC (20 mm);
+     - (c) as duas coisas juntas.
+   - Se já existir na base ou na principal um poste ou parafuso perto da cauda que possa ser aproveitado, diga.
+   - Mesmo sistema da R9SL: porca sextavada sob a régua e cabeça sobre a régua ou a grade.
+   - A grade fica presa pelo M2 da direita e pelas switches. Se ela não alcançar a cauda, isso deve ficar dito.
+2. **Case 1 mm mais largo.** Planta **248,0 × 89,1** (parede direita interna em x 148,0). A folga da régua mais longa (fileiras 1 e 3) até a parede passa a ≥ 1,75 mm. **Mudança externa aprovada pelo J.** Se o item 1 mudar o comprimento da régua, recalcule essa folga; o mínimo é 1,5 mm.
+3. **Resumo dos limitantes do case (novo, para otimização futura).** No `RESTRICOES_CASE.md`, acima da tabela, uma seção **"Resumo dos limitantes"**, organizada por cota do case:
+   - comprimento (esquerda e direita);
+   - profundidade (frente e trás);
+   - altura (piso, divisão base/tampo, tampo, botões);
+   - cada parede com furo.
+
+   Para cada cota, informar:
+   - quais itens R## a definem hoje e com que folga;
+   - quanto se ganharia se cada um mudasse;
+   - o que custaria mudar (peça, placa ou risco).
+
+   Os itens da R10SL entram aí: M2 nas pontas, cauda, folga da parede direita e o case 248,0. **Só registrar.** Nenhuma otimização será feita agora; o J decide depois o que analisar.
+4. **Imagens (regra do J):** todo relatório lista **todas** as imagens e renders gerados ou atualizados na sessão, mesmo os que não têm relação com as decisões, com caminho e uma linha de legenda. A mensagem de volta também os lista. Os títulos de `pcb/regua/img/planta_regua.png` ("160,0 × 15,0") e `pcb/regua/img/grade.png` ("148 × 16") estão desatualizados: os títulos e as cotas devem sair das variáveis do modelo.
+
+---
+
 
 ## Mudanças desde a R8SL (25 nov 2026)
 
@@ -287,7 +318,7 @@ Regra: **qualquer item que mude o lado de fora do case** (contorno, altura, pare
 ## 5. Placas
 
 ### 5.1 Régua R8 (×4, idênticas, montadas uma vez)
-- 15 × ≈160 mm, 2 camadas, 1,2 mm. Cauda de 14 mm além da primeira tecla, com o conector por baixo, fora da área das teclas.
+- 15 × ≈167,5 mm (R9SL; pode mudar com a R10SL item 1), 2 camadas, 1,2 mm. Cauda além da primeira tecla, com o conector por baixo, fora da área das teclas. **Fixação (R10SL): um M2 na cauda e um M2 depois da tecla 8, no eixo.**
 - 8 × **TMAG5253** na face de baixo, na posição do desenho Gateron (4,3 mm do centro), saída analógica compartilhada; habilitação por **74HC595** na cauda (esquema do V4). O BA3 (±80 mT lineares) cobre os 68 mT do fundo de curso.
 - Footprint KS‑33D: 2 × Ø1,70 + Ø5,20.
 - **Grade** FR‑4 1,2 mm com furos 14,00, no mesmo painel da régua se a JLCPCB aceitar.
@@ -329,7 +360,9 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 | Demais peças JLCPCB | ✔ EasyEDA (`modelos/baixados/`, fora do Git) |
 | Pot com chave, SRBV | — saíram do projeto na R2SL |
 
-## 8. Tarefa da R9SL — duas sessões separadas do Code
+## 8. Tarefas abertas — sessões do Code
+
+A §8.1 (sessão A da R9SL) foi concluída no PR #228. A §8.2 (sessão B, BGA) continua valendo. A R10SL acrescenta a §8.3.
 
 ### 8.1 Sessão A — ajustes da régua e da principal [Eletrônica + Design + Roteamento]
 
@@ -371,3 +404,22 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
   - Recomendação: seguir com o Code ou passar ao J com o Freerouting (item 4).
 
 Aceite da 3b‑1: todas as bolas usadas com escape até fora da sombra do BGA, DRC da região 0/0, paridade 0. Estado em `slim/pcb/principal/rota/estado.json`, um commit por passo concluído, `ROTEAMENTO.md` atualizado. Nada de cotação ou compra.
+
+### 8.3 Sessão A2 — fixação da régua nas duas pontas e case 248,0 [Eletrônica + Design + Roteamento]
+
+Pode rodar em paralelo à sessão B: não mexe na principal, salvo se o item 1(b) da R10SL encostar nela.
+
+1. **Eletrônica:** um M2 na cauda e um na ponta direita (R10SL item 1).
+   - Mostrar as opções (a)/(b)/(c) **com números**: quanto a régua cresce, a folga até a principal e até a parede, e a folga do FFC.
+   - Escolher uma e justificar.
+   - ERC 0/0.
+2. **Roteamento:** refazer a rota da régua pelo método híbrido (`etapas.py`). Aceite C‑régua: DRC 0/0, 0 não ligados, paridade 0. Gerbers da grade conferidos.
+3. **Design:**
+   - case 248,0;
+   - porcas e apoios dos dois M2 na base;
+   - folga até a parede direita recalculada;
+   - seção "Resumo dos limitantes" no `RESTRICOES_CASE.md` (R10SL item 3);
+   - títulos das figuras corrigidos (item 4).
+4. `FIT_CHECK.md` com as perguntas **já com contexto** e a lista de **todas** as imagens geradas.
+5. Commit → PR → merge. Parar.
+
