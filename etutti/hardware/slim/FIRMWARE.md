@@ -57,3 +57,7 @@ Bateria: **VARTA 1/LPP 523450 S PCM W (56457 201 016)**, 1000 mAh (cabeçalho da
 ## R5SL — pinos × placa
 
 Refeito `check_placa.py` depois do LED na face de cima: **21/21 pinos** na bola e na rede certas; os mais longos: I²S_TX 59, BCLK 55, LRCLK 53, OUT_R1 46 mm; par USB 47,7 / 46,4 mm (Manhattan; 36 mm em linha reta, aceito). Nada muda no firmware: os pinos do LED (R/G) são os mesmos. Com a BAK de 950 mAh (se for a substituta) a autonomia cai a ~7,7 h.
+
+## R6SL — LED e pico de consumo
+
+LED do anel: 0805 bicolor vermelho/verde-amarelo, **mesmos pinos: 13 (LED_R, D8) e 5 (LED_G, H3)**, mesma polaridade (ânodos nos pinos, cátodos em GND); `check_placa.py` 21/21 depois do reposicionamento. Pico de consumo para a BAK: ~250 mA a 3,3 V, ~325 mA na bateria (< 475 mA, 68 %); autonomia com a BAK ~7,7 h.

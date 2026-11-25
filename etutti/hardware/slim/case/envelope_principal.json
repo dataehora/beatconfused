@@ -10,11 +10,11 @@
     -9.0
    ],
    [
-    -36.0,
+    -36.3,
     -9.0
    ],
    [
-    -36.0,
+    -36.3,
     -5.5
    ],
    [
@@ -26,11 +26,11 @@
     5.5
    ],
    [
-    -36.0,
+    -36.3,
     5.5
    ],
    [
-    -36.0,
+    -36.3,
     26.543
    ],
    [
@@ -42,11 +42,11 @@
     37.543
    ],
    [
-    -36.0,
+    -36.3,
     37.543
    ],
    [
-    -36.0,
+    -36.3,
     68.1
    ],
    [
@@ -69,7 +69,7 @@
   "faixa": {
    "x": [
     -58.5,
-    -36.0
+    -36.3
    ],
    "y": [
     -9.0,
@@ -229,10 +229,10 @@
    "fileira": 2,
    "ref": "J602",
    "y": 16.021,
-   "x_borda_placa": -36.0,
+   "x_borda_placa": -36.3,
    "boca": "+x",
    "x_regua_esquerda": -30.5,
-   "folga_horizontal_mm": 5.5,
+   "folga_horizontal_mm": 5.8,
    "z_regua_baixo": 5.8,
    "dz_ate_placa_mm": -1.0
   },
@@ -251,10 +251,10 @@
    "fileira": 4,
    "ref": "J604",
    "y": 48.064,
-   "x_borda_placa": -36.0,
+   "x_borda_placa": -36.3,
    "boca": "+x",
    "x_regua_esquerda": -30.5,
-   "folga_horizontal_mm": 5.5,
+   "folga_horizontal_mm": 5.8,
    "z_regua_baixo": 10.8,
    "dz_ate_placa_mm": 4.0
   }

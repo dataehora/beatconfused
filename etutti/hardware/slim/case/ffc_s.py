@@ -3,9 +3,11 @@
 Cable thickness 0.3 (assumed, FFC 1.0 mm pitch), minimum static bend radius taken as 10 x T = 3.0 mm (conservative; 5 x T = 1.5 is the usual lower limit): both ESTIMATES, no datasheet read.
 """
 import json, math, os
-H, T, INS = 5.5, 0.3, 3.4
-out = {"vao_horizontal": H, "espessura_assumida": T, "raio_minimo_regra_10T": 10 * T, "insercao_por_ponta": INS, "fileiras": []}
+T, INS = 0.3, 3.4
+GAPS = (5.5, 5.8, 5.5, 5.8)                        # R6SL: rows 2 and 4 have 5.8 (the strip ends 0.3 mm earlier) so that row 4 reaches R >= 3.0
+out = {"vao_horizontal_por_fileira": GAPS, "espessura_assumida": T, "raio_minimo_regra_10T": 10 * T, "insercao_por_ponta": INS, "fileiras": []}
 for r, dz in enumerate((-3.0, -1.0, 1.0, 4.0), 1):
+    H = GAPS[r - 1]
     a = abs(dz)
     th = 2 * math.atan(a / H)                      # tan(theta/2) = dz/h for two equal arcs
     R = H / (2 * math.sin(th)) if th > 1e-9 else float("inf")

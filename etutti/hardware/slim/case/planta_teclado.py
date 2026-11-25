@@ -1,4 +1,4 @@
-"""eTutti Slim (R5SL): keyboard plan with the note name on every button (naturals white, sharps black, C and F with the tactile dimple). Stdlib only.
+"""eTutti Slim (R6SL): keyboard plan with the note name on every button (naturals white, sharps black, C and F with the tactile dimple). Stdlib only.
 
     python etutti/hardware/slim/case/planta_teclado.py   -> case/img/planta_teclado.{svg,png}
 
@@ -30,8 +30,8 @@ def py(y):
 def main():
     W, H = int(20 + (RIGHT - X0 + 8) * SC), int(70 + (Y1 - FRONT + 8) * SC + 60)
     o = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" font-family="Arial,sans-serif"><rect width="100%%" height="100%%" fill="#fbfaf6"/>' % (W, H, W, H)]
-    o.append('<text x="20" y="28" font-size="17" font-weight="bold">eTutti Slim R5SL - planta do teclado com o nome da nota em cada botao (vista de cima, jogador embaixo)</text>')
-    o.append('<text x="20" y="50" font-size="12" fill="#555">naturais brancas, sustenidos pretos, C e F brancos com a covinha tatil (D5,0 x 0,4 no domo); botao D15, furo do tampo D11; passo 18,5, fileiras 16,02; mm</text>')
+    o.append('<text x="20" y="28" font-size="17" font-weight="bold">eTutti Slim R6SL - planta do teclado com o nome da nota em cada botao (vista de cima, jogador embaixo)</text>')
+    o.append('<text x="20" y="50" font-size="12" fill="#555">naturais brancas, sustenidos pretos, C e F brancos com a pontilhado diagonal tatil (quadrados de 0,5, fundo 0,18, passo 1,1, em D11); botao D15, furo do tampo D11; passo 18,5, fileiras 16,02; mm</text>')
     o.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="%.1f" fill="#f1ece0" stroke="#776" stroke-width="2"/>' % (px(LEFT), py(BACK), (RIGHT - LEFT) * SC, (BACK - FRONT) * SC, 6 * SC))
     for r in range(4):
         for k in range(L.NKEYS):
@@ -42,12 +42,17 @@ def main():
             o.append('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>' % (px(x), py(y), 5.5 * SC))
             o.append('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="%s" stroke="#222" stroke-width="1.5"/>' % (px(x), py(y), 7.5 * SC, fill))
             if cf:
-                o.append('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="#e3ded0" stroke="#999" stroke-width="1"/>' % (px(x), py(y), 2.5 * SC))
-                o.append('<text x="%.1f" y="%.1f" font-size="15" font-weight="bold" text-anchor="middle" fill="%s">%s</text>' % (px(x), py(y) + 22, ink, n))
+                o.append('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="#f1efe8" stroke="#999" stroke-width="0.6"/>' % (px(x), py(y), 5.5 * SC))
+                for i_ in range(-9, 10):
+                    for j_ in range(-9, 10):
+                        dx, dy = (i_ - j_) * 1.1 / 2 ** 0.5, (i_ + j_) * 1.1 / 2 ** 0.5
+                        if (dx * dx + dy * dy) ** 0.5 + 0.36 <= 5.5:
+                            o.append('<rect x="%.2f" y="%.2f" width="%.2f" height="%.2f" fill="#8a8575" transform="rotate(45 %.2f %.2f)"/>' % (px(x + dx) - 0.25 * SC, py(y + dy) - 0.25 * SC, 0.5 * SC, 0.5 * SC, px(x + dx), py(y + dy)))
+                o.append('<text x="%.1f" y="%.1f" font-size="15" font-weight="bold" text-anchor="middle" fill="%s">%s</text>' % (px(x), py(y) + 5, '#000', n))
             else:
                 o.append('<text x="%.1f" y="%.1f" font-size="15" font-weight="bold" text-anchor="middle" fill="%s">%s</text>' % (px(x), py(y) + 5, ink, n))
         o.append('<text x="%.1f" y="%.1f" font-size="12" fill="#555">fileira %d</text>' % (px(LEFT) + 6, py(L.ROW_Y[r]) + 4, r + 1))
-    o.append('<text x="20" y="%d" font-size="12" fill="#555">C e F: o nome fica abaixo da covinha. Fileira 1 = a mais perto do jogador e a mais baixa; degraus 2 / 2 / 3 mm.</text>' % (H - 20))
+    o.append('<text x="20" y="%d" font-size="12" fill="#555">C e F: o nome fica sobre o pontilhado. Fileira 1 = a mais perto do jogador e a mais baixa; degraus 2 / 2 / 3 mm.</text>' % (H - 20))
     o.append("</svg>")
     path = os.path.join(IMG, "planta_teclado.svg")
     open(path, "w", encoding="utf-8").write("\n".join(o))

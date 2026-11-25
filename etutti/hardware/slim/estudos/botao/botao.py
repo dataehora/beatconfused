@@ -23,14 +23,15 @@ sys.path.insert(0, os.path.join(SLIM, "case"))
 import case as C  # noqa: E402
 import layout_slim as L  # noqa: E402
 
-HEAD_D, HEAD_H, SAG, EDGE_R = 15.0, 7.5, 1.0, 1.0
+HEAD_D, HEAD_H = 15.0, 3.8                              # R6SL: head D15 x 3.8 (R5SL had 7.5)
+WALL_H, EDGE_RX, EDGE_RZ = 1.6, 1.3, 1.15               # straight wall 1.6, quarter-ellipse edge 1.3 radial x 1.15 vertical, spherical dome up to the top
 SHANK_D, PIN_D, PIN_L = 10.0, 5.4, 3.0
 WELL_D = 5.67
 CROSS_L, CROSS_W, CROSS_H = 4.00, 1.10, 3.30
 SOCK_L, SOCK_W, SOCK_DEPTH, LEAD = 4.20, 1.04, 3.0, 0.3
 HOLE_D = C.KEY_HOLE_D
 TRAVEL, GAP, STEM_ABOVE = 3.5, 2.0, 3.5                # stroke, clear space above the hole's high edge at the bottom of the stroke, stem top above the housing top at rest
-DIMPLE_D, DIMPLE_DEPTH = 5.0, 0.4                      # tactile mark of C and F: a concave dimple in the dome
+DOT_S, DOT_DEPTH, DOT_PITCH, DOT_AREA_D = 0.5, 0.18, 1.1, 11.0   # R6SL: C and F = diagonal dotted pattern as on the V4 (0.5 mm square recesses, 0.18 deep, 45 deg grid, pitch 1.1, inside D11)
 
 
 def row_numbers():
@@ -49,30 +50,56 @@ ROWS = row_numbers()
 SHANK_L = math.ceil(max(r["haste_precisa"] for r in ROWS) * 20) / 20       # one shank for the four rows (to 0.05)
 
 
+ELL = [(HEAD_D / 2 - EDGE_RX + EDGE_RX * math.cos(math.pi / 2 * i / 8), WALL_H + EDGE_RZ * math.sin(math.pi / 2 * i / 8)) for i in range(0, 9)]
+ELL = [(HEAD_D / 2, WALL_H)] + ELL[1:]
+R0, Z0 = ELL[-1]
+DZC = (R0 ** 2 + Z0 ** 2 - HEAD_H ** 2) / (2 * (Z0 - HEAD_H))          # dome sphere centre on the axis, through the edge's end and the top
+DRS = HEAD_H - DZC
+_a0 = math.atan2(Z0 - DZC, R0)
+DOME_MID = (DRS * math.cos((_a0 + math.pi / 2) / 2), DZC + DRS * math.sin((_a0 + math.pi / 2) / 2))
+
+
+def dome_z(r):
+    return HEAD_H if r < 1e-9 else (DZC + math.sqrt(DRS ** 2 - r * r) if r <= R0 else None)
+
+
+def head_pts(n=16):
+    """(r, z) of the head's outline from the wall top to the axis: wall, ellipse, dome (for the drawings)."""
+    pts = [(HEAD_D / 2, WALL_H)] + ELL[1:]
+    for i in range(1, n + 1):
+        a = _a0 + (math.pi / 2 - _a0) * i / n
+        pts.append((DRS * math.cos(a), DZC + DRS * math.sin(a)))
+    return pts
+
+
+def dots():
+    """The C/F pattern: square recesses (0.5 mm, rotated 45 deg, pitch 1.1 along the rotated axes) inside D11, flat bottom 0.18 below the dome at the square's centre."""
+    cut = None
+    n = 9
+    for i in range(-n, n + 1):
+        for j in range(-n, n + 1):
+            x, y = (i - j) * DOT_PITCH / math.sqrt(2), (i + j) * DOT_PITCH / math.sqrt(2)
+            if math.hypot(x, y) + DOT_S * 0.71 > DOT_AREA_D / 2:
+                continue
+            zs = dome_z(math.hypot(x, y)) - DOT_DEPTH
+            b = cq.Workplane("XY").workplane(offset=zs).center(x, y).rect(DOT_S, DOT_S).extrude(1.5).rotate((x, y, 0), (x, y, 1), 45)
+            cut = b if cut is None else cut.union(b)
+    return cut
+
+
 def cap(texture=False):
     """Revolved profile: pin tip -> pin -> shank -> head, then the dome (arc), the R1 edge as a fillet, the female cross."""
     hr = HEAD_D / 2
-    Rs = (hr ** 2 + SAG ** 2) / (2 * SAG)                       # dome sphere radius (sagitta SAG over the chord D15)
-    zc = HEAD_H - Rs                                             # sphere centre on the axis
-    fz = zc + math.sqrt((Rs - EDGE_R) ** 2 - (hr - EDGE_R) ** 2)  # R1 edge fillet: tangent to the wall x = hr and to the dome sphere
-    fx = hr - EDGE_R
-    k = Rs / (Rs - EDGE_R)
-    ts = (fx * k, zc + (fz - zc) * k)                           # tangent point on the dome
-    a0 = math.atan2(ts[1] - fz, ts[0] - fx)
-    mid_f = (fx + EDGE_R * math.cos((a0 + 0.0) / 2), fz + EDGE_R * math.sin((a0 + 0.0) / 2))
-    am = math.asin(ts[0] / Rs) / 2
-    mid_d = (Rs * math.sin(am), zc + Rs * math.cos(am))
     z_pin = -SHANK_L - PIN_L
     wp = (cq.Workplane("XZ").moveTo(0, z_pin).lineTo(PIN_D / 2, z_pin).lineTo(PIN_D / 2, -SHANK_L).lineTo(SHANK_D / 2, -SHANK_L).lineTo(SHANK_D / 2, 0).lineTo(hr, 0)
-          .lineTo(hr, fz).threePointArc(mid_f, ts).threePointArc(mid_d, (0, HEAD_H)).close().revolve(360, (0, 0, 0), (0, 1, 0)))
+          .lineTo(hr, WALL_H).spline(ELL[1:], includeCurrent=True).threePointArc(DOME_MID, (0, HEAD_H)).close().revolve(360, (0, 0, 0), (0, 1, 0)))
     z0 = -SHANK_L - PIN_L
     for ang in (0, 90):
         slot = cq.Workplane("XY").workplane(offset=z0 - 0.01).rect(SOCK_L, SOCK_W).extrude(SOCK_DEPTH + 0.01)
         lead = (cq.Workplane("XY").workplane(offset=z0 - 0.01).rect(SOCK_L, SOCK_W + 2 * LEAD).workplane(offset=LEAD + 0.01).rect(SOCK_L, SOCK_W).loft())
         wp = wp.cut(slot.rotate((0, 0, 0), (0, 0, 1), ang)).cut(lead.rotate((0, 0, 0), (0, 0, 1), ang))
     if texture:
-        Rd = ((DIMPLE_D / 2) ** 2 + DIMPLE_DEPTH ** 2) / (2 * DIMPLE_DEPTH)
-        wp = wp.cut(cq.Workplane("XY").sphere(Rd).translate((0, 0, HEAD_H - DIMPLE_DEPTH + Rd)))
+        wp = wp.cut(dots())
     return wp
 
 
@@ -82,13 +109,13 @@ def main():
         cq.exporters.export(w, os.path.join(HERE, name + ".step"))
         cq.exporters.export(w, os.path.join(HERE, name + ".stl"), tolerance=0.03, angularTolerance=0.1)
     vol = plain.val().Volume()
-    out = {"revisao": "R5SL",
-           "cabeca": {"d": HEAD_D, "altura": HEAD_H, "flecha_do_topo": SAG, "raio_da_borda": EDGE_R}, "haste_d": SHANK_D, "haste_comprimento": SHANK_L,
+    out = {"revisao": "R6SL",
+           "cabeca": {"d": HEAD_D, "altura": HEAD_H, "lateral_reta": WALL_H, "borda_elipse_radial": EDGE_RX, "borda_elipse_vertical": EDGE_RZ, "raio_da_esfera_do_domo": round(DRS, 2)}, "haste_d": SHANK_D, "haste_comprimento": SHANK_L,
            "pino": {"d": PIN_D, "comprimento": PIN_L, "folga_radial_no_poco": round((WELL_D - PIN_D) / 2, 3)},
            "cruz_femea": {"braco": SOCK_L, "largura": SOCK_W, "profundidade": SOCK_DEPTH, "entrada_chanfro": LEAD},
            "cruz_macho_STEP": {"braco": CROSS_L, "largura": CROSS_W, "altura_min": CROSS_H}, "interferencia_largura_mm": round(CROSS_W - SOCK_W, 3),
            "furo_do_tampo_d": HOLE_D, "folga_radial_haste_furo": (HOLE_D - SHANK_D) / 2,
-           "textura_C_F": {"tipo": "covinha concava no centro do domo", "d": DIMPLE_D, "profundidade": DIMPLE_DEPTH, "arquivo": "botao_textura.step"},
+           "textura_C_F": {"tipo": "pontilhado diagonal (V4)", "quadrado": DOT_S, "fundo": DOT_DEPTH, "passo": DOT_PITCH, "grade_graus": 45, "area_d": DOT_AREA_D, "arquivo": "botao_textura.step"},
            "volume_cm3": round(vol / 1000, 3), "massa_g_resina_1p1": round(vol / 1000 * 1.1, 2)}
     tilt = 0.5
     out["folga_haste_furo"] = {"nominal_mm": (HOLE_D - SHANK_D) / 2, "jogo_da_haste_estimado_mm": 0.20, "inclinacao_graus_estimada": tilt,
@@ -129,8 +156,8 @@ def cortes(per):
 
     def ln(a, b, c="#1f5fa8", w=0.8, d="4,3"):
         o.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="%s" stroke-width="%.1f" stroke-dasharray="%s"/>' % (a[0], a[1], b[0], b[1], c, w, d))
-    T(W / 2, 26, "eTutti Slim R5SL - botao estilo acordeon: cortes pelo eixo, fileiras 1 a 4, em repouso e apertado (fim do curso); tampo real de cada fileira; z em mm a partir do fundo do case", 15, wgt="bold")
-    T(W / 2, 46, "mesma peca nas 4 fileiras: cabeca D15 x 7,5, haste D10 x %.2f, pino D5,4 x 3,0; furo do tampo D11 sem rebaixo; frente (jogador) a esquerda" % SHANK_L, 12, c="#555")
+    T(W / 2, 26, "eTutti Slim R6SL - botao baixo (cabeca D15 x 3,8): cortes pelo eixo, fileiras 1 a 4, em repouso e apertado (fim do curso); tampo real de cada fileira; z em mm a partir do fundo do case", 15, wgt="bold")
+    T(W / 2, 46, "mesma peca nas 4 fileiras: cabeca D15 x 3,8, haste D10 x %.2f, pino D5,4 x 3,0; furo do tampo D11 sem rebaixo; frente (jogador) a esquerda" % SHANK_L, 12, c="#555")
     for col, p in enumerate(per):
         r = p["fileira"] - 1
         y0 = L.ROW_Y[r]
@@ -162,20 +189,18 @@ def cortes(per):
             und = st + SHANK_L
             # cap
             hr = HEAD_D / 2
-            Rs = (hr ** 2 + SAG ** 2) / (2 * SAG)
             pts = [(X(-SHANK_D / 2), Z(und)), (X(-SHANK_D / 2), Z(st)), (X(-PIN_D / 2), Z(st)), (X(-PIN_D / 2), Z(st - PIN_L)), (X(PIN_D / 2), Z(st - PIN_L)), (X(PIN_D / 2), Z(st)),
-                   (X(SHANK_D / 2), Z(st)), (X(SHANK_D / 2), Z(und)), (X(hr), Z(und)), (X(hr), Z(und + HEAD_H - SAG - 0.2))]
-            for i in range(0, 17):
-                a = math.asin(hr / Rs) * (1 - 2 * i / 16)
-                pts.append((X(Rs * math.sin(a)), Z(und + HEAD_H - SAG - Rs + Rs * math.cos(a))))
-            pts += [(X(-hr), Z(und + HEAD_H - SAG - 0.2)), (X(-hr), Z(und))]
+                   (X(SHANK_D / 2), Z(st)), (X(SHANK_D / 2), Z(und)), (X(hr), Z(und))]
+            hp = head_pts()
+            pts += [(X(r_), Z(und + z_)) for r_, z_ in hp] + [(X(-r_), Z(und + z_)) for r_, z_ in reversed(hp)] + [(X(-hr), Z(und))]
             poly(pts, "#f6f1e4", "#222", 1.3)
             poly([(X(-0.52), Z(st - PIN_L)), (X(0.52), Z(st - PIN_L)), (X(0.52), Z(st - PIN_L + SOCK_DEPTH)), (X(-0.52), Z(st - PIN_L + SOCK_DEPTH))], "#fbfaf6", "#b3261e", 0.8)
             xr = X(9.0)
             hi = p["borda_alta_do_furo_z"]
             for z, t, c in ((und + HEAD_H, "topo %.2f" % (und + HEAD_H), "#1f5fa8"), (und, "base da cabeca %.2f" % und, "#1f5fa8"), (hi, "borda alta do furo %.2f" % hi, "#8a6d1f"), (st, "topo da haste %.2f" % st, "#6a4e9a")):
+                dy = 9 if c == "#6a4e9a" else 0
                 ln((xr - 4, Z(z)), (xr + 6, Z(z)), c)
-                T(xr + 8, Z(z) + 4, t.replace(".", ","), 10, "start", c)
+                T(xr + 8, Z(z) + 4 + dy, t.replace(".", ","), 10, "start", c)
             if state == "apertado":
                 o.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="#c0392b" stroke-width="2"/>' % (X(-9), Z(und), X(-9), Z(hi)))
                 T(X(-9.4), Z((und + hi) / 2) + 4, ("%.2f livre" % (und - hi)).replace(".", ","), 11, "end", "#c0392b", "bold")

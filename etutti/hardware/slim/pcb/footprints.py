@@ -16,7 +16,7 @@ library always matches the schematic. Writes pcb/kicad/slim.pretty/:
       5 SMD pads 3 x 2 mm + 2 locating holes 1.0 mm (drawing "PJ-327A 5JJ",
       PCB view). Pads: 1, 2 sleeve; 3 ring; 4 tip; 5 tip switch (normally
       closed against 4, opens when a plug is in). Mouth towards -y.
-  LED_1615_RG_4pad                I3, TOGIALED TJ-S1615SW6TGLCRG-A5 (C273605),
+  LED_0805_RG_4pad                I3, EKINGLUX E6C0805RYGC2UDA-A21 (C375546),
       recommended pad layout 2.6 x 1.6: pads 0.85 x 0.55. Pads: 1 red
       anode, 2 red cathode, 3 green anode, 4 green cathode (datasheet
       symbol: 2 -|<- 1 red, 4 -|<- 3 green; cathode mark on the 2/4 side).
@@ -120,18 +120,18 @@ def jack():
     return name
 
 
-LED_PADS = {"1": (0.875, -0.525), "2": (-0.875, -0.525), "3": (0.875, 0.525), "4": (-0.875, 0.525)}
+LED_PADS = {"1": (0.85, -0.485), "2": (-0.85, -0.485), "3": (0.85, 0.485), "4": (-0.85, 0.485)}      # R6SL: 0805 pads from the EKINGLUX sheet (0.8 x 0.7, 0.9 apart in x, 0.27 in y)
 
 
 def led():
-    name = "LED_1615_RG_4pad"
-    L = head(name, "LED 1.6 x 1.5 mm red/green, 4 pads, TOGIALED TJ-S1615SW6TGLCRG-A5 (LCSC C273605); "
-                   "1 red A, 2 red K, 3 green A, 4 green K", "LED 1615 bicolor", ref_y=-1.6, val_y=1.6)
-    L += [rect(-0.8, -0.75, 0.8, 0.75, "F.Fab", 0.1), line(-0.8, -0.2, -0.8, 0.2, "F.Fab", 0.3),
-          rect(-1.55, -1.05, 1.55, 1.05, "F.CrtYd", 0.05),
-          line(-1.5, -0.95, -1.5, 0.95, "F.SilkS", 0.12)]
+    name = "LED_0805_RG_4pad"
+    L = head(name, "LED 2.0 x 1.25 mm red / yellow-green, 4 pads, EKINGLUX E6C0805RYGC2UDA-A21 (LCSC C375546), hand-soldered; "
+                   "1 red A, 2 red K, 3 YG A, 4 YG K", "LED 0805 bicolor", ref_y=-1.6, val_y=1.6)
+    L += [rect(-1.0, -0.625, 1.0, 0.625, "F.Fab", 0.1), line(-1.0, -0.2, -1.0, 0.2, "F.Fab", 0.3),
+          rect(-1.6, -1.05, 1.6, 1.05, "F.CrtYd", 0.05),
+          line(-1.55, -0.95, -1.55, 0.95, "F.SilkS", 0.12)]
     for num, (x, y) in LED_PADS.items():
-        L.append('\t(pad "%s" smd rect (at %s %s) (size 0.85 0.55) (layers "F.Cu" "F.Paste" "F.Mask"))' % (num, f(x), f(y)))
+        L.append('\t(pad "%s" smd rect (at %s %s) (size 0.8 0.7) (layers "F.Cu" "F.Paste" "F.Mask"))' % (num, f(x), f(y)))
     write(name, L)
     return name
 
