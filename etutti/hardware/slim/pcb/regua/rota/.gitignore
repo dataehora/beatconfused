@@ -1,0 +1,5 @@
+# intermediates of the routing stages: rebuilt by etapas.py (base -> fixa -> sinais -> gnd) from the placed board
+build/
+kicad/base/
+kicad/fixo.*
+kicad/sinais.*

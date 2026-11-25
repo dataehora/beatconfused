@@ -181,8 +181,8 @@ def jack_symbol():
 
 
 def led_pins(s):
-    """LED_Dual_AAKK renumbered to the 4-pad LED part's pads: A1 = 1 (red), K1 = 2, A2 = 3 (green), K2 = 4."""
-    new = {"A1": "1", "K1": "2", "A2": "3", "K2": "4"}
+    """LED_Dual_AAKK renumbered to the XL-2012SURUGC pads (R8SL): K1 = 1 (red cathode), A1 = 2, K2 = 3 (green cathode), A2 = 4."""
+    new = {"K1": "1", "A1": "2", "K2": "3", "A2": "4"}
 
     def walk(n):
         for x in n:
@@ -605,13 +605,13 @@ for ref, var, lc, addr, role, pk in (("U401", "A2", "C3020565", "0x35", "registr
               "~0,2 mA em wake-and-sleep de 10 ms" % (role, var, addr),
          datasheet="https://www.ti.com/lit/ds/symlink/tmag5273.pdf")
     C("C40%d" % (1 if ref == "U401" else 2), "100nF", "+3V3", "GND", pk, note="desacoplamento do %s, junto do pino 4" % ref)
-part("D401", sym("LED_RG_0805", "Device", "LED_Dual_AAKK", fix=led_pins), "E6C0805RYGC2UDA-A21",
-     {"1": "LED_R_A", "3": "LED_G_A", "2": "GND", "4": "GND"}, "I3", fp="slim:LED_0805_RG_4pad", lcsc="C375546",
+part("D401", sym("LED_RG_0805", "Device", "LED_Dual_AAKK", fix=led_pins), "XL-2012SURUGC",
+     {"1": "LED_R_K", "2": "+3V3", "3": "LED_G_K", "4": "+3V3"}, "I3", fp="slim:LED_0805_RG_4pad", lcsc="C965845",
      cls="estendida", price=0.05, status="final", mount="casa (face de cima)",
-     note="R6SL: 0805 bicolor vermelho / verde-amarelo (os dois = laranja), 4 pads (1 R anodo, 2 R catodo, 3 YG anodo, 4 YG catodo, folha EKINGLUX), face de CIMA, soldado em casa; acende o anel do knob de volume",
-     datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_2203301830_EKINGLUX-E6C0805RYGC2UDA_C375546.pdf")
-R("R409", "330", "LED_R", "LED_R_A", "I3")
-R("R410", "100", "LED_G", "LED_G_A", "I3")
+     note="R8SL: 0805 bicolor vermelho / verde puro (520 nm) XINGLIGHT, ANODO COMUM por ligacao (pinos 2 e 4 no +3V3; 1 = catodo vermelho, 3 = catodo verde; acende com o pino em nivel BAIXO); face de CIMA, soldado em casa; acende o anel do knob de volume",
+     datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_2402181506_XINGLIGHT-XL-2012SURUGC_C965845.pdf")
+R("R409", "330", "LED_R", "LED_R_K", "I3")
+R("R410", "100", "LED_G", "LED_G_K", "I3")
 part("SW403", sym("SW_Push", "Switch"), "Program", {"1": "PROG", "2": "GND"}, "I4",
      fp="Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A", lcsc="C318884", cls="basica", price=0.02,
      status="conferir", note="PROG: dentro do case, so abrindo a base (SPEC 4)", rot=0)

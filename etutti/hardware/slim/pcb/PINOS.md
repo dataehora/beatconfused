@@ -11,11 +11,11 @@ Contrato entre a eletronica e a programacao. Numeracao da Teensy 4.1 (`teensy:av
 | 2 | SCAN_DATA_P | GPIO_EMC_04 | F2 | out | DADO do 74HC595 das 4 reguas (100 ohm em serie) |
 | 3 | SCAN_CLK_P | GPIO_EMC_05 | G5 | out | CLOCK (SRCLK) das reguas |
 | 4 | SCAN_LATCH_P | GPIO_EMC_06 | H5 | out | LATCH (RCLK) das reguas |
-| 5 | LED_G | GPIO_EMC_08 | H3 | out PWM | LED verde |
+| 5 | LED_G | GPIO_EMC_08 | H3 | out PWM (ânodo comum: LIGA em nível baixo) | LED verde |
 | 6 | SET | GPIO_B0_10 | D9 | out | arma o latch de energia (Q206): partida por USB com o knob ligado |
 | 7 | I2S_TX | GPIO_B1_01 | B11 | I2S | SAI1 TX_DATA0 -> SGTL5000 DIN |
 | 10 | KILL | GPIO_B0_00 | D7 | out | desarma o latch de energia (Q207): desligamento automatico |
-| 13 | LED_R | GPIO_B0_03 | D8 | out PWM | LED vermelho |
+| 13 | LED_R | GPIO_B0_03 | D8 | out PWM (ânodo comum: LIGA em nível baixo) | LED vermelho |
 | 14 | OUT_R1 | GPIO_AD_B1_02 | L11 | ADC | saida analogica da fileira 1 (a mais baixa) |
 | 15 | OUT_R2 | GPIO_AD_B1_03 | M12 | ADC | fileira 2 |
 | 16 | VBAT_S | GPIO_AD_B1_07 | K10 | ADC | VBAT/2 (1M/1M) |
