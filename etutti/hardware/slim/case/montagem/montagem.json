@@ -1,0 +1,30 @@
+{
+ "passos": 7,
+ "glb": true,
+ "cabos": {
+  "1": {
+   "bulge_mm": 5.69,
+   "comprimento_total_mm": 20.0,
+   "vao_mm": 5.5,
+   "dz_mm": -3.0
+  },
+  "2": {
+   "bulge_mm": 5.7,
+   "comprimento_total_mm": 20.0,
+   "vao_mm": 5.8,
+   "dz_mm": -1.0
+  },
+  "3": {
+   "bulge_mm": 5.78,
+   "comprimento_total_mm": 20.0,
+   "vao_mm": 5.5,
+   "dz_mm": 1.0
+  },
+  "4": {
+   "bulge_mm": 5.51,
+   "comprimento_total_mm": 20.0,
+   "vao_mm": 5.8,
+   "dz_mm": 4.0
+  }
+ }
+}

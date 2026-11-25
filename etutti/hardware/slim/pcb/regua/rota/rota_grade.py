@@ -9,7 +9,8 @@ outside the FFC zone. No part is moved; nothing is written but the output board.
 """
 import heapq, json, math, os, sys, time
 import json as _j, os as _o
-TAILG = _j.load(open(_o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "case", "envelope_regua.json"), encoding="utf-8"))["regua"]["cauda_g"]   # R10SL: tail growth (the head parts keep their place relative to the keys)
+TAILG = _j.load(open(_o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "case", "envelope_regua.json"), encoding="utf-8"))["regua"]["cauda_g"]   # R11SL: keys move +0.5 along the ruler
+U9DX = _j.load(open(_o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "case", "envelope_regua.json"), encoding="utf-8"))["regua"]["u9_dx"]   # R11SL: U9 moved -2.5 (the guide + M2 sit between U9 and key 1)
 
 import numpy as np
 import pcbnew
@@ -143,7 +144,7 @@ def load(path):
             ends.setdefault((net, li, round(q[0], 3), round(q[1], 3)), 0)
             ends[(net, li, round(q[0], 3), round(q[1], 3))] += 1
     for (net, li, x, y), cnt in ends.items():
-        if net in ("OUT", "+3V3") and cnt == 1 and abs(x - (36.0 + TAILG)) < 1e-3:
+        if net in ("OUT", "+3V3") and cnt == 1 and abs(x - (36.0 + U9DX)) < 1e-3:
             pads.append({"ref": "BUS", "num": "ini", "net": net, "rect": (x - 0.1, y - 0.1, x + 0.1, y + 0.1), "x": x, "y": y, "layers": [li]})
     return b, nets, pads, holes, ko, fixed, fvias
 

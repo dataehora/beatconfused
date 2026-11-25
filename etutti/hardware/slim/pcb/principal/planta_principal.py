@@ -47,7 +47,7 @@ def build():
     def C(x, y, d, fill="none", stroke=INK, w=1.0, dash=None):
         o.append('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="%s" stroke="%s" stroke-width="%.1f"%s/>' % (px(x), py(y), d / 2 * SC, fill, stroke, w, ' stroke-dasharray="%s"' % dash if dash else ""))
 
-    T("eTutti Slim - placa principal (SPEC R4SL, Etapa 2b): posicionamento SEM rotas. Vista de CIMA (frente/jogador embaixo, y para tras); pecas na face de baixo; mm.", 20, 20, 14)
+    T("eTutti Slim - placa principal (SPEC R11SL): posicionamento SEM rotas. Vista de CIMA (frente/jogador embaixo, y para tras); pecas na face de baixo; mm.", 20, 20, 14)
     # context: case walls, bay, rulers' left ends
     c = ENV["paredes_internas"]
     R(c["esquerda_x"], c["frente_y"], -20.0, c["tras_y"], "none", "#bbbbbb", 1.0, "6 3")

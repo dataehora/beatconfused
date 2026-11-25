@@ -52,8 +52,8 @@ def ruler_plan(ox, oy, o):
         o.append(circ(ox + u, oy, 5.2, "#ffffff", INK, 0.12))
         for sgn in (-1, 1):
             o.append(circ(ox + u + sgn * 5.075, oy, 1.7, "#ffffff", INK, 0.12))
-    for u, v in zip(ENV["regua"]["m2_u"], ENV["regua"]["m2_v"]):
-        o.append(circ(ox + u, oy + v, 2.2, "#ffffff", RED, 0.15))
+    for u, v, sl in zip(ENV["regua"]["m2_u"], ENV["regua"]["m2_v"], ENV["regua"]["m2_slot"]):
+        o.append(rect(ox + u - sl / 2, oy + v - 1.1, ox + u + sl / 2, oy + v + 1.1, "#ffffff", RED, 0.15) if sl else circ(ox + u, oy + v, 2.2, "#ffffff", RED, 0.15))
         o.append(circ(ox + u, oy + v, 4.6, "none", RED, 0.08))
     for p in POS["pads"]:
         if p["ref"].startswith(("SW", "H")):
@@ -84,8 +84,8 @@ def build():
     o.append(hdim(ox, ox + RL, oy - 18, "%.1f" % RL))
     o.append(hdim(ox + u[0], ox + u[0] + 0.01, oy + 12, ""))
     o.append(txt(ox + u[0], oy + 11.6, "tecla 1: u = 21,25", 1.4, BLUE))
-    M2U, M2V = ENV["regua"]["m2_u"], ENV["regua"]["m2_v"]
-    o.append(hdim(ox + M2U[0], ox + M2U[2], oy + 12, "%d x M2 por ponta: cauda u = %.1f, v = -/+%.1f; direita u = %.1f, v = -/+%.1f" % (len(M2U) // 2, M2U[0], M2V[1], M2U[2], M2V[3]), BLUE))
+    M2U, M2V, M2S = ENV["regua"]["m2_u"], ENV["regua"]["m2_v"], ENV["regua"]["m2_slot"]
+    o.append(hdim(ox + M2U[0], ox + M2U[1], oy + 12, "1 x M2 por ponta, no eixo (v = 0): esquerda u = %.1f (furo redondo), direita u = %.1f (oblongo %.1f x 2,2)" % (M2U[0], M2U[1], M2S[1]), BLUE))
     o.append(vdim(ox + RL + 4, oy - RW / 2, oy + RW / 2, "%.1f" % RW))
     o.append(vdim(ox + RL + 14, oy, oy + 4.3, "sensor a 4,3 do centro (lado do jogador)"))
     o.append(txt(ox + 3, oy + 11.2, "FFC J1: boca para -u, u = 2,2", 1.3, BLUE, "start"))
@@ -117,8 +117,8 @@ def build():
     for uu in ENV["regua"]["u_teclas"]:
         h = g["furo"] / 2
         o.append(rect(gx + uu - g["u0"] - h, oy3 - h, gx + uu - g["u0"] + h, oy3 + h, "#ffffff", INK, 0.15))
-    for uu, vv in zip(g["m2_u"], g["m2_v"]):
-        o.append(circ(gx + uu - g["u0"], oy3 + vv, 2.2, "#ffffff", RED, 0.15))
+    for uu, vv, sl in zip(g["m2_u"], g["m2_v"], g["m2_slot"]):
+        o.append(rect(gx + uu - g["u0"] - sl / 2, oy3 + vv - 1.1, gx + uu - g["u0"] + sl / 2, oy3 + vv + 1.1, "#ffffff", RED, 0.15) if sl else circ(gx + uu - g["u0"], oy3 + vv, 2.2, "#ffffff", RED, 0.15))
     o.append(hdim(gx, gx + gl, oy3 - 12, "%.1f" % gl))
     o.append(vdim(gx + gl + 4, oy3 - g["largura"] / 2, oy3 + g["largura"] / 2, "%.1f" % g["largura"]))
     o.append(hdim(gx + 6.5, gx + 6.5 + 18.5, oy3 + 12, "passo 18,5"))

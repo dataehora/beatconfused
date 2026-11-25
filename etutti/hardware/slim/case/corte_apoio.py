@@ -56,10 +56,11 @@ def covered(iv, x0, x1):
 
 
 def main():
-    rep = {"revisao": "R4SL", "regra": "apoio continuo em todo o comprimento, o mesmo tipo nas 4 fileiras, sem furos no piso", "fileiras": []}
+    rep = {"revisao": "R11SL", "regra": "apoio continuo entre os dois M2 (os trilhos terminam nas guias centradas), o mesmo tipo nas 4 fileiras, sem furos no piso; as pontas alem dos M2 ficam livres", "fileiras": []}
     fig, axes = plt.subplots(4, 2, figsize=(22, 14))
     for r in range(4):
         x0, x1 = L.ROW_X0[r] - L.U_KEY1, L.ROW_X0[r] - L.U_KEY1 + L.RULER_L
+        g0, g1 = x0 + L.M2_ENDS[0], x0 + L.M2_ENDS[1]
         zb = L.RULER_BOT[r]
         y0 = L.ROW_Y[r]
         row = {"fileira": r + 1, "x": [round(x0, 2), round(x1, 2)], "regua_baixo_z": round(zb, 2), "trilhos": []}
@@ -77,7 +78,7 @@ def main():
                 ax.add_patch(plt.Rectangle((xk - 7.0, zb + 1.2), 14.0, 5.85 - 1.2 + 1.2, fill=False, ec="#8b8b8b", lw=0.4))
             if c == 0:
                 iv = intervals(slc, zb - 0.1)
-                gaps = covered(iv, x0, x1)
+                gaps = covered(iv, g0, g1)
                 row["trilhos"].append({"plano": vname, "intervalos_de_material": [(round(a, 2), round(b, 2)) for a, b in iv], "vaos": gaps})
                 ax.set_title("fileira %d - %s: material de %.2f a %.2f; vaos: %s" % (r + 1, vname, min(a for a, b in iv) if iv else 0, max(b for a, b in iv) if iv else 0, gaps or "nenhum"), fontsize=9)
             else:
@@ -89,10 +90,10 @@ def main():
         # the other rail (-6.75) too
         slc2 = base.slice(normal="y", origin=(0, y0 - 6.75, 0))
         iv2 = intervals(slc2, zb - 0.1)
-        row["trilhos"].append({"plano": "trilho v = -6,75", "intervalos_de_material": [(round(a, 2), round(b, 2)) for a, b in iv2], "vaos": covered(iv2, x0, x1)})
+        row["trilhos"].append({"plano": "trilho v = -6,75", "intervalos_de_material": [(round(a, 2), round(b, 2)) for a, b in iv2], "vaos": covered(iv2, g0, g1)})
         row["continuo"] = all(not t["vaos"] for t in row["trilhos"])
         rep["fileiras"].append(row)
-    fig.suptitle("eTutti Slim R4SL - apoio das 4 reguas: cortes longitudinais da base (verde = regua, tracejado vermelho = linha de prova 0,1 mm sob a regua; cauda a esquerda)", fontsize=11)
+    fig.suptitle("eTutti Slim R11SL - apoio das 4 reguas (trilhos de um M2 ao outro, guias centradas): cortes longitudinais da base (verde = regua, tracejado vermelho = linha de prova 0,1 mm sob a regua; cauda a esquerda)", fontsize=11)
     fig.tight_layout()
     fig.savefig(os.path.join(REN, "corte_apoio_4fileiras.png"), dpi=110)
     rep["todas_continuas"] = all(f["continuo"] for f in rep["fileiras"])

@@ -192,3 +192,21 @@ Conclusão: a **BAK LP-523450-IS-3** é a substituta direta (mesma classe 52 × 
 **Cabe um M2 único em v = 0 na cauda?** Cabe, com ressalvas (estimativa, não roteado): a porca (|v| < 2,3) cai entre J1 e U9, que ficam a 2,9 mm um do outro; precisa de 5,2: a régua cresce só **2,4 mm** (em vez de 3,8) e C9 (v −2,45…−4,36) fica a 0,15 mm da porca. Com 3 pontos no total (o par da direita mais este) a régua fica isostática: sem tolerância de comprimento a absorver.
 
 **Folgas e vão do FFC** (a régua cresce para dentro da faixa da principal; a faixa e as abas da principal recuaram 3,8 mm: faixa x −58,5…−40,1, abas até −30,55, os dois pilares da direita em x −44,3 e −43,8): vão do FFC 5,5 (fileiras 1 e 3) / 5,8 (2 e 4): **o FFC de 20 mm alcança nas 4 fileiras** (raios 3,27 / 8,66 / 7,81 / 3,10). Ponta esquerda → principal: 5,5 / 5,8 mm (o mesmo de antes); → parede esquerda interna (x −96,0): 70,9 mm (fileiras 1/3) e 61,7 (2/4); → baia da bateria (parede em x −58,8): 33,8 / 24,5 mm. Principal reposicionada com a faixa mais curta: **DRC sem trilhas 0/0, paridade 0**, ERC 0/0 nas duas placas.
+
+## R11SL — 1 × M2 no eixo em cada ponta (substitui a R10SL)
+
+**Disposição.** Esquerda: J1 (FFC, boca para −x, u = 2,2) → U9/C9/C10 (U9 em u = 7,7, pátio 5,45…9,95) → **M2 redondo em u = 13,1** → tecla 1 (u = 22,75). Direita: tecla 8 (u = 151,25) → **M2 oblongo 3,2 × 2,2 em u = 161,9** → ponta em u = 164,9. Os dois no eixo (v = 0). O par de M2 da direita e o par da cauda da R10SL saíram.
+
+**Por que o M2 fica a 9,65 mm do centro da primeira/última tecla:** a cabeça (Ø3,8) termina 0,45 mm antes do flange da carcaça da KS‑33D (que começa a 7,3 do centro), a porca (4,6 entre cantos) fica fora dos pinos (5,08) e do poste (Ø5,2) da switch, e a grade tem 1,1 mm de ponte entre o furo do M2 e o furo da tecla.
+
+**Régua o mais curta possível: 164,9 mm** (R9SL 167,5; R10SL 171,3; R3SL 160,0). A ponta direita acaba 3,0 mm depois do eixo do M2 (porca 2,3 + 0,7 de borda). A esquerda cresceu **1,5 mm** (de 21,25 a 22,75 até a tecla 1): é o menor valor para o qual a rota da régua fecha. Em 0,5 mm (J1 e U9 separados por 0,4 mm) e em 1,0 mm (0,9 mm) o roteador não fecha os 5 sinais entre J1 e U9; em 1,5 mm (1,4 mm) fecha com folga. Resultado: a faixa da principal passa de **18,4 para 20,7 mm** (+2,3).
+
+**Furos: confirmo a sugestão** (redondo na esquerda, oblongo na direita). Razão: é o lado esquerdo que recebe o empurrão de 5 N do encaixe do FFC e que carrega J1/U9 em balanço, então ali o furo fixa a origem; o oblongo (3,2 × 2,2 ao longo da régua) fica na direita, longe do cabo, e absorve a tolerância do comprimento (furos ±0,1 em cada ponta e FR‑4/MJF) sem forçar nada. O oblongo é 0,5 mm mais comprido de cada lado que o redondo; a porca fica no bolso da guia e o parafuso passa pelo oblongo da régua e da grade.
+
+**Ponta em balanço.** Do eixo do M2 esquerdo à ponta: **13,1 mm** (J1 a 10,9 mm). Flecha estimada ao empurrar 5 N em J1 (viga em balanço, FR‑4 E = 20 GPa, 15 × 1,2 mm, I = 2,16 mm⁴): **0,05 mm** em J1 e 0,09 mm na ponta, só pela flexão; o aperto do M2 (a guia Ø6,0 tem raio de apoio 3,0) resiste a ~18 N de levantamento. Estimativa a medir no protótipo.
+
+**FFC de 20 mm nas 4 fileiras: alcança.** Vão 5,5 (fileiras 1 e 3) / 5,8 (2 e 4) e dz −3,0 / −1,0 / +1,0 / +4,0: raios do S 3,27 / 8,66 / 7,81 / 3,10 mm (a regra de 3,0 mm da R6SL segue valendo); no modelo 3D o excedente de ~6 mm de cabo forma uma barriga de 5,5…5,8 mm para cima, no vão entre a faixa e a régua.
+
+**Grade presa pelos dois M2: sim** (u 10,1…164,9, 154,8 mm; furo redondo à esquerda, oblongo à direita), e também pelas switches. A grade **não** cobre a cauda (J1/U9).
+
+**ERC 0/0** nas duas placas (principal e régua); netlists conferidas.

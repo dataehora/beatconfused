@@ -43,6 +43,7 @@ KEYS_U = ENV["regua"]["u_teclas"]
 SENS_V = ENV["regua"]["sensor_v"]
 M2_U, M2_D = ENV["regua"]["m2_u"], ENV["regua"]["m2_d"]
 HEAD_U = ENV["regua"]["head_u"]
+M2_SLOT = ENV["regua"]["m2_slot"]
 M2_V = ENV["regua"]["m2_v"]                              # R9SL: the two M2 sit at the right end, at v = -/+ 3.6
 PEG_DX, PEG_D, POST_D = ENV["regua"]["furos_switch"]["pino_dx"], ENV["regua"]["furos_switch"]["pino_d"], ENV["regua"]["furos_switch"]["poste_d"]
 FFC_U = ENV["regua"]["ffc"]["u_origem"]
@@ -146,14 +147,23 @@ def square(cx, cy, h):
     return [(cx - h, cy - h), (cx + h, cy - h), (cx + h, cy + h), (cx - h, cy + h)]
 
 
-def hole_fp(b, fps, ref, x, y, d):
+def slot_pad(pad, d, slot):
+    """Round D hole, or an OBLONG one (slot long along the ruler = x, d wide) when slot is given."""
+    if slot:
+        pad.SetShape(pcbnew.PAD_SHAPE_OVAL); pad.SetDrillShape(pcbnew.PAD_DRILL_SHAPE_OBLONG)
+        pad.SetSize(pcbnew.VECTOR2I(M(slot), M(d))); pad.SetDrillSize(pcbnew.VECTOR2I(M(slot), M(d)))
+    else:
+        pad.SetSize(pcbnew.VECTOR2I(M(d), M(d))); pad.SetDrillSize(pcbnew.VECTOR2I(M(d), M(d)))
+
+
+def hole_fp(b, fps, ref, x, y, d, slot=None):
     fp = pcbnew.FootprintLoad(KICAD_FP + "/MountingHole.pretty", "MountingHole_2.2mm_M2")
     fp.SetFPID(pcbnew.LIB_ID("MountingHole", "MountingHole_2.2mm_M2"))
     fp.SetReference(ref)
     fp.Reference().SetVisible(False); fp.Value().SetVisible(False)
     fp.SetPosition(VEC(x, y))
     for pad in fp.Pads():
-        pad.SetSize(pcbnew.VECTOR2I(M(d), M(d))); pad.SetDrillSize(pcbnew.VECTOR2I(M(d), M(d)))
+        slot_pad(pad, d, slot)
     fp.SetAttributes(fp.GetAttributes() | pcbnew.FP_BOARD_ONLY | pcbnew.FP_EXCLUDE_FROM_BOM)
     for d_ in list(fp.GraphicalItems()):                      # the M2 holes sit in the gaps between the key bodies: no courtyard of their own
         if d_.GetLayer() in (pcbnew.F_CrtYd, pcbnew.B_CrtYd):
@@ -231,7 +241,7 @@ def main():
         b.Add(fp)
         fps["SW%d" % (k + 1)] = fp
     for i, (u, v) in enumerate(zip(M2_U, M2_V)):
-        hole_fp(b, fps, "H%d" % (i + 1), X(u), Y(v), M2_D)
+        hole_fp(b, fps, "H%d" % (i + 1), X(u), Y(v), M2_D, M2_SLOT[i])
 
     # ---- sensors: the EasyEDA orientation (rows along u, 0.5 mm apart in v): VCC/GND row at the BACK, EN/OUT row at the FRONT
     def sensor_ok(fp):
@@ -293,8 +303,8 @@ def main():
 
     # ---- keep-outs: the M2 nut under the ruler (D5.4, bottom), the bolt head on top (D4.8)
     for u, v in zip(M2_U, M2_V):
-        add_rule_area(b, [pcbnew.B_Cu], square(X(u), Y(v), 2.45), "M2 porca (D5,4)")
-        add_rule_area(b, [pcbnew.F_Cu], square(X(u), Y(v), 2.4), "M2 cabeca (D4,8)")
+        add_rule_area(b, [pcbnew.B_Cu], square(X(u), Y(v), 2.3), "M2 porca (D5,4)")
+        add_rule_area(b, [pcbnew.F_Cu], square(X(u), Y(v), 2.0), "M2 cabeca (D4,8)")
     # silkscreen / drawings
     for k, u in enumerate(KEYS_U):
         text(b, "tecla %d" % (k + 1), X(u), Y(-5.2), pcbnew.F_SilkS, 0.8)
@@ -415,10 +425,12 @@ def build_grade():
         fp.Reference().SetVisible(False); fp.Value().SetVisible(False)
         fp.SetPosition(VEC(X(u), Y(v)))
         for pad in fp.Pads():
-            pad.SetSize(pcbnew.VECTOR2I(M(g["m2_d"]), M(g["m2_d"]))); pad.SetDrillSize(pcbnew.VECTOR2I(M(g["m2_d"]), M(g["m2_d"])))
+            slot_pad(pad, g["m2_d"], g["m2_slot"][i_h])
+        if g["m2_slot"][i_h]:                                   # an oblong hole is not the library's footprint: give it its own (unlinked) name
+            fp.SetFPID(pcbnew.LIB_ID("", "MountingSlot_M2_%.1fx%.1f" % (g["m2_slot"][i_h], g["m2_d"])))
         b.Add(fp)
-    for u, v in zip(g["m2_u"], g["m2_v"]):
-        text(b, "M2 cabeca cilindrica D3,8 (sem escareado)", X(u), Y(v + 3.2), pcbnew.Cmts_User, 0.6)
+    for i_t, (u, v) in enumerate(zip(g["m2_u"], g["m2_v"])):
+        text(b, "M2 cabeca cilindrica D3,8 (sem escareado)" + (" - FURO OBLONGO %.1f x %.1f" % (g["m2_slot"][i_t], g["m2_d"]) if g["m2_slot"][i_t] else " - furo redondo"), X(u), Y(v + 3.2), pcbnew.Cmts_User, 0.6)
     pcbnew.SaveBoard(os.path.join(KD, "slim_grade.kicad_pcb"), b)
 
 
