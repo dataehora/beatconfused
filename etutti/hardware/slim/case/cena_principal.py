@@ -47,6 +47,10 @@ STEP_BY_LCSC = {"C3216699": os.path.join(HW, "modelos", "rt1062", "MIMXRT1062DVJ
                 "C266118": glob.glob(BX + "/drv5032ZE_C266118.step")[0], "C2651833": glob.glob(BX + "/sgtl5000_C2651833.step")[0], "C15464": glob.glob(BX + "/bq24075_C15464.step")[0],
                 "C28060": glob.glob(BX + "/tps63001_C28060.step")[0], "C167747": glob.glob(BX + "/ind_FNR3015_C167747.step")[0], "C524739": glob.glob(BX + "/xtal_24M_3225_C524739.step")[0],
                 "C273605": glob.glob(BX + "/led_1615_C273605.step")[0], "C318884": glob.glob(BX + "/botao_TS-1187A_C318884.step")[0]}
+for _f in glob.glob(BX + "/*_C*.step"):                      # R12SL: every EasyEDA STEP downloaded by LCSC code (modelos/fetch_principal.py) is used by its code
+    _code = os.path.basename(_f)[:-5].rsplit("_", 1)[-1]
+    if _code.startswith("C") and _code[1:].isdigit():
+        STEP_BY_LCSC.setdefault(_code, _f)
 KICAD_PASSIVE = {"C_0402": "Capacitor_SMD.3dshapes/C_0402_1005Metric.step", "C_0603": "Capacitor_SMD.3dshapes/C_0603_1608Metric.step", "C_0805": "Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
                  "R_0402": "Resistor_SMD.3dshapes/R_0402_1005Metric.step", "R_0603": "Resistor_SMD.3dshapes/R_0603_1608Metric.step"}
 CENTER = {"FFC_8P_0.5_KH-H1.0": (0.0, 0.45)}
@@ -81,6 +85,18 @@ def affine_for(ref):
         if p["ref"] == ref and p["n"] in lib and dcnt[p["n"]] == 1:
             src.append(lib[p["n"]])
             dst.append((p["x"], p["y"]))
+    if len(src) < 2:                           # R12SL: pads with repeated numbers (SW403's 1,1,2,2): match the pad SETS under the 8 rotations / mirrors
+        lp = np.array([(x, y) for n, x, y in allp])
+        pp = np.array([(p["x"], p["y"]) for p in POS["pads"] if p["ref"] == ref])
+        if len(lp) == len(pp) and len(lp) >= 2:
+            for mir in (1, -1):
+                for k in range(4):
+                    a = k * np.pi / 2
+                    R = np.array([[np.cos(a), -np.sin(a)], [np.sin(a), np.cos(a)]]) @ np.diag([mir, 1])
+                    t0 = pp.mean(axis=0) - (R @ lp.mean(axis=0))
+                    q = (R @ lp.T).T + t0
+                    if all(np.min(np.linalg.norm(pp - qq, axis=1)) < 0.05 for qq in q):
+                        return np.hstack([R, t0.reshape(2, 1)])
     if len(src) >= 3 and np.linalg.matrix_rank(np.array(src) - np.mean(src, axis=0)) >= 2:
         return CR.fit_affine(src, dst)
     if len(src) >= 2:
@@ -92,14 +108,23 @@ def affine_for(ref):
     return None
 
 
-def place(mesh, A, center_fp=(0, 0), yflip=False, top=False):
+Z_OFF = {"C49284723": 2.8}                  # R12SL: the PJ-327A STEP has its z = 0 on the barrel's AXIS (body z -2.9..2.5); the axis sits 2.8 below the board's face (R01), so the model drops 2.8 more
+
+
+PRE_ROT = {"C49284723": 90.0}                    # R12SL: the PJ-327A STEP comes turned 90 degrees against its footprint (checked: with +90 its body fills the placed courtyard and faces the wall hole)
+
+
+def place(mesh, A, center_fp=(0, 0), yflip=False, top=False, zoff=0.0, prerot=0.0):
     m = mesh.copy()
     pts = np.array(m.points)
     xy = pts[:, :2] - np.array(center_fp)
+    if prerot:
+        c_, s_ = np.cos(np.radians(prerot)), np.sin(np.radians(prerot))
+        xy = np.column_stack([c_ * xy[:, 0] - s_ * xy[:, 1], s_ * xy[:, 0] + c_ * xy[:, 1]])
     if yflip:
         xy[:, 1] = -xy[:, 1]
     uv = (A[:, :2] @ xy.T).T + A[:, 2]
-    z = (BOARD_BOT + BOARD_T + pts[:, 2]) if top else (BOARD_BOT - pts[:, 2])
+    z = (BOARD_BOT + BOARD_T + pts[:, 2] + zoff) if top else (BOARD_BOT - pts[:, 2] - zoff)
     m.points = np.column_stack([uv[:, 0], uv[:, 1], z])
     if not top:
         m.flip_faces(inplace=True)
@@ -173,7 +198,7 @@ def build():
         if lc in STEP_BY_LCSC and A is not None:
             if lc not in cache:
                 cache[lc] = step_mesh(STEP_BY_LCSC[lc], "m_" + lc)
-            mesh = place(cache[lc], A, CENTER.get(fpn, (0, 0)), top=(q.get('lado') == 'cima'))
+            mesh = place(cache[lc], A, CENTER.get(fpn, (0, 0)), top=(q.get('lado') == 'cima'), zoff=Z_OFF.get(lc, 0.0), prerot=PRE_ROT.get(lc, 0.0))
             col = {"C3216699": "#222222", "C165948": "#c9c9c9", "C49284723": "#2b2b2b", "C3250113": "#e8d9a8", "C273605": "#dddddd"}.get(lc, "#262626")
             report["modelos_reais"].append(ref)
         else:

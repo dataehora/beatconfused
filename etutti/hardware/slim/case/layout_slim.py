@@ -14,7 +14,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # ---- keyboard (SPEC 1, fixed)
 P = 18.5
 D = math.sqrt(P * P - (P / 2) ** 2)                 # 16.0156 between rows
-ROW_X0 = [0.0, -P / 2, 0.0, -P / 2]                 # first key centre of rows 1..4
+KEY_DX = 1.5                                        # R12SL: the whole keyboard sits 1.5 mm to the RIGHT of the SPEC's origin: the rulers grew 1.5 mm to the left (R11SL) and the main board cannot give that room back
+ROW_X0 = [KEY_DX, KEY_DX - P / 2, KEY_DX, KEY_DX - P / 2]   # first key centre of rows 1..4
 ROW_Y = [r * D for r in range(4)]
 NOTES = [["A3", "C4", "D#4", "F#4", "A4", "C5", "D#5", "F#5"],
          ["G3", "A#3", "C#4", "E4", "G4", "A#4", "C#5", "E5"],
@@ -39,6 +40,7 @@ U_KEY1 = 21.25 + TAIL_G
 M2_CLEAR = 9.65                                     # M2 axis to the key's centre: head D3.8 stops 0.45 before the KS-33D flange (edge at key -7.3), nut clear of pegs/post
 M2_ENDS = (U_KEY1 - M2_CLEAR, U_KEY1 + 7 * 18.5 + M2_CLEAR)   # R11SL: ONE M2 per end, on the axis (v = 0): 12.1 and 160.9
 GUIDE_D = 6.0                                       # centred guide (pedestal) in the base under each M2: hex pocket for the nut (4.6 across corners), 0.7 mm walls
+GUIDE_FLAT = 2.65                                   # R12SL: flat (relief) on the left guide's face towards U9, at this distance from the M2 axis (guide radius 3.0 -> 0.35 removed)
 END_PAST = 3.0                                      # ruler end beyond the right M2 axis (the oblong slot's end + the nut's 2.3 + 0.2)
 RULER_L = M2_ENDS[1] + END_PAST                     # 163.9 (R9SL 167.5, R10SL 171.3)
 RULER_W = 15.0
