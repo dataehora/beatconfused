@@ -4,15 +4,20 @@
 
 Resposta do J à sessão A (PR #228). A sessão B (escape do BGA, §8.2) segue como estava, em paralelo.
 
-1. **Um M2 em cada ponta da régua.** Muda a fixação da R9SL (sessão A): sai o par de M2 lado a lado na ponta direita e **a lingueta não será usada**.
-   - **Direita:** **um** M2 no eixo da régua (v = 0), depois da tecla 8.
-   - **Esquerda (cauda):** **um** M2. Ele já estava previsto na R9SL item 1 ("na cauda"). **Crie o espaço para ele.** Opções, nesta ordem de preferência:
-     - (a) rearranjar J1, U9, C9, C10 e as pistas na cauda;
-     - (b) alongar a cauda para a esquerda, conferindo a folga até a principal e o comprimento do FFC (20 mm);
-     - (c) as duas coisas juntas.
-   - Se já existir na base ou na principal um poste ou parafuso perto da cauda que possa ser aproveitado, diga.
-   - Mesmo sistema da R9SL: porca sextavada sob a régua e cabeça sobre a régua ou a grade.
-   - A grade fica presa pelo M2 da direita e pelas switches. Se ela não alcançar a cauda, isso deve ficar dito.
+1. **Um parafuso em cada ponta da régua, simétricos** (corrigido pelo J no mesmo dia). **A lingueta não será usada.**
+   - **Direita: fica como foi feita na sessão A (PR #228)**: 2 × M2 em u = 163,0, v = ±3,6, a 3 mm da tecla 8. Não mexer.
+   - **Esquerda (cauda): novo parafuso, espelho do da direita**, com a mesma disposição em v e a mesma distância até a ponta da régua. Na cauda há pouca largura, por isso o Code informa também se cabe um só M2 em v = 0 e deixa a decisão ao J.
+   - **Onde abrir o espaço (proposta do J):** a régua cresce para a esquerda. Da ponta esquerda para a direita, a ordem passa a ser:
+     1. **conector do FFC (J1)**, ainda na ponta e com a boca para −x;
+     2. **o(s) M2**;
+     3. **o controlador (U9) com C9 e C10**;
+     4. a tecla 1.
+   - Medir o quanto a régua cresce e conferir:
+     - a folga da nova ponta até a placa principal;
+     - se o FFC de 20 mm ainda alcança, nas 4 fileiras;
+     - a folga até a parede esquerda e até a baia da bateria.
+     Se não couber, não mude a ordem. Informe o problema com números e opções.
+   - Mesmo sistema da direita: porca sextavada sob a régua, cabeça por cima. A grade fica presa pelo M2 da direita e pelas switches. Se ela não alcançar a cauda, isso deve ficar dito.
 2. **Case 1 mm mais largo.** Planta **248,0 × 89,1** (parede direita interna em x 148,0). A folga da régua mais longa (fileiras 1 e 3) até a parede passa a ≥ 1,75 mm. **Mudança externa aprovada pelo J.** Se o item 1 mudar o comprimento da régua, recalcule essa folga; o mínimo é 1,5 mm.
 3. **Resumo dos limitantes do case (novo, para otimização futura).** No `RESTRICOES_CASE.md`, acima da tabela, uma seção **"Resumo dos limitantes"**, organizada por cota do case:
    - comprimento (esquerda e direita);
@@ -25,7 +30,7 @@ Resposta do J à sessão A (PR #228). A sessão B (escape do BGA, §8.2) segue c
    - quanto se ganharia se cada um mudasse;
    - o que custaria mudar (peça, placa ou risco).
 
-   Os itens da R10SL entram aí: M2 nas pontas, cauda, folga da parede direita e o case 248,0. **Só registrar.** Nenhuma otimização será feita agora; o J decide depois o que analisar.
+   Os itens da R10SL entram aí: M2 nas pontas, régua alongada à esquerda, folga da parede direita e o case 248,0. **Só registrar.** Nenhuma otimização será feita agora; o J decide depois o que analisar.
 4. **Imagens (regra do J):** todo relatório lista **todas** as imagens e renders gerados ou atualizados na sessão, mesmo os que não têm relação com as decisões, com caminho e uma linha de legenda. A mensagem de volta também os lista. Os títulos de `pcb/regua/img/planta_regua.png` ("160,0 × 15,0") e `pcb/regua/img/grade.png` ("148 × 16") estão desatualizados: os títulos e as cotas devem sair das variáveis do modelo.
 
 ---
@@ -318,7 +323,7 @@ Regra: **qualquer item que mude o lado de fora do case** (contorno, altura, pare
 ## 5. Placas
 
 ### 5.1 Régua R8 (×4, idênticas, montadas uma vez)
-- 15 × ≈167,5 mm (R9SL; pode mudar com a R10SL item 1), 2 camadas, 1,2 mm. Cauda além da primeira tecla, com o conector por baixo, fora da área das teclas. **Fixação (R10SL): um M2 na cauda e um M2 depois da tecla 8, no eixo.**
+- 15 × ≈167,5 mm (R9SL; pode mudar com a R10SL item 1), 2 camadas, 1,2 mm. Cauda além da primeira tecla, com o conector por baixo, fora da área das teclas. **Fixação (R10SL): os M2 da direita (u 163,0, v ±3,6) e, espelhados, os da cauda; ordem na cauda a partir da ponta: J1 → M2 → U9/C9/C10.**
 - 8 × **TMAG5253** na face de baixo, na posição do desenho Gateron (4,3 mm do centro), saída analógica compartilhada; habilitação por **74HC595** na cauda (esquema do V4). O BA3 (±80 mT lineares) cobre os 68 mT do fundo de curso.
 - Footprint KS‑33D: 2 × Ø1,70 + Ø5,20.
 - **Grade** FR‑4 1,2 mm com furos 14,00, no mesmo painel da régua se a JLCPCB aceitar.
@@ -409,9 +414,9 @@ Aceite da 3b‑1: todas as bolas usadas com escape até fora da sombra do BGA, D
 
 Pode rodar em paralelo à sessão B: não mexe na principal, salvo se o item 1(b) da R10SL encostar nela.
 
-1. **Eletrônica:** um M2 na cauda e um na ponta direita (R10SL item 1).
-   - Mostrar as opções (a)/(b)/(c) **com números**: quanto a régua cresce, a folga até a principal e até a parede, e a folga do FFC.
-   - Escolher uma e justificar.
+1. **Eletrônica:** parafuso(s) da cauda como espelho do da direita (R10SL item 1). Ordem a partir da ponta esquerda: J1 → M2 → U9/C9/C10 → tecla 1. A ponta direita não muda.
+   - Informar o novo comprimento da régua, as folgas até a principal, a parede esquerda e a bateria, e o alcance do FFC de 20 mm nas 4 fileiras.
+   - Dizer se cabe um M2 único em v = 0 na cauda, como alternativa para o J decidir.
    - ERC 0/0.
 2. **Roteamento:** refazer a rota da régua pelo método híbrido (`etapas.py`). Aceite C‑régua: DRC 0/0, 0 não ligados, paridade 0. Gerbers da grade conferidos.
 3. **Design:**
