@@ -52,9 +52,9 @@ def ruler_plan(ox, oy, o):
         o.append(circ(ox + u, oy, 5.2, "#ffffff", INK, 0.12))
         for sgn in (-1, 1):
             o.append(circ(ox + u + sgn * 5.075, oy, 1.7, "#ffffff", INK, 0.12))
-    for u in ENV["regua"]["m2_u"]:
-        o.append(circ(ox + u, oy, 2.2, "#ffffff", RED, 0.15))
-        o.append(circ(ox + u, oy, 5.4, "none", RED, 0.08))
+    for u, v in zip(ENV["regua"]["m2_u"], ENV["regua"]["m2_v"]):
+        o.append(circ(ox + u, oy + v, 2.2, "#ffffff", RED, 0.15))
+        o.append(circ(ox + u, oy + v, 4.6, "none", RED, 0.08))
     for p in POS["pads"]:
         if p["ref"].startswith(("SW", "H")):
             continue
@@ -81,10 +81,10 @@ def build():
     u = ENV["regua"]["u_teclas"]
     o.append(hdim(ox, ox + 14.0, oy - 12, "cauda 14,0"))
     o.append(hdim(ox + u[0], ox + u[1], oy - 12, "passo 18,5"))
-    o.append(hdim(ox, ox + RL, oy - 18, "160,0"))
+    o.append(hdim(ox, ox + RL, oy - 18, "%.1f" % RL))
     o.append(hdim(ox + u[0], ox + u[0] + 0.01, oy + 12, ""))
     o.append(txt(ox + u[0], oy + 11.6, "tecla 1: u = 21,25", 1.4, BLUE))
-    o.append(hdim(ox + u[1] + 9.25 - 0.0, ox + ENV["regua"]["m2_u"][1], oy + 12, "M2 u = %.1f e %.1f (nos vaos, v = 0)" % tuple(ENV["regua"]["m2_u"]), BLUE))
+    o.append(hdim(ox + u[-1] + 9.25, ox + ENV["regua"]["m2_u"][1], oy + 12, "2 x M2 em u = %.1f, v = -/+%.1f (ponta direita)" % (ENV["regua"]["m2_u"][0], ENV["regua"]["m2_v"][1]), BLUE))
     o.append(vdim(ox + RL + 4, oy - RW / 2, oy + RW / 2, "15,0"))
     o.append(vdim(ox + RL + 14, oy, oy + 4.3, "sensor a 4,3 do centro (lado do jogador)"))
     o.append(txt(ox + 3, oy + 11.2, "FFC J1: boca para -u, u = 2,2", 1.3, BLUE, "start"))
@@ -116,8 +116,8 @@ def build():
     for uu in ENV["regua"]["u_teclas"]:
         h = g["furo"] / 2
         o.append(rect(gx + uu - g["u0"] - h, oy3 - h, gx + uu - g["u0"] + h, oy3 + h, "#ffffff", INK, 0.15))
-    for uu in g["m2_u"]:
-        o.append(circ(gx + uu - g["u0"], oy3, 2.2, "#ffffff", RED, 0.15))
+    for uu, vv in zip(g["m2_u"], g["m2_v"]):
+        o.append(circ(gx + uu - g["u0"], oy3 + vv, 2.2, "#ffffff", RED, 0.15))
     o.append(hdim(gx, gx + gl, oy3 - 12, "%.1f" % gl))
     o.append(vdim(gx + gl + 4, oy3 - g["largura"] / 2, oy3 + g["largura"] / 2, "%.1f" % g["largura"]))
     o.append(hdim(gx + 6.5, gx + 6.5 + 18.5, oy3 + 12, "passo 18,5"))

@@ -2,7 +2,7 @@
  "revisao": "R4SL",
  "quadro": "u ao longo da regua a partir da ponta ESQUERDA, v atravessado, +v para o jogador, v = 0 na linha do centro das teclas",
  "regua": {
-  "comprimento": 160.0,
+  "comprimento": 167.5,
   "largura": 15.0,
   "espessura": 1.2,
   "cauda_alem_da_carcaca": 14.0,
@@ -25,11 +25,14 @@
   },
   "sensor_v": 4.3,
   "m2_u": [
-   49.0,
-   123.0
+   163.0,
+   163.0
   ],
   "m2_d": 2.2,
-  "m2_v": 0.0,
+  "m2_v": [
+   -3.6,
+   3.6
+  ],
   "ffc": {
    "u_origem": 2.2,
    "v": 0.0,
@@ -40,7 +43,7 @@
  },
  "grade": {
   "u0": 12.0,
-  "u1": 160.0,
+  "u1": 167.5,
   "largura": 16.0,
   "espessura": 1.2,
   "furo": 14.0,
@@ -48,13 +51,14 @@
    "recuo": 0.25,
    "raio": 0.6
   },
-  "m2_escareado": {
-   "d": 4.4,
-   "angulo": 90.0
-  },
+  "m2_escareado": null,
+  "m2_v": [
+   -3.6,
+   3.6
+  ],
   "m2_u": [
-   49.0,
-   123.0
+   163.0,
+   163.0
   ],
   "m2_d": 2.2,
   "separador_h": 1.3
@@ -109,7 +113,7 @@
    "row": 1,
    "y": 0.0,
    "x_left": -21.25,
-   "x_right": 138.75,
+   "x_right": 146.25,
    "z_bottom": 3.8,
    "z_top": 5.0,
    "grade_z_bottom": 6.3,
@@ -188,15 +192,19 @@
     }
    ],
    "m2_u": [
-    49.0,
-    123.0
+    163.0,
+    163.0
+   ],
+   "m2_v": [
+    -3.6,
+    3.6
    ]
   },
   {
    "row": 2,
    "y": 16.021469970012117,
    "x_left": -30.5,
-   "x_right": 129.5,
+   "x_right": 137.0,
    "z_bottom": 5.8,
    "z_top": 7.0,
    "grade_z_bottom": 8.3,
@@ -275,15 +283,19 @@
     }
    ],
    "m2_u": [
-    49.0,
-    123.0
+    163.0,
+    163.0
+   ],
+   "m2_v": [
+    -3.6,
+    3.6
    ]
   },
   {
    "row": 3,
    "y": 32.04293994002423,
    "x_left": -21.25,
-   "x_right": 138.75,
+   "x_right": 146.25,
    "z_bottom": 7.8,
    "z_top": 9.0,
    "grade_z_bottom": 10.3,
@@ -362,15 +374,19 @@
     }
    ],
    "m2_u": [
-    49.0,
-    123.0
+    163.0,
+    163.0
+   ],
+   "m2_v": [
+    -3.6,
+    3.6
    ]
   },
   {
    "row": 4,
    "y": 48.064409910036346,
    "x_left": -30.5,
-   "x_right": 129.5,
+   "x_right": 137.0,
    "z_bottom": 10.8,
    "z_top": 12.0,
    "grade_z_bottom": 13.3,
@@ -449,8 +465,12 @@
     }
    ],
    "m2_u": [
-    49.0,
-    123.0
+    163.0,
+    163.0
+   ],
+   "m2_v": [
+    -3.6,
+    3.6
    ]
   }
  ],

@@ -106,3 +106,7 @@ Nenhuma mudança de **posição de peça** é necessária para a régua: ela fec
 1. A régua e a grade têm 1,2 mm; o escareado D4,4 dos M2 de fixação não cabe no vão de 4,5 mm entre as teclas (parede 0,05 mm). Que cabeça de parafuso e que escareado o case aceita (D3,8?), ou o M2 pode ir para fora da grade?
 2. O corpo do conector FFC (KH-H1.0) cobre as trilhas da cabeça (x 20..24 mm, verso); o case tem folga para o conector e o cabo na altura da degrau 1 (z = 3,8 mm sob a régua)?
 3. A pista EN mais baixa (F.Cu, y = 37,15, 0,15 mm de largura) chega a 0,28 mm da borda da frente da régua (y = 37,5; mínimo da JLCPCB e do DRC 0,25): alguma parte do case ou da grade encosta nessa borda, onde máscara riscada exporia o cobre?
+
+## R9SL — refeito para os furos novos
+
+Com os M2 passando para a ponta direita (régua 160 → 167,5 mm), `posiciona_regua.py` e `rota/etapas.py` foram rodados do zero (todas as etapas, ~11 s no total): a rota híbrida não precisou de mudança de código; o que mudou foi só a placa (mais 7,5 mm de cobre sem trilha e o plano de GND) e a saída dos keep-outs dos furos do meio. Resultado (reconferido com `kicad-cli --schematic-parity --refill-zones --all-track-errors`): **DRC 0 erros / 0 avisos, 0 não ligados, paridade 0; 99 vias, 225 trilhas, 1059,7 mm de sinal; pontas soltas 0; ilhas 0**. Grade: DRC 0/0, 155,5 × 16, 8 furos 14,00 com dog-bone, 2 furos M2 Ø2,2, sem escareado, Gerbers regenerados em `rota/kicad/grade/fab/`.
