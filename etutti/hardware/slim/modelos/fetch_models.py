@@ -14,10 +14,11 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "baixados")
-PARTS = {"usbc_TYPE-C-31-M-14": "C223907", "rotativa_SRBV170501": "C470375", "rt1062_DVJ6B": "C3216699", "rt1062_DVL6B": "C2847497",
-         "bq24075": "C15464", "ffc_8p_05": "C66953", "tmag5253": "C22401868", "hc595_dhvqfn": "C730243", "sgtl5000": "C2651833",
-         "jst_S3B-PH": "C265101", "led_1615": "C273605", "tps63001": "C28060", "ind_FNR4020": "C167825", "xtal_24M_3225": "C524739",
-         "botao_TS-1187A": "C318884", "pot_RK097_5p": "C2938587"}
+PARTS = {"usbc_TYPE-C-31-M-12": "C165948", "jack_PJ-327A_XUNPU": "C49284723", "ffc_8p_05_h1": "C3250113",
+         "tmag5273A2": "C3020565", "tmag5273B2": "C41935525", "drv5032ZE": "C266118", "ind_FNR3015": "C167747",
+         "bq24075": "C15464", "tmag5253": "C22401868", "hc595_dhvqfn": "C730243", "sgtl5000": "C2651833",
+         "jst_S3B-PH": "C265101", "led_1615": "C273605", "tps63001": "C28060", "xtal_24M_3225": "C524739",
+         "botao_TS-1187A": "C318884", "usbc_TYPE-C-31-M-14": "C223907", "ffc_8p_05_h2": "C66953"}
 API = "https://easyeda.com/api/products/%s/components?version=6.4.19.5"
 STEP = "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/%s"
 

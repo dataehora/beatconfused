@@ -162,7 +162,7 @@ def check_bga():
 
 
 def write_all():
-    names = [bga(), jack(), led(), srbv()]
+    names = [bga(), jack(), led()]
     n = check_bga()
     return names, n
 

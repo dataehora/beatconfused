@@ -85,10 +85,10 @@ M.part("U9", "74HC595BQ", "74HC595BQ,115", n595, "S9", fp=DFN_FP, lcsc="C730243"
        note="registrador de deslocamento 8 bits (DHVQFN-16, 2,5 x 3,5 mm), 137 mil em estoque; QA..QH = EN dos sensores 1..8, QH' sem uso; pad 17 no GND",
        datasheet="https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
 M.sym("Conn_01x08_MountingPin", "Connector_Generic_MountingPin")
-M.part("J1", "Conn_01x08_MountingPin", "FFC 8P 0.5 mm, contato por baixo",
+M.part("J1", "Conn_01x08_MountingPin", "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)",
        {"1": "GND", "2": "+3V3", "3": "OUT", "4": "DATA", "5": "CLK", "6": "LATCH", "7": "GND", "8": "GND", "MP": "GND"}, "S10",
-       fp=FFC_FP, lcsc="C66953", cls="estendida", price=0.10, status="conferir",
-       note="na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector na principal); footprint = placeholder Amphenol")
+       fp=FFC_FP, lcsc="C3250113", cls="estendida", price=0.10, status="conferir",
+       note="na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector, 1,0 mm de altura, contatos dos dois lados); footprint = placeholder Amphenol")
 for k in range(1, NPOS + 1):
     M.C("C%d" % k, "100nF", "+3V3", "GND", "S%d" % k, note="desacoplamento do TMAG5253 %d, junto do pino 1" % k)
 M.C("C9", "100nF", "+3V3", "GND", "S9", note="desacoplamento do 595")

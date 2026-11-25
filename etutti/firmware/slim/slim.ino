@@ -1,7 +1,7 @@
-// eTutti Slim (SPEC R1SL, stage 1): own sketch, Teensy 4.1 (the board's RT1062 chip-down runs the Teensy 4.1 core).
+// eTutti Slim (SPEC R2SL, stage 1): own sketch, Teensy 4.1 (the board's RT1062 chip-down runs the Teensy 4.1 core).
 //   arduino-cli compile --fqbn teensy:avr:teensy41:usb=midi,speed=396 etutti/firmware/slim
 // Independent of the Student V4 sketch. Stage-1 scope: pins, 32-key scan, key model + velocity, 7 registers, continuous volume,
-// LED states, power logic (KEEP / auto-off / battery), USB MIDI "eTutti". The sound engine is a placeholder (8 simple voices):
+// LED states, power logic (latch SET/KILL, Hall OFF switch, auto-off, battery), forced USB Full Speed, USB MIDI "eTutti". The sound engine is a placeholder (8 simple voices):
 // the accordion engine (sampled reeds, licensed data) is NOT copied here; it comes in a later step.
 // Pin map = pcb/PINOS.md (checked by check_pins.py).
 #include <Audio.h>
@@ -18,12 +18,13 @@
 #define PIN_SCAN_CLK   3
 #define PIN_SCAN_LATCH 4
 #define PIN_LED_G      5
-#define PIN_KEEP       10
+#define PIN_KILL       10    // pulse high: resets the power latch (auto-off)
+#define PIN_SET        6     // pulse high: sets the power latch
+#define PIN_KNOB_N     25    // low = volume knob out of OFF (Hall switch, inverted by Q209)
 #define PIN_LED_R      13
 #define PIN_VBAT_S     16    // VBAT / 2
-#define PIN_VOL_W      22    // volume pot wiper
-#define PIN_REG_ADC    24    // 7-position ladder
-#define PIN_SW_S       25    // knob switch state: SWV / 2
+#define TMAG_REG_ADDR 0x35   // TMAG5273A2: register knob
+#define TMAG_VOL_ADDR 0x22   // TMAG5273B2: volume knob
 static const uint8_t PIN_OUT[4] = {14, 15, 26, 27};   // analog line of rows 1..4
 
 // ---------------------------------------------------------------- keyboard (SPEC 1): rows x 8 keys, MIDI notes (C4 = 60)
@@ -111,30 +112,63 @@ static void soundOff(int note) {
 }
 static void allSoundOff() { for (int i = 0; i < 8; i++) { voiceNote[i] = -1; voice[i].amplitude(0); } }
 
-// ---------------------------------------------------------------- registers: 7-position ladder (R401 10k to 3V3, Rk to GND)
-static const float REG_V[7] = {0.300f, 0.595f, 1.055f, 1.650f, 2.269f, 2.720f, 3.000f};
+// ---------------------------------------------------------------- knobs: two TMAG5273 angle sensors (I2C), magnet on the knob stem
+// Registers: 7 absolute positions every 45 deg, clockwise from bottom-left; volume: continuous angle between the OFF click and the end stop.
+// REG_A0 / VOL_A_* are the sensor-frame angles of those mechanical points: set when the first knob exists (the sensor frame depends on how
+// the chip is placed). Defaults below are placeholders.
+#define REG_A0       225.0f   // sensor angle of position 1 (deg)
+#define REG_HYST     8.0f     // a new position needs to be within 22.5 - REG_HYST deg of its centre
+#define VOL_A_MIN    40.0f    // sensor angle just after the OFF click (volume 0)
+#define VOL_A_MAX    300.0f   // end stop (volume 1)
 static const uint8_t REG_MASK[7] = {0b0001, 0b0011, 0b0010, 0b0110, 0b1010, 0b1001, 0b1000};  // L, LM, M, MM, MH, LH, H
-static int regPos = 2, regCand = -1, regCount = 0;
-static int readRegister() {
-  float v = analogRead(PIN_REG_ADC) * 3.3f / 4095.0f;
-  if (v > 3.15f) return -1;                      // between two positions (switch open): keep the last one
-  int best = 0; float bd = 9;
-  for (int i = 0; i < 7; i++) { float d = fabsf(v - REG_V[i]); if (d < bd) { bd = d; best = i; } }
-  return best;
+static bool tmagOk[2] = {false, false};
+static bool tmagWrite(uint8_t addr, uint8_t reg, uint8_t val) {
+  Wire.beginTransmission(addr); Wire.write(reg); Wire.write(val); return Wire.endTransmission() == 0;
 }
+static bool tmagInit(uint8_t addr) {
+  bool ok = tmagWrite(addr, 0x02, 0x30);        // SENSOR_CONFIG_1: MAG_CH_EN = X and Y
+  ok &= tmagWrite(addr, 0x03, 0x07);            // SENSOR_CONFIG_2: ANGLE_EN = X 1st, Y 2nd; +-266 mT range (the magnet gives 80-150 mT at the die)
+  ok &= tmagWrite(addr, 0x01, 0x02);            // DEVICE_CONFIG_2: continuous measure (~2.3 mA); wake-and-sleep (mode 3) is a later saving
+  return ok;
+}
+static bool tmagAngle(uint8_t addr, float &deg) {   // ANGLE_RESULT_MSB/LSB at 0x19/0x1A: 13 bits, 4 fractional (xxxx/16)
+  Wire.beginTransmission(addr); Wire.write(0x19);
+  if (Wire.endTransmission(false) != 0) return false;
+  if (Wire.requestFrom((int)addr, 2) != 2) return false;
+  uint16_t v = (Wire.read() << 8); v |= Wire.read();
+  deg = (v & 0x1FFF) / 16.0f;
+  return true;
+}
+static int regPos = 2;
 static void updateRegister() {
-  int p = readRegister();
-  if (p < 0) { regCand = -1; regCount = 0; return; }
-  if (p == regCand) {
-    if (++regCount == 3 && p != regPos) { regPos = p; regMask = REG_MASK[p]; usbMIDI.sendControlChange(26, regMask, 1); }
-  } else { regCand = p; regCount = 1; }
+  float a;
+  if (!tmagAngle(TMAG_REG_ADDR, a)) return;
+  float rel = fmodf(a - REG_A0 + 720.0f, 360.0f);                 // clockwise from position 1
+  int p = (int)((rel + 22.5f) / 45.0f);
+  if (p > 6) return;                                              // outside the 7 positions (dead zone between 7 and 1): keep the last one
+  float off = rel - 45.0f * p;
+  if (p != regPos && fabsf(off) <= 22.5f - REG_HYST) {            // hysteresis
+    regPos = p; regMask = REG_MASK[p];
+    usbMIDI.sendControlChange(26, regMask, 1);
+  }
+}
+static float volSm = 0;
+static bool readVolume(float &out) {
+  float a;
+  if (!tmagAngle(TMAG_VOL_ADDR, a)) return false;
+  float rel = fmodf(a - VOL_A_MIN + 720.0f, 360.0f);
+  float x = rel / (VOL_A_MAX - VOL_A_MIN);
+  if (rel > 330.0f) x = 0;                                        // just before the OFF click: the sensor wraps, treat as 0
+  x = x < 0 ? 0 : (x > 1 ? 1 : x);
+  volSm += 0.2f * (x - volSm);
+  out = volSm;
+  return true;
 }
 
-// ---------------------------------------------------------------- volume, battery, knob, power
-static float volSm = 0;
-static float readVolume() { volSm += 0.15f * (analogRead(PIN_VOL_W) / 4095.0f - volSm); return volSm; }
+// ---------------------------------------------------------------- battery, knob, power
 static float batteryV() { return analogRead(PIN_VBAT_S) * 3.3f / 4095.0f * 2.0f; }
-static bool knobOn() { return analogRead(PIN_SW_S) * 3.3f / 4095.0f > 1.0f; }  // SWV/2: 1.5..2.1 V closed, ~0 open
+static bool knobOn() { return digitalRead(PIN_KNOB_N) == LOW; }   // Hall switch: low = knob out of OFF
+static void pulsePin(uint8_t pin, uint32_t ms) { digitalWrite(pin, HIGH); delay(ms); digitalWrite(pin, LOW); }
 static bool usbPresent() { return digitalRead(PIN_PGOOD_N) == LOW; }
 static bool charging() { return digitalRead(PIN_CHG_STAT) == LOW; }
 static uint32_t lastActivity = 0, bootMs = 0, lowSince = 0;
@@ -206,8 +240,10 @@ static void calibrateRest() {                    // every key at rest at power-u
 static void onCC(byte ch, byte cc, byte val) { (void)ch; if (cc == 26) regMask = val & 0x0F; }
 
 void setup() {
-  pinMode(PIN_KEEP, OUTPUT);
-  digitalWriteFast(PIN_KEEP, HIGH);              // first thing: keep the power the knob edge pulse gave us (~3 s)
+  pinMode(PIN_KILL, OUTPUT); digitalWrite(PIN_KILL, LOW);
+  pinMode(PIN_SET, OUTPUT); digitalWrite(PIN_SET, LOW);
+  pinMode(PIN_KNOB_N, INPUT);
+  USB1_PORTSC1 |= USB_PORTSC1_PFSC;              // force USB Full Speed (the 30-35 mm pair is not controlled-impedance); NOT verified on hardware
   analogReadResolution(ADC_BITS);
   analogReadAveraging(1);
   pinMode(PIN_LED_R, OUTPUT); pinMode(PIN_LED_G, OUTPUT);
@@ -217,6 +253,9 @@ void setup() {
   bootMs = millis();
   led(true, true);
   AudioMemory(24);
+  Wire.begin(); Wire.setClock(400000);
+  if (knobOn()) pulsePin(PIN_SET, 10);           // started from USB with the knob already on: arm the latch so the battery takes over when the cable goes
+  tmagOk[0] = tmagInit(TMAG_REG_ADDR); tmagOk[1] = tmagInit(TMAG_VOL_ADDR);
   codecOk = codec.enable();                      // I2C 0x0A; false if the codec does not answer
   codec.volume(0.0f);
   usbMIDI.setHandleControlChange(onCC);
@@ -235,21 +274,22 @@ void loop() {
   if (now - slow >= 20) {                        // 50 Hz: knobs, power, LED
     slow = now;
     updateRegister();
-    float v = readVolume();
-    int cc = (int)(v * 127.0f + 0.5f);
-    static int lastCC = -1;
-    if (cc != lastCC) { lastCC = cc; usbMIDI.sendControlChange(7, cc, 1); }
+    float v = volSm;
+    if (readVolume(v)) {
+      int cc = (int)(v * 127.0f + 0.5f);
+      static int lastCC = -1;
+      if (cc != lastCC) { lastCC = cc; usbMIDI.sendControlChange(7, cc, 1); }
+    }
     bool on = knobOn(), usb = usbPresent();
     softOff = usb && !on;
     if (codecOk) codec.volume(softOff ? 0.0f : v * 0.8f);
     updateLed(now);
-    // power: KEEP high only while the knob is on (the hardware also drops it when the knob opens). USB alone needs no KEEP.
+    // power: the Hall switch drops the battery path in hardware when the knob goes to OFF. The firmware only handles the automatic switch-off.
     bool idle = !usb && (now - lastActivity > 15UL * 60UL * 1000UL);
     if (batteryV() < 3.3f && !usb) { if (!lowSince) lowSince = now; } else lowSince = 0;
     bool empty = lowSince && (now - lowSince > 5000);
-    bool keep = on && !idle && !empty;
-    if (!keep) allSoundOff();
-    digitalWriteFast(PIN_KEEP, keep ? HIGH : LOW);   // LOW with no USB: SYSOFF is released, the battery is disconnected, the board dies
+    if (!on) allSoundOff();
+    if ((idle || empty) && !usb) { allSoundOff(); codec.volume(0); pulsePin(PIN_KILL, 50); }   // resets the latch: SYSOFF is released, the battery is disconnected, the board dies
   }
   usbMIDI.send_now();
 }

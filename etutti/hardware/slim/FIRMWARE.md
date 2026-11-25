@@ -1,43 +1,43 @@
-# eTutti Slim · Firmware (SPEC R1SL, etapa 1 — portão A)
+# eTutti Slim · Firmware (SPEC R2SL, etapa 1 — portão A)
 
-Atende a **SPEC R1SL §8, item 2**. Sketch próprio e independente da V4: `etutti/firmware/slim/` (`slim.ino`, `name.c` = nome USB “eTutti”, `check_pins.py`). **Compila** para Teensy 4.1:
+Atende a **SPEC R2SL §8, item 2**. Sketch próprio e independente da V4: `etutti/firmware/slim/` (`slim.ino`, `name.c` = nome USB “eTutti”, `check_pins.py`). **Compila** para Teensy 4.1:
 
 ```powershell
 & "C:/Program Files/Arduino IDE/resources/app/lib/backend/resources/arduino-cli.exe" compile --fqbn teensy:avr:teensy41:usb=midi,speed=396 etutti/firmware/slim
 ```
 
-Resultado (24 nov 2026, Teensyduino 1.60): flash 65 KB de código + 9,8 KB de dados, RAM1 17,5 KB de variáveis, RAM2 13 KB. **Nunca rodou numa placa Slim** (ela não existe); só compilou. `check_pins.py` confere os 16 pinos do sketch contra `pcb/PINOS.md`: 0 erros.
+Resultado (25 nov 2026, Teensyduino 1.60): flash 66 KB de código + 9,8 KB de dados, RAM1 17,5 KB, RAM2 13 KB, sem avisos. **Nunca rodou numa placa Slim** (ela não existe). `check_pins.py` confere os 15 pinos do sketch contra `pcb/PINOS.md`: 0 erros.
 
-## O que o sketch faz hoje
+## O que mudou na R2SL
 
-| Função | Como | Estado |
+| Função | Como ficou | Estado |
 |---|---|---|
-| **Varredura das 32 teclas** | 4 linhas analógicas lidas **em paralelo** (pinos 14, 15, 26, 27); DADO/CLOCK/LATCH comuns às 4 réguas; um “1” caminha pelo 74HC595 de cada régua: DADO = 1 só no 1º pulso, 1 pulso de CLOCK + 1 de LATCH por coluna; 60 µs de espera por coluna (TMAG5253BA3: 20 µs típ./45 µs máx. de ligação); depois 9 pulsos com DADO = 0 limpam a cadeia | compila; temporização por estimativa |
-| **Modelo da tecla** | desvio absoluto da leitura em relação ao repouso (medido na partida, 16 quadros) → curso pelo modelo do dipolo (B ∝ 1/d³, raiz cúbica) entre repouso e fundo (fundo aprendido por tecla); nota liga a 45 %, desliga a 30 %; velocity = tempo de 12 % a 45 % do curso em escala logarítmica (1 ms = 127, 80 ms = 1). Mesmos limiares do sketch da V4, que **também nunca rodaram com sensor real** | compila |
-| **7 registros** | ADC do pino 24; 3 leituras iguais seguidas; entre posições (> 3,15 V) mantém a última; envia **CC 26** com a máscara (bit 0 L, bit 1 M esquerdo, bit 2 M direito, bit 3 H: L, LM, M, MM, MH, LH, H) | compila; o **motor de som ainda é placeholder** (só muda a forma de onda) |
-| **Volume contínuo** | cursor do pot no pino 22, filtro de 1 polo, `codec.volume()` e **CC 7** de volta quando muda | compila |
-| **LED** (R pino 13, G pino 5) | verde tocando; verde breve a cada 2 s em repouso; laranja ao ler as teclas na partida (0,6 s) e carregando; vermelho lento bateria < 3,45 V sem USB; vermelho rápido codec ou régua sem resposta (qualquer sensor com leitura presa a um trilho) | compila |
-| **Energia** | `setup()` põe **KEEP (pino 10) = 1 primeiro de tudo**; a cada 20 ms: knob ligado = SW_S ≥ 1,0 V; KEEP = knob ligado e sem desligamento automático e sem bateria vazia; **15 min sem uso (sem USB)** ou **bateria < 3,3 V por 5 s** → KEEP = 0 → o hardware solta o SYSOFF e a placa morre; **soft off** com USB e knob em OFF: mudo, MIDI vivo, LED de carga | compila; a lógica de hardware está na seção 3 do `ELETRONICA.md` |
-| **USB MIDI class-compliant “eTutti”** | `usb=midi`, velocity, nome por `name.c`; recebe CC 26 | compila |
-| **Full Speed forçado** | **não feito** (precisa da placa; ver `ELETRONICA.md` §6.6) | pendente |
+| **Registros (7 posições)** | TMAG5273A2 (0x35) por I²C: ângulo XY (registros 0x19/0x1A, 13 bits, 1/16°); posição = `round((ângulo − REG_A0)/45°)`, 7 posições a 45°; **histerese** (uma nova posição só vale a ≤ 14,5° do seu centro) e **memória da última** (a zona morta entre a posição 7 e a 1 não muda nada); envia **CC 26** com a máscara (L, LM, M, MM, MH, LH, H) | compila; `REG_A0` é provisório (depende de como o chip fica na placa): ajustar com o primeiro knob |
+| **Volume contínuo** | TMAG5273B2 (0x22): ângulo entre o clique de OFF (`VOL_A_MIN`) e o fim de curso (`VOL_A_MAX`) → 0…1, filtro de 1 polo, `codec.volume()` e **CC 7** quando muda | compila; limites provisórios |
+| **OFF pela chave Hall** | não há mais KEEP nem leitura de chave de pot. O pino 25 (`KNOB_N`) lê a chave Hall invertida (0 = fora de OFF); **a bateria é desconectada em hardware** com o knob em OFF; o firmware só trata o desligamento automático | compila |
+| **Latch de energia** | **SET** (pino 6): pulso de 10 ms na partida se o knob já está ligado (partida por USB); **KILL** (pino 10): pulso de 50 ms no desligamento automático (15 min sem uso sem USB, ou bateria < 3,3 V por 5 s) → a placa morre e não reinicia até o knob passar por OFF | compila; lógica na seção 3 do `ELETRONICA.md` |
+| **Full Speed forçado** | `USB1_PORTSC1 \|= USB_PORTSC1_PFSC` no início do `setup()` | **compila; não verificado** em host real (se a enumeração já tiver começado em High Speed, pode ser preciso um desconectar/reconectar suave) |
+| Tudo o mais | varredura das 32 teclas (4 linhas analógicas em paralelo, 595 por LATCH/CLOCK/DADO), modelo de tecla (cubo-raiz, 45 %/30 %, velocity logarítmica), LED, USB MIDI “eTutti”: **como na R1SL** | — |
 
-## O que NÃO está aqui (etapas seguintes)
+Os dois sensores são lidos a 50 Hz (loop lento); a I²C a 400 kHz leva ~0,3 ms por leitura de 2 bytes. Configuração: modo contínuo (`DEVICE_CONFIG_2` = 0x02), canais X e Y, faixa ±266 mT (`SENSOR_CONFIG_2` = 0x07, o ímã dá 80–150 mT no sensor, estimativa).
 
-- **O motor de acordeão** (palhetas amostradas, 7 registros reais, brilho por velocity, tremolo CC 27): os dados vêm da biblioteca licenciada do J e **não** podem ser copiados nem publicados; o Slim usa 8 vozes simples (seno/serra) só para soar. Quando o motor for trazido, os registros passam a chamar os 4 bancos (L, M esquerdo, M direito, H).
-- Funções que a V4 tinha e o Slim ainda não: página web (`/etutti/`) não conhece o Slim; EEPROM (fundo das teclas aprendido, registro guardado); relatório do conferido de sensores na tela (o Slim não tem tela).
-- Watchdog.
+## O que NÃO está aqui
 
-## CPU e bateria (**estimativas**, não medidas)
+- O **motor de acordeão** (palhetas amostradas, dados licenciados): 8 vozes simples placeholder; os 7 registros só mudam a forma de onda.
+- A página `/etutti/` não conhece o Slim; sem EEPROM (registro e fundo de tecla não são guardados); sem watchdog.
+- Modo **wake-and-sleep** dos TMAG5273 (economizaria ~4 mA): o modo contínuo é mais simples e robusto.
 
-- **CPU de áudio:** o motor definitivo mede ~12 % (MM) a ~20 % (todos os bancos) com 8 notas num RT1062 (medição da V4 em Teensy 4.0, mesmo núcleo); o motor placeholder deste sketch **não foi medido** (sem placa). A varredura roda no `loop()`, **abaixo** do áudio (a interrupção do áudio a preempta): **não custa CPU de áudio**; custa só corrente (o núcleo nunca dorme).
-- **Taxa de varredura:** 8 colunas × (60 µs de espera + 4 × ~5 µs de ADC + 0,5 µs de pulsos) ≈ 0,65 ms por quadro ≈ **1,5 kHz**; o `analogRead` de 4 linhas **não** é paralelo no hardware (ADC1/ADC2 só em paralelo com a biblioteca `ADC`): ganho possível de ~20 µs por coluna se for preciso.
-- **Corrente a 3,3 V:** núcleo a 396 MHz ~70 mA (a 600 MHz ~100 mA), 4 TMAG5253 ligados por vez ~8 mA (2 mA cada), SGTL5000 com fone ~15–20 mA, resto (flash, LED, divisores) ~5 mA → **~100 mA**; na bateria, com o TPS63001 a ~90 %: **~100 mA**.
-- **Autonomia da LiPo de 1000 mAh** (80–85 % utilizáveis): **~8 h a 396 MHz**, ~6 h a 600 MHz. Desligado (SYSOFF alto): só fugas, da ordem de µA.
+## Consumo, bateria e prateleira (**estimativas**, não medidas)
+
+- **Corrente a 3,3 V:** núcleo a 396 MHz ~70 mA, 4 TMAG5253 ligados por vez ~8 mA, **2 × TMAG5273 contínuos 4,6 mA** (novo), SGTL5000 com fone ~15–20 mA, resto ~5 mA → **~105 mA**; na bateria (TPS63001 a ~90 %) **~105 mA**.
+- **Autonomia (85 % da capacidade útil):** B1 1000 mAh **~8,1 h**; B2 1200 mAh **~9,7 h**; B3 1400 mAh **~11,3 h**. A 600 MHz, ~1,5 h a menos.
+- **OFF (knob em OFF, sem USB):** **≤ 18 µA** no pior caso (típico ~10 µA): chave Hall ~3 µA + pull-up da chave 4,2 µA + latch 4,2 µA + BQ24075 ≤ 6,5 µA. **Prateleira só pela eletrônica ≈ 70 meses (B1)**; a autodescarga da LiPo (2–3 %/mês) é o fator real, não a eletrônica.
+- **CPU de áudio:** como na R1SL (motor definitivo ~12–20 % medido na V4 no mesmo RT1062; o placeholder não foi medido). A varredura roda no `loop()` abaixo do áudio.
 
 ## Contrato com a eletrônica
 
-Todos os pinos vêm de `etutti/hardware/slim/pcb/PINOS.md`; se o mapa mudar, `check_pins.py` quebra. As constantes de temporização (`T_ON_US`, limiares) saem da TMAG5253 e da SPEC §5.1 e devem ser **afinadas por tato** quando houver uma régua real: velocity, limiares de nota ligada/desligada, ganho (`COUNTS_PER_GS`).
+Todos os pinos vêm de `etutti/hardware/slim/pcb/PINOS.md`; se o mapa mudar, `check_pins.py` quebra. Endereços I²C: SGTL5000 0x0A, TMAG5273A2 0x35, TMAG5273B2 0x22.
 
 ## Perguntas
 
-Sem perguntas para o design. Para a eletrônica: confirmar o pulso de partida (C205 × R210, `ELETRONICA.md` §3) e o Full Speed (§6.6).
+Sem perguntas para o design. Para a bancada: ângulos de referência dos knobs, o pulso de SET e o Full Speed (`ELETRONICA.md` §3 e §7).

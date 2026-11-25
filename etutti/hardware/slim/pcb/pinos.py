@@ -28,11 +28,10 @@ FUNC = {
     "CHG_STAT": ("in", "~CHG do BQ24075 (0 = carregando), pull-up 100k"), "PGOOD_N": ("in", "~PGOOD do BQ24075 (0 = USB presente)"),
     "SCAN_DATA_P": ("out", "DADO do 74HC595 das 4 reguas (100 ohm em serie)"), "SCAN_CLK_P": ("out", "CLOCK (SRCLK) das reguas"),
     "SCAN_LATCH_P": ("out", "LATCH (RCLK) das reguas"), "LED_G": ("out PWM", "LED verde"), "LED_R": ("out PWM", "LED vermelho"),
-    "I2S_TX": ("I2S", "SAI1 TX_DATA0 -> SGTL5000 DIN"), "KEEP": ("out", "segura o sistema ligado (Q203)"),
+    "I2S_TX": ("I2S", "SAI1 TX_DATA0 -> SGTL5000 DIN"), "KILL": ("out", "desarma o latch de energia (Q207): desligamento automatico"), "SET": ("out", "arma o latch de energia (Q206): partida por USB com o knob ligado"),
     "OUT_R1": ("ADC", "saida analogica da fileira 1 (a mais baixa)"), "OUT_R2": ("ADC", "fileira 2"),
     "OUT_R3": ("ADC", "fileira 3"), "OUT_R4": ("ADC", "fileira 4 (a mais alta)"),
-    "VBAT_S": ("ADC", "VBAT/2 (1M/1M)"), "VOL_W": ("ADC", "cursor do pot de volume (0..3,3 V)"),
-    "REG_ADC": ("ADC", "escada da chave de 7 posicoes"), "SW_S": ("ADC", "estado do knob: SWV/2 (>= 1,0 V = ligado)"),
+    "VBAT_S": ("ADC", "VBAT/2 (1M/1M)"), "KNOB_N": ("in", "0 = knob de volume fora de OFF (inversor Q209, pull-up 100k no 3V3)"),
     "I2C_SDA": ("I2C", "Wire SDA (SGTL5000 0x0A)"), "I2C_SCL": ("I2C", "Wire SCL"), "I2S_LRCLK": ("I2S", "LRCLK"),
     "I2S_BCLK": ("I2S", "BCLK"), "AUD_MCLK_P": ("I2S", "MCLK 11,3 MHz (100 ohm em serie)"),
 }
@@ -52,14 +51,14 @@ def main():
     for pin, net, pad, ball, (kind, what) in rows:
         L.append("| %d | %s | %s | %s | %s | %s |" % (pin, net, pad, ball, kind, what))
     L += ["", "Pinos de ADC das 4 linhas OUT: 14, 15, 26, 27 (cada um pertence aos dois conversores, ADC1 e ADC2: leitura em paralelo de duas fileiras de cada vez).",
-          "Livres para o futuro: 6-9, 11, 12, 17, 28+ (so os pinos de borda da Teensy 4.1 que existem como pad: os demais precisam de bolas fora do mapa usado).", "",
+          "Livres: 8, 9, 11, 12, 17, 22 (A8), 24 (A10) e os demais pads do RT1062 (os dois sensores de angulo estao no I2C: 18/19, enderecos 0x35 e 0x22; SGTL5000 0x0A).", "",
           "## Bolas que mandam no posicionamento do BGA (12 x 12, 14 x 14, passo 0,8; colunas 1-14, linhas A-P sem I e O)", ""]
     groups = {
         "USB (D+, D-)": ["USB_OTG1_DP", "USB_OTG1_DN"], "Flash QSPI": [n for n in BALLS.values() if n.startswith("GPIO_SD_B1_") and M.P1_NETS.get(n, "").startswith("FLASH")],
         "Cristal 24 MHz e 32 kHz": ["XTALI", "XTALO", "RTC_XTALI", "RTC_XTALO"],
         "I2S e I2C": [n for n, net in M.P1_NETS.items() if net in ("I2S_TX", "I2S_LRCLK", "I2S_BCLK", "AUD_MCLK_P", "I2C_SDA", "I2C_SCL")],
         "ADC (4 fileiras)": [n for n, net in M.P1_NETS.items() if net in ("OUT_R1", "OUT_R2", "OUT_R3", "OUT_R4")],
-        "ADC (knobs, bateria)": [n for n, net in M.P1_NETS.items() if net in ("VOL_W", "REG_ADC", "SW_S", "VBAT_S")],
+        "ADC (knobs, bateria)": [n for n, net in M.P1_NETS.items() if net in ("VBAT_S",)],
         "Varredura": [n for n, net in M.P1_NETS.items() if net in ("SCAN_DATA_P", "SCAN_CLK_P", "SCAN_LATCH_P")],
         "Bootloader (MKL02)": [n for n, net in M.P1_NETS.items() if net.startswith("BL_") or net in ("PSWITCH", "POR_B")],
         "Energia do DCDC": ["DCDC_LP", "DCDC_IN", "DCDC_IN_Q", "DCDC_SENSE", "DCDC_PSWITCH"],
@@ -84,9 +83,8 @@ def main():
           "a orientacao final sai do posicionamento): " + "; ".join("%s: %s" % (g, "/".join(sorted(v))) for g, v in sides.items()), "",
           "## Notas", "",
           "- ONOFF e deixado sem ligacao (a Teensy 4.1 sem botao); PMIC_ON_REQ tem 100 k para GND; o 3,3 V nao depende dele (sobe com o OUT do BQ24075).",
-          "- Bolas SD_B1_05 (N3) e EMC_23 (G2) sem ligacao, como no Viaggio; sem PSRAM (pinos 48-54 livres).",
-          "- A SPEC pede o MIMXRT1062DVL6B (LCSC C2847497, 64 em estoque), que e o BGA **10 x 10 mm de 0,65 mm**; o mapa de bolas daqui e o do **12 x 12 mm de 0,8 mm (DVJ6B**, LCSC C3216699, 1 em estoque). "
-          "Os nomes das bolas sao os mesmos nos dois (conferir na NXP); so o footprint muda. Decisao do J: ver `ELETRONICA.md`.", ""]
+          "- R2SL: DVJ6B 12 x 12 mm (decisao do J); footprint e mapa de bolas conferidos contra a SamacSys (`pcb/confere_rt1062.py`: 196/196 pads, desvio 0 mm, 0 diferencas de nome).",
+          "- Bolas SD_B1_05 (N3) e EMC_23 (G2) sem ligacao, como no Viaggio; sem PSRAM (pinos 48-54 livres).", ""]
     open(os.path.join(HERE, "PINOS.md"), "w", encoding="utf-8").write("\n".join(L))
     print("PINOS.md: %d pinos" % len(rows))
 

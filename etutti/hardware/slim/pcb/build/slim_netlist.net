@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\slim\\pcb\\kicad\\slim.kicad_sch")
-		(date "2026-11-24T23:18:53")
+		(date "2026-11-25T11:12:52")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -2825,20 +2825,20 @@
 			(value "MIMXRT1062DVJ6B")
 			(footprint "slim:BGA-196_12x12mm_P0.8mm_RT1062")
 			(datasheet "https://www.pjrc.com/teensy/IMXRT1060CEC_rev4.pdf")
-			(description "12x12 mm, 0,8 mm, 196 bolas (DVJ6B). ATENCAO: a SPEC cita DVL6B, que e o 10x10 mm de 0,65 mm (LCSC C2847497, 64 em estoque); os nomes das bolas sao os mesmos, so o footprint muda. ONOFF sem ligacao (como a Teensy 4.1 sem botao).")
+			(description "MIMXRT1062DVJ6B, 12x12 mm, 0,8 mm, 196 bolas (decisao do J, R2SL). Footprint e mapa de bolas conferidos contra a SamacSys em modelos/rt1062 (pcb/confere_rt1062.py). ONOFF sem ligacao (como a Teensy 4.1 sem botao).")
 			(fields
 				(field
 					(name "Codigo") "P1")
 				(field
 					(name "LCSC") "C3216699")
 				(field
-					(name "Montagem") "consignada (so 1 em estoque na LCSC)")
+					(name "Montagem") "consignada (decisao do J, R2SL)")
 				(field
 					(name "Footprint") "slim:BGA-196_12x12mm_P0.8mm_RT1062")
 				(field
 					(name "Datasheet") "https://www.pjrc.com/teensy/IMXRT1060CEC_rev4.pdf")
 				(field
-					(name "Description") "12x12 mm, 0,8 mm, 196 bolas (DVJ6B). ATENCAO: a SPEC cita DVL6B, que e o 10x10 mm de 0,65 mm (LCSC C2847497, 64 em estoque); os nomes das bolas sao os mesmos, so o footprint muda. ONOFF sem ligacao (como a Teensy 4.1 sem botao).")
+					(name "Description") "MIMXRT1062DVJ6B, 12x12 mm, 0,8 mm, 196 bolas (decisao do J, R2SL). Footprint e mapa de bolas conferidos contra a SamacSys em modelos/rt1062 (pcb/confere_rt1062.py). ONOFF sem ligacao (como a Teensy 4.1 sem botao).")
 			)
 			(libsource
 				(lib "slim")
@@ -2855,7 +2855,7 @@
 			)
 			(property
 				(name "Montagem")
-				(value "consignada (so 1 em estoque na LCSC)")
+				(value "consignada (decisao do J, R2SL)")
 			)
 			(property
 				(name "Sheetname")
@@ -4141,150 +4141,6 @@
 			)
 		)
 		(comp
-			(ref "C205")
-			(value "4.7uF")
-			(footprint "Capacitor_SMD:C_0603_1608Metric")
-			(description "borda do knob: o fechamento da chave empurra ~VBAT no ONG e ele decai (tau ~3 s com a perda de capacitancia): tempo para o firmware ligar o KEEP")
-			(fields
-				(field
-					(name "Codigo") "E4")
-				(field
-					(name "LCSC") "C19666")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Capacitor_SMD:C_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "borda do knob: o fechamento da chave empurra ~VBAT no ONG e ele decai (tau ~3 s com a perda de capacitancia): tempo para o firmware ligar o KEEP")
-			)
-			(libsource
-				(lib "slim")
-				(part "C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "Codigo")
-				(value "E4")
-			)
-			(property
-				(name "LCSC")
-				(value "C19666")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "E · Energia")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_E.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/E · Energia/")
-				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
-			)
-			(tstamps "cefd723f-627f-5dfa-b56d-4c14a9b48b69")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C206")
-			(value "100nF")
-			(footprint "Capacitor_SMD:C_0402_1005Metric")
-			(fields
-				(field
-					(name "Codigo") "E4")
-				(field
-					(name "LCSC") "C1525")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "slim")
-				(part "C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "Codigo")
-				(value "E4")
-			)
-			(property
-				(name "LCSC")
-				(value "C1525")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "E · Energia")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_E.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/E · Energia/")
-				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
-			)
-			(tstamps "c7a65d72-013c-5130-9e9f-f6ca0450c62b")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
 			(ref "C207")
 			(value "10uF")
 			(footprint "Capacitor_SMD:C_0805_2012Metric")
@@ -4645,6 +4501,150 @@
 			)
 		)
 		(comp
+			(ref "C250")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento da chave Hall")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "desacoplamento da chave Hall")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "96ed34d0-d752-500f-b12b-a36f94d6401d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C251")
+			(value "100nF")
+			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "a subida de HALL_X vira um pulso de ~0,1 s (R253 1 M)")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C1525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Capacitor_SMD:C_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "a subida de HALL_X vira um pulso de ~0,1 s (R253 1 M)")
+			)
+			(libsource
+				(lib "slim")
+				(part "C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C1525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "8d552fa7-e335-57ed-aabd-d2f907d215e1")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "D201")
 			(value "SMF5.0A")
 			(footprint "Diode_SMD:D_SOD-123F")
@@ -4790,14 +4790,14 @@
 		)
 		(comp
 			(ref "J201")
-			(value "TYPE-C-31-M-14 (mid-mount)")
+			(value "TYPE-C-31-M-12")
 			(footprint "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12")
-			(description "HRO, 16 pinos, 'laminated board' = encaixado na borda da placa (mid-mount), 2218 em estoque. Pinagem do M-14 e footprint a conferir (o footprint aqui e o do M-12, so para o esquema); a JLCPCB pode nao montar peca mid-mount pela face de baixo")
+			(description "HRO TYPE-C-31-M-12 (a mesma da V4), face de baixo, borda da placa, montada pela JLCPCB; STEP: 8,94 x 7,9 x 4,1 mm, z -0,85...3,25")
 			(fields
 				(field
 					(name "Codigo") "E1")
 				(field
-					(name "LCSC") "C223907")
+					(name "LCSC") "C165948")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -4806,7 +4806,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "HRO, 16 pinos, 'laminated board' = encaixado na borda da placa (mid-mount), 2218 em estoque. Pinagem do M-14 e footprint a conferir (o footprint aqui e o do M-12, so para o esquema); a JLCPCB pode nao montar peca mid-mount pela face de baixo")
+					(name "Description") "HRO TYPE-C-31-M-12 (a mesma da V4), face de baixo, borda da placa, montada pela JLCPCB; STEP: 8,94 x 7,9 x 4,1 mm, z -0,85...3,25")
 			)
 			(libsource
 				(lib "slim")
@@ -4819,7 +4819,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C223907")
+				(value "C165948")
 			)
 			(property
 				(name "Montagem")
@@ -4907,23 +4907,23 @@
 		)
 		(comp
 			(ref "J202")
-			(value "S3B-PH-SM4-TB")
-			(footprint "Connector_JST:JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal")
-			(description "bateria: 1 +, 2 NTC, 3 - (conferir a ordem do cabo da bateria escolhida)")
+			(value "SM03B-SRSS-TB")
+			(footprint "Connector_JST:JST_SH_SM03B-SRSS-TB_1x03-1MP_P1.00mm_Horizontal")
+			(description "bateria: 1 +, 2 NTC, 3 - (cabo com plugue JST SH de 3 vias soldado/crimpado pelo J: nenhuma das 3 baterias vem com SH). JST SH de lado, 2,9 mm de altura, face de baixo, montado pela JLCPCB (regra de alturas a: o PH de 5,5 mm nao cabe sob a placa)")
 			(fields
 				(field
 					(name "Codigo") "E6")
 				(field
-					(name "LCSC") "C265101")
+					(name "LCSC") "C160403")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Connector_JST:JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal")
+					(name "Footprint") "Connector_JST:JST_SH_SM03B-SRSS-TB_1x03-1MP_P1.00mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "bateria: 1 +, 2 NTC, 3 - (conferir a ordem do cabo da bateria escolhida)")
+					(name "Description") "bateria: 1 +, 2 NTC, 3 - (cabo com plugue JST SH de 3 vias soldado/crimpado pelo J: nenhuma das 3 baterias vem com SH). JST SH de lado, 2,9 mm de altura, face de baixo, montado pela JLCPCB (regra de alturas a: o PH de 5,5 mm nao cabe sob a placa)")
 			)
 			(libsource
 				(lib "slim")
@@ -4936,7 +4936,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C265101")
+				(value "C160403")
 			)
 			(property
 				(name "Montagem")
@@ -4986,22 +4986,22 @@
 		(comp
 			(ref "L201")
 			(value "2.2uH")
-			(footprint "Inductor_SMD:L_Changjiang_FNR4020S")
-			(description "FNR4020S2R2MT, 2 mm de altura (folga abaixo da placa: SPEC 3)")
+			(footprint "Inductor_SMD:L_Changjiang_FNR3015S")
+			(description "FNR3015S2R2MT, 3 x 3 x 1,5 mm, Isat 2 A (a carga media e ~0,15 A); era o FNR4020 de 2,6 mm (regra de alturas a)")
 			(fields
 				(field
 					(name "Codigo") "E5")
 				(field
-					(name "LCSC") "C167825")
+					(name "LCSC") "C167747")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Inductor_SMD:L_Changjiang_FNR4020S")
+					(name "Footprint") "Inductor_SMD:L_Changjiang_FNR3015S")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "FNR4020S2R2MT, 2 mm de altura (folga abaixo da placa: SPEC 3)")
+					(name "Description") "FNR3015S2R2MT, 3 x 3 x 1,5 mm, Isat 2 A (a carga media e ~0,15 A); era o FNR4020 de 2,6 mm (regra de alturas a)")
 			)
 			(libsource
 				(lib "slim")
@@ -5014,7 +5014,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C167825")
+				(value "C167747")
 			)
 			(property
 				(name "Montagem")
@@ -5060,7 +5060,7 @@
 			(value "AO3400A")
 			(footprint "Package_TO_SOT_SMD:SOT-23")
 			(datasheet "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
-			(description "liga o OUT: puxa o SYSOFF a GND (a bateria passa a alimentar o sistema)")
+			(description "liga o OUT quando o latch ARM esta alto E o knob fora de OFF (em serie com Q202)")
 			(fields
 				(field
 					(name "Codigo") "E4")
@@ -5073,7 +5073,7 @@
 				(field
 					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
 				(field
-					(name "Description") "liga o OUT: puxa o SYSOFF a GND (a bateria passa a alimentar o sistema)")
+					(name "Description") "liga o OUT quando o latch ARM esta alto E o knob fora de OFF (em serie com Q202)")
 			)
 			(libsource
 				(lib "slim")
@@ -5132,28 +5132,28 @@
 		)
 		(comp
 			(ref "Q202")
-			(value "AO3401A")
+			(value "AO3400A")
 			(footprint "Package_TO_SOT_SMD:SOT-23")
-			(datasheet "https://www.aosmd.com/res/datasheets/AO3401A.pdf")
-			(description "mantem o ONG em SWV enquanto o KEEP estiver alto E a chave do knob fechada (abrir o knob desliga em hardware)")
+			(datasheet "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+			(description "knob em OFF (HALL_X baixo) = aberto: bateria desconectada em hardware, mesmo com o latch armado")
 			(fields
 				(field
 					(name "Codigo") "E4")
 				(field
-					(name "LCSC") "C15127")
+					(name "LCSC") "C20917")
 				(field
 					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "Package_TO_SOT_SMD:SOT-23")
 				(field
-					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3401A.pdf")
+					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
 				(field
-					(name "Description") "mantem o ONG em SWV enquanto o KEEP estiver alto E a chave do knob fechada (abrir o knob desliga em hardware)")
+					(name "Description") "knob em OFF (HALL_X baixo) = aberto: bateria desconectada em hardware, mesmo com o latch armado")
 			)
 			(libsource
 				(lib "slim")
-				(part "AO3401A")
-				(description "-4.0A Id, -30V Vds, P-Channel MOSFET, SOT-23")
+				(part "AO3400A")
+				(description "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
 			)
 			(property
 				(name "Codigo")
@@ -5161,7 +5161,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C15127")
+				(value "C20917")
 			)
 			(property
 				(name "Montagem")
@@ -5177,7 +5177,7 @@
 			)
 			(property
 				(name "ki_keywords")
-				(value "P-Channel MOSFET")
+				(value "N-Channel MOSFET")
 			)
 			(property
 				(name "ki_fp_filters")
@@ -5210,7 +5210,7 @@
 			(value "AO3400A")
 			(footprint "Package_TO_SOT_SMD:SOT-23")
 			(datasheet "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
-			(description "o firmware (KEEP, pino 10) segura o sistema ligado; solta no desligamento automatico")
+			(description "latch ARM/ARMB (par cruzado Q203/Q204)")
 			(fields
 				(field
 					(name "Codigo") "E4")
@@ -5223,7 +5223,7 @@
 				(field
 					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
 				(field
-					(name "Description") "o firmware (KEEP, pino 10) segura o sistema ligado; solta no desligamento automatico")
+					(name "Description") "latch ARM/ARMB (par cruzado Q203/Q204)")
 			)
 			(libsource
 				(lib "slim")
@@ -5285,6 +5285,306 @@
 			(value "AO3400A")
 			(footprint "Package_TO_SOT_SMD:SOT-23")
 			(datasheet "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C20917")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_TO_SOT_SMD:SOT-23")
+				(field
+					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "slim")
+				(part "AO3400A")
+				(description "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C20917")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "N-Channel MOSFET")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "SOT?23*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "f289c9ce-500b-5ea7-a763-901ce893b181")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "Q205")
+			(value "AO3400A")
+			(footprint "Package_TO_SOT_SMD:SOT-23")
+			(datasheet "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+			(description "SET pela borda: knob saindo de OFF arma o latch")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C20917")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_TO_SOT_SMD:SOT-23")
+				(field
+					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+				(field
+					(name "Description") "SET pela borda: knob saindo de OFF arma o latch")
+			)
+			(libsource
+				(lib "slim")
+				(part "AO3400A")
+				(description "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C20917")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "N-Channel MOSFET")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "SOT?23*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "6643621e-63f8-5852-bea2-b560b6088904")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "Q206")
+			(value "AO3400A")
+			(footprint "Package_TO_SOT_SMD:SOT-23")
+			(datasheet "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+			(description "SET pelo firmware (pino 6): arma o latch depois de uma partida por USB com o knob ligado")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C20917")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_TO_SOT_SMD:SOT-23")
+				(field
+					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+				(field
+					(name "Description") "SET pelo firmware (pino 6): arma o latch depois de uma partida por USB com o knob ligado")
+			)
+			(libsource
+				(lib "slim")
+				(part "AO3400A")
+				(description "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C20917")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "N-Channel MOSFET")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "SOT?23*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "d2e713c8-376b-5d46-a64f-27ff2d7685ec")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "Q207")
+			(value "AO3400A")
+			(footprint "Package_TO_SOT_SMD:SOT-23")
+			(datasheet "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+			(description "KILL pelo firmware (pino 10): desarma o latch no desligamento automatico; so voltando a ligar o knob (nova borda)")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C20917")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_TO_SOT_SMD:SOT-23")
+				(field
+					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+				(field
+					(name "Description") "KILL pelo firmware (pino 10): desarma o latch no desligamento automatico; so voltando a ligar o knob (nova borda)")
+			)
+			(libsource
+				(lib "slim")
+				(part "AO3400A")
+				(description "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C20917")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "N-Channel MOSFET")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "SOT?23*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "a9b36656-3f24-5873-a348-4e73331b1876")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "Q208")
+			(value "AO3400A")
+			(footprint "Package_TO_SOT_SMD:SOT-23")
+			(datasheet "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
 			(description "com USB o SYSOFF fica baixo sempre (senao o BQ24075 nao carrega)")
 			(fields
 				(field
@@ -5337,7 +5637,82 @@
 				(names "/E · Energia/")
 				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
 			)
-			(tstamps "f289c9ce-500b-5ea7-a763-901ce893b181")
+			(tstamps "85e9b223-1a9c-558e-8886-a5f527bc2077")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "Q209")
+			(value "AO3400A")
+			(footprint "Package_TO_SOT_SMD:SOT-23")
+			(datasheet "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+			(description "estado do knob para o firmware sem divisor: KNOB_N = 0 com o knob fora de OFF (pino 25); so existe com o 3,3 V ligado")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C20917")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_TO_SOT_SMD:SOT-23")
+				(field
+					(name "Datasheet") "https://www.aosmd.com/res/datasheets/AO3400A.pdf")
+				(field
+					(name "Description") "estado do knob para o firmware sem divisor: KNOB_N = 0 com o knob fora de OFF (pino 25); so existe com o 3,3 V ligado")
+			)
+			(libsource
+				(lib "slim")
+				(part "AO3400A")
+				(description "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C20917")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "N-Channel MOSFET")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "SOT?23*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "bcdb62ae-0993-5444-8e99-26648c01aee2")
 			(units
 				(unit
 					(name "A")
@@ -5860,510 +6235,6 @@
 			)
 		)
 		(comp
-			(ref "R210")
-			(value "1M")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "descarga do ONG")
-			(fields
-				(field
-					(name "Codigo") "E4")
-				(field
-					(name "LCSC") "C26083")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "descarga do ONG")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "E4")
-			)
-			(property
-				(name "LCSC")
-				(value "C26083")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "E · Energia")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_E.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/E · Energia/")
-				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
-			)
-			(tstamps "b037f556-f3b5-55b2-9f00-c204e59c352e")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R211")
-			(value "100k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(fields
-				(field
-					(name "Codigo") "E4")
-				(field
-					(name "LCSC") "C25741")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "E4")
-			)
-			(property
-				(name "LCSC")
-				(value "C25741")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "E · Energia")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_E.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/E · Energia/")
-				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
-			)
-			(tstamps "f8721751-b1e1-5ac8-bfd3-feaa3987ee99")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R212")
-			(value "100k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "KEEP baixo enquanto o processador parte")
-			(fields
-				(field
-					(name "Codigo") "E4")
-				(field
-					(name "LCSC") "C25741")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "KEEP baixo enquanto o processador parte")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "E4")
-			)
-			(property
-				(name "LCSC")
-				(value "C25741")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "E · Energia")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_E.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/E · Energia/")
-				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
-			)
-			(tstamps "84bacc5d-9e6b-5bce-a6d8-6d5afcf58caf")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R213")
-			(value "100k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(fields
-				(field
-					(name "Codigo") "E4")
-				(field
-					(name "LCSC") "C25741")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "E4")
-			)
-			(property
-				(name "LCSC")
-				(value "C25741")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "E · Energia")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_E.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/E · Energia/")
-				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
-			)
-			(tstamps "1f1b583a-8ddd-5326-9bcd-cbff6686954f")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R214")
-			(value "100k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(fields
-				(field
-					(name "Codigo") "E4")
-				(field
-					(name "LCSC") "C25741")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "E4")
-			)
-			(property
-				(name "LCSC")
-				(value "C25741")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "E · Energia")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_E.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/E · Energia/")
-				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
-			)
-			(tstamps "20171f47-ae31-591b-acf6-4f7570e875b7")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R215")
-			(value "1M")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "leitura do estado do knob: V(pino 25) = SWV/2 (SWV so existe com o knob ligado; sem bateria nem USB nada)")
-			(fields
-				(field
-					(name "Codigo") "E4")
-				(field
-					(name "LCSC") "C26083")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "leitura do estado do knob: V(pino 25) = SWV/2 (SWV so existe com o knob ligado; sem bateria nem USB nada)")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "E4")
-			)
-			(property
-				(name "LCSC")
-				(value "C26083")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "E · Energia")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_E.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/E · Energia/")
-				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
-			)
-			(tstamps "2f9ef81c-31d6-5046-af0d-c3c5a079b314")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R216")
-			(value "1M")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(fields
-				(field
-					(name "Codigo") "E4")
-				(field
-					(name "LCSC") "C26083")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "E4")
-			)
-			(property
-				(name "LCSC")
-				(value "C26083")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "E · Energia")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_E.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/E · Energia/")
-				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
-			)
-			(tstamps "4e3c9d0a-0809-56cc-998e-4cee62de1e53")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
 			(ref "R217")
 			(value "100")
 			(footprint "Resistor_SMD:R_0402_1005Metric")
@@ -6421,6 +6292,729 @@
 				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
 			)
 			(tstamps "e2b3b61e-d834-5b5c-b7e6-21479b4c256d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R250")
+			(value "1M")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(description "pull-up da chave Hall: HALL_X alto = knob fora de OFF (so conduz, 3,7 uA, com o knob em OFF)")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C26083")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "pull-up da chave Hall: HALL_X alto = knob fora de OFF (so conduz, 3,7 uA, com o knob em OFF)")
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C26083")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "b2b2871e-cd0f-5cc1-a2d2-71dbe0725e81")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R251")
+			(value "1M")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(description "pull-up do latch (uma das duas conduz sempre: ~3,7 uA)")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C26083")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "pull-up do latch (uma das duas conduz sempre: ~3,7 uA)")
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C26083")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "e5e6a83e-8697-5837-ace2-ade87b337dc2")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R252")
+			(value "1M")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C26083")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C26083")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "74b5b1db-d039-549b-a94a-7af963d71666")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R253")
+			(value "1M")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C26083")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C26083")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "8fce75f3-a968-59b5-9edd-93a26eebe094")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R254")
+			(value "100k")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C25741")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C25741")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "80c5edcf-9c78-5639-907a-fa6752aec1db")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R255")
+			(value "100k")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C25741")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C25741")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "3e55c15a-fe89-5042-b38a-2a9feaecf4d1")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R256")
+			(value "100k")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C25741")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C25741")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "d6d4ce8b-6d1c-5755-9fac-4c4e5fd5c731")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R257")
+			(value "100k")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C25741")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C25741")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "17f2af6e-c6b8-5a03-b16a-f34d599d5c84")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R258")
+			(value "100k")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C25741")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C25741")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "a1361681-ba15-5787-96f4-a6316fd145aa")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R259")
+			(value "10k")
+			(footprint "Resistor_SMD:R_0402_1005Metric")
+			(description "SO para a bateria B1 (2 fios, sem NTC): o BQ24075 passa a ver 10 k = 25 C; com B2/B3 (NTC de 10 k) nao montar")
+			(fields
+				(field
+					(name "Codigo") "E3")
+				(field
+					(name "LCSC") "C25744")
+				(field
+					(name "Montagem") "nao montar")
+				(field
+					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "SO para a bateria B1 (2 fios, sem NTC): o BQ24075 passa a ver 10 k = 25 C; com B2/B3 (NTC de 10 k) nao montar")
+			)
+			(libsource
+				(lib "slim")
+				(part "R")
+				(description "Resistor")
+			)
+			(property
+				(name "Codigo")
+				(value "E3")
+			)
+			(property
+				(name "LCSC")
+				(value "C25744")
+			)
+			(property
+				(name "Montagem")
+				(value "nao montar")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(property
+				(name "dnp")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "9ddfe0b5-20a3-559d-a65c-8e0b0d60b57a")
 			(units
 				(unit
 					(name "A")
@@ -6730,6 +7324,73 @@
 						)
 						(pin
 							(num "10")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U403")
+			(value "DRV5032ZEDBZR")
+			(footprint "Package_TO_SOT_SMD:SOT-23")
+			(datasheet "https://www.ti.com/lit/ds/symlink/drv5032.pdf")
+			(description "chave Hall omnipolar de microcorrente (2,3 uA a 20 Hz), saida em dreno aberto, BOP 33-63 mT (versao ZE, a mais insensivel: o ima central do knob da 5-13 mT na posicao da chave); alimentada direto pela bateria; sob o knob de volume; baixa (campo presente) = knob em OFF")
+			(fields
+				(field
+					(name "Codigo") "E4")
+				(field
+					(name "LCSC") "C266118")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_TO_SOT_SMD:SOT-23")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/drv5032.pdf")
+				(field
+					(name "Description") "chave Hall omnipolar de microcorrente (2,3 uA a 20 Hz), saida em dreno aberto, BOP 33-63 mT (versao ZE, a mais insensivel: o ima central do knob da 5-13 mT na posicao da chave); alimentada direto pela bateria; sob o knob de volume; baixa (campo presente) = knob em OFF")
+			)
+			(libsource
+				(lib "slim")
+				(part "DRV5032")
+				(description "TI DRV5032 ultra-low-power Hall switch, SOT-23 (DBZ): 1 VCC, 2 OUT, 3 GND")
+			)
+			(property
+				(name "Codigo")
+				(value "E4")
+			)
+			(property
+				(name "LCSC")
+				(value "C266118")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "E · Energia")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_E.kicad_sch")
+			)
+			(sheetpath
+				(names "/E · Energia/")
+				(tstamps "/d1d05e4a-fc45-5fb6-bdce-da9af9c63ede/")
+			)
+			(tstamps "e7279363-9014-5a5e-8cda-b0f679bb3f65")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
 						)
 					)
 				)
@@ -7313,29 +7974,28 @@
 		)
 		(comp
 			(ref "J301")
-			(value "jack 3,5 mm mid-mount (a definir)")
+			(value "PJ-327A (XUNPU)")
 			(footprint "slim:Jack_3.5mm_PJ-327A_SMD")
-			(description "P2 mid-mount na parede esquerda; o footprint e o do PJ-327A de topo, so para o esquema; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta; contato da ponta nao usado (sem alto-falante)")
+			(description "XUNPU PJ-327A (a mesma da V4), face de baixo, parede esquerda; pads 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (nao usado); footprint do esquema e o do PJ-327A SHOU HAN, so placeholder (pads reais, do EasyEDA, no passo 2)")
 			(fields
 				(field
 					(name "Codigo") "F2")
 				(field
-					(name "LCSC")
-				)
+					(name "LCSC") "C49284723")
 				(field
-					(name "Montagem") "sem LCSC em estoque (mid-mount nao achado): montar em casa ou consignar")
+					(name "Montagem") "JLC")
 				(field
 					(name "Footprint") "slim:Jack_3.5mm_PJ-327A_SMD")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "P2 mid-mount na parede esquerda; o footprint e o do PJ-327A de topo, so para o esquema; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta; contato da ponta nao usado (sem alto-falante)")
+					(name "Description") "XUNPU PJ-327A (a mesma da V4), face de baixo, parede esquerda; pads 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (nao usado); footprint do esquema e o do PJ-327A SHOU HAN, so placeholder (pads reais, do EasyEDA, no passo 2)")
 			)
 			(libsource
 				(lib "slim")
 				(part "PJ-327A")
-				(description "3.5 mm stereo jack, tip switch (5 NC against 4)")
+				(description "3.5 mm stereo jack XUNPU PJ-327A: 2/5 sleeve, 6 ring, 4 tip, 3 tip switch")
 			)
 			(property
 				(name "Codigo")
@@ -7343,11 +8003,11 @@
 			)
 			(property
 				(name "LCSC")
-				(value "")
+				(value "C49284723")
 			)
 			(property
 				(name "Montagem")
-				(value "sem LCSC em estoque (mid-mount nao achado): montar em casa ou consignar")
+				(value "JLC")
 			)
 			(property
 				(name "Sheetname")
@@ -7367,19 +8027,19 @@
 					(name "A")
 					(pins
 						(pin
-							(num "1")
-						)
-						(pin
 							(num "2")
-						)
-						(pin
-							(num "4")
 						)
 						(pin
 							(num "5")
 						)
 						(pin
+							(num "4")
+						)
+						(pin
 							(num "3")
+						)
+						(pin
+							(num "6")
 						)
 					)
 				)
@@ -7737,7 +8397,7 @@
 			(ref "C401")
 			(value "100nF")
 			(footprint "Capacitor_SMD:C_0402_1005Metric")
-			(description "filtro do cursor do pot")
+			(description "desacoplamento do U401, junto do pino 4")
 			(fields
 				(field
 					(name "Codigo") "I1")
@@ -7751,7 +8411,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "filtro do cursor do pot")
+					(name "Description") "desacoplamento do U401, junto do pino 4")
 			)
 			(libsource
 				(lib "slim")
@@ -7809,6 +8469,7 @@
 			(ref "C402")
 			(value "100nF")
 			(footprint "Capacitor_SMD:C_0402_1005Metric")
+			(description "desacoplamento do U402, junto do pino 4")
 			(fields
 				(field
 					(name "Codigo") "I2")
@@ -7822,8 +8483,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description")
-				)
+					(name "Description") "desacoplamento do U402, junto do pino 4")
 			)
 			(libsource
 				(lib "slim")
@@ -7950,582 +8610,6 @@
 						)
 						(pin
 							(num "4")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R401")
-			(value "10k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "topo da escada: aberto entre posicoes = 3,3 V")
-			(fields
-				(field
-					(name "Codigo") "I2")
-				(field
-					(name "LCSC") "C25744")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "topo da escada: aberto entre posicoes = 3,3 V")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "I2")
-			)
-			(property
-				(name "LCSC")
-				(value "C25744")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "765141b9-1d90-524d-b58b-11b7eac3e01d")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R402")
-			(value "1k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "posicao 1: V = 3,3 x R/(10k+R) = 0.30 V")
-			(fields
-				(field
-					(name "Codigo") "I2")
-				(field
-					(name "LCSC") "C11702")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "posicao 1: V = 3,3 x R/(10k+R) = 0.30 V")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "I2")
-			)
-			(property
-				(name "LCSC")
-				(value "C11702")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "ffd550f5-45e1-54ff-bdac-70b84ac98d76")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R403")
-			(value "2.2k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "posicao 2: V = 3,3 x R/(10k+R) = 0.60 V")
-			(fields
-				(field
-					(name "Codigo") "I2")
-				(field
-					(name "LCSC") "C25879")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "posicao 2: V = 3,3 x R/(10k+R) = 0.60 V")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "I2")
-			)
-			(property
-				(name "LCSC")
-				(value "C25879")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "0c9b779d-736c-5b51-96e4-7e34fff60ae0")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R404")
-			(value "4.7k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "posicao 3: V = 3,3 x R/(10k+R) = 1.06 V")
-			(fields
-				(field
-					(name "Codigo") "I2")
-				(field
-					(name "LCSC") "C25900")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "posicao 3: V = 3,3 x R/(10k+R) = 1.06 V")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "I2")
-			)
-			(property
-				(name "LCSC")
-				(value "C25900")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "75c2b04c-a245-5660-8bf1-e079db6341ca")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R405")
-			(value "10k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "posicao 4: V = 3,3 x R/(10k+R) = 1.65 V")
-			(fields
-				(field
-					(name "Codigo") "I2")
-				(field
-					(name "LCSC") "C25744")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "posicao 4: V = 3,3 x R/(10k+R) = 1.65 V")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "I2")
-			)
-			(property
-				(name "LCSC")
-				(value "C25744")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "5f05179b-0b3c-5e75-b480-6f2636a258d0")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R406")
-			(value "22k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "posicao 5: V = 3,3 x R/(10k+R) = 2.27 V")
-			(fields
-				(field
-					(name "Codigo") "I2")
-				(field
-					(name "LCSC") "C25768")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "posicao 5: V = 3,3 x R/(10k+R) = 2.27 V")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "I2")
-			)
-			(property
-				(name "LCSC")
-				(value "C25768")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "21b748ad-df4d-5122-8473-480485f9a66d")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R407")
-			(value "47k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "posicao 6: V = 3,3 x R/(10k+R) = 2.72 V")
-			(fields
-				(field
-					(name "Codigo") "I2")
-				(field
-					(name "LCSC") "C25792")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "posicao 6: V = 3,3 x R/(10k+R) = 2.72 V")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "I2")
-			)
-			(property
-				(name "LCSC")
-				(value "C25792")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "ab3518eb-a726-55e9-8132-974f4be50a90")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R408")
-			(value "100k")
-			(footprint "Resistor_SMD:R_0402_1005Metric")
-			(description "posicao 7: V = 3,3 x R/(10k+R) = 3.00 V")
-			(fields
-				(field
-					(name "Codigo") "I2")
-				(field
-					(name "LCSC") "C25741")
-				(field
-					(name "Montagem") "JLC")
-				(field
-					(name "Footprint") "Resistor_SMD:R_0402_1005Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "posicao 7: V = 3,3 x R/(10k+R) = 3.00 V")
-			)
-			(libsource
-				(lib "slim")
-				(part "R")
-				(description "Resistor")
-			)
-			(property
-				(name "Codigo")
-				(value "I2")
-			)
-			(property
-				(name "LCSC")
-				(value "C25741")
-			)
-			(property
-				(name "Montagem")
-				(value "JLC")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "36130d1f-ff09-5ce1-9930-2a200cbb43cd")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
 						)
 					)
 				)
@@ -8676,168 +8760,6 @@
 			)
 		)
 		(comp
-			(ref "SW401")
-			(value "pot 9 mm 50k B c/ chave (a definir)")
-			(footprint "Potentiometer_THT:Potentiometer_Alps_RK097_Single_Horizontal_Switch")
-			(description "volume continuo; a chave fecha SW1-SW2 ao sair de OFF no sentido horario. O footprint e o do RK097 horizontal com chave, so para o esquema. O RK097 da LCSC com 5 pinos (RK0971114Z1N) tem chave de EMPURRAR, nao rotativa")
-			(fields
-				(field
-					(name "Codigo") "I1")
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "Montagem") "sem LCSC (nenhum pot de 9 mm com chave rotativa no catalogo da JLCPCB): montar em casa")
-				(field
-					(name "Footprint") "Potentiometer_THT:Potentiometer_Alps_RK097_Single_Horizontal_Switch")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "volume continuo; a chave fecha SW1-SW2 ao sair de OFF no sentido horario. O footprint e o do RK097 horizontal com chave, so para o esquema. O RK097 da LCSC com 5 pinos (RK0971114Z1N) tem chave de EMPURRAR, nao rotativa")
-			)
-			(libsource
-				(lib "slim")
-				(part "POT_SW_9mm")
-				(description "9 mm rotary potentiometer with on/off rotary switch (SW1-SW2 closed when ON)")
-			)
-			(property
-				(name "Codigo")
-				(value "I1")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "Montagem")
-				(value "sem LCSC (nenhum pot de 9 mm com chave rotativa no catalogo da JLCPCB): montar em casa")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "fcea46ca-84db-52ab-9747-9867baa0305c")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-						(pin
-							(num "3")
-						)
-						(pin
-							(num "4")
-						)
-						(pin
-							(num "5")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "SW402")
-			(value "Alps SRBV170501")
-			(footprint "slim:Rotary_Alps_SRBV_7p5_Vertical")
-			(datasheet "https://datasheet.lcsc.com/datasheet/pdf/190b925bc48073e99305ed7b719b3b35.pdf?productCode=C470375")
-			(description "7 posicoes, 1 polo, sem curto entre posicoes, corpo de 7,5 mm; L = 15 ou 20 mm de eixo (o 170501 e o 170701 de L diferente: conferir qual); 325 em estoque; footprint aproximado")
-			(fields
-				(field
-					(name "Codigo") "I2")
-				(field
-					(name "LCSC") "C470375")
-				(field
-					(name "Montagem") "THT: montar em casa")
-				(field
-					(name "Footprint") "slim:Rotary_Alps_SRBV_7p5_Vertical")
-				(field
-					(name "Datasheet") "https://datasheet.lcsc.com/datasheet/pdf/190b925bc48073e99305ed7b719b3b35.pdf?productCode=C470375")
-				(field
-					(name "Description") "7 posicoes, 1 polo, sem curto entre posicoes, corpo de 7,5 mm; L = 15 ou 20 mm de eixo (o 170501 e o 170701 de L diferente: conferir qual); 325 em estoque; footprint aproximado")
-			)
-			(libsource
-				(lib "slim")
-				(part "SRBV_7pos")
-				(description "Alps SRBV 7-position rotary switch, 1 pole, non-shorting; 1 and 10 common, 2..8 positions, 9 dummy")
-			)
-			(property
-				(name "Codigo")
-				(value "I2")
-			)
-			(property
-				(name "LCSC")
-				(value "C470375")
-			)
-			(property
-				(name "Montagem")
-				(value "THT: montar em casa")
-			)
-			(property
-				(name "Sheetname")
-				(value "I · Interface")
-			)
-			(property
-				(name "Sheetfile")
-				(value "slim_I.kicad_sch")
-			)
-			(sheetpath
-				(names "/I · Interface/")
-				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
-			)
-			(tstamps "476309b5-147a-5723-b22c-6fdb5d8e1474")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "10")
-						)
-						(pin
-							(num "2")
-						)
-						(pin
-							(num "3")
-						)
-						(pin
-							(num "4")
-						)
-						(pin
-							(num "5")
-						)
-						(pin
-							(num "6")
-						)
-						(pin
-							(num "7")
-						)
-						(pin
-							(num "8")
-						)
-						(pin
-							(num "9")
-						)
-					)
-				)
-			)
-		)
-		(comp
 			(ref "SW403")
 			(value "Program")
 			(footprint "Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A")
@@ -8900,6 +8822,158 @@
 						)
 						(pin
 							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U401")
+			(value "TMAG5273A2QDBVT")
+			(footprint "Package_TO_SOT_SMD:SOT-23-6")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5273.pdf")
+			(description "sensor de angulo (CORDIC XY) do knob de registros (7 posicoes): face de baixo, sob o eixo do knob, le o ima diametral atraves da placa; versao A2: +-133/+-266 mT, endereco I2C 0x35 de fabrica (o outro sensor usa o outro endereco; SGTL5000 = 0x0A); 1,7-3,6 V, 2,3 mA em modo continuo, ~0,2 mA em wake-and-sleep de 10 ms")
+			(fields
+				(field
+					(name "Codigo") "I1")
+				(field
+					(name "LCSC") "C3020565")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_TO_SOT_SMD:SOT-23-6")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5273.pdf")
+				(field
+					(name "Description") "sensor de angulo (CORDIC XY) do knob de registros (7 posicoes): face de baixo, sob o eixo do knob, le o ima diametral atraves da placa; versao A2: +-133/+-266 mT, endereco I2C 0x35 de fabrica (o outro sensor usa o outro endereco; SGTL5000 = 0x0A); 1,7-3,6 V, 2,3 mA em modo continuo, ~0,2 mA em wake-and-sleep de 10 ms")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5273")
+				(description "TI TMAG5273 3-axis Hall sensor with angle CORDIC, I2C, SOT-23-6 (DBV)")
+			)
+			(property
+				(name "Codigo")
+				(value "I1")
+			)
+			(property
+				(name "LCSC")
+				(value "C3020565")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "I · Interface")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_I.kicad_sch")
+			)
+			(sheetpath
+				(names "/I · Interface/")
+				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
+			)
+			(tstamps "bfb194b2-081b-5247-87b1-8b2c72adf7fc")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U402")
+			(value "TMAG5273B2QDBVR")
+			(footprint "Package_TO_SOT_SMD:SOT-23-6")
+			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5273.pdf")
+			(description "sensor de angulo (CORDIC XY) do knob de volume (continuo): face de baixo, sob o eixo do knob, le o ima diametral atraves da placa; versao B2: +-133/+-266 mT, endereco I2C 0x22 de fabrica (o outro sensor usa o outro endereco; SGTL5000 = 0x0A); 1,7-3,6 V, 2,3 mA em modo continuo, ~0,2 mA em wake-and-sleep de 10 ms")
+			(fields
+				(field
+					(name "Codigo") "I2")
+				(field
+					(name "LCSC") "C41935525")
+				(field
+					(name "Montagem") "JLC")
+				(field
+					(name "Footprint") "Package_TO_SOT_SMD:SOT-23-6")
+				(field
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5273.pdf")
+				(field
+					(name "Description") "sensor de angulo (CORDIC XY) do knob de volume (continuo): face de baixo, sob o eixo do knob, le o ima diametral atraves da placa; versao B2: +-133/+-266 mT, endereco I2C 0x22 de fabrica (o outro sensor usa o outro endereco; SGTL5000 = 0x0A); 1,7-3,6 V, 2,3 mA em modo continuo, ~0,2 mA em wake-and-sleep de 10 ms")
+			)
+			(libsource
+				(lib "slim")
+				(part "TMAG5273")
+				(description "TI TMAG5273 3-axis Hall sensor with angle CORDIC, I2C, SOT-23-6 (DBV)")
+			)
+			(property
+				(name "Codigo")
+				(value "I2")
+			)
+			(property
+				(name "LCSC")
+				(value "C41935525")
+			)
+			(property
+				(name "Montagem")
+				(value "JLC")
+			)
+			(property
+				(name "Sheetname")
+				(value "I · Interface")
+			)
+			(property
+				(name "Sheetfile")
+				(value "slim_I.kicad_sch")
+			)
+			(sheetpath
+				(names "/I · Interface/")
+				(tstamps "/e4bb3b4d-2ef0-5ff2-9cbe-3ba8ead89964/")
+			)
+			(tstamps "c7d135e3-8eb7-5921-8f05-9b737f0d52ed")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
 						)
 					)
 				)
@@ -8979,14 +9053,14 @@
 		)
 		(comp
 			(ref "J601")
-			(value "FFC 8P 0.5 mm, contato por baixo")
+			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
 			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
-			(description "fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+			(description "fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
 					(name "Codigo") "R1")
 				(field
-					(name "LCSC") "C66953")
+					(name "LCSC") "C3250113")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -8995,7 +9069,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+					(name "Description") "fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			)
 			(libsource
 				(lib "slim")
@@ -9008,7 +9082,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C66953")
+				(value "C3250113")
 			)
 			(property
 				(name "Montagem")
@@ -9072,14 +9146,14 @@
 		)
 		(comp
 			(ref "J602")
-			(value "FFC 8P 0.5 mm, contato por baixo")
+			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
 			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
-			(description "fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+			(description "fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
 					(name "Codigo") "R2")
 				(field
-					(name "LCSC") "C66953")
+					(name "LCSC") "C3250113")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -9088,7 +9162,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+					(name "Description") "fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			)
 			(libsource
 				(lib "slim")
@@ -9101,7 +9175,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C66953")
+				(value "C3250113")
 			)
 			(property
 				(name "Montagem")
@@ -9165,14 +9239,14 @@
 		)
 		(comp
 			(ref "J603")
-			(value "FFC 8P 0.5 mm, contato por baixo")
+			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
 			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
-			(description "fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+			(description "fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
 					(name "Codigo") "R3")
 				(field
-					(name "LCSC") "C66953")
+					(name "LCSC") "C3250113")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -9181,7 +9255,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+					(name "Description") "fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			)
 			(libsource
 				(lib "slim")
@@ -9194,7 +9268,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C66953")
+				(value "C3250113")
 			)
 			(property
 				(name "Montagem")
@@ -9258,14 +9332,14 @@
 		)
 		(comp
 			(ref "J604")
-			(value "FFC 8P 0.5 mm, contato por baixo")
+			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
 			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
-			(description "fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+			(description "fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
 					(name "Codigo") "R4")
 				(field
-					(name "LCSC") "C66953")
+					(name "LCSC") "C3250113")
 				(field
 					(name "Montagem") "JLC")
 				(field
@@ -9274,7 +9348,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+					(name "Description") "fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			)
 			(libsource
 				(lib "slim")
@@ -9287,7 +9361,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C66953")
+				(value "C3250113")
 			)
 			(property
 				(name "Montagem")
@@ -9897,44 +9971,6 @@
 		)
 		(libpart
 			(lib "slim")
-			(part "AO3401A")
-			(description "-4.0A Id, -30V Vds, P-Channel MOSFET, SOT-23")
-			(docs "http://www.aosmd.com/pdfs/datasheet/AO3401A.pdf")
-			(footprints
-				(fp "SOT?23*")
-			)
-			(fields
-				(field
-					(name "Reference") "Q")
-				(field
-					(name "Value") "AO3401A")
-				(field
-					(name "Footprint") "Package_TO_SOT_SMD:SOT-23")
-				(field
-					(name "Datasheet") "http://www.aosmd.com/pdfs/datasheet/AO3401A.pdf")
-				(field
-					(name "Description") "-4.0A Id, -30V Vds, P-Channel MOSFET, SOT-23")
-			)
-			(pins
-				(pin
-					(num "1")
-					(name "G")
-					(type "input")
-				)
-				(pin
-					(num "2")
-					(name "S")
-					(type "passive")
-				)
-				(pin
-					(num "3")
-					(name "D")
-					(type "passive")
-				)
-			)
-		)
-		(libpart
-			(lib "slim")
 			(part "BAT54C")
 			(description "dual schottky barrier diode, common cathode")
 			(docs "http://www.diodes.com/_files/datasheets/ds11005.pdf")
@@ -10305,6 +10341,42 @@
 					(num "4")
 					(name "G")
 					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "slim")
+			(part "DRV5032")
+			(description "TI DRV5032 ultra-low-power Hall switch, SOT-23 (DBZ): 1 VCC, 2 OUT, 3 GND")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "DRV5032")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "TI DRV5032 ultra-low-power Hall switch, SOT-23 (DBZ): 1 VCC, 2 OUT, 3 GND")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "VCC")
+					(type "power_in")
+				)
+				(pin
+					(num "2")
+					(name "OUT")
+					(type "open_collector")
+				)
+				(pin
+					(num "3")
+					(name "GND")
+					(type "power_in")
 				)
 			)
 		)
@@ -11539,7 +11611,7 @@
 		(libpart
 			(lib "slim")
 			(part "PJ-327A")
-			(description "3.5 mm stereo jack, tip switch (5 NC against 4)")
+			(description "3.5 mm stereo jack XUNPU PJ-327A: 2/5 sleeve, 6 ring, 4 tip, 3 tip switch")
 			(fields
 				(field
 					(name "Reference") "J")
@@ -11552,14 +11624,9 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "3.5 mm stereo jack, tip switch (5 NC against 4)")
+					(name "Description") "3.5 mm stereo jack XUNPU PJ-327A: 2/5 sleeve, 6 ring, 4 tip, 3 tip switch")
 			)
 			(pins
-				(pin
-					(num "1")
-					(name "S")
-					(type "passive")
-				)
 				(pin
 					(num "2")
 					(name "S")
@@ -11567,7 +11634,7 @@
 				)
 				(pin
 					(num "3")
-					(name "R")
+					(name "TN")
 					(type "passive")
 				)
 				(pin
@@ -11577,53 +11644,12 @@
 				)
 				(pin
 					(num "5")
-					(name "TN")
-					(type "passive")
-				)
-			)
-		)
-		(libpart
-			(lib "slim")
-			(part "POT_SW_9mm")
-			(description "9 mm rotary potentiometer with on/off rotary switch (SW1-SW2 closed when ON)")
-			(fields
-				(field
-					(name "Reference") "RV")
-				(field
-					(name "Value") "POT_SW_9mm")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "9 mm rotary potentiometer with on/off rotary switch (SW1-SW2 closed when ON)")
-			)
-			(pins
-				(pin
-					(num "1")
-					(name "CCW")
+					(name "S2")
 					(type "passive")
 				)
 				(pin
-					(num "2")
-					(name "W")
-					(type "passive")
-				)
-				(pin
-					(num "3")
-					(name "CW")
-					(type "passive")
-				)
-				(pin
-					(num "4")
-					(name "SW1")
-					(type "passive")
-				)
-				(pin
-					(num "5")
-					(name "SW2")
+					(num "6")
+					(name "R")
 					(type "passive")
 				)
 			)
@@ -11860,77 +11886,6 @@
 		)
 		(libpart
 			(lib "slim")
-			(part "SRBV_7pos")
-			(description "Alps SRBV 7-position rotary switch, 1 pole, non-shorting; 1 and 10 common, 2..8 positions, 9 dummy")
-			(fields
-				(field
-					(name "Reference") "SW")
-				(field
-					(name "Value") "SRBV_7pos")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "Alps SRBV 7-position rotary switch, 1 pole, non-shorting; 1 and 10 common, 2..8 positions, 9 dummy")
-			)
-			(pins
-				(pin
-					(num "1")
-					(name "C")
-					(type "passive")
-				)
-				(pin
-					(num "2")
-					(name "P1")
-					(type "passive")
-				)
-				(pin
-					(num "3")
-					(name "P2")
-					(type "passive")
-				)
-				(pin
-					(num "4")
-					(name "P3")
-					(type "passive")
-				)
-				(pin
-					(num "5")
-					(name "P4")
-					(type "passive")
-				)
-				(pin
-					(num "6")
-					(name "P5")
-					(type "passive")
-				)
-				(pin
-					(num "7")
-					(name "P6")
-					(type "passive")
-				)
-				(pin
-					(num "8")
-					(name "P7")
-					(type "passive")
-				)
-				(pin
-					(num "9")
-					(name "DUM")
-					(type "passive")
-				)
-				(pin
-					(num "10")
-					(name "C2")
-					(type "passive")
-				)
-			)
-		)
-		(libpart
-			(lib "slim")
 			(part "SW_Push")
 			(description "Push button switch, generic, two pins")
 			(fields
@@ -11957,6 +11912,57 @@
 					(num "2")
 					(name "2")
 					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "slim")
+			(part "TMAG5273")
+			(description "TI TMAG5273 3-axis Hall sensor with angle CORDIC, I2C, SOT-23-6 (DBV)")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "TMAG5273")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "TI TMAG5273 3-axis Hall sensor with angle CORDIC, I2C, SOT-23-6 (DBV)")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "SCL")
+					(type "input")
+				)
+				(pin
+					(num "2")
+					(name "GND")
+					(type "power_in")
+				)
+				(pin
+					(num "3")
+					(name "GND_T")
+					(type "power_in")
+				)
+				(pin
+					(num "4")
+					(name "VCC")
+					(type "power_in")
+				)
+				(pin
+					(num "5")
+					(name "INT")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "SDA")
+					(type "bidirectional")
 				)
 			)
 		)
@@ -12374,6 +12380,16 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "C401")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C402")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
 				(ref "C601")
 				(pin "1")
 				(pintype "passive")
@@ -12433,6 +12449,11 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "R258")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
 				(ref "R301")
 				(pin "1")
 				(pintype "passive")
@@ -12440,17 +12461,6 @@
 			(node
 				(ref "R302")
 				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R401")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW401")
-				(pin "3")
-				(pinfunction "CW_3")
 				(pintype "passive")
 			)
 			(node
@@ -12549,9 +12559,89 @@
 				(pinfunction "VI_3")
 				(pintype "power_in")
 			)
+			(node
+				(ref "U401")
+				(pin "4")
+				(pinfunction "VCC_4")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U402")
+				(pin "4")
+				(pinfunction "VCC_4")
+				(pintype "power_in")
+			)
 		)
 		(net
 			(code "2")
+			(name "ARM")
+			(class "Default")
+			(node
+				(ref "Q201")
+				(pin "1")
+				(pinfunction "G_1")
+				(pintype "input")
+			)
+			(node
+				(ref "Q203")
+				(pin "3")
+				(pinfunction "D_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q204")
+				(pin "1")
+				(pinfunction "G_1")
+				(pintype "input")
+			)
+			(node
+				(ref "Q207")
+				(pin "3")
+				(pinfunction "D_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "R251")
+				(pin "2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "3")
+			(name "ARMB")
+			(class "Default")
+			(node
+				(ref "Q203")
+				(pin "1")
+				(pinfunction "G_1")
+				(pintype "input")
+			)
+			(node
+				(ref "Q204")
+				(pin "3")
+				(pinfunction "D_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q205")
+				(pin "3")
+				(pinfunction "D_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q206")
+				(pin "3")
+				(pinfunction "D_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "R252")
+				(pin "2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "4")
 			(name "AUD_MCLK")
 			(class "Default")
 			(node
@@ -12567,7 +12657,7 @@
 			)
 		)
 		(net
-			(code "3")
+			(code "5")
 			(name "AUD_MCLK_P")
 			(class "Default")
 			(node
@@ -12583,13 +12673,18 @@
 			)
 		)
 		(net
-			(code "4")
+			(code "6")
 			(name "BAT_NTC")
 			(class "Default")
 			(node
 				(ref "J202")
 				(pin "2")
 				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R259")
+				(pin "1")
 				(pintype "passive")
 			)
 			(node
@@ -12600,7 +12695,7 @@
 			)
 		)
 		(net
-			(code "5")
+			(code "7")
 			(name "BB_L1")
 			(class "Default")
 			(node
@@ -12617,7 +12712,7 @@
 			)
 		)
 		(net
-			(code "6")
+			(code "8")
 			(name "BB_L2")
 			(class "Default")
 			(node
@@ -12634,7 +12729,7 @@
 			)
 		)
 		(net
-			(code "7")
+			(code "9")
 			(name "BB_VINA")
 			(class "Default")
 			(node
@@ -12655,7 +12750,7 @@
 			)
 		)
 		(net
-			(code "8")
+			(code "10")
 			(name "BL_B013")
 			(class "Default")
 			(node
@@ -12672,7 +12767,7 @@
 			)
 		)
 		(net
-			(code "9")
+			(code "11")
 			(name "BL_BOOT0")
 			(class "Default")
 			(node
@@ -12689,7 +12784,7 @@
 			)
 		)
 		(net
-			(code "10")
+			(code "12")
 			(name "BL_EMC01")
 			(class "Default")
 			(node
@@ -12706,7 +12801,7 @@
 			)
 		)
 		(net
-			(code "11")
+			(code "13")
 			(name "BL_MOD")
 			(class "Default")
 			(node
@@ -12723,7 +12818,7 @@
 			)
 		)
 		(net
-			(code "12")
+			(code "14")
 			(name "BL_TCK")
 			(class "Default")
 			(node
@@ -12740,7 +12835,7 @@
 			)
 		)
 		(net
-			(code "13")
+			(code "15")
 			(name "BL_TDI")
 			(class "Default")
 			(node
@@ -12757,7 +12852,7 @@
 			)
 		)
 		(net
-			(code "14")
+			(code "16")
 			(name "BL_TDO")
 			(class "Default")
 			(node
@@ -12774,7 +12869,7 @@
 			)
 		)
 		(net
-			(code "15")
+			(code "17")
 			(name "BL_TMS")
 			(class "Default")
 			(node
@@ -12791,7 +12886,7 @@
 			)
 		)
 		(net
-			(code "16")
+			(code "18")
 			(name "CC1")
 			(class "Default")
 			(node
@@ -12807,7 +12902,7 @@
 			)
 		)
 		(net
-			(code "17")
+			(code "19")
 			(name "CC2")
 			(class "Default")
 			(node
@@ -12823,7 +12918,7 @@
 			)
 		)
 		(net
-			(code "18")
+			(code "20")
 			(name "CHG_EN1")
 			(class "Default")
 			(node
@@ -12839,7 +12934,7 @@
 			)
 		)
 		(net
-			(code "19")
+			(code "21")
 			(name "CHG_ILIM")
 			(class "Default")
 			(node
@@ -12855,7 +12950,7 @@
 			)
 		)
 		(net
-			(code "20")
+			(code "22")
 			(name "CHG_ISET")
 			(class "Default")
 			(node
@@ -12871,7 +12966,7 @@
 			)
 		)
 		(net
-			(code "21")
+			(code "23")
 			(name "CHG_STAT")
 			(class "Default")
 			(node
@@ -12893,7 +12988,7 @@
 			)
 		)
 		(net
-			(code "22")
+			(code "24")
 			(name "DCDC_IN")
 			(class "Default")
 			(node
@@ -12930,7 +13025,7 @@
 			)
 		)
 		(net
-			(code "23")
+			(code "25")
 			(name "DCDC_LP")
 			(class "Default")
 			(node
@@ -12953,7 +13048,7 @@
 			)
 		)
 		(net
-			(code "24")
+			(code "26")
 			(name "FLASH_CLK")
 			(class "Default")
 			(node
@@ -12970,7 +13065,7 @@
 			)
 		)
 		(net
-			(code "25")
+			(code "27")
 			(name "FLASH_CS")
 			(class "Default")
 			(node
@@ -12987,7 +13082,7 @@
 			)
 		)
 		(net
-			(code "26")
+			(code "28")
 			(name "FLASH_D0")
 			(class "Default")
 			(node
@@ -13004,7 +13099,7 @@
 			)
 		)
 		(net
-			(code "27")
+			(code "29")
 			(name "FLASH_D1")
 			(class "Default")
 			(node
@@ -13021,7 +13116,7 @@
 			)
 		)
 		(net
-			(code "28")
+			(code "30")
 			(name "FLASH_D2")
 			(class "Default")
 			(node
@@ -13038,7 +13133,7 @@
 			)
 		)
 		(net
-			(code "29")
+			(code "31")
 			(name "FLASH_D3")
 			(class "Default")
 			(node
@@ -13055,7 +13150,7 @@
 			)
 		)
 		(net
-			(code "30")
+			(code "32")
 			(name "GND")
 			(class "Default")
 			(node
@@ -13204,11 +13299,6 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "C206")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
 				(ref "C207")
 				(pin "2")
 				(pintype "passive")
@@ -13230,6 +13320,11 @@
 			)
 			(node
 				(ref "C211")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C250")
 				(pin "2")
 				(pintype "passive")
 			)
@@ -13440,7 +13535,7 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "Q201")
+				(ref "Q202")
 				(pin "2")
 				(pinfunction "S_2")
 				(pintype "passive")
@@ -13453,6 +13548,36 @@
 			)
 			(node
 				(ref "Q204")
+				(pin "2")
+				(pinfunction "S_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q205")
+				(pin "2")
+				(pinfunction "S_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q206")
+				(pin "2")
+				(pinfunction "S_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q207")
+				(pin "2")
+				(pinfunction "S_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q208")
+				(pin "2")
+				(pinfunction "S_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q209")
 				(pin "2")
 				(pinfunction "S_2")
 				(pintype "passive")
@@ -13498,57 +13623,27 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "R210")
+				(ref "R253")
 				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "R212")
+				(ref "R254")
 				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "R214")
+				(ref "R255")
 				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "R216")
+				(ref "R257")
 				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "R402")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R403")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R404")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R405")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R406")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R407")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R408")
+				(ref "R259")
 				(pin "2")
 				(pintype "passive")
 			)
@@ -13570,12 +13665,6 @@
 			(node
 				(ref "R604")
 				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW401")
-				(pin "1")
-				(pinfunction "CCW_1")
 				(pintype "passive")
 			)
 			(node
@@ -13807,6 +13896,36 @@
 				(pintype "power_in")
 			)
 			(node
+				(ref "U401")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U401")
+				(pin "3")
+				(pinfunction "GND_T_3")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U402")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U402")
+				(pin "3")
+				(pinfunction "GND_T_3")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U403")
+				(pin "3")
+				(pinfunction "GND_3")
+				(pintype "power_in")
+			)
+			(node
 				(ref "Y101")
 				(pin "2")
 				(pinfunction "G_2")
@@ -13820,9 +13939,14 @@
 			)
 		)
 		(net
-			(code "31")
-			(name "HOLDG")
+			(code "33")
+			(name "HALL_X")
 			(class "Default")
+			(node
+				(ref "C251")
+				(pin "1")
+				(pintype "passive")
+			)
 			(node
 				(ref "Q202")
 				(pin "1")
@@ -13830,19 +13954,25 @@
 				(pintype "input")
 			)
 			(node
-				(ref "Q203")
-				(pin "3")
-				(pinfunction "D_3")
+				(ref "Q209")
+				(pin "1")
+				(pinfunction "G_1")
+				(pintype "input")
+			)
+			(node
+				(ref "R250")
+				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "R211")
-				(pin "1")
-				(pintype "passive")
+				(ref "U403")
+				(pin "2")
+				(pinfunction "OUT_2")
+				(pintype "open_collector")
 			)
 		)
 		(net
-			(code "32")
+			(code "34")
 			(name "HP_L")
 			(class "Default")
 			(node
@@ -13859,13 +13989,13 @@
 			)
 		)
 		(net
-			(code "33")
+			(code "35")
 			(name "HP_R")
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "3")
-				(pinfunction "R_3")
+				(pin "6")
+				(pinfunction "R_6")
 				(pintype "passive")
 			)
 			(node
@@ -13876,19 +14006,19 @@
 			)
 		)
 		(net
-			(code "34")
+			(code "36")
 			(name "HP_VGND")
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "1")
-				(pinfunction "S_1")
+				(pin "2")
+				(pinfunction "S_2")
 				(pintype "passive")
 			)
 			(node
 				(ref "J301")
-				(pin "2")
-				(pinfunction "S_2")
+				(pin "5")
+				(pinfunction "S2_5")
 				(pintype "passive")
 			)
 			(node
@@ -13899,7 +14029,7 @@
 			)
 		)
 		(net
-			(code "35")
+			(code "37")
 			(name "I2C_SCL")
 			(class "Default")
 			(node
@@ -13919,9 +14049,21 @@
 				(pinfunction "CTRL_CLK_19")
 				(pintype "input")
 			)
+			(node
+				(ref "U401")
+				(pin "1")
+				(pinfunction "SCL_1")
+				(pintype "input")
+			)
+			(node
+				(ref "U402")
+				(pin "1")
+				(pinfunction "SCL_1")
+				(pintype "input")
+			)
 		)
 		(net
-			(code "36")
+			(code "38")
 			(name "I2C_SDA")
 			(class "Default")
 			(node
@@ -13941,9 +14083,21 @@
 				(pinfunction "CTRL_DATA_18")
 				(pintype "input")
 			)
+			(node
+				(ref "U401")
+				(pin "6")
+				(pinfunction "SDA_6")
+				(pintype "bidirectional")
+			)
+			(node
+				(ref "U402")
+				(pin "6")
+				(pinfunction "SDA_6")
+				(pintype "bidirectional")
+			)
 		)
 		(net
-			(code "37")
+			(code "39")
 			(name "I2S_BCLK")
 			(class "Default")
 			(node
@@ -13960,7 +14114,7 @@
 			)
 		)
 		(net
-			(code "38")
+			(code "40")
 			(name "I2S_LRCLK")
 			(class "Default")
 			(node
@@ -13977,7 +14131,7 @@
 			)
 		)
 		(net
-			(code "39")
+			(code "41")
 			(name "I2S_TX")
 			(class "Default")
 			(node
@@ -13994,17 +14148,17 @@
 			)
 		)
 		(net
-			(code "40")
-			(name "KEEP")
+			(code "42")
+			(name "KILL")
 			(class "Default")
 			(node
-				(ref "Q203")
+				(ref "Q207")
 				(pin "1")
 				(pinfunction "G_1")
 				(pintype "input")
 			)
 			(node
-				(ref "R212")
+				(ref "R255")
 				(pin "1")
 				(pintype "passive")
 			)
@@ -14016,7 +14170,29 @@
 			)
 		)
 		(net
-			(code "41")
+			(code "43")
+			(name "KNOB_N")
+			(class "Default")
+			(node
+				(ref "Q209")
+				(pin "3")
+				(pinfunction "D_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "R258")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U101")
+				(pin "L14")
+				(pinfunction "GPIO_AD_B0_13_L14")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "44")
 			(name "LED_G")
 			(class "Default")
 			(node
@@ -14032,7 +14208,7 @@
 			)
 		)
 		(net
-			(code "42")
+			(code "45")
 			(name "LED_G_A")
 			(class "Default")
 			(node
@@ -14048,7 +14224,7 @@
 			)
 		)
 		(net
-			(code "43")
+			(code "46")
 			(name "LED_R")
 			(class "Default")
 			(node
@@ -14064,7 +14240,7 @@
 			)
 		)
 		(net
-			(code "44")
+			(code "47")
 			(name "LED_R_A")
 			(class "Default")
 			(node
@@ -14080,7 +14256,7 @@
 			)
 		)
 		(net
-			(code "45")
+			(code "48")
 			(name "NVCC_PLL")
 			(class "Default")
 			(node
@@ -14101,19 +14277,14 @@
 			)
 		)
 		(net
-			(code "46")
-			(name "ONG")
+			(code "49")
+			(name "ONX")
 			(class "Default")
 			(node
-				(ref "C205")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
 				(ref "Q201")
-				(pin "1")
-				(pinfunction "G_1")
-				(pintype "input")
+				(pin "2")
+				(pinfunction "S_2")
+				(pintype "passive")
 			)
 			(node
 				(ref "Q202")
@@ -14121,14 +14292,9 @@
 				(pinfunction "D_3")
 				(pintype "passive")
 			)
-			(node
-				(ref "R210")
-				(pin "1")
-				(pintype "passive")
-			)
 		)
 		(net
-			(code "47")
+			(code "50")
 			(name "OUT_R1")
 			(class "Default")
 			(node
@@ -14150,7 +14316,7 @@
 			)
 		)
 		(net
-			(code "48")
+			(code "51")
 			(name "OUT_R2")
 			(class "Default")
 			(node
@@ -14172,7 +14338,7 @@
 			)
 		)
 		(net
-			(code "49")
+			(code "52")
 			(name "OUT_R3")
 			(class "Default")
 			(node
@@ -14194,7 +14360,7 @@
 			)
 		)
 		(net
-			(code "50")
+			(code "53")
 			(name "OUT_R4")
 			(class "Default")
 			(node
@@ -14216,7 +14382,7 @@
 			)
 		)
 		(net
-			(code "51")
+			(code "54")
 			(name "PGOOD_N")
 			(class "Default")
 			(node
@@ -14238,7 +14404,7 @@
 			)
 		)
 		(net
-			(code "52")
+			(code "55")
 			(name "PMIC_ON_REQ")
 			(class "Default")
 			(node
@@ -14254,7 +14420,7 @@
 			)
 		)
 		(net
-			(code "53")
+			(code "56")
 			(name "POR_B")
 			(class "Default")
 			(node
@@ -14271,7 +14437,7 @@
 			)
 		)
 		(net
-			(code "54")
+			(code "57")
 			(name "PROG")
 			(class "Default")
 			(node
@@ -14288,7 +14454,7 @@
 			)
 		)
 		(net
-			(code "55")
+			(code "58")
 			(name "PSWITCH")
 			(class "Default")
 			(node
@@ -14316,152 +14482,7 @@
 			)
 		)
 		(net
-			(code "56")
-			(name "REG_ADC")
-			(class "Default")
-			(node
-				(ref "C402")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R401")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "1")
-				(pinfunction "C_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "10")
-				(pinfunction "C2_10")
-				(pintype "passive")
-			)
-			(node
-				(ref "U101")
-				(pin "K14")
-				(pinfunction "GPIO_AD_B0_12_K14")
-				(pintype "bidirectional")
-			)
-		)
-		(net
-			(code "57")
-			(name "REG_P1")
-			(class "Default")
-			(node
-				(ref "R402")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "2")
-				(pinfunction "P1_2")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "58")
-			(name "REG_P2")
-			(class "Default")
-			(node
-				(ref "R403")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "3")
-				(pinfunction "P2_3")
-				(pintype "passive")
-			)
-		)
-		(net
 			(code "59")
-			(name "REG_P3")
-			(class "Default")
-			(node
-				(ref "R404")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "4")
-				(pinfunction "P3_4")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "60")
-			(name "REG_P4")
-			(class "Default")
-			(node
-				(ref "R405")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "5")
-				(pinfunction "P4_5")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "61")
-			(name "REG_P5")
-			(class "Default")
-			(node
-				(ref "R406")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "6")
-				(pinfunction "P5_6")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "62")
-			(name "REG_P6")
-			(class "Default")
-			(node
-				(ref "R407")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "7")
-				(pinfunction "P6_7")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "63")
-			(name "REG_P7")
-			(class "Default")
-			(node
-				(ref "R408")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW402")
-				(pin "8")
-				(pinfunction "P7_8")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "64")
 			(name "RTC_XTALI")
 			(class "Default")
 			(node
@@ -14483,7 +14504,7 @@
 			)
 		)
 		(net
-			(code "65")
+			(code "60")
 			(name "RTC_XTALO")
 			(class "Default")
 			(node
@@ -14505,7 +14526,7 @@
 			)
 		)
 		(net
-			(code "66")
+			(code "61")
 			(name "SCAN_CLK")
 			(class "Default")
 			(node
@@ -14539,7 +14560,7 @@
 			)
 		)
 		(net
-			(code "67")
+			(code "62")
 			(name "SCAN_CLK_P")
 			(class "Default")
 			(node
@@ -14555,7 +14576,7 @@
 			)
 		)
 		(net
-			(code "68")
+			(code "63")
 			(name "SCAN_DATA")
 			(class "Default")
 			(node
@@ -14589,7 +14610,7 @@
 			)
 		)
 		(net
-			(code "69")
+			(code "64")
 			(name "SCAN_DATA_P")
 			(class "Default")
 			(node
@@ -14605,7 +14626,7 @@
 			)
 		)
 		(net
-			(code "70")
+			(code "65")
 			(name "SCAN_LATCH")
 			(class "Default")
 			(node
@@ -14639,7 +14660,7 @@
 			)
 		)
 		(net
-			(code "71")
+			(code "66")
 			(name "SCAN_LATCH_P")
 			(class "Default")
 			(node
@@ -14655,7 +14676,50 @@
 			)
 		)
 		(net
-			(code "72")
+			(code "67")
+			(name "SET")
+			(class "Default")
+			(node
+				(ref "Q206")
+				(pin "1")
+				(pinfunction "G_1")
+				(pintype "input")
+			)
+			(node
+				(ref "R254")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U101")
+				(pin "D9")
+				(pinfunction "GPIO_B0_10_D9")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "68")
+			(name "SETG")
+			(class "Default")
+			(node
+				(ref "C251")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q205")
+				(pin "1")
+				(pinfunction "G_1")
+				(pintype "input")
+			)
+			(node
+				(ref "R253")
+				(pin "1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "69")
 			(name "SGTL_VAG")
 			(class "Default")
 			(node
@@ -14671,7 +14735,7 @@
 			)
 		)
 		(net
-			(code "73")
+			(code "70")
 			(name "SGTL_VDDA")
 			(class "Default")
 			(node
@@ -14697,7 +14761,7 @@
 			)
 		)
 		(net
-			(code "74")
+			(code "71")
 			(name "SGTL_VDDD")
 			(class "Default")
 			(node
@@ -14719,65 +14783,7 @@
 			)
 		)
 		(net
-			(code "75")
-			(name "SWV")
-			(class "Default")
-			(node
-				(ref "C205")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "Q202")
-				(pin "2")
-				(pinfunction "S_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R211")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R215")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW401")
-				(pin "5")
-				(pinfunction "SW2_5")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "76")
-			(name "SW_S")
-			(class "Default")
-			(node
-				(ref "C206")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R215")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R216")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U101")
-				(pin "L14")
-				(pinfunction "GPIO_AD_B0_13_L14")
-				(pintype "bidirectional")
-			)
-		)
-		(net
-			(code "77")
+			(code "72")
 			(name "SYSOFF")
 			(class "Default")
 			(node
@@ -14787,7 +14793,7 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "Q204")
+				(ref "Q208")
 				(pin "3")
 				(pinfunction "D_3")
 				(pintype "passive")
@@ -14800,7 +14806,7 @@
 			)
 		)
 		(net
-			(code "78")
+			(code "73")
 			(name "USB_DN")
 			(class "Default")
 			(node
@@ -14835,7 +14841,7 @@
 			)
 		)
 		(net
-			(code "79")
+			(code "74")
 			(name "USB_DP")
 			(class "Default")
 			(node
@@ -14870,11 +14876,16 @@
 			)
 		)
 		(net
-			(code "80")
+			(code "75")
 			(name "VBAT")
 			(class "Default")
 			(node
 				(ref "C203")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C250")
 				(pin "1")
 				(pintype "passive")
 			)
@@ -14890,9 +14901,18 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "SW401")
-				(pin "4")
-				(pinfunction "SW1_4")
+				(ref "R250")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R251")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R252")
+				(pin "1")
 				(pintype "passive")
 			)
 			(node
@@ -14907,9 +14927,15 @@
 				(pinfunction "BAT_3")
 				(pintype "passive")
 			)
+			(node
+				(ref "U403")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "power_in")
+			)
 		)
 		(net
-			(code "81")
+			(code "76")
 			(name "VBAT_S")
 			(class "Default")
 			(node
@@ -14935,7 +14961,7 @@
 			)
 		)
 		(net
-			(code "82")
+			(code "77")
 			(name "VBUS")
 			(class "Default")
 			(node
@@ -14993,7 +15019,7 @@
 			)
 		)
 		(net
-			(code "83")
+			(code "78")
 			(name "VBUS_F")
 			(class "Default")
 			(node
@@ -15012,7 +15038,7 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "R213")
+				(ref "R256")
 				(pin "1")
 				(pintype "passive")
 			)
@@ -15024,28 +15050,28 @@
 			)
 		)
 		(net
-			(code "84")
+			(code "79")
 			(name "VBUS_G")
 			(class "Default")
 			(node
-				(ref "Q204")
+				(ref "Q208")
 				(pin "1")
 				(pinfunction "G_1")
 				(pintype "input")
 			)
 			(node
-				(ref "R213")
+				(ref "R256")
 				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "R214")
+				(ref "R257")
 				(pin "1")
 				(pintype "passive")
 			)
 		)
 		(net
-			(code "85")
+			(code "80")
 			(name "VDD_HIGH_CAP")
 			(class "Default")
 			(node
@@ -15066,7 +15092,7 @@
 			)
 		)
 		(net
-			(code "86")
+			(code "81")
 			(name "VDD_SNVS_CAP")
 			(class "Default")
 			(node
@@ -15082,7 +15108,7 @@
 			)
 		)
 		(net
-			(code "87")
+			(code "82")
 			(name "VDD_SNVS_IN")
 			(class "Default")
 			(node
@@ -15108,7 +15134,7 @@
 			)
 		)
 		(net
-			(code "88")
+			(code "83")
 			(name "VDD_SOC")
 			(class "Default")
 			(node
@@ -15199,7 +15225,7 @@
 			)
 		)
 		(net
-			(code "89")
+			(code "84")
 			(name "VDD_USB_CAP")
 			(class "Default")
 			(node
@@ -15225,29 +15251,7 @@
 			)
 		)
 		(net
-			(code "90")
-			(name "VOL_W")
-			(class "Default")
-			(node
-				(ref "C401")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "SW401")
-				(pin "2")
-				(pinfunction "W_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "U101")
-				(pin "H13")
-				(pinfunction "GPIO_AD_B1_08_H13")
-				(pintype "bidirectional")
-			)
-		)
-		(net
-			(code "91")
+			(code "85")
 			(name "VSYS")
 			(class "Default")
 			(node
@@ -15291,7 +15295,7 @@
 			)
 		)
 		(net
-			(code "92")
+			(code "86")
 			(name "XTALI")
 			(class "Default")
 			(node
@@ -15318,7 +15322,7 @@
 			)
 		)
 		(net
-			(code "93")
+			(code "87")
 			(name "XTALO")
 			(class "Default")
 			(node
@@ -15340,7 +15344,7 @@
 			)
 		)
 		(net
-			(code "94")
+			(code "88")
 			(name "unconnected-(D102-Pad2)")
 			(class "Default")
 			(node
@@ -15350,7 +15354,7 @@
 			)
 		)
 		(net
-			(code "95")
+			(code "89")
 			(name "unconnected-(J201-SBU1-PadA8)")
 			(class "Default")
 			(node
@@ -15361,7 +15365,7 @@
 			)
 		)
 		(net
-			(code "96")
+			(code "90")
 			(name "unconnected-(J201-SBU2-PadB8)")
 			(class "Default")
 			(node
@@ -15372,29 +15376,18 @@
 			)
 		)
 		(net
-			(code "97")
-			(name "unconnected-(J301-TN-Pad5)")
+			(code "91")
+			(name "unconnected-(J301-TN-Pad3)")
 			(class "Default")
 			(node
 				(ref "J301")
-				(pin "5")
-				(pinfunction "TN_5")
+				(pin "3")
+				(pinfunction "TN_3")
 				(pintype "passive+no_connect")
 			)
 		)
 		(net
-			(code "98")
-			(name "unconnected-(SW402-DUM-Pad9)")
-			(class "Default")
-			(node
-				(ref "SW402")
-				(pin "9")
-				(pinfunction "DUM_9")
-				(pintype "passive+no_connect")
-			)
-		)
-		(net
-			(code "99")
+			(code "92")
 			(name "unconnected-(U101B-CCM_CLK1_N-PadP13)")
 			(class "Default")
 			(node
@@ -15405,7 +15398,7 @@
 			)
 		)
 		(net
-			(code "100")
+			(code "93")
 			(name "unconnected-(U101B-CCM_CLK1_P-PadN13)")
 			(class "Default")
 			(node
@@ -15416,7 +15409,7 @@
 			)
 		)
 		(net
-			(code "101")
+			(code "94")
 			(name "unconnected-(U101B-GPANAIO-PadN10)")
 			(class "Default")
 			(node
@@ -15427,7 +15420,7 @@
 			)
 		)
 		(net
-			(code "102")
+			(code "95")
 			(name "unconnected-(U101B-ONOFF-PadM6)")
 			(class "Default")
 			(node
@@ -15438,7 +15431,7 @@
 			)
 		)
 		(net
-			(code "103")
+			(code "96")
 			(name "unconnected-(U101B-PMIC_STBY_REQ-PadL7)")
 			(class "Default")
 			(node
@@ -15449,7 +15442,7 @@
 			)
 		)
 		(net
-			(code "104")
+			(code "97")
 			(name "unconnected-(U101B-TEST_MODE-PadK6)")
 			(class "Default")
 			(node
@@ -15460,7 +15453,7 @@
 			)
 		)
 		(net
-			(code "105")
+			(code "98")
 			(name "unconnected-(U101B-USB_OTG1_CHD_B-PadN12)")
 			(class "Default")
 			(node
@@ -15471,7 +15464,7 @@
 			)
 		)
 		(net
-			(code "106")
+			(code "99")
 			(name "unconnected-(U101B-USB_OTG2_DN-PadN7)")
 			(class "Default")
 			(node
@@ -15482,7 +15475,7 @@
 			)
 		)
 		(net
-			(code "107")
+			(code "100")
 			(name "unconnected-(U101B-USB_OTG2_DP-PadP7)")
 			(class "Default")
 			(node
@@ -15493,7 +15486,7 @@
 			)
 		)
 		(net
-			(code "108")
+			(code "101")
 			(name "unconnected-(U101B-WAKEUP-PadL6)")
 			(class "Default")
 			(node
@@ -15504,7 +15497,7 @@
 			)
 		)
 		(net
-			(code "109")
+			(code "102")
 			(name "unconnected-(U101C-GPIO_AD_B0_00-PadM14)")
 			(class "Default")
 			(node
@@ -15515,7 +15508,7 @@
 			)
 		)
 		(net
-			(code "110")
+			(code "103")
 			(name "unconnected-(U101C-GPIO_AD_B0_01-PadH10)")
 			(class "Default")
 			(node
@@ -15526,7 +15519,18 @@
 			)
 		)
 		(net
-			(code "111")
+			(code "104")
+			(name "unconnected-(U101C-GPIO_AD_B0_12-PadK14)")
+			(class "Default")
+			(node
+				(ref "U101")
+				(pin "K14")
+				(pinfunction "GPIO_AD_B0_12_K14")
+				(pintype "bidirectional+no_connect")
+			)
+		)
+		(net
+			(code "105")
 			(name "unconnected-(U101C-GPIO_AD_B0_14-PadH14)")
 			(class "Default")
 			(node
@@ -15537,7 +15541,7 @@
 			)
 		)
 		(net
-			(code "112")
+			(code "106")
 			(name "unconnected-(U101C-GPIO_AD_B0_15-PadL10)")
 			(class "Default")
 			(node
@@ -15548,7 +15552,7 @@
 			)
 		)
 		(net
-			(code "113")
+			(code "107")
 			(name "unconnected-(U101C-GPIO_AD_B1_04-PadL12)")
 			(class "Default")
 			(node
@@ -15559,7 +15563,7 @@
 			)
 		)
 		(net
-			(code "114")
+			(code "108")
 			(name "unconnected-(U101C-GPIO_AD_B1_05-PadK12)")
 			(class "Default")
 			(node
@@ -15570,7 +15574,7 @@
 			)
 		)
 		(net
-			(code "115")
+			(code "109")
 			(name "unconnected-(U101C-GPIO_AD_B1_06-PadJ12)")
 			(class "Default")
 			(node
@@ -15581,7 +15585,18 @@
 			)
 		)
 		(net
-			(code "116")
+			(code "110")
+			(name "unconnected-(U101C-GPIO_AD_B1_08-PadH13)")
+			(class "Default")
+			(node
+				(ref "U101")
+				(pin "H13")
+				(pinfunction "GPIO_AD_B1_08_H13")
+				(pintype "bidirectional+no_connect")
+			)
+		)
+		(net
+			(code "111")
 			(name "unconnected-(U101C-GPIO_AD_B1_12-PadH12)")
 			(class "Default")
 			(node
@@ -15592,7 +15607,7 @@
 			)
 		)
 		(net
-			(code "117")
+			(code "112")
 			(name "unconnected-(U101C-GPIO_AD_B1_13-PadH11)")
 			(class "Default")
 			(node
@@ -15603,7 +15618,7 @@
 			)
 		)
 		(net
-			(code "118")
+			(code "113")
 			(name "unconnected-(U101D-GPIO_B0_01-PadE7)")
 			(class "Default")
 			(node
@@ -15614,7 +15629,7 @@
 			)
 		)
 		(net
-			(code "119")
+			(code "114")
 			(name "unconnected-(U101D-GPIO_B0_02-PadE8)")
 			(class "Default")
 			(node
@@ -15625,7 +15640,7 @@
 			)
 		)
 		(net
-			(code "120")
+			(code "115")
 			(name "unconnected-(U101D-GPIO_B0_04-PadC8)")
 			(class "Default")
 			(node
@@ -15636,7 +15651,7 @@
 			)
 		)
 		(net
-			(code "121")
+			(code "116")
 			(name "unconnected-(U101D-GPIO_B0_05-PadB8)")
 			(class "Default")
 			(node
@@ -15647,7 +15662,7 @@
 			)
 		)
 		(net
-			(code "122")
+			(code "117")
 			(name "unconnected-(U101D-GPIO_B0_06-PadA8)")
 			(class "Default")
 			(node
@@ -15658,7 +15673,7 @@
 			)
 		)
 		(net
-			(code "123")
+			(code "118")
 			(name "unconnected-(U101D-GPIO_B0_07-PadA9)")
 			(class "Default")
 			(node
@@ -15669,7 +15684,7 @@
 			)
 		)
 		(net
-			(code "124")
+			(code "119")
 			(name "unconnected-(U101D-GPIO_B0_08-PadB9)")
 			(class "Default")
 			(node
@@ -15680,7 +15695,7 @@
 			)
 		)
 		(net
-			(code "125")
+			(code "120")
 			(name "unconnected-(U101D-GPIO_B0_09-PadC9)")
 			(class "Default")
 			(node
@@ -15691,18 +15706,7 @@
 			)
 		)
 		(net
-			(code "126")
-			(name "unconnected-(U101D-GPIO_B0_10-PadD9)")
-			(class "Default")
-			(node
-				(ref "U101")
-				(pin "D9")
-				(pinfunction "GPIO_B0_10_D9")
-				(pintype "bidirectional+no_connect")
-			)
-		)
-		(net
-			(code "127")
+			(code "121")
 			(name "unconnected-(U101D-GPIO_B0_11-PadA10)")
 			(class "Default")
 			(node
@@ -15713,7 +15717,7 @@
 			)
 		)
 		(net
-			(code "128")
+			(code "122")
 			(name "unconnected-(U101D-GPIO_B0_12-PadC10)")
 			(class "Default")
 			(node
@@ -15724,7 +15728,7 @@
 			)
 		)
 		(net
-			(code "129")
+			(code "123")
 			(name "unconnected-(U101D-GPIO_B0_14-PadE10)")
 			(class "Default")
 			(node
@@ -15735,7 +15739,7 @@
 			)
 		)
 		(net
-			(code "130")
+			(code "124")
 			(name "unconnected-(U101D-GPIO_B0_15-PadE11)")
 			(class "Default")
 			(node
@@ -15746,7 +15750,7 @@
 			)
 		)
 		(net
-			(code "131")
+			(code "125")
 			(name "unconnected-(U101D-GPIO_B1_00-PadA11)")
 			(class "Default")
 			(node
@@ -15757,7 +15761,7 @@
 			)
 		)
 		(net
-			(code "132")
+			(code "126")
 			(name "unconnected-(U101D-GPIO_B1_02-PadC11)")
 			(class "Default")
 			(node
@@ -15768,7 +15772,7 @@
 			)
 		)
 		(net
-			(code "133")
+			(code "127")
 			(name "unconnected-(U101D-GPIO_B1_03-PadD11)")
 			(class "Default")
 			(node
@@ -15779,7 +15783,7 @@
 			)
 		)
 		(net
-			(code "134")
+			(code "128")
 			(name "unconnected-(U101D-GPIO_B1_04-PadE12)")
 			(class "Default")
 			(node
@@ -15790,7 +15794,7 @@
 			)
 		)
 		(net
-			(code "135")
+			(code "129")
 			(name "unconnected-(U101D-GPIO_B1_05-PadD12)")
 			(class "Default")
 			(node
@@ -15801,7 +15805,7 @@
 			)
 		)
 		(net
-			(code "136")
+			(code "130")
 			(name "unconnected-(U101D-GPIO_B1_06-PadC12)")
 			(class "Default")
 			(node
@@ -15812,7 +15816,7 @@
 			)
 		)
 		(net
-			(code "137")
+			(code "131")
 			(name "unconnected-(U101D-GPIO_B1_07-PadB12)")
 			(class "Default")
 			(node
@@ -15823,7 +15827,7 @@
 			)
 		)
 		(net
-			(code "138")
+			(code "132")
 			(name "unconnected-(U101D-GPIO_B1_08-PadA12)")
 			(class "Default")
 			(node
@@ -15834,7 +15838,7 @@
 			)
 		)
 		(net
-			(code "139")
+			(code "133")
 			(name "unconnected-(U101D-GPIO_B1_09-PadA13)")
 			(class "Default")
 			(node
@@ -15845,7 +15849,7 @@
 			)
 		)
 		(net
-			(code "140")
+			(code "134")
 			(name "unconnected-(U101D-GPIO_B1_10-PadB13)")
 			(class "Default")
 			(node
@@ -15856,7 +15860,7 @@
 			)
 		)
 		(net
-			(code "141")
+			(code "135")
 			(name "unconnected-(U101D-GPIO_B1_11-PadC13)")
 			(class "Default")
 			(node
@@ -15867,7 +15871,7 @@
 			)
 		)
 		(net
-			(code "142")
+			(code "136")
 			(name "unconnected-(U101D-GPIO_B1_12-PadD13)")
 			(class "Default")
 			(node
@@ -15878,7 +15882,7 @@
 			)
 		)
 		(net
-			(code "143")
+			(code "137")
 			(name "unconnected-(U101D-GPIO_B1_13-PadD14)")
 			(class "Default")
 			(node
@@ -15889,7 +15893,7 @@
 			)
 		)
 		(net
-			(code "144")
+			(code "138")
 			(name "unconnected-(U101D-GPIO_B1_14-PadC14)")
 			(class "Default")
 			(node
@@ -15900,7 +15904,7 @@
 			)
 		)
 		(net
-			(code "145")
+			(code "139")
 			(name "unconnected-(U101D-GPIO_B1_15-PadB14)")
 			(class "Default")
 			(node
@@ -15911,7 +15915,7 @@
 			)
 		)
 		(net
-			(code "146")
+			(code "140")
 			(name "unconnected-(U101E-GPIO_EMC_00-PadE3)")
 			(class "Default")
 			(node
@@ -15922,7 +15926,7 @@
 			)
 		)
 		(net
-			(code "147")
+			(code "141")
 			(name "unconnected-(U101E-GPIO_EMC_02-PadF4)")
 			(class "Default")
 			(node
@@ -15933,7 +15937,7 @@
 			)
 		)
 		(net
-			(code "148")
+			(code "142")
 			(name "unconnected-(U101E-GPIO_EMC_03-PadG4)")
 			(class "Default")
 			(node
@@ -15944,7 +15948,7 @@
 			)
 		)
 		(net
-			(code "149")
+			(code "143")
 			(name "unconnected-(U101E-GPIO_EMC_07-PadH4)")
 			(class "Default")
 			(node
@@ -15955,7 +15959,7 @@
 			)
 		)
 		(net
-			(code "150")
+			(code "144")
 			(name "unconnected-(U101E-GPIO_EMC_09-PadC2)")
 			(class "Default")
 			(node
@@ -15966,7 +15970,7 @@
 			)
 		)
 		(net
-			(code "151")
+			(code "145")
 			(name "unconnected-(U101E-GPIO_EMC_10-PadG1)")
 			(class "Default")
 			(node
@@ -15977,7 +15981,7 @@
 			)
 		)
 		(net
-			(code "152")
+			(code "146")
 			(name "unconnected-(U101E-GPIO_EMC_11-PadG3)")
 			(class "Default")
 			(node
@@ -15988,7 +15992,7 @@
 			)
 		)
 		(net
-			(code "153")
+			(code "147")
 			(name "unconnected-(U101E-GPIO_EMC_12-PadH1)")
 			(class "Default")
 			(node
@@ -15999,7 +16003,7 @@
 			)
 		)
 		(net
-			(code "154")
+			(code "148")
 			(name "unconnected-(U101E-GPIO_EMC_13-PadA6)")
 			(class "Default")
 			(node
@@ -16010,7 +16014,7 @@
 			)
 		)
 		(net
-			(code "155")
+			(code "149")
 			(name "unconnected-(U101E-GPIO_EMC_14-PadB6)")
 			(class "Default")
 			(node
@@ -16021,7 +16025,7 @@
 			)
 		)
 		(net
-			(code "156")
+			(code "150")
 			(name "unconnected-(U101E-GPIO_EMC_15-PadB1)")
 			(class "Default")
 			(node
@@ -16032,7 +16036,7 @@
 			)
 		)
 		(net
-			(code "157")
+			(code "151")
 			(name "unconnected-(U101E-GPIO_EMC_16-PadA5)")
 			(class "Default")
 			(node
@@ -16043,7 +16047,7 @@
 			)
 		)
 		(net
-			(code "158")
+			(code "152")
 			(name "unconnected-(U101E-GPIO_EMC_17-PadA4)")
 			(class "Default")
 			(node
@@ -16054,7 +16058,7 @@
 			)
 		)
 		(net
-			(code "159")
+			(code "153")
 			(name "unconnected-(U101E-GPIO_EMC_18-PadB2)")
 			(class "Default")
 			(node
@@ -16065,7 +16069,7 @@
 			)
 		)
 		(net
-			(code "160")
+			(code "154")
 			(name "unconnected-(U101E-GPIO_EMC_19-PadB4)")
 			(class "Default")
 			(node
@@ -16076,7 +16080,7 @@
 			)
 		)
 		(net
-			(code "161")
+			(code "155")
 			(name "unconnected-(U101E-GPIO_EMC_20-PadA3)")
 			(class "Default")
 			(node
@@ -16087,7 +16091,7 @@
 			)
 		)
 		(net
-			(code "162")
+			(code "156")
 			(name "unconnected-(U101E-GPIO_EMC_21-PadC1)")
 			(class "Default")
 			(node
@@ -16098,7 +16102,7 @@
 			)
 		)
 		(net
-			(code "163")
+			(code "157")
 			(name "unconnected-(U101E-GPIO_EMC_22-PadF1)")
 			(class "Default")
 			(node
@@ -16109,7 +16113,7 @@
 			)
 		)
 		(net
-			(code "164")
+			(code "158")
 			(name "unconnected-(U101E-GPIO_EMC_23-PadG2)")
 			(class "Default")
 			(node
@@ -16120,7 +16124,7 @@
 			)
 		)
 		(net
-			(code "165")
+			(code "159")
 			(name "unconnected-(U101E-GPIO_EMC_24-PadD3)")
 			(class "Default")
 			(node
@@ -16131,7 +16135,7 @@
 			)
 		)
 		(net
-			(code "166")
+			(code "160")
 			(name "unconnected-(U101E-GPIO_EMC_25-PadD2)")
 			(class "Default")
 			(node
@@ -16142,7 +16146,7 @@
 			)
 		)
 		(net
-			(code "167")
+			(code "161")
 			(name "unconnected-(U101E-GPIO_EMC_26-PadB3)")
 			(class "Default")
 			(node
@@ -16153,7 +16157,7 @@
 			)
 		)
 		(net
-			(code "168")
+			(code "162")
 			(name "unconnected-(U101E-GPIO_EMC_27-PadA2)")
 			(class "Default")
 			(node
@@ -16164,7 +16168,7 @@
 			)
 		)
 		(net
-			(code "169")
+			(code "163")
 			(name "unconnected-(U101E-GPIO_EMC_28-PadD1)")
 			(class "Default")
 			(node
@@ -16175,7 +16179,7 @@
 			)
 		)
 		(net
-			(code "170")
+			(code "164")
 			(name "unconnected-(U101E-GPIO_EMC_29-PadE1)")
 			(class "Default")
 			(node
@@ -16186,7 +16190,7 @@
 			)
 		)
 		(net
-			(code "171")
+			(code "165")
 			(name "unconnected-(U101E-GPIO_EMC_30-PadC6)")
 			(class "Default")
 			(node
@@ -16197,7 +16201,7 @@
 			)
 		)
 		(net
-			(code "172")
+			(code "166")
 			(name "unconnected-(U101E-GPIO_EMC_31-PadC5)")
 			(class "Default")
 			(node
@@ -16208,7 +16212,7 @@
 			)
 		)
 		(net
-			(code "173")
+			(code "167")
 			(name "unconnected-(U101E-GPIO_EMC_32-PadD5)")
 			(class "Default")
 			(node
@@ -16219,7 +16223,7 @@
 			)
 		)
 		(net
-			(code "174")
+			(code "168")
 			(name "unconnected-(U101E-GPIO_EMC_33-PadC4)")
 			(class "Default")
 			(node
@@ -16230,7 +16234,7 @@
 			)
 		)
 		(net
-			(code "175")
+			(code "169")
 			(name "unconnected-(U101E-GPIO_EMC_34-PadD4)")
 			(class "Default")
 			(node
@@ -16241,7 +16245,7 @@
 			)
 		)
 		(net
-			(code "176")
+			(code "170")
 			(name "unconnected-(U101E-GPIO_EMC_35-PadE5)")
 			(class "Default")
 			(node
@@ -16252,7 +16256,7 @@
 			)
 		)
 		(net
-			(code "177")
+			(code "171")
 			(name "unconnected-(U101E-GPIO_EMC_36-PadC3)")
 			(class "Default")
 			(node
@@ -16263,7 +16267,7 @@
 			)
 		)
 		(net
-			(code "178")
+			(code "172")
 			(name "unconnected-(U101E-GPIO_EMC_37-PadE4)")
 			(class "Default")
 			(node
@@ -16274,7 +16278,7 @@
 			)
 		)
 		(net
-			(code "179")
+			(code "173")
 			(name "unconnected-(U101E-GPIO_EMC_38-PadD6)")
 			(class "Default")
 			(node
@@ -16285,7 +16289,7 @@
 			)
 		)
 		(net
-			(code "180")
+			(code "174")
 			(name "unconnected-(U101E-GPIO_EMC_39-PadB7)")
 			(class "Default")
 			(node
@@ -16296,7 +16300,7 @@
 			)
 		)
 		(net
-			(code "181")
+			(code "175")
 			(name "unconnected-(U101E-GPIO_EMC_40-PadA7)")
 			(class "Default")
 			(node
@@ -16307,7 +16311,7 @@
 			)
 		)
 		(net
-			(code "182")
+			(code "176")
 			(name "unconnected-(U101E-GPIO_EMC_41-PadC7)")
 			(class "Default")
 			(node
@@ -16318,7 +16322,7 @@
 			)
 		)
 		(net
-			(code "183")
+			(code "177")
 			(name "unconnected-(U101F-GPIO_SD_B0_00-PadJ4)")
 			(class "Default")
 			(node
@@ -16329,7 +16333,7 @@
 			)
 		)
 		(net
-			(code "184")
+			(code "178")
 			(name "unconnected-(U101F-GPIO_SD_B0_01-PadJ3)")
 			(class "Default")
 			(node
@@ -16340,7 +16344,7 @@
 			)
 		)
 		(net
-			(code "185")
+			(code "179")
 			(name "unconnected-(U101F-GPIO_SD_B0_02-PadJ1)")
 			(class "Default")
 			(node
@@ -16351,7 +16355,7 @@
 			)
 		)
 		(net
-			(code "186")
+			(code "180")
 			(name "unconnected-(U101F-GPIO_SD_B0_03-PadK1)")
 			(class "Default")
 			(node
@@ -16362,7 +16366,7 @@
 			)
 		)
 		(net
-			(code "187")
+			(code "181")
 			(name "unconnected-(U101F-GPIO_SD_B0_04-PadH2)")
 			(class "Default")
 			(node
@@ -16373,7 +16377,7 @@
 			)
 		)
 		(net
-			(code "188")
+			(code "182")
 			(name "unconnected-(U101F-GPIO_SD_B0_05-PadJ2)")
 			(class "Default")
 			(node
@@ -16384,7 +16388,7 @@
 			)
 		)
 		(net
-			(code "189")
+			(code "183")
 			(name "unconnected-(U101F-GPIO_SD_B1_00-PadL5)")
 			(class "Default")
 			(node
@@ -16395,7 +16399,7 @@
 			)
 		)
 		(net
-			(code "190")
+			(code "184")
 			(name "unconnected-(U101F-GPIO_SD_B1_01-PadM5)")
 			(class "Default")
 			(node
@@ -16406,7 +16410,7 @@
 			)
 		)
 		(net
-			(code "191")
+			(code "185")
 			(name "unconnected-(U101F-GPIO_SD_B1_02-PadM3)")
 			(class "Default")
 			(node
@@ -16417,7 +16421,7 @@
 			)
 		)
 		(net
-			(code "192")
+			(code "186")
 			(name "unconnected-(U101F-GPIO_SD_B1_03-PadM4)")
 			(class "Default")
 			(node
@@ -16428,7 +16432,7 @@
 			)
 		)
 		(net
-			(code "193")
+			(code "187")
 			(name "unconnected-(U101F-GPIO_SD_B1_04-PadP2)")
 			(class "Default")
 			(node
@@ -16439,7 +16443,7 @@
 			)
 		)
 		(net
-			(code "194")
+			(code "188")
 			(name "unconnected-(U101F-GPIO_SD_B1_05-PadN3)")
 			(class "Default")
 			(node
@@ -16450,7 +16454,7 @@
 			)
 		)
 		(net
-			(code "195")
+			(code "189")
 			(name "unconnected-(U102-PTA0{slash}IRQ_0-Pad14)")
 			(class "Default")
 			(node
@@ -16461,7 +16465,7 @@
 			)
 		)
 		(net
-			(code "196")
+			(code "190")
 			(name "unconnected-(U102-PTA2-Pad16)")
 			(class "Default")
 			(node
@@ -16472,7 +16476,7 @@
 			)
 		)
 		(net
-			(code "197")
+			(code "191")
 			(name "unconnected-(U102-PTB3{slash}IRQ_10-Pad11)")
 			(class "Default")
 			(node
@@ -16483,7 +16487,7 @@
 			)
 		)
 		(net
-			(code "198")
+			(code "192")
 			(name "unconnected-(U202-TMR-Pad14)")
 			(class "Default")
 			(node
@@ -16494,7 +16498,7 @@
 			)
 		)
 		(net
-			(code "199")
+			(code "193")
 			(name "unconnected-(U301-I2S_DOUT-Pad16)")
 			(class "Default")
 			(node
@@ -16505,7 +16509,7 @@
 			)
 		)
 		(net
-			(code "200")
+			(code "194")
 			(name "unconnected-(U301-LINEIN_L-Pad9)")
 			(class "Default")
 			(node
@@ -16516,7 +16520,7 @@
 			)
 		)
 		(net
-			(code "201")
+			(code "195")
 			(name "unconnected-(U301-LINEIN_R-Pad8)")
 			(class "Default")
 			(node
@@ -16527,7 +16531,7 @@
 			)
 		)
 		(net
-			(code "202")
+			(code "196")
 			(name "unconnected-(U301-LINEOUT_L-Pad7)")
 			(class "Default")
 			(node
@@ -16538,7 +16542,7 @@
 			)
 		)
 		(net
-			(code "203")
+			(code "197")
 			(name "unconnected-(U301-LINEOUT_R-Pad6)")
 			(class "Default")
 			(node
@@ -16549,7 +16553,7 @@
 			)
 		)
 		(net
-			(code "204")
+			(code "198")
 			(name "unconnected-(U301-MIC-Pad10)")
 			(class "Default")
 			(node
@@ -16560,7 +16564,7 @@
 			)
 		)
 		(net
-			(code "205")
+			(code "199")
 			(name "unconnected-(U301-MIC_BIAS-Pad11)")
 			(class "Default")
 			(node
@@ -16568,6 +16572,28 @@
 				(pin "11")
 				(pinfunction "MIC_BIAS_11")
 				(pintype "input+no_connect")
+			)
+		)
+		(net
+			(code "200")
+			(name "unconnected-(U401-INT-Pad5)")
+			(class "Default")
+			(node
+				(ref "U401")
+				(pin "5")
+				(pinfunction "INT_5")
+				(pintype "passive+no_connect")
+			)
+		)
+		(net
+			(code "201")
+			(name "unconnected-(U402-INT-Pad5)")
+			(class "Default")
+			(node
+				(ref "U402")
+				(pin "5")
+				(pinfunction "INT_5")
+				(pintype "passive+no_connect")
 			)
 		)
 	)
