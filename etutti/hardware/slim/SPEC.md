@@ -1,4 +1,14 @@
-# eTutti Slim — SPEC R6SL
+# eTutti Slim — SPEC R7SL
+
+## Mudanças desde a R6SL (25 nov 2026)
+
+Respostas do J às 3 perguntas do PR #223. **Etapa 2 fechada.** Sem tarefa nova para o Code: o próximo passo é a decisão do J sobre a próxima etapa.
+
+1. **LED do anel: verde puro em ânodo comum** (no lugar do verde‑amarelo de cátodo comum). O firmware inverte a lógica dos pinos 13 (R) e 5 (G). Aplicar junto com a próxima tarefa de eletrônica.
+2. **FFC:** aceita a faixa da principal 0,3 mm mais curta (vão 5,8 nas fileiras 2 e 4), fileira 4 com R 3,1.
+3. **Ensaio do pontilhado (4 botões):** testar **0,4 × 0,15**, **0,5 × 0,18** e **0,6 × 0,25** (lado × fundo, mm); o J escolhe pelo tato.
+
+---
 
 ## Mudanças desde a R5SL (25 nov 2026)
 
