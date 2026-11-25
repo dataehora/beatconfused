@@ -1,0 +1,15 @@
+(version 1)
+# eTutti Slim ruler R8 -- custom rules (R3SL, stage 2a). Routing (stage 3) works under these.
+(rule "Vias 0,5 / furo 0,3"
+    (condition "A.Type == 'via'")
+    (constraint via_diameter (min 0.5mm))
+    (constraint hole_size (min 0.3mm)))
+(rule "Trilhas: minimo 0,15; preferida 0,2"
+    (condition "A.Type == 'track'")
+    (constraint track_width (min 0.15mm) (opt 0.2mm)))
+(rule "OUT (analogico) a 0,3 mm de DADO/CLOCK/LATCH (diafonia na leitura)"
+    (condition "A.Type == 'track' && A.NetName == 'OUT' && (B.NetName == 'DATA' || B.NetName == 'CLK' || B.NetName == 'LATCH')")
+    (constraint clearance (min 0.3mm)))
+(rule "Nada no topo (lado das teclas): so cobre de trilha e plano, nenhuma peca"
+    (condition "A.Type == 'Footprint' && A.Layer == 'F.Cu' && !A.Reference.startsWith('SW') && !A.Reference.startsWith('H')")
+    (constraint disallow footprint))

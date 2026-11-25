@@ -10,7 +10,7 @@
    "5": "GND"
   },
   "code": "S1",
-  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "fp": "slim:TMAG5253_X2SON4_EE",
   "lcsc": "C22401868",
   "cls": "estendida",
   "mount": "JLC",
@@ -18,7 +18,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.6,
-  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/2cc5690a-5f39-50e4-8dcc-8353e1de502c"
  },
  {
   "ref": "U2",
@@ -31,7 +32,7 @@
    "5": "GND"
   },
   "code": "S2",
-  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "fp": "slim:TMAG5253_X2SON4_EE",
   "lcsc": "C22401868",
   "cls": "estendida",
   "mount": "JLC",
@@ -39,7 +40,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.6,
-  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/3fb23c9f-10f3-537c-86cc-08d6ccfe5359"
  },
  {
   "ref": "U3",
@@ -52,7 +54,7 @@
    "5": "GND"
   },
   "code": "S3",
-  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "fp": "slim:TMAG5253_X2SON4_EE",
   "lcsc": "C22401868",
   "cls": "estendida",
   "mount": "JLC",
@@ -60,7 +62,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.6,
-  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/dcf71845-daf2-5981-bf0f-927118b2b8ec"
  },
  {
   "ref": "U4",
@@ -73,7 +76,7 @@
    "5": "GND"
   },
   "code": "S4",
-  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "fp": "slim:TMAG5253_X2SON4_EE",
   "lcsc": "C22401868",
   "cls": "estendida",
   "mount": "JLC",
@@ -81,7 +84,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.6,
-  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/da280169-aa0c-579e-8aca-70919bcad510"
  },
  {
   "ref": "U5",
@@ -94,7 +98,7 @@
    "5": "GND"
   },
   "code": "S5",
-  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "fp": "slim:TMAG5253_X2SON4_EE",
   "lcsc": "C22401868",
   "cls": "estendida",
   "mount": "JLC",
@@ -102,7 +106,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.6,
-  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/73ca0806-a34a-5634-b014-a723a26365e6"
  },
  {
   "ref": "U6",
@@ -115,7 +120,7 @@
    "5": "GND"
   },
   "code": "S6",
-  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "fp": "slim:TMAG5253_X2SON4_EE",
   "lcsc": "C22401868",
   "cls": "estendida",
   "mount": "JLC",
@@ -123,7 +128,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.6,
-  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/793e8e30-9fe1-5d06-8491-9386535bfe2a"
  },
  {
   "ref": "U7",
@@ -136,7 +142,7 @@
    "5": "GND"
   },
   "code": "S7",
-  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "fp": "slim:TMAG5253_X2SON4_EE",
   "lcsc": "C22401868",
   "cls": "estendida",
   "mount": "JLC",
@@ -144,7 +150,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.6,
-  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/6724fa3d-b48b-53dd-9394-c595274763c5"
  },
  {
   "ref": "U8",
@@ -157,7 +164,7 @@
    "5": "GND"
   },
   "code": "S8",
-  "fp": "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm",
+  "fp": "slim:TMAG5253_X2SON4_EE",
   "lcsc": "C22401868",
   "cls": "estendida",
   "mount": "JLC",
@@ -165,7 +172,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.6,
-  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf"
+  "datasheet": "https://www.ti.com/lit/ds/symlink/tmag5253.pdf",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/99d3fddc-1702-56f9-8ee9-bf85e8ad1ffe"
  },
  {
   "ref": "U9",
@@ -190,7 +198,7 @@
    "7": "EN8"
   },
   "code": "S9",
-  "fp": "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm",
+  "fp": "slim:HC595_DHVQFN16_EE",
   "lcsc": "C730243",
   "cls": "estendida",
   "mount": "JLC",
@@ -198,7 +206,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.176,
-  "datasheet": "https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf"
+  "datasheet": "https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/1f630d42-57a7-5f83-9f12-62f93e01ad00"
  },
  {
   "ref": "J1",
@@ -215,7 +224,7 @@
    "MP": "GND"
   },
   "code": "S10",
-  "fp": "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal",
+  "fp": "slim:FFC_8P_0.5_KH-H1.0",
   "lcsc": "C3250113",
   "cls": "estendida",
   "mount": "JLC",
@@ -223,7 +232,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.1,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/3fabf566-6357-550c-a883-22940118f5c6"
  },
  {
   "ref": "C1",
@@ -241,7 +251,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.001,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/c8e1cf36-641b-58d9-b594-18e3da46a99b"
  },
  {
   "ref": "C2",
@@ -259,7 +270,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.001,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/deccde2d-dee0-516f-a60b-544f78951f7a"
  },
  {
   "ref": "C3",
@@ -277,7 +289,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.001,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/ce03180f-a199-58e3-9310-362cbbcaccae"
  },
  {
   "ref": "C4",
@@ -295,7 +308,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.001,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/769b47ea-8bdd-5f48-a327-637fec8b3325"
  },
  {
   "ref": "C5",
@@ -313,7 +327,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.001,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/c87e475e-274b-5805-9ae8-a7cbba88b8aa"
  },
  {
   "ref": "C6",
@@ -331,7 +346,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.001,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/805d84f8-c62f-5232-bb44-d00febc17f80"
  },
  {
   "ref": "C7",
@@ -349,7 +365,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.001,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/41cbe916-88ff-547e-943b-4f4ccc300678"
  },
  {
   "ref": "C8",
@@ -367,7 +384,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.001,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/0f6accf8-572e-5cfb-b597-33e480e55a73"
  },
  {
   "ref": "C9",
@@ -385,7 +403,8 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.001,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/89c5493b-7c1b-57ce-9e6d-ecc068e56974"
  },
  {
   "ref": "C10",
@@ -403,6 +422,7 @@
   "dnp": false,
   "sheet": "R",
   "price": 0.008,
-  "datasheet": ""
+  "datasheet": "",
+  "path": "/bdf15e72-6526-539e-b474-f8d4054b25ba/43f3e6bf-683b-567a-a921-d4ed2152b370/0151e5ac-0a68-5104-9084-18308483bbb8"
  }
 ]

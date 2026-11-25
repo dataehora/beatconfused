@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\slim\\pcb\\kicad\\slim.kicad_sch")
-		(date "2026-11-25T11:12:52")
+		(date "2026-11-25T11:31:43")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -9054,7 +9054,7 @@
 		(comp
 			(ref "J601")
 			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
-			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+			(footprint "slim:FFC_8P_0.5_KH-H1.0")
 			(description "fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
@@ -9064,7 +9064,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+					(name "Footprint") "slim:FFC_8P_0.5_KH-H1.0")
 				(field
 					(name "Datasheet")
 				)
@@ -9147,7 +9147,7 @@
 		(comp
 			(ref "J602")
 			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
-			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+			(footprint "slim:FFC_8P_0.5_KH-H1.0")
 			(description "fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
@@ -9157,7 +9157,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+					(name "Footprint") "slim:FFC_8P_0.5_KH-H1.0")
 				(field
 					(name "Datasheet")
 				)
@@ -9240,7 +9240,7 @@
 		(comp
 			(ref "J603")
 			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
-			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+			(footprint "slim:FFC_8P_0.5_KH-H1.0")
 			(description "fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
@@ -9250,7 +9250,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+					(name "Footprint") "slim:FFC_8P_0.5_KH-H1.0")
 				(field
 					(name "Datasheet")
 				)
@@ -9333,7 +9333,7 @@
 		(comp
 			(ref "J604")
 			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
-			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+			(footprint "slim:FFC_8P_0.5_KH-H1.0")
 			(description "fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
@@ -9343,7 +9343,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+					(name "Footprint") "slim:FFC_8P_0.5_KH-H1.0")
 				(field
 					(name "Datasheet")
 				)
