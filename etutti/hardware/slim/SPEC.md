@@ -1,4 +1,16 @@
-# eTutti Slim — SPEC R8SL
+# eTutti Slim — SPEC R9SL
+
+## Mudanças desde a R8SL (25 nov 2026)
+
+Resposta do J ao PR #226. **Portão F‑1 fechado:** o J ouviu os 7 registros no Teensy 4.0, todos tocam. **Portão C‑régua aprovado** com o ajuste de furos do item 1 (refazer a rota só onde os furos mudam).
+
+1. **Fixação da régua e da grade só nas pontas.** Sai o M2 escareado do meio do teclado (deixava 0,05 mm de FR‑4 até o furo da switch). Régua e grade ficam presas por M2 **fora das teclas**: na cauda e depois da posição 8 (ou onde couber nas pontas). Entre as pontas, a switch prende na grade, os pinos dela entram na régua, a base dá apoio contínuo e o tampo limita a subida. **Reserva**, se não houver espaço nas pontas: escareado menor para cabeça DIN 965 (~3,8 mm, parede de ~0,35 mm), registrado como risco.
+2. **Pistas EN de 0,15 mm: aceitas** (padrão JLCPCB, só sinal lógico).
+3. **R410 (LED verde) = 47 Ω**; brilho final ajustado por PWM no firmware.
+4. **Etapa 3b começa pelo escape do BGA do RT1062, numa etapa e sessão do Code dedicadas, com relato passo a passo ao J** (§8.2). Salvaguarda: se o escape não fechar em **2 sessões**, o J roteia o restante da principal com o Freerouting (como no Viaggio) e o Code entrega a placa, as regras e o DSN prontos.
+5. **Regra de comunicação (J):** as perguntas ao J trazem contexto suficiente (o problema, os números e as opções) para ele decidir sem abrir os relatórios do Code. Vale para o `FIT_CHECK.md` e para a mensagem de volta.
+
+---
 
 ## Mudanças desde a R7SL (25 nov 2026)
 
@@ -317,62 +329,45 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 | Demais peças JLCPCB | ✔ EasyEDA (`modelos/baixados/`, fora do Git) |
 | Pot com chave, SRBV | — saíram do projeto na R2SL |
 
-## 8. Tarefa da R8SL: Etapa 3a (roteamento da régua) + frente de firmware
+## 8. Tarefa da R9SL — duas sessões separadas do Code
 
-### 8.1 Etapa 3a — roteamento da régua R8 e da grade [Roteamento + Eletrônica]
+### 8.1 Sessão A — ajustes da régua e da principal [Eletrônica + Design + Roteamento]
 
-- **Quem:** o agente **roteamento**, que só roteia: **não move peça**. Mudança de posição é pedida à eletrônica, com justificativa, e volta pelo portão B da régua.
-- **Antes:** a eletrônica aplica a decisão 1 da R7SL (LED do anel em ânodo comum) no esquema da principal. Ela não afeta a régua, mas fecha o pendente.
-- **Método:** compare **KiCadRoutingTools** (instalado pelo J) com o roteador próprio do repositório, na régua. Escolha e justifique no `ROTEAMENTO.md` (novo, em `slim/`) com números:
-  - tempo;
-  - número de vias;
-  - comprimento total;
-  - avisos;
-  - facilidade de repetir.
-- **Etapas idempotentes e retomáveis:** estado em `slim/pcb/regua/rota/estado.json`, cada etapa com menos de ~10 min, commit por etapa concluída num ramo de trabalho.
-- **Regras:** 2 camadas, 1,2 mm.
-  - A linha analógica OUT fica longe de CLOCK/LATCH; o critério vai no `.kicad_dru`.
-  - GND em plano na face de cima, sem ilhas.
-  - Larguras e vias dentro do mínimo da JLCPCB padrão (sem custo extra).
-- **Aceite (portão C‑régua):**
-  - DRC com **0 erros e 0 avisos**;
-  - 0 itens não ligados;
-  - paridade 0;
-  - sem trilha abaixo do mínimo, sem ponta solta, sem ilha de plano.
-- **Grade:** confere os Gerbers da grade (furos 14,00 com dog‑bone, escareados M2, sem cobre perto dos furos).
-- **Entrega:**
-  - placa roteada;
-  - `ROTEAMENTO.md` com a comparação dos métodos;
-  - imagens da régua (frente/verso) com o nome da nota em cada tecla.
+1. **Eletrônica:**
+   - furos M2 da régua e da grade nas pontas (item 1), com o furo cego da cauda e da ponta direita conferido contra a base do case;
+   - R410 = 47 Ω (item 3);
+   - ERC 0/0 nas duas placas.
+2. **Design:**
+   - base do case com os apoios/porcas dos M2 nas novas posições;
+   - grade sem escareado no meio;
+   - `RESTRICOES_CASE.md` atualizado.
+3. **Roteamento:** refazer na régua só o que os furos deslocam, pelo método híbrido da R8SL. Aceite C‑régua: DRC 0/0, 0 não ligados, paridade 0.
+4. Gerbers da grade conferidos de novo.
+5. `FIT_CHECK.md` com as perguntas **já com contexto** (item 5).
+6. Parar.
 
-### 8.2 Frente de firmware completo [Programação e som]
+### 8.2 Sessão B — Etapa 3b‑1: escape do BGA do RT1062 [Roteamento, sessão dedicada]
 
-O sketch `etutti/firmware/slim/` (Teensy 4.1) ganha o instrumento de verdade. **Copie, não referencie** o motor de som do `etutti_synth`/V4, que fica congelado.
+**Uma sessão própria do Code, só para isto. Em cada passo o Code para, mostra o resultado ao J numa mensagem curta, com imagem, e só segue quando o J disser "siga".**
 
-1. **Som:**
-   - acordeon com as amostras de palhetas (`reed_sampler.h`; as amostras `reed_samples.cpp/.h` são licenciadas e **nunca** entram no Git: sem elas o sketch compila com as tabelas sintetizadas);
-   - velocidade como pressão do fole;
-   - os 7 registros pela ordem e pelos nomes da SPEC §4.
-2. **Teclado:**
-   - varredura das 4 réguas pela cadeia 74HC595 + TMAG5253;
-   - nota ligada e desligada com velocidade;
-   - calibração de repouso e fundo, como na eTuttino.
-3. **Knobs magnéticos:**
-   - TMAG5273 (0x35 registros / 0x22 volume) com 7 posições com histerese e memória;
-   - volume contínuo;
-   - OFF pela chave Hall + latch SET/KILL;
-   - desligamento automático.
-4. **LED do anel**, já em ânodo comum: estados de ligado, carregando, bateria baixa e erro de sensor.
-5. **USB:** MIDI com Full Speed forçado, as funções USB da V4 e nome "eTutti".
-6. **Teste sem placa:** um modo de compilação (`#define SLIM_BANCADA`) para o **Teensy 4.0 do J** com Audio Board, que troca a varredura real por teclas simuladas (MIDI de entrada ou um padrão automático) e deixa os sensores ausentes inofensivos. A versão de produção compila para `teensy:avr:teensy41`.
-7. **Aceite (portão F‑1):**
-   - as duas versões compilam;
-   - `check_pins.py`, `check_teclas.py` e `check_placa.py` passam;
-   - o sketch roda no Teensy 4.0 do J (o J já autorizou gravar o Teensy dele): o som sai pelo fone com os 7 registros e há CPU e memória medidas;
-   - `FIRMWARE.md` atualizado.
+- **B1 — Regras e camadas.** Proponha e justifique, sem cotação:
+  - stack‑up de 4 camadas da JLCPCB;
+  - via para o BGA de 0,8 mm (furo e anel dentro do padrão da JLCPCB, ou o custo extra, se exigir);
+  - largura e folga entre bolas;
+  - papel de cada camada (sinal / GND / 3V3);
+  - regras no `.kicad_dru`.
+- **B2 — Plano de escape.**
+  - Mapa das 196 bolas: anel por anel, em qual camada cada uma sai e por que lado.
+  - Bolas não usadas e de alimentação ligadas aos planos.
+  - Pares e sinais sensíveis (USB, I²S, cristal, flash) com o caminho previsto.
+  - Imagem do mapa.
+- **B3 — Escape.**
+  - Rodar o `bga_fanout.py` do KiCadRoutingTools (ou o método melhor que o B1/B2 indicarem) só no RT1062 e vizinhos imediatos (cristal, desacoplamentos, flash, MKL02).
+  - DRC dessa região.
+  - Imagem.
+- **B4 — Avaliação.**
+  - Quantas bolas escaparam e o que falta.
+  - Se o resto da placa parece roteável pelo mesmo método.
+  - Recomendação: seguir com o Code ou passar ao J com o Freerouting (item 4).
 
-### 8.3 Fecho
-
-- `FIT_CHECK.md`: resumo da R8SL e **"Perguntas para o design"**.
-- Parar nos portões **C‑régua** e **F‑1**. A placa principal **não** é roteada nesta revisão.
-- Nada de cotação ou compra.
+Aceite da 3b‑1: todas as bolas usadas com escape até fora da sombra do BGA, DRC da região 0/0, paridade 0. Estado em `slim/pcb/principal/rota/estado.json`, um commit por passo concluído, `ROTEAMENTO.md` atualizado. Nada de cotação ou compra.
