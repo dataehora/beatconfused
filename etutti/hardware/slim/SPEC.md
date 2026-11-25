@@ -1,4 +1,21 @@
-# eTutti Slim — SPEC R11SL
+# eTutti Slim — SPEC R12SL
+
+## Mudanças desde a R11SL (25 nov 2026)
+
+Resposta do J à sessão A3 (PR #234): **tudo aprovado.**
+
+1. **Faixa da principal: 20,7 mm, aceita.** A sessão B confirma no B2 se o escape do RT1062 cabe nela.
+2. **Case encurtado para ~245,5 mm** (−2,5 mm, só à direita), com folga de ~3,35 mm entre a régua e a parede direita nas fileiras 1 e 3. Exterior aprovado pelo J. O Code ajusta para o valor redondo mais próximo que mantenha a folga ≥ 3,0 mm e informa o número final.
+3. **Guia da porca: parede de 0,7 mm aceita, com um alívio de ~0,4 mm** na face da guia voltada para o U9. Assim a guia não encosta no chip com a tolerância de ±0,3 mm do MJF. Folga final guia–U9 ≥ 0,5 mm. O resultado vai para o `RESTRICOES_CASE.md`, com o teste no protótipo registrado como risco.
+4. **Cabo FFC de 20 mm, mantido.** A barriga fica ~2 mm abaixo do tampo e a sobra de cabo facilita o encaixe com a régua fora.
+5. **Modelos 3D:**
+   - Cabo FFC, M2, porca e espaçador desenhados pelas medidas da norma: **aceitos**.
+   - As peças da principal que estão em caixa (D101, D102, D201, D401, FB301, J202, L101, L102, Q201–Q209, SW403, U102, U103, U201, U302, Y102) ganham o **STEP do EasyEDA pelo código LCSC**, baixado em lotes pequenos com `curl` simples. A API recusa depois de ~15 consultas, então espere entre lotes.
+   - O que não for obtido vai **listado ao J**, com o código LCSC e o fabricante, para ele fornecer.
+6. **Sessão B (BGA):** a placa principal não muda com os itens 2 a 5. A sessão B pode **recomeçar já, a partir do `main` atual**, em paralelo com a sessão A4.
+
+---
+
 
 ## Mudanças desde a R10SL (25 nov 2026)
 
@@ -407,7 +424,7 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 
 ## 8. Tarefas abertas — sessões do Code
 
-A §8.1 (sessão A da R9SL) foi concluída no PR #228. A §8.2 (sessão B, BGA) continua valendo. A R10SL acrescentou a §8.3 (feita no PR #231). A R11SL acrescenta a §8.4; a sessão B recomeça do `main` atual (R11SL item 3).
+A §8.1 (sessão A da R9SL) foi concluída no PR #228. A §8.2 (sessão B, BGA) continua valendo. A R10SL acrescentou a §8.3 (feita no PR #231). A R11SL acrescentou a §8.4 (feita no PR #234). A R12SL acrescenta a §8.5 (sessão A4); a sessão B recomeça já do `main` atual, em paralelo (R12SL item 6).
 
 ### 8.1 Sessão A — ajustes da régua e da principal [Eletrônica + Design + Roteamento]
 
@@ -491,3 +508,18 @@ Substitui a fixação da cauda feita na §8.3.
    - as perguntas 2 e 3 da A2 recolocadas com os números novos;
    - a lista de **todas** as imagens geradas, com caminho e uma linha de legenda.
 5. Commit → PR → merge. Parar.
+
+### 8.5 Sessão A4 — case 245,5, alívio da guia e modelos 3D [Design + Eletrônica]
+
+Não mexe na placa principal nem na rota da régua. Pode rodar em paralelo à sessão B.
+
+1. **Design:**
+   - case encurtado à direita (R12SL item 2), com o número final e a folga;
+   - alívio da guia voltada para o U9 (item 3);
+   - fit check sem interferência;
+   - `RESTRICOES_CASE.md` e "Resumo dos limitantes" atualizados;
+   - `base.step` e `conjunto.glb` regenerados;
+   - os 7 passos de montagem re-renderizados.
+2. **Eletrônica:** baixar do EasyEDA os STEP das peças da principal que estão em caixa (item 5). Os modelos vão para `slim/modelos/` (ou para a pasta já usada pelos scripts de cena) e entram na cena da principal e nos passos 2 a 7. Listar o que faltar.
+3. `FIT_CHECK.md` com as perguntas com contexto e a lista de **todas** as imagens geradas, com caminho e uma linha de legenda.
+4. Commit → PR → merge. Parar.
