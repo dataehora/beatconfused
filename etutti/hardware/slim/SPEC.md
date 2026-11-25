@@ -1,4 +1,21 @@
-# eTutti Slim — SPEC R5SL
+# eTutti Slim — SPEC R6SL
+
+## Mudanças desde a R5SL (25 nov 2026)
+
+Resposta do J ao PR #221 (5 perguntas). **Portão B da placa principal aprovado** com os ajustes abaixo; esta revisão **fecha a Etapa 2**. Depois dela, o Code para e espera o J.
+
+1. **Botão mais baixo (cabeça Ø15 × 3,8, metade da R5SL)**, fiel ao botão de acordeon cromático profissional. Modelo do Chat em `conceito/botao3d/` (STL branco liso, preto liso e branco com textura; renders; script Blender `mk.py`) e corte em `conceito/img/botao_baixo.png`.
+   - Perfil da cabeça: base plana; **lateral reta de 1,6 mm**; borda arredondada (quarto de elipse 1,3 radial × 1,15 vertical); **domo esférico** até o topo a 3,8 mm.
+   - **Não mudam:** haste Ø10 × 5,85, pino Ø5,4 com cruz fêmea, furo do tampo Ø11, **folga de 2,0 mm sobre a borda alta do furo no fim do curso**.
+   - Topos em repouso: **24,0 / 26,0 / 28,0 / 31,0** (fileiras 1–4); apertado: 20,5 / 22,5 / 24,5 / 27,5. **Altura do instrumento 31,0** (era 34,7). O Code confere com o tampo real.
+   - **Textura de C e F: pontilhado diagonal, como na V4** (não mais a covinha). Ponto de partida: quadradinhos de 0,5 mm rebaixados 0,18 mm, grade a 45° com passo de 1,1 mm, dentro de Ø11 no domo. O Code confere o que a SLA reproduz bem; o ensaio dos 4 botões decide.
+   - Cores: naturais brancas, sustenidos pretos, C e F brancos com o pontilhado. Material SLA tough; acabamento na fase de cotação. Sem feltro (o botão não encosta no case).
+2. **FFC: 20 mm sob medida, os 4 iguais.** Na fileira 4 o raio da curva no corte é 2,9 mm, abaixo do mínimo estimado (3,0): o Code confere o raio mínimo na folha do cabo e ajusta a curva ou o comprimento.
+3. **Bateria substituta BAK LP‑523450‑1S‑3 (Farnell UK 2077888) aceita como reserva**; folha em `fornecimento/bateria/BAK_LP-523450-1S-3_Farnell2077888.pdf`: 950 mAh, máx. 5,2 × 34,5 × 52, PCM + **NTC 10 k em 3 fios**, conector Molex 5264‑0300 (trocado pelo rabicho SH), carga ≤ 0,5 C (20–45 °C), **descarga contínua máx. 0,5 C (≈475 mA)**. O Code confirma que o pico de consumo do instrumento fica abaixo de 475 mA; senão a BAK sai da lista. Sem STEP: envelope da folha. A principal continua a VARTA 56457 201 016.
+4. **Saia do knob Ø18,4 no poço Ø19,0:** aprovada.
+5. **LED do anel: bicolor 0805 ou 1206 na face de cima, soldado em casa** (o 1615 é pequeno demais para solda manual).
+
+---
 
 ## Mudanças desde a R4SL (25 nov 2026)
 
@@ -272,18 +289,9 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 | Demais peças JLCPCB | ✔ EasyEDA (`modelos/baixados/`, fora do Git) |
 | Pot com chave, SRBV | — saíram do projeto na R2SL |
 
-## 8. Tarefa da R5SL: fechar a Etapa 2 (portão B da placa principal)
+## 8. Tarefa da R6SL: fechar a Etapa 2
 
-**Ordem:** Design → Eletrônica → Programação e som.
-
-1. **[Design]**
-   - Botão novo (item 3): STEP em `estudos/botao/`, cortes cotados em repouso e apertado **nas 4 fileiras** com a switch real e o tampo real, textura de C e F, versões branca e preta.
-   - Tampo: furos Ø11 sem rebaixo; vista lateral e altura total novas.
-   - Knobs S2 com saia (item 2).
-   - Bateria: substitutas e conferência da baia (item 1).
-   - FFC de 30 mm com curva em S: corte com o raio mínimo do cabo (item 4).
-   - `RESTRICOES_CASE.md` atualizado, em destaque o que muda o lado de fora (altura dos botões, furos).
-   - **Figura de planta do teclado com o nome da nota em cada botão**, naturais brancas, sustenidos pretos, C e F com a textura.
-2. **[Eletrônica]** LED do anel (item 6); pinagem invertida dos FFC confirmada no esquema (ERC 0/0); bateria: tabela das substitutas no `ELETRONICA.md`; DRC sem trilhas 0/0 e paridade 0 depois de qualquer mudança; `POSICIONAMENTO.md` atualizado.
-3. **[Programação e som]** Conferir pinos × placa depois das mudanças.
-4. **`FIT_CHECK.md`**: resumo da R5SL e **"Perguntas para o design"**. Parar no **portão B da placa principal**. Nada de cotação ou compra.
+1. **[Design]** Botão baixo (item 1): STEP branco, preto e C/F em `estudos/botao/`, cortes nas 4 fileiras, altura total; planta do teclado com o pontilhado em C e F; FFC da fileira 4 (item 2); `RESTRICOES_CASE.md` (altura 31,0).
+2. **[Eletrônica]** LED bicolor 0805/1206 na face de cima (item 5); BAK no `ELETRONICA.md` com o pico de consumo × 475 mA (item 3); FFC de 20 mm; DRC sem trilhas 0/0, paridade 0, ERC 0/0.
+3. **[Programação e som]** Pino(s) do LED bicolor × firmware; pico de consumo estimado para o item 3.
+4. **`FIT_CHECK.md`**: resumo e "Perguntas para o design". **Parar ao fim da Etapa 2** e esperar o J. Nada de cotação ou compra.
