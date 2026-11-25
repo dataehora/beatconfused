@@ -1,4 +1,22 @@
-# eTutti Slim — SPEC R7SL
+# eTutti Slim — SPEC R8SL
+
+## Mudanças desde a R7SL (25 nov 2026)
+
+O J aprovou o plano de etapas (abaixo). Começam **em paralelo**: a **Etapa 3a (roteamento da régua R8 + grade)** e a **frente de firmware completo**. Cada uma é independente da outra.
+
+**Plano de etapas (cada uma termina num portão que o J aprova):**
+
+| Etapa | Entrega | Portão |
+|---|---|---|
+| 3a | Roteamento da régua R8 (2 camadas) + grade | C‑régua |
+| 3b | Roteamento da placa principal (4 camadas), em sessões curtas: escape do BGA → alimentação/planos → par USB → resto | C‑principal |
+| 4 | Gerbers, BOM e CPL JLCPCB (só por baixo, CPL pelos pads do EasyEDA), firmware × placa roteada, rigidez, conferência completa do case | D (pronto para cotar) |
+| 5 | Case final (acabamento, STEP/STL), manual de montagem | E |
+| 6 | Cotação — **só quando o J mandar** | — |
+| 7 | Protótipo: compra, montagem, ensaios na ordem de risco (4 botões, ímãs dos knobs, corrente em OFF, USB, teclado) | final |
+| paralela | Firmware completo, testável no Teensy 4.0 do J | F‑1 |
+
+---
 
 ## Mudanças desde a R6SL (25 nov 2026)
 
@@ -299,9 +317,62 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 | Demais peças JLCPCB | ✔ EasyEDA (`modelos/baixados/`, fora do Git) |
 | Pot com chave, SRBV | — saíram do projeto na R2SL |
 
-## 8. Tarefa da R6SL: fechar a Etapa 2
+## 8. Tarefa da R8SL: Etapa 3a (roteamento da régua) + frente de firmware
 
-1. **[Design]** Botão baixo (item 1): STEP branco, preto e C/F em `estudos/botao/`, cortes nas 4 fileiras, altura total; planta do teclado com o pontilhado em C e F; FFC da fileira 4 (item 2); `RESTRICOES_CASE.md` (altura 31,0).
-2. **[Eletrônica]** LED bicolor 0805/1206 na face de cima (item 5); BAK no `ELETRONICA.md` com o pico de consumo × 475 mA (item 3); FFC de 20 mm; DRC sem trilhas 0/0, paridade 0, ERC 0/0.
-3. **[Programação e som]** Pino(s) do LED bicolor × firmware; pico de consumo estimado para o item 3.
-4. **`FIT_CHECK.md`**: resumo e "Perguntas para o design". **Parar ao fim da Etapa 2** e esperar o J. Nada de cotação ou compra.
+### 8.1 Etapa 3a — roteamento da régua R8 e da grade [Roteamento + Eletrônica]
+
+- **Quem:** o agente **roteamento**, que só roteia: **não move peça**. Mudança de posição é pedida à eletrônica, com justificativa, e volta pelo portão B da régua.
+- **Antes:** a eletrônica aplica a decisão 1 da R7SL (LED do anel em ânodo comum) no esquema da principal. Ela não afeta a régua, mas fecha o pendente.
+- **Método:** compare **KiCadRoutingTools** (instalado pelo J) com o roteador próprio do repositório, na régua. Escolha e justifique no `ROTEAMENTO.md` (novo, em `slim/`) com números:
+  - tempo;
+  - número de vias;
+  - comprimento total;
+  - avisos;
+  - facilidade de repetir.
+- **Etapas idempotentes e retomáveis:** estado em `slim/pcb/regua/rota/estado.json`, cada etapa com menos de ~10 min, commit por etapa concluída num ramo de trabalho.
+- **Regras:** 2 camadas, 1,2 mm.
+  - A linha analógica OUT fica longe de CLOCK/LATCH; o critério vai no `.kicad_dru`.
+  - GND em plano na face de cima, sem ilhas.
+  - Larguras e vias dentro do mínimo da JLCPCB padrão (sem custo extra).
+- **Aceite (portão C‑régua):**
+  - DRC com **0 erros e 0 avisos**;
+  - 0 itens não ligados;
+  - paridade 0;
+  - sem trilha abaixo do mínimo, sem ponta solta, sem ilha de plano.
+- **Grade:** confere os Gerbers da grade (furos 14,00 com dog‑bone, escareados M2, sem cobre perto dos furos).
+- **Entrega:**
+  - placa roteada;
+  - `ROTEAMENTO.md` com a comparação dos métodos;
+  - imagens da régua (frente/verso) com o nome da nota em cada tecla.
+
+### 8.2 Frente de firmware completo [Programação e som]
+
+O sketch `etutti/firmware/slim/` (Teensy 4.1) ganha o instrumento de verdade. **Copie, não referencie** o motor de som do `etutti_synth`/V4, que fica congelado.
+
+1. **Som:**
+   - acordeon com as amostras de palhetas (`reed_sampler.h`; as amostras `reed_samples.cpp/.h` são licenciadas e **nunca** entram no Git: sem elas o sketch compila com as tabelas sintetizadas);
+   - velocidade como pressão do fole;
+   - os 7 registros pela ordem e pelos nomes da SPEC §4.
+2. **Teclado:**
+   - varredura das 4 réguas pela cadeia 74HC595 + TMAG5253;
+   - nota ligada e desligada com velocidade;
+   - calibração de repouso e fundo, como na eTuttino.
+3. **Knobs magnéticos:**
+   - TMAG5273 (0x35 registros / 0x22 volume) com 7 posições com histerese e memória;
+   - volume contínuo;
+   - OFF pela chave Hall + latch SET/KILL;
+   - desligamento automático.
+4. **LED do anel**, já em ânodo comum: estados de ligado, carregando, bateria baixa e erro de sensor.
+5. **USB:** MIDI com Full Speed forçado, as funções USB da V4 e nome "eTutti".
+6. **Teste sem placa:** um modo de compilação (`#define SLIM_BANCADA`) para o **Teensy 4.0 do J** com Audio Board, que troca a varredura real por teclas simuladas (MIDI de entrada ou um padrão automático) e deixa os sensores ausentes inofensivos. A versão de produção compila para `teensy:avr:teensy41`.
+7. **Aceite (portão F‑1):**
+   - as duas versões compilam;
+   - `check_pins.py`, `check_teclas.py` e `check_placa.py` passam;
+   - o sketch roda no Teensy 4.0 do J (o J já autorizou gravar o Teensy dele): o som sai pelo fone com os 7 registros e há CPU e memória medidas;
+   - `FIRMWARE.md` atualizado.
+
+### 8.3 Fecho
+
+- `FIT_CHECK.md`: resumo da R8SL e **"Perguntas para o design"**.
+- Parar nos portões **C‑régua** e **F‑1**. A placa principal **não** é roteada nesta revisão.
+- Nada de cotação ou compra.
