@@ -117,3 +117,7 @@ Aceito pela SPEC. Foi **comprovado no sketch** que `USB1_PORTSC1 |= USB_PORTSC1_
 ## Perguntas para o design
 
 As perguntas completas (inclusive as de posicionamento) estão em `FIT_CHECK.md`, no fim.
+
+## R3SL (Etapa 2a)
+
+A régua R8 e a grade foram posicionadas (sem rotas) e a placa principal **não** foi tocada: ver `POSICIONAMENTO.md`. O esquema da régua passou a usar footprints próprios (`TMAG5253_X2SON4_EE`, `HC595_DHVQFN16_EE`, `FFC_8P_0.5_KH-H1.0`, `KS33D_holes`, com os pads do EasyEDA, que é o que a JLCPCB posiciona); ERC 0/0 nas duas placas continua valendo.

@@ -16,3 +16,5 @@ etutti/hardware/student_v04/fornecimento/modelos3d/
 # eTutti Slim: STEP baixados do EasyEDA e caches
 etutti/hardware/slim/modelos/baixados/
 __pycache__/
+etutti/hardware/slim/case/out/
+etutti/hardware/slim/pcb/regua/build/drc_*_raw.json

@@ -53,9 +53,9 @@ def tmag_tristate():
 
 M.sym("TMAG5253BA3", "custom", tmag_tristate)
 
-FFC_FP = "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal"
-TMAG_FP = "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm"
-DFN_FP = "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm"
+FFC_FP = "slim:FFC_8P_0.5_KH-H1.0"
+TMAG_FP = "slim:TMAG5253_X2SON4_EE"
+DFN_FP = "slim:HC595_DHVQFN16_EE"
 NPOS = 8
 
 QPIN = {1: "15", 2: "1", 3: "2", 4: "3", 5: "4", 6: "5", 7: "6", 8: "7"}     # 74HC595 QA..QH
@@ -96,6 +96,9 @@ M.C("C10", "10uF", "+3V3", "GND", "S10", "0805", note="reservatorio da regua (ju
 
 
 def main():
+    import shutil
+    M.footprints.write_all()
+    shutil.copytree(os.path.join(PCB, "kicad", "slim.pretty"), os.path.join(KD, "slim.pretty"), dirs_exist_ok=True)
     M.check_footprints()
     declared, pages = {}, {}
     for s, title in M.SHEETS:
@@ -113,6 +116,7 @@ def main():
     parts = []
     for p in M.PARTS["R"]:
         q = {k: p[k] for k in ("ref", "value", "nets", "code", "fp", "lcsc", "cls", "mount", "note", "dnp", "sheet", "price", "datasheet")}
+        q["path"] = "/%s/%s/%s" % (M.ROOT_UUID, M.SHEET_UUID["R"], M.uid("sym", p["ref"], 1))
         parts.append(q)
     json.dump(parts, open(os.path.join(BUILD, "partes_regua.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     counts, bad = M.run_checks(declared)

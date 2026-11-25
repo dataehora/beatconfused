@@ -41,3 +41,7 @@ Todos os pinos vêm de `etutti/hardware/slim/pcb/PINOS.md`; se o mapa mudar, `ch
 ## Perguntas
 
 Sem perguntas para o design. Para a bancada: ângulos de referência dos knobs, o pulso de SET e o Full Speed (`ELETRONICA.md` §3 e §7).
+
+## R3SL: índice × posição × nota (conferido contra a régua posicionada)
+
+`etutti/firmware/slim/check_teclas.py` compara a tabela `NOTE[][]` do sketch com o contrato do Design (`case/envelope_regua.json`) e com a régua posicionada (`pcb/regua/posicao_regua.json`): **32/32 teclas batem** (índice = 8 × (fileira − 1) + posição; posição 1 = esquerda; nota → MIDI com C4 = 60). A coluna c da varredura é o estágio c do 595 (QA…QH = EN1…EN8 = TMAG5253 U1…U8, nos pinos 15, 1, 2, 3, 4, 5, 6, 7 do 595): conferido nas redes da régua posicionada. O sketch não mudou.
