@@ -1,4 +1,22 @@
-# eTutti Slim — SPEC R12SL
+# eTutti Slim — SPEC R13SL
+
+## Mudanças desde a R12SL (25 nov 2026)
+
+Resposta do J à sessão A4 (PR #236): **tudo aprovado.**
+
+1. **Teclado 1,5 mm à direita (`KEY_DX`) e case de 247,0 × 89,1 mm: aceitos.** A placa principal fica como está no `main` (posicionamento da R9SL, **faixa de 22,2 mm**). Os números de faixa de 18,4 e 20,7 mm citados nas R10SL a R12SL **nunca valeram**. Esta revisão os substitui.
+2. **Parede da guia de 0,615 mm (0,65 nos cantos), com alívio de 0,35 mm e 0,50 mm até o U9: aceita.** Fica registrada como risco a ensaiar no protótipo. Plano B: inserto de latão, sem mexer em mais nada.
+3. **Modelo 3D do MKL02 (U102):** baixar do EasyEDA pelo código **C2056583** (MKL02Z32VFG4R, a mesma peça em fita, HUQFN16 3 × 3). Conferir que o encapsulamento do modelo bate com o footprint. A peça continua consignada da PJRC, porque o chip da loja vem sem o bootloader; o código serve só para o modelo.
+4. **Regra de verificação (nova, vale para todas as sessões, por causa do erro das A2/A3):**
+   - todo script que gera ou altera placa, modelo ou case **termina com código de erro (≠ 0)** quando falha ou não grava. Mensagens como `no free spot` passam a ser erro, não aviso;
+   - antes de relatar um DRC, um fit check ou um número, o Code confere que **o arquivo lido foi gravado nesta execução** (data e hora) e lê a saída inteira do script, não só a última linha;
+   - o relatório diz qual arquivo foi verificado e quando ele foi gravado.
+
+   Os scripts que já existem (`posiciona_principal.py`, `posiciona_regua.py`, `etapas.py`, `case.py`, `fit_check.py`, `montagem.py`, `cena_*.py`) são ajustados a esta regra na sessão A5.
+5. **Sessão B (BGA):** começa **depois** da A5, numa sessão nova do Code, sobre a placa principal do `main` com a **faixa de 22,2 mm** (§8.2, corrigida abaixo).
+
+---
+
 
 ## Mudanças desde a R11SL (25 nov 2026)
 
@@ -424,7 +442,7 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 
 ## 8. Tarefas abertas — sessões do Code
 
-A §8.1 (sessão A da R9SL) foi concluída no PR #228. A §8.2 (sessão B, BGA) continua valendo. A R10SL acrescentou a §8.3 (feita no PR #231). A R11SL acrescentou a §8.4 (feita no PR #234). A R12SL acrescenta a §8.5 (sessão A4); a sessão B recomeça já do `main` atual, em paralelo (R12SL item 6).
+A §8.1 (sessão A da R9SL) foi concluída no PR #228. A §8.2 (sessão B, BGA) continua valendo. A R10SL acrescentou a §8.3 (feita no PR #231). A R11SL acrescentou a §8.4 (feita no PR #234). A R12SL acrescentou a §8.5 (feita no PR #236). A R13SL acrescenta a §8.6 (sessão A5); a sessão B começa depois dela (R13SL item 5).
 
 ### 8.1 Sessão A — ajustes da régua e da principal [Eletrônica + Design + Roteamento]
 
@@ -444,6 +462,8 @@ A §8.1 (sessão A da R9SL) foi concluída no PR #228. A §8.2 (sessão B, BGA) 
 ### 8.2 Sessão B — Etapa 3b‑1: escape do BGA do RT1062 [Roteamento, sessão dedicada]
 
 **Uma sessão própria do Code, só para isto. Em cada passo o Code para, mostra o resultado ao J numa mensagem curta, com imagem, e só segue quando o J disser "siga".**
+
+**Base (R13SL):** a placa principal do `main`, com o posicionamento da R9SL e a **faixa de 22,2 mm** (x −58,5…−36,3). A sessão B começa **depois da A5**, numa sessão nova do Code, e segue a regra de verificação da R13SL item 4. Se não houver nenhum outro trabalho do Code rodando ao mesmo tempo, ela pode usar a pasta principal; senão, usa uma worktree git própria.
 
 - **B1 — Regras e camadas.** Proponha e justifique, sem cotação:
   - stack‑up de 4 camadas da JLCPCB;
@@ -523,3 +543,16 @@ Não mexe na placa principal nem na rota da régua. Pode rodar em paralelo à se
 2. **Eletrônica:** baixar do EasyEDA os STEP das peças da principal que estão em caixa (item 5). Os modelos vão para `slim/modelos/` (ou para a pasta já usada pelos scripts de cena) e entram na cena da principal e nos passos 2 a 7. Listar o que faltar.
 3. `FIT_CHECK.md` com as perguntas com contexto e a lista de **todas** as imagens geradas, com caminho e uma linha de legenda.
 4. Commit → PR → merge. Parar.
+
+### 8.6 Sessão A5 — regra de verificação e modelo do MKL02 [Eletrônica + Design + Roteamento]
+
+Curta. Não muda a geometria.
+
+1. **Regra de verificação (R13SL item 4):** ajustar os scripts listados para terminarem com erro quando falham ou não gravam. Cada um é testado de duas formas: uma vez com sucesso e uma vez forçando a falha (por exemplo, uma faixa estreita no posicionador), mostrando o código de saída ≠ 0.
+2. **MKL02:** baixar o STEP do EasyEDA pelo código C2056583, conferir com o footprint, pôr na cena da principal e nos passos 2 a 7. Re-renderizar o que mudar.
+3. **Re-verificar tudo sobre o `main` atual**, seguindo a regra nova:
+   - DRC da principal e da régua (0/0, paridade 0), com o nome do arquivo e a data de gravação de cada um;
+   - fit check;
+   - corrigir em `ELETRONICA.md` e `RESTRICOES_CASE.md` qualquer resto das faixas de 18,4 e 20,7 mm.
+4. `FIT_CHECK.md` com as perguntas já com contexto e a lista de **todas** as imagens geradas.
+5. Commit → PR → merge. Parar.
