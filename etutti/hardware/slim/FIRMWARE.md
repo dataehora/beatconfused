@@ -53,3 +53,7 @@ Bateria: **VARTA 1/LPP 523450 S PCM W (56457 201 016)**, 1000 mAh (cabeçalho da
 - **Corrente de carga:** R203 = 2,2 kΩ → ICHG = 890/2200 = **0,405 A = 0,41 C** de 1000 mAh (**≤ 0,5 C**; a folha admite 1,98 A); carga completa ≈ 2,8 h.
 - **Autonomia (≈ 105 mA, 85 % útil):** **~8,1 h** a 396 MHz (1320 mAh mín. da tabela: ~10,7 h); OFF ≤ 18 µA. O desligamento por bateria vazia (< 3,3 V por 5 s) fica **acima** do corte do PCM (2,3 V).
 - **Pinos × placa posicionada:** `etutti/firmware/slim/check_placa.py` lê `pcb/PINOS.md` e `pcb/principal/posicao_principal.json`: **21/21 pinos** na bola e na rede certas; os mais longos (estimativa Manhattan): I²S_TX 59, BCLK 55, LRCLK 53 mm (o SGTL5000 está no pé da placa), OUT_R1 46 mm; **par USB 36 mm** em linha reta. `check_pins.py` 15/15 e `check_teclas.py` 32/32 seguem ok.
+
+## R5SL — pinos × placa
+
+Refeito `check_placa.py` depois do LED na face de cima: **21/21 pinos** na bola e na rede certas; os mais longos: I²S_TX 59, BCLK 55, LRCLK 53, OUT_R1 46 mm; par USB 47,7 / 46,4 mm (Manhattan; 36 mm em linha reta, aceito). Nada muda no firmware: os pinos do LED (R/G) são os mesmos. Com a BAK de 950 mAh (se for a substituta) a autonomia cai a ~7,7 h.

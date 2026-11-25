@@ -7,7 +7,7 @@ and case/out/numeros.json (volumes, heights). Decisions applied (SPEC R3SL):
   * R4SL: the battery is the VARTA 56457 201 016 (LPP 523450, 34.5 x 52 x 5.35): bay 36.0 x 60.0, case +8.0 mm to the LEFT (x -98.0 .. 149, plan 247.0 x 89.1);
   * R4SL: platforms follow the lid (S2): top = lid + 1.0 (registers) / + 0 (volume), HORIZONTAL well floor, vertical bore, flat horizontal knob top;
   * main board bottom face z 6.8 (the P2 sets it) + a 0.6 mm pocket in the floor under the P2; USB-C hole (back wall, x -66, z 5.2), P2 hole (left wall, y 59.5, z 4.0);
-  * registers platform +1.0 mm (the keys do not change); volume platform on the surface; wells D17.6 x 1.2; bearing collar; translucent LED ring D23.2/D20.8 x 1.5;
+  * registers platform +1.0 mm (the keys do not change); volume platform on the surface; wells D19.0 (R5SL: skirt D18.4); bearing collar; translucent LED ring D23.2/D20.8 x 1.5;
   * ruler support: two continuous rails per row (1.5 mm wide at |v| = 6.0..7.5), same type on the four rows, no holes in the floor, a pocket under each post of row 1.
 Simplified on purpose: the walls are 2.0 mm, the lid skirt starts at the split z 8.0, the main board's own posts and the battery's pillars come with the main board (2b).
 """
@@ -32,7 +32,9 @@ BOARD_BOT, BOARD_T = 6.8, 1.2
 REG = (-46.0, 0.0)
 VOL = (-46.0, 3 * L.D)
 PLAT_R = 13.0
-WELL_D, WELL_DEPTH, BEAR_D = 17.6, 1.2, 5.4
+WELL_D, WELL_DEPTH, BEAR_D = 19.0, 1.2, 5.4                  # R5SL: well D19.0 (was 17.6) takes the knob's skirt D18.4 (0.3 mm radial)
+KNOB_SKIRT_D = 18.4
+KEY_HOLE_D = 11.0                                            # R5SL: D11 through, no counterbore (only the button's D10 shank passes)
 COLLAR_OD, COLLAR_H = 9.0, 3.0
 RING_OD, RING_ID, RING_H = 23.2, 20.8, 1.5
 S2_RISE_VOL = 1.0                                            # R4SL item 3: S2 = lid + 1.0 on both knobs
@@ -164,10 +166,9 @@ def build_lid():
         if zf - 1.5 > MAG_UNDER + 0.5:                          # retention tube under the lid (volume): keeps the head's 0.8 mm axial play
             lid = lid.union(cyl(cx, cy, MAG_UNDER, zf - 1.4, COLLAR_OD))
         lid = lid.cut(cyl(cx, cy, zf - 4.0, zf + COLLAR_H + 1, BEAR_D))
-    # key holes: D16 through, D17 counterbore down to the housing top + 1.8
+    # key holes (R5SL): D11 straight through, no counterbore
     for r, k, x, y in key_xy():
-        lid = lid.cut(cyl(x, y, L.HOUSING_TOP[r] - 1.0, S(y) + 3, 16.0))
-        lid = lid.cut(cyl(x, y, L.HOUSING_TOP[r] + 1.8, S(y) + 3, 17.0))
+        lid = lid.cut(cyl(x, y, L.HOUSING_TOP[r] - 1.0, S(y) + 3, KEY_HOLE_D))
     # LED ring window around the volume knob: a vertical annular slot through the boss (the ring follows the lid, 1.5 mm thick)
     ring_slot = cyl(VOL[0], VOL[1], SPLIT - 0.1, zv + 6, RING_OD).cut(cyl(VOL[0], VOL[1], SPLIT - 0.2, zv + 6.1, RING_ID))
     lid = lid.cut(ring_slot)

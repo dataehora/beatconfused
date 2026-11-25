@@ -92,16 +92,17 @@ def affine_for(ref):
     return None
 
 
-def place(mesh, A, center_fp=(0, 0), yflip=False):
+def place(mesh, A, center_fp=(0, 0), yflip=False, top=False):
     m = mesh.copy()
     pts = np.array(m.points)
     xy = pts[:, :2] - np.array(center_fp)
     if yflip:
         xy[:, 1] = -xy[:, 1]
     uv = (A[:, :2] @ xy.T).T + A[:, 2]
-    z = BOARD_BOT - pts[:, 2]
+    z = (BOARD_BOT + BOARD_T + pts[:, 2]) if top else (BOARD_BOT - pts[:, 2])
     m.points = np.column_stack([uv[:, 0], uv[:, 1], z])
-    m.flip_faces(inplace=True)
+    if not top:
+        m.flip_faces(inplace=True)
     return m
 
 
@@ -128,6 +129,8 @@ def knobs():
         zf = C.S(cy - C.WELL_D / 2) + rise - 0.1
         top = zc + 4.8
         knob = cq.Workplane("XY").workplane(offset=zf + 0.3).center(cx, cy).circle(8.2).extrude(top - zf - 0.3)
+        zs_top = C.S(cy + C.WELL_D / 2) + rise + 0.5
+        knob = knob.union(cq.Workplane("XY").workplane(offset=zf + 0.3).center(cx, cy).circle(C.KNOB_SKIRT_D / 2).extrude(zs_top - zf - 0.3))   # R5SL skirt
         stem = cq.Workplane("XY").workplane(offset=11.0).center(cx, cy).circle(2.5).extrude(zf + 0.3 - 11.0)
         head = cq.Workplane("XY").workplane(offset=9.0).center(cx, cy).circle(9.5 if vol else 5.0).extrude(2.0)
         mag = cq.Workplane("XY").workplane(offset=8.5).center(cx, cy).circle(3.0).extrude(2.5)
@@ -170,7 +173,7 @@ def build():
         if lc in STEP_BY_LCSC and A is not None:
             if lc not in cache:
                 cache[lc] = step_mesh(STEP_BY_LCSC[lc], "m_" + lc)
-            mesh = place(cache[lc], A, CENTER.get(fpn, (0, 0)))
+            mesh = place(cache[lc], A, CENTER.get(fpn, (0, 0)), top=(q.get('lado') == 'cima'))
             col = {"C3216699": "#222222", "C165948": "#c9c9c9", "C49284723": "#2b2b2b", "C3250113": "#e8d9a8", "C273605": "#dddddd"}.get(lc, "#262626")
             report["modelos_reais"].append(ref)
         else:

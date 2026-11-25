@@ -149,3 +149,20 @@ As perguntas completas (inclusive as de posicionamento) estão em `FIT_CHECK.md`
 ## R3SL (Etapa 2a)
 
 A régua R8 e a grade foram posicionadas (sem rotas) e a placa principal **não** foi tocada: ver `POSICIONAMENTO.md`. O esquema da régua passou a usar footprints próprios (`TMAG5253_X2SON4_EE`, `HC595_DHVQFN16_EE`, `FFC_8P_0.5_KH-H1.0`, `KS33D_holes`, com os pads do EasyEDA, que é o que a JLCPCB posiciona); ERC 0/0 nas duas placas continua valendo.
+
+## R5SL — bateria: substitutas diretas, e o LED do anel
+
+Dados lidos em 25 nov 2026 (páginas do Farnell UK e do CPC no navegador do app; o PDF da BAK não pôde ser baixado nesta máquina: **a folha da BAK não foi lida**).
+
+| | **Escolhida** VARTA 1/LPP 523450 S PCM W | **Substituta 1** BAK LP-523450-IS-3 | **Substituta 2** a mesma VARTA, outro código (56457 201 012) | Não cabem: VARTA 503562 / 503759 |
+|---|---|---|---|---|
+| Medidas C × L × E | 52,0 × 34,5 × 5,35 | **51 × 33,5 × 5** | igual à escolhida | 63,5 × 35,5 × 5,1 / 60,5 × 37,5 × 5,4 |
+| Capacidade | 1000 mAh (folha se contradiz: 1400) | 950 mAh | 1000 mAh | 1200 / 1400 mAh |
+| NTC | 10 k, B 3380, 3 fios (folha VARTA) | **não confirmado** (o "IS-3" sugere PCM + NTC; o produto é vendido com conector) | igual | 10 k, 3 fios |
+| Distribuidor UK / código / preço (sem IVA) | CPC BT07248, £ 12,50 (2 em estoque); Farnell UK 4062501, £ 23,08, prazo 28 semanas | **Farnell UK 2077888**, £ 18,31 (1+), **218 em estoque + 640 a caminho** (prazo padrão 20 semanas) | saiu de linha segundo a consulta da R4SL | — |
+| STEP | do fabricante (`fornecimento/bateria/`) | **falta** (pedir ao J ou à BAK) | o da 012 está no repositório | do J |
+| Cabe na baia 36 × 60 sem mudar o case | sim (folga 0,75 por lado) | **sim** (folga 1,25 na largura; 8 mm de sobra no comprimento para a PCM e os fios) | sim | **não**: 503562 precisa de ~+4 mm na profundidade da baia (63,5 + fios); 503759 precisa de +1,5 mm na largura e +0,5 no comprimento |
+
+Conclusão: a **BAK LP-523450-IS-3** é a substituta direta (mesma classe 52 × 34 × 5, estoque de centenas no Farnell UK). Antes de depender dela: **confirmar o NTC e o conector** na folha da BAK (se vier com conector em vez de fios, o rabicho SH muda; se não houver NTC, resistor de 10 k no TS e R259 montado) e **trazer o STEP**. A carga (R203 = 2,2 k, 0,405 A) fica em 0,43 C dos 950 mAh, ainda ≤ 0,5 C.
+
+**LED do anel (item 6).** A folha do TJ-S1615SW6TGLCRG-A5 (TOGIALED, `fornecimento/datasheets/LED_1615_C273605.pdf`) é de um LED de topo (lente 1,6 × 1,5 × 0,6; pads com 0,6 mm entre as fileiras): **não traz montagem reversa nem janela**, e uma janela de ~0,6 mm não deixa a luz passar. **D401 vai para a face de cima, soldado em casa** (sai da lista da JLCPCB: um tipo estendido a menos). Esquema refeito: ERC 0/0, netlist conferida. Pinagem invertida dos 4 FFC: confirmada no esquema (J601–J604).

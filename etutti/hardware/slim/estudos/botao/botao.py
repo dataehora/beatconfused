@@ -1,130 +1,193 @@
-"""eTutti Slim (R4SL item 10): the button (keycap) study: round D5.4 pin with a female cross socket for the KS-33D's male cross. CadQuery + stdlib SVG.
+"""eTutti Slim (R5SL item 3): the accordion-style button. CadQuery + stdlib SVG.  Replaces the R4SL study (skirt D15 x 0.75 cap).
 
     "C:/Users/julia/.venvs/cadquery/Scripts/python.exe" -X utf8 etutti/hardware/slim/estudos/botao/botao.py
-    -> estudos/botao/botao.{step,stl}, botao_corte.svg/.png, botao.json
+    -> estudos/botao/botao.{step,stl} (plain: naturals white / sharps black), botao_textura.{step,stl} (C and F), botao.json, botao_cortes_4fileiras.{svg,png}
 
-Measured on the KS-33D STEP (fornecimento/gateron/KS-33D_FB_POM_Mini.stp, sliced every 0.5 mm, 25 Nov 2026): male cross arms +-2.00 (4.00 long) x 1.10 wide (area 7.6 mm2),
-from z 4.5 up to 7.8 on the STEP's frame (stem top 8.0, so the cross tops out 0.2 mm below the stem top and is >= 3.3 mm tall). The drawing (SPEC-KS-33D-001) does not
-dimension the cross: the STEP is the source, checked by the section area. The round well D5.67 is the SPEC's reading of the same STEP.
-Frame of the cap: z = 0 at the skirt's lower edge, up positive; the cap sits with its skirt at 14.55 and its top at 18.55 on row 1 (SPEC 3; every row has the same cap).
+Shape (SPEC R5SL 3, reference conceito/img/botao_acordeon.png): head D15 x 7.5 (cylinder + domed top, sagitta 1.0, edge R1), shank D10, pin D5.4 x 3.0 with the
+female cross (4.2 x 1.04 x 3.0, 0.3 lead-in) over the KS-33D's male cross (4.0 x 1.10, read off the STEP in R4SL).  Heights come from the REAL lid of each row
+(case.S): at the bottom of the stroke the head's base is 2.0 mm above the highest edge of the D11 hole (the rear one: the lid slopes 7.1 deg).  One piece for all four
+rows: its shank length is the largest one any row needs, so a row that needs less simply has more than 2.0 mm of clearance.
+Cap frame: z = 0 at the head's base, up positive.
 """
 import json
 import math
 import os
 import subprocess
+import sys
 
 import cadquery as cq
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SKIRT_D, SKIRT_H, TOP_H = 15.0, 0.75, 4.0           # skirt D15 (SPEC 1), dome rising to +4.0 above the skirt edge (top 18.55 - 14.55)
-PIN_D, PIN_L = 5.40, 3.40                          # pin D5.4 (<= 5.5) in the D5.67 well: 0.135 mm radial; 3.4 below the skirt edge
+SLIM = os.path.normpath(os.path.join(HERE, "..", ".."))
+sys.path.insert(0, os.path.join(SLIM, "case"))
+import case as C  # noqa: E402
+import layout_slim as L  # noqa: E402
+
+HEAD_D, HEAD_H, SAG, EDGE_R = 15.0, 7.5, 1.0, 1.0
+SHANK_D, PIN_D, PIN_L = 10.0, 5.4, 3.0
 WELL_D = 5.67
-CROSS_L, CROSS_W, CROSS_H = 4.00, 1.10, 3.30        # male cross (STEP)
-SOCK_L, SOCK_DEPTH = 4.20, 3.00                     # female cross: arms 0.1 longer each end (no retention there), 3.0 engaged (cross top reaches 0.2 below the stem top)
-RUN = {"SLA": {"slot_w": 1.04, "tol": 0.10, "nota": "resina SLA (Tough / Durable), +-0.1: interferencia nominal 0.06 mm na largura (0.03 por face), faixa -0.04..+0.16"},
-       "MJF": {"slot_w": 1.04, "tol": 0.30, "nota": "MJF PA12: +-0.3 e pó preso em fendas de 1 mm: NAO serve para a cruz (so para um botao com cruz usinada/inserida)"}}
+CROSS_L, CROSS_W, CROSS_H = 4.00, 1.10, 3.30
+SOCK_L, SOCK_W, SOCK_DEPTH, LEAD = 4.20, 1.04, 3.0, 0.3
+HOLE_D = C.KEY_HOLE_D
+TRAVEL, GAP, STEM_ABOVE = 3.5, 2.0, 3.5                # stroke, clear space above the hole's high edge at the bottom of the stroke, stem top above the housing top at rest
+DIMPLE_D, DIMPLE_DEPTH = 5.0, 0.4                      # tactile mark of C and F: a concave dimple in the dome
 
 
-def cap():
-    prof = [(0, -PIN_L), (PIN_D / 2, -PIN_L), (PIN_D / 2, 0), (SKIRT_D / 2, 0), (SKIRT_D / 2, SKIRT_H)]
-    R = ((SKIRT_D / 2) ** 2 + (TOP_H - SKIRT_H) ** 2) / (2 * (TOP_H - SKIRT_H))      # dome sphere radius
-    pts = [(0, -PIN_L), (PIN_D / 2, -PIN_L), (PIN_D / 2, 0.0), (SKIRT_D / 2, 0.0), (SKIRT_D / 2, SKIRT_H)]
-    n = 24
-    zc = TOP_H - R
-    for i in range(1, n + 1):
-        a = math.asin((SKIRT_D / 2) / R) * (1 - i / n)
-        pts.append((R * math.sin(a), zc + R * math.cos(a)))
-    wp = cq.Workplane("XZ").polyline(pts).close().revolve(360, (0, 0, 0), (0, 1, 0))
-    # underside relief: a shallow dish D12.6 up to +1.4 around the pin (the skirt is a ring, the pin a boss D8 -> D5.4)
-    dish = cq.Workplane("XY").workplane(offset=-0.01).circle(12.6 / 2).circle(8.0 / 2).extrude(1.4)
-    wp = wp.cut(dish)
-    # female cross: two slots, 0.3 lead-in chamfer by a flared start
+def row_numbers():
+    rows = []
+    for r in range(4):
+        y = L.ROW_Y[r]
+        ys = [y - HOLE_D / 2 + HOLE_D * i / 220 for i in range(221)]
+        rim_hi = max(C.S(v) for v in ys)
+        rim_lo = min(C.S(v) for v in ys)
+        rows.append({"fileira": r + 1, "y": round(y, 3), "topo_carcaca": L.HOUSING_TOP[r], "tampo_no_centro": round(C.S(y), 3), "borda_alta_do_furo": round(rim_hi, 3),
+                     "borda_baixa_do_furo": round(rim_lo, 3), "haste_precisa": rim_hi + GAP - L.HOUSING_TOP[r]})
+    return rows
+
+
+ROWS = row_numbers()
+SHANK_L = math.ceil(max(r["haste_precisa"] for r in ROWS) * 20) / 20       # one shank for the four rows (to 0.05)
+
+
+def cap(texture=False):
+    """Revolved profile: pin tip -> pin -> shank -> head, then the dome (arc), the R1 edge as a fillet, the female cross."""
+    hr = HEAD_D / 2
+    Rs = (hr ** 2 + SAG ** 2) / (2 * SAG)                       # dome sphere radius (sagitta SAG over the chord D15)
+    zc = HEAD_H - Rs                                             # sphere centre on the axis
+    fz = zc + math.sqrt((Rs - EDGE_R) ** 2 - (hr - EDGE_R) ** 2)  # R1 edge fillet: tangent to the wall x = hr and to the dome sphere
+    fx = hr - EDGE_R
+    k = Rs / (Rs - EDGE_R)
+    ts = (fx * k, zc + (fz - zc) * k)                           # tangent point on the dome
+    a0 = math.atan2(ts[1] - fz, ts[0] - fx)
+    mid_f = (fx + EDGE_R * math.cos((a0 + 0.0) / 2), fz + EDGE_R * math.sin((a0 + 0.0) / 2))
+    am = math.asin(ts[0] / Rs) / 2
+    mid_d = (Rs * math.sin(am), zc + Rs * math.cos(am))
+    z_pin = -SHANK_L - PIN_L
+    wp = (cq.Workplane("XZ").moveTo(0, z_pin).lineTo(PIN_D / 2, z_pin).lineTo(PIN_D / 2, -SHANK_L).lineTo(SHANK_D / 2, -SHANK_L).lineTo(SHANK_D / 2, 0).lineTo(hr, 0)
+          .lineTo(hr, fz).threePointArc(mid_f, ts).threePointArc(mid_d, (0, HEAD_H)).close().revolve(360, (0, 0, 0), (0, 1, 0)))
+    z0 = -SHANK_L - PIN_L
     for ang in (0, 90):
-        slot = cq.Workplane("XY").workplane(offset=-PIN_L - 0.01).rect(SOCK_L, RUN["SLA"]["slot_w"]).extrude(SOCK_DEPTH + 0.01)
-        wp = wp.cut(slot.rotate((0, 0, 0), (0, 0, 1), ang))
+        slot = cq.Workplane("XY").workplane(offset=z0 - 0.01).rect(SOCK_L, SOCK_W).extrude(SOCK_DEPTH + 0.01)
+        lead = (cq.Workplane("XY").workplane(offset=z0 - 0.01).rect(SOCK_L, SOCK_W + 2 * LEAD).workplane(offset=LEAD + 0.01).rect(SOCK_L, SOCK_W).loft())
+        wp = wp.cut(slot.rotate((0, 0, 0), (0, 0, 1), ang)).cut(lead.rotate((0, 0, 0), (0, 0, 1), ang))
+    if texture:
+        Rd = ((DIMPLE_D / 2) ** 2 + DIMPLE_DEPTH ** 2) / (2 * DIMPLE_DEPTH)
+        wp = wp.cut(cq.Workplane("XY").sphere(Rd).translate((0, 0, HEAD_H - DIMPLE_DEPTH + Rd)))
     return wp
 
 
 def main():
-    c = cap()
-    cq.exporters.export(c, os.path.join(HERE, "botao.step"))
-    cq.exporters.export(c, os.path.join(HERE, "botao.stl"), tolerance=0.03, angularTolerance=0.1)
-    vol = c.val().Volume()
-    # lid hole numbers (row 1 lid: top 14.0 at the key centre, D16 through, D17 counterbore down to 12.65)
-    hole_d, cb_d = 16.0, 17.0
-    out = {"revisao": "R4SL", "cruz_macho": {"braco": CROSS_L, "largura": CROSS_W, "altura_min": CROSS_H, "fonte": "STEP KS-33D cortado a cada 0,5 mm (area 7,6 mm2); o desenho nao cota a cruz"},
-           "poco_redondo_d": WELL_D, "pino_d": PIN_D, "folga_radial_pino_poco": round((WELL_D - PIN_D) / 2, 3), "pino_comprimento_abaixo_da_saia": PIN_L,
-           "cruz_femea": {"braco": SOCK_L, "largura_slot": RUN["SLA"]["slot_w"], "profundidade": SOCK_DEPTH, "entrada_chanfro": 0.3},
-           "interferencia_largura_mm": round(CROSS_W - RUN["SLA"]["slot_w"], 3), "interferencia_por_processo": {k: {"slot": v["slot_w"], "tolerancia": v["tol"], "nota": v["nota"]} for k, v in RUN.items()},
+    plain, tex = cap(False), cap(True)
+    for name, w in (("botao", plain), ("botao_textura", tex)):
+        cq.exporters.export(w, os.path.join(HERE, name + ".step"))
+        cq.exporters.export(w, os.path.join(HERE, name + ".stl"), tolerance=0.03, angularTolerance=0.1)
+    vol = plain.val().Volume()
+    out = {"revisao": "R5SL",
+           "cabeca": {"d": HEAD_D, "altura": HEAD_H, "flecha_do_topo": SAG, "raio_da_borda": EDGE_R}, "haste_d": SHANK_D, "haste_comprimento": SHANK_L,
+           "pino": {"d": PIN_D, "comprimento": PIN_L, "folga_radial_no_poco": round((WELL_D - PIN_D) / 2, 3)},
+           "cruz_femea": {"braco": SOCK_L, "largura": SOCK_W, "profundidade": SOCK_DEPTH, "entrada_chanfro": LEAD},
+           "cruz_macho_STEP": {"braco": CROSS_L, "largura": CROSS_W, "altura_min": CROSS_H}, "interferencia_largura_mm": round(CROSS_W - SOCK_W, 3),
+           "furo_do_tampo_d": HOLE_D, "folga_radial_haste_furo": (HOLE_D - SHANK_D) / 2,
+           "textura_C_F": {"tipo": "covinha concava no centro do domo", "d": DIMPLE_D, "profundidade": DIMPLE_DEPTH, "arquivo": "botao_textura.step"},
            "volume_cm3": round(vol / 1000, 3), "massa_g_resina_1p1": round(vol / 1000 * 1.1, 2)}
-    # radial clearance in the lid hole
-    skirt_hi = SKIRT_D + 0.15
-    hole_lo = hole_d - 0.15
-    out["folga_radial_furo_tampo"] = {"nominal_mm": (hole_d - SKIRT_D) / 2, "pior_caso_impressao_mm": round((hole_lo - skirt_hi) / 2, 3),
-                                      "deslocamento_haste_estimado_mm": 0.20, "inclinacao_socket_graus": 0.5, "deslocamento_por_inclinacao_mm": round(10.0 * math.tan(math.radians(0.5)), 3),
-                                      "margem_pior_caso_mm": round((hole_lo - skirt_hi) / 2 - 0.20 - 10.0 * math.tan(math.radians(0.5)), 3),
-                                      "nota": "a folga da haste (+-0,2) e a inclinacao (0,5 graus) sao ESTIMATIVAS: a Gateron nao as publica; o ensaio dos 4 botoes mede"}
-    out["alternativa_saia"] = {"saia_d": 14.8, "folga_radial_nominal": 0.6, "margem_pior_caso_mm": round(((hole_d - 0.15) - (14.8 + 0.15)) / 2 - 0.20 - 10.0 * math.tan(math.radians(0.5)), 3)}
-    rows = []
-    for r, dz in enumerate((0.0, 2.0, 4.0, 7.0)):
-        rows.append({"fileira": r + 1, "saia_em_repouso_z": round(14.55 + dz, 2), "topo_em_repouso_z": round(18.55 + dz, 2), "saia_no_fundo_z": round(11.05 + dz, 2),
-                     "carcaca_topo_z": round(10.85 + dz, 2), "folga_saia_carcaca_no_fundo": 0.2})
-    out["altura_por_fileira"] = rows
-    out["processo"] = {"recomendado": "SLA em resina Tough/Durable (ou nylon SLS fino), cor preta e branca; pretos = sustenidos, brancos = naturais, brancos com ponto = C e F (SPEC 1)",
-                       "alternativa": "MJF PA12 para a cupula e a cruz em INSERTO (peca de latao/POM usinada) so se o ensaio mostrar que a SLA racha",
-                       "acabamento": "lixar a cruz? NAO: so remover suporte; cupula polida a vapor so no MJF",
-                       "onde_encomendar": "JLC3DP (SLA 8001 / Tough), PCBWay 3D, Craftcloud (agregador, entrega ao Reino Unido), Protolabs Network/Hubs UK. Nenhuma cotacao pedida."}
-    out["ensaio_antes_de_imprimir_32"] = "4 botoes (1 por fileira) com slots 1,00 / 1,04 / 1,08 / 1,12 em SLA: medir a forca de saida (alvo 3-10 N) e o jogo lateral; escolher o slot e so entao imprimir 32."
+    tilt = 0.5
+    out["folga_haste_furo"] = {"nominal_mm": (HOLE_D - SHANK_D) / 2, "jogo_da_haste_estimado_mm": 0.20, "inclinacao_graus_estimada": tilt,
+                               "deslocamento_na_borda_mm": round(SHANK_L * math.tan(math.radians(tilt)), 3),
+                               "margem_pior_caso_mm": round((HOLE_D - 0.15 - (SHANK_D + 0.15)) / 2 - 0.20 - SHANK_L * math.tan(math.radians(tilt)), 3),
+                               "nota": "jogo da haste e inclinacao sao estimativas (a Gateron nao publica); o ensaio dos 4 botoes mede; impressao SLA +-0,15 no pior caso"}
+    per = []
+    for r in ROWS:
+        stem_rest = r["topo_carcaca"] + STEM_ABOVE
+        und_rest = stem_rest + SHANK_L
+        und_pr = und_rest - TRAVEL
+        per.append({"fileira": r["fileira"], "topo_carcaca_z": r["topo_carcaca"], "borda_alta_do_furo_z": r["borda_alta_do_furo"], "borda_baixa_do_furo_z": r["borda_baixa_do_furo"],
+                    "haste_switch_topo_repouso_z": round(stem_rest, 2), "base_da_cabeca_repouso_z": round(und_rest, 2), "base_da_cabeca_apertado_z": round(und_pr, 2),
+                    "topo_repouso_z": round(und_rest + HEAD_H, 2), "topo_apertado_z": round(und_pr + HEAD_H, 2),
+                    "folga_fim_do_curso_mm": round(und_pr - r["borda_alta_do_furo"], 3), "haste_necessaria_mm": round(r["haste_precisa"], 3)})
+    out["por_fileira"] = per
+    out["altura_total_botoes_z"] = max(p["topo_repouso_z"] for p in per)
+    out["processo"] = {"material": "resina SLA tough (peca unica)", "cores": "naturais brancas, sustenidos pretos, C e F brancos com a covinha (botao_textura)",
+                       "acabamento": "so na fase de cotacao (lixa, verniz, brilho)", "ensaio": "4 botoes (1 por fileira) com fendas 1,00 / 1,04 / 1,08 / 1,12 antes de imprimir os 32"}
     json.dump(out, open(os.path.join(HERE, "botao.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
-    # ---- dimensioned section (x-z), row 1, at rest and at the bottom of travel
-    W, H = 150, 70
-    o = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" font-family="Arial,sans-serif">' % (W, H, W * 9, H * 9), '<rect width="%d" height="%d" fill="#fff"/>' % (W, H)]
-    S = 3.0
+    cortes(per)
+    print(json.dumps({"haste": SHANK_L, "linhas": per, "vol": out["volume_cm3"]}, indent=1))
 
-    def poly(pts, fill, stroke="#1d1d1f", w=0.15):
-        o.append('<polygon points="%s" fill="%s" stroke="%s" stroke-width="%.2f"/>' % (" ".join("%.2f,%.2f" % p for p in pts), fill, stroke, w))
 
-    def T(t, x, y, s=1.8, c="#1d1d1f", a="start"):
-        o.append('<text x="%.2f" y="%.2f" font-size="%.2f" fill="%s" text-anchor="%s">%s</text>' % (t if False else x, y, s, c, a, t))
-    o[-1:] = o[-1:]
-    T("eTutti Slim R4SL - botao: corte pelo eixo, fileira 1, em repouso (esq.) e no fundo do curso (dir.); cotas em mm", 4, 6, 2.2)
-    for k, (cx, drop, name) in enumerate(((35, 0.0, "repouso"), (105, 3.5, "fundo do curso"))):
-        z0 = 12.0 + drop * 0                      # drawing baseline: z = 10 at y = 62
-        def P(dx, z):
-            return (cx + dx * S * 0.9, 62 - (z - 10.0) * S)
-        zs = 14.55 - drop                         # skirt edge
-        # lid (row 1): top 14.0, counterbore D17 to 12.65, D16 hole through
-        poly([P(-12, 14.0), P(-8.0, 14.0), P(-8.0, 12.65), P(-8.5, 12.65), P(-8.5, 11.15), P(-12, 11.15)], "#efe6d2")
-        poly([P(12, 14.0), P(8.0, 14.0), P(8.0, 12.65), P(8.5, 12.65), P(8.5, 11.15), P(12, 11.15)], "#efe6d2")
-        # housing top 10.85
-        poly([P(-7.3, 10.85), P(7.3, 10.85), P(7.3, 10.0), P(-7.3, 10.0)], "#c9c9c9")
-        # stem body (rect 9.4 wide) with the well D5.67 and the male cross
-        zt = 14.35 - drop
-        poly([P(-4.7, zt), P(-WELL_D / 2, zt), P(-WELL_D / 2, 10.85 + 1.0), P(-4.7, 10.85 + 1.0)], "#9ec5e8")
-        poly([P(4.7, zt), P(WELL_D / 2, zt), P(WELL_D / 2, 10.85 + 1.0), P(4.7, 10.85 + 1.0)], "#9ec5e8")
-        poly([P(-0.55, zt - 0.2), P(0.55, zt - 0.2), P(0.55, zt - 0.2 - CROSS_H), P(-0.55, zt - 0.2 - CROSS_H)], "#5b8ec2")
-        # cap
-        pts = [P(-PIN_D / 2, zs - PIN_L), P(PIN_D / 2, zs - PIN_L), P(PIN_D / 2, zs), P(SKIRT_D / 2, zs), P(SKIRT_D / 2, zs + SKIRT_H)]
-        R = ((SKIRT_D / 2) ** 2 + (TOP_H - SKIRT_H) ** 2) / (2 * (TOP_H - SKIRT_H))
-        zc = zs + TOP_H - R
-        for i in range(0, 17):
-            a = math.asin((SKIRT_D / 2) / R) * (1 - i / 16 * 2)
-            pts.append(P(R * math.sin(a), zc + R * math.cos(a)))
-        pts += [P(-SKIRT_D / 2, zs + SKIRT_H), P(-SKIRT_D / 2, zs), P(-PIN_D / 2, zs)]
-        poly(pts, "#fbf9f3")
-        poly([P(-0.52, zs - PIN_L), P(0.52, zs - PIN_L), P(0.52, zs - PIN_L + SOCK_DEPTH), P(-0.52, zs - PIN_L + SOCK_DEPTH)], "#ffffff", "#b3261e", 0.1)
-        T(name, cx, 12, 2.0, "#1d1d1f", "middle")
-        T("saia z %.2f / topo %.2f" % (zs, zs + TOP_H), cx, 15.5, 1.5, "#1f5fa8", "middle")
-        T("pino D5,4 no poco D5,67 (folga radial 0,135)", cx, 18.5, 1.3, "#1d1d1f", "middle")
-        T("furo D16 no tampo: folga radial 0,5 (0,35 no pior caso)", cx, 21.0, 1.3, "#1d1d1f", "middle")
-    T("cruz macho 4,0 x 1,1 (STEP) / cruz femea 4,2 x 1,04, 3,0 de fundo; interferencia 0,06 na largura (SLA)", 4, 66, 1.6)
+def cortes(per):
+    """Dimensioned sections, rows 1-4, at rest and at the bottom of the stroke, with the real lid of each row (section through the hole axis, front on the left)."""
+    S = 6.0
+    PW = 44 * S
+    STRIDE = 30 * S + 60
+    W, H = int(4 * PW + 60), int(2 * STRIDE + 110)
+    o = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" font-family="Arial,sans-serif"><rect width="100%%" height="100%%" fill="#fbfaf6"/>' % (W, H, W, H)]
+
+    def T(x, y, t, sz=12, a="middle", c="#222", wgt="normal"):
+        o.append('<text x="%.1f" y="%.1f" font-size="%d" text-anchor="%s" fill="%s" font-weight="%s">%s</text>' % (x, y, sz, a, c, wgt, t))
+
+    def poly(pts, fill, stroke="#222", w=1.0):
+        o.append('<polygon points="%s" fill="%s" stroke="%s" stroke-width="%.1f"/>' % (" ".join("%.1f,%.1f" % p for p in pts), fill, stroke, w))
+
+    def ln(a, b, c="#1f5fa8", w=0.8, d="4,3"):
+        o.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="%s" stroke-width="%.1f" stroke-dasharray="%s"/>' % (a[0], a[1], b[0], b[1], c, w, d))
+    T(W / 2, 26, "eTutti Slim R5SL - botao estilo acordeon: cortes pelo eixo, fileiras 1 a 4, em repouso e apertado (fim do curso); tampo real de cada fileira; z em mm a partir do fundo do case", 15, wgt="bold")
+    T(W / 2, 46, "mesma peca nas 4 fileiras: cabeca D15 x 7,5, haste D10 x %.2f, pino D5,4 x 3,0; furo do tampo D11 sem rebaixo; frente (jogador) a esquerda" % SHANK_L, 12, c="#555")
+    for col, p in enumerate(per):
+        r = p["fileira"] - 1
+        y0 = L.ROW_Y[r]
+        for rowi, state in enumerate(("repouso", "apertado")):
+            drop = TRAVEL if state == "apertado" else 0.0
+            ox = 30 + col * PW + 16 * S
+            zmax = per[3]["topo_repouso_z"] + 2
+            ztop_panel = p["topo_repouso_z"] + 3
+            base = 90 + rowi * STRIDE
+            zref = p["topo_repouso_z"] + 2.0          # panel top
+            Z = lambda z: base + (zref - z) * S + 14
+            X = lambda dy: ox + dy * S
+
+            T(ox + 4 * S, base - 6, "fileira %d - %s" % (p["fileira"], state), 13, wgt="bold")
+            ht = L.HOUSING_TOP[r]
+            zb = ht - 3.0
+            # lid (real S): left = front
+            ds = [i * 0.5 - 15.0 for i in range(0, 61)]
+            top = [(X(d), Z(C.S(y0 + d))) for d in ds if abs(d) >= HOLE_D / 2 or False]
+            left = [(X(d), Z(C.S(y0 + d))) for d in ds if d <= -HOLE_D / 2] + [(X(-HOLE_D / 2), Z(C.S(y0 - HOLE_D / 2)))]
+            right = [(X(HOLE_D / 2), Z(C.S(y0 + HOLE_D / 2)))] + [(X(d), Z(C.S(y0 + d))) for d in ds if d >= HOLE_D / 2]
+            lidb = ht + 0.3
+            poly(left + [(X(-HOLE_D / 2), Z(lidb)), (X(-15), Z(lidb))], "#ede4cf", "#776")
+            poly(right + [(X(15), Z(lidb)), (X(HOLE_D / 2), Z(lidb))], "#ede4cf", "#776")
+            # housing + stem
+            poly([(X(-7.0), Z(ht)), (X(7.0), Z(ht)), (X(7.0), Z(zb)), (X(-7.0), Z(zb))], "#e5e5e5", "#666")
+            st = ht + STEM_ABOVE - drop
+            poly([(X(-4.7), Z(st)), (X(4.7), Z(st)), (X(4.7), Z(ht - 0.5)), (X(-4.7), Z(ht - 0.5))], "#d8d0e8", "#665")
+            und = st + SHANK_L
+            # cap
+            hr = HEAD_D / 2
+            Rs = (hr ** 2 + SAG ** 2) / (2 * SAG)
+            pts = [(X(-SHANK_D / 2), Z(und)), (X(-SHANK_D / 2), Z(st)), (X(-PIN_D / 2), Z(st)), (X(-PIN_D / 2), Z(st - PIN_L)), (X(PIN_D / 2), Z(st - PIN_L)), (X(PIN_D / 2), Z(st)),
+                   (X(SHANK_D / 2), Z(st)), (X(SHANK_D / 2), Z(und)), (X(hr), Z(und)), (X(hr), Z(und + HEAD_H - SAG - 0.2))]
+            for i in range(0, 17):
+                a = math.asin(hr / Rs) * (1 - 2 * i / 16)
+                pts.append((X(Rs * math.sin(a)), Z(und + HEAD_H - SAG - Rs + Rs * math.cos(a))))
+            pts += [(X(-hr), Z(und + HEAD_H - SAG - 0.2)), (X(-hr), Z(und))]
+            poly(pts, "#f6f1e4", "#222", 1.3)
+            poly([(X(-0.52), Z(st - PIN_L)), (X(0.52), Z(st - PIN_L)), (X(0.52), Z(st - PIN_L + SOCK_DEPTH)), (X(-0.52), Z(st - PIN_L + SOCK_DEPTH))], "#fbfaf6", "#b3261e", 0.8)
+            xr = X(9.0)
+            hi = p["borda_alta_do_furo_z"]
+            for z, t, c in ((und + HEAD_H, "topo %.2f" % (und + HEAD_H), "#1f5fa8"), (und, "base da cabeca %.2f" % und, "#1f5fa8"), (hi, "borda alta do furo %.2f" % hi, "#8a6d1f"), (st, "topo da haste %.2f" % st, "#6a4e9a")):
+                ln((xr - 4, Z(z)), (xr + 6, Z(z)), c)
+                T(xr + 8, Z(z) + 4, t.replace(".", ","), 10, "start", c)
+            if state == "apertado":
+                o.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="#c0392b" stroke-width="2"/>' % (X(-9), Z(und), X(-9), Z(hi)))
+                T(X(-9.4), Z((und + hi) / 2) + 4, ("%.2f livre" % (und - hi)).replace(".", ","), 11, "end", "#c0392b", "bold")
+            else:
+                o.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="#555" stroke-width="1.5"/>' % (X(-9), Z(und), X(-9), Z(und - TRAVEL)))
+                T(X(-9.4), Z(und - TRAVEL / 2) + 4, "curso 3,5", 10, "end", "#555")
     o.append("</svg>")
-    path = os.path.join(HERE, "botao_corte.svg")
+    path = os.path.join(HERE, "botao_cortes_4fileiras.svg")
     open(path, "w", encoding="utf-8").write("\n".join(o))
     edge = "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
     if os.path.exists(edge):
-        subprocess.run([edge, "--headless", "--screenshot=" + os.path.join(HERE, "botao_corte.png"), "--window-size=1350,630", "file:///" + path.replace("\\", "/")], capture_output=True)
-    print(json.dumps({k: out[k] for k in ("interferencia_largura_mm", "folga_radial_furo_tampo", "alternativa_saia", "volume_cm3")}, indent=1))
+        subprocess.run([edge, "--headless", "--screenshot=" + os.path.join(HERE, "botao_cortes_4fileiras.png"), "--window-size=%d,%d" % (W, H), "file:///" + path.replace("\\", "/")], capture_output=True)
 
 
 if __name__ == "__main__":

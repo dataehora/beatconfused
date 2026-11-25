@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\slim\\pcb\\kicad\\slim.kicad_sch")
-		(date "2026-11-25T13:47:32")
+		(date "2026-11-25T15:43:32")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -8542,20 +8542,20 @@
 			(value "TJ-S1615SW6TGLCRG-A5")
 			(footprint "slim:LED_1615_RG_4pad")
 			(datasheet "https://www.lcsc.com/datasheet/lcsc_datasheet_1810191024_TOGIALED-TJ-S1615SW6TGLCRG-A5_C273605.pdf")
-			(description "1615 vermelho/verde (laranja = os dois); face de baixo, montagem reversa, acende o anel do knob de volume")
+			(description "1615 vermelho/verde (laranja = os dois); R5SL: face de CIMA, soldado em casa (a folha nao traz montagem reversa nem janela: 0,6 mm entre as fileiras de pads); acende o anel do knob de volume")
 			(fields
 				(field
 					(name "Codigo") "I3")
 				(field
 					(name "LCSC") "C273605")
 				(field
-					(name "Montagem") "JLC")
+					(name "Montagem") "casa (face de cima)")
 				(field
 					(name "Footprint") "slim:LED_1615_RG_4pad")
 				(field
 					(name "Datasheet") "https://www.lcsc.com/datasheet/lcsc_datasheet_1810191024_TOGIALED-TJ-S1615SW6TGLCRG-A5_C273605.pdf")
 				(field
-					(name "Description") "1615 vermelho/verde (laranja = os dois); face de baixo, montagem reversa, acende o anel do knob de volume")
+					(name "Description") "1615 vermelho/verde (laranja = os dois); R5SL: face de CIMA, soldado em casa (a folha nao traz montagem reversa nem janela: 0,6 mm entre as fileiras de pads); acende o anel do knob de volume")
 			)
 			(libsource
 				(lib "slim")
@@ -8572,7 +8572,7 @@
 			)
 			(property
 				(name "Montagem")
-				(value "JLC")
+				(value "casa (face de cima)")
 			)
 			(property
 				(name "Sheetname")

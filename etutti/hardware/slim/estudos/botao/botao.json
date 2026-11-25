@@ -1,89 +1,107 @@
 {
- "revisao": "R4SL",
- "cruz_macho": {
-  "braco": 4.0,
-  "largura": 1.1,
-  "altura_min": 3.3,
-  "fonte": "STEP KS-33D cortado a cada 0,5 mm (area 7,6 mm2); o desenho nao cota a cruz"
+ "revisao": "R5SL",
+ "cabeca": {
+  "d": 15.0,
+  "altura": 7.5,
+  "flecha_do_topo": 1.0,
+  "raio_da_borda": 1.0
  },
- "poco_redondo_d": 5.67,
- "pino_d": 5.4,
- "folga_radial_pino_poco": 0.135,
- "pino_comprimento_abaixo_da_saia": 3.4,
+ "haste_d": 10.0,
+ "haste_comprimento": 5.85,
+ "pino": {
+  "d": 5.4,
+  "comprimento": 3.0,
+  "folga_radial_no_poco": 0.135
+ },
  "cruz_femea": {
   "braco": 4.2,
-  "largura_slot": 1.04,
+  "largura": 1.04,
   "profundidade": 3.0,
   "entrada_chanfro": 0.3
  },
+ "cruz_macho_STEP": {
+  "braco": 4.0,
+  "largura": 1.1,
+  "altura_min": 3.3
+ },
  "interferencia_largura_mm": 0.06,
- "interferencia_por_processo": {
-  "SLA": {
-   "slot": 1.04,
-   "tolerancia": 0.1,
-   "nota": "resina SLA (Tough / Durable), +-0.1: interferencia nominal 0.06 mm na largura (0.03 por face), faixa -0.04..+0.16"
-  },
-  "MJF": {
-   "slot": 1.04,
-   "tolerancia": 0.3,
-   "nota": "MJF PA12: +-0.3 e pó preso em fendas de 1 mm: NAO serve para a cruz (so para um botao com cruz usinada/inserida)"
-  }
+ "furo_do_tampo_d": 11.0,
+ "folga_radial_haste_furo": 0.5,
+ "textura_C_F": {
+  "tipo": "covinha concava no centro do domo",
+  "d": 5.0,
+  "profundidade": 0.4,
+  "arquivo": "botao_textura.step"
  },
- "volume_cm3": 0.389,
- "massa_g_resina_1p1": 0.43,
- "folga_radial_furo_tampo": {
+ "volume_cm3": 1.737,
+ "massa_g_resina_1p1": 1.91,
+ "folga_haste_furo": {
   "nominal_mm": 0.5,
-  "pior_caso_impressao_mm": 0.35,
-  "deslocamento_haste_estimado_mm": 0.2,
-  "inclinacao_socket_graus": 0.5,
-  "deslocamento_por_inclinacao_mm": 0.087,
-  "margem_pior_caso_mm": 0.063,
-  "nota": "a folga da haste (+-0,2) e a inclinacao (0,5 graus) sao ESTIMATIVAS: a Gateron nao as publica; o ensaio dos 4 botoes mede"
+  "jogo_da_haste_estimado_mm": 0.2,
+  "inclinacao_graus_estimada": 0.5,
+  "deslocamento_na_borda_mm": 0.051,
+  "margem_pior_caso_mm": 0.099,
+  "nota": "jogo da haste e inclinacao sao estimativas (a Gateron nao publica); o ensaio dos 4 botoes mede; impressao SLA +-0,15 no pior caso"
  },
- "alternativa_saia": {
-  "saia_d": 14.8,
-  "folga_radial_nominal": 0.6,
-  "margem_pior_caso_mm": 0.163
- },
- "altura_por_fileira": [
+ "por_fileira": [
   {
    "fileira": 1,
-   "saia_em_repouso_z": 14.55,
-   "topo_em_repouso_z": 18.55,
-   "saia_no_fundo_z": 11.05,
-   "carcaca_topo_z": 10.85,
-   "folga_saia_carcaca_no_fundo": 0.2
+   "topo_carcaca_z": 10.85,
+   "borda_alta_do_furo_z": 14.697,
+   "borda_baixa_do_furo_z": 13.323,
+   "haste_switch_topo_repouso_z": 14.35,
+   "base_da_cabeca_repouso_z": 20.2,
+   "base_da_cabeca_apertado_z": 16.7,
+   "topo_repouso_z": 27.7,
+   "topo_apertado_z": 24.2,
+   "folga_fim_do_curso_mm": 2.003,
+   "haste_necessaria_mm": 5.847
   },
   {
    "fileira": 2,
-   "saia_em_repouso_z": 16.55,
-   "topo_em_repouso_z": 20.55,
-   "saia_no_fundo_z": 13.05,
-   "carcaca_topo_z": 12.85,
-   "folga_saia_carcaca_no_fundo": 0.2
+   "topo_carcaca_z": 12.85,
+   "borda_alta_do_furo_z": 16.697,
+   "borda_baixa_do_furo_z": 15.323,
+   "haste_switch_topo_repouso_z": 16.35,
+   "base_da_cabeca_repouso_z": 22.2,
+   "base_da_cabeca_apertado_z": 18.7,
+   "topo_repouso_z": 29.7,
+   "topo_apertado_z": 26.2,
+   "folga_fim_do_curso_mm": 2.003,
+   "haste_necessaria_mm": 5.847
   },
   {
    "fileira": 3,
-   "saia_em_repouso_z": 18.55,
-   "topo_em_repouso_z": 22.55,
-   "saia_no_fundo_z": 15.05,
-   "carcaca_topo_z": 14.85,
-   "folga_saia_carcaca_no_fundo": 0.2
+   "topo_carcaca_z": 14.85,
+   "borda_alta_do_furo_z": 18.697,
+   "borda_baixa_do_furo_z": 17.323,
+   "haste_switch_topo_repouso_z": 18.35,
+   "base_da_cabeca_repouso_z": 24.2,
+   "base_da_cabeca_apertado_z": 20.7,
+   "topo_repouso_z": 31.7,
+   "topo_apertado_z": 28.2,
+   "folga_fim_do_curso_mm": 2.003,
+   "haste_necessaria_mm": 5.847
   },
   {
    "fileira": 4,
-   "saia_em_repouso_z": 21.55,
-   "topo_em_repouso_z": 25.55,
-   "saia_no_fundo_z": 18.05,
-   "carcaca_topo_z": 17.85,
-   "folga_saia_carcaca_no_fundo": 0.2
+   "topo_carcaca_z": 17.85,
+   "borda_alta_do_furo_z": 21.63,
+   "borda_baixa_do_furo_z": 20.323,
+   "haste_switch_topo_repouso_z": 21.35,
+   "base_da_cabeca_repouso_z": 27.2,
+   "base_da_cabeca_apertado_z": 23.7,
+   "topo_repouso_z": 34.7,
+   "topo_apertado_z": 31.2,
+   "folga_fim_do_curso_mm": 2.07,
+   "haste_necessaria_mm": 5.78
   }
  ],
+ "altura_total_botoes_z": 34.7,
  "processo": {
-  "recomendado": "SLA em resina Tough/Durable (ou nylon SLS fino), cor preta e branca; pretos = sustenidos, brancos = naturais, brancos com ponto = C e F (SPEC 1)",
-  "alternativa": "MJF PA12 para a cupula e a cruz em INSERTO (peca de latao/POM usinada) so se o ensaio mostrar que a SLA racha",
-  "acabamento": "lixar a cruz? NAO: so remover suporte; cupula polida a vapor so no MJF",
-  "onde_encomendar": "JLC3DP (SLA 8001 / Tough), PCBWay 3D, Craftcloud (agregador, entrega ao Reino Unido), Protolabs Network/Hubs UK. Nenhuma cotacao pedida."
- },
- "ensaio_antes_de_imprimir_32": "4 botoes (1 por fileira) com slots 1,00 / 1,04 / 1,08 / 1,12 em SLA: medir a forca de saida (alvo 3-10 N) e o jogo lateral; escolher o slot e so entao imprimir 32."
+  "material": "resina SLA tough (peca unica)",
+  "cores": "naturais brancas, sustenidos pretos, C e F brancos com a covinha (botao_textura)",
+  "acabamento": "so na fase de cotacao (lixa, verniz, brilho)",
+  "ensaio": "4 botoes (1 por fileira) com fendas 1,00 / 1,04 / 1,08 / 1,12 antes de imprimir os 32"
+ }
 }
