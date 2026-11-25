@@ -1,4 +1,19 @@
-# eTutti Slim — SPEC R2SL
+# eTutti Slim — SPEC R3SL
+
+## Mudanças desde a R2SL (25 nov 2026)
+
+Resposta do J ao portão A da R2SL (PR #213, 7 perguntas do `FIT_CHECK.md`). **Portão A aprovado.** Começa a **Etapa 2 pela régua (2a)**; a placa principal (2b) vem numa sessão própria, depois do portão B da régua.
+
+1. **Placa principal com a face de baixo em z 6,8** (definida pelo P2) **e bolso de 0,6 mm no piso sob o P2**, como margem para a leitura ambígua do STEP (pergunta 1). Os furos do USB‑C (z ≈ 5,2) e do P2 (z ≈ 4,0) ficam aprovados.
+2. **Bateria = B3, LPP 503759 8HH** (1400 mAh, PCM, NTC 10 k, 3 fios; Farnell 56427 201 018): **case +10,5 mm à esquerda** (pergunta 2). B1 e B2 saem.
+3. **Plataforma dos registros +1,0 mm** (exterior, só essa plataforma; as teclas não mudam): folga axial 1,3 mm e **ímã Ø6 × 2,5** (pergunta 3).
+4. **Anel de LED leitoso** no volume, peça separada no tampo, Ø23,2/Ø20,8 × 1,5, em material translúcido (resina SLA ou acrílico; o MJF não é translúcido) (pergunta 4).
+5. **Plugue da bateria JST SH 3 vias** (J202, face de baixo): **rabicho SH já crimpado**, emendado aos fios da bateria com solda e termo‑retrátil; crimpar SH à mão não (pergunta 5).
+6. **Knob retido pela cabeça da haste**: montagem com o tampo virado, o knob por último (pergunta 6).
+7. **OFF do volume às 7h30** visto de cima (12 h = trás do instrumento, 225° na convenção matemática), do mesmo lado da posição 1 dos registros; o volume sobe no sentido horário por **270°** até o máximo às 4h30. Ímã do OFF a 7,2 mm do eixo, no batente anti‑horário (pergunta 7).
+8. **Desvios da R2SL aceitos:** OFF com latch SET/KILL; DRV5032**ZE**; indutor FNR3015 de 1,5 mm; conector SH da bateria. **Risco de fornecimento registrado:** TMAG5273A2 com 60 peças em estoque.
+
+---
 
 ## Mudanças desde a R1SL (25 nov 2026)
 
@@ -122,8 +137,8 @@ Regra: **qualquer item que mude o lado de fora do case** (contorno, altura, pare
 ## 4. Interface e energia
 
 - **Knobs magnéticos, sem eixo (opção C, R2SL)**, em poços (Ø17,6, 1,2 mm de fundo) nas plataformas: **registros** em (−46, 0) na fileira 1, **volume** em (−46, 48,06) na fileira 4. Corte de referência: `conceito/img/knobs_opcoes.png` (coluna C).
-  - **Knob:** peça impressa, topo ≈ +4,8 mm sobre o tampo (≈ altura do botão da fileira), **haste** que atravessa um furo‑mancal no fundo do poço e desce até ≈0,5 mm acima da placa principal. Retenção por anel de encaixe (ou arruela de pressão) na haste, por baixo do tampo; o knob não sai puxando.
-  - **Ímã diametral** (classe Ø6 × 2,5 NdFeB, a confirmar) na ponta da haste, sobre um **sensor de ângulo** na **face de baixo** da placa (montado pela JLCPCB), lendo através da placa: ímã → sensor ≈ 0,5 + 1,2 + chip. Sensor: TMAG5273 ou equivalente (AS5600, MT6701…), **o Code escolhe e justifica** pelo campo no sensor, resolução, consumo e endereço I²C (dois sensores no mesmo barramento do SGTL5000). Se a placa subir pela regra de alturas, só a haste muda de comprimento.
+  - **Knob:** peça impressa, topo ≈ +4,8 mm sobre o tampo (≈ altura do botão da fileira), **haste** que atravessa um furo‑mancal no fundo do poço e desce até ≈0,5 mm acima da placa principal. Retenção pela cabeça da haste (R3SL): knob por cima, haste por baixo, montado com o tampo virado e o knob por último; o knob não sai puxando.
+  - **Ímã diametral** (**Ø6 × 2,5** NdFeB, R3SL; a plataforma dos registros sobe 1,0 mm para caber) na ponta da haste, sobre um **sensor de ângulo** na **face de baixo** da placa (montado pela JLCPCB), lendo através da placa: ímã → sensor ≈ 0,5 + 1,2 + chip. Sensor: TMAG5273 ou equivalente (AS5600, MT6701…), **o Code escolhe e justifica** pelo campo no sensor, resolução, consumo e endereço I²C (dois sensores no mesmo barramento do SGTL5000). Se a placa subir pela regra de alturas, só a haste muda de comprimento.
   - **Cliques:** moldados no poço/haste (esfera com mola ou flexão do PA12, **o Design propõe e justifica**), com batentes. A vida útil do clique em PA12 é risco a registrar.
 - **Volume: contínuo, sem passos.** O clique ao sair de OFF, no sentido horário, liga o instrumento e acende o LED; daí até o fim do curso só sobe o volume (volume digital, lido do sensor de ângulo). **OFF em hardware:** um segundo ímã no knob, na posição OFF, sobre uma **chave Hall de microcorrente** (DRV5032 ou equivalente, alimentada direto pela bateria) que comanda o SYSOFF no lugar da chave do pot: knob em OFF e sem USB = bateria desconectada, como na R1SL. Consumo em OFF ≤ alguns µA (o Code calcula a autonomia em prateleira). Marcação: arco contínuo que engrossa no sentido horário, com ponto de OFF.
 - **Registros: seletor absoluto de 7 posições** (ângulo lido pelo sensor; o firmware arredonda para a posição e guarda a última), no sentido horário a partir de baixo‑esquerda, a 45°:
@@ -139,12 +154,9 @@ Regra: **qualquer item que mude o lado de fora do case** (contorno, altura, pare
 | 7 | H | H |
 
   Desenho: `conceito/img/knobs7.svg`.
-- **LED:** bicolor (verde/vermelho, laranja pela mistura), montagem reversa na face de baixo, aceso num anel translúcido em volta do knob de volume (o Code confere que a luz passa ao lado da haste e do ímã). Estados do V4: verde tocando, verde breve a cada 2 s em repouso, laranja ao ler as teclas na partida e carregando, vermelho lento bateria baixa, vermelho rápido codec ou régua sem resposta.
-- **Bateria (R2SL):** baia própria na frente‑esquerda. Três candidatas a comparar no portão A (o J escolhe e manda o STEP):
-  - **B1 (caminho aprovado):** LP402764‑1000, 1000 mAh, máx. 4,5 × 28 × 68 mm, fabricante genérico; **baia +1 mm** (29 × 69,5); sem NTC → **resistor de 10 k no TS** do BQ24075. Não exige mudar o case por fora.
-  - **B2:** **VARTA LPP 503562 S**, 1200 mAh típico, com PCM e **NTC 10 k (B 3435)** + pino ID (folha de dados VARTA, vendida pela Farnell). Classe 5 × 35 × 62 (**medidas do pack com PCM a conferir**).
-  - **B3:** **LPP 503759 8HH**, 1400 mAh típico, PCM e NTC 10 k (B 3380). Classe 5 × 37 × 59 (**fabricante, distribuidor e medidas a conferir**).
-  - B2 e B3 são mais largas e mais grossas: **o J aceita alongar o case para a esquerda**. Para cada uma o Code informa: crescimento do case em x (mm), efeito da espessura (> 4,5) no piso/placa, autonomia, conector, distribuidor e se vende em pequena quantidade. Entra no `RESTRICOES_CASE.md`. Nada é comprado.
+- **LED:** bicolor (verde/vermelho, laranja pela mistura), montagem reversa na face de baixo, aceso num **anel leitoso** em volta do knob de volume: peça separada no tampo, Ø23,2/Ø20,8 × 1,5, resina SLA ou acrílico (R3SL). Estados do V4: verde tocando, verde breve a cada 2 s em repouso, laranja ao ler as teclas na partida e carregando, vermelho lento bateria baixa, vermelho rápido codec ou régua sem resposta.
+- **Bateria:** baia própria na frente‑esquerda.
+  - **Escolhida (R3SL): B3, LPP 503759 8HH**, 1400 mAh típico, PCM e NTC 10 k (B 3380), 3 fios; Farnell 56427 201 018. Medidas do pack no `RESTRICOES_CASE.md` (R07/R08). **Case +10,5 mm à esquerda.** Plugue JST SH 3 vias por rabicho crimpado emendado aos fios. Nada é comprado; o J manda o STEP quando tiver (até lá, caixa com as medidas máximas da folha de dados).
 - **Conectores (aprovados):**
   - **USB‑C** na **parede de trás**, centro em x = −66 (24 mm da parede esquerda; se o case crescer para a esquerda pela bateria, a distância à quina cresce junto).
   - **P2 3,5 mm OUT** na **parede esquerda**, centro em y = 59,5 (11 mm da parede de trás).
@@ -192,24 +204,24 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 | Switch KS‑33D | ✔ `fornecimento/gateron/` |
 | RT1062 DVJ6B | ✔ `modelos/rt1062/` (SamacSys, fornecido pelo J) |
 | USB‑C C165948, P2 C49284723 | ◐ puxar do EasyEDA pelo LCSC (os mesmos da V4) |
-| Sensor de ângulo, chave Hall, ímãs | ✖ falta: o Code escolhe o PN e busca o STEP (ímã = cilindro com as medidas do PN) |
-| Bateria B1 / B2 / B3 | ✖ falta: o J manda o da escolhida; até lá, caixa com as medidas máximas da folha de dados |
+| TMAG5273, DRV5032ZE, ímãs Ø6 × 2,5 | ◐ chips pelo EasyEDA; ímãs = cilindros pelas medidas |
+| JST SH 3 vias | ✖ falta (o Code busca no EasyEDA) |
+| Anel leitoso do LED | desenho próprio (Design) |
+| Bateria B3 (LPP 503759 8HH) | ✖ falta: o J manda; até lá, caixa com as medidas máximas da folha de dados |
 | MKL02 | ✖ sem STEP público: caixa QFN‑16 3 × 3 pelo desenho da NXP |
 | Demais peças JLCPCB | ✔ EasyEDA (`modelos/baixados/`, fora do Git) |
 | Pot com chave, SRBV | — saíram do projeto na R2SL |
 
-## 8. Tarefa da R2SL: fechar a Etapa 1 (portão A)
+## 8. Tarefa da R3SL: Etapa 2a, posicionamento da régua R8 (+ grade)
 
-Refazer só o que mudou; o resto da Etapa 1 (PR #210) fica valendo.
+A placa principal (2b) **não** é posicionada nesta sessão.
 
-1. **[Eletrônica]**
-   - Esquema: RT1062 **DVJ6B** (conferir o mapa de bolas e o footprint contra `modelos/rt1062/`); sai o pot com chave (SW401) e a escada da SRBV (R401–R408); entram **2 sensores de ângulo + chave Hall do OFF** (escolha justificada, endereços I²C, alimentação, consumo em OFF) e a lógica do SYSOFF com a chave Hall; USB‑C C165948 e P2 C49284723 por baixo; FFC C3250113; indutor ≤ 1,9 mm (ou a alternativa da regra de alturas); conector da bateria conforme B1/B2/B3. ERC 0/0 nas duas placas.
-   - BOM conferida de novo (LCSC/JLCPCB, Basic/Extended, estoque), sem cotação.
-   - Bateria: tabela B1/B2/B3 (§4) com fabricante, distribuidor, venda em pequena quantidade, medidas do pack, NTC, conector, autonomia.
-   - Alturas sob a placa de **todas** as peças da face de baixo e a **altura mínima da placa principal** que resulta (com USB‑C e P2 da V4).
-2. **[Programação e som]** No sketch `etutti/firmware/slim/`: leitura dos 2 sensores de ângulo (7 posições com histerese e memória da última; volume contínuo), OFF pela chave Hall, **Full Speed forçado**; atualizar `PINOS.md` × sketch e o `FIRMWARE.md` (consumo em OFF e autonomia em prateleira). Compilar para Teensy 4.1.
-3. **[Design]**
-   - Criar o **`RESTRICOES_CASE.md`** (§3.1) com tudo o que já se sabe: alturas sob a placa, USB‑C/P2, indutor, conector e baia da bateria (B1/B2/B3, com o crescimento para a esquerda), FFC, hastes dos knobs, poste dos switches sobre o piso.
-   - Knob C: corte cotado de cada knob (poço, mancal, haste, retenção, ímã, distância ao sensor, cliques e batentes) e o mecanismo de clique proposto; o anel de LED do volume.
-   - Envelopes conferidos contra os STEP das peças novas; lista dos STEP que faltam.
-4. **`FIT_CHECK.md`**: resumo da R2SL, itens do `RESTRICOES_CASE.md` que mudam o lado de fora do case, e **"Perguntas para o design"**. Parar no **portão A**. Nada de posicionamento, roteamento, cotação ou compra.
+1. **[Design]** Aplicar as decisões da R3SL no modelo do case e no `RESTRICOES_CASE.md`: case +10,5 mm à esquerda (B3), bolso de 0,6 mm sob o P2, plataforma dos registros +1,0 mm, anel leitoso, retenção pela haste, OFF às 7h30. Entregar à eletrônica o **envelope da régua**: apoio contínuo da base (mesmo tipo nas 4 fileiras, sem furos no piso), bolsos sob os postes dos switches, posição dos 2 espaçadores M2 por régua, cauda e saída do FFC na zona da interface, folgas da grade.
+2. **[Eletrônica]** Posicionar a **régua R8** e a **grade** (sem rotas):
+   - 8 KS‑33D no passo 18,5, TMAG5253 a 4,3 mm do centro na face de baixo (orientação e pino 1 conferidos contra o desenho Gateron), 74HC595, desacoplamentos e FFC na cauda, furos M2;
+   - contorno, furos 14,00 da grade, e se a JLCPCB aceita régua + grade no mesmo painel;
+   - corredores previstos para a rota (linha analógica OUT longe do CLOCK/LATCH), regras no `.kicad_dru`;
+   - DRC sem trilhas (courtyard e furos 0 erros), paridade com o esquema 0;
+   - `POSICIONAMENTO.md` (novo): planta cotada da régua e da grade, com o nome da nota em cada tecla das 4 fileiras; cena 3D com o case (corte numa tecla e na cauda), com modelos realistas.
+3. **[Programação e som]** Só conferir que o `PINOS.md` e a ordem das teclas no sketch batem com a régua posicionada (índice da tecla × posição × nota).
+4. **`FIT_CHECK.md`**: resumo da R3SL, itens novos do `RESTRICOES_CASE.md` (em destaque os que mudam o lado de fora) e **"Perguntas para o design"**. Parar no **portão B da régua**. Nada de rota, cotação ou compra.
