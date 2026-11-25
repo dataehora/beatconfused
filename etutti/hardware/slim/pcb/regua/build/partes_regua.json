@@ -202,7 +202,7 @@
  },
  {
   "ref": "J1",
-  "value": "FFC 8P 0.5 mm, contato por baixo",
+  "value": "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)",
   "nets": {
    "1": "GND",
    "2": "+3V3",
@@ -216,10 +216,10 @@
   },
   "code": "S10",
   "fp": "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal",
-  "lcsc": "C66953",
+  "lcsc": "C3250113",
   "cls": "estendida",
   "mount": "JLC",
-  "note": "na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector na principal); footprint = placeholder Amphenol",
+  "note": "na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector, 1,0 mm de altura, contatos dos dois lados); footprint = placeholder Amphenol",
   "dnp": false,
   "sheet": "R",
   "price": 0.1,

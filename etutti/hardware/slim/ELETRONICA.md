@@ -1,123 +1,119 @@
-# eTutti Slim · Eletrônica (SPEC R1SL, etapa 1 — portão A)
+# eTutti Slim · Eletrônica (SPEC R2SL, etapa 1 — portão A)
 
-Atende a **SPEC R1SL §8, item 1**. Nada é colocado nem roteado: só componentes, esquema e lógica. Independente da V4 (a máquina de escrever o esquema foi **copiada** para `pcb/`, nada é importado da V4).
+Atende a **SPEC R2SL §8, item 1** (refaz só o que mudou desde a R1SL / PR #210). Nada é colocado, roteado, cotado ou comprado. Independente da V4.
 
-## 1. O que foi feito
+## 1. O que mudou e o que ficou
 
-| Entrega | Onde | Estado |
+| Entrega | Onde | Estado (25 nov 2026) |
 |---|---|---|
-| Esquema KiCad da **placa principal** (5 folhas: P processador, E energia, F fone, I interface, R conectores das réguas) | `pcb/schematic.py` → `pcb/kicad/` | **ERC 0 erros / 0 avisos**, netlist = declarada. 119 peças, 93 redes |
-| Esquema KiCad da **régua R8** | `pcb/regua/schematic_regua.py` → `pcb/kicad_regua/` | **ERC 0 / 0**, netlist = declarada. 20 peças, 14 redes |
-| BOM com PN, LCSC, Basic/Extended, estoque | `pcb/bom_esquema.csv`, `pcb/bom_regua.csv`, conferência em `fornecimento/bom_conferido.{csv,json}` (50 códigos, LCSC + JLCPCB) | feita em 24 nov 2026 |
-| Mapa de pinos do RT1062 (pinos Teensy 4.1 ↔ bolas) | `pcb/PINOS.md` (gerado por `pcb/pinos.py`) | contrato com a programação; conferido contra o sketch (`etutti/firmware/slim/check_pins.py`, 16/16) |
-| Lógica de energia (BQ24075 + SYSOFF + USB) | seção 3 | projetada; **não testada em bancada** |
-| Escada da chave de 7 posições | seção 4 | calculada |
-| STEP dos componentes escolhidos | `modelos/` (`fetch_models.py`; 14 de 16 baixados, fora do Git) | medidas na seção 7 |
+| Esquema da **principal** (P processador, E energia, F fone, I interface, R conectores das réguas) | `pcb/schematic.py` → `pcb/kicad/` | **ERC 0 erros / 0 avisos**, netlist = declarada; 120 peças, 87 redes |
+| Esquema da **régua R8** | `pcb/regua/schematic_regua.py` | **ERC 0 / 0**; 20 peças (FFC trocado para o de 1,0 mm) |
+| RT1062 **DVJ6B**: footprint e mapa de bolas × SamacSys | `pcb/confere_rt1062.py` | **196/196 pads, desvio de posição 0,0000 mm, 0 diferenças de nome**; diâmetro do pad 0,394 (SamacSys) × 0,35 mm (esquema): a eletrônica mantém 0,35 no posicionamento/roteamento (máscara 0,45), decisão do passo 2 |
+| BOM conferida (LCSC + JLCPCB, classe, estoque), sem cotação | `pcb/bom_esquema.csv`, `pcb/bom_regua.csv`, `fornecimento/bom_conferido.{csv,json}` | 48 códigos, 140 peças, **24 tipos Extended** (eram 21) |
+| Mapa de pinos | `pcb/PINOS.md` (gerado por `pcb/pinos.py`) | 21 pinos; conferido contra o sketch (15/15) |
+| Saíram | pot com chave (SW401), SRBV (SW402), escada R401–R408, chave de empurrar/clique do pot, latch por borda do pot | — |
+| Entraram | 2 × TMAG5273, chave Hall DRV5032, latch de energia, KILL/SET, USB-C e P2 da V4 por baixo, FFC 1,0 mm, indutor 1,5 mm, JST SH 3 vias da bateria | — |
+| STEP | `modelos/` (`fetch_models.py`; 18 baixados + RT1062 da SamacSys) | medidas em `FIT_CHECK.md` |
 
-Rodar (da raiz do repositório): `python etutti/hardware/slim/pcb/schematic.py`, depois `.../pcb/regua/schematic_regua.py`, `.../pcb/pinos.py`, `.../fornecimento/conferir_bom_slim.py` (~3 min, 2 s entre pedidos).
+Rodar (raiz do repositório): `python etutti/hardware/slim/pcb/schematic.py`, `.../pcb/regua/schematic_regua.py`, `.../pcb/pinos.py`, `"C:/Users/julia/.venvs/cadquery/Scripts/python.exe" -X utf8 .../pcb/confere_rt1062.py`, `.../fornecimento/conferir_bom_slim.py` (~3 min).
 
-## 2. Escolhas de componentes
+## 2. Knobs magnéticos: escolha dos sensores
 
-| Função | Escolha | LCSC / classe / estoque (24 nov) | Observação |
+**Sensor de ângulo: TMAG5273 (TI), versões A2 e B2** (SOT-23-6, 2,9 × 2,8 × 1,65 mm).
+
+| Critério | TMAG5273A2/B2 | AS5600 | MT6701 |
 |---|---|---|---|
-| Processador | **RT1062 chip-down** | **MIMXRT1062DVJ6B** (12×12 mm, 0,8 mm) C3216699 · Ext · **1** em estoque. A SPEC cita **DVL6B** (C2847497 · Ext · 64) | **Desvio da SPEC, ver §6.1.** O mapa de bolas do esquema é o do 12×12 (o do Viaggio) |
-| Bootloader | MKL02 com bootloader PJRC | **consignada** (só a PJRC vende) | como a SPEC |
-| Flash | W25Q64JVSSIM | C5362615 · Ext · 3944 | 64 Mbit, como a Teensy 4.1 |
-| Cristal 24 MHz | 7U24000E08UCG (8 pF) | C524739 · Ext · 3410 | o C431156 do Viaggio está **sem estoque** |
-| Codec | SGTL5000XNLA3R2 (QFN-20) | C2651833 · Ext · 952 | só saída de fone; **C307 = 100 nF** (datasheet: VAG 0,1 µF) |
-| Carregador | **BQ24075RGTR** | C15464 · Ext · 15786 | SYSOFF no pino 15 |
-| 3,3 V | TPS63001DRCR + FNR4020S2R2MT | C28060 / C167825 · Ext | buck-boost (a bateria desce a 3,0 V) |
-| USB‑C | **TYPE-C-31-M-14** (HRO, 16 pinos, “laminated board” = mid-mount) | C223907 · Ext · 2218 | modelo 11,45 × 8,56 × 3,16 mm; a JLCPCB pode não montar peça mid-mount por baixo (ver §6.4) |
-| P2 OUT (3,5 mm) | **mid-mount: não achei peça em estoque** | nenhuma (só entradas com estoque 0) | montar em casa ou consignar; o esquema usa o footprint do PJ-327A de topo só como marcador |
-| **Pot 9 mm com chave** | **nenhum na LCSC/JLCPCB** | — | **ver §6.2**: o RK097 de 5 pinos da LCSC (RK0971114Z1N, C2938587) tem chave de **empurrar**, não rotativa; candidato a conferir: Same Sky PTN09S1 (9,5 mm, “SWITCH”, DigiKey), sem datasheet lido |
-| **Chave de 7 posições** | **Alps SRBV170501** | C470375 · Ext · 325 | 1 polo, 7 posições, **sem curto** entre posições, 30° por passo, corpo de 7,5 mm; eixo L = 15 ou 20 mm (170501 × 170701: conferir qual é qual); STEP do 170501 não existe (EasyEDA dá o 141404) |
-| Réguas: sensor | TMAG5253BA3IQDMRR | C22401868 · Ext · 2912 (LCSC: 229) | 32 por instrumento |
-| Réguas: registrador | 74HC595BQ,115 (DHVQFN-16) | C730243 · Ext · 137 mil | |
-| Conector das réguas | FFC 8 vias 0,5 mm, contato por baixo | C66953 · Ext · 5028 | **altura 2,0 mm**: ver §6.5 |
-| Bateria (conector) | JST PH S3B-PH-SM4-TB | C265101 · Ext | **5,5 mm de altura**: ver §6.5 |
-| Bateria | **LP402764-1000** (68 × 28 × 4,5 máx., 1000 mAh) | não é peça JLCPCB | ver §5 |
-| LED | TJ-S1615SW6TGLCRG-A5 | C273605 · Ext | vermelho/verde |
-| PROG | TS-1187A | C318884 · **Basic** | |
-| Demais passivos | 0402 de valores Basic | 21 tipos Extended no total (a JLCPCB cobra por tipo Extended) | **sem cotação**, como pede a SPEC |
+| Endereço I²C com o SGTL5000 (0x0A) no mesmo barramento | **4 endereços de fábrica**: A = **0x35**, B = **0x22**, C = 0x78, D = 0x44 → **dois sensores sem conflito** | **fixo 0x36**: dois no mesmo barramento colidem (só o AS5600L tem endereço configurável) | fixo 0x06 (I²C) |
+| Campo no sensor | faixa ±133/±266 mT (A2/B2) ou ±40/±80 mT (A1): cobre o ímã de Ø6 × 2 a ~3,5 mm (~80–150 mT, estimativa de dipolo; ver §3) | 30–70 mT recomendado: o ímã “satura” de perto | 10–100 mT |
+| Resolução | ângulo CORDIC de 13 bits (1/16°), 4 × em XY | 12 bits | 14 bits |
+| Consumo | 2,3 mA contínuo (1,2 µA em wake-and-sleep de 5 s; ~160 µA com intervalo de 1 ms) | 6,4 mA | 10 mA |
+| Alimentação | 1,7–3,6 V (a 3,3 V da placa) | 3,3/5 V | 3,3–5 V |
+| LCSC | A2 C3020565 (**60** em estoque), B2 C41935525 (**416**); A1 C3716049 (3241) existe como reserva do 0x35 | SOIC-8 | SOP-8 |
 
-Tipos **Extended** (principal + régua): 21. Os resistores da escada foram escolhidos só entre valores **Basic** (1 k, 2,2 k, 4,7 k, 10 k, 22 k, 47 k, 100 k) para não criar tipos novos; o PTC (F201) e o 2,2 MΩ do cristal são Extended e podem sair (o PTC está na SPEC §5.2).
+Escolha: **U401 = TMAG5273A2 (0x35) → registros; U402 = TMAG5273B2 (0x22) → volume**, ambos na face de baixo, sob o eixo do knob, no mesmo barramento I²C (pinos 18/19, 2,2 kΩ já existentes). Faixa ±266 mT (registro `SENSOR_CONFIG_2` = 0x07) e ângulo XY (`ANGLE_EN` = 01, registros 0x19/0x1A). Risco: estoque do A2 (60 peças); reserva = A1 (0x35, ±40/±80 mT) com ímã menor (Ø4 × 2). O consumo de 2 × 2,3 mA entra na conta da bateria.
 
-## 3. Energia: BQ24075 + SYSOFF + USB
+**Chave Hall do OFF do volume: DRV5032ZE (TI, C266118, SOT-23, 5509 em estoque).** Omnipolar (qualquer polo), saída em **dreno aberto**, **BOP 33–63 mT** e BRP 30–58 mT (a versão menos sensível), **2,3 µA** a 20 Hz, 1,65–5,5 V: alimentada **direto pela bateria**. Por que a ZE e não a FA (BOP 1,5–4,8 mT, 1,6 µA, push-pull, 58 mil em estoque): o ímã **central** do knob (Ø6) dá ~5–13 mT a 8–9 mm do eixo, o que **dispararia a FA** em qualquer ângulo; com a ZE o ímã de OFF (Ø4 × 2, ~100–120 mT a 2,2 mm) tem margem ≥ 1,5 × sobre o BOP máximo, e o ímã central, margem ≥ 2,5 × sob o BOP mínimo (33 mT). A conta usa fórmulas analíticas, **não** foi medida (item de bancada).
 
-Fato do datasheet (TI SLUS810, seção SYSOFF): **SYSOFF tem pull-up interno de ~5 MΩ no VBAT**; SYSOFF alto desconecta a bateria do OUT e, com adaptador, **desliga também a carga**; deixe-o sempre acionado, nunca flutuando. Logo: sem acionamento externo a bateria fica **desconectada** (consumo ~0), e qualquer lógica só precisa **puxar o SYSOFF a GND** quando o instrumento deve ligar.
+## 3. Lógica de energia (BQ24075 + SYSOFF + chave Hall + USB)
+
+Fato do datasheet: **SYSOFF tem pull-up interno de ~5 MΩ no VBAT**; alto = bateria desconectada do OUT (e, com adaptador, carga desligada). Logo, sem acionamento a placa está desligada, e basta **puxar o SYSOFF a GND** para ligar.
 
 ```
- VBAT ──SW401 (chave do pot: SW1-SW2)── SWV ──┬─ C205 4,7 µF ──┐                         BQ24075
-                                              │                ├─ ONG ─ Q201 (N) ──┐
-                                              ├─ R215+R216 (2 M) → SW_S (pino 25)    ├──────── SYSOFF (pino 15)
-                                              └─ Q202 (P, fonte=SWV, dreno=ONG) ─┘   │
-                                        KEEP (pino 10) → Q203 (N) → gate de Q202      │
- VBUS_F → R213/R214 (divisor 100k/100k) → VBUS_G → Q204 (N) ──────────────────────────┘
+ VBAT ─ R250 1M ─┬─ HALL_X ── Q202 (g)        U403 DRV5032ZE: OUT baixo = ímã de OFF presente
+ (U403 OUT) ─────┘      │
+                        ├─ Q209 (g) → KNOB_N (pino 25, 0 = ligado) , R258 100k no 3V3
+                        └─ C251 100n → SETG (R253 1M) → Q205 : BORDA de subida arma o latch
+
+ latch ARM/ARMB: Q203/Q204 cruzados, R251/R252 1M (uma conduz sempre: ~3,7 µA)
+   SET  (pino 6)  → Q206 → puxa ARMB   | KILL (pino 10) → Q207 → puxa ARM
+ SYSOFF ── Q201 (g = ARM) ── ONX ── Q202 (g = HALL_X) ── GND     (série: latch armado E knob fora de OFF)
+ SYSOFF ── Q208 (g = ½ VBUS)  ── GND                                (USB presente)
 ```
 
 | Situação | SYSOFF | Resultado |
 |---|---|---|
-| Knob OFF, sem USB | alto (pull-up interno) | bateria desligada do OUT: **nada consome**; o sistema está desligado |
-| Knob sai de OFF (chave fecha) | baixo por ~3 s | o fechamento empurra ~VBAT no ONG por C205 (R210 1 MΩ o descarrega, τ ≈ 3 s com a perda de capacitância): Q201 liga, OUT sobe, o 3,3 V sobe, o RT1062 parte; **o firmware põe KEEP = 1 logo na partida** (`setup()`), Q203 → Q202 passa a manter o ONG em SWV: o sistema fica ligado enquanto a chave estiver fechada |
-| Knob ON | baixo (KEEP) | funciona só na bateria; o firmware lê a chave (SW_S = SWV/2 ≥ 1,0 V) |
-| Knob vai a OFF | alto | **em hardware**: SWV cai, Q202 deixa de conduzir (só conduz com a chave fechada), o ONG descarrega: o sistema desliga sem depender do firmware |
-| Desligamento automático (15 min sem uso, ou bateria < 3,3 V por 5 s) | alto | o firmware solta KEEP: SYSOFF é solto, a bateria se desconecta, a placa morre; para ligar de novo: **abrir e fechar o knob** (nova borda) |
-| **USB presente** | **baixo** (Q204, gate = ½ VBUS ≈ 2,5 V) | o BQ24075 carrega e alimenta o OUT; o instrumento acorda **com o knob em OFF** (“soft off”: mudo, LED de carga, MIDI vivo). Com USB o KEEP não é preciso |
-| USB sai com o knob OFF | alto | desliga |
-| USB sai com o knob ON | segue baixo (KEEP) | continua na bateria |
+| Knob em OFF (ímã sobre a chave), sem USB | alto | **bateria desconectada em hardware** (Q202 aberto), qualquer que seja o latch |
+| Knob sai de OFF (sentido horário) | baixo | HALL_X sobe → C251 arma o latch (pulso ~0,1 s) → Q201+Q202 conduzem → OUT, 3,3 V e RT1062 sobem; o latch segura sem o firmware. O “clique” é o detente mecânico no OFF (Design), não um interruptor |
+| Knob ligado | baixo | liga/desliga só pela chave Hall |
+| Desligamento automático (15 min sem uso, ou bateria < 3,3 V por 5 s) | alto | o firmware dá um pulso em **KILL** (50 ms): o latch desarma, SYSOFF é solto, a placa morre **e não reinicia** (HALL_X continua alto, sem nova borda); para religar é preciso levar o knob a OFF e voltar |
+| USB presente | baixo (Q208) | carrega e alimenta com o knob em OFF (“soft off”: mudo, LED de carga, MIDI vivo); com o knob ligado, o firmware dá **SET** (pino 6) na partida: ao tirar o cabo a bateria assume |
+| USB sai, knob em OFF | alto | desliga |
 
-Pontos conferidos: Q201/Q203/Q204 = AO3400A (Vth máx. 1,45 V), Q202 = AO3401A, ambos **Basic**; com a bateria em 3,0 V os gates ainda ficam com ≥ 1,5 V de folga. A SPEC pedia “lógica mantém SYSOFF baixo sempre que há USB”: é o Q204. Correntes em espera: knob fechado, R215+R216 = 2 MΩ (~2 µA) e R211 100 kΩ só com o KEEP ligado (SWV/100 k = 40 µA, em operação).
-**Risco que só a bancada fecha:** a duração do pulso de partida (C205 × R210 depende da capacitância real do X5R sob 4 V). Se o RT1062 levar mais de ~2 s para ligar o KEEP (a partida normal da Teensy é < 0,5 s, com a rotina de calibração das teclas vindo depois do KEEP), o sistema desliga antes. Se for preciso, R210 sobe para 2,2 MΩ.
+**Consumo em OFF (pior caso, 4,2 V, 85 °C):** DRV5032ZE ~3 µA + pull-up R250 (chave conduzindo) 4,2 µA + latch 4,2 µA + BQ24075 sleep (IBAT(PDWN) ≤ 6,5 µA) + fugas ≈ **≤ 18 µA**; típico ~10 µA. **Vida em prateleira só pela eletrônica:** 1000 mAh × 0,9 / 18 µA ≈ 50 000 h ≈ **70 meses** (B1); 1260 mAh úteis (B3) ≈ 97 meses. A **autodescarga da célula** (LiPo ≈ 2–3 %/mês) é muito maior e manda: a eletrônica não é o fator limitante. Todos os transistores são AO3400A/AO3401A **Basic**.
 
-## 4. Escada da chave de 7 posições
+Pontos que só a bancada fecha: a temporização do pulso de SET (C251 × R253 = 0,1 s × a perda de capacitância do X5R sob tensão), o disparo real da chave Hall com o ímã do knob (campos de §2 são analíticos) e o corte limpo do SYSOFF (BQ24075) com Q201/Q202 em série.
 
-Comum (pinos 1 e 10) → `REG_ADC` (pino 24 / A10); R401 10 kΩ de +3V3 até o comum; cada posição k (pinos 2…8) liga o comum a um resistor para GND; o pino 9 é terminal virtual (não usado). Como a chave é “sem curto”, **entre duas posições o comum fica aberto = 3,3 V**, e o firmware mantém a última posição.
+## 4. Peças pedidas pela R2SL
 
-| Pos. | Registro | Resistor | Tensão (3,3 V) | Contagem 12 bits |
-|---|---|---|---|---|
-| 1 | L | 1 k (R402) | 0,300 V | 373 |
-| 2 | LM | 2,2 k (R403) | 0,595 V | 739 |
-| 3 | M | 4,7 k (R404) | 1,055 V | 1310 |
-| 4 | MM | 10 k (R405) | 1,650 V | 2048 |
-| 5 | MH | 22 k (R406) | 2,269 V | 2817 |
-| 6 | LH | 47 k (R407) | 2,720 V | 3376 |
-| 7 | H | 100 k (R408) | 3,000 V | 3724 |
-| — | entre posições | aberto | 3,300 V | 4095 |
+| Função | Escolha | LCSC / classe / estoque | Observação |
+|---|---|---|---|
+| Processador | **MIMXRT1062DVJ6B** (12 × 12, 0,8) | C3216699 · Ext · **1** (consignado) | footprint/símbolo conferidos (§1); STEP 12,0 × 12,0 × 1,52 |
+| USB‑C | HRO TYPE-C-31-M-12 | C165948 · Ext · 426 mil | face de baixo, JLCPCB; STEP 8,94 × 7,9 × 4,1 (z −0,85…3,25) |
+| P2 | XUNPU PJ-327A | C49284723 · Ext · 3250 | face de baixo, JLCPCB; STEP 14,2 × 8,6 × 5,4 (z −2,9…2,5); corpo 4,4 mm (LCSC); pads: 2/5 manga, 6 anel, 4 ponta, 3 chave da ponta |
+| FFC | KH-FPC0.5-H1.0SMT-8P-QCHF | C3250113 · Ext · 2374 | **contatos dos dois lados, entrada por cima ou por baixo** (resposta à dúvida da SPEC); 1,0 mm de altura; STEP 6,01 × 3,5 × 1,02; os 4 cabos FFC têm de ser de 0,3 mm de espessura (0,5 mm de passo) |
+| Indutor do TPS63001 | **FNR3015S2R2MT** (2,2 µH, 2 A) | C167747 · Ext · 81 mil | **1,5 mm** (era o FNR4020 de 2,6 mm): regra de alturas (a); STEP 3,0 × 3,0 × 1,52. A corrente média é ~0,15 A, o pico do TPS63001 em carga leve é pequeno |
+| Conector da bateria | **JST SH 3 vias** SM03B-SRSS-TB | C160403 · Ext · 20 715 | **2,9 mm**, face de baixo (regra a: o PH de 5,5 mm não cabe). Nenhuma das 3 baterias traz SH: o J solda/crimpa o plugue |
+| TS do BQ24075 | R259 10 kΩ (**não montar** com B2/B3) | C25744 Basic | só para a B1 (2 fios, sem NTC) |
 
-A menor distância entre dois níveis é 0,28 V (47 k → 100 k) = 350 contagens, contra ±1 % dos resistores (≈ 40 contagens no pior caso): folga de 8×. Limiar de “aberto”: 3,15 V. Os valores são todos **Basic**.
+## 5. Baterias B1 / B2 / B3 (nada comprado)
 
-## 5. Bateria (a SPEC pede opções de distribuidor com NTC)
+Corrente da placa ≈ 105 mA na bateria (FIRMWARE.md); 85 % da capacidade útil.
 
-Envelope da SPEC: 4,5 × 28 × 68 mm, baia em x −88…−60 (28 mm) e y −14,5…54 (68,5 mm).
-- **LP402764-1000** (folha de dados de um fabricante de Shenzhen, vista em um fórum da TI): 3,7 V, 1000 mAh, **máximos** 68 × 28 × 4,5 mm, PCM de 1,5 A, cabos 26 AWG com conector ZHL1.25. É exatamente o envelope: **folga de 0 mm na largura e 0,5 mm no comprimento** nos máximos.
-- **Não achei** distribuidor com um LP402764 (ou equivalente de ≤ 4,5 mm) **com NTC de 3 fios e JST PH 2,0**. O 3 fios com NTC que existe em loja (Core Electronics, 1000 mAh) mede 7 × 30 × 50 mm: não cabe.
-- Caminho prático: pedir ao fabricante o **LP402764 com NTC de 10 kΩ em 3 fios e conector JST PH** (ou o conector que o J preferir), ou usar uma bateria de 2 fios e **ligar o TS do BQ24075 a um resistor de 10 kΩ para GND** (o carregador passa a ignorar temperatura): isso muda o esquema (R + NTC sai).
-- O que o J precisa escolher e mandar o STEP: ver as perguntas no `FIT_CHECK.md`.
+| | **B1** LP402764-1000 | **B2** VARTA LPP 503562 S | **B3** VARTA LPP 503759 8HH |
+|---|---|---|---|
+| Fabricante / folha | genérico (Shenzhen); folha de dados num fórum da TI, capacidade ambígua | **VARTA** (folha de dados na Farnell, 2026390/2026391) | **VARTA** (folha na Farnell, 2026384; e no fórum da TI) |
+| Capacidade | 1000 mAh (conferir) | 1150 mín. / **1200 típ.** | 1320 mín. / **1400 típ.** |
+| Medidas | **máx. 4,5 × 28 × 68** | célula máx. 5,0 × 35 × 62 (Adafruit: pack 34 × 62 × 5); **pack com PCM a conferir** | distribuidores: 5,2–5,4 × 37–37,5 × 60–60,5 (a folha não dá o contorno): **conferir** |
+| PCM / NTC | PCM 1,5 A; **sem NTC** → R259 10 k no TS | PCM; **NTC 10 kΩ B 3435** + resistor de ID | PCM; **NTC 10 kΩ B 3380**, sem ID; fios AWG24: vermelho (+), branco (NTC), preto (−) |
+| Conector | ZHL1.25 (ou fios) | **a variante 56456 701 099 da Farnell tem contatos de pressão (snap)**, não fios: a versão com fios não foi confirmada | **fios soltos** (3 fios) |
+| Distribuidor / pequena quantidade | nenhum achado: **não** | **Farnell 56456 701 099** (1 un.), mas é a variante snap: **sim, com ressalva** | **Farnell 56427 201 018, ~€ 16, estoque “10+”**; Texim: MOQ 600: **sim (Farnell)** |
+| Baia / case | 29 × 69,5: **+1 mm** à esquerda (ou à frente) | pack ≥ 35 + folga 0,75 × 2 = **36,5**: **+8,5 mm** à esquerda | pack ≥ 37,5 + 1 = **38,5**: **+10,5 mm** à esquerda |
+| Espessura (> 4,5) | n/a | 5,0: folga ao tampo ≥ 2,5 mm (piso 1,6 + 5,0 = 6,6; tampo ≥ 9,5 por cima da baia) | 5,2–5,4: idem, folga ≥ 2,3 mm; **não toca na placa** (a baia fica fora da faixa x −57…−33) |
+| Autonomia (≈ 105 mA) | **~8,1 h** | **~9,7 h** | **~11,3 h** |
 
-## 6. Problemas encontrados (desvios e riscos)
+Resumo: **B3 dá mais autonomia, NTC de verdade e é a única com pacote vendável em pequena quantidade com fios de 3 vias, ao custo de +10,5 mm no lado esquerdo**; B1 é a que não muda o lado de fora, mas depende do R259 e de fornecedor ainda não identificado; B2 só vale se o fabricante confirmar a versão com fios. O J escolhe e manda o STEP.
 
-1. **RT1062: a SPEC mistura dois encapsulamentos.** “MIMXRT1062DVL6B (BGA196 12 × 12, passo 0,8)”: o **DVL6B é o 10 × 10 mm** (a Teensy usa esse; EasyEDA chama o modelo de P0.65), enquanto o 12 × 12 mm de 0,8 mm é o **DVJ6B**. LCSC/JLCPCB: DVL6B **64** em estoque (US$ ~14), DVJ6B **1**. O esquema usa o mapa de bolas do 12 × 12 (o do Viaggio, 196 bolas, mesmos nomes de bolas que a Teensy, que usa o 10 × 10: conferir na NXP). **Pergunta 1.** O RT1062 é peça Extended e sai da JLCPCB só se houver estoque: com 1 peça não dá para montar 5 placas; em ambos os casos a opção segura é **consignar** (PJRC/DigiKey/Mouser).
-2. **Pot 9 mm com chave rotativa: não existe no catálogo da JLCPCB.** O que a LCSC tem na série RK097 com chave tem chave de empurrar (0,5 mm de curso) ou nenhuma. Fica como peça **montada em casa**, de distribuidor: candidatos a ler o datasheet antes (Alps RK097 com “chave rotativa” = dígito de chave 1 no PN; Same Sky PTN09S1). **Pergunta 2.** Alternativa sem chave física: pot comum + comparador de baixa corrente que puxa o SYSOFF quando o cursor sai de ~0 V (sem o “clique” tátil, e o pot consome ~66 µA o tempo todo ligado a VBAT, ou um comparador micropower a mais); não implementei.
-3. **Chave de 7 posições é longa.** O STEP mais próximo (SRBV141404) mede 26,5 mm no total, **21,9 mm acima da face da placa** e 4,6 mm de pinos abaixo: com a placa a z = 5,0 o eixo chega a z ≈ 27, bem acima do tampo (14 mm no nível da fileira 1; “knobs baixos em poços de 1,2 mm” fica impossível com esse eixo). Ver o `FIT_CHECK.md`.
-4. **Peças mid-mount (USB-C e jack):** têm pernas dos dois lados da placa; a JLCPCB pode não montá-las pelo processo “só face de baixo”. Previsto: soldar à mão ou consignar. **Pergunta 3** no FIT_CHECK.
-5. **Alturas abaixo da placa:** a SPEC dá 2,2 mm entre a face de baixo da régua (z 3,8) e o piso (z 1,6). FFC de 2,0 mm deixa 0,1–0,2 mm; o indutor FNR4020 (STEP: 2,6 mm) e o JST PH de lado (5,5 mm) **não cabem** nessa folga: ver o FIT_CHECK.
-6. **Par USB (SPEC §5.2: 30–35 mm):** em Full Speed (12 Mbit/s, subida ≥ 4 ns) 35 mm de FR-4 (~0,23 ns de atraso) é eletricamente curto: **aceitável**, com 90 Ω diferenciais só como boa prática. O **risco** é a Teensy 4 negociar **High Speed (480 Mbit/s)** num host que o aceite: com um par longo e sem impedância controlada isso pode falhar. Mitigação: forçar Full Speed (`USB_PORTSC1.PFSC`) no firmware; **não verificado** (precisa da placa). **Pergunta 4.**
-7. **Nada do esquema foi comprado, cotado, posicionado ou roteado.** Estoques e códigos de 24 nov 2026; mudam.
+## 6. Alturas sob a placa e altura mínima da placa principal
 
-## 7. Medidas dos STEP baixados (EasyEDA, por código LCSC; `modelos/index.json`)
+Folga sob a placa = face de baixo da placa − piso (z 1,6). Peças da **face de baixo** (STEP / LCSC):
 
-| Peça | Caixa (mm) | Observação |
+| Peça | Altura sob a face de baixo | Observação |
 |---|---|---|
-| USB-C TYPE-C-31-M-14 | 11,45 × 8,56 × 3,16 | |
-| SRBV (modelo do 141404) | 18,22 × 19,85 × 26,5 (z −4,6…21,9) | modelo aproximado do 170501 |
-| RT1062 DVL6B | 10,0 × 10,0 × 1,51 | (o DVJ6B não tem modelo) |
-| BQ24075 / TPS63001 / SGTL5000 | 3,0 × 3,0 × 0,6–0,76 | |
-| FFC 8P | 8,3 × 6,6 × 2,1 | |
-| TMAG5253 / 74HC595 | 1,42 × 1,1 × 0,41 / 3,52 × 2,52 × 1,03 | |
-| JST PH lateral S3B | 10,0 × 8,5 × 5,5 | |
-| Indutor FNR4020 | 4,0 × 4,0 × 2,61 | |
-| LED 1615 / TS-1187A / cristal | 0,6 / 1,55 / 0,72 de altura | |
+| **P2 XUNPU PJ-327A** | **≈ 5,0** (eixo a 2,8 da face na geometria da V3, meia altura 2,2 do corpo de 4,4; o STEP dá 5,4 de ponta a ponta) | **a mais alta: define a placa**; ver `RESTRICOES_CASE.md` R01 |
+| USB‑C M-12 | 3,25 (pernas −0,85 atravessam a placa) | |
+| JST SH 3 vias | 2,9 | |
+| TMAG5273 (2 ×) | 1,65 | |
+| DVJ6B BGA | 1,52 (STEP) | |
+| FNR3015 | 1,52 | |
+| DRV5032ZE | 1,05 | |
+| 74HC595, FFC H1.0, BQ24075, SGTL5000, TPS63001, TMAG5253, LED, cristal | 0,4–1,05 | |
+
+**Altura mínima da placa principal: face de baixo em z = 1,6 + 5,0 + 0,2 (folga) = 6,8 mm** (topo da placa 8,0 com 1,2 mm de espessura), **definida pelo P2**; com um bolso de 0,6 mm sob o jack (o piso mínimo sob o bolso é 1,0 mm) cairia para 6,2 mm. Isso é **3,0 mm acima** da face de baixo da régua da fileira 1 (3,8) e **entre** as das fileiras 2 e 3 (5,8 e 7,8). Tudo o mais cabe nessa folga (4,6 mm) com ≥ 1,7 mm de sobra.
+
+## 7. Par USB e Full Speed
+
+Aceito pela SPEC. Foi **comprovado no sketch** que `USB1_PORTSC1 |= USB_PORTSC1_PFSC` compila; que forçar Full Speed funciona com a Teensy 4.1 num host real **não foi verificado** (precisa de placa): fica como item de bancada.
 
 ## Perguntas para o design
 
-(As perguntas completas, com as de posicionamento, estão em `FIT_CHECK.md`, fim.)
+As perguntas completas (inclusive as de posicionamento) estão em `FIT_CHECK.md`, no fim.

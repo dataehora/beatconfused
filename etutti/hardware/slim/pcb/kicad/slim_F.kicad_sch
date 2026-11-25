@@ -377,7 +377,7 @@
 				)
 			)
 		)
-		(property "Description" "3.5 mm stereo jack, tip switch (5 NC against 4)"
+		(property "Description" "3.5 mm stereo jack XUNPU PJ-327A: 2/5 sleeve, 6 ring, 4 tip, 3 tip switch"
 			(at 0 0 0)
 			(hide yes)
 			(effects
@@ -408,7 +408,7 @@
 						)
 					)
 				)
-				(number "1"
+				(number "2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -419,14 +419,14 @@
 			(pin passive line
 				(at -7.62 0.0 0)
 				(length 2.54)
-				(name "S"
+				(name "S2"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "2"
+				(number "5"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -462,7 +462,7 @@
 						)
 					)
 				)
-				(number "5"
+				(number "3"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -480,7 +480,7 @@
 						)
 					)
 				)
-				(number "3"
+				(number "6"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1524,28 +1524,28 @@
 	(global_label "I2C_SCL" (shape passive) (at 224.79 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "02d2b698-8ff0-579c-aeb1-a57836157b9a") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 224.79 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
 	(symbol (lib_id "slim:PJ-327A") (at 261.62 142.24 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "17abf852-2415-5e55-8eec-ff0d0bd0843b")
 		(property "Reference" "J301" (at 254 135.89 0) (effects (font (size 1.27 1.27)) (justify left)))
-		(property "Value" "jack 3,5 mm mid-mount (a definir)" (at 254 148.59 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "PJ-327A (XUNPU)" (at 254 148.59 0) (effects (font (size 1.27 1.27)) (justify left)))
 		(property "Footprint" "slim:Jack_3.5mm_PJ-327A_SMD" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Datasheet" "" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Description" "P2 mid-mount na parede esquerda; o footprint e o do PJ-327A de topo, so para o esquema; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta; contato da ponta nao usado (sem alto-falante)" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "XUNPU PJ-327A (a mesma da V4), face de baixo, parede esquerda; pads 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (nao usado); footprint do esquema e o do PJ-327A SHOU HAN, so placeholder (pads reais, do EasyEDA, no passo 2)" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Codigo" "F2" (at 269.24 135.89 0) (effects (font (size 1.27 1.27)) (justify right)))
-		(property "LCSC" "" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Montagem" "sem LCSC em estoque (mid-mount nao achado): montar em casa ou consignar" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(pin "1" (uuid "8a9894d5-e0b2-56f2-9a33-c6be54d41fce"))
+		(property "LCSC" "C49284723" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Montagem" "JLC" (at 261.62 142.24 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(pin "2" (uuid "b6f09ee3-4213-542d-b3e3-ff4c5555d5c2"))
-		(pin "4" (uuid "dbe6d40f-006e-5478-ade9-428d5bfa0aec"))
 		(pin "5" (uuid "1394027e-c3fe-5410-b1e7-775d4a4b6194"))
+		(pin "4" (uuid "dbe6d40f-006e-5478-ade9-428d5bfa0aec"))
 		(pin "3" (uuid "4aee543c-8342-50c3-a1d2-dbdd59eb5696"))
+		(pin "6" (uuid "dd14c735-812a-5a10-9a8f-b8ebcbacbde6"))
 		(instances (project "slim" (path "/1334544a-ab0d-5385-a5b2-3013af2a9cd8/e46aa03b-2f84-51d9-a670-3ac76229fb4a" (reference "J301") (unit 1))))
 	)
-	(wire (pts (xy 254 139.7) (xy 251.46 139.7)) (stroke (width 0) (type default)) (uuid "423cee1b-f643-514c-9db1-ecc044b3c497"))
-	(global_label "HP_VGND" (shape passive) (at 251.46 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "c907239e-09f2-540a-94b2-dfb824c0f9b2") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 251.46 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
-	(wire (pts (xy 254 142.24) (xy 251.46 142.24)) (stroke (width 0) (type default)) (uuid "5e7412b6-6da4-5f2c-b34f-ab1bb659e622"))
-	(global_label "HP_VGND" (shape passive) (at 251.46 142.24 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "ab7892f3-f281-559d-9b22-ecd14d0ba40b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 251.46 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 254 139.7) (xy 251.46 139.7)) (stroke (width 0) (type default)) (uuid "5e7412b6-6da4-5f2c-b34f-ab1bb659e622"))
+	(global_label "HP_VGND" (shape passive) (at 251.46 139.7 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "ab7892f3-f281-559d-9b22-ecd14d0ba40b") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 251.46 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
+	(wire (pts (xy 254 142.24) (xy 251.46 142.24)) (stroke (width 0) (type default)) (uuid "ff060856-0b31-5427-8904-03fd961e95f5"))
+	(global_label "HP_VGND" (shape passive) (at 251.46 142.24 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "325b326b-7ecd-513b-b58c-2d93bcdbf22a") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 251.46 142.24 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
 	(wire (pts (xy 269.24 139.7) (xy 271.78 139.7)) (stroke (width 0) (type default)) (uuid "3b60a8a0-b393-5658-bc0c-cddeba39fa0b"))
 	(global_label "HP_L" (shape passive) (at 271.78 139.7 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "c8cb6a5a-3d45-5a3e-9944-eb62bfab6570") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 271.78 139.7 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
-	(no_connect (at 269.24 142.24) (uuid "e6392560-651a-5d4c-bc4b-d72b46597db7"))
-	(wire (pts (xy 269.24 144.78) (xy 271.78 144.78)) (stroke (width 0) (type default)) (uuid "89dd338c-d372-56c2-a9c8-69a87e0fa33b"))
-	(global_label "HP_R" (shape passive) (at 271.78 144.78 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "b5bba211-a275-5894-a14b-eb11c0f8002d") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 271.78 144.78 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
+	(no_connect (at 269.24 142.24) (uuid "652f0b68-58e0-50af-984c-95335f4982f7"))
+	(wire (pts (xy 269.24 144.78) (xy 271.78 144.78)) (stroke (width 0) (type default)) (uuid "f4af6980-b079-52c9-b7d7-9c714c5c7943"))
+	(global_label "HP_R" (shape passive) (at 271.78 144.78 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "701c50ee-bec2-5693-b43b-ffdd7986f615") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 271.78 144.78 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
 	(embedded_fonts no)
 )

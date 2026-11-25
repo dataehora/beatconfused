@@ -175,9 +175,9 @@ def rt1062_symbol():
 
 
 def jack_symbol():
-    return box_symbol("PJ-327A", "J", [([("1", "S", "passive"), ("2", "S", "passive")],
-                                        [("4", "T", "passive"), ("5", "TN", "passive"), ("3", "R", "passive")])],
-                      "3.5 mm stereo jack, tip switch (5 NC against 4)")
+    return box_symbol("PJ-327A", "J", [([("2", "S", "passive"), ("5", "S2", "passive")],
+                                        [("4", "T", "passive"), ("3", "TN", "passive"), ("6", "R", "passive")])],
+                      "3.5 mm stereo jack XUNPU PJ-327A: 2/5 sleeve, 6 ring, 4 tip, 3 tip switch")
 
 
 def led_pins(s):
@@ -357,16 +357,15 @@ def bav70(ref, a1, a2, k, code, note=""):
          datasheet="https://www.lcsc.com/product-detail/C68978.html")
 
 
-def pot_sw_symbol():
-    return box_symbol("POT_SW_9mm", "RV", [([("1", "CCW", "passive"), ("2", "W", "passive"), ("3", "CW", "passive"),
-                                             ("4", "SW1", "passive"), ("5", "SW2", "passive")], [])],
-                      "9 mm rotary potentiometer with on/off rotary switch (SW1-SW2 closed when ON)")
+def tmag5273_symbol():
+    left = [("1", "SCL", "input"), ("6", "SDA", "bidirectional"), ("5", "INT", "passive")]
+    right = [("4", "VCC", "power_in"), ("2", "GND", "power_in"), ("3", "GND_T", "power_in")]
+    return box_symbol("TMAG5273", "U", [(left, right)], "TI TMAG5273 3-axis Hall sensor with angle CORDIC, I2C, SOT-23-6 (DBV)")
 
 
-def srbv_symbol():
-    left = [("1", "C", "passive"), ("10", "C2", "passive")]
-    right = [(str(n), "P%d" % (n - 1), "passive") for n in range(2, 9)] + [("9", "DUM", "passive")]
-    return box_symbol("SRBV_7pos", "SW", [(left, right)], "Alps SRBV 7-position rotary switch, 1 pole, non-shorting; 1 and 10 common, 2..8 positions, 9 dummy")
+def drv5032_symbol():
+    return box_symbol("DRV5032", "U", [([("1", "VCC", "power_in"), ("2", "OUT", "open_collector")], [("3", "GND", "power_in")])],
+                      "TI DRV5032 ultra-low-power Hall switch, SOT-23 (DBZ): 1 VCC, 2 OUT, 3 GND")
 
 
 # ---------------------------------------------------------------- P: processor (chip-down RT1062)
@@ -382,7 +381,8 @@ P1_NETS = {
     "GPIO_EMC_06": "SCAN_LATCH_P",      # 4
     "GPIO_EMC_08": "LED_G",             # 5
     "GPIO_B1_01": "I2S_TX",             # 7
-    "GPIO_B0_00": "KEEP",               # 10
+    "GPIO_B0_00": "KILL",               # 10 (auto-off: resets the latch)
+    "GPIO_B0_10": "SET",                # 6  (sets the latch)
     "GPIO_B0_03": "LED_R",              # 13
     "GPIO_AD_B1_02": "OUT_R1",          # 14 / A0
     "GPIO_AD_B1_03": "OUT_R2",          # 15 / A1
@@ -391,10 +391,8 @@ P1_NETS = {
     "GPIO_AD_B1_00": "I2C_SCL",         # 19
     "GPIO_AD_B1_10": "I2S_LRCLK",       # 20
     "GPIO_AD_B1_11": "I2S_BCLK",        # 21
-    "GPIO_AD_B1_08": "VOL_W",           # 22 / A8
     "GPIO_AD_B1_09": "AUD_MCLK_P",      # 23
-    "GPIO_AD_B0_12": "REG_ADC",         # 24 / A10
-    "GPIO_AD_B0_13": "SW_S",            # 25 / A11
+    "GPIO_AD_B0_13": "KNOB_N",          # 25 (0 = knob out of OFF)
     "GPIO_AD_B1_14": "OUT_R3",          # 26 / A12
     "GPIO_AD_B1_15": "OUT_R4",          # 27 / A13
     # bootloader (MKL02) and boot mode
@@ -421,9 +419,8 @@ def p1_nets():
 
 
 part("U101", "MIMXRT1062DVJ6B", "MIMXRT1062DVJ6B", p1_nets(), "P1", fp="slim:BGA-196_12x12mm_P0.8mm_RT1062",
-     lcsc="C3216699", cls="estendida", price=14.0, mount="consignada (so 1 em estoque na LCSC)", status="conferir", nc_rest=True,
-     note="12x12 mm, 0,8 mm, 196 bolas (DVJ6B). ATENCAO: a SPEC cita DVL6B, que e o 10x10 mm de 0,65 mm (LCSC C2847497, 64 em estoque); "
-          "os nomes das bolas sao os mesmos, so o footprint muda. ONOFF sem ligacao (como a Teensy 4.1 sem botao).",
+     lcsc="C3216699", cls="estendida", price=14.0, mount="consignada (decisao do J, R2SL)", status="conferir", nc_rest=True,
+     note="MIMXRT1062DVJ6B, 12x12 mm, 0,8 mm, 196 bolas (decisao do J, R2SL). Footprint e mapa de bolas conferidos contra a SamacSys em modelos/rt1062 (pcb/confere_rt1062.py). ONOFF sem ligacao (como a Teensy 4.1 sem botao).",
      datasheet="https://www.pjrc.com/teensy/IMXRT1060CEC_rev4.pdf")
 part("L101", sym("FerriteBead_Small", "Device"), "120R@100MHz 2A", {"1": "+3V3", "2": "DCDC_IN"}, "P1",
      fp=FP["0603L"], lcsc="C14709", cls="basica", price=0.005, status="final", note="Teensy L3", rot=90)
@@ -483,13 +480,12 @@ R("R107", "100k", "PGOOD_N", "+3V3", "P1", note="pull-up do ~PGOOD do BQ24075 (U
 
 # ---------------------------------------------------------------- E: power
 CUR[0] = "E"
-part("J201", sym("USB_C_Receptacle_USB2.0_16P", "Connector"), "TYPE-C-31-M-14 (mid-mount)",
+part("J201", sym("USB_C_Receptacle_USB2.0_16P", "Connector"), "TYPE-C-31-M-12",
      {"A1": "GND", "A12": "GND", "B1": "GND", "B12": "GND", "SH": "GND", "A4": "VBUS", "A9": "VBUS",
       "B4": "VBUS", "B9": "VBUS", "A5": "CC1", "B5": "CC2", "A6": "USB_DP", "B6": "USB_DP", "A7": "USB_DN",
       "B7": "USB_DN", "A8": "NC", "B8": "NC"}, "E1", fp="Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12",
-     lcsc="C223907", cls="estendida", price=0.15, status="conferir",
-     note="HRO, 16 pinos, 'laminated board' = encaixado na borda da placa (mid-mount), 2218 em estoque. Pinagem do M-14 e footprint a conferir "
-          "(o footprint aqui e o do M-12, so para o esquema); a JLCPCB pode nao montar peca mid-mount pela face de baixo")
+     lcsc="C165948", cls="estendida", price=0.15, status="final",
+     note="HRO TYPE-C-31-M-12 (a mesma da V4), face de baixo, borda da placa, montada pela JLCPCB; STEP: 8,94 x 7,9 x 4,1 mm, z -0,85...3,25")
 R("R201", "5.1k", "CC1", "GND", "E1")
 R("R202", "5.1k", "CC2", "GND", "E1")
 part("F201", sym("Polyfuse", "Device"), "500mA 6V PTC", {"1": "VBUS", "2": "VBUS_F"}, "E2",
@@ -518,37 +514,53 @@ R("R205", "10k", "VBUS_F", "CHG_EN1", "E3", note="EN1 = 1 quando ha USB (USB500)
 R("R208", "1M", "VBAT", "VBAT_S", "E3", note="medida da bateria: V(pino 16) = VBAT/2")
 R("R209", "1M", "VBAT_S", "GND", "E3")
 C("C204", "100nF", "VBAT_S", "GND", "E3")
-# --- energy logic (SPEC 4): knob switch (SW1 = VBAT, SW2 = SWV) -> pulse -> SYSOFF low; firmware KEEP holds; USB holds
-nmos("Q201", "ONG", "GND", "SYSOFF", "E4", note="liga o OUT: puxa o SYSOFF a GND (a bateria passa a alimentar o sistema)")
-C("C205", "4.7uF", "SWV", "ONG", "E4", "0603", note="borda do knob: o fechamento da chave empurra ~VBAT no ONG e ele decai (tau ~3 s com a perda de capacitancia): tempo para o firmware ligar o KEEP")
-R("R210", "1M", "ONG", "GND", "E4", note="descarga do ONG")
-pmos("Q202", "HOLDG", "SWV", "ONG", "E4", note="mantem o ONG em SWV enquanto o KEEP estiver alto E a chave do knob fechada (abrir o knob desliga em hardware)")
-R("R211", "100k", "HOLDG", "SWV", "E4")
-nmos("Q203", "KEEP", "GND", "HOLDG", "E4", note="o firmware (KEEP, pino 10) segura o sistema ligado; solta no desligamento automatico")
-R("R212", "100k", "KEEP", "GND", "E4", note="KEEP baixo enquanto o processador parte")
-nmos("Q204", "VBUS_G", "GND", "SYSOFF", "E4", note="com USB o SYSOFF fica baixo sempre (senao o BQ24075 nao carrega)")
-R("R213", "100k", "VBUS_F", "VBUS_G", "E4")
-R("R214", "100k", "VBUS_G", "GND", "E4")
-R("R215", "1M", "SWV", "SW_S", "E4", note="leitura do estado do knob: V(pino 25) = SWV/2 (SWV so existe com o knob ligado; sem bateria nem USB nada)")
-R("R216", "1M", "SW_S", "GND", "E4")
-C("C206", "100nF", "SW_S", "GND", "E4")
+# --- energy logic (R2SL): Hall switch of the volume knob (OFF magnet) + latch + USB. SYSOFF low = battery connected to OUT.
+sym("DRV5032", "custom", drv5032_symbol)
+part("U403", "DRV5032", "DRV5032ZEDBZR", {"1": "VBAT", "2": "HALL_X", "3": "GND"}, "E4", fp=FP["SOT23"], lcsc="C266118",
+     cls="estendida", price=0.20, status="conferir",
+     note="chave Hall omnipolar de microcorrente (2,3 uA a 20 Hz), saida em dreno aberto, BOP 33-63 mT (versao ZE, a mais insensivel: o ima central do knob "
+          "da 5-13 mT na posicao da chave); alimentada direto pela bateria; sob o knob de volume; baixa (campo presente) = knob em OFF",
+     datasheet="https://www.ti.com/lit/ds/symlink/drv5032.pdf")
+C("C250", "100nF", "VBAT", "GND", "E4", note="desacoplamento da chave Hall")
+R("R250", "1M", "VBAT", "HALL_X", "E4", note="pull-up da chave Hall: HALL_X alto = knob fora de OFF (so conduz, 3,7 uA, com o knob em OFF)")
+nmos("Q201", "ARM", "ONX", "SYSOFF", "E4", note="liga o OUT quando o latch ARM esta alto E o knob fora de OFF (em serie com Q202)")
+nmos("Q202", "HALL_X", "GND", "ONX", "E4", note="knob em OFF (HALL_X baixo) = aberto: bateria desconectada em hardware, mesmo com o latch armado")
+nmos("Q203", "ARMB", "GND", "ARM", "E4", note="latch ARM/ARMB (par cruzado Q203/Q204)")
+R("R251", "1M", "VBAT", "ARM", "E4", note="pull-up do latch (uma das duas conduz sempre: ~3,7 uA)")
+nmos("Q204", "ARM", "GND", "ARMB", "E4")
+R("R252", "1M", "VBAT", "ARMB", "E4")
+nmos("Q205", "SETG", "GND", "ARMB", "E4", note="SET pela borda: knob saindo de OFF arma o latch")
+C("C251", "100nF", "HALL_X", "SETG", "E4", note="a subida de HALL_X vira um pulso de ~0,1 s (R253 1 M)")
+R("R253", "1M", "SETG", "GND", "E4")
+nmos("Q206", "SET", "GND", "ARMB", "E4", note="SET pelo firmware (pino 6): arma o latch depois de uma partida por USB com o knob ligado")
+R("R254", "100k", "SET", "GND", "E4")
+nmos("Q207", "KILL", "GND", "ARM", "E4", note="KILL pelo firmware (pino 10): desarma o latch no desligamento automatico; so voltando a ligar o knob (nova borda)")
+R("R255", "100k", "KILL", "GND", "E4")
+nmos("Q208", "VBUS_G", "GND", "SYSOFF", "E4", note="com USB o SYSOFF fica baixo sempre (senao o BQ24075 nao carrega)")
+R("R256", "100k", "VBUS_F", "VBUS_G", "E4")
+R("R257", "100k", "VBUS_G", "GND", "E4")
+nmos("Q209", "HALL_X", "GND", "KNOB_N", "E4", note="estado do knob para o firmware sem divisor: KNOB_N = 0 com o knob fora de OFF (pino 25); so existe com o 3,3 V ligado")
+R("R258", "100k", "+3V3", "KNOB_N", "E4")
+R("R259", "10k", "BAT_NTC", "GND", "E3", dnp=True, note="SO para a bateria B1 (2 fios, sem NTC): o BQ24075 passa a ver 10 k = 25 C; com B2/B3 (NTC de 10 k) nao montar")
 part("U204", sym("TPS63001", "Regulator_Switching"), "TPS63001DRCR",
      {"1": "+3V3", "2": "BB_L2", "3": "GND", "4": "BB_L1", "5": "VSYS", "6": "VSYS", "7": "GND",
       "8": "BB_VINA", "9": "GND", "10": "+3V3", "11": "GND"}, "E5", fp="Package_SON:Texas_DRC0010J",
      lcsc="C28060", cls="estendida", price=1.40, status="final", note="3,3 V fixo; EN em VSYS (sempre ligado com OUT); PS/SYNC baixo = economia",
      datasheet="https://www.ti.com/lit/ds/symlink/tps63001.pdf")
-part("L201", sym("L", "Device"), "2.2uH", {"1": "BB_L1", "2": "BB_L2"}, "E5", fp="Inductor_SMD:L_Changjiang_FNR4020S",
-     lcsc="C167825", cls="estendida", price=0.08, status="final", note="FNR4020S2R2MT, 2 mm de altura (folga abaixo da placa: SPEC 3)", rot=90)
+part("L201", sym("L", "Device"), "2.2uH", {"1": "BB_L1", "2": "BB_L2"}, "E5", fp="Inductor_SMD:L_Changjiang_FNR3015S",
+     lcsc="C167747", cls="estendida", price=0.08, status="final", note="FNR3015S2R2MT, 3 x 3 x 1,5 mm, Isat 2 A (a carga media e ~0,15 A); era o FNR4020 de 2,6 mm (regra de alturas a)", rot=90)
 C("C207", "10uF", "VSYS", "GND", "E5", "0805")
 C("C208", "10uF", "+3V3", "GND", "E5", "0805")
 C("C209", "10uF", "+3V3", "GND", "E5", "0805")
 R("R217", "100", "VSYS", "BB_VINA", "E5")
 C("C210", "100nF", "BB_VINA", "GND", "E5")
 C("C211", "100nF", "+3V3", "GND", "E5")
-part("J202", sym("Conn_01x03_MountingPin", "Connector_Generic_MountingPin"), "S3B-PH-SM4-TB",
+part("J202", sym("Conn_01x03_MountingPin", "Connector_Generic_MountingPin"), "SM03B-SRSS-TB",
      {"1": "VBAT", "2": "BAT_NTC", "3": "GND", "MP": "GND"}, "E6",
-     fp="Connector_JST:JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal", lcsc="C265101", cls="estendida",
-     price=0.27, status="final", note="bateria: 1 +, 2 NTC, 3 - (conferir a ordem do cabo da bateria escolhida)")
+     fp="Connector_JST:JST_SH_SM03B-SRSS-TB_1x03-1MP_P1.00mm_Horizontal", lcsc="C160403", cls="estendida",
+     price=0.30, status="conferir",
+     note="bateria: 1 +, 2 NTC, 3 - (cabo com plugue JST SH de 3 vias soldado/crimpado pelo J: nenhuma das 3 baterias vem com SH). JST SH de lado, 2,9 mm de altura, "
+          "face de baixo, montado pela JLCPCB (regra de alturas a: o PH de 5,5 mm nao cabe sob a placa)")
 
 # ---------------------------------------------------------------- F: headphone codec
 CUR[0] = "F"
@@ -575,35 +587,24 @@ C("C307", "100nF", "SGTL_VAG", "GND", "F1", note="datasheet do SGTL5000: VAG = 0
 R("R301", "2.2k", "+3V3", "I2C_SDA", "F1")
 R("R302", "2.2k", "+3V3", "I2C_SCL", "F1")
 sym("PJ-327A", "custom", jack_symbol)
-part("J301", "PJ-327A", "jack 3,5 mm mid-mount (a definir)",
-     {"1": "HP_VGND", "2": "HP_VGND", "3": "HP_R", "4": "HP_L", "5": "NC"}, "F2",
-     fp="slim:Jack_3.5mm_PJ-327A_SMD", lcsc="", cls="-", price=0.15, mount="sem LCSC em estoque (mid-mount nao achado): montar em casa ou consignar",
-     status="conferir",
-     note="P2 mid-mount na parede esquerda; o footprint e o do PJ-327A de topo, so para o esquema; 1/2 manga (HP_VGND, nunca no GND), 3 anel, 4 ponta; "
-          "contato da ponta nao usado (sem alto-falante)")
+part("J301", "PJ-327A", "PJ-327A (XUNPU)",
+     {"2": "HP_VGND", "5": "HP_VGND", "6": "HP_R", "4": "HP_L", "3": "NC"}, "F2",
+     fp="slim:Jack_3.5mm_PJ-327A_SMD", lcsc="C49284723", cls="estendida", price=0.15, status="conferir",
+     note="XUNPU PJ-327A (a mesma da V4), face de baixo, parede esquerda; pads 2/5 manga (HP_VGND, nunca no GND), 6 anel, 4 ponta, 3 contato da ponta (nao usado); "
+          "footprint do esquema e o do PJ-327A SHOU HAN, so placeholder (pads reais, do EasyEDA, no passo 2)")
 
 # ---------------------------------------------------------------- I: interface
 CUR[0] = "I"
-sym("POT_SW_9mm", "custom", pot_sw_symbol)
-sym("SRBV_7pos", "custom", srbv_symbol)
-part("SW401", "POT_SW_9mm", "pot 9 mm 50k B c/ chave (a definir)",
-     {"1": "GND", "2": "VOL_W", "3": "+3V3", "4": "VBAT", "5": "SWV"}, "I1",
-     fp="Potentiometer_THT:Potentiometer_Alps_RK097_Single_Horizontal_Switch", lcsc="", cls="-", price=1.5,
-     mount="sem LCSC (nenhum pot de 9 mm com chave rotativa no catalogo da JLCPCB): montar em casa", status="conferir",
-     note="volume continuo; a chave fecha SW1-SW2 ao sair de OFF no sentido horario. O footprint e o do RK097 horizontal com chave, so para o esquema. "
-          "O RK097 da LCSC com 5 pinos (RK0971114Z1N) tem chave de EMPURRAR, nao rotativa")
-C("C401", "100nF", "VOL_W", "GND", "I1", note="filtro do cursor do pot")
-part("SW402", "SRBV_7pos", "Alps SRBV170501",
-     {"1": "REG_ADC", "10": "REG_ADC", "2": "REG_P1", "3": "REG_P2", "4": "REG_P3", "5": "REG_P4", "6": "REG_P5",
-      "7": "REG_P6", "8": "REG_P7", "9": "NC"}, "I2", fp="slim:Rotary_Alps_SRBV_7p5_Vertical",
-     lcsc="C470375", cls="estendida", price=3.62, status="conferir", mount="THT: montar em casa",
-     note="7 posicoes, 1 polo, sem curto entre posicoes, corpo de 7,5 mm; L = 15 ou 20 mm de eixo (o 170501 e o 170701 de L diferente: conferir qual); 325 em estoque; footprint aproximado",
-     datasheet="https://datasheet.lcsc.com/datasheet/pdf/190b925bc48073e99305ed7b719b3b35.pdf?productCode=C470375")
-R("R401", "10k", "+3V3", "REG_ADC", "I2", note="topo da escada: aberto entre posicoes = 3,3 V")
-for k, rv in enumerate(("1k", "2.2k", "4.7k", "10k", "22k", "47k", "100k"), 1):
-    R("R40%d" % (k + 1), rv, "REG_P%d" % k, "GND", "I2",
-      note="posicao %d: V = 3,3 x R/(10k+R) = %.2f V" % (k, 3.3 * float(rv.replace("k", "")) / (10 + float(rv.replace("k", "")))))
-C("C402", "100nF", "REG_ADC", "GND", "I2")
+sym("TMAG5273", "custom", tmag5273_symbol)
+for ref, var, lc, addr, role, pk in (("U401", "A2", "C3020565", "0x35", "registros (7 posicoes)", "I1"), ("U402", "B2", "C41935525", "0x22", "volume (continuo)", "I2")):
+    part(ref, "TMAG5273", "TMAG5273%sQDBV%s" % (var, "T" if var == "A2" else "R"),
+         {"1": "I2C_SCL", "6": "I2C_SDA", "5": "NC", "4": "+3V3", "2": "GND", "3": "GND"}, pk, fp="Package_TO_SOT_SMD:SOT-23-6", lcsc=lc,
+         cls="estendida", price=1.6, status="conferir",
+         note="sensor de angulo (CORDIC XY) do knob de %s: face de baixo, sob o eixo do knob, le o ima diametral atraves da placa; versao %s: "
+              "+-133/+-266 mT, endereco I2C %s de fabrica (o outro sensor usa o outro endereco; SGTL5000 = 0x0A); 1,7-3,6 V, 2,3 mA em modo continuo, "
+              "~0,2 mA em wake-and-sleep de 10 ms" % (role, var, addr),
+         datasheet="https://www.ti.com/lit/ds/symlink/tmag5273.pdf")
+    C("C40%d" % (1 if ref == "U401" else 2), "100nF", "+3V3", "GND", pk, note="desacoplamento do %s, junto do pino 4" % ref)
 part("D401", sym("LED_RG_1615", "Device", "LED_Dual_AAKK", fix=led_pins), "TJ-S1615SW6TGLCRG-A5",
      {"1": "LED_R_A", "3": "LED_G_A", "2": "GND", "4": "GND"}, "I3", fp="slim:LED_1615_RG_4pad", lcsc="C273605",
      cls="estendida", price=0.08, status="final",
@@ -619,12 +620,12 @@ part("SW403", sym("SW_Push", "Switch"), "Program", {"1": "PROG", "2": "GND"}, "I
 CUR[0] = "R"
 sym("Conn_01x08_MountingPin", "Connector_Generic_MountingPin")
 for k in range(1, 5):
-    part("J60%d" % k, "Conn_01x08_MountingPin", "FFC 8P 0.5 mm, contato por baixo",
+    part("J60%d" % k, "Conn_01x08_MountingPin", "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)",
          {"1": "GND", "2": "+3V3", "3": "OUT_R%d" % k, "4": "SCAN_DATA", "5": "SCAN_CLK", "6": "SCAN_LATCH", "7": "GND",
           "8": "GND", "MP": "GND"}, "R%d" % k,
-         fp="Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal", lcsc="C66953", cls="estendida",
+         fp="Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal", lcsc="C3250113", cls="estendida",
          price=0.10, status="conferir",
-         note="fileira %d: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC 0.5-8P clamshell, h = 2 mm, 5028 em estoque; "
+         note="fileira %d: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; "
               "footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)" % k)
     R("R60%d" % k, "100k", "OUT_R%d" % k, "GND", "R%d" % k, note="pull-down da linha OUT da fileira (saidas dos TMAG5253 ficam em alta impedancia sem EN)")
 R("R605", "100", "SCAN_DATA_P", "SCAN_DATA", "R5", note="serie junto do processador (as 4 fileiras em paralelo)")
@@ -735,10 +736,10 @@ NOTES = {
           "3,3 V sobe sozinho quando o OUT do BQ24075 existe; SNVS pelo 3V3 (sem pilha). Nunca ativar o modo seguro.",
           "Pinos do Teensy 4.1 nas bolas: ver pcb/PINOS.md."],
     "E": ["E · Energia: USB-C -> PTC -> BQ24075 (USB500, 0,4 A, NTC) -> VSYS -> TPS63001 (3,3 V).",
-          "SYSOFF (pull-up interno ~5 Mohm no VBAT) fica ALTO = bateria desligada. Puxado a GND por: borda do knob (C205), KEEP do firmware (Q202/Q203) ou USB (Q204).",
-          "Abrir o knob desfaz o KEEP em hardware (Q202 so conduz com a chave fechada)."],
+          "SYSOFF (pull-up interno ~5 Mohm no VBAT) fica ALTO = bateria desligada. Puxado a GND por Q201+Q202 (latch ARM E knob fora de OFF, chave Hall U403) ou por USB (Q208).",
+          "O latch ARM (Q203/Q204) e armado pela borda do knob (Q205) ou pelo firmware (SET) e desarmado pelo firmware (KILL): desligamento automatico sem reiniciar."],
     "F": ["F · Fone: SGTL5000 como a Audio Board Rev D2, so saida de fone. HP_VGND e terra virtual: NUNCA no GND."],
-    "I": ["I · Interface: pot 9 mm com chave (volume continuo + liga), chave rotativa de 7 posicoes (escada de resistores em REG_ADC), LED bicolor, PROG."],
+    "I": ["I · Interface: 2 sensores de angulo TMAG5273 (registros 0x35, volume 0x22) sob os knobs magneticos, LED bicolor, PROG."],
     "R": ["R · Reguas: 4 conectores FFC de 8 vias (GND 3V3 OUT DADO CLOCK LATCH GND GND); DADO, CLOCK e LATCH comuns com 100 ohm de serie."],
 }
 

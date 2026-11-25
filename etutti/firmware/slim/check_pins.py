@@ -11,8 +11,7 @@ ino = open(os.path.join(HERE, "slim.ino"), encoding="utf-8").read()
 pinos = open(os.path.join(HERE, "..", "..", "hardware", "slim", "pcb", "PINOS.md"), encoding="utf-8").read()
 table = {m.group(2): int(m.group(1)) for m in re.finditer(r"^\| (\d+) \| (\w+) \|", pinos, re.M)}
 want = {"PIN_CHG_STAT": "CHG_STAT", "PIN_PGOOD_N": "PGOOD_N", "PIN_SCAN_DATA": "SCAN_DATA_P", "PIN_SCAN_CLK": "SCAN_CLK_P",
-        "PIN_SCAN_LATCH": "SCAN_LATCH_P", "PIN_LED_G": "LED_G", "PIN_KEEP": "KEEP", "PIN_LED_R": "LED_R", "PIN_VBAT_S": "VBAT_S",
-        "PIN_VOL_W": "VOL_W", "PIN_REG_ADC": "REG_ADC", "PIN_SW_S": "SW_S"}
+        "PIN_SCAN_LATCH": "SCAN_LATCH_P", "PIN_LED_G": "LED_G", "PIN_KILL": "KILL", "PIN_SET": "SET", "PIN_KNOB_N": "KNOB_N", "PIN_LED_R": "LED_R", "PIN_VBAT_S": "VBAT_S"}
 bad = 0
 for d, net in want.items():
     m = re.search(r"#define %s\s+(\d+)" % d, ino)
