@@ -181,7 +181,7 @@ def jack_symbol():
 
 
 def led_pins(s):
-    """LED_Dual_AAKK renumbered to the 1615 part's pads: A1 = 1 (red), K1 = 2, A2 = 3 (green), K2 = 4."""
+    """LED_Dual_AAKK renumbered to the 4-pad LED part's pads: A1 = 1 (red), K1 = 2, A2 = 3 (green), K2 = 4."""
     new = {"A1": "1", "K1": "2", "A2": "3", "K2": "4"}
 
     def walk(n):
@@ -605,11 +605,11 @@ for ref, var, lc, addr, role, pk in (("U401", "A2", "C3020565", "0x35", "registr
               "~0,2 mA em wake-and-sleep de 10 ms" % (role, var, addr),
          datasheet="https://www.ti.com/lit/ds/symlink/tmag5273.pdf")
     C("C40%d" % (1 if ref == "U401" else 2), "100nF", "+3V3", "GND", pk, note="desacoplamento do %s, junto do pino 4" % ref)
-part("D401", sym("LED_RG_1615", "Device", "LED_Dual_AAKK", fix=led_pins), "TJ-S1615SW6TGLCRG-A5",
-     {"1": "LED_R_A", "3": "LED_G_A", "2": "GND", "4": "GND"}, "I3", fp="slim:LED_1615_RG_4pad", lcsc="C273605",
-     cls="estendida", price=0.08, status="final", mount="casa (face de cima)",
-     note="1615 vermelho/verde (laranja = os dois); R5SL: face de CIMA, soldado em casa (a folha nao traz montagem reversa nem janela: 0,6 mm entre as fileiras de pads); acende o anel do knob de volume",
-     datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_1810191024_TOGIALED-TJ-S1615SW6TGLCRG-A5_C273605.pdf")
+part("D401", sym("LED_RG_0805", "Device", "LED_Dual_AAKK", fix=led_pins), "E6C0805RYGC2UDA-A21",
+     {"1": "LED_R_A", "3": "LED_G_A", "2": "GND", "4": "GND"}, "I3", fp="slim:LED_0805_RG_4pad", lcsc="C375546",
+     cls="estendida", price=0.05, status="final", mount="casa (face de cima)",
+     note="R6SL: 0805 bicolor vermelho / verde-amarelo (os dois = laranja), 4 pads (1 R anodo, 2 R catodo, 3 YG anodo, 4 YG catodo, folha EKINGLUX), face de CIMA, soldado em casa; acende o anel do knob de volume",
+     datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_2203301830_EKINGLUX-E6C0805RYGC2UDA_C375546.pdf")
 R("R409", "330", "LED_R", "LED_R_A", "I3")
 R("R410", "100", "LED_G", "LED_G_A", "I3")
 part("SW403", sym("SW_Push", "Switch"), "Program", {"1": "PROG", "2": "GND"}, "I4",

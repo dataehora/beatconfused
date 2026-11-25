@@ -2814,7 +2814,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(symbol "LED_RG_1615"
+	(symbol "LED_RG_0805"
 		(pin_names
 			(offset 0)
 			(hide yes)
@@ -2899,7 +2899,7 @@
 				)
 			)
 		)
-		(symbol "LED_RG_1615_0_1"
+		(symbol "LED_RG_0805_0_1"
 			(polyline
 				(pts
 					(xy -5.08 2.54)
@@ -3052,7 +3052,7 @@
 				)
 			)
 		)
-		(symbol "LED_RG_1615_1_1"
+		(symbol "LED_RG_0805_1_1"
 			(pin passive line
 				(at -7.62 2.54 0)
 				(length 3.048)

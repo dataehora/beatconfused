@@ -194,7 +194,7 @@ def main():
             netinfo[name] = ni
         return netinfo[name]
 
-    TOP_FACE = {"D401"}                     # R5SL item 6: the ring LED is soldered at home on the TOP face (a reverse-mounted 1615 has no window)
+    TOP_FACE = {"D401"}                     # R5SL item 6: the ring LED is soldered at home on the TOP face (R6SL: a 0805 bicolor)
     fps = {}
     for ref, c in sorted(comps.items()):
         fp = load_fp(c["fp"])

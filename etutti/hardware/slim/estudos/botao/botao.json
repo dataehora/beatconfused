@@ -1,10 +1,12 @@
 {
- "revisao": "R5SL",
+ "revisao": "R6SL",
  "cabeca": {
   "d": 15.0,
-  "altura": 7.5,
-  "flecha_do_topo": 1.0,
-  "raio_da_borda": 1.0
+  "altura": 3.8,
+  "lateral_reta": 1.6,
+  "borda_elipse_radial": 1.3,
+  "borda_elipse_vertical": 1.15,
+  "raio_da_esfera_do_domo": 18.83
  },
  "haste_d": 10.0,
  "haste_comprimento": 5.85,
@@ -28,13 +30,16 @@
  "furo_do_tampo_d": 11.0,
  "folga_radial_haste_furo": 0.5,
  "textura_C_F": {
-  "tipo": "covinha concava no centro do domo",
-  "d": 5.0,
-  "profundidade": 0.4,
+  "tipo": "pontilhado diagonal (V4)",
+  "quadrado": 0.5,
+  "fundo": 0.18,
+  "passo": 1.1,
+  "grade_graus": 45,
+  "area_d": 11.0,
   "arquivo": "botao_textura.step"
  },
- "volume_cm3": 1.737,
- "massa_g_resina_1p1": 1.91,
+ "volume_cm3": 1.04,
+ "massa_g_resina_1p1": 1.14,
  "folga_haste_furo": {
   "nominal_mm": 0.5,
   "jogo_da_haste_estimado_mm": 0.2,
@@ -52,8 +57,8 @@
    "haste_switch_topo_repouso_z": 14.35,
    "base_da_cabeca_repouso_z": 20.2,
    "base_da_cabeca_apertado_z": 16.7,
-   "topo_repouso_z": 27.7,
-   "topo_apertado_z": 24.2,
+   "topo_repouso_z": 24.0,
+   "topo_apertado_z": 20.5,
    "folga_fim_do_curso_mm": 2.003,
    "haste_necessaria_mm": 5.847
   },
@@ -65,8 +70,8 @@
    "haste_switch_topo_repouso_z": 16.35,
    "base_da_cabeca_repouso_z": 22.2,
    "base_da_cabeca_apertado_z": 18.7,
-   "topo_repouso_z": 29.7,
-   "topo_apertado_z": 26.2,
+   "topo_repouso_z": 26.0,
+   "topo_apertado_z": 22.5,
    "folga_fim_do_curso_mm": 2.003,
    "haste_necessaria_mm": 5.847
   },
@@ -78,8 +83,8 @@
    "haste_switch_topo_repouso_z": 18.35,
    "base_da_cabeca_repouso_z": 24.2,
    "base_da_cabeca_apertado_z": 20.7,
-   "topo_repouso_z": 31.7,
-   "topo_apertado_z": 28.2,
+   "topo_repouso_z": 28.0,
+   "topo_apertado_z": 24.5,
    "folga_fim_do_curso_mm": 2.003,
    "haste_necessaria_mm": 5.847
   },
@@ -91,13 +96,13 @@
    "haste_switch_topo_repouso_z": 21.35,
    "base_da_cabeca_repouso_z": 27.2,
    "base_da_cabeca_apertado_z": 23.7,
-   "topo_repouso_z": 34.7,
-   "topo_apertado_z": 31.2,
+   "topo_repouso_z": 31.0,
+   "topo_apertado_z": 27.5,
    "folga_fim_do_curso_mm": 2.07,
    "haste_necessaria_mm": 5.78
   }
  ],
- "altura_total_botoes_z": 34.7,
+ "altura_total_botoes_z": 31.0,
  "processo": {
   "material": "resina SLA tough (peca unica)",
   "cores": "naturais brancas, sustenidos pretos, C e F brancos com a covinha (botao_textura)",

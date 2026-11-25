@@ -163,7 +163,7 @@
 		)
 		(embedded_fonts no)
 	)
-		(symbol "slim:LED_RG_1615"
+		(symbol "slim:LED_RG_0805"
 		(pin_names
 			(offset 0)
 			(hide yes)
@@ -248,7 +248,7 @@
 				)
 			)
 		)
-		(symbol "LED_RG_1615_0_1"
+		(symbol "LED_RG_0805_0_1"
 			(polyline
 				(pts
 					(xy -5.08 2.54)
@@ -401,7 +401,7 @@
 				)
 			)
 		)
-		(symbol "LED_RG_1615_1_1"
+		(symbol "LED_RG_0805_1_1"
 			(pin passive line
 				(at -7.62 2.54 0)
 				(length 3.048)
@@ -1047,14 +1047,14 @@
 	(global_label "+3V3" (shape passive) (at 163.83 48.26 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right)) (uuid "750a0ad9-b092-5a0d-ab3a-00e911e3a0ac") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 163.83 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify right))))
 	(wire (pts (xy 173.99 48.26) (xy 176.53 48.26)) (stroke (width 0) (type default)) (uuid "add9371b-e8af-5dcb-945d-28c4a06c989a"))
 	(global_label "GND" (shape passive) (at 176.53 48.26 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left)) (uuid "cefe94e7-5e97-565f-8420-00c3d728edf0") (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 176.53 48.26 0) (hide yes) (effects (font (size 1.27 1.27)) (justify left))))
-	(symbol (lib_id "slim:LED_RG_1615") (at 210.82 50.8 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "32ed0864-4928-58b2-8493-dd94251c8fbe")
+	(symbol (lib_id "slim:LED_RG_0805") (at 210.82 50.8 0) (unit 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "32ed0864-4928-58b2-8493-dd94251c8fbe")
 		(property "Reference" "D401" (at 203.2 44.45 0) (effects (font (size 1.27 1.27)) (justify left)))
-		(property "Value" "TJ-S1615SW6TGLCRG-A5" (at 203.2 57.15 0) (effects (font (size 1.27 1.27)) (justify left)))
-		(property "Footprint" "slim:LED_1615_RG_4pad" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_1810191024_TOGIALED-TJ-S1615SW6TGLCRG-A5_C273605.pdf" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Description" "1615 vermelho/verde (laranja = os dois); R5SL: face de CIMA, soldado em casa (a folha nao traz montagem reversa nem janela: 0,6 mm entre as fileiras de pads); acende o anel do knob de volume" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Value" "E6C0805RYGC2UDA-A21" (at 203.2 57.15 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "slim:LED_0805_RG_4pad" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2203301830_EKINGLUX-E6C0805RYGC2UDA_C375546.pdf" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "Description" "R6SL: 0805 bicolor vermelho / verde-amarelo (os dois = laranja), 4 pads (1 R anodo, 2 R catodo, 3 YG anodo, 4 YG catodo, folha EKINGLUX), face de CIMA, soldado em casa; acende o anel do knob de volume" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Codigo" "I3" (at 218.44 44.45 0) (effects (font (size 1.27 1.27)) (justify right)))
-		(property "LCSC" "C273605" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
+		(property "LCSC" "C375546" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(property "Montagem" "casa (face de cima)" (at 210.82 50.8 0) (hide yes) (effects (font (size 1.27 1.27))))
 		(pin "1" (uuid "8db95b00-8d50-5d85-b7b8-3cba793ba233"))
 		(pin "3" (uuid "c1a2ec96-205c-5d0a-a306-cf57d5c28a33"))
