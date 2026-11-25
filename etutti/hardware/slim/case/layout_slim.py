@@ -35,15 +35,16 @@ BODY = 14.0                                         # KS-33D body = grade hole
 TAIL = 14.0                                         # beyond the first key's housing edge (SPEC 5.1)
 U_KEY1 = TAIL + HOUSING / 2                         # 21.3 -> use 21.25 so that the length is exactly 160
 U_KEY1 = 21.25
-RULER_L = 160.0                                     # = U_KEY1 + 7 * 18.5 + 9.25
+RULER_L = 167.5                                     # R9SL: 160 + 7.5 so that the two M2 sit beyond key 8 (U_KEY1 + 7 * 18.5 + 9.25 = 160 was the R3SL length)
 RULER_W = 15.0
 GRADE_W = 16.0
 GRADE_U0 = U_KEY1 - P / 2                           # 12.0: the grade covers the key area only (the tail stays free)
 GRADE_U1 = RULER_L
 GRADE_HOLE = 14.00                                  # R4SL item 4: nominal 14.00 (+0.05 / -0.02) with DOG-BONE relief in the corners (the cutter's +-0.1 is a risk, RESTRICOES R28)
 GRADE_DOGBONE = (0.25, 0.60)                        # relief circle: centre 0.25 mm in from the corner along both edges, radius 0.60
-GRADE_CSK = (4.4, 90.0)                             # R4SL item 6: M2 countersunk flush with the grade (D4.4 x 90 deg from the key side), as in the V3
-M2_GAPS = (2, 6)                                    # the two M2 spacers: in the gap between key 2-3 and key 6-7 (on the centre line)
+GRADE_CSK = None                                    # R9SL: no countersink (the M2 are beyond the keys; a pan head D3.8 x 1.6 fits under the lid)
+M2_ENDS = (163.0, 163.0)                            # R9SL: the two M2 spacers sit at the RIGHT end, beyond key 8 (u), at v = -/+ M2_V (the tail is full: J1, U9, C9, C10 and the head's routing)
+M2_V = 3.6                                          # nut (D4.6 across corners) stays clear of the support rails (|v| >= 6.0)
 M2_D = 2.2
 PEG_DX, PEG_D, POST_D = 5.08, 1.70, 5.20            # KS-33D PCB holes (Gateron drawing "Layout of PCB")
 SENSOR_V = 4.3                                      # TMAG5253 centre, from the key centre, towards the PLAYER (the magnet side of the switch)
@@ -64,7 +65,7 @@ def ruler(r):
             "z_bottom": round(RULER_BOT[r], 3), "z_top": round(PCB_TOP[r], 3), "grade_z_bottom": round(GRADE_BOT[r], 3),
             "keys": [{"idx": r * NKEYS + k + 1, "k": k + 1, "note": NOTES[r][k], "midi": MIDI[r][k], "u": U_KEY1 + P * k,
                       "x": round(ROW_X0[r] + P * k, 3), "y": round(ROW_Y[r], 3)} for k in range(NKEYS)],
-            "m2_u": [round(U_KEY1 + P * (g - 1) + P / 2, 3) for g in M2_GAPS]}
+            "m2_u": list(M2_ENDS), "m2_v": [-M2_V, M2_V]}
 
 
 def contract():
@@ -73,9 +74,9 @@ def contract():
         "revisao": "R4SL", "quadro": "u ao longo da regua a partir da ponta ESQUERDA, v atravessado, +v para o jogador, v = 0 na linha do centro das teclas",
         "regua": {"comprimento": RULER_L, "largura": RULER_W, "espessura": RULER_T, "cauda_alem_da_carcaca": TAIL, "u_tecla1": U_KEY1, "passo": P,
                   "u_teclas": [U_KEY1 + P * k for k in range(NKEYS)], "furos_switch": {"poste_d": POST_D, "pino_d": PEG_D, "pino_dx": PEG_DX},
-                  "sensor_v": SENSOR_V, "m2_u": rs[0]["m2_u"], "m2_d": M2_D, "m2_v": 0.0,
+                  "sensor_v": SENSOR_V, "m2_u": rs[0]["m2_u"], "m2_d": M2_D, "m2_v": rs[0]["m2_v"],
                   "ffc": {"u_origem": FFC_U, "v": 0.0, "boca": "-u (esquerda)", "altura": FFC_H, "saida": "-x, cabo FFC horizontal"}},
-        "grade": {"u0": GRADE_U0, "u1": GRADE_U1, "largura": GRADE_W, "espessura": GRADE_T, "furo": GRADE_HOLE, "dogbone": {"recuo": GRADE_DOGBONE[0], "raio": GRADE_DOGBONE[1]}, "m2_escareado": {"d": GRADE_CSK[0], "angulo": GRADE_CSK[1]},
+        "grade": {"u0": GRADE_U0, "u1": GRADE_U1, "largura": GRADE_W, "espessura": GRADE_T, "furo": GRADE_HOLE, "dogbone": {"recuo": GRADE_DOGBONE[0], "raio": GRADE_DOGBONE[1]}, "m2_escareado": None, "m2_v": rs[0]["m2_v"],
                   "m2_u": rs[0]["m2_u"], "m2_d": M2_D, "separador_h": SPACER_H},
         "base": {"piso": FLOOR_T, "trilhos_largura": RAIL_W, "trilhos_v": [6.0, 7.5], "bolso_poste": {"d": POST_POCKET_D, "fundo_z": POST_BOTTOM, "so_fileira": 1},
                  "regua_baixo_z": [round(z, 3) for z in RULER_BOT], "regua_topo_z": [round(z, 3) for z in PCB_TOP],

@@ -266,6 +266,7 @@ PASSIVES = {
     ("C", "12pF", "0402"): ("C1547", "basica", 0.001, "conferir"),
     ("C", "20pF", "0402"): ("C1554", "basica", 0.001, "conferir"),
     ("R", "100", "0402"): ("C25076", "basica", 0.001, "final"),
+    ("R", "47", "0402"): ("C25118", "basica", 0.001, "final"),
     ("R", "270", "0402"): ("C25190", "basica", 0.001, "conferir"),
     ("R", "330", "0402"): ("C25104", "basica", 0.001, "conferir"),
     ("R", "470", "0402"): ("C25117", "basica", 0.001, "conferir"),
@@ -611,7 +612,7 @@ part("D401", sym("LED_RG_0805", "Device", "LED_Dual_AAKK", fix=led_pins), "XL-20
      note="R8SL: 0805 bicolor vermelho / verde puro (520 nm) XINGLIGHT, ANODO COMUM por ligacao (pinos 2 e 4 no +3V3; 1 = catodo vermelho, 3 = catodo verde; acende com o pino em nivel BAIXO); face de CIMA, soldado em casa; acende o anel do knob de volume",
      datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_2402181506_XINGLIGHT-XL-2012SURUGC_C965845.pdf")
 R("R409", "330", "LED_R", "LED_R_K", "I3")
-R("R410", "100", "LED_G", "LED_G_K", "I3")
+R("R410", "47", "LED_G", "LED_G_K", "I3")
 part("SW403", sym("SW_Push", "Switch"), "Program", {"1": "PROG", "2": "GND"}, "I4",
      fp="Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A", lcsc="C318884", cls="basica", price=0.02,
      status="conferir", note="PROG: dentro do case, so abrindo a base (SPEC 4)", rot=0)

@@ -126,8 +126,8 @@ def ruler_board(r):
         pcb = pcb.cut(cq.Workplane("XY").workplane(offset=ri["z_bottom"] - 1).center(k["x"], k["y"]).circle(L.POST_D / 2).extrude(3))
         for sgn in (-1, 1):
             pcb = pcb.cut(cq.Workplane("XY").workplane(offset=ri["z_bottom"] - 1).center(k["x"] + sgn * L.PEG_DX, k["y"]).circle(L.PEG_D / 2).extrude(3))
-    for u in ri["m2_u"]:
-        pcb = pcb.cut(cq.Workplane("XY").workplane(offset=ri["z_bottom"] - 1).center(x0 + u, y0).circle(L.M2_D / 2).extrude(3))
+    for u, v in zip(ri["m2_u"], ri["m2_v"]):
+        pcb = pcb.cut(cq.Workplane("XY").workplane(offset=ri["z_bottom"] - 1).center(x0 + u, y0 + v).circle(L.M2_D / 2).extrude(3))
     return pcb
 
 
@@ -141,8 +141,8 @@ def grade_board(r):
         for sx in (-1, 1):
             for sy in (-1, 1):
                 g = g.cut(cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(k["x"] + sx * (L.GRADE_HOLE / 2 - L.GRADE_DOGBONE[0]), k["y"] + sy * (L.GRADE_HOLE / 2 - L.GRADE_DOGBONE[0])).circle(L.GRADE_DOGBONE[1]).extrude(4))
-    for u in ri["m2_u"]:
-        g = g.cut(cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(ri["x_left"] + u, ri["y"]).circle(L.M2_D / 2).extrude(4))
+    for u, v in zip(ri["m2_u"], ri["m2_v"]):
+        g = g.cut(cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(ri["x_left"] + u, ri["y"] + v).circle(L.M2_D / 2).extrude(4))
     return g
 
 
@@ -150,8 +150,8 @@ def hardware(r):
     """Spacers, M2 bolts and nuts of one ruler."""
     ri = ENV["fileiras"][r]
     out = []
-    for u in ri["m2_u"]:
-        x, y = ri["x_left"] + u, ri["y"]
+    for u, v in zip(ri["m2_u"], ri["m2_v"]):
+        x, y = ri["x_left"] + u, ri["y"] + v
         sp = cq.Workplane("XY").workplane(offset=ri["z_top"]).center(x, y).circle(1.9).circle(1.1).extrude(L.SPACER_H)
         head = cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] + L.GRADE_T).center(x, y).circle(1.9).extrude(1.6)
         shank = cq.Workplane("XY").workplane(offset=ri["z_bottom"] - 2.0).center(x, y).circle(1.0).extrude(ri["grade_z_bottom"] + L.GRADE_T - ri["z_bottom"] + 2.0)

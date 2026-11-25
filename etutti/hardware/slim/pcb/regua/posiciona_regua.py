@@ -42,6 +42,7 @@ VB, VF = -RW / 2, RW / 2
 KEYS_U = ENV["regua"]["u_teclas"]
 SENS_V = ENV["regua"]["sensor_v"]
 M2_U, M2_D = ENV["regua"]["m2_u"], ENV["regua"]["m2_d"]
+M2_V = ENV["regua"]["m2_v"]                              # R9SL: the two M2 sit at the right end, at v = -/+ 3.6
 PEG_DX, PEG_D, POST_D = ENV["regua"]["furos_switch"]["pino_dx"], ENV["regua"]["furos_switch"]["pino_d"], ENV["regua"]["furos_switch"]["poste_d"]
 FFC_U = ENV["regua"]["ffc"]["u_origem"]
 EDGE = 0.25
@@ -228,8 +229,8 @@ def main():
         fp.SetPosition(VEC(X(u), Y(0.0)))
         b.Add(fp)
         fps["SW%d" % (k + 1)] = fp
-    for i, u in enumerate(M2_U):
-        hole_fp(b, fps, "H%d" % (i + 1), X(u), Y(0.0), M2_D)
+    for i, (u, v) in enumerate(zip(M2_U, M2_V)):
+        hole_fp(b, fps, "H%d" % (i + 1), X(u), Y(v), M2_D)
 
     # ---- sensors: the EasyEDA orientation (rows along u, 0.5 mm apart in v): VCC/GND row at the BACK, EN/OUT row at the FRONT
     def sensor_ok(fp):
@@ -290,9 +291,9 @@ def main():
     set_pose(fps["C10"], X(11.6), Y(-4.9), 0)
 
     # ---- keep-outs: the M2 nut under the ruler (D5.4, bottom), the bolt head on top (D4.8)
-    for u in M2_U:
-        add_rule_area(b, [pcbnew.B_Cu], square(X(u), Y(0.0), 2.7), "M2 porca (D5,4)")
-        add_rule_area(b, [pcbnew.F_Cu], square(X(u), Y(0.0), 2.4), "M2 cabeca (D4,8)")
+    for u, v in zip(M2_U, M2_V):
+        add_rule_area(b, [pcbnew.B_Cu], square(X(u), Y(v), 2.7), "M2 porca (D5,4)")
+        add_rule_area(b, [pcbnew.F_Cu], square(X(u), Y(v), 2.4), "M2 cabeca (D4,8)")
     # silkscreen / drawings
     for k, u in enumerate(KEYS_U):
         text(b, "tecla %d" % (k + 1), X(u), Y(-5.2), pcbnew.F_SilkS, 0.8)
@@ -396,7 +397,7 @@ def dogbone_hole(b, cx, cy, h, inset, r, step_deg=4.0):
 
 
 def build_grade():
-    """The grade: FR-4 1.2 mm, 148 x 16, eight 14.00 square holes with dog-bone corner reliefs (R4SL), two M2 holes (countersunk D4.4 x 90 from the key side: note on User.Comments). Its own board."""
+    """The grade: FR-4 1.2 mm, 155.5 x 16, eight 14.00 square holes with dog-bone corner reliefs (R4SL), two M2 holes at the right end (R9SL: NO countersink: pan head D3.8 on top). Its own board."""
     g = ENV["grade"]
     b = pcbnew.CreateEmptyBoard()
     b.SetCopperLayerCount(2)
@@ -406,17 +407,17 @@ def build_grade():
     h = g["furo"] / 2
     for u in KEYS_U:
         dogbone_hole(b, X(u), Y(0), h, g["dogbone"]["recuo"], g["dogbone"]["raio"])
-    for u in g["m2_u"]:
+    for u, v in zip(g["m2_u"], g["m2_v"]):
         fp = pcbnew.FootprintLoad(KICAD_FP + "/MountingHole.pretty", "MountingHole_2.2mm_M2")
         fp.SetFPID(pcbnew.LIB_ID("MountingHole", "MountingHole_2.2mm_M2"))
         fp.SetReference("H%d" % (g["m2_u"].index(u) + 1))
         fp.Reference().SetVisible(False); fp.Value().SetVisible(False)
-        fp.SetPosition(VEC(X(u), Y(0.0)))
+        fp.SetPosition(VEC(X(u), Y(v)))
         for pad in fp.Pads():
             pad.SetSize(pcbnew.VECTOR2I(M(g["m2_d"]), M(g["m2_d"]))); pad.SetDrillSize(pcbnew.VECTOR2I(M(g["m2_d"]), M(g["m2_d"])))
         b.Add(fp)
-    for u in g["m2_u"]:
-        text(b, "ESCAREAR M2 D4,4 x 90 gr (lado das teclas)", X(u), Y(5.5), pcbnew.Cmts_User, 0.7)
+    for u, v in zip(g["m2_u"], g["m2_v"]):
+        text(b, "M2 cabeca cilindrica D3,8 (sem escareado)", X(u), Y(v + 3.2), pcbnew.Cmts_User, 0.6)
     pcbnew.SaveBoard(os.path.join(KD, "slim_grade.kicad_pcb"), b)
 
 
