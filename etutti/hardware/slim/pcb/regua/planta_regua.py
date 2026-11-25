@@ -73,10 +73,10 @@ def ruler_plan(ox, oy, o):
 def build():
     W, H = 340, 305
     o = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d">' % (W, H, W * 6, H * 6), '<rect width="%d" height="%d" fill="#ffffff"/>' % (W, H)]
-    o.append(txt(10, 8, "eTutti Slim - regua R8 e grade (SPEC R3SL, Etapa 2a): planta cotada, mm. Face de baixo vista de cima (as pecas estao no verso, tracejado = verso).", 2.6, INK, "start"))
+    o.append(txt(10, 8, "eTutti Slim - regua R8 e grade (SPEC R10SL): planta cotada, mm. Face de baixo vista de cima (as pecas estao no verso, tracejado = verso).", 2.6, INK, "start"))
     # ---- 1. ruler
     ox, oy = 25, 40
-    o.append(txt(10, 22, "1. Regua R8: 160,0 x 15,0 x 1,2 mm, 2 camadas. Frente (jogador) EMBAIXO. Eixo: u da ponta esquerda, v = 0 na linha do centro das teclas.", 2.0, INK, "start"))
+    o.append(txt(10, 22, "1. Regua R8: %.1f x %.1f x %.1f mm, 2 camadas. Frente (jogador) EMBAIXO. Eixo: u da ponta esquerda, v = 0 na linha do centro das teclas." % (RL, RW, ENV["regua"]["espessura"]), 2.0, INK, "start"))
     ruler_plan(ox, oy, o)
     u = ENV["regua"]["u_teclas"]
     o.append(hdim(ox, ox + 14.0, oy - 12, "cauda 14,0"))
@@ -84,8 +84,9 @@ def build():
     o.append(hdim(ox, ox + RL, oy - 18, "%.1f" % RL))
     o.append(hdim(ox + u[0], ox + u[0] + 0.01, oy + 12, ""))
     o.append(txt(ox + u[0], oy + 11.6, "tecla 1: u = 21,25", 1.4, BLUE))
-    o.append(hdim(ox + u[-1] + 9.25, ox + ENV["regua"]["m2_u"][1], oy + 12, "2 x M2 em u = %.1f, v = -/+%.1f (ponta direita)" % (ENV["regua"]["m2_u"][0], ENV["regua"]["m2_v"][1]), BLUE))
-    o.append(vdim(ox + RL + 4, oy - RW / 2, oy + RW / 2, "15,0"))
+    M2U, M2V = ENV["regua"]["m2_u"], ENV["regua"]["m2_v"]
+    o.append(hdim(ox + M2U[0], ox + M2U[2], oy + 12, "%d x M2 por ponta: cauda u = %.1f, v = -/+%.1f; direita u = %.1f, v = -/+%.1f" % (len(M2U) // 2, M2U[0], M2V[1], M2U[2], M2V[3]), BLUE))
+    o.append(vdim(ox + RL + 4, oy - RW / 2, oy + RW / 2, "%.1f" % RW))
     o.append(vdim(ox + RL + 14, oy, oy + 4.3, "sensor a 4,3 do centro (lado do jogador)"))
     o.append(txt(ox + 3, oy + 11.2, "FFC J1: boca para -u, u = 2,2", 1.3, BLUE, "start"))
     # ---- 2. the four rows with the note names
@@ -110,7 +111,7 @@ def build():
     oy3 = 222
     g = ENV["grade"]
     gl = g["u1"] - g["u0"]
-    o.append(txt(10, oy3 - 14, "3. Grade FR-4 1,2 mm: %.1f x %.1f, 8 furos de %.2f com dog-bone (R4SL), 2 furos M2 de 2,2 escareados D4,4 x 90 (lado das teclas); sem cobre. Topo a 1,3 mm da regua." % (gl, g["largura"], g["furo"]), 2.0, INK, "start"))
+    o.append(txt(10, oy3 - 14, "3. Grade FR-4 1,2 mm: %.1f x %.1f, 8 furos de %.2f com dog-bone, %d furos M2 de 2,2 sem escareado; sem cobre. Topo a %.1f mm da regua." % (gl, g["largura"], g["furo"], len(g["m2_u"]), g["separador_h"]), 2.0, INK, "start"))
     gx = 25
     o.append(rect(gx, oy3 - g["largura"] / 2, gx + gl, oy3 + g["largura"] / 2, "#efe6d2", "#6b5a3a", 0.25))
     for uu in ENV["regua"]["u_teclas"]:
@@ -128,7 +129,7 @@ def build():
     o.append(rect(px - 2, oy4 - 21, px + RL + 2, oy4 + 21, "none", RED, 0.2, 'stroke-dasharray="3 1"'))
     o.append(rect(px, oy4 - 19, px + RL, oy4 - 19 + RW, "#e9f1e6", GREEN, 0.25))
     o.append(rect(px + g["u0"], oy4 + 4, px + RL, oy4 + 4 + g["largura"], "#efe6d2", "#6b5a3a", 0.25))
-    o.append(txt(px + RL / 2, oy4 - 11, "regua 160,0 x 15,0", 1.8, GREEN))
+    o.append(txt(px + RL / 2, oy4 - 11, "regua %.1f x %.1f" % (RL, RW), 1.8, GREEN))
     o.append(txt(px + g["u0"] + gl / 2, oy4 + 12.5, "grade %.1f x %.1f" % (gl, g["largura"]), 1.8, "#6b5a3a"))
     o.append(hdim(px - 2, px + RL + 2, oy4 + 24, "painel %.1f x %.1f" % (RL + 4, 42.0)))
     o.append("</svg>")

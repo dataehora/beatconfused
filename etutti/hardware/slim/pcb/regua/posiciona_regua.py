@@ -42,6 +42,7 @@ VB, VF = -RW / 2, RW / 2
 KEYS_U = ENV["regua"]["u_teclas"]
 SENS_V = ENV["regua"]["sensor_v"]
 M2_U, M2_D = ENV["regua"]["m2_u"], ENV["regua"]["m2_d"]
+HEAD_U = ENV["regua"]["head_u"]
 M2_V = ENV["regua"]["m2_v"]                              # R9SL: the two M2 sit at the right end, at v = -/+ 3.6
 PEG_DX, PEG_D, POST_D = ENV["regua"]["furos_switch"]["pino_dx"], ENV["regua"]["furos_switch"]["pino_d"], ENV["regua"]["furos_switch"]["poste_d"]
 FFC_U = ENV["regua"]["ffc"]["u_origem"]
@@ -284,15 +285,15 @@ def main():
     def u9_ok(fp):           # the Q row (pins 2..7) towards the front
         return pad_xy(fp, "4")[1] > pad_xy(fp, "13")[1] + 1.0
 
-    rot_u9 = best_orientation(u9, X(9.2), Y(0.0), u9_ok)
+    rot_u9 = best_orientation(u9, X(HEAD_U["U9"]), Y(0.0), u9_ok)
     if rot_u9 is None:
         raise SystemExit("U9: no orientation with the Q row to the front")
-    set_pose(fps["C9"], X(6.0), Y(-3.4), 90)
-    set_pose(fps["C10"], X(11.6), Y(-4.9), 0)
+    set_pose(fps["C9"], X(HEAD_U["C9"][0]), Y(HEAD_U["C9"][1]), 90)
+    set_pose(fps["C10"], X(HEAD_U["C10"][0]), Y(HEAD_U["C10"][1]), 0)
 
     # ---- keep-outs: the M2 nut under the ruler (D5.4, bottom), the bolt head on top (D4.8)
     for u, v in zip(M2_U, M2_V):
-        add_rule_area(b, [pcbnew.B_Cu], square(X(u), Y(v), 2.7), "M2 porca (D5,4)")
+        add_rule_area(b, [pcbnew.B_Cu], square(X(u), Y(v), 2.45), "M2 porca (D5,4)")
         add_rule_area(b, [pcbnew.F_Cu], square(X(u), Y(v), 2.4), "M2 cabeca (D4,8)")
     # silkscreen / drawings
     for k, u in enumerate(KEYS_U):
@@ -407,10 +408,10 @@ def build_grade():
     h = g["furo"] / 2
     for u in KEYS_U:
         dogbone_hole(b, X(u), Y(0), h, g["dogbone"]["recuo"], g["dogbone"]["raio"])
-    for u, v in zip(g["m2_u"], g["m2_v"]):
+    for i_h, (u, v) in enumerate(zip(g["m2_u"], g["m2_v"])):
         fp = pcbnew.FootprintLoad(KICAD_FP + "/MountingHole.pretty", "MountingHole_2.2mm_M2")
         fp.SetFPID(pcbnew.LIB_ID("MountingHole", "MountingHole_2.2mm_M2"))
-        fp.SetReference("H%d" % (g["m2_u"].index(u) + 1))
+        fp.SetReference("H%d" % (i_h + 1))
         fp.Reference().SetVisible(False); fp.Value().SetVisible(False)
         fp.SetPosition(VEC(X(u), Y(v)))
         for pad in fp.Pads():

@@ -13,9 +13,9 @@ sys.path.insert(0, HERE)
 import case as C  # noqa: E402
 import layout_slim as L  # noqa: E402
 
-STRIP_X0, STRIP_X1 = -58.5, -36.3          # the strip under the knobs (the bay's right wall ends at -58.8)
+STRIP_X0, STRIP_X1 = -58.5, -36.3 - L.TAIL_G          # the strip under the knobs (the bay's right wall ends at -58.8)
 Y_FRONT, Y_BACK = -9.0, 68.1               # back: 0.5 mm from the wall's inner face (68.6)
-TAB_X1, TAB_HALF = -26.75, 5.5             # tabs for rows 1 and 3: the FFC gap is the same 5.5 mm on the four rows
+TAB_X1, TAB_HALF = -26.75 - L.TAIL_G, 5.5             # tabs for rows 1 and 3: the FFC gap is the same 5.5 mm on the four rows
 FOOT_X0, FOOT_Y0 = C.LEFT + 2.0 + 0.2, 47.0    # foot: from the left wall (0.2 gap) to the strip; its front edge 0.3 behind the bay's back wall (46.7)
 CORNER_CUT = (3.0, 2.8)                    # chamfer at the back-left corner (the wall's inner corner radius is 4)
 

@@ -177,7 +177,7 @@ def draw(js, outdir):
     if os.path.exists(gj):
         g = json.load(open(gj))
         fig, ax = plt.subplots(figsize=(20, 3.2))
-        ax.set_title("Grade FR-4 1,2 mm, 148 x 16 (lado das teclas para cima): 8 furos quadrados de 14,00 com dog-bone nos cantos; 2 furos M2 de 2,2 com escareado D4,4 x 90 graus; sem cobre", fontsize=10, loc="left")
+        ax.set_title("Grade FR-4 1,2 mm, %.1f x %.1f (lado das teclas para cima): 8 furos quadrados de 14,00 com dog-bone nos cantos; %d furos M2 de 2,2 sem escareado; sem cobre" % (g["contorno"]["w"], g["contorno"]["h"], len(g["m2"])), fontsize=10, loc="left")
         cx0 = min(min(q[1], q[3]) for q in g["segs"]); cx1 = max(max(q[1], q[3]) for q in g["segs"]); cy0 = min(min(q[2], q[4]) for q in g["segs"]); cy1 = max(max(q[2], q[4]) for q in g["segs"])
         ax.add_patch(Rectangle((cx0, cy0), cx1 - cx0, cy1 - cy0, fc="#e9dfc5", ec="none"))
         for sh, a, b_, c, e in g["segs"]:

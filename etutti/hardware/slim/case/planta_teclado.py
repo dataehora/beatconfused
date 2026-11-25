@@ -16,7 +16,7 @@ IMG = os.path.join(HERE, "img")
 os.makedirs(IMG, exist_ok=True)
 SC = 5.0
 X0, Y1 = -105.0, 70.0
-LEFT, RIGHT, FRONT, BACK = -98.0, 149.0, -18.5, 70.6
+LEFT, RIGHT, FRONT, BACK = -98.0, 150.0, -18.5, 70.6
 
 
 def px(x):

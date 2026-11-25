@@ -8,6 +8,9 @@ copper), via 0.6/0.3 (claim 0.45), NPTH holes 0.25 + 0.38, outline 0.45. OUT is 
 outside the FFC zone. No part is moved; nothing is written but the output board. A net that fails goes first and the run starts again (up to RETRIES times).
 """
 import heapq, json, math, os, sys, time
+import json as _j, os as _o
+TAILG = _j.load(open(_o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "case", "envelope_regua.json"), encoding="utf-8"))["regua"]["cauda_g"]   # R10SL: tail growth (the head parts keep their place relative to the keys)
+
 import numpy as np
 import pcbnew
 
@@ -140,7 +143,7 @@ def load(path):
             ends.setdefault((net, li, round(q[0], 3), round(q[1], 3)), 0)
             ends[(net, li, round(q[0], 3), round(q[1], 3))] += 1
     for (net, li, x, y), cnt in ends.items():
-        if net in ("OUT", "+3V3") and cnt == 1 and abs(x - 36.0) < 1e-3:
+        if net in ("OUT", "+3V3") and cnt == 1 and abs(x - (36.0 + TAILG)) < 1e-3:
             pads.append({"ref": "BUS", "num": "ini", "net": net, "rect": (x - 0.1, y - 0.1, x + 0.1, y + 0.1), "x": x, "y": y, "layers": [li]})
     return b, nets, pads, holes, ko, fixed, fvias
 
@@ -279,7 +282,7 @@ class Router:
                 if runs:
                     self.vias.append((net, x, y))
                     g.circle([0, 1], x, y, VD / 2, nid)
-                    g.NOVIA[g.window(x, y, x, y, VD / 2 + 0.05)] |= True
+                    g.NOVIA[g.window(x, y, x, y, VD / 2 + 0.25)] |= True
                 runs.append((li, [(x, y)]))
             self.copper[net].add((li, ix, iy))
         for li, run in runs:
