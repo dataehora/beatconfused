@@ -25,7 +25,7 @@ import layout_slim as L  # noqa: E402
 OUT = os.path.join(HERE, "out")
 os.makedirs(OUT, exist_ok=True)
 
-LEFT, RIGHT, FRONT, BACK = -98.0, 149.0, -18.5, 70.6       # R4SL: +8.0 mm to the left (battery 523450); R3SL had -100.5 (B3)
+LEFT, RIGHT, FRONT, BACK = -98.0, 150.0, -18.5, 70.6       # R4SL: +8.0 mm to the left (battery 523450); R10SL: +1.0 mm to the right (the longer rulers): plan 248.0 x 89.1
 CORNER_R, WALL, SKIN = 6.0, 2.0, 1.5
 SPLIT = L.SPLIT_Z
 BOARD_BOT, BOARD_T = 6.8, 1.2
@@ -45,7 +45,7 @@ P2_POCKET = (LEFT + 2.0, 55.0, LEFT + 2.0 + 15.0, 64.0, 0.6)       # x0, y0, x1,
 BAY = (-96.0, -14.5, -60.0, 45.5)                           # R4SL bay x0, y0, x1, y1 (36.0 x 60.0): 34.5 x 52 battery + 0.75 each side, wires/PCM end at the back
 BATT = (34.5, 52.0, 5.35)                                    # VARTA 56457 201 016: width, length, thickness (datasheet 5.3, STEP 5.36)
 WIRE_SLOT = (-82.0, -74.0, 3.0)                             # x0, x1, z0: notch in the bay's back wall for the three wires
-POSTS = [(-55.5, -7.0), (-40.5, 8.5), (-40.0, 63.5), (-93.0, 52.0), (-75.0, 64.0)]   # main-board supports (D6 from the floor to z 6.8)
+POSTS = [(-55.5, -7.0), (-44.3, 8.5), (-43.8, 63.5), (-93.0, 52.0), (-75.0, 64.0)]   # R10SL: the two right-hand posts moved 3.8 mm left with the strip's edge (the rulers grew to the left)   # main-board supports (D6 from the floor to z 6.8)
 
 # ---- the lid's top surface (SPEC 3 / conceito wave5 + sec7), independent copy
 ROWZ = [10.6, 12.6, 14.6, 17.6]
@@ -121,6 +121,9 @@ def build_base():
             va, vb = 6.0, 6.0 + L.RAIL_W
             ya, yb = (L.ROW_Y[r] + sgn * va, L.ROW_Y[r] + sgn * vb)
             base = base.union(box(x0, min(ya, yb), L.FLOOR_T - 0.05, x1, max(ya, yb), zb))
+        # R10SL: the nuts of the tail M2 (v = -/+ M2_V_TAIL, u = 6.7) reach |v| 6.5: a pocket (D5.0) in the rails' inner 0.5 mm keeps the nut (4.6 across corners, 1.6 thick) clear; 1.0 mm of rail remains
+        for sgn in (-1, 1):
+            base = base.cut(cyl(x0 + L.M2_ENDS[0], L.ROW_Y[r] + sgn * L.M2_V_TAIL, L.FLOOR_T - 0.04, zb + 0.01, 5.0))
     # pockets under the posts of row 1 (the post reaches z 1.3; floor under the pocket >= 1.0)
     for r, k, x, y in key_xy():
         if r == 0:
