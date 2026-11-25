@@ -194,6 +194,7 @@ def main():
             netinfo[name] = ni
         return netinfo[name]
 
+    TOP_FACE = {"D401"}                     # R5SL item 6: the ring LED is soldered at home on the TOP face (a reverse-mounted 1615 has no window)
     fps = {}
     for ref, c in sorted(comps.items()):
         fp = load_fp(c["fp"])
@@ -211,7 +212,8 @@ def main():
             if n:
                 pad.SetNet(net_of(n))
         b.Add(fp)
-        fp.Flip(fp.GetPosition(), pcbnew.FLIP_DIRECTION_TOP_BOTTOM)
+        if ref not in TOP_FACE:
+            fp.Flip(fp.GetPosition(), pcbnew.FLIP_DIRECTION_TOP_BOTTOM)
         fps[ref] = fp
 
     # ---- big nets: power / ground (excluded from the wire-length cost except through the anchor IC)

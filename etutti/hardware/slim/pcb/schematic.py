@@ -607,8 +607,8 @@ for ref, var, lc, addr, role, pk in (("U401", "A2", "C3020565", "0x35", "registr
     C("C40%d" % (1 if ref == "U401" else 2), "100nF", "+3V3", "GND", pk, note="desacoplamento do %s, junto do pino 4" % ref)
 part("D401", sym("LED_RG_1615", "Device", "LED_Dual_AAKK", fix=led_pins), "TJ-S1615SW6TGLCRG-A5",
      {"1": "LED_R_A", "3": "LED_G_A", "2": "GND", "4": "GND"}, "I3", fp="slim:LED_1615_RG_4pad", lcsc="C273605",
-     cls="estendida", price=0.08, status="final",
-     note="1615 vermelho/verde (laranja = os dois); face de baixo, montagem reversa, acende o anel do knob de volume",
+     cls="estendida", price=0.08, status="final", mount="casa (face de cima)",
+     note="1615 vermelho/verde (laranja = os dois); R5SL: face de CIMA, soldado em casa (a folha nao traz montagem reversa nem janela: 0,6 mm entre as fileiras de pads); acende o anel do knob de volume",
      datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_1810191024_TOGIALED-TJ-S1615SW6TGLCRG-A5_C273605.pdf")
 R("R409", "330", "LED_R", "LED_R_A", "I3")
 R("R410", "100", "LED_G", "LED_G_A", "I3")

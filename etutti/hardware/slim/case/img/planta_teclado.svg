@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1330 612" width="1330" height="612" font-family="Arial,sans-serif"><rect width="100%" height="100%" fill="#fbfaf6"/>
+<text x="20" y="28" font-size="17" font-weight="bold">eTutti Slim R5SL - planta do teclado com o nome da nota em cada botao (vista de cima, jogador embaixo)</text>
+<text x="20" y="50" font-size="12" fill="#555">naturais brancas, sustenidos pretos, C e F brancos com a covinha tatil (D5,0 x 0,4 no domo); botao D15, furo do tampo D11; passo 18,5, fileiras 16,02; mm</text>
+<rect x="55.0" y="67.0" width="1235.0" height="445.5" rx="30.0" fill="#f1ece0" stroke="#776" stroke-width="2"/>
+<circle cx="545.0" cy="420.0" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="545.0" cy="420.0" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="545.0" y="425.0" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">A3</text>
+<circle cx="637.5" cy="420.0" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="637.5" cy="420.0" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<circle cx="637.5" cy="420.0" r="12.5" fill="#e3ded0" stroke="#999" stroke-width="1"/>
+<text x="637.5" y="442.0" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">C4</text>
+<circle cx="730.0" cy="420.0" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="730.0" cy="420.0" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="730.0" y="425.0" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">D#4</text>
+<circle cx="822.5" cy="420.0" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="822.5" cy="420.0" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="822.5" y="425.0" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">F#4</text>
+<circle cx="915.0" cy="420.0" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="915.0" cy="420.0" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="915.0" y="425.0" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">A4</text>
+<circle cx="1007.5" cy="420.0" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1007.5" cy="420.0" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<circle cx="1007.5" cy="420.0" r="12.5" fill="#e3ded0" stroke="#999" stroke-width="1"/>
+<text x="1007.5" y="442.0" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">C5</text>
+<circle cx="1100.0" cy="420.0" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1100.0" cy="420.0" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="1100.0" y="425.0" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">D#5</text>
+<circle cx="1192.5" cy="420.0" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1192.5" cy="420.0" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="1192.5" y="425.0" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">F#5</text>
+<text x="61.0" y="424.0" font-size="12" fill="#555">fileira 1</text>
+<circle cx="498.8" cy="339.9" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="498.8" cy="339.9" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="498.8" y="344.9" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">G3</text>
+<circle cx="591.2" cy="339.9" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="591.2" cy="339.9" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="591.2" y="344.9" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">A#3</text>
+<circle cx="683.8" cy="339.9" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="683.8" cy="339.9" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="683.8" y="344.9" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">C#4</text>
+<circle cx="776.2" cy="339.9" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="776.2" cy="339.9" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="776.2" y="344.9" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">E4</text>
+<circle cx="868.8" cy="339.9" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="868.8" cy="339.9" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="868.8" y="344.9" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">G4</text>
+<circle cx="961.2" cy="339.9" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="961.2" cy="339.9" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="961.2" y="344.9" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">A#4</text>
+<circle cx="1053.8" cy="339.9" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1053.8" cy="339.9" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="1053.8" y="344.9" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">C#5</text>
+<circle cx="1146.2" cy="339.9" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1146.2" cy="339.9" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="1146.2" y="344.9" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">E5</text>
+<text x="61.0" y="343.9" font-size="12" fill="#555">fileira 2</text>
+<circle cx="545.0" cy="259.8" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="545.0" cy="259.8" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="545.0" y="264.8" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">G#3</text>
+<circle cx="637.5" cy="259.8" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="637.5" cy="259.8" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="637.5" y="264.8" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">B3</text>
+<circle cx="730.0" cy="259.8" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="730.0" cy="259.8" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="730.0" y="264.8" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">D4</text>
+<circle cx="822.5" cy="259.8" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="822.5" cy="259.8" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<circle cx="822.5" cy="259.8" r="12.5" fill="#e3ded0" stroke="#999" stroke-width="1"/>
+<text x="822.5" y="281.8" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">F4</text>
+<circle cx="915.0" cy="259.8" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="915.0" cy="259.8" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="915.0" y="264.8" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">G#4</text>
+<circle cx="1007.5" cy="259.8" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1007.5" cy="259.8" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="1007.5" y="264.8" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">B4</text>
+<circle cx="1100.0" cy="259.8" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1100.0" cy="259.8" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="1100.0" y="264.8" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">D5</text>
+<circle cx="1192.5" cy="259.8" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1192.5" cy="259.8" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<circle cx="1192.5" cy="259.8" r="12.5" fill="#e3ded0" stroke="#999" stroke-width="1"/>
+<text x="1192.5" y="281.8" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">F5</text>
+<text x="61.0" y="263.8" font-size="12" fill="#555">fileira 3</text>
+<circle cx="498.8" cy="179.7" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="498.8" cy="179.7" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="498.8" y="184.7" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">F#3</text>
+<circle cx="591.2" cy="179.7" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="591.2" cy="179.7" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="591.2" y="184.7" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">A3</text>
+<circle cx="683.8" cy="179.7" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="683.8" cy="179.7" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<circle cx="683.8" cy="179.7" r="12.5" fill="#e3ded0" stroke="#999" stroke-width="1"/>
+<text x="683.8" y="201.7" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">C4</text>
+<circle cx="776.2" cy="179.7" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="776.2" cy="179.7" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="776.2" y="184.7" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">D#4</text>
+<circle cx="868.8" cy="179.7" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="868.8" cy="179.7" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="868.8" y="184.7" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">F#4</text>
+<circle cx="961.2" cy="179.7" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="961.2" cy="179.7" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<text x="961.2" y="184.7" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">A4</text>
+<circle cx="1053.8" cy="179.7" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1053.8" cy="179.7" r="37.5" fill="#ffffff" stroke="#222" stroke-width="1.5"/>
+<circle cx="1053.8" cy="179.7" r="12.5" fill="#e3ded0" stroke="#999" stroke-width="1"/>
+<text x="1053.8" y="201.7" font-size="15" font-weight="bold" text-anchor="middle" fill="#1d1d1f">C5</text>
+<circle cx="1146.2" cy="179.7" r="27.5" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+<circle cx="1146.2" cy="179.7" r="37.5" fill="#1d1d1f" stroke="#222" stroke-width="1.5"/>
+<text x="1146.2" y="184.7" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">D#5</text>
+<text x="61.0" y="183.7" font-size="12" fill="#555">fileira 4</text>
+<text x="20" y="592" font-size="12" fill="#555">C e F: o nome fica abaixo da covinha. Fileira 1 = a mais perto do jogador e a mais baixa; degraus 2 / 2 / 3 mm.</text>
+</svg>

@@ -20,7 +20,7 @@ Atende à **SPEC R4SL §8, item 2**. **Nenhuma rota**, nada cotado ou comprado. 
 | FFC | **J601…J604** alinhados com as caudas: y = 0 / 16,02 / 32,05 / 48,07, boca para **+x**; **folga horizontal 5,5 mm nas 4 fileiras** (as abas das fileiras 1 e 3 igualam as da 2 e 4); desnível régua→placa −3,0 / −1,0 / +1,0 / +4,0 mm |
 | Cabo FFC | **4 iguais, retos, 20 mm sob medida** (estimativa, sem cotação): 5,5 de vão + 2 × 3,4 até os contatos + ~1,5 de folga e o desnível; de série, 30 mm com uma curva em S é a alternativa (pergunta 5) |
 | Pinagem do FFC | **invertida no esquema** (pino n da principal = pino 9−n da régua): as bocas se olham e o cabo reto mantém a posição de cada condutor |
-| Knobs | **U401** (registros, TMAG5273A2) em (−46; 0) e **U402** (volume, B2) em (−46; 48,06), no eixo, face de baixo; **U403** (DRV5032ZE) em (−51,09; 42,97), a 7,2 mm do eixo do volume a 225°; **D401** (LED) a 11,0 mm do eixo, atrás (−46; 59,06), no anel; **janela do LED na placa: ainda por definir com a folha do LED** (pergunta 7) |
+| Knobs | **U401** (registros, TMAG5273A2) em (−46; 0) e **U402** (volume, B2) em (−46; 48,06), no eixo, face de baixo; **U403** (DRV5032ZE) em (−51,09; 42,97), a 7,2 mm do eixo do volume a 225°; **D401** (LED) a 11,0 mm do eixo, atrás (−46; 59,06), no anel, agora na **face de CIMA, soldado em casa** (R5SL: a folha não traz montagem reversa) |
 | Conectores | **J301 (P2)** na parede esquerda (y 59,5), boca para −x (pad 1 do lado da parede); **J202 (JST SH)** em (−71,0; 51,5), boca para −y, para a baia, a 3,2 mm do passa-fios (x −82…−74) |
 | Pilares | (−55,5; −7), (−40,5; 8,5), (−40,0; 63,5), (−93,0; 52,0), (−75,0; 64,0): discos de 6,4 mm sem peça |
 | Alturas | maior peça sob a placa: **P2 5,0** (folga 5,2 com o bolso de 0,6 sob ele: sobra 0,2 + 0,6); USB-C 3,25; JST SH 2,9; SOIC-8 1,75; BGA 1,6; resto ≤ 1,5 |
@@ -102,3 +102,7 @@ Roteamento das duas placas; a placa principal; o CPL/BOM com a rotação por Eas
 ## Perguntas para o design
 
 As perguntas estão no fim de `FIT_CHECK.md`.
+
+## R5SL — refeito depois da mudança do LED
+
+`pcb/posiciona_principal.py` refeito com D401 na face de cima: **120 peças, DRC sem trilhas 0 erros / 0 avisos, paridade 0** (`pcb/principal/drc_principal.py`; 379 ligações abertas = sem rotas, como deve ser no portão B); esquema ERC 0/0. Cena 3D refeita (`case/cena_principal.py`, 98 modelos reais; o LED aparece em cima; os knobs com a saia Ø18,4). Nenhuma outra peça mudou de lugar.

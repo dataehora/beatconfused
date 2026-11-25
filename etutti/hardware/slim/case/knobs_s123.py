@@ -63,7 +63,7 @@ def build():
     def line(a, b, c=INK, w=0.15, dash=None):
         o.append('<line x1="%.2f" y1="%.2f" x2="%.2f" y2="%.2f" stroke="%s" stroke-width="%.2f"%s/>' % (a[0], a[1], b[0], b[1], c, w, ' stroke-dasharray="%s"' % dash if dash else ""))
 
-    T("eTutti Slim R4SL - knobs na tampo inclinado (7,1 graus): S1 plano / S2 segue o tampo (oficial) / S3 eixo perpendicular. Corte x = -46, frente (jogador) a esquerda, z em mm.", 4, 6, 2.4)
+    T("eTutti Slim R5SL - knobs (S2 com saia D18,4 no poco D19,0) no tampo inclinado (7,1 graus): S1 plano / S2 segue o tampo (oficial) / S3 eixo perpendicular. Corte x = -46, frente (jogador) a esquerda, z em mm.", 4, 6, 2.4)
     for row, (name, (cx, cy), rise) in enumerate((("REGISTROS", C.REG, 1.0), ("VOLUME", C.VOL, 1.0))):
         for col, mode in enumerate(("S1", "S2", "S3")):
             ox = 6 + col * 82            # drawing x of y = cy - 14
@@ -116,8 +116,13 @@ def build():
                 line(R(0, -8), R(0, KNOB_TOP + 2), RED, 0.12, "1 0.6")
             else:
                 knob_top = zc + KNOB_TOP
-                poly([(X(cy - 8.8), Zd(zf)), (X(cy + 8.8), Zd(zf)), (X(cy + 8.8), Zd(zc + 3)), (X(cy - 8.8), Zd(zc + 3))], "#ffffff", INK, 0.1)
-                poly([(X(cy - KNOB_D / 2), Zd(zf + 0.3)), (X(cy + KNOB_D / 2), Zd(zf + 0.3)), (X(cy + KNOB_D / 2), Zd(knob_top)), (X(cy - KNOB_D / 2), Zd(knob_top))], KNOB, INK, 0.15)
+                poly([(X(cy - C.WELL_D / 2), Zd(zf)), (X(cy + C.WELL_D / 2), Zd(zf)), (X(cy + C.WELL_D / 2), Zd(zc + 3)), (X(cy - C.WELL_D / 2), Zd(zc + 3))], "#ffffff", INK, 0.1)
+                if mode == "S2":                  # R5SL: skirt D18.4 down into the D19.0 well, up to 0.5 above the well's rear edge, then the D16.4 body
+                    sk, zs_top = C.KNOB_SKIRT_D / 2, C.S(cy + C.WELL_D / 2) + rise + 0.5
+                    poly([(X(cy - sk), Zd(zf + 0.3)), (X(cy + sk), Zd(zf + 0.3)), (X(cy + sk), Zd(zs_top)), (X(cy + KNOB_D / 2), Zd(zs_top)), (X(cy + KNOB_D / 2), Zd(knob_top)),
+                          (X(cy - KNOB_D / 2), Zd(knob_top)), (X(cy - KNOB_D / 2), Zd(zs_top)), (X(cy - sk), Zd(zs_top))], KNOB, INK, 0.15)
+                else:
+                    poly([(X(cy - KNOB_D / 2), Zd(zf + 0.3)), (X(cy + KNOB_D / 2), Zd(zf + 0.3)), (X(cy + KNOB_D / 2), Zd(knob_top)), (X(cy - KNOB_D / 2), Zd(knob_top))], KNOB, INK, 0.15)
                 poly([(X(cy - STEM_D / 2), Zd(HEAD_Z1)), (X(cy + STEM_D / 2), Zd(HEAD_Z1)), (X(cy + STEM_D / 2), Zd(zf)), (X(cy - STEM_D / 2), Zd(zf))], "#d9d9d9", INK, 0.1)
                 poly([(X(cy - MAG_D / 2), Zd(MAG_Z0)), (X(cy + MAG_D / 2), Zd(MAG_Z0)), (X(cy + MAG_D / 2), Zd(MAG_Z0 + MAG_L)), (X(cy - MAG_D / 2), Zd(MAG_Z0 + MAG_L))], MAG, INK, 0.1)
                 line((X(cy), Zd(MAG_Z0 - 1)), (X(cy), Zd(knob_top + 2)), RED, 0.12, "1 0.6")
