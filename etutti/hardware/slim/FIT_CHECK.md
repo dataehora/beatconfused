@@ -1,54 +1,67 @@
-# eTutti Slim · FIT_CHECK (SPEC R3SL, Etapa 2a — portão B da régua)
+# eTutti Slim · FIT_CHECK (SPEC R4SL, Etapa 2b — portão B da placa principal)
 
-Resposta à **SPEC R3SL §8**. Relatórios: [POSICIONAMENTO.md](POSICIONAMENTO.md) (régua e grade), [RESTRICOES_CASE.md](RESTRICOES_CASE.md) (41 itens), [ELETRONICA.md](ELETRONICA.md), [FIRMWARE.md](FIRMWARE.md). **Parado no portão B da régua: sem rotas, a placa principal não foi posicionada, nada cotado ou comprado.**
+Resposta à **SPEC R4SL §8**. Relatórios: [ELETRONICA.md](ELETRONICA.md) (escolha da bateria, seção 0), [POSICIONAMENTO.md](POSICIONAMENTO.md) (seção A: placa principal), [RESTRICOES_CASE.md](RESTRICOES_CASE.md) (56 itens), [FIRMWARE.md](FIRMWARE.md), `estudos/botao/` (botão). **Parado no portão B da placa principal: sem rotas, nada cotado, comprado ou amostrado.**
 
-## 1. Resumo da R3SL
+## 1. Resumo da R4SL
 
 | Parte | Resultado |
 |---|---|
-| **Design** | decisões da R3SL aplicadas no modelo do case (`case/case.py`: planta **249,5 × 89,1**, +10,5 mm à esquerda, bolso de 0,6 sob o P2, furos do USB‑C z 5,2 e do P2 z 4,0, plataforma dos registros +1,0, anel de LED, trilhos de apoio, bolsos dos postes da fileira 1); **envelope da régua** entregue (`case/envelope_regua.json`); `RESTRICOES_CASE.md` com 41 itens (17 novos) |
-| **Eletrônica** | régua R8 + grade posicionadas, **DRC sem trilhas 0 erros / 0 avisos, paridade 0**; planta cotada com a nota em cada tecla; cena 3D com o case e cortes |
-| **Programação e som** | índice × posição × nota: **32/32 ok** (`check_teclas.py`); `PINOS.md` × sketch: 15/15 |
-| STEP que faltam | bateria LPP 503759 8HH (o fabricante não publica; usei a caixa 5,4 × 37,5 × 60,5) · MKL02 · JST SH 3 vias (altura 2,9 da LCSC). Todos os da régua têm STEP real |
-| Desvios da R3SL | (1) **folga axial dos registros 0,8 mm, não 1,3** (pele de PA12 de 0,5 sobre o ímã Ø6 × 2,5); (2) **cabeça do parafuso M2 a 0,05 mm do flange da KS‑33D**; (3) o furo da grade ficou 14,03 (meio da faixa da SPEC), cantos R0,5 |
+| **Bateria (item 9)** | **VARTA 56457 201 016 (1/LPP 523450 S PCM W)**, 34,5 × 52,0 × 5,35, **1000 mAh** (a folha se contradiz: 1000 × 1400; usei 1000), NTC 10 k B 3380, 3 fios; **CPC UK BT07248, £ 12,50, 2 em estoque (25 nov)**; STEP e folha do fabricante. Case **+8,0 mm** à esquerda (247,0 mm) |
+| **Apoio das réguas (item 1)** | **contínuo nas 4 fileiras** (2 trilhos de 1,5 mm por régua, o mesmo tipo, sem furo no piso): `case/corte_apoio.py` provou **0 vãos** de ponta a ponta, cauda incluída; cortes em `case/renders/corte_apoio_4fileiras.png` e `case/out/apoio.json`. Nada precisou mudar |
+| **Knobs S1/S2/S3 (item 3)** | cortes dos dois knobs em `case/img/knobs_s123.png`; **S2 aplicada no modelo oficial** (`case/case.py`): plataforma segue o tampo (+1,0), poço horizontal, eixo vertical, ímã horizontal; ímã→sensor 2,5 mm (face do ímã z 8,5, centro do chip z 6,0); S3: erro de ângulo ≤ 0,22° |
+| **Grade (itens 4 e 6)** | furo **14,00 com dog‑bone** (R0,6 recuado 0,25) e **M2 escareado** D4,4 × 90° pelo lado das teclas (DRC da grade 0/0) |
+| **Botão (item 10)** | pino **Ø5,4** no poço Ø5,67, cruz fêmea 4,2 × 1,04 (macho 4,0 × 1,10, lido do STEP), interferência 0,06 na largura, **SLA**; `estudos/botao/` |
+| **Placa principal (2b)** | 69,0 × 77,1 mm, 4 camadas, 120 peças na face de baixo; **DRC sem trilhas 0 erros / 0 avisos; paridade 0**; RT1062 com zona de escape de 2,5 mm; 4 FFC alinhados (cabo ~20 mm sob medida); par USB 36 mm |
+| **Programação e som** | NTC (B 3380), carga 0,41 C (0,405 A) e autonomia ~8,1 h da 523450 em `FIRMWARE.md`; `check_placa.py`: **21/21 pinos × placa posicionada**; `check_pins.py` 15/15; `check_teclas.py` 32/32 |
+| STEP que faltam | MKL02 (QFN‑16, sem STEP público), JST SH 3 vias, W25Q64 (SOIC‑8 em caixa); o resto da placa tem modelo real |
+| Desvios da R4SL | (1) pinagem do FFC **invertida** na principal; (2) **S2 sobe o knob de volume 1,0 mm**; (3) **tubo de retenção** sob o tampo do volume; (4) par USB 36 mm (aceito 30–35) |
 
-## 2. Decisões da R3SL aplicadas (medidas no modelo, `case/out/numeros.json`)
+## 2. Itens que mudam o lado de fora (precisam do OK do J)
 
-| Decisão | Aplicado | Medida |
-|---|---|---|
-| Bateria B3 | **+10,5 mm à esquerda** | planta x −100,5 … 149,0 (249,5), y −18,5 … 70,6 (89,1); baia 38,5 × 68,5 |
-| Placa principal em z 6,8 + bolso de 0,6 sob o P2 | bolso 15,0 × 9,0 × 0,6 (piso 1,0 sob ele) | divisão base/tampo em z 8,0 (= topo da placa) |
-| Furos do USB‑C e do P2 | USB‑C 9,0 × 3,6, centro z 5,2, x = −66; P2 Ø6,2, centro z 4,0, y = 59,5 | a 34,5 mm da quina esquerda (USB‑C) |
-| Plataforma dos registros +1,0 | topo z **15,01** (as teclas não mudam: tampo máx. 22,0, borda da frente 11,1) | poço 13,81; face de baixo 12,31 |
-| Plataforma do volume | topo z 21,01 | poço 19,81; face de baixo 18,31 |
-| Anel de LED translúcido | fenda passante Ø23,2/Ø20,8 no tampo + peça `anel_led` (1,5 mm) | SLA ou acrílico |
-| Knob retido pela haste, montado por último | desenho `case/img/knobs_corte.svg` | cabeça Ø10 / Ø19 sob o tampo |
-| OFF às 7h30 (225°), 270° no sentido horário | ímã de OFF a 7,2 mm do eixo, no batente anti‑horário | registrado em R13 |
-| Plugue SH por rabicho crimpado | R21 | JST SH 2,9 mm |
+1. **Planta 247,0 × 89,1** (x −98,0…149): **+8,0 mm** à esquerda, **2,5 mm a menos** que os +10,5 aprovados na R3SL, por causa da bateria escolhida (R07/R08).
+2. **Plataformas S2** seguem o tampo e o **knob de volume sobe 1,0 mm** (topo do knob a z 26,8) (R09/R55). O de registros mantém +1,0.
 
-## 3. Envelope da régua entregue à eletrônica (`case/envelope_regua.json`)
+Todo o resto é interno (R42…R54, R56).
 
-- **Apoio contínuo:** dois **trilhos de 1,5 mm** (|v| = 6,0…7,5) sob as bordas longas de cada régua, até a face de baixo dela; **o mesmo tipo nas 4 fileiras, sem furos no piso**; a zona livre sob a régua é |v| < 6 (altura livre 2,2 / 4,2 / 6,2 / 9,2).
-- **Bolsos sob os postes:** Ø5,8 até z 1,0, **só na fileira 1** (o poste chega a z 1,3); nas fileiras 2–4 o poste não alcança o piso.
-- **2 espaçadores M2 por régua:** u = 49,0 e 123,0 (nos vãos 2‑3 e 6‑7), v = 0; parafuso M2 × 6, porca sextavada 4,6 × 1,6 sob a régua, cabeça sobre a grade; **furos Ø2,2** na régua e na grade.
-- **Cauda e FFC:** cauda de 14,0 além da carcaça da tecla 1; FFC de 1,0 mm de altura, boca para −x na ponta esquerda; cabo reto.
-- **Grade:** 148,0 × 16,0 × 1,2, a 1,3 mm acima da régua; furos 14,03 (R0,5); **alcance lateral 0,72 mm** entre a carcaça de uma fileira e a grade da vizinha.
-- **Tamanho:** régua 160,0 (cauda 14,0 + teclas até u = 160); posição das réguas: fileiras 1 e 3 de x = −21,25 a 138,75; fileiras 2 e 4 de x = −30,5 a 129,5.
+## 3. Cortes e figuras (onde ver)
 
-## 4. Itens novos do RESTRICOES_CASE.md (R25…R41, 17) e os que mudam o lado de fora
+| Pedido | Arquivo |
+|---|---|
+| Apoio contínuo, 1 corte por fileira (trilho e centro) | `case/renders/corte_apoio_4fileiras.png` |
+| S1/S2/S3 dos dois knobs | `case/img/knobs_s123.png` (e `.svg`) |
+| Botão cotado com a switch e o tampo | `estudos/botao/botao_corte.png`, `botao.step`, `botao.json` |
+| Placa principal (planta cotada, blocos) | `pcb/principal/img/planta_principal.png` |
+| Cena 3D: placa vista de baixo, base com réguas e knobs, cortes | `case/renders/cena_principal_*.png`, `corte_principal_*.png` |
 
-**Mudam o lado de fora e já estavam aprovados:** R02/R03 (furos), R07/R08 (+10,5 mm), R09 (plataforma dos registros +1,0), R17 (anel de LED). **Novos itens que mudam o lado de fora: nenhum.** Os novos tratam do apoio das réguas (R25), zona livre (R26), parafusos M2 (R27, **R35 crítico**), grade (R28, R41), FFC (R29), orientação das chaves (R30), tampo e plataformas (R31), corte base/tampo e paredes (R32, R36, R37), teto (R33), rampa (R34), MJF (R38), chave Hall (R39) e knobs (R40).
+## 4. Estudo do botão (item 10)
 
-## 5. Pontos que só o protótipo fecha
+Medidas lidas do **STEP da KS‑33D** (cortes a cada 0,5 mm; o desenho da Gateron não cota a cruz): braços de **4,00**, largura **1,10**, altura ≥ 3,3 (topo 0,2 abaixo do topo da haste); poço Ø5,67 (SPEC).
 
-Campo magnético real no sensor e na chave Hall; folga axial de 0,8 mm com a tolerância do MJF (±0,3); furo da grade 14,03 com a fresa da JLCPCB; painel régua + grade; comprimento do FFC (a principal ainda não está posicionada).
+| Item | Valor |
+|---|---|
+| Pino | **Ø5,40** (folga radial 0,135 no poço), 3,4 abaixo da saia |
+| Cruz fêmea | braços 4,2 (0,1 de sobra em cada ponta), **fenda 1,04** (macho 1,10): **interferência 0,06 total (0,03 por face)** em SLA (±0,1: faixa −0,04…+0,16); 3,0 de fundo; entrada chanfrada 0,3 |
+| MJF PA12 | **não serve para a cruz** (±0,3 e pó preso em fenda de 1 mm); só com cruz em inserto usinado |
+| Cabeça | saia Ø15 × 0,75, domo até +4,0 (topo z 18,55 / 20,55 / 22,55 / 25,55 nas fileiras 1…4; **o mesmo botão nas quatro**); saia a 0,2 da carcaça no fundo do curso |
+| Folga no furo do tampo (Ø16) | **0,5 nominal, 0,35 no pior caso** de impressão (±0,15); a folga da haste (±0,2) e a inclinação do soquete (0,5° → 0,09 mm) são **estimativas** (a Gateron não publica): **margem 0,06 mm**; com a saia **Ø14,8** a margem é 0,16 |
+| Processo | **SLA** (resina Tough/Durable), pretos/brancos/branco com ponto; ou nylon SLS fino; onde encomendar (sem cotação): JLC3DP, PCBWay 3D, Craftcloud, Protolabs Network UK |
+| Antes de imprimir 32 | **ensaio de 4 botões** com fendas 1,00 / 1,04 / 1,08 / 1,12: medir a força de saída (alvo 3–10 N) e o jogo |
+
+## 5. Placa principal: o que mudou no esquema
+
+**Pinagem dos 4 FFC invertida** (pino n da principal = pino 9−n da régua; ERC 0/0 refeito): as bocas dos dois conectores se olham (a placa gira 180° em relação à régua), então o cabo reto mantém a posição de cada condutor e não a numeração. A régua não mudou.
+
+## 6. Itens para o J fornecer ou confirmar
+
+**STEP:** MKL02, JST SH 3 vias (o fabricante tem), W25Q64 (o da biblioteca do KiCad serve). **Bancada (só o protótipo responde):** campo real nos sensores, folga axial 0,8 com o MJF, cruz fêmea em SLA, estoque da bateria, TMAG5273A2 (60 peças), Full Speed forçado, comprimento do FFC.
 
 ## Perguntas para o design
 
-1. **Folga axial dos registros: 0,8 mm.** Com o ímã Ø6 × 2,5 (z 8,5…11,0) e 0,5 mm de pele de PA12 sobre ele, a cabeça chega a z 11,5 e a face de baixo do tampo fica em 12,31: **0,8 mm**, não os 1,3 da SPEC (que valem sem a pele). Aceita 0,8, ou o ímã fica **exposto no topo** da cabeça (1,3), ou a plataforma sobe mais 0,5?
-2. **Plataforma plana de Ø26:** o tampo é inclinado 7,1°; um disco plano a z 15,01 fica **2,6 mm acima do tampo na frente** e **0,6 mm abaixo dele atrás**. Aceita assim, ou a plataforma deve **seguir a inclinação** (tampo + 1,0, com o poço inclinado)?
-3. **Furo da grade:** 14,03 com cantos R0,5. A fresa da JLCPCB tem tolerância de ±0,1 e raio interno mínimo a confirmar; pedir 14,03 assim, ou 14,10 com alívio nos cantos?
-4. **Painel régua + grade:** o painel proposto é ≈ 164 × 42 mm com trilho de 2,0 mm. Posso perguntar à JLCPCB (sem cotação) se aceita as duas peças no mesmo painel, ou o J prefere pedidos separados?
-5. **Cabeça do parafuso M2 a 0,05 mm do flange da KS‑33D** (R35): escolhe (a) cabeça escareada nivelada à grade (grade escareada, como na V3), (b) parafuso de cabeça menor Ø3,2 (folga 0,25) ou (c) espaçador colado, sem parafuso?
-6. **Orientação das chaves:** guia de luz **para trás**, ímã/sensor **para o jogador**, TMAG5253 a 4,3 mm do centro **do lado do jogador**. Confirma? (a outra orientação inverte as faixas de roteamento.)
-7. **Cabos FFC iguais de ~50 mm** nas 4 fileiras (a principal ainda não está posicionada): aceita já, ou espera a 2b para escolher o comprimento?
+1. **Bateria 523450 e o lado de fora:** aprova a escolha (1000 mAh, ~8,1 h; **2 em estoque no CPC UK**, Farnell com prazo de 28 semanas; a 012 saiu de linha) e a planta **247,0 mm (+8,0)**, 2,5 mm menor que os +10,5 da R3SL? Se a folha estiver certa nos 1400 mAh da tabela, a autonomia sobe a ~11,3 h.
+2. **S2 (plataformas que seguem o tampo):** o poço tem **0,1 mm na frente e 2,3 (registros) / 2,9 (volume) atrás**, e o knob fica com um vão em cunha de 2,0 / 2,6 mm atrás; o **knob de volume sobe 1,0 mm** (topo 26,8). Aceita S2, ou prefere S1 (disco plano, 2,6 acima do tampo na frente) ou S3 (eixo perpendicular, erro de ângulo 0,22°)? Se S2: quer uma **saia** no knob para esconder a cunha?
+3. **Botão:** aprova **SLA** (não MJF) para o botão, a fenda de 1,04 e o **ensaio dos 4 botões** antes de imprimir 32?
+4. **Saia do botão:** Ø15 (margem 0,06 mm no pior caso) ou **Ø14,8** (margem 0,16)? A SPEC fixa Ø15.
+5. **Cabo FFC:** os 4 iguais de **20 mm sob medida** (estimado: 5,5 de vão + 6,8 de inserção + folga), ou **30 mm de série** com uma curva em S?
+6. **Par USB:** 36 mm em linha reta (aceito 30–35; roteado ~38–42). Aceita, ou subo o RT1062 de y 33 para ~37 (encurta o USB, alonga o OUT das fileiras 1 e 2)?
+7. **LED reverso:** o 1615 precisa de uma janela na placa sob o anel e os pads deixam só 0,5 mm entre as fileiras: confirmo na folha do LED, ou passo o LED para a face de cima (soldado em casa)?
+8. **Pinagem invertida do FFC** na principal (item 5): aprova mexer no esquema da principal (a régua não muda) em vez de usar cabo com torção?

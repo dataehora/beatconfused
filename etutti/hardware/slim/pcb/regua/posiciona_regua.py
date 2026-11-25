@@ -361,8 +361,42 @@ def main():
     print("orientacao", rec["orientacao"])
 
 
+def dogbone_hole(b, cx, cy, h, inset, r, step_deg=4.0):
+    """A square hole (half side h) with a dog-bone relief circle (radius r, centre inset mm in from the corner along both edges) in every corner: a closed polyline on Edge.Cuts."""
+    d = math.sqrt(r * r - inset * inset)
+    pts = []
+    for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1)):                 # corners, clockwise on the page (y down)
+        ccx, ccy = sx * (h - inset), sy * (h - inset)
+        a = (sx * h, ccy - sy * d)                                     # on the vertical edge, inner intersection
+        bb = (ccx - sx * d, sy * h)                                    # on the horizontal edge, inner intersection
+        ang_a = math.atan2(a[1] - ccy, a[0] - ccx)
+        ang_b = math.atan2(bb[1] - ccy, bb[0] - ccx)
+        mid = math.atan2(sy, sx)
+        # sweep from A to B through the outward diagonal
+        def norm(x):
+            return (x + math.pi) % (2 * math.pi) - math.pi
+        da = norm(mid - ang_a)
+        db = norm(ang_b - mid)
+        n = max(int((abs(da) + abs(db)) / math.radians(step_deg)), 6)
+        seq = []
+        for i in range(n + 1):
+            t = i / n
+            ang = ang_a + (da + db) * t
+            seq.append((ccx + r * math.cos(ang), ccy + r * math.sin(ang)))
+        pts.append(seq)
+    # order: the corners come as (-,-),(+,-),(+,+),(-,+): on the page that is clockwise; each corner's arc runs from its vertical-edge point to its horizontal-edge point,
+    # so for the clockwise walk we need, per corner, the arc reversed when the walk arrives along the horizontal edge. Build by walking: start at corner 0's B point.
+    loop = []
+    walk = [(0, False), (1, True), (2, False), (3, True)]
+    for ci, rev in walk:
+        seq = pts[ci]
+        loop += list(reversed(seq)) if rev else seq
+    for (x0, y0), (x1, y1) in zip(loop, loop[1:] + loop[:1]):
+        seg(b, cx + x0, cy + y0, cx + x1, cy + y1, pcbnew.Edge_Cuts, 0.1)
+
+
 def build_grade():
-    """The grade: FR-4 1.2 mm, 148 x 16, eight 14.03 square holes (R0.5 corners), two M2 holes. Its own board (no schematic)."""
+    """The grade: FR-4 1.2 mm, 148 x 16, eight 14.00 square holes with dog-bone corner reliefs (R4SL), two M2 holes (countersunk D4.4 x 90 from the key side: note on User.Comments). Its own board."""
     g = ENV["grade"]
     b = pcbnew.CreateEmptyBoard()
     b.SetCopperLayerCount(2)
@@ -371,7 +405,7 @@ def build_grade():
     rect_edges(b, gx0, gy0, gx1, gy1)
     h = g["furo"] / 2
     for u in KEYS_U:
-        rect_edges(b, X(u) - h, Y(0) - h, X(u) + h, Y(0) + h, pcbnew.Edge_Cuts, 0.1, g["raio_canto"])
+        dogbone_hole(b, X(u), Y(0), h, g["dogbone"]["recuo"], g["dogbone"]["raio"])
     for u in g["m2_u"]:
         fp = pcbnew.FootprintLoad(KICAD_FP + "/MountingHole.pretty", "MountingHole_2.2mm_M2")
         fp.SetFPID(pcbnew.LIB_ID("MountingHole", "MountingHole_2.2mm_M2"))
@@ -381,6 +415,8 @@ def build_grade():
         for pad in fp.Pads():
             pad.SetSize(pcbnew.VECTOR2I(M(g["m2_d"]), M(g["m2_d"]))); pad.SetDrillSize(pcbnew.VECTOR2I(M(g["m2_d"]), M(g["m2_d"])))
         b.Add(fp)
+    for u in g["m2_u"]:
+        text(b, "ESCAREAR M2 D4,4 x 90 gr (lado das teclas)", X(u), Y(5.5), pcbnew.Cmts_User, 0.7)
     pcbnew.SaveBoard(os.path.join(KD, "slim_grade.kicad_pcb"), b)
 
 

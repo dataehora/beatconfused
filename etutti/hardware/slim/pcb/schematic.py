@@ -621,11 +621,11 @@ CUR[0] = "R"
 sym("Conn_01x08_MountingPin", "Connector_Generic_MountingPin")
 for k in range(1, 5):
     part("J60%d" % k, "Conn_01x08_MountingPin", "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)",
-         {"1": "GND", "2": "+3V3", "3": "OUT_R%d" % k, "4": "SCAN_DATA", "5": "SCAN_CLK", "6": "SCAN_LATCH", "7": "GND",
+         {"1": "GND", "2": "GND", "3": "SCAN_LATCH", "4": "SCAN_CLK", "5": "SCAN_DATA", "6": "OUT_R%d" % k, "7": "+3V3",
           "8": "GND", "MP": "GND"}, "R%d" % k,
          fp="slim:FFC_8P_0.5_KH-H1.0", lcsc="C3250113", cls="estendida",
          price=0.10, status="conferir",
-         note="fileira %d: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; "
+         note="fileira %d: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND na regua). R4SL: PINAGEM INVERTIDA (pino n daqui = pino 9-n da regua) porque as bocas dos dois conectores se olham (a placa gira 180 graus em relacao a regua) e o cabo reto mantem a posicao de cada condutor; LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; "
               "footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)" % k)
     R("R60%d" % k, "100k", "OUT_R%d" % k, "GND", "R%d" % k, note="pull-down da linha OUT da fileira (saidas dos TMAG5253 ficam em alta impedancia sem EN)")
 R("R605", "100", "SCAN_DATA_P", "SCAN_DATA", "R5", note="serie junto do processador (as 4 fileiras em paralelo)")

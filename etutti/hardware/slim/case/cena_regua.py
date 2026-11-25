@@ -137,7 +137,10 @@ def grade_board(r):
     gl = L.GRADE_U1 - L.GRADE_U0
     g = cq.Workplane("XY").box(gl, L.GRADE_W, L.GRADE_T, centered=False).translate((x0, ri["y"] - L.GRADE_W / 2, ri["grade_z_bottom"]))
     for k in ri["keys"]:
-        g = g.cut(cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(k["x"], k["y"]).rect(L.GRADE_HOLE, L.GRADE_HOLE).extrude(4).edges("|Z").fillet(L.GRADE_HOLE_R))
+        g = g.cut(cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(k["x"], k["y"]).rect(L.GRADE_HOLE, L.GRADE_HOLE).extrude(4))
+        for sx in (-1, 1):
+            for sy in (-1, 1):
+                g = g.cut(cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(k["x"] + sx * (L.GRADE_HOLE / 2 - L.GRADE_DOGBONE[0]), k["y"] + sy * (L.GRADE_HOLE / 2 - L.GRADE_DOGBONE[0])).circle(L.GRADE_DOGBONE[1]).extrude(4))
     for u in ri["m2_u"]:
         g = g.cut(cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(ri["x_left"] + u, ri["y"]).circle(L.M2_D / 2).extrude(4))
     return g

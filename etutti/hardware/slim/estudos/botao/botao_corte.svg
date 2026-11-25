@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 70" width="1350" height="630" font-family="Arial,sans-serif">
+<rect width="150" height="70" fill="#fff"/>
+<text x="4.00" y="6.00" font-size="2.20" fill="#1d1d1f" text-anchor="start">eTutti Slim R4SL - botao: corte pelo eixo, fileira 1, em repouso (esq.) e no fundo do curso (dir.); cotas em mm</text>
+<polygon points="2.60,50.00 13.40,50.00 13.40,54.05 12.05,54.05 12.05,58.55 2.60,58.55" fill="#efe6d2" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="67.40,50.00 56.60,50.00 56.60,54.05 57.95,54.05 57.95,58.55 67.40,58.55" fill="#efe6d2" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="15.29,59.45 54.71,59.45 54.71,62.00 15.29,62.00" fill="#c9c9c9" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="22.31,48.95 27.35,48.95 27.35,56.45 22.31,56.45" fill="#9ec5e8" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="47.69,48.95 42.65,48.95 42.65,56.45 47.69,56.45" fill="#9ec5e8" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="33.52,49.55 36.48,49.55 36.48,59.45 33.52,59.45" fill="#5b8ec2" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="27.71,58.55 42.29,58.55 42.29,48.35 55.25,48.35 55.25,46.10 55.25,46.10 53.21,43.91 50.98,41.97 48.58,40.29 46.03,38.89 43.38,37.79 40.63,36.99 37.83,36.51 35.00,36.35 32.17,36.51 29.37,36.99 26.62,37.79 23.97,38.89 21.42,40.29 19.02,41.97 16.79,43.91 14.75,46.10 14.75,46.10 14.75,48.35 27.71,48.35" fill="#fbf9f3" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="33.60,58.55 36.40,58.55 36.40,49.55 33.60,49.55" fill="#ffffff" stroke="#b3261e" stroke-width="0.10"/>
+<text x="35.00" y="12.00" font-size="2.00" fill="#1d1d1f" text-anchor="middle">repouso</text>
+<text x="35.00" y="15.50" font-size="1.50" fill="#1f5fa8" text-anchor="middle">saia z 14.55 / topo 18.55</text>
+<text x="35.00" y="18.50" font-size="1.30" fill="#1d1d1f" text-anchor="middle">pino D5,4 no poco D5,67 (folga radial 0,135)</text>
+<text x="35.00" y="21.00" font-size="1.30" fill="#1d1d1f" text-anchor="middle">furo D16 no tampo: folga radial 0,5 (0,35 no pior caso)</text>
+<polygon points="72.60,50.00 83.40,50.00 83.40,54.05 82.05,54.05 82.05,58.55 72.60,58.55" fill="#efe6d2" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="137.40,50.00 126.60,50.00 126.60,54.05 127.95,54.05 127.95,58.55 137.40,58.55" fill="#efe6d2" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="85.29,59.45 124.71,59.45 124.71,62.00 85.29,62.00" fill="#c9c9c9" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="92.31,59.45 97.35,59.45 97.35,56.45 92.31,56.45" fill="#9ec5e8" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="117.69,59.45 112.65,59.45 112.65,56.45 117.69,56.45" fill="#9ec5e8" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="103.52,60.05 106.48,60.05 106.48,69.95 103.52,69.95" fill="#5b8ec2" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="97.71,69.05 112.29,69.05 112.29,58.85 125.25,58.85 125.25,56.60 125.25,56.60 123.21,54.41 120.98,52.47 118.58,50.79 116.03,49.39 113.38,48.29 110.63,47.49 107.83,47.01 105.00,46.85 102.17,47.01 99.37,47.49 96.62,48.29 93.97,49.39 91.42,50.79 89.02,52.47 86.79,54.41 84.75,56.60 84.75,56.60 84.75,58.85 97.71,58.85" fill="#fbf9f3" stroke="#1d1d1f" stroke-width="0.15"/>
+<polygon points="103.60,69.05 106.40,69.05 106.40,60.05 103.60,60.05" fill="#ffffff" stroke="#b3261e" stroke-width="0.10"/>
+<text x="105.00" y="12.00" font-size="2.00" fill="#1d1d1f" text-anchor="middle">fundo do curso</text>
+<text x="105.00" y="15.50" font-size="1.50" fill="#1f5fa8" text-anchor="middle">saia z 11.05 / topo 15.05</text>
+<text x="105.00" y="18.50" font-size="1.30" fill="#1d1d1f" text-anchor="middle">pino D5,4 no poco D5,67 (folga radial 0,135)</text>
+<text x="105.00" y="21.00" font-size="1.30" fill="#1d1d1f" text-anchor="middle">furo D16 no tampo: folga radial 0,5 (0,35 no pior caso)</text>
+<text x="4.00" y="66.00" font-size="1.60" fill="#1d1d1f" text-anchor="start">cruz macho 4,0 x 1,1 (STEP) / cruz femea 4,2 x 1,04, 3,0 de fundo; interferencia 0,06 na largura (SLA)</text>
+</svg>

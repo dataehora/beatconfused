@@ -1,10 +1,11 @@
-"""eTutti Slim (R3SL): the case model (base + lid + LED ring) with the R3SL decisions applied. CadQuery.
+"""eTutti Slim (R4SL): the case model (base + lid + LED ring) with the R3SL and R4SL decisions applied. CadQuery.
 
     "C:/Users/julia/.venvs/cadquery/Scripts/python.exe" -X utf8 etutti/hardware/slim/case/case.py
 
 Frame (SPEC 1): x right, y towards the BACK, z up from the bottom of the base (right-handed: no mirroring on export). Writes case/out/{base,tampo,anel_led}.{step,stl}
 and case/out/numeros.json (volumes, heights). Decisions applied (SPEC R3SL):
-  * plan 249.5 x 89.1: B3 battery, +10.5 mm to the LEFT (x -100.5 .. 149);
+  * R4SL: the battery is the VARTA 56457 201 016 (LPP 523450, 34.5 x 52 x 5.35): bay 36.0 x 60.0, case +8.0 mm to the LEFT (x -98.0 .. 149, plan 247.0 x 89.1);
+  * R4SL: platforms follow the lid (S2): top = lid + 1.0 (registers) / + 0 (volume), HORIZONTAL well floor, vertical bore, flat horizontal knob top;
   * main board bottom face z 6.8 (the P2 sets it) + a 0.6 mm pocket in the floor under the P2; USB-C hole (back wall, x -66, z 5.2), P2 hole (left wall, y 59.5, z 4.0);
   * registers platform +1.0 mm (the keys do not change); volume platform on the surface; wells D17.6 x 1.2; bearing collar; translucent LED ring D23.2/D20.8 x 1.5;
   * ruler support: two continuous rails per row (1.5 mm wide at |v| = 6.0..7.5), same type on the four rows, no holes in the floor, a pocket under each post of row 1.
@@ -24,7 +25,7 @@ import layout_slim as L  # noqa: E402
 OUT = os.path.join(HERE, "out")
 os.makedirs(OUT, exist_ok=True)
 
-LEFT, RIGHT, FRONT, BACK = -100.5, 149.0, -18.5, 70.6      # R3SL: +10.5 mm to the left (B3)
+LEFT, RIGHT, FRONT, BACK = -98.0, 149.0, -18.5, 70.6       # R4SL: +8.0 mm to the left (battery 523450); R3SL had -100.5 (B3)
 CORNER_R, WALL, SKIN = 6.0, 2.0, 1.5
 SPLIT = L.SPLIT_Z
 BOARD_BOT, BOARD_T = 6.8, 1.2
@@ -34,10 +35,15 @@ PLAT_R = 13.0
 WELL_D, WELL_DEPTH, BEAR_D = 17.6, 1.2, 5.4
 COLLAR_OD, COLLAR_H = 9.0, 3.0
 RING_OD, RING_ID, RING_H = 23.2, 20.8, 1.5
+S2_RISE_VOL = 1.0                                            # R4SL item 3: S2 = lid + 1.0 on both knobs
+MAG_UNDER = 12.31                                            # underside of the lid under a knob: magnet top 11.0 + 0.5 skin + 0.8 axial play
 USB = (-66.0, 5.2, 9.0, 3.6)                                 # x, z, width, height (back wall)
 P2 = (59.5, 4.0, 6.2)                                       # y, z, diameter (left wall)
-P2_POCKET = (-100.5 + 2.0, 55.0, -100.5 + 2.0 + 15.0, 64.0, 0.6)   # x0, y0, x1, y1, depth: under the P2
-BAY = (-98.5, -14.5, -60.0, 54.0)                           # B3 bay x0, y0, x1, y1 (38.5 x 68.5)
+P2_POCKET = (LEFT + 2.0, 55.0, LEFT + 2.0 + 15.0, 64.0, 0.6)       # x0, y0, x1, y1, depth: under the P2
+BAY = (-96.0, -14.5, -60.0, 45.5)                           # R4SL bay x0, y0, x1, y1 (36.0 x 60.0): 34.5 x 52 battery + 0.75 each side, wires/PCM end at the back
+BATT = (34.5, 52.0, 5.35)                                    # VARTA 56457 201 016: width, length, thickness (datasheet 5.3, STEP 5.36)
+WIRE_SLOT = (-82.0, -74.0, 3.0)                             # x0, x1, z0: notch in the bay's back wall for the three wires
+POSTS = [(-55.5, -7.0), (-40.5, 8.5), (-40.0, 63.5), (-93.0, 52.0), (-75.0, 64.0)]   # main-board supports (D6 from the floor to z 6.8)
 
 # ---- the lid's top surface (SPEC 3 / conceito wave5 + sec7), independent copy
 ROWZ = [10.6, 12.6, 14.6, 17.6]
@@ -117,9 +123,14 @@ def build_base():
     for r, k, x, y in key_xy():
         if r == 0:
             base = base.cut(cyl(x, y, L.POST_BOTTOM, L.FLOOR_T + 0.1, L.POST_POCKET_D))
-    # battery bay (B3, 38.5 x 68.5): low walls on its right and back sides
+    # battery bay (R4SL, 36.0 x 60.0): low walls on its right and back sides, a notch for the wires in the back wall
     base = base.union(box(BAY[2], BAY[1], L.FLOOR_T - 0.05, BAY[2] + 1.2, BAY[3] + 1.2, 7.0))
-    base = base.union(box(BAY[0], BAY[3], L.FLOOR_T - 0.05, BAY[2] + 1.2, BAY[3] + 1.2, 7.0))
+    back = box(BAY[0], BAY[3], L.FLOOR_T - 0.05, BAY[2] + 1.2, BAY[3] + 1.2, 7.0)
+    back = back.cut(box(WIRE_SLOT[0], BAY[3] - 1, WIRE_SLOT[2], WIRE_SLOT[1], BAY[3] + 2.5, 8.0))
+    base = base.union(back)
+    # main-board supports: D6 posts from the floor to the board's bottom face (z 6.8), pilot D1.75 for a thread-forming M2
+    for px, py in POSTS:
+        base = base.union(cyl(px, py, L.FLOOR_T - 0.05, BOARD_BOT, 6.0)).cut(cyl(px, py, L.FLOOR_T + 1.0, BOARD_BOT + 0.1, 1.75))
     # pocket under the P2 (0.6 mm into the floor: the floor under it is 1.0)
     x0, y0, x1, y1, dp = P2_POCKET
     base = base.cut(box(x0, y0, L.FLOOR_T - dp, x1, y1, L.FLOOR_T + 0.1))
@@ -139,28 +150,34 @@ def build_lid():
     for r, k, x, y in key_xy():
         ceil = L.HOUSING_TOP[r] + 0.3
         lid = lid.union(cyl(x, y, ceil, S(y) - SKIN + 0.05, 20.0))
-    # platforms: flat discs; registers +1.0 mm
+    # platforms (R4SL, S2): the boss follows the lid (top = S(y) + raise), the well floor is HORIZONTAL (depth 1.2 at the axis, shallower in front, deeper
+    # behind), the bore is vertical, the collar is a horizontal ring.  Registers: +1.0 mm; volume: on the lid (+0).
     zr = S(REG[1]) + 1.0
-    zv = S(VOL[1])
-    for (cx, cy), zp in ((REG, zr), (VOL, zv)):
-        lid = lid.union(cyl(cx, cy, zp - 2.7, zp, 2 * PLAT_R)).cut(cyl(cx, cy, zp, zp + 12, 2 * PLAT_R + 0.1))
-        lid = lid.union(cyl(cx, cy, zp - 2.7, zp - 2.0, 18.5))      # keeps 1.5 mm under the well floor (underside at zp - 2.7)
-        lid = lid.cut(cyl(cx, cy, zp - WELL_DEPTH, zp + 1, WELL_D))
-        lid = lid.union(cyl(cx, cy, zp - WELL_DEPTH - 0.01, zp - WELL_DEPTH + COLLAR_H, COLLAR_OD))
-        lid = lid.cut(cyl(cx, cy, zp - 4.0, zp + 6, BEAR_D))
+    zv = S(VOL[1]) + S2_RISE_VOL
+    for (cx, cy), rise in ((REG, 1.0), (VOL, S2_RISE_VOL)):
+        zc = S(cy) + rise
+        zf = S(cy - WELL_D / 2) + rise - 0.1                 # horizontal floor: 0.1 mm deep at the front rim (registers: 13.81, as in the R3SL)
+        boss = cyl(cx, cy, zf - 1.5, zc + 4.0, 2 * PLAT_R).intersect(profile_solid(lambda y, r=rise: S(y) + r, SPLIT))
+        lid = lid.union(boss)
+        lid = lid.cut(cyl(cx, cy, zf, zc + 8.0, WELL_D))
+        lid = lid.union(cyl(cx, cy, zf - 0.01, zf + COLLAR_H, COLLAR_OD))
+        if zf - 1.5 > MAG_UNDER + 0.5:                          # retention tube under the lid (volume): keeps the head's 0.8 mm axial play
+            lid = lid.union(cyl(cx, cy, MAG_UNDER, zf - 1.4, COLLAR_OD))
+        lid = lid.cut(cyl(cx, cy, zf - 4.0, zf + COLLAR_H + 1, BEAR_D))
     # key holes: D16 through, D17 counterbore down to the housing top + 1.8
     for r, k, x, y in key_xy():
         lid = lid.cut(cyl(x, y, L.HOUSING_TOP[r] - 1.0, S(y) + 3, 16.0))
         lid = lid.cut(cyl(x, y, L.HOUSING_TOP[r] + 1.8, S(y) + 3, 17.0))
-    # LED ring window around the volume knob (through slot, the ring sits at the top)
-    ring_slot = cyl(VOL[0], VOL[1], zv - 3.0, zv + 1, RING_OD).cut(cyl(VOL[0], VOL[1], zv - 3.1, zv + 1.1, RING_ID))
+    # LED ring window around the volume knob: a vertical annular slot through the boss (the ring follows the lid, 1.5 mm thick)
+    ring_slot = cyl(VOL[0], VOL[1], SPLIT - 0.1, zv + 6, RING_OD).cut(cyl(VOL[0], VOL[1], SPLIT - 0.2, zv + 6.1, RING_ID))
     lid = lid.cut(ring_slot)
     return lid, zr, zv, ring_slot
 
 
 def build_ring(zv):
-    ring = cyl(VOL[0], VOL[1], zv - RING_H, zv, RING_OD).cut(cyl(VOL[0], VOL[1], zv - RING_H - 0.1, zv + 0.1, RING_ID))
-    return ring
+    ann = cyl(VOL[0], VOL[1], SPLIT, zv + 6, RING_OD).cut(cyl(VOL[0], VOL[1], SPLIT - 0.1, zv + 6.1, RING_ID))
+    top = ann.intersect(profile_solid(S, SPLIT - 0.5))
+    return top.cut(ann.intersect(profile_solid(lambda y: S(y) - RING_H, SPLIT - 0.5)))
 
 
 def export(name, wp):
@@ -177,8 +194,9 @@ def main():
     export("anel_led", ring)
     nums = {"planta": [RIGHT - LEFT, BACK - FRONT], "x": [LEFT, RIGHT], "y": [FRONT, BACK], "split_z": SPLIT,
             "tampo_z_centro_fileira": [round(S(y), 3) for y in L.ROW_Y], "plataforma_registros_z": round(zr, 3), "plataforma_volume_z": round(zv, 3),
-            "poco_fundo_registros": round(zr - WELL_DEPTH, 3), "poco_fundo_volume": round(zv - WELL_DEPTH, 3),
-            "face_de_baixo_sob_poco_registros": round(zr - 2.7, 3), "face_de_baixo_sob_poco_volume": round(zv - 2.7, 3),
+            "poco_fundo_registros": round(S(REG[1] - WELL_D / 2) + 1.0 - 0.1, 3), "poco_fundo_volume": round(S(VOL[1] - WELL_D / 2) + S2_RISE_VOL - 0.1, 3),
+            "face_de_baixo_sob_poco_registros": round(S(REG[1] - WELL_D / 2) + 1.0 - 1.6, 3), "face_de_baixo_sob_poco_volume": round(S(VOL[1] - WELL_D / 2) + S2_RISE_VOL - 1.6, 3),
+            "bateria": {"modelo": "VARTA 56457 201 016", "baia": [BAY[2] - BAY[0], BAY[3] - BAY[1]], "crescimento_esquerda_mm": -90.0 - LEFT, "pilares_placa": POSTS},
             "tampo_borda_frente": round(S(FRONT + 0.5), 3), "tampo_max": round(max(S(FRONT + i * 0.3) for i in range(int((BACK - FRONT) / 0.3))), 3),
             "volume_cm3": {"base": round(base.val().Volume() / 1000, 2), "tampo": round(lid.val().Volume() / 1000, 2), "anel": round(ring.val().Volume() / 1000, 3)},
             "base_valida": base.val().isValid(), "tampo_valido": lid.val().isValid()}
