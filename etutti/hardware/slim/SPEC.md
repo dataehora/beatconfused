@@ -1,4 +1,42 @@
-# eTutti Slim — SPEC R10SL
+# eTutti Slim — SPEC R11SL
+
+## Mudanças desde a R10SL (25 nov 2026)
+
+Resposta do J à sessão A2 (PR #231). Fica decidido o item 1 abaixo, que substitui a fixação da R10SL. **As perguntas 2 (faixa da principal, 18,4 mm) e 3 (folga de 1,75 mm na parede direita) seguem em aberto.** O J decide as duas depois de ver o modelo de montagem do item 2.
+
+1. **Fixação da régua: 2 M2 na direita, 1 M2 centralizado na esquerda.** Os parafusos servem principalmente para prender a régua ao case.
+   - **Direita: sem mudança.** São os 2 × M2 que já existem (v = ±3,6, a ~3 mm da tecla 8).
+   - **Esquerda: um só M2, no eixo (v = 0),** entre a tecla 1 e o conjunto controlador + conector.
+   - **Ordem a partir da ponta esquerda:** J1 (FFC, boca para −x) → U9 com C9 e C10 → **M2** → tecla 1. O J1 e o controlador ficam numa **ponta curta em balanço**, além do parafuso. A ordem J1 → M2 → U9 da R10SL deixa de valer.
+   - **São 3 pontos de fixação**, o que resolve a pergunta 1 da A2. Os furos podem ser redondos, mas o Code diz se algum precisa ser oblongo.
+   - **Montante (trilhos) de apoio:** os trilhos da base, sob as bordas longas da régua, **terminam exatamente no parafuso da esquerda**. Ali, no eixo, fica uma **guia centralizada no montante**: um ressalto com o bolso da porca, que recebe o M2 e posiciona a régua. A ponta em balanço não se apoia na base.
+   - **A régua deve ficar o mais curta possível.** Informe o comprimento novo comparado com a R9SL (167,5) e a R10SL (171,3), e quanto a faixa da principal recupera em relação aos 18,4 mm.
+   - **Informe, para a ponta em balanço:**
+     - o comprimento dela;
+     - a flecha estimada ao encaixar o FFC (empurrão de 5 N no J1);
+     - se o FFC de 20 mm ainda alcança nas 4 fileiras.
+   - **A grade:** diga se alcança o M2 da esquerda e se é presa por ele.
+2. **Modelo 3D de montagem (pedido do J para decidir o que está pendente).**
+   - **Base:** modelo 3D da caixa inferior (base) com trilhos, guias centralizadas, bolsos das porcas, baia da bateria e postes da principal.
+   - **Sequência de montagem, uma imagem por passo,** sempre com modelos 3D realistas e detalhados:
+     1. a base vazia, com as porcas nos bolsos;
+     2. a principal e a bateria, se entrarem antes das réguas. O Code propõe a ordem e justifica;
+     3. a 4. cada régua, **com o seu cabo FFC já conectado**, posicionada na base e **parafusada junto com a grade**, uma fileira por passo (fileira 1 a 4);
+     4. por fim as **switches KS‑33D** encaixadas na grade e na régua, que fecham a montagem.
+   - **Vistas:** cada passo em isométrico, mais dois detalhes, um da ponta esquerda (guia, M2, balanço) e um da ponta direita (2 M2). As teclas levam o nome da nota, conforme a regra do projeto.
+   - **Modelos 3D:**
+     - KS‑33D da Gateron;
+     - conector FFC C3250113 e cabo FFC 8 vias;
+     - M2 e porcas;
+     - VARTA 523450;
+     - placa principal pelo GLB do KiCad.
+     Se faltar o modelo realista de alguma peça, **o Code avisa o J** e diz qual é, em vez de desenhar uma caixa.
+   - Entregar também o **STEP da base** e um **STEP (ou GLB) do conjunto montado**, para o J girar o modelo.
+3. **Sessão B (escape do BGA):** a placa principal mudou desde que a §8.2 foi escrita. A faixa caiu de 22,2 para 18,4 mm na R10SL e vai mudar de novo com o item 1. **A sessão B deve recomeçar a partir do `main` atual** (depois desta sessão A3, se ainda não tiver avançado além do B1). No B2, ela informa se o escape do RT1062 cabe na largura da faixa resultante e quanta folga sobra.
+4. **Regra das imagens (R10SL item 4) continua valendo.** Corrigir também o título de `pcb/principal/img/planta_principal.png`, que ainda diz "SPEC R4SL".
+
+---
+
 
 ## Mudanças desde a R9SL (25 nov 2026)
 
@@ -323,7 +361,7 @@ Regra: **qualquer item que mude o lado de fora do case** (contorno, altura, pare
 ## 5. Placas
 
 ### 5.1 Régua R8 (×4, idênticas, montadas uma vez)
-- 15 × ≈167,5 mm (R9SL; pode mudar com a R10SL item 1), 2 camadas, 1,2 mm. Cauda além da primeira tecla, com o conector por baixo, fora da área das teclas. **Fixação (R10SL): os M2 da direita (u 163,0, v ±3,6) e, espelhados, os da cauda; ordem na cauda a partir da ponta: J1 → M2 → U9/C9/C10.**
+- 15 × ≈167,5 mm (R9SL; pode mudar com a R10SL item 1), 2 camadas, 1,2 mm. Cauda além da primeira tecla, com o conector por baixo, fora da área das teclas. **Fixação (R11SL): 2 × M2 na direita (v ±3,6) e 1 × M2 em v = 0 na esquerda, entre a tecla 1 e U9; ponta em balanço com J1 e U9/C9/C10.**
 - 8 × **TMAG5253** na face de baixo, na posição do desenho Gateron (4,3 mm do centro), saída analógica compartilhada; habilitação por **74HC595** na cauda (esquema do V4). O BA3 (±80 mT lineares) cobre os 68 mT do fundo de curso.
 - Footprint KS‑33D: 2 × Ø1,70 + Ø5,20.
 - **Grade** FR‑4 1,2 mm com furos 14,00, no mesmo painel da régua se a JLCPCB aceitar.
@@ -367,7 +405,7 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 
 ## 8. Tarefas abertas — sessões do Code
 
-A §8.1 (sessão A da R9SL) foi concluída no PR #228. A §8.2 (sessão B, BGA) continua valendo. A R10SL acrescenta a §8.3.
+A §8.1 (sessão A da R9SL) foi concluída no PR #228. A §8.2 (sessão B, BGA) continua valendo. A R10SL acrescentou a §8.3 (feita no PR #231). A R11SL acrescenta a §8.4; a sessão B recomeça do `main` atual (R11SL item 3).
 
 ### 8.1 Sessão A — ajustes da régua e da principal [Eletrônica + Design + Roteamento]
 
@@ -428,3 +466,24 @@ Pode rodar em paralelo à sessão B: não mexe na principal, salvo se o item 1(b
 4. `FIT_CHECK.md` com as perguntas **já com contexto** e a lista de **todas** as imagens geradas.
 5. Commit → PR → merge. Parar.
 
+
+### 8.4 Sessão A3 — fixação 2 + 1 e modelo de montagem [Eletrônica + Design + Roteamento]
+
+Substitui a fixação da cauda feita na §8.3.
+
+1. **Eletrônica:**
+   - cauda reorganizada (R11SL item 1): J1 → U9/C9/C10 → M2 em v = 0 → tecla 1, com a régua o mais curta possível;
+   - furo de cada ponta: redondo ou oblongo, com justificativa;
+   - ERC 0/0;
+   - principal reposicionada para devolver à faixa o que a régua liberar. DRC 0/0, paridade 0.
+2. **Roteamento:** refazer a rota da régua pelo método híbrido (`etapas.py`). Aceite: DRC 0/0, 0 não ligados, paridade 0. Gerbers da grade conferidos.
+3. **Design:**
+   - trilhos terminando no M2 da esquerda, com a guia centralizada e o bolso da porca;
+   - folgas recalculadas;
+   - `RESTRICOES_CASE.md` e "Resumo dos limitantes" atualizados;
+   - **modelo 3D da base e sequência de montagem** (R11SL item 2), com os STEP/GLB.
+4. `FIT_CHECK.md`:
+   - as perguntas já com contexto;
+   - as perguntas 2 e 3 da A2 recolocadas com os números novos;
+   - a lista de **todas** as imagens geradas, com caminho e uma linha de legenda.
+5. Commit → PR → merge. Parar.
