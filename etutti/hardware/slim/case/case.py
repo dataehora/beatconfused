@@ -25,7 +25,7 @@ import layout_slim as L  # noqa: E402
 OUT = os.path.join(HERE, "out")
 os.makedirs(OUT, exist_ok=True)
 
-LEFT, RIGHT, FRONT, BACK = -98.0, 150.0, -18.5, 70.6       # R4SL: +8.0 mm to the left (battery 523450); R10SL: +1.0 mm to the right (the longer rulers): plan 248.0 x 89.1
+LEFT, RIGHT, FRONT, BACK = -98.0, 149.0, -18.5, 70.6       # R4SL: +8.0 mm to the left (battery 523450); R12SL: right wall at 149.0: plan 247.0 x 89.1; the keyboard moved 1.5 mm right (layout_slim.KEY_DX), so the longest rulers (rows 1 and 3) end at x 143.65: 3.35 mm to the wall's inner face (147.0)
 CORNER_R, WALL, SKIN = 6.0, 2.0, 1.5
 SPLIT = L.SPLIT_Z
 BOARD_BOT, BOARD_T = 6.8, 1.2
@@ -45,7 +45,7 @@ P2_POCKET = (LEFT + 2.0, 55.0, LEFT + 2.0 + 15.0, 64.0, 0.6)       # x0, y0, x1,
 BAY = (-96.0, -14.5, -60.0, 45.5)                           # R4SL bay x0, y0, x1, y1 (36.0 x 60.0): 34.5 x 52 battery + 0.75 each side, wires/PCM end at the back
 BATT = (34.5, 52.0, 5.35)                                    # VARTA 56457 201 016: width, length, thickness (datasheet 5.3, STEP 5.36)
 WIRE_SLOT = (-82.0, -74.0, 3.0)                             # x0, x1, z0: notch in the bay's back wall for the three wires
-POSTS = [(-55.5, -7.0), (-42.0, 8.5), (-41.5, 63.5), (-93.0, 52.0), (-75.0, 64.0)]   # R11SL: the two right-hand posts moved 1.5 mm left with the strip's edge (the rulers grew to the left)   # main-board supports (D6 from the floor to z 6.8)
+POSTS = [(-55.5, -7.0), (-40.5, 8.5), (-40.0, 63.5), (-93.0, 52.0), (-75.0, 64.0)]   # R11SL: the two right-hand posts moved 1.5 mm left with the strip's edge (the rulers grew to the left)   # main-board supports (D6 from the floor to z 6.8)
 
 # ---- the lid's top surface (SPEC 3 / conceito wave5 + sec7), independent copy
 ROWZ = [10.6, 12.6, 14.6, 17.6]
@@ -125,8 +125,11 @@ def build_base():
             base = base.union(box(xa, min(ya, yb), L.FLOOR_T - 0.05, xb, max(ya, yb), zb))
         for xg in (xa, xb):
             base = base.union(cyl(xg, L.ROW_Y[r], L.FLOOR_T - 0.05, zb, L.GUIDE_D))
-            hexp = cq.Workplane("XY").workplane(offset=zb - 1.6).center(xg, L.ROW_Y[r]).polygon(6, 4.7).extrude(1.7)
+            hexp = cq.Workplane("XY").workplane(offset=zb - 1.6).center(xg, L.ROW_Y[r]).polygon(6, 4.7).extrude(1.7).rotate((xg, L.ROW_Y[r], 0), (xg, L.ROW_Y[r], 1), 30)   # flats face +-x
             base = base.cut(hexp).cut(cyl(xg, L.ROW_Y[r], L.FLOOR_T - 0.6, zb - 1.5, 2.6))
+        # R12SL: relief on the face of the LEFT guide that looks at U9: a flat at 2.65 from the axis (the guide's radius is 3.0), so the guide stays >= 0.5 mm from U9's courtyard
+        # (U9 ends at u 9.95, the flat is at u 10.45); the wall to the nut's pocket flat (2.035 from the axis) is then 0.615 mm
+        base = base.cut(box(xa - 3.2, L.ROW_Y[r] - 3.2, L.FLOOR_T - 0.05, xa - L.GUIDE_FLAT, L.ROW_Y[r] + 3.2, zb + 0.01))
     # pockets under the posts of row 1 (the post reaches z 1.3; floor under the pocket >= 1.0)
     for r, k, x, y in key_xy():
         if r == 0:

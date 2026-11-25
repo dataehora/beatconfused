@@ -1,0 +1,74 @@
+{
+ "ind_L0603_120R_L101": {
+  "lcsc": "C14709",
+  "arquivo": "ind_L0603_120R_L101_C14709.step",
+  "bytes": 1387465,
+  "titulo": "L0603_L1.6-W0.8-H0.5_BEAD"
+ },
+ "ind_L0805_4u7_L102": {
+  "lcsc": "C63166",
+  "arquivo": "ind_L0805_4u7_L102_C63166.step",
+  "bytes": 1067890,
+  "titulo": "R0805_L2.0-W1.3-H0.6"
+ },
+ "bav70_D101": {
+  "lcsc": "C68978",
+  "arquivo": "bav70_D101_C68978.step",
+  "bytes": 1214930,
+  "titulo": "SOT-23-3L_L2.9-W1.6-H1.1-LS2.8-P0.95"
+ },
+ "w25q64_U103": {
+  "lcsc": "C5362615",
+  "arquivo": "w25q64_U103_C5362615.step",
+  "bytes": 1623385,
+  "titulo": "SOIC-8_L5.2-W5.2-P1.27-LS8.0-BL"
+ },
+ "xtal_32k_Y102": {
+  "lcsc": "C32346",
+  "arquivo": "xtal_32k_Y102_C32346.step",
+  "bytes": 1208641,
+  "titulo": "FC-135R_L3.2-W1.5"
+ },
+ "smf5v0_D201": {
+  "lcsc": "C151296",
+  "arquivo": "smf5v0_D201_C151296.step",
+  "bytes": 1087959,
+  "titulo": "SOD-123FL_L2.8-W1.8-LS3.7-RD-1"
+ },
+ "usblc6_U201": {
+  "lcsc": "C7519",
+  "arquivo": "usblc6_U201_C7519.step",
+  "bytes": 3277159,
+  "titulo": "SOT-23-6_L2.9-W1.6-H1.5-LS2.8-P0.95"
+ },
+ "ao3400a_Q201": {
+  "lcsc": "C20917",
+  "arquivo": "ao3400a_Q201_C20917.step",
+  "bytes": 2773949,
+  "titulo": "SOT-23-3P_L2.9-W1.3-H1.0-LS2.4-P0.95"
+ },
+ "jst_SM03B-SRSS_J202": {
+  "lcsc": "C160403",
+  "arquivo": "jst_SM03B-SRSS_J202_C160403.step",
+  "bytes": 1720693,
+  "titulo": "CONN-SMD_SR1.00-WS-3P"
+ },
+ "fb_0603_FB301": {
+  "lcsc": "C19330",
+  "arquivo": "fb_0603_FB301_C19330.step",
+  "bytes": 1387465,
+  "titulo": "L0603_L1.6-W0.8-H0.5_BEAD"
+ },
+ "xc6206_U302": {
+  "lcsc": "C347373",
+  "arquivo": "xc6206_U302_C347373.step",
+  "bytes": 1214930,
+  "titulo": "SOT-23-3L_L2.9-W1.6-H1.1-LS2.8-P0.95"
+ },
+ "led_0805_RGCA_D401": {
+  "lcsc": "C965845",
+  "arquivo": "led_0805_RGCA_D401_C965845.step",
+  "bytes": 1212308,
+  "titulo": "LED-SMD_4P-L2.0-W1.3-RD-TL"
+ }
+}
