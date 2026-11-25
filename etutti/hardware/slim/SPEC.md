@@ -16,12 +16,20 @@ Resposta do J à Etapa 2a (PR #215). **Portão B da régua aprovado, com uma con
 6. **Parafuso M2 da régua: escareado, rente à grade** (grade escareada, como na V3).
 7. **Orientação das switches confirmada:** ímã/sensor para o jogador, guia de luz para trás.
 8. **Comprimento do FFC:** decidido nesta etapa (2b), com a placa principal posicionada.
-9. **Bateria (corrigido 25 nov, 13h30) = VARTA 1/LPP 523450 S PCM W**, a que o J achou à venda. Arquivos do J em `fornecimento/bateria/`: STEP `VARTA_56457201012_LPP523450S_PCM_W.stp` e folha de dados `VARTA_1_LPP_523450_S_PCM_W_56457201016.pdf`.
-   - **Código: a folha diz VKB 56457 201 016, o STEP diz 56457 201 012** — tratar como a mesma célula (LPP 523450 S, fios); o Code confere e registra.
-   - **Capacidade: a folha se contradiz** (cabeçalho 1000 mAh / 3,7 Wh; tabela 1400 mAh / 5,2 Wh). **Usar 1000 mAh** nas contas de autonomia (o distribuidor anuncia 1 Ah).
-   - PCM, **NTC 10 k (B 3380)**, 3 fios AWG24 UL1007 (vermelho +, branco NTC, preto −), ~20 g, descarga máx. 2 A. Corrente de carga do BQ24075 ≤ 0,5 C (**≤ 500 mA**).
-   - Pack pelo STEP: **≈ 34,5 × 52 × 5,35 mm** (comprimento sem os fios; o STEP inclui os fios, 104,6 mm no total). Mais curta e um pouco mais estreita que a B2, mas **0,25 mm mais grossa**: o Code recalcula a baia, o crescimento do case à esquerda e a folga sob a placa.
-   - B2 (56456 201 012) e B3 (56427 201 018) ficam registradas como alternativas; os arquivos da B2 continuam em `fornecimento/bateria/`.
+9. **Bateria: o Code escolhe uma e ela vira o padrão do case** (revisado 25 nov, 13h30). Há várias candidatas; o J quer **uma** escolha, com dados confiáveis.
+   - **Requisitos:**
+     - LiPo 1S 3,7 V, **≥ 1000 mAh**, com PCM;
+     - **NTC 10 k em 3 fios** (preferido; sem NTC só com justificativa e o resistor de 10 k no TS);
+     - fios (sem conector de pressão), descarga ≥ 1 A;
+     - tamanho que caiba na baia da frente‑esquerda com o menor crescimento do case à esquerda; **espessura ≤ 5,5 mm**.
+   - **Compra:** à venda para **Londres**, **em estoque**, **em quantidade unitária**, num distribuidor do Reino Unido ou que entregue lá (Farnell UK, RS UK, Mouser, DigiKey, Rapid, The Pi Hut, Pimoroni…). Guardar o link, o código do distribuidor e a data da consulta. **Nada é comprado.**
+   - **Dados confiáveis:** folha de dados do **fabricante** (medidas máximas, NTC, PCM, carga) e **STEP do fabricante ou do distribuidor**. Se a folha se contradisser, usar o valor mais conservador e registrar.
+   - **Candidatas já conhecidas** (todas VARTA, com fios, PCM, NTC 10 k B 3380):
+     - 1/LPP 523450 S PCM W — VKB 56457 201 016 (folha) / 56457 201 012 (STEP); ≈ 34,5 × 52 × 5,35; 1000 mAh (a folha diz também 1400, contradição); **STEP e folha do J** em `fornecimento/bateria/`;
+     - 1/LPP 503562 S PCM W — VKB 56456 201 012; 63,5 × 35,5 × 5,1; 1200 mAh; **STEP e folha do J** em `fornecimento/bateria/`;
+     - 1/LPP 503759 8HH PCM W — VKB 56427 201 018 (Farnell 2531265) / 56427 201 022; 60,5 × 37,5 × 5,4; 1400 mAh; sem STEP.
+     Outras marcas podem entrar se atenderem aos requisitos melhor.
+   - **Entrega:** tabela comparativa no `ELETRONICA.md` (medidas, capacidade, NTC, distribuidor, estoque, preço unitário visto, link, data, STEP sim/não), **a escolha justificada**, e a escolhida aplicada no case (baia, crescimento à esquerda, folga sob a placa, saída dos fios e do rabicho SH), no `RESTRICOES_CASE.md` e na corrente de carga do BQ24075 (≤ 0,5 C). Se o STEP da escolhida não existir, pedir ao J no `FIT_CHECK.md`.
 10. **Estudo do botão (novo), para projetar e comprar.** Pela leitura do STEP da KS‑33D: a haste tem uma **cruz macho tipo MX** (braços de 4,0 mm, largura ≈1,1 mm, ≈3,3 mm de altura) dentro de um **poço redondo de Ø5,67**. O botão precisa de um **pino redondo de Ø ≤ 5,5 com soquete em cruz fêmea** e encaixe firme. O estudo define:
     - encaixe na cruz: medidas do soquete e interferência por processo (MJF PA12, resina SLA), retenção e desmontagem;
     - diâmetros do pino, da cabeça e da saia;
@@ -188,7 +196,7 @@ Regra: **qualquer item que mude o lado de fora do case** (contorno, altura, pare
   Desenho: `conceito/img/knobs7.svg`.
 - **LED:** bicolor (verde/vermelho, laranja pela mistura), montagem reversa na face de baixo, aceso num **anel leitoso** em volta do knob de volume: peça separada no tampo, Ø23,2/Ø20,8 × 1,5, resina SLA ou acrílico (R3SL). Estados do V4: verde tocando, verde breve a cada 2 s em repouso, laranja ao ler as teclas na partida e carregando, vermelho lento bateria baixa, vermelho rápido codec ou régua sem resposta.
 - **Bateria:** baia própria na frente‑esquerda.
-  - **Escolhida (R4SL, corrigido): VARTA 1/LPP 523450 S PCM W** (VKB 56457 201 016 / 56457 201 012), 1000 mAh para as contas, PCM, NTC 10 k (B 3380), 3 fios; pack ≈ 34,5 × 52 × 5,35 mm; STEP e folha de dados em `fornecimento/bateria/`. Crescimento do case à esquerda: o Code recalcula. Corrente de carga ≤ 500 mA. Plugue JST SH 3 vias por rabicho crimpado emendado aos fios. Nada é comprado.
+  - **A definir pelo Code na R4SL** (item 9 das Mudanças): uma bateria à venda para Londres, em estoque, com folha de dados e STEP confiáveis; ela vira o padrão do case. Plugue JST SH 3 vias por rabicho crimpado emendado aos fios. Nada é comprado.
 - **Conectores (aprovados):**
   - **USB‑C** na **parede de trás**, centro em x = −66 (24 mm da parede esquerda; se o case crescer para a esquerda pela bateria, a distância à quina cresce junto).
   - **P2 3,5 mm OUT** na **parede esquerda**, centro em y = 59,5 (11 mm da parede de trás).
@@ -239,27 +247,29 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 | TMAG5273, DRV5032ZE, ímãs Ø6 × 2,5 | ◐ chips pelo EasyEDA; ímãs = cilindros pelas medidas |
 | JST SH 3 vias | ✖ falta (o Code busca no EasyEDA) |
 | Anel leitoso do LED | desenho próprio (Design) |
-| Bateria VARTA LPP 523450 S PCM W | ✔ `fornecimento/bateria/` (fornecido pelo J) |
+| Bateria | ◐ STEP das VARTA 523450 e 503562 em `fornecimento/bateria/`; o da escolhida, se for outra, o Code busca ou pede ao J |
 | MKL02 | ✖ sem STEP público: caixa QFN‑16 3 × 3 pelo desenho da NXP |
 | Demais peças JLCPCB | ✔ EasyEDA (`modelos/baixados/`, fora do Git) |
 | Pot com chave, SRBV | — saíram do projeto na R2SL |
 
 ## 8. Tarefa da R4SL: fechar a régua e Etapa 2b (placa principal)
 
+**Ordem:** Eletrônica escolhe a bateria (item 9) → Design (itens abaixo, já com a bateria escolhida) → Eletrônica posiciona a principal (2b) → Programação e som.
+
 1. **[Design]**
    - Cortes longitudinais do apoio das 4 réguas (item 1); corrigir se houver vão.
    - Knobs: cortes S1/S2/S3 nos dois knobs (item 3); modelo oficial em S2.
    - Grade 14,00 com dog‑bone; grade escareada para o M2 (itens 4 e 6).
-   - Bateria VARTA LPP 523450 (STEP real, item 9): baia, crescimento do case, saída dos fios e do rabicho SH.
+   - Bateria escolhida pela eletrônica (item 9), com STEP real: baia, crescimento do case, saída dos fios e do rabicho SH.
    - **Estudo do botão** (item 10): `estudos/botao/` + seção no `FIT_CHECK.md`.
    - Envelope da placa principal para a eletrônica: zonas livres, apoios, alturas (regra de alturas), knobs, conectores nas paredes, baia da bateria, caminho dos 4 FFC.
    - `RESTRICOES_CASE.md` atualizado.
-2. **[Eletrônica] Etapa 2b — posicionar a placa principal** (sem rotas):
+2. **[Eletrônica]** Primeiro, **escolher a bateria** (item 9) e passar a escolha ao Design. Depois, **Etapa 2b — posicionar a placa principal** (sem rotas):
    - RT1062 primeiro, com a zona de escape do BGA (2,5 mm) e os corredores; MKL02, flash, cristal, DCDC perto dele;
    - SGTL5000 e P2; USB‑C, ESD e o par USB (≤ 30–35 mm, Full Speed); BQ24075, bateria (J202 SH), latch do OFF;
    - 2 TMAG5273 sob os eixos dos knobs e a DRV5032ZE sob o ímã do OFF; LED reverso sob o anel;
    - 4 FFC alinhados com as caudas das réguas; **comprimento dos cabos FFC definido** (de série, mesmo comprimento se possível);
    - todas as peças na face de baixo (JLCPCB), alturas conforme a regra; DRC sem trilhas 0 erros, paridade 0; corredores e regras no `.kicad_dru`;
    - `POSICIONAMENTO.md`: planta cotada da principal, blocos por função, cena 3D com o case e as réguas (modelos realistas).
-3. **[Programação e som]** Conferir NTC (B 3380), corrente de carga (≤ 500 mA) e autonomia com 1000 mAh da bateria do item 9 no `FIRMWARE.md`/`PINOS.md`; conferir pinos × placa posicionada.
+3. **[Programação e som]** Conferir NTC (B 3380), corrente de carga (≤ 0,5 C) e autonomia da bateria escolhida (item 9) no `FIRMWARE.md`/`PINOS.md`; conferir pinos × placa posicionada.
 4. **`FIT_CHECK.md`**: resumo da R4SL, itens do `RESTRICOES_CASE.md` que mudam o lado de fora em destaque, **"Perguntas para o design"**. Parar no **portão B da placa principal**. Nada de rota, cotação ou compra.
