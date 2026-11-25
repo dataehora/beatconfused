@@ -1,4 +1,24 @@
-# eTutti Slim — SPEC R4SL
+# eTutti Slim — SPEC R5SL
+
+## Mudanças desde a R4SL (25 nov 2026)
+
+Resposta do J à Etapa 2b (PR #219, 8 perguntas do `FIT_CHECK.md`). **Condição do portão B da régua cumprida** (apoio contínuo provado). A placa principal está aprovada nas linhas gerais; esta revisão fecha os pontos abaixo e **redefine o botão**. Ao terminar, o Code para no **portão B da placa principal** (fechamento da Etapa 2).
+
+1. **Bateria VARTA 1/LPP 523450 S PCM W (56457 201 016) aprovada**, case com **247,0 mm** (+8,0). **Risco de fornecimento registrado:** 2 peças no CPC UK (BT07248) em 25 nov, Farnell com 28 semanas, e nada se compra antes de o protótipo fechar. O Code lista **1–2 substitutas diretas** (classe 34 × 50 × 5, NTC 10 k em 3 fios, à venda no Reino Unido, folha e STEP confiáveis) e confere que a **baia de 36 × 60 aceita todas sem mudar o case**; se alguma não couber, diz quanto a baia teria de crescer.
+2. **Knobs em S2 com saia:** a saia esconde o vão em cunha atrás (2,0 / 2,6 mm); o knob de volume 1,0 mm mais alto fica aceito. Ímã horizontal, como pedido.
+3. **Botão redefinido (substitui o estudo da R4SL; perguntas 3 e 4 ficam superadas).** Referência: `conceito/img/botao_acordeon.png` (script em `conceito/scripts/botao_acordeon.py`).
+   - **Forma: cópia do botão comum de acordeon.** Cabeça **Ø15 × 7,5 mm**, lateral cilíndrica, topo levemente abaulado (flecha 1,0 mm), borda R1. **Haste Ø10** (cobre o topo da haste da switch, 9,4 × 6,5). Na ponta, **pino Ø5,4 com cruz fêmea** (4,2 × 1,04, 3,0 de fundo; interferência ≈ 0,06 conforme o estudo da R4SL), que entra na cruz MX da KS‑33D dentro do poço Ø5,67.
+   - **Alturas: a cabeça nunca entra no case.** No fim do curso, a base da cabeça fica **2,0 mm acima da borda mais alta do furo** (a de trás, porque o tampo é inclinado 7,1°). Na fileira 1: base da cabeça **20,2** em repouso / **16,7** apertado; topo **27,7** / **24,2**; borda alta do furo 14,7; haste da base da cabeça ao topo da haste da switch **5,8**. As outras fileiras somam os degraus 2/2/3; **a mesma peça serve as 4 fileiras**. O Code confirma os números com o tampo real de cada fileira e corrige se a borda alta de alguma fileira for diferente.
+   - **Furo do tampo: Ø11, sem rebaixo** (era Ø16 com rebaixo Ø17). Só a haste passa; folga radial 0,5 para a haste Ø10.
+   - **Altura do instrumento aceita:** os botões ficam ~9 mm mais altos que no conceito (fileira 4: topo ~34,7). O Design atualiza a vista lateral e a altura total no `RESTRICOES_CASE.md` (muda o lado de fora).
+   - **Material: resina SLA "tough"** (opção B), peça única. **Cores do teclado bayan: naturais brancas, sustenidos pretos; C e F com textura** (o Design propõe uma textura tátil que a SLA faça bem e que não incomode o dedo). **Acabamento (lixa, verniz, brilho) fica para a fase de cotação.**
+   - Ensaio com 4 botões antes de imprimir os 32, no plano do protótipo.
+4. **Cabo FFC:** **30 mm de série com curva em S**, se o corte provar que a curva cabe com o raio mínimo do cabo; senão, 20 mm sob medida.
+5. **Par USB 36 mm (38–42 roteado): aceito** (Full Speed). O RT1062 fica onde está.
+6. **LED do anel:** primeiro conferir o LED reverso 1615 na folha de dados (janela na placa, 0,5 mm entre fileiras de pads); se não fechar, o LED passa para a **face de cima, soldado em casa**.
+7. **Pinagem invertida dos FFC no esquema da principal: aprovada** (a régua não muda).
+
+---
 
 ## Mudanças desde a R3SL (25 nov 2026)
 
@@ -252,24 +272,18 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 | Demais peças JLCPCB | ✔ EasyEDA (`modelos/baixados/`, fora do Git) |
 | Pot com chave, SRBV | — saíram do projeto na R2SL |
 
-## 8. Tarefa da R4SL: fechar a régua e Etapa 2b (placa principal)
+## 8. Tarefa da R5SL: fechar a Etapa 2 (portão B da placa principal)
 
-**Ordem:** Eletrônica escolhe a bateria (item 9) → Design (itens abaixo, já com a bateria escolhida) → Eletrônica posiciona a principal (2b) → Programação e som.
+**Ordem:** Design → Eletrônica → Programação e som.
 
 1. **[Design]**
-   - Cortes longitudinais do apoio das 4 réguas (item 1); corrigir se houver vão.
-   - Knobs: cortes S1/S2/S3 nos dois knobs (item 3); modelo oficial em S2.
-   - Grade 14,00 com dog‑bone; grade escareada para o M2 (itens 4 e 6).
-   - Bateria escolhida pela eletrônica (item 9), com STEP real: baia, crescimento do case, saída dos fios e do rabicho SH.
-   - **Estudo do botão** (item 10): `estudos/botao/` + seção no `FIT_CHECK.md`.
-   - Envelope da placa principal para a eletrônica: zonas livres, apoios, alturas (regra de alturas), knobs, conectores nas paredes, baia da bateria, caminho dos 4 FFC.
-   - `RESTRICOES_CASE.md` atualizado.
-2. **[Eletrônica]** Primeiro, **escolher a bateria** (item 9) e passar a escolha ao Design. Depois, **Etapa 2b — posicionar a placa principal** (sem rotas):
-   - RT1062 primeiro, com a zona de escape do BGA (2,5 mm) e os corredores; MKL02, flash, cristal, DCDC perto dele;
-   - SGTL5000 e P2; USB‑C, ESD e o par USB (≤ 30–35 mm, Full Speed); BQ24075, bateria (J202 SH), latch do OFF;
-   - 2 TMAG5273 sob os eixos dos knobs e a DRV5032ZE sob o ímã do OFF; LED reverso sob o anel;
-   - 4 FFC alinhados com as caudas das réguas; **comprimento dos cabos FFC definido** (de série, mesmo comprimento se possível);
-   - todas as peças na face de baixo (JLCPCB), alturas conforme a regra; DRC sem trilhas 0 erros, paridade 0; corredores e regras no `.kicad_dru`;
-   - `POSICIONAMENTO.md`: planta cotada da principal, blocos por função, cena 3D com o case e as réguas (modelos realistas).
-3. **[Programação e som]** Conferir NTC (B 3380), corrente de carga (≤ 0,5 C) e autonomia da bateria escolhida (item 9) no `FIRMWARE.md`/`PINOS.md`; conferir pinos × placa posicionada.
-4. **`FIT_CHECK.md`**: resumo da R4SL, itens do `RESTRICOES_CASE.md` que mudam o lado de fora em destaque, **"Perguntas para o design"**. Parar no **portão B da placa principal**. Nada de rota, cotação ou compra.
+   - Botão novo (item 3): STEP em `estudos/botao/`, cortes cotados em repouso e apertado **nas 4 fileiras** com a switch real e o tampo real, textura de C e F, versões branca e preta.
+   - Tampo: furos Ø11 sem rebaixo; vista lateral e altura total novas.
+   - Knobs S2 com saia (item 2).
+   - Bateria: substitutas e conferência da baia (item 1).
+   - FFC de 30 mm com curva em S: corte com o raio mínimo do cabo (item 4).
+   - `RESTRICOES_CASE.md` atualizado, em destaque o que muda o lado de fora (altura dos botões, furos).
+   - **Figura de planta do teclado com o nome da nota em cada botão**, naturais brancas, sustenidos pretos, C e F com a textura.
+2. **[Eletrônica]** LED do anel (item 6); pinagem invertida dos FFC confirmada no esquema (ERC 0/0); bateria: tabela das substitutas no `ELETRONICA.md`; DRC sem trilhas 0/0 e paridade 0 depois de qualquer mudança; `POSICIONAMENTO.md` atualizado.
+3. **[Programação e som]** Conferir pinos × placa depois das mudanças.
+4. **`FIT_CHECK.md`**: resumo da R5SL e **"Perguntas para o design"**. Parar no **portão B da placa principal**. Nada de cotação ou compra.
