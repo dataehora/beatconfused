@@ -4,18 +4,20 @@
 
 Resposta do J à sessão A2 (PR #231). Fica decidido o item 1 abaixo, que substitui a fixação da R10SL. **As perguntas 2 (faixa da principal, 18,4 mm) e 3 (folga de 1,75 mm na parede direita) seguem em aberto.** O J decide as duas depois de ver o modelo de montagem do item 2.
 
-1. **Fixação da régua: 2 M2 na direita, 1 M2 centralizado na esquerda.** Os parafusos servem principalmente para prender a régua ao case.
-   - **Direita: sem mudança.** São os 2 × M2 que já existem (v = ±3,6, a ~3 mm da tecla 8).
-   - **Esquerda: um só M2, no eixo (v = 0),** entre a tecla 1 e o conjunto controlador + conector.
-   - **Ordem a partir da ponta esquerda:** J1 (FFC, boca para −x) → U9 com C9 e C10 → **M2** → tecla 1. O J1 e o controlador ficam numa **ponta curta em balanço**, além do parafuso. A ordem J1 → M2 → U9 da R10SL deixa de valer.
-   - **São 3 pontos de fixação**, o que resolve a pergunta 1 da A2. Os furos podem ser redondos, mas o Code diz se algum precisa ser oblongo.
-   - **Montante (trilhos) de apoio:** os trilhos da base, sob as bordas longas da régua, **terminam exatamente no parafuso da esquerda**. Ali, no eixo, fica uma **guia centralizada no montante**: um ressalto com o bolso da porca, que recebe o M2 e posiciona a régua. A ponta em balanço não se apoia na base.
-   - **A régua deve ficar o mais curta possível.** Informe o comprimento novo comparado com a R9SL (167,5) e a R10SL (171,3), e quanto a faixa da principal recupera em relação aos 18,4 mm.
+1. **Fixação da régua: um M2 centralizado em cada ponta, igual dos dois lados** (corrigido pelo J no mesmo dia). Os parafusos servem principalmente para prender a régua ao case.
+   - **Esquerda:** 1 × M2 no eixo (v = 0), entre a tecla 1 e o conjunto controlador + conector. A partir da ponta esquerda: J1 (FFC, boca para −x) → U9 com C9 e C10 → **M2** → tecla 1. J1 e o controlador ficam numa **ponta curta em balanço**, além do parafuso.
+   - **Direita:** sai o par de M2 (v = ±3,6). Entra **1 × M2 no eixo (v = 0)**, logo depois da tecla 8, com a ponta da régua o mais curta possível.
+   - **Montante (trilhos) de apoio:** **dos dois lados, os trilhos terminam exatamente no parafuso**, numa **guia centralizada** (ressalto no eixo com o bolso da porca), que fecha o montante da mesma forma compacta nas duas pontas. Nada da régua além dos parafusos se apoia na base.
+   - **2 pontos no eixo por régua** posicionam a régua e não forçam nada se um dos furos for **oblongo ao longo da régua** (sugestão: redondo na esquerda, que fica perto do FFC, e oblongo na direita). O Code confirma ou propõe outra coisa.
+   - **A régua deve ficar o mais curta possível nas duas pontas.** Informe:
+     - o comprimento novo, comparado com a R9SL (167,5) e a R10SL (171,3);
+     - quanto a faixa da principal recupera em relação aos 18,4 mm;
+     - a folga nova até a parede direita.
    - **Informe, para a ponta em balanço:**
      - o comprimento dela;
      - a flecha estimada ao encaixar o FFC (empurrão de 5 N no J1);
      - se o FFC de 20 mm ainda alcança nas 4 fileiras.
-   - **A grade:** diga se alcança o M2 da esquerda e se é presa por ele.
+   - **A grade:** diga se é presa pelos dois M2.
 2. **Modelo 3D de montagem (pedido do J para decidir o que está pendente).**
    - **Base:** modelo 3D da caixa inferior (base) com trilhos, guias centralizadas, bolsos das porcas, baia da bateria e postes da principal.
    - **Sequência de montagem, uma imagem por passo,** sempre com modelos 3D realistas e detalhados:
@@ -361,7 +363,7 @@ Regra: **qualquer item que mude o lado de fora do case** (contorno, altura, pare
 ## 5. Placas
 
 ### 5.1 Régua R8 (×4, idênticas, montadas uma vez)
-- 15 × ≈167,5 mm (R9SL; pode mudar com a R10SL item 1), 2 camadas, 1,2 mm. Cauda além da primeira tecla, com o conector por baixo, fora da área das teclas. **Fixação (R11SL): 2 × M2 na direita (v ±3,6) e 1 × M2 em v = 0 na esquerda, entre a tecla 1 e U9; ponta em balanço com J1 e U9/C9/C10.**
+- 15 × ≈167,5 mm (R9SL; pode mudar com a R10SL item 1), 2 camadas, 1,2 mm. Cauda além da primeira tecla, com o conector por baixo, fora da área das teclas. **Fixação (R11SL): 1 × M2 em v = 0 em cada ponta (esquerda entre a tecla 1 e U9; direita logo depois da tecla 8); trilhos terminam nos dois parafusos, em guias centralizadas; ponta esquerda em balanço com J1 e U9/C9/C10.**
 - 8 × **TMAG5253** na face de baixo, na posição do desenho Gateron (4,3 mm do centro), saída analógica compartilhada; habilitação por **74HC595** na cauda (esquema do V4). O BA3 (±80 mT lineares) cobre os 68 mT do fundo de curso.
 - Footprint KS‑33D: 2 × Ø1,70 + Ø5,20.
 - **Grade** FR‑4 1,2 mm com furos 14,00, no mesmo painel da régua se a JLCPCB aceitar.
@@ -467,18 +469,20 @@ Pode rodar em paralelo à sessão B: não mexe na principal, salvo se o item 1(b
 5. Commit → PR → merge. Parar.
 
 
-### 8.4 Sessão A3 — fixação 2 + 1 e modelo de montagem [Eletrônica + Design + Roteamento]
+### 8.4 Sessão A3 — um M2 central em cada ponta e modelo de montagem [Eletrônica + Design + Roteamento]
 
 Substitui a fixação da cauda feita na §8.3.
 
 1. **Eletrônica:**
-   - cauda reorganizada (R11SL item 1): J1 → U9/C9/C10 → M2 em v = 0 → tecla 1, com a régua o mais curta possível;
+   - cauda reorganizada (R11SL item 1): J1 → U9/C9/C10 → M2 em v = 0 → tecla 1;
+   - ponta direita com 1 M2 em v = 0 no lugar do par;
+   - régua o mais curta possível nas duas pontas;
    - furo de cada ponta: redondo ou oblongo, com justificativa;
    - ERC 0/0;
    - principal reposicionada para devolver à faixa o que a régua liberar. DRC 0/0, paridade 0.
 2. **Roteamento:** refazer a rota da régua pelo método híbrido (`etapas.py`). Aceite: DRC 0/0, 0 não ligados, paridade 0. Gerbers da grade conferidos.
 3. **Design:**
-   - trilhos terminando no M2 da esquerda, com a guia centralizada e o bolso da porca;
+   - trilhos terminando nos dois M2, cada um numa guia centralizada com o bolso da porca;
    - folgas recalculadas;
    - `RESTRICOES_CASE.md` e "Resumo dos limitantes" atualizados;
    - **modelo 3D da base e sequência de montagem** (R11SL item 2), com os STEP/GLB.
