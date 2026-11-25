@@ -45,3 +45,11 @@ Sem perguntas para o design. Para a bancada: ângulos de referência dos knobs, 
 ## R3SL: índice × posição × nota (conferido contra a régua posicionada)
 
 `etutti/firmware/slim/check_teclas.py` compara a tabela `NOTE[][]` do sketch com o contrato do Design (`case/envelope_regua.json`) e com a régua posicionada (`pcb/regua/posicao_regua.json`): **32/32 teclas batem** (índice = 8 × (fileira − 1) + posição; posição 1 = esquerda; nota → MIDI com C4 = 60). A coluna c da varredura é o estágio c do 595 (QA…QH = EN1…EN8 = TMAG5253 U1…U8, nos pinos 15, 1, 2, 3, 4, 5, 6, 7 do 595): conferido nas redes da régua posicionada. O sketch não mudou.
+
+## R4SL — bateria escolhida, NTC, carga e autonomia
+
+Bateria: **VARTA 1/LPP 523450 S PCM W (56457 201 016)**, 1000 mAh (cabeçalho da folha; a tabela diz 1320 mín./1400 típ.: usei o conservador), PCM, **NTC 10 kΩ ±1 %, B 3380**, fios vermelho (+), branco (NTC), preto (−), AWG24.
+- **NTC:** 28,2 kΩ a 0 °C, 10 kΩ a 25 °C, 4,9 kΩ a 45 °C, 3,6 kΩ a 50 °C (B 3380). Vai direto no TS do BQ24075 (R259 **não monta**); o BQ24075 corta a carga fora da janela dele. O firmware não lê o NTC (só o VBAT/2 no pino 16).
+- **Corrente de carga:** R203 = 2,2 kΩ → ICHG = 890/2200 = **0,405 A = 0,41 C** de 1000 mAh (**≤ 0,5 C**; a folha admite 1,98 A); carga completa ≈ 2,8 h.
+- **Autonomia (≈ 105 mA, 85 % útil):** **~8,1 h** a 396 MHz (1320 mAh mín. da tabela: ~10,7 h); OFF ≤ 18 µA. O desligamento por bateria vazia (< 3,3 V por 5 s) fica **acima** do corte do PCM (2,3 V).
+- **Pinos × placa posicionada:** `etutti/firmware/slim/check_placa.py` lê `pcb/PINOS.md` e `pcb/principal/posicao_principal.json`: **21/21 pinos** na bola e na rede certas; os mais longos (estimativa Manhattan): I²S_TX 59, BCLK 55, LRCLK 53 mm (o SGTL5000 está no pé da placa), OUT_R1 46 mm; **par USB 36 mm** em linha reta. `check_pins.py` 15/15 e `check_teclas.py` 32/32 seguem ok.

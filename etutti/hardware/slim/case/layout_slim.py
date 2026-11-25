@@ -40,8 +40,9 @@ RULER_W = 15.0
 GRADE_W = 16.0
 GRADE_U0 = U_KEY1 - P / 2                           # 12.0: the grade covers the key area only (the tail stays free)
 GRADE_U1 = RULER_L
-GRADE_HOLE = 14.03                                  # the SPEC's 14.00 (+0.05 / -0.02): middle of the band
-GRADE_HOLE_R = 0.5                                  # corner radius of the grade holes (the router's minimum is to be confirmed)
+GRADE_HOLE = 14.00                                  # R4SL item 4: nominal 14.00 (+0.05 / -0.02) with DOG-BONE relief in the corners (the cutter's +-0.1 is a risk, RESTRICOES R28)
+GRADE_DOGBONE = (0.25, 0.60)                        # relief circle: centre 0.25 mm in from the corner along both edges, radius 0.60
+GRADE_CSK = (4.4, 90.0)                             # R4SL item 6: M2 countersunk flush with the grade (D4.4 x 90 deg from the key side), as in the V3
 M2_GAPS = (2, 6)                                    # the two M2 spacers: in the gap between key 2-3 and key 6-7 (on the centre line)
 M2_D = 2.2
 PEG_DX, PEG_D, POST_D = 5.08, 1.70, 5.20            # KS-33D PCB holes (Gateron drawing "Layout of PCB")
@@ -69,12 +70,12 @@ def ruler(r):
 def contract():
     rs = [ruler(r) for r in range(4)]
     return {
-        "revisao": "R3SL", "quadro": "u ao longo da regua a partir da ponta ESQUERDA, v atravessado, +v para o jogador, v = 0 na linha do centro das teclas",
+        "revisao": "R4SL", "quadro": "u ao longo da regua a partir da ponta ESQUERDA, v atravessado, +v para o jogador, v = 0 na linha do centro das teclas",
         "regua": {"comprimento": RULER_L, "largura": RULER_W, "espessura": RULER_T, "cauda_alem_da_carcaca": TAIL, "u_tecla1": U_KEY1, "passo": P,
                   "u_teclas": [U_KEY1 + P * k for k in range(NKEYS)], "furos_switch": {"poste_d": POST_D, "pino_d": PEG_D, "pino_dx": PEG_DX},
                   "sensor_v": SENSOR_V, "m2_u": rs[0]["m2_u"], "m2_d": M2_D, "m2_v": 0.0,
                   "ffc": {"u_origem": FFC_U, "v": 0.0, "boca": "-u (esquerda)", "altura": FFC_H, "saida": "-x, cabo FFC horizontal"}},
-        "grade": {"u0": GRADE_U0, "u1": GRADE_U1, "largura": GRADE_W, "espessura": GRADE_T, "furo": GRADE_HOLE, "raio_canto": GRADE_HOLE_R,
+        "grade": {"u0": GRADE_U0, "u1": GRADE_U1, "largura": GRADE_W, "espessura": GRADE_T, "furo": GRADE_HOLE, "dogbone": {"recuo": GRADE_DOGBONE[0], "raio": GRADE_DOGBONE[1]}, "m2_escareado": {"d": GRADE_CSK[0], "angulo": GRADE_CSK[1]},
                   "m2_u": rs[0]["m2_u"], "m2_d": M2_D, "separador_h": SPACER_H},
         "base": {"piso": FLOOR_T, "trilhos_largura": RAIL_W, "trilhos_v": [6.0, 7.5], "bolso_poste": {"d": POST_POCKET_D, "fundo_z": POST_BOTTOM, "so_fileira": 1},
                  "regua_baixo_z": [round(z, 3) for z in RULER_BOT], "regua_topo_z": [round(z, 3) for z in PCB_TOP],

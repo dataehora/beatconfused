@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\slim\\pcb\\kicad\\slim.kicad_sch")
-		(date "2026-11-25T11:31:43")
+		(date "2026-11-25T13:47:32")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -9055,7 +9055,7 @@
 			(ref "J601")
 			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
 			(footprint "slim:FFC_8P_0.5_KH-H1.0")
-			(description "fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+			(description "fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND na regua). R4SL: PINAGEM INVERTIDA (pino n daqui = pino 9-n da regua) porque as bocas dos dois conectores se olham (a placa gira 180 graus em relacao a regua) e o cabo reto mantem a posicao de cada condutor; LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
 					(name "Codigo") "R1")
@@ -9069,7 +9069,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+					(name "Description") "fileira 1: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND na regua). R4SL: PINAGEM INVERTIDA (pino n daqui = pino 9-n da regua) porque as bocas dos dois conectores se olham (a placa gira 180 graus em relacao a regua) e o cabo reto mantem a posicao de cada condutor; LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			)
 			(libsource
 				(lib "slim")
@@ -9148,7 +9148,7 @@
 			(ref "J602")
 			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
 			(footprint "slim:FFC_8P_0.5_KH-H1.0")
-			(description "fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+			(description "fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND na regua). R4SL: PINAGEM INVERTIDA (pino n daqui = pino 9-n da regua) porque as bocas dos dois conectores se olham (a placa gira 180 graus em relacao a regua) e o cabo reto mantem a posicao de cada condutor; LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
 					(name "Codigo") "R2")
@@ -9162,7 +9162,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+					(name "Description") "fileira 2: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND na regua). R4SL: PINAGEM INVERTIDA (pino n daqui = pino 9-n da regua) porque as bocas dos dois conectores se olham (a placa gira 180 graus em relacao a regua) e o cabo reto mantem a posicao de cada condutor; LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			)
 			(libsource
 				(lib "slim")
@@ -9241,7 +9241,7 @@
 			(ref "J603")
 			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
 			(footprint "slim:FFC_8P_0.5_KH-H1.0")
-			(description "fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+			(description "fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND na regua). R4SL: PINAGEM INVERTIDA (pino n daqui = pino 9-n da regua) porque as bocas dos dois conectores se olham (a placa gira 180 graus em relacao a regua) e o cabo reto mantem a posicao de cada condutor; LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
 					(name "Codigo") "R3")
@@ -9255,7 +9255,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+					(name "Description") "fileira 3: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND na regua). R4SL: PINAGEM INVERTIDA (pino n daqui = pino 9-n da regua) porque as bocas dos dois conectores se olham (a placa gira 180 graus em relacao a regua) e o cabo reto mantem a posicao de cada condutor; LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			)
 			(libsource
 				(lib "slim")
@@ -9334,7 +9334,7 @@
 			(ref "J604")
 			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
 			(footprint "slim:FFC_8P_0.5_KH-H1.0")
-			(description "fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+			(description "fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND na regua). R4SL: PINAGEM INVERTIDA (pino n daqui = pino 9-n da regua) porque as bocas dos dois conectores se olham (a placa gira 180 graus em relacao a regua) e o cabo reto mantem a posicao de cada condutor; LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			(fields
 				(field
 					(name "Codigo") "R4")
@@ -9348,7 +9348,7 @@
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND); LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
+					(name "Description") "fileira 4: cabo FFC reto de 8 vias ate a regua R8 (SPEC 5.1: GND 3V3 OUT DADO CLOCK LATCH GND GND na regua). R4SL: PINAGEM INVERTIDA (pino n daqui = pino 9-n da regua) porque as bocas dos dois conectores se olham (a placa gira 180 graus em relacao a regua) e o cabo reto mantem a posicao de cada condutor; LCSC C3250113, 1,0 mm de altura, contatos dos dois lados (entrada por cima ou por baixo), 2370 em estoque; footprint do esquema = Amphenol (so placeholder; pads reais no passo 2)")
 			)
 			(libsource
 				(lib "slim")
@@ -12411,26 +12411,26 @@
 			)
 			(node
 				(ref "J601")
-				(pin "2")
-				(pinfunction "Pin_2_2")
+				(pin "7")
+				(pinfunction "Pin_7_7")
 				(pintype "passive")
 			)
 			(node
 				(ref "J602")
-				(pin "2")
-				(pinfunction "Pin_2_2")
+				(pin "7")
+				(pinfunction "Pin_7_7")
 				(pintype "passive")
 			)
 			(node
 				(ref "J603")
-				(pin "2")
-				(pinfunction "Pin_2_2")
+				(pin "7")
+				(pinfunction "Pin_7_7")
 				(pintype "passive")
 			)
 			(node
 				(ref "J604")
-				(pin "2")
-				(pinfunction "Pin_2_2")
+				(pin "7")
+				(pinfunction "Pin_7_7")
 				(pintype "passive")
 			)
 			(node
@@ -13446,8 +13446,8 @@
 			)
 			(node
 				(ref "J601")
-				(pin "7")
-				(pinfunction "Pin_7_7")
+				(pin "2")
+				(pinfunction "Pin_2_2")
 				(pintype "passive")
 			)
 			(node
@@ -13470,8 +13470,8 @@
 			)
 			(node
 				(ref "J602")
-				(pin "7")
-				(pinfunction "Pin_7_7")
+				(pin "2")
+				(pinfunction "Pin_2_2")
 				(pintype "passive")
 			)
 			(node
@@ -13494,8 +13494,8 @@
 			)
 			(node
 				(ref "J603")
-				(pin "7")
-				(pinfunction "Pin_7_7")
+				(pin "2")
+				(pinfunction "Pin_2_2")
 				(pintype "passive")
 			)
 			(node
@@ -13518,8 +13518,8 @@
 			)
 			(node
 				(ref "J604")
-				(pin "7")
-				(pinfunction "Pin_7_7")
+				(pin "2")
+				(pinfunction "Pin_2_2")
 				(pintype "passive")
 			)
 			(node
@@ -14299,8 +14299,8 @@
 			(class "Default")
 			(node
 				(ref "J601")
-				(pin "3")
-				(pinfunction "Pin_3_3")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
@@ -14321,8 +14321,8 @@
 			(class "Default")
 			(node
 				(ref "J602")
-				(pin "3")
-				(pinfunction "Pin_3_3")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
@@ -14343,8 +14343,8 @@
 			(class "Default")
 			(node
 				(ref "J603")
-				(pin "3")
-				(pinfunction "Pin_3_3")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
@@ -14365,8 +14365,8 @@
 			(class "Default")
 			(node
 				(ref "J604")
-				(pin "3")
-				(pinfunction "Pin_3_3")
+				(pin "6")
+				(pinfunction "Pin_6_6")
 				(pintype "passive")
 			)
 			(node
@@ -14531,26 +14531,26 @@
 			(class "Default")
 			(node
 				(ref "J601")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive")
 			)
 			(node
 				(ref "J602")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive")
 			)
 			(node
 				(ref "J603")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive")
 			)
 			(node
 				(ref "J604")
-				(pin "5")
-				(pinfunction "Pin_5_5")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive")
 			)
 			(node
@@ -14581,26 +14581,26 @@
 			(class "Default")
 			(node
 				(ref "J601")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
 				(ref "J602")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
 				(ref "J603")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
 				(ref "J604")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "5")
+				(pinfunction "Pin_5_5")
 				(pintype "passive")
 			)
 			(node
@@ -14631,26 +14631,26 @@
 			(class "Default")
 			(node
 				(ref "J601")
-				(pin "6")
-				(pinfunction "Pin_6_6")
+				(pin "3")
+				(pinfunction "Pin_3_3")
 				(pintype "passive")
 			)
 			(node
 				(ref "J602")
-				(pin "6")
-				(pinfunction "Pin_6_6")
+				(pin "3")
+				(pinfunction "Pin_3_3")
 				(pintype "passive")
 			)
 			(node
 				(ref "J603")
-				(pin "6")
-				(pinfunction "Pin_6_6")
+				(pin "3")
+				(pinfunction "Pin_3_3")
 				(pintype "passive")
 			)
 			(node
 				(ref "J604")
-				(pin "6")
-				(pinfunction "Pin_6_6")
+				(pin "3")
+				(pinfunction "Pin_3_3")
 				(pintype "passive")
 			)
 			(node

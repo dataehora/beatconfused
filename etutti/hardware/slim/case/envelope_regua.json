@@ -1,5 +1,5 @@
 {
- "revisao": "R3SL",
+ "revisao": "R4SL",
  "quadro": "u ao longo da regua a partir da ponta ESQUERDA, v atravessado, +v para o jogador, v = 0 na linha do centro das teclas",
  "regua": {
   "comprimento": 160.0,
@@ -43,8 +43,15 @@
   "u1": 160.0,
   "largura": 16.0,
   "espessura": 1.2,
-  "furo": 14.03,
-  "raio_canto": 0.5,
+  "furo": 14.0,
+  "dogbone": {
+   "recuo": 0.25,
+   "raio": 0.6
+  },
+  "m2_escareado": {
+   "d": 4.4,
+   "angulo": 90.0
+  },
   "m2_u": [
    49.0,
    123.0

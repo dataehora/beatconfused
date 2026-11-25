@@ -1,6 +1,34 @@
-# eTutti Slim · Eletrônica (SPEC R2SL, etapa 1 — portão A)
+# eTutti Slim · Eletrônica (SPEC R4SL: bateria escolhida e etapa 2b, placa principal posicionada; base da R2SL abaixo)
 
 Atende a **SPEC R2SL §8, item 1** (refaz só o que mudou desde a R1SL / PR #210). Nada é colocado, roteado, cotado ou comprado. Independente da V4.
+
+## 0. R4SL — bateria escolhida (item 9) e Etapa 2b
+
+### 0.1 A bateria: **VARTA 1/LPP 523450 S PCM W, VKB 56457 201 016** (consulta de 25 nov 2026; nada comprado)
+
+| | **523450** (56457 201 016) | 503562 (56456 201 012) | 503759 8HH (56427 201 018) | 423566 BE (56437 201 012) |
+|---|---|---|---|---|
+| Medidas do pack (C × L × E) | **34,5 × 52,0 × 5,35** (folha; STEP 34,5 × 5,36) | 35,5 × 63,5 × 5,1 | 37,5 × 60,5 × 5,4 (sem contorno na folha) | 35,5 × 67 × 4,6 |
+| Capacidade | **1000 mAh** (cabeçalho) × 1320 mín./1400 típ. (tabela): **contradição, usei 1000** | 1200 mAh típ. | 1400 mAh | 1160 mAh |
+| PCM / NTC / saída | PCM; **NTC 10 kΩ ±1 %, B 3380**; **3 fios AWG24 soltos** (+ vermelho, NTC branco, − preto) | PCM; NTC 10 kΩ B 3380; folha diz “wires **with connector**” | PCM; NTC 10 kΩ B 3380; fios | PCM; NTC não confirmado |
+| Descarga / carga | 2,0 A (PCM) / 1,98 A célula, 0 a 45 °C | 2,0 A / 1,15 A | 2,0 A | 2,0 A |
+| Distribuidor UK, código, preço, estoque | **CPC (Farnell) BT07248, £ 12,50 sem IVA (1+), £ 12,15 (3+), 2 em estoque** em 25 nov; **Farnell UK 4062501**, £ 23,08 (1+), “Available to Order”, prazo 28 semanas | **não achei** em distribuidor UK | Farnell UK 2531265: página **404** em 25 nov (não listada); só um anúncio fora do UK | CPC BT07204, £ 15,20, 1 em estoque |
+| Variante irmã | 56457 201 012 (Farnell UK 2531264): **“No Longer Manufactured”** | EasyPack 56456 701 099: snap, descontinuada | — | — |
+| STEP | **fabricante** (`fornecimento/bateria/VARTA_56457201012_LPP523450S_PCM_W.stp`, a mesma célula/PCM do 016; o CPC lista “CAD” do 016) | fabricante (J) | falta | falta |
+| Folha de dados | fabricante (`VARTA_1_LPP_523450_S_PCM_W_56457201016.pdf`, Rev 1 0819) | fabricante | Farnell 2026384 | Farnell |
+| Crescimento do case à esquerda | **+ 8,0 mm** (baia 36,0 × 60,0) | + 8,5 e baia de 71 mm: **come o pé da placa** (não cabe) | + 10,5 (R3SL) | + 8,5, baia de 74: não cabe |
+
+**Escolha: 523450 (56457 201 016).** É a **única** com folha e STEP do fabricante **e** à venda em quantidade unitária num distribuidor do Reino Unido (CPC/Farnell), com NTC de 3 fios e PCM; é a **mais curta** (52 mm): a baia de 60 mm deixa o pé da placa (y 47–68) livre para o USB-C, o P2 e o conector da bateria, e o case cresce **8,0 mm** (era 10,5 com a B3). Custo: **1000 mAh** (em vez de 1400): **~8,1 h** de autonomia; e o estoque é de **2 peças no CPC** (a Farnell tem prazo de 28 semanas): **risco de fornecimento** (a 016 e a 012 são do mesmo pack; a 012 saiu de linha). Se a folha estiver certa nos 1400 mAh da tabela, a autonomia sobe a ~11,3 h sem mudar nada. **Contradição registrada:** o cabeçalho diz 1000 mAh nominal / 3,7 Wh e a tabela 1320 mín. / 1400 típ. / 5,2 Wh; usei o valor conservador. A 503562 (1200 mAh) só serviria se o fabricante confirmar a versão sem conector e se a baia pudesse ser mais longa; **não há** oferta UK conhecida.
+
+### 0.2 Carga, NTC e autonomia da 523450
+- **Carga:** R203 = 2,2 kΩ → ICHG = 890/2200 = **0,405 A = 0,41 C** da capacidade de 1000 mAh (≤ 0,5 C: **ok**; 0,31 C da mínima de 1320). Máxima da folha 1,98 A.
+- **NTC:** 10 kΩ ±1 %, B 3380 → 28,2 kΩ a 0 °C, 10 kΩ a 25 °C, 4,9 kΩ a 45 °C, 3,6 kΩ a 50 °C (cálculo): a janela de carga da folha (0–45 °C) cai no intervalo que o BQ24075 aceita no TS; os limiares exatos do BQ24075 com β 3380 (a TI especifica o NTC 103AT) ficam para a bancada. **R259 não monta** (ela só valia para a bateria sem NTC).
+- **Autonomia (≈ 105 mA, 85 % útil):** 1000 × 0,85 / 105 ≈ **8,1 h**; 1320 mín. → ~10,7 h. **OFF ≤ 18 µA** (inalterado).
+
+### 0.3 Etapa 2b: placa principal posicionada (sem rotas)
+Planta e números em `POSICIONAMENTO.md` (seção “Placa principal”). Resumo: `pcb/posiciona_principal.py` (KiCad python) coloca as 120 peças **todas na face de baixo**; DRC sem trilhas **0 erros / 0 avisos**, paridade com o esquema **0**; 4 FFC alinhados com as caudas das réguas, **pinagem dos 4 FFC invertida no esquema (pino n = pino 9−n da régua)**, porque as bocas dos dois conectores se olham e o cabo reto mantém a posição de cada condutor.
+
+---
 
 ## 1. O que mudou e o que ficou
 

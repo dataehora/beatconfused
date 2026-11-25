@@ -110,7 +110,7 @@ def build():
     oy3 = 222
     g = ENV["grade"]
     gl = g["u1"] - g["u0"]
-    o.append(txt(10, oy3 - 14, "3. Grade FR-4 1,2 mm: %.1f x %.1f, 8 furos de %.2f (cantos R%.1f), 2 furos M2 de 2,2; sem cobre. Topo da grade a 1,3 mm da regua (separador M2)." % (gl, g["largura"], g["furo"], g["raio_canto"]), 2.0, INK, "start"))
+    o.append(txt(10, oy3 - 14, "3. Grade FR-4 1,2 mm: %.1f x %.1f, 8 furos de %.2f com dog-bone (R4SL), 2 furos M2 de 2,2 escareados D4,4 x 90 (lado das teclas); sem cobre. Topo a 1,3 mm da regua." % (gl, g["largura"], g["furo"]), 2.0, INK, "start"))
     gx = 25
     o.append(rect(gx, oy3 - g["largura"] / 2, gx + gl, oy3 + g["largura"] / 2, "#efe6d2", "#6b5a3a", 0.25))
     for uu in ENV["regua"]["u_teclas"]:
