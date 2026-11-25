@@ -34,19 +34,22 @@ HOUSING = 14.6                                      # KS-33D housing, top part
 BODY = 14.0                                         # KS-33D body = grade hole
 TAIL = 14.0                                         # beyond the first key's housing edge (SPEC 5.1)
 U_KEY1 = TAIL + HOUSING / 2                         # 21.3 -> use 21.25 so that the length is exactly 160
-TAIL_G = 3.8                                        # R10SL: the ruler grows 3.8 mm to the LEFT: room for the tail M2 pair between J1 and U9/C9 (J1 stays at the end, the keys, U9, C9, C10 keep their place)
+TAIL_G = 1.5                                        # R11SL: the ruler grows only 0.5 mm to the LEFT (keys move +0.5 along it): J1 -> U9/C9/C10 -> M2 -> key 1, see ELETRONICA.md
 U_KEY1 = 21.25 + TAIL_G
-RULER_L = 167.5 + TAIL_G                                     # R9SL: 160 + 7.5 so that the two M2 sit beyond key 8 (U_KEY1 + 7 * 18.5 + 9.25 = 160 was the R3SL length)
+M2_CLEAR = 9.65                                     # M2 axis to the key's centre: head D3.8 stops 0.45 before the KS-33D flange (edge at key -7.3), nut clear of pegs/post
+M2_ENDS = (U_KEY1 - M2_CLEAR, U_KEY1 + 7 * 18.5 + M2_CLEAR)   # R11SL: ONE M2 per end, on the axis (v = 0): 12.1 and 160.9
+GUIDE_D = 6.0                                       # centred guide (pedestal) in the base under each M2: hex pocket for the nut (4.6 across corners), 0.7 mm walls
+END_PAST = 3.0                                      # ruler end beyond the right M2 axis (the oblong slot's end + the nut's 2.3 + 0.2)
+RULER_L = M2_ENDS[1] + END_PAST                     # 163.9 (R9SL 167.5, R10SL 171.3)
 RULER_W = 15.0
 GRADE_W = 16.0
-GRADE_U0 = 6.7 - 4.0                                # R10SL: the grade now reaches the tail M2 (4.0 mm before the hole: 2.7), over J1/U9 (their parts are on the bottom face)
+GRADE_U0 = M2_ENDS[0] - 3.0                        # R11SL: the grade reaches both M2 (it is clamped by both): 9.1 ... RULER_L
 GRADE_U1 = RULER_L
 GRADE_HOLE = 14.00                                  # R4SL item 4: nominal 14.00 (+0.05 / -0.02) with DOG-BONE relief in the corners (the cutter's +-0.1 is a risk, RESTRICOES R28)
 GRADE_DOGBONE = (0.25, 0.60)                        # relief circle: centre 0.25 mm in from the corner along both edges, radius 0.60
 GRADE_CSK = None                                    # R9SL: no countersink (the M2 are beyond the keys; a pan head D3.8 x 1.6 fits under the lid)
-M2_ENDS = (6.7, 6.7, 163.0 + TAIL_G, 163.0 + TAIL_G)   # R10SL: two M2 at the tail (u 6.7: nut 4.4 mm clear of J1's courtyard, which ends at u 4.05) and two at the right end (R9SL, 4.5 from the end), each pair at v = -/+ M2_V
-M2_V_TAIL = 4.2                                     # R10SL: the tail pair is 8.4 apart (not 7.2): the corridor between the nuts for J1's five signals is then 3.8 mm wide instead of 2.6
-M2_V = 3.6                                          # nut (D4.6 across corners) stays clear of the support rails (|v| >= 6.0)
+M2_V = (0.0, 0.0)                                  # R11SL: both on the axis
+M2_SLOT = (None, 3.2)                               # R11SL: left round (near the FFC, positions the ruler); right OBLONG 2.2 x 3.2 along the ruler (absorbs the length tolerance)
 M2_D = 2.2
 PEG_DX, PEG_D, POST_D = 5.08, 1.70, 5.20            # KS-33D PCB holes (Gateron drawing "Layout of PCB")
 SENSOR_V = 4.3                                      # TMAG5253 centre, from the key centre, towards the PLAYER (the magnet side of the switch)
@@ -58,7 +61,7 @@ RAIL_W = 1.5                                        # continuous support rails u
 POST_POCKET_D, POST_BOTTOM = 5.8, 1.0               # pocket under every post of row 1 (the post reaches z 1.3): floor under the pocket >= 1.0
 FFC_H = 1.0                                         # KH-FPC0.5-H1.0SMT-8P (C3250113)
 FFC_U = 2.2                                         # connector origin (u): mouth towards -u at the ruler's left edge (stays at the end: the ruler grows to the left)
-TAIL_U = {"U9": 9.2 + TAIL_G, "C9": (6.0 + TAIL_G, -3.4), "C10": (11.6 + TAIL_G, -4.9)}   # the head parts keep their place relative to the keys
+TAIL_U = {"U9": TAIL_G + 6.2, "C9": (TAIL_G + 6.2, -3.4), "C10": (TAIL_G + 8.6, -4.9)}   # R11SL: head parts (old U9 9.2): J1 ends at u 4.05, U9 6.7 (pátio 4.45..8.95), the left guide (D6.0 at u 12.1) starts at 9.1
 SPLIT_Z = 8.0                                       # base walls end here (the main board's top face)
 
 
@@ -68,7 +71,7 @@ def ruler(r):
             "z_bottom": round(RULER_BOT[r], 3), "z_top": round(PCB_TOP[r], 3), "grade_z_bottom": round(GRADE_BOT[r], 3),
             "keys": [{"idx": r * NKEYS + k + 1, "k": k + 1, "note": NOTES[r][k], "midi": MIDI[r][k], "u": U_KEY1 + P * k,
                       "x": round(ROW_X0[r] + P * k, 3), "y": round(ROW_Y[r], 3)} for k in range(NKEYS)],
-            "m2_u": list(M2_ENDS), "m2_v": [-M2_V_TAIL, M2_V_TAIL, -M2_V, M2_V]}
+            "m2_u": list(M2_ENDS), "m2_v": list(M2_V), "m2_slot": list(M2_SLOT)}
 
 
 def contract():
@@ -77,9 +80,9 @@ def contract():
         "revisao": "R4SL", "quadro": "u ao longo da regua a partir da ponta ESQUERDA, v atravessado, +v para o jogador, v = 0 na linha do centro das teclas",
         "regua": {"comprimento": RULER_L, "largura": RULER_W, "espessura": RULER_T, "cauda_alem_da_carcaca": TAIL, "u_tecla1": U_KEY1, "passo": P,
                   "u_teclas": [U_KEY1 + P * k for k in range(NKEYS)], "furos_switch": {"poste_d": POST_D, "pino_d": PEG_D, "pino_dx": PEG_DX},
-                  "sensor_v": SENSOR_V, "cauda_g": TAIL_G, "head_u": {"U9": TAIL_U["U9"], "C9": list(TAIL_U["C9"]), "C10": list(TAIL_U["C10"])}, "m2_u": rs[0]["m2_u"], "m2_d": M2_D, "m2_v": rs[0]["m2_v"],
+                  "sensor_v": SENSOR_V, "cauda_g": TAIL_G, "u9_dx": TAIL_U["U9"] - 9.2, "guia_d": GUIDE_D, "head_u": {"U9": TAIL_U["U9"], "C9": list(TAIL_U["C9"]), "C10": list(TAIL_U["C10"])}, "m2_u": rs[0]["m2_u"], "m2_d": M2_D, "m2_v": rs[0]["m2_v"], "m2_slot": rs[0]["m2_slot"],
                   "ffc": {"u_origem": FFC_U, "v": 0.0, "boca": "-u (esquerda)", "altura": FFC_H, "saida": "-x, cabo FFC horizontal"}},
-        "grade": {"u0": GRADE_U0, "u1": GRADE_U1, "largura": GRADE_W, "espessura": GRADE_T, "furo": GRADE_HOLE, "dogbone": {"recuo": GRADE_DOGBONE[0], "raio": GRADE_DOGBONE[1]}, "m2_escareado": None, "m2_v": rs[0]["m2_v"],
+        "grade": {"u0": GRADE_U0, "u1": GRADE_U1, "largura": GRADE_W, "espessura": GRADE_T, "furo": GRADE_HOLE, "dogbone": {"recuo": GRADE_DOGBONE[0], "raio": GRADE_DOGBONE[1]}, "m2_escareado": None, "m2_v": rs[0]["m2_v"], "m2_slot": rs[0]["m2_slot"],
                   "m2_u": rs[0]["m2_u"], "m2_d": M2_D, "separador_h": SPACER_H},
         "base": {"piso": FLOOR_T, "trilhos_largura": RAIL_W, "trilhos_v": [6.0, 7.5], "bolso_poste": {"d": POST_POCKET_D, "fundo_z": POST_BOTTOM, "so_fileira": 1},
                  "regua_baixo_z": [round(z, 3) for z in RULER_BOT], "regua_topo_z": [round(z, 3) for z in PCB_TOP],

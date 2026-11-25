@@ -45,7 +45,7 @@ P2_POCKET = (LEFT + 2.0, 55.0, LEFT + 2.0 + 15.0, 64.0, 0.6)       # x0, y0, x1,
 BAY = (-96.0, -14.5, -60.0, 45.5)                           # R4SL bay x0, y0, x1, y1 (36.0 x 60.0): 34.5 x 52 battery + 0.75 each side, wires/PCM end at the back
 BATT = (34.5, 52.0, 5.35)                                    # VARTA 56457 201 016: width, length, thickness (datasheet 5.3, STEP 5.36)
 WIRE_SLOT = (-82.0, -74.0, 3.0)                             # x0, x1, z0: notch in the bay's back wall for the three wires
-POSTS = [(-55.5, -7.0), (-44.3, 8.5), (-43.8, 63.5), (-93.0, 52.0), (-75.0, 64.0)]   # R10SL: the two right-hand posts moved 3.8 mm left with the strip's edge (the rulers grew to the left)   # main-board supports (D6 from the floor to z 6.8)
+POSTS = [(-55.5, -7.0), (-42.0, 8.5), (-41.5, 63.5), (-93.0, 52.0), (-75.0, 64.0)]   # R11SL: the two right-hand posts moved 1.5 mm left with the strip's edge (the rulers grew to the left)   # main-board supports (D6 from the floor to z 6.8)
 
 # ---- the lid's top surface (SPEC 3 / conceito wave5 + sec7), independent copy
 ROWZ = [10.6, 12.6, 14.6, 17.6]
@@ -113,17 +113,20 @@ def build_base():
     outer = plan(0, 0, SPLIT)
     inner = plan(WALL, L.FLOOR_T, SPLIT)                       # the cavity: floor 1.6, walls 2.0
     base = outer.cut(inner)
-    # continuous support rails (|v| = 6.0 .. 7.5) under the long edges of every ruler, up to the ruler's bottom face
+    # R11SL: the rails (|v| = 6.0 .. 7.5) run exactly from one M2 axis to the other; at each M2 a centred GUIDE (pedestal D6.0 up to the ruler's bottom face) holds the nut in
+    # a hex pocket (4.6 across corners, 1.6 deep) and a relief D2.6 for the screw's tip. Nothing of the ruler outside the two screws touches the base (the ends hang free).
     for r in range(4):
-        x0, x1 = L.ROW_X0[r] - L.U_KEY1, L.ROW_X0[r] - L.U_KEY1 + L.RULER_L
+        x0 = L.ROW_X0[r] - L.U_KEY1
         zb = L.RULER_BOT[r]
+        xa, xb = x0 + L.M2_ENDS[0], x0 + L.M2_ENDS[1]
         for sgn in (-1, 1):
             va, vb = 6.0, 6.0 + L.RAIL_W
             ya, yb = (L.ROW_Y[r] + sgn * va, L.ROW_Y[r] + sgn * vb)
-            base = base.union(box(x0, min(ya, yb), L.FLOOR_T - 0.05, x1, max(ya, yb), zb))
-        # R10SL: the nuts of the tail M2 (v = -/+ M2_V_TAIL, u = 6.7) reach |v| 6.5: a pocket (D5.0) in the rails' inner 0.5 mm keeps the nut (4.6 across corners, 1.6 thick) clear; 1.0 mm of rail remains
-        for sgn in (-1, 1):
-            base = base.cut(cyl(x0 + L.M2_ENDS[0], L.ROW_Y[r] + sgn * L.M2_V_TAIL, L.FLOOR_T - 0.04, zb + 0.01, 5.0))
+            base = base.union(box(xa, min(ya, yb), L.FLOOR_T - 0.05, xb, max(ya, yb), zb))
+        for xg in (xa, xb):
+            base = base.union(cyl(xg, L.ROW_Y[r], L.FLOOR_T - 0.05, zb, L.GUIDE_D))
+            hexp = cq.Workplane("XY").workplane(offset=zb - 1.6).center(xg, L.ROW_Y[r]).polygon(6, 4.7).extrude(1.7)
+            base = base.cut(hexp).cut(cyl(xg, L.ROW_Y[r], L.FLOOR_T - 0.6, zb - 1.5, 2.6))
     # pockets under the posts of row 1 (the post reaches z 1.3; floor under the pocket >= 1.0)
     for r, k, x, y in key_xy():
         if r == 0:

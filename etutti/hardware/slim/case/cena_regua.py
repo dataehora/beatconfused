@@ -126,8 +126,9 @@ def ruler_board(r):
         pcb = pcb.cut(cq.Workplane("XY").workplane(offset=ri["z_bottom"] - 1).center(k["x"], k["y"]).circle(L.POST_D / 2).extrude(3))
         for sgn in (-1, 1):
             pcb = pcb.cut(cq.Workplane("XY").workplane(offset=ri["z_bottom"] - 1).center(k["x"] + sgn * L.PEG_DX, k["y"]).circle(L.PEG_D / 2).extrude(3))
-    for u, v in zip(ri["m2_u"], ri["m2_v"]):
-        pcb = pcb.cut(cq.Workplane("XY").workplane(offset=ri["z_bottom"] - 1).center(x0 + u, y0 + v).circle(L.M2_D / 2).extrude(3))
+    for u, v, sl in zip(ri["m2_u"], ri["m2_v"], ENV["regua"]["m2_slot"]):
+        hole = cq.Workplane("XY").workplane(offset=ri["z_bottom"] - 1).center(x0 + u, y0 + v)
+        pcb = pcb.cut(hole.slot2D(sl, L.M2_D).extrude(3) if sl else hole.circle(L.M2_D / 2).extrude(3))
     return pcb
 
 
@@ -141,8 +142,9 @@ def grade_board(r):
         for sx in (-1, 1):
             for sy in (-1, 1):
                 g = g.cut(cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(k["x"] + sx * (L.GRADE_HOLE / 2 - L.GRADE_DOGBONE[0]), k["y"] + sy * (L.GRADE_HOLE / 2 - L.GRADE_DOGBONE[0])).circle(L.GRADE_DOGBONE[1]).extrude(4))
-    for u, v in zip(ri["m2_u"], ri["m2_v"]):
-        g = g.cut(cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(ri["x_left"] + u, ri["y"] + v).circle(L.M2_D / 2).extrude(4))
+    for u, v, sl in zip(ri["m2_u"], ri["m2_v"], ENV["regua"]["m2_slot"]):
+        hole = cq.Workplane("XY").workplane(offset=ri["grade_z_bottom"] - 1).center(ri["x_left"] + u, ri["y"] + v)
+        g = g.cut(hole.slot2D(sl, L.M2_D).extrude(4) if sl else hole.circle(L.M2_D / 2).extrude(4))
     return g
 
 

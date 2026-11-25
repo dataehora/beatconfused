@@ -19,7 +19,8 @@ The router then gets: DATA, CLK, LATCH, OUT (J1.3 -> the OUT bus start), +3V3 (J
 """
 import os
 import json as _j, os as _o
-TAILG = _j.load(open(_o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "case", "envelope_regua.json"), encoding="utf-8"))["regua"]["cauda_g"]   # R10SL: tail growth (the head parts keep their place relative to the keys)
+TAILG = _j.load(open(_o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "case", "envelope_regua.json"), encoding="utf-8"))["regua"]["cauda_g"]   # R11SL: keys move +0.5 along the ruler
+U9DX = _j.load(open(_o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "case", "envelope_regua.json"), encoding="utf-8"))["regua"]["u9_dx"]   # R11SL: U9 moved -2.5 (the guide + M2 sit between U9 and key 1)
 
 import pcbnew
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -29,7 +30,7 @@ W, WL = 0.2, 0.15
 VDIA, VDR = 0.5, 0.3
 Y3, YO = 33.11, 35.30
 LANE0, LANEP = 35.05, 0.30
-XL = 36.5 + TAILG                      # lane start
+XL = 36.5 + U9DX                      # lane start
 SRC = os.path.join(HERE, "kicad", "base", "slim_regua.kicad_pcb")
 DST = os.path.join(HERE, "kicad", "fixo.kicad_pcb")
 b = pcbnew.LoadBoard(SRC)
@@ -74,8 +75,8 @@ for k in range(1, 9):
     tr("GND", [(x, 34.3), (x, 33.65)])
     via("GND", x, 33.65)
 # buses
-tr("+3V3", [(36.0 + TAILG, Y3), (xs[7] - 1.52, Y3)])
-tr("OUT", [(36.0 + TAILG, YO), (xs[7] - 0.7, YO)])
+tr("+3V3", [(36.0 + U9DX, Y3), (xs[7] - 1.52, Y3)])
+tr("OUT", [(36.0 + U9DX, YO), (xs[7] - 0.7, YO)])
 # lanes: EN_j passes sensors 1 .. j-1; its end is the stub of sensor j
 def jog(pts, x, k, j):
     """lane j climbs one step (0.30) before sensor k; the jogs of lane j are at x - 4.6 + 0.5 j, so adjacent lanes never run their 45-degree pieces side by side."""
@@ -106,22 +107,22 @@ for j, vy in stair.items():
     tr(en, [(px, vy), (px, ly), (XL, ly)], F, WL)
 # EN2
 px, py = pad["1"]
-tr("EN2", [(px, py), (31.7 + TAILG, py)])
-via("EN2", 31.7 + TAILG, py)
-tr("EN2", [(31.7 + TAILG, py), (31.7 + TAILG, lane_y(1, 2)), (XL, lane_y(1, 2))], F, WL)
+tr("EN2", [(px, py), ((29.0 + U9DX + 2.5), py)])
+via("EN2", (29.0 + U9DX + 2.5), py)
+tr("EN2", [((29.0 + U9DX + 2.5), py), ((29.0 + U9DX + 2.5), lane_y(1, 2)), (XL, lane_y(1, 2))], F, WL)
 # EN1
 px, py = pad["15"]
-tr("EN1", [(px, py), (32.5 + TAILG, py)])
-via("EN1", 32.5 + TAILG, py)
-tr("EN1", [(32.5 + TAILG, py), (32.5 + TAILG, lane_y(1, 1)), (xs[0] + 1.4, lane_y(1, 1))], F, WL)
+tr("EN1", [(px, py), ((29.5 + U9DX + 2.5), py)])
+via("EN1", (29.5 + U9DX + 2.5), py)
+tr("EN1", [((29.5 + U9DX + 2.5), py), ((29.5 + U9DX + 2.5), lane_y(1, 1)), (xs[0] + 1.4, lane_y(1, 1))], F, WL)
 # J1 GND pads 7 and 8 (the two on the top of the connector, 0.5 mm pitch): one via east of them, reserved before the router runs (otherwise the other head nets wall them in)
 jp = {}
 for fp in b.GetFootprints():
     if fp.GetReference() == "J1":
         for p in fp.Pads():
             jp[p.GetNumber()] = (pcbnew.ToMM(p.GetX()), pcbnew.ToMM(p.GetY()))
-tr("GND", [jp["8"], (24.7, 28.65)])
-tr("GND", [jp["7"], (24.7, 28.65)])
-via("GND", 24.7, 28.65)
+tr("GND", [jp["8"], (24.55, 28.5)])
+tr("GND", [jp["7"], (24.55, 28.5)])
+via("GND", 24.55, 28.5)
 pcbnew.SaveBoard(DST, b)
 print("fixo.kicad_pcb escrito")

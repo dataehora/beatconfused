@@ -10,43 +10,43 @@
     -9.0
    ],
    [
-    -40.1,
+    -37.8,
     -9.0
    ],
    [
-    -40.1,
+    -37.8,
     -5.5
    ],
    [
-    -30.55,
+    -28.25,
     -5.5
    ],
    [
-    -30.55,
+    -28.25,
     5.5
    ],
    [
-    -40.1,
+    -37.8,
     5.5
    ],
    [
-    -40.1,
+    -37.8,
     26.543
    ],
    [
-    -30.55,
+    -28.25,
     26.543
    ],
    [
-    -30.55,
+    -28.25,
     37.543
    ],
    [
-    -40.1,
+    -37.8,
     37.543
    ],
    [
-    -40.1,
+    -37.8,
     68.1
    ],
    [
@@ -69,7 +69,7 @@
   "faixa": {
    "x": [
     -58.5,
-    -40.099999999999994
+    -37.8
    ],
    "y": [
     -9.0,
@@ -87,7 +87,7 @@
    ]
   },
   "abas_ffc": {
-   "x_ate": -30.55,
+   "x_ate": -28.25,
    "meia_largura": 5.5,
    "fileiras": [
     1,
@@ -121,11 +121,11 @@
     -7.0
    ],
    [
-    -44.3,
+    -42.0,
     8.5
    ],
    [
-    -43.8,
+    -41.5,
     63.5
    ],
    [
@@ -218,9 +218,9 @@
    "fileira": 1,
    "ref": "J601",
    "y": 0.0,
-   "x_borda_placa": -30.55,
+   "x_borda_placa": -28.25,
    "boca": "+x",
-   "x_regua_esquerda": -25.05,
+   "x_regua_esquerda": -22.75,
    "folga_horizontal_mm": 5.5,
    "z_regua_baixo": 3.8,
    "dz_ate_placa_mm": -3.0
@@ -229,9 +229,9 @@
    "fileira": 2,
    "ref": "J602",
    "y": 16.021,
-   "x_borda_placa": -40.099999999999994,
+   "x_borda_placa": -37.8,
    "boca": "+x",
-   "x_regua_esquerda": -34.3,
+   "x_regua_esquerda": -32.0,
    "folga_horizontal_mm": 5.8,
    "z_regua_baixo": 5.8,
    "dz_ate_placa_mm": -1.0
@@ -240,9 +240,9 @@
    "fileira": 3,
    "ref": "J603",
    "y": 32.043,
-   "x_borda_placa": -30.55,
+   "x_borda_placa": -28.25,
    "boca": "+x",
-   "x_regua_esquerda": -25.05,
+   "x_regua_esquerda": -22.75,
    "folga_horizontal_mm": 5.5,
    "z_regua_baixo": 7.8,
    "dz_ate_placa_mm": 1.0
@@ -251,9 +251,9 @@
    "fileira": 4,
    "ref": "J604",
    "y": 48.064,
-   "x_borda_placa": -40.099999999999994,
+   "x_borda_placa": -37.8,
    "boca": "+x",
-   "x_regua_esquerda": -34.3,
+   "x_regua_esquerda": -32.0,
    "folga_horizontal_mm": 5.8,
    "z_regua_baixo": 10.8,
    "dz_ate_placa_mm": 4.0

@@ -1,26 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1238 1090" width="1238" height="1090" font-family="Arial,sans-serif">
 <rect width="1238" height="1090" fill="#fff"/>
-<text x="20.0" y="20.0" font-size="14" fill="#1d1d1f" text-anchor="start" >eTutti Slim - placa principal (SPEC R4SL, Etapa 2b): posicionamento SEM rotas. Vista de CIMA (frente/jogador embaixo, y para tras); pecas na face de baixo; mm.</text>
+<text x="20.0" y="20.0" font-size="14" fill="#1d1d1f" text-anchor="start" >eTutti Slim - placa principal (SPEC R11SL): posicionamento SEM rotas. Vista de CIMA (frente/jogador embaixo, y para tras); pecas na face de baixo; mm.</text>
 <rect x="64.0" y="77.4" width="836.0" height="936.1" fill="none" stroke="#bbbbbb" stroke-width="1.0" stroke-dasharray="6 3"/>
 <rect x="64.0" y="331.5" width="396.0" height="660.0" fill="#f2f2f2" stroke="#8b8b8b" stroke-width="1.0" stroke-dasharray="4 3"/>
 <text x="70.0" y="683.5" font-size="11" fill="#8b8b8b" text-anchor="start" >baia da bateria VARTA 56457 201 016 (34,5 x 52,0 x 5,35): 36.0 x 60.0</text>
-<rect x="844.5" y="749.5" width="99.0" height="165.0" fill="#eaf3e6" stroke="#2f6b3a" stroke-width="1.0"/>
-<text x="846.5" y="836.0" font-size="10" fill="#2f6b3a" text-anchor="start" >regua 1</text>
-<rect x="742.7" y="573.3" width="99.0" height="165.0" fill="#eaf3e6" stroke="#2f6b3a" stroke-width="1.0"/>
-<text x="744.7" y="659.8" font-size="10" fill="#2f6b3a" text-anchor="start" >regua 2</text>
-<rect x="844.5" y="397.0" width="99.0" height="165.0" fill="#eaf3e6" stroke="#2f6b3a" stroke-width="1.0"/>
-<text x="846.5" y="483.5" font-size="10" fill="#2f6b3a" text-anchor="start" >regua 3</text>
-<rect x="742.7" y="220.8" width="99.0" height="165.0" fill="#eaf3e6" stroke="#2f6b3a" stroke-width="1.0"/>
-<text x="744.7" y="307.3" font-size="10" fill="#2f6b3a" text-anchor="start" >regua 4</text>
+<rect x="869.8" y="749.5" width="99.0" height="165.0" fill="#eaf3e6" stroke="#2f6b3a" stroke-width="1.0"/>
+<text x="871.8" y="836.0" font-size="10" fill="#2f6b3a" text-anchor="start" >regua 1</text>
+<rect x="768.0" y="573.3" width="99.0" height="165.0" fill="#eaf3e6" stroke="#2f6b3a" stroke-width="1.0"/>
+<text x="770.0" y="659.8" font-size="10" fill="#2f6b3a" text-anchor="start" >regua 2</text>
+<rect x="869.8" y="397.0" width="99.0" height="165.0" fill="#eaf3e6" stroke="#2f6b3a" stroke-width="1.0"/>
+<text x="871.8" y="483.5" font-size="10" fill="#2f6b3a" text-anchor="start" >regua 3</text>
+<rect x="768.0" y="220.8" width="99.0" height="165.0" fill="#eaf3e6" stroke="#2f6b3a" stroke-width="1.0"/>
+<text x="770.0" y="307.3" font-size="10" fill="#2f6b3a" text-anchor="start" >regua 4</text>
 <polygon points="476.5,931.0 720.7,931.0 720.7,892.5 825.8,892.5 825.8,771.5 720.7,771.5 720.7,540.0 825.8,540.0 825.8,419.0 720.7,419.0 720.7,82.9 99.2,82.9 66.2,113.7 66.2,315.0 476.5,315.0" fill="#f1f7ec" stroke="#2f6b3a" stroke-width="2"/>
 <rect x="506.8" y="375.5" width="187.0" height="187.0" fill="none" stroke="#b3261e" stroke-width="1.2" stroke-dasharray="5 3"/>
 <text x="509.8" y="371.5" font-size="10" fill="#b3261e" text-anchor="start" >zona de escape do BGA (2,5 mm)</text>
 <circle cx="509.5" cy="909.0" r="33.0" fill="none" stroke="#7a5a2a" stroke-width="1.0" stroke-dasharray="3 2"/>
 <circle cx="509.5" cy="909.0" r="12.1" fill="#fff" stroke="#7a5a2a" stroke-width="1.2"/>
-<circle cx="632.7" cy="738.5" r="33.0" fill="none" stroke="#7a5a2a" stroke-width="1.0" stroke-dasharray="3 2"/>
-<circle cx="632.7" cy="738.5" r="12.1" fill="#fff" stroke="#7a5a2a" stroke-width="1.2"/>
-<circle cx="638.2" cy="133.5" r="33.0" fill="none" stroke="#7a5a2a" stroke-width="1.0" stroke-dasharray="3 2"/>
-<circle cx="638.2" cy="133.5" r="12.1" fill="#fff" stroke="#7a5a2a" stroke-width="1.2"/>
+<circle cx="658.0" cy="738.5" r="33.0" fill="none" stroke="#7a5a2a" stroke-width="1.0" stroke-dasharray="3 2"/>
+<circle cx="658.0" cy="738.5" r="12.1" fill="#fff" stroke="#7a5a2a" stroke-width="1.2"/>
+<circle cx="663.5" cy="133.5" r="33.0" fill="none" stroke="#7a5a2a" stroke-width="1.0" stroke-dasharray="3 2"/>
+<circle cx="663.5" cy="133.5" r="12.1" fill="#fff" stroke="#7a5a2a" stroke-width="1.2"/>
 <circle cx="97.0" cy="260.0" r="33.0" fill="none" stroke="#7a5a2a" stroke-width="1.0" stroke-dasharray="3 2"/>
 <circle cx="97.0" cy="260.0" r="12.1" fill="#fff" stroke="#7a5a2a" stroke-width="1.2"/>
 <circle cx="295.0" cy="128.0" r="33.0" fill="none" stroke="#7a5a2a" stroke-width="1.0" stroke-dasharray="3 2"/>
@@ -792,16 +792,16 @@
 <text x="558.0" y="362.3" font-size="9" fill="#000" text-anchor="middle" font-weight="bold">U403</text>
 <text x="633.1" y="598.8" font-size="9" fill="#000" text-anchor="middle" font-weight="bold">Y101</text>
 <text x="559.8" y="596.5" font-size="9" fill="#000" text-anchor="middle" font-weight="bold">Y102</text>
-<line x1="476.5" y1="964.0" x2="678.9" y2="964.0" stroke="#1f5fa8" stroke-width="1.0"/>
-<text x="577.7" y="978.0" font-size="10" fill="#1f5fa8" text-anchor="middle" >faixa 18.4</text>
+<line x1="476.5" y1="964.0" x2="704.2" y2="964.0" stroke="#1f5fa8" stroke-width="1.0"/>
+<text x="590.4" y="978.0" font-size="10" fill="#1f5fa8" text-anchor="middle" >faixa 20.7</text>
 <line x1="66.2" y1="58.7" x2="825.8" y2="58.7" stroke="#1f5fa8" stroke-width="1.0"/>
 <text x="446.0" y="53.7" font-size="10" fill="#1f5fa8" text-anchor="middle" >comprimento 69.0 (x -95.8 ... -26.8)</text>
 <line x1="858.8" y1="931.0" x2="858.8" y2="82.9" stroke="#1f5fa8" stroke-width="1.0"/>
 <text x="864.8" y="507.0" font-size="10" fill="#1f5fa8" text-anchor="start" >altura 77.1 (y -9.0 ... 68.1)</text>
-<text x="788.0" y="785.8" font-size="9" fill="#1f5fa8" text-anchor="start" >FFC 1: folga 5.5</text>
-<text x="682.9" y="609.6" font-size="9" fill="#1f5fa8" text-anchor="start" >FFC 2: folga 5.8</text>
-<text x="788.0" y="433.3" font-size="9" fill="#1f5fa8" text-anchor="start" >FFC 3: folga 5.5</text>
-<text x="682.9" y="257.1" font-size="9" fill="#1f5fa8" text-anchor="start" >FFC 4: folga 5.8</text>
+<text x="813.2" y="785.8" font-size="9" fill="#1f5fa8" text-anchor="start" >FFC 1: folga 5.5</text>
+<text x="708.2" y="609.6" font-size="9" fill="#1f5fa8" text-anchor="start" >FFC 2: folga 5.8</text>
+<text x="813.2" y="433.3" font-size="9" fill="#1f5fa8" text-anchor="start" >FFC 3: folga 5.5</text>
+<text x="708.2" y="257.1" font-size="9" fill="#1f5fa8" text-anchor="start" >FFC 4: folga 5.8</text>
 <rect x="898.0" y="60.0" width="14" height="14" fill="#cfe3f7" stroke="#444"/>
 <text x="918.0" y="72.0" font-size="11" fill="#1d1d1f" text-anchor="start" >Processador (RT1062, flash, boot, cristais)</text>
 <rect x="898.0" y="82.0" width="14" height="14" fill="#f7d9c4" stroke="#444"/>
