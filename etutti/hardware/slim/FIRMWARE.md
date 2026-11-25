@@ -61,3 +61,42 @@ Refeito `check_placa.py` depois do LED na face de cima: **21/21 pinos** na bola 
 ## R6SL — LED e pico de consumo
 
 LED do anel: 0805 bicolor vermelho/verde-amarelo, **mesmos pinos: 13 (LED_R, D8) e 5 (LED_G, H3)**, mesma polaridade (ânodos nos pinos, cátodos em GND); `check_placa.py` 21/21 depois do reposicionamento. Pico de consumo para a BAK: ~250 mA a 3,3 V, ~325 mA na bateria (< 475 mA, 68 %); autonomia com a BAK ~7,7 h.
+
+## R8SL — portão F-1: o instrumento completo (26 nov 2026)
+
+Sketch `etutti/firmware/slim/slim.ino`, uma só fonte, **duas versões**. O motor de som foi **copiado** do `etutti_synth` (que continua congelado).
+
+| Versão | Para quê | Compilar |
+|---|---|---|
+| **Produção** | Slim: RT1062 chip-down = Teensy 4.1 | `arduino-cli compile --fqbn teensy:avr:teensy41:usb=midi,speed=396 etutti/firmware/slim` |
+| **Bancada** (`SLIM_BANCADA`, liga sozinho no `teensy40`) | Teensy 4.0 do J + Audio Board Rev D, sem placa Slim | `arduino-cli compile --fqbn teensy:avr:teensy40:usb=midi,speed=396 etutti/firmware/slim` (força: `-DSLIM_BANCADA=0/1`) |
+| Medição (temporária) | CPU/memória/pico na serial | cópia da pasta com `#define SLIM_BENCH_PRINT 1` na primeira linha, `usb=serialmidi`, lida em `COM3` por `System.IO.Ports.SerialPort` |
+
+Gravar: `arduino-cli upload -p <porta de board list> --fqbn ...` (depois do upload a Teensy fica 10-20 s no bootloader, `PID_0478`, e volta como `VID_16C0&PID_0485` "eTutti").
+
+### O que foi feito
+1. **Som:** acordeão com **palhetas amostradas** (`ReedSampler`, 4 ranks, 8 vozes; `reed_sampler.h` copiado), velocidade = pressão do fole (`accordionLevel` 24 dB + `accordionBrightness` com passa-baixas 700 Hz-16 kHz), envoltória de fole (ataque 24 ms, soltura 82 ms), reverb leve. **Registros** na ordem do knob (SPEC 4) com os nomes do J: 1 L Bassoon, 2 LM **Bandoneon**, 3 M **Clarinet**, 4 MM **Violin**, 5 MH **Oboe**, 6 LH **Organ**, 7 H **Piccolo** (máscara CC 26: 1 = 16', 2 = 8' M1, 4 = 8' M2, 8 = 4'). **As amostras (`reed_samples.cpp/.h`, licenciadas) estão em `etutti/firmware/slim/.gitignore`** (confirmado com `git check-ignore`); sem elas o mesmo sketch compila com as tabelas sintetizadas (compilado e conferido: 7,8 KB de dados em vez de 1,2 MB).
+2. **Teclado:** varredura das 4 réguas (595 + TMAG5253, OUT_R1..R4) como na R3SL; nota ligada em 45 %, desligada em 30 %, velocity logarítmica; repouso medido na partida (16 quadros) e **fundo aprendido por tecla, guardado na EEPROM** (gravação só 5 s depois de parar de tocar; CC 14 recalibra). Linha 4 repete notas da 1: `noteHolders` (a nota só começa na primeira tecla e só para na última). Sem placa não foi exercitado.
+3. **Knobs (TMAG5273 0x35 / 0x22):** 7 posições a 45° com **histerese** (8°), zona morta entre 7 e 1 mantém a última, **posição guardada na EEPROM** (vale na partida); volume contínuo (filtro de 1 polo, `codec.volume`, CC 7); chave Hall (pino 25) + latch SET/KILL; desligamento automático (15 min sem uso, ou bateria < 3,3 V por 5 s, só sem USB). Sensor que não responde: nada trava, é tentado de novo a cada 1 s e o LED fica vermelho rápido. Ângulos de referência (`REG_A0`, `VOL_A_*`) seguem **provisórios** (dependem de como o chip fica na placa).
+4. **LED em ânodo comum (R7SL):** pinos 13 (R) e 5 (G) **ligam em nível BAIXO**, apagam em ALTO; pino solto (reset, alta impedância) = apagado, porque o ânodo está no +3V3 e não há caminho ao GND. Estados: verde breve a cada 2 s (ligado, parado), verde (tocando), laranja (lendo as teclas ≥ 0,6 s e **carregando**), vermelho lento (**bateria baixa**), vermelho rápido (**erro de sensor**: codec, régua ou knob mudos).
+5. **USB:** MIDI "eTutti" (`name.c`) e **Full Speed forçado**. **Achado:** o gancho da V4 (`USB1_PORTSC1 |= PFSC` em `startup_late_hook`) **não funciona** no core 1.62: o gancho roda 300 ms depois do `usb_init()`, o host já enumerou em High Speed (medido na bancada: PSPD = 2). O Slim faz um **desconectar suave** (RS = 0, PFSC, 60 ms, RS = 1): o host enumera de novo, agora a 12 Mbit/s (medido: PSPD = 0, "eTutti" estável). A V4 deveria ganhar a mesma correção (fora do escopo).
+6. **Bancada:** troca varredura, knobs e energia por simulados: um padrão automático percorre os **7 registros e um 8º segmento com os 4 ranks juntos** (7 s cada: arpejo de 4 notas, velocity 30-127, depois 8 notas ao mesmo tempo), manda os mesmos Note On/Off e CC 26 pela USB, e também toca o Note On que chegar por MIDI (CC 7 = volume; volume fixo de 0,35 por segurança). Sensores ausentes, bateria e latch não são lidos nem pulsados.
+
+### Medido no Teensy 4.0 do J (396 MHz, amostras reais, `usb=serialmidi` com `SLIM_BENCH_PRINT`)
+- **Som:** cada um dos 7 registros e o segmento "4 ranks" saíram no mixer final (`AudioAnalyzePeak`, pico por segundo): L 0,13, LM 0,18, M 0,16, MM 0,16, MH 0,17, LH 0,19, H 0,12, 4 ranks 0,21 (escala 1,0; margem ampla, sem clip). Pelo fone **não ouvi** (sem ouvido aqui): o que está confirmado é o sinal no mixer, o codec respondendo (`codecOk`) e a enumeração; **J: ouvir os 7 registros no fone**.
+- **CPU de áudio (`AudioProcessorUsageMax`, 396 MHz):** 8 notas, registros de 1-2 ranks: **13-19 %**; **pior caso (8 notas, 4 ranks): 29,8 %** (a 600 MHz ficaria ~20 %). Antes do reverb e do bellows serem iguais aos da eTuttino (12 %/20 % a 600 MHz): confere.
+- **Blocos de áudio:** pico **8** de 60 reservados (`AudioMemory(60)`; podem baixar para ~24).
+- **Memória (relatório do compilador):** produção Teensy 4.1: flash código 78,7 KB + dados 1,21 MB (as amostras), RAM1 61,9 KB de variáveis (+75 KB de código), RAM2 22,4 KB; livre para arquivos 6,8 MB. Bancada Teensy 4.0: código 72,6 KB + dados 1,21 MB, RAM1 60,0 KB, RAM2 22,4 KB.
+- **USB:** Full Speed (PSPD 0), enumera como "eTutti" (MIDI), estável.
+
+### Checks (portão F-1)
+`check_pins.py` 15/15, `check_teclas.py` 32/32, `check_placa.py` 21/21: **passaram** (os dois últimos leram `posicao_principal.json` atual). Ambas as versões compilam sem avisos (produção 4.1 e bancada 4.0; mais a de produção sem as amostras).
+
+### Desvios e limites
+- Velocidade de produção compilada a **396 MHz** (a conta de consumo da R2SL usa isso); 600 MHz só se a CPU pedir.
+- O código real de varredura, knobs, latch, LED de carga/bateria e EEPROM das teclas **compila mas não rodou** (a placa não existe); na bancada só rodam som, USB, LED (pino 13 da 4.0 é o LED da placa, com lógica invertida) e registros simulados.
+- Não há tom/instrumentos extras nem tremolo (CC 27) no Slim: só o acordeão clássico seco; a página `/etutti/` ainda não conhece o Slim.
+- A Teensy do J ficou gravada com a **bancada usb=midi** (versão final).
+
+### Perguntas para o design
+Nenhuma nova. Para a eletrônica: confirmar que o LED fica apagado com os dois pinos em alta impedância (ânodo no +3V3 e só os cátodos nos pinos), e o nível do pino 25 na partida por USB.
