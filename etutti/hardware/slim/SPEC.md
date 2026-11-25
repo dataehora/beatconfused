@@ -1,4 +1,31 @@
-# eTutti Slim — SPEC R3SL
+# eTutti Slim — SPEC R4SL
+
+## Mudanças desde a R3SL (25 nov 2026)
+
+Resposta do J à Etapa 2a (PR #215). **Portão B da régua aprovado, com uma condição:** provar em corte o apoio contínuo das réguas (item 1). Começa a **Etapa 2b: posicionamento da placa principal**.
+
+1. **Apoio das réguas (condição do portão B):** a cena 3D mostra as caudas sobre duas "pernas" com vão embaixo. A regra é **base sólida, apoio contínuo em todo o comprimento, o mesmo tipo de apoio nas 4 fileiras, sem furos no piso**. O Design mostra **um corte longitudinal por fileira**, de ponta a ponta (cauda incluída). Se houver vão, corrige.
+2. **Folga axial dos registros 0,8 mm:** aceita (pele de PA12 de 0,5 sobre o ímã Ø6 × 2,5).
+3. **Plataforma dos knobs no tampo inclinado (7,1°):** cortes das três soluções, para o J decidir, **de preferência com o ímã sem inclinação**:
+   - **S1** — disco plano de Ø26 (hoje): 2,6 mm acima do tampo na frente e 0,6 abaixo atrás;
+   - **S2 (preferida)** — a plataforma segue a inclinação (tampo + 1,0); **eixo do knob vertical, ímã horizontal**; topo do knob plano e horizontal (tem de ser simétrico, senão parece bambolear ao girar); fundo do poço horizontal, mais fundo atrás que na frente;
+   - **S3** — eixo perpendicular ao tampo (ímã inclinado 7,1°), só como referência, com o erro de ângulo estimado no sensor.
+   Vale para os dois knobs (registros e volume). O modelo oficial segue a S2 até o J decidir, salvo impedimento.
+4. **Furo da grade: 14,00 nominal com alívio nos cantos** (dog‑bone, como nas placas de teclado). A tolerância da fresa (±0,1) entra como risco no `RESTRICOES_CASE.md`.
+5. **Painel régua + grade:** fica para a fase de cotação (que só começa quando o J mandar).
+6. **Parafuso M2 da régua: escareado, rente à grade** (grade escareada, como na V3).
+7. **Orientação das switches confirmada:** ímã/sensor para o jogador, guia de luz para trás.
+8. **Comprimento do FFC:** decidido nesta etapa (2b), com a placa principal posicionada.
+9. **Bateria = B2 com fios: VARTA 1/LPP 503562 S PCM W, VKB 56456 201 012** (o J achou à venda e mandou os arquivos). 1200 mAh nominal (1150 mín.), PCM, **NTC 10 k (B 3380)**, 3 fios AWG24 UL1007 (vermelho +, branco NTC, preto −), ~23 g, carga máx. 1150 mA, descarga máx. 2 A. Pack 63,5 × 35,5 × ~5,1 mm (STEP). Arquivos em `fornecimento/bateria/` (STEP + folha de dados). **Sai a B3.** O case volta a crescer só o necessário para a B2 (≈ +8,5 mm à esquerda; o Code recalcula). O aviso "MOQ 600, só OEM" da folha da VARTA vale para pedido direto à fábrica; distribuidores vendem avulso. Alternativa registrada: B3 = VKB 56427 201 018 (Farnell 2531265).
+10. **Estudo do botão (novo), para projetar e comprar.** Pela leitura do STEP da KS‑33D: a haste tem uma **cruz macho tipo MX** (braços de 4,0 mm, largura ≈1,1 mm, ≈3,3 mm de altura) dentro de um **poço redondo de Ø5,67**. O botão precisa de um **pino redondo de Ø ≤ 5,5 com soquete em cruz fêmea** e encaixe firme. O estudo define:
+    - encaixe na cruz: medidas do soquete e interferência por processo (MJF PA12, resina SLA), retenção e desmontagem;
+    - diâmetros do pino, da cabeça e da saia;
+    - **folga radial para o furo do tampo** (hoje Ø16, rebaixo Ø17) com o curso de 3,5 mm sem raspar, inclusive com o botão inclinado pela folga da haste;
+    - altura da cabeça (fileira por fileira, com o case);
+    - processo, material, acabamento e onde encomendar (sem cotação);
+    - STEP do botão e corte cotado com a switch e o tampo. Medidas conferidas contra o desenho da Gateron.
+
+---
 
 ## Mudanças desde a R2SL (25 nov 2026)
 
@@ -156,7 +183,7 @@ Regra: **qualquer item que mude o lado de fora do case** (contorno, altura, pare
   Desenho: `conceito/img/knobs7.svg`.
 - **LED:** bicolor (verde/vermelho, laranja pela mistura), montagem reversa na face de baixo, aceso num **anel leitoso** em volta do knob de volume: peça separada no tampo, Ø23,2/Ø20,8 × 1,5, resina SLA ou acrílico (R3SL). Estados do V4: verde tocando, verde breve a cada 2 s em repouso, laranja ao ler as teclas na partida e carregando, vermelho lento bateria baixa, vermelho rápido codec ou régua sem resposta.
 - **Bateria:** baia própria na frente‑esquerda.
-  - **Escolhida (R3SL): B3, LPP 503759 8HH**, 1400 mAh típico, PCM e NTC 10 k (B 3380), 3 fios; Farnell 56427 201 018. Medidas do pack no `RESTRICOES_CASE.md` (R07/R08). **Case +10,5 mm à esquerda.** Plugue JST SH 3 vias por rabicho crimpado emendado aos fios. Nada é comprado; o J manda o STEP quando tiver (até lá, caixa com as medidas máximas da folha de dados).
+  - **Escolhida (R4SL): B2 com fios, VARTA 1/LPP 503562 S PCM W (VKB 56456 201 012)**, 1200 mAh, PCM, NTC 10 k (B 3380), 3 fios; pack 63,5 × 35,5 × ~5,1 mm; STEP e folha de dados em `fornecimento/bateria/`. Case ≈ +8,5 mm à esquerda (o Code recalcula). Corrente de carga do BQ24075 ≤ 0,5 C (≤ 575 mA). Plugue JST SH 3 vias por rabicho crimpado emendado aos fios. Nada é comprado.
 - **Conectores (aprovados):**
   - **USB‑C** na **parede de trás**, centro em x = −66 (24 mm da parede esquerda; se o case crescer para a esquerda pela bateria, a distância à quina cresce junto).
   - **P2 3,5 mm OUT** na **parede esquerda**, centro em y = 59,5 (11 mm da parede de trás).
@@ -207,21 +234,27 @@ Sempre modelos realistas e detalhados. O que faltar vai para o `FIT_CHECK.md` pa
 | TMAG5273, DRV5032ZE, ímãs Ø6 × 2,5 | ◐ chips pelo EasyEDA; ímãs = cilindros pelas medidas |
 | JST SH 3 vias | ✖ falta (o Code busca no EasyEDA) |
 | Anel leitoso do LED | desenho próprio (Design) |
-| Bateria B3 (LPP 503759 8HH) | ✖ falta: o J manda; até lá, caixa com as medidas máximas da folha de dados |
+| Bateria B2 VARTA 56456 201 012 | ✔ `fornecimento/bateria/` (fornecido pelo J) |
 | MKL02 | ✖ sem STEP público: caixa QFN‑16 3 × 3 pelo desenho da NXP |
 | Demais peças JLCPCB | ✔ EasyEDA (`modelos/baixados/`, fora do Git) |
 | Pot com chave, SRBV | — saíram do projeto na R2SL |
 
-## 8. Tarefa da R3SL: Etapa 2a, posicionamento da régua R8 (+ grade)
+## 8. Tarefa da R4SL: fechar a régua e Etapa 2b (placa principal)
 
-A placa principal (2b) **não** é posicionada nesta sessão.
-
-1. **[Design]** Aplicar as decisões da R3SL no modelo do case e no `RESTRICOES_CASE.md`: case +10,5 mm à esquerda (B3), bolso de 0,6 mm sob o P2, plataforma dos registros +1,0 mm, anel leitoso, retenção pela haste, OFF às 7h30. Entregar à eletrônica o **envelope da régua**: apoio contínuo da base (mesmo tipo nas 4 fileiras, sem furos no piso), bolsos sob os postes dos switches, posição dos 2 espaçadores M2 por régua, cauda e saída do FFC na zona da interface, folgas da grade.
-2. **[Eletrônica]** Posicionar a **régua R8** e a **grade** (sem rotas):
-   - 8 KS‑33D no passo 18,5, TMAG5253 a 4,3 mm do centro na face de baixo (orientação e pino 1 conferidos contra o desenho Gateron), 74HC595, desacoplamentos e FFC na cauda, furos M2;
-   - contorno, furos 14,00 da grade, e se a JLCPCB aceita régua + grade no mesmo painel;
-   - corredores previstos para a rota (linha analógica OUT longe do CLOCK/LATCH), regras no `.kicad_dru`;
-   - DRC sem trilhas (courtyard e furos 0 erros), paridade com o esquema 0;
-   - `POSICIONAMENTO.md` (novo): planta cotada da régua e da grade, com o nome da nota em cada tecla das 4 fileiras; cena 3D com o case (corte numa tecla e na cauda), com modelos realistas.
-3. **[Programação e som]** Só conferir que o `PINOS.md` e a ordem das teclas no sketch batem com a régua posicionada (índice da tecla × posição × nota).
-4. **`FIT_CHECK.md`**: resumo da R3SL, itens novos do `RESTRICOES_CASE.md` (em destaque os que mudam o lado de fora) e **"Perguntas para o design"**. Parar no **portão B da régua**. Nada de rota, cotação ou compra.
+1. **[Design]**
+   - Cortes longitudinais do apoio das 4 réguas (item 1); corrigir se houver vão.
+   - Knobs: cortes S1/S2/S3 nos dois knobs (item 3); modelo oficial em S2.
+   - Grade 14,00 com dog‑bone; grade escareada para o M2 (itens 4 e 6).
+   - Bateria B2 (STEP real): baia, crescimento do case, saída dos fios e do rabicho SH.
+   - **Estudo do botão** (item 10): `estudos/botao/` + seção no `FIT_CHECK.md`.
+   - Envelope da placa principal para a eletrônica: zonas livres, apoios, alturas (regra de alturas), knobs, conectores nas paredes, baia da bateria, caminho dos 4 FFC.
+   - `RESTRICOES_CASE.md` atualizado.
+2. **[Eletrônica] Etapa 2b — posicionar a placa principal** (sem rotas):
+   - RT1062 primeiro, com a zona de escape do BGA (2,5 mm) e os corredores; MKL02, flash, cristal, DCDC perto dele;
+   - SGTL5000 e P2; USB‑C, ESD e o par USB (≤ 30–35 mm, Full Speed); BQ24075, bateria (J202 SH), latch do OFF;
+   - 2 TMAG5273 sob os eixos dos knobs e a DRV5032ZE sob o ímã do OFF; LED reverso sob o anel;
+   - 4 FFC alinhados com as caudas das réguas; **comprimento dos cabos FFC definido** (de série, mesmo comprimento se possível);
+   - todas as peças na face de baixo (JLCPCB), alturas conforme a regra; DRC sem trilhas 0 erros, paridade 0; corredores e regras no `.kicad_dru`;
+   - `POSICIONAMENTO.md`: planta cotada da principal, blocos por função, cena 3D com o case e as réguas (modelos realistas).
+3. **[Programação e som]** Conferir NTC (B 3380) e corrente de carga da B2 no `FIRMWARE.md`/`PINOS.md`; conferir pinos × placa posicionada.
+4. **`FIT_CHECK.md`**: resumo da R4SL, itens do `RESTRICOES_CASE.md` que mudam o lado de fora em destaque, **"Perguntas para o design"**. Parar no **portão B da placa principal**. Nada de rota, cotação ou compra.
