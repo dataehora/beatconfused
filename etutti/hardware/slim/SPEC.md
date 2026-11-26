@@ -1,4 +1,27 @@
-# eTutti Slim — SPEC R13SL
+# eTutti Slim — SPEC R14SL
+
+## Mudanças desde a R13SL (26 nov 2026)
+
+Resposta do J à sessão A5 (PR #238) e ao passo B1 da sessão B (commit d8be7eb, branch `slim-3b1-bga`, ainda não enviada ao GitHub).
+
+1. **Sessão A concluída.** Respostas às perguntas da A5:
+   - os ganchos de teste (`SLIM_FORCAR_FALHA` etc.) ficam;
+   - a sessão B parte da faixa de 22,2 mm.
+2. **B1 aprovado**, com estes ajustes:
+   - **Via do BGA: 0,50 / 0,30 mm** (folga de 0,141 mm ao pad). É o tamanho padrão da JLCPCB e deixa de lado a dúvida sobre o custo do furo de 0,20 mm sem precisar de cotação. A 0,45/0,20 fica só como reserva, se o B2 mostrar que a 0,50/0,30 não fecha.
+   - Empilhamento JLC04121H-7628, 4 camadas, 1,2 mm; In2 = GND; In1 = +3V3/VDD_SOC + saída das bolas internas; B.Cu = peças + USB; F.Cu livre: aprovado.
+3. **Paridade com o esquema (correção de verificação).** A "paridade 0" da principal relatada até a A5 nunca foi verificada de fato, porque `kicad_principal/` não tinha o esquema. A partir de agora, **toda paridade é verificada contra o esquema, e o relatório diz qual arquivo de esquema foi usado.** Os 2 itens achados no B1 são corrigidos pela Eletrônica **antes do B2**:
+   - **J301 (P2):** falta o pad 6 na pegada, e o esquema liga o pino 6 a HP_R. Sem a correção, o canal direito do fone fica desligado. Corrigir a pegada (ou o esquema) pelo datasheet do XUNPU PJ-327A, como foi feito no V3 (`troca_jack.py`: pads 2/5 = manga, 6 = anel, 4 = ponta, 3 = chave da ponta).
+   - **R259:** marcado "não montar" no esquema, mas montado na pegada. Pôr os dois de acordo com a intenção do esquema e dizer qual é.
+   - Paridade 0 contra o esquema, DRC 0/0.
+4. **Arrumação do repositório no PC do J (antes do B2):**
+   - enviar a branch `slim-3b1-bga` ao GitHub;
+   - a pasta principal tem 178 alterações não commitadas na branch antiga `slim-r1sl`. Elas são **guardadas fora do repositório** (patch + cópia dos arquivos não rastreados, num zip datado), e a pasta volta para o `main` limpo. Nada é apagado sem cópia, e o Code relata o que eram essas alterações;
+   - a branch remota antiga `origin/slim-r1sl` (de 24 nov, commits "Com" e "k") **não é mesclada**. Dela só se aproveitou a biblioteca do DVJ6B (PR #211). Ela fica como está até o J apagá-la.
+5. **Imagens da sessão B:** cada passo envia a branch ao GitHub antes de relatar, para o Chat poder mostrar as imagens ao J. O Code confere cada imagem depois do último ajuste.
+
+---
+
 
 ## Mudanças desde a R12SL (25 nov 2026)
 
