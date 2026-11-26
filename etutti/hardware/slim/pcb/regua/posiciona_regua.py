@@ -28,11 +28,13 @@ PCB = os.path.normpath(os.path.join(HERE, ".."))
 HW = os.path.normpath(os.path.join(PCB, ".."))
 sys.path.insert(0, PCB)
 import sexpr as S  # noqa: E402
+sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..")))
+import verificacao as V  # noqa: E402
 
 KD = os.path.join(PCB, "kicad_regua")
 BUILD = os.path.join(HERE, "build")
 KICAD_FP = "C:/Program Files/KiCad/10.0/share/kicad/footprints"
-ENV = json.load(open(os.path.join(HW, "case", "envelope_regua.json"), encoding="utf-8"))
+ENV = json.load(open(os.environ.get("SLIM_ENVELOPE") or os.path.join(HW, "case", "envelope_regua.json"), encoding="utf-8"))   # SLIM_ENVELOPE: test hook
 M, T = pcbnew.FromMM, pcbnew.ToMM
 GRAVE = []
 
@@ -184,6 +186,7 @@ def best_orientation(fp, x, y, ok):
 
 
 def main():
+    T0 = V.inicio()
     parts = json.load(open(os.path.join(BUILD, "partes_regua.json"), encoding="utf-8"))
     nl = netlist(os.path.join(BUILD, "regua_netlist.net"))
     b = pcbnew.CreateEmptyBoard()
@@ -313,6 +316,7 @@ def main():
 
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     b.BuildConnectivity()
+    V.forcar("posiciona_regua")
     os.makedirs(KD, exist_ok=True)
     out_pcb = os.path.join(KD, "slim_regua.kicad_pcb")
     pcbnew.SaveBoard(out_pcb, b)
@@ -370,6 +374,7 @@ def main():
     for ref in ["U1", "U9", "J1", "C1", "C9", "C10"]:
         q = rec["pecas"][ref]
         print("%-3s u %7.2f v %6.2f rot %5.1f lado %s" % (ref, q["u"], q["v"], q["rot"], q["lado"]))
+    V.exige([out_pcb, os.path.join(KD, "slim_grade.kicad_pcb"), os.path.join(HERE, "posicao_regua.json")], T0, "posiciona_regua")
     print("orientacao", rec["orientacao"])
 
 

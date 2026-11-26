@@ -21,11 +21,13 @@ import cadquery as cq
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import layout_slim as L  # noqa: E402
+sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..")))
+import verificacao as V  # noqa: E402
 
 OUT = os.path.join(HERE, "out")
 os.makedirs(OUT, exist_ok=True)
 
-LEFT, RIGHT, FRONT, BACK = -98.0, 149.0, -18.5, 70.6       # R4SL: +8.0 mm to the left (battery 523450); R12SL: right wall at 149.0: plan 247.0 x 89.1; the keyboard moved 1.5 mm right (layout_slim.KEY_DX), so the longest rulers (rows 1 and 3) end at x 143.65: 3.35 mm to the wall's inner face (147.0)
+LEFT, RIGHT, FRONT, BACK = -98.0, float(os.environ.get("SLIM_CASE_RIGHT", 149.0)), -18.5, 70.6       # R4SL: +8.0 mm to the left (battery 523450); R12SL: right wall at 149.0: plan 247.0 x 89.1; the keyboard moved 1.5 mm right (layout_slim.KEY_DX), so the longest rulers (rows 1 and 3) end at x 143.65: 3.35 mm to the wall's inner face (147.0)
 CORNER_R, WALL, SKIN = 6.0, 2.0, 1.5
 SPLIT = L.SPLIT_Z
 BOARD_BOT, BOARD_T = 6.8, 1.2
@@ -196,9 +198,15 @@ def export(name, wp):
 
 
 def main():
+    T0 = V.inicio()
+    if RIGHT <= LEFT + 50:
+        V.falha("RIGHT = %s: case sem largura" % RIGHT)
     base = build_base()
     lid, zr, zv, slot = build_lid()
     ring = build_ring(zv)
+    if not (base.val().isValid() and lid.val().isValid() and ring.val().isValid()):
+        V.falha("sólido inválido: base %s, tampo %s, anel %s (nada foi gravado)" % (base.val().isValid(), lid.val().isValid(), ring.val().isValid()))
+    V.forcar("case")
     export("base", base)
     export("tampo", lid)
     export("anel_led", ring)
@@ -212,6 +220,7 @@ def main():
             "base_valida": base.val().isValid(), "tampo_valido": lid.val().isValid()}
     json.dump(nums, open(os.path.join(OUT, "numeros.json"), "w", encoding="utf-8"), indent=1)
     print(json.dumps(nums, indent=1))
+    V.exige([os.path.join(OUT, n) for n in ("base.step", "base.stl", "tampo.step", "tampo.stl", "anel_led.step", "numeros.json")], T0, "case")
 
 
 if __name__ == "__main__":

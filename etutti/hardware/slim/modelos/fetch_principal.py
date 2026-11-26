@@ -16,7 +16,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "baixados")
 PARTS = {"ind_L0603_120R_L101": "C14709", "ind_L0805_4u7_L102": "C63166", "bav70_D101": "C68978", "w25q64_U103": "C5362615", "xtal_32k_Y102": "C32346",
          "smf5v0_D201": "C151296", "usblc6_U201": "C7519", "ao3400a_Q201": "C20917", "jst_SM03B-SRSS_J202": "C160403", "fb_0603_FB301": "C19330",
-         "xc6206_U302": "C347373", "led_0805_RGCA_D401": "C965845"}
+         "xc6206_U302": "C347373", "led_0805_RGCA_D401": "C965845", "mkl02_U102": "C2056583"}
 API = "https://easyeda.com/api/products/%s/components?version=6.4.19.5"
 STEP = "https://modules.easyeda.com/qAxj6KHrDKw4blvCG8QJPs7Y/%s"
 BATCH, PAUSE, WAIT_403 = 5, 240, 420

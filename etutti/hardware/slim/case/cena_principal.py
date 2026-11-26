@@ -24,7 +24,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 HW = os.path.normpath(os.path.join(HERE, ".."))
 sys.path.insert(0, HERE)
 import case as C  # noqa: E402
-import cena_regua as CR  # noqa: E402
+import cena_regua as CR
+sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..")))
+import verificacao as V  # noqa: E402
 import layout_slim as L  # noqa: E402
 
 OUT, REN, TMP = CR.OUT, CR.REN, CR.TMP
@@ -41,6 +43,7 @@ _t = S.parse(open(os.path.join(HW, "pcb", "build", "slim_netlist.net"), encoding
 for _c in S.find(S.first(_t, "components"), "comp"):
     _f = {S.first(f, "name")[1]: (f[-1] if isinstance(f[-1], str) else "") for f in S.find(S.first(_c, "fields"), "field")}
     LCSC[S.first(_c, "ref")[1]] = _f.get("LCSC", "")
+LCSC["U102"] = LCSC.get("U102") if (LCSC.get("U102") or "").startswith("C") else "C2056583"      # R13SL: the PJRC-consigned MKL02 has no LCSC code in the BOM; the EasyEDA model of the same chip (MKL02Z32VFG4R) is used for the 3D scene only
 STEP_BY_LCSC = {"C3216699": os.path.join(HW, "modelos", "rt1062", "MIMXRT1062DVJ6B.stp"), "C165948": glob.glob(BX + "/usbc_TYPE-C-31-M-12_C165948.step")[0],
                 "C49284723": glob.glob(BX + "/jack_PJ-327A_XUNPU_C49284723.step")[0], "C3250113": glob.glob(BX + "/ffc_8p_05_h1_C3250113.step")[0],
                 "C3020565": glob.glob(BX + "/tmag5273A2_C3020565.step")[0], "C41935525": glob.glob(BX + "/tmag5273B2_C41935525.step")[0],
@@ -222,6 +225,7 @@ def build():
 
 def main():
     meshes = build()
+    V.forcar("cena_principal")
     cx = -62.0
     # bottom view of the board with the parts: base, lid and rulers hidden (the battery stays)
     rn = set(json.load(open(os.path.join(HW, "pcb", "regua", "posicao_regua.json"), encoding="utf-8"))["pecas"].keys()) | {"base", "tampo", "ferragem", "ks33d", "knob_registros", "knob_volume"}
@@ -238,4 +242,6 @@ def main():
 
 
 if __name__ == "__main__":
+    _t0 = V.inicio()
     main()
+    V.exige([os.path.join(CR.REN, n + ".png") for n in ("cena_principal_baixo", "cena_principal_iso", "corte_principal_registros", "corte_principal_volume", "corte_principal_longitudinal")] + [os.path.join(OUT, "cena_principal.json")], _t0, "cena_principal")

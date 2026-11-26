@@ -70,5 +70,11 @@
   "arquivo": "led_0805_RGCA_D401_C965845.step",
   "bytes": 1212308,
   "titulo": "LED-SMD_4P-L2.0-W1.3-RD-TL"
+ },
+ "mkl02_U102": {
+  "lcsc": "C2056583",
+  "arquivo": "mkl02_U102_C2056583.step",
+  "bytes": 1322304,
+  "titulo": "QFN-16_L3.0-W3.0-P0.50-TL-EP1.9"
  }
 }

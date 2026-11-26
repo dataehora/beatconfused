@@ -29,6 +29,8 @@ sys.path.insert(0, HERE)
 import cena_principal as CP  # noqa: E402
 import cena_regua as CR  # noqa: E402
 import layout_slim as L  # noqa: E402
+sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..")))
+import verificacao as V  # noqa: E402
 
 REN, OUT = CR.REN, CR.OUT
 MONT = os.path.join(HERE, "montagem")
@@ -210,7 +212,9 @@ ENV_P = json.load(open(os.path.join(HERE, "envelope_principal.json"), encoding="
 
 
 def main():
+    T0 = V.inicio()
     G, cables = build_groups()
+    V.forcar("montagem")
     notes = []
     for r in range(4):
         ri = ENV["fileiras"][r]
@@ -230,6 +234,9 @@ def main():
     shutil.copy(os.path.join(OUT, "base.step"), os.path.join(MONT, "base.step"))
     json.dump({"passos": 7, "glb": ok, "cabos": cables}, open(os.path.join(MONT, "montagem.json"), "w", encoding="utf-8"), indent=1)
     print(json.dumps(cables))
+    V.exige([os.path.join(REN, "montagem_p%d_%s.png" % (n, t)) for n in range(1, 8) for t in ("iso", "esq", "dir")] + [os.path.join(MONT, "conjunto.glb"), os.path.join(MONT, "base.step"), os.path.join(MONT, "montagem.json")], T0, "montagem")
+    if not ok:
+        V.falha("o GLB nao foi exportado")
 
 
 if __name__ == "__main__":

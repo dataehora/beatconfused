@@ -13,7 +13,7 @@ sys.path.insert(0, HERE)
 import case as C  # noqa: E402
 import layout_slim as L  # noqa: E402
 
-STRIP_X0, STRIP_X1 = -58.5, -36.3          # the strip under the knobs (the bay's right wall ends at -58.8)
+STRIP_X0, STRIP_X1 = -58.5, float(os.environ.get("SLIM_STRIP_X1", -36.3))          # the strip under the knobs (the bay's right wall ends at -58.8)
 Y_FRONT, Y_BACK = -9.0, 68.1               # back: 0.5 mm from the wall's inner face (68.6)
 TAB_X1, TAB_HALF = -26.75, 5.5             # tabs for rows 1 and 3: the FFC gap is the same 5.5 mm on the four rows
 FOOT_X0, FOOT_Y0 = C.LEFT + 2.0 + 0.2, 47.0    # foot: from the left wall (0.2 gap) to the strip; its front edge 0.3 behind the bay's back wall (46.7)
@@ -52,7 +52,8 @@ def main():
            "alturas": {"regra": "(a) peca mais baixa, (b) face de cima soldada em casa, (c) subir o conjunto", "limite_peca_sob_a_placa_mm": round(C.BOARD_BOT - 1.6 - 0.2, 2)},
            "avisos": ["a bateria (z 1,6-6,95) fica FORA da placa: a parede da baia (x -60..-58,8) toca a placa em z 7,0 > 6,8, por isso a faixa comeca em x -58,5",
                       "o LED reverso precisa de janela na placa sob o anel (a definir com a folha do LED)"]}
-    json.dump(env, open(os.path.join(HERE, "envelope_principal.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    saida = os.environ.get("SLIM_ENV_OUT") or os.path.join(HERE, "envelope_principal.json")   # SLIM_STRIP_X1 / SLIM_ENV_OUT: test hooks (a narrower strip, written elsewhere)
+    json.dump(env, open(saida, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print("envelope_principal.json", len(env["placa"]["contorno"]), "vertices")
 
 

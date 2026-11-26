@@ -17,6 +17,8 @@ import pyvista as pv
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import montagem as M  # noqa: E402
+sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..")))
+import verificacao as V  # noqa: E402
 
 DEPTH = 0.08
 
@@ -41,8 +43,23 @@ def inside_count(points, solid):
     return int(np.sum(d < -DEPTH)), float(d.min())
 
 
+def desloca(G):
+    """test hook: SLIM_FIT_DESLOCA="regua0:0,0,8" moves the mesh named so, to prove that the check FAILS on an interference"""
+    s = os.environ.get("SLIM_FIT_DESLOCA", "")
+    if not s:
+        return
+    nome, v = s.split(":")
+    dx, dy, dz = [float(a) for a in v.split(",")]
+    for g in G.values():
+        for m, col, op, nm in g:
+            if nm == nome:
+                m.translate((dx, dy, dz), inplace=True)
+
+
 def main():
+    T0 = V.inicio()
     G, cables = M.build_groups()
+    desloca(G)
     lid = pv.read(os.path.join(M.OUT, "tampo.stl"))
     solids = {"base": [m for m in G[1] if m[3] == "base"][0][0], "tampo": lid}
     for r in range(4):
@@ -84,10 +101,14 @@ def main():
             c, dmin = inside_count(pts, sol)
             if c:
                 bad.append({"peca": nm, "dentro_de": sn, "pontos": c, "penetracao_max_mm": round(-dmin, 3)})
-    json.dump({"revisao": "R12SL", "pares_testados": n_tests, "profundidade_limite_mm": DEPTH, "interferencias": bad}, open(os.path.join(M.OUT, "fit_check.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    V.forcar("fit_check")
+    json.dump({"revisao": "R13SL", "pares_testados": n_tests, "profundidade_limite_mm": DEPTH, "interferencias": bad}, open(os.path.join(M.OUT, "fit_check.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    V.exige([os.path.join(M.OUT, "fit_check.json")], T0, "fit_check")
     print("pares testados:", n_tests, "interferencias:", len(bad))
     for b in bad[:40]:
         print(b)
+    if bad:
+        V.falha("%d interferencias (ver acima)" % len(bad))
 
 
 if __name__ == "__main__":

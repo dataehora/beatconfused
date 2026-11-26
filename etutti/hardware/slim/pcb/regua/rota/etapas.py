@@ -10,6 +10,8 @@ Commit per finished stage is the integrator's job (no git here).
 """
 import hashlib, json, os, subprocess, sys, time
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..", "..")))
+import verificacao as V  # noqa: E402
 KP = "C:/Program Files/KiCad/10.0/bin/python.exe"
 VP = "C:/Users/julia/.venvs/cadquery/Scripts/python.exe"
 EST = os.path.join(HERE, "estado.json")
@@ -73,18 +75,28 @@ def main():
             print("[%s] ja feita (%s)" % (name, rec.get("segundos")))
             continue
         print("[%s] rodando..." % name, flush=True)
+        t_ini = time.time()
         r, secs = sh(st["cmd"]())
         if "cmd2" in st and r.returncode == 0:
             r2, s2 = sh(st["cmd2"]())
             secs += s2
             r = r2
         tail = (r.stdout or "")[-400:] + (r.stderr or "")[-200:]
-        e[name] = {"feito": r.returncode == 0 and os.path.exists(st["out"]), "segundos": secs, "hash_entrada": h, "saida": os.path.relpath(st["out"], HERE), "cauda": tail}
+        gravou = os.path.exists(st["out"]) and os.path.getmtime(st["out"]) >= t_ini - 1.0      # R13SL: the stage's output must have been written in THIS run
+        e[name] = {"feito": r.returncode == 0 and gravou, "segundos": secs, "hash_entrada": h, "saida": os.path.relpath(st["out"], HERE), "cauda": tail}
         if name in ("verifica", "grade") and os.path.exists(st["out"]):
             e[name]["resultado"] = json.load(open(st["out"]))
         save(e)
         print("[%s] %s em %.1fs" % (name, "ok" if e[name]["feito"] else "FALHOU", secs))
         if not e[name]["feito"]:
+            print("ERRO: etapa %s falhou (codigo %d, saida gravada agora: %s). Cauda:\n%s" % (name, r.returncode, gravou, tail))
+            sys.exit(1)
+    vf = os.path.join(HERE, "build", "verifica.json")
+    if only is None or only in ("verifica", "grade"):
+        for f in (vf, os.path.join(HERE, "build", "grade.json"), os.path.join(K, "slim_regua_rota.kicad_pcb")):
+            print("ARQUIVO %s | gravado %s" % (os.path.relpath(f, HERE), V.data(f)))
+        if os.path.exists(vf) and not json.load(open(vf)).get("aceito", False):
+            print("ERRO: verifica.json diz aceito = false (DRC com erro/aviso, nao ligado, paridade ou regra de OUT)")
             sys.exit(1)
 
 
