@@ -21,6 +21,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 HW = os.path.normpath(os.path.join(HERE, ".."))
 sys.path.insert(0, HERE)
 import layout_slim as L  # noqa: E402
+sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..")))
+import verificacao as V  # noqa: E402
 
 OUT = os.path.join(HERE, "out")
 REN = os.path.join(HERE, "renders")
@@ -232,7 +234,9 @@ def shot(meshes, name, normal=None, origin=None, cam=None, size=(1800, 900), hid
 
 
 def main():
+    T0 = V.inicio()
     meshes = build_scene()
+    V.forcar("cena_regua")
     r1 = ENV["fileiras"][0]
     # 1. iso without the lid: the four rulers on their steps
     shot(meshes, "cena_iso", cam=[(-170, -150, 150), (20, 25, 6), (0, 0, 1)], hide=("tampo",), size=(1800, 1000))
@@ -248,4 +252,6 @@ def main():
 
 
 if __name__ == "__main__":
+    _t0 = V.inicio()
     main()
+    V.exige([os.path.join(REN, n + ".png") for n in ("cena_iso", "corte_tecla", "corte_tecla_4fileiras", "corte_cauda", "corte_longitudinal")], _t0, "cena_regua")

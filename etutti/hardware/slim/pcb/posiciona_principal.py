@@ -25,12 +25,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 HW = os.path.normpath(os.path.join(HERE, ".."))
 sys.path.insert(0, HERE)
 import sexpr as S  # noqa: E402
+sys.path.insert(0, HW)
+import verificacao as V  # noqa: E402
 
 KD = os.path.join(HERE, "kicad_principal")
 OUTD = os.path.join(HERE, "principal")
 KICAD_FP = "C:/Program Files/KiCad/10.0/share/kicad/footprints"
 SLIM_FP = os.path.join(HERE, "kicad", "slim.pretty")
-ENV = json.load(open(os.path.join(HW, "case", "envelope_principal.json"), encoding="utf-8"))
+ENV = json.load(open(os.environ.get("SLIM_ENVELOPE") or os.path.join(HW, "case", "envelope_principal.json"), encoding="utf-8"))   # SLIM_ENVELOPE: test hook (an envelope with another strip)
 M, T = pcbnew.FromMM, pcbnew.ToMM
 OXK, OYK = 200.0, 100.0
 GRAVE = []
@@ -179,6 +181,7 @@ def grow(r, g):
 
 
 def main():
+    T0 = V.inicio()
     comps, nets, pins = parse_netlist(os.path.join(HERE, "build", "slim_netlist.net"))
     poly = [tuple(p) for p in ENV["placa"]["contorno"]]
     b = pcbnew.CreateEmptyBoard()
@@ -441,7 +444,7 @@ def main():
             if ok_any:
                 found += 1
         if best is None:
-            raise SystemExit("%s: no free spot" % ref)
+            V.falha("%s: no free spot (the placement did not close: NOTHING was written)" % ref, 2)
         commit(ref, best[1], best[2], best[3])
         report[ref] = {"custo": round(best[0], 1)}
 
@@ -463,6 +466,7 @@ def main():
 
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     b.BuildConnectivity()
+    V.forcar("posiciona_principal")
     os.makedirs(KD, exist_ok=True)
     os.makedirs(OUTD, exist_ok=True)
     import shutil
@@ -504,6 +508,7 @@ def main():
             rec["pads"].append({"ref": ref, "n": pd.GetNumber(), "net": pd.GetNetname(), "x": round(px, 3), "y": round(py, 3), "w": round(T(sz.x), 3), "h": round(T(sz.y), 3), "furo": round(T(pd.GetDrillSize().x), 2)})
     json.dump(rec, open(os.path.join(OUTD, "posicao_principal.json"), "w", encoding="utf-8"), indent=1)
     print("pecas", len(comps), "BGA rot", rot_bga)
+    V.exige([out_pcb, pro_path, os.path.join(OUTD, "posicao_principal.json")], T0, "posiciona_principal")
     for r in rows:
         print(r["ref"], "rot", r["rot"], "pino1-pino8 em y", r["pino1_y_relativo"])
 

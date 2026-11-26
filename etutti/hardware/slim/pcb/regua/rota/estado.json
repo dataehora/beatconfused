@@ -1,38 +1,38 @@
 {
  "base": {
   "feito": true,
-  "segundos": 0.4,
-  "hash_entrada": "c6387dff573e",
+  "segundos": 0.5,
+  "hash_entrada": "10674f66faba",
   "saida": "kicad\\base\\slim_regua.kicad_pcb",
   "cauda": "keep-outs de furo: 26\nbase escrita em C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\slim\\pcb\\regua\\rota\\kicad\\base\n"
  },
  "fixa": {
   "feito": true,
-  "segundos": 0.3,
-  "hash_entrada": "8847562e9ad3",
+  "segundos": 0.4,
+  "hash_entrada": "575528078cbf",
   "saida": "kicad\\fixo.kicad_pcb",
   "cauda": "fixo.kicad_pcb escrito\n"
  },
  "sinais": {
   "feito": true,
-  "segundos": 4.7,
-  "hash_entrada": "2fdcd51d0d67",
+  "segundos": 4.8,
+  "hash_entrada": "b85efd6201c7",
   "saida": "kicad\\sinais.kicad_pcb",
-  "cauda": "tentativa 1 falhas [] 4.1s pads inacessiveis: []\n{\"pads_ja_ligados\": 58, \"pad_fora_da_grade_max_mm\": 0.05, \"pads_inacessiveis\": [], \"ordem_final\": [\"CLK\", \"LATCH\", \"DATA\", \"OUT\", \"+3V3\"], \"falhas\": [], \"vias\": 8, \"trilhas\": 88, \"segundos\": 4.1}\ng duplicate image handler for 'Windows animated cursor file'\nAdding duplicate image handler for 'TGA file'\nAdding duplicate image handler for 'XPM file'\nAdding duplicate image handler for 'WebP file'\n"
+  "cauda": "tentativa 1 falhas [] 4.2s pads inacessiveis: []\n{\"pads_ja_ligados\": 58, \"pad_fora_da_grade_max_mm\": 0.05, \"pads_inacessiveis\": [], \"ordem_final\": [\"CLK\", \"LATCH\", \"DATA\", \"OUT\", \"+3V3\"], \"falhas\": [], \"vias\": 8, \"trilhas\": 88, \"segundos\": 4.2}\ng duplicate image handler for 'Windows animated cursor file'\nAdding duplicate image handler for 'TGA file'\nAdding duplicate image handler for 'XPM file'\nAdding duplicate image handler for 'WebP file'\n"
  },
  "gnd": {
   "feito": true,
   "segundos": 0.7,
-  "hash_entrada": "14bdd05ce656",
+  "hash_entrada": "3e8911758ea7",
   "saida": "kicad\\slim_regua_rota.kicad_pcb",
   "cauda": "GND: vias de pad 15, de costura 42, sem lugar: [('U9', '17', 27.7, 30.0)]\n"
  },
  "verifica": {
   "feito": true,
-  "segundos": 2.9,
-  "hash_entrada": "975acbf88bdb",
+  "segundos": 12.8,
+  "hash_entrada": "00a87f770662",
   "saida": "build\\verifica.json",
-  "cauda": " \"CLK\": 4.79,\n  \"DATA\": 13.59,\n  \"EN1\": 22.61,\n  \"EN2\": 39.72,\n  \"EN3\": 58.14,\n  \"EN4\": 77.57,\n  \"EN5\": 96.99,\n  \"EN6\": 116.41,\n  \"EN7\": 135.84,\n  \"EN8\": 155.26,\n  \"GND\": 16.75,\n  \"LATCH\": 7.54,\n  \"OUT\": 159.35\n },\n \"largura_min_mm\": 0.15,\n \"pontas_soltas_proprio\": [],\n \"ilhas_de_plano\": [],\n \"OUT_afastamento_min_mm\": 2.665,\n \"OUT_afastamento_onde\": [\n  24.1,\n  30.8,\n  \"CLK\"\n ],\n \"aceito\": true\n}\ng duplicate image handler for 'Windows animated cursor file'\nAdding duplicate image handler for 'TGA file'\nAdding duplicate image handler for 'XPM file'\nAdding duplicate image handler for 'WebP file'\n",
+  "cauda": " \"CLK\": 4.79,\n  \"DATA\": 13.59,\n  \"EN1\": 22.61,\n  \"EN2\": 39.72,\n  \"EN3\": 58.14,\n  \"EN4\": 77.57,\n  \"EN5\": 96.99,\n  \"EN6\": 116.41,\n  \"EN7\": 135.84,\n  \"EN8\": 155.26,\n  \"GND\": 16.75,\n  \"LATCH\": 7.54,\n  \"OUT\": 159.35\n },\n \"largura_min_mm\": 0.15,\n \"pontas_soltas_proprio\": [],\n \"ilhas_de_plano\": [],\n \"OUT_afastamento_min_mm\": 2.665,\n \"OUT_afastamento_onde\": [\n  23.8,\n  30.8,\n  \"CLK\"\n ],\n \"aceito\": true\n}\ng duplicate image handler for 'Windows animated cursor file'\nAdding duplicate image handler for 'TGA file'\nAdding duplicate image handler for 'XPM file'\nAdding duplicate image handler for 'WebP file'\n",
   "resultado": {
    "placa": "kicad\\slim_regua_rota.kicad_pcb",
    "drc": {
@@ -67,7 +67,7 @@
    "ilhas_de_plano": [],
    "OUT_afastamento_min_mm": 2.665,
    "OUT_afastamento_onde": [
-    24.1,
+    23.8,
     30.8,
     "CLK"
    ],
@@ -76,10 +76,10 @@
  },
  "grade": {
   "feito": true,
-  "segundos": 3.1,
-  "hash_entrada": "8321488555ac",
+  "segundos": 3.5,
+  "hash_entrada": "0b5c0bd45b65",
   "saida": "build\\grade.json",
-  "cauda": "7\n  },\n  {\n   \"ref\": \"H1\",\n   \"furo_mm\": 2.1999999999999997,\n   \"x\": 33.1,\n   \"y\": 30.0,\n   \"npth\": true,\n   \"cobre\": true,\n   \"pad_mm\": 2.1999999999999997\n  }\n ],\n \"trilhas\": 0,\n \"zonas\": 0,\n \"notas_escareado\": [\n  \"M2 cabeca cilindrica D3,8 (sem escareado) - furo redondo\",\n  \"M2 cabeca cilindrica D3,8 (sem escareado) - FURO OBLONGO 3.2 x 2.2\"\n ],\n \"distancia_furo_m2_ao_furo_quadrado_mm\": null\n}\n",
+  "cauda": "\n  },\n  {\n   \"ref\": \"H2\",\n   \"furo_mm\": 3.1999999999999997,\n   \"x\": 181.9,\n   \"y\": 30.0,\n   \"npth\": true,\n   \"cobre\": true,\n   \"pad_mm\": 3.1999999999999997\n  }\n ],\n \"trilhas\": 0,\n \"zonas\": 0,\n \"notas_escareado\": [\n  \"M2 cabeca cilindrica D3,8 (sem escareado) - furo redondo\",\n  \"M2 cabeca cilindrica D3,8 (sem escareado) - FURO OBLONGO 3.2 x 2.2\"\n ],\n \"distancia_furo_m2_ao_furo_quadrado_mm\": null\n}\n",
   "resultado": {
    "drc": {
     "erros": 0,
@@ -130,15 +130,6 @@
    "dogbone_extensao_alem_do_lado_mm": 0.35,
    "m2": [
     {
-     "ref": "H2",
-     "furo_mm": 3.1999999999999997,
-     "x": 181.9,
-     "y": 30.0,
-     "npth": true,
-     "cobre": true,
-     "pad_mm": 3.1999999999999997
-    },
-    {
      "ref": "H1",
      "furo_mm": 2.1999999999999997,
      "x": 33.1,
@@ -146,6 +137,15 @@
      "npth": true,
      "cobre": true,
      "pad_mm": 2.1999999999999997
+    },
+    {
+     "ref": "H2",
+     "furo_mm": 3.1999999999999997,
+     "x": 181.9,
+     "y": 30.0,
+     "npth": true,
+     "cobre": true,
+     "pad_mm": 3.1999999999999997
     }
    ],
    "trilhas": 0,
@@ -159,8 +159,8 @@
  },
  "imagens": {
   "feito": true,
-  "segundos": 3.1999999999999997,
-  "hash_entrada": "926b1f8e8489",
+  "segundos": 3.6,
+  "hash_entrada": "6b55b4772788",
   "saida": "..\\img\\regua_frente.png",
   "cauda": "imagens em C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\slim\\pcb\\regua\\rota\\..\\img\n"
  }
