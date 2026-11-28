@@ -71,6 +71,8 @@ Conclusão: com o IM72D128 e o ganho de 0 a +42 dB, o que fica abaixo do estúdi
 3. **Nenhum case**, nem faixa de silicone.
 4. Sem o texto "SATUROU: BAIXE O GANHO": o "SAT" azul basta.
 
+**Decisão do J (28 nov): seguimos apenas com a A.** B e C ficam registradas e congeladas. O prompt para o Code está em `minimic/PROMPT-R3MIC.md`.
+
 ### 9. Versões B e C (variantes, só para comparar)
 Página única com A, B e C: `minimic/design/liebling_r3_comparacao.html` (gerada por `proto_comp.py`, que usa `proto_r3.py` e `proto_b.py`).
 
