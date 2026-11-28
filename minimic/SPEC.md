@@ -38,7 +38,7 @@ O bloco R2MIC e as seções 1 a 13 abaixo continuam valendo **exceto** onde este
 - **Custo:** um sensor a mais (+US$ a conferir), a decimação de dois canais no RP2040 (a simulação F1 mede a carga) e o dobro de banda USB (288 kB/s, longe do limite do Full Speed). Consumo continua ≤ 100 mA (conta em `POWER.md`).
 
 ### 5. Sem case, mas com cara de produto
-- **Nenhum case.** O acabamento é a PCB: máscara **preta fosca**, **ouro (ENIG)** exposto em marca "Liebling" em cobre, contorno dourado interno, anéis dourados nos furos dos microfones, chanfros de 3 mm nos cantos da frente e 1,5 mm nos de trás, serigrafia branca mínima (número, +, −, L, R, SAT). Tudo isso já está no protótipo.
+- **Nenhum case.** O acabamento é a PCB: máscara **preta fosca**, **ouro (ENIG)** exposto em marca "Liebling" em cobre, contorno dourado interno, anéis dourados nos furos dos microfones, chanfros de 3 mm nos cantos da frente e 1,5 mm nos de trás, serigrafia branca mínima (número em dBFS, +, −, L, R, SAT, "LEVEL dBFS", "GAIN dB", "BATSCHAUER" e a marca; só a frase explicando a saturação fica fora). Tudo isso já está no protótipo.
 - Case mínimo só se o J pedir depois (faixa de silicone fina no fundo, sem tampa). Em aberto na §6.
 - A espuma cola sobre cada furo (**3 pares por embalagem**).
 
@@ -72,6 +72,16 @@ Conclusão: com o IM72D128 e o ganho de 0 a +42 dB, o que fica abaixo do estúdi
 4. Sem o texto "SATUROU: BAIXE O GANHO": o "SAT" azul basta.
 
 **Decisão do J (28 nov): seguimos apenas com a A.** B e C ficam registradas e congeladas. O prompt para o Code está em `minimic/PROMPT-R3MIC.md`.
+
+### 10. Decisões do J na Fase 1 (28 nov, depois da etapa 1) — valem sobre o resto
+1. Placa de **1,6 mm** (era 1,2). O **plugue é soldado pela JLCPCB**; só se for impossível, à mão na Fase 2. Isso pode levar a montagem de Economic para **Standard**.
+2. **Sem cola e sem epóxi em lugar nenhum** (nem na junção do plugue). Pendente: como a espuma fica presa (ver relatório de eletrônica).
+3. **Calço macio de 0,5 mm entre a placa e o celular: aceito.** A JLCPCB não monta calço; como fazê-lo sem cola é pendente.
+4. **IM72D128VV01 no projeto, independentemente de estoque.** Como comprá-lo (Global Sourcing, consignação, outra origem) é estudo da eletrônica.
+5. **Serigrafia:** valem os textos do protótipo ("LEVEL dBFS", "GAIN dB", "BATSCHAUER", marca, números); só a frase de saturação sai.
+6. **Clock do RP2040 a 153,6 MHz autorizado** (fallback documentado: 120 MHz com PDM a 2,4 MHz).
+7. **Mudo de 50 ms no arranque aprovado** (por causa do DC do canal com SELECT em VDD).
+8. Pendentes de decisão do J: pico por amostra × verdadeiro; toolchain (pico-sdk × arduino-pico); UAC1 × UAC2 primeiro; tensão dos LEDs (3,3 V × 5 V com ULN2003A).
 
 ### 9. Versões B e C (variantes, só para comparar)
 Página única com A, B e C: `minimic/design/liebling_r3_comparacao.html` (gerada por `proto_comp.py`, que usa `proto_r3.py` e `proto_b.py`).
