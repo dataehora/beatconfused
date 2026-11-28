@@ -1,0 +1,886 @@
+{
+ "schema": "minimic_pcb_envelope/1",
+ "revision": "R3MIC (versao A)",
+ "date": "2026-11-28",
+ "owner": "mic-design (a eletronica so le; mudancas sao pedidas no relatorio)",
+ "units": "mm",
+ "frame": {
+  "origin": "canto superior esquerdo da placa, vista de cima (face de componentes = F.Cu)",
+  "x": "para a direita, 0..72",
+  "y": "para BAIXO, 0..22 (mesmo sentido do KiCad; nao espelhar)",
+  "plug_side": "y = 0 (lado de 72 mm onde sai o plugue); y = 22 e a frente, longe do celular",
+  "z": "0 = face de baixo (B.Cu), 1.2 = face de cima; o plugue e centrado em z = 0.6",
+  "note": "para pecas na face de baixo, espelhar so em x (x' = 72 - x) ao ver por baixo"
+ },
+ "board": {
+  "size": [
+   72.0,
+   22.0
+  ],
+  "thickness": 1.2,
+  "layers": 2,
+  "mask": "preta fosca",
+  "finish": "ENIG",
+  "outline": [
+   [
+    1.5,
+    0.0
+   ],
+   [
+    31.38,
+    0.0
+   ],
+   [
+    31.38,
+    2.6
+   ],
+   [
+    40.62,
+    2.6
+   ],
+   [
+    40.62,
+    0.0
+   ],
+   [
+    70.5,
+    0.0
+   ],
+   [
+    72.0,
+    1.5
+   ],
+   [
+    72.0,
+    19.0
+   ],
+   [
+    69.0,
+    22.0
+   ],
+   [
+    3.0,
+    22.0
+   ],
+   [
+    0.0,
+    19.0
+   ],
+   [
+    0.0,
+    1.5
+   ]
+  ],
+  "outline_no_notch": [
+   [
+    1.5,
+    0.0
+   ],
+   [
+    70.5,
+    0.0
+   ],
+   [
+    72.0,
+    1.5
+   ],
+   [
+    72.0,
+    19.0
+   ],
+   [
+    69.0,
+    22.0
+   ],
+   [
+    3.0,
+    22.0
+   ],
+   [
+    0.0,
+    19.0
+   ],
+   [
+    0.0,
+    1.5
+   ]
+  ],
+  "outline_area_mm2": 1548.73,
+  "chamfer_front_mm": 3.0,
+  "chamfer_back_mm": 1.5,
+  "copper_to_edge_min": 0.3,
+  "thickness_alternative": 1.6,
+  "thickness_note": "1.2 e o da SPEC; o estudo de alavanca (FIT_CHECK.md) recomenda 1.6: a eletronica deve poder trocar em 1 parametro"
+ },
+ "plug": {
+  "id": "J1",
+  "type": "USB-C macho, carcaca metalica, pernas soldadas (peca a escolher na E1)",
+  "x": 36.0,
+  "y_axis": "perpendicular ao lado de 72 mm, saindo para y < 0",
+  "z_center": 0.6,
+  "envelope_wxh": [
+   8.94,
+   3.26
+  ],
+  "envelope_note": "8.94 x 3.26 e o do protótipo (conservador); casca USB-C nominal 8.25 x 2.40",
+  "exposed_length_from_board_edge": 6.65,
+  "body_inside_board": 2.5,
+  "box": {
+   "x0": 31.53,
+   "x1": 40.47,
+   "y0": -6.65,
+   "y1": 2.5
+  },
+  "notch": {
+   "enabled": true,
+   "x0": 31.38,
+   "x1": 40.62,
+   "y0": 0.0,
+   "y1": 2.6,
+   "clearance_per_side": 0.15,
+   "note": "entalhe do meio-montado; se a E1 escolher um plugue so THT na borda, usar board.outline_no_notch"
+  },
+  "leg_pad_zone": {
+   "x0": 30.9,
+   "x1": 41.1,
+   "y0": 0.0,
+   "y1": 4.2,
+   "note": "pads das 4 pernas: a eletronica posiciona com o footprint da peca; nada mais nesta zona"
+  },
+  "min_exposed_length_requirement": "6.65 (qualquer plugue mais curto reduz a inserção; ver capinha no FIT_CHECK)"
+ },
+ "mics": [
+  {
+   "id": "MK_L",
+   "channel": "L",
+   "x": 6.5,
+   "y": 11.0,
+   "body": [
+    4.0,
+    3.0
+   ],
+   "acoustic_hole_d": 1.8,
+   "gold_ring": {
+    "r_center": 3.2,
+    "width": 0.3
+   },
+   "foam_d": 10.0,
+   "foam_h": 3.0
+  },
+  {
+   "id": "MK_R",
+   "channel": "R",
+   "x": 65.5,
+   "y": 11.0,
+   "body": [
+    4.0,
+    3.0
+   ],
+   "acoustic_hole_d": 1.8,
+   "gold_ring": {
+    "r_center": 3.2,
+    "width": 0.3
+   },
+   "foam_d": 10.0,
+   "foam_h": 3.0
+  }
+ ],
+ "mic_pair": {
+  "spacing": 59.0,
+  "margin_from_ends": 6.5,
+  "port_note": "face do som a confirmar na E1: o protótipo desenha o microfone e a espuma na face de CIMA; se o IM72D128 for de porta inferior, o furo atravessa a placa e a espuma vai do lado do som"
+ },
+ "leds_meter": [
+  {
+   "id": "M1",
+   "x": 15.9,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "green",
+   "hex": "#3ddc6a",
+   "dbfs": -42,
+   "label": "-42",
+   "meaning": "baixo"
+  },
+  {
+   "id": "M2",
+   "x": 19.55,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "green",
+   "hex": "#3ddc6a",
+   "dbfs": -36,
+   "label": "-36",
+   "meaning": "baixo"
+  },
+  {
+   "id": "M3",
+   "x": 23.2,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "green",
+   "hex": "#3ddc6a",
+   "dbfs": -30,
+   "label": "-30",
+   "meaning": "baixo"
+  },
+  {
+   "id": "M4",
+   "x": 26.85,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "green",
+   "hex": "#3ddc6a",
+   "dbfs": -24,
+   "label": "-24",
+   "meaning": "baixo"
+  },
+  {
+   "id": "M5",
+   "x": 30.5,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "green",
+   "hex": "#3ddc6a",
+   "dbfs": -20,
+   "label": "-20",
+   "meaning": "bom"
+  },
+  {
+   "id": "M6",
+   "x": 34.15,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "green",
+   "hex": "#3ddc6a",
+   "dbfs": -16,
+   "label": "-16",
+   "meaning": "bom"
+  },
+  {
+   "id": "M7",
+   "x": 37.8,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "yellow",
+   "hex": "#ffd23f",
+   "dbfs": -12,
+   "label": "-12",
+   "meaning": "forte (picos do bayan aqui)"
+  },
+  {
+   "id": "M8",
+   "x": 41.45,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "yellow",
+   "hex": "#ffd23f",
+   "dbfs": -9,
+   "label": "-9",
+   "meaning": "forte"
+  },
+  {
+   "id": "M9",
+   "x": 45.1,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "yellow",
+   "hex": "#ffd23f",
+   "dbfs": -6,
+   "label": "-6",
+   "meaning": "forte"
+  },
+  {
+   "id": "M10",
+   "x": 48.75,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "red",
+   "hex": "#ff4a3d",
+   "dbfs": -3,
+   "label": "-3",
+   "meaning": "limite"
+  },
+  {
+   "id": "M11",
+   "x": 52.4,
+   "y": 6.3,
+   "pkg": "0805",
+   "color": "red",
+   "hex": "#ff4a3d",
+   "dbfs": 0,
+   "label": "0",
+   "meaning": "no teto"
+  },
+  {
+   "id": "M12",
+   "x": 56.05,
+   "y": 6.3,
+   "pkg": "1206",
+   "color": "blue",
+   "hex": "#4aa8ff",
+   "dbfs": null,
+   "label": "SAT",
+   "meaning": "saturou (blinks with the two reds, ~8 Hz, ~2 s)"
+  }
+ ],
+ "leds_gain": [
+  {
+   "id": "G1",
+   "x": 21.5,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 0,
+   "label": "0"
+  },
+  {
+   "id": "G2",
+   "x": 23.571,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 3,
+   "label": null
+  },
+  {
+   "id": "G3",
+   "x": 25.643,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 6,
+   "label": null
+  },
+  {
+   "id": "G4",
+   "x": 27.714,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 9,
+   "label": null
+  },
+  {
+   "id": "G5",
+   "x": 29.786,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 12,
+   "label": "+12"
+  },
+  {
+   "id": "G6",
+   "x": 31.857,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 15,
+   "label": null
+  },
+  {
+   "id": "G7",
+   "x": 33.929,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 18,
+   "label": null
+  },
+  {
+   "id": "G8",
+   "x": 36.0,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 21,
+   "label": null
+  },
+  {
+   "id": "G9",
+   "x": 38.071,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 24,
+   "label": "+24"
+  },
+  {
+   "id": "G10",
+   "x": 40.143,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 27,
+   "label": null
+  },
+  {
+   "id": "G11",
+   "x": 42.214,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 30,
+   "label": null
+  },
+  {
+   "id": "G12",
+   "x": 44.286,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 33,
+   "label": null
+  },
+  {
+   "id": "G13",
+   "x": 46.357,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 36,
+   "label": "+36"
+  },
+  {
+   "id": "G14",
+   "x": 48.429,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 39,
+   "label": null
+  },
+  {
+   "id": "G15",
+   "x": 50.5,
+   "y": 15.5,
+   "pkg": "0603",
+   "rot": 90,
+   "color": "white",
+   "gain_db": 42,
+   "label": "+42"
+  }
+ ],
+ "buttons": [
+  {
+   "id": "SW_DN",
+   "x": 16.0,
+   "y": 15.5,
+   "body": [
+    3.4,
+    2.6
+   ],
+   "pads_est": [
+    4.2,
+    3.4
+   ],
+   "glyph": "-"
+  },
+  {
+   "id": "SW_UP",
+   "x": 56.0,
+   "y": 15.5,
+   "body": [
+    3.4,
+    2.6
+   ],
+   "pads_est": [
+    4.2,
+    3.4
+   ],
+   "glyph": "+"
+  }
+ ],
+ "foam": {
+  "diameter": 10.0,
+  "height": 3.0,
+  "count": 2,
+  "side": "face de cima (do protótipo)",
+  "centers": [
+   [
+    6.5,
+    11.0
+   ],
+   [
+    65.5,
+    11.0
+   ]
+  ],
+  "note": "esponja de celula aberta autocolante, 3 pares por embalagem; nenhuma peca alta sob ela alem do microfone"
+ },
+ "keepouts": [
+  {
+   "id": "KO_FOAM_L",
+   "kind": "no_parts_no_silk_no_tall",
+   "shape": "circle",
+   "cx": 6.5,
+   "cy": 11.0,
+   "r": 5.0,
+   "except": "MK_L"
+  },
+  {
+   "id": "KO_FOAM_R",
+   "kind": "no_parts_no_silk_no_tall",
+   "shape": "circle",
+   "cx": 65.5,
+   "cy": 11.0,
+   "r": 5.0,
+   "except": "MK_R"
+  },
+  {
+   "id": "KO_HOLE_L",
+   "kind": "no_copper_no_mask_bridge",
+   "shape": "circle",
+   "cx": 6.5,
+   "cy": 11.0,
+   "r": 1.2,
+   "note": "furo acustico Ø1.8 (do protótipo; E1 confirma no datasheet): sem cobre de outra rede, sem via"
+  },
+  {
+   "id": "KO_HOLE_R",
+   "kind": "no_copper_no_mask_bridge",
+   "shape": "circle",
+   "cx": 65.5,
+   "cy": 11.0,
+   "r": 1.2
+  },
+  {
+   "id": "KO_PLUG_TOP",
+   "kind": "no_parts_no_silk",
+   "shape": "rect",
+   "x0": 30.9,
+   "x1": 41.1,
+   "y0": 0.0,
+   "y1": 4.2,
+   "note": "o plugue passa 1.03 mm acima e abaixo da placa dentro do entalhe"
+  },
+  {
+   "id": "KO_FLEX_NOTCH",
+   "kind": "no_ceramic_caps_no_crystal_no_via_farm",
+   "shape": "rect",
+   "x0": 26.0,
+   "x1": 46.0,
+   "y0": 0.0,
+   "y1": 6.0,
+   "note": "zona de flexao em volta do plugue: sem capacitor ceramico, cristal ou peca grande; trilhas largas, cantos do entalhe com raio 0.3"
+  },
+  {
+   "id": "KO_EDGE",
+   "kind": "copper_to_edge",
+   "value": 0.3
+  }
+ ],
+ "gold": {
+  "mic_rings": [
+   {
+    "cx": 6.5,
+    "cy": 11.0,
+    "r_center": 3.2,
+    "width": 0.3
+   },
+   {
+    "cx": 65.5,
+    "cy": 11.0,
+    "r_center": 3.2,
+    "width": 0.3
+   }
+  ],
+  "contour": {
+   "width": 0.22,
+   "polyline": [
+    [
+     30.6,
+     0.8
+    ],
+    [
+     1.9,
+     0.8
+    ],
+    [
+     0.8,
+     1.9
+    ],
+    [
+     0.8,
+     18.6
+    ],
+    [
+     3.4,
+     21.2
+    ],
+    [
+     68.6,
+     21.2
+    ],
+    [
+     71.2,
+     18.6
+    ],
+    [
+     71.2,
+     1.9
+    ],
+    [
+     70.1,
+     0.8
+    ],
+    [
+     41.4,
+     0.8
+    ]
+   ],
+   "note": "linha de cobre 0.8 mm para dentro da borda, aberta na mascara (ENIG); aberta junto ao entalhe (±5.4 do centro)"
+  },
+  "brand": {
+   "text": "Liebling",
+   "x": 14.5,
+   "y_baseline": 11.7,
+   "size": 3.0,
+   "bbox": [
+    14.5,
+    9.5,
+    26.5,
+    12.4
+   ],
+   "note": "marca em cobre aberto na mascara; 1.0 mm acima do protótipo (ver D3)"
+  },
+  "plug_band": {
+   "x0": 31.5,
+   "x1": 40.5,
+   "y0": 0.0,
+   "y1": 2.5,
+   "note": "faixa dourada do protótipo sobre o entalhe: e a area de solda do plugue, nao arte"
+  }
+ },
+ "silkscreen_proposal": {
+  "min_height": 1.0,
+  "width": 0.8,
+  "stroke": 0.15,
+  "color": "white",
+  "texts": [
+   {
+    "id": "T_LEVEL",
+    "text": "LEVEL dBFS",
+    "x": 14.3,
+    "y_center": 1.8,
+    "height": 1.0,
+    "anchor": "left"
+   },
+   {
+    "id": "T_M1",
+    "text": "-42",
+    "x": 15.9,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M2",
+    "text": "-36",
+    "x": 19.55,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M3",
+    "text": "-30",
+    "x": 23.2,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M4",
+    "text": "-24",
+    "x": 26.85,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M5",
+    "text": "-20",
+    "x": 30.5,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M6",
+    "text": "-16",
+    "x": 34.15,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M7",
+    "text": "-12",
+    "x": 37.8,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M8",
+    "text": "-9",
+    "x": 41.45,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M9",
+    "text": "-6",
+    "x": 45.1,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M10",
+    "text": "-3",
+    "x": 48.75,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M11",
+    "text": "0",
+    "x": 52.4,
+    "y_center": 3.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_M12",
+    "text": "SAT",
+    "x": 56.05,
+    "y_center": 3.4,
+    "height": 1.2,
+    "anchor": "center"
+   },
+   {
+    "id": "T_G1",
+    "text": "0",
+    "x": 21.5,
+    "y_center": 18.2,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_G5",
+    "text": "+12",
+    "x": 29.786,
+    "y_center": 18.2,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_G9",
+    "text": "+24",
+    "x": 38.071,
+    "y_center": 18.2,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_G13",
+    "text": "+36",
+    "x": 46.357,
+    "y_center": 18.2,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_G15",
+    "text": "+42",
+    "x": 50.5,
+    "y_center": 18.2,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_GAIN",
+    "text": "GAIN dB",
+    "x": 36.0,
+    "y_center": 13.0,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_SW_DN",
+    "text": "-",
+    "x": 16.0,
+    "y_center": 18.6,
+    "height": 1.4,
+    "anchor": "center"
+   },
+   {
+    "id": "T_SW_UP",
+    "text": "+",
+    "x": 56.0,
+    "y_center": 18.6,
+    "height": 1.4,
+    "anchor": "center"
+   },
+   {
+    "id": "T_L",
+    "text": "L",
+    "x": 6.5,
+    "y_center": 19.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_R",
+    "text": "R",
+    "x": 65.5,
+    "y_center": 19.4,
+    "height": 1.0,
+    "anchor": "center"
+   },
+   {
+    "id": "T_BATSCH",
+    "text": "BATSCHAUER",
+    "x": 14.7,
+    "y_center": 13.0,
+    "height": 0.9,
+    "anchor": "left"
+   }
+  ],
+  "note": "proposta de D3 (o protótipo usa letras de 0.7 mm, abaixo do minimo de silk da JLCPCB); a eletronica ajusta com o KiCad e re-roda a conferencia"
+ },
+ "heights": {
+  "board_top_z": 1.2,
+  "meter_led": 0.6,
+  "meter_sat": 0.7,
+  "gain_led": 0.5,
+  "button": 1.6,
+  "mic": 1.0,
+  "foam_above_board": 3.0,
+  "max_z_total": 4.2,
+  "plug_z_range": [
+   -1.03,
+   2.23
+  ]
+ },
+ "status": "provisorio nas pecas (footprints reais vem da E1/E3); definitivo nas posicoes de LEDs, botoes e microfones (as do protótipo aprovado)"
+}

@@ -1,0 +1,14 @@
+{
+ "10": {
+  "pecas_por_placa": 6.590899999999999,
+  "tipos_extended": 6,
+  "fixo_pedido": 33.26,
+  "por_placa_sem_pcb": 9.916899999999998
+ },
+ "100": {
+  "pecas_por_placa": 5.883699999999999,
+  "tipos_extended": 6,
+  "fixo_pedido": 77.63,
+  "por_placa_sem_pcb": 6.659999999999999
+ }
+}

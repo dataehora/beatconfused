@@ -1,0 +1,524 @@
+{
+ "massa": {
+  "itens_1.2": {
+   "FR-4 (1.2 mm)": 3.438,
+   "cobre (2 camadas, 35 um, 50 %)": 0.486,
+   "27 LEDs (12 x 0805/1206 + 15 x 0603) a 0,015 g": 0.405,
+   "2 botoes tateis a 0,10 g": 0.2,
+   "RP2040 0,10 + flash 0,03 + LDO 0,03 + 2 microfones 0,02": 0.2,
+   "~60 passivos a 0,003 g": 0.18,
+   "cristal": 0.05,
+   "mascara, ENIG, solda": 0.15,
+   "2 espumas Ø10 x 3 (0,03 g cada)": 0.06
+  },
+  "placa_sem_plugue_1.2_g": 5.17,
+  "plugue_g_assumido": 1.2,
+  "total_1.2_g": 6.37,
+  "total_1.6_g": 7.51,
+  "faixa_g": [
+   5.5,
+   7.5
+  ],
+  "pior_caso_g": 8.0
+ },
+ "cargas": [
+  {
+   "caso": "peso (1 g), celular deitado, placa horizontal",
+   "t": 1.2,
+   "F_N": 0.078,
+   "M_Nmm": 0.9,
+   "tipo": "flexao fraca",
+   "sigma_casca_MPa": 0.2,
+   "F_perna_N": 0.3,
+   "margem_THT": 77.56,
+   "margem_SMD": 24.82
+  },
+  {
+   "caso": "peso (1 g), celular deitado, placa horizontal",
+   "t": 1.6,
+   "F_N": 0.078,
+   "M_Nmm": 0.9,
+   "tipo": "flexao fraca",
+   "sigma_casca_MPa": 0.2,
+   "F_perna_N": 0.3,
+   "margem_THT": 99.72,
+   "margem_SMD": 31.91
+  },
+  {
+   "caso": "manuseio / pau de selfie balancando (10 g)",
+   "t": 1.2,
+   "F_N": 0.785,
+   "M_Nmm": 9.0,
+   "tipo": "flexao fraca",
+   "sigma_casca_MPa": 2.1,
+   "F_perna_N": 3.2,
+   "margem_THT": 7.76,
+   "margem_SMD": 2.48
+  },
+  {
+   "caso": "manuseio / pau de selfie balancando (10 g)",
+   "t": 1.6,
+   "F_N": 0.785,
+   "M_Nmm": 9.0,
+   "tipo": "flexao fraca",
+   "sigma_casca_MPa": 2.1,
+   "F_perna_N": 2.5,
+   "margem_THT": 9.97,
+   "margem_SMD": 3.19
+  },
+  {
+   "caso": "empurrao leve na borda livre (2 N)",
+   "t": 1.2,
+   "F_N": 2.0,
+   "M_Nmm": 40.0,
+   "tipo": "flexao fraca",
+   "sigma_casca_MPa": 9.5,
+   "F_perna_N": 14.3,
+   "margem_THT": 1.75,
+   "margem_SMD": 0.56
+  },
+  {
+   "caso": "empurrao leve na borda livre (2 N)",
+   "t": 1.6,
+   "F_N": 2.0,
+   "M_Nmm": 40.0,
+   "tipo": "flexao fraca",
+   "sigma_casca_MPa": 9.5,
+   "F_perna_N": 11.1,
+   "margem_THT": 2.25,
+   "margem_SMD": 0.72
+  },
+  {
+   "caso": "empurrao forte na borda livre (5 N)",
+   "t": 1.2,
+   "F_N": 5.0,
+   "M_Nmm": 100.0,
+   "tipo": "flexao fraca",
+   "sigma_casca_MPa": 23.6,
+   "F_perna_N": 35.7,
+   "margem_THT": 0.7,
+   "margem_SMD": 0.22
+  },
+  {
+   "caso": "empurrao forte na borda livre (5 N)",
+   "t": 1.6,
+   "F_N": 5.0,
+   "M_Nmm": 100.0,
+   "tipo": "flexao fraca",
+   "sigma_casca_MPa": 23.6,
+   "F_perna_N": 27.8,
+   "margem_THT": 0.9,
+   "margem_SMD": 0.29
+  },
+  {
+   "caso": "empurrao forte na PONTA (5 N, x = 70)",
+   "t": 1.2,
+   "F_N": 5.0,
+   "M_Nmm": 170.0,
+   "tipo": "torque no eixo do plugue",
+   "sigma_casca_MPa": null,
+   "F_perna_N": 12.1,
+   "margem_THT": 2.06,
+   "margem_SMD": 0.66
+  },
+  {
+   "caso": "empurrao forte na PONTA (5 N, x = 70)",
+   "t": 1.6,
+   "F_N": 5.0,
+   "M_Nmm": 170.0,
+   "tipo": "torque no eixo do plugue",
+   "sigma_casca_MPa": null,
+   "F_perna_N": 12.1,
+   "margem_THT": 2.06,
+   "margem_SMD": 0.66
+  }
+ ],
+ "casca": {
+  "w": 8.25,
+  "h": 2.4,
+  "t": 0.25,
+  "I_mm4": 5.07,
+  "Z_mm3": 4.23,
+  "sigma_escoamento_MPa": 200.0,
+  "momento_de_escoamento_Nmm": 846.0
+ },
+ "capacidade_perna_N": {
+  "THT": 25.0,
+  "SMD": 8.0
+ },
+ "empurrao_max_borda_livre_N_1.2": 3.5,
+ "momento_max_juncao_THT_Nmm_1.2": 70.0,
+ "empurrao_max_borda_livre_N_1.6": 4.5,
+ "momento_max_juncao_THT_Nmm_1.6": 90.0,
+ "folga_receptaculo": {
+  "folga_mm": 0.16000000000000014,
+  "inclinacao_rad": 0.0291,
+  "inclinacao_graus": 1.67,
+  "deslocamento_na_borda_livre_mm": 0.65,
+  "deslocamento_no_microfone_mm": 0.33
+ },
+ "validacao_grelha_faixa_20x5": {
+  "grelha_mm": 0.1936,
+  "viga_FL3/3EI_mm": 0.213,
+  "razao": 0.909
+ },
+ "flexao_placa": {
+  "t_1.2": {
+   "peso_1g": {
+    "deflexao_max_mm": 0.0025,
+    "sigma_nominal_MPa": 0.7
+   },
+   "peso_10g": {
+    "deflexao_max_mm": 0.0254,
+    "sigma_nominal_MPa": 6.7
+   },
+   "empurrao_2N_borda_livre_x36": {
+    "deflexao_max_mm": 0.0717,
+    "sigma_nominal_MPa": 35.6
+   },
+   "empurrao_5N_borda_livre_x36": {
+    "deflexao_max_mm": 0.1793,
+    "sigma_nominal_MPa": 88.9
+   },
+   "empurrao_2N_ponta_x70": {
+    "deflexao_max_mm": 0.4948,
+    "sigma_nominal_MPa": 112.0
+   },
+   "empurrao_5N_ponta_x70": {
+    "deflexao_max_mm": 1.2369,
+    "sigma_nominal_MPa": 279.9
+   }
+  },
+  "t_1.6": {
+   "peso_1g": {
+    "deflexao_max_mm": 0.0013,
+    "sigma_nominal_MPa": 0.5
+   },
+   "peso_10g": {
+    "deflexao_max_mm": 0.0131,
+    "sigma_nominal_MPa": 4.6
+   },
+   "empurrao_2N_borda_livre_x36": {
+    "deflexao_max_mm": 0.0303,
+    "sigma_nominal_MPa": 20.0
+   },
+   "empurrao_5N_borda_livre_x36": {
+    "deflexao_max_mm": 0.0756,
+    "sigma_nominal_MPa": 50.0
+   },
+   "empurrao_2N_ponta_x70": {
+    "deflexao_max_mm": 0.2087,
+    "sigma_nominal_MPa": 63.0
+   },
+   "empurrao_5N_ponta_x70": {
+    "deflexao_max_mm": 0.5218,
+    "sigma_nominal_MPa": 157.4
+   }
+  }
+ },
+ "flexao_premissas": {
+  "E_MPa": 17000.0,
+  "nu": 0.15,
+  "malha_mm": 0.5,
+  "engaste": "contorno do entalhe (juncao rigida: melhor caso para a placa)",
+  "Kt_canto": 2.5,
+  "resistencia_flexao_FR4_MPa": "350-450 (adotado 100 como admissivel com cobre, fadiga e Kt)"
+ },
+ "f1_asa_Hz_1.2": 483.0,
+ "f1_asa_Hz_1.6": 673.0,
+ "capinha": {
+  "premissas": {
+   "Lp": 6.65,
+   "D_port": 6.5,
+   "Lmin": 5.0,
+   "tc_max_para_Lp_6.65": 1.65
+  },
+  "tabela": [
+   {
+    "capinha_mm": 0.0,
+    "plugue_mm": 6.65,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 0.0,
+    "plugue_mm": 7.5,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 0.0,
+    "plugue_mm": 8.5,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 0.5,
+    "plugue_mm": 6.65,
+    "insercao_mm": 6.15,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 0.5,
+    "plugue_mm": 7.5,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 0.5,
+    "plugue_mm": 8.5,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 1.0,
+    "plugue_mm": 6.65,
+    "insercao_mm": 5.65,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 1.0,
+    "plugue_mm": 7.5,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 1.0,
+    "plugue_mm": 8.5,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 1.2,
+    "plugue_mm": 6.65,
+    "insercao_mm": 5.45,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 1.2,
+    "plugue_mm": 7.5,
+    "insercao_mm": 6.3,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 1.2,
+    "plugue_mm": 8.5,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 1.5,
+    "plugue_mm": 6.65,
+    "insercao_mm": 5.15,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 1.5,
+    "plugue_mm": 7.5,
+    "insercao_mm": 6.0,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 1.5,
+    "plugue_mm": 8.5,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 2.0,
+    "plugue_mm": 6.65,
+    "insercao_mm": 4.65,
+    "ok_>=5.0": false
+   },
+   {
+    "capinha_mm": 2.0,
+    "plugue_mm": 7.5,
+    "insercao_mm": 5.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 2.0,
+    "plugue_mm": 8.5,
+    "insercao_mm": 6.5,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 2.5,
+    "plugue_mm": 6.65,
+    "insercao_mm": 4.15,
+    "ok_>=5.0": false
+   },
+   {
+    "capinha_mm": 2.5,
+    "plugue_mm": 7.5,
+    "insercao_mm": 5.0,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 2.5,
+    "plugue_mm": 8.5,
+    "insercao_mm": 6.0,
+    "ok_>=5.0": true
+   },
+   {
+    "capinha_mm": 3.0,
+    "plugue_mm": 6.65,
+    "insercao_mm": 3.65,
+    "ok_>=5.0": false
+   },
+   {
+    "capinha_mm": 3.0,
+    "plugue_mm": 7.5,
+    "insercao_mm": 4.5,
+    "ok_>=5.0": false
+   },
+   {
+    "capinha_mm": 3.0,
+    "plugue_mm": 8.5,
+    "insercao_mm": 5.5,
+    "ok_>=5.0": true
+   }
+  ]
+ },
+ "folga_celular_nu": {
+  "min": 0,
+  "max": 0.55,
+  "nominal": 0.15
+ },
+ "rebaixo_minimo": {
+  "conta": "profundidade do receptaculo (6.1-6.9) + capinha tc <= 6.65 + (6.9-D_port)?",
+  "tc_max_nominal": 1.65,
+  "comprimento_para_capinha_2mm": 7.0,
+  "comprimento_para_capinha_3mm": 8.0
+ },
+ "largura": [
+  {
+   "celular": "compacto (64-68)",
+   "largura_celular_mm": 66.0,
+   "capinha_mm": 0.0,
+   "largura_total": 66.0,
+   "sobra_por_lado_mm": -3.0,
+   "porta_deslocada_1mm_pior_lado": -4.0
+  },
+  {
+   "celular": "compacto (64-68)",
+   "largura_celular_mm": 66.0,
+   "capinha_mm": 1.0,
+   "largura_total": 68.0,
+   "sobra_por_lado_mm": -2.0,
+   "porta_deslocada_1mm_pior_lado": -3.0
+  },
+  {
+   "celular": "Pixel 8 / Galaxy S24 (~70.6)",
+   "largura_celular_mm": 70.6,
+   "capinha_mm": 0.0,
+   "largura_total": 70.6,
+   "sobra_por_lado_mm": -0.7,
+   "porta_deslocada_1mm_pior_lado": -1.7
+  },
+  {
+   "celular": "Pixel 8 / Galaxy S24 (~70.6)",
+   "largura_celular_mm": 70.6,
+   "capinha_mm": 1.0,
+   "largura_total": 72.6,
+   "sobra_por_lado_mm": 0.3,
+   "porta_deslocada_1mm_pior_lado": -0.7
+  },
+  {
+   "celular": "iPhone 15/16 (~71.6)",
+   "largura_celular_mm": 71.6,
+   "capinha_mm": 0.0,
+   "largura_total": 71.6,
+   "sobra_por_lado_mm": -0.2,
+   "porta_deslocada_1mm_pior_lado": -1.2
+  },
+  {
+   "celular": "iPhone 15/16 (~71.6)",
+   "largura_celular_mm": 71.6,
+   "capinha_mm": 1.0,
+   "largura_total": 73.6,
+   "sobra_por_lado_mm": 0.8,
+   "porta_deslocada_1mm_pior_lado": -0.2
+  },
+  {
+   "celular": "Pixel 9 (~72)",
+   "largura_celular_mm": 72.0,
+   "capinha_mm": 0.0,
+   "largura_total": 72.0,
+   "sobra_por_lado_mm": 0.0,
+   "porta_deslocada_1mm_pior_lado": -1.0
+  },
+  {
+   "celular": "Pixel 9 (~72)",
+   "largura_celular_mm": 72.0,
+   "capinha_mm": 1.0,
+   "largura_total": 74.0,
+   "sobra_por_lado_mm": 1.0,
+   "porta_deslocada_1mm_pior_lado": 0.0
+  },
+  {
+   "celular": "Galaxy S24+ (~75.9)",
+   "largura_celular_mm": 75.9,
+   "capinha_mm": 0.0,
+   "largura_total": 75.9,
+   "sobra_por_lado_mm": 1.95,
+   "porta_deslocada_1mm_pior_lado": 0.95
+  },
+  {
+   "celular": "Galaxy S24+ (~75.9)",
+   "largura_celular_mm": 75.9,
+   "capinha_mm": 1.0,
+   "largura_total": 77.9,
+   "sobra_por_lado_mm": 2.95,
+   "porta_deslocada_1mm_pior_lado": 1.95
+  },
+  {
+   "celular": "Pixel 9 Pro XL (~76.6)",
+   "largura_celular_mm": 76.6,
+   "capinha_mm": 0.0,
+   "largura_total": 76.6,
+   "sobra_por_lado_mm": 2.3,
+   "porta_deslocada_1mm_pior_lado": 1.3
+  },
+  {
+   "celular": "Pixel 9 Pro XL (~76.6)",
+   "largura_celular_mm": 76.6,
+   "capinha_mm": 1.0,
+   "largura_total": 78.6,
+   "sobra_por_lado_mm": 3.3,
+   "porta_deslocada_1mm_pior_lado": 2.3
+  },
+  {
+   "celular": "iPhone Pro Max (~77.6)",
+   "largura_celular_mm": 77.6,
+   "capinha_mm": 0.0,
+   "largura_total": 77.6,
+   "sobra_por_lado_mm": 2.8,
+   "porta_deslocada_1mm_pior_lado": 1.8
+  },
+  {
+   "celular": "iPhone Pro Max (~77.6)",
+   "largura_celular_mm": 77.6,
+   "capinha_mm": 1.0,
+   "largura_total": 79.6,
+   "sobra_por_lado_mm": 3.8,
+   "porta_deslocada_1mm_pior_lado": 2.8
+  },
+  {
+   "celular": "Galaxy S Ultra (~79)",
+   "largura_celular_mm": 79.0,
+   "capinha_mm": 0.0,
+   "largura_total": 79.0,
+   "sobra_por_lado_mm": 3.5,
+   "porta_deslocada_1mm_pior_lado": 2.5
+  },
+  {
+   "celular": "Galaxy S Ultra (~79)",
+   "largura_celular_mm": 79.0,
+   "capinha_mm": 1.0,
+   "largura_total": 81.0,
+   "sobra_por_lado_mm": 4.5,
+   "porta_deslocada_1mm_pior_lado": 3.5
+  }
+ ]
+}

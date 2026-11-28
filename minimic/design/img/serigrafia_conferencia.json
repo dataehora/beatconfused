@@ -1,0 +1,20 @@
+{
+ "proposta": [],
+ "protótipo_estimado": [
+  {
+   "tipo": "texto x texto",
+   "a": "Liebling",
+   "b": "BATSCHAUER"
+  },
+  {
+   "tipo": "texto x pad",
+   "a": "BATSCHAUER",
+   "b": "SW_DN"
+  }
+ ],
+ "anel_dourado": {
+  "r_proto": 2.4,
+  "canto_do_encapsulamento_4x3": 2.5,
+  "r_proposto": 3.2
+ }
+}

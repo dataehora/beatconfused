@@ -1,0 +1,947 @@
+{
+ "C36405960": {
+  "codigo": "C36405960",
+  "modelo": "IM72D128VV01XTMA1",
+  "marca": "Infineon Technologies",
+  "pacote": "LLGA-5",
+  "classe": "Extended",
+  "estoque": 0,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    1.7667
+   ],
+   [
+    10,
+    1.7224
+   ],
+   [
+    30,
+    1.6945
+   ],
+   [
+    100,
+    1.665
+   ],
+   [
+    102,
+    1.665
+   ],
+   [
+    104,
+    1.665
+   ]
+  ]
+ },
+ "C2040": {
+  "codigo": "C2040",
+  "modelo": "RP2040",
+  "marca": "Raspberry Pi",
+  "pacote": "LQFN-56(7x7)",
+  "classe": "Extended",
+  "estoque": 89457,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    1.0892
+   ],
+   [
+    10,
+    1.0023
+   ],
+   [
+    30,
+    0.9203
+   ],
+   [
+    100,
+    0.858
+   ],
+   [
+    500,
+    0.7399
+   ],
+   [
+    1000,
+    0.7267
+   ]
+  ]
+ },
+ "C2456211": {
+  "codigo": "C2456211",
+  "modelo": "W25Q16JVSNIQ",
+  "marca": "Winbond Elec",
+  "pacote": "SOIC-8",
+  "classe": "Extended",
+  "estoque": 20354,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    1.1188
+   ],
+   [
+    10,
+    0.9695
+   ],
+   [
+    30,
+    0.8284
+   ],
+   [
+    100,
+    0.7234
+   ],
+   [
+    500,
+    0.6792
+   ],
+   [
+    1000,
+    0.6578
+   ]
+  ]
+ },
+ "C9002": {
+  "codigo": "C9002",
+  "modelo": "X322512MSB4SI",
+  "marca": "YXC Crystal Oscillators",
+  "pacote": "SMD3225-4P",
+  "classe": "Basic",
+  "estoque": 491332,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0901
+   ],
+   [
+    50,
+    0.0711
+   ],
+   [
+    150,
+    0.0612
+   ],
+   [
+    500,
+    0.053
+   ],
+   [
+    3000,
+    0.0445
+   ],
+   [
+    6000,
+    0.0425
+   ]
+  ]
+ },
+ "C5446": {
+  "codigo": "C5446",
+  "modelo": "XC6206P332MR-G",
+  "marca": "Torex Semicon",
+  "pacote": "SOT-23-3L",
+  "classe": "Basic",
+  "estoque": 461517,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.1334
+   ],
+   [
+    50,
+    0.1068
+   ],
+   [
+    150,
+    0.0932
+   ],
+   [
+    500,
+    0.0819
+   ],
+   [
+    3000,
+    0.078
+   ],
+   [
+    6000,
+    0.0753
+   ]
+  ]
+ },
+ "C53432944": {
+  "codigo": "C53432944",
+  "modelo": "TYPE-C-MBB008",
+  "marca": "JXTCONN",
+  "pacote": "SMD",
+  "classe": "Extended",
+  "estoque": 245,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.5299
+   ],
+   [
+    10,
+    0.4183
+   ],
+   [
+    60,
+    0.3724
+   ],
+   [
+    120,
+    0.3134
+   ],
+   [
+    480,
+    0.2871
+   ],
+   [
+    1200,
+    0.2707
+   ]
+  ]
+ },
+ "C318884": {
+  "codigo": "C318884",
+  "modelo": "TS-1187A-B-A-B",
+  "marca": "XKB Connection",
+  "pacote": "SMD-4P,5.1x5.1mm",
+  "classe": "Basic",
+  "estoque": 620598,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0197
+   ],
+   [
+    200,
+    0.015
+   ],
+   [
+    600,
+    0.0129
+   ],
+   [
+    4000,
+    0.0111
+   ],
+   [
+    8000,
+    0.0105
+   ],
+   [
+    20000,
+    0.0101
+   ]
+  ]
+ },
+ "C2290": {
+  "codigo": "C2290",
+  "modelo": "KT-0603W",
+  "marca": "Hubei KENTO Elec",
+  "pacote": "0603",
+  "classe": "Basic",
+  "estoque": 2217933,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0123
+   ],
+   [
+    500,
+    0.0095
+   ],
+   [
+    1500,
+    0.0083
+   ],
+   [
+    4000,
+    0.0066
+   ],
+   [
+    24000,
+    0.0062
+   ],
+   [
+    48000,
+    0.006
+   ]
+  ]
+ },
+ "C2297": {
+  "codigo": "C2297",
+  "modelo": "KT-0805G",
+  "marca": "Hubei KENTO Elec",
+  "pacote": "0805",
+  "classe": "Basic",
+  "estoque": 2817615,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0165
+   ],
+   [
+    500,
+    0.0128
+   ],
+   [
+    3000,
+    0.0102
+   ],
+   [
+    6000,
+    0.0089
+   ],
+   [
+    24000,
+    0.0084
+   ],
+   [
+    51000,
+    0.0081
+   ]
+  ]
+ },
+ "C2296": {
+  "codigo": "C2296",
+  "modelo": "KT-0805Y",
+  "marca": "Hubei KENTO Elec",
+  "pacote": "0805",
+  "classe": "Basic",
+  "estoque": 388163,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0149
+   ],
+   [
+    500,
+    0.0118
+   ],
+   [
+    3000,
+    0.0092
+   ],
+   [
+    6000,
+    0.0082
+   ],
+   [
+    24000,
+    0.0073
+   ],
+   [
+    51000,
+    0.0068
+   ]
+  ]
+ },
+ "C84256": {
+  "codigo": "C84256",
+  "modelo": "NCD0805R1",
+  "marca": "Foshan NationStar Optoelectronics",
+  "pacote": "0805",
+  "classe": "Basic",
+  "estoque": 3408947,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0134
+   ],
+   [
+    500,
+    0.0105
+   ],
+   [
+    3000,
+    0.0088
+   ],
+   [
+    6000,
+    0.0078
+   ],
+   [
+    24000,
+    0.0074
+   ],
+   [
+    51000,
+    0.0072
+   ]
+  ]
+ },
+ "C72691": {
+  "codigo": "C72691",
+  "modelo": "KT-1206B",
+  "marca": "Hubei KENTO Elec",
+  "pacote": "1206",
+  "classe": "Extended",
+  "estoque": 1102,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0212
+   ],
+   [
+    200,
+    0.0164
+   ],
+   [
+    600,
+    0.0137
+   ],
+   [
+    3000,
+    0.0121
+   ],
+   [
+    9000,
+    0.0107
+   ],
+   [
+    21000,
+    0.01
+   ]
+  ]
+ },
+ "C25104": {
+  "codigo": "C25104",
+  "modelo": "0402WGF3300TCE",
+  "marca": "UNI-ROYAL(Uniroyal Elec)",
+  "pacote": "0402",
+  "classe": "Basic",
+  "estoque": 1924046,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0011
+   ],
+   [
+    1000,
+    0.0009
+   ],
+   [
+    3000,
+    0.0008
+   ],
+   [
+    10000,
+    0.0007
+   ],
+   [
+    50000,
+    0.0005
+   ],
+   [
+    50200,
+    0.0005
+   ]
+  ]
+ },
+ "C11702": {
+  "codigo": "C11702",
+  "modelo": "0402WGF1001TCE",
+  "marca": "UNI-ROYAL(Uniroyal Elec)",
+  "pacote": "0402",
+  "classe": "Basic",
+  "estoque": 24959272,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0011
+   ],
+   [
+    1000,
+    0.0008
+   ],
+   [
+    3000,
+    0.0007
+   ],
+   [
+    10000,
+    0.0006
+   ],
+   [
+    50000,
+    0.0006
+   ],
+   [
+    50200,
+    0.0006
+   ]
+  ]
+ },
+ "C25744": {
+  "codigo": "C25744",
+  "modelo": "0402WGF1002TCE",
+  "marca": "UNI-ROYAL(Uniroyal Elec)",
+  "pacote": "0402",
+  "classe": "Basic",
+  "estoque": 30781823,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0009
+   ],
+   [
+    1000,
+    0.0007
+   ],
+   [
+    3000,
+    0.0006
+   ],
+   [
+    10000,
+    0.0005
+   ],
+   [
+    50000,
+    0.0005
+   ],
+   [
+    50200,
+    0.0005
+   ]
+  ]
+ },
+ "C25905": {
+  "codigo": "C25905",
+  "modelo": "0402WGF5101TCE",
+  "marca": "UNI-ROYAL(Uniroyal Elec)",
+  "pacote": "0402",
+  "classe": "Basic",
+  "estoque": 5141316,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0014
+   ],
+   [
+    1000,
+    0.0011
+   ],
+   [
+    3000,
+    0.0009
+   ],
+   [
+    10000,
+    0.0008
+   ],
+   [
+    50000,
+    0.0008
+   ],
+   [
+    50200,
+    0.0008
+   ]
+  ]
+ },
+ "C25092": {
+  "codigo": "C25092",
+  "modelo": "0402WGF220JTCE",
+  "marca": "UNI-ROYAL(Uniroyal Elec)",
+  "pacote": "0402",
+  "classe": "Basic",
+  "estoque": 6289921,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0011
+   ],
+   [
+    1000,
+    0.0008
+   ],
+   [
+    3000,
+    0.0007
+   ],
+   [
+    10000,
+    0.0006
+   ],
+   [
+    50000,
+    0.0005
+   ],
+   [
+    50200,
+    0.0005
+   ]
+  ]
+ },
+ "C25100": {
+  "codigo": "C25100",
+  "modelo": "0402WGF270JTCE",
+  "marca": "UNI-ROYAL(Uniroyal Elec)",
+  "pacote": "0402",
+  "classe": "Extended",
+  "estoque": 558988,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0012
+   ],
+   [
+    1000,
+    0.001
+   ],
+   [
+    3000,
+    0.0009
+   ],
+   [
+    10000,
+    0.0008
+   ],
+   [
+    50000,
+    0.0006
+   ],
+   [
+    50200,
+    0.0006
+   ]
+  ]
+ },
+ "C1525": {
+  "codigo": "C1525",
+  "modelo": "CL05B104KO5NNNC",
+  "marca": "Samsung Electro-Mechanics",
+  "pacote": "0402",
+  "classe": "Basic",
+  "estoque": 27776782,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0029
+   ],
+   [
+    1000,
+    0.0022
+   ],
+   [
+    3000,
+    0.0019
+   ],
+   [
+    10000,
+    0.0017
+   ],
+   [
+    50000,
+    0.0016
+   ],
+   [
+    50200,
+    0.0016
+   ]
+  ]
+ },
+ "C52923": {
+  "codigo": "C52923",
+  "modelo": "CL05A105KA5NQNC",
+  "marca": "Samsung Electro-Mechanics",
+  "pacote": "0402",
+  "classe": "Basic",
+  "estoque": 10805079,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0046
+   ],
+   [
+    1000,
+    0.0035
+   ],
+   [
+    3000,
+    0.003
+   ],
+   [
+    10000,
+    0.0026
+   ],
+   [
+    50000,
+    0.0024
+   ],
+   [
+    100000,
+    0.0023
+   ]
+  ]
+ },
+ "C19702": {
+  "codigo": "C19702",
+  "modelo": "CL10A106KP8NNNC",
+  "marca": "Samsung Electro-Mechanics",
+  "pacote": "0603",
+  "classe": "Basic",
+  "estoque": 12597958,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0112
+   ],
+   [
+    200,
+    0.0085
+   ],
+   [
+    600,
+    0.0073
+   ],
+   [
+    4000,
+    0.0064
+   ],
+   [
+    8000,
+    0.006
+   ],
+   [
+    20000,
+    0.0058
+   ]
+  ]
+ },
+ "C1555": {
+  "codigo": "C1555",
+  "modelo": "0402CG220J500NT",
+  "marca": "FH (Guangdong Fenghua Advanced Tech)",
+  "pacote": "0402",
+  "classe": "Basic",
+  "estoque": 1997674,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0018
+   ],
+   [
+    1000,
+    0.0014
+   ],
+   [
+    3000,
+    0.0011
+   ],
+   [
+    10000,
+    0.001
+   ],
+   [
+    50000,
+    0.0008
+   ],
+   [
+    50200,
+    0.0008
+   ]
+  ]
+ },
+ "C5119248": {
+  "codigo": "C5119248",
+  "modelo": "IM72D128V01XTMA1",
+  "marca": "Infineon Technologies",
+  "pacote": "SMD-5P",
+  "classe": "Extended",
+  "estoque": 4837,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    3.12
+   ],
+   [
+    10,
+    2.6476
+   ],
+   [
+    30,
+    2.3523
+   ],
+   [
+    100,
+    2.0505
+   ],
+   [
+    500,
+    1.9127
+   ],
+   [
+    1000,
+    1.8537
+   ]
+  ]
+ },
+ "C53432943": {
+  "codigo": "C53432943",
+  "modelo": "TYPE-C-MAB169",
+  "marca": "JXTCONN",
+  "pacote": "SMD",
+  "classe": "Extended",
+  "estoque": 155,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.3631
+   ],
+   [
+    50,
+    0.2868
+   ],
+   [
+    120,
+    0.254
+   ],
+   [
+    480,
+    0.2133
+   ],
+   [
+    2400,
+    0.1951
+   ],
+   [
+    4800,
+    0.1841
+   ]
+  ]
+ },
+ "C2687116": {
+  "codigo": "C2687116",
+  "modelo": "USBLC6-2SC6",
+  "marca": "UMW(Youtai Semiconductor Co., Ltd.)",
+  "pacote": "SOT-23-6",
+  "classe": "Extended",
+  "estoque": 149624,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.0479
+   ],
+   [
+    100,
+    0.0386
+   ],
+   [
+    300,
+    0.0338
+   ],
+   [
+    3000,
+    0.0245
+   ],
+   [
+    6000,
+    0.0232
+   ],
+   [
+    9000,
+    0.0222
+   ]
+  ]
+ },
+ "C97521": {
+  "codigo": "C97521",
+  "modelo": "W25Q128JVSIQ",
+  "marca": "Winbond Elec",
+  "pacote": "SOIC-8-208mil",
+  "classe": "Basic",
+  "estoque": 61499,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    2.1604
+   ],
+   [
+    10,
+    1.8701
+   ],
+   [
+    30,
+    1.665
+   ],
+   [
+    100,
+    1.478
+   ],
+   [
+    500,
+    1.3927
+   ],
+   [
+    1000,
+    1.3566
+   ]
+  ]
+ },
+ "C404027": {
+  "codigo": "C404027",
+  "modelo": "TLV75533PDBVR",
+  "marca": "Texas Instruments",
+  "pacote": "SOT-23-5",
+  "classe": "Extended",
+  "estoque": 63040,
+  "montagem": null,
+  "tiers": [
+   [
+    1,
+    0.1221
+   ],
+   [
+    50,
+    0.0962
+   ],
+   [
+    150,
+    0.0829
+   ],
+   [
+    500,
+    0.0719
+   ],
+   [
+    3000,
+    0.0681
+   ],
+   [
+    6000,
+    0.0655
+   ]
+  ]
+ }
+}

@@ -1,0 +1,118 @@
+[resp]
+     10.0 Hz  chain  -0.329 dB  sensor+chain  -3.773
+     12.0 Hz  chain  -0.231 dB  sensor+chain  -2.880
+     14.0 Hz  chain  -0.172 dB  sensor+chain  -2.260
+     15.0 Hz  chain  -0.150 dB  sensor+chain  -2.019
+     16.0 Hz  chain  -0.132 dB  sensor+chain  -1.813
+     18.0 Hz  chain  -0.105 dB  sensor+chain  -1.483
+     20.0 Hz  chain  -0.086 dB  sensor+chain  -1.234
+     25.0 Hz  chain  -0.056 dB  sensor+chain  -0.824
+     30.0 Hz  chain  -0.039 dB  sensor+chain  -0.587
+     35.0 Hz  chain  -0.029 dB  sensor+chain  -0.438
+     41.0 Hz  chain  -0.022 dB  sensor+chain  -0.324
+     50.0 Hz  chain  -0.015 dB  sensor+chain  -0.220
+     63.0 Hz  chain  -0.010 dB  sensor+chain  -0.141
+     80.0 Hz  chain  -0.007 dB  sensor+chain  -0.088
+    100.0 Hz  chain  -0.005 dB  sensor+chain  -0.057
+    160.0 Hz  chain  -0.003 dB  sensor+chain  -0.023
+    250.0 Hz  chain  -0.002 dB  sensor+chain  -0.010
+    400.0 Hz  chain  -0.002 dB  sensor+chain  -0.005
+    630.0 Hz  chain  -0.001 dB  sensor+chain  -0.002
+   1000.0 Hz  chain  +0.000 dB  sensor+chain  -0.000
+   1600.0 Hz  chain  +0.003 dB  sensor+chain  +0.003
+   2500.0 Hz  chain  +0.009 dB  sensor+chain  +0.009
+   4000.0 Hz  chain  +0.026 dB  sensor+chain  +0.026
+   6300.0 Hz  chain  +0.061 dB  sensor+chain  +0.061
+   8000.0 Hz  chain  +0.091 dB  sensor+chain  +0.091
+  10000.0 Hz  chain  +0.124 dB  sensor+chain  +0.124
+  12500.0 Hz  chain  +0.151 dB  sensor+chain  +0.151
+  14000.0 Hz  chain  +0.155 dB  sensor+chain  +0.155
+  16000.0 Hz  chain  +0.139 dB  sensor+chain  +0.139
+  18000.0 Hz  chain  +0.094 dB  sensor+chain  +0.094
+  20000.0 Hz  chain  +0.015 dB  sensor+chain  +0.015
+  22000.0 Hz  chain  -0.631 dB  sensor+chain  -0.631
+  24000.0 Hz  chain  -6.430 dB  sensor+chain  -6.431
+   (12.0 s)
+[ruido]
+  ideal_sinc5        20-20k: -104.50 dBFS  A: -112.57   | brickwall -102.55 / -112.68 | excesso A +0.12 dB
+  mic_sinc5          20-20k: -103.07 dBFS  A: -108.42   | brickwall -101.70 / -108.50 | excesso A +0.08 dB
+  ideal_sinc4        20-20k: -104.27 dBFS  A: -112.33   | brickwall -102.55 / -112.68 | excesso A +0.35 dB
+  mic_sinc4          20-20k: -102.88 dBFS  A: -108.31   | brickwall -101.70 / -108.50 | excesso A +0.19 dB
+  ideal_sinc5_mod4   20-20k: -108.48 dBFS  A: -116.31   | brickwall -104.57 / -116.42 | excesso A +0.11 dB
+  ideal_sinc4_mod4   20-20k: -107.75 dBFS  A: -115.58   | brickwall -104.57 / -116.42 | excesso A +0.84 dB
+   (4.0 s)
+[dist]
+  41 Hz  -6 dBFS                           THD+N(A)  -96.04 dB  (B)  -96.04 dB  {'HD2': -168.44418513230522, 'HD3': -167.72787225640454, 'HD4': -169.33427057270177, 'HD5': -168.77215854179337}
+  41 Hz -26 dBFS                           THD+N(A)  -74.92 dB  (B)  -74.92 dB  {'HD2': -159.85271129430916, 'HD3': -152.04938228253107, 'HD4': -150.69824723494636, 'HD5': -152.29728492961405}
+  1 kHz  -6 dBFS                           THD+N(A)  -95.63 dB  (B)  -95.63 dB  {'HD2': -170.55763181489692, 'HD3': -169.5215267141365, 'HD4': -167.245907351394, 'HD5': -156.81036290341206}
+  1 kHz -26 dBFS                           THD+N(A)  -74.97 dB  (B)  -74.97 dB  {'HD2': -152.45538033212796, 'HD3': -152.833173413597, 'HD4': -146.71067523259, 'HD5': -153.24740938922574}
+  1 kHz -36 dBFS (94 dB SPL)               THD+N(A)  -63.14 dB  (B)  -63.14 dB  {'HD2': -149.6936024151733, 'HD3': -142.38207950259536, 'HD4': -143.2561791663353, 'HD5': -133.07432599748898}
+  acorde La menor + E1                     THD+N(A)  -88.35 dB  (B)  -88.35 dB  None
+  acorde forte (5 x -18 dBFS) + 1 kHz      THD+N(A)  -90.48 dB  (B)  -90.48 dB  None
+   (3.2 s)
+[alias]
+  in     26000 Hz -> alias   22000 Hz :   -25.1 dB
+  in     28000 Hz -> alias   20000 Hz :   -92.0 dB
+  in     30000 Hz -> alias   18000 Hz :   -90.5 dB
+  in     32000 Hz -> alias   16000 Hz :   -91.9 dB
+  in     36000 Hz -> alias   12000 Hz :  -107.3 dB
+  in     37500 Hz -> alias   10500 Hz :   -92.7 dB
+  in     40000 Hz -> alias    8000 Hz :   -96.3 dB
+  in     44000 Hz -> alias    4000 Hz :  -112.5 dB
+  in     47000 Hz -> alias    1000 Hz :  -105.4 dB
+  in     52000 Hz -> alias    4000 Hz :  -120.0 dB
+  in     60000 Hz -> alias   12000 Hz :  -131.3 dB
+  in     72000 Hz -> alias   24000 Hz :   -71.4 dB
+  in     76000 Hz -> alias   20000 Hz :  -109.6 dB
+  in     90000 Hz -> alias    6000 Hz :  -114.4 dB
+  in    100000 Hz -> alias    4000 Hz :  -118.4 dB
+  in    150000 Hz -> alias    6000 Hz :  -157.9 dB
+  in    180000 Hz -> alias   12000 Hz :  -119.9 dB
+  in    190000 Hz -> alias    2000 Hz :  -169.6 dB
+  in    194000 Hz -> alias    2000 Hz :  -166.9 dB
+  in    200000 Hz -> alias    8000 Hz :  -139.6 dB
+  in    250000 Hz -> alias   10000 Hz :  -142.5 dB
+  in    372000 Hz -> alias   12000 Hz :  -138.0 dB
+  in    380000 Hz -> alias    4000 Hz :  -167.7 dB
+  in    388000 Hz -> alias    4000 Hz :  -164.2 dB
+  in    396000 Hz -> alias   12000 Hz :  -136.5 dB
+  in    570000 Hz -> alias    6000 Hz :  -168.9 dB
+  in    760000 Hz -> alias    8000 Hz :  -160.1 dB
+  in   1000000 Hz -> alias    8000 Hz :  -154.3 dB
+  in   1400000 Hz -> alias    8000 Hz :  -155.9 dB
+   (9.8 s)
+[sat]
+   110.0 dB SPL: fund -20.00 dBFS pico -20.00 THD   0.00 %  SAT False
+   120.0 dB SPL: fund -10.00 dBFS pico -10.00 THD   0.01 %  SAT False
+   124.0 dB SPL: fund  -6.06 dBFS pico  -6.12 THD   0.51 %  SAT False
+   125.0 dB SPL: fund  -5.16 dBFS pico  -5.34 THD   1.42 %  SAT False
+   126.0 dB SPL: fund  -4.40 dBFS pico  -4.80 THD   3.37 %  SAT False
+   127.0 dB SPL: fund  -3.82 dBFS pico  -4.52 THD   6.42 %  SAT True
+   127.5 dB SPL: fund  -3.59 dBFS pico  -4.44 THD   8.19 %  SAT True
+   128.0 dB SPL: fund  -3.41 dBFS pico  -4.40 THD  10.02 %  SAT True
+   129.0 dB SPL: fund  -3.12 dBFS pico  -4.35 THD  13.65 %  SAT True
+   130.0 dB SPL: fund  -2.92 dBFS pico  -4.32 THD  17.10 %  SAT True
+   132.0 dB SPL: fund  -2.65 dBFS pico  -4.27 THD  23.21 %  SAT True
+   134.0 dB SPL: fund  -2.50 dBFS pico  -4.25 THD  28.08 %  SAT True
+   (8.7 s)
+[ganho]
+  erro maximo de ganho 0.0002 dB
+  1.5 dB   banda lateral: seco -70.1 dB, rampa -91.2 dB, acomoda 29.5 ms
+  +42 dB   banda lateral: seco -54.0 dB, rampa -80.1 dB, acomoda 49.0 ms
+  -1.5 dB  banda lateral: seco -68.3 dB, rampa -91.1 dB, acomoda 31.3 ms
+   (0.6 s)
+[medidor]
+    1000 Hz: erro de limiar, pior fase (dB) [-0.0, -0.0, -0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0, -0.1]
+    8000 Hz: erro de limiar, pior fase (dB) [1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.15]
+   16000 Hz: erro de limiar, pior fase (dB) [1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.25, 1.15]
+  queda medida: 20.0 dB/s
+  SAT (corte): {'primeiro_ms': 0, 'ultimo_ms': 2437, 'duracao_ms_depois_do_ultimo_evento': 1937, 'piscadas_por_s': 7.796471070988922, 'vermelhos_seguem_SAT': True}
+   (3.0 s)
+[cpu]
+  pess: 91.2 Mc/s  133 MHz 69 %  200 MHz 46 %
+  otim: 74.8 Mc/s  133 MHz 56 %  200 MHz 37 %
+   (0.1 s)
+[arranque]
+  dc_fast=True -> {'pico_L_dbfs_ms0_50': -40.19783874002031, 'pico_L_dbfs_ms100_600': -72.14600298396745, 'tempo_ate_abaixo_de_-60dBFS_ms': 0.0, 'acomoda_ms': 11.791666666666666}
+  dc_fast=False -> {'pico_L_dbfs_ms0_50': -39.69420213486754, 'pico_L_dbfs_ms100_600': -55.11741220788871, 'tempo_ate_abaixo_de_-60dBFS_ms': 0.0, 'acomoda_ms': 131.375}
+   (0.3 s)

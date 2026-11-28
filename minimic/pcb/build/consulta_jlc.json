@@ -1,0 +1,9862 @@
+{
+ "IM72D128": [
+  {
+   "codigo": "C5301767",
+   "modelo": "IM72D128V01",
+   "marca": "Infineon Technologies",
+   "pacote": "PG-LLGA-5-3",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C5119248",
+   "modelo": "IM72D128V01XTMA1",
+   "marca": "Infineon Technologies",
+   "pacote": "SMD-5P",
+   "classe": "Extended",
+   "estoque": 4837,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     3.12
+    ],
+    [
+     10,
+     2.6476
+    ],
+    [
+     30,
+     2.3523
+    ],
+    [
+     100,
+     2.0505
+    ],
+    [
+     500,
+     1.9127
+    ],
+    [
+     1000,
+     1.8537
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900312322",
+   "modelo": "IM72D128V01XTMA",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LGA-5(3x4)",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C3171734",
+   "modelo": "IM72D128V01XTSA1",
+   "marca": "Infineon Technologies",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     6.3531
+    ],
+    [
+     10,
+     5.4756
+    ],
+    [
+     30,
+     4.9408
+    ],
+    [
+     100,
+     4.4913
+    ],
+    [
+     102,
+     4.4913
+    ],
+    [
+     104,
+     4.4913
+    ]
+   ]
+  },
+  {
+   "codigo": "C36405960",
+   "modelo": "IM72D128VV01XTMA1",
+   "marca": "Infineon Technologies",
+   "pacote": "LLGA-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.7667
+    ],
+    [
+     10,
+     1.7224
+    ],
+    [
+     30,
+     1.6945
+    ],
+    [
+     100,
+     1.665
+    ],
+    [
+     102,
+     1.665
+    ],
+    [
+     104,
+     1.665
+    ]
+   ]
+  },
+  {
+   "codigo": "C17309293",
+   "modelo": "KITIM72D128V01FLEXTOBO1",
+   "marca": "Infineon Technologies",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     130.2197
+    ],
+    [
+     10,
+     130.2197
+    ],
+    [
+     30,
+     130.2197
+    ],
+    [
+     200,
+     51.9583
+    ],
+    [
+     500,
+     50.2228
+    ],
+    [
+     1000,
+     49.3649
+    ]
+   ]
+  }
+ ],
+ "IM69D130": [
+  {
+   "codigo": "C54305019",
+   "modelo": "IM69D130A",
+   "marca": "Infineon Technologies",
+   "pacote": "LGA-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C536262",
+   "modelo": "IM69D130V01",
+   "marca": "Infineon Technologies",
+   "pacote": "SMD-5P,4x3mm",
+   "classe": "Extended",
+   "estoque": 992,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     3.1167
+    ],
+    [
+     10,
+     2.6312
+    ],
+    [
+     30,
+     2.3261
+    ],
+    [
+     100,
+     2.0144
+    ],
+    [
+     500,
+     1.8733
+    ],
+    [
+     1000,
+     1.8126
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900015304",
+   "modelo": "IM69D130V01XTSA1",
+   "marca": "JLCPCB Assembly",
+   "pacote": "MIC-SMD_5P-L4.0-W3.0-P0.70-TR_IM69D130V01",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0058
+    ],
+    [
+     200,
+     0.0021
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900035948",
+   "modelo": "IM69D130V01XTSA1",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900066093",
+   "modelo": "IM69D130V01XTSA1",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD,4X3mm",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C20191539",
+   "modelo": "IM69D130V11XTSA2",
+   "marca": "Infineon Technologies",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     2.9527
+    ],
+    [
+     10,
+     2.9527
+    ],
+    [
+     12,
+     2.9527
+    ],
+    [
+     200,
+     1.1795
+    ],
+    [
+     500,
+     1.1401
+    ],
+    [
+     1000,
+     1.1204
+    ]
+   ]
+  },
+  {
+   "codigo": "C42464166",
+   "modelo": "IM69D130V01XTSA1",
+   "marca": "Infineon Technologies",
+   "pacote": "SMD,4x3mm",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     3.0117
+    ],
+    [
+     10,
+     3.0117
+    ],
+    [
+     12,
+     3.0117
+    ],
+    [
+     200,
+     1.2024
+    ],
+    [
+     500,
+     1.1631
+    ],
+    [
+     1000,
+     1.1417
+    ]
+   ]
+  },
+  {
+   "codigo": "C17644587",
+   "modelo": "EVALIM69D130FLEXKITTOBO1",
+   "marca": "Infineon Technologies",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     105.698
+    ],
+    [
+     10,
+     105.698
+    ],
+    [
+     30,
+     105.698
+    ],
+    [
+     200,
+     42.1752
+    ],
+    [
+     500,
+     42.1752
+    ],
+    [
+     1000,
+     42.1752
+    ]
+   ]
+  },
+  {
+   "codigo": "C19480121",
+   "modelo": "EVALIM69D130V01FLEXTOBO1",
+   "marca": "Infineon Technologies",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     68.5899
+    ],
+    [
+     10,
+     68.5899
+    ],
+    [
+     30,
+     68.5899
+    ],
+    [
+     200,
+     27.3677
+    ],
+    [
+     500,
+     26.4541
+    ],
+    [
+     1000,
+     26.0013
+    ]
+   ]
+  }
+ ],
+ "IM72D128V01": [
+  {
+   "codigo": "C5301767",
+   "modelo": "IM72D128V01",
+   "marca": "Infineon Technologies",
+   "pacote": "PG-LLGA-5-3",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900312322",
+   "modelo": "IM72D128V01XTMA",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LGA-5(3x4)",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C5119248",
+   "modelo": "IM72D128V01XTMA1",
+   "marca": "Infineon Technologies",
+   "pacote": "SMD-5P",
+   "classe": "Extended",
+   "estoque": 4837,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     3.12
+    ],
+    [
+     10,
+     2.6476
+    ],
+    [
+     30,
+     2.3523
+    ],
+    [
+     100,
+     2.0505
+    ],
+    [
+     500,
+     1.9127
+    ],
+    [
+     1000,
+     1.8537
+    ]
+   ]
+  },
+  {
+   "codigo": "C3171734",
+   "modelo": "IM72D128V01XTSA1",
+   "marca": "Infineon Technologies",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     6.3531
+    ],
+    [
+     10,
+     5.4756
+    ],
+    [
+     30,
+     4.9408
+    ],
+    [
+     100,
+     4.4913
+    ],
+    [
+     102,
+     4.4913
+    ],
+    [
+     104,
+     4.4913
+    ]
+   ]
+  },
+  {
+   "codigo": "C17309293",
+   "modelo": "KITIM72D128V01FLEXTOBO1",
+   "marca": "Infineon Technologies",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     130.2197
+    ],
+    [
+     10,
+     130.2197
+    ],
+    [
+     30,
+     130.2197
+    ],
+    [
+     200,
+     51.9583
+    ],
+    [
+     500,
+     50.2228
+    ],
+    [
+     1000,
+     49.3649
+    ]
+   ]
+  }
+ ],
+ "RP2040": [
+  {
+   "codigo": "C2040",
+   "modelo": "RP2040",
+   "marca": "Raspberry Pi",
+   "pacote": "LQFN-56(7x7)",
+   "classe": "Extended",
+   "estoque": 89462,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0892
+    ],
+    [
+     10,
+     1.0023
+    ],
+    [
+     30,
+     0.9203
+    ],
+    [
+     100,
+     0.858
+    ],
+    [
+     500,
+     0.7399
+    ],
+    [
+     1000,
+     0.7267
+    ]
+   ]
+  },
+  {
+   "codigo": "C5350143",
+   "modelo": "RP2040-Zero",
+   "marca": "Waveshare",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 50,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     5.9644
+    ],
+    [
+     10,
+     5.1426
+    ],
+    [
+     30,
+     4.6537
+    ],
+    [
+     100,
+     4.16
+    ],
+    [
+     500,
+     3.932
+    ],
+    [
+     1000,
+     3.8286
+    ]
+   ]
+  },
+  {
+   "codigo": "C5374683",
+   "modelo": "RP2040-LCD-1.28",
+   "marca": "Waveshare",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 6,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     19.9993
+    ],
+    [
+     10,
+     19.0544
+    ],
+    [
+     30,
+     17.4173
+    ],
+    [
+     100,
+     15.9886
+    ],
+    [
+     102,
+     15.9886
+    ],
+    [
+     104,
+     15.9886
+    ]
+   ]
+  },
+  {
+   "codigo": "C2961140",
+   "modelo": "RP2040",
+   "marca": "Raspberry Pi",
+   "pacote": "QFN-56-EP(7x7)",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.5354
+    ],
+    [
+     10,
+     1.5043
+    ],
+    [
+     30,
+     1.4829
+    ],
+    [
+     100,
+     1.4616
+    ],
+    [
+     102,
+     1.4616
+    ],
+    [
+     104,
+     1.4616
+    ]
+   ]
+  },
+  {
+   "codigo": "C7437606",
+   "modelo": "RP2040-Tiny",
+   "marca": "Waveshare",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     6.5762
+    ],
+    [
+     10,
+     5.6773
+    ],
+    [
+     30,
+     5.1311
+    ],
+    [
+     100,
+     4.6718
+    ],
+    [
+     102,
+     4.6718
+    ],
+    [
+     104,
+     4.6718
+    ]
+   ]
+  },
+  {
+   "codigo": "C2761095",
+   "modelo": "RP2040",
+   "marca": "Raspberry Pi",
+   "pacote": "QFN-56",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C5157610",
+   "modelo": "RP2040CT",
+   "marca": "Raspberry Pi",
+   "pacote": "QFN-56",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C6855416",
+   "modelo": "RP2040TR13",
+   "marca": "Raspberry Pi",
+   "pacote": "QFN-56_7X7",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900154720",
+   "modelo": "RP2040-Plus",
+   "marca": "JLCPCB Assembly",
+   "pacote": "Through hole",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C5306791",
+   "modelo": "RP2040-based",
+   "marca": "Raspberry Pi",
+   "pacote": "LCC",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "W25Q16JVSNIQ": [
+  {
+   "codigo": "C2456211",
+   "modelo": "W25Q16JVSNIQ",
+   "marca": "Winbond Elec",
+   "pacote": "SOIC-8",
+   "classe": "Extended",
+   "estoque": 20354,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.1188
+    ],
+    [
+     10,
+     0.9695
+    ],
+    [
+     30,
+     0.8284
+    ],
+    [
+     100,
+     0.7234
+    ],
+    [
+     500,
+     0.6792
+    ],
+    [
+     1000,
+     0.6578
+    ]
+   ]
+  },
+  {
+   "codigo": "C115407",
+   "modelo": "W25Q16JVSNIQ",
+   "marca": "Winbond Elec",
+   "pacote": "SOIC-8",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.1975
+    ],
+    [
+     10,
+     1.0023
+    ],
+    [
+     30,
+     0.8957
+    ],
+    [
+     100,
+     0.7349
+    ],
+    [
+     500,
+     0.6808
+    ],
+    [
+     1000,
+     0.6562
+    ]
+   ]
+  },
+  {
+   "codigo": "C17673479",
+   "modelo": "W25Q16JVSNIQ TR",
+   "marca": "Winbond Elec",
+   "pacote": "SOIC-8",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.52
+    ],
+    [
+     10,
+     0.52
+    ],
+    [
+     12,
+     0.52
+    ],
+    [
+     200,
+     0.2084
+    ],
+    [
+     500,
+     0.2018
+    ],
+    [
+     1000,
+     0.1985
+    ]
+   ]
+  },
+  {
+   "codigo": "C52207884",
+   "modelo": "W25Q16JVSNIQ",
+   "marca": "Winbond Elec",
+   "pacote": "SOIC-8",
+   "classe": "Extended",
+   "estoque": 390,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.437
+    ],
+    [
+     10,
+     1.1745
+    ],
+    [
+     30,
+     1.0302
+    ],
+    [
+     100,
+     0.8678
+    ],
+    [
+     480,
+     0.7956
+    ],
+    [
+     960,
+     0.7628
+    ]
+   ]
+  }
+ ],
+ "W25Q32JVSSIQ": [
+  {
+   "codigo": "C179173",
+   "modelo": "W25Q32JVSSIQ",
+   "marca": "Winbond Elec",
+   "pacote": "SOIC-8-208mil",
+   "classe": "Extended",
+   "estoque": 6143,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.5059
+    ],
+    [
+     10,
+     1.3025
+    ],
+    [
+     30,
+     1.1581
+    ],
+    [
+     100,
+     1.0253
+    ],
+    [
+     500,
+     0.9646
+    ],
+    [
+     1000,
+     0.94
+    ]
+   ]
+  },
+  {
+   "codigo": "C82344",
+   "modelo": "W25Q32JVSSIQ",
+   "marca": "Winbond Elec",
+   "pacote": "SOIC-8-208mil",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.6552
+    ],
+    [
+     10,
+     1.3878
+    ],
+    [
+     30,
+     1.2221
+    ],
+    [
+     90,
+     1.0499
+    ],
+    [
+     540,
+     0.9728
+    ],
+    [
+     990,
+     0.94
+    ]
+   ]
+  },
+  {
+   "codigo": "C2834491",
+   "modelo": "W25Q32JVSSIQ",
+   "marca": "Winbond Elec",
+   "pacote": "SOIC-8-208mil",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.3025
+    ],
+    [
+     10,
+     1.0712
+    ],
+    [
+     30,
+     0.9433
+    ],
+    [
+     300,
+     0.7563
+    ],
+    [
+     600,
+     0.6923
+    ],
+    [
+     900,
+     0.6628
+    ]
+   ]
+  },
+  {
+   "codigo": "C2441426",
+   "modelo": "W25Q32JVSSIQ TR",
+   "marca": "Winbond Elec",
+   "pacote": "SOIC-8-208mil",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.5397
+    ],
+    [
+     10,
+     0.4446
+    ],
+    [
+     30,
+     0.397
+    ],
+    [
+     100,
+     0.3511
+    ],
+    [
+     500,
+     0.3216
+    ],
+    [
+     1000,
+     0.3068
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900155257",
+   "modelo": "W25Q32JVSSIQ(SOIC-8)",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SOIC-8",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "12MHz crystal 3225": [
+  {
+   "codigo": "C160457",
+   "modelo": "HSO321S 12MHZ 3.3V -40~+85℃",
+   "marca": "HELE(Harmony Elec)",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 2602,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.7366
+    ],
+    [
+     10,
+     0.6513
+    ],
+    [
+     30,
+     0.6086
+    ],
+    [
+     100,
+     0.5676
+    ],
+    [
+     500,
+     0.5414
+    ],
+    [
+     1000,
+     0.5282
+    ]
+   ]
+  },
+  {
+   "codigo": "C295522",
+   "modelo": "OXETGLJANF-12MHZ",
+   "marca": "TAITIEN Elec",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 1479,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.5906
+    ],
+    [
+     10,
+     0.484
+    ],
+    [
+     30,
+     0.4315
+    ],
+    [
+     100,
+     0.379
+    ],
+    [
+     500,
+     0.3347
+    ],
+    [
+     1000,
+     0.3183
+    ]
+   ]
+  },
+  {
+   "codigo": "C481400",
+   "modelo": "NX3225SA-12MHz-STD-CSR-6",
+   "marca": "NDK",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 3287,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4872
+    ],
+    [
+     10,
+     0.3921
+    ],
+    [
+     30,
+     0.3527
+    ],
+    [
+     100,
+     0.3019
+    ],
+    [
+     500,
+     0.2658
+    ],
+    [
+     1000,
+     0.251
+    ]
+   ]
+  },
+  {
+   "codigo": "C481407",
+   "modelo": "NX3225GA-12MHZ-STD-CRG-2",
+   "marca": "NDK",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 5651,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2768
+    ],
+    [
+     50,
+     0.2202
+    ],
+    [
+     150,
+     0.1959
+    ],
+    [
+     500,
+     0.1657
+    ],
+    [
+     3000,
+     0.1523
+    ],
+    [
+     6000,
+     0.1441
+    ]
+   ]
+  },
+  {
+   "codigo": "C5160137",
+   "modelo": "XXHCELNANF-12MHZ",
+   "marca": "TAITIEN Elec",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 2062,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1387
+    ],
+    [
+     50,
+     0.1103
+    ],
+    [
+     150,
+     0.0962
+    ],
+    [
+     500,
+     0.0855
+    ],
+    [
+     3000,
+     0.0704
+    ],
+    [
+     6000,
+     0.0662
+    ]
+   ]
+  },
+  {
+   "codigo": "C5160143",
+   "modelo": "XXCBELNAOF-12MHZ",
+   "marca": "TAITIEN Elec",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 537,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1469
+    ],
+    [
+     50,
+     0.1168
+    ],
+    [
+     150,
+     0.1019
+    ],
+    [
+     500,
+     0.0908
+    ],
+    [
+     3000,
+     0.0749
+    ],
+    [
+     6000,
+     0.0704
+    ]
+   ]
+  },
+  {
+   "codigo": "C5382664",
+   "modelo": "OXETDLJANF-12MHZ",
+   "marca": "TAITIEN Elec",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 1610,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4249
+    ],
+    [
+     10,
+     0.3741
+    ],
+    [
+     30,
+     0.3494
+    ],
+    [
+     100,
+     0.3248
+    ],
+    [
+     500,
+     0.3101
+    ],
+    [
+     1000,
+     0.3019
+    ]
+   ]
+  },
+  {
+   "codigo": "C9002",
+   "modelo": "X322512MSB4SI",
+   "marca": "YXC Crystal Oscillators",
+   "pacote": "SMD3225-4P",
+   "classe": "Basic",
+   "estoque": 491337,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0901
+    ],
+    [
+     50,
+     0.0711
+    ],
+    [
+     150,
+     0.0612
+    ],
+    [
+     500,
+     0.053
+    ],
+    [
+     3000,
+     0.0445
+    ],
+    [
+     6000,
+     0.0425
+    ]
+   ]
+  },
+  {
+   "codigo": "C50430",
+   "modelo": "X322512MMB4SI",
+   "marca": "YXC Crystal Oscillators",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 8284,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1063
+    ],
+    [
+     50,
+     0.0832
+    ],
+    [
+     150,
+     0.0717
+    ],
+    [
+     500,
+     0.063
+    ],
+    [
+     3000,
+     0.0512
+    ],
+    [
+     6000,
+     0.0478
+    ]
+   ]
+  },
+  {
+   "codigo": "C70565",
+   "modelo": "X322512MOB4SI",
+   "marca": "YXC Crystal Oscillators",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 136610,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0901
+    ],
+    [
+     50,
+     0.0709
+    ],
+    [
+     150,
+     0.0612
+    ],
+    [
+     500,
+     0.053
+    ],
+    [
+     3000,
+     0.045
+    ],
+    [
+     6000,
+     0.043
+    ]
+   ]
+  }
+ ],
+ "X322512MSB4SI": [
+  {
+   "codigo": "C5280576",
+   "modelo": "XL2EL89CSI-111YLC-12M",
+   "marca": "YXC Crystal Oscillators",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 227516,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0796
+    ],
+    [
+     50,
+     0.0652
+    ],
+    [
+     150,
+     0.0576
+    ],
+    [
+     500,
+     0.0516
+    ],
+    [
+     3000,
+     0.0434
+    ],
+    [
+     6000,
+     0.0419
+    ]
+   ]
+  },
+  {
+   "codigo": "C9002",
+   "modelo": "X322512MSB4SI",
+   "marca": "YXC Crystal Oscillators",
+   "pacote": "SMD3225-4P",
+   "classe": "Basic",
+   "estoque": 491337,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0901
+    ],
+    [
+     50,
+     0.0711
+    ],
+    [
+     150,
+     0.0612
+    ],
+    [
+     500,
+     0.053
+    ],
+    [
+     3000,
+     0.0445
+    ],
+    [
+     6000,
+     0.0425
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900148804",
+   "modelo": "X322512MSB4SI",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C2917494",
+   "modelo": "X322512MSB4SI-YJLTY",
+   "marca": "YXC Crystal Oscillators",
+   "pacote": "SMD3225-4P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0007
+    ],
+    [
+     1000,
+     0.0003
+    ]
+   ]
+  }
+ ],
+ "ME6211C33": [
+  {
+   "codigo": "C82942",
+   "modelo": "ME6211C33M5G-N",
+   "marca": "MICRONE(Nanjing Micro One Elec)",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 198717,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0542
+    ],
+    [
+     100,
+     0.0424
+    ],
+    [
+     300,
+     0.0363
+    ],
+    [
+     3000,
+     0.0312
+    ],
+    [
+     6000,
+     0.0296
+    ],
+    [
+     9000,
+     0.0283
+    ]
+   ]
+  },
+  {
+   "codigo": "C235316",
+   "modelo": "ME6211C33R5G",
+   "marca": "MICRONE(Nanjing Micro One Elec)",
+   "pacote": "SOT-353",
+   "classe": "Extended",
+   "estoque": 11860,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0611
+    ],
+    [
+     100,
+     0.0476
+    ],
+    [
+     300,
+     0.0409
+    ],
+    [
+     3000,
+     0.036
+    ],
+    [
+     6000,
+     0.0319
+    ],
+    [
+     9000,
+     0.0299
+    ]
+   ]
+  },
+  {
+   "codigo": "C428904",
+   "modelo": "ME6211C33U4AG-N",
+   "marca": "MICRONE(Nanjing Micro One Elec)",
+   "pacote": "X2-SON-4-EP(1x1)",
+   "classe": "Extended",
+   "estoque": 5344,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0548
+    ],
+    [
+     100,
+     0.043
+    ],
+    [
+     300,
+     0.0371
+    ],
+    [
+     1000,
+     0.0327
+    ],
+    [
+     5000,
+     0.0279
+    ],
+    [
+     10000,
+     0.0261
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900172394",
+   "modelo": "ME6211C33",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900139058",
+   "modelo": "ME6211C33M5G",
+   "marca": "JLCPCB Assembly",
+   "pacote": "DFN2X2-6L",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900151594",
+   "modelo": "ME6211C33M5G",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SOT23-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C42754311",
+   "modelo": "ME6211C33M5G",
+   "marca": "MICRONE(Nanjing Micro One Elec)",
+   "pacote": "SOT23-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0729
+    ],
+    [
+     10,
+     0.0729
+    ],
+    [
+     30,
+     0.0729
+    ],
+    [
+     200,
+     0.0291
+    ],
+    [
+     500,
+     0.0281
+    ],
+    [
+     1000,
+     0.0276
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900309438",
+   "modelo": "ME6211C33N6G",
+   "marca": "JLCPCB Assembly",
+   "pacote": "DFN-6",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900295699",
+   "modelo": "ME6211C33N6AG",
+   "marca": "JLCPCB Assembly",
+   "pacote": "DFN-6(2x2)",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C2911285",
+   "modelo": "ME6211C33N6AG-N",
+   "marca": "MICRONE(Nanjing Micro One Elec)",
+   "pacote": "DFN-6(2x2)",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "XC6206P332MR": [
+  {
+   "codigo": "C5446",
+   "modelo": "XC6206P332MR-G",
+   "marca": "Torex Semicon",
+   "pacote": "SOT-23-3L",
+   "classe": "Basic",
+   "estoque": 461539,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1334
+    ],
+    [
+     50,
+     0.1068
+    ],
+    [
+     150,
+     0.0932
+    ],
+    [
+     500,
+     0.0819
+    ],
+    [
+     3000,
+     0.078
+    ],
+    [
+     6000,
+     0.0753
+    ]
+   ]
+  },
+  {
+   "codigo": "C347376",
+   "modelo": "XC6206P332MR",
+   "marca": "UMW(Youtai Semiconductor Co., Ltd.)",
+   "pacote": "SOT-23",
+   "classe": "Extended",
+   "estoque": 1237271,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0184
+    ],
+    [
+     500,
+     0.0135
+    ],
+    [
+     3000,
+     0.0113
+    ],
+    [
+     6000,
+     0.0097
+    ],
+    [
+     24000,
+     0.0091
+    ],
+    [
+     51000,
+     0.0086
+    ]
+   ]
+  },
+  {
+   "codigo": "C479053",
+   "modelo": "XC6206P332MR",
+   "marca": "PUOLOP",
+   "pacote": "SOT-23",
+   "classe": "Extended",
+   "estoque": 9146,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0332
+    ],
+    [
+     200,
+     0.0265
+    ],
+    [
+     600,
+     0.0229
+    ],
+    [
+     3000,
+     0.0176
+    ],
+    [
+     9000,
+     0.0156
+    ],
+    [
+     21000,
+     0.0146
+    ]
+   ]
+  },
+  {
+   "codigo": "C2827648",
+   "modelo": "XC6206P332MR(1uA)",
+   "marca": "TECH PUBLIC",
+   "pacote": "SOT-23-3L",
+   "classe": "Extended",
+   "estoque": 569,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0755
+    ],
+    [
+     50,
+     0.0598
+    ],
+    [
+     150,
+     0.0519
+    ],
+    [
+     500,
+     0.046
+    ],
+    [
+     3000,
+     0.0412
+    ],
+    [
+     6000,
+     0.0389
+    ]
+   ]
+  },
+  {
+   "codigo": "C2897477",
+   "modelo": "XC6206P332MR",
+   "marca": "YONGYUTAI",
+   "pacote": "SOT-23-3L",
+   "classe": "Extended",
+   "estoque": 14281,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0386
+    ],
+    [
+     100,
+     0.0307
+    ],
+    [
+     300,
+     0.0268
+    ],
+    [
+     3000,
+     0.024
+    ],
+    [
+     6000,
+     0.0217
+    ],
+    [
+     9000,
+     0.0204
+    ]
+   ]
+  },
+  {
+   "codigo": "C2909968",
+   "modelo": "XC6206P332MR",
+   "marca": "YONGYUTAI",
+   "pacote": "SOT-23",
+   "classe": "Extended",
+   "estoque": 5721,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0288
+    ],
+    [
+     200,
+     0.0225
+    ],
+    [
+     600,
+     0.0191
+    ],
+    [
+     3000,
+     0.0166
+    ],
+    [
+     9000,
+     0.0148
+    ],
+    [
+     21000,
+     0.0139
+    ]
+   ]
+  },
+  {
+   "codigo": "C5148692",
+   "modelo": "XC6206P332MR",
+   "marca": "HXY MOSFET",
+   "pacote": "SOT-23",
+   "classe": "Extended",
+   "estoque": 655977,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0183
+    ],
+    [
+     500,
+     0.0147
+    ],
+    [
+     3000,
+     0.0106
+    ],
+    [
+     6000,
+     0.0094
+    ],
+    [
+     24000,
+     0.009
+    ],
+    [
+     51000,
+     0.0086
+    ]
+   ]
+  },
+  {
+   "codigo": "C5250985",
+   "modelo": "XC6206P332MR",
+   "marca": "TWGMC",
+   "pacote": "SOT-23",
+   "classe": "Extended",
+   "estoque": 5252,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0209
+    ],
+    [
+     500,
+     0.0166
+    ],
+    [
+     3000,
+     0.013
+    ],
+    [
+     6000,
+     0.0116
+    ],
+    [
+     24000,
+     0.0104
+    ],
+    [
+     51000,
+     0.0098
+    ]
+   ]
+  },
+  {
+   "codigo": "C5252899",
+   "modelo": "XC6206P332MR-MS",
+   "marca": "MSKSEMI",
+   "pacote": "SOT-23",
+   "classe": "Extended",
+   "estoque": 945904,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0174
+    ],
+    [
+     500,
+     0.0139
+    ],
+    [
+     3000,
+     0.0102
+    ],
+    [
+     6000,
+     0.009
+    ],
+    [
+     24000,
+     0.0079
+    ],
+    [
+     51000,
+     0.0074
+    ]
+   ]
+  },
+  {
+   "codigo": "C6430947",
+   "modelo": "XC6206P332MR",
+   "marca": "GOODWORK",
+   "pacote": "SOT-23",
+   "classe": "Extended",
+   "estoque": 8216,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0215
+    ],
+    [
+     500,
+     0.0166
+    ],
+    [
+     3000,
+     0.0148
+    ],
+    [
+     6000,
+     0.0132
+    ],
+    [
+     30000,
+     0.0118
+    ],
+    [
+     45000,
+     0.011
+    ]
+   ]
+  }
+ ],
+ "TLV75533PDBVR": [
+  {
+   "codigo": "C723789",
+   "modelo": "HE9073A33M5R",
+   "marca": "HEERMICR",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 46915,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1167
+    ],
+    [
+     50,
+     0.0945
+    ],
+    [
+     150,
+     0.0835
+    ],
+    [
+     500,
+     0.0753
+    ],
+    [
+     3000,
+     0.0629
+    ],
+    [
+     6000,
+     0.0596
+    ]
+   ]
+  },
+  {
+   "codigo": "C404027",
+   "modelo": "TLV75533PDBVR",
+   "marca": "Texas Instruments",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 63049,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1221
+    ],
+    [
+     50,
+     0.0962
+    ],
+    [
+     150,
+     0.0829
+    ],
+    [
+     500,
+     0.0719
+    ],
+    [
+     3000,
+     0.0681
+    ],
+    [
+     6000,
+     0.0655
+    ]
+   ]
+  },
+  {
+   "codigo": "C2937042",
+   "modelo": "TPTLV75533PDBVR",
+   "marca": "TECH PUBLIC",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 1690,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1933
+    ],
+    [
+     50,
+     0.1524
+    ],
+    [
+     150,
+     0.1349
+    ],
+    [
+     500,
+     0.1129
+    ],
+    [
+     3000,
+     0.0919
+    ],
+    [
+     6000,
+     0.0862
+    ]
+   ]
+  },
+  {
+   "codigo": "C30197532",
+   "modelo": "TLV75533PDBVR-MS",
+   "marca": "MSKSEMI",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 1807,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1488
+    ],
+    [
+     50,
+     0.1157
+    ],
+    [
+     150,
+     0.1016
+    ],
+    [
+     500,
+     0.0839
+    ],
+    [
+     2500,
+     0.0793
+    ],
+    [
+     5000,
+     0.0745
+    ]
+   ]
+  },
+  {
+   "codigo": "C42411799",
+   "modelo": "TLV75533PDBVR-HXY",
+   "marca": "HXY MOSFET",
+   "pacote": "SOT-23-5L",
+   "classe": "Extended",
+   "estoque": 2518,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.117
+    ],
+    [
+     50,
+     0.1021
+    ],
+    [
+     150,
+     0.0958
+    ],
+    [
+     500,
+     0.0878
+    ],
+    [
+     3000,
+     0.0844
+    ],
+    [
+     6000,
+     0.0822
+    ]
+   ]
+  }
+ ],
+ "RT9013-33GB": [
+  {
+   "codigo": "C723789",
+   "modelo": "HE9073A33M5R",
+   "marca": "HEERMICR",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 46915,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1167
+    ],
+    [
+     50,
+     0.0945
+    ],
+    [
+     150,
+     0.0835
+    ],
+    [
+     500,
+     0.0753
+    ],
+    [
+     3000,
+     0.0629
+    ],
+    [
+     6000,
+     0.0596
+    ]
+   ]
+  },
+  {
+   "codigo": "C47773",
+   "modelo": "RT9013-33GB",
+   "marca": "Richtek Tech",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 306433,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1351
+    ],
+    [
+     50,
+     0.1086
+    ],
+    [
+     150,
+     0.095
+    ],
+    [
+     500,
+     0.0839
+    ],
+    [
+     3000,
+     0.0683
+    ],
+    [
+     6000,
+     0.0657
+    ]
+   ]
+  },
+  {
+   "codigo": "C19268157",
+   "modelo": "RT9013-33GB",
+   "marca": "TECH PUBLIC",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 27025,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0824
+    ],
+    [
+     100,
+     0.0644
+    ],
+    [
+     300,
+     0.0555
+    ],
+    [
+     3000,
+     0.0488
+    ],
+    [
+     6000,
+     0.0434
+    ],
+    [
+     9000,
+     0.0406
+    ]
+   ]
+  },
+  {
+   "codigo": "C41381685",
+   "modelo": "HRT9013-33GB",
+   "marca": "HXY MOSFET",
+   "pacote": "SOT-23-5L",
+   "classe": "Extended",
+   "estoque": 1726,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.065
+    ],
+    [
+     100,
+     0.0517
+    ],
+    [
+     300,
+     0.045
+    ],
+    [
+     3000,
+     0.0389
+    ],
+    [
+     6000,
+     0.0348
+    ],
+    [
+     9000,
+     0.0329
+    ]
+   ]
+  },
+  {
+   "codigo": "C587158",
+   "modelo": "TPRT9013-33GB",
+   "marca": "TECH PUBLIC",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 81605,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0934
+    ],
+    [
+     50,
+     0.0734
+    ],
+    [
+     150,
+     0.0635
+    ],
+    [
+     500,
+     0.056
+    ],
+    [
+     3000,
+     0.0501
+    ],
+    [
+     6000,
+     0.047
+    ]
+   ]
+  },
+  {
+   "codigo": "C7434207",
+   "modelo": "RT9013-33GB-MS",
+   "marca": "MSKSEMI",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 168730,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0586
+    ],
+    [
+     100,
+     0.0473
+    ],
+    [
+     300,
+     0.0416
+    ],
+    [
+     3000,
+     0.033
+    ],
+    [
+     6000,
+     0.0296
+    ],
+    [
+     9000,
+     0.0279
+    ]
+   ]
+  },
+  {
+   "codigo": "C39846929",
+   "modelo": "RT9013-33GB-JSM",
+   "marca": "JSMSEMI",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 4016,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0655
+    ],
+    [
+     100,
+     0.0514
+    ],
+    [
+     300,
+     0.0442
+    ],
+    [
+     3000,
+     0.0407
+    ],
+    [
+     6000,
+     0.0365
+    ],
+    [
+     9000,
+     0.0343
+    ]
+   ]
+  }
+ ],
+ "TPS7A2033": [
+  {
+   "codigo": "C42038768",
+   "modelo": "TPS7A2033YCKR",
+   "marca": "Texas Instruments",
+   "pacote": "DSBGA-4",
+   "classe": "Extended",
+   "estoque": 124,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.3727
+    ],
+    [
+     50,
+     0.3076
+    ],
+    [
+     150,
+     0.2758
+    ],
+    [
+     500,
+     0.2474
+    ],
+    [
+     2500,
+     0.2397
+    ],
+    [
+     5000,
+     0.2351
+    ]
+   ]
+  },
+  {
+   "codigo": "C46459900",
+   "modelo": "TPS7A2033DQNR",
+   "marca": "Texas Instruments",
+   "pacote": "X2SON-4(1x1)",
+   "classe": "Extended",
+   "estoque": 4752,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.3658
+    ],
+    [
+     10,
+     0.2953
+    ],
+    [
+     30,
+     0.2609
+    ],
+    [
+     100,
+     0.2313
+    ],
+    [
+     500,
+     0.2231
+    ],
+    [
+     1000,
+     0.2166
+    ]
+   ]
+  },
+  {
+   "codigo": "C51953290",
+   "modelo": "XTPS7A2033-XC",
+   "marca": "Si-Change",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 16041,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0958
+    ],
+    [
+     10,
+     0.0762
+    ],
+    [
+     30,
+     0.0663
+    ],
+    [
+     100,
+     0.0589
+    ],
+    [
+     500,
+     0.053
+    ],
+    [
+     1000,
+     0.0501
+    ]
+   ]
+  },
+  {
+   "codigo": "C2802576",
+   "modelo": "TPS7A2033PDBV",
+   "marca": "Texas Instruments",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0007
+    ],
+    [
+     1000,
+     0.0003
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900149947",
+   "modelo": "TPS7A2033DBVR",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C2862740",
+   "modelo": "TPS7A2033PDBVR",
+   "marca": "Texas Instruments",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 65181,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2035
+    ],
+    [
+     50,
+     0.1556
+    ],
+    [
+     150,
+     0.1321
+    ],
+    [
+     500,
+     0.1113
+    ],
+    [
+     3000,
+     0.1055
+    ],
+    [
+     6000,
+     0.1021
+    ]
+   ]
+  },
+  {
+   "codigo": "C2871641",
+   "modelo": "TPS7A2033PDQNR",
+   "marca": "Texas Instruments",
+   "pacote": "SON-4(1x1)",
+   "classe": "Extended",
+   "estoque": 7819,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.4354
+    ],
+    [
+     50,
+     1.3287
+    ],
+    [
+     150,
+     1.2746
+    ],
+    [
+     500,
+     1.2205
+    ],
+    [
+     2500,
+     1.1893
+    ],
+    [
+     5000,
+     1.1729
+    ]
+   ]
+  },
+  {
+   "codigo": "C3746252",
+   "modelo": "TPS7A2033PYCJR",
+   "marca": "Texas Instruments",
+   "pacote": "DSBGA-4(0.6x0.6)",
+   "classe": "Extended",
+   "estoque": 1202,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2638
+    ],
+    [
+     50,
+     0.21
+    ],
+    [
+     150,
+     0.1871
+    ],
+    [
+     500,
+     0.1582
+    ],
+    [
+     2500,
+     0.1454
+    ],
+    [
+     5000,
+     0.1378
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900016575",
+   "modelo": "TPS7A2033PYCJR",
+   "marca": "JLCPCB Assembly",
+   "pacote": "DSBGA-4",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900047704",
+   "modelo": "TPS7A2033PBDVR",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "NCP163": [
+  {
+   "codigo": "C154590",
+   "modelo": "NCP1631DR2G",
+   "marca": "onsemi",
+   "pacote": "SOIC-16",
+   "classe": "Extended",
+   "estoque": 11615,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0581
+    ],
+    [
+     10,
+     0.8662
+    ],
+    [
+     30,
+     0.7612
+    ],
+    [
+     100,
+     0.6414
+    ],
+    [
+     500,
+     0.5889
+    ],
+    [
+     1000,
+     0.5643
+    ]
+   ]
+  },
+  {
+   "codigo": "C603642",
+   "modelo": "NCP1632DR2G",
+   "marca": "onsemi",
+   "pacote": "SOIC-16",
+   "classe": "Extended",
+   "estoque": 760,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0925
+    ],
+    [
+     10,
+     0.9793
+    ],
+    [
+     30,
+     0.917
+    ],
+    [
+     100,
+     0.8465
+    ],
+    [
+     500,
+     0.8153
+    ],
+    [
+     1000,
+     0.8005
+    ]
+   ]
+  },
+  {
+   "codigo": "C5209120",
+   "modelo": "NCP1632ADR2G",
+   "marca": "onsemi",
+   "pacote": "SOIC-16",
+   "classe": "Extended",
+   "estoque": 1,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.7602
+    ],
+    [
+     10,
+     1.4944
+    ],
+    [
+     30,
+     1.3287
+    ],
+    [
+     100,
+     1.1565
+    ],
+    [
+     500,
+     1.0794
+    ],
+    [
+     1000,
+     1.0466
+    ]
+   ]
+  },
+  {
+   "codigo": "C463130",
+   "modelo": "NCP163AMX500TBG",
+   "marca": "onsemi",
+   "pacote": "XDFN-4-EP(1x1)",
+   "classe": "Extended",
+   "estoque": 253,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4328
+    ],
+    [
+     50,
+     0.3596
+    ],
+    [
+     150,
+     0.3283
+    ],
+    [
+     500,
+     0.2892
+    ],
+    [
+     3000,
+     0.2719
+    ],
+    [
+     6000,
+     0.2614
+    ]
+   ]
+  },
+  {
+   "codigo": "C603649",
+   "modelo": "NCP163AMX180TBG",
+   "marca": "onsemi",
+   "pacote": "XDFN-4-EP(1x1)",
+   "classe": "Extended",
+   "estoque": 4249,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1708
+    ],
+    [
+     50,
+     0.1334
+    ],
+    [
+     150,
+     0.1173
+    ],
+    [
+     500,
+     0.0975
+    ],
+    [
+     2500,
+     0.0885
+    ],
+    [
+     5000,
+     0.0832
+    ]
+   ]
+  },
+  {
+   "codigo": "C603650",
+   "modelo": "NCP163AMX270TBG",
+   "marca": "onsemi",
+   "pacote": "XDFN-4-EP(1x1)",
+   "classe": "Extended",
+   "estoque": 575,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.3206
+    ],
+    [
+     50,
+     0.2545
+    ],
+    [
+     150,
+     0.2261
+    ],
+    [
+     500,
+     0.1908
+    ],
+    [
+     3000,
+     0.175
+    ],
+    [
+     6000,
+     0.1656
+    ]
+   ]
+  },
+  {
+   "codigo": "C603653",
+   "modelo": "NCP163AMX300TBG",
+   "marca": "onsemi",
+   "pacote": "XDFN-4-EP(1x1)",
+   "classe": "Extended",
+   "estoque": 28,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2901
+    ],
+    [
+     50,
+     0.2249
+    ],
+    [
+     150,
+     0.1969
+    ],
+    [
+     500,
+     0.1621
+    ],
+    [
+     2500,
+     0.1465
+    ],
+    [
+     5000,
+     0.1372
+    ]
+   ]
+  },
+  {
+   "codigo": "C603654",
+   "modelo": "NCP163AMX330TBG",
+   "marca": "onsemi",
+   "pacote": "XDFN-4-EP(1x1)",
+   "classe": "Extended",
+   "estoque": 4276,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2409
+    ],
+    [
+     50,
+     0.1867
+    ],
+    [
+     150,
+     0.1634
+    ],
+    [
+     500,
+     0.1346
+    ],
+    [
+     2500,
+     0.1216
+    ],
+    [
+     5000,
+     0.1139
+    ]
+   ]
+  },
+  {
+   "codigo": "C603656",
+   "modelo": "NCP163ASN330T1G",
+   "marca": "onsemi",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 6001,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.3557
+    ],
+    [
+     50,
+     0.2771
+    ],
+    [
+     150,
+     0.2435
+    ],
+    [
+     500,
+     0.2013
+    ],
+    [
+     3000,
+     0.1826
+    ],
+    [
+     6000,
+     0.1715
+    ]
+   ]
+  },
+  {
+   "codigo": "C603657",
+   "modelo": "NCP163ASN500T1G",
+   "marca": "onsemi",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 3,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.3691
+    ],
+    [
+     10,
+     0.2871
+    ],
+    [
+     30,
+     0.251
+    ],
+    [
+     100,
+     0.2067
+    ],
+    [
+     500,
+     0.1871
+    ],
+    [
+     1000,
+     0.1756
+    ]
+   ]
+  }
+ ],
+ "MIC5504-3.3": [
+  {
+   "codigo": "C41348078",
+   "modelo": "MIC5504-3.3YM5",
+   "marca": "TECH PUBLIC",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 1092,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1763
+    ],
+    [
+     50,
+     0.139
+    ],
+    [
+     150,
+     0.1231
+    ],
+    [
+     500,
+     0.1032
+    ],
+    [
+     3000,
+     0.0944
+    ],
+    [
+     6000,
+     0.0891
+    ]
+   ]
+  },
+  {
+   "codigo": "C3021093",
+   "modelo": "TPMIC5504-3.3YM5",
+   "marca": "TECH PUBLIC",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 4580,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1763
+    ],
+    [
+     50,
+     0.139
+    ],
+    [
+     150,
+     0.1231
+    ],
+    [
+     500,
+     0.1032
+    ],
+    [
+     3000,
+     0.0914
+    ],
+    [
+     6000,
+     0.086
+    ]
+   ]
+  },
+  {
+   "codigo": "C3021135",
+   "modelo": "TPMIC5504-3.3YMT",
+   "marca": "TECH PUBLIC",
+   "pacote": "DFN-4-EP(1x1)",
+   "classe": "Extended",
+   "estoque": 9932,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1526
+    ],
+    [
+     50,
+     0.1223
+    ],
+    [
+     150,
+     0.107
+    ],
+    [
+     500,
+     0.0957
+    ],
+    [
+     2500,
+     0.0778
+    ],
+    [
+     5000,
+     0.0734
+    ]
+   ]
+  },
+  {
+   "codigo": "C88419",
+   "modelo": "MIC5504-3.3YM5-TR",
+   "marca": "Microchip Tech",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 18188,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2645
+    ],
+    [
+     50,
+     0.2089
+    ],
+    [
+     150,
+     0.1851
+    ],
+    [
+     500,
+     0.1554
+    ],
+    [
+     3000,
+     0.1401
+    ],
+    [
+     6000,
+     0.1323
+    ]
+   ]
+  },
+  {
+   "codigo": "C22392689",
+   "modelo": "HMIC5504-3.3YM5-TR",
+   "marca": "HXY MOSFET",
+   "pacote": "SOT-23-5L",
+   "classe": "Extended",
+   "estoque": 1481,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1643
+    ],
+    [
+     50,
+     0.1288
+    ],
+    [
+     150,
+     0.1136
+    ],
+    [
+     500,
+     0.0947
+    ],
+    [
+     3000,
+     0.0862
+    ],
+    [
+     6000,
+     0.0811
+    ]
+   ]
+  },
+  {
+   "codigo": "C481378",
+   "modelo": "MIC5504-3.3YMT-TR",
+   "marca": "Microchip Tech",
+   "pacote": "TDFN-4-EP(1x1)",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.6562
+    ],
+    [
+     10,
+     0.5332
+    ],
+    [
+     30,
+     0.4708
+    ],
+    [
+     100,
+     0.4101
+    ],
+    [
+     500,
+     0.3396
+    ],
+    [
+     1000,
+     0.3216
+    ],
+    [
+     2000,
+     0.3166
+    ],
+    [
+     5000,
+     0.315
+    ]
+   ]
+  },
+  {
+   "codigo": "C621388",
+   "modelo": "MIC5504-3.3YMT-TZ",
+   "marca": "Microchip Tech",
+   "pacote": "TDFN-4(1x1)",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.3872
+    ],
+    [
+     10,
+     0.379
+    ],
+    [
+     30,
+     0.3724
+    ],
+    [
+     100,
+     0.3675
+    ],
+    [
+     102,
+     0.3675
+    ],
+    [
+     104,
+     0.3675
+    ]
+   ]
+  },
+  {
+   "codigo": "C633165",
+   "modelo": "MIC5504-3.3YM5-T5",
+   "marca": "Microchip Tech",
+   "pacote": "SOT-23-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.3762
+    ],
+    [
+     10,
+     0.2986
+    ],
+    [
+     30,
+     0.2653
+    ],
+    [
+     100,
+     0.2238
+    ],
+    [
+     500,
+     0.2038
+    ],
+    [
+     1000,
+     0.1928
+    ]
+   ]
+  },
+  {
+   "codigo": "C633166",
+   "modelo": "MIC5504-3.3YMT-T5",
+   "marca": "Microchip Tech",
+   "pacote": "TDFN-4-EP(1x1)",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.5955
+    ],
+    [
+     10,
+     0.4807
+    ],
+    [
+     30,
+     0.4233
+    ],
+    [
+     100,
+     0.3675
+    ],
+    [
+     500,
+     0.333
+    ],
+    [
+     1000,
+     0.315
+    ]
+   ]
+  }
+ ],
+ "IM72D128VV01XTMA1": [
+  {
+   "codigo": "C36405960",
+   "modelo": "IM72D128VV01XTMA1",
+   "marca": "Infineon Technologies",
+   "pacote": "LLGA-5",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.7667
+    ],
+    [
+     10,
+     1.7224
+    ],
+    [
+     30,
+     1.6945
+    ],
+    [
+     100,
+     1.665
+    ],
+    [
+     102,
+     1.665
+    ],
+    [
+     104,
+     1.665
+    ]
+   ]
+  }
+ ],
+ "IM72D128V01XTMA1": [
+  {
+   "codigo": "C5119248",
+   "modelo": "IM72D128V01XTMA1",
+   "marca": "Infineon Technologies",
+   "pacote": "SMD-5P",
+   "classe": "Extended",
+   "estoque": 4837,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     3.12
+    ],
+    [
+     10,
+     2.6476
+    ],
+    [
+     30,
+     2.3523
+    ],
+    [
+     100,
+     2.0505
+    ],
+    [
+     500,
+     1.9127
+    ],
+    [
+     1000,
+     1.8537
+    ]
+   ]
+  }
+ ],
+ "0603 LED white": [
+  {
+   "codigo": "C9900115266",
+   "modelo": "WHITE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C113679",
+   "modelo": "0603White light",
+   "marca": "Made in China",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0092
+    ],
+    [
+     500,
+     0.0072
+    ],
+    [
+     1500,
+     0.0068
+    ],
+    [
+     5000,
+     0.0064
+    ],
+    [
+     25000,
+     0.0063
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900194376",
+   "modelo": "LED White",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900209425",
+   "modelo": "LED0603whiteET",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900249033",
+   "modelo": "LED_0603_white",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900249034",
+   "modelo": "LED_0603_white",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900301330",
+   "modelo": "White_0603UWWD",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900005808",
+   "modelo": "White SMDLED-0603",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0007
+    ],
+    [
+     1000,
+     0.0003
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900313320",
+   "modelo": "SMY-LED-White-CGL",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900040242",
+   "modelo": "765-1600MDC-White",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "0805 LED red": [
+  {
+   "codigo": "C2295",
+   "modelo": "KT-0805R",
+   "marca": "Hubei KENTO Elec",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 39712,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0107
+    ],
+    [
+     500,
+     0.0083
+    ],
+    [
+     3000,
+     0.007
+    ],
+    [
+     6000,
+     0.0063
+    ],
+    [
+     24000,
+     0.0056
+    ],
+    [
+     51000,
+     0.0052
+    ]
+   ]
+  },
+  {
+   "codigo": "C84256",
+   "modelo": "NCD0805R1",
+   "marca": "Foshan NationStar Optoelectronics",
+   "pacote": "0805",
+   "classe": "Basic",
+   "estoque": 3408637,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0134
+    ],
+    [
+     500,
+     0.0105
+    ],
+    [
+     3000,
+     0.0088
+    ],
+    [
+     6000,
+     0.0078
+    ],
+    [
+     24000,
+     0.0074
+    ],
+    [
+     51000,
+     0.0072
+    ]
+   ]
+  },
+  {
+   "codigo": "C94741",
+   "modelo": "BL-HUF35A-AV-TRB",
+   "marca": "BrtLed(Bright LED Elec)",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 18367,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0232
+    ],
+    [
+     200,
+     0.0179
+    ],
+    [
+     600,
+     0.0149
+    ],
+    [
+     3000,
+     0.014
+    ],
+    [
+     9000,
+     0.0125
+    ],
+    [
+     21000,
+     0.0117
+    ]
+   ]
+  },
+  {
+   "codigo": "C94868",
+   "modelo": "LTST-C170KRKT",
+   "marca": "Lite-On",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 47587,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0292
+    ],
+    [
+     200,
+     0.0232
+    ],
+    [
+     600,
+     0.0197
+    ],
+    [
+     3000,
+     0.0169
+    ],
+    [
+     9000,
+     0.0151
+    ],
+    [
+     21000,
+     0.0142
+    ]
+   ]
+  },
+  {
+   "codigo": "C130114",
+   "modelo": "D-R080508L3-KS2",
+   "marca": "ARKLED(Wuxi ARK Tech Elec)",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 7806,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0179
+    ],
+    [
+     500,
+     0.0139
+    ],
+    [
+     3000,
+     0.012
+    ],
+    [
+     6000,
+     0.0107
+    ],
+    [
+     24000,
+     0.0095
+    ],
+    [
+     60000,
+     0.0089
+    ]
+   ]
+  },
+  {
+   "codigo": "C131205",
+   "modelo": "17-223/BHR7C-C30/3C",
+   "marca": "Everlight Elec",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 19912,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0822
+    ],
+    [
+     50,
+     0.064
+    ],
+    [
+     150,
+     0.055
+    ],
+    [
+     500,
+     0.0483
+    ],
+    [
+     3000,
+     0.0429
+    ],
+    [
+     6000,
+     0.0401
+    ]
+   ]
+  },
+  {
+   "codigo": "C131277",
+   "modelo": "17-223/R7GHC-D01/3C",
+   "marca": "Everlight Elec",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 20395,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0967
+    ],
+    [
+     50,
+     0.0757
+    ],
+    [
+     150,
+     0.065
+    ],
+    [
+     500,
+     0.0571
+    ],
+    [
+     3000,
+     0.0507
+    ],
+    [
+     6000,
+     0.0476
+    ]
+   ]
+  },
+  {
+   "codigo": "C205444",
+   "modelo": "ORH-R35A",
+   "marca": "Orient",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 112552,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0102
+    ],
+    [
+     500,
+     0.008
+    ],
+    [
+     3000,
+     0.0072
+    ],
+    [
+     6000,
+     0.0064
+    ],
+    [
+     24000,
+     0.0058
+    ],
+    [
+     51000,
+     0.0054
+    ]
+   ]
+  },
+  {
+   "codigo": "C192318",
+   "modelo": "TJ-S2012SW8TGLC2R-A5",
+   "marca": "TOGIALED",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 14282,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0258
+    ],
+    [
+     200,
+     0.0204
+    ],
+    [
+     600,
+     0.0174
+    ],
+    [
+     3000,
+     0.0142
+    ],
+    [
+     9000,
+     0.0127
+    ],
+    [
+     21000,
+     0.0119
+    ]
+   ]
+  },
+  {
+   "codigo": "C284871",
+   "modelo": "LTST-C171KRKT",
+   "marca": "Lite-On",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 58223,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0261
+    ],
+    [
+     200,
+     0.0207
+    ],
+    [
+     600,
+     0.0176
+    ],
+    [
+     3000,
+     0.0154
+    ],
+    [
+     9000,
+     0.0138
+    ],
+    [
+     21000,
+     0.0129
+    ]
+   ]
+  }
+ ],
+ "0805 LED green": [
+  {
+   "codigo": "C28105",
+   "modelo": "Light emitting diode (LED)（Green-yellow）",
+   "marca": "Hubei KENTO Elec",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0098
+    ],
+    [
+     500,
+     0.0076
+    ],
+    [
+     1500,
+     0.0072
+    ],
+    [
+     5000,
+     0.0068
+    ],
+    [
+     25000,
+     0.0067
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900270145",
+   "modelo": "LED GREEN",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900337224",
+   "modelo": "LED0805-GREEN",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900149613",
+   "modelo": "0805GREEN_ATA",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900037482",
+   "modelo": "Green",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900041074",
+   "modelo": "green",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900044166",
+   "modelo": "GREEN",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900045997",
+   "modelo": "GREEN",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900060366",
+   "modelo": "Green",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900251068",
+   "modelo": "LED-0805-GREEN",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "0805 LED yellow": [
+  {
+   "codigo": "C28105",
+   "modelo": "Light emitting diode (LED)（Green-yellow）",
+   "marca": "Hubei KENTO Elec",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0098
+    ],
+    [
+     500,
+     0.0076
+    ],
+    [
+     1500,
+     0.0072
+    ],
+    [
+     5000,
+     0.0068
+    ],
+    [
+     25000,
+     0.0067
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900337225",
+   "modelo": "LED0805-YELLOW",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900217609",
+   "modelo": "BACK_YELLOW_LED",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0805",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900031477",
+   "modelo": "Yellow",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-1206",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900035250",
+   "modelo": "Yellow",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900041073",
+   "modelo": "yellow",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900057985",
+   "modelo": "Yellow",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900071700",
+   "modelo": "YELLOW",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD_L3.5-W2.8-R_YELLOW",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900196259",
+   "modelo": "YELLOW",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD_3P-L3.5-W3.5-R-RD_XHP35-H0",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C2874873",
+   "modelo": "F8YELLOW",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2_D9.2-P2.54",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0007
+    ],
+    [
+     1000,
+     0.0002
+    ]
+   ]
+  }
+ ],
+ "1206 LED blue": [
+  {
+   "codigo": "C9900037484",
+   "modelo": "Blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900045252",
+   "modelo": "Blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900196262",
+   "modelo": "BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD_3P-L3.5-W3.5-R-RD_XHP35-H0",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900186333",
+   "modelo": "LED_red_blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "1206",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900028478",
+   "modelo": "1206 Ice Blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "1206",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900180342",
+   "modelo": "SMD1206_T1.8_LED_BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "1206",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900034407",
+   "modelo": "JG-1206 Ball Head Blue Light",
+   "marca": "JLCPCB Assembly",
+   "pacote": "1206",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C2874874",
+   "modelo": "F8BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2_D9.2-P2.54",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0007
+    ],
+    [
+     1000,
+     0.0002
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900020151",
+   "modelo": "3wBlue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C69273",
+   "modelo": "LEDBlue",
+   "marca": "Made in China",
+   "pacote": "LED_3528",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0073
+    ],
+    [
+     500,
+     0.0056
+    ],
+    [
+     1500,
+     0.0052
+    ],
+    [
+     5000,
+     0.0049
+    ]
+   ]
+  }
+ ],
+ "0603 LED blue": [
+  {
+   "codigo": "C9900014381",
+   "modelo": "Blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0058
+    ],
+    [
+     200,
+     0.0021
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900176173",
+   "modelo": "BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900150076",
+   "modelo": "led blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900170600",
+   "modelo": "led blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900176340",
+   "modelo": "led blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900037484",
+   "modelo": "Blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900045252",
+   "modelo": "Blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900196262",
+   "modelo": "BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD_3P-L3.5-W3.5-R-RD_XHP35-H0",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900306587",
+   "modelo": "LED0603 BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900318382",
+   "modelo": "LED0603-BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "0603",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "74HC595": [
+  {
+   "codigo": "C5947",
+   "modelo": "74HC595D,118",
+   "marca": "Nexperia",
+   "pacote": "SO-16",
+   "classe": "Basic",
+   "estoque": 430704,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0944
+    ],
+    [
+     50,
+     0.0749
+    ],
+    [
+     150,
+     0.0648
+    ],
+    [
+     500,
+     0.0566
+    ],
+    [
+     2500,
+     0.0537
+    ],
+    [
+     5000,
+     0.0517
+    ]
+   ]
+  },
+  {
+   "codigo": "C5948",
+   "modelo": "74HC595PW,118",
+   "marca": "Nexperia",
+   "pacote": "TSSOP-16",
+   "classe": "Extended",
+   "estoque": 178020,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0914
+    ],
+    [
+     50,
+     0.0719
+    ],
+    [
+     150,
+     0.0619
+    ],
+    [
+     500,
+     0.0537
+    ],
+    [
+     2500,
+     0.0507
+    ],
+    [
+     5000,
+     0.0488
+    ]
+   ]
+  },
+  {
+   "codigo": "C7344",
+   "modelo": "MC74HC595ADR2G",
+   "marca": "onsemi",
+   "pacote": "SOIC-16",
+   "classe": "Extended",
+   "estoque": 156160,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2243
+    ],
+    [
+     50,
+     0.1786
+    ],
+    [
+     150,
+     0.159
+    ],
+    [
+     500,
+     0.1162
+    ],
+    [
+     2500,
+     0.1052
+    ],
+    [
+     5000,
+     0.0988
+    ]
+   ]
+  },
+  {
+   "codigo": "C10092",
+   "modelo": "SN74HC595DR",
+   "marca": "Texas Instruments",
+   "pacote": "SOIC-16",
+   "classe": "Extended",
+   "estoque": 238673,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1844
+    ],
+    [
+     50,
+     0.1424
+    ],
+    [
+     150,
+     0.1244
+    ],
+    [
+     500,
+     0.1019
+    ],
+    [
+     2500,
+     0.0919
+    ],
+    [
+     5000,
+     0.086
+    ]
+   ]
+  },
+  {
+   "codigo": "C72745",
+   "modelo": "MM74HC595MTCX",
+   "marca": "onsemi",
+   "pacote": "TSSOP-16",
+   "classe": "Extended",
+   "estoque": 3,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.6037
+    ],
+    [
+     10,
+     0.4922
+    ],
+    [
+     30,
+     0.4364
+    ],
+    [
+     100,
+     0.3806
+    ],
+    [
+     500,
+     0.3462
+    ],
+    [
+     1000,
+     0.3298
+    ]
+   ]
+  },
+  {
+   "codigo": "C78711",
+   "modelo": "SN74HC595N",
+   "marca": "Texas Instruments",
+   "pacote": "DIP-16",
+   "classe": "Extended",
+   "estoque": 254,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.2418
+    ],
+    [
+     10,
+     0.999
+    ],
+    [
+     25,
+     0.8776
+    ],
+    [
+     100,
+     0.7563
+    ],
+    [
+     500,
+     0.6841
+    ],
+    [
+     1000,
+     0.6464
+    ]
+   ]
+  },
+  {
+   "codigo": "C79097",
+   "modelo": "TM74HC595",
+   "marca": "TM(Shenzhen Titan Micro Elec)",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 19946,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0809
+    ],
+    [
+     100,
+     0.0652
+    ],
+    [
+     300,
+     0.0573
+    ],
+    [
+     1000,
+     0.0516
+    ],
+    [
+     4000,
+     0.0465
+    ],
+    [
+     8000,
+     0.0442
+    ]
+   ]
+  },
+  {
+   "codigo": "C84127",
+   "modelo": "M74HC595YRM13TR",
+   "marca": "STMicroelectronics",
+   "pacote": "SOIC-16",
+   "classe": "Extended",
+   "estoque": 251,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.5725
+    ],
+    [
+     10,
+     0.4544
+    ],
+    [
+     30,
+     0.4052
+    ],
+    [
+     100,
+     0.3412
+    ],
+    [
+     500,
+     0.3134
+    ],
+    [
+     1000,
+     0.297
+    ]
+   ]
+  },
+  {
+   "codigo": "C87300",
+   "modelo": "U74HC595AG-S16-R",
+   "marca": "UTC(Unisonic Tech)",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 3599,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1405
+    ],
+    [
+     50,
+     0.1141
+    ],
+    [
+     150,
+     0.1009
+    ],
+    [
+     500,
+     0.0911
+    ],
+    [
+     2500,
+     0.0809
+    ],
+    [
+     5000,
+     0.077
+    ]
+   ]
+  },
+  {
+   "codigo": "C93838",
+   "modelo": "SM74HC595D",
+   "marca": "Shenzhen Sunmoon Micro",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 37463,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.094
+    ],
+    [
+     50,
+     0.076
+    ],
+    [
+     150,
+     0.067
+    ],
+    [
+     500,
+     0.0601
+    ],
+    [
+     2500,
+     0.0452
+    ],
+    [
+     4000,
+     0.0424
+    ]
+   ]
+  }
+ ],
+ "tactile switch SMD 3x4": [],
+ "KT-1206B": [
+  {
+   "codigo": "C72691",
+   "modelo": "KT-1206B",
+   "marca": "Hubei KENTO Elec",
+   "pacote": "1206",
+   "classe": "Extended",
+   "estoque": 1102,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0212
+    ],
+    [
+     200,
+     0.0164
+    ],
+    [
+     600,
+     0.0137
+    ],
+    [
+     3000,
+     0.0121
+    ],
+    [
+     9000,
+     0.0107
+    ],
+    [
+     21000,
+     0.01
+    ]
+   ]
+  }
+ ],
+ "1206 blue LED SMD": [
+  {
+   "codigo": "C9900071693",
+   "modelo": "BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD,3.5X2.8mm",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900103682",
+   "modelo": "BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900248249",
+   "modelo": "BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD,P=2.5mm,4P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900180342",
+   "modelo": "SMD1206_T1.8_LED_BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "1206",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900020151",
+   "modelo": "3wBlue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900123291",
+   "modelo": "BLUE-M",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD-20-15X15.2",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900054605",
+   "modelo": "BlueLan",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD-18P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900134338",
+   "modelo": "MP-BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD-16P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900071692",
+   "modelo": "LED_BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD,3.5X2.8mm",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900091837",
+   "modelo": "LED-BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD-2mm*2mm",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "LED 1206 blue 470nm": [
+  {
+   "codigo": "C9900037484",
+   "modelo": "Blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900045252",
+   "modelo": "Blue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900196262",
+   "modelo": "BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD_3P-L3.5-W3.5-R-RD_XHP35-H0",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900208254",
+   "modelo": "470nm",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD_3P-L3.5-W3.5-R-RD-C",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C2874874",
+   "modelo": "F8BLUE",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-TH-2_D9.2-P2.54",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0007
+    ],
+    [
+     1000,
+     0.0002
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900020151",
+   "modelo": "3wBlue",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900022012",
+   "modelo": "Osram470nm",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED-SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900155213",
+   "modelo": "470NM_LED",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD8080",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C69273",
+   "modelo": "LEDBlue",
+   "marca": "Made in China",
+   "pacote": "LED_3528",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0073
+    ],
+    [
+     500,
+     0.0056
+    ],
+    [
+     1500,
+     0.0052
+    ],
+    [
+     5000,
+     0.0049
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900025836",
+   "modelo": "BlueLED",
+   "marca": "JLCPCB Assembly",
+   "pacote": "LED0805",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "SMD tactile switch 4.5x4.5": [],
+ "TS-1187A": [
+  {
+   "codigo": "C42420254",
+   "modelo": "TS-1187A-S16",
+   "marca": "JXTCONN",
+   "pacote": "SMD-4P,5.2x5.2mm",
+   "classe": "Extended",
+   "estoque": 53863,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0202
+    ],
+    [
+     200,
+     0.0178
+    ],
+    [
+     600,
+     0.0164
+    ],
+    [
+     4000,
+     0.0155
+    ],
+    [
+     8000,
+     0.0148
+    ],
+    [
+     20000,
+     0.0144
+    ]
+   ]
+  },
+  {
+   "codigo": "C52190655",
+   "modelo": "TS-1187A-BAB",
+   "marca": "XYECONN",
+   "pacote": "SMD-4P,5.2x5.2mm",
+   "classe": "Extended",
+   "estoque": 23,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0184
+    ],
+    [
+     500,
+     0.0145
+    ],
+    [
+     1500,
+     0.0123
+    ],
+    [
+     4000,
+     0.0109
+    ],
+    [
+     24000,
+     0.0098
+    ],
+    [
+     48000,
+     0.0091
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900052981",
+   "modelo": "TS-1187A-B-A",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SW4-SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C318884",
+   "modelo": "TS-1187A-B-A-B",
+   "marca": "XKB Connection",
+   "pacote": "SMD-4P,5.1x5.1mm",
+   "classe": "Basic",
+   "estoque": 620644,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0197
+    ],
+    [
+     200,
+     0.015
+    ],
+    [
+     600,
+     0.0129
+    ],
+    [
+     4000,
+     0.0111
+    ],
+    [
+     8000,
+     0.0105
+    ],
+    [
+     20000,
+     0.0101
+    ]
+   ]
+  },
+  {
+   "codigo": "C318885",
+   "modelo": "TS-1187A-C-J-B",
+   "marca": "XKB Connection",
+   "pacote": "SMD-4P,5.1x5.1mm",
+   "classe": "Extended",
+   "estoque": 2818,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0614
+    ],
+    [
+     100,
+     0.0493
+    ],
+    [
+     300,
+     0.0432
+    ],
+    [
+     1000,
+     0.0386
+    ],
+    [
+     5000,
+     0.035
+    ],
+    [
+     10000,
+     0.0332
+    ]
+   ]
+  },
+  {
+   "codigo": "C318886",
+   "modelo": "TS-1187A-C-G-B",
+   "marca": "XKB Connection",
+   "pacote": "SMD-4P,5.1x5.1mm",
+   "classe": "Extended",
+   "estoque": 19335,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0509
+    ],
+    [
+     100,
+     0.0406
+    ],
+    [
+     300,
+     0.0353
+    ],
+    [
+     2000,
+     0.0283
+    ],
+    [
+     4000,
+     0.0251
+    ],
+    [
+     10000,
+     0.0237
+    ]
+   ]
+  },
+  {
+   "codigo": "C318887",
+   "modelo": "TS-1187A-C-E-B",
+   "marca": "XKB Connection",
+   "pacote": "SMD-4P,5.1x5.1mm",
+   "classe": "Extended",
+   "estoque": 37980,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0406
+    ],
+    [
+     200,
+     0.0319
+    ],
+    [
+     600,
+     0.027
+    ],
+    [
+     3000,
+     0.0235
+    ],
+    [
+     9000,
+     0.021
+    ],
+    [
+     21000,
+     0.0196
+    ]
+   ]
+  },
+  {
+   "codigo": "C318888",
+   "modelo": "TS-1187A-C-D-B",
+   "marca": "XKB Connection",
+   "pacote": "SMD-4P,5.2x5.2mm",
+   "classe": "Extended",
+   "estoque": 22835,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0424
+    ],
+    [
+     200,
+     0.0335
+    ],
+    [
+     600,
+     0.0286
+    ],
+    [
+     4000,
+     0.0237
+    ],
+    [
+     8000,
+     0.021
+    ],
+    [
+     20000,
+     0.0197
+    ]
+   ]
+  },
+  {
+   "codigo": "C318889",
+   "modelo": "TS-1187A-C-C-B",
+   "marca": "XKB Connection",
+   "pacote": "SMD-4P,5.1x5.1mm",
+   "classe": "Extended",
+   "estoque": 121385,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0414
+    ],
+    [
+     200,
+     0.0327
+    ],
+    [
+     600,
+     0.0279
+    ],
+    [
+     4000,
+     0.0245
+    ],
+    [
+     8000,
+     0.0219
+    ],
+    [
+     20000,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C480267",
+   "modelo": "TS-1187A-C-A-B",
+   "marca": "XKB Connection",
+   "pacote": "SMD-4P,5.1x5.1mm",
+   "classe": "Extended",
+   "estoque": 13180,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.034
+    ],
+    [
+     200,
+     0.027
+    ],
+    [
+     600,
+     0.023
+    ],
+    [
+     4000,
+     0.0202
+    ],
+    [
+     8000,
+     0.0181
+    ],
+    [
+     20000,
+     0.0171
+    ]
+   ]
+  }
+ ],
+ "SKRPACE010": [
+  {
+   "codigo": "C778165",
+   "modelo": "GT-TC048B-H025-L1",
+   "marca": "G-Switch",
+   "pacote": "SMD-4P,4.2x3.2mm",
+   "classe": "Extended",
+   "estoque": 6551,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1062
+    ],
+    [
+     50,
+     0.0853
+    ],
+    [
+     150,
+     0.075
+    ],
+    [
+     500,
+     0.0671
+    ],
+    [
+     3000,
+     0.0596
+    ],
+    [
+     6000,
+     0.0565
+    ]
+   ]
+  },
+  {
+   "codigo": "C2896624",
+   "modelo": "GT-TC048B-H025-L1B",
+   "marca": "G-Switch",
+   "pacote": "SMD,4.2x3.2mm",
+   "classe": "Extended",
+   "estoque": 100,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0739
+    ],
+    [
+     50,
+     0.0578
+    ],
+    [
+     150,
+     0.0498
+    ],
+    [
+     500,
+     0.0438
+    ],
+    [
+     3000,
+     0.0389
+    ],
+    [
+     6000,
+     0.0365
+    ]
+   ]
+  },
+  {
+   "codigo": "C139797",
+   "modelo": "SKRPACE010",
+   "marca": "ALPSALPINE",
+   "pacote": "SMD-4P,4.2x3.2mm",
+   "classe": "Extended",
+   "estoque": 129618,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0665
+    ],
+    [
+     100,
+     0.054
+    ],
+    [
+     300,
+     0.0476
+    ],
+    [
+     1000,
+     0.0424
+    ],
+    [
+     4000,
+     0.0345
+    ],
+    [
+     8000,
+     0.0333
+    ]
+   ]
+  }
+ ],
+ "USB-C male plug": [],
+ "USB Type-C plug SMD male": [
+  {
+   "codigo": "C283539",
+   "modelo": "TYPE-C-31-G-06",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 654,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.7481
+    ],
+    [
+     10,
+     0.6053
+    ],
+    [
+     30,
+     0.5348
+    ],
+    [
+     100,
+     0.4643
+    ],
+    [
+     750,
+     0.4036
+    ],
+    [
+     1500,
+     0.3823
+    ]
+   ]
+  },
+  {
+   "codigo": "C530605",
+   "modelo": "TYPE-C-31-G-01",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 59,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4511
+    ],
+    [
+     10,
+     0.356
+    ],
+    [
+     30,
+     0.315
+    ],
+    [
+     100,
+     0.2543
+    ],
+    [
+     500,
+     0.2313
+    ],
+    [
+     1000,
+     0.2182
+    ]
+   ]
+  },
+  {
+   "codigo": "C530606",
+   "modelo": "TYPE-C-31-G-02",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 63,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4938
+    ],
+    [
+     10,
+     0.3872
+    ],
+    [
+     30,
+     0.3429
+    ],
+    [
+     100,
+     0.2855
+    ],
+    [
+     500,
+     0.2609
+    ],
+    [
+     1000,
+     0.2461
+    ]
+   ]
+  },
+  {
+   "codigo": "C530607",
+   "modelo": "TYPE-C-31-G-07",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 901,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0564
+    ],
+    [
+     10,
+     0.8793
+    ],
+    [
+     30,
+     0.7809
+    ],
+    [
+     100,
+     0.671
+    ],
+    [
+     500,
+     0.6217
+    ],
+    [
+     1000,
+     0.6004
+    ]
+   ]
+  },
+  {
+   "codigo": "C840338",
+   "modelo": "TYPE-C-31-G-03",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 1335,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.9318
+    ],
+    [
+     10,
+     0.7415
+    ],
+    [
+     30,
+     0.6464
+    ],
+    [
+     100,
+     0.5528
+    ],
+    [
+     500,
+     0.4954
+    ],
+    [
+     1000,
+     0.4676
+    ]
+   ]
+  },
+  {
+   "codigo": "C2909200",
+   "modelo": "TYPE-C-31-G-08",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 460,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0236
+    ],
+    [
+     10,
+     0.9236
+    ],
+    [
+     30,
+     0.8694
+    ],
+    [
+     100,
+     0.8071
+    ],
+    [
+     500,
+     0.7809
+    ],
+    [
+     1000,
+     0.7677
+    ]
+   ]
+  },
+  {
+   "codigo": "C5370429",
+   "modelo": "TYPE-C-31-G-09",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 290,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.6004
+    ],
+    [
+     10,
+     0.484
+    ],
+    [
+     30,
+     0.4249
+    ],
+    [
+     300,
+     0.3675
+    ],
+    [
+     600,
+     0.333
+    ],
+    [
+     900,
+     0.315
+    ]
+   ]
+  },
+  {
+   "codigo": "C5370430",
+   "modelo": "TYPE-C-31-G-10",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 2663,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0384
+    ],
+    [
+     10,
+     0.8416
+    ],
+    [
+     30,
+     0.7448
+    ],
+    [
+     100,
+     0.6464
+    ],
+    [
+     500,
+     0.5889
+    ],
+    [
+     1000,
+     0.5578
+    ]
+   ]
+  },
+  {
+   "codigo": "C53207151",
+   "modelo": "TYPE-C-24P-GON",
+   "marca": "BXCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 5,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1347
+    ],
+    [
+     50,
+     0.1072
+    ],
+    [
+     120,
+     0.0934
+    ],
+    [
+     480,
+     0.0831
+    ],
+    [
+     2520,
+     0.0749
+    ],
+    [
+     4980,
+     0.0707
+    ]
+   ]
+  },
+  {
+   "codigo": "C42418805",
+   "modelo": "TYPE-C-GTJB-24P",
+   "marca": "JXTCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 179,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1925
+    ],
+    [
+     50,
+     0.1511
+    ],
+    [
+     120,
+     0.1334
+    ],
+    [
+     480,
+     0.1114
+    ],
+    [
+     2520,
+     0.1016
+    ],
+    [
+     4980,
+     0.0957
+    ]
+   ]
+  }
+ ],
+ "Type-C male plug": [
+  {
+   "codigo": "C283539",
+   "modelo": "TYPE-C-31-G-06",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 654,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.7481
+    ],
+    [
+     10,
+     0.6053
+    ],
+    [
+     30,
+     0.5348
+    ],
+    [
+     100,
+     0.4643
+    ],
+    [
+     750,
+     0.4036
+    ],
+    [
+     1500,
+     0.3823
+    ]
+   ]
+  },
+  {
+   "codigo": "C530605",
+   "modelo": "TYPE-C-31-G-01",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 59,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4511
+    ],
+    [
+     10,
+     0.356
+    ],
+    [
+     30,
+     0.315
+    ],
+    [
+     100,
+     0.2543
+    ],
+    [
+     500,
+     0.2313
+    ],
+    [
+     1000,
+     0.2182
+    ]
+   ]
+  },
+  {
+   "codigo": "C530606",
+   "modelo": "TYPE-C-31-G-02",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 63,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4938
+    ],
+    [
+     10,
+     0.3872
+    ],
+    [
+     30,
+     0.3429
+    ],
+    [
+     100,
+     0.2855
+    ],
+    [
+     500,
+     0.2609
+    ],
+    [
+     1000,
+     0.2461
+    ]
+   ]
+  },
+  {
+   "codigo": "C530607",
+   "modelo": "TYPE-C-31-G-07",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 901,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0564
+    ],
+    [
+     10,
+     0.8793
+    ],
+    [
+     30,
+     0.7809
+    ],
+    [
+     100,
+     0.671
+    ],
+    [
+     500,
+     0.6217
+    ],
+    [
+     1000,
+     0.6004
+    ]
+   ]
+  },
+  {
+   "codigo": "C840338",
+   "modelo": "TYPE-C-31-G-03",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 1335,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.9318
+    ],
+    [
+     10,
+     0.7415
+    ],
+    [
+     30,
+     0.6464
+    ],
+    [
+     100,
+     0.5528
+    ],
+    [
+     500,
+     0.4954
+    ],
+    [
+     1000,
+     0.4676
+    ]
+   ]
+  },
+  {
+   "codigo": "C2909200",
+   "modelo": "TYPE-C-31-G-08",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 460,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0236
+    ],
+    [
+     10,
+     0.9236
+    ],
+    [
+     30,
+     0.8694
+    ],
+    [
+     100,
+     0.8071
+    ],
+    [
+     500,
+     0.7809
+    ],
+    [
+     1000,
+     0.7677
+    ]
+   ]
+  },
+  {
+   "codigo": "C5370429",
+   "modelo": "TYPE-C-31-G-09",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 290,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.6004
+    ],
+    [
+     10,
+     0.484
+    ],
+    [
+     30,
+     0.4249
+    ],
+    [
+     300,
+     0.3675
+    ],
+    [
+     600,
+     0.333
+    ],
+    [
+     900,
+     0.315
+    ]
+   ]
+  },
+  {
+   "codigo": "C5370430",
+   "modelo": "TYPE-C-31-G-10",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 2663,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0384
+    ],
+    [
+     10,
+     0.8416
+    ],
+    [
+     30,
+     0.7448
+    ],
+    [
+     100,
+     0.6464
+    ],
+    [
+     500,
+     0.5889
+    ],
+    [
+     1000,
+     0.5578
+    ]
+   ]
+  },
+  {
+   "codigo": "C53207151",
+   "modelo": "TYPE-C-24P-GON",
+   "marca": "BXCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 5,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1347
+    ],
+    [
+     50,
+     0.1072
+    ],
+    [
+     120,
+     0.0934
+    ],
+    [
+     480,
+     0.0831
+    ],
+    [
+     2520,
+     0.0749
+    ],
+    [
+     4980,
+     0.0707
+    ]
+   ]
+  },
+  {
+   "codigo": "C42418805",
+   "modelo": "TYPE-C-GTJB-24P",
+   "marca": "JXTCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 179,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1925
+    ],
+    [
+     50,
+     0.1511
+    ],
+    [
+     120,
+     0.1334
+    ],
+    [
+     480,
+     0.1114
+    ],
+    [
+     2520,
+     0.1016
+    ],
+    [
+     4980,
+     0.0957
+    ]
+   ]
+  }
+ ],
+ "USB Type-C male 24P plug": [
+  {
+   "codigo": "C283539",
+   "modelo": "TYPE-C-31-G-06",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 654,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.7481
+    ],
+    [
+     10,
+     0.6053
+    ],
+    [
+     30,
+     0.5348
+    ],
+    [
+     100,
+     0.4643
+    ],
+    [
+     750,
+     0.4036
+    ],
+    [
+     1500,
+     0.3823
+    ]
+   ]
+  },
+  {
+   "codigo": "C530605",
+   "modelo": "TYPE-C-31-G-01",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 59,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4511
+    ],
+    [
+     10,
+     0.356
+    ],
+    [
+     30,
+     0.315
+    ],
+    [
+     100,
+     0.2543
+    ],
+    [
+     500,
+     0.2313
+    ],
+    [
+     1000,
+     0.2182
+    ]
+   ]
+  },
+  {
+   "codigo": "C530606",
+   "modelo": "TYPE-C-31-G-02",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 63,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4938
+    ],
+    [
+     10,
+     0.3872
+    ],
+    [
+     30,
+     0.3429
+    ],
+    [
+     100,
+     0.2855
+    ],
+    [
+     500,
+     0.2609
+    ],
+    [
+     1000,
+     0.2461
+    ]
+   ]
+  },
+  {
+   "codigo": "C530607",
+   "modelo": "TYPE-C-31-G-07",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 901,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0564
+    ],
+    [
+     10,
+     0.8793
+    ],
+    [
+     30,
+     0.7809
+    ],
+    [
+     100,
+     0.671
+    ],
+    [
+     500,
+     0.6217
+    ],
+    [
+     1000,
+     0.6004
+    ]
+   ]
+  },
+  {
+   "codigo": "C840338",
+   "modelo": "TYPE-C-31-G-03",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 1335,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.9318
+    ],
+    [
+     10,
+     0.7415
+    ],
+    [
+     30,
+     0.6464
+    ],
+    [
+     100,
+     0.5528
+    ],
+    [
+     500,
+     0.4954
+    ],
+    [
+     1000,
+     0.4676
+    ]
+   ]
+  },
+  {
+   "codigo": "C2909200",
+   "modelo": "TYPE-C-31-G-08",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 460,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0236
+    ],
+    [
+     10,
+     0.9236
+    ],
+    [
+     30,
+     0.8694
+    ],
+    [
+     100,
+     0.8071
+    ],
+    [
+     500,
+     0.7809
+    ],
+    [
+     1000,
+     0.7677
+    ]
+   ]
+  },
+  {
+   "codigo": "C5370429",
+   "modelo": "TYPE-C-31-G-09",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 290,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.6004
+    ],
+    [
+     10,
+     0.484
+    ],
+    [
+     30,
+     0.4249
+    ],
+    [
+     300,
+     0.3675
+    ],
+    [
+     600,
+     0.333
+    ],
+    [
+     900,
+     0.315
+    ]
+   ]
+  },
+  {
+   "codigo": "C5370430",
+   "modelo": "TYPE-C-31-G-10",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 2663,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0384
+    ],
+    [
+     10,
+     0.8416
+    ],
+    [
+     30,
+     0.7448
+    ],
+    [
+     100,
+     0.6464
+    ],
+    [
+     500,
+     0.5889
+    ],
+    [
+     1000,
+     0.5578
+    ]
+   ]
+  },
+  {
+   "codigo": "C53207151",
+   "modelo": "TYPE-C-24P-GON",
+   "marca": "BXCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 5,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1347
+    ],
+    [
+     50,
+     0.1072
+    ],
+    [
+     120,
+     0.0934
+    ],
+    [
+     480,
+     0.0831
+    ],
+    [
+     2520,
+     0.0749
+    ],
+    [
+     4980,
+     0.0707
+    ]
+   ]
+  },
+  {
+   "codigo": "C42418805",
+   "modelo": "TYPE-C-GTJB-24P",
+   "marca": "JXTCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 179,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1925
+    ],
+    [
+     50,
+     0.1511
+    ],
+    [
+     120,
+     0.1334
+    ],
+    [
+     480,
+     0.1114
+    ],
+    [
+     2520,
+     0.1016
+    ],
+    [
+     4980,
+     0.0957
+    ]
+   ]
+  }
+ ],
+ "USB-C 16P male plug": [
+  {
+   "codigo": "C5309714",
+   "modelo": "16PS-JED",
+   "marca": "JST",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.6447
+    ],
+    [
+     10,
+     0.5217
+    ],
+    [
+     30,
+     0.4593
+    ],
+    [
+     100,
+     0.3987
+    ],
+    [
+     500,
+     0.3626
+    ],
+    [
+     1000,
+     0.3429
+    ]
+   ]
+  },
+  {
+   "codigo": "C5885030",
+   "modelo": "2ESDV-16P",
+   "marca": "Dinkle",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     5.6773
+    ],
+    [
+     10,
+     5.6773
+    ],
+    [
+     12,
+     5.6773
+    ],
+    [
+     200,
+     2.2654
+    ],
+    [
+     500,
+     2.1899
+    ],
+    [
+     1000,
+     2.1522
+    ]
+   ]
+  },
+  {
+   "codigo": "C6053433",
+   "modelo": "2ESDP-16P",
+   "marca": "Dinkle",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     7.4374
+    ],
+    [
+     10,
+     7.4374
+    ],
+    [
+     12,
+     7.4374
+    ],
+    [
+     200,
+     2.9675
+    ],
+    [
+     400,
+     2.869
+    ],
+    [
+     1000,
+     2.8198
+    ]
+   ]
+  },
+  {
+   "codigo": "C5366969",
+   "modelo": "JH2810P-16P",
+   "marca": "Cixi Kefa Elec",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 8,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     2.9773
+    ],
+    [
+     10,
+     2.9773
+    ],
+    [
+     30,
+     2.9773
+    ],
+    [
+     100,
+     2.9773
+    ],
+    [
+     500,
+     2.9773
+    ],
+    [
+     1000,
+     2.9773
+    ]
+   ]
+  },
+  {
+   "codigo": "C5367011",
+   "modelo": "JH2812P-16P",
+   "marca": "Cixi Kefa Elec",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 8,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     2.9773
+    ],
+    [
+     10,
+     2.9773
+    ],
+    [
+     30,
+     2.9773
+    ],
+    [
+     100,
+     2.9773
+    ],
+    [
+     500,
+     2.9773
+    ],
+    [
+     1000,
+     2.9773
+    ]
+   ]
+  },
+  {
+   "codigo": "C5367033",
+   "modelo": "JH2813P-16P",
+   "marca": "Cixi Kefa Elec",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 5,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     3.0577
+    ],
+    [
+     10,
+     3.0577
+    ],
+    [
+     30,
+     3.0577
+    ],
+    [
+     100,
+     3.0577
+    ],
+    [
+     500,
+     3.0577
+    ],
+    [
+     1000,
+     3.0577
+    ]
+   ]
+  },
+  {
+   "codigo": "C5367047",
+   "modelo": "JH2811P-16P",
+   "marca": "Cixi Kefa Elec",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 6,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     3.4546
+    ],
+    [
+     10,
+     3.4546
+    ],
+    [
+     30,
+     3.4546
+    ],
+    [
+     100,
+     3.4546
+    ],
+    [
+     500,
+     3.4546
+    ],
+    [
+     1000,
+     3.4546
+    ]
+   ]
+  },
+  {
+   "codigo": "C5496213",
+   "modelo": "2ESDVM-16P",
+   "marca": "Dinkle",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     7.777
+    ],
+    [
+     10,
+     7.777
+    ],
+    [
+     12,
+     7.777
+    ],
+    [
+     200,
+     3.1036
+    ],
+    [
+     500,
+     3.0003
+    ],
+    [
+     1000,
+     2.9478
+    ]
+   ]
+  },
+  {
+   "codigo": "C55129972",
+   "modelo": "WF-1D200H16P",
+   "marca": "BXCONN",
+   "pacote": "P=2mm",
+   "classe": "Extended",
+   "estoque": 180,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0681
+    ],
+    [
+     100,
+     0.0542
+    ],
+    [
+     300,
+     0.0473
+    ],
+    [
+     1000,
+     0.042
+    ],
+    [
+     5000,
+     0.0379
+    ],
+    [
+     10000,
+     0.0358
+    ]
+   ]
+  },
+  {
+   "codigo": "C55130354",
+   "modelo": "WF-1H200A16P",
+   "marca": "BXCONN",
+   "pacote": "P=2mm",
+   "classe": "Extended",
+   "estoque": 100,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0606
+    ],
+    [
+     100,
+     0.0481
+    ],
+    [
+     300,
+     0.0419
+    ],
+    [
+     1000,
+     0.0373
+    ],
+    [
+     5000,
+     0.0337
+    ],
+    [
+     10000,
+     0.0317
+    ]
+   ]
+  }
+ ],
+ "Type-C plug board edge": [],
+ "USB-C plug 6P": [
+  {
+   "codigo": "C9900076942",
+   "modelo": "usb-c-h",
+   "marca": "JLCPCB Assembly",
+   "pacote": "TYPE-C-6P-S",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900092960",
+   "modelo": "usb-c-h",
+   "marca": "JLCPCB Assembly",
+   "pacote": "TYPE-C-6P-S",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900152430",
+   "modelo": "USB-C-6P-BS-10.0",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "Type-C 公头": [
+  {
+   "codigo": "C9900046704",
+   "modelo": "Type-C 公头 立贴",
+   "marca": "JLCPCB Assembly",
+   "pacote": "smd",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C67376",
+   "modelo": "Type-C 3.1Male to Apple Female Connector",
+   "marca": "Jing Extension of the Electronic Co.",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0105
+    ],
+    [
+     10,
+     0.9875
+    ],
+    [
+     30,
+     0.9711
+    ],
+    [
+     100,
+     0.9564
+    ],
+    [
+     500,
+     0.9564
+    ],
+    [
+     1000,
+     0.9564
+    ]
+   ]
+  },
+  {
+   "codigo": "C67375",
+   "modelo": "Type-C 3.1Male to3.0Female header",
+   "marca": "Jing Extension of the Electronic Co.",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.7989
+    ],
+    [
+     10,
+     0.7809
+    ],
+    [
+     30,
+     0.7694
+    ],
+    [
+     100,
+     0.7579
+    ],
+    [
+     500,
+     0.7579
+    ],
+    [
+     1000,
+     0.7579
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900026998",
+   "modelo": "Type-C16P Male and female two-in-one",
+   "marca": "JLCPCB Assembly",
+   "pacote": "D-USB",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900084434",
+   "modelo": "XD-USB-Type-C16P-M",
+   "marca": "JLCPCB Assembly",
+   "pacote": "TYPE_CMale16PINs",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900012365",
+   "modelo": "TYPE-C 3.1Female Pogo Pin Connector 9P",
+   "marca": "JLCPCB Assembly",
+   "pacote": "TYPE-C 3.1  9P",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0007
+    ],
+    [
+     1000,
+     0.0003
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900336007",
+   "modelo": "Type-c L=10.8mm 16Pin",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD 公头16pin 夹板0.8",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C9900038650",
+   "modelo": "Type-C公头夹板，16pin，间距0.78mm",
+   "marca": "JLCPCB Assembly",
+   "pacote": "Type-CMale head clamp plate，16pin，Pitch0.78mm",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C67377",
+   "modelo": "Type-C 3.1Male tomicro 5PFemale header No Curl Edge",
+   "marca": "Jing Extension of the Electronic Co.",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0532
+    ],
+    [
+     10,
+     0.876
+    ],
+    [
+     30,
+     0.7792
+    ],
+    [
+     100,
+     0.6447
+    ],
+    [
+     500,
+     0.5955
+    ],
+    [
+     1000,
+     0.5742
+    ],
+    [
+     2000,
+     0.566
+    ],
+    [
+     4000,
+     0.5611
+    ]
+   ]
+  },
+  {
+   "codigo": "C67378",
+   "modelo": "Type-C 3.1Male tomicro 5PFemale header With curled edge",
+   "marca": "Jing Extension of the Electronic Co.",
+   "pacote": "-",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.6316
+    ],
+    [
+     10,
+     0.6168
+    ],
+    [
+     30,
+     0.607
+    ],
+    [
+     100,
+     0.5988
+    ],
+    [
+     500,
+     0.5988
+    ],
+    [
+     1000,
+     0.5988
+    ]
+   ]
+  }
+ ],
+ "USB-C 公头 夹板": [],
+ "Type-C male plug horizontal": [
+  {
+   "codigo": "C9900337212",
+   "modelo": "Type-C_Female_Horizontal",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  }
+ ],
+ "USB-C male": [],
+ "TYPE-C-M": [
+  {
+   "codigo": "C9900312635",
+   "modelo": "TYPE-C-M",
+   "marca": "JLCPCB Assembly",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0399
+    ],
+    [
+     100,
+     0.0206
+    ]
+   ]
+  },
+  {
+   "codigo": "C53432943",
+   "modelo": "TYPE-C-MAB169",
+   "marca": "JXTCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 155,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.3631
+    ],
+    [
+     50,
+     0.2868
+    ],
+    [
+     120,
+     0.254
+    ],
+    [
+     480,
+     0.2133
+    ],
+    [
+     2400,
+     0.1951
+    ],
+    [
+     4800,
+     0.1841
+    ]
+   ]
+  },
+  {
+   "codigo": "C53432944",
+   "modelo": "TYPE-C-MBB008",
+   "marca": "JXTCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 245,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.5299
+    ],
+    [
+     10,
+     0.4183
+    ],
+    [
+     60,
+     0.3724
+    ],
+    [
+     120,
+     0.3134
+    ],
+    [
+     480,
+     0.2871
+    ],
+    [
+     1200,
+     0.2707
+    ]
+   ]
+  },
+  {
+   "codigo": "C18077666",
+   "modelo": "BX-TYPE-C-MWT6P",
+   "marca": "Bossie",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 1699,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1329
+    ],
+    [
+     50,
+     0.1114
+    ],
+    [
+     150,
+     0.1022
+    ],
+    [
+     1000,
+     0.0908
+    ],
+    [
+     2000,
+     0.0857
+    ],
+    [
+     5000,
+     0.0826
+    ]
+   ]
+  },
+  {
+   "codigo": "C18077639",
+   "modelo": "BX-TYPE-C-MCB16P",
+   "marca": "Bossie",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 1678,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2733
+    ],
+    [
+     50,
+     0.2292
+    ],
+    [
+     150,
+     0.2103
+    ],
+    [
+     1500,
+     0.1867
+    ],
+    [
+     3000,
+     0.1762
+    ],
+    [
+     4500,
+     0.1699
+    ]
+   ]
+  },
+  {
+   "codigo": "C18077640",
+   "modelo": "BX-TYPE-C-MWT24P",
+   "marca": "Bossie",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 2714,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4807
+    ],
+    [
+     10,
+     0.4101
+    ],
+    [
+     30,
+     0.3757
+    ],
+    [
+     100,
+     0.3412
+    ],
+    [
+     500,
+     0.3216
+    ],
+    [
+     1000,
+     0.3101
+    ]
+   ]
+  },
+  {
+   "codigo": "C18077641",
+   "modelo": "BX-TYPE-C-MLT26P",
+   "marca": "Bossie",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 395,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.8826
+    ],
+    [
+     10,
+     0.7677
+    ],
+    [
+     30,
+     0.7038
+    ],
+    [
+     100,
+     0.6332
+    ],
+    [
+     400,
+     0.6004
+    ],
+    [
+     800,
+     0.5873
+    ]
+   ]
+  },
+  {
+   "codigo": "C18077642",
+   "modelo": "BX-TYPE-C-MWT16P",
+   "marca": "Bossie",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 755,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.3347
+    ],
+    [
+     10,
+     0.2806
+    ],
+    [
+     30,
+     0.2576
+    ],
+    [
+     100,
+     0.2281
+    ],
+    [
+     500,
+     0.2166
+    ],
+    [
+     800,
+     0.2084
+    ]
+   ]
+  },
+  {
+   "codigo": "C18077643",
+   "modelo": "BX-TYPE-C-MWC16P",
+   "marca": "Bossie",
+   "pacote": "Push-Pull",
+   "classe": "Extended",
+   "estoque": 955,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.7989
+    ],
+    [
+     10,
+     0.6841
+    ],
+    [
+     30,
+     0.6267
+    ],
+    [
+     100,
+     0.5693
+    ],
+    [
+     500,
+     0.5348
+    ],
+    [
+     1000,
+     0.5168
+    ]
+   ]
+  },
+  {
+   "codigo": "C18077644",
+   "modelo": "BX-TYPE-C-MLT24P",
+   "marca": "Bossie",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 474,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.5086
+    ],
+    [
+     10,
+     0.4692
+    ],
+    [
+     30,
+     0.4495
+    ],
+    [
+     100,
+     0.4315
+    ],
+    [
+     450,
+     0.42
+    ],
+    [
+     900,
+     0.4134
+    ]
+   ]
+  }
+ ],
+ "Type-C 24P male SMD": [
+  {
+   "codigo": "C283539",
+   "modelo": "TYPE-C-31-G-06",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 654,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.7481
+    ],
+    [
+     10,
+     0.6053
+    ],
+    [
+     30,
+     0.5348
+    ],
+    [
+     100,
+     0.4643
+    ],
+    [
+     750,
+     0.4036
+    ],
+    [
+     1500,
+     0.3823
+    ]
+   ]
+  },
+  {
+   "codigo": "C530605",
+   "modelo": "TYPE-C-31-G-01",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 59,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4511
+    ],
+    [
+     10,
+     0.356
+    ],
+    [
+     30,
+     0.315
+    ],
+    [
+     100,
+     0.2543
+    ],
+    [
+     500,
+     0.2313
+    ],
+    [
+     1000,
+     0.2182
+    ]
+   ]
+  },
+  {
+   "codigo": "C530606",
+   "modelo": "TYPE-C-31-G-02",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 63,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.4938
+    ],
+    [
+     10,
+     0.3872
+    ],
+    [
+     30,
+     0.3429
+    ],
+    [
+     100,
+     0.2855
+    ],
+    [
+     500,
+     0.2609
+    ],
+    [
+     1000,
+     0.2461
+    ]
+   ]
+  },
+  {
+   "codigo": "C530607",
+   "modelo": "TYPE-C-31-G-07",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 901,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0564
+    ],
+    [
+     10,
+     0.8793
+    ],
+    [
+     30,
+     0.7809
+    ],
+    [
+     100,
+     0.671
+    ],
+    [
+     500,
+     0.6217
+    ],
+    [
+     1000,
+     0.6004
+    ]
+   ]
+  },
+  {
+   "codigo": "C840338",
+   "modelo": "TYPE-C-31-G-03",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 1335,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.9318
+    ],
+    [
+     10,
+     0.7415
+    ],
+    [
+     30,
+     0.6464
+    ],
+    [
+     100,
+     0.5528
+    ],
+    [
+     500,
+     0.4954
+    ],
+    [
+     1000,
+     0.4676
+    ]
+   ]
+  },
+  {
+   "codigo": "C2909200",
+   "modelo": "TYPE-C-31-G-08",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 460,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0236
+    ],
+    [
+     10,
+     0.9236
+    ],
+    [
+     30,
+     0.8694
+    ],
+    [
+     100,
+     0.8071
+    ],
+    [
+     500,
+     0.7809
+    ],
+    [
+     1000,
+     0.7677
+    ]
+   ]
+  },
+  {
+   "codigo": "C5370429",
+   "modelo": "TYPE-C-31-G-09",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 290,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.6004
+    ],
+    [
+     10,
+     0.484
+    ],
+    [
+     30,
+     0.4249
+    ],
+    [
+     300,
+     0.3675
+    ],
+    [
+     600,
+     0.333
+    ],
+    [
+     900,
+     0.315
+    ]
+   ]
+  },
+  {
+   "codigo": "C5370430",
+   "modelo": "TYPE-C-31-G-10",
+   "marca": "Korean Hroparts Elec",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 2663,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     1.0384
+    ],
+    [
+     10,
+     0.8416
+    ],
+    [
+     30,
+     0.7448
+    ],
+    [
+     100,
+     0.6464
+    ],
+    [
+     500,
+     0.5889
+    ],
+    [
+     1000,
+     0.5578
+    ]
+   ]
+  },
+  {
+   "codigo": "C53207151",
+   "modelo": "TYPE-C-24P-GON",
+   "marca": "BXCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 5,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1347
+    ],
+    [
+     50,
+     0.1072
+    ],
+    [
+     120,
+     0.0934
+    ],
+    [
+     480,
+     0.0831
+    ],
+    [
+     2520,
+     0.0749
+    ],
+    [
+     4980,
+     0.0707
+    ]
+   ]
+  },
+  {
+   "codigo": "C42418805",
+   "modelo": "TYPE-C-GTJB-24P",
+   "marca": "JXTCONN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 179,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1925
+    ],
+    [
+     50,
+     0.1511
+    ],
+    [
+     120,
+     0.1334
+    ],
+    [
+     480,
+     0.1114
+    ],
+    [
+     2520,
+     0.1016
+    ],
+    [
+     4980,
+     0.0957
+    ]
+   ]
+  }
+ ],
+ "USB Type-C plug PCB mount": [
+  {
+   "codigo": "C55629727",
+   "modelo": "TYPE-C 16PCB0.8 IP68",
+   "marca": "SHOU HAN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 675,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.9711
+    ],
+    [
+     10,
+     0.7874
+    ],
+    [
+     30,
+     0.6956
+    ],
+    [
+     100,
+     0.6037
+    ],
+    [
+     700,
+     0.5496
+    ],
+    [
+     1400,
+     0.5217
+    ]
+   ]
+  },
+  {
+   "codigo": "C55629728",
+   "modelo": "TYPE-C 16PCB1.2 IP68",
+   "marca": "SHOU HAN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 678,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.9711
+    ],
+    [
+     10,
+     0.7874
+    ],
+    [
+     30,
+     0.6956
+    ],
+    [
+     100,
+     0.6037
+    ],
+    [
+     700,
+     0.5496
+    ],
+    [
+     1400,
+     0.5217
+    ]
+   ]
+  },
+  {
+   "codigo": "C55629729",
+   "modelo": "TYPE-C 16PCB1.6 IP68",
+   "marca": "SHOU HAN",
+   "pacote": "SMD",
+   "classe": "Extended",
+   "estoque": 1400,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.9711
+    ],
+    [
+     10,
+     0.7874
+    ],
+    [
+     30,
+     0.6956
+    ],
+    [
+     100,
+     0.6037
+    ],
+    [
+     700,
+     0.5496
+    ],
+    [
+     1400,
+     0.5217
+    ]
+   ]
+  }
+ ],
+ "ULN2003ADR": [
+  {
+   "codigo": "C7512",
+   "modelo": "ULN2003ADR",
+   "marca": "Texas Instruments",
+   "pacote": "SOIC-16",
+   "classe": "Basic",
+   "estoque": 382345,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1447
+    ],
+    [
+     50,
+     0.1103
+    ],
+    [
+     150,
+     0.0934
+    ],
+    [
+     500,
+     0.0783
+    ],
+    [
+     2500,
+     0.0742
+    ],
+    [
+     5000,
+     0.0717
+    ]
+   ]
+  },
+  {
+   "codigo": "C96639",
+   "modelo": "ULN2003ADR2G",
+   "marca": "onsemi",
+   "pacote": "SOIC-16",
+   "classe": "Extended",
+   "estoque": 9878,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2661
+    ],
+    [
+     50,
+     0.2102
+    ],
+    [
+     150,
+     0.1861
+    ],
+    [
+     500,
+     0.1393
+    ],
+    [
+     2500,
+     0.1259
+    ],
+    [
+     5000,
+     0.118
+    ]
+   ]
+  },
+  {
+   "codigo": "C2834450",
+   "modelo": "HT2003ARZ",
+   "marca": "HTCSEMI",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 2029,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1972
+    ],
+    [
+     50,
+     0.156
+    ],
+    [
+     150,
+     0.1383
+    ],
+    [
+     500,
+     0.1164
+    ],
+    [
+     2500,
+     0.1011
+    ],
+    [
+     5000,
+     0.0952
+    ]
+   ]
+  },
+  {
+   "codigo": "C18723566",
+   "modelo": "ULN2003ADTR(XBLW)",
+   "marca": "XBLW",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 5827,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1157
+    ],
+    [
+     50,
+     0.0937
+    ],
+    [
+     150,
+     0.0827
+    ],
+    [
+     500,
+     0.0744
+    ],
+    [
+     2500,
+     0.0678
+    ],
+    [
+     5000,
+     0.0645
+    ]
+   ]
+  },
+  {
+   "codigo": "C19673785",
+   "modelo": "ULN2003A-JSM",
+   "marca": "JSMSEMI",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 1126,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1014
+    ],
+    [
+     50,
+     0.0793
+    ],
+    [
+     150,
+     0.0721
+    ],
+    [
+     500,
+     0.0637
+    ],
+    [
+     2500,
+     0.0571
+    ],
+    [
+     5000,
+     0.0539
+    ]
+   ]
+  },
+  {
+   "codigo": "C913848",
+   "modelo": "ULN2003ADRG3",
+   "marca": "Texas Instruments",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.6562
+    ],
+    [
+     10,
+     0.5332
+    ],
+    [
+     30,
+     0.4183
+    ],
+    [
+     100,
+     0.333
+    ],
+    [
+     500,
+     0.2986
+    ],
+    [
+     1000,
+     0.2806
+    ]
+   ]
+  },
+  {
+   "codigo": "C6851442",
+   "modelo": "ULN2003",
+   "marca": "HXY MOSFET",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1574
+    ],
+    [
+     50,
+     0.1242
+    ],
+    [
+     150,
+     0.1101
+    ],
+    [
+     500,
+     0.0924
+    ],
+    [
+     2500,
+     0.0812
+    ],
+    [
+     5000,
+     0.0765
+    ]
+   ]
+  },
+  {
+   "codigo": "C22387044",
+   "modelo": "ULN2003ALDTR(XBLW)",
+   "marca": "XBLW",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0688
+    ],
+    [
+     100,
+     0.0557
+    ],
+    [
+     300,
+     0.0491
+    ],
+    [
+     2500,
+     0.0424
+    ],
+    [
+     5000,
+     0.0384
+    ],
+    [
+     10000,
+     0.0365
+    ]
+   ]
+  },
+  {
+   "codigo": "C55239129",
+   "modelo": "ULN2003ADRG",
+   "marca": "QNH",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 203,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0978
+    ],
+    [
+     50,
+     0.078
+    ],
+    [
+     150,
+     0.0681
+    ],
+    [
+     500,
+     0.0607
+    ],
+    [
+     2500,
+     0.0547
+    ],
+    [
+     4000,
+     0.0517
+    ]
+   ]
+  },
+  {
+   "codigo": "C180142",
+   "modelo": "ULN2003ADRG4",
+   "marca": "Texas Instruments",
+   "pacote": "SOP-16",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0007
+    ],
+    [
+     1000,
+     0.0002
+    ]
+   ]
+  }
+ ],
+ "ESD USB TVS USBLC6-2SC6": [
+  {
+   "codigo": "C7519",
+   "modelo": "USBLC6-2SC6",
+   "marca": "STMicroelectronics",
+   "pacote": "SOT-23-6L",
+   "classe": "Extended",
+   "estoque": 25222,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1524
+    ],
+    [
+     50,
+     0.1154
+    ],
+    [
+     150,
+     0.0973
+    ],
+    [
+     500,
+     0.0812
+    ],
+    [
+     3000,
+     0.0768
+    ],
+    [
+     6000,
+     0.0742
+    ]
+   ]
+  },
+  {
+   "codigo": "C2687116",
+   "modelo": "USBLC6-2SC6",
+   "marca": "UMW(Youtai Semiconductor Co., Ltd.)",
+   "pacote": "SOT-23-6",
+   "classe": "Extended",
+   "estoque": 149624,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0479
+    ],
+    [
+     100,
+     0.0386
+    ],
+    [
+     300,
+     0.0338
+    ],
+    [
+     3000,
+     0.0245
+    ],
+    [
+     6000,
+     0.0232
+    ],
+    [
+     9000,
+     0.0222
+    ]
+   ]
+  },
+  {
+   "codigo": "C2827654",
+   "modelo": "USBLC6-2SC6",
+   "marca": "TECH PUBLIC",
+   "pacote": "SOT-23-6",
+   "classe": "Extended",
+   "estoque": 176775,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.045
+    ],
+    [
+     100,
+     0.0358
+    ],
+    [
+     300,
+     0.0312
+    ],
+    [
+     3000,
+     0.0273
+    ],
+    [
+     6000,
+     0.026
+    ],
+    [
+     9000,
+     0.025
+    ]
+   ]
+  },
+  {
+   "codigo": "C5250994",
+   "modelo": "USBLC6-2SC6",
+   "marca": "TWGMC",
+   "pacote": "SOT-23-6",
+   "classe": "Extended",
+   "estoque": 112,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0913
+    ],
+    [
+     50,
+     0.0735
+    ],
+    [
+     150,
+     0.0647
+    ],
+    [
+     500,
+     0.0581
+    ],
+    [
+     3000,
+     0.0481
+    ],
+    [
+     6000,
+     0.0455
+    ]
+   ]
+  },
+  {
+   "codigo": "C5261088",
+   "modelo": "USBLC6-2SC6",
+   "marca": "HXY MOSFET",
+   "pacote": "SOT-23-6L",
+   "classe": "Extended",
+   "estoque": 68559,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0409
+    ],
+    [
+     50,
+     0.0332
+    ],
+    [
+     150,
+     0.0291
+    ],
+    [
+     500,
+     0.0265
+    ],
+    [
+     3000,
+     0.0192
+    ],
+    [
+     6000,
+     0.0179
+    ]
+   ]
+  },
+  {
+   "codigo": "C21713975",
+   "modelo": "USBLC6-2SC6",
+   "marca": "GOODWORK",
+   "pacote": "SOT-23-6",
+   "classe": "Extended",
+   "estoque": 29735,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0393
+    ],
+    [
+     100,
+     0.0314
+    ],
+    [
+     300,
+     0.0274
+    ],
+    [
+     3000,
+     0.024
+    ],
+    [
+     6000,
+     0.0215
+    ],
+    [
+     9000,
+     0.0204
+    ]
+   ]
+  },
+  {
+   "codigo": "C22390014",
+   "modelo": "USBLC6-2SC6",
+   "marca": "DOWO",
+   "pacote": "SOT-23-6L",
+   "classe": "Extended",
+   "estoque": 1679,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0342
+    ],
+    [
+     200,
+     0.0266
+    ],
+    [
+     600,
+     0.0224
+    ],
+    [
+     3000,
+     0.0199
+    ],
+    [
+     9000,
+     0.0178
+    ],
+    [
+     21000,
+     0.0166
+    ]
+   ]
+  },
+  {
+   "codigo": "C48971164",
+   "modelo": "USBLC6-2SC6",
+   "marca": "Slkor(SLKORMICRO Elec.)",
+   "pacote": "SOT-23-6L",
+   "classe": "Extended",
+   "estoque": 12582,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0366
+    ],
+    [
+     200,
+     0.0291
+    ],
+    [
+     600,
+     0.0248
+    ],
+    [
+     3000,
+     0.0209
+    ],
+    [
+     9000,
+     0.0186
+    ],
+    [
+     21000,
+     0.0174
+    ]
+   ]
+  },
+  {
+   "codigo": "C323793",
+   "modelo": "USBLC6-2SC6",
+   "marca": "Yenji Elec",
+   "pacote": "SOT-23-6",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0857
+    ],
+    [
+     50,
+     0.0693
+    ],
+    [
+     150,
+     0.0609
+    ],
+    [
+     500,
+     0.0547
+    ],
+    [
+     3000,
+     0.0547
+    ],
+    [
+     6000,
+     0.0547
+    ]
+   ]
+  },
+  {
+   "codigo": "C47147619",
+   "modelo": "USBLC6-2SC6",
+   "marca": "KUU",
+   "pacote": "SOT-23-6L",
+   "classe": "Extended",
+   "estoque": 0,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0347
+    ],
+    [
+     200,
+     0.0276
+    ],
+    [
+     600,
+     0.0237
+    ],
+    [
+     3000,
+     0.0196
+    ],
+    [
+     9000,
+     0.0176
+    ],
+    [
+     21000,
+     0.0165
+    ]
+   ]
+  }
+ ],
+ "PRTR5V0U2X": [
+  {
+   "codigo": "C12333",
+   "modelo": "PRTR5V0U2X,215",
+   "marca": "Nexperia",
+   "pacote": "SOT-143B",
+   "classe": "Extended",
+   "estoque": 99069,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.2801
+    ],
+    [
+     50,
+     0.2159
+    ],
+    [
+     150,
+     0.1846
+    ],
+    [
+     500,
+     0.1567
+    ],
+    [
+     3000,
+     0.149
+    ],
+    [
+     6000,
+     0.1444
+    ]
+   ]
+  },
+  {
+   "codigo": "C316030",
+   "modelo": "PRTR5V0U2X-N",
+   "marca": "BORN",
+   "pacote": "SOT-143",
+   "classe": "Extended",
+   "estoque": 44975,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.1049
+    ],
+    [
+     50,
+     0.0852
+    ],
+    [
+     150,
+     0.0753
+    ],
+    [
+     500,
+     0.068
+    ],
+    [
+     3000,
+     0.0494
+    ],
+    [
+     6000,
+     0.0465
+    ]
+   ]
+  },
+  {
+   "codigo": "C558444",
+   "modelo": "TPPRTR5V0U2X",
+   "marca": "TECH PUBLIC",
+   "pacote": "SOT-143",
+   "classe": "Extended",
+   "estoque": 34140,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0872
+    ],
+    [
+     100,
+     0.0663
+    ],
+    [
+     300,
+     0.0558
+    ],
+    [
+     3000,
+     0.044
+    ],
+    [
+     6000,
+     0.0378
+    ],
+    [
+     9000,
+     0.0347
+    ]
+   ]
+  },
+  {
+   "codigo": "C2827688",
+   "modelo": "PRTR5V0U2X",
+   "marca": "TECH PUBLIC",
+   "pacote": "SOT-143",
+   "classe": "Extended",
+   "estoque": 138840,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0629
+    ],
+    [
+     100,
+     0.0498
+    ],
+    [
+     300,
+     0.043
+    ],
+    [
+     3000,
+     0.0375
+    ],
+    [
+     6000,
+     0.0356
+    ],
+    [
+     9000,
+     0.0343
+    ]
+   ]
+  },
+  {
+   "codigo": "C2836313",
+   "modelo": "PRTR5V0U2X-MS",
+   "marca": "MSKSEMI",
+   "pacote": "SOT-143",
+   "classe": "Extended",
+   "estoque": 5520,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.046
+    ],
+    [
+     100,
+     0.0378
+    ],
+    [
+     300,
+     0.0337
+    ],
+    [
+     3000,
+     0.0288
+    ],
+    [
+     6000,
+     0.0263
+    ],
+    [
+     9000,
+     0.0251
+    ]
+   ]
+  },
+  {
+   "codigo": "C2904824",
+   "modelo": "KPRTR5V0U2X",
+   "marca": "KUU",
+   "pacote": "SOT-143",
+   "classe": "Extended",
+   "estoque": 343,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0717
+    ],
+    [
+     100,
+     0.0571
+    ],
+    [
+     300,
+     0.0498
+    ],
+    [
+     3000,
+     0.0443
+    ],
+    [
+     6000,
+     0.0399
+    ],
+    [
+     9000,
+     0.0378
+    ]
+   ]
+  },
+  {
+   "codigo": "C3018477",
+   "modelo": "PRTR5V0U2X-FS",
+   "marca": "FUXINSEMI",
+   "pacote": "SOT-143",
+   "classe": "Extended",
+   "estoque": 10729,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0663
+    ],
+    [
+     100,
+     0.0545
+    ],
+    [
+     300,
+     0.0486
+    ],
+    [
+     3000,
+     0.0442
+    ],
+    [
+     6000,
+     0.0406
+    ],
+    [
+     9000,
+     0.0389
+    ]
+   ]
+  },
+  {
+   "codigo": "C5158049",
+   "modelo": "PRTR5V0U2X",
+   "marca": "UMW(Youtai Semiconductor Co., Ltd.)",
+   "pacote": "SOT-143",
+   "classe": "Extended",
+   "estoque": 77497,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0442
+    ],
+    [
+     100,
+     0.0347
+    ],
+    [
+     300,
+     0.0299
+    ],
+    [
+     3000,
+     0.025
+    ],
+    [
+     6000,
+     0.0222
+    ],
+    [
+     9000,
+     0.0207
+    ]
+   ]
+  },
+  {
+   "codigo": "C5180302",
+   "modelo": "PRTR5V0U2X-ES",
+   "marca": "ElecSuper",
+   "pacote": "SOT-143",
+   "classe": "Extended",
+   "estoque": 51558,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0461
+    ],
+    [
+     50,
+     0.0361
+    ],
+    [
+     150,
+     0.0312
+    ],
+    [
+     500,
+     0.0274
+    ],
+    [
+     3000,
+     0.0245
+    ],
+    [
+     6000,
+     0.023
+    ]
+   ]
+  },
+  {
+   "codigo": "C5337179",
+   "modelo": "PRTR5V0U2X-HXY",
+   "marca": "HXY MOSFET",
+   "pacote": "SOT-143",
+   "classe": "Extended",
+   "estoque": 4605,
+   "montagem": null,
+   "tiers": [
+    [
+     1,
+     0.0507
+    ],
+    [
+     100,
+     0.0402
+    ],
+    [
+     300,
+     0.0352
+    ],
+    [
+     3000,
+     0.0289
+    ],
+    [
+     6000,
+     0.0258
+    ],
+    [
+     9000,
+     0.0243
+    ]
+   ]
+  }
+ ],
+ "tactile switch 5.1x5.1": []
+}
