@@ -1,4 +1,4 @@
-# Minimic (nome provisório)
+# Liebling (Batschauer) — pasta `minimic/`
 
 Microfone USB-C minimalista: uma placa só, plug and play em celulares, ganho contínuo e medidor de LEDs verde/amarelo/vermelho.
 

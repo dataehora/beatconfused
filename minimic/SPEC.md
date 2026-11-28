@@ -1,7 +1,50 @@
-# Minimic — SPEC R1MIC (conceito)
+# Liebling (Batschauer) — SPEC R2MIC (conceito)
 
 Data: 28 nov 2026 · Autor: Claude (sessão de conceito, com o J) · Destino: Claude Code + agentes `mic-*`
-Nome **provisório** ("Minimic"; a pasta e os arquivos são fáceis de renomear). Nomenclatura das revisões: **RnMIC**; os relatórios citam a revisão que atendem.
+Nome do produto: **Liebling**, da marca **Batschauer** ("mic Liebling"). A pasta continua `minimic/` (nome de trabalho; renomear é só um `git mv` mais os três arquivos de agente). Nomenclatura das revisões: **RnMIC**; os relatórios citam a revisão que atendem.
+
+## R2MIC — o que mudou desde a R1MIC (este bloco vale sobre o resto do texto)
+
+**Uso real:** captar **acordeon bayan** (graves poderosos, de ~41 Hz para cima, picos de 105-115 dB SPL de perto), de um músico ou banda, em live ou em estúdio pequeno em casa. O foco é plug and play o mais perto possível de um estúdio grande.
+
+### Captação (a pergunta do J)
+
+O que o bayan exige do sensor, em ordem: (1) **ponto de sobrecarga (AOP) ≥ 128 dB SPL**, porque de perto os picos passam de 110 dB e a distorção do sensor não se corrige depois; (2) **extensão de graves até ≤ 30 Hz sem queda**, para a fundamental de 41 Hz e os graves de fole; (3) ruído próprio baixo; (4) resposta plana, sem realce nem AGC. Um microfone de **pressão omnidirecional** (todo MEMS) não tem efeito de proximidade, que é bom para o grave do bayan e ruim para vazamento de outros instrumentos.
+
+Conferido em fonte (Infineon, 28 nov 2026; o resto desta seção segue **de memória**, a E1 confere):
+- **IM72D128** (PDM): SNR **71,5 a 72 dB(A)**, AOP **128 dB SPL**, queda de graves em **11 Hz** (variante VV01) ou 20 Hz (V01). Ruído próprio ≈ 22 dB SPL(A), faixa dinâmica ≈ 106 dB.
+- **IM69D130** (PDM): SNR 69 dB(A), AOP 130 dB SPL, tabela de resposta começando em 25 Hz (−2/−5 dB nesse ponto).
+- O ICS-43434 e os MEMS de ~65 dB / 120 dB SPL com queda de graves em torno de 60 Hz **ficam fora**: cortam a fundamental do bayan e saturam cedo.
+
+**Decisão R2MIC:** **IM72D128 (preferir a variante VV01, 11 Hz)** em PDM, omnidirecional, com **espuma acústica** na porta. Fallback: IM69D130. Os limites que escrevi na R1MIC ("MEMS não passa de ~69 dB") estavam desatualizados; o IM72D128 muda a conta.
+
+Por que **não** dois sensores somados (+3 dB de SNR, ruído ≈ 19,5 dB(A)): numa sala de casa o ruído do ambiente é de 30-40 dB(A), então 22 ou 19,5 dB(A) de ruído próprio não se ouvem; o que decide a qualidade é AOP, graves, planicidade e a posição do microfone. Fica como opção de estudo (dois PDM na mesma linha, selecionados por L/R) se a medição real mostrar ruído audível. **Cardioide por dois sensores** também fica de fora do R2: a subtração diferencial amplifica o ruído justo nos graves do bayan.
+
+Riscos da escolha, para a `mic-eletronica` fechar na E1: (a) **estoque e preço** do IM72D128 na LCSC/JLCPCB (Infineon costuma vir por distribuidor, talvez *Global Sourcing* ou compra à parte e solda em casa); (b) encapsulamento e se a JLCPCB monta; (c) PDM de 2,4-3,1 MHz exige **decimação no RP2040** (PIO + CIC + FIR) com banda e fase boas até os 40 Hz, sem queda do próprio filtro.
+
+### Ganho
+
+**0 a +42 dB**, curva em dB com mais resolução no começo: de perto, o bayan quer 0 a +20 dB; uma banda a 2 m (picos de ~80 dB SPL) precisa de ~+39 dB. Faixa justificada pela escala de fundo do sensor (≈ 128 dB SPL ≈ 0 dBFS). Slider (preferência do J): ver as opções no protótipo; a R2 desenha o **S1 (slider mecânico, 15 mm)** e deixa **S2 (capacitivo, 30 mm, sem peça)** como estudo.
+
+### Medidor
+
+**12 LEDs** (L3): 11 na escala e **1 azul "MIC"** que acende quando o próprio sensor satura (o ganho não resolve isso). Passo de 3 a 4 dB perto do topo. As opções de 8 e 10 LEDs ficam registradas no protótipo.
+
+### Espuma (quebra-vento) — vai junto, faz parte do produto
+
+Espuma acústica de célula aberta, Ø10 × 3 mm, colada sobre a porta do microfone: segura as rajadas de ar do fole e as plosivas da voz, e protege o sensor. Entram **3 por embalagem**. Perda de agudos esperada < 1 dB acima de 10 kHz (a verificar na medição).
+
+### Fases e compra
+
+- **Fase 1 — projeto, sem comprar nada:** conceito, esquema, posicionamento (portão P), roteamento, orçamento, firmware que compila e é testado em simulação no PC (decimação PDM, ganho, medidor com sinais sintéticos).
+- **Portão de compra:** o J valida a **versão final e o orçamento**. Só então começa a **Fase 2 — compras**: placas de teste, módulo de bancada, testes em celulares e medições.
+- Por isso o antigo F1 (protótipo em bancada) passa para a Fase 2; na Fase 1 o F1 é a simulação no PC.
+
+### Protótipo visual
+
+`minimic/design/liebling_r2.html` (gerado por `minimic/design/proto_r2.py`): planta com cotas, dois isométricos (produto e em uso no celular), 3 opções de slider e 3 de medidor. Conceito, não é desenho de fabricação.
+
+---
 
 **Regras herdadas da eTutti** (o J confirma ou muda):
 - o J manda; nada é comprado nem encomendado sem o "aprovado" dele;
@@ -116,14 +159,15 @@ Comportamento:
 
 Saída de fone/monitoramento (adicionaria latência e custo), estéreo, padrões polares, filtro passa-altas selecionável, modos de ganho, bateria, Bluetooth, app, aplicativo de configuração, caixa, suporte de mesa.
 
-## 11. Perguntas abertas para o J
+## 11. Decisões do J (R2MIC) e perguntas abertas
 
-1. **Nome** do produto (a pasta se chama `minimic/`).
-2. **Faixa de ganho**: 0 a +36 dB serve, ou você quer mais (+48) para fontes distantes, aceitando mais ruído?
-3. **Knob de lado ou deslizante?** (a eletrônica traz as opções que a JLCPCB monta)
-4. **10 LEDs** é o ponto certo, ou 8 (mais barato) / 12?
-5. **Quebra-vento** de espuma: entra como acessório?
-6. A regra "nada é comprado antes de aprovar" continua valendo para um protótipo de ~US$ 15 (placa + peças)? Ou aqui pode-se pedir o protótipo logo depois do portão P?
+Respondidas: (1) nome **Liebling**, marca **Batschauer**; (2) faixa de ganho pelo uso com bayan: 0 a +42 dB; (3) slider, com opções; (4) LEDs com opções (R2 desenha 12); (5) espuma vem junto, se importar para a qualidade (importa: entra); (6) nada é comprado antes de validar a versão final e o orçamento.
+
+Abertas para o J olhar no protótipo visual:
+1. **Slider:** S1 mecânico (15 mm) ou S2 capacitivo (30 mm, sem peça)?
+2. **Medidor:** L1 (8), L2 (10) ou L3 (12, com o LED azul de sobrecarga do sensor)?
+3. **Sentido do medidor** com o celular deitado (live em paisagem): o vermelho fica perto do plugue (nível sobe em direção ao celular, certo com o celular em pé) ou do outro lado? Dá para um acelerômetro invertê-lo sozinho, ao custo de uma peça.
+4. O **cabo de extensão USB-C** (microfone num pedestal, celular no suporte) faz parte do kit ou é do músico?
 
 ## 12. Tarefas para o Code
 
@@ -136,7 +180,7 @@ Cada tarefa tem dono (agente) e a ordem é eletrônica/firmware em paralelo depo
 4. **E4 — posicionamento** (portão P): contorno ≤ 60 × 16 mm, plugue na ponta, sensor na outra, LEDs em fila, potenciômetro; renders; **o J aprova antes de rotear**. Depois roteamento (o agente de roteamento da eTutti pode ser reaproveitado), DRC 0/0, Gerbers, BOM e CPL (Economic, o maior número de peças Basic).
 
 **Programação e som (`mic-firmware`)** — `minimic/firmware/`, `minimic/FIRMWARE.md`
-1. **F1 — protótipo em bancada** antes da placa: uma placa RP2040 de desenvolvimento + um sensor I²S em módulo, para provar USB reconhecido em Android e iPhone, 24 bits limpos e o medidor.
+1. **F1 — simulação no PC (Fase 1, sem comprar):** fluxo de bits PDM sintético (modulador delta-sigma) → decimação (CIC + FIR, parâmetros do IM72D128) → ganho → medidor; medir resposta em 30 Hz-16 kHz, ruído e distorção do filtro, com tons de 41 Hz e acordes. *(O protótipo em bancada com celulares reais é da Fase 2, depois do portão de compra.)*
 2. **F2 — firmware**: I²S por PIO, classe de áudio USB (UAC1/UAC2, §9), bloqueio de DC, ganho digital com suavização (§6), medidor e LEDs (§7), partida com varredura. Sketch próprio, só do Minimic.
 3. **F3 — verificação:** ruído próprio medido com o sensor tapado (dBFS → dB SPL(A)), resposta contra um microfone de referência, lista de aparelhos testados (modelo, sistema, resultado).
 
