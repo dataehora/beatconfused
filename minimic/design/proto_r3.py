@@ -19,12 +19,25 @@ FB_X = [15.9 + i * 3.65 for i in range(12)]        # 11 níveis + SAT
 GAIN_X = [21.5 + i * (29.0 / 14) for i in range(15)]  # 0 .. +42 dB em passos de 3 dB
 MIC_X = (6.5, 65.5)
 MIC_Y = 11.0
-OUTLINE = [(1.5, 0), (70.5, 0), (72, 1.5), (72, 19), (69, 22), (3, 22), (0, 19), (0, 1.5)]
-GOLD_LINE = "M 30.6 .8 L 1.9 .8 L .8 1.9 L .8 18.6 L 3.4 21.2 L 68.6 21.2 L 71.2 18.6 L 71.2 1.9 L 70.1 .8 L 41.4 .8"
+DX = DY = 0.0
+
+
+def set_size(w, d, mic_margin):
+    """Muda o tamanho da placa (versão C): w x d, microfones a mic_margin das pontas."""
+    global W, D, DX, DY, MIC_X, MIC_Y
+    W, D, DX, DY = w, d, (w - 72.0) / 2, (d - 22.0) / 2
+    MIC_X, MIC_Y = (mic_margin, w - mic_margin), d / 2
 
 
 def outline_pts():
-    return " ".join("%s,%s" % p for p in OUTLINE)
+    pts = [(1.5, 0), (W - 1.5, 0), (W, 1.5), (W, D - 3), (W - 3, D), (3, D), (0, D - 3), (0, 1.5)]
+    return " ".join("%s,%s" % p for p in pts)
+
+
+def gold_line():
+    c = W / 2
+    return "M %s .8 L 1.9 .8 L .8 1.9 L .8 %s L 3.4 %s L %s %s L %s %s L %s 1.9 L %s .8 L %s .8" % (
+        c - 5.4, D - 3.4, D - .8, W - 3.4, D - .8, W - .8, D - 3.4, W - .8, W - 1.9, c + 5.4)
 
 
 def plan(state="ok", gain=6, foam=True, plug=True, callouts=False, dims=False, only_outline=None, mic="mems"):
@@ -32,11 +45,15 @@ def plan(state="ok", gain=6, foam=True, plug=True, callouts=False, dims=False, o
     if only_outline:
         return '<polygon points="%s" fill="%s"/>' % (outline_pts(), only_outline)
     o = []
+    tr = '<g transform="translate(%s %s)">' % (DX, DY)
     if plug:
+        o.append(tr)
         o.append('<rect x="31.53" y="-6.65" width="8.94" height="9.15" rx="1.3" fill="#c3c7ce" stroke="#6b7078" stroke-width=".18"/>')
         o.append('<rect x="32.6" y="-5.6" width="6.8" height="7" rx=".9" fill="none" stroke="#8c919a" stroke-width=".15"/>')
+        o.append('</g>')
     o.append('<polygon points="%s" fill="#17171c" stroke="#3a3a44" stroke-width=".15"/>' % outline_pts())
-    o.append('<path d="%s" fill="none" stroke="%s" stroke-width=".22"/>' % (GOLD_LINE, GOLD))
+    o.append('<path d="%s" fill="none" stroke="%s" stroke-width=".22"/>' % (gold_line(), GOLD))
+    o.append(tr)  # a interface (LEDs, botões, marca) fica centrada na placa
     o.append('<rect x="31.5" y="0" width="9" height="2.5" fill="%s" opacity=".7"/>' % GOLD)
     # --- medidor (feedback): colorido e brilhante
     lit_to = {"ok": -16, "hot": -3, "sat": 0}[state]
@@ -79,8 +96,22 @@ def plan(state="ok", gain=6, foam=True, plug=True, callouts=False, dims=False, o
         o.append('<rect x="%s" y="14.2" width="3.4" height="2.6" rx=".4" fill="#8d929c" stroke="#d0d4da" stroke-width=".12"/>' % (bx - 1.7))
         o.append('<circle cx="%s" cy="15.5" r=".85" fill="#5a5e66"/>' % bx)
         o.append('<text x="%s" y="19.3" font-size="1.7" fill="#e8e8ee" text-anchor="middle" font-weight="700">%s</text>' % (bx, sym))
+    o.append('</g>')
     # --- par estéreo
     for mx, lab in zip(MIC_X, "LR"):
+        if mic == "ldc":  # cápsula de diafragma grande Ø16 (versão C), furos de ventilação atrás
+            o.append('<circle cx="%s" cy="%s" r="8.6" fill="none" stroke="%s" stroke-width=".3"/>' % (mx, MIC_Y, GOLD))
+            o.append('<circle cx="%s" cy="%s" r="8" fill="#aeb3bb" stroke="#e6e9ee" stroke-width=".15"/>' % (mx, MIC_Y))
+            o.append('<circle cx="%s" cy="%s" r="6.9" fill="#2a2c31"/>' % (mx, MIC_Y))
+            for k in range(13):
+                for j in range(13):
+                    px, py = (k - 6) * .95, (j - 6) * .95
+                    if px * px + py * py < 6.2 ** 2:
+                        o.append('<circle cx="%.2f" cy="%.2f" r=".2" fill="#5b5f68"/>' % (mx + px, MIC_Y + py))
+            if foam:
+                o.append('<circle cx="%s" cy="%s" r="9.6" fill="#46464c" opacity=".45" stroke="#cfcfd6" stroke-width=".15" stroke-dasharray=".7 .5"/>' % (mx, MIC_Y))
+            o.append('<text x="%s" y="%s" font-size="1.4" fill="#e8e8ee" text-anchor="middle" font-weight="700">%s</text>' % (mx, D - 0.9, lab))
+            continue
         if mic == "cap":  # cápsula de eletreto Ø9,7 (versão B)
             o.append('<circle cx="%s" cy="%s" r="5.3" fill="none" stroke="%s" stroke-width=".3"/>' % (mx, MIC_Y, GOLD))
             o.append('<circle cx="%s" cy="%s" r="4.85" fill="#aeb3bb" stroke="#e6e9ee" stroke-width=".15"/>' % (mx, MIC_Y))
@@ -112,11 +143,15 @@ def plan(state="ok", gain=6, foam=True, plug=True, callouts=False, dims=False, o
             o.append('<text x="%s" y="%s" font-size="1.6" fill="#0b1118" text-anchor="middle" font-weight="700">%d</text>' % (cx, cy + .58, n))
     if dims:
         d = "#8a8a96"
-        o.append('<line x1="0" y1="31.4" x2="72" y2="31.4" stroke="%s" stroke-width=".15"/><line x1="0" y1="30.7" x2="0" y2="32.1" stroke="%s" stroke-width=".15"/><line x1="72" y1="30.7" x2="72" y2="32.1" stroke="%s" stroke-width=".15"/>' % (d, d, d))
-        o.append('<text x="36" y="30.8" font-size="1.3" fill="#c8c8d2" text-anchor="middle">72 mm</text>')
-        o.append('<line x1="77" y1="0" x2="77" y2="22" stroke="%s" stroke-width=".15"/><line x1="76.3" y1="0" x2="77.7" y2="0" stroke="%s" stroke-width=".15"/><line x1="76.3" y1="22" x2="77.7" y2="22" stroke="%s" stroke-width=".15"/>' % (d, d, d))
-        o.append('<text x="80.4" y="11.5" font-size="1.3" fill="#c8c8d2" text-anchor="middle">22 mm</text>')
-        o.append('<text x="36" y="25.4" font-size="1.0" fill="#8a8a96" text-anchor="middle">microfones a 59 mm um do outro</text>')
+        yb = D + 9.4
+        o.append('<line x1="0" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-width=".15"/><line x1="0" y1="%s" x2="0" y2="%s" stroke="%s" stroke-width=".15"/><line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-width=".15"/>' % (
+            yb, W, yb, d, yb - .7, yb + .7, d, W, yb - .7, W, yb + .7, d))
+        o.append('<text x="%s" y="%s" font-size="1.3" fill="#c8c8d2" text-anchor="middle">%g mm</text>' % (W / 2, yb - .6, W))
+        xr = W + 5
+        o.append('<line x1="%s" y1="0" x2="%s" y2="%s" stroke="%s" stroke-width=".15"/><line x1="%s" y1="0" x2="%s" y2="0" stroke="%s" stroke-width=".15"/><line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-width=".15"/>' % (
+            xr, xr, D, d, xr - .7, xr + .7, d, xr - .7, D, xr + .7, D, d))
+        o.append('<text x="%s" y="%s" font-size="1.3" fill="#c8c8d2" text-anchor="middle">%g mm</text>' % (xr + 3.4, D / 2, D))
+        o.append('<text x="%s" y="%s" font-size="1.0" fill="#8a8a96" text-anchor="middle">microfones a %g mm um do outro</text>' % (W / 2, D + 3.4, MIC_X[1] - MIC_X[0]))
     return "".join(o)
 
 
@@ -152,6 +187,7 @@ def components(state="ok", gain=6, mic="mems"):
         items.append((x - .4, x + .4, GAIN_Y - .8, GAIN_Y + .8, .5, "#f1f1ea" if on else "#55555c", "#303036", "#44444a"))
     for bx in (16, 56):
         items.append((bx - 1.7, bx + 1.7, 14.2, 16.8, 1.6, "#9aa0a8", "#6f747c", "#80858d"))
+    items = [(i[0] + DX, i[1] + DX, i[2] + DY, i[3] + DY) + i[4:] for i in items]
     if mic == "mems":
         for mx in MIC_X:
             items.append((mx - 2, mx + 2, MIC_Y - 1.5, MIC_Y + 1.5, 1.0, "#cfd2d8", "#9ea3ab", "#b2b6be"))
@@ -160,6 +196,8 @@ def components(state="ok", gain=6, mic="mems"):
 
 def mic_stack(mic):
     """Cilindros (raio, altura inicial, final, topo, lado) sobre cada furo/cápsula."""
+    if mic == "ldc":
+        return [(8.0, 0, 9.0, "#2a2c31", "#aeb3bb"), (9.0, 9.0, 12.0, "#55555c", "#3a3a40")]
     if mic == "cap":
         return [(4.85, 0, 6.5, "#2a2c31", "#aeb3bb"), (5.7, 6.5, 9.0, "#55555c", "#3a3a40")]
     return [(5.0, 0, 3.0, "#55555c", "#3a3a40")]
@@ -169,7 +207,7 @@ def iso_flat(state="ok", mic="mems"):
     iso = Iso3(7.6)
     wd = lambda u, v, w=0: (u, v, w)
     # plugue (atrás da placa, saindo do lado y = 0)
-    iso.box(31.53, 40.47, -6.65, 2.5, T / 2 - 1.63, T / 2 + 1.63, "#c8ccd3", "#9ea3ab", "#b2b6be")
+    iso.box(31.53 + DX, 40.47 + DX, -6.65 + DY, 2.5 + DY, T / 2 - 1.63, T / 2 + 1.63, "#c8ccd3", "#9ea3ab", "#b2b6be")
     for k in range(6):
         iso.plan_on(lambda u, v, z=T * k / 6: (u, v, z), only_outline="#0d0d10")
     iso.plan_on(lambda u, v: (u, v, T), foam=False, plug=False, state=state, mic=mic)
