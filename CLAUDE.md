@@ -1117,7 +1117,10 @@ left wall (connectors now under the board) and the V3 page.
 ## Liebling / Minimic (28 Nov 2026) — new project, USB-C microphone
 
 `minimic/` (product **Liebling**, brand Batschauer): one-board USB-C class-compliant mic for accordion bayan (live / small
-home studio), continuous gain slider 0..+42 dB, 12-LED meter, foam windscreen included. Concept in `minimic/SPEC.md`
+home studio). **R3MIC (28 Nov):** 72 x 22 mm board with the USB-C plug at the centre of the long side (the board is the
+phone's "chin"), no case (PCB is the finish), stereo pair of IM72D128 59 mm apart, gain = 15 dim white LEDs + two buttons
+(1.5 dB steps, 0..+42 dB, no pot), meter = 11 coloured LEDs + blue SAT right after the last red (SAT blinks with the reds),
+foam windscreen included; visual prototype `minimic/design/liebling_r3.html` from `proto_r3.py`. Concept in `minimic/SPEC.md`
 (**RnMIC**, Portuguese, written in the concept session; agents never edit it). Same protocol as the eTutti: agents
 `mic-eletronica`, `mic-firmware`, `mic-design` (`.claude/agents/`) each own a folder + report; placement gate P approved by J
 before routing. R2MIC sensor = Infineon IM72D128 (PDM, 128 dB SPL AOP, 11-20 Hz roll-off) + RP2040; prices/stock/JLCPCB

@@ -1,4 +1,78 @@
-# Liebling (Batschauer) — SPEC R2MIC (conceito)
+# Liebling (Batschauer) — SPEC R3MIC (conceito)
+
+## R3MIC — decisões do J (28 nov, tarde): o que vale sobre o resto do texto
+
+O bloco R2MIC e as seções 1 a 13 abaixo continuam valendo **exceto** onde este bloco manda diferente (forma, ganho, medidor, estéreo, sem case).
+
+**Fase 1 (projeto, sem comprar) continua.** Protótipo visual: `minimic/design/liebling_r3.html` (gerado por `proto_r3.py`; o `liebling_r2.html` fica como histórico).
+
+### 1. Forma: a placa é a continuação do corpo do celular
+- Placa **72 × 22 × 1,2 mm**, o **plugue USB-C macho no centro do lado maior** (largura 72 mm ≈ a de um celular comum), saindo do lado de 72 mm. Plugada, a placa vira o "queixo" do celular, em linha com o corpo, em vez de uma haste que se projeta para fora. Cabe no celular em pé numa estante ou num pau de selfie; sem cabo de extensão.
+- **Firme e integrado:** plugue de carcaça metálica com as quatro pernas soldadas na placa (THT, ou meio-montado em entalhe), e a placa de 1,2 mm encostada no corpo do celular. A `mic-design` estuda a alavanca lateral (peso ~6-8 g centrado no plugue) e a folga para capinha fina; a `mic-eletronica` escolhe o plugue pela resistência mecânica (o mais robusto que a JLCPCB monte, ou soldado à mão se for o caso).
+- A placa tem 72 mm de largura: celulares mais largos (até ~77 mm) deixam a placa um pouco mais estreita que o corpo, sem problema.
+
+### 2. Ganho: duas barras de LED, sem potenciômetro
+- **Barra de ganho** (embaixo, a mais distante do celular): **15 LEDs brancos 0603, fracos** (cor e brilho diferentes do medidor, de propósito), posições de **0 a +42 dB em passos de 3 dB**.
+- **Dois botões, − e +**, nas pontas da barra. Cada toque muda **1,5 dB** (o LED aceso anda meio passo: **dois LEDs vizinhos acesos** = meia posição); segurar repete. Resolução real **1,5 dB**, melhor que um slider de 15 mm.
+- O **último ganho fica guardado** (RP2040 sem EEPROM: um setor de flash, gravado só 3 s depois da última mudança, com rodízio). Padrão de fábrica: **+12 dB**.
+- Sem potenciômetro, sem ADC, sem cursor móvel: **menos uma peça mecânica**, e a barra branca vira parte do desenho. Os 15 LEDs acendem por **charlieplexing** (5 pinos + 5 resistores; brilho fraco é o que se quer), proposta que a eletrônica confirma contra 2 × 74HC595 (Basic).
+
+### 3. Medidor de nível (barra de cima, perto do plugue): colorido e brilhante
+- **12 LEDs 0805 (SAT em 1206)**, da esquerda para a direita:
+
+| LED | cor | dBFS (pico, depois do ganho) | significa |
+|---|---|---|---|
+| 1-6 | verde | −42, −36, −30, −24, −20, −16 | baixo → bom |
+| 7-9 | amarelo | −12, −9, −6 | forte: **alvo dos picos do bayan** |
+| 10 | vermelho | −3 | limite |
+| 11 | vermelho | 0 | no teto |
+| 12 | **azul, "SAT"** | — | **saturou** |
+
+- **SAT é o degrau logo depois do último vermelho.** Acende (azul, piscando a ~8 Hz) quando **(a)** a saída chegou a 0 dBFS e **cortou**, ou **(b)** o próprio sensor passou de ~128 dB SPL (o ganho não resolve isso). Dura ~2 s depois do evento. **Enquanto SAT pisca, os dois vermelhos piscam juntos**: o corte fica inconfundível mesmo de longe.
+- **Texto na serigrafia:** "SAT" sob o LED e "SATUROU: BAIXE O GANHO" ao lado, com um traço ligando o texto ao LED. Cada LED tem o número em dBFS impresso (o protótipo confere cor × número).
+- O medidor mostra o **máximo entre L e R** (qualquer canal que sature acende o SAT).
+
+### 4. Par estéreo
+- **Dois IM72D128** (PDM, **uma só linha de dados**, selecionados por L/R), nas **duas pontas da placa, a 59 mm um do outro**, cada um com furo acústico e **espuma Ø10**. USB **2 canais, 24 bits, 48 kHz**, ganho ligado nos dois, o mesmo caminho de sinal.
+- Par espaçado (AB) de omnis: imagem estéreo moderada (diferença de tempo máxima de 59 mm / 343 m/s ≈ 0,17 ms), **bem compatível com mono** (soma sem filtro de pente forte), natural para um instrumento largo como o acordeon (lado dos graves × lado dos agudos).
+- **Custo:** um sensor a mais (+US$ a conferir), a decimação de dois canais no RP2040 (a simulação F1 mede a carga) e o dobro de banda USB (288 kB/s, longe do limite do Full Speed). Consumo continua ≤ 100 mA (conta em `POWER.md`).
+
+### 5. Sem case, mas com cara de produto
+- **Nenhum case.** O acabamento é a PCB: máscara **preta fosca**, **ouro (ENIG)** exposto em marca "Liebling" em cobre, contorno dourado interno, anéis dourados nos furos dos microfones, chanfros de 3 mm nos cantos da frente e 1,5 mm nos de trás, serigrafia branca mínima (número, +, −, L, R, SAT). Tudo isso já está no protótipo.
+- Case mínimo só se o J pedir depois (faixa de silicone fina no fundo, sem tampa). Em aberto na §6.
+- A espuma cola sobre cada furo (**3 pares por embalagem**).
+
+### 6. Graves e onde ainda perdemos para um estúdio grande
+**Graves:** o sensor **não limita** (IM72D128VV01: queda em 11 Hz, a E1 do bayan é 41 Hz). Meta R3MIC: **−3 dB em ≤ 15 Hz** na cadeia inteira (sensor → decimação → bloqueio de DC em ~3 Hz → USB), medida na simulação F1. Perdas possíveis ficam **fora do sensor**: (a) o filtro passa-altas que o sistema/app do celular aplica (Android: fonte UNPROCESSED; iOS: modo de medição; **depende do app de gravação**, a página futura deve dizer isso); (b) vibração e manuseio pelo pau de selfie (graves de manuseio que o estúdio isola com suporte elástico).
+
+Onde ainda estamos **abaixo de um estúdio grande** (conta honesta):
+
+| Item | Liebling | Estúdio grande | Perda real? |
+|---|---|---|---|
+| Ruído próprio | ≈ 22 dB(A) por canal | 7-15 dB(A) (condensador grande) | **pequena**: o ruído da sala (30-40 dB(A)) é maior que os dois |
+| Padrão polar | omni fixo | cardioide, figura 8 etc. | **sim**: mais vazamento de outros instrumentos e da sala; só a posição resolve |
+| Estéreo | AB fixo de 59 mm | escolhe XY / ORTF / spaced, a qualquer distância | **parcial**: um par só, mas bom para um instrumento só |
+| Isolamento mecânico | rígido no celular | suporte elástico | **sim** (graves de manuseio), a medir; mitigação por filtro < 15 Hz opcional no firmware |
+| Pré-amplificador e conversor | digitais dentro do sensor, 24 bits | pré de alta classe + conversor | **pequena** |
+| Tamanho da cápsula | ~4 mm | 25 mm | **fora de eixo** nos agudos e comprimento de onda dos graves: sem perda de graves para omni |
+| Processamento do celular | depende do app | nenhum | **fora do nosso controle** (ver acima) |
+| Distância e posição | presa ao celular | livre | **sim**, é a natureza do produto |
+
+Conclusão: com o IM72D128 e o ganho de 0 a +42 dB, o que fica abaixo do estúdio é **polar, isolamento e posição**, não graves nem ruído. Isso é dito na página do produto.
+
+### 7. Ajustes nas tarefas (§12)
+- **Eletrônica:** E1 inclui o IM72D128 duas vezes na tabela (preço × 2, estoque), plugue USB-C pela resistência mecânica, botões táteis SMD baixos (Basic), LEDs 0603 branco, 0805 R/Y/G, 1206 azul; **sem potenciômetro**. E3: 12 + 15 LEDs, 2 botões, 2 microfones numa linha PDM, GPIOs ≈ 21 (PDM 2, medidor 12, charlieplex 5, botões 2). E4: posicionamento no contorno 72 × 22.
+- **Firmware:** F1 simula **dois** canais; F2 faz a rampa de ganho em passos de 1,5 dB com meio LED, ganho guardado em flash, SAT com os vermelhos piscando, UAC 2 canais.
+- **Design:** D1 = estudo de alavanca do plugue no centro, folga para capinha e para o celular em pé; D3 = a arte da PCB (ENIG, marca, contorno); D2 (espuma) vale para 2 furos.
+
+### 8. Perguntas abertas
+1. O **sentido do medidor** com o celular deitado (live em paisagem): a barra lê da esquerda para a direita só com o celular em pé. Um acelerômetro (uma peça) inverteria sozinho; ou aceitamos a leitura "de cabeça" em paisagem?
+2. Cor da máscara: **preta fosca** (desenhada) ou também uma versão **branca**? (a máscara branca costuma custar extra na JLCPCB)
+3. **Case mínimo**: quer uma faixa de silicone para o fundo, ou nada?
+
+---
+
+# R2MIC (histórico) — SPEC R2MIC (conceito)
 
 Data: 28 nov 2026 · Autor: Claude (sessão de conceito, com o J) · Destino: Claude Code + agentes `mic-*`
 Nome do produto: **Liebling**, da marca **Batschauer** ("mic Liebling"). A pasta continua `minimic/` (nome de trabalho; renomear é só um `git mv` mais os três arquivos de agente). Nomenclatura das revisões: **RnMIC**; os relatórios citam a revisão que atendem.
