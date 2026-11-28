@@ -27,7 +27,7 @@ def outline_pts():
     return " ".join("%s,%s" % p for p in OUTLINE)
 
 
-def plan(state="ok", gain=6, foam=True, plug=True, callouts=False, dims=False, only_outline=None):
+def plan(state="ok", gain=6, foam=True, plug=True, callouts=False, dims=False, only_outline=None, mic="mems"):
     """state: 'ok' | 'hot' | 'sat'. gain: posição 0..14 (0,5 = meio passo: acende dois LEDs)."""
     if only_outline:
         return '<polygon points="%s" fill="%s"/>' % (outline_pts(), only_outline)
@@ -62,9 +62,6 @@ def plan(state="ok", gain=6, foam=True, plug=True, callouts=False, dims=False, o
             'stroke="#fff" stroke-width=".14"' if (on and blink) else ""))
         o.append('<text x="%.2f" y="3.9" font-size="%s" fill="%s" text-anchor="middle" %s>%s</text>' % (
             x, 1.2 if i == 11 else .95, B if i == 11 else "#b5b5c0", 'font-weight="700"' if i == 11 else "", lab))
-    # seta e aviso de saturação, no degrau logo depois do vermelho
-    o.append('<path d="M 52.4 8.4 L 56.05 8.4 L 56.05 7.5" fill="none" stroke="%s" stroke-width=".18"/>' % B)
-    o.append('<text x="57.6" y="9.0" font-size=".95" fill="%s" text-anchor="end">SATUROU: BAIXE O GANHO</text>' % B)
     # --- identidade
     o.append('<text x="14.5" y="12.7" font-size="3" fill="%s" font-family="Georgia,serif" font-style="italic">Liebling</text>' % GOLD)
     o.append('<text x="14.7" y="13.9" font-size=".9" fill="#9a9aa6" letter-spacing=".3">BATSCHAUER</text>')
@@ -84,6 +81,19 @@ def plan(state="ok", gain=6, foam=True, plug=True, callouts=False, dims=False, o
         o.append('<text x="%s" y="19.3" font-size="1.7" fill="#e8e8ee" text-anchor="middle" font-weight="700">%s</text>' % (bx, sym))
     # --- par estéreo
     for mx, lab in zip(MIC_X, "LR"):
+        if mic == "cap":  # cápsula de eletreto Ø9,7 (versão B)
+            o.append('<circle cx="%s" cy="%s" r="5.3" fill="none" stroke="%s" stroke-width=".3"/>' % (mx, MIC_Y, GOLD))
+            o.append('<circle cx="%s" cy="%s" r="4.85" fill="#aeb3bb" stroke="#e6e9ee" stroke-width=".15"/>' % (mx, MIC_Y))
+            o.append('<circle cx="%s" cy="%s" r="3.7" fill="#2a2c31"/>' % (mx, MIC_Y))
+            for k in range(7):
+                for j in range(7):
+                    px, py = (k - 3) * .8, (j - 3) * .8
+                    if px * px + py * py < 3.3 ** 2:
+                        o.append('<circle cx="%.2f" cy="%.2f" r=".18" fill="#5b5f68"/>' % (mx + px, MIC_Y + py))
+            if foam:
+                o.append('<circle cx="%s" cy="%s" r="6.5" fill="#46464c" opacity=".5" stroke="#cfcfd6" stroke-width=".15" stroke-dasharray=".7 .5"/>' % (mx, MIC_Y))
+            o.append('<text x="%s" y="19.9" font-size="1.4" fill="#e8e8ee" text-anchor="middle" font-weight="700">%s</text>' % (mx, lab))
+            continue
         o.append('<circle cx="%s" cy="%s" r="2.4" fill="none" stroke="%s" stroke-width=".3"/>' % (mx, MIC_Y, GOLD))
         o.append('<rect x="%s" y="%s" width="4" height="3" rx=".3" fill="#cfd2d8" stroke="#6b7078" stroke-width=".12"/>' % (mx - 2, MIC_Y - 1.5))
         o.append('<circle cx="%s" cy="%s" r=".9" fill="#050506" stroke="#fff" stroke-width=".1"/>' % (mx, MIC_Y))
@@ -124,7 +134,7 @@ class Iso3(Iso):
         self.out.append('<g transform="matrix(%.4f %.4f %.4f %.4f %.2f %.2f)">%s</g>' % (m + (plan(**kw),)))
 
 
-def components(state="ok", gain=6):
+def components(state="ok", gain=6, mic="mems"):
     """(u0,u1,v0,v1,h,topo,lado,frente) de cada peça sobre a placa, em mm da planta."""
     items = []
     lit_to = {"ok": -16, "hot": -3, "sat": 0}[state]
@@ -142,28 +152,37 @@ def components(state="ok", gain=6):
         items.append((x - .4, x + .4, GAIN_Y - .8, GAIN_Y + .8, .5, "#f1f1ea" if on else "#55555c", "#303036", "#44444a"))
     for bx in (16, 56):
         items.append((bx - 1.7, bx + 1.7, 14.2, 16.8, 1.6, "#9aa0a8", "#6f747c", "#80858d"))
-    for mx in MIC_X:
-        items.append((mx - 2, mx + 2, MIC_Y - 1.5, MIC_Y + 1.5, 1.0, "#cfd2d8", "#9ea3ab", "#b2b6be"))
+    if mic == "mems":
+        for mx in MIC_X:
+            items.append((mx - 2, mx + 2, MIC_Y - 1.5, MIC_Y + 1.5, 1.0, "#cfd2d8", "#9ea3ab", "#b2b6be"))
     return items
 
 
-def iso_flat(state="ok"):
+def mic_stack(mic):
+    """Cilindros (raio, altura inicial, final, topo, lado) sobre cada furo/cápsula."""
+    if mic == "cap":
+        return [(4.85, 0, 6.5, "#2a2c31", "#aeb3bb"), (5.7, 6.5, 9.0, "#55555c", "#3a3a40")]
+    return [(5.0, 0, 3.0, "#55555c", "#3a3a40")]
+
+
+def iso_flat(state="ok", mic="mems"):
     iso = Iso3(7.6)
     wd = lambda u, v, w=0: (u, v, w)
     # plugue (atrás da placa, saindo do lado y = 0)
     iso.box(31.53, 40.47, -6.65, 2.5, T / 2 - 1.63, T / 2 + 1.63, "#c8ccd3", "#9ea3ab", "#b2b6be")
     for k in range(6):
         iso.plan_on(lambda u, v, z=T * k / 6: (u, v, z), only_outline="#0d0d10")
-    iso.plan_on(lambda u, v: (u, v, T), foam=False, plug=False, state=state)
-    items = sorted(components(state), key=lambda c: (c[0] + c[1] + c[2] + c[3]))
+    iso.plan_on(lambda u, v: (u, v, T), foam=False, plug=False, state=state, mic=mic)
+    items = sorted(components(state, mic=mic), key=lambda c: (c[0] + c[1] + c[2] + c[3]))
     for u0, u1, v0, v1, h, top, side, front in items:
         iso.box(u0, u1, v0, v1, T, T + h, top, side, front, stroke="#111", sw=.2)
     for mx in MIC_X:
-        iso.cyl(mx, MIC_Y, T, T + 3.0, 5, "#55555c", "#3a3a40")
+        for r, h0, h1, top, side in mic_stack(mic):
+            iso.cyl(mx, MIC_Y, T + h0, T + h1, r, top, side)
     return iso.svg()
 
 
-def iso_use(state="ok"):
+def iso_use(state="ok", mic="mems"):
     iso = Iso3(5.6)
     PH_W, PH_T, PH_H = 72.0, 8.5, 22.0
     xc, y_mid, gap = 36.0, 4.25, 0.8
@@ -181,7 +200,7 @@ def iso_use(state="ok"):
     # corpo da placa: 6 cópias do contorno em y crescente, a última com a planta
     for k in range(6):
         iso.plan_on(lambda u, v, w=T * k / 6: wd(u, v, w), only_outline="#0d0d10")
-    iso.plan_on(lambda u, v: wd(u, v, T), foam=False, plug=False, state=state)
+    iso.plan_on(lambda u, v: wd(u, v, T), foam=False, plug=False, state=state, mic=mic)
 
     def pbox(u0, u1, v0, v1, h, top, side, front):
         x0, x1 = X0 + u0, X0 + u1
@@ -189,17 +208,18 @@ def iso_use(state="ok"):
         iso.box(x0, x1, ytop, ytop + h, z0, z1, top, side, front, stroke="#111", sw=.2)
 
     # em pé, a face +y é a "tampa" (a que o músico vê): o rótulo da cor vai na frente
-    for u0, u1, v0, v1, h, top, side, front in sorted(components(state), key=lambda c: c[0] + c[1]):
+    for u0, u1, v0, v1, h, top, side, front in sorted(components(state, mic=mic), key=lambda c: c[0] + c[1]):
         pbox(u0, u1, v0, v1, h, front, side, front)
     for mx in MIC_X:
-        cx, cz, r = X0 + mx, -gap - MIC_Y, 5.0
+        cx, cz = X0 + mx, -gap - MIC_Y
         n = 24
-        pf = [iso.P(cx + r * math.cos(t * 2 * math.pi / n), ytop + 3.0, cz + r * math.sin(t * 2 * math.pi / n)) for t in range(n + 1)]
-        pb = [iso.P(cx + r * math.cos(t * 2 * math.pi / n), ytop, cz + r * math.sin(t * 2 * math.pi / n)) for t in range(n + 1)]
-        iso.poly(pb, "#3a3a40", "#111", .3)
-        for t in range(n):
-            iso.poly([pb[t], pb[t + 1], pf[t + 1], pf[t]], "#3a3a40", "#3a3a40", .3)
-        iso.poly(pf, "#55555c", "#111", .4)
+        for r, h0, h1, top, side in mic_stack(mic):
+            pf = [iso.P(cx + r * math.cos(t * 2 * math.pi / n), ytop + h1, cz + r * math.sin(t * 2 * math.pi / n)) for t in range(n + 1)]
+            pb = [iso.P(cx + r * math.cos(t * 2 * math.pi / n), ytop + h0, cz + r * math.sin(t * 2 * math.pi / n)) for t in range(n + 1)]
+            iso.poly(pb, side, "#111", .3)
+            for t in range(n):
+                iso.poly([pb[t], pb[t + 1], pf[t + 1], pf[t]], side, side, .3)
+            iso.poly(pf, top, "#111", .4)
     return iso.svg()
 
 
@@ -215,7 +235,7 @@ def page():
     legend = [
         "Plugue USB-C macho no <b>centro do lado maior</b>: a placa é a continuação do corpo do celular.",
         "Barra de <b>nível</b>: 11 LEDs verde/amarelo/vermelho, brilhantes, legíveis de longe.",
-        "<b>SAT</b>: o degrau logo depois do vermelho. Azul, piscando, com o texto \"SATUROU: baixe o ganho\".",
+        "<b>SAT</b>: o degrau logo depois do vermelho. Azul, piscando; o texto \"SAT\" na serigrafia basta.",
         "Barra de <b>ganho</b>: 15 LEDs brancos e discretos; o aceso mostra a posição (0 a +42 dB).",
         "Botões <b>−</b> e <b>+</b> nas pontas da barra de ganho.",
         "<b>Par estéreo</b> (L e R), a 59 mm um do outro, cada um com espuma Ø10.",

@@ -29,7 +29,7 @@ O bloco R2MIC e as seções 1 a 13 abaixo continuam valendo **exceto** onde este
 | 12 | **azul, "SAT"** | — | **saturou** |
 
 - **SAT é o degrau logo depois do último vermelho.** Acende (azul, piscando a ~8 Hz) quando **(a)** a saída chegou a 0 dBFS e **cortou**, ou **(b)** o próprio sensor passou de ~128 dB SPL (o ganho não resolve isso). Dura ~2 s depois do evento. **Enquanto SAT pisca, os dois vermelhos piscam juntos**: o corte fica inconfundível mesmo de longe.
-- **Texto na serigrafia:** "SAT" sob o LED e "SATUROU: BAIXE O GANHO" ao lado, com um traço ligando o texto ao LED. Cada LED tem o número em dBFS impresso (o protótipo confere cor × número).
+- **Texto na serigrafia:** só "SAT" sob o LED (o azul já é claro; **sem** frase adicional). Cada LED tem o número em dBFS impresso (o protótipo confere cor × número).
 - O medidor mostra o **máximo entre L e R** (qualquer canal que sature acende o SAT).
 
 ### 4. Par estéreo
@@ -65,10 +65,14 @@ Conclusão: com o IM72D128 e o ganho de 0 a +42 dB, o que fica abaixo do estúdi
 - **Firmware:** F1 simula **dois** canais; F2 faz a rampa de ganho em passos de 1,5 dB com meio LED, ganho guardado em flash, SAT com os vermelhos piscando, UAC 2 canais.
 - **Design:** D1 = estudo de alavanca do plugue no centro, folga para capinha e para o celular em pé; D3 = a arte da PCB (ENIG, marca, contorno); D2 (espuma) vale para 2 furos.
 
-### 8. Perguntas abertas
-1. O **sentido do medidor** com o celular deitado (live em paisagem): a barra lê da esquerda para a direita só com o celular em pé. Um acelerômetro (uma peça) inverteria sozinho; ou aceitamos a leitura "de cabeça" em paisagem?
-2. Cor da máscara: **preta fosca** (desenhada) ou também uma versão **branca**? (a máscara branca costuma custar extra na JLCPCB)
-3. **Case mínimo**: quer uma faixa de silicone para o fundo, ou nada?
+### 8. Decisões finais do J (28 nov) — R3MIC fechada para detalhar
+1. **Layout fixo**, também em paisagem (sem acelerômetro, sem inverter a barra).
+2. Máscara **preta fosca**, só ela.
+3. **Nenhum case**, nem faixa de silicone.
+4. Sem o texto "SATUROU: BAIXE O GANHO": o "SAT" azul basta.
+
+### 9. Versão B (variante, só para comparar)
+`minimic/design/liebling_r3_b.html` (gerado por `proto_b.py`): cápsulas de eletreto Ø9,7 mm (classe Primo EM272: 80 dB SNR, 119 a 122 dB SPL de máximo, sensibilidade −28 dBV/Pa ±3 dB) + ADC estéreo (candidato: TI PCM1863, 110 dB SNR, 2,1 Vrms de fundo de escala) + RP2040. Resultado das contas: ruído 2,5 a 7 dB menor, mas **6 a 9 dB menos margem de sobrecarga** (a cápsula satura antes do sensor MEMS) e graves **não confirmados** (60 Hz a 20 kHz na ficha de loja). O J decide se segue só a A ou também a B; **a A é a base de todas as tarefas acima**.
 
 ---
 
