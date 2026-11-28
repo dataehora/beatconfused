@@ -53,9 +53,9 @@ def tmag_tristate():
 
 M.sym("TMAG5253BA3", "custom", tmag_tristate)
 
-FFC_FP = "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal"
-TMAG_FP = "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm"
-DFN_FP = "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm"
+FFC_FP = "slim:FFC_8P_0.5_KH-H1.0"
+TMAG_FP = "slim:TMAG5253_X2SON4_EE"
+DFN_FP = "slim:HC595_DHVQFN16_EE"
 NPOS = 8
 
 QPIN = {1: "15", 2: "1", 3: "2", 4: "3", 5: "4", 6: "5", 7: "6", 8: "7"}     # 74HC595 QA..QH
@@ -85,10 +85,10 @@ M.part("U9", "74HC595BQ", "74HC595BQ,115", n595, "S9", fp=DFN_FP, lcsc="C730243"
        note="registrador de deslocamento 8 bits (DHVQFN-16, 2,5 x 3,5 mm), 137 mil em estoque; QA..QH = EN dos sensores 1..8, QH' sem uso; pad 17 no GND",
        datasheet="https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
 M.sym("Conn_01x08_MountingPin", "Connector_Generic_MountingPin")
-M.part("J1", "Conn_01x08_MountingPin", "FFC 8P 0.5 mm, contato por baixo",
+M.part("J1", "Conn_01x08_MountingPin", "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)",
        {"1": "GND", "2": "+3V3", "3": "OUT", "4": "DATA", "5": "CLK", "6": "LATCH", "7": "GND", "8": "GND", "MP": "GND"}, "S10",
-       fp=FFC_FP, lcsc="C66953", cls="estendida", price=0.10, status="conferir",
-       note="na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector na principal); footprint = placeholder Amphenol")
+       fp=FFC_FP, lcsc="C3250113", cls="estendida", price=0.10, status="conferir",
+       note="na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector, 1,0 mm de altura, contatos dos dois lados); footprint = placeholder Amphenol")
 for k in range(1, NPOS + 1):
     M.C("C%d" % k, "100nF", "+3V3", "GND", "S%d" % k, note="desacoplamento do TMAG5253 %d, junto do pino 1" % k)
 M.C("C9", "100nF", "+3V3", "GND", "S9", note="desacoplamento do 595")
@@ -96,6 +96,9 @@ M.C("C10", "10uF", "+3V3", "GND", "S10", "0805", note="reservatorio da regua (ju
 
 
 def main():
+    import shutil
+    M.footprints.write_all()
+    shutil.copytree(os.path.join(PCB, "kicad", "slim.pretty"), os.path.join(KD, "slim.pretty"), dirs_exist_ok=True)
     M.check_footprints()
     declared, pages = {}, {}
     for s, title in M.SHEETS:
@@ -113,6 +116,7 @@ def main():
     parts = []
     for p in M.PARTS["R"]:
         q = {k: p[k] for k in ("ref", "value", "nets", "code", "fp", "lcsc", "cls", "mount", "note", "dnp", "sheet", "price", "datasheet")}
+        q["path"] = "/%s/%s/%s" % (M.ROOT_UUID, M.SHEET_UUID["R"], M.uid("sym", p["ref"], 1))
         parts.append(q)
     json.dump(parts, open(os.path.join(BUILD, "partes_regua.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     counts, bad = M.run_checks(declared)

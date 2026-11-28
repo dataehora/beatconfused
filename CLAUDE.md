@@ -1114,6 +1114,16 @@ left wall (connectors now under the board) and the V3 page.
 - **Student V3 page and assembly manual (18 Nov):** `/etutti/studentV3/` (unlisted, noindex, Portuguese; `index.html` = concept, block diagram, KiCad schematic sheets as SVG in `esquema/`, parts by area and supplier, numbered exploded view, budget; `montagem.html` = ten-step manual, each step an exploded picture). Written by `student_v03/pagina.py` (texts and prices live there); pictures by `student_v03/case/passos.py` (CadQuery venv, ~3 min, run after `case.py` + `render.py`; steps 8-9 are drawn view-up = -z, lid face down as on the bench). Schematics: `kicad-cli sch export svg --exclude-drawing-sheet` on `kicad/student_v03.kicad_sch`. The 5 DRC *warnings* (via/track dangling) were analysed on 18 Nov: removing them cascades through whole routes (ends sit off a via's centre, KiCad's check is topological); the board was left as ordered. The lid's printed logo still reads "STUDENT · V2" (SPEC v3, paint only).
 - **Student V3 photo-real renders (18 Nov):** Blender 5.2 (Cycles, OptiX) via `student_v03/case/blender_export.py` (CadQuery venv: writes `case/blender/build/` PLYs + manifest + KiCad GLB of the board; shots = the steps' cameras and offsets plus beauty shots) -> `case/render_blender.py` (`blender -b --python ... -- [shots] [--fast]`, ~10 min for all 17) -> `case/blender_finish.py` (lays the transparent PNGs on the paper colour, writes `etutti/studentV3/img/foto_*.jpg`). `pagina.py` uses `foto_<name>` when it exists and links the clay version. Gotchas: PLY import brings custom normals that smear flat plates (the mesh is rebuilt with `from_pydata`); use "Standard" view transform (AgX washes the cream paint); keep the same camera as pyvista and the numbered pins of `ancoras.json` still line up. `case/blender/{build,out}` are gitignored.
 
+## Minimic (28 Nov 2026) — new project, USB-C microphone
+
+`minimic/` (working name): one-board USB-C microphone, class-compliant audio, continuous gain pot + a 10-LED
+green/yellow/red level meter, bought SMD from JLCPCB. Concept in `minimic/SPEC.md` (**RnMIC** revisions, Portuguese,
+written in the concept session; agents never edit it). Same protocol as the eTutti: concept → SPEC → Code with the
+agents `mic-eletronica`, `mic-firmware`, `mic-design` (`.claude/agents/`), each owning its folder and report and only
+reading the others'; placement gate P approved by J before routing; nothing ordered without J's OK. Recommended
+architecture: digital MEMS (I2S/PDM) + RP2040 (USB audio, gain, meter), all prices/datasheet figures in the SPEC are
+from memory until `ELETRONICA.md` E1 checks them. Unlisted: no home card, not in `sitemap.xml`.
+
 ## eTutti Student V4 (21 Nov 2026) — SPEC R1V4 + R2V4, Phase A (studies)
 
 `etutti/hardware/student_v04/`: Chat's `SPEC.md` (nomenclature **RnV4** = revision n of the V4 SPEC; reports cite the revision they meet).

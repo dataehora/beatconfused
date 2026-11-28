@@ -1,0 +1,215 @@
+{
+ "revisao": "R11SL",
+ "regra": "apoio continuo entre os dois M2 (os trilhos terminam nas guias centradas), o mesmo tipo nas 4 fileiras, sem furos no piso; as pontas alem dos M2 ficam livres",
+ "fileiras": [
+  {
+   "fileira": 1,
+   "x": [
+    -21.25,
+    143.65
+   ],
+   "regua_baixo_z": 3.8,
+   "trilhos": [
+    {
+     "plano": "trilho v = +6,75",
+     "intervalos_de_material": [
+      [
+       -98.0,
+       -96.0
+      ],
+      [
+       -60.0,
+       -58.8
+      ],
+      [
+       -42.94,
+       -38.06
+      ],
+      [
+       -8.15,
+       140.65
+      ],
+      [
+       147.0,
+       149.0
+      ]
+     ],
+     "vaos": []
+    },
+    {
+     "plano": "trilho v = -6,75",
+     "intervalos_de_material": [
+      [
+       -98.0,
+       -96.0
+      ],
+      [
+       -60.0,
+       -58.8
+      ],
+      [
+       -58.49,
+       -56.34
+      ],
+      [
+       -54.66,
+       -52.51
+      ],
+      [
+       -8.15,
+       140.65
+      ],
+      [
+       147.0,
+       149.0
+      ]
+     ],
+     "vaos": []
+    }
+   ],
+   "continuo": true
+  },
+  {
+   "fileira": 2,
+   "x": [
+    -30.5,
+    134.4
+   ],
+   "regua_baixo_z": 5.8,
+   "trilhos": [
+    {
+     "plano": "trilho v = +6,75",
+     "intervalos_de_material": [
+      [
+       -98.0,
+       -96.0
+      ],
+      [
+       -60.0,
+       -58.8
+      ],
+      [
+       -17.4,
+       131.4
+      ],
+      [
+       147.0,
+       149.0
+      ]
+     ],
+     "vaos": []
+    },
+    {
+     "plano": "trilho v = -6,75",
+     "intervalos_de_material": [
+      [
+       -98.0,
+       -96.0
+      ],
+      [
+       -60.0,
+       -58.8
+      ],
+      [
+       -43.4,
+       -40.91
+      ],
+      [
+       -40.09,
+       -37.6
+      ],
+      [
+       -17.4,
+       131.4
+      ],
+      [
+       147.0,
+       149.0
+      ]
+     ],
+     "vaos": []
+    }
+   ],
+   "continuo": true
+  },
+  {
+   "fileira": 3,
+   "x": [
+    -21.25,
+    143.65
+   ],
+   "regua_baixo_z": 7.8,
+   "trilhos": [
+    {
+     "plano": "trilho v = +6,75",
+     "intervalos_de_material": [
+      [
+       -98.0,
+       -96.0
+      ],
+      [
+       -8.15,
+       140.65
+      ],
+      [
+       147.0,
+       149.0
+      ]
+     ],
+     "vaos": []
+    },
+    {
+     "plano": "trilho v = -6,75",
+     "intervalos_de_material": [
+      [
+       -98.0,
+       -96.0
+      ],
+      [
+       -8.15,
+       140.65
+      ],
+      [
+       147.0,
+       149.0
+      ]
+     ],
+     "vaos": []
+    }
+   ],
+   "continuo": true
+  },
+  {
+   "fileira": 4,
+   "x": [
+    -30.5,
+    134.4
+   ],
+   "regua_baixo_z": 10.8,
+   "trilhos": [
+    {
+     "plano": "trilho v = +6,75",
+     "intervalos_de_material": [
+      [
+       -17.4,
+       131.4
+      ]
+     ],
+     "vaos": []
+    },
+    {
+     "plano": "trilho v = -6,75",
+     "intervalos_de_material": [
+      [
+       -17.4,
+       131.4
+      ]
+     ],
+     "vaos": []
+    }
+   ],
+   "continuo": true
+  }
+ ],
+ "todas_continuas": true
+}

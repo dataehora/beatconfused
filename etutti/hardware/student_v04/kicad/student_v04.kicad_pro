@@ -752,8 +752,8 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "student_v03.kicad_sch",
-        "name": "student_v03",
+        "filename": "student_v04.kicad_sch",
+        "name": "student_v04",
         "uuid": "00000000-0000-0000-0000-000000000000"
       }
     ],
@@ -767,27 +767,27 @@
     ],
     [
       "0af12ad9-e8ef-5b2e-a9f6-5743bb5f9d24",
-      "P \u00c2\u00b7 Processador"
+      "P Â· Processador"
     ],
     [
       "f8e86e05-da06-50f3-ac15-8ea0d986bd2c",
-      "E \u00c2\u00b7 Energia"
+      "E Â· Energia"
     ],
     [
       "5da1b986-40e4-59ed-afc2-0b6ae3263df1",
-      "F \u00c2\u00b7 Fone"
+      "F Â· Fone"
     ],
     [
       "6bee8ded-6107-5f0f-8cd2-5597276bbfc6",
-      "I \u00c2\u00b7 Interface"
+      "I Â· Interface"
     ],
     [
       "3719de62-0226-5294-928b-eb6903dc1feb",
-      "A \u00c2\u00b7 Alto-falante"
+      "A Â· Alto-falante"
     ],
     [
       "29e8b50d-5b48-570c-b27d-761541d3a4c6",
-      "R \u00b7 Reguas"
+      "R · Reguas"
     ]
   ],
   "text_variables": {},

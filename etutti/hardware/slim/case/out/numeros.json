@@ -1,0 +1,66 @@
+{
+ "planta": [
+  247.0,
+  89.1
+ ],
+ "x": [
+  -98.0,
+  149.0
+ ],
+ "y": [
+  -18.5,
+  70.6
+ ],
+ "split_z": 8.0,
+ "tampo_z_centro_fileira": [
+  14.01,
+  16.01,
+  18.01,
+  21.01
+ ],
+ "plataforma_registros_z": 15.01,
+ "plataforma_volume_z": 22.01,
+ "poco_fundo_registros": 13.724,
+ "poco_fundo_volume": 19.728,
+ "face_de_baixo_sob_poco_registros": 12.224,
+ "face_de_baixo_sob_poco_volume": 18.228,
+ "bateria": {
+  "modelo": "VARTA 56457 201 016",
+  "baia": [
+   36.0,
+   60.0
+  ],
+  "crescimento_esquerda_mm": 8.0,
+  "pilares_placa": [
+   [
+    -55.5,
+    -7.0
+   ],
+   [
+    -40.5,
+    8.5
+   ],
+   [
+    -40.0,
+    63.5
+   ],
+   [
+    -93.0,
+    52.0
+   ],
+   [
+    -75.0,
+    64.0
+   ]
+  ]
+ },
+ "tampo_borda_frente": 11.144,
+ "tampo_max": 22.001,
+ "volume_cm3": {
+  "base": 55.07,
+  "tampo": 45.98,
+  "anel": 0.124
+ },
+ "base_valida": true,
+ "tampo_valido": true
+}

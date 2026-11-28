@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\julia\\OneDrive\\Documentos\\GitHub\\beatconfused\\etutti\\hardware\\slim\\pcb\\kicad_regua\\slim_regua.kicad_sch")
-		(date "2026-11-24T23:19:03")
+		(date "2026-11-25T20:53:59")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -824,23 +824,23 @@
 		)
 		(comp
 			(ref "J1")
-			(value "FFC 8P 0.5 mm, contato por baixo")
-			(footprint "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
-			(description "na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector na principal); footprint = placeholder Amphenol")
+			(value "FFC 8P 0.5 mm H1.0 (KH-FPC0.5-H1.0SMT-8P-QCHF)")
+			(footprint "slim:FFC_8P_0.5_KH-H1.0")
+			(description "na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector, 1,0 mm de altura, contatos dos dois lados); footprint = placeholder Amphenol")
 			(fields
 				(field
 					(name "Codigo") "S10")
 				(field
-					(name "LCSC") "C66953")
+					(name "LCSC") "C3250113")
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Connector_FFC-FPC:Amphenol_F32Q-1A7x1-11008_1x08-1MP_P0.5mm_Horizontal")
+					(name "Footprint") "slim:FFC_8P_0.5_KH-H1.0")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector na principal); footprint = placeholder Amphenol")
+					(name "Description") "na cauda, face de baixo, fora da area das teclas; cabo FFC reto ate a principal (mesmo conector, 1,0 mm de altura, contatos dos dois lados); footprint = placeholder Amphenol")
 			)
 			(libsource
 				(lib "slim")
@@ -853,7 +853,7 @@
 			)
 			(property
 				(name "LCSC")
-				(value "C66953")
+				(value "C3250113")
 			)
 			(property
 				(name "Montagem")
@@ -918,7 +918,7 @@
 		(comp
 			(ref "U1")
 			(value "TMAG5253BA3IQDMRR")
-			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(footprint "slim:TMAG5253_X2SON4_EE")
 			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 			(description "tecla 1: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QA do 595")
 			(fields
@@ -929,7 +929,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+					(name "Footprint") "slim:TMAG5253_X2SON4_EE")
 				(field
 					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 				(field
@@ -991,7 +991,7 @@
 		(comp
 			(ref "U2")
 			(value "TMAG5253BA3IQDMRR")
-			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(footprint "slim:TMAG5253_X2SON4_EE")
 			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 			(description "tecla 2: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QB do 595")
 			(fields
@@ -1002,7 +1002,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+					(name "Footprint") "slim:TMAG5253_X2SON4_EE")
 				(field
 					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 				(field
@@ -1064,7 +1064,7 @@
 		(comp
 			(ref "U3")
 			(value "TMAG5253BA3IQDMRR")
-			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(footprint "slim:TMAG5253_X2SON4_EE")
 			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 			(description "tecla 3: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QC do 595")
 			(fields
@@ -1075,7 +1075,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+					(name "Footprint") "slim:TMAG5253_X2SON4_EE")
 				(field
 					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 				(field
@@ -1137,7 +1137,7 @@
 		(comp
 			(ref "U4")
 			(value "TMAG5253BA3IQDMRR")
-			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(footprint "slim:TMAG5253_X2SON4_EE")
 			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 			(description "tecla 4: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QD do 595")
 			(fields
@@ -1148,7 +1148,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+					(name "Footprint") "slim:TMAG5253_X2SON4_EE")
 				(field
 					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 				(field
@@ -1210,7 +1210,7 @@
 		(comp
 			(ref "U5")
 			(value "TMAG5253BA3IQDMRR")
-			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(footprint "slim:TMAG5253_X2SON4_EE")
 			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 			(description "tecla 5: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QE do 595")
 			(fields
@@ -1221,7 +1221,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+					(name "Footprint") "slim:TMAG5253_X2SON4_EE")
 				(field
 					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 				(field
@@ -1283,7 +1283,7 @@
 		(comp
 			(ref "U6")
 			(value "TMAG5253BA3IQDMRR")
-			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(footprint "slim:TMAG5253_X2SON4_EE")
 			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 			(description "tecla 6: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QF do 595")
 			(fields
@@ -1294,7 +1294,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+					(name "Footprint") "slim:TMAG5253_X2SON4_EE")
 				(field
 					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 				(field
@@ -1356,7 +1356,7 @@
 		(comp
 			(ref "U7")
 			(value "TMAG5253BA3IQDMRR")
-			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(footprint "slim:TMAG5253_X2SON4_EE")
 			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 			(description "tecla 7: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QG do 595")
 			(fields
@@ -1367,7 +1367,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+					(name "Footprint") "slim:TMAG5253_X2SON4_EE")
 				(field
 					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 				(field
@@ -1429,7 +1429,7 @@
 		(comp
 			(ref "U8")
 			(value "TMAG5253BA3IQDMRR")
-			(footprint "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+			(footprint "slim:TMAG5253_X2SON4_EE")
 			(datasheet "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 			(description "tecla 8: no verso, a 4,3 mm do centro (desenho Gateron 'Layout of PCB'); OUT em comum com os 7 outros; EN = QH do 595")
 			(fields
@@ -1440,7 +1440,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Package_SON:Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm")
+					(name "Footprint") "slim:TMAG5253_X2SON4_EE")
 				(field
 					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/tmag5253.pdf")
 				(field
@@ -1502,7 +1502,7 @@
 		(comp
 			(ref "U9")
 			(value "74HC595BQ,115")
-			(footprint "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm")
+			(footprint "slim:HC595_DHVQFN16_EE")
 			(datasheet "https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
 			(description "registrador de deslocamento 8 bits (DHVQFN-16, 2,5 x 3,5 mm), 137 mil em estoque; QA..QH = EN dos sensores 1..8, QH' sem uso; pad 17 no GND")
 			(fields
@@ -1513,7 +1513,7 @@
 				(field
 					(name "Montagem") "JLC")
 				(field
-					(name "Footprint") "Package_DFN_QFN:DHVQFN-16-1EP_2.5x3.5mm_P0.5mm_EP1x2mm")
+					(name "Footprint") "slim:HC595_DHVQFN16_EE")
 				(field
 					(name "Datasheet") "https://assets.nexperia.com/documents/data-sheet/74HC_HCT595.pdf")
 				(field

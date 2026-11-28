@@ -1,0 +1,16 @@
+{
+ "slim_regua": {
+  "erros": 0,
+  "avisos": 0,
+  "nao_ligados": 72,
+  "paridade": 0,
+  "tipos": {}
+ },
+ "slim_grade": {
+  "erros": 0,
+  "avisos": 0,
+  "nao_ligados": 0,
+  "paridade": null,
+  "tipos": {}
+ }
+}

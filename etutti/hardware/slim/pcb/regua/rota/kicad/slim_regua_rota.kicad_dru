@@ -1,0 +1,18 @@
+(version 1)
+# eTutti Slim ruler R8 -- routing rules (R8SL, stage 3a).
+(rule "Vias 0,6 / furo 0,3"
+    (condition "A.Type == 'via'")
+    (constraint via_diameter (min 0.5mm))
+    (constraint hole_size (min 0.3mm)))
+(rule "Trilhas: minimo 0,15; preferida 0,2"
+    (condition "A.Type == 'track'")
+    (constraint track_width (min 0.15mm) (opt 0.2mm)))
+# OUT is the analogue line (the 8 sensors share it, mV swings). DATA/CLK/LATCH are the fast edges (3.3 V, ns). Crosstalk falls with distance:
+# 1.0 mm = 5 track widths, well beyond the 0.15 mm default gap. At the FFC pads (0.5 mm pitch, OUT is pin 3 beside DATA pin 4) the pitch itself
+# leaves 0.2 mm between pads, so the rule is relaxed only inside the rule area "Zona FFC" (2 mm in front of the connector).
+(rule "OUT longe de DADO/CLOCK/LATCH (>= 1,0 mm)"
+    (condition "A.NetName == 'OUT' && (B.NetName == 'DATA' || B.NetName == 'CLK' || B.NetName == 'LATCH')")
+    (constraint clearance (min 1.0mm)))
+(rule "OUT junto aos pads do FFC (passo 0,5: folga entre pads 0,2 mm)"
+    (condition "A.NetName == 'OUT' && (B.NetName == 'DATA' || B.NetName == 'CLK' || B.NetName == 'LATCH') && (A.insideArea('Zona FFC') || B.insideArea('Zona FFC'))")
+    (constraint clearance (min 0.2mm)))

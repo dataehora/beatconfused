@@ -1,0 +1,72 @@
+{
+ "registros": {
+  "S1": {
+   "topo_plataforma_z": 15.01,
+   "acima_do_tampo_frente_mm": 2.62,
+   "abaixo_do_tampo_tras_mm": 0.62,
+   "poco_fundo_z": 13.81,
+   "profundidade_poco_mm": [
+    1.2,
+    1.2
+   ],
+   "folga_axial_ima_mm": 0.8
+  },
+  "S2": {
+   "topo_plataforma_frente_z": 13.39,
+   "topo_plataforma_tras_z": 16.63,
+   "poco_fundo_z": 13.72,
+   "profundidade_no_eixo_mm": 1.29,
+   "profundidade_poco_borda_frente_mm": 0.1,
+   "profundidade_poco_borda_tras_mm": 2.47,
+   "vao_sob_o_knob_atras_mm": 2.17,
+   "topo_do_knob_z": 19.81,
+   "knob_acima_do_tampo_frente_mm": 5.99,
+   "knob_acima_do_tampo_tras_mm": 3.61,
+   "folga_axial_ima_mm": 0.8
+  },
+  "S3": {
+   "inclinacao_graus": 7.12,
+   "profundidade_poco_mm": [
+    1.2,
+    1.2
+   ],
+   "erro_de_angulo_pico_graus": 0.221,
+   "deslocamento_lateral_do_ima_na_haste_mm": 0.34
+  }
+ },
+ "volume": {
+  "S1": {
+   "topo_plataforma_z": 21.01,
+   "acima_do_tampo_frente_mm": 2.62,
+   "abaixo_do_tampo_tras_mm": 0.99,
+   "poco_fundo_z": 19.81,
+   "profundidade_poco_mm": [
+    1.2,
+    1.2
+   ],
+   "folga_axial_ima_mm": 0.8
+  },
+  "S2": {
+   "topo_plataforma_frente_z": 19.39,
+   "topo_plataforma_tras_z": 23.0,
+   "poco_fundo_z": 19.73,
+   "profundidade_no_eixo_mm": 2.28,
+   "profundidade_poco_borda_frente_mm": 0.1,
+   "profundidade_poco_borda_tras_mm": 3.17,
+   "vao_sob_o_knob_atras_mm": 2.87,
+   "topo_do_knob_z": 26.81,
+   "knob_acima_do_tampo_frente_mm": 6.98,
+   "knob_acima_do_tampo_tras_mm": 3.91,
+   "folga_axial_ima_mm": 0.8
+  },
+  "S3": {
+   "inclinacao_graus": 7.12,
+   "profundidade_poco_mm": [
+    1.2,
+    1.2
+   ],
+   "erro_de_angulo_pico_graus": 0.221,
+   "deslocamento_lateral_do_ima_na_haste_mm": 0.34
+  }
+ }
+}

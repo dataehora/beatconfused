@@ -1,0 +1,112 @@
+{
+ "revisao": "R6SL",
+ "cabeca": {
+  "d": 15.0,
+  "altura": 3.8,
+  "lateral_reta": 1.6,
+  "borda_elipse_radial": 1.3,
+  "borda_elipse_vertical": 1.15,
+  "raio_da_esfera_do_domo": 18.83
+ },
+ "haste_d": 10.0,
+ "haste_comprimento": 5.85,
+ "pino": {
+  "d": 5.4,
+  "comprimento": 3.0,
+  "folga_radial_no_poco": 0.135
+ },
+ "cruz_femea": {
+  "braco": 4.2,
+  "largura": 1.04,
+  "profundidade": 3.0,
+  "entrada_chanfro": 0.3
+ },
+ "cruz_macho_STEP": {
+  "braco": 4.0,
+  "largura": 1.1,
+  "altura_min": 3.3
+ },
+ "interferencia_largura_mm": 0.06,
+ "furo_do_tampo_d": 11.0,
+ "folga_radial_haste_furo": 0.5,
+ "textura_C_F": {
+  "tipo": "pontilhado diagonal (V4)",
+  "quadrado": 0.5,
+  "fundo": 0.18,
+  "passo": 1.1,
+  "grade_graus": 45,
+  "area_d": 11.0,
+  "arquivo": "botao_textura.step"
+ },
+ "volume_cm3": 1.04,
+ "massa_g_resina_1p1": 1.14,
+ "folga_haste_furo": {
+  "nominal_mm": 0.5,
+  "jogo_da_haste_estimado_mm": 0.2,
+  "inclinacao_graus_estimada": 0.5,
+  "deslocamento_na_borda_mm": 0.051,
+  "margem_pior_caso_mm": 0.099,
+  "nota": "jogo da haste e inclinacao sao estimativas (a Gateron nao publica); o ensaio dos 4 botoes mede; impressao SLA +-0,15 no pior caso"
+ },
+ "por_fileira": [
+  {
+   "fileira": 1,
+   "topo_carcaca_z": 10.85,
+   "borda_alta_do_furo_z": 14.697,
+   "borda_baixa_do_furo_z": 13.323,
+   "haste_switch_topo_repouso_z": 14.35,
+   "base_da_cabeca_repouso_z": 20.2,
+   "base_da_cabeca_apertado_z": 16.7,
+   "topo_repouso_z": 24.0,
+   "topo_apertado_z": 20.5,
+   "folga_fim_do_curso_mm": 2.003,
+   "haste_necessaria_mm": 5.847
+  },
+  {
+   "fileira": 2,
+   "topo_carcaca_z": 12.85,
+   "borda_alta_do_furo_z": 16.697,
+   "borda_baixa_do_furo_z": 15.323,
+   "haste_switch_topo_repouso_z": 16.35,
+   "base_da_cabeca_repouso_z": 22.2,
+   "base_da_cabeca_apertado_z": 18.7,
+   "topo_repouso_z": 26.0,
+   "topo_apertado_z": 22.5,
+   "folga_fim_do_curso_mm": 2.003,
+   "haste_necessaria_mm": 5.847
+  },
+  {
+   "fileira": 3,
+   "topo_carcaca_z": 14.85,
+   "borda_alta_do_furo_z": 18.697,
+   "borda_baixa_do_furo_z": 17.323,
+   "haste_switch_topo_repouso_z": 18.35,
+   "base_da_cabeca_repouso_z": 24.2,
+   "base_da_cabeca_apertado_z": 20.7,
+   "topo_repouso_z": 28.0,
+   "topo_apertado_z": 24.5,
+   "folga_fim_do_curso_mm": 2.003,
+   "haste_necessaria_mm": 5.847
+  },
+  {
+   "fileira": 4,
+   "topo_carcaca_z": 17.85,
+   "borda_alta_do_furo_z": 21.63,
+   "borda_baixa_do_furo_z": 20.323,
+   "haste_switch_topo_repouso_z": 21.35,
+   "base_da_cabeca_repouso_z": 27.2,
+   "base_da_cabeca_apertado_z": 23.7,
+   "topo_repouso_z": 31.0,
+   "topo_apertado_z": 27.5,
+   "folga_fim_do_curso_mm": 2.07,
+   "haste_necessaria_mm": 5.78
+  }
+ ],
+ "altura_total_botoes_z": 31.0,
+ "processo": {
+  "material": "resina SLA tough (peca unica)",
+  "cores": "naturais brancas, sustenidos pretos, C e F brancos com a covinha (botao_textura)",
+  "acabamento": "so na fase de cotacao (lixa, verniz, brilho)",
+  "ensaio": "4 botoes (1 por fileira) com fendas 1,00 / 1,04 / 1,08 / 1,12 antes de imprimir os 32"
+ }
+}

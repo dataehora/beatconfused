@@ -16,7 +16,7 @@ library always matches the schematic. Writes pcb/kicad/slim.pretty/:
       5 SMD pads 3 x 2 mm + 2 locating holes 1.0 mm (drawing "PJ-327A 5JJ",
       PCB view). Pads: 1, 2 sleeve; 3 ring; 4 tip; 5 tip switch (normally
       closed against 4, opens when a plug is in). Mouth towards -y.
-  LED_1615_RG_4pad                I3, TOGIALED TJ-S1615SW6TGLCRG-A5 (C273605),
+  LED_0805_RG_4pad                I3, XINGLIGHT XL-2012SURUGC (C965845),
       recommended pad layout 2.6 x 1.6: pads 0.85 x 0.55. Pads: 1 red
       anode, 2 red cathode, 3 green anode, 4 green cathode (datasheet
       symbol: 2 -|<- 1 red, 4 -|<- 3 green; cathode mark on the 2/4 side).
@@ -120,18 +120,18 @@ def jack():
     return name
 
 
-LED_PADS = {"1": (0.875, -0.525), "2": (-0.875, -0.525), "3": (0.875, 0.525), "4": (-0.875, 0.525)}
+LED_PADS = {"1": (-0.775, -0.4), "2": (0.775, -0.4), "3": (-0.775, 0.4), "4": (0.775, 0.4)}      # R8SL: XL-2012SURUGC pads from the XINGLIGHT sheet (0.55 square, 1.0 apart in x, 0.25 in y)
 
 
 def led():
-    name = "LED_1615_RG_4pad"
-    L = head(name, "LED 1.6 x 1.5 mm red/green, 4 pads, TOGIALED TJ-S1615SW6TGLCRG-A5 (LCSC C273605); "
-                   "1 red A, 2 red K, 3 green A, 4 green K", "LED 1615 bicolor", ref_y=-1.6, val_y=1.6)
-    L += [rect(-0.8, -0.75, 0.8, 0.75, "F.Fab", 0.1), line(-0.8, -0.2, -0.8, 0.2, "F.Fab", 0.3),
-          rect(-1.55, -1.05, 1.55, 1.05, "F.CrtYd", 0.05),
-          line(-1.5, -0.95, -1.5, 0.95, "F.SilkS", 0.12)]
+    name = "LED_0805_RG_4pad"
+    L = head(name, "LED 2.0 x 1.25 mm red / green, 4 pads, XINGLIGHT XL-2012SURUGC (LCSC C965845), hand-soldered; "
+                   "1 red K, 2 red A, 3 green K, 4 green A", "LED 0805 bicolor", ref_y=-1.6, val_y=1.6)
+    L += [rect(-1.0, -0.625, 1.0, 0.625, "F.Fab", 0.1), line(-1.0, -0.2, -1.0, 0.2, "F.Fab", 0.3),
+          rect(-1.6, -1.05, 1.6, 1.05, "F.CrtYd", 0.05),
+          line(-1.55, -0.95, -1.55, 0.95, "F.SilkS", 0.12)]
     for num, (x, y) in LED_PADS.items():
-        L.append('\t(pad "%s" smd rect (at %s %s) (size 0.85 0.55) (layers "F.Cu" "F.Paste" "F.Mask"))' % (num, f(x), f(y)))
+        L.append('\t(pad "%s" smd rect (at %s %s) (size 0.55 0.55) (layers "F.Cu" "F.Paste" "F.Mask"))' % (num, f(x), f(y)))
     write(name, L)
     return name
 
@@ -153,6 +153,66 @@ def srbv():
     return name
 
 
+def _courtyard(x0, y0, x1, y1):
+    return rect(x0, y0, x1, y1, "F.CrtYd", 0.05)
+
+
+def tmag5253():
+    """TMAG5253 X2SON-4 as EasyEDA / JLCPCB draw it (LCSC C22401868): pad 1 (+0.7, -0.25), 2 (-0.7, -0.25), 3 (-0.7, +0.25), 4 (+0.7, +0.25), 5 = EP."""
+    name = "TMAG5253_X2SON4_EE"
+    L = head(name, "TI TMAG5253 X2SON-4 1.4 x 1.1, pads as EasyEDA C22401868 (what JLCPCB places)", "X2SON TMAG5253", ref_y=-1.5, val_y=1.5)
+    L += [rect(-0.7, -0.55, 0.7, 0.55, "F.Fab", 0.1), _courtyard(-0.95, -0.7, 0.95, 0.7)]
+    for num, x, y in (("1", 0.7, -0.25), ("2", -0.7, -0.25), ("3", -0.7, 0.25), ("4", 0.7, 0.25)):
+        L.append('	(pad "%s" smd rect (at %s %s) (size 0.22 0.4) (layers "F.Cu" "F.Paste" "F.Mask"))' % (num, f(x), f(y)))
+    L.append('	(pad "5" smd rect (at 0 0) (size 0.8 0.6) (layers "F.Cu" "F.Paste" "F.Mask"))')
+    write(name, L)
+    return name
+
+
+def hc595():
+    """74HC595BQ DHVQFN-16 2.5 x 3.5 as EasyEDA draws it (LCSC C730243)."""
+    name = "HC595_DHVQFN16_EE"
+    L = head(name, "Nexperia 74HC595BQ DHVQFN-16, pads as EasyEDA C730243", "DHVQFN16 595", ref_y=-2.6, val_y=2.6)
+    L += [rect(-1.75, -1.25, 1.75, 1.25, "F.Fab", 0.1), _courtyard(-2.2, -1.65, 2.2, 1.65)]
+    pads = [("1", -1.658, 0.25, 0.665, 0.28), ("16", -1.658, -0.25, 0.665, 0.28), ("8", 1.658, 0.25, 0.665, 0.28), ("9", 1.658, -0.25, 0.665, 0.28)]
+    for i, x in enumerate((-1.25, -0.75, -0.25, 0.25, 0.75, 1.25)):
+        pads.append((str(2 + i), x, 1.157, 0.28, 0.665))
+        pads.append((str(15 - i), x, -1.157, 0.28, 0.665))
+    for num, x, y, w, h in pads:
+        L.append('	(pad "%s" smd rect (at %s %s) (size %s %s) (layers "F.Cu" "F.Paste" "F.Mask"))' % (num, f(x), f(y), f(w), f(h)))
+    L.append('	(pad "17" smd rect (at 0 0) (size 2 1) (layers "F.Cu" "F.Paste" "F.Mask"))')
+    write(name, L)
+    return name
+
+
+def ffc():
+    """KH-FPC0.5-H1.0SMT-8P-QCHF (LCSC C3250113), pads as EasyEDA draws them: the 8 signal pads (0.3 x 0.8, 0.5 pitch) at y = -1.25 (the REAR),
+    two hold-down pads (0.4 x 0.8, named MP) at (+-2.75, +1.25); the body is x +-3.0, y -1.0 .. +1.9; the cable mouth is at y = +1.9 (towards +y)."""
+    name = "FFC_8P_0.5_KH-H1.0"
+    L = head(name, "FFC/FPC 8P 0.5 mm, 1.0 mm high, flip lock, double-sided contacts, KH-FPC0.5-H1.0SMT-8P-QCHF; mouth towards +y", "FFC FPC 0.5 8P",
+             ref_y=-2.6, val_y=3.0)
+    L += [rect(-3.0, -1.0, 3.0, 1.9, "F.Fab", 0.1), _courtyard(-3.3, -1.8, 3.3, 2.1), line(-3.0, 1.9, 3.0, 1.9, "F.SilkS", 0.12)]
+    for i in range(8):
+        L.append('	(pad "%d" smd rect (at %s -1.25) (size 0.3 0.8) (layers "F.Cu" "F.Paste" "F.Mask"))' % (i + 1, f(-1.75 + 0.5 * i)))
+    for x in (-2.75, 2.75):
+        L.append('	(pad "MP" smd rect (at %s 1.25) (size 0.4 0.8) (layers "F.Cu" "F.Paste" "F.Mask"))' % f(x))
+    write(name, L)
+    return name
+
+
+def ks33d():
+    """The KS-33D's PCB holes (Gateron drawing 'Layout of PCB'): centre post D5.20 and two pegs D1.70 at +-5.075; no electrical pad."""
+    name = "KS33D_holes"
+    L = head(name, "Gateron KS-33D PCB holes: D5.20 centre, 2 x D1.70 at +-5.075 (10.15 apart); the Hall sensor is 4.3 mm from the centre (+y here)", "KS-33D holes",
+             attr="through_hole", ref_y=-8.2, val_y=8.2)
+    L += [rect(-7.3, -7.3, 7.3, 7.3, "F.Fab", 0.1), _courtyard(-7.4, -7.4, 7.4, 7.4)]
+    L.append('	(pad "" np_thru_hole circle (at 0 0) (size 5.2 5.2) (drill 5.2) (layers "*.Cu" "*.Mask"))')
+    for x in (-5.075, 5.075):
+        L.append('	(pad "" np_thru_hole circle (at %s 0) (size 1.7 1.7) (drill 1.7) (layers "*.Cu" "*.Mask"))' % f(x))
+    write(name, L)
+    return name
+
+
 def check_bga():
     balls = json.load(open(os.path.join(HERE, "rt1062_balls.json")))
     mine = set(bga_balls())
@@ -162,7 +222,7 @@ def check_bga():
 
 
 def write_all():
-    names = [bga(), jack(), led(), srbv()]
+    names = [bga(), jack(), led(), tmag5253(), hc595(), ffc(), ks33d()]
     n = check_bga()
     return names, n
 

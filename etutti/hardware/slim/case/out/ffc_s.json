@@ -1,0 +1,50 @@
+{
+ "vao_horizontal_por_fileira": [
+  5.5,
+  5.8,
+  5.5,
+  5.8
+ ],
+ "espessura_assumida": 0.3,
+ "raio_minimo_regra_10T": 3.0,
+ "insercao_por_ponta": 3.4,
+ "fileiras": [
+  {
+   "fileira": 1,
+   "dz": -3.0,
+   "raio_no_corte_mm": 3.27,
+   "comprimento_livre_S_mm": 6.53,
+   "cabo_minimo_mm": 13.3,
+   "folga_com_30mm_mm": 16.7,
+   "folga_com_20mm_mm": 6.7
+  },
+  {
+   "fileira": 2,
+   "dz": -1.0,
+   "raio_no_corte_mm": 8.66,
+   "comprimento_livre_S_mm": 5.91,
+   "cabo_minimo_mm": 12.7,
+   "folga_com_30mm_mm": 17.3,
+   "folga_com_20mm_mm": 7.3
+  },
+  {
+   "fileira": 3,
+   "dz": 1.0,
+   "raio_no_corte_mm": 7.81,
+   "comprimento_livre_S_mm": 5.62,
+   "cabo_minimo_mm": 12.4,
+   "folga_com_30mm_mm": 17.6,
+   "folga_com_20mm_mm": 7.6
+  },
+  {
+   "fileira": 4,
+   "dz": 4.0,
+   "raio_no_corte_mm": 3.1,
+   "comprimento_livre_S_mm": 7.49,
+   "cabo_minimo_mm": 14.3,
+   "folga_com_30mm_mm": 15.7,
+   "folga_com_20mm_mm": 5.7
+  }
+ ],
+ "conclusao": "30 mm NAO cabe: sobram 16-17 mm de cabo num vao de 5,5 mm (laco de >= 7 mm fora do plano); 20 mm sob medida (sobra 6-7 mm, absorvida por uma barriga rasa)."
+}

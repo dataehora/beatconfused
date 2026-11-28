@@ -1,0 +1,4 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "slim") (type "KiCad") (uri "${KIPRJMOD}/slim.pretty") (options "") (descr "eTutti Slim footprints, written by footprints.py"))
+)
